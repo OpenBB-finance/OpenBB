@@ -26,7 +26,7 @@ def get_similar_companies(symbol: str, us_only: bool = False) -> List[str]:
         Only stocks from the US stock exchanges
 
     Returns
-    ----------
+    -------
     List[str]:
         List of similar tickers
     """

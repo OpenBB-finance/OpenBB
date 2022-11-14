@@ -150,7 +150,7 @@ def screener(
         Export dataframe data to csv,json,xlsx file
 
     Returns
-    ----------
+    -------
     List[str]
         List of stocks that meet preset criteria
     """

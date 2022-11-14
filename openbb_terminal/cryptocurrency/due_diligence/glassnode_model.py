@@ -199,7 +199,7 @@ def get_close_price(
         Flag to print errors. Default: True
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         price over time
     """
@@ -261,7 +261,7 @@ def get_non_zero_addresses(
         Final date, format YYYY-MM-DD
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         addresses with non-zero balances
     """
@@ -323,7 +323,7 @@ def get_active_addresses(
         Final date, format YYYY-MM-DD
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         active addresses over time
     """
@@ -384,7 +384,7 @@ def get_hashrate(
         Interval frequency (e.g., 24h)
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         mean hashrate and symbol price over time
     """
@@ -459,7 +459,7 @@ def get_exchange_balances(
         Final date, format YYYY-MM-DD
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         total amount of coins in units/percentage and symbol price over time
     """
@@ -541,7 +541,7 @@ def get_exchange_net_position_change(
         Final date, format YYYY-MM-DD
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         supply change in exchange wallets of a certain symbol over time
     """

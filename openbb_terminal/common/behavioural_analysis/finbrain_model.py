@@ -21,7 +21,7 @@ def get_sentiment(symbol: str) -> pd.DataFrame:
         Ticker symbol to get the sentiment analysis from
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Empty if there was an issue with data retrieval
     """

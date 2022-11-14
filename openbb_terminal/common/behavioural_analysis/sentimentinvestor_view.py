@@ -62,7 +62,7 @@ def display_historical(
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     Returns
-    ----------
+    -------
     """
 
     supported_ticker = sentimentinvestor_model.check_supported_ticker(symbol)

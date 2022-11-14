@@ -20,7 +20,7 @@ def get_all_names_symbols() -> Tuple[List[str], List[str]]:
     """Gets all etf names and symbols
 
     Returns
-    ----------
+    -------
     etf_symbols: List[str]:
         List of all available etf symbols
     etf_names: List[str]
@@ -56,7 +56,7 @@ def get_etf_overview(symbol: str) -> pd.DataFrame:
         Etf symbol to get overview for
 
     Returns
-    ----------
+    -------
     df : pd.DataFrame
         Dataframe of stock overview data
     """
@@ -90,7 +90,7 @@ def get_etf_holdings(symbol: str) -> pd.DataFrame:
         Symbol to get holdings for
 
     Returns
-    ----------
+    -------
     df: pd.DataFrame
         Dataframe of holdings
     """
@@ -118,7 +118,7 @@ def compare_etfs(symbols: List[str]) -> pd.DataFrame:
         ETF symbols to compare
 
     Returns
-    ----------
+    -------
     df_compare : pd.DataFrame
         Dataframe of etf comparisons
     """
@@ -140,7 +140,7 @@ def get_etfs_by_name(name_to_search: str) -> pd.DataFrame:
         ETF name to match
 
     Returns
-    ----------
+    -------
     df: pd.Dataframe
         Dataframe with symbols and names
     """

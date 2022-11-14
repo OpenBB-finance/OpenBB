@@ -23,7 +23,7 @@ def get_collection_stats(slug: str) -> pd.DataFrame:
         Opensea collection slug. If the name of the collection is Mutant Ape Yacht Club the slug is mutant-ape-yacht-club
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         collection stats
     """

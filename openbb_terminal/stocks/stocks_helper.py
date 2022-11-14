@@ -75,7 +75,7 @@ def check_datetime(
         If False and string is invalid, will return today, by default True
 
     Returns
-    ----------
+    -------
     datetime
         Datetime object
     """
@@ -283,7 +283,7 @@ def load(
         Display verbose information on what was the symbol that was loaded
 
     Returns
-    ----------
+    -------
     df_stock_candidate: pd.DataFrame
         Dataframe of data
     """
@@ -778,7 +778,7 @@ def load_ticker(
         End date to load stock ticker data formatted YYYY-MM-DD.
 
     Returns
-    ----------
+    -------
     DataFrame
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
         date_id, OC-High, OC-Low.
@@ -806,7 +806,7 @@ def process_candle(data: pd.DataFrame) -> pd.DataFrame:
         Stock dataframe.
 
     Returns
-    ----------
+    -------
     DataFrame
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
         date_id, OC-High, OC-Low.
@@ -841,7 +841,7 @@ def find_trendline(
         Either "high" or "low". High is the default.
 
     Returns
-    ----------
+    -------
     DataFrame
         If a trend is successfully found,
             An updated Panda's data frame with a trend data {y_key}_trend column.
@@ -891,7 +891,7 @@ def additional_info_about_ticker(ticker: str) -> str:
     ticker : str
         The stock ticker to extract if stock market is open or not
     Returns
-    ----------
+    -------
     str
         Additional information about trading the ticker
     """
@@ -937,7 +937,7 @@ def clean_fraction(num, denom):
         The denominator for the fraction
 
     Returns
-    ----------
+    -------
     val : Any
         The value of the fraction
     """
@@ -956,7 +956,7 @@ def load_custom(file_path: str) -> pd.DataFrame:
         Path to file
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe of stock data
     """

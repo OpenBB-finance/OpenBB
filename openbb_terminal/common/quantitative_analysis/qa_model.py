@@ -31,7 +31,7 @@ def get_summary(data: pd.DataFrame) -> pd.DataFrame:
         Dataframe to get summary statistics for
 
     Returns
-    ----------
+    -------
     summary : pd.DataFrame
         Summary statistics
     """
@@ -56,7 +56,7 @@ def get_seasonal_decomposition(
         Boolean to indicate multiplication instead of addition
 
     Returns
-    ----------
+    -------
     result: Any
         Result of statsmodels seasonal_decompose
     cycle: pd.DataFrame
@@ -92,7 +92,7 @@ def get_normality(data: pd.DataFrame) -> pd.DataFrame:
         Dataframe of targeted data
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe containing statistics of normality
     """
@@ -149,7 +149,7 @@ def get_unitroot(
         Type of regression for KPSS test.  Can be ‘c’,’ct'
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe with results of ADF test and KPSS test
     """
@@ -200,7 +200,7 @@ def calculate_adjusted_var(
         mean of data
 
     Returns
-    ----------
+    -------
     float
         Real adjusted VaR
     """
@@ -249,7 +249,7 @@ def get_var(
         If the data is a portfolio
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with Value at Risk per percentile
     """
@@ -377,7 +377,7 @@ def get_es(
         If the data is a portfolio
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with Expected Shortfall per percentile
     """
@@ -548,7 +548,7 @@ def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> pd.Da
         length of the rolling window
 
     Returns
-    ----------
+    -------
     sharpe: pd.DataFrame
         sharpe ratio
     """
@@ -579,7 +579,7 @@ def get_sortino(
         adjust the sortino ratio
 
     Returns
-    ----------
+    -------
     sortino: pd.DataFrame
         sortino ratio
     """
@@ -613,7 +613,7 @@ def get_omega_ratio(data: pd.DataFrame, threshold: float = 0) -> float:
         target return threshold
 
     Returns
-    ----------
+    -------
     omega_ratio: float
         omega ratio
     """

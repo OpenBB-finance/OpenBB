@@ -273,7 +273,7 @@ def get_rates(rate_type: str = "borrow") -> pd.DataFrame:
     rate_type : str
         Interest rate type: {borrow, supply}. Default: supply
     Returns
-    ----------
+    -------
     pd.DataFrame: crypto interest rates per platform
     """
     if rate_type not in ("supply", "borrow"):

@@ -26,7 +26,7 @@ def get_rolling_avg(
         Length of rolling window
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe of rolling mean
     pd.DataFrame:
@@ -52,7 +52,7 @@ def get_spread(
         Length of window
 
     Returns
-    ----------
+    -------
     df_sd: pd.DataFrame
         Dataframe of rolling standard deviation
     df_var: pd.DataFrame
@@ -86,7 +86,7 @@ def get_quantile(
         Quantile to display
 
     Returns
-    ----------
+    -------
     df_med : pd.DataFrame
         Dataframe of median prices over window
     df_quantile : pd.DataFrame
@@ -114,7 +114,7 @@ def get_skew(data: pd.DataFrame, window: int = 14) -> pd.DataFrame:
         Length of window
 
     Returns
-    ----------
+    -------
     data_skew : pd.DataFrame
         Dataframe of rolling skew
     """
@@ -134,7 +134,7 @@ def get_kurtosis(data: pd.DataFrame, window: int = 14) -> pd.DataFrame:
         Length of window
 
     Returns
-    ----------
+    -------
     df_kurt : pd.DataFrame
         Dataframe of rolling kurtosis
     """

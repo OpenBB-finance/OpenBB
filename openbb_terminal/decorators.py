@@ -24,7 +24,7 @@ def log_start_end(func=None, log=None):
         Logger, by default None
 
     Returns
-    ----------
+    -------
         Wrapped function
     """
     assert callable(func) or func is None  # nosec

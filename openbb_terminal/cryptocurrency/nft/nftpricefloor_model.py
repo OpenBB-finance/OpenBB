@@ -28,7 +28,7 @@ def get_collections() -> pd.DataFrame:
     ----------
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         nft collections
     """
@@ -52,7 +52,7 @@ def get_floor_price(slug) -> pd.DataFrame:
         nft collection slug
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         nft collections
     """

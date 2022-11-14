@@ -21,7 +21,7 @@ def get_technical_summary_report(symbol: str) -> str:
         Ticker symbol to get the technical summary
 
     Returns
-    ----------
+    -------
     report:str
         technical summary report
     """

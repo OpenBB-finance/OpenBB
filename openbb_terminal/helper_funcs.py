@@ -104,7 +104,7 @@ def check_path(path: str) -> str:
         path of file
 
     Returns
-    ----------
+    -------
     str:
         Ratio of similarity between two strings
     """
@@ -139,7 +139,7 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
         Additional regular expressions to match
 
     Returns
-    ----------
+    -------
     List[str]
         Command queue as list
     """
@@ -211,7 +211,7 @@ def similar(a: str, b: str) -> float:
         string b
 
     Returns
-    ----------
+    -------
     float:
         Ratio of similarity between two strings
     """
@@ -307,7 +307,7 @@ def check_int_range(mini: int, maxi: int):
         Max value to compare
 
     Returns
-    ----------
+    -------
     int_range_checker:
         Function that compares the three integers
     """
@@ -359,7 +359,7 @@ def check_terra_address_format(address: str) -> str:
     address: str
         terra blockchain account address
     Returns
-    ----------
+    -------
     str
         Terra blockchain address or raise argparse exception
     """
@@ -424,7 +424,7 @@ def check_percentage_range(num) -> float:
         Input float
 
     Returns
-    ----------
+    -------
     num: float
         Input number if conditions are met
 
@@ -449,7 +449,7 @@ def check_proportion_range(num) -> float:
     num: float
         Input float
     Returns
-    ----------
+    -------
     num: float
         Input number if conditions are met
     Raises
@@ -490,7 +490,7 @@ def check_list_dates(str_dates: str) -> List[datetime]:
         string with dates separated by ","
 
     Returns
-    ----------
+    -------
     list_dates: List[datetime]
         List of valid dates
     """
@@ -813,7 +813,7 @@ def is_intraday(df: pd.DataFrame) -> bool:
         Price data
 
     Returns
-    ----------
+    -------
     bool
         True if data is intraday
     """
@@ -837,7 +837,7 @@ def reindex_dates(df: pd.DataFrame) -> pd.DataFrame:
         Source dataframe
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Reindexed dataframe
     """
@@ -978,7 +978,7 @@ def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
         List of arguments to parse
 
     Returns
-    ----------
+    -------
     ns_parser:
         Namespace with parsed arguments
     """
@@ -1101,7 +1101,7 @@ def is_timezone_valid(user_tz: str) -> bool:
         Timezone to check for validity
 
     Returns
-    ----------
+    -------
     bool
         True if timezone provided is valid
     """
@@ -1112,7 +1112,7 @@ def get_user_timezone() -> str:
     """Get user timezone if it is a valid one.
 
     Returns
-    ----------
+    -------
     str
         user timezone based on .env file
     """
@@ -1127,7 +1127,7 @@ def get_user_timezone_or_invalid() -> str:
     """Get user timezone if it is a valid one.
 
     Returns
-    ----------
+    -------
     str
         user timezone based on timezone.openbb file or INVALID
     """
@@ -1218,7 +1218,7 @@ def check_file_type_saved(valid_types: List[str] = None):
         List of valid types to export data
 
     Returns
-    ----------
+    -------
     check_filenames: Optional[List[str]]
         Function that returns list of filenames to export data
     """
@@ -1264,7 +1264,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
         Path of directory from where this function is called
 
     Returns
-    ----------
+    -------
     Path
         Path variable containing the path of the exported file
     """
@@ -1340,7 +1340,7 @@ def get_rf() -> float:
     """Use the fiscaldata.gov API to get most recent T-Bill rate.
 
     Returns
-    ----------
+    -------
     rate : float
         The current US T-Bill rate
     """
@@ -1364,7 +1364,7 @@ def excel_columns() -> List[str]:
     """Return potential columns for excel.
 
     Returns
-    ----------
+    -------
     letters : List[str]
         Letters to be used as excel columns
     """
@@ -1423,7 +1423,7 @@ def get_closing_price(ticker, days):
         No. of days in past
 
     Returns
-    ----------
+    -------
     data : pd.DataFrame
         Historic close prices for ticker for given days
     """
@@ -1447,7 +1447,7 @@ def camel_case_split(string: str) -> str:
         The string to be converted
 
     Returns
-    ----------
+    -------
     new_string: str
         The formatted string
     """
@@ -1482,7 +1482,7 @@ def choice_check_after_action(action=None, choices=None):
         return bool that value is allowed or not
 
     Returns
-    ----------
+    -------
     Class
         Class extended argparse.Action
     """
@@ -1580,7 +1580,7 @@ def check_list_values(valid_values: List[str]):
         List of valid values to be checked
 
     Returns
-    ----------
+    -------
     check_list_values_from_valid_values_list:
         Function that ensures that the valid values go through and notifies user when value is not valid.
     """
@@ -1772,7 +1772,7 @@ def load_json(path: str) -> Dict[str, str]:
         The path for the json file
 
     Returns
-    ----------
+    -------
     Dict[str, str]
         The dictionary loaded from json
     """
@@ -1797,7 +1797,7 @@ def list_from_str(value: str) -> List[str]:
         The string to convert
 
     Returns
-    ----------
+    -------
     new_value: List[str]
         The list of strings
     """
@@ -1815,7 +1815,7 @@ def str_date_to_timestamp(date: str) -> int:
         Initial date, format YYYY-MM-DD
 
     Returns
-    ----------
+    -------
     date_ts : int
         Initial date timestamp (e.g., 1_614_556_800)
     """

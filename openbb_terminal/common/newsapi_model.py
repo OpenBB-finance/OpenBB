@@ -37,7 +37,7 @@ def get_news(
         sources to exclusively show news from (comma separated)
 
     Returns
-    ----------
+    -------
     tables : List[Tuple]
         List of tuples containing news df in first index and dict containing title of news df
     """

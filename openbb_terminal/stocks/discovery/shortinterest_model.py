@@ -16,7 +16,7 @@ def get_low_float() -> pd.DataFrame:
     """Returns low float DataFrame
 
     Returns
-    ----------
+    -------
     DataFrame
         Low float DataFrame with the following columns:
         Ticker, Company, Exchange, ShortInt, Float, Outstd, Industry
@@ -39,7 +39,7 @@ def get_today_hot_penny_stocks() -> pd.DataFrame:
     """Returns today hot penny stocks
 
     Returns
-    ----------
+    -------
     DataFrame
         Today hot penny stocks DataFrame with the following columns:
         Ticker, Price, Change, $ Volume, Volume, # Trades

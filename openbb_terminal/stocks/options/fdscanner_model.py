@@ -24,7 +24,7 @@ def unusual_options(limit: int = 100):
         Number to show
 
     Returns
-    ----------
+    -------
     df: pd.DataFrame
         Dataframe containing options information
     last_updated: pd.Timestamp

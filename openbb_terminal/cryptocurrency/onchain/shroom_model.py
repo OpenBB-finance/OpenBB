@@ -113,7 +113,7 @@ def get_daily_transactions(symbols: List[str]) -> pd.DataFrame:
         List of symbols to get transactions for
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with transactions for each symbol
     """
@@ -170,7 +170,7 @@ def get_total_value_locked(
         Interval in months
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with total value locked
     """

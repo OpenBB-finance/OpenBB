@@ -17,7 +17,7 @@ def get_cost_to_borrow() -> pd.DataFrame:
     """Get stocks with highest cost to borrow [Source: Interactive Broker]
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Cost to borrow
     """

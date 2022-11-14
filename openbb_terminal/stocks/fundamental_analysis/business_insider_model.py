@@ -25,7 +25,7 @@ def get_management(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of managers
     """

@@ -67,7 +67,7 @@ def get_historical_options(
         OCC chain ID
 
     Returns
-    ----------
+    -------
     df_hist: pd.DataFrame
         Dataframe of historical option prices
     """
@@ -125,7 +125,7 @@ def option_expirations(symbol: str) -> List[str]:
         Ticker symbol to get expirations for
 
     Returns
-    ----------
+    -------
     dates: List[str]
         List of of available expirations
     """
@@ -163,7 +163,7 @@ def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
         Expiration date in the form of "YYYY-MM-DD"
 
     Returns
-    ----------
+    -------
     chains: pd.DataFrame
         Dataframe with options for the given Symbol and Expiration date
     """
@@ -197,7 +197,7 @@ def process_chains(response: requests.models.Response) -> pd.DataFrame:
         This is the response from tradier api.
 
     Returns
-    ----------
+    -------
     opt_chain: pd.DataFrame
         Dataframe with all available options
     """
@@ -235,7 +235,7 @@ def last_price(symbol: str):
         Ticker symbol
 
     Returns
-    ----------
+    -------
     float:
         Last price
     """

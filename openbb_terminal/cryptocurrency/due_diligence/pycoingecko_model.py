@@ -80,7 +80,7 @@ def get_coin_potential_returns(
         Target price of main_coin to check potential returns (e.g., 5)
 
     Returns
-    ----------
+    -------
     pd.DataFrame
             Potential returns data
             Columns: Coin, Current Price, Target Coin, Potential Price, Potential Market Cap ($), Change (%)
@@ -234,7 +234,7 @@ def get_coin_market_chart(
         unspecified keyword arguments
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Prices for given coin
         Columns: time, price, currency
@@ -259,7 +259,7 @@ def get_coin_tokenomics(symbol: str = "") -> pd.DataFrame:
         coin symbol to check tokenomics
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Metric, Value with tokenomics
     """
@@ -804,7 +804,7 @@ def get_ohlc(symbol: str, vs_currency: str = "usd", days: int = 90) -> pd.DataFr
         on from (1/7/14/30/90/180/365, max)
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         OHLC data for coin
         Columns: time, price, currency

@@ -25,7 +25,7 @@ def get_heatmap_data(timeframe: str) -> pd.DataFrame:
     timeframe: str
         Timeframe to get performance for
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of tickers, changes and sectors
     """

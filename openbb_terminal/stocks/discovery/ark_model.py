@@ -38,7 +38,7 @@ def get_ark_orders(
         Optional filter by fund
 
     Returns
-    ----------
+    -------
     DataFrame
         ARK orders data frame with the following columns:
         ticker, date, shares, weight, fund, direction
@@ -111,7 +111,7 @@ def add_order_total(data: DataFrame) -> DataFrame:
         ticker, date, shares, weight, fund, direction
 
     Returns
-    ----------
+    -------
     DataFrame
         ARK orders data frame with the following columns:
         ticker, date, shares, volume, open, close, high, low, total, weight, fund, direction

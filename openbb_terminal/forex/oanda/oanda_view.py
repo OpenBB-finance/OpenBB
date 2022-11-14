@@ -426,7 +426,7 @@ def add_plots(df: pd.DataFrame, additional_charts: Dict[str, bool]):
         A dictionary of flags to include additional charts
 
     Returns
-    ----------
+    -------
     Tuple
         Tuple of lists containing the plots, legends and subplot legends
     """

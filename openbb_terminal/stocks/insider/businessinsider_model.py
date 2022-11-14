@@ -23,7 +23,7 @@ def get_insider_activity(symbol: str) -> pd.DataFrame:
         Ticker symbol to get insider activity data from
 
     Returns
-    ----------
+    -------
     df_insider : pd.DataFrame
         Get insider activity data
     """

@@ -67,7 +67,7 @@ def split_cols_with_dot(column: str) -> str:
         Pandas dataframe column value
 
     Returns
-    ----------
+    -------
     str:
         Value of column with replaced format.
     """
@@ -138,7 +138,7 @@ def make_request(
         Additional keywords arguments e.g. limit of transactions
 
     Returns
-    ----------
+    -------
     dict
     dictionary with response data
     """
@@ -182,7 +182,7 @@ def get_token_decimals(address: str) -> Optional[int]:
         Blockchain balance e.g. 0x1f9840a85d5af5bf1d1762f925bdaddc4201f984
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         DataFrame with list of tokens and their balances.
     """
@@ -209,7 +209,7 @@ def get_address_info(
         Sort in descending order.
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         DataFrame with list of tokens and their balances.
     """
@@ -269,7 +269,7 @@ def get_top_tokens(sortby: str = "rank", ascend: bool = False) -> pd.DataFrame:
     """Get top 50 tokens. [Source: Ethplorer]
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         DataFrame with list of top 50 tokens.
     """
@@ -310,7 +310,7 @@ def get_top_token_holders(
         Sort in descending order.
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         DataFrame with list of top token holders.
     """
@@ -341,7 +341,7 @@ def get_address_history(
         Sort in ascending order.
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         DataFrame with balance historical transactions (last 100)
     """
@@ -379,7 +379,7 @@ def get_token_info(address) -> pd.DataFrame:
         Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         DataFrame with information about provided ERC20 token.
     """
@@ -443,7 +443,7 @@ def get_tx_info(tx_hash) -> pd.DataFrame:
         Transaction hash e.g. 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         DataFrame with information about ERC20 token transaction.
     """
@@ -494,7 +494,7 @@ def get_token_history(
         Sort in descending order.
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         DataFrame with token historical transactions.
     """
@@ -552,7 +552,7 @@ def get_token_historical_price(
         Sort in descending order.
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         DataFrame with token historical prices.
     """

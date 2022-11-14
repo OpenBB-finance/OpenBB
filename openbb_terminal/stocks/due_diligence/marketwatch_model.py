@@ -26,7 +26,7 @@ def get_sec_filings(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    ----------
+    -------
     df_financials : pd.DataFrame
         SEC filings data
     """

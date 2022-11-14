@@ -87,7 +87,7 @@ def get_historical_futures(symbols: List[str], expiry: str = "") -> pd.DataFrame
         Future expiry date with format YYYY-MM
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dictionary with sector weightings allocation
     """

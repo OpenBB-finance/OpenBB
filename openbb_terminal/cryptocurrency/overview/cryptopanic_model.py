@@ -64,7 +64,7 @@ def make_request(**kwargs: Any) -> Optional[dict]:
     kwargs: Any
         Keyword arguments with parameters for GET request to cryptopanic api.
     Returns
-    ----------
+    -------
     dict:
         response from api request
     """
@@ -138,7 +138,7 @@ def _parse_post(post: dict) -> dict:
         Response object from cryptopanic api.
 
     Returns
-    ----------
+    -------
     dict
         Parsed dictionary with target data structure.
 
@@ -183,7 +183,7 @@ def get_news(
         Sort in ascend order.
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with recent news from different sources filtered by provided parameters.
     """

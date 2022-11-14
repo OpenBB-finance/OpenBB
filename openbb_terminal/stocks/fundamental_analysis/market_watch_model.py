@@ -37,7 +37,7 @@ def prepare_df_financials(
         Return quarterly financial statements instead of annual, by default False
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         A DataFrame with financial info
 
@@ -147,7 +147,7 @@ def get_sean_seah_warnings(
         [description], by default False
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of financials
     List[str]

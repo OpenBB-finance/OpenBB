@@ -61,7 +61,7 @@ def get_theta_data(
         Number of days to forecast when backtesting and retraining historical
 
     Returns
-    ----------
+    -------
     List[TimeSeries]
         Adjusted Data series
     List[TimeSeries]

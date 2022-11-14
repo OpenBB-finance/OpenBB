@@ -26,7 +26,7 @@ def catching_diff_url_formats(ftd_urls: list) -> list:
         list of urls of sec data
 
     Returns
-    ----------
+    -------
     list
         list of ftd urls
     """
@@ -76,7 +76,7 @@ def get_fails_to_deliver(
         Number of latest fails-to-deliver being printed
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Fail to deliver data
     """

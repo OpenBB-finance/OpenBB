@@ -53,7 +53,7 @@ def get_spy_sector_contributions(
         end date for fetching data
 
     Returns
-    ----------
+    -------
     contributions : pd.DataFrame
         dataframe with SPY raw contributions
     """
@@ -112,7 +112,7 @@ def get_portfolio_sector_contributions(start_date, portfolio_trades: pd.DataFram
         dataframe of trades in the loaded portfolio
 
     Returns
-    ----------
+    -------
     contributions : pd.DataFrame
         dataframe with portfolio raw contributions
     """
@@ -208,7 +208,7 @@ def percentage_attrib_categorizer(bench_df: pd.DataFrame, pf_df: pd.DataFrame):
         portfolio attribution dataframe
 
     Returns
-    ----------
+    -------
     result : pd.DataFrame
         dataframe of S&P500 and PF attribution as a proportion
     """
@@ -281,7 +281,7 @@ def raw_attrib_categorizer(bench_df, pf_df):
         portfolio attribution dataframe
 
     Returns
-    ----------
+    -------
     result : pd.DataFrame
         dataframe of S&P500 and PF attribution as raw values.
     """
@@ -348,7 +348,7 @@ def get_daily_sector_prices(start_date, end_date):
         end date for fetching data
 
     Returns
-    ----------
+    -------
     sp500_tickers_data : Dictionary
         dictionary of dataframes with SPY daily sector prices
     """

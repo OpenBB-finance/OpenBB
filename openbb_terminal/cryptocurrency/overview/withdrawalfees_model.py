@@ -126,7 +126,7 @@ def get_overall_withdrawal_fees(limit: int = 100) -> pd.DataFrame:
     limit: int
         Number of coins to search, by default n=100, one page has 100 coins, so 1 page is scraped.
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Coin, Lowest, Average, Median, Highest, Exchanges Compared
     """
@@ -186,7 +186,7 @@ def get_overall_exchange_withdrawal_fees() -> pd.DataFrame:
     ----------
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Exchange, Coins, Lowest, Average, Median, Highest
     """
@@ -217,7 +217,7 @@ def get_crypto_withdrawal_fees(
     symbol: str
         Coin to check withdrawal fees. By default bitcoin
     Returns
-    ----------
+    -------
     List:
         - str:              Overall statistics (exchanges, lowest, average and median)
         - pd.DataFrame: Exchange, Withdrawal Fee, Minimum Withdrawal Amount

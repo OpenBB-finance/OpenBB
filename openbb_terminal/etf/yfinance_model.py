@@ -21,7 +21,7 @@ def get_etf_sector_weightings(name: str) -> Dict:
         ETF name
 
     Returns
-    ----------
+    -------
     Dict[str, Any]
         Dictionary with sector weightings allocation
     """
@@ -50,7 +50,7 @@ def get_etf_summary_description(name: str) -> str:
         ETF name
 
     Returns
-    ----------
+    -------
     str
         Summary description of the ETF
     """

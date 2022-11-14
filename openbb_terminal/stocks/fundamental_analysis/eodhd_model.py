@@ -33,7 +33,7 @@ def get_financials(
         Shows percentage change, by default False
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Balance Sheets or Income Statements or cashflow
     """

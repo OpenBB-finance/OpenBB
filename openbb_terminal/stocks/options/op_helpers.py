@@ -27,7 +27,7 @@ def get_dte_from_expiration(date: str) -> float:
         Date in format %B %d, %Y
 
     Returns
-    ----------
+    -------
     float
         Days to expiration as a decimal
     """
@@ -51,7 +51,7 @@ def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
         Dataframe containing at least strike and openInterest
 
     Returns
-    ----------
+    -------
     loss : Union[float,int]
         Total loss
     """
@@ -77,7 +77,7 @@ def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
         Dataframe to calculate value from
 
     Returns
-    ----------
+    -------
     max_pain : int
         Max pain value
     """
@@ -101,7 +101,7 @@ def convert(orig: str, to: str) -> float:
     orig : str
         String to convert
     Returns
-    ----------
+    -------
     number : float
         Decimal value of string
     """
@@ -129,7 +129,7 @@ def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> flo
         The current risk-free rate
 
     Returns
-    ----------
+    -------
     number : float
         Risk neutral value of option
     """

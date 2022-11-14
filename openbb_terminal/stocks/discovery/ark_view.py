@@ -21,7 +21,7 @@ def lambda_direction_color_red_green(val: str) -> str:
         Direction string - either Buy or Sell
 
     Returns
-    ----------
+    -------
     str
         Direction string with color tags added
     """

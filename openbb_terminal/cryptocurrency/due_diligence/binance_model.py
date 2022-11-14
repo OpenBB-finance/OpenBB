@@ -24,7 +24,7 @@ def _get_trading_pairs() -> List[dict]:
     building dataframe with all coins, or to build dict of all trading pairs. [Source: Binance]
 
     Returns
-    ----------
+    -------
     List[dict]
         list of dictionaries in format:
         [
@@ -63,7 +63,7 @@ def get_all_binance_trading_pairs() -> pd.DataFrame:
 
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         All available pairs on Binance
         Columns: symbol, baseAsset, quoteAsset
@@ -79,7 +79,7 @@ def get_binance_available_quotes_for_each_coin() -> dict:
     """Helper methods that for every coin available on Binance add all quote assets. [Source: Binance]
 
     Returns
-    ----------
+    -------
     dict:
         All quote assets for given coin
         {'ETH' : ['BTC', 'USDT' ...], 'UNI' : ['ETH', 'BTC','BUSD', ...]
@@ -120,7 +120,7 @@ def show_available_pairs_for_given_symbol(
         Uppercase symbol of coin e.g BTC, ETH, UNI, LUNA, DOT ...
 
     Returns
-    ----------
+    -------
     str:
         Coin symbol
     list:
@@ -155,7 +155,7 @@ def get_order_book(
         Quote currency (what to view coin vs)
 
     Returns
-    ----------
+    -------
 
     pd.DataFrame
         Dataframe containing orderbook
@@ -187,7 +187,7 @@ def get_balance(
         Cryptocurrency
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe with account holdings for an asset
     """

@@ -24,7 +24,7 @@ def lambda_buy_sell_ratio_color_red_green(val: str) -> str:
         Buys/Sells ratio cell
 
     Returns
-    ----------
+    -------
     str
         Buys/Sells ratio cell with color tags
     """
@@ -52,7 +52,7 @@ def lambda_price_change_color_red_green(val: str) -> str:
         Price change cell
 
     Returns
-    ----------
+    -------
     str
         Price change cell with color tags
     """

@@ -21,7 +21,7 @@ def etf_movers(sort_type: str = "gainers", export: bool = False) -> pd.DataFrame
         Data to get. Can be "gainers", "decliners" or "active"
 
     Returns
-    ----------
+    -------
     etfmovers: pd.DataFrame
         Datafame containing the name, price, change and the volume of the etf
     """

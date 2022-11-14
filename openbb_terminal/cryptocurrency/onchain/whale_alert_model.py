@@ -50,7 +50,7 @@ def make_request(params: Optional[dict] = None) -> Tuple[Optional[int], Any]:
         additional param
 
     Returns
-    ----------
+    -------
     dict:
         response from api request
     """
@@ -104,7 +104,7 @@ def get_whales_transactions(
         Sort in ascending order.
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Crypto wales transactions
     """

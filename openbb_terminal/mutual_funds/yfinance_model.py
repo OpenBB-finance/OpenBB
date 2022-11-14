@@ -21,7 +21,7 @@ def get_information(name: str) -> Dict:
         Symbol of fund
 
     Returns
-    ----------
+    -------
     dict[str, Any]
         Dictionary containing fund information
     """

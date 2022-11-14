@@ -15,7 +15,7 @@ def get_exchanges():
     ----------
 
     Returns
-    ----------
+    -------
     List[str]
         list of all the exchanges supported by ccxt
     """
@@ -30,7 +30,7 @@ def get_binance_currencies():
     ----------
 
     Returns
-    ----------
+    -------
     List[str]
         list of all the currenices supported by ccxt
     """
@@ -57,7 +57,7 @@ def get_orderbook(exchange_id: str, symbol: str, to_symbol: str) -> Dict[str, An
         currency to compare coin against
 
     Returns
-    ----------
+    -------
     Dict[str, Any]
         With bids and asks
     """
@@ -81,7 +81,7 @@ def get_trades(exchange_id: str, symbol: str, to_symbol: str) -> pd.DataFrame:
         currency to compare coin against
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         trades for a coin in a given exchange
     """

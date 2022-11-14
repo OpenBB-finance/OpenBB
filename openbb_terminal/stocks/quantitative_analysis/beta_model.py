@@ -31,7 +31,7 @@ def beta_model(
         The interval of the ref_data. This will ONLY be used if ref_data is None
 
     Returns
-    ----------
+    -------
     sr: pd.Series
         Stock ticker symbols close-to-close returns
     rr: pd.Series

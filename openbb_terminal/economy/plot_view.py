@@ -34,7 +34,7 @@ def show_plot(
         External axes to plot on
 
     Returns
-    ----------
+    -------
     Plots the data.
     """
     if external_axes is None:
@@ -119,7 +119,7 @@ def show_options(
         Whether you want to export the data.
 
     Returns
-    ----------
+    -------
     Plots the data.
     """
     if raw or export:

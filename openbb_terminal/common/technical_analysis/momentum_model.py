@@ -38,7 +38,7 @@ def cci(
         Scalar variable
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
@@ -77,7 +77,7 @@ def macd(
     n_signal : int
         Signal period
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
@@ -107,7 +107,7 @@ def rsi(
         Drift variable
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
@@ -142,7 +142,7 @@ def stoch(
     slowkperiod : int
         Slow k period
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
@@ -172,7 +172,7 @@ def fisher(data: pd.DataFrame, window: int = 14) -> pd.DataFrame:
     window: int
         Length for indicator window
     Returns
-    ----------
+    -------
     df_ta: pd.DataFrame
         Dataframe of technical indicator
     """
@@ -196,7 +196,7 @@ def cg(values: pd.Series, window: int) -> pd.DataFrame:
     window: int
         Length for indicator window
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
@@ -218,7 +218,7 @@ def clenow_momentum(
         Length of lookback period
 
     Returns
-    ----------
+    -------
     float:
         R2 of fit to log data
     float:
@@ -257,7 +257,7 @@ def demark_seq(values: pd.Series) -> pd.DataFrame:
         Series of close values
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of UP and DOWN sequential indicators
     """

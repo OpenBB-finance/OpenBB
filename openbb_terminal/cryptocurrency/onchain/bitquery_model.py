@@ -144,7 +144,7 @@ def _extract_dex_trades(data: dict) -> pd.DataFrame:
         response data from bitquery api.
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         normalized pandas data frame with data
     """
@@ -168,7 +168,7 @@ def query_graph(url: str, query: str) -> dict:
         Graphql query
 
     Returns
-    ----------
+    -------
     dict:
         Dictionary with response data
     """
@@ -212,7 +212,7 @@ def get_erc20_tokens() -> pd.DataFrame:
     [Source: json file]
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         ERC20 tokens with address, symbol and name
     """
@@ -240,7 +240,7 @@ def find_token_address(symbol: str) -> Optional[str]:
         0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
 
     Returns
-    ----------
+    -------
     str or None
         ERC20 token address, or None if nothing found.
     """
@@ -284,7 +284,7 @@ def get_dex_trades_by_exchange(
         Flag to sort data ascending
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Trades on Decentralized Exchanges aggregated by DEX
     """
@@ -347,7 +347,7 @@ def get_dex_trades_monthly(
         Flag to sort data ascending
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Trades on Decentralized Exchanges monthly aggregated
     """
@@ -420,7 +420,7 @@ def get_daily_dex_volume_for_given_pair(
         Flag to sort data ascending
 
     Returns
-    ----------
+    -------
     pd.DataFrame
          Daily volume for given pair
     """
@@ -530,7 +530,7 @@ def get_token_volume_on_dexes(
         Flag to sort data ascending
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Token volume on Decentralized Exchanges
     """
@@ -602,7 +602,7 @@ def get_ethereum_unique_senders(
         Flag to sort data ascending
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Unique ethereum addresses which made a transaction
     """
@@ -679,7 +679,7 @@ def get_most_traded_pairs(
         Flag to sort data ascending
 
     Returns
-    ----------
+    -------
 
     """
 
@@ -745,7 +745,7 @@ def get_spread_for_crypto_pair(
         Flag to sort data ascending
 
     Returns
-    ----------
+    -------
     pd.DataFrame
        Average bid and ask prices, spread for given crypto pair for chosen time period
     """

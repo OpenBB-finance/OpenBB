@@ -51,7 +51,7 @@ def get_regression_data(
         lagged target values to predict the next time step
 
     Returns
-    ----------
+    -------
     List[TimeSeries]
         Adjusted Data series
     List[TimeSeries]

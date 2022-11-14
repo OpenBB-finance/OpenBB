@@ -801,7 +801,7 @@ def get_r2_score(portfolio: PortfolioModel) -> pd.DataFrame:
         Portfolio object with trades loaded
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with R2 Score between portfolio and benchmark for different periods
     """
@@ -829,7 +829,7 @@ def get_skewness(portfolio: PortfolioModel) -> pd.DataFrame:
         Portfolio object with trades loaded
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with skewness for portfolio and benchmark for different periods
     """
@@ -868,7 +868,7 @@ def get_kurtosis(portfolio: PortfolioModel) -> pd.DataFrame:
         Portfolio object with trades loaded
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with kurtosis for portfolio and benchmark for different periods
     """
@@ -909,7 +909,7 @@ def get_stats(portfolio: PortfolioModel, window: str = "all") -> pd.DataFrame:
         interval to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with overall stats for portfolio and benchmark for a certain period
     """
@@ -937,7 +937,7 @@ def get_volatility(portfolio: PortfolioModel) -> pd.DataFrame:
         Portfolio object with trades loaded
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with volatility for portfolio and benchmark for different periods
     """
@@ -980,7 +980,7 @@ def get_sharpe_ratio(
         Risk free rate value
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with sharpe ratio for portfolio and benchmark for different periods
     """
@@ -1025,7 +1025,7 @@ def get_sortino_ratio(
         Risk free rate value
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with sortino ratio for portfolio and benchmark for different periods
     """
@@ -1066,7 +1066,7 @@ def get_maximum_drawdown_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
         Portfolio object with trades loaded
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with maximum drawdown for portfolio and benchmark for different periods
     """
@@ -1105,7 +1105,7 @@ def get_gaintopain_ratio(portfolio: PortfolioModel):
         Portfolio object with trades loaded
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of the portfolio's gain-to-pain ratio
     """
@@ -1130,7 +1130,7 @@ def get_tracking_error(portfolio: PortfolioModel, window: int = 252):
         Interval used for rolling values
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of tracking errors during different time windows
     pd.Series
@@ -1153,7 +1153,7 @@ def get_information_ratio(portfolio: PortfolioModel):
         Portfolio object with trades loaded
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of the information ratio during different time periods
     """
@@ -1180,7 +1180,7 @@ def get_tail_ratio(portfolio: PortfolioModel, window: int = 252):
         Interval used for rolling values
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of the portfolios and the benchmarks tail ratio during different time windows
     pd.Series
@@ -1205,7 +1205,7 @@ def get_common_sense_ratio(portfolio: PortfolioModel):
         Portfolio object with trades loaded
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of the portfolios and the benchmarks common sense ratio during different time periods
     """
@@ -1235,7 +1235,7 @@ def get_jensens_alpha(
         Risk free rate
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of jensens's alpha during different time windows
     pd.Series
@@ -1265,7 +1265,7 @@ def get_calmar_ratio(portfolio: PortfolioModel, window: int = 756):
         Interval used for rolling values
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of calmar ratio of the benchmark and portfolio during different time periods
     pd.Series
@@ -1292,7 +1292,7 @@ def get_kelly_criterion(portfolio: PortfolioModel):
         Portfolio object with trades loaded
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of kelly criterion of the portfolio during different time periods
     """
@@ -1308,7 +1308,7 @@ def get_payoff_ratio(portfolio: PortfolioModel):
     """Gets payoff ratio
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of payoff ratio of the portfolio during different time periods
     """
@@ -1327,7 +1327,7 @@ def get_profit_factor(portfolio: PortfolioModel):
         Portfolio object with trades loaded
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of profit factor of the portfolio during different time periods
     """
@@ -1345,7 +1345,7 @@ def get_holdings_value(portfolio: PortfolioModel) -> pd.DataFrame:
         Portfolio object with trades loaded
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of holdings
     """
@@ -1396,7 +1396,7 @@ def get_maximum_drawdown(
         Flag to indicate inputs are returns
 
     Returns
-    ----------
+    -------
     pd.Series
         Holdings series
     pd.Series
@@ -1484,7 +1484,7 @@ def get_rolling_sharpe(
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Rolling sharpe ratio DataFrame
     """
@@ -1525,7 +1525,7 @@ def get_rolling_sortino(
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
     Returns
-    ----------
+    -------
     pd.DataFrame
         Rolling sortino ratio DataFrame
     """
@@ -1565,7 +1565,7 @@ def get_rolling_beta(
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of the portfolio's rolling beta
     """
@@ -1592,7 +1592,7 @@ def get_performance_vs_benchmark(
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
     Returns
-    ----------
+    -------
     pd.DataFrame
 
     """
@@ -1705,7 +1705,7 @@ def get_var(
     percentile: float
         var percentile (%)
     Returns
-    ----------
+    -------
     pd.DataFrame
 
     """
@@ -1739,7 +1739,7 @@ def get_es(
     percentile: float
         es percentile (%)
     Returns
-    ----------
+    -------
     pd.DataFrame
 
     """
@@ -1768,7 +1768,7 @@ def get_omega(
     threshold_end: float
         annualized target return threshold end of plotted threshold range
     Returns
-    ----------
+    -------
     pd.DataFrame
 
     """
@@ -1796,7 +1796,7 @@ def get_summary(
     risk_free_rate : float
         Risk free rate for calculations
     Returns
-    ----------
+    -------
     pd.DataFrame
 
     """
@@ -1910,7 +1910,7 @@ def get_monthly_returns(
     window : str
         interval to compare cumulative returns and benchmark
     Returns
-    ----------
+    -------
     pd.DataFrame
 
     """
@@ -2005,7 +2005,7 @@ def get_daily_returns(
     window : str
         interval to compare cumulative returns and benchmark
     Returns
-    ----------
+    -------
     pd.DataFrame
 
     """
@@ -2033,7 +2033,7 @@ def get_main_text(data: pd.DataFrame) -> str:
         Stock holdings and returns with market returns
 
     Returns
-    ----------
+    -------
     text : str
         The main summary of performance
     """
@@ -2076,7 +2076,7 @@ def get_beta_text(data: pd.DataFrame) -> str:
         The beta history of the stock
 
     Returns
-    ----------
+    -------
     text : str
         The beta history for a ticker
     """

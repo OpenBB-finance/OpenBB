@@ -42,7 +42,7 @@ def get_trading_pair_info(symbol: str) -> pd.DataFrame:
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Basic information about given trading pair
     """
@@ -65,7 +65,7 @@ def get_order_book(symbol: str) -> Tuple[np.ndarray, np.ndarray, str, dict]:
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
 
     Returns
-    ----------
+    -------
     Tuple[np.array, np.array, str, dict]
         array with bid prices, order sizes and cumulative order sizes
         array with ask prices, order sizes and cumulative order sizes
@@ -112,7 +112,7 @@ def get_trades(
     side: str
         You can chose either sell or buy side. If side is not set then all trades will be displayed.
     Returns
-    ----------
+    -------
     pd.DataFrame
         Last N trades for chosen trading pairs.
     """
@@ -138,7 +138,7 @@ def get_candles(symbol: str, interval: str = "24h") -> pd.DataFrame:
         Time interval. One from 1min, 5min ,15min, 1hour, 6hour, 24hour
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Candles for chosen trading pair.
     """
@@ -196,7 +196,7 @@ def get_product_stats(symbol: str) -> pd.DataFrame:
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         24h stats for chosen trading pair
     """

@@ -24,7 +24,7 @@ def load_configuration(excel_file: str = ""):
         The location of the Excel file that needs to be loaded.
 
     Returns
-    ----------
+    -------
     configuration: dictionary
         Returns a dictionary with the configurations set.
     """
@@ -61,7 +61,7 @@ def load_allocation(excel_file: str = ""):
         The location of the Excel file that needs to be loaded.
 
     Returns
-    ----------
+    -------
     tickers: list
         Returns a list with ticker symbols
     categories: dictionary
@@ -108,7 +108,7 @@ def load_bl_views(excel_file: str = ""):
         The location of the Excel file that needs to be loaded.
 
     Returns
-    ----------
+    -------
     p_views: list
         Returns a list with p_views matrix
     q_views: list
@@ -156,7 +156,7 @@ def excel_bl_views(file: str, stocks: str, n: int = 3):
         The number of views that will be created.
 
     Returns
-    ----------
+    -------
     file: excel
         Returns a list with ticker symbols
     """

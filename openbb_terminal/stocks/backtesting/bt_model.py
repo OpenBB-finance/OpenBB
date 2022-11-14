@@ -28,7 +28,7 @@ def get_data(symbol: str, start_date: str = "2019-01-01") -> pd.DataFrame:
         Start date in YYYY-MM-DD format
 
     Returns
-    ----------
+    -------
     prices: pd.DataFrame
         Dataframe of Adj Close with columns = [ticker]
     """
@@ -55,7 +55,7 @@ def buy_and_hold(symbol: str, start_date: str, name: str = "") -> bt.Backtest:
         Name of the backtest (for labeling purposes)
 
     Returns
-    ----------
+    -------
     bt.Backtest
         Backtest object for buy and hold strategy
     """
@@ -96,7 +96,7 @@ def ema_strategy(
         Boolean to not show buy and hold comparison
 
     Returns
-    ----------
+    -------
     bt.backtest.Result
         Backtest results
     """
@@ -167,7 +167,7 @@ def emacross_strategy(
         Boolean to allow for selling of the stock at cross
 
     Returns
-    ----------
+    -------
     Result
         Backtest results
     """
@@ -246,7 +246,7 @@ def rsi_strategy(
         Flag to disable the ability to short sell
 
     Returns
-    ----------
+    -------
     Result
         Backtest results
     """

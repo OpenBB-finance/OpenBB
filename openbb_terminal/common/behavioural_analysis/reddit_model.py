@@ -57,7 +57,7 @@ def get_watchlists(
         Number of posts to look through
 
     Returns
-    ----------
+    -------
     list[praw.models.reddit.submission.Submission]:
         List of reddit submissions
     dict:
@@ -168,7 +168,7 @@ def get_popular_tickers(
         String of comma separated subreddits.
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of top tickers from supplied subreddits
     """
@@ -338,7 +338,7 @@ def get_spac_community(
         Search by hot instead of new
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe of reddit submission
     dict:
@@ -476,7 +476,7 @@ def get_spac(
         Number of posts to get for each subreddit, by default 5
 
     Returns
-    ----------
+    -------
     pd.DataFrame :
         Dataframe of reddit submissions
     dict :
@@ -624,7 +624,7 @@ def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
         Flag to sort by new instead of hot, by default False
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of reddit submissions
     """
@@ -739,7 +739,7 @@ def get_due_dilligence(
         Search through all flairs (apart from Yolo and Meme)
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of submissions
     """
@@ -903,7 +903,7 @@ def get_posts_about(
         Comma-separated list of subreddits
 
     Returns
-    ----------
+    -------
     tuple[pd.DataFrame, list, float]:
         Dataframe of submissions related to the search term,
         List of polarity scores,
@@ -1002,7 +1002,7 @@ def get_comments(
         Post to get comments from
 
     Returns
-    ----------
+    -------
     list[praw.models.reddit.comment.Comment]
         List of all comments on the post
     """
@@ -1032,7 +1032,7 @@ def clean_reddit_text(docs: List[str]) -> List[str]:
         A list of documents to prepare for sentiment analysis
 
     Returns
-    ----------
+    -------
     list[str]
         List of cleaned and prepared docs
     """
@@ -1071,7 +1071,7 @@ def get_sentiment(post_data: List[str]) -> float:
         A post and its comments in string form
 
     Returns
-    ----------
+    -------
     float
         A number in the range [-1, 1] representing sentiment
     """

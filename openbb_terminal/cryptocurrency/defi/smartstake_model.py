@@ -26,7 +26,7 @@ def get_luna_supply_stats(
         Day count to fetch data
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of supply history data
     """

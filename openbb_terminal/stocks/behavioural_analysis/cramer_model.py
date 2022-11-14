@@ -32,7 +32,7 @@ def get_cramer_daily(inverse: bool = True) -> pd.DataFrame:
         Whether to include inverse
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Datafreme of daily Cramer recommendations
     """
@@ -108,7 +108,7 @@ def get_cramer_ticker(symbol: str) -> pd.DataFrame:
         Ticker to get recommendations for
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe with dates and recommendations
     """

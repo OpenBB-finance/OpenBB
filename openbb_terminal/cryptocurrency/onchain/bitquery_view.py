@@ -112,7 +112,7 @@ def display_daily_volume_for_given_pair(
         Export dataframe data to csv,json,xlsx file
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Token volume on different decentralized exchanges
     """
@@ -184,7 +184,7 @@ def display_dex_volume_for_token(
     export : str
         Export dataframe data to csv,json,xlsx file
     Returns
-    ----------
+    -------
     pd.DataFrame
         Token volume on different decentralized exchanges
     """
@@ -248,7 +248,7 @@ def display_ethereum_unique_senders(
     export : str
         Export dataframe data to csv,json,xlsx file
     Returns
-    ----------
+    -------
     pd.DataFrame
         Number of unique ethereum addresses which made a transaction in given time interval
     """
@@ -306,7 +306,7 @@ def display_most_traded_pairs(
     export : str
         Export dataframe data to csv,json,xlsx file
     Returns
-    ----------
+    -------
     pd.DataFrame
         Most traded crypto pairs on given decentralized exchange in chosen time period.
     """
@@ -368,7 +368,7 @@ def display_spread_for_crypto_pair(
         Export dataframe data to csv,json,xlsx file
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Average bid and ask prices, spread for given crypto pair for chosen time period
     """

@@ -21,7 +21,7 @@ def get_data(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of fundamental data
     """

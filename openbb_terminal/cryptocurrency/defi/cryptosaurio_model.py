@@ -23,7 +23,7 @@ def get_anchor_data(address: str = "") -> Tuple[Any, Any, str]:
     address : str
         Terra address. Valid terra addresses start with 'terra'
     Returns
-    ----------
+    -------
     Tuple:
         - pd.DataFrame: Earnings over time in UST
         - pd.DataFrame: History of transactions

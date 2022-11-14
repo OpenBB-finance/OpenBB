@@ -22,7 +22,7 @@ def get_forward_rates(to_symbol: str = "USD", from_symbol: str = "EUR"):
         From currency
 
     Returns
-    ----------
+    -------
     df: pd.DataFrame
 
     """

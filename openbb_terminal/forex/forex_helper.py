@@ -123,7 +123,7 @@ def load(
         Display verbose information on what was the pair that was loaded, by default True
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         The loaded data
     """
@@ -206,7 +206,7 @@ def check_valid_yf_forex_currency(fx_symbol: str) -> str:
         Symbol to check
 
     Returns
-    ----------
+    -------
     str
         Currency symbol
 

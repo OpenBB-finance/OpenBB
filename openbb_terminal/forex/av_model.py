@@ -35,7 +35,7 @@ def check_valid_forex_currency(symbol: str) -> str:
         Symbol to check
 
     Returns
-    ----------
+    -------
     str
         Currency symbol
 
@@ -64,7 +64,7 @@ def get_quote(to_symbol: str = "USD", from_symbol: str = "EUR") -> Dict[str, Any
         From forex symbol
 
     Returns
-    ----------
+    -------
     Dict[str, Any]
         Dictionary of exchange rate
     """
@@ -117,7 +117,7 @@ def get_historical(
         Start date for data.
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Historical data for forex pair
     """

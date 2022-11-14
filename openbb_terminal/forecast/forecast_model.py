@@ -26,7 +26,7 @@ def get_default_files() -> Dict[str, Path]:
     """Get the default files to load.
 
     Returns
-    ----------
+    -------
     default_files : Dict[str, Path]
         A dictionary to map the default file names to their paths.
     """
@@ -56,7 +56,7 @@ def get_options(
         The dataset you wish to show the options for.
 
     Returns
-    ----------
+    -------
     option_tables: dict
         A dictionary with a DataFrame for each option. With dataset_name set, only shows one
         options table.
@@ -105,7 +105,7 @@ def clean(
         The maximum limit you wish to apply that can be forward or backward filled
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe with cleaned up data
     """
@@ -160,7 +160,7 @@ def add_ema(
         Time Span
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe with added EMA column
     """
@@ -193,7 +193,7 @@ def add_sto(
         Span
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe with added STO K & D columns
     """
@@ -238,7 +238,7 @@ def add_rsi(
         Time Span
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe with added RSI column
     """
@@ -280,7 +280,7 @@ def add_roc(
         Time Span
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe with added ROC column
     """
@@ -309,7 +309,7 @@ def add_momentum(
         Time Span
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe with added MOM column
     """
@@ -374,7 +374,7 @@ def add_signal(
         The dataset you wish to calculate with
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe with added signal column
     """
@@ -411,7 +411,7 @@ def combine_dfs(
         A name for df2 (shows in name of new column)
 
     Returns
-    ----------
+    -------
     data: pd.DataFrame
         The new dataframe
     """
@@ -463,7 +463,7 @@ def rename_column(data: pd.DataFrame, old_column: str, new_column: str) -> pd.Da
         The name to update to
 
     Returns
-    ----------
+    -------
     new_df: pd.DataFrame
         The dataframe with the renamed column
     """
@@ -486,7 +486,7 @@ def describe_df(data: pd.DataFrame) -> pd.DataFrame:
         The df to produce statistics for
 
     Returns
-    ----------
+    -------
     df: pd.DataFrame
         The df with the new data
     """
@@ -503,7 +503,7 @@ def corr_df(data: pd.DataFrame) -> pd.DataFrame:
         The df to produce statistics for
 
     Returns
-    ----------
+    -------
     df: pd.DataFrame
         The df with the new data
     """

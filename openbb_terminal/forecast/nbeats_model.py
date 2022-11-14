@@ -84,7 +84,7 @@ def get_NBEATS_data(
         Defaults to True.
 
     Returns
-    ----------
+    -------
     List[TimeSeries]
         Adjusted Data series
     List[TimeSeries]

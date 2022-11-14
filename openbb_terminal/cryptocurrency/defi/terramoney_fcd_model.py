@@ -49,7 +49,7 @@ def _make_request(endpoint: str) -> dict:
     endpoint: str
         endpoint url
     Returns
-    ----------
+    -------
     dict:
         dictionary with response data
     """
@@ -84,7 +84,7 @@ def _adjust_delegation_info(delegation: dict) -> dict:
         dictionary object with delegation data e.g.
 
     Returns
-    ----------
+    -------
     dict
         adjusted dictionary with delegation data
     """
@@ -109,7 +109,7 @@ def get_staking_account_info(address: str = "") -> Tuple[pd.DataFrame, str]:
     address: str
         terra blockchain address e.g. terra1jvwelvs7rdk6j3mqdztq5tya99w8lxk6l9hcqg
     Returns
-    ----------
+    -------
     Tuple[pd.DataFrame, str]:
         luna delegations and summary report for given address
     """
@@ -163,7 +163,7 @@ def get_validators(sortby: str = "votingPower", ascend: bool = True) -> pd.DataF
         Flag to sort data descending
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         terra validators details
     """
@@ -210,7 +210,7 @@ def get_proposals(
         Number of records to display
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Terra blockchain governance proposals list
     """
@@ -267,7 +267,7 @@ def get_account_growth(cumulative: bool = True) -> pd.DataFrame:
     cumulative: bool
         distinguish between periodical and cumulative account growth data
     Returns
-    ----------
+    -------
     pd.DataFrame
         historical data of accounts growth
     """
@@ -291,7 +291,7 @@ def get_staking_ratio_history(limit: int = 200):
         The number of ratios to show
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         historical staking ratio
     """
@@ -316,7 +316,7 @@ def get_staking_returns_history(limit: int = 200):
         The number of returns to show
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         historical staking returns
     """

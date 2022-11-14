@@ -24,7 +24,7 @@ def get_rating_over_time(symbol: str) -> pd.DataFrame:
         Ticker symbol to get ratings from
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Get dataframe with ratings
     """

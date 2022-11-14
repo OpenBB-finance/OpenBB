@@ -23,7 +23,7 @@ def lambda_category_color_red_green(val: str) -> str:
         Analyst rating - Upgrade/Downgrade
 
     Returns
-    ----------
+    -------
     str
         Analyst rating with color
     """

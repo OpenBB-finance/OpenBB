@@ -108,7 +108,7 @@ def get_stocks_data(
         Default is USD (US Dollars).
 
     Returns
-    ----------
+    -------
     dict
         Dictionary of filtered stocks data separated by financial statement
     """
@@ -185,7 +185,7 @@ def match_length_dataframes(dataframes: Dict[pd.DataFrame, Any]):
         Dict of dataframes to match length
 
     Returns
-    ----------
+    -------
     dataframes : dict
         Dict of DataFrames with equal column length
     """
@@ -215,7 +215,7 @@ def change_type_dataframes(data: pd.DataFrame) -> pd.DataFrame:
         DataFrame with comma-seperated strings
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Adjusted DataFrame
     """

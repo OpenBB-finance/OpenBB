@@ -13,7 +13,7 @@ def get_quote_type(symbol: str) -> str:
         Ticker to check.
 
     Returns
-    ----------
+    -------
     str
         Returns the quote type of the symbol.
     """

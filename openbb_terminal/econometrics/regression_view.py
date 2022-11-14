@@ -50,7 +50,7 @@ def display_panel(
         Format to export data
 
     Returns
-    ----------
+    -------
     The dataset used, the dependent variable, the independent variable and
     the regression model.
     """

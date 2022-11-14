@@ -35,7 +35,7 @@ def get_similar_companies(
         List of fields to compare, ["Sector", "Industry", "Country"]
 
     Returns
-    ----------
+    -------
     List[str]
         List of similar companies
     """
@@ -65,7 +65,7 @@ def get_comparison_data(similar: List[str], data_type: str = "overview"):
         Data type between: overview, valuation, financial, ownership, performance, technical
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe with overview, valuation, financial, ownership, performance or technical
     """

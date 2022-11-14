@@ -24,7 +24,7 @@ def get_similar_companies(symbol: str) -> List[str]:
         Ticker to find comparisons for
 
     Returns
-    ----------
+    -------
     List[str]
         List of similar companies
     """

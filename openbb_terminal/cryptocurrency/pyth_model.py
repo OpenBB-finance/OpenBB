@@ -83,7 +83,7 @@ async def get_price(symbol: str):
         Symbol of the asset to get price and confidence interval from
 
     Returns
-    ----------
+    -------
     float
         Price of the asset
     float

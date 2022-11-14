@@ -57,7 +57,7 @@ def get_historical_greeks(
         Is this a put option?
 
     Returns
-    ----------
+    -------
     df: pd.DataFrame
         Dataframe containing historical greeks
     """
@@ -164,7 +164,7 @@ def get_screener_output(preset: str) -> Tuple[pd.DataFrame, str]:
     preset: str
         Chosen preset
     Returns
-    ----------
+    -------
     pd.DataFrame:
         DataFrame with screener data, or empty if errors
     str:
@@ -257,7 +257,7 @@ def check_presets(preset_dict: dict) -> str:
     preset_dict: dict
         Defined presets from configparser
     Returns
-    ----------
+    -------
     error: str
         String of all errors accumulated
     """

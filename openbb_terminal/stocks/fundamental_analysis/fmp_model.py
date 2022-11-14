@@ -32,7 +32,7 @@ def get_score(symbol: str) -> Optional[np.number]:
         Stock ticker symbol
 
     Returns
-    ----------
+    -------
     np.number
         Value score
     """
@@ -63,7 +63,7 @@ def get_profile(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe of ticker profile
     """
@@ -91,7 +91,7 @@ def get_quote(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe of ticker quote
     """
@@ -144,7 +144,7 @@ def get_enterprise(
         Flag to get quarterly data
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Dataframe of enterprise information
     """
@@ -184,7 +184,7 @@ def get_dcf(symbol: str, limit: int = 5, quarterly: bool = False) -> pd.DataFram
         Flag to get quarterly data, by default False
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of dcf data
     """
@@ -234,7 +234,7 @@ def get_income(
         If the data shall be formatted ready to plot
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of the income statements
     """
@@ -301,7 +301,7 @@ def get_balance(
         If the data shall be formatted ready to plot
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of balance sheet
     """
@@ -370,7 +370,7 @@ def get_cash(
         If the data shall be formatted ready to plot
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of company cash flow
     """
@@ -428,7 +428,7 @@ def get_key_metrics(
         Flag to get quarterly data, by default False
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of key metrics
     """
@@ -470,7 +470,7 @@ def get_key_ratios(
         Flag to get quarterly data, by default False
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of key ratios
     """
@@ -512,7 +512,7 @@ def get_financial_growth(
         Flag to get quarterly data, by default False
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of financial statement growth
     """
@@ -554,7 +554,7 @@ def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = True) -> pd.Data
         Apply mask, by default True
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Cleaned metrics data frame
     """

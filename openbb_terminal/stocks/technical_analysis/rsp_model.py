@@ -25,7 +25,7 @@ def get_rsp(
         Stock Ticker
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of stock percentile
     pd.Dataframe

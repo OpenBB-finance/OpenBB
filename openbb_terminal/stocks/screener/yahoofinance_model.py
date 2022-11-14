@@ -75,7 +75,7 @@ def historical(
         Boolean to normalize all stock prices using MinMax
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of the screener
     list[str]

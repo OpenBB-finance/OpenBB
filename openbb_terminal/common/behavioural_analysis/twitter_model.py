@@ -41,7 +41,7 @@ def load_analyze_tweets(
         If given, the end time to get tweets from
 
     Returns
-    ----------
+    -------
     df_tweet: pd.DataFrame
         Dataframe of tweets and sentiment
     """

@@ -182,7 +182,7 @@ def get_possible_timelines() -> List[str]:
     """This function returns the available timelines.
 
     Returns
-    ----------
+    -------
     List[str]
         A list with the available timelines values.
     """
@@ -194,7 +194,7 @@ def get_possible_categories() -> List[str]:
     """This function returns the available categories.
 
     Returns
-    ----------
+    -------
     List[str]
         A list with the available categories values.
     """
@@ -206,7 +206,7 @@ def get_possible_metrics() -> List[str]:
     """This function returns the available metrics.
 
     Returns
-    ----------
+    -------
     List[str]
         A list with the available metrics values.
     """
@@ -235,7 +235,7 @@ def get_fundamental_metrics(
         Direction of the sort. If True, the data is sorted in ascending order.
 
     Returns
-    ----------
+    -------
     pandas.Series:
         Project, Metric value
     """

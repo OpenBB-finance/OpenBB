@@ -18,7 +18,7 @@ def get_gwei_fees() -> pd.DataFrame:
     ----------
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         four gas fees and durations
             (fees for slow, average, fast and

@@ -24,7 +24,7 @@ def get_rating(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Rating data
     """

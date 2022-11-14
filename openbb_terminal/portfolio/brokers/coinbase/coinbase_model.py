@@ -46,7 +46,7 @@ def get_accounts(add_current_price: bool = True, currency: str = "USD") -> pd.Da
         Currency to convert to, defaults to 'USD'
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with all your trading accounts.
     """
@@ -144,7 +144,7 @@ def get_account_history(account: str) -> pd.DataFrame:
     account: str
         id ("71452118-efc7-4cc4-8780-a5e22d4baa53") or currency (BTC)
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame with account history.
     """
@@ -228,7 +228,7 @@ def get_orders(
         Flag to sort descending
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Open orders in your account
     """
@@ -289,7 +289,7 @@ def get_deposits(
         internal_deposits (transfer between portfolios) or deposit
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         List of deposits
     """

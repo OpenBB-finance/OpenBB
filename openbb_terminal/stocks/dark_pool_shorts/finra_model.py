@@ -26,7 +26,7 @@ def getFINRAweeks(tier: str = "T1", is_ats: bool = True) -> List:
         ATS data if true, NON-ATS otherwise
 
     Returns
-    ----------
+    -------
     List
         List of response data
     """
@@ -85,7 +85,7 @@ def getFINRAdata_offset(
         Offset in getting the data
 
     Returns
-    ----------
+    -------
     requests.Response
         Response from FINRA data
     """
@@ -154,7 +154,7 @@ def getFINRAdata(
         ATS data if true, NON-ATS otherwise
 
     Returns
-    ----------
+    -------
     int
         Status code from request
     List
@@ -224,7 +224,7 @@ def getATSdata(limit: int = 1000, tier_ats: str = "T1") -> Tuple[pd.DataFrame, D
         Tier to process data from: T1, T2 or OTCE
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dark Pools (ATS) Data
     Dict
@@ -303,7 +303,7 @@ def getTickerFINRAdata(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
         Stock ticker to get data from
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dark Pools (ATS) Data
     pd.DataFrame

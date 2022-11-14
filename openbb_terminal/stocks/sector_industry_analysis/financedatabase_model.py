@@ -27,7 +27,7 @@ def get_countries(industry: str = "", sector: str = "") -> list:
         Filter retrieved countries by sector
 
     Returns
-    ----------
+    -------
     list
         List of possible countries
     """
@@ -52,7 +52,7 @@ def get_sectors(industry: str = "", country: str = "") -> list:
         Filter retrieved sectors by country
 
     Returns
-    ----------
+    -------
     list
         List of possible sectors
     """
@@ -77,7 +77,7 @@ def get_industries(country: str = "", sector: str = "") -> list:
         Filter retrieved industries by sector
 
     Returns
-    ----------
+    -------
     list
         List of possible industries
     """
@@ -98,7 +98,7 @@ def get_marketcap() -> list:
     """Get all market cap division in Yahoo Finance data. [Source: Finance Database]
 
     Returns
-    ----------
+    -------
     list
         List of possible market caps
     """
@@ -130,7 +130,7 @@ def filter_stocks(
         When you wish to include different exchanges use this boolean.
 
     Returns
-    ----------
+    -------
     list
         List of filtered stocks
     """
@@ -187,7 +187,7 @@ def get_stocks_data(
         When you wish to include different exchanges use this boolean.
 
     Returns
-    ----------
+    -------
     dict
         Dictionary of filtered stocks data
     """
@@ -219,7 +219,7 @@ def get_companies_per_sector_in_country(
         Exclude international exchanges
 
     Returns
-    ----------
+    -------
     dict
         Dictionary of sectors and number of companies in a specific country
     """
@@ -270,7 +270,7 @@ def get_companies_per_industry_in_country(
         Exclude international exchanges
 
     Returns
-    ----------
+    -------
     dict
         Dictionary of industries and number of companies in a specific country
     """
@@ -322,7 +322,7 @@ def get_companies_per_industry_in_sector(
         Exclude international exchanges
 
     Returns
-    ----------
+    -------
     dict
         Dictionary of industries and number of companies in a specific sector
     """
@@ -373,7 +373,7 @@ def get_companies_per_country_in_sector(
         Exclude international exchanges
 
     Returns
-    ----------
+    -------
     dict
         Dictionary of countries and number of companies in a specific sector
     """
@@ -426,7 +426,7 @@ def get_companies_per_country_in_industry(
         Exclude international exchanges
 
     Returns
-    ----------
+    -------
     dict
         Dictionary of countries and number of companies in a specific sector
     """

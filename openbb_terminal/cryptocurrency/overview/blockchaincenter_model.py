@@ -36,7 +36,7 @@ def get_altcoin_index(
         Final date, format YYYY-MM-DD
 
     Returns
-    ----------
+    -------
     pd.DataFrame:
         Date, Value (Altcoin Index)
     """

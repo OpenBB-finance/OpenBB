@@ -190,7 +190,7 @@ def create_matrix(dictionary: Dict[str, Dict[str, float]]) -> pd.DataFrame:
         Dictionary of yield data by country. E.g. {'10Y': {'United States': 4.009, 'Canada': 3.48}}
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Spread matrix.
 
@@ -238,7 +238,7 @@ def get_spread_matrix(
         Flag to use 1 day change or not. By default False.
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Spread matrix.
 
@@ -312,7 +312,7 @@ def get_yieldcurve(country: str = "United States") -> pd.DataFrame:
         Country to display yield curve. List of available countries is accessible through get_ycrv_countries().
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Country yield curve
     """
@@ -394,7 +394,7 @@ def get_economic_calendar(
         Last date to get events.
 
     Returns
-    ----------
+    -------
     Tuple[pd.DataFrame, str]
         Economic calendar Dataframe and detail string about country/time zone.
     """

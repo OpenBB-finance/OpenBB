@@ -24,7 +24,7 @@ def get_sentiment_stats(ticker: str) -> pd.DataFrame:
         Ticker to get sentiment stats
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Get sentiment stats
     """

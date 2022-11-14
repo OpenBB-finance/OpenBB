@@ -20,7 +20,7 @@ def get_orders() -> Tuple[str, DataFrame]:
     """Returns Fidelity orders in a Dataframe
 
     Returns
-    ----------
+    -------
     Tuple[str, DataFrame]
         First value in the tuple is a Fidelity orders header
         Fidelity orders Dataframe with the following columns:

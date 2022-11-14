@@ -265,7 +265,7 @@ def display_sp500_comps_tsne(
         External axes (1 axis is expected in the list), by default None
 
     Returns
-    ----------
+    -------
     List[str]
         List of the 10 closest stocks due to TSNE
     """
