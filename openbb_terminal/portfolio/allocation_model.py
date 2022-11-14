@@ -110,8 +110,6 @@ def get_sectors_allocation(
         DataFrame with country allocations
     """
 
-    p_bar = tqdm(range(3), desc="Loading sector data")
-
     benchmark_sectors_allocation = (
         pd.DataFrame.from_dict(
             data={
@@ -143,8 +141,6 @@ def get_sectors_allocation(
         .groupby(by="Sector")
         .agg({"Portfolio Value": "sum"})
     )
-    p_bar.n += 1
-    p_bar.refresh()
 
     # Aggregate sector value for ETFs
     # Start by getting value by isin/symbol
@@ -155,48 +151,45 @@ def get_sectors_allocation(
     )
     etf_global_sector_alloc = pd.DataFrame()
 
-    # Loop through each etf and multiply sector weights by current value
-    for item in etf_ticker_value.index.values:
+    if not etf_ticker_value.empty:
+        # Loop through each etf and multiply sector weights by current value
+        for item in tqdm(etf_ticker_value.index.values, desc="Loading ETF data"):
 
-        # TODO: This can be improved by caching this info similar to what is done in stocks
-        etf_info = yf.Ticker(item).info
+            # TODO: This can be improved by caching this info similar to what is done in stocks
+            etf_info = yf.Ticker(item).info
 
-        try:
-            etf_sector_weight = pd.DataFrame.from_dict(
-                data={
-                    sector_name: allocation
-                    for sector in etf_info["sectorWeightings"]
-                    for sector_name, allocation in sector.items()
-                },
-                orient="index",
-                columns=["Portfolio Value"],
+            try:
+                etf_sector_weight = pd.DataFrame.from_dict(
+                    data={
+                        sector_name: allocation
+                        for sector in etf_info["sectorWeightings"]
+                        for sector_name, allocation in sector.items()
+                    },
+                    orient="index",
+                    columns=["Portfolio Value"],
+                )
+
+            except Exception:
+                # If ETF has no sectors like VIX for example or it was not found, add to Other
+                etf_sector_weight = pd.DataFrame.from_dict(
+                    data={"Other": 1}, orient="index", columns=["Portfolio Value"]
+                )
+
+            etf_value = etf_ticker_value["Portfolio Value"][item]
+
+            etf_ticker_sector_alloc = etf_sector_weight * etf_value
+
+            # Aggregate etf sector allocation by value
+            etf_global_sector_alloc = pd.concat(
+                [etf_global_sector_alloc, etf_ticker_sector_alloc], axis=1
             )
+            etf_global_sector_alloc.fillna(0, inplace=True)
+            etf_global_sector_alloc = etf_global_sector_alloc.sum(axis=1)
 
-        except Exception:
-            # If ETF has no sectors like VIX for example or it was not found, add to Other
-            etf_sector_weight = pd.DataFrame.from_dict(
-                data={"Other": 1}, orient="index", columns=["Portfolio Value"]
-            )
-
-        etf_value = etf_ticker_value["Portfolio Value"][item]
-
-        etf_ticker_sector_alloc = etf_sector_weight * etf_value
-
-        # Aggregate etf sector allocation by value
-        etf_global_sector_alloc = pd.concat(
-            [etf_global_sector_alloc, etf_ticker_sector_alloc], axis=1
+        etf_global_sector_alloc = pd.DataFrame(
+            etf_global_sector_alloc, columns=["Portfolio Value"]
         )
-
-        etf_global_sector_alloc.fillna(0, inplace=True)
-
-        etf_global_sector_alloc = etf_global_sector_alloc.sum(axis=1)
-
-    p_bar.n += 1
-    p_bar.refresh()
-
-    etf_global_sector_alloc = pd.DataFrame(
-        etf_global_sector_alloc, columns=["Portfolio Value"]
-    )
+        console.print("\n")
 
     # Rename columns to match stock and crypto classification
     etf_global_sector_alloc.index.name = "Sector"
@@ -227,11 +220,6 @@ def get_sectors_allocation(
     portfolio_sectors_allocation = pd.DataFrame(portfolio_sectors_allocation)
     portfolio_sectors_allocation.reset_index(inplace=True)
     portfolio_sectors_allocation.columns = ["Sector", "Portfolio"]
-
-    p_bar.n += 1
-    p_bar.refresh()
-    p_bar.disable = True
-    console.print("\n")
 
     return benchmark_sectors_allocation, portfolio_sectors_allocation
 
@@ -381,8 +369,6 @@ def get_portfolio_allocation(
         Dictionary with country allocations
     """
 
-    p_bar = tqdm(range(3), desc=f"Loading {category.lower()} data")
-
     # Define portfolio allocation
     if not portfolio_trades[category].isnull().any():
         allocation = (
@@ -393,9 +379,6 @@ def get_portfolio_allocation(
     else:
         allocation = pd.DataFrame()
 
-    p_bar.n += 1
-    p_bar.refresh()
-
     # Aggregate sector value for ETFs
     # Start by getting value by symbol
     etf_ticker_value = (
@@ -403,32 +386,31 @@ def get_portfolio_allocation(
         .groupby(by="Ticker")
         .agg({"Portfolio Value": "sum"})
     )
-    etf_global_alloc = pd.DataFrame()
+    etf_global_alloc = pd.DataFrame(columns=[category, "Portfolio Value"])
 
-    # Loop through each etf and multiply sector weights by current value
-    for item in etf_ticker_value.index.values:
+    if not etf_ticker_value.empty:
+        # Loop through each etf and multiply sector weights by current value
+        for item in tqdm(etf_ticker_value.index.values, desc="Loading ETF data"):
 
-        etf_weight = get_symbol_allocation(symbol=item, category=category)
-        etf_weight.set_index(category, inplace=True)
+            etf_weight = get_symbol_allocation(symbol=item, category=category)
+            etf_weight.set_index(category, inplace=True)
 
-        if etf_weight.empty:
-            etf_weight = pd.DataFrame.from_dict(
-                data={"Other": 1}, orient="index", columns=["Portfolio Value"]
-            )
+            if etf_weight.empty:
+                etf_weight = pd.DataFrame.from_dict(
+                    data={"Other": 1}, orient="index", columns=["Portfolio Value"]
+                )
 
-        etf_value = etf_ticker_value["Portfolio Value"][item]
+            etf_value = etf_ticker_value["Portfolio Value"][item]
 
-        # Aggregate etf allocation by value
-        etf_ticker_alloc = etf_weight
-        etf_ticker_alloc["Benchmark"] = etf_ticker_alloc["Benchmark"] * etf_value
-        etf_global_alloc = pd.concat([etf_global_alloc, etf_ticker_alloc], axis=1)
-        etf_global_alloc.fillna(0, inplace=True)
-        etf_global_alloc = etf_global_alloc.sum(axis=1)
+            # Aggregate etf allocation by value
+            etf_ticker_alloc = etf_weight
+            etf_ticker_alloc["Benchmark"] = etf_ticker_alloc["Benchmark"] * etf_value
+            etf_global_alloc = pd.concat([etf_global_alloc, etf_ticker_alloc], axis=1)
+            etf_global_alloc.fillna(0, inplace=True)
+            etf_global_alloc = etf_global_alloc.sum(axis=1)
 
-    p_bar.n += 1
-    p_bar.refresh()
-
-    etf_global_alloc = pd.DataFrame(etf_global_alloc, columns=["Portfolio Value"])
+        etf_global_alloc = pd.DataFrame(etf_global_alloc, columns=["Portfolio Value"])
+        console.print("\n")
 
     # Aggregate allocation for stocks and crypto with ETFs
     allocation = pd.merge(
@@ -446,11 +428,6 @@ def get_portfolio_allocation(
     )
 
     allocation.fillna(0, inplace=True)
-
-    p_bar.n += 1
-    p_bar.refresh()
-    p_bar.disable = True
-    console.print("\n")
 
     allocation.reset_index(inplace=True)
 

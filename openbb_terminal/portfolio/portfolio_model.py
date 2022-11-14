@@ -349,15 +349,16 @@ class PortfolioEngine:
 
             p_bar.n += 1
             p_bar.refresh()
+            p_bar.disable = True
 
             # Warn user of removed ISINs
             if removed_tickers:
                 console.print(
-                    f"\n\n[red]The following tickers are not supported and were removed: {removed_tickers}."
+                    f"\n[red]The following tickers are not supported and were removed: {removed_tickers}."
                     f"\nManually edit the 'Ticker' field with the proper Yahoo Finance suffix or provide a valid ISIN."
                     f"\nSuffix info on 'Yahoo Finance market coverage':"
                     " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html"
-                    f"\nE.g. IWDA -> IWDA.AS[/red]"
+                    f"\nE.g. IWDA -> IWDA.AS[/red]\n"
                 )
         except Exception:
             console.print("\nCould not preprocess transactions.")
