@@ -151,21 +151,25 @@ def load(
         if source == "AlphaVantage":
             if "min" in interval:
                 resolution = "i"
-            return av_model.get_historical(
+            df = av_model.get_historical(
                 to_symbol=to_symbol,
                 from_symbol=from_symbol,
                 resolution=resolution,
                 interval=clean_interval,
                 start_date=start_date,
             )
+            df.index.name = "date"
+            return df
 
         if source == "YahooFinance":
-            return yf.download(
+            df = yf.download(
                 f"{from_symbol}{to_symbol}=X",
                 start=datetime.strptime(start_date, "%Y-%m-%d"),
                 interval=clean_interval,
                 progress=verbose,
             )
+            df.index.name = "date"
+            return df
 
     if source == "Polygon":
         # Interval for polygon gets broken into multiplier and timeframe
@@ -174,12 +178,14 @@ def load(
         timeframe = temp[2]
         if timeframe == "min":
             timeframe = "minute"
-        return polygon_model.get_historical(
+        df = polygon_model.get_historical(
             f"{from_symbol}{to_symbol}",
             multiplier=multiplier,
             timespan=timeframe,
             from_date=start_date,
         )
+        df.index.name = "date"
+        return df
 
     console.print(f"Source {source} not supported")
     return pd.DataFrame()
