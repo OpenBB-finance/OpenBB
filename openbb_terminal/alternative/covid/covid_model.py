@@ -24,7 +24,7 @@ global_deaths_time_series = (
 
 @log_start_end(log=logger)
 def get_global_cases(country: str) -> pd.DataFrame:
-    """Get historical cases for given countryooooo
+    """Get historical cases for given country
 
     Parameters
     ----------
