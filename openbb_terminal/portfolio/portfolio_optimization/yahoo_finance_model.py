@@ -132,7 +132,7 @@ def process_stocks(
         weekday.
 
     Returns
-    -------
+    ----------
     stock_closes: DataFrame
         DataFrame containing daily (adjusted) close prices for each stock in list
     """
@@ -321,7 +321,7 @@ def process_returns(
         `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
 
     Returns
-    -------
+    ----------
     stock_returns: DataFrame
         DataFrame containing daily (adjusted) close prices for each stock in list
     """

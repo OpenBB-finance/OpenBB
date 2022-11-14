@@ -45,7 +45,7 @@ def _retry_session(
         Backoff schema - time periods between retry
 
     Returns
-    -------
+    ----------
     requests.Session
         Mounted session
     """
@@ -73,7 +73,7 @@ def _make_request(url: str) -> Union[BeautifulSoup, None]:
         url to scrape
 
     Returns
-    -------
+    ----------
         BeautifulSoup object
     """
     headers = {"User-Agent": get_user_agent()}
@@ -104,8 +104,8 @@ def get_startups() -> pd.DataFrame:
     """Get startups from ROSS index [Source: https://runacap.com/]
 
     Returns
-    -------
-    pandas.DataFrame:
+    ----------
+    pd.DataFrame:
         list of startups
     """
     response = requests.get("https://runacap.com/ross-index/", timeout=10)

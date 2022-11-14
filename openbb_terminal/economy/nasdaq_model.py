@@ -35,7 +35,7 @@ def get_economic_calendar(
         End date for calendar
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Economic calendar
     """
@@ -109,7 +109,7 @@ def get_country_codes() -> List[str]:
     """Get available country codes for Bigmac index
 
     Returns
-    -------
+    ----------
     List[str]
         List of ISO-3 letter country codes.
     """
@@ -129,7 +129,7 @@ def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
         ISO-3 letter country code to retrieve. Codes available through get_country_codes().
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe with Big Mac index converted to USD equivalent.
     """
@@ -173,7 +173,7 @@ def get_big_mac_indices(country_codes: List[str] = None) -> pd.DataFrame:
         List of country codes (ISO-3 letter country code). Codes available through economy.country_codes().
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe with Big Mac indices converted to USD equivalent.
     """

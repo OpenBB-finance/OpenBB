@@ -26,7 +26,7 @@ def get_price_target_from_analysts(symbol: str) -> pd.DataFrame:
         Ticker symbol
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Analysts data
     """
@@ -77,7 +77,7 @@ def get_estimates(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame
         Ticker to get analysts' estimates
 
     Returns
-    -------
+    ----------
     df_year_estimates : pd.DataFrame
         Year estimates
     df_quarter_earnings : pd.DataFrame

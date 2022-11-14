@@ -19,7 +19,7 @@ def wrap_text_in_df(df: pd.DataFrame, w: int = 55) -> pd.DataFrame:  # pragma: n
         length of text in column after which text is wrapped into new line
 
     Returns
-    -------
+    ----------
     pd.DataFrame
     """
 
@@ -35,7 +35,7 @@ def percent_to_float(s: str) -> float:
     s: string
         string to replace
     Returns
-    -------
+    ----------
     float
     """
 
@@ -76,7 +76,7 @@ def lambda_long_number_format_with_type_check(x: Union[int, float]) -> Union[str
     x: int/float
         number to apply long_number_format method
     Returns
-    -------
+    ----------
     Union[str, Any]
     """
 
@@ -97,7 +97,7 @@ def lambda_very_long_number_formatter(num: Union[str, int, float]) -> str:
     num: Union[str, int, float]
         number to format
     Returns
-    -------
+    ----------
     str:
         formatted number
     """
@@ -151,7 +151,7 @@ def prettify_column_names(columns: list) -> list:
         list of column names
 
     Returns
-    -------
+    ----------
     list with reformatted columns
     """
     return [" ".join(re.findall(".[^A-Z]*", val)).capitalize() for val in columns]
@@ -171,7 +171,7 @@ def denominate_number(
     round_digits:
         round number to n digits
     Returns
-    -------
+    ----------
     float:
         denominated number
     """
@@ -190,7 +190,7 @@ def lambda_replace_unicode(x: Any) -> Any:
         value to replace unicode chars
 
     Returns
-    -------
+    ----------
     Any
         replaced value
     """

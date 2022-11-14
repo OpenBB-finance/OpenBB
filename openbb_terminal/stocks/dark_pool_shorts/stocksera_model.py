@@ -23,7 +23,7 @@ def get_cost_to_borrow(symbol: str) -> pd.DataFrame:
     symbol : str
         ticker to get cost to borrow from
     Returns
-    -------
+    ----------
     pd.DataFrame
         Cost to borrow
     """

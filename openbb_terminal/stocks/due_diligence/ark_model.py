@@ -25,7 +25,7 @@ def get_ark_trades_by_ticker(symbol: str) -> pd.DataFrame:
         Ticker to get trades for
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of trades
     """

@@ -36,7 +36,7 @@ def get_government_trading(
         Ticker symbol to get congress trading data from
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Most recent transactions by members of U.S. Congress
     """
@@ -114,7 +114,7 @@ def get_contracts(
         Number of days to get transactions for
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Most recent transactions by members of U.S. Congress
     """
@@ -147,7 +147,7 @@ def get_hist_contracts(
         Ticker symbol to get congress trading data from
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Historical quarterly government contracts
     """
@@ -176,7 +176,7 @@ def get_last_government(
         Specific representative to look at
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Last government trading
     """
@@ -238,7 +238,7 @@ def get_government_buys(
         Number of months to get trading for
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of top government buy trading
     """
@@ -298,7 +298,7 @@ def get_government_sells(
         Number of months to get trading for
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of top government sell trading
     """
@@ -359,7 +359,7 @@ def get_top_lobbying() -> pd.DataFrame:
     """Corporate lobbying details
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of top corporate lobbying
 
@@ -385,7 +385,7 @@ def get_last_contracts(
         Number of days to look back
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of government contracts
     """
@@ -430,7 +430,7 @@ def get_cleaned_government_trading(
         Number of months to get transactions for
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of tickers government trading
     """
@@ -490,7 +490,7 @@ def get_qtr_contracts(analysis: str = "total", limit: int = 5) -> pd.DataFrame:
         Number to return, by default 5
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe with tickers and total amount if total selected.
     """
@@ -539,7 +539,7 @@ def get_lobbying(symbol: str, limit: int = 10) -> pd.DataFrame:
         Number of events to show
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe with corporate lobbying data
     """

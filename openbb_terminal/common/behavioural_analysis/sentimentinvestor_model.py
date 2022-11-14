@@ -40,7 +40,7 @@ def get_historical(
         Maximum 250 per api call
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of historical sentiment
     """
@@ -89,7 +89,7 @@ def check_supported_ticker(symbol: str) -> bool:
         Ticker symbol to view sentiment data
 
     Returns
-    -------
+    ----------
     result: Boolean
 
     """
@@ -148,7 +148,7 @@ def get_trending(
         Maximum 250 per api call
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of trending data
     """

@@ -36,8 +36,8 @@ def get_altcoin_index(
         Final date, format YYYY-MM-DD
 
     Returns
-    -------
-    pandas.DataFrame:
+    ----------
+    pd.DataFrame:
         Date, Value (Altcoin Index)
     """
     if period not in DAYS:

@@ -89,7 +89,7 @@ def _prepare_params(**kwargs) -> dict:
     kwargs: keyword arguments: chain, kind, protocol
 
     Returns
-    -------
+    ----------
     dict:
         Prepared parameters for request
     """
@@ -133,7 +133,7 @@ def get_defi_vaults(
         Kind/type of vault - one from list: ['lp','single','noimploss','stable']
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Top 100 DeFi Vaults for given chain/protocol sorted by APY.
     """

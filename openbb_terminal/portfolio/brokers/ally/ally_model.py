@@ -16,7 +16,7 @@ def get_holdings() -> pd.DataFrame:
     """Get holdings from Ally account in pandas df
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of positions
     """
@@ -34,7 +34,7 @@ def ally_positions_to_df(df: pd.DataFrame) -> pd.DataFrame:
         Input dataframe of holdings
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Processed holdings
     """
@@ -63,7 +63,7 @@ def get_history(limit: int = 50) -> pd.DataFrame:
         Number of entries to return
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of transaction history
     """
@@ -77,7 +77,7 @@ def get_balances() -> pd.DataFrame:
     """Gets balance details for the account."
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of transaction history
     """
@@ -94,7 +94,7 @@ def get_stock_quote(symbol: str) -> pd.DataFrame:
     symbol : str
         Ticker to get.  Can be in form of 'tick1,tick2...'
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of ticker quote
     """
@@ -123,7 +123,7 @@ def get_top_movers(
     limit: int
         Number of top rows to return
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of top movers
     """

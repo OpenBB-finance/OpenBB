@@ -50,7 +50,7 @@ def _make_request(url: str, verbose: bool = True) -> Optional[dict]:
     verbose: bool
         whether to print the text from the response
     Returns
-    -------
+    ----------
     dict:
         dictionary with response data
     """
@@ -84,7 +84,7 @@ def get_top_nfts(sortby: str = "", limit: int = 10) -> pd.DataFrame:
         Key by which to sort data
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         NFTs Columns: Name, Protocols, Floor Price [$], Avg Price [$], Market Cap [$], Volume [$]
     """
@@ -129,7 +129,7 @@ def get_top_dexes(sortby: str = "", limit: int = 10) -> pd.DataFrame:
         Key by which to sort data
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Top decentralized exchanges. Columns: Name, Daily Users, Daily Volume [$]
     """
@@ -171,7 +171,7 @@ def get_top_games(sortby: str = "", limit: int = 10) -> pd.DataFrame:
     sortby: str
         Key by which to sort data
     Returns
-    -------
+    ----------
     pd.DataFrame
         Top blockchain games. Columns: Name, Daily Users, Daily Volume [$]
     """
@@ -213,7 +213,7 @@ def get_top_dapps(sortby: str = "", limit: int = 10) -> pd.DataFrame:
         Key by which to sort data
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Top decentralized exchanges.
         Columns: Name, Category, Protocols, Daily Users, Daily Volume [$]

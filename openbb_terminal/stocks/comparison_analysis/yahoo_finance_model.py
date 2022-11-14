@@ -47,7 +47,7 @@ def get_historical(
         Candle variable to compare, by default "a" for Adjusted Close. Possible values are: o, h, l, c, a, v, r
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe containing candle type variable for each ticker
     """
@@ -147,7 +147,7 @@ def get_1y_sp500() -> pd.DataFrame:
     They are scraped daily using yfinance at https://github.com/jmaslek/daily_sp_500
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame containing last 1 year of closes for all SP500 stocks.
     """
@@ -179,7 +179,7 @@ def get_sp500_comps_tsne(
         Learning rate for TSNE
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of tickers closest to selected ticker
     """

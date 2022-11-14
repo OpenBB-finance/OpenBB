@@ -100,7 +100,7 @@ def get_tft_data(
 
 
     Returns
-    -------
+    ----------
     List[float]
         Adjusted Data series
     List[float]

@@ -32,7 +32,7 @@ def bbands(
         Method of calculating average
 
     Returns
-    -------
+    ----------
     df_ta: pd.DataFrame
         Dataframe of bollinger band data
     """
@@ -67,7 +67,7 @@ def donchian(
         Length of window to calculate lower channel
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of upper and lower channels
     """
@@ -108,7 +108,7 @@ def kc(
         Offset value
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of rolling kc
     """
@@ -149,7 +149,7 @@ def atr(
         Offset value
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of atr
     """

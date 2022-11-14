@@ -76,8 +76,8 @@ def get_global_market() -> pd.DataFrame:
     market_cap_change_24h, volume_24h_change_24h, last_updated.   [Source: CoinPaprika]
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Most important global crypto statistics
         Metric, Value
     """
@@ -109,8 +109,8 @@ def get_list_of_coins() -> pd.DataFrame:
     """Get list of all available coins on CoinPaprika  [Source: CoinPaprika]
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Available coins on CoinPaprika
         rank, id, name, symbol, type
     """
@@ -167,8 +167,8 @@ def _get_coins_info_helper(symbols: str = "USD") -> pd.DataFrame:
     symbols: Comma separated quotes to return e.g quotes=USD,BTC
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         id, name, symbol, rank, circulating_supply, total_supply, max_supply, beta_value, first_data_at,
         last_updated, price, volume_24h, volume_24h_change_24h, market_cap, market_cap_change_24h,
         percent_change_15m, percent_change_30m, percent_change_1h, percent_change_6h, percent_change_12h,
@@ -213,8 +213,8 @@ def get_coins_info(
         Flag to sort data descending
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         rank, name, symbol, price, volume_24h, circulating_supply, total_supply,
         max_supply, market_cap, beta_value, ath_price,
     """
@@ -253,8 +253,8 @@ def get_coins_market_info(
         Flag to sort data ascend
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         rank, name, symbol, price, volume_24h, mcap_change_24h,
         pct_change_1h, pct_change_24h, ath_price, pct_from_ath,
     """
@@ -296,8 +296,8 @@ def get_list_of_exchanges(
         Flag to sort data ascend
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         rank, name, currencies, markets, fiats, confidence_score, reported_volume_24h,
         reported_volume_7d ,reported_volume_30d, sessions_per_month,
     """
@@ -364,8 +364,8 @@ def get_exchanges_market(
         Flag to sort data ascending
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         pair, base_currency_name, quote_currency_name, market_url,
         category, reported_volume_24h_share, trust_score,
     """
@@ -399,8 +399,8 @@ def get_all_contract_platforms() -> pd.DataFrame:
     """List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama ... [Source: CoinPaprika]
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         index, platform_id
     """
 
@@ -430,8 +430,8 @@ def get_contract_platform(
         Flag to sort data ascend
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
          id, type, active
     """
 

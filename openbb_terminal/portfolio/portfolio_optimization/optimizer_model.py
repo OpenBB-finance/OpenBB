@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 from datetime import date
 
 import numpy as np
@@ -208,7 +208,7 @@ def get_equal_weights(
         Amount to allocate.  Returns percentages if set to 1.
 
     Returns
-    -------
+    ----------
     dict
         Dictionary of weights where keys are the tickers
     """
@@ -243,7 +243,7 @@ def get_property_weights(
     method: str = "time",
     s_property: str = "marketCap",
     value: float = 1.0,
-) -> Tuple:
+) -> Tuple[Dict[str, Any], pd.DataFrame]:
     """Calculate portfolio weights based on selected property
 
     Parameters
@@ -281,7 +281,7 @@ def get_property_weights(
         Amount of money to allocate
 
     Returns
-    -------
+    ----------
     Dict
         Dictionary of portfolio weights or allocations
     """
@@ -443,7 +443,7 @@ def get_mean_risk_portfolio(
         Amount to allocate to portfolio in short positions. The default is 0.
 
     Returns
-    -------
+    ----------
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
@@ -629,7 +629,7 @@ def get_max_sharpe(
         Amount to allocate to portfolio in short positions, by default 0.0
 
     Returns
-    -------
+    ----------
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
@@ -775,7 +775,7 @@ def get_min_risk(
         Amount to allocate to portfolio in short positions, by default 0.0
 
     Returns
-    -------
+    ----------
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
@@ -921,7 +921,7 @@ def get_max_util(
         Amount to allocate to portfolio in short positions, by default 0.0
 
     Returns
-    -------
+    ----------
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
@@ -1067,7 +1067,7 @@ def get_max_ret(
         Amount to allocate to portfolio in short positions, by default 0.0
 
     Returns
-    -------
+    ----------
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
@@ -1170,7 +1170,7 @@ def get_max_diversification_portfolio(
         Amount to allocate to portfolio in short positions. The default is 0.
 
     Returns
-    -------
+    ----------
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
@@ -1284,7 +1284,7 @@ def get_max_decorrelation_portfolio(
         Amount to allocate to portfolio in short positions. The default is 0.
 
     Returns
-    -------
+    ----------
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
@@ -1419,7 +1419,7 @@ def get_black_litterman_portfolio(
         Amount to allocate to portfolio in short positions. The default is 0.
 
     Returns
-    -------
+    ----------
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
@@ -1586,7 +1586,7 @@ def get_ef(
         Seed used to generate random portfolios. The default value is 123.
 
     Returns
-    -------
+    ----------
     Tuple
         Parameters to create efficient frontier: frontier, mu, cov, stock_returns, weights, X1, Y1, port
     """
@@ -1786,7 +1786,7 @@ def get_risk_parity_portfolio(
         Amount of money to allocate. The default is 1.
 
     Returns
-    -------
+    ----------
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
@@ -1934,7 +1934,7 @@ def get_rel_risk_parity_portfolio(
         Amount of money to allocate. The default is 1.
 
     Returns
-    -------
+    ----------
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
@@ -2185,7 +2185,7 @@ def get_hcp_portfolio(
         Amount of money to allocate. The default is 1.
 
     Returns
-    -------
+    ----------
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
@@ -2967,7 +2967,7 @@ def black_litterman(
         The time factor
 
     Returns
-    -------
+    ----------
     Tuple:
         Black-Litterman model estimates of expected returns,
         covariance matrix and portfolio weights.
@@ -3073,7 +3073,7 @@ def generate_random_portfolios(
 def get_properties() -> List[str]:
     """Get properties to use on property optimization.
     Returns
-    -------
+    ----------
     List[str]:
         List of available properties to use on property optimization.
     """

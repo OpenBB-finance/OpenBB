@@ -54,7 +54,7 @@ def get_real_gdp(
     start_year : int, optional
         Start year for plot, by default 2010
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of GDP
     """
@@ -101,7 +101,7 @@ def get_gdp_capita(start_year: int = 2010) -> pd.DataFrame:
         Start year for plot, by default 2010
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of GDP per Capita
     """
@@ -144,7 +144,7 @@ def get_inflation(start_year: int = 2010) -> pd.DataFrame:
         Start year for plot, by default 2010
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of inflation rates
     """
@@ -189,7 +189,7 @@ def get_cpi(interval: str = "m", start_year: int = 2010) -> pd.DataFrame:
         Start year for plot, by default 2010
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of CPI
     """
@@ -241,7 +241,7 @@ def get_treasury_yield(
         Maturity timeline.  Can be "3mo","5y","10y" or "30y", by default "10y"
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of historical yields
     """
@@ -289,7 +289,7 @@ def get_unemployment(start_year: int = 2010) -> pd.DataFrame:
         Start year for plot, by default 2010
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of historical yields
     """

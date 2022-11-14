@@ -56,7 +56,7 @@ def get_defi_protocols(
         Whether to drop the chain column
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Information about DeFi protocols
     """
@@ -126,7 +126,7 @@ def get_defi_protocol(protocol: str) -> pd.DataFrame:
     [Source: https://docs.llama.fi/api]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Historical tvl
     """
@@ -153,7 +153,7 @@ def get_grouped_defi_protocols(
         Number of top dApps to display
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Information about DeFi protocols grouped by chain
     """
@@ -167,7 +167,7 @@ def get_defi_tvl() -> pd.DataFrame:
     [Source: https://docs.llama.fi/api]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Historical values of total sum of Total Value Locked from all listed protocols.
     """

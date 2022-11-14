@@ -139,8 +139,8 @@ def get_coins(
         Sort data in ascending order
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         N coins
     """
     client = CoinGeckoAPI()
@@ -207,8 +207,8 @@ def get_gainers_or_losers(
     typ: str
         Either "gainers" or "losers"
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Top Gainers / Top Losers - coins which gain/lost most in price in given period of time.
         Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
     """
@@ -267,7 +267,7 @@ def get_gainers(
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Top Gainers  - coins which gain most in price in given period of time.
         Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
@@ -295,7 +295,7 @@ def get_losers(
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Top Losers  - coins which lost most in price in given period of time.
         Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
@@ -313,8 +313,8 @@ def get_trending_coins() -> pd.DataFrame:
     ----------
 
     Returns
-    -------
-    pandas.DataFrame:
+    ----------
+    pd.DataFrame:
         Trending Coins
     """
     client = CoinGeckoAPI()
@@ -332,8 +332,8 @@ def get_coin_list() -> pd.DataFrame:
     """Get list of coins available on CoinGecko [Source: CoinGecko]
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Coins available on CoinGecko
         Columns: id, symbol, name
     """
@@ -357,7 +357,7 @@ def get_coins_for_given_exchange(exchange_id: str = "binance", page: int = 1) ->
         number of page. One page contains 100 records
 
     Returns
-    -------
+    ----------
     dict
         dictionary with all trading pairs on binance
     """
@@ -379,7 +379,7 @@ def get_mapping_matrix_for_exchange(exchange_id: str, pages: int = 12) -> dict:
         number of pages. One page contains 100 records
 
     Returns
-    -------
+    ----------
     dict
         dictionary with all coins: {"ETH" : "ethereum"}
     """

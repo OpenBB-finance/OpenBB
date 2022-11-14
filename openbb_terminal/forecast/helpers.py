@@ -220,7 +220,7 @@ def prepare_scale_train_valid_test(
     ns_parser: argparse.Namespace
         Parsed arguments
     Returns
-    -------
+    ----------
     X_train: np.ndarray
         Array of training data.  Shape (# samples, n_inputs, 1)
     X_test: np.ndarray

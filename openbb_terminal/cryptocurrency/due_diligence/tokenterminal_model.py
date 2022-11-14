@@ -208,7 +208,7 @@ def get_fundamental_metric_from_project(
         The project of interest. See `get_possible_projects()` for available categories.
 
     Returns
-    -------
+    ----------
     pandas.Series:
         Date, Metric value
     """
@@ -243,8 +243,8 @@ def get_description(
         The project of interest. See `get_possible_projects()` for available categories.
 
     Returns
-    -------
-    Dict
+    ----------
+    Dict[str, Any]
         Description of the project with fields: 'how', 'who', 'what', 'funding',
         'competition', 'business_model', 'github_contributors'
     """

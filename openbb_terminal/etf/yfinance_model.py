@@ -22,7 +22,7 @@ def get_etf_sector_weightings(name: str) -> Dict:
 
     Returns
     ----------
-    Dict
+    Dict[str, Any]
         Dictionary with sector weightings allocation
     """
     weights = yf.Ticker(name).info

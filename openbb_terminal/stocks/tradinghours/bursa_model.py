@@ -26,7 +26,7 @@ def get_bursa(symbol: str) -> pd.DataFrame:
         Exchange symbol
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Exchange info
     """
@@ -58,7 +58,7 @@ def get_open() -> pd.DataFrame:
     ----------
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Currently open exchanges
     """
@@ -80,7 +80,7 @@ def get_closed() -> pd.DataFrame:
     ----------
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Currently closed exchanges
     """
@@ -102,7 +102,7 @@ def get_all() -> pd.DataFrame:
     ----------
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         All available exchanges
     """
@@ -123,7 +123,7 @@ def get_all_exchange_short_names() -> pd.DataFrame:
     ----------
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         All available exchanges short names
     """

@@ -54,7 +54,7 @@ def get_regressions_results(
         Whether to apply Fixed Effects on time.
 
     Returns
-    -------
+    ----------
     The dataset used, the dependent variable, the independent variable and
     the regression model.
     """
@@ -91,7 +91,7 @@ def get_regression_data(
         The type of regression that is executed.
 
     Returns
-    -------
+    ----------
     The dataset used, the dependent variable, the independent variable and
     the OLS model.
     """
@@ -154,7 +154,7 @@ def get_ols(
         Format to export data
 
     Returns
-    -------
+    ----------
     The dataset used, the dependent variable, the independent variable and
     the OLS model.
     """
@@ -211,7 +211,7 @@ def get_pols(
         A dictionary containing the datasets.
 
     Returns
-    -------
+    ----------
     The dataset used, the dependent variable, the independent variable and
     the Pooled OLS model.
     """
@@ -254,7 +254,7 @@ def get_re(
         A dictionary containing the datasets.
 
     Returns
-    -------
+    ----------
     The dataset used, the dependent variable, the independent variable and
     the RandomEffects model.
     """
@@ -297,7 +297,7 @@ def get_bols(
         A dictionary containing the datasets.
 
     Returns
-    -------
+    ----------
     The dataset used, the dependent variable, the independent variable and
     the Between OLS model.
     """
@@ -346,7 +346,7 @@ def get_fe(
         Whether to include time effects
 
     Returns
-    -------
+    ----------
     The dataset used, the dependent variable, the independent variable and
     the OLS model.
     """
@@ -396,7 +396,7 @@ def get_fdols(
         A dictionary containing the datasets.
 
     Returns
-    -------
+    ----------
     The dataset used, the dependent variable, the independent variable and
     the OLS model.
     """
@@ -434,7 +434,7 @@ def get_comparison(regressions, export: str = ""):
         Format to export data
 
     Returns
-    -------
+    ----------
     Returns a PanelModelComparison which shows an overview of the different regression results.
     """
     comparison = {}
@@ -480,7 +480,7 @@ def get_dwat(residual: pd.DataFrame) -> pd.DataFrame:
         Model containing residual values.
 
     Returns
-    -------
+    ----------
     Test statistic of the Durbin Watson test.
     """
     # Durbin Watson test: The test statistic is approximately equal to 2*(1-r) where r is the
@@ -505,7 +505,7 @@ def get_bgod(model: pd.DataFrame, lags: int = 3) -> tuple:
         The amount of lags.
 
     Returns
-    -------
+    ----------
     Test results from the Breusch-Godfrey Test
     """
 
@@ -524,7 +524,7 @@ def get_bpag(model: pd.DataFrame) -> tuple:
         Model containing residual values.
 
     Returns
-    -------
+    ----------
     Test results from the Breusch-Pagan Test
     """
 

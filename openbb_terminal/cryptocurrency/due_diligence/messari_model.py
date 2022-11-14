@@ -41,7 +41,7 @@ def get_available_timeseries(only_free: bool = True) -> pd.DataFrame:
         Display only timeseries available for free
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         available timeseries
     """
@@ -99,7 +99,7 @@ def get_marketcap_dominance(
         End date like string (e.g., 2021-10-01)
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         market dominance percentage over time
     """
@@ -140,7 +140,7 @@ def get_messari_timeseries(
         End date like string (e.g., 2021-10-01)
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         messari timeserie over time
     str
@@ -194,7 +194,7 @@ def get_links(symbol: str) -> pd.DataFrame:
         Crypto symbol to check links
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         asset links
     """
@@ -235,7 +235,7 @@ def get_roadmap(symbol: str, ascend: bool = True) -> pd.DataFrame:
         reverse order
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         roadmap
     """
@@ -281,7 +281,7 @@ def get_tokenomics(symbol: str, coingecko_id: str) -> Tuple[pd.DataFrame, pd.Dat
     coingecko_id : str
         ID from coingecko
     Returns
-    -------
+    ----------
     pd.DataFrame
         Metric Value tokenomics
     pd.DataFrame
@@ -352,7 +352,7 @@ def get_project_product_info(
         Crypto symbol to check product info
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Metric, Value with project and technology details
     pd.DataFrame
@@ -419,7 +419,7 @@ def get_team(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
         Crypto symbol to check team
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         individuals
     pd.DataFrame
@@ -495,7 +495,7 @@ def get_investors(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
         Crypto symbol to check investors
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         individuals
     pd.DataFrame
@@ -569,7 +569,7 @@ def get_governance(symbol: str) -> Tuple[str, pd.DataFrame]:
         Crypto symbol to check governance
 
     Returns
-    -------
+    ----------
     str
         governance summary
     pd.DataFrame
@@ -642,7 +642,7 @@ def get_fundraising(
         Crypto symbol to check fundraising
 
     Returns
-    -------
+    ----------
     str
         launch summary
     pd.DataFrame

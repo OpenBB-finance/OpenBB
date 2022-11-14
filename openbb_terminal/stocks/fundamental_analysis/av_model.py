@@ -42,7 +42,7 @@ def get_overview(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of fundamentals
     """
@@ -107,7 +107,7 @@ def get_key_metrics(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of key metrics
     """
@@ -182,7 +182,7 @@ def get_income_statements(
         If the data shall be formatted ready to plot
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of income statements
     """
@@ -273,7 +273,7 @@ def get_balance_sheet(
         If the data shall be formatted ready to plot
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of the balance sheet
     """
@@ -360,7 +360,7 @@ def get_cash_flow(
         If the data shall be formatted ready to plot
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of cash flow statements
     """
@@ -438,7 +438,7 @@ def get_earnings(symbol: str, quarterly: bool = False) -> pd.DataFrame:
         Flag to get quarterly and not annual, by default False
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of earnings
     """
@@ -514,7 +514,7 @@ def df_values(
         The number of rows to return
 
     Returns
-    -------
+    ----------
     values : List[int]
         The values for the dataframe
     """
@@ -602,7 +602,7 @@ def get_fraud_ratios(symbol: str, detail: bool = False) -> pd.DataFrame:
         Whether to provide extra m-score details
 
     Returns
-    -------
+    ----------
     metrics : pd.DataFrame
         The fraud ratios
     """
@@ -718,7 +718,7 @@ def get_dupont(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    -------
+    ----------
     dupont : pd.DataFrame
         The dupont ratio breakdown
     """

@@ -235,7 +235,7 @@ def get_fundamental_metrics(
         Direction of the sort. If True, the data is sorted in ascending order.
 
     Returns
-    -------
+    ----------
     pandas.Series:
         Project, Metric value
     """

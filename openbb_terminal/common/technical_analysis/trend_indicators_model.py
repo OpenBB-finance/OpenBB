@@ -33,7 +33,7 @@ def adx(
         Drift variable
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame with adx indicator
     """
@@ -66,7 +66,7 @@ def aroon(data: pd.DataFrame, window: int = 25, scalar: int = 100) -> pd.DataFra
         Scalar variable
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame with aroon indicator
     """

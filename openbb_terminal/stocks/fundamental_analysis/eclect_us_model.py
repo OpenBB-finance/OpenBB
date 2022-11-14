@@ -24,7 +24,7 @@ def get_filings_analysis(symbol: str) -> pd.DataFrame:
         Ticker symbol to see analysis of filings
 
     Returns
-    -------
+    ----------
     str
         Analysis of filings text
     """

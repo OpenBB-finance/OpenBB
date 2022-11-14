@@ -29,7 +29,7 @@ def get_history_asset_from_terra_address(
     address : str
         Terra address. Valid terra addresses start with 'terra'
     Returns
-    -------
+    ----------
     pd.DataFrame
         historical data
     """

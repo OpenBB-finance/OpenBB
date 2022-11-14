@@ -56,7 +56,7 @@ def historical(
         External axes (1 axis is expected in the list), by default None
 
     Returns
-    -------
+    ----------
     list[str]
         List of stocks
     """

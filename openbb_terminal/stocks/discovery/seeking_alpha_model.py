@@ -26,7 +26,7 @@ def get_earnings_html(url_next_earnings: str) -> str:
         Next earnings URL
 
     Returns
-    -------
+    ----------
     str
         HTML page of next earnings
     """
@@ -47,7 +47,7 @@ def get_next_earnings(limit: int = 10) -> DataFrame:
         Number of pages
 
     Returns
-    -------
+    ----------
     DataFrame
         Upcoming earnings DataFrame
     """
@@ -85,7 +85,7 @@ def get_articles_html(url_articles: str) -> str:
         Articles URL
 
     Returns
-    -------
+    ----------
     str
         HTML page of articles
     """
@@ -106,7 +106,7 @@ def get_trending_list(limit: int = 5) -> list:
         Number of articles
 
     Returns
-    -------
+    ----------
     list
         Trending articles list
     """
@@ -146,7 +146,7 @@ def get_article_data(article_id: int) -> dict:
         Article ID
 
     Returns
-    -------
+    ----------
     dict
         Article data
     """
@@ -178,7 +178,7 @@ def get_news_html(news_type: str = "Top-News") -> dict:
         Guidance, IPOs, SPACs, Politics, M-A, Consumer, Energy, Financials, Healthcare, MLPs, REITs, Technology
 
     Returns
-    -------
+    ----------
     dict
         HTML page of articles
     """
@@ -208,7 +208,7 @@ def get_news(news_type: str = "Top-News", limit: int = 5) -> List:
         Number of news to display
 
     Returns
-    -------
+    ----------
     List[dict]
         List of dict news
     """

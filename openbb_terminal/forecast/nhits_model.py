@@ -105,7 +105,7 @@ def get_nhits_data(
         Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
 
     Returns
-    -------
+    ----------
     list[TimeSeries]
         Adjusted Data series
     list[TimeSeries]

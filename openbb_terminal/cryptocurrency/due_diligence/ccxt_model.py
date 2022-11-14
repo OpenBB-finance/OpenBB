@@ -1,7 +1,7 @@
 """Ccxt model"""
 __docformat__ = "numpy"
 
-from typing import Dict
+from typing import Any, Dict
 import ccxt
 import pandas as pd
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_column_names
@@ -15,7 +15,7 @@ def get_exchanges():
     ----------
 
     Returns
-    -------
+    ----------
     List[str]
         list of all the exchanges supported by ccxt
     """
@@ -30,7 +30,7 @@ def get_binance_currencies():
     ----------
 
     Returns
-    -------
+    ----------
     List[str]
         list of all the currenices supported by ccxt
     """
@@ -43,7 +43,7 @@ def get_binance_currencies():
     return [c["code"] for c in currencies.values()]
 
 
-def get_orderbook(exchange_id: str, symbol: str, to_symbol: str) -> Dict:
+def get_orderbook(exchange_id: str, symbol: str, to_symbol: str) -> Dict[str, Any]:
     """Returns orderbook for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 
@@ -57,8 +57,9 @@ def get_orderbook(exchange_id: str, symbol: str, to_symbol: str) -> Dict:
         currency to compare coin against
 
     Returns
-    -------
-    Dict with bids and asks
+    ----------
+    Dict[str, Any]
+        With bids and asks
     """
     exchange_class = getattr(ccxt, exchange_id)
     exchange = exchange_class()
@@ -80,7 +81,7 @@ def get_trades(exchange_id: str, symbol: str, to_symbol: str) -> pd.DataFrame:
         currency to compare coin against
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         trades for a coin in a given exchange
     """

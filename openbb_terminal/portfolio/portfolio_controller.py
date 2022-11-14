@@ -1505,7 +1505,7 @@ def check_portfolio_benchmark_defined(portfolio_name: str, benchmark_name: str) 
         Benchmark name, will be empty if not defined
 
     Returns
-    -------
+    ----------
     bool
         If both portfolio and benchmark have been defined
     """

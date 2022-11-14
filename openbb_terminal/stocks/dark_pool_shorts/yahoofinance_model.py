@@ -17,7 +17,7 @@ def get_most_shorted() -> pd.DataFrame:
     """Get most shorted stock screener [Source: Yahoo Finance]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Most Shorted Stocks
     """

@@ -28,7 +28,7 @@ def find_smallest_num_data_point(results_list: List[dict]) -> int:
         List of dicts storing ticker data
 
     Returns
-    -------
+    ----------
     int
         Value of smallest total number of sentiment data points
     """
@@ -55,7 +55,7 @@ def get_sentiments(symbols: List[str]) -> pd.DataFrame:
         finnhub_peers(), finviz_peers(), polygon_peers().
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Contains sentiment analysis from several tickers
     """

@@ -19,7 +19,7 @@ def parameterize_from_file(test_namespace: str, parameter_file: str) -> Callable
         Test scenario YAML to load
 
     Returns
-    -------
+    ----------
     Callable
         Wrapper function
     """

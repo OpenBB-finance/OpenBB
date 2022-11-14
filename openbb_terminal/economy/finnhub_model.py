@@ -17,7 +17,7 @@ def get_economy_calendar_events() -> pd.DataFrame:
     """Get economic calendar events
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Get dataframe with economic calendar events
     """

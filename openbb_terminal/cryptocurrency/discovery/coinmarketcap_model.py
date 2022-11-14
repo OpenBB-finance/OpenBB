@@ -38,7 +38,7 @@ def get_cmc_top_n(sortby: str = "CMC_Rank", ascend: bool = True) -> pd.DataFrame
         Whether to sort ascending or descending
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Top coin on CoinMarketCap
 

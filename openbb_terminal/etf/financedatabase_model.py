@@ -22,7 +22,7 @@ def get_etfs_by_name(name: str) -> Dict:
 
     Returns
     ----------
-    data : Dict
+    data : Dict[str, Any]
         Dictionary with ETFs that match a certain name
     """
     data = fd.select_etfs()
@@ -43,7 +43,7 @@ def get_etfs_by_description(description: str) -> Dict:
 
     Returns
     ----------
-    data : Dict
+    data: Dict[str, Any]
         Dictionary with ETFs that match a certain description
     """
     data = fd.select_etfs()
@@ -64,7 +64,7 @@ def get_etfs_by_category(category: str) -> Dict:
 
     Returns
     ----------
-    data : Dict
+    data: Dict[str, Any]
         Dictionary with ETFs that match a certain description
     """
     data = fd.select_etfs(category=category)

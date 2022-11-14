@@ -34,7 +34,7 @@ def calculate_fib_levels(
         Custom end date for retracement
 
     Returns
-    -------
+    ----------
     df : pd.DataFrame
         Dataframe of fib levels
     min_date: pd.Timestamp

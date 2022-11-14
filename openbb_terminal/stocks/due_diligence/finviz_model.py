@@ -23,7 +23,7 @@ def get_news(symbol: str) -> List[Any]:
         Stock ticker symbol
 
     Returns
-    -------
+    ----------
     List[Any]
         News
     """
@@ -40,7 +40,7 @@ def get_analyst_data(symbol: str) -> DataFrame:
         Stock ticker symbol
 
     Returns
-    -------
+    ----------
     df_fa: DataFrame
         Analyst price targets
     """

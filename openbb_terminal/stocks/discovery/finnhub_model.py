@@ -28,7 +28,7 @@ def get_ipo_calendar(
         end date (%Y-%m-%d) to get IPO calendar
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Get dataframe with economic calendar events
     """

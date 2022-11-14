@@ -108,10 +108,10 @@ def get_holdings_overview(endpoint: str = "bitcoin") -> List[Any]:
         "bitcoin" or "ethereum"
 
     Returns
-    -------
+    ----------
     List:
         - str:              Overall statistics
-        - pandas.DataFrame: Companies holding crypto
+        - pd.DataFrame: Companies holding crypto
     """
     cg = CoinGeckoAPI()
     data = cg.get_companies_public_treasury_by_coin_id(coin_id=endpoint)
@@ -158,8 +158,8 @@ def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame
     """Returns top crypto categories [Source: CoinGecko]
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
        Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h,Coins, Url
     """
     if sort_filter in SORT_VALUES:
@@ -197,8 +197,8 @@ def get_stable_coins(
         Flag to sort data ascending
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d, Url
     """
 
@@ -220,8 +220,8 @@ def get_exchanges(sortby: str = "Rank", ascend: bool = True) -> pd.DataFrame:
         Flag to sort data descending
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC, Url
     """
 
@@ -268,8 +268,8 @@ def get_financial_platforms(sortby: str = "Name", ascend: bool = True) -> pd.Dat
         Flag to sort data ascending
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Rank, Name, Category, Centralized, Url
     """
 
@@ -294,8 +294,8 @@ def get_finance_products(sortby: str = "Name", ascend: bool = True) -> pd.DataFr
         Flag to sort data ascending
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
        Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate
     """
 
@@ -320,8 +320,8 @@ def get_indexes(sortby: str = "Name", ascend: bool = True) -> pd.DataFrame:
     """Get list of crypto indexes from CoinGecko API [Source: CoinGecko]
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Name, Id, Market, Last, MultiAsset
     sortby: str
         Key by which to sort data
@@ -349,8 +349,8 @@ def get_derivatives(sortby: str = "Rank", ascend: bool = False) -> pd.DataFrame:
         Flag to sort data descending
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread,
         Funding_Rate, Volume_24h,
     """
@@ -397,8 +397,8 @@ def get_exchange_rates(sortby: str = "Name", ascend: bool = False) -> pd.DataFra
         Flag to sort data ascending
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Index, Name, Unit, Value, Type
     """
 
@@ -422,8 +422,8 @@ def get_global_info() -> pd.DataFrame:
     [Source: CoinGecko]
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Metric, Value
     """
 
@@ -455,8 +455,8 @@ def get_global_markets_info() -> pd.DataFrame:
     [Source: CoinGecko]
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Market_Cap, Volume, Market_Cap_Percentage
     """
 
@@ -481,8 +481,8 @@ def get_global_defi_info() -> pd.DataFrame:
     """Get global statistics about Decentralized Finances [Source: CoinGecko]
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Metric, Value
     """
 

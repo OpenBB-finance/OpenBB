@@ -28,7 +28,7 @@ def get_coin(symbol: str = "eth-ethereum") -> dict:
     symbol: str
         id of coin from coinpaprika e.g. Ethereum - > 'eth-ethereum'
     Returns
-    -------
+    ----------
     dict
         Coin response
     """
@@ -55,8 +55,8 @@ def get_coin_twitter_timeline(
     ascend: bool
         Flag to sort data descending
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Twitter timeline for given coin.
         Columns: date, user_name, status, retweet_count, like_count
     """
@@ -119,8 +119,8 @@ def get_coin_events_by_id(
     ascend: bool
         Flag to sort data ascending
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Events found for given coin
         Columns: id, date , date_to, name, description, is_conference, link, proof_image_link
     """
@@ -165,8 +165,8 @@ def get_coin_exchanges_by_id(
         Flag to sort data ascending
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         All exchanges for given coin
         Columns: id, name, adjusted_volume_24h_share, fiats
     """
@@ -210,8 +210,8 @@ def get_coin_markets_by_id(
         Flag to sort data ascending
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         All markets for given coin and currency
     """
 
@@ -263,8 +263,8 @@ def get_ohlc_historical(
         time range for chart in days. Maximum 365
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Open/High/Low/Close values with volume and market_cap.
     """
 
@@ -342,8 +342,8 @@ def get_tickers_info_for_coin(
         Comma separated quotes to return e.g quotes = USD, BTC
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Most important ticker related information
         Columns: Metric, Value
     """
@@ -393,7 +393,7 @@ def validate_coin(symbol: str, coins_dct: dict) -> Tuple[Optional[Any], Optional
         dictionary of coins
 
     Returns
-    -------
+    ----------
     Tuple[str,str]
         coin id, coin symbol
     """
@@ -414,7 +414,7 @@ def basic_coin_info(symbol: str = "btc-bitcoin") -> pd.DataFrame:
         Coin id
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Metric, Value
     """

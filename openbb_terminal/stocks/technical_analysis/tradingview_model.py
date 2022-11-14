@@ -70,7 +70,7 @@ def get_tradingview_recommendation(
         Interval time to check technical indicators and correspondent recommendation
 
     Returns
-    -------
+    ----------
     df_recommendation: pd.DataFrame
         Dataframe of tradingview recommendations based on technical indicators
     """

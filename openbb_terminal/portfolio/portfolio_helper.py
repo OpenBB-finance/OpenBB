@@ -255,7 +255,7 @@ def rolling_volatility(
         Rolling window size to use
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Rolling volatility DataFrame
     """
@@ -285,7 +285,7 @@ def sharpe_ratio(portfolio_returns: pd.Series, risk_free_rate: float) -> float:
         Value to use for risk free rate
 
     Returns
-    -------
+    ----------
     float
         Sharpe ratio
     """
@@ -311,7 +311,7 @@ def rolling_sharpe(
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Rolling sharpe ratio DataFrame
     """
@@ -344,7 +344,7 @@ def sortino_ratio(portfolio_returns: pd.Series, risk_free_rate: float) -> float:
         Value to use for risk free rate
 
     Returns
-    -------
+    ----------
     float
         Sortino ratio
     """
@@ -369,7 +369,7 @@ def rolling_sortino(
         Rolling window to use
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Rolling sortino ratio DataFrame
     """
@@ -410,7 +410,7 @@ def rolling_beta(
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of the portfolio's rolling beta
     """
@@ -449,7 +449,7 @@ def maximum_drawdown(portfolio_returns: pd.Series) -> float:
         Series of portfolio returns
 
     Returns
-    -------
+    ----------
     float
         Maximum drawdown
     """
@@ -472,7 +472,7 @@ def cumulative_returns(data: pd.Series) -> pd.Series:
     ----------
     pd.Series
         Cumulative investment returns series
-    -------
+    ----------
     """
     return (1 + data.shift(periods=1, fill_value=0)).cumprod() - 1
 
@@ -495,7 +495,7 @@ def get_gaintopain_ratio(
         Dataframe of benchmark returns
 
     Returns
-    -------
+    ----------
     pd.DataFrame
             DataFrame of the portfolio's gain-to-pain ratio
     """
@@ -568,7 +568,7 @@ def calculate_beta(portfolio_returns: pd.Series, benchmark_returns: pd.Series) -
         Series of benchmark returns
 
     Returns
-    -------
+    ----------
     float
         The calculated beta value
     """
@@ -603,7 +603,7 @@ def get_tracking_error(
         Examples: 1d, 5d, 10d
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of tracking errors during different time periods
     pd.Series
@@ -647,7 +647,7 @@ def get_information_ratio(
         Series of benchmark returns
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of the information ratio during different time periods
     """
@@ -724,7 +724,7 @@ def get_tail_ratio(
         Examples: 1d, 5d, 10d
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of the portfolios and the benchmarks tail ratio during different time periods
     pd.Series
@@ -790,7 +790,7 @@ def get_common_sense_ratio(
         Series of benchmark returns
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of the portfolios and the benchmarks common sense ratio during different time periods
     """
@@ -851,7 +851,7 @@ def jensens_alpha(
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of jensens's alpha during different time periods
     pd.Series
@@ -948,7 +948,7 @@ def get_calmar_ratio(
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of calmar ratio of the benchmark and portfolio during different time periods
     pd.Series
@@ -1032,7 +1032,7 @@ def get_kelly_criterion(
         DataFrame of the portfolio trades with trade return in %
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of kelly criterion of the portfolio during different time periods
     """
@@ -1072,7 +1072,7 @@ def get_payoff_ratio(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
         DataFrame of the portfolio trades with trade return in % and abs values
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of payoff ratio of the portfolio during different time periods
     """
@@ -1126,7 +1126,7 @@ def get_profit_factor(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
         DataFrame of the portfolio trades with trade return in % and abs values
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of profit factor of the portfolio during different time periods
     """

@@ -22,7 +22,7 @@ def get_retail_tickers() -> pd.DataFrame:
     """Gets the top 10 retail stocks per day
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of tickers
     """
@@ -61,7 +61,7 @@ def get_dividend_cal(date: str = datetime.today().strftime("%Y-%m-%d")) -> pd.Da
         Date to get for in format YYYY-MM-DD
 
     Returns
-    -------
+    ----------
     pd.DataFrame:
         Dataframe of dividend calendar
     """

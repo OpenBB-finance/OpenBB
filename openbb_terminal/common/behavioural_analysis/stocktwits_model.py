@@ -22,7 +22,7 @@ def get_bullbear(symbol: str) -> Tuple[int, int, int, int]:
         Ticker symbol to look at
 
     Returns
-    -------
+    ----------
     int
         Watchlist count
     int
@@ -63,7 +63,7 @@ def get_messages(symbol: str, limit: int = 30) -> pd.DataFrame:
         Number of messages to get
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of messages
     """
@@ -83,7 +83,7 @@ def get_trending() -> pd.DataFrame:
     """Get trending tickers from stocktwits [Source: stocktwits]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of trending tickers and watchlist count
     """

@@ -35,7 +35,7 @@ def add_and_show_greeks(
         Whether you have a long (1) or short (-1) position
 
     Returns
-    -------
+    ----------
     delta: float
     gamma: float
     vega: float
@@ -97,7 +97,7 @@ def show_calculated_hedge(
         Whether you have a long (1) or short (-1) position
 
     Returns
-    -------
+    ----------
     A table with the neutral portfolio weights.
     """
     # Calculate hedge position

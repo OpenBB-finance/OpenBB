@@ -66,7 +66,7 @@ def query_graph(url: str, query: str) -> dict:
         Graphql query
 
     Returns
-    -------
+    ----------
     dict:
         Dictionary with response data
     """
@@ -95,7 +95,7 @@ def get_uni_tokens(
         Whether to sort in ascending order
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Uniswap tokens with trading volume, transaction count, liquidity.
     """
@@ -134,7 +134,7 @@ def get_uniswap_stats() -> pd.DataFrame:
 
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Uniswap DEX statistics like liquidity, volume, number of pairs, number of transactions.
     """
@@ -187,7 +187,7 @@ def get_uniswap_pool_recently_added(
         Minimum number of transactions done in given pool.
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Lastly added pairs on Uniswap DEX.
     """
@@ -254,7 +254,7 @@ def get_uni_pools_by_volume() -> pd.DataFrame:
     """Get uniswap pools by volume. [Source: https://thegraph.com/en/]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Trade-able pairs listed on Uniswap by top volume.
     """
@@ -299,7 +299,7 @@ def get_last_uni_swaps(
     """Get the last 100 swaps done on Uniswap [Source: https://thegraph.com/en/]
 
     Parameters
-    -------
+    ----------
     limit: int
         Number of swaps to return. Maximum possible number: 1000.
     sortby: str
@@ -308,7 +308,7 @@ def get_last_uni_swaps(
     ascend: bool
         Flag to sort data descending
     Returns
-    -------
+    ----------
     pd.DataFrame
         Last 100 swaps on Uniswap
     """

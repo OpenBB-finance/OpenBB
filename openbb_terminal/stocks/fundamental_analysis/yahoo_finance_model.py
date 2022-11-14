@@ -37,7 +37,7 @@ def get_info(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of yfinance information
     """
@@ -83,7 +83,7 @@ def get_shareholders(symbol: str, holder: str = "institutional") -> pd.DataFrame
         Which holder to get table for
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Major holders
     """
@@ -144,7 +144,7 @@ def get_sustainability(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of sustainability metrics
     """
@@ -185,7 +185,7 @@ def get_calendar_earnings(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of calendar earnings
     """
@@ -216,7 +216,7 @@ def get_website(symbol: str) -> str:
         Stock ticker symbol
 
     Returns
-    -------
+    ----------
     str
         Company website"""
     stock = yf.Ticker(symbol)
@@ -234,7 +234,7 @@ def get_hq(symbol: str) -> str:
         Stock ticker symbol
 
     Returns
-    -------
+    ----------
     str
         Headquarter google maps url
     """
@@ -262,7 +262,7 @@ def get_dividends(symbol: str) -> pd.DataFrame:
         Ticker symbol to get dividend for
 
     Returns
-    -------
+    ----------
     pd.DataFrame:
         Dataframe of dividends and dates
     """
@@ -284,7 +284,7 @@ def get_mktcap(
         Start date to display market cap
 
     Returns
-    -------
+    ----------
     pd.DataFrame:
         Dataframe of estimated market cap over time
     str:
@@ -314,7 +314,7 @@ def get_splits(symbol: str) -> pd.DataFrame:
         Ticker to get forward and reverse splits
 
     Returns
-    -------
+    ----------
     pd.DataFrame:
         Dataframe of forward and reverse splits
     """
@@ -343,7 +343,7 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
         Shows percentage change
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of Financial statement
     """
@@ -459,7 +459,7 @@ def get_earnings_history(symbol: str) -> pd.DataFrame:
         Symbol to get earnings for
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of historical earnings if present
     """

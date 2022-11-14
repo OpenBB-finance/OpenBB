@@ -57,7 +57,7 @@ def get_autoces_data(
         Number of days to forecast when backtesting and retraining historical
 
     Returns
-    -------
+    ----------
     list[float]
         Adjusted Data series
     list[float]

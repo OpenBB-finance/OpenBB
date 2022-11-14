@@ -3,7 +3,7 @@
 import argparse
 import logging
 import os
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import pandas as pd
 import requests
@@ -35,7 +35,7 @@ def check_valid_forex_currency(symbol: str) -> str:
         Symbol to check
 
     Returns
-    -------
+    ----------
     str
         Currency symbol
 
@@ -53,7 +53,7 @@ def check_valid_forex_currency(symbol: str) -> str:
 
 
 @log_start_end(log=logger)
-def get_quote(to_symbol: str = "USD", from_symbol: str = "EUR") -> Dict:
+def get_quote(to_symbol: str = "USD", from_symbol: str = "EUR") -> Dict[str, Any]:
     """Get current exchange rate quote from alpha vantage.
 
     Parameters
@@ -64,8 +64,8 @@ def get_quote(to_symbol: str = "USD", from_symbol: str = "EUR") -> Dict:
         From forex symbol
 
     Returns
-    -------
-    Dict
+    ----------
+    Dict[str, Any]
         Dictionary of exchange rate
     """
     url = (
@@ -117,7 +117,7 @@ def get_historical(
         Start date for data.
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Historical data for forex pair
     """

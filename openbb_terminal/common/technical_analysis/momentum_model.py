@@ -218,7 +218,7 @@ def clenow_momentum(
         Length of lookback period
 
     Returns
-    -------
+    ----------
     float:
         R2 of fit to log data
     float:
@@ -257,7 +257,7 @@ def demark_seq(values: pd.Series) -> pd.DataFrame:
         Series of close values
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of UP and DOWN sequential indicators
     """

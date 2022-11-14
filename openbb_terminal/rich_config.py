@@ -59,7 +59,7 @@ def get_ordered_list_sources(command_path: str):
         for stocks.load first, then stocks, then the default value.
 
     Returns
-    -------
+    ----------
     list:
         list of sources
     """

@@ -30,7 +30,7 @@ def get_liquidations(symbol: str) -> pd.DataFrame:
         Crypto Symbol to search daily liquidations (e.g., BTC)
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         daily liquidations for loaded symbol
     """
@@ -94,7 +94,7 @@ def get_funding_rate(symbol: str) -> pd.DataFrame:
         Crypto Symbol to search open interest futures (e.g., BTC)
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         funding rate per exchange
     """
@@ -159,7 +159,7 @@ def get_open_interest_per_exchange(symbol: str, interval: int = 0) -> pd.DataFra
         Frequency (possible values are: 0 for ALL, 2 for 1H, 1 for 4H, 4 for 12H), by default 0
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         open interest by exchange and price
     """

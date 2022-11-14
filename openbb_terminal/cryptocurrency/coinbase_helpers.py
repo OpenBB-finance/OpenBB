@@ -83,7 +83,7 @@ def check_validity_of_product(product_id: str) -> str:
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
 
     Returns
-    -------
+    ----------
     str
         pair of coins in format COIN-COIN
     """
@@ -113,7 +113,7 @@ def make_coinbase_request(
         Api credentials for purpose of using endpoints that needs authentication
 
     Returns
-    -------
+    ----------
     dict
         response from Coinbase Pro Api
     """
@@ -134,7 +134,7 @@ def _get_account_coin_dict() -> dict:
     """Helper method that returns dictionary with all symbols and account ids in dictionary format. [Source: Coinbase]
 
     Returns
-    -------
+    ----------
     dict:
         Your accounts in coinbase
         {'1INCH': '0c29b708-d73b-4e1c-a58c-9c261cb4bedb', 'AAVE': '0712af66-c069-45b5-84ae-7b2347c2fd24', ..}
@@ -156,7 +156,7 @@ def _check_account_validity(account: str) -> Union[str, Any]:
         coin or account id
 
     Returns
-    -------
+    ----------
     Union[str, Any]
         Your account id or None
     """

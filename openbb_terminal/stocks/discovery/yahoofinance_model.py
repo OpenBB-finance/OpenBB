@@ -17,7 +17,7 @@ def get_gainers() -> pd.DataFrame:
     """Get top gainers. [Source: Yahoo Finance]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Stock Gainers
     """
@@ -36,7 +36,7 @@ def get_losers() -> pd.DataFrame:
     """Get top losers. [Source: Yahoo Finance]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Stock Losers
     """
@@ -56,7 +56,7 @@ def get_ugs() -> pd.DataFrame:
     [Source: Yahoo Finance]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Undervalued stocks
     """
@@ -77,7 +77,7 @@ def get_gtech() -> pd.DataFrame:
     """Get technology stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Growth technology stocks
     """
@@ -98,7 +98,7 @@ def get_active() -> pd.DataFrame:
     """Get stocks ordered in descending order by intraday trade volume. [Source: Yahoo Finance]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Most active stocks
     """
@@ -118,7 +118,7 @@ def get_ulc() -> pd.DataFrame:
     [Source: Yahoo Finance]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Most undervalued large cap stocks
     """
@@ -140,7 +140,7 @@ def get_asc() -> pd.DataFrame:
     [Source: Yahoo Finance]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Most aggressive small cap stocks
     """
@@ -161,7 +161,7 @@ def get_hotpenny() -> pd.DataFrame:
     """Get Yahoo Finance hot penny stocks. [Source: Yahoo Finance]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Hottest penny stocks
     """

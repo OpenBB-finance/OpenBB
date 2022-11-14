@@ -23,7 +23,7 @@ def get_options_info(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    -------
+    ----------
     df: pd.DataFrame
         Dataframe of information
     """

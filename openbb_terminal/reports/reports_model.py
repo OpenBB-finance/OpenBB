@@ -243,7 +243,7 @@ def update_parameters(input_path: str, args_dict: Dict[str, str]) -> Dict[str, A
         Dictionary with received arguments dictionary.
 
     Returns
-    -------
+    ----------
     Dict[str, Any]
         Dictionary with report parameters.
     """
@@ -270,7 +270,7 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
         Dictionary with report parameters.
 
     Returns
-    -------
+    ----------
     str
         Path of rendered report.
     """
@@ -342,7 +342,7 @@ def add_ipynb_extension(path: str) -> str:
         Path to notebook file.
 
     Returns
-    -------
+    ----------
     str
         Path to .ipynb file.
     """
@@ -363,7 +363,7 @@ def check_ipynb(path: str) -> str:
         Path to notebook file.
 
     Returns
-    -------
+    ----------
     bool
         Path if paths endswith .ipynb, else empty string.
     """

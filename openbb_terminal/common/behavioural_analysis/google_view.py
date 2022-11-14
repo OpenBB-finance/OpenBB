@@ -216,8 +216,8 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
         Format to export data
 
     Returns
-    -------
-        None
+    ----------
+    None
     """
     # Retrieve a dict with top and rising queries
     df = google_model.get_queries(symbol, limit)

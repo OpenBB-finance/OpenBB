@@ -22,7 +22,7 @@ def get_finviz_image(symbol: str) -> bytes:
         Ticker symbol
 
     Returns
-    -------
+    ----------
     bytes
         Image in byte format
     """

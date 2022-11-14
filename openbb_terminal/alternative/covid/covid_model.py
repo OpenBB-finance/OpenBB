@@ -32,7 +32,7 @@ def get_global_cases(country: str) -> pd.DataFrame:
         Country to search for
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of historical cases
     """
@@ -61,7 +61,7 @@ def get_global_deaths(country: str) -> pd.DataFrame:
         Country to search for
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of historical deaths
     """
@@ -155,7 +155,7 @@ def get_case_slopes(
         Flag to sort in ascending order
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe containing slopes
     """

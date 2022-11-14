@@ -34,7 +34,7 @@ def _retry_session(
         Backoff schema - time periods between retry
 
     Returns
-    -------
+    ----------
     requests.Session
         Mounted session
     """
@@ -62,7 +62,7 @@ def _make_request(url: str) -> Union[BeautifulSoup, None]:
         url to scrape
 
     Returns
-    -------
+    ----------
         BeautifulSoup object
     """
     headers = {"User-Agent": get_user_agent()}
@@ -101,8 +101,8 @@ def get_crypto_hacks(sortby: str = "Platform", ascend: bool = False) -> pd.DataF
         Flag to sort data ascending
 
     Returns
-    -------
-    pandas.DataFrame:
+    ----------
+    pd.DataFrame:
         Hacks with columns {Platform,Date,Amount [$],Audited,Slug,URL}
     """
     soup = _make_request("https://rekt.news/leaderboard")
@@ -145,8 +145,8 @@ def get_crypto_hack(slug: str) -> Union[str, None]:
         slug of crypto hack
 
     Returns
-    -------
-    pandas.DataFrame:
+    ----------
+    pd.DataFrame:
         Hacks with columns {Platform,Date,Amount [$],Audited,URL}
     """
     url = f"https://rekt.news/{slug}"
@@ -182,7 +182,7 @@ def get_crypto_hack_slugs() -> List[str]:
     """Get all crypto hack slugs
     [Source: https://rekt.news]
     Returns
-    -------
+    ----------
     List[str]:
         List with slugs
     """

@@ -34,7 +34,7 @@ def check_series_id(series_id: str) -> Tuple[bool, Dict]:
         Series ID to check
 
     Returns
-    -------
+    ----------
     bool:
         Boolean if series ID exists
     dict:
@@ -260,7 +260,7 @@ def get_yield_curve(
         Date to get curve for.  If None, gets most recent date
 
     Returns
-    -------
+    ----------
     pd.DataFrame:
         Dataframe of yields and maturities
     str

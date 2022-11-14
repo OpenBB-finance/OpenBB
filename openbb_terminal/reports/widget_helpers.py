@@ -32,7 +32,7 @@ def price_card(ticker: str, price: str, price_color: str = "neutral_color") -> s
         The color of the price. Accepts "up_color", "down_color" and default "neutral_color"
 
     Returns
-    -------
+    ----------
     str
         HTML code as string
     """
@@ -68,7 +68,7 @@ def html_report(title: str = "", stylesheet: str = "", body: str = "") -> str:
         Contents of the body tag, by default ""
 
     Returns
-    -------
+    ----------
     str
         HTML code as string
     """
@@ -90,7 +90,7 @@ def h(level: int, text: str) -> str:
         Contents for `h` level tag
 
     Returns
-    -------
+    ----------
     str
         HTML code as string
     """
@@ -108,7 +108,7 @@ def p(text: str, style: str = "") -> str:
         Div style
 
     Returns
-    -------
+    ----------
     str
         HTML code as string
     """
@@ -124,7 +124,7 @@ def row(elements: List) -> str:
        List of HTML code elements to add in a row
 
     Returns
-    -------
+    ----------
     str
         HTML code as string
     """
@@ -148,7 +148,7 @@ def kpi(thresholds: List[float], sentences: List[str], value: float) -> str:
         Current value for the KPI in question
 
     Returns
-    -------
+    ----------
     str
         HTML code as string
     """
@@ -181,7 +181,7 @@ def add_tab(
         Comment cell
 
     Returns
-    -------
+    ----------
     str
         HTML code as string
     """
@@ -205,7 +205,7 @@ def tab_clickable_and_save_evt() -> str:
         Report name for the file to be saved
 
     Returns
-    -------
+    ----------
     str
         javascript code in HTML to process interactive tabs
     """
@@ -272,7 +272,7 @@ def tablinks(tabs: List[str]) -> str:
         List of tabs/sections for the reports.
 
     Returns
-    -------
+    ----------
     str
         HTML code for interactive tabs
     """
@@ -308,7 +308,7 @@ def header(
         Title of the report
 
     Returns
-    -------
+    ----------
     str
         HTML code for interactive tabs
     """
@@ -365,7 +365,7 @@ def add_external_fig(figloc: str, style: str = "") -> str:
         Div style
 
     Returns
-    -------
+    ----------
     str
         HTML code for figure
     """

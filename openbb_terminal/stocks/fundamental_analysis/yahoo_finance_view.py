@@ -497,7 +497,7 @@ def display_earnings(symbol: str, limit: int, export: str):
     export
 
     Returns
-    -------
+    ----------
 
     """
     earnings = yahoo_finance_model.get_earnings_history(symbol)

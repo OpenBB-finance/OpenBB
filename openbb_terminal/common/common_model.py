@@ -67,7 +67,7 @@ def load(
         Contains all available examples from Statsmodels
 
     Returns
-    -------
+    ----------
     pd.DataFrame:
         Dataframe with custom data
     """

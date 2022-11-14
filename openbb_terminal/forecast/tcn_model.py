@@ -81,7 +81,7 @@ def get_tcn_data(
         Defaults to True.
 
     Returns
-    -------
+    ----------
     List[TimeSeries]
         Adjusted Data series
     List[TimeSeries]

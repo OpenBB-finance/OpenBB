@@ -22,7 +22,7 @@ def get_mentions(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of interest over time
     """
@@ -50,7 +50,7 @@ def get_regions(symbol: str) -> pd.DataFrame:
         Ticker symbol to look at
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of interest by region
     """
@@ -81,7 +81,7 @@ def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
         Number of queries to show
 
     Returns
-    -------
+    ----------
     dict : {'top': pd.DataFrame or None, 'rising': pd.DataFrame or None}
 
     """
@@ -114,7 +114,7 @@ def get_rise(symbol: str, limit: int = 10) -> pd.DataFrame:
         Number of queries to show
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe containing rising related queries
     """

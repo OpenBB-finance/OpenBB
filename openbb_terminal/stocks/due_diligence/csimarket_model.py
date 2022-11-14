@@ -19,7 +19,7 @@ def clean_table(df: pd.DataFrame) -> pd.DataFrame:
         Dataframe to clean
 
     Returns
-    -------
+    ----------
     df: pd.DataFrame
         Cleaned dataframe
     """
@@ -50,7 +50,7 @@ def get_suppliers(symbol: str, limit: int = 50) -> pd.DataFrame:
         The maximum number of rows to show
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         A dataframe of suppliers
     """
@@ -74,7 +74,7 @@ def get_customers(symbol: str, limit: int = 50) -> pd.DataFrame:
         The maximum number of rows to show
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         A dataframe of suppliers
     """

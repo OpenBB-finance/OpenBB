@@ -20,7 +20,7 @@ def _make_request(endpoint: str) -> dict:
     endpoint: str
         endpoint url
     Returns
-    -------
+    ----------
     dict:
         dictionary with response data
     """
@@ -43,7 +43,7 @@ def get_btc_circulating_supply() -> pd.DataFrame:
     """Returns BTC circulating supply [Source: https://api.blockchain.info/]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         BTC circulating supply
     """
@@ -62,7 +62,7 @@ def get_btc_confirmed_transactions() -> pd.DataFrame:
     """Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         BTC confirmed transactions
     """

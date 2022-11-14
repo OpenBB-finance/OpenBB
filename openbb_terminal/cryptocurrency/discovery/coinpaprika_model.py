@@ -51,8 +51,8 @@ def get_search_results(
         Flag to sort data descending
 
     Returns
-    -------
-    pandas.DataFrame
+    ----------
+    pd.DataFrame
         Search Results
         Columns: Metric, Value
     """

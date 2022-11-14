@@ -21,7 +21,7 @@ def get_short_data_by_exchange(symbol: str) -> pd.DataFrame:
         Ticker to get data for
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of short data by exchange
     """

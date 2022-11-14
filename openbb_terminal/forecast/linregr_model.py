@@ -54,7 +54,7 @@ def get_linear_regression_data(
         The state for the model
 
     Returns
-    -------
+    ----------
     List[TimeSeries]
         Adjusted Data series
     List[TimeSeries]

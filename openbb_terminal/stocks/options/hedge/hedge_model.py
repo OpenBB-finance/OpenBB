@@ -47,7 +47,7 @@ def calc_hedge(
         Whether you have a long (1) or short (-1) position
 
     Returns
-    -------
+    ----------
     option A weight: float
     option B weight: float
     portfolio weight: float
@@ -163,7 +163,7 @@ def add_hedge_option(
         Whether you have a long (1) or short (-1) position
 
     Returns
-    -------
+    ----------
     delta: float
     gamma: float
     portfolio: float
@@ -210,7 +210,7 @@ def calc_delta(
         Whether you have a long (1) or short (-1) position
 
     Returns
-    -------
+    ----------
     delta: float
         Returns the value for the delta.
     """
@@ -256,7 +256,7 @@ def calc_gamma(
         The risk free rate.
 
     Returns
-    -------
+    ----------
     gamma: float
         Returns the value for the gamma.
     """
@@ -299,7 +299,7 @@ def calc_vega(
         The risk free rate.
 
     Returns
-    -------
+    ----------
     vega: float
         Returns the value for the gamma.
     """

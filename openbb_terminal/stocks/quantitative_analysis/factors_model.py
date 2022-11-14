@@ -86,7 +86,7 @@ def capm_information(symbol: str) -> Tuple[float, float]:
         A ticker symbol in string form
 
     Returns
-    -------
+    ----------
     beta : float
         The beta for a stock
     sys : float

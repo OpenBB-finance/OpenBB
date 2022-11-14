@@ -19,7 +19,7 @@ def get_high_short_interest() -> DataFrame:
     """Returns a high short interest DataFrame
 
     Returns
-    -------
+    ----------
     DataFrame
         High short interest Dataframe with the following columns:
         Ticker, Company, Exchange, ShortInt, Float, Outstd, Industry

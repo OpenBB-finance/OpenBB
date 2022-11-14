@@ -30,7 +30,7 @@ def display_apy(
         Export dataframe data to csv,json,xlsx file
 
     Returns
-    -------
+    ----------
     """
     df, apy_str = calculate_apy(apr, compounding_times)
 
@@ -79,7 +79,7 @@ def display_il(
         Export dataframe data to csv,json,xlsx file
 
     Returns
-    -------
+    ----------
     """
     df, il_str = calculate_il(
         price_changeA=price_changeA,

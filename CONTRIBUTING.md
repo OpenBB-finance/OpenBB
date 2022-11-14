@@ -99,7 +99,7 @@ def get_most_shorted() -> pd.DataFrame:
     """Get most shorted stock screener [Source: Yahoo Finance]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Most Shorted Stocks
     """
@@ -133,7 +133,7 @@ def get_economy_calendar_events() -> pd.DataFrame:
     """Get economic calendar events
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Get dataframe with economic calendar events
     """
@@ -1158,7 +1158,7 @@ def check_iex_key(show_output: bool = False) -> str:
             Display status string or not.
 
     Returns
-    -------
+    ----------
     status: str
 
     """

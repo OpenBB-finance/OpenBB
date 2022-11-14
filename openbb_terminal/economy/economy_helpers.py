@@ -19,7 +19,7 @@ def create_new_entry(dataset: Dict[str, pd.DataFrame], query: str) -> Dict:
         Query to execute
 
     Returns
-    -------
+    ----------
     Dict[str, pd.DataFrame]
     """
     # Create a single dataframe from dictionary of dataframes

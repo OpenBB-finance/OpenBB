@@ -53,7 +53,7 @@ def get_github_activity(
         Interval frequency (e.g., 1d)
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         developer activity over time
     """

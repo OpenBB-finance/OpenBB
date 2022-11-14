@@ -30,7 +30,7 @@ def price_card(ticker: str, price: str, price_color: str = "neutral_color") -> s
         The color of the price. Accepts "up_color", "down_color" and default "neutral_color"
 
     Returns
-    -------
+    ----------
     str
         HTML code as string
     """

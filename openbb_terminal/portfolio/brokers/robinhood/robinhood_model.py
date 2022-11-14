@@ -54,7 +54,7 @@ def rh_positions_to_df(holds: dict) -> pd.DataFrame:
         Dictionary from robin_stocks
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Processed dataframe of holdings
     """
@@ -87,7 +87,7 @@ def get_historical(interval: str = "day", window: str = "3month") -> pd.DataFram
         Lookback to get portfolio history, by default "3month"
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Historical portfolio with OHLC variables
     """

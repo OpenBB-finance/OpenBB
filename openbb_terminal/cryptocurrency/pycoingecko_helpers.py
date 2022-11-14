@@ -51,7 +51,7 @@ def get_btc_price() -> float:
     """Get BTC/USD price from CoinGecko API
 
     Returns
-    -------
+    ----------
     str
         latest bitcoin price in usd.
     """
@@ -81,7 +81,7 @@ def _retry_session(
         Backoff schema - time periods between retry
 
     Returns
-    -------
+    ----------
     requests.Session
         Mounted session
     """
@@ -108,7 +108,7 @@ def scrape_gecko_data(url: str) -> BeautifulSoup:
         coin gecko url to scrape e.g: "https://www.coingecko.com/en/discover"
 
     Returns
-    -------
+    ----------
         BeautifulSoup object
     """
     headers = {"User-Agent": get_user_agent()}
@@ -141,7 +141,7 @@ def replace_underscores_to_newlines(cols: list, line: int = 13) -> list:
     line
         - line length
     Returns
-    -------
+    ----------
         list of column names with replaced underscores
     """
 
@@ -213,7 +213,7 @@ def clean_row(row: BeautifulSoup) -> list:
     row
         text returned from BeautifulSoup find method
     Returns
-    -------
+    ----------
         list of elements
     """
 

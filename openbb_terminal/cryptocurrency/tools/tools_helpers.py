@@ -7,7 +7,7 @@ def change_variation(change: float) -> float:
         percentage change
 
     Returns
-    -------
+    ----------
     float:
         converted value
     """
@@ -27,7 +27,7 @@ def calculate_hold_value(changeA: float, changeB: float, proportion: float) -> f
         percentage of first token in pool
 
     Returns
-    -------
+    ----------
     float:
         hold value
     """
@@ -49,7 +49,7 @@ def calculate_pool_value(changeA, changeB, proportion):
         percentage of first token in pool
 
     Returns
-    -------
+    ----------
     float:
         pool value
     """

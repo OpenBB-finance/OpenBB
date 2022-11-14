@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict
 
 import pandas as pd
 import requests
@@ -16,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
-def get_sentiment_stats(ticker: str) -> Dict:
+def get_sentiment_stats(ticker: str) -> pd.DataFrame:
     """Get sentiment stats [Source: finnhub]
 
     Parameters
@@ -25,8 +24,8 @@ def get_sentiment_stats(ticker: str) -> Dict:
         Ticker to get sentiment stats
 
     Returns
-    -------
-    Dict
+    ----------
+    pd.DataFrame
         Get sentiment stats
     """
     response = requests.get(

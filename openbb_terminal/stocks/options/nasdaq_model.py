@@ -27,7 +27,7 @@ def get_full_chain(symbol: str) -> pd.DataFrame:
         Symbol to get options for.  Can be a stock, etf or index.
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of option chain
     """
@@ -96,7 +96,7 @@ def get_expirations(symbol: str) -> List[str]:
     symbol
 
     Returns
-    -------
+    ----------
     List[str]
         List of expiration dates
     """
@@ -120,7 +120,7 @@ def get_chain_given_expiration(symbol: str, expiration: str) -> pd.DataFrame:
     expiration
         Expiration to get chain for
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of option chain
     """
@@ -183,7 +183,7 @@ def get_last_price(symbol: str) -> float:
         Symbol to get quote for
 
     Returns
-    -------
+    ----------
     float
         Last price
     """
@@ -220,7 +220,7 @@ def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
         Option expiration
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe with option greeks
     """

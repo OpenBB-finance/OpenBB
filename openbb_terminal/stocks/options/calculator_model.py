@@ -34,7 +34,7 @@ def pnl_calculator(
     kwargs
 
     Returns
-    -------
+    ----------
     price_at_expiry : np.ndarray
         Array of prices
     pnl: np.ndarray

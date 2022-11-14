@@ -41,7 +41,7 @@ def get_trading_pairs(
         Sort descending flag
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Available trading pairs on Coinbase
     """

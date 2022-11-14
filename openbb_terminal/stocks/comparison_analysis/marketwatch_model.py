@@ -38,7 +38,7 @@ def get_financial_comparisons(
         Flag to use quarterly data.
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of income statements
 
@@ -170,7 +170,7 @@ def prepare_df_financials(
         Return quarterly financial statements instead of annual, by default False
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         A DataFrame with financial info
 
@@ -278,7 +278,7 @@ def prepare_comparison_financials(
         Return quarterly financial statements instead of annual, by default False
 
     Returns
-    -------
+    ----------
     List[str]
         List of index headers
     Dict[str, pd.DataFrame]
@@ -344,7 +344,7 @@ def combine_similar_financials(
     quarter: bool
         False for yearly data, True for quarterly
     Returns
-    -------
+    ----------
     pd.DataFrame
         A DataFrame with financial statements from a certain timeframe of a list of tickers
     """

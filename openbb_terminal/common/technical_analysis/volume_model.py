@@ -25,7 +25,7 @@ def ad(data: pd.DataFrame, use_open: bool = False) -> pd.DataFrame:
         Whether to use open prices
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe with technical indicator
     """
@@ -60,7 +60,7 @@ def adosc(
         Slow value
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe with technical indicator
     """
@@ -96,7 +96,7 @@ def obv(data: pd.DataFrame) -> pd.DataFrame:
         Dataframe of OHLC prices
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe with technical indicator
     """

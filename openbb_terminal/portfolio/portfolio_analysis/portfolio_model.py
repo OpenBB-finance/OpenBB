@@ -40,7 +40,7 @@ def load_portfolio(
         Boolean to indicate dropping nan values, by default True
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe containing portfolio
     """

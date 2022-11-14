@@ -31,7 +31,7 @@ def get_options(
         The dataset you wish to show the options for.
 
     Returns
-    -------
+    ----------
     option_tables: dict
         A dictionary with a DataFrame for each option. With dataset_name set, only shows one
         options table.
@@ -82,7 +82,7 @@ def clean(
         The maximum limit you wish to apply that can be forward or backward filled
 
     Returns
-    -------
+    ----------
     pd.DataFrame:
         Dataframe with cleaned up data
     """
@@ -120,7 +120,7 @@ def get_normality(data: pd.Series) -> pd.DataFrame:
         A series or column of a DataFrame to test normality for
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe containing statistics of normality
     """
@@ -178,7 +178,7 @@ def get_root(
         Type of regression for KPSS test
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe with results of ADF test and KPSS test
     """
@@ -251,7 +251,7 @@ def get_engle_granger_two_step_cointegration_test(dependent_series, independent_
         The second time series of the pair to analyse.
 
     Returns
-    -------
+    ----------
     c : float
         The constant term in the long-run relationship y_t = c + gamma * x_t + z_t. This
         describes the static shift of y with respect to gamma * x.

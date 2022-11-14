@@ -149,7 +149,7 @@ def string_float(string: str) -> float:
         String to be converted
 
     Returns
-    -------
+    ----------
     number : float
         Analysis of filings text
     """
@@ -175,7 +175,7 @@ def insert_row(
         The items to be added to the row
 
     Returns
-    -------
+    ----------
     new_df : pd.DataFrame
         The new dataframe
     """
@@ -241,7 +241,7 @@ def get_fama_raw() -> pd.DataFrame:
     """Get Fama French data
 
     Returns
-    -------
+    ----------
     df : pd.DataFrame
         Fama French data
     """
@@ -284,7 +284,7 @@ def get_historical_5(symbol: str) -> pd.DataFrame:
         The ticker symbol to be analyzed
 
     Returns
-    -------
+    ----------
     df: pd.DataFrame
         Historical data
     """
@@ -306,7 +306,7 @@ def get_fama_coe(symbol: str) -> float:
         The ticker symbol to be analyzed
 
     Returns
-    -------
+    ----------
     coef : float
         The stock's Fama French coefficient
     """
@@ -348,7 +348,7 @@ def others_in_sector(
         True means that we do not filter based on market cap
 
     Returns
-    -------
+    ----------
     List[str]
         List of symbols in the same sector
     """
@@ -383,7 +383,7 @@ def create_dataframe(symbol: str, statement: str, period: str = "annual"):
         Whether to look at annual, quarterly, or trailing
 
     Returns
-    -------
+    ----------
     statement : pd.DataFrame
         The financial statement requested
     rounding : int
@@ -481,7 +481,7 @@ def get_similar_dfs(symbol: str, info: Dict[str, Any], n: int, no_filter: bool =
         True means that we do not filter based on market cap
 
     Returns
-    -------
+    ----------
     new_list : List[str, pd.DataFrame]
         A list of similar companies
     """
@@ -510,7 +510,7 @@ def clean_dataframes(*args) -> List[pd.DataFrame]:
         List of dataframes to clean
 
     Returns
-    -------
+    ----------
     dfs : List[pd.DataFrame]
         Cleaned list of dataframes
     """
@@ -535,7 +535,7 @@ def get_value(df: pd.DataFrame, row: str, column: int) -> Tuple[float, float]:
         The column to get the information from
 
     Returns
-    -------
+    ----------
     value : List[float]
         The information in float format
     """
@@ -565,7 +565,7 @@ def frac(num: float, denom: float) -> Union[str, float]:
         The denominator
 
     Returns
-    -------
+    ----------
     value : Union[str, float]
         The fraction
     """
@@ -587,7 +587,7 @@ def generate_path(n: int, symbol: str, date: str) -> Path:
         The date the dcf was generated
 
     Returns
-    -------
+    ----------
     path: Path
         The path to save a file to
     """

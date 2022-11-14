@@ -27,7 +27,7 @@ def calculate_apy(apr: float, compounding_times: int) -> Tuple[pd.DataFrame, str
         number of compounded periods in a year
 
     Returns
-    -------
+    ----------
     Tuple:
         - pd.DataFrame: dataframe with results
         - str: narrative version of results
@@ -74,7 +74,7 @@ def calculate_il(
         initial value that pool contains
 
     Returns
-    -------
+    ----------
     Tuple:
         - pd.DataFrame: dataframe with results
         - str: narrative version of results

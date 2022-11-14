@@ -35,7 +35,7 @@ def get_similar_companies(
         List of fields to compare, ["Sector", "Industry", "Country"]
 
     Returns
-    -------
+    ----------
     List[str]
         List of similar companies
     """

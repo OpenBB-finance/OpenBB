@@ -17,7 +17,7 @@ def us_indices() -> pd.DataFrame:
     """Get the top US indices
 
     Returns
-    -------
+    ----------
     indices: pd.DataFrame
         Dataframe containing name, price, net change and percent change
     """
@@ -63,7 +63,7 @@ def market_overview() -> pd.DataFrame:
     """Scrape data for market overview
 
     Returns
-    -------
+    ----------
     overview: pd.DataFrame
         Dataframe containing name, price, net change and percent change
     """
@@ -104,7 +104,7 @@ def top_commodities() -> pd.DataFrame:
     """Scrape data for top commodities
 
     Returns
-    -------
+    ----------
     commodities: pd.DataFrame
         Dataframe containing name, price, net change and percent change
     """
@@ -152,7 +152,7 @@ def us_bonds() -> pd.DataFrame:
     """Scrape data for us bonds
 
     Returns
-    -------
+    ----------
     bonds: pd.DataFrame
         Dataframe containing name, coupon rate, yield and change in yield
     """
@@ -195,7 +195,7 @@ def global_bonds() -> pd.DataFrame:
     """Scrape data for global bonds
 
     Returns
-    -------
+    ----------
     bonds: pd.DataFrame
         Dataframe containing name, coupon rate, yield and change in yield
     """
@@ -233,7 +233,7 @@ def global_currencies() -> pd.DataFrame:
     """Scrape data for global currencies
 
     Returns
-    -------
+    ----------
     currencies: pd.DataFrame
         Dataframe containing name, price, net change and percent change
     """

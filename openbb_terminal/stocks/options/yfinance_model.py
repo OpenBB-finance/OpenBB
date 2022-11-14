@@ -44,7 +44,7 @@ def get_full_option_chain(
         Flag to get puts
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame of option chain.  If both calls and puts
     """
@@ -143,7 +143,7 @@ def option_expirations(symbol: str):
         Ticker symbol to get expirations for
 
     Returns
-    -------
+    ----------
     dates: List[str]
         List of of available expirations
     """
@@ -166,7 +166,7 @@ def get_option_chain(symbol: str, expiry: str):
         Date to get options for. YYYY-MM-DD
 
     Returns
-    -------
+    ----------
     chains: yf.ticker.Options
         Options chain
     """
@@ -191,7 +191,7 @@ def get_dividend(symbol: str) -> pd.Series:
         Ticker symbol to get options for
 
     Returns
-    -------
+    ----------
     chains: yf.ticker.Dividends
         Dividends
     """
@@ -327,7 +327,7 @@ def get_iv_surface(symbol: str) -> pd.DataFrame:
         Stock ticker symbol to get
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of DTE, Strike and IV
     """

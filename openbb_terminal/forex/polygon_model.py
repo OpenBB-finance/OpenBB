@@ -36,7 +36,7 @@ def get_historical(
         End date of data
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of historical forex prices
     """

@@ -27,7 +27,7 @@ def scrape_substack(url: str) -> list:
         Url to newsletter on substack domain.
 
     Returns
-    -------
+    ----------
     list
         list of news from given newsletter
     """
@@ -54,7 +54,7 @@ def get_newsletters() -> pd.DataFrame:
     [Source: substack.com]
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         DataFrame with recent news from most popular DeFi related newsletters.
     """

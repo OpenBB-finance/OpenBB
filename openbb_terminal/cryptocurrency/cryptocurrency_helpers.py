@@ -137,7 +137,7 @@ def check_datetime(
         If False and string is invalid, will return today, by default True
 
     Returns
-    -------
+    ----------
     datetime
         Datetime object
     """
@@ -210,7 +210,7 @@ def prepare_all_coins_df() -> pd.DataFrame:
         CoinGecko - > id <- Binance
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         CoinGecko - id for coin in CoinGecko API: uniswap
         CoinPaprika - id for coin in CoinPaprika API: uni-uniswap
@@ -308,7 +308,7 @@ def _create_closest_match_df(
         float between <0, 1>. Show only coins matches with score higher then cutoff.
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         index, id, name, symbol - > depends on source of data.
     """
@@ -362,7 +362,7 @@ def load_from_ccxt(
         Quote Currency (Defaults to usdt)
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
@@ -404,7 +404,7 @@ def load_from_coingecko(
         Quote Currency (Defaults to usdt)
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
@@ -460,7 +460,7 @@ def load_from_yahoofinance(
        The datetime to end at
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
@@ -535,7 +535,7 @@ def load(
         Choose from: CCXT, CoinGecko, YahooFinance
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
@@ -660,7 +660,7 @@ def load_deprecated(
         Source of the loaded data. CoinGecko, CoinPaprika, Yahoo Finance or Binance
 
     Returns
-    -------
+    ----------
     Tuple[Union[str, pycoingecko_model.Coin], str, str]
         - str or Coin object for provided coin
         - str with source of the loaded data. CoinGecko, CoinPaprika, Yahoo Finance or Binance

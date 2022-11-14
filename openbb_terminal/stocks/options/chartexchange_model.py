@@ -33,7 +33,7 @@ def get_option_history(
         Strike price for a specific option
 
     Returns
-    -------
+    ----------
     historical : pd.Dataframe
         Historic information for an option
     """

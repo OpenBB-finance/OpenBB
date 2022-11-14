@@ -22,7 +22,7 @@ def load_file(path: str = "") -> Tuple[dict, str]:
         The location of the file to be loaded in either xlsx or ini.
 
     Returns
-    -------
+    ----------
     Tuple[dict, str]
         Return the parameters and the model, if available.
     """
@@ -99,7 +99,7 @@ def show_arguments(arguments, description=None):
         A dictionary containing the keys equal to arguments and the descriptions.
 
     Returns
-    -------
+    ----------
     A table containing the parameter names, possible values and (if applicable) the description.
     """
     adjusted_arguments = {}

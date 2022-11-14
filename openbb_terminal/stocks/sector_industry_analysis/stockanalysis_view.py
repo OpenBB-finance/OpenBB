@@ -83,7 +83,7 @@ def display_plots_financials(
         External axes (1 axis is expected in the list), by default None
 
     Returns
-    -------
+    ----------
     dict
         Dictionary of filtered stocks data
     list

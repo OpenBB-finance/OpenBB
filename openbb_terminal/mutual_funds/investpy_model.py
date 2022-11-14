@@ -28,7 +28,7 @@ def search_funds(by: str = "name", value: str = "") -> pd.DataFrame:
         String that will be searched for
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe containing matches
     """
@@ -57,7 +57,7 @@ def get_overview(country: str = "united states", limit: int = 20) -> pd.DataFram
         Number of results to get
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe containing overview
     """
@@ -83,7 +83,7 @@ def get_fund_symbol_from_name(name: str) -> Tuple[str, str]:
         Name to get fund symbol of
 
     Returns
-    -------
+    ----------
     str
         Name of Symbol matching provided name
     str
@@ -117,7 +117,7 @@ def get_fund_name_from_symbol(symbol: str) -> Tuple[str, str]:
         Symbol to get fund name of
 
     Returns
-    -------
+    ----------
     str
         Name of fund matching provided symbol
     str
@@ -153,7 +153,7 @@ def get_fund_info(name: str, country: str = "united states") -> pd.DataFrame:
         Country of fund
 
     Returns
-    -------
+    ----------
     pd.DataFrame
         Dataframe of fund information
     """
@@ -191,7 +191,7 @@ def get_fund_historical(
         End date of data in format YYYY-MM-DD
 
     Returns
-    -------
+    ----------
     pd.DataFrame:
         Dataframe of OHLC prices
     str:

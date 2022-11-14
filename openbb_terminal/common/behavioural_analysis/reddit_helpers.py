@@ -16,7 +16,7 @@ def find_tickers(submission: praw.models.reddit.submission.Submission) -> List[s
         Reddit post to scan
 
     Returns
-    -------
+    ----------
     List[str]
         List of potential tickers
     """

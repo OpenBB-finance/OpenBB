@@ -73,7 +73,7 @@ def view_screener_output(
         Format for export file
 
     Returns
-    -------
+    ----------
     List
         List of tickers screened
     """

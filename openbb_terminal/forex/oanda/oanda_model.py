@@ -46,7 +46,7 @@ def fx_price_request(
         The loaded currency pair, by default None
 
     Returns
-    -------
+    ----------
     Union[Dict[str, str], bool]
         The currency pair price or False
     """
@@ -80,7 +80,7 @@ def account_summary_request(accountID: str = account) -> Union[pd.DataFrame, boo
         Oanda account ID, by default cfg.OANDA_ACCOUNT
 
     Returns
-    -------
+    ----------
     Union[pd.DataFrame, bool]
         Account summary data or False
     """
@@ -147,7 +147,7 @@ def orderbook_plot_data_request(
         Oanda account ID, by default cfg.OANDA_ACCOUNT
 
     Returns
-    -------
+    ----------
     Union[pd.DataFrame, bool]
         Order book data or False
     """
@@ -192,7 +192,7 @@ def positionbook_plot_data_request(
         Oanda account ID, by default cfg.OANDA_ACCOUNT
 
     Returns
-    -------
+    ----------
     Union[pd.DataFrame, bool]
         Position book data or False
     """
@@ -287,7 +287,7 @@ def create_order_request(
         Oanda account ID, by default cfg.OANDA_ACCOUNT
 
     Returns
-    -------
+    ----------
     Union[pd.DataFrame, bool]
         Orders data or False
     """
@@ -427,7 +427,7 @@ def pending_orders_request(accountID: str = account) -> Union[pd.DataFrame, bool
         Oanda account ID, by default cfg.OANDA_ACCOUNT
 
     Returns
-    -------
+    ----------
     Union[pd.DataFrame, bool]
         Pending orders data or False
     """
@@ -476,7 +476,7 @@ def open_trades_request(accountID: str = account) -> Union[pd.DataFrame, bool]:
         Oanda account ID, by default cfg.OANDA_ACCOUNT
 
     Returns
-    -------
+    ----------
     Union[pd.DataFrame, bool]
         Open trades data or False
     """
@@ -538,7 +538,7 @@ def close_trades_request(
         Oanda account ID, by default cfg.OANDA_ACCOUNT
 
     Returns
-    -------
+    ----------
     Union[pd.DataFrame, bool]
         Close trades data or False
     """
@@ -593,7 +593,7 @@ def get_candles_dataframe(
         Limit for the number of data points, by default 180
 
     Returns
-    -------
+    ----------
     Union[pd.DataFrame, bool]
         Candle chart data or False
     """
@@ -655,7 +655,7 @@ def get_calendar_request(
         Number of days in advance
 
     Returns
-    -------
+    ----------
     Union[pd.DataFrame, bool]
         Calendar events data or False
     """

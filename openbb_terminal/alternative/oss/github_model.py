@@ -28,7 +28,7 @@ def get_github_data(url: str, **kwargs):
     params: dict
         params to pass to api endpoint
     Returns
-    -------
+    ----------
     dict with data
     """
     res = requests.get(
@@ -65,7 +65,7 @@ def search_repos(
     page : int
             Page number to get repos
     Returns
-    -------
+    ----------
     pd.DataFrame with list of repos
     """
     params: Dict[str, Any] = {"page": page}
@@ -90,7 +90,7 @@ def get_stars_history(repo: str):
             Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
 
     Returns
-    -------
+    ----------
     pd.DataFrame - Columns: Date, Stars
     """
     data = get_github_data(f"https://api.github.com/repos/{repo}")
@@ -139,7 +139,7 @@ def get_top_repos(sortby: str, limit: int = 50, categories: str = "") -> pd.Data
     limit : int
             Number of repos to search for
     Returns
-    -------
+    ----------
     pd.DataFrame with list of repos
     """
     initial_top = limit
@@ -178,7 +178,7 @@ def get_repo_summary(repo: str) -> pd.DataFrame:
             Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
 
     Returns
-    -------
+    ----------
     pd.DataFrame - Columns: Metric, Value
     """
     data = get_github_data(f"https://api.github.com/repos/{repo}")

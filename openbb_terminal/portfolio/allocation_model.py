@@ -23,7 +23,7 @@ def get_assets_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
         Object containing trades made within the portfolio.
 
     Returns
-    -------
+    ----------
     benchmark_assets_allocation: dict
         Dictionary with the top 10 of the benchmark's asset allocations.
     portfolio_assets_allocation: dict
@@ -62,7 +62,7 @@ def get_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
         Object containing trades made within the portfolio.
 
     Returns
-    -------
+    ----------
     regional_allocation: dict
         Dictionary with regional allocations.
     country_allocation: dict
@@ -210,7 +210,7 @@ def get_region_country_allocation(
         which list on the Fidelity page is the correct one
 
     Returns
-    -------
+    ----------
     region_allocation: dict
         Dictionary with regional allocations.
     country_allocation: dict
