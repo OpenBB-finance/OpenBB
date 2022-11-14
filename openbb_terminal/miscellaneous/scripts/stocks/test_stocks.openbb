@@ -8,7 +8,7 @@ tob -e EDGX
 candle
 candle -t --ma 5,10
 candle --raw
-candle --sort AdjClose -d --raw
+candle --sort AdjClose -r --raw
 codes
 news -l 3
 exit

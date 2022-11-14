@@ -86,8 +86,8 @@ def write_section(
 
     if code_snippet:
         file.write("    {{< highlight python >}}\n")
-        file.write("    " + text)
-        file.write("{{< /highlight >}}")
+        file.write("    " + text + "\n")
+        file.write("    {{< /highlight >}}")
     else:
         file.write("    " + text)
 
@@ -218,13 +218,19 @@ def write_docstring(name: str, func, file, chart: bool):
             title="Parameters\n    ----------\n", docstring=formatted_docstring
         )
 
+        has_returns = False
         returns_title_start, returns_title_end = locate_section(
             title="Returns\n    -------\n", docstring=formatted_docstring
         )
+        if returns_title_start > -1:
+            has_returns = True
 
+        has_examples = False
         examples_title_start, examples_title_end = locate_section(
             title="Examples\n    --------\n", docstring=formatted_docstring
         )
+        if examples_title_start > -1:
+            has_examples = True
 
         has_parameters = False
         if signature(func[2]).parameters:
@@ -244,8 +250,10 @@ def write_docstring(name: str, func, file, chart: bool):
         # Summary
         if has_parameters:
             bottom = parameters_title_start
-        else:
+        elif has_returns:
             bottom = returns_title_start
+        else:
+            bottom = len(formatted_docstring)
 
         write_summary(
             bottom=bottom,
@@ -255,10 +263,18 @@ def write_docstring(name: str, func, file, chart: bool):
 
         # Parameters
         if parameters_title_start > 0:
+
+            if has_returns:
+                end = returns_title_start
+            elif has_examples:
+                end = examples_title_start
+            else:
+                end = len(formatted_docstring)
+
             write_section(
                 title="Parameters",
                 start=parameters_title_end,
-                end=returns_title_start,
+                end=end,
                 docstring=formatted_docstring.replace("_:", r"\_:"),
                 file=file,
             )
@@ -270,6 +286,12 @@ def write_docstring(name: str, func, file, chart: bool):
 
         # Returns
         if returns_title_start > 0:
+
+            if has_examples:
+                end = examples_title_start
+            else:
+                end = len(formatted_docstring)
+
             write_section(
                 title="Returns",
                 start=returns_title_end,

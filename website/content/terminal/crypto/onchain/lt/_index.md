@@ -1,6 +1,6 @@
 ```
 usage: lt [-k {dex,time}] [-vs {ETH,USD,BTC,USDT}] [-l N] [-d DAYS]
-          [-s {trades,tradeAmount,exchange}] [--descend] [-h]
+          [-s {trades,tradeAmount,exchange}] [--reverse] [-h]
           [--export {csv,json,xlsx}]
 ```
 
@@ -18,8 +18,9 @@ optional arguments:
   -s {trades,tradeAmount,exchange}, --sort {trades,tradeAmount,exchange}
                         Sort by given column. Default: tradeAmount. For
                         monthly trades date. (default: tradeAmount)
-  --descend             Flag to sort in descending order (lowest first)
-                        (default: False)
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is displayed. (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
