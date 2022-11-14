@@ -2500,36 +2500,20 @@ main:
                 ref: /SDK/portfolio/alloc/sectors
           - name: bench
             ref: /SDK/portfolio/bench
-          - name: calmar
-            ref: /SDK/portfolio/calmar
-          - name: commonsense
-            ref: /SDK/portfolio/commonsense
           - name: distr
             ref: /SDK/portfolio/distr
           - name: dret
             ref: /SDK/portfolio/dret
           - name: es
             ref: /SDK/portfolio/es
-          - name: gaintopain
-            ref: /SDK/portfolio/gaintopain
           - name: holdp
             ref: /SDK/portfolio/holdp
           - name: holdv
             ref: /SDK/portfolio/holdv
-          - name: information
-            ref: /SDK/portfolio/information
-          - name: jensens
-            ref: /SDK/portfolio/jensens
-          - name: kelly
-            ref: /SDK/portfolio/kelly
-          - name: kurtosis
-            ref: /SDK/portfolio/kurtosis
           - name: load
             ref: /SDK/portfolio/load
           - name: maxdd
             ref: /SDK/portfolio/maxdd
-          - name: maxdrawdown
-            ref: /SDK/portfolio/maxdrawdown
           - name: metric
             ref: /SDK/portfolio/metric
             sub:
@@ -2571,8 +2555,6 @@ main:
             ref: /SDK/portfolio/mret
           - name: om
             ref: /SDK/portfolio/om
-          - name: payoff
-            ref: /SDK/portfolio/payoff
           - name: perf
             ref: /SDK/portfolio/perf
           - name: po
@@ -2620,8 +2602,6 @@ main:
                 ref: /SDK/portfolio/po/relriskparity
               - name: riskparity
                 ref: /SDK/portfolio/po/riskparity
-          - name: profitfactor
-            ref: /SDK/portfolio/profitfactor
           - name: rbeta
             ref: /SDK/portfolio/rbeta
           - name: rsharpe
@@ -2634,24 +2614,12 @@ main:
             ref: /SDK/portfolio/rsquare
           - name: rvol
             ref: /SDK/portfolio/rvol
-          - name: sharpe
-            ref: /SDK/portfolio/sharpe
           - name: show
             ref: /SDK/portfolio/show
-          - name: skew
-            ref: /SDK/portfolio/skew
-          - name: sortino
-            ref: /SDK/portfolio/sortino
           - name: summary
             ref: /SDK/portfolio/summary
-          - name: tail
-            ref: /SDK/portfolio/tail
-          - name: trackerr
-            ref: /SDK/portfolio/trackerr
           - name: var
             ref: /SDK/portfolio/var
-          - name: volatility
-            ref: /SDK/portfolio/volatility
           - name: yret
             ref: /SDK/portfolio/yret
       - name: stocks
