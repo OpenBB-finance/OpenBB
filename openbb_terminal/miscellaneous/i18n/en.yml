@@ -1042,8 +1042,12 @@ en:
   forecast/atr: Add Average True Range
   forecast/signal: Add Price Signal (short vs. long term)
   forecast/_tsforecasting_: TimeSeries Forecasting
+  forecast/autoarima: Automatic ARIMA Model
+  forecast/autoselect: Select best statistical model from AutoARIMA, AutoETS, AutoCES, MSTL, etc.
   forecast/autoces: Automatic Complex Exponential Smoothing Model
   forecast/autoets: Automatic ETS (Error, Trend, Seasonality) Model
+  forecast/mstl: Multiple Seasonalities and Trend using Loess (MSTL) Model
+  forecast/rwd: Random Walk with Drift Model 
   forecast/arima: Arima (Non-darts)
   forecast/expo: Probabilistic Exponential Smoothing
   forecast/theta: Theta Method
