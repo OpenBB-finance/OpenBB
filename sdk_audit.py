@@ -202,6 +202,8 @@ def main():
     final_df = funcs_df.merge(sdk_df, how="outer", left_index=True, right_index=True)
     final_df = final_df.sort_values("trail")
     final_df = get_nonconforming_functions(final_df)
+    # Do this so that the duplicated method also checks the name column
+    final_df = final_df.reset_index()
     # Get further stats on bad data
     no_doc_count = len(final_df[final_df["docstring"].isnull()].index)
     if no_doc_count > 0:
@@ -210,7 +212,7 @@ def main():
             "This indicates a matching function does not exist, is not in a 'model' or 'view'\n"
             "file, or that the trailmap does not import it from the place it is defined.\n"
         )
-    dup_name_count = len(final_df[final_df.index.duplicated(keep=False)].index)
+    dup_name_count = len(final_df[final_df.duplicated(keep=False)].index)
     if dup_name_count > 0:
         print(f"The number of duplicate functions after merge is: {dup_name_count}")
         print(
