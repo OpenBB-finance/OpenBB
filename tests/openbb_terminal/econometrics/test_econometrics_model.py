@@ -218,11 +218,9 @@ def test_get_root(recorder, df, fuller_reg, kpss_reg):
 def test_get_granger_causality(recorder, time_series_y, time_series_x, lags):
     result = econometrics_model.get_granger_causality(
         dependent_series=time_series_y, independent_series=time_series_x, lags=lags
-    )
+    ).applymap(lambda x: round(float(x), 5) if x != "-" else x)
 
-    # The first item is taken since the second item contains Statsmodels
-    # objects (which change their identifier on every iteration)
-    recorder.capture_list(result[lags][0])
+    recorder.capture(result)
 
 
 @pytest.mark.vcr()
