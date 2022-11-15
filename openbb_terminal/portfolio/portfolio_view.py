@@ -100,7 +100,7 @@ In order to load a CSV do the following:
 
 @log_start_end(log=logger)
 def display_transactions(
-    portfolio_engine=None,
+    portfolio_engine: PortfolioEngine,
     show_index=False,
     limit: int = 10,
     export: str = "",
@@ -141,7 +141,7 @@ def display_transactions(
 
 @log_start_end(log=logger)
 def display_assets_allocation(
-    portfolio_engine=None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
 ):
@@ -175,7 +175,7 @@ def display_assets_allocation(
 
 @log_start_end(log=logger)
 def display_sectors_allocation(
-    portfolio_engine=None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
 ):
@@ -209,7 +209,7 @@ def display_sectors_allocation(
 
 @log_start_end(log=logger)
 def display_countries_allocation(
-    portfolio_engine=None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
 ):
@@ -243,7 +243,7 @@ def display_countries_allocation(
 
 @log_start_end(log=logger)
 def display_regions_allocation(
-    portfolio_engine=None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
 ):

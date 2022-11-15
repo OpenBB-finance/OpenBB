@@ -11,9 +11,8 @@ from sklearn.metrics import r2_score
 from openbb_terminal.common.quantitative_analysis import qa_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio.statics import PERIODS
-from . import portfolio_helper
-from . import metrics_model
-from .portfolio_engine import PortfolioEngine
+from openbb_terminal.portfolio import portfolio_helper, metrics_model
+from openbb_terminal.portfolio.portfolio_engine import PortfolioEngine
 
 
 # pylint: disable=E1136,W0201,R0902,C0302
@@ -72,7 +71,8 @@ def get_transactions(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
     Returns
     -------
@@ -98,7 +98,8 @@ def set_benchmark(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     symbol: str
         Benchmark symbol to download data
     full_shares: bool
@@ -122,7 +123,8 @@ def set_risk_free_rate(portfolio_engine: PortfolioEngine, risk_free_rate: float)
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     risk_free_rate: float
         Risk free rate in float format
     """
@@ -810,7 +812,7 @@ def get_assets_allocation(
 
 
 def get_sectors_allocation(
-    portfolio_engine=None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
     recalculate: bool = False,
@@ -854,7 +856,7 @@ def get_sectors_allocation(
 
 
 def get_countries_allocation(
-    portfolio_engine=None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
     recalculate: bool = False,
@@ -898,7 +900,7 @@ def get_countries_allocation(
 
 
 def get_regions_allocation(
-    portfolio_engine=None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
     recalculate: bool = False,

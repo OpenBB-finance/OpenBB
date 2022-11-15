@@ -12,7 +12,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import USER_PORTFOLIO_DATA_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal.portfolio.statics import PERIODS
-from .portfolio_helper import filter_df_by_period
+from openbb_terminal.portfolio.portfolio_helper import filter_df_by_period
 
 logger = logging.getLogger(__name__)
 
@@ -916,7 +916,7 @@ def get_payoff_ratio(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
 
     if no_losses:
         console.print(
-            "During some time periods there were no losing trades. ",
+            "During some time periods there were no losing trades.",
             "Thus some values could not be calculated.",
         )
 

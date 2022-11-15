@@ -12,8 +12,11 @@ import yfinance as yf
 from tqdm import tqdm
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from . import portfolio_helper
-from .allocation_model import get_allocation
+from openbb_terminal.portfolio.portfolio_helper import (
+    make_equal_length,
+    get_info_from_ticker,
+)
+from openbb_terminal.portfolio.allocation_model import get_allocation
 
 # pylint: disable=E1136,W0201,R0902,C0302
 # pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods, consider-using-f-string
@@ -378,7 +381,7 @@ class PortfolioEngine:
                         .values.any()
                     ):
                         # Get ticker info in list ["Sector", "Industry", "Country", "Region"] from isin/ticker
-                        info_list = portfolio_helper.get_info_from_ticker(ticker)
+                        info_list = get_info_from_ticker(ticker)
 
                         # Replace fields in transactions
                         self.__transactions.loc[
@@ -475,7 +478,7 @@ class PortfolioEngine:
         (
             self.returns,
             self.benchmark_returns,
-        ) = portfolio_helper.make_equal_length(self.returns, self.benchmark_returns)
+        ) = make_equal_length(self.returns, self.benchmark_returns)
 
         p_bar.n += 1
         p_bar.refresh()
