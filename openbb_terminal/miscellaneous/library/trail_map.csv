@@ -471,7 +471,7 @@ stocks.options.screen.screener_output,openbb_terminal.stocks.options.screen.sync
 stocks.options.hist_tr,openbb_terminal.stocks.options.tradier_model.get_historical_options,openbb_terminal.stocks.options.tradier_view.display_historical
 stocks.options.chains,openbb_terminal.stocks.options.options_sdk_helper.get_full_option_chain
 stocks.options.last_price,openbb_terminal.stocks.options.tradier_model.last_price,
-stocks.options.option_expirations,openbb_terminal.stocks.options.yfinance_model.option_expirations,
+stocks.options.expirations,openbb_terminal.stocks.options.options_sdk_helper.get_option_expirations
 stocks.options.process_chains,openbb_terminal.stocks.options.tradier_model.process_chains,
 stocks.options.generate_data,openbb_terminal.stocks.options.yfinance_model.generate_data,
 stocks.options.dte,openbb_terminal.stocks.options.yfinance_model.get_dte,
