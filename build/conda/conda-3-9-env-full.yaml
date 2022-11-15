@@ -4,7 +4,6 @@ channels:
 dependencies:
   - python=3.9.6
   - pip
+  - poetry=1.1.13
   - pytorch-lightning=1.6.5
   - u8darts[torch]=0.22.0
-  - poetry=1.1.13
-  - cvxpy=1.2.1
