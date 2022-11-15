@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_full_chain(symbol: str) -> pd.DataFrame:
+def get_full_option_chain(symbol: str) -> pd.DataFrame:
     """Get the full option chain for symbol over all expirations
 
     Parameters
@@ -100,7 +100,7 @@ def get_expirations(symbol: str) -> List[str]:
     List[str]
         List of expiration dates
     """
-    df = get_full_chain(symbol)
+    df = get_full_option_chain(symbol)
     if df.empty:
         return []
     # get everything that is not an empty string
