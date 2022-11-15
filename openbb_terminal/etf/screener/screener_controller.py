@@ -209,11 +209,16 @@ class ScreenerController(BaseController):
             choices=self.sortby_screen_choices,
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in ascending order (lowest on top)",
-            dest="ascend",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
@@ -225,7 +230,7 @@ class ScreenerController(BaseController):
                 preset=self.preset,
                 num_to_show=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 

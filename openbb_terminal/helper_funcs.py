@@ -1802,3 +1802,24 @@ def list_from_str(value: str) -> List[str]:
     if value:
         return value.split(",")
     return []
+
+
+def str_date_to_timestamp(date: str) -> int:
+    """Transform string date to timestamp
+
+    Parameters
+    ----------
+    start_date : str
+        Initial date, format YYYY-MM-DD
+
+    Returns
+    -------
+    date_ts : int
+        Initial date timestamp (e.g., 1_614_556_800)
+    """
+
+    date_ts = int(
+        datetime.strptime(date + " 00:00:00+0000", "%Y-%m-%d %H:%M:%S%z").timestamp()
+    )
+
+    return date_ts

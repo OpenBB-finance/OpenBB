@@ -28,7 +28,7 @@ kurtosis --w 10
 var
 es
 raw
-raw --limit 10 --descend
+raw --limit 10 --reverse
 decompose
 decompose --multiplicative
 cusum

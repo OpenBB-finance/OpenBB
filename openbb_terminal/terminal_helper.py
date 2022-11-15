@@ -232,9 +232,9 @@ def check_for_updates() -> None:
                     "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
                 )
                 break
-            if int(lastest_split[i]) < int(
-                current[i]
-            ) or release == obbff.VERSION.replace("m", ""):
+            if int(lastest_split[i]) < int(current[i]):
+                console.print("[yellow]You are using an unreleased version[/yellow]")
+            if release == obbff.VERSION.replace("m", ""):
                 console.print("[green]You are using the latest version[/green]")
                 break
     else:

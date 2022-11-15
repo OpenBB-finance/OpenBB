@@ -37,8 +37,8 @@ crypto.onchain.btc_transac() -> pandas.core.frame.DataFrame
 
 {{< highlight python >}}
 crypto.onchain.btc_transac(
-    start_date: int = 1262304000,
-    end_date: int = 1668077823,
+    start_date: str = '2010-01-01',
+    end_date: str = '2022-11-14',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
@@ -53,10 +53,10 @@ crypto.onchain.btc_transac(
 
 * **Parameters**
 
-    since : int
-        Initial date timestamp (e.g., 1_609_459_200)
-    until : int
-        End date timestamp (e.g., 1_641_588_030)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional

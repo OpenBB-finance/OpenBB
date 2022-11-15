@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 from ast import literal_eval
 import webbrowser
+from typing import List
 
 import pandas as pd
 import requests
@@ -56,7 +57,7 @@ def get_performance_map(period: str = "1d", map_filter: str = "sp500"):
 
 
 @log_start_end(log=logger)
-def get_groups() -> list:
+def get_groups() -> List[str]:
     """Get group available"""
     return list(GROUPS.keys())
 

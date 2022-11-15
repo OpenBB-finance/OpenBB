@@ -15,6 +15,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     valid_date,
+    list_from_str,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
@@ -928,11 +929,10 @@ class FundamentalAnalysisController(StockBaseController):
             "-p",
             "--plot",
             action="store",
-            nargs="+",
             type=str,
             default=None,
             dest="plot",
-            help="Rows to plot. (-1 represents invalid data)",
+            help="Rows to plot, comma separated. (-1 represents invalid data)",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -941,6 +941,7 @@ class FundamentalAnalysisController(StockBaseController):
             limit=5,
         )
         if ns_parser:
+            ns_parser.plot = list_from_str(ns_parser.plot)
             # TODO: Switch to actually getting data
             if ns_parser.source == "YahooFinance" and ns_parser.b_quarter:
                 console.print(
@@ -1039,11 +1040,10 @@ class FundamentalAnalysisController(StockBaseController):
             "-p",
             "--plot",
             action="store",
-            nargs="+",
             type=str,
             default=None,
             dest="plot",
-            help="Rows to plot. (-1 represents invalid data)",
+            help="Rows to plot, comma separated. (-1 represents invalid data)",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -1052,6 +1052,7 @@ class FundamentalAnalysisController(StockBaseController):
             limit=5,
         )
         if ns_parser:
+            ns_parser.plot = list_from_str(ns_parser.plot)
             # TODO: Switch to actually getting data
             if ns_parser.source == "YahooFinance" and ns_parser.b_quarter:
                 text = "Quarterly data currently unavailable for yfinance"
@@ -1155,7 +1156,6 @@ class FundamentalAnalysisController(StockBaseController):
             "-p",
             "--plot",
             action="store",
-            nargs="+",
             type=str,
             default=None,
             dest="plot",
@@ -1167,6 +1167,7 @@ class FundamentalAnalysisController(StockBaseController):
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
+            ns_parser.plot = list_from_str(ns_parser.plot)
             # TODO: Switch to actually getting data
             if ns_parser.source == "YahooFinance" and ns_parser.b_quarter:
                 text = "Quarterly data currently unavailable for yfinance"

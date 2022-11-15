@@ -155,7 +155,8 @@ class QaController(CryptoBaseController):
                     for c in [x.lower().replace(" ", "") for x in self.data.columns]
                 },
                 "-s": "--sortby",
-                "--descend": {},
+                "--reverse": {},
+                "-r": "--reverse",
                 "--export": {c: {} for c in ["csv", "json", "xlsx"]},
             }
             choices["decompose"] = {
@@ -256,12 +257,16 @@ class QaController(CryptoBaseController):
             dest="limit",
         )
         parser.add_argument(
-            "-d",
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
             default=False,
-            dest="descend",
-            help="Sort in descending order",
+            dest="reverse",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-s",
@@ -280,7 +285,7 @@ class QaController(CryptoBaseController):
                 data=self.data,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
