@@ -380,15 +380,10 @@ class EconometricsController(BaseController):
 
             if not data.empty:
                 data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
-
                 self.files.append(alias)
                 self.datasets[alias] = data
-
                 self.update_runtime_choices()
-
                 self.update_loaded()
-
-                console.print()
 
     @log_start_end(log=logger)
     def call_export(self, other_args: List[str]):

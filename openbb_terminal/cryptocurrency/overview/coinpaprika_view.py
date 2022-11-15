@@ -192,7 +192,7 @@ def display_all_coins_info(
     cols = [col for col in df.columns if col != "rank"]
     df[cols] = df[cols].applymap(lambda x: lambda_long_number_format_with_type_check(x))
 
-    console.print(f"\nDisplaying data vs {symbol}")
+    console.print(f"Displaying data vs {symbol}")
 
     print_rich_table(
         df.head(limit),

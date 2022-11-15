@@ -177,8 +177,6 @@ class ParametersController(BaseController):
 
             self.params, self.current_model = params_view.load_file(file_location)
 
-            console.print()
-
     @log_start_end(log=logger)
     def call_save(self, other_args: List[str]):
         """Process save command"""
