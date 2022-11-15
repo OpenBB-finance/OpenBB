@@ -119,7 +119,7 @@ def get_trailmaps() -> List[Trailmap]:
     for tmap_csv in [MAP_PATH, MAP_FORECASTING_PATH]:
         if tmap_csv == MAP_FORECASTING_PATH and not FORECASTING:
             console.print(
-                "[bold red]Forecasting is disabled. Forecasting will not be included in the SDK.[/bold red]"
+                "[bold red]Forecasting is disabled. Forecasting will not be included in the Generation of Docs[/bold red]"
             )
             continue
         with open(tmap_csv, "r") as csvfile:
