@@ -2,6 +2,7 @@
 """Main Terminal Module."""
 __docformat__ = "numpy"
 
+from datetime import datetime
 import argparse
 import difflib
 import logging
@@ -11,6 +12,7 @@ from pathlib import Path
 import sys
 import webbrowser
 from typing import List, Dict, Optional
+import contextlib
 
 import dotenv
 from rich import panel
@@ -49,7 +51,6 @@ from openbb_terminal.terminal_helper import (
     is_reset,
     print_goodbye,
     reset,
-    suppress_stdout,
     update_terminal,
     welcome_message,
 )
@@ -1020,8 +1021,18 @@ def run_scripts(
         if not test_mode or verbose:
             terminal(file_cmds, test_mode=True)
         else:
-            with suppress_stdout():
-                terminal(file_cmds, test_mode=True)
+            timestamp = datetime.now().timestamp()
+            stamp_str = str(timestamp).replace(".", "")
+            base_path = Path(__file__).parent.parent
+            whole_path = Path(base_path / "integration_test_output")
+            whole_path.mkdir(parents=True, exist_ok=True)
+            first_cmd = file_cmds[0].split("/")[1]
+            print(first_cmd)
+            with open(
+                whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
+            ) as output:
+                with contextlib.redirect_stdout(output):
+                    terminal(file_cmds, test_mode=True)
 
 
 def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:

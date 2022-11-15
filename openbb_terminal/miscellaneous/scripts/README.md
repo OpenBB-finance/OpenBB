@@ -180,3 +180,5 @@ If the `-t` argument is not given, then the reason why a specific failure occurs
 test is printed inline while the test is being run.
 
 If there is an error, one can identify the command and or series of steps that causes it fairly easily.
+
+Output from the integration tests can also be viewed in the `integration_test_output` folder .
