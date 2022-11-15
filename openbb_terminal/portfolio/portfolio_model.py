@@ -1263,7 +1263,7 @@ def get_tracking_error(
 
 
 @log_start_end(log=logger)
-def get_information_ratio(portfolio_engine: PortfolioEngine):
+def get_information_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """Get information ratio
 
     Parameters
@@ -1295,7 +1295,9 @@ def get_information_ratio(portfolio_engine: PortfolioEngine):
 
 
 @log_start_end(log=logger)
-def get_tail_ratio(portfolio_engine: PortfolioEngine, window: int = 252):
+def get_tail_ratio(
+    portfolio_engine: PortfolioEngine, window: int = 252
+) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
     """Get tail ratio
 
     Parameters
@@ -1330,7 +1332,7 @@ def get_tail_ratio(portfolio_engine: PortfolioEngine, window: int = 252):
 
 
 @log_start_end(log=logger)
-def get_common_sense_ratio(portfolio_engine: PortfolioEngine):
+def get_common_sense_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """Get common sense ratio
 
     Parameters
@@ -1364,7 +1366,7 @@ def get_common_sense_ratio(portfolio_engine: PortfolioEngine):
 @log_start_end(log=logger)
 def get_jensens_alpha(
     portfolio_engine: PortfolioEngine, risk_free_rate: float = 0, window: str = "1y"
-):
+) -> Tuple[pd.DataFrame, pd.Series]:
     """Get jensen's alpha
 
     Parameters
@@ -1404,7 +1406,9 @@ def get_jensens_alpha(
 
 
 @log_start_end(log=logger)
-def get_calmar_ratio(portfolio_engine: PortfolioEngine, window: int = 756):
+def get_calmar_ratio(
+    portfolio_engine: PortfolioEngine, window: int = 756
+) -> Tuple[pd.DataFrame, pd.Series]:
     """Get calmar ratio
 
     Parameters
@@ -1441,7 +1445,7 @@ def get_calmar_ratio(portfolio_engine: PortfolioEngine, window: int = 756):
 
 
 @log_start_end(log=logger)
-def get_kelly_criterion(portfolio_engine: PortfolioEngine):
+def get_kelly_criterion(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """Gets kelly criterion
 
     Parameters
@@ -1533,7 +1537,7 @@ def get_holdings_value(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Returns
     -------
     pd.DataFrame
-        DataFrame of holdings
+        DataFrame of holdings value
 
     Examples
     --------
@@ -1555,7 +1559,7 @@ def get_holdings_value(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
 
 def get_holdings_percentage(
     portfolio_engine: PortfolioEngine,
-):
+) -> pd.DataFrame:
     """Get holdings of assets (in percentage)
 
     Parameters
@@ -1563,6 +1567,11 @@ def get_holdings_percentage(
     portfolio_engine: PortfolioEngine
         PortfolioEngine class instance, this will hold transactions and perform calculations.
         Use `portfolio.load` to create a PortfolioEngine.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of holdings percentage
 
     Examples
     --------
@@ -1586,7 +1595,7 @@ def get_holdings_percentage(
 @log_start_end(log=logger)
 def get_maximum_drawdown(
     portfolio_engine: PortfolioEngine, is_returns: bool = False
-) -> pd.Series:
+) -> Tuple[pd.DataFrame, pd.Series]:
     """Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
      on cumulative returns (or prices).  The definition of drawdown is
 
@@ -1626,7 +1635,7 @@ def get_maximum_drawdown(
 def get_distribution_returns(
     portfolio_engine: PortfolioEngine,
     window: str = "all",
-):
+) -> pd.DataFrame:
     """Display daily returns
 
     Parameters
@@ -1636,6 +1645,11 @@ def get_distribution_returns(
         Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of returns distribution
 
     Examples
     --------
@@ -1671,6 +1685,11 @@ def get_rolling_volatility(
     window : str
         Rolling window size to use
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
+
+    Returns
+    -------
+    pd.DataFrame
+        Rolling volatility DataFrame
 
     Examples
     --------
@@ -2661,86 +2680,3 @@ def get_regions_allocation(
     if tables:
         return combined, portfolio_allocation, benchmark_allocation
     return combined
-
-
-# Old code
-@log_start_end(log=logger)
-def get_main_text(data: pd.DataFrame) -> str:
-    """Get main performance summary from a dataframe with market returns
-
-    Parameters
-    ----------
-    data : pd.DataFrame
-        Stock holdings and returns with market returns
-
-    Returns
-    ----------
-    text : str
-        The main summary of performance
-    """
-    d_debt = np.where(data[("Cash", "Cash")] > 0, 0, 1)
-    bcash = 0 if data[("Cash", "Cash")][0] > 0 else abs(data[("Cash", "Cash")][0])
-    ecash = 0 if data[("Cash", "Cash")][-1] > 0 else abs(data[("Cash", "Cash")][-1])
-    bdte = bcash / (data["holdings"][0] - bcash)
-    edte = ecash / (data["holdings"][-1] - ecash)
-    if sum(d_debt) > 0:
-        t_debt = (
-            f"Beginning debt to equity was {bdte:.2%} and ending debt to equity was"
-            f" {edte:.2%}. Debt adds risk to a portfolio by amplifying the gains and losses when"
-            " equities change in value."
-        )
-        if bdte > 1 or edte > 1:
-            t_debt += " Debt to equity ratios above one represent a significant amount of risk."
-    else:
-        t_debt = (
-            "Margin was not used this year. This reduces this risk of the portfolio."
-        )
-    text = (
-        f"Your portfolio's performance for the period was {data['return'][-1]:.2%}. This was"
-        f" {'greater' if data['return'][-1] > data[('Market', 'Return')][-1] else 'less'} than"
-        f" the market return of {data[('Market', 'Return')][-1]:.2%}. The variance for the"
-        f" portfolio is {np.var(data['return']):.2%}, while the variance for the market was"
-        f" {np.var(data[('Market', 'Return')]):.2%}. {t_debt} The following report details"
-        f" various analytics from the portfolio. Read below to see the moving beta for a"
-        f" stock."
-    )
-    return text
-
-
-@log_start_end(log=logger)
-def get_beta_text(data: pd.DataFrame) -> str:
-    """Get beta summary for a stock from a dataframe
-
-    Parameters
-    ----------
-    data : pd.DataFrame
-        The beta history of the stock
-
-    Returns
-    ----------
-    text : str
-        The beta history for a ticker
-    """
-    betas = data[list(filter(lambda score: "beta" in score, list(data.columns)))]
-    high = betas.idxmax(axis=1)
-    low = betas.idxmin(axis=1)
-    text = (
-        "Beta is how strongly a portfolio's movements correlate with the market's movements."
-        " A stock with a high beta is considered to be riskier. The beginning beta for the period"
-        f" was {portfolio_helper.beta_word(data['total'][0])} at {data['total'][0]:.2f}. This went"
-        f" {'up' if data['total'][-1] > data['total'][0] else 'down'} to"
-        f" {portfolio_helper.beta_word(data['total'][-1])} at {data['total'][-1]:.2f} by the end"
-        f" of the period. The ending beta was pulled {'up' if data['total'][-1] > 1 else 'down'} by"
-        f" {portfolio_helper.clean_name(high[-1] if data['total'][-1] > 1 else low[-1])}, which had"
-        f" an ending beta of {data[high[-1]][-1] if data['total'][-1] > 1 else data[low[-1]][-1]:.2f}."
-    )
-    return text
-
-
-performance_text = (
-    "The Sharpe ratio is a measure of reward to total volatility. A Sharpe ratio above one is"
-    " considered acceptable. The Treynor ratio is a measure of systematic risk to reward."
-    " Alpha is the average return above what CAPM predicts. This measure should be above zero"
-    ". The information ratio is the excess return on systematic risk. An information ratio of"
-    " 0.4 to 0.6 is considered good."
-)
