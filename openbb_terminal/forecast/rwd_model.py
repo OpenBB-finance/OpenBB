@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Union, Optional, List, Tuple
+from typing import Union, Optional, List, Tuple
 
 import warnings
 import numpy as np
@@ -30,7 +30,9 @@ def get_rwd_data(
     n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
-) -> Tuple[list[np.ndarray], List[np.ndarray], List[np.ndarray], Optional[float], Any]:
+) -> Tuple[
+    List[np.ndarray], List[np.ndarray], List[np.ndarray], Optional[float], StatsForecast
+]:
 
     """Performs Random Walk with Drift forecasting
     This is a wrapper around StatsForecast RandomWalkWithDrift;
@@ -54,15 +56,11 @@ def get_rwd_data(
 
     Returns
     -------
-    list[float]
-        Adjusted Data series
-    list[float]
-        List of historical fcast values
-    list[float]
-        List of predicted fcast values
-    Optional[float]
-        precision
-    Any
+    Tuple[List[np.ndarray], List[np.ndarray], List[np.ndarray], Optional[float], StatsForecast]:
+        Adjusted Data series,
+        List of historical fcast values,
+        List of predicted fcast values,
+        Optional[float] precision,
         Fit RWD model object.
     """
 

@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union, List
+from typing import Tuple, Union, List
 import warnings
 
 
@@ -28,7 +28,9 @@ def get_regression_data(
     forecast_horizon: int = 5,
     output_chunk_length: int = 1,
     lags: Union[int, List[int]] = 72,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
+) -> Tuple[
+    List[TimeSeries], List[TimeSeries], List[TimeSeries], float, type[RegressionModel]
+]:
     """Perform Regression Forecasting
 
     Parameters
@@ -52,16 +54,12 @@ def get_regression_data(
 
     Returns
     -------
-    List[TimeSeries]
-        Adjusted Data series
-    List[TimeSeries]
-        Historical forecast by best RNN model
-    List[TimeSeries]
-        list of Predictions
-    float
-        Mean average precision error
-    Any
-        Best Regression Model
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, type[RegressionModel]]
+        Adjusted Data series,
+        Historical forecast by best RNN model,
+        list of Predictions,
+        Mean average precision error,
+        Best Regression Model.
     """
 
     use_scalers = False

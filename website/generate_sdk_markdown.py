@@ -1,12 +1,137 @@
+import csv
+import importlib
+import inspect
 import os
-from typing import Literal
+
+from types import FunctionType
+from typing import Dict, List, Literal, Optional
 
 from docstring_parser import parse
 
-from generate_sdk import get_trailmaps
+from openbb_terminal.rich_config import console
+from openbb_terminal.core.library.trail_map import FORECASTING, MISCELLANEOUS_DIRECTORY
+
+MAP_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map.csv"
+MAP_FORECASTING_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map_forecasting.csv"
 
 
-def get_function_meta(trailmap, trail_type: Literal["model", "view"]):
+def clean_attr_desc(attr: Optional[FunctionType] = None) -> Optional[str]:
+    """Clean the attribute description."""
+    if attr.__doc__ is None:
+        return None
+    return (
+        attr.__doc__.splitlines()[1].lstrip()
+        if not attr.__doc__.splitlines()[0]
+        else attr.__doc__.splitlines()[0].lstrip()
+        if attr.__doc__
+        else ""
+    )
+
+
+class Trailmap:
+    def __init__(self, trailmap: str, model: str, view: Optional[str] = None):
+        tmap = trailmap.split(".")
+        if len(tmap) == 1:
+            tmap = ["root", tmap[0]]
+        self.class_attr: str = tmap.pop(-1)
+        self.category = tmap[0]
+        self.location_path = tmap
+        self.model = model
+        self.view = view if view else None
+        self.model_func: Optional[str] = model if model else None
+        self.view_func: Optional[str] = view if view else None
+        self.short_doc: Dict[str, Optional[str]] = {}
+        self.long_doc: Dict[str, str] = {}
+        self.lineon: Dict[str, int] = {}
+        self.full_path: Dict[str, str] = {}
+        self.func_def: Dict[str, str] = {}
+        self.func_attr: Dict[str, FunctionType] = {}
+        self.params: Dict[str, Dict[str, inspect.Parameter]] = {}
+        self.get_docstrings()
+
+    def get_docstrings(self) -> None:
+        """Gets the function docstrings. We get the short and long docstrings."""
+
+        for key, func in zip(["model", "view"], [self.model, self.view]):
+            if func:
+                print(f"Getting docstrings for {func}")
+                module_path, function_name = func.rsplit(".", 1)
+                module = importlib.import_module(module_path)
+                self.func_attr[key] = getattr(module, function_name)
+
+                add_juan = 0
+                if "__wrapped__" in dir(self.func_attr[key]):
+                    self.func_attr[key] = self.func_attr[key].__wrapped__
+                    add_juan = 1
+                self.lineon[key] = (
+                    inspect.getsourcelines(self.func_attr[key])[1] + add_juan
+                )
+
+                self.func_def[key] = self.get_definition(key)
+                self.long_doc[key] = self.func_attr[key].__doc__
+                self.short_doc[key] = clean_attr_desc(self.func_attr[key])
+                full_path = (
+                    inspect.getfile(self.func_attr[key])
+                    .replace("\\", "/")
+                    .split("openbb_terminal/")[1]
+                )
+                self.full_path[key] = f"openbb_terminal/{full_path}"
+
+    def get_definition(self, key: str) -> str:
+        """Creates the function definition to be used in SDK docs."""
+        funcspec = inspect.getfullargspec(self.func_attr[key])
+
+        definition = ""
+        added_comma = False
+        for arg in funcspec.args:
+            annotation = (
+                funcspec.annotations[arg] if arg in funcspec.annotations else "Any"
+            )
+            if arg in funcspec.annotations:
+                annotation = (
+                    str(annotation)
+                    .replace("<class '", "")
+                    .replace("'>", "")
+                    .replace("typing.", "")
+                    .replace("pandas.core.frame.", "pd.")
+                    .replace("pandas.core.series.", "pd.")
+                    .replace("openbb_terminal.portfolio.", "")
+                )
+            definition += f"{arg}: {annotation}, "
+            added_comma = True
+
+        if added_comma:
+            definition = definition[:-2]
+
+        return_def = (
+            funcspec.annotations["return"].__name__
+            if "return" in funcspec.annotations
+            and hasattr(funcspec.annotations["return"], "__name__")
+            and funcspec.annotations["return"] is not None
+            else "None"
+        )
+        definition = f"def {getattr(self, f'{key}_func').split('.')[-1]}({definition }) -> {return_def}"
+        return definition
+
+
+def get_trailmaps() -> List[Trailmap]:
+    trailmaps = []
+    for tmap_csv in [MAP_PATH, MAP_FORECASTING_PATH]:
+        if tmap_csv == MAP_FORECASTING_PATH and not FORECASTING:
+            console.print(
+                "[bold red]Forecasting is disabled. Forcasting will not be included in the SDK.[/bold red]"
+            )
+            continue
+        with open(tmap_csv, "r") as csvfile:
+            reader = csv.reader(csvfile, delimiter=",")
+            next(reader)
+            for row in reader:
+                trailmaps.append(Trailmap(*row))
+
+    return trailmaps
+
+
+def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
     doc_parsed = parse(trailmap.long_doc[trail_type])
     line = trailmap.lineon[trail_type]
     path = trailmap.full_path[trail_type]
