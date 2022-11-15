@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 def get_put_call_ratio(
     symbol: str,
     window: int = 30,
-    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    start_date: str = None,
 ) -> pd.DataFrame:
     """Gets put call ratio over last time window [Source: AlphaQuery.com]
 
@@ -27,8 +27,12 @@ def get_put_call_ratio(
     window: int, optional
         Window to consider, by default 30
     start_date: str, optional
-        Start date to plot, by default last 366 days
+        Start date to plot (e.g., 2021-10-01), by default last 366 days
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
+
     url = f"https://www.alphaquery.com/data/option-statistic-chart?ticker={symbol}\
         &perType={window}-Day&identifier=put-call-ratio-volume"
     headers = {
