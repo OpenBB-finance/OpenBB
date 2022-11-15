@@ -12,9 +12,12 @@ jobs:
         with:
           python-version: 3.9
           - name: Install dependencies
-            run: pip install -r requirements.txt
+            run: | 
+              pip install -r requirements.txt
+              pip install 
           - name: Run the script
             run: python website/generate.py
+
 
       - name: Commit Documentation
         uses: stefanzweifel/git-auto-commit-action@v4
