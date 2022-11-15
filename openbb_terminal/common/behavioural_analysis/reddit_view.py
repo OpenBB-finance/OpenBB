@@ -75,8 +75,8 @@ def print_and_record_reddit_post(
         "awards": s_all_awards,
     }
     # Print post data collected so far
-    console.print(f"{s_datetime} - {submission.title}")
-    console.print(f"{s_link}")
+    console.print(f"[yellow]{s_datetime}[/yellow] - {submission.title}")
+    console.print(f"[blue]{s_link}[/blue]\n")
     columns = ["Subreddit", "Flair", "Score", "# Comments", "Upvote %", "Awards"]
     data = [
         submission.subreddit,
@@ -115,7 +115,7 @@ def print_reddit_post(sub: tuple):
     date = sub_list[0]
     title = sub_list[3]
     link = sub_list[-1]
-    console.print(f"[yellow]{date} - {title}[/yellow]")
+    console.print(f"[yellow]{date}[/yellow] - {title}")
     console.print(f"[blue]{link}[/blue]\n")
     columns = [
         "Subreddit",
@@ -156,6 +156,8 @@ def display_watchlist(limit: int = 5):
     if subs:
         for sub in subs:
             print_and_record_reddit_post({}, sub)
+            console.print("")
+
         if n_flair_posts_found > 0:
             lt_watchlist_sorted = sorted(
                 d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
@@ -299,6 +301,7 @@ def display_spac(limit: int = 5):
     if not subs.empty:
         for sub in subs.iterrows():
             print_reddit_post(sub)
+            console.print("")
 
         if n_flair_posts_found > 0:
             lt_watchlist_sorted = sorted(
@@ -347,6 +350,7 @@ def display_wsb_community(limit: int = 10, new: bool = False):
     if not subs.empty:
         for sub in subs.iterrows():
             print_reddit_post(sub)
+            console.print("")
 
 
 @log_start_end(log=logger)
@@ -379,6 +383,7 @@ def display_due_diligence(
     if not subs.empty:
         for sub in subs.iterrows():
             print_reddit_post(sub)
+            console.print("")
     else:
         console.print(f"No DD posts found for {symbol}\n")
 
