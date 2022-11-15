@@ -147,8 +147,8 @@ class OptionsController(BaseController):
             choices["unu"] = {
                 "--sortby": {c: {} for c in self.unu_sortby_choices},
                 "-s": "--sortby",
-                "--ascending": {},
-                "-a": "--ascending",
+                "--reverse": {},
+                "-r": "--reverse",
                 "--puts_only": {},
                 "-p": "--puts_only",
                 "--calls_only": {},
@@ -482,12 +482,16 @@ class OptionsController(BaseController):
             help="Column to sort by.  Vol/OI is the default and typical variable to be considered unusual.",
         )
         parser.add_argument(
-            "-a",
-            "--ascending",
-            dest="ascend",
-            default=False,
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in ascending order",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-p",
@@ -520,7 +524,7 @@ class OptionsController(BaseController):
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     export=ns_parser.export,
-                    ascend=ns_parser.ascend,
+                    ascend=ns_parser.reverse,
                     calls_only=ns_parser.calls_only,
                     puts_only=ns_parser.puts_only,
                 )
