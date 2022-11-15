@@ -53,6 +53,7 @@ from openbb_terminal.terminal_helper import (
     reset,
     update_terminal,
     welcome_message,
+    suppress_stdout,
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
 from openbb_terminal.keys_model import first_time_user
@@ -1031,8 +1032,9 @@ def run_scripts(
             with open(
                 whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
             ) as output:
-                with contextlib.redirect_stdout(output):
-                    terminal(file_cmds, test_mode=True)
+                with suppress_stdout():
+                    with contextlib.redirect_stdout(output):
+                        terminal(file_cmds, test_mode=True)
 
 
 def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
