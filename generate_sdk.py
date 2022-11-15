@@ -135,6 +135,7 @@ class Trailmap:
                     .replace("typing.", "")
                     .replace("pandas.core.frame.", "pd.")
                     .replace("pandas.core.series.", "pd.")
+                    .replace("openbb_terminal.portfolio.", "")
                 )
             definition += f"{arg}: {annotation}, "
             added_comma = True
