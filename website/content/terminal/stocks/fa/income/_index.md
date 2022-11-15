@@ -14,8 +14,7 @@ average shs out dil [Source: Alpha Vantage]
 optional arguments:
   -q, --quarter         Quarter fundamental data flag. (default: False)
   -r, --ratios          Shows percentage change of values. (default: False)
-  -p PLOT [PLOT ...], --plot PLOT [PLOT ...]
-                        Rows to plot. (-1 represents invalid data) (default: None)
+  -p PLOT, --plot PLOT  Rows to plot, comma separated. (-1 represents invalid data) (default: None)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
   -l LIMIT, --limit LIMIT

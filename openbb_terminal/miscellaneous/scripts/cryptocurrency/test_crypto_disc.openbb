@@ -4,6 +4,7 @@ disc
 # gctop
 top
 top -c stablecoins -s Volume [$] -l 5
+top -s Market Cap -r
 
 # cgtrending
 trending

@@ -1046,7 +1046,7 @@ def get_kelly_criterion(
         if (not period_return.empty) and (not period_portfolio_tr.empty):
             w = len(period_return[period_return > 0]) / len(period_return)
             r = len(
-                period_portfolio_tr[period_portfolio_tr["% Portfolio Return"] > 0]
+                period_portfolio_tr[period_portfolio_tr["Portfolio % Return"] > 0]
             ) / len(
                 period_portfolio_tr[period_portfolio_tr["Type"].str.upper() != "CASH"]
             )
@@ -1086,10 +1086,10 @@ def get_payoff_ratio(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
         period_portfolio_tr = filter_df_by_period(portfolio_trades, period)
         if not portfolio_trades.empty:
             portfolio_wins = period_portfolio_tr[
-                period_portfolio_tr["% Portfolio Return"] > 0
+                period_portfolio_tr["Portfolio % Return"] > 0
             ]
             portfolio_loses = period_portfolio_tr[
-                period_portfolio_tr["% Portfolio Return"] < 0
+                period_portfolio_tr["Portfolio % Return"] < 0
             ]
             if portfolio_loses.empty:
                 vals.append(["-"])
@@ -1140,10 +1140,10 @@ def get_profit_factor(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
         period_portfolio_tr = filter_df_by_period(portfolio_trades, period)
         if not portfolio_trades.empty:
             portfolio_wins = period_portfolio_tr[
-                period_portfolio_tr["% Portfolio Return"] > 0
+                period_portfolio_tr["Portfolio % Return"] > 0
             ]
             portfolio_loses = period_portfolio_tr[
-                period_portfolio_tr["% Portfolio Return"] < 0
+                period_portfolio_tr["Portfolio % Return"] < 0
             ]
             if portfolio_loses.empty:
                 vals.append(["-"])

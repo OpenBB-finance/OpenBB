@@ -73,7 +73,7 @@ crypto.dd.oi(
     interval : int
         Frequency (possible values are: 0 for ALL, 2 for 1H, 1 for 4H, 4 for 12H), by default 0
     export : str
-        Export dataframe data to csv,json,xlsx fil
+        Export dataframe data to csv,json,xlsx file
     chart: bool
        Flag to display chart
 
