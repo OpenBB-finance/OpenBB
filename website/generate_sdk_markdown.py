@@ -122,7 +122,7 @@ def get_trailmaps() -> List[Trailmap]:
             console.print(
                 "[bold red]Forecasting is disabled. Forecasting will not be included in the Generation of Docs[/bold red]"
             )
-            continue
+            break
         with open(tmap_csv) as csvfile:
             reader = csv.reader(csvfile, delimiter=",")
             next(reader)
@@ -248,9 +248,11 @@ def generate_markdown_section(meta):
 
     markdown += "## Examples\n\n"
     for example in meta["examples"]:
-        snippet = example["snippet"].replace(">>> ", "")
         markdown += f"{example['description']}\n"
-        markdown += f"```python\n{snippet}\n```\n\n"
+
+        if isinstance(example["snippet"], str):
+            snippet = example["snippet"].replace(">>> ", "")
+            markdown += f"```python\n{snippet}\n```\n\n"
 
     return markdown
 
