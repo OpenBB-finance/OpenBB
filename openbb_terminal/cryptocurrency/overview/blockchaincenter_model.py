@@ -27,9 +27,9 @@ def get_altcoin_index(
     Parameters
     ----------
     period: int
-       Number of days {30,90,365} to check performance of coins and calculate the altcoin index.
-       E.g., 365 checks yearly performance, 90 will check seasonal performance (90 days),
-       30 will check monthly performance (30 days).
+        Number of days {30,90,365} to check performance of coins and calculate the altcoin index.
+        E.g., 365 checks yearly performance, 90 will check seasonal performance (90 days),
+        30 will check monthly performance (30 days).
     start_date : str
         Initial date, format YYYY-MM-DD
     end_date : str
@@ -37,7 +37,7 @@ def get_altcoin_index(
 
     Returns
     -------
-    pandas.DataFrame:
+    pd.DataFrame
         Date, Value (Altcoin Index)
     """
 

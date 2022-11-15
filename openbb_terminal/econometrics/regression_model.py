@@ -40,33 +40,34 @@ def get_regressions_results(
 ) -> Any:
     """Based on the regression type, this function decides what regression to run.
 
-        Parameters
-        ----------
-        Y: pd.DataFrame
-            Dataframe containing the dependent variable.
-        X: pd.DataFrame
-            Dataframe containing the independent variables.
-        regression_type: str
-            The type of regression you wish to execute.
-        entity_effects: bool
-            Whether to apply Fixed Effects on entities.
-        time_effects: bool
-            Whether to apply Fixed Effects on time.
+    Parameters
+    ----------
+    Y: pd.DataFrame
+        Dataframe containing the dependent variable.
+    X: pd.DataFrame
+        Dataframe containing the independent variables.
+    regression_type: str
+        The type of regression you wish to execute.
+    entity_effects: bool
+        Whether to apply Fixed Effects on entities.
+    time_effects: bool
+        Whether to apply Fixed Effects on time.
 
-        Returns
-        -------
+    Returns
+    -------
+    Any
         A regression model
 
-        Examples
-        --------
-        >>> from openbb_terminal.sdk import openbb
-        >>> df = openbb.econometrics.load("wage_panel")
-        >>> df = df.set_index(["nr","year"])
-        >>> X = df[["exper","educ","union"]]
-        >>> Y = df["lwage"]
-        >>> pooled_ols_model = openbb.econometrics.panel(Y,X,"POLS")
-        >>> print(pooled_ols_model.summary)
-                              PooledOLS Estimation Summary
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.econometrics.load("wage_panel")
+    >>> df = df.set_index(["nr","year"])
+    >>> X = df[["exper","educ","union"]]
+    >>> Y = df["lwage"]
+    >>> pooled_ols_model = openbb.econometrics.panel(Y,X,"POLS")
+    >>> print(pooled_ols_model.summary)
+                          PooledOLS Estimation Summary
     ================================================================================
     Dep. Variable:                  lwage   R-squared:                        0.1634
     Estimator:                  PooledOLS   R-squared (Between):              0.1686
@@ -85,7 +86,7 @@ def get_regressions_results(
     Min Obs:                       545.00
     Max Obs:                       545.00
 
-                                 Parameter Estimates
+                                Parameter Estimates
     ==============================================================================
                 Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
     ------------------------------------------------------------------------------
@@ -129,8 +130,9 @@ def get_regression_data(
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the OLS model.
+    Tuple[DataFrame, Any, List[Any]]
+        The dataset used, the dependent variable, the independent variable and
+        the OLS model.
     """
 
     datasets = get_datasets(data)
@@ -176,25 +178,25 @@ def get_ols(
 ) -> Any:
     """Performs an OLS regression on timeseries data. [Source: Statsmodels]
 
-        Parameters
-        ----------
-        Y: pd.DataFrame
-            Dependent variable series.
-        X: pd.DataFrame
-            Dataframe of independent variables series.
+    Parameters
+    ----------
+    Y: pd.DataFrame
+        Dependent variable series.
+    X: pd.DataFrame
+        Dataframe of independent variables series.
 
-        Returns
-        -------
-        statsmodels.regression.linear_model.RegressionResultsWrapper
-            Regression model wrapper from statsmodels.
+    Returns
+    -------
+    statsmodels.regression.linear_model.RegressionResultsWrapper
+        Regression model wrapper from statsmodels.
 
-        Examples
-        -------
-        >>> import openbb_terminal.sdk as openbb
-        >>> df = openbb.econometrics.load("wage_panel")
-        >>> OLS_model = openbb.econometrics.OLS(df["lwage"], df[["educ", "exper", "expersq"]])
-        >>> print(OLS_model.summary())
-                                         OLS Regression Results
+    Examples
+    --------
+    >>> import openbb_terminal.sdk as openbb
+    >>> df = openbb.econometrics.load("wage_panel")
+    >>> OLS_model = openbb.econometrics.OLS(df["lwage"], df[["educ", "exper", "expersq"]])
+    >>> print(OLS_model.summary())
+                                        OLS Regression Results
     =======================================================================================
     Dep. Variable:                  lwage   R-squared (uncentered):                   0.920
     Model:                            OLS   Adj. R-squared (uncentered):              0.919
@@ -206,7 +208,7 @@ def get_ols(
     Df Model:                           3
     Covariance Type:            nonrobust
     ==============================================================================
-                     coef    std err          t      P>|t|      [0.025      0.975]
+                    coef    std err          t      P>|t|      [0.025      0.975]
     ------------------------------------------------------------------------------
     educ           0.0986      0.002     39.879      0.000       0.094       0.103
     exper          0.1018      0.009     10.737      0.000       0.083       0.120
@@ -250,7 +252,8 @@ def get_pols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
     Returns
     -------
-    PooledOLS model
+    Any
+        PooledOLS model
     """
 
     if Y.empty or X.empty:
@@ -283,7 +286,8 @@ def get_re(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
     Returns
     -------
-    RandomEffects model
+    Any
+        RandomEffects model
     """
 
     if X.empty or Y.empty:
@@ -316,7 +320,8 @@ def get_bols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
     Returns
     -------
-    BetweenOLS model
+    Any
+        BetweenOLS model
     """
     if Y.empty or X.empty:
         model = None
@@ -357,7 +362,8 @@ def get_fe(
 
     Returns
     -------
-    PanelOLS model with Fixed Effects
+    Any
+        PanelOLS model with Fixed Effects
     """
     if X.empty or Y.empty:
         model = None
@@ -396,7 +402,8 @@ def get_fdols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
     Returns
     -------
-    First Difference OLS model
+    Any
+        First Difference OLS model
     """
     if X.empty or Y.empty:
         model = None
@@ -425,7 +432,8 @@ def get_comparison(regressions: Dict, export: str = ""):
 
     Returns
     -------
-    Returns a PanelModelComparison which shows an overview of the different regression results.
+    dict
+        Returns a PanelModelComparison which shows an overview of the different regression results.
     """
     comparison = {}
 

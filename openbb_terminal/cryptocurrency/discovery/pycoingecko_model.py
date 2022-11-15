@@ -113,6 +113,13 @@ def read_file_data(file_name: str) -> dict:
 
 @log_start_end(log=logger)
 def get_categories_keys() -> List[str]:
+    """Get list of categories keys
+
+    Returns
+    -------
+    List[str]
+        List of categories keys
+    """
     categories = read_file_data("coingecko_categories.json")
     return list(categories.keys())
 
@@ -140,7 +147,7 @@ def get_coins(
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         N coins
     """
     client = CoinGeckoAPI()
@@ -206,9 +213,10 @@ def get_gainers_or_losers(
         One from {14d,1h,1y,200d,24h,30d,7d}
     typ: str
         Either "gainers" or "losers"
+
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Top Gainers / Top Losers - coins which gain/lost most in price in given period of time.
         Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
     """
@@ -314,7 +322,7 @@ def get_trending_coins() -> pd.DataFrame:
 
     Returns
     -------
-    pandas.DataFrame:
+    pd.DataFrame
         Trending Coins
     """
     client = CoinGeckoAPI()
@@ -333,7 +341,7 @@ def get_coin_list() -> pd.DataFrame:
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Coins available on CoinGecko
         Columns: id, symbol, name
     """

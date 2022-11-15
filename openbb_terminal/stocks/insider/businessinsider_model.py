@@ -25,7 +25,7 @@ def get_insider_activity(symbol: str) -> pd.DataFrame:
     Returns
     -------
     df_insider : pd.DataFrame
-        Get insider activity data
+        Insider activity data
     """
     url_market_business_insider = (
         f"https://markets.businessinsider.com/stocks/{symbol.lower()}-stock"

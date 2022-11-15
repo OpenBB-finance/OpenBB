@@ -63,7 +63,7 @@ def show_macro_data(
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
 
     Returns
-    ----------
+    -------
     Plots the Series.
     """
 
@@ -175,7 +175,7 @@ def show_treasuries(
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
 
     Returns
-    ----------
+    -------
     Plots the Treasury Series.
     """
 
@@ -236,7 +236,7 @@ def show_treasury_maturities():
     """Get treasury maturity options [Source: EconDB]
 
     Returns
-    ----------
+    -------
     A table containing the instruments and maturities.
     """
 

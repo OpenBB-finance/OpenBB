@@ -51,8 +51,8 @@ def make_request(params: Optional[dict] = None) -> Tuple[Optional[int], Any]:
 
     Returns
     -------
-    dict:
-        response from api request
+    Tuple[Optional[int], Any]
+        status code, response from api request
     """
 
     api_key = cfg.API_WHALE_ALERT_KEY or ""

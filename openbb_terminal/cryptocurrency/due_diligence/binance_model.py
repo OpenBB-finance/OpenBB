@@ -80,7 +80,7 @@ def get_binance_available_quotes_for_each_coin() -> dict:
 
     Returns
     -------
-    dict:
+    dict
         All quote assets for given coin
         {'ETH' : ['BTC', 'USDT' ...], 'UNI' : ['ETH', 'BTC','BUSD', ...]
 
@@ -95,7 +95,13 @@ def get_binance_available_quotes_for_each_coin() -> dict:
 @log_start_end(log=logger)
 @check_api_key(["API_BINANCE_KEY", "API_BINANCE_SECRET"])
 def check_valid_binance_str(symbol: str) -> str:
-    """Check if symbol is in defined binance. [Source: Binance]"""
+    """Check if symbol is in defined binance. [Source: Binance]
+
+    Returns
+    -------
+    str
+        Symbol
+    """
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
     try:
         client.get_avg_price(symbol=symbol.upper())
@@ -116,15 +122,14 @@ def show_available_pairs_for_given_symbol(
 
     Parameters
     ----------
-    symbol:
+    symbol: str
         Uppercase symbol of coin e.g BTC, ETH, UNI, LUNA, DOT ...
 
     Returns
     -------
-    str:
-        Coin symbol
-    list:
-        Quoted assets for given symbol: ["BTC", "USDT" , "BUSD"]
+    Tuple[Union[str, None], list]
+        Tuple of symbol,
+        list of quoted assets for given symbol: ["BTC", "USDT" , "BUSD"]
     """
 
     symbol_upper = symbol.upper()
@@ -146,7 +151,6 @@ def get_order_book(
 
     Parameters
     ----------
-
     from_symbol: str
         Cryptocurrency symbol
     limit: int
