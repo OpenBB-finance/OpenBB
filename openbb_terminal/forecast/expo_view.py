@@ -45,7 +45,7 @@ def display_expo_forecast(
         Data to forecast
     dataset_name str
         The name of the ticker to be predicted
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     trend: str
         Trend component.  One of [N, A, M]
