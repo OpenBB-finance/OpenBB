@@ -9,7 +9,6 @@ from PIL import Image
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import finviz_model
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -120,7 +119,6 @@ def display_spectrum(group: str = "sector", export: str = ""):
         Format to export data
     """
     finviz_model.get_spectrum_data(group)
-    console.print("")
 
     group = finviz_model.GROUPS[group]
     img = Image.open(group + ".jpg")
