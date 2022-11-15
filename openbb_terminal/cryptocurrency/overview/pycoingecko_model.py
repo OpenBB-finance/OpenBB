@@ -109,7 +109,7 @@ def get_holdings_overview(endpoint: str = "bitcoin") -> List[Union[str, pd.DataF
 
     Returns
     -------
-    List[Union[str, pd.DataFrame]]:
+    List[Union[str, pd.DataFrame]]
         - str:              Overall statistics
         - pd.DataFrame: Companies holding crypto
     """
