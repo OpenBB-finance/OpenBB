@@ -152,6 +152,6 @@ def get_mstl_data(
         ticker_series,
         historical_fcast,
         forecast,
-        precision,
+        float(precision),
         fcst,
     )

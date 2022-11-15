@@ -145,6 +145,6 @@ def get_autoets_data(
         ticker_series,
         historical_fcast_ets,
         forecast,
-        precision,
+        float(precision),
         fcst,
     )

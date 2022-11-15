@@ -42,7 +42,7 @@ def get_autoselect_data(
     Optional[List[type[TimeSeries]]],
     Optional[float],
     Optional[StatsForecast],
-    Union[int, str],
+    Optional[Union[int, str]],
 ]:
 
     """Performs Automatic Statistical forecasting
