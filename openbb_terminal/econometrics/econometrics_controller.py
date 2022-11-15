@@ -5,40 +5,42 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from itertools import chain
 import os
+from itertools import chain
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 import numpy as np
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-import openbb_terminal.econometrics.regression_model
-import openbb_terminal.econometrics.regression_view
-from openbb_terminal.core.config.paths import USER_CUSTOM_IMPORTS_DIRECTORY
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
+from openbb_terminal.common import common_model
+from openbb_terminal.core.config.paths import (
+    USER_CUSTOM_IMPORTS_DIRECTORY,
+    USER_EXPORTS_DIRECTORY,
+)
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    check_positive,
-    check_positive_float,
-    NO_EXPORT,
-    EXPORT_ONLY_FIGURES_ALLOWED,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    export_data,
+from openbb_terminal.econometrics import (
+    econometrics_model,
+    econometrics_view,
+    regression_model,
+    regression_view,
 )
 from openbb_terminal.helper_funcs import (
-    print_rich_table,
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_FIGURES_ALLOWED,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    NO_EXPORT,
     check_list_values,
+    check_positive,
+    check_positive_float,
+    export_data,
+    print_rich_table,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
-from openbb_terminal.econometrics import econometrics_model, econometrics_view
-from openbb_terminal.common import common_model
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -87,6 +89,19 @@ class EconometricsController(BaseController):
         "area",
         "pie",
         "hexbin",
+    ]
+
+    PANEL_CHOICES = [
+        "pols",
+        "re",
+        "bols",
+        "fe",
+        "fdols",
+        "POLS",
+        "RE",
+        "BOLS",
+        "FE",
+        "FDOLS",
     ]
     PATH = "/econometrics/"
 
@@ -170,7 +185,7 @@ class EconometricsController(BaseController):
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
-
+            choices["panel"]["-r"] = {c: {} for c in self.PANEL_CHOICES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
@@ -262,13 +277,11 @@ class EconometricsController(BaseController):
         mt.add_cmd("bpag", self.files and self.regression["OLS"]["model"])
 
         console.print(text=mt.menu_text, menu="Econometrics")
+        console.print()
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        if self.files:
-            load_files = [f"load -f {file}" for file in self.files]
-            return ["econometrics"] + load_files
-        return []
+        return ["econometrics"]
 
     def update_loaded(self):
         self.list_dataset_cols = []
@@ -355,7 +368,7 @@ class EconometricsController(BaseController):
 
                 if not file:
                     console.print(
-                        "[red]The file/dataset selected does not exist.[/red]\n"
+                        "[red]The file/dataset selected does not exist.[/red]"
                     )
                     return
             else:
@@ -372,7 +385,7 @@ class EconometricsController(BaseController):
             # check if this dataset has been added already
             if alias in self.files:
                 console.print(
-                    "[red]The file/dataset selected has already been loaded.[/red]\n"
+                    "[red]The file/dataset selected has already been loaded.[/red]"
                 )
                 return
 
@@ -387,8 +400,6 @@ class EconometricsController(BaseController):
                 self.update_runtime_choices()
 
                 self.update_loaded()
-
-                console.print()
 
     @log_start_end(log=logger)
     def call_export(self, other_args: List[str]):
@@ -1189,6 +1200,13 @@ class EconometricsController(BaseController):
             ),
             required="-h" not in other_args,
         )
+        parser.add_argument(
+            "--no-output",
+            action="store_true",
+            default=False,
+            help="Hide the output of the regression",
+            dest="no_output",
+        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
@@ -1204,15 +1222,25 @@ class EconometricsController(BaseController):
                 )
             elif ns_parser.dependent in self.choices["regressions"]:
                 (
-                    self.regression["OLS"]["data"],
-                    self.regression["OLS"]["dependent"],
-                    self.regression["OLS"]["independent"],
-                    self.regression["OLS"]["model"],
-                ) = openbb_terminal.econometrics.regression_model.get_ols(
+                    regression_df,
+                    dependent_variable,
+                    independent_variables,
+                ) = regression_model.get_regression_data(
                     [ns_parser.dependent] + ns_parser.independent,
                     self.datasets,
-                    export=ns_parser.export,
+                    "OLS",
                 )
+                self.regression["OLS"]["data"] = regression_df
+                self.regression["OLS"]["dependent"] = dependent_variable
+                self.regression["OLS"]["independent"] = independent_variables
+                model = regression_model.get_ols(
+                    regression_df[dependent_variable],
+                    regression_df[independent_variables],
+                )
+                self.regression["OLS"]["model"] = model
+                if not ns_parser.no_output:
+                    console.print(model.summary())
+
             else:
                 console.print(
                     f"{ns_parser.dependent} not in {','.join(self.choices['regressions'])}\n"
@@ -1273,7 +1301,7 @@ class EconometricsController(BaseController):
             else:
                 return console.print(f"Can not find {dataset}. Did you load the data?")
 
-            return econometrics_view.display_norm(
+            econometrics_view.display_norm(
                 data, dataset, column, ns_parser.plot, ns_parser.export
             )
 
@@ -1386,18 +1414,7 @@ class EconometricsController(BaseController):
             "-r",
             "--regression",
             type=str,
-            choices=[
-                "pols",
-                "re",
-                "bols",
-                "fe",
-                "fdols",
-                "POLS",
-                "RE",
-                "BOLS",
-                "FE",
-                "FDOLS",
-            ],
+            choices=self.PANEL_CHOICES,
             dest="type",
             help="The type of regression you wish to perform. This can be either pols (Pooled OLS), "
             "re (Random Effects), bols (Between OLS), fe (Fixed Effects) or fdols (First Difference OLS)",
@@ -1459,7 +1476,7 @@ class EconometricsController(BaseController):
                             )
 
                     # Ensure that OLS is always ran to be able to perform tests
-                    regression_types = ["OLS", ns_parser.type.upper()]
+                    regression_types = [ns_parser.type.upper(), "OLS"]
 
                     for regression in regression_types:
                         regression_name = regression
@@ -1470,18 +1487,29 @@ class EconometricsController(BaseController):
                                 regression_name = regression_name + "_IE"
 
                         (
-                            self.regression[regression_name]["data"],
-                            self.regression[regression_name]["dependent"],
-                            self.regression[regression_name]["independent"],
-                            self.regression[regression_name]["model"],
-                        ) = openbb_terminal.econometrics.regression_view.display_panel(
+                            regression_df,
+                            dependent_variable,
+                            independent_variables,
+                        ) = regression_model.get_regression_data(
+                            [ns_parser.dependent] + ns_parser.independent,
                             self.datasets,
-                            regression_vars,
+                            regression,
+                        )
+                        self.regression[regression]["data"] = regression_df
+                        self.regression[regression]["dependent"] = dependent_variable
+                        self.regression[regression][
+                            "independent"
+                        ] = independent_variables
+                        self.regression[regression_name][
+                            "model"
+                        ] = regression_view.display_panel(
+                            regression_df[dependent_variable],
+                            regression_df[independent_variables],
                             regression,
                             ns_parser.entity_effects,
                             ns_parser.time_effects,
+                            ns_parser.export,
                         )
-                        console.print()
             else:
                 console.print(
                     f"{ns_parser.dependent} not in {','.join(self.choices['regressions'])}\n"
@@ -1501,9 +1529,7 @@ class EconometricsController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            openbb_terminal.econometrics.regression_model.get_comparison(
-                self.regression, ns_parser.export
-            )
+            regression_model.get_comparison(self.regression, ns_parser.export)
             console.print()
 
     @log_start_end(log=logger)
@@ -1538,9 +1564,9 @@ class EconometricsController(BaseController):
                 dependent_variable = self.regression["OLS"]["data"][
                     self.regression["OLS"]["dependent"]
                 ]
-                openbb_terminal.econometrics.regression_view.display_dwat(
+                regression_view.display_dwat(
+                    self.regression["OLS"]["model"],
                     dependent_variable,
-                    self.regression["OLS"]["model"].resid,
                     ns_parser.plot,
                     ns_parser.export,
                 )
@@ -1578,7 +1604,7 @@ class EconometricsController(BaseController):
                     "Perform an OLS regression before estimating the Breusch-Godfrey statistic.\n"
                 )
             else:
-                openbb_terminal.econometrics.regression_view.display_bgod(
+                regression_view.display_bgod(
                     self.regression["OLS"]["model"], ns_parser.lags, ns_parser.export
                 )
 
@@ -1590,7 +1616,7 @@ class EconometricsController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="bpag",
             description=(
-                "Show Breusch-Pagan heteroscedasticity test results."
+                "Show Breusch-Pagan heteroscedasticity test results. "
                 "Needs OLS to be run in advance with independent and dependent variables"
             ),
         )
@@ -1605,7 +1631,7 @@ class EconometricsController(BaseController):
                     "Perform an OLS regression before estimating the Breusch-Pagan statistic.\n"
                 )
             else:
-                openbb_terminal.econometrics.regression_view.display_bpag(
+                regression_view.display_bpag(
                     self.regression["OLS"]["model"], ns_parser.export
                 )
 
@@ -1626,6 +1652,7 @@ class EconometricsController(BaseController):
             "by the second time series.",
             type=str,
             dest="ts",
+            metavar="Available time series",
         )
         parser.add_argument(
             "-l",
@@ -1708,24 +1735,24 @@ class EconometricsController(BaseController):
         if ns_parser:
 
             if ns_parser.ts:
-
+                # We are going to pass through a variable number of series, so datasets will be a list of series
                 if len(ns_parser.ts) > 1:
-                    datasets = {}
-                    for stock in ns_parser.ts:
-                        if "." not in stock:
+                    datasets = []
+                    for series in ns_parser.ts:
+                        if "." not in series:
                             console.print(
                                 "[red]Invalid time series format. Should be dataset.column, "
                                 "e.g. historical.open[/red]\n"
                             )
                         else:
-                            dataset, column = stock.split(".")
-                            datasets[stock] = self.datasets[dataset][column]
+                            dataset, column = series.split(".")
+                            datasets.append(self.datasets[dataset][column])
 
                     econometrics_view.display_cointegration_test(
-                        datasets,
-                        ns_parser.significant,
-                        ns_parser.plot,
-                        ns_parser.export,
+                        *datasets,
+                        significant=ns_parser.significant,
+                        plot=ns_parser.plot,
+                        export=ns_parser.export,
                     )
 
                 else:
