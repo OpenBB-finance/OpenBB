@@ -19,8 +19,6 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def show_available_pairs_for_given_symbol(symbol: str = "ETH") -> Tuple[str, list]:
-    pairs = make_coinbase_request("/products")
-    df = pd.DataFrame(pairs)[["base_currency", "quote_currency"]]
     """Return all available quoted assets for given symbol. [Source: Coinbase]
 
     Parameters
@@ -33,6 +31,8 @@ def show_available_pairs_for_given_symbol(symbol: str = "ETH") -> Tuple[str, lis
     Tuple[str, list]
         Symbol and list of available pairs
     """
+    pairs = make_coinbase_request("/products")
+    df = pd.DataFrame(pairs)[["base_currency", "quote_currency"]]
 
     if not isinstance(symbol, str):
         console.print(
