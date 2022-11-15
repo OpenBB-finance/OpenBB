@@ -29,20 +29,8 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
 )
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.cryptocurrency.due_diligence import (
-    pycoingecko_model,
-    coinpaprika_model,
-)
-from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import get_coin_list
-from openbb_terminal.cryptocurrency.overview.coinpaprika_model import get_list_of_coins
-from openbb_terminal.cryptocurrency.due_diligence.binance_model import (
-    check_valid_binance_str,
-    show_available_pairs_for_given_symbol,
-)
-
+from openbb_terminal.cryptocurrency.due_diligence import pycoingecko_model
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.cryptocurrency.due_diligence import coinbase_model
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -690,7 +678,7 @@ def find(
     """
 
     if source == "CoinGecko":
-        coins_df = get_coin_list()
+        coins_df = pycoingecko_model.get_coin_list()
         coins_list = coins_df[key].to_list()
         if key in ["symbol", "id"]:
             query = query.lower()
