@@ -54,7 +54,6 @@ class Trailmap:
 
         for key, func in zip(["model", "view"], [self.model, self.view]):
             if func:
-                print(f"Getting docstrings for {func}")
                 module_path, function_name = func.rsplit(".", 1)
                 module = importlib.import_module(module_path)
                 self.func_attr[key] = getattr(module, function_name)
