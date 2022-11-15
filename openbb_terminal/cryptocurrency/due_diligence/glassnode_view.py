@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 def display_active_addresses(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -56,6 +56,9 @@ def display_active_addresses(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_addresses = get_active_addresses(symbol, interval, start_date, end_date)
 
@@ -94,7 +97,7 @@ def display_active_addresses(
 def display_non_zero_addresses(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -114,6 +117,9 @@ def display_non_zero_addresses(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_addresses = get_non_zero_addresses(symbol, start_date, end_date)
 
@@ -153,7 +159,7 @@ def display_exchange_net_position_change(
     symbol: str,
     exchange: str = "binance",
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -177,6 +183,9 @@ def display_exchange_net_position_change(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_addresses = get_exchange_net_position_change(
         symbol, exchange, start_date, end_date
@@ -231,7 +240,7 @@ def display_exchange_balances(
     symbol: str,
     exchange: str = "binance",
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     percentage: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -258,6 +267,9 @@ def display_exchange_balances(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_balance = get_exchange_balances(symbol, exchange, start_date, end_date)
 
@@ -307,7 +319,7 @@ def display_exchange_balances(
 def display_hashrate(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -330,6 +342,9 @@ def display_hashrate(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df = get_hashrate(symbol, interval, start_date, end_date)
 
