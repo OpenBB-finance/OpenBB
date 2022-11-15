@@ -143,6 +143,8 @@ class ComparisonAnalysisController(BaseController):
                 "-t": "--timeframe",
                 "--quarter": {},
                 "-q": "--quarter",
+                "--export": {x: {} for x in ["csv", "json", "xlsx"]},
+                "-e": "--export",
             }
             choices["income"] = statements
             choices["balance"] = statements
@@ -647,6 +649,7 @@ class ComparisonAnalysisController(BaseController):
                 symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -719,6 +722,7 @@ class ComparisonAnalysisController(BaseController):
                 symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -758,6 +762,7 @@ class ComparisonAnalysisController(BaseController):
                 symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
