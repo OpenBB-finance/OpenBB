@@ -556,3 +556,4 @@ keys.shroom,openbb_terminal.keys_model.set_shroom_key,
 futures.search,openbb_terminal.futures.yfinance_model.get_search_futures,openbb_terminal.futures.yfinance_view.display_search
 futures.historical,openbb_terminal.futures.yfinance_model.get_historical_futures,openbb_terminal.futures.yfinance_view.display_historical
 futures.curve,openbb_terminal.futures.yfinance_model.get_curve_futures,openbb_terminal.futures.yfinance_view.display_curve
+economy.get_groups,openbb_terminal.economy.finviz_model.get_groups

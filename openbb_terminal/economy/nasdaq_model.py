@@ -20,8 +20,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_economic_calendar(
     countries: Union[List[str], str] = "",
-    start_date: str = dt.now().strftime("%Y-%m-%d"),
-    end_date: str = dt.now().strftime("%Y-%m-%d"),
+    start_date: str = None,
+    end_date: str = None,
 ) -> pd.DataFrame:
     """Get economic calendar for countries between specified dates
 
@@ -39,6 +39,13 @@ def get_economic_calendar(
     pd.DataFrame
         Economic calendar
     """
+
+    if start_date is None:
+        start_date = dt.now().strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = dt.now().strftime("%Y-%m-%d")
+
     if countries == "":
         countries = []
     if isinstance(countries, str):

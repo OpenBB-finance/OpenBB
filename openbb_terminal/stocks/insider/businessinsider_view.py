@@ -32,7 +32,7 @@ register_matplotlib_converters()
 def insider_activity(
     data: pd.DataFrame,
     symbol: str,
-    start_date: str = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
+    start_date: str = None,
     interval: str = "1440min",
     limit: int = 10,
     raw: bool = False,
@@ -48,7 +48,7 @@ def insider_activity(
     symbol: str
         Due diligence ticker symbol
     start_date: str
-        Start date of the stock data
+        Initial date (e.g., 2021-10-01). Defaults to 3 years back
     interval: str
         Stock data interval
     limit: int
@@ -60,6 +60,10 @@ def insider_activity(
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+
     df_ins = businessinsider_model.get_insider_activity(symbol)
 
     if df_ins.empty:
