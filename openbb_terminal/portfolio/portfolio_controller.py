@@ -1326,11 +1326,11 @@ class PortfolioController(BaseController):
                     portfolio_view.display_volatility(self.portfolio, ns_parser.export)
                 elif ns_parser.metric == "sharpe":
                     portfolio_view.display_sharpe_ratio(
-                        self.portfolio, ns_parser.risk_free_rate, ns_parser.export
+                        self.portfolio, ns_parser.risk_free_rate / 100, ns_parser.export
                     )
                 elif ns_parser.metric == "sortino":
                     portfolio_view.display_sortino_ratio(
-                        self.portfolio, ns_parser.risk_free_rate, ns_parser.export
+                        self.portfolio, ns_parser.risk_free_rate / 100, ns_parser.export
                     )
                 elif ns_parser.metric == "maxdrawdown":
                     portfolio_view.display_maximum_drawdown_ratio(
@@ -1358,7 +1358,7 @@ class PortfolioController(BaseController):
                     )
                 elif ns_parser.metric == "jensens":
                     portfolio_view.display_jensens_alpha(
-                        self.portfolio, ns_parser.risk_free_rate, ns_parser.export
+                        self.portfolio, ns_parser.risk_free_rate / 100, ns_parser.export
                     )
                 elif ns_parser.metric == "calmar":
                     portfolio_view.display_calmar_ratio(
@@ -1456,7 +1456,7 @@ class PortfolioController(BaseController):
                 portfolio_view.display_summary(
                     self.portfolio,
                     ns_parser.period,
-                    ns_parser.risk_free_rate,
+                    ns_parser.risk_free_rate / 100,
                     ns_parser.export,
                 )
 
