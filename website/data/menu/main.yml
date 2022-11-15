@@ -200,8 +200,6 @@ main:
                 ref: /terminal/crypto/defi/gacc
               - name: gdapps
                 ref: /terminal/crypto/defi/gdapps
-              - name: govp
-                ref: /terminal/crypto/defi/govp
               - name: lcsc
                 ref: /terminal/crypto/defi/lcsc
               - name: ldapps
@@ -751,7 +749,7 @@ main:
             ref: terminal/forecast/autoces
           - name: autoets
             ref: terminal/forecast/autoets
-          - name: autoselect 
+          - name: autoselect
             ref: terminal/forecast/autoselect
           - name: brnn
             ref: terminal/forecast/brnn
@@ -1971,8 +1969,6 @@ main:
             sub:
               - name: categories_keys
                 ref: /SDK/crypto/disc/categories_keys
-              - name: cmctop
-                ref: /SDK/crypto/disc/cmctop
               - name: coin_list
                 ref: /SDK/crypto/disc/coin_list
               - name: coins
