@@ -36,7 +36,7 @@ def get_holdings() -> pd.DataFrame:
     """Return Robinhood holdings
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Robinhood holdings
     """

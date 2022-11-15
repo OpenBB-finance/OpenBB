@@ -29,7 +29,7 @@ def ema(data: pd.Series, length: int = 50, offset: int = 0) -> pd.DataFrame:
         Length of offset
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe containing prices and EMA
     """
@@ -53,7 +53,7 @@ def sma(data: pd.Series, length: int = 50, offset: int = 0) -> pd.DataFrame:
         Length of offset
 
     Returns
-    ----------
+    -------
     pd.DataFrame
          Dataframe containing prices and SMA
     """
@@ -77,7 +77,7 @@ def wma(data: pd.Series, length: int = 50, offset: int = 0) -> pd.DataFrame:
         Length of offset
 
     Returns
-    ----------
+    -------
     df_ta: pd.DataFrame
         Dataframe containing prices and WMA
     """
@@ -101,7 +101,7 @@ def hma(data: pd.Series, length: int = 50, offset: int = 0) -> pd.DataFrame:
         Length of offset
 
     Returns
-    ----------
+    -------
     df_ta: pd.DataFrame
         Dataframe containing prices and HMA
     """
@@ -125,7 +125,7 @@ def zlma(data: pd.Series, length: int = 50, offset: int = 0) -> pd.DataFrame:
         Length of offset
 
     Returns
-    ----------
+    -------
     df_ta: pd.DataFrame
         Dataframe containing prices and EMA
     """
@@ -146,7 +146,7 @@ def vwap(data: pd.Series, offset: int = 0) -> pd.DataFrame:
     offset: int
         Length of offset
     Returns
-    ----------
+    -------
     df_vwap: pd.DataFrame
         Dataframe with VWAP data
     """

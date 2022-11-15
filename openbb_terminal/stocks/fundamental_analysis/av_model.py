@@ -560,7 +560,7 @@ def color_mscore(value: str) -> str:
         The string value
 
     Returns
-    ----------
+    -------
     new_value : str
         The string formatted with rich color
     """
@@ -580,7 +580,7 @@ def color_zscore_mckee(value: str) -> str:
         The string value
 
     Returns
-    ----------
+    -------
     new_value : str
         The string formatted with rich color
     """

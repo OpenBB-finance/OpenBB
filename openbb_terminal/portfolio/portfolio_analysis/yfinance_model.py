@@ -21,7 +21,7 @@ def get_stocks(symbols: List[str], start: datetime) -> pd.DataFrame:
         First date in stock filtered dataframe
 
     Returns
-    ----------
+    -------
     data : pd.DataFrame
         Historic daily prices for stocks
     """
@@ -52,7 +52,7 @@ def get_dividends(symbols: List[str]) -> pd.DataFrame:
         Tickers to get data for
 
     Returns
-    ----------
+    -------
     data : pd.DataFrame
         Historic dividends for stocks
     """
@@ -75,7 +75,7 @@ def get_market(start: datetime, ticker: str = "SPY") -> pd.DataFrame:
         First date in stock filtered dataframe
 
     Returns
-    ----------
+    -------
     data : pd.DataFrame
         Historic prices for SPY
     """

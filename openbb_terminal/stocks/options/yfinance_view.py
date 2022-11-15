@@ -55,7 +55,7 @@ def header_fmt(header: str) -> str:
         The string to be formatted
 
     Returns
-    ----------
+    -------
     new_header: str
         The clean string to use as a header
     """

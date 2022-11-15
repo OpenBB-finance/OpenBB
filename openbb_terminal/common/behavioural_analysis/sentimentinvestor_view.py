@@ -61,8 +61,6 @@ def display_historical(
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    Returns
-    -------
     """
 
     if start_date is None:

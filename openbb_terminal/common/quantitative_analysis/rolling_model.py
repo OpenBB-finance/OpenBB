@@ -27,9 +27,8 @@ def get_rolling_avg(
 
     Returns
     -------
-    pd.DataFrame:
-        Dataframe of rolling mean
-    pd.DataFrame:
+    Tuple[pd.DataFrame, pd.DataFrame]
+        Dataframe of rolling mean,
         Dataframe of rolling standard deviation
     """
     rolling_mean = data.rolling(window, center=True, min_periods=1).mean()
@@ -53,10 +52,9 @@ def get_spread(
 
     Returns
     -------
-    df_sd: pd.DataFrame
-        Dataframe of rolling standard deviation
-    df_var: pd.DataFrame
-        Dataframe of rolling standard deviation
+    Tuple[pd.DataFrame, pd.DataFrame]
+        Dataframe of rolling standard deviation,
+        Dataframe of rolling variance
     """
     df_sd = ta.stdev(
         close=data,
@@ -87,10 +85,9 @@ def get_quantile(
 
     Returns
     -------
-    df_med : pd.DataFrame
-        Dataframe of median prices over window
-    df_quantile : pd.DataFrame
-        Dataframe of gievn quantile prices over window
+    Tuple[pd.DataFrame, pd.DataFrame]
+        Dataframe of rolling median prices over window,
+        Dataframe of rolling quantile prices over window
     """
     df_med = ta.median(close=data, length=window).dropna()
     df_quantile = ta.quantile(

@@ -22,7 +22,7 @@ def get_news(
     start_date: str = None,
     show_newest: bool = True,
     sources: str = "",
-) -> List[Tuple[Any, Any]]:
+) -> List[Tuple[pd.DataFrame, Any]]:
     """Get news for a given term. [Source: NewsAPI]
 
     Parameters
@@ -37,9 +37,10 @@ def get_news(
         sources to exclusively show news from (comma separated)
 
     Returns
-    ----------
-    tables : List[Tuple]
-        List of tuples containing news df in first index and dict containing title of news df
+    -------
+    tables : List[Tuple[pd.DataFrame, dict]]
+        List of tuples containing news df in first index,
+        dict containing title of news df.
     """
 
     if start_date is None:
@@ -87,7 +88,7 @@ def get_news(
     else:
         console.print(f"Error in request: {response.json()['message']}", "\n")
 
-    tables = []
+    tables: List[Tuple[pd.DataFrame, dict]] = []
     if articles:
         for idx, article in enumerate(articles):
             # Unnecessary to use source name because contained in link article["source"]["name"]

@@ -26,7 +26,7 @@ def load_data_files() -> Dict[str, Path]:
     """Loads files from the misc directory and from the user's custom exports
 
     Returns
-    ----------
+    -------
     Dict[str, Path]
         The dictionary of filenames and their paths
     """

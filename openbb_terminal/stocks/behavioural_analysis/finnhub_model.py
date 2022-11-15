@@ -35,7 +35,7 @@ def get_company_news(
         date to end searching articles, with format YYYY-MM-DD
 
     Returns
-    ----------
+    -------
     articles : List
         term to search on the news articles
     """
@@ -70,7 +70,7 @@ def process_news_headlines_sentiment(
         list of articles with `headline` and `datetime` keys
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Headlines sentiment using VADER model over time
     """

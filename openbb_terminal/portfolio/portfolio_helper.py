@@ -55,7 +55,7 @@ def is_ticker(ticker: str) -> bool:
         The string to be tested
 
     Returns
-    ----------
+    -------
     bool
         Whether the string is a ticker
     """
@@ -73,7 +73,7 @@ def beta_word(beta: float) -> str:
         The beta for a portfolio
 
     Returns
-    ----------
+    -------
     str
         The description of the beta
     """
@@ -98,7 +98,7 @@ def clean_name(name: str) -> str:
         The value to be cleaned
 
     Returns
-    ----------
+    -------
     str
         A cleaned value
     """
@@ -117,7 +117,7 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
         Possible choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         A cleaned value
     """
