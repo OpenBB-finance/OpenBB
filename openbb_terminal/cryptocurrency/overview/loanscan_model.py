@@ -272,9 +272,11 @@ def get_rates(rate_type: str = "borrow") -> pd.DataFrame:
     ----------
     rate_type : str
         Interest rate type: {borrow, supply}. Default: supply
+
     Returns
     -------
-    pandas.DataFrame: crypto interest rates per platform
+    pd.DataFrame
+        crypto interest rates per platform
     """
     if rate_type not in ("supply", "borrow"):
         raise Exception("Rate type not supported. Supported rates: borrow, supply")

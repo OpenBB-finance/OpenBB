@@ -9,17 +9,16 @@ from typing import Any, List
 import numpy as np
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.config_terminal import API_TRADIER_TOKEN
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    valid_date,
     parse_and_split_input,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -42,8 +41,8 @@ from openbb_terminal.stocks.options.hedge import hedge_controller
 from openbb_terminal.stocks.options.pricing import pricing_controller
 from openbb_terminal.stocks.options.screen import (
     screener_controller,
-    syncretism_view,
     syncretism_model,
+    syncretism_view,
 )
 
 # pylint: disable=R1710,C0302,R0916
@@ -52,6 +51,9 @@ from openbb_terminal.stocks.options.screen import (
 #       - At the moment there's too much logic in the controller to implement an
 #         API wrapper. Please refactor functions like 'call_exp'
 
+# TODO: Additional refactoring -- load should bring in a df from the sdk_helpers functions and we can get expirations
+# from there.  Additionally each view function should be made a function that takes the df and plots it instead of
+# getting the new chain
 
 logger = logging.getLogger(__name__)
 
@@ -147,8 +149,8 @@ class OptionsController(BaseController):
             choices["unu"] = {
                 "--sortby": {c: {} for c in self.unu_sortby_choices},
                 "-s": "--sortby",
-                "--ascending": {},
-                "-a": "--ascending",
+                "--reverse": {},
+                "-r": "--reverse",
                 "--puts_only": {},
                 "-p": "--puts_only",
                 "--calls_only": {},
@@ -482,12 +484,16 @@ class OptionsController(BaseController):
             help="Column to sort by.  Vol/OI is the default and typical variable to be considered unusual.",
         )
         parser.add_argument(
-            "-a",
-            "--ascending",
-            dest="ascend",
-            default=False,
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in ascending order",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-p",
@@ -520,7 +526,7 @@ class OptionsController(BaseController):
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     export=ns_parser.export,
-                    ascend=ns_parser.ascend,
+                    ascend=ns_parser.reverse,
                     calls_only=ns_parser.calls_only,
                     puts_only=ns_parser.puts_only,
                 )

@@ -169,7 +169,7 @@ def get_possible_metrics() -> List[str]:
     """This function returns the available metrics.
 
     Returns
-    ----------
+    -------
     List[str]
         A list with the available metrics values.
     """
@@ -181,7 +181,7 @@ def get_project_ids() -> List[str]:
     """This function returns the available project ids.
 
     Returns
-    ----------
+    -------
     List[str]
         A list with the all the project IDs
     """
@@ -244,7 +244,7 @@ def get_description(
 
     Returns
     -------
-    Dict
+    Dict[str, Any]
         Description of the project with fields: 'how', 'who', 'what', 'funding',
         'competition', 'business_model', 'github_contributors'
     """

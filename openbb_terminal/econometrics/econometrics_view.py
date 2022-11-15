@@ -3,27 +3,20 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from itertools import combinations
-from typing import Dict, Optional, List, Union
+from typing import Dict, List, Optional, Union
 
-from matplotlib.units import ConversionError
 import matplotlib.pyplot as plt
 import pandas as pd
+from matplotlib.units import ConversionError
 from pandas.plotting import register_matplotlib_converters
 
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-)
-from openbb_terminal.helper_funcs import (
-    print_rich_table,
-)
-from openbb_terminal.rich_config import console
-from openbb_terminal.econometrics import econometrics_model
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.econometrics import econometrics_model
 from openbb_terminal.econometrics.econometrics_helpers import get_ending
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -137,7 +130,7 @@ def display_norm(
     data: pd.Series,
     dataset: str = "",
     column: str = "",
-    plot: bool = False,
+    plot: bool = True,
     export: str = "",
     external_axes: Optional[List[plt.axes]] = None,
 ):
@@ -284,20 +277,9 @@ def display_granger(
             f"{independent_series.dtype}. Consider using the command 'type' to change this."
         )
     else:
-        granger = econometrics_model.get_granger_causality(
+        granger_df = econometrics_model.get_granger_causality(
             dependent_series, independent_series, lags
         )
-
-        for test in granger[lags][0]:
-            # As ssr_chi2test and lrtest have one less value in the tuple, we fill
-            # this value with a '-' to allow the conversion to a DataFrame
-            if len(granger[lags][0][test]) != 4:
-                pars = granger[lags][0][test]
-                granger[lags][0][test] = (pars[0], pars[1], "-", pars[2])
-
-        granger_df = pd.DataFrame(
-            granger[lags][0], index=["F-test", "P-value", "Count", "Lags"]
-        ).T
 
         print_rich_table(
             granger_df,
@@ -306,7 +288,7 @@ def display_granger(
             title=f"Granger Causality Test [Y: {dependent_series.name} | X: {independent_series.name} | Lags: {lags}]",
         )
 
-        result_ftest = round(granger[lags][0]["params_ftest"][1], 3)
+        result_ftest = round(granger_df.loc["params_ftest"]["P-value"], 3)
 
         if result_ftest > confidence_level:
             console.print(
@@ -330,9 +312,9 @@ def display_granger(
 
 @log_start_end(log=logger)
 def display_cointegration_test(
-    datasets: Union[pd.DataFrame, Dict[str, pd.Series]],
+    *datasets: pd.Series,
     significant: bool = False,
-    plot: bool = False,
+    plot: bool = True,
     export: str = "",
     external_axes: Optional[List[plt.axes]] = None,
 ):
@@ -355,8 +337,8 @@ def display_cointegration_test(
 
     Parameters
     ----------
-    datasets: Union[pd.DataFrame, Dict[str, pd.Series]]
-        All time series to perform co-integration tests on.
+    datasets: pd.Series
+        Variable number of series to test for cointegration
     significant: float
         Show only companies that have p-values lower than this percentage
     plot: bool
@@ -366,81 +348,45 @@ def display_cointegration_test(
     external_axes:Optional[List[plt.axes]]
         External axes to plot on
     """
+    if len(datasets) < 2:
+        console.print("[red]Co-integration requires at least two time series.[/red]")
+        return
 
-    pairs = list(combinations(datasets.keys(), 2))
-    result: Dict[str, list] = {}
-    z_values: Dict[str, pd.Series] = {}
+    df: pd.DataFrame = econometrics_model.get_coint_df(*datasets)
 
-    for x, y in pairs:
-        if sum(datasets[y].isnull()) > 0:
-            console.print(
-                f"The Series {y} has nan-values. Please consider dropping or filling these "
-                f"values with 'clean'."
-            )
-        elif sum(datasets[x].isnull()) > 0:
-            console.print(
-                f"The Series {x} has nan-values. Please consider dropping or filling these "
-                f"values with 'clean'."
-            )
-        elif not datasets[y].index.equals(datasets[x].index):
-            console.print(f"The Series {y} and {x} do not have the same index.")
+    if significant:
+        console.print(
+            f"Only showing pairs that are statistically significant ({significant} > p-value)."
+        )
+        df = df[significant > df["P Value"]]
+        console.print()
+
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=True,
+        index_name="Pairs",
+        title="Cointegration Tests",
+    )
+
+    if plot:
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
-            try:
-                (
-                    c,
-                    gamma,
-                    alpha,
-                    z,
-                    adfstat,
-                    pvalue,
-                ) = econometrics_model.get_engle_granger_two_step_cointegration_test(
-                    datasets[x], datasets[y]
-                )
-                result[f"{x}/{y}"] = [c, gamma, alpha, adfstat, pvalue]
-                z_values[f"{x}/{y}"] = z
-            except ValueError:
-                console.print(
-                    "[red]Error: please only send string and integer columns[/red]\n"
-                )
+            ax = external_axes[0]
 
-    if result and z_values:
-        df = pd.DataFrame.from_dict(
-            result,
-            orient="index",
-            columns=["Constant", "Gamma", "Alpha", "Dickey-Fuller", "P Value"],
-        )
+        z_values = econometrics_model.get_coint_df(*datasets, return_z=True)
 
-        if significant:
-            console.print(
-                f"Only showing pairs that are statistically significant ({significant} > p-value)."
-            )
-            df = df[significant > df["P Value"]]
-            console.print()
+        for pair, values in z_values.items():
+            ax.plot(values, label=pair)
 
-        print_rich_table(
-            df,
-            headers=list(df.columns),
-            show_index=True,
-            index_name="Pairs",
-            title="Cointegration Tests",
-        )
+        ax.legend()
+        ax.set_title("Error correction terms")
 
-        if plot:
-            if external_axes is None:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            else:
-                ax = external_axes[0]
+        theme.style_primary_axis(ax)
 
-            for pair, values in z_values.items():
-                ax.plot(values, label=pair)
-
-            ax.legend()
-            ax.set_title("Error correction terms")
-
-            theme.style_primary_axis(ax)
-
-            if external_axes is None:
-                theme.visualize_output()
+        if external_axes is None:
+            theme.visualize_output()
 
         export_data(
             export,

@@ -1,5 +1,5 @@
 ```
-usage: nft [-l N] [-s {Name,Protocols,Floor Price [$],Avg Price [$],Market Cap [$],Volume [$]}] [--descend] [-l] [--export {csv,json,xlsx}] [-h]
+usage: nft [-l LIMIT] [-s SORTBY [SORTBY ...]] [-h] [--export EXPORT]
 ```
 
 Shows top NFT collections [Source: https://dappradar.com/]

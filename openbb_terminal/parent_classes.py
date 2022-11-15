@@ -243,7 +243,7 @@ class BaseController(metaclass=ABCMeta):
             User input string
 
         Returns
-        -------
+        ----------
         list
             Command queue as list
         """
@@ -300,7 +300,7 @@ class BaseController(metaclass=ABCMeta):
         """Process and dispatch input.
 
         Returns
-        -------
+        ----------
         List[str]
             list of commands in the queue to execute
         """
@@ -693,7 +693,7 @@ class BaseController(metaclass=ABCMeta):
             Add a --limit flag with this number default
 
         Returns
-        -------
+        ----------
         ns_parser:
             Namespace with parsed arguments
         """

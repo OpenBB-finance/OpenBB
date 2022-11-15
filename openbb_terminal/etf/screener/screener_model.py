@@ -51,7 +51,7 @@ def etf_screener(preset: str):
         Screener to use from presets
 
     Returns
-    ----------
+    -------
     df : pd.DataFrame
         Screened dataframe
     """

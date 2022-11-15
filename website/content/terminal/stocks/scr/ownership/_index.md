@@ -14,7 +14,9 @@ optional arguments:
                         Filter presets
   -l LIMIT, --limit LIMIT
                         Limit of stocks to print
-  -a, --ascend          Set order to Ascend, the default is Descend
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is show this help message (default: False)
   -s {Ticker,Market Cap,Outstanding,Float,Insider Own,Insider Trans,Inst Own,Inst Trans,Float Short,Short Ratio,Avg Volume,Price,Change,Volume} [{Ticker,Market Cap,Outstanding,Float,Insider Own,Insider Trans,Inst Own,Inst Trans,Float Short,Short Ratio,Avg Volume,Price,Change,Volume} ...], --sort {Ticker,Market Cap,Outstanding,Float,Insider Own,Insider Trans,Inst Own,Inst Trans,Float Short,Short Ratio,Avg Volume,Price,Change,Volume} [{Ticker,Market Cap,Outstanding,Float,Insider Own,Insider Trans,Inst Own,Inst Trans,Float Short,Short Ratio,Avg Volume,Price,Change,Volume} ...]
                         Sort elements of the table.
   -h, --help            show this help message

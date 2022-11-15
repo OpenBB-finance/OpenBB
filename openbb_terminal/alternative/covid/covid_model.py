@@ -24,7 +24,7 @@ global_deaths_time_series = (
 
 @log_start_end(log=logger)
 def get_global_cases(country: str) -> pd.DataFrame:
-    """Get historical cases for given country
+    """Get historical cases for given country.
 
     Parameters
     ----------
@@ -35,6 +35,21 @@ def get_global_cases(country: str) -> pd.DataFrame:
     -------
     pd.DataFrame
         Dataframe of historical cases
+
+    Examples
+    --------
+
+    >>> df = get_global_cases("United States")
+    Dataframe of historical cases for United States
+
+
+    >>> df = get_global_cases("Portugal")
+    Dataframe of historical cases for Portugal
+
+
+    >>> df = get_global_cases("Spain")
+    Dataframe of historical cases for Spain
+
     """
     cases = pd.read_csv(global_cases_time_series)
     cases = cases.rename(columns={"Country/Region": "Country"})
@@ -53,7 +68,7 @@ def get_global_cases(country: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_global_deaths(country: str) -> pd.DataFrame:
-    """Get historical deaths for given country
+    """Get historical deaths for given country.
 
     Parameters
     ----------
@@ -85,7 +100,7 @@ def get_covid_ov(
     country: str,
     limit: int = 100,
 ) -> pd.DataFrame:
-    """Get historical cases and deaths by country
+    """Get historical cases and deaths by country.
 
     Parameters
     ----------
@@ -93,6 +108,11 @@ def get_covid_ov(
         Country to get data for
     limit: int
         Number of raw data to show
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of historical cases and deaths
     """
     cases = get_global_cases(country)
     deaths = get_global_deaths(country)
@@ -108,7 +128,7 @@ def get_covid_stat(
     stat: str = "cases",
     limit: int = 10,
 ) -> pd.DataFrame:
-    """Show historical cases and deaths by country
+    """Show historical cases and deaths by country.
 
     Parameters
     ----------
@@ -118,6 +138,11 @@ def get_covid_stat(
         Statistic to get.  Either "cases", "deaths" or "rates"
     limit: int
         Number of raw data to show
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of data for given country and statistic
     """
     if stat == "cases":
         data = get_global_cases(country)
@@ -141,7 +166,7 @@ def get_case_slopes(
     threshold: int = 10000,
     ascend: bool = False,
 ) -> pd.DataFrame:
-    """Load cases and find slope over period
+    """Load cases and find slope over period.
 
     Parameters
     ----------
@@ -159,7 +184,6 @@ def get_case_slopes(
     pd.DataFrame
         Dataframe containing slopes
     """
-
     # Ignore the pandas warning for setting a slace with a value
     warnings.filterwarnings("ignore")
     data = pd.read_csv(global_cases_time_series)

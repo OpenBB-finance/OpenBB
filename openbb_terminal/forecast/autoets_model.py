@@ -3,10 +3,11 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Union, Tuple
+from typing import List, Optional, Union, Tuple
 
 import warnings
 import pandas as pd
+from darts import TimeSeries
 from statsforecast.models import ETS
 from statsforecast.core import StatsForecast
 
@@ -30,7 +31,13 @@ def get_autoets_data(
     n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
-) -> Tuple[Any, Any, Any, Any, Any]:
+) -> Tuple[
+    Optional[List[type[TimeSeries]]],
+    Optional[List[type[TimeSeries]]],
+    Optional[List[type[TimeSeries]]],
+    Optional[float],
+    Optional[StatsForecast],
+]:
 
     """Performs Automatic ETS forecasting
     This is a wrapper around StatsForecast ETS;
@@ -43,7 +50,7 @@ def get_autoets_data(
     ----------
     data : Union[pd.Series, np.ndarray]
         Input data.
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     seasonal_periods: int
         Number of seasonal periods in a year (7 for daily data)
@@ -57,15 +64,11 @@ def get_autoets_data(
 
     Returns
     -------
-    list[float]
-        Adjusted Data series
-    list[float]
-        List of historical fcast values
-    list[float]
-        List of predicted fcast values
-    Optional[float]
-        precision
-    Any
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], StatsForecast]
+        Adjusted Data series,
+        List of historical fcast values,
+        List of predicted fcast values,
+        Optional[float] - precision,
         Fit ETS model object.
     """
 
@@ -142,6 +145,6 @@ def get_autoets_data(
         ticker_series,
         historical_fcast_ets,
         forecast,
-        precision,
+        float(precision),
         fcst,
     )

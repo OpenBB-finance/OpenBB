@@ -31,7 +31,7 @@ register_matplotlib_converters()
 def price_target_from_analysts(
     symbol: str,
     data: DataFrame,
-    start_date: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: str = None,
     limit: int = 10,
     raw: bool = False,
     export: str = "",
@@ -46,7 +46,7 @@ def price_target_from_analysts(
     data: DataFrame
         Due diligence stock dataframe
     start_date : str
-        Start date of the stock data
+        Start date of the stock data, format YYYY-MM-DD
     limit : int
         Number of latest price targets from analysts to print
     raw: bool
@@ -56,6 +56,9 @@ def price_target_from_analysts(
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if start_date is None:
+        start_date = datetime.now().strftime("%Y-%m-%d")
 
     df_analyst_data = business_insider_model.get_price_target_from_analysts(symbol)
     if df_analyst_data.empty:
@@ -85,12 +88,8 @@ def price_target_from_analysts(
         if start_date:
             df_analyst_data = df_analyst_data[start_date:]  # type: ignore
 
-        if "Adj Close" in data:
-            plot_column = "Adj Close"
-            legend_price_label = "Adjust Close"
-        else:
-            plot_column = "Close"
-            legend_price_label = "Close"
+        plot_column = "Close"
+        legend_price_label = "Close"
 
         ax.plot(data.index, data[plot_column].values)
 
@@ -117,8 +116,6 @@ def price_target_from_analysts(
 
         if not external_axes:
             theme.visualize_output()
-
-    console.print("")
 
     export_data(
         export,

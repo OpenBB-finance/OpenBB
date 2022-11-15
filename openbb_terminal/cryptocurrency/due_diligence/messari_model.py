@@ -81,8 +81,8 @@ base_url2 = "https://data.messari.io/api/v2/"
 def get_marketcap_dominance(
     symbol: str,
     interval: str = "1d",
-    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: str = None,
+    end_date: str = None,
 ) -> pd.DataFrame:
     """Returns market dominance of a coin over time
     [Source: https://messari.io/]
@@ -104,6 +104,12 @@ def get_marketcap_dominance(
         market dominance percentage over time
     """
 
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     df, _ = get_messari_timeseries(
         symbol=symbol,
         end_date=end_date,
@@ -120,8 +126,8 @@ def get_messari_timeseries(
     symbol: str,
     timeseries_id: str,
     interval: str = "1d",
-    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: str = None,
+    end_date: str = None,
 ) -> Tuple[pd.DataFrame, str]:
     """Returns messari timeseries
     [Source: https://messari.io/]
@@ -141,11 +147,16 @@ def get_messari_timeseries(
 
     Returns
     -------
-    pd.DataFrame
-        messari timeserie over time
-    str
-        timeserie title
+    Tuple[pd.DataFrame, str]
+        Messari timeseries over time,
+        Timeseries title
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     url = base_url + f"assets/{symbol}/metrics/{timeseries_id}/time-series"
 
@@ -280,11 +291,11 @@ def get_tokenomics(symbol: str, coingecko_id: str) -> Tuple[pd.DataFrame, pd.Dat
         Crypto symbol to check tokenomics
     coingecko_id : str
         ID from coingecko
+
     Returns
     -------
-    pd.DataFrame
-        Metric Value tokenomics
-    pd.DataFrame
+    Tuple[pd.DataFrame, pd.DataFrame]
+        Metric Value tokenomics,
         Circulating supply overtime
     """
 
@@ -353,14 +364,11 @@ def get_project_product_info(
 
     Returns
     -------
-    pd.DataFrame
-        Metric, Value with project and technology details
-    pd.DataFrame
-        coin public repos
-    pd.DataFrame
-        coin audits
-    pd.DataFrame
-        coin known exploits/vulns
+    Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]
+        Metric, Value with project and technology details,
+        Coin public repos,
+        Coin audits,
+        Coin known exploits/vulns
     """
 
     url = base_url2 + f"assets/{symbol}/profile"
@@ -420,10 +428,9 @@ def get_team(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     Returns
     -------
-    pd.DataFrame
-        individuals
-    pd.DataFrame
-        organizations
+    Tuple[pd.DataFrame, pd.DataFrame]
+        Individuals,
+        Organizations
     """
 
     url = base_url2 + f"assets/{symbol}/profile"
@@ -496,10 +503,9 @@ def get_investors(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     Returns
     -------
-    pd.DataFrame
-        individuals
-    pd.DataFrame
-        organizations
+    Tuple[pd.DataFrame, pd.DataFrame]
+        Individuals,
+        Organizations
     """
 
     url = base_url2 + f"assets/{symbol}/profile"
@@ -570,9 +576,8 @@ def get_governance(symbol: str) -> Tuple[str, pd.DataFrame]:
 
     Returns
     -------
-    str
-        governance summary
-    pd.DataFrame
+    Tuple[str, pd.DataFrame]
+        Governance summary,
         Metric Value with governance details
     """
 
@@ -643,13 +648,10 @@ def get_fundraising(
 
     Returns
     -------
-    str
-        launch summary
-    pd.DataFrame
-        Sales rounds
-    pd.DataFrame
-        Treasury Accounts
-    pd.DataFrame
+    Tuple[str, pd.DataFrame, pd.DataFrame, pd.DataFrame]
+        Launch summary,
+        Sales rounds,
+        Treasury Accounts,
         Metric Value launch details
     """
 

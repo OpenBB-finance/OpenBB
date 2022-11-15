@@ -25,7 +25,7 @@ def get_collections() -> pd.DataFrame:
     """Get nft collections [Source: https://nftpricefloor.com/]
 
     Parameters
-    -------
+    ----------
 
     Returns
     -------
@@ -47,7 +47,7 @@ def get_floor_price(slug) -> pd.DataFrame:
     """Get nft collections [Source: https://nftpricefloor.com/]
 
     Parameters
-    -------
+    ----------
     slug: str
         nft collection slug
 

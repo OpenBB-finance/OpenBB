@@ -1,4 +1,4 @@
-"""Twitter view"""
+"""Twitter view."""
 __docformat__ = "numpy"
 
 import logging
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_inference(symbol: str, limit: int = 100, export: str = ""):
-    """Infer sentiment from past n tweets
+    """Prints Inference sentiment from past n tweets.
 
     Parameters
     ----------
@@ -84,7 +84,7 @@ def display_sentiment(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot sentiments from symbol
+    """Plots sentiments from symbol
 
     Parameters
     ----------
