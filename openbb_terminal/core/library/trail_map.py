@@ -79,7 +79,7 @@ class TrailMap:
             method_path = view_path
         else:
             raise AttributeError(f"Unknown method : {trail}")
-        
+
         return method_path
 
     def load(self):
