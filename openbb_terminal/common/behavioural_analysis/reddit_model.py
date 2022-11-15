@@ -61,7 +61,7 @@ def get_watchlists(
     Tuple[List[praw.models.reddit.submission.Submission], dict, int]
         List of reddit submissions,
         Dictionary of tickers and their count,
-        Count of how many posts were analyzed
+        Count of how many posts were analyzed.
     """
     d_watchlist_tickers: dict = {}
     l_watchlist_author = []
@@ -339,7 +339,7 @@ def get_spac_community(
     -------
     Tuple[pd.DataFrame, dict]
         Dataframe of reddit submission,
-        Dictionary of tickers and number of mentions
+        Dictionary of tickers and number of mentions.
     """
     praw_api = praw.Reddit(
         client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -900,7 +900,7 @@ def get_posts_about(
     Tuple[pd.DataFrame, list, float]:
         Dataframe of submissions related to the search term,
         List of polarity scores,
-        Average polarity score
+        Average polarity score.
     """
     praw_api = praw.Reddit(
         client_id=cfg.API_REDDIT_CLIENT_ID,

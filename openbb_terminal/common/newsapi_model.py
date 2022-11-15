@@ -38,8 +38,9 @@ def get_news(
 
     Returns
     -------
-    tables : List[Tuple[pd.DataFrame, Any]]
-        List of tuples containing news df in first index and dict containing title of news df
+    tables : List[Tuple[pd.DataFrame, dict]]
+        List of tuples containing news df in first index,
+        dict containing title of news df.
     """
     link = (
         f"https://newsapi.org/v2/everything?q={query}&from={start_date}&sortBy=publishedAt"
@@ -83,7 +84,7 @@ def get_news(
     else:
         console.print(f"Error in request: {response.json()['message']}", "\n")
 
-    tables = []
+    tables: List[Tuple[pd.DataFrame, dict]] = []
     if articles:
         for idx, article in enumerate(articles):
             # Unnecessary to use source name because contained in link article["source"]["name"]

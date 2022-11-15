@@ -143,6 +143,7 @@ def get_top_repos(sortby: str, limit: int = 50, categories: str = "") -> pd.Data
         Check for repo categories. If more than one separate with a comma: e.g., finance,investment. Default: None
     limit : int
         Number of repos to search for
+
     Returns
     -------
     pd.DataFrame
