@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, str_date_to_timestamp
 
 logger = logging.getLogger(__name__)
 
@@ -18,8 +18,8 @@ DAYS = [30, 90, 365]
 @log_start_end(log=logger)
 def get_altcoin_index(
     period: int = 30,
-    start_date: int = int(datetime(2010, 1, 1).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: str = None,
 ) -> pd.DataFrame:
     """Get altcoin index overtime
     [Source: https://blockchaincenter.net]
@@ -30,16 +30,20 @@ def get_altcoin_index(
        Number of days {30,90,365} to check performance of coins and calculate the altcoin index.
        E.g., 365 checks yearly performance, 90 will check seasonal performance (90 days),
        30 will check monthly performance (30 days).
-    start_date : int
-        Initial date timestamp (e.g., 1_609_459_200)
-    end_date : int
-        End date timestamp (e.g., 1_641_588_030)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
 
     Returns
     -------
     pandas.DataFrame:
         Date, Value (Altcoin Index)
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     if period not in DAYS:
         return pd.DataFrame()
     soup = BeautifulSoup(
@@ -62,9 +66,13 @@ def get_altcoin_index(
     df["Date"] = pd.to_datetime(df["Date"])
     df["Value"] = df["Value"].astype(int)
     df = df.set_index("Date")
+
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
+
     df = df[
-        (df.index > datetime.fromtimestamp(start_date))
-        & (df.index < datetime.fromtimestamp(end_date))
+        (df.index > datetime.fromtimestamp(ts_start_date))
+        & (df.index < datetime.fromtimestamp(ts_end_date))
     ]
 
     return df

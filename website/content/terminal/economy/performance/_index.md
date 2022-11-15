@@ -10,7 +10,9 @@ optional arguments:
                         Data group (sector, industry or country) (default: sector)
   -s {Name,Week,Month,3Month,6Month,1Year,YTD,Recom,AvgVolume,RelVolume,Change,Volume}, --sortby {Name,Week,Month,3Month,6Month,1Year,YTD,Recom,AvgVolume,RelVolume,Change,Volume}
                         Column to sort by (default: Name)
-  -a, -ascend           Flag to sort in ascending order (default: False)
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is show this help message (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )

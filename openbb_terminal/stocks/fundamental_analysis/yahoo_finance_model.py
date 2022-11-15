@@ -272,7 +272,7 @@ def get_dividends(symbol: str) -> pd.DataFrame:
 @log_start_end(log=logger)
 def get_mktcap(
     symbol: str,
-    start_date: str = (datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d"),
+    start_date: str = None,
 ) -> Tuple[pd.DataFrame, str]:
     """Get market cap over time for ticker. [Source: Yahoo Finance]
 
@@ -281,7 +281,7 @@ def get_mktcap(
     symbol: str
         Ticker to get market cap over time
     start_date: str
-        Start date to display market cap
+        Initial date (e.g., 2021-10-01). Defaults to 3 years back
 
     Returns
     -------
@@ -290,6 +290,10 @@ def get_mktcap(
     str:
         Currency of ticker
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d")
+
     currency = ""
     df_data = yf.download(symbol, start=start_date, progress=False, threads=False)
     if not df_data.empty:

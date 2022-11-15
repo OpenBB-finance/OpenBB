@@ -58,6 +58,7 @@ kurtosis -w 20
 # raw
 raw
 raw -l 3
+raw --sortby adjclose --reverse
 
 # decompose
 decompose

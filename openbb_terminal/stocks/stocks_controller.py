@@ -140,8 +140,8 @@ class StocksController(StockBaseController):
                 "--sort": {c: {} for c in stocks_helper.CANDLE_SORT},
                 "--plotly": {},
                 "-p": "--plotly",
-                "--descending": {},
-                "-d": "--descending",
+                "--reverse": {},
+                "-r": "--reverse",
                 "--raw": {},
                 "--trend": {},
                 "-t": "--trend",
@@ -412,12 +412,16 @@ class StocksController(StockBaseController):
             help="Choose a column to sort by. Only works when raw data is displayed.",
         )
         parser.add_argument(
-            "-d",
-            "--descending",
+            "-r",
+            "--reverse",
             action="store_true",
-            dest="descending",
+            dest="reverse",
             default=False,
-            help="Sort selected column descending. Only works when raw data is displayed.",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "--raw",
@@ -465,7 +469,7 @@ class StocksController(StockBaseController):
                 qa_view.display_raw(
                     data=self.stock,
                     sortby=ns_parser.sort,
-                    ascend=not ns_parser.descending,
+                    ascend=ns_parser.reverse,
                     limit=ns_parser.limit,
                 )
 

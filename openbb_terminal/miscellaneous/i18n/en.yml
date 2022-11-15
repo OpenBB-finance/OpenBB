@@ -926,6 +926,7 @@ en:
   portfolio/rbeta: rolling beta
   portfolio/_metrics_: Metrics
   portfolio/alloc: allocation on an asset, sector, countries or regions basis
+  portfolio/attrib: display sector attribution of the portfolio compared to the S&P 500
   portfolio/summary: all portfolio vs benchmark metrics for a certain period of choice
   portfolio/metric: portfolio vs benchmark metric for all different periods
   portfolio/perf: performance of the portfolio versus benchmark
@@ -1041,8 +1042,12 @@ en:
   forecast/atr: Add Average True Range
   forecast/signal: Add Price Signal (short vs. long term)
   forecast/_tsforecasting_: TimeSeries Forecasting
+  forecast/autoarima: Automatic ARIMA Model
+  forecast/autoselect: Select best statistical model from AutoARIMA, AutoETS, AutoCES, MSTL, etc.
   forecast/autoces: Automatic Complex Exponential Smoothing Model
   forecast/autoets: Automatic ETS (Error, Trend, Seasonality) Model
+  forecast/mstl: Multiple Seasonalities and Trend using Loess (MSTL) Model
+  forecast/rwd: Random Walk with Drift Model 
   forecast/arima: Arima (Non-darts)
   forecast/expo: Probabilistic Exponential Smoothing
   forecast/theta: Theta Method

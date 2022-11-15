@@ -104,8 +104,8 @@ def display_messari_timeseries_list(
 def display_messari_timeseries(
     symbol: str,
     timeseries_id: str,
-    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: str = None,
+    end_date: str = None,
     interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -130,6 +130,12 @@ def display_messari_timeseries(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df, title = get_messari_timeseries(
         symbol=symbol,
@@ -175,8 +181,8 @@ def display_messari_timeseries(
 @check_api_key(["API_MESSARI_KEY"])
 def display_marketcap_dominance(
     symbol: str,
-    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: str = None,
+    end_date: str = None,
     interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -199,6 +205,12 @@ def display_marketcap_dominance(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df = get_marketcap_dominance(
         symbol=symbol, start_date=start_date, end_date=end_date, interval=interval

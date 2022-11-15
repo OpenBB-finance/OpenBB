@@ -219,7 +219,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     [
         (
             "call_screen",
-            ["-l=10", "-s=NAV", "-a"],
+            ["-l=10", "-s=NAV", "-r"],
             "screener_view.view_screener",
             [],
             dict(

@@ -4,4 +4,5 @@ rs openbb-finance/openbbterminal
 sh openbb-finance/openbbterminal
 tr
 rossidx
+rossidx --sortby Raised [$M] --reverse
 exit

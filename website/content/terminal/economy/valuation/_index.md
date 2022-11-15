@@ -10,7 +10,9 @@ optional arguments:
                         Data group (sector, industry or country) (default: sector)
   -s {Name,MarketCap,P/E,FwdP/E,PEG,P/S,P/B,P/C,P/FCF,EPSpast5Y,EPSnext5Y,Salespast5Y,Change,Volume}, --sortby {Name,MarketCap,P/E,FwdP/E,PEG,P/S,P/B,P/C,P/FCF,EPSpast5Y,EPSnext5Y,Salespast5Y,Change,Volume}
                         Column to sort by (default: Name)
-  -a, -ascend           Flag to sort in ascending order (default: False)
+  -r, --reverse          Data is sorted in descending order by default.
+                         Reverse flag will sort it in an ascending way.
+                         Only works when raw data is show this help message (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )

@@ -14,7 +14,9 @@ optional arguments:
                         Choose category of interest (default: )
   -t {24h,7d,30d,90d,180d,365d}, --timeline {24h,7d,30d,90d,180d,365d}
                         Choose timeline of interest (default: 24h)
-  -a, --ascend          Flag to sort in ascending order (default: False)
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is displayed. (default: False)
   -l LIMIT, --limit LIMIT
                         Display N items (default: 10)
   -h, --help            show this help message (default: False)
@@ -26,4 +28,3 @@ Example:
 ```
 
 <img width="1428" alt="Screenshot 2022-08-29 at 00 07 31" src="https://user-images.githubusercontent.com/25267873/187100287-2d81da1a-0def-49f0-8c1f-fd1b10f40004.png">
-

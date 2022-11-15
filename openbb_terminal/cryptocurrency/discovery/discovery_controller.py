@@ -83,7 +83,8 @@ class DiscoveryController(BaseController):
                 "-c": "--category",
                 "--limit": None,
                 "-l": "--limit",
-                "--descend": {},
+                "--reverse": {},
+                "-r": "--reverse",
                 "--source": {c: {} for c in self.ORDERED_LIST_SOURCES_TOP},
             }
             choices["search"] = {
@@ -95,7 +96,8 @@ class DiscoveryController(BaseController):
                 "-c": "--cat",
                 "--limit": None,
                 "-l": "--limit",
-                "--descend": {},
+                "--reverse": {},
+                "-r": "--reverse",
             }
             choices["nft"] = {
                 "--sort": {c: {} for c in dappradar_model.NFT_COLUMNS},
@@ -185,13 +187,17 @@ class DiscoveryController(BaseController):
             else "CMC_Rank",
         )
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
 
@@ -205,13 +211,13 @@ class DiscoveryController(BaseController):
                     category=ns_parser.category,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
-                    ascend=not ns_parser.descend,
+                    ascend=ns_parser.reverse,
                 )
             elif ns_parser.source == "CoinMarketCap":
                 coinmarketcap_view.display_cmc_top_coins(
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    ascend=not ns_parser.descend,
+                    ascend=ns_parser.reverse,
                     export=ns_parser.export,
                 )
 
@@ -507,54 +513,6 @@ class DiscoveryController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_cmctop(self, other_args):
-        """Process cmctop command"""
-        parser = argparse.ArgumentParser(
-            prog="cmctop",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="This gets the top ranked coins from coinmarketcap.com",
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            default=15,
-            dest="limit",
-            help="Limit of records",
-            type=check_positive,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="column to sort data by.",
-            default="CMC_Rank",
-            choices=coinmarketcap_model.FILTERS,
-        )
-
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=False,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            coinmarketcap_view.display_cmc_top_coins(
-                limit=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
     def call_search(self, other_args):
         """Process search command"""
         parser = argparse.ArgumentParser(
@@ -563,13 +521,12 @@ class DiscoveryController(BaseController):
             prog="search",
             description="""Search over CoinPaprika API
             You can display only N number of results with --limit parameter.
-            You can sort data by id, name , category --sort parameter and also with --descend flag to sort descending.
+            You can sort data by id, name , category --sort parameter and also with --reverse flag to sort descending.
             To choose category in which you are searching for use --cat/-c parameter. Available categories:
             currencies|exchanges|icos|people|tags|all
             Displays:
                 id, name, category""",
         )
-
         parser.add_argument(
             "-q",
             "--query",
@@ -579,7 +536,6 @@ class DiscoveryController(BaseController):
             type=str,
             required="-h" not in other_args,
         )
-
         parser.add_argument(
             "-c",
             "--cat",
@@ -589,7 +545,6 @@ class DiscoveryController(BaseController):
             type=str,
             choices=coinpaprika_model.CATEGORIES,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -598,7 +553,6 @@ class DiscoveryController(BaseController):
             help="Limit of records",
             type=check_positive,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -608,15 +562,18 @@ class DiscoveryController(BaseController):
             default="id",
             choices=coinpaprika_model.FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         if other_args:
             if not other_args[0][0] == "-":
                 other_args.insert(0, "-q")
@@ -628,7 +585,7 @@ class DiscoveryController(BaseController):
             coinpaprika_view.display_search_results(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
                 query=" ".join(ns_parser.query),
                 category=ns_parser.category,
