@@ -144,6 +144,6 @@ def get_seasonalnaive_data(
         ticker_series,
         historical_fcast,
         forecast,
-        precision,
+        float(precision),
         fcst,
     )

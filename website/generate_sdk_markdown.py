@@ -32,7 +32,7 @@ class Trailmap:
     def __init__(self, trailmap: str, model: str, view: Optional[str] = None):
         tmap = trailmap.split(".")
         if len(tmap) == 1:
-            tmap = ["root", tmap[0]]
+            tmap = ["", tmap[0]]
         self.class_attr: str = tmap.pop(-1)
         self.category = tmap[0]
         self.location_path = tmap
@@ -54,7 +54,6 @@ class Trailmap:
 
         for key, func in zip(["model", "view"], [self.model, self.view]):
             if func:
-                print(f"Getting docstrings for {func}")
                 module_path, function_name = func.rsplit(".", 1)
                 module = importlib.import_module(module_path)
                 self.func_attr[key] = getattr(module, function_name)
@@ -62,6 +61,8 @@ class Trailmap:
                 add_juan = 0
                 if "__wrapped__" in dir(self.func_attr[key]):
                     self.func_attr[key] = self.func_attr[key].__wrapped__
+                    if "__wrapped__" in dir(self.func_attr[key]):
+                        self.func_attr[key] = self.func_attr[key].__wrapped__
                     add_juan = 1
                 self.lineon[key] = (
                     inspect.getsourcelines(self.func_attr[key])[1] + add_juan
@@ -122,7 +123,7 @@ def get_trailmaps() -> List[Trailmap]:
                 "[bold red]Forecasting is disabled. Forecasting will not be included in the Generation of Docs[/bold red]"
             )
             continue
-        with open(tmap_csv, "r") as csvfile:
+        with open(tmap_csv) as csvfile:
             reader = csv.reader(csvfile, delimiter=",")
             next(reader)
             for row in reader:

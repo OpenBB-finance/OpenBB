@@ -36,11 +36,11 @@ def get_rnn_data(
     force_reset: bool = True,
     save_checkpoints: bool = True,
 ) -> Tuple[
-    List[TimeSeries],
-    List[TimeSeries],
-    List[TimeSeries],
+    Optional[List[type[TimeSeries]]],
+    Optional[List[type[TimeSeries]]],
+    Optional[List[type[TimeSeries]]],
     Optional[float],
-    type[RNNModel],
+    Optional[type[RNNModel]],
 ]:
     """Perform RNN forecasting
 

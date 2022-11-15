@@ -464,9 +464,9 @@ def get_pl_kwargs(
 def plot_forecast(
     name: str,
     target_col: str,
-    historical_fcast: List[np.ndarray],
-    predicted_values: List[np.ndarray],
-    ticker_series: List[np.ndarray],
+    historical_fcast: type[TimeSeries],
+    predicted_values: type[TimeSeries],
+    ticker_series: type[TimeSeries],
     ticker_name: str,
     data: Union[pd.DataFrame, pd.Series],
     n_predict: int,
@@ -493,7 +493,7 @@ def plot_forecast(
         ax = external_axes[0]
 
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
-    naive_fcast = ticker_series.shift(1)
+    naive_fcast: type[TimeSeries] = ticker_series.shift(1)
     if forecast_only:
         ticker_series = ticker_series.drop_before(historical_fcast.start_time())
     ticker_series.plot(label=target_col, ax=ax)
@@ -654,9 +654,7 @@ def get_series(
             filler.transform(ticker_series)
         ).astype(np.float32)
         return scaler, scaled_ticker_series
-    ticker_series: Union[TimeSeries, List[TimeSeries]] = filler.transform(
-        ticker_series
-    ).astype(np.float32)
+    ticker_series = filler.transform(ticker_series).astype(np.float32)
     scaler = None
     return scaler, ticker_series
 
@@ -750,7 +748,7 @@ def get_prediction(
     console.print(f"{model_name} model obtains MAPE: {precision:.2f}% \n")
 
     # scale back
-    if use_scalers:
+    if use_scalers and isinstance(scaler, Scaler):
         ticker_series = scaler.inverse_transform(ticker_series)
         historical_fcast = scaler.inverse_transform(historical_fcast)
         prediction = scaler.inverse_transform(prediction)
@@ -782,7 +780,7 @@ def check_parser_input(parser: argparse.ArgumentParser, datasets, *args) -> bool
 def plot_residuals(
     model: type[GlobalForecastingModel],
     past_covariates: Optional[str],
-    series: Optional[Union[TimeSeries, List[TimeSeries], List[np.ndarray]]],
+    series: Optional[Union[type[TimeSeries], List[type[TimeSeries]], List[np.ndarray]]],
     forecast_horizon: int = 1,
     num_bins: int = 20,
     default_formatting: bool = False,
