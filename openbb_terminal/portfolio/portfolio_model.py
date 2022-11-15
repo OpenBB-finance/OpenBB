@@ -1138,11 +1138,11 @@ def get_volatility(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
         vals.append(
             [
                 round(
-                    100 * port_rets.std() * (len(port_rets) ** 0.5),
+                    port_rets.std() * (len(port_rets) ** 0.5),
                     3,
                 ),
                 round(
-                    100 * bench_rets.std() * (len(bench_rets) ** 0.5),
+                    bench_rets.std() * (len(bench_rets) ** 0.5),
                     3,
                 ),
             ]
