@@ -23,11 +23,11 @@ def display_bullbear(symbol: str):
         Stock ticker symbol
     """
     watchlist_count, n_cases, n_bull, n_bear = stocktwits_model.get_bullbear(symbol)
-    console.print(f"Watchlist count: {watchlist_count}")
+    console.print(f"[yellow]Watchlist count[/yellow]: {watchlist_count}")
     if n_cases > 0:
         console.print(f"\nLast {n_cases} sentiment messages:")
-        console.print(f"Bullish {round(100*n_bull/n_cases, 2)}%")
-        console.print(f"Bearish {round(100*n_bear/n_cases, 2)}%")
+        console.print(f"[green]Bullish:[/green] {round(100*n_bull/n_cases, 2)}%")
+        console.print(f"[red]Bearish:[/red] {round(100*n_bear/n_cases, 2)}%")
     else:
         console.print("No messages found")
 
