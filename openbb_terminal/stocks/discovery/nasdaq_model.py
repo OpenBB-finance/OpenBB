@@ -49,7 +49,7 @@ def get_retail_tickers() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_dividend_cal(date: str = datetime.today().strftime("%Y-%m-%d")) -> pd.DataFrame:
+def get_dividend_cal(date: str = None) -> pd.DataFrame:
     """Gets dividend calendar for given date.  Date represents Ex-Dividend Date
 
     Parameters
@@ -67,6 +67,9 @@ def get_dividend_cal(date: str = datetime.today().strftime("%Y-%m-%d")) -> pd.Da
     # that you might be using, etc. More exploration is required to make this feature
     # equally usable for all. In the time being we patch selection of the user agent and
     # add a timeout for cases when the URL doesn't respond.
+
+    if date is None:
+        date = datetime.today().strftime("%Y-%m-%d")
 
     ag = get_user_agent()
     # Nasdaq API doesn't like this user agent, thus we always get other than this particular one

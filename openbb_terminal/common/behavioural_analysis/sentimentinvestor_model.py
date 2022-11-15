@@ -19,8 +19,8 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def get_historical(
     symbol: str,
-    start_date: str = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.utcnow().strftime("%Y-%m-%d"),
+    start_date: str = None,
+    end_date: str = None,
     number: int = 100,
 ) -> pd.DataFrame:
     """Get hour-level sentiment data for the chosen symbol
@@ -44,6 +44,12 @@ def get_historical(
     pd.DataFrame
         Dataframe of historical sentiment
     """
+
+    if start_date is None:
+        start_date = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.utcnow().strftime("%Y-%m-%d")
 
     payload: Dict[str, Union[int, str]] = {
         "token": cfg.API_SENTIMENTINVESTOR_TOKEN,
@@ -128,7 +134,7 @@ def check_supported_ticker(symbol: str) -> bool:
 
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def get_trending(
-    start_date: str = datetime.today().strftime("%Y-%m-%d"),
+    start_date: str = None,
     hour: int = 0,
     number: int = 10,
 ) -> pd.DataFrame:
@@ -152,6 +158,9 @@ def get_trending(
     pd.DataFrame
         Dataframe of trending data
     """
+
+    if start_date is None:
+        start_date = datetime.today().strftime("%Y-%m-%d")
 
     # type is datetime
     start_timestamp = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(hours=hour)

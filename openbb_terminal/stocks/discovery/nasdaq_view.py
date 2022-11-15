@@ -50,7 +50,7 @@ def display_top_retail(limit: int = 3, export: str = ""):
 
 @log_start_end(log=logger)
 def display_dividend_calendar(
-    date: str = datetime.today().strftime("%Y-%m-%d"),
+    date: str = None,
     sortby: str = "Dividend",
     ascend: bool = False,
     limit: int = 10,
@@ -61,7 +61,7 @@ def display_dividend_calendar(
     Parameters
     ----------
     date: str
-        Date to get dividend calendar for
+        Date to get dividend calendar for, format YYYY-MM-DD
     sortby: str
         Column to sort data for
     ascend: bool
@@ -71,6 +71,10 @@ def display_dividend_calendar(
     export: str
         Format to export data
     """
+
+    if date is None:
+        date = datetime.today().strftime("%Y-%m-%d")
+
     div_map = {
         "symbol": "Symbol",
         "companyName": "Name",
