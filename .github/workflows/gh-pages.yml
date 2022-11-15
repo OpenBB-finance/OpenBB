@@ -1,5 +1,5 @@
 name: github pages
-on: push
+on: [pull-request, push]
 jobs:
   deploy:
     runs-on: ubuntu-latest
