@@ -52,7 +52,7 @@ def get_theta_data(
     ----------
     data : Union[pd.Series, np.ndarray]
         Input data.
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     seasonal: str
         Seasonal component.  One of [N, A, M]

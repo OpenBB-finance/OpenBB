@@ -63,7 +63,7 @@ def get_tft_data(
     ----------
     data (Union[pd.Series, pd.DataFrame]):
         Input Data
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     n_predict (int, optional):
         Days to predict. Defaults to 5.

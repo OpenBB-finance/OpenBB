@@ -50,7 +50,7 @@ def get_autoarima_data(
     ----------
     data : Union[pd.Series, np.ndarray]
         Input data.
-    target_column (str, optional):
+    target_column: Optional[str]
         Target column to forecast. Defaults to "close".
     seasonal_periods: int
         Number of seasonal periods in a year (7 for daily data)
