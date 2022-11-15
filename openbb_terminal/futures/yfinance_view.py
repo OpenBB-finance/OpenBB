@@ -65,7 +65,7 @@ def display_search(
 def display_historical(
     symbols: List[str],
     expiry: str = "",
-    start_date: str = (datetime.now() - timedelta(days=3 * 365)).strftime("%Y-%m-%d"),
+    start_date: str = None,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -87,6 +87,10 @@ def display_historical(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=3 * 365)).strftime("%Y-%m-%d")
+
     symbols_validated = list()
     for symbol in symbols:
         if symbol in yfinance_model.FUTURES_DATA["Ticker"].unique().tolist():

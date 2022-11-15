@@ -217,11 +217,9 @@ def search(
 
 def load(
     symbol: str,
-    start_date: Optional[Union[datetime, str]] = (
-        datetime.now() - timedelta(days=1100)
-    ).strftime("%Y-%m-%d"),
+    start_date: Optional[Union[datetime, str]] = None,
     interval: int = 1440,
-    end_date: Optional[Union[datetime, str]] = datetime.now().strftime("%Y-%m-%d"),
+    end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
     iexrange: str = "ytd",
@@ -287,6 +285,13 @@ def load(
     df_stock_candidate: pd.DataFrame
         Dataframe of data
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
 
@@ -438,11 +443,9 @@ def display_candle(
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = "",
-    start_date: Optional[Union[datetime, str]] = (
-        datetime.today() - timedelta(days=1100)
-    ).strftime("%Y-%m-%d"),
+    start_date: Optional[Union[datetime, str]] = None,
     interval: int = 1440,
-    end_date: Optional[Union[datetime, str]] = datetime.today().strftime("%Y-%m-%d"),
+    end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
     iexrange: str = "ytd",
@@ -497,6 +500,13 @@ def display_candle(
     yscale: str
         Linear or log for yscale
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
 

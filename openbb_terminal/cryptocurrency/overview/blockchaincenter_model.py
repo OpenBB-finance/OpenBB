@@ -19,7 +19,7 @@ DAYS = [30, 90, 365]
 def get_altcoin_index(
     period: int = 30,
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
 ) -> pd.DataFrame:
     """Get altcoin index overtime
     [Source: https://blockchaincenter.net]
@@ -40,6 +40,10 @@ def get_altcoin_index(
     pandas.DataFrame:
         Date, Value (Altcoin Index)
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     if period not in DAYS:
         return pd.DataFrame()
     soup = BeautifulSoup(
