@@ -3,10 +3,10 @@ __docformat__ = "numpy"
 
 import logging
 import textwrap
+from typing import Tuple, Optional, Any
 
 import pandas as pd
 from dateutil import parser
-from typing import Tuple, Optional, Any
 
 from openbb_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 from openbb_terminal.decorators import log_start_end
