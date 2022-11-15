@@ -72,6 +72,8 @@ disable_lines = "# flake8: noqa\r# pylint: disable=C0301,R0902,R0903\r"
 class Trailmap:
     def __init__(self, trailmap: str, model: str, view: Optional[str] = None):
         tmap = trailmap.split(".")
+        if len(tmap) == 1:
+            tmap = ["root", tmap[0]]
         self.class_attr: str = tmap.pop(-1)
         self.category = tmap[0]
         self.location_path = tmap
@@ -121,7 +123,7 @@ class Trailmap:
         """Creates the function definition to be used in SDK docs."""
         funcspec = inspect.getfullargspec(self.func_attr[key])
 
-        definition = f"def {getattr(self, f'{key}_func').split('.')[-1]}("
+        definition = ""
         added_comma = False
         for arg in funcspec.args:
             annotation = (
@@ -135,6 +137,7 @@ class Trailmap:
                     .replace("typing.", "")
                     .replace("pandas.core.frame.", "pd.")
                     .replace("pandas.core.series.", "pd.")
+                    .replace("openbb_terminal.portfolio.", "")
                 )
             definition += f"{arg}: {annotation}, "
             added_comma = True
@@ -149,7 +152,7 @@ class Trailmap:
             and funcspec.annotations["return"] is not None
             else "None"
         )
-        definition = f"{definition }) -> {return_def}:"
+        definition = f"def {getattr(self, f'{key}_func').split('.')[-1]}({definition }) -> {return_def}"
         return definition
 
 
@@ -532,8 +535,15 @@ class BuildCategoryModelClasses:
 
             sdk_funcs = "\r".join(sdk_init_funcs.splitlines())
             f.write(
-                f'{get_sdk_imports_text()}class OpenBBSDK:\r    """OpenBB SDK Class."""\r\r{sdk_funcs}'
+                f'{get_sdk_imports_text()}class OpenBBSDK:\r    """OpenBB SDK Class.\r'
             )
+            root_attrs = self.categories.pop("")
+            if root_attrs:
+                self.write_class_attr_docs(root_attrs, f)
+                f.write(sdk_funcs)
+                self.write_class_attributes(root_attrs, f)
+            else:
+                f.write(sdk_funcs)
 
             for category in self.categories:
                 self.write_class_property(category, f)
@@ -550,7 +560,7 @@ class BuildCategoryModelClasses:
     def build(self) -> None:
         """Builds the SDK."""
         for category, d in self.categories.items():
-            if isinstance(d, Trailmap):
+            if isinstance(d, Trailmap) or category == "":
                 continue
             self.write_category_file(category, d)
 

@@ -76,7 +76,6 @@ from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal.loggers import setup_logging
-from openbb_terminal.portfolio.portfolio_model import PortfolioModel as Portfolio
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.reports.reports_controller import ReportController
 
