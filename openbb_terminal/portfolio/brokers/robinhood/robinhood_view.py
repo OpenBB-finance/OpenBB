@@ -88,6 +88,7 @@ def display_historical(interval: str = "day", window: str = "3month", export: st
     )
     if obbff.USE_ION:
         plt.ion()
+    console.print("")
 
     export_data(
         export,
