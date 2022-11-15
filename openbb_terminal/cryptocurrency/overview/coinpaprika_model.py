@@ -105,24 +105,6 @@ def get_global_market() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_list_of_coins() -> pd.DataFrame:
-    """Get list of all available coins on CoinPaprika  [Source: CoinPaprika]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Available coins on CoinPaprika
-        rank, id, name, symbol, type
-    """
-
-    session = PaprikaSession()
-    coins = session.make_request(session.ENDPOINTS["coins"])
-    df = pd.DataFrame(coins)
-    df = df[df["is_active"]]
-    return df[["rank", "id", "name", "symbol", "type"]]
-
-
-@log_start_end(log=logger)
 def _get_coins_info_helper(symbols: str = "USD") -> pd.DataFrame:
     """Helper method that call /tickers endpoint which returns for all coins quoted in provided currency/crypto
 

@@ -32,6 +32,7 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.due_diligence import pycoingecko_model
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
+from openbb_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 
 logger = logging.getLogger(__name__)
 
@@ -322,6 +323,23 @@ def get_coinpaprika_id(symbol: str):
     paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
     coinpaprika_id, _ = validate_coin(symbol.upper(), paprika_coins_dict)
     return coinpaprika_id
+
+
+def get_list_of_coins() -> pd.DataFrame:
+    """Get list of all available coins on CoinPaprika  [Source: CoinPaprika]
+
+    Returns
+    -------
+    pandas.DataFrame
+        Available coins on CoinPaprika
+        rank, id, name, symbol, type
+    """
+
+    session = PaprikaSession()
+    coins = session.make_request(session.ENDPOINTS["coins"])
+    df = pd.DataFrame(coins)
+    df = df[df["is_active"]]
+    return df[["rank", "id", "name", "symbol", "type"]]
 
 
 def validate_coin(symbol: str, coins_dct: dict) -> Tuple[Optional[Any], Optional[Any]]:
