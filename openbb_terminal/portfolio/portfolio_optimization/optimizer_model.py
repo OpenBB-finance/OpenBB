@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple
 from datetime import date
 
 
