@@ -872,6 +872,7 @@ def test_call_fred_query(mocker):
                 limit=100,
                 raw=False,
                 export="",
+                get_data=True,
             ),
         ),
         (
@@ -885,6 +886,7 @@ def test_call_fred_query(mocker):
                 limit=100,
                 raw=True,
                 export="csv",
+                get_data=True,
             ),
         ),
         (
@@ -898,6 +900,7 @@ def test_call_fred_query(mocker):
                 limit=100,
                 raw=False,
                 export="csv",
+                get_data=True,
             ),
         ),
     ],
@@ -922,7 +925,7 @@ def test_call_fred_params(mocked_func, other_args, called_args, called_kwargs, m
         new=False,
     )
 
-    mock = mocker.Mock()
+    mock = mocker.Mock(return_value=(MOCK_FRED_AGG, MOCK_DETAIL))
     mocker.patch(
         target=f"{path_controller}.{mocked_func}",
         new=mock,
