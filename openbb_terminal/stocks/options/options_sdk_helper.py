@@ -78,17 +78,14 @@ def get_option_expirations(symbol: str, source: str = "Nasdaq") -> List:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> aapl_option_chain = openbb.stocks.options.expirations("SPX", source = "Nasdaq")
+    >>> SPX_expirations = openbb.stocks.options.expirations("SPX", source = "Tradier")
     """
 
     if source == "Tradier":
-        df = tradier_model.get_full_option_chain(symbol)
         return list(df.expiration.unique())
     if source == "YahooFinance":
-        df = yfinance_model.get_full_option_chain(symbol)
-        return list(df.expiration.unique())
+        return yfinance_model.option_expirations(symbol)
     if source == "Nasdaq":
-        # Nasdaq handles these slightly differently
         return nasdaq_model.get_expirations(symbol)
 
     logger.info("Invalid Source")
