@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.ca.hist( similar: List[str], start_date: str = &#39;2021-11-13&#39;, candle_type: str = &#39;a&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get historical prices for all comparison stocks * **Parameters** similar: List[str] List of similar tickers. Comparable companies can be accessed through finnhub_peers(), finviz_peers(), polygon_peers().">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.ca.hist( similar: List[str], start_date: str = None, candle_type: str = &#39;a&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get historical prices for all comparison stocks * **Parameters** similar: List[str] List of similar tickers. Comparable companies can be accessed through finnhub_peers(), finviz_peers(), polygon_peers().">
 
 
 
@@ -47951,7 +47951,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">ca</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span>
     <span class="n">similar</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2021-11-13&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">candle_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></code></pre></div>
@@ -47969,7 +47969,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date: str, optional
-        Start date of comparison. Defaults to 1 year previously
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type: str, optional
         Candle variable to compare, by default "a" for Adjusted Close. Possible values are: o, h, l, c, a, v, r
     chart: bool
@@ -47991,7 +47991,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">ca</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span>
     <span class="n">similar</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2021-11-13&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">candle_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span>
     <span class="n">normalize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
@@ -48012,7 +48012,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date: str, optional
-        Start date of comparison, by default 1 year ago
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type: str, optional
         OHLCA column to use or R to use daily returns calculated from Adjusted Close, by default "a" for Adjusted Close
     normalize: bool, optional

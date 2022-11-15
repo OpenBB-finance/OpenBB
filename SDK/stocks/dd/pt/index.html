@@ -47984,7 +47984,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">dd</span><span class="o">.</span><span class="n">pt</span><span class="p">(</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-14&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="n">raw</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
@@ -48005,7 +48005,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     data: DataFrame
         Due diligence stock dataframe
     start_date : str
-        Start date of the stock data
+        Start date of the stock data, format YYYY-MM-DD
     limit : int
         Number of latest price targets from analysts to print
     raw: bool

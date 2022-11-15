@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  crypto.dd.close( symbol: str, start_date: str = &#39;2010-01-01&#39;, end_date: str = &#39;2022-11-14&#39;, print_errors: bool = True, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Returns the price of a cryptocurrency [Source: https://glassnode.com] * **Parameters** symbol : str Crypto to check close price (BTC or ETH) start_date : str Initial date, format YYYY-MM-DD end_date : str Final date, format YYYY-MM-DD print_errors: bool Flag to print errors.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  crypto.dd.close( symbol: str, start_date: str = &#39;2010-01-01&#39;, end_date: str = None, print_errors: bool = True, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Returns the price of a cryptocurrency [Source: https://glassnode.com] * **Parameters** symbol : str Crypto to check close price (BTC or ETH) start_date : str Initial date, format YYYY-MM-DD end_date : str Final date, format YYYY-MM-DD print_errors: bool Flag to print errors.">
 
 
 
@@ -47950,7 +47950,7 @@ code, img {
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">crypto</span><span class="o">.</span><span class="n">dd</span><span class="o">.</span><span class="n">close</span><span class="p">(</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2010-01-01&#39;</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-14&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">print_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></code></pre></div>

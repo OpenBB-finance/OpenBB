@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.options.pcr( symbol: str, window: int = 30, start_date: str = &#39;2021-11-13&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Gets put call ratio over last time window [Source: AlphaQuery.com] * **Parameters** symbol: str Ticker symbol to look for window: int, optional Window to consider, by default 30 start_date: str, optional Start date to plot, by default last 366 days chart: bool Flag to display chart | .">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.options.pcr( symbol: str, window: int = 30, start_date: str = None, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Gets put call ratio over last time window [Source: AlphaQuery.com] * **Parameters** symbol: str Ticker symbol to look for window: int, optional Window to consider, by default 30 start_date: str, optional Start date to plot (e.">
 
 
 
@@ -47952,7 +47952,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pcr</span><span class="p">(</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2021-11-13&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></code></pre></div>
 
@@ -47969,7 +47969,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     window: int, optional
         Window to consider, by default 30
     start_date: str, optional
-        Start date to plot, by default last 366 days
+        Start date to plot (e.g., 2021-10-01), by default last 366 days
     chart: bool
        Flag to display chart
 

@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.fa.mktcap( symbol: str, start_date: str = &#39;2019-11-12&#39;, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, str] .. raw:: html  Get market cap over time for ticker. [Source: Yahoo Finance] * **Parameters** symbol: str Ticker to get market cap over time start_date: str Start date to display market cap chart: bool Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.fa.mktcap( symbol: str, start_date: str = None, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, str] .. raw:: html  Get market cap over time for ticker. [Source: Yahoo Finance] * **Parameters** symbol: str Ticker to get market cap over time start_date: str Initial date (e.">
 
 
 
@@ -47951,7 +47951,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">mktcap</span><span class="p">(</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2019-11-12&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span></code></pre></div>
 
@@ -47966,7 +47966,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     symbol: str
         Ticker to get market cap over time
     start_date: str
-        Start date to display market cap
+        Initial date (e.g., 2021-10-01). Defaults to 3 years back
     chart: bool
        Flag to display chart
 
@@ -47988,7 +47988,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">mktcap</span><span class="p">(</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2019-11-12&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">external_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -48005,7 +48005,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     symbol: str
         Stock ticker symbol
     start_date: str
-        Start date to display market cap
+        Initial date (e.g., 2021-10-01). Defaults to 3 years back
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional

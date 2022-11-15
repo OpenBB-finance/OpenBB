@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  etf.load( symbol: str, start_date: Union[datetime.datetime, str, NoneType] = &#39;2019-11-10&#39;, interval: int = 1440, end_date: Union[datetime.datetime, str, NoneType] = &#39;2022-11-14&#39;, prepost: bool = False, source: str = &#39;YahooFinance&#39;, iexrange: str = &#39;ytd&#39;, weekly: bool = False, monthly: bool = False, verbose: bool = True, chart: bool = False, ) .. raw:: html  Load a symbol to perform analysis using the string above as a template.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  etf.load( symbol: str, start_date: Union[datetime.datetime, str, NoneType] = None, interval: int = 1440, end_date: Union[datetime.datetime, str, NoneType] = None, prepost: bool = False, source: str = &#39;YahooFinance&#39;, iexrange: str = &#39;ytd&#39;, weekly: bool = False, monthly: bool = False, verbose: bool = True, chart: bool = False, ) .. raw:: html  Load a symbol to perform analysis using the string above as a template.">
 
 
 
@@ -47941,9 +47941,9 @@ code, img {
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">etf</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2019-11-10&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1440</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2022-11-14&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">prepost</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;YahooFinance&#39;</span><span class="p">,</span>
     <span class="n">iexrange</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;ytd&#39;</span><span class="p">,</span>

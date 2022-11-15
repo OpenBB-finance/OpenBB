@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.ov.btcrb( start_date: str = &#39;2010-01-01&#39;, end_date: str = &#39;2022-11-14&#39;, chart: bool = False, ) .. raw:: html  Get bitcoin price data [Price data from source: https://glassnode.com] [Inspired by: https://blockchaincenter.net] * **Parameters** start_date : str Initial date, format YYYY-MM-DD end_date : str Final date, format YYYY-MM-DD chart: bool Flag to display chart | .">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.ov.btcrb( start_date: str = &#39;2010-01-01&#39;, end_date: str = None, chart: bool = False, ) .. raw:: html  Get bitcoin price data [Price data from source: https://glassnode.com] [Inspired by: https://blockchaincenter.net] * **Parameters** start_date : str Initial date, format YYYY-MM-DD end_date : str Final date, format YYYY-MM-DD chart: bool Flag to display chart | .">
 
 
 
@@ -47951,7 +47951,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">crypto</span><span class="o">.</span><span class="n">ov</span><span class="o">.</span><span class="n">btcrb</span><span class="p">(</span>
     <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2010-01-01&#39;</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-14&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span></code></pre></div>
 
@@ -47983,7 +47983,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">crypto</span><span class="o">.</span><span class="n">ov</span><span class="o">.</span><span class="n">btcrb</span><span class="p">(</span>
     <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2010-01-01&#39;</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-14&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">external_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -47999,9 +47999,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 * **Parameters**
 
-    start_date : int
+    start_date : str
         Initial date, format YYYY-MM-DD
-    end_date : int
+    end_date : str
         Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file

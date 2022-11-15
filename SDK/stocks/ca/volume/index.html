@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.ca.volume( similar: List[str], start_date: str = &#39;2021-11-13&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get stock volume. [Source: Yahoo Finance] * **Parameters** similar : List[str] List of similar tickers. Comparable companies can be accessed through finnhub_peers(), finviz_peers(), polygon_peers().">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.ca.volume( similar: List[str], start_date: str = None, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get stock volume. [Source: Yahoo Finance] * **Parameters** similar : List[str] List of similar tickers. Comparable companies can be accessed through finnhub_peers(), finviz_peers(), polygon_peers().">
 
 
 
@@ -47951,7 +47951,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">ca</span><span class="o">.</span><span class="n">volume</span><span class="p">(</span>
     <span class="n">similar</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2021-11-13&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></code></pre></div>
 
@@ -47968,7 +47968,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
-        Start date of comparison, by default 1 year ago
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     chart: bool
        Flag to display chart
 
@@ -47983,7 +47983,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">ca</span><span class="o">.</span><span class="n">volume</span><span class="p">(</span>
     <span class="n">similar</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2021-11-13&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">external_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -48002,7 +48002,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
-        Start date of comparison, by default 1 year ago
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     export : str, optional
         Format to export historical prices, by default ""
     external_axes : Optional[List[plt.Axes]], optional

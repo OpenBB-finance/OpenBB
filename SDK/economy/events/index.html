@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  economy.events( countries: Union[List[str], str] = &#39;&#39;, start_date: str = &#39;2022-11-14&#39;, end_date: str = &#39;2022-11-14&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get economic calendar for countries between specified dates * **Parameters** countries : [List[str],str] List of countries to include in calendar. Empty returns all start_date : str Start date for calendar end_date : str End date for calendar * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  economy.events( countries: Union[List[str], str] = &#39;&#39;, start_date: str = None, end_date: str = None, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get economic calendar for countries between specified dates * **Parameters** countries : [List[str],str] List of countries to include in calendar. Empty returns all start_date : str Start date for calendar end_date : str End date for calendar * **Returns** pd.">
 
 
 
@@ -47941,8 +47941,8 @@ code, img {
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">economy</span><span class="o">.</span><span class="n">events</span><span class="p">(</span>
     <span class="n">countries</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-14&#39;</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-14&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></code></pre></div>
 

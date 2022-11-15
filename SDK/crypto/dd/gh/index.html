@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.dd.gh( symbol: str, dev_activity: bool = False, interval: str = &#39;1d&#39;, start_date: str = &#39;2021-11-14T14:32:50Z&#39;, end_date: str = &#39;2022-11-14T14:32:50Z&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Returns a list of developer activity for a given coin and time interval.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.dd.gh( symbol: str, dev_activity: bool = False, interval: str = &#39;1d&#39;, start_date: str = None, end_date: str = None, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Returns a list of developer activity for a given coin and time interval.">
 
 
 
@@ -47953,8 +47953,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">dev_activity</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">interval</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;1d&#39;</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2021-11-14T14:32:50Z&#39;</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-14T14:32:50Z&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></code></pre></div>
 
@@ -47972,12 +47972,12 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Crypto symbol to check github activity
     dev_activity: bool
         Whether to filter only for development activity
+    interval : str
+        Interval frequency (e.g., 1d)
     start_date : int
         Initial date like string (e.g., 2021-10-01)
     end_date : int
         End date like string (e.g., 2021-10-01)
-    interval : str
-        Interval frequency (e.g., 1d)
     chart: bool
        Flag to display chart
 
@@ -47997,9 +47997,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">crypto</span><span class="o">.</span><span class="n">dd</span><span class="o">.</span><span class="n">gh</span><span class="p">(</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2021-11-14T14:32:50Z&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">dev_activity</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-14T14:32:50Z&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">interval</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;1d&#39;</span><span class="p">,</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">external_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.ba.trend( start_date: str = &#39;2022-11-14&#39;, hour: int = 0, number: int = 10, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get sentiment data on the most talked about tickers within the last hour Source: [Sentiment Investor] * **Parameters** start_date : str Initial date, format YYYY-MM-DD hour: int Hour of the day in 24-hour notation (e.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.ba.trend( start_date: str = None, hour: int = 0, number: int = 10, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get sentiment data on the most talked about tickers within the last hour Source: [Sentiment Investor] * **Parameters** start_date : str Initial date, format YYYY-MM-DD hour: int Hour of the day in 24-hour notation (e.">
 
 
 
@@ -47950,7 +47950,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     </h3>
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">ba</span><span class="o">.</span><span class="n">trend</span><span class="p">(</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-14&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">hour</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -47992,7 +47992,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     </h3>
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">ba</span><span class="o">.</span><span class="n">trend</span><span class="p">(</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-14&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">hour</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
