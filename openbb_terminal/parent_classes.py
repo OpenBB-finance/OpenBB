@@ -421,7 +421,7 @@ class BaseController(metaclass=ABCMeta):
         # Not sure how to handle controller loading here
         """Process exit terminal command."""
         self.save_class()
-        for _ in range(self.PATH.count("/")):
+        for _ in range(self.PATH.count("/") + 1):
             self.queue.insert(0, "quit")
 
     @log_start_end(log=logger)
