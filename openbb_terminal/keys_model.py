@@ -134,7 +134,8 @@ def set_keys(
 
     Returns
     -------
-    status_dict: Dict
+    dict
+        Status of each key set. E.g. {"fred": "defined, test passed", "binance": "defined, test failed"}
     """
 
     status_dict = {}
@@ -170,7 +171,8 @@ def get_keys_info() -> Dict[str, List[str]]:
 
     Returns
     -------
-    Dictionary of expected API keys and arguments:  Dict[str, List[str]]
+    Dict[str, List[str]]
+        Dictionary of expected API keys and arguments
     """
     args_dict = {}
 
@@ -282,7 +284,8 @@ def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> st
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_KEY_ALPHAVANTAGE", key, persist)
@@ -299,7 +302,8 @@ def check_av_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_KEY_ALPHAVANTAGE == "REPLACE_ME":  # pragma: allowlist secret
@@ -338,7 +342,8 @@ def set_fmp_key(key: str, persist: bool = False, show_output: bool = False) -> s
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_KEY_FINANCIALMODELINGPREP", key, persist)
@@ -399,7 +404,8 @@ def set_quandl_key(key: str, persist: bool = False, show_output: bool = False) -
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_KEY_QUANDL", key, persist)
@@ -416,7 +422,8 @@ def check_quandl_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_KEY_QUANDL == "REPLACE_ME":  # pragma: allowlist secret
@@ -454,7 +461,8 @@ def set_polygon_key(key: str, persist: bool = False, show_output: bool = False) 
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_POLYGON_KEY", key, persist)
@@ -471,7 +479,8 @@ def check_polygon_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_POLYGON_KEY == "REPLACE_ME":
@@ -514,7 +523,8 @@ def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> 
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_FRED_KEY", key, persist)
@@ -531,7 +541,8 @@ def check_fred_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_FRED_KEY == "REPLACE_ME":
@@ -573,7 +584,8 @@ def set_news_key(key: str, persist: bool = False, show_output: bool = False) -> 
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_NEWS_TOKEN", key, persist)
@@ -590,7 +602,8 @@ def check_news_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
@@ -632,7 +645,8 @@ def set_tradier_key(key: str, persist: bool = False, show_output: bool = False) 
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_TRADIER_TOKEN", key, persist)
@@ -649,7 +663,8 @@ def check_tradier_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
@@ -696,7 +711,8 @@ def set_cmc_key(key: str, persist: bool = False, show_output: bool = False) -> s
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_CMC_KEY", key, persist)
@@ -752,7 +768,8 @@ def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False) 
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_FINNHUB_KEY", key, persist)
@@ -769,7 +786,8 @@ def check_finnhub_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_FINNHUB_KEY == "REPLACE_ME":
@@ -811,7 +829,8 @@ def set_iex_key(key: str, persist: bool = False, show_output: bool = False) -> s
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_IEX_TOKEN", key, persist)
@@ -828,7 +847,8 @@ def check_iex_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
@@ -883,7 +903,8 @@ def set_reddit_key(
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_REDDIT_CLIENT_ID", client_id, persist)
@@ -905,7 +926,8 @@ def check_reddit_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     reddit_keys = [
@@ -971,7 +993,8 @@ def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False)
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_BITQUERY_KEY", key, persist)
@@ -988,7 +1011,8 @@ def check_bitquery_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     bitquery = cfg.API_BITQUERY_KEY
@@ -1047,7 +1071,8 @@ def set_twitter_key(
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_TWITTER_KEY", key, persist)
@@ -1067,7 +1092,8 @@ def check_twitter_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     twitter_keys = [
@@ -1128,7 +1154,8 @@ def set_rh_key(
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_RH_USERNAME", username, persist)
@@ -1147,7 +1174,8 @@ def check_rh_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     rh_keys = [cfg.RH_USERNAME, cfg.RH_PASSWORD]
@@ -1190,7 +1218,8 @@ def set_degiro_key(
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_DG_USERNAME", username, persist)
@@ -1210,7 +1239,8 @@ def check_degiro_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     dg_keys = [cfg.DG_USERNAME, cfg.DG_PASSWORD, cfg.DG_TOTP_SECRET]
@@ -1271,7 +1301,8 @@ def set_oanda_key(
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_OANDA_ACCOUNT", account, persist)
@@ -1291,7 +1322,8 @@ def check_oanda_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     oanda_keys = [cfg.OANDA_TOKEN, cfg.OANDA_ACCOUNT]
@@ -1343,7 +1375,8 @@ def set_binance_key(
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_BINANCE_KEY", key, persist)
@@ -1362,7 +1395,8 @@ def check_binance_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if "REPLACE_ME" in [cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET]:
@@ -1405,7 +1439,8 @@ def set_si_key(
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_SENTIMENTINVESTOR_TOKEN", key, persist)
@@ -1423,7 +1458,8 @@ def check_si_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     si_keys = [cfg.API_SENTIMENTINVESTOR_TOKEN]
@@ -1478,7 +1514,8 @@ def set_coinbase_key(
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_COINBASE_KEY", key, persist)
@@ -1547,7 +1584,8 @@ def set_walert_key(key: str, persist: bool = False, show_output: bool = False) -
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_WHALE_ALERT_KEY", key, persist)
@@ -1564,7 +1602,8 @@ def check_walert_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_WHALE_ALERT_KEY == "REPLACE_ME":
@@ -1611,7 +1650,8 @@ def set_glassnode_key(
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_GLASSNODE_KEY", key, persist)
@@ -1628,7 +1668,8 @@ def check_glassnode_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_GLASSNODE_KEY == "REPLACE_ME":
@@ -1677,7 +1718,8 @@ def set_coinglass_key(
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_COINGLASS_KEY", key, persist)
@@ -1694,7 +1736,8 @@ def check_coinglass_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_COINGLASS_KEY == "REPLACE_ME":
@@ -1739,7 +1782,8 @@ def set_cpanic_key(key: str, persist: bool = False, show_output: bool = False) -
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_CRYPTO_PANIC_KEY", key, persist)
@@ -1756,7 +1800,8 @@ def check_cpanic_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
@@ -1797,7 +1842,8 @@ def set_ethplorer_key(
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_ETHPLORER_KEY", key, persist)
@@ -1814,7 +1860,8 @@ def check_ethplorer_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_ETHPLORER_KEY == "REPLACE_ME":
@@ -1862,7 +1909,8 @@ def set_smartstake_key(
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_SMARTSTAKE_KEY", key, persist)
@@ -1880,7 +1928,8 @@ def check_smartstake_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if "REPLACE_ME" in [
@@ -1939,7 +1988,8 @@ def set_github_key(key: str, persist: bool = False, show_output: bool = False) -
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_GITHUB_KEY", key, persist)
@@ -1956,7 +2006,8 @@ def check_github_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_GITHUB_KEY == "REPLACE_ME":  # pragma: allowlist secret
@@ -1989,7 +2040,8 @@ def set_messari_key(key: str, persist: bool = False, show_output: bool = False) 
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_MESSARI_KEY", key, persist)
@@ -2006,7 +2058,8 @@ def check_messari_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if (
@@ -2050,7 +2103,8 @@ def set_eodhd_key(key: str, persist: bool = False, show_output: bool = False) ->
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_EODHD_KEY", key, persist)
@@ -2067,7 +2121,8 @@ def check_eodhd_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_EODHD_KEY == "REPLACE_ME":  # nosec
@@ -2107,7 +2162,8 @@ def set_santiment_key(
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_SANTIMENT_KEY", key, persist)
@@ -2124,7 +2180,8 @@ def check_santiment_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     if cfg.API_SANTIMENT_KEY == "REPLACE_ME":
@@ -2175,7 +2232,8 @@ def set_shroom_key(key: str, persist: bool = False, show_output: bool = False) -
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
 
     set_key("OPENBB_API_SHROOM_KEY", key, persist)
@@ -2230,8 +2288,8 @@ def set_tokenterminal_key(
 
     Returns
     -------
-    status: str
-
+    str
+        Status of key set
     """
     set_key("OPENBB_API_TOKEN_TERMINAL_KEY", key, persist)
     return check_tokenterminal_key(show_output)
@@ -2247,8 +2305,8 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    status: str
-
+    str
+        Status of key set
     """
     if cfg.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":
         logger.info("Token Terminal key not defined")
@@ -2285,8 +2343,8 @@ def set_stocksera_key(key: str, persist: bool = False, show_output: bool = False
 
     Returns
     -------
-    status: str
-
+    str
+        Status of key set
     """
     set_key("OPENBB_API_STOCKSERA_KEY", key, persist)
     return check_stocksera_key(show_output)
@@ -2301,7 +2359,8 @@ def check_stocksera_key(show_output: bool = False):
 
     Returns
     -------
-    status: str
+    str
+        Status of key set
     """
     if cfg.API_STOCKSERA_KEY == "REPLACE_ME":
         logger.info("Stocksera key not defined")
