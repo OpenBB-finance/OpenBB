@@ -169,7 +169,7 @@ def query_graph(url: str, query: str) -> dict:
 
     Returns
     -------
-    dict:
+    dict
         Dictionary with response data
     """
 
@@ -669,9 +669,9 @@ def get_most_traded_pairs(
     ----------
     network: str
         EVM network. One from list: bsc (binance smart chain), ethereum or matic
-    exchange:
+    exchange: st
         Decentralized exchange name
-    limit:
+    limit: int
         Number of days taken into calculation account.
     sortby: str
         Key by which to sort data

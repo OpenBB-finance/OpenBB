@@ -157,6 +157,12 @@ def lambda_coin_formatter(n):
 def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame:
     """Returns top crypto categories [Source: CoinGecko]
 
+    Parameters
+    ----------
+    sort_filter : str
+        Can be one of - "market_cap_desc", "market_cap_asc", "name_desc", "name_asc",
+        "market_cap_change_24h_desc", "market_cap_change_24h_asc"
+
     Returns
     -------
     pd.DataFrame

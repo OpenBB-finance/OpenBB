@@ -268,6 +268,13 @@ def get_address_info(
 def get_top_tokens(sortby: str = "rank", ascend: bool = False) -> pd.DataFrame:
     """Get top 50 tokens. [Source: Ethplorer]
 
+    Parameters
+    ----------
+    sortby: str
+        Key to sort by.
+    ascend: str
+        Sort in descending order.
+
     Returns
     -------
     pd.DataFrame
