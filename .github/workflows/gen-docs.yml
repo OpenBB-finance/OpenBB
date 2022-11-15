@@ -1,0 +1,26 @@
+name: gen docs
+on: push
+jobs:
+  deploy:
+    name: Creating Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b  # actions/checkout v3.0.2
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+          architecture: x64
+
+      - run: pip install poetry
+      - run: poetry install -E prediction
+
+      - run: python website/generate_sdk_markdown.py
+
+      - name: Commit Documentation
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automated Change
+
