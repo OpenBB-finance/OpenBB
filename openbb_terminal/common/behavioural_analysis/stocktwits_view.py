@@ -81,8 +81,10 @@ def display_stalker(user: str, limit: int = 10):
     """
     messages = stocktwits_model.get_stalker(user, limit)
     for message in messages:
+        console.print("-------------------")
         console.print(
-            "------------------------------------------------------------------------------"
+            "[yellow]"
+            + message["created_at"].replace("T", " ").replace("Z", "")
+            + "[/yellow]"
         )
-        console.print(message["created_at"].replace("T", " ").replace("Z", ""))
-        console.print(message["body"])
+        console.print(message["body"] + "\n")
