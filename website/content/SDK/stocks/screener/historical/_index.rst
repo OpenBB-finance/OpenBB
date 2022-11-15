@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 stocks.screener.historical(
     preset_loaded: str = 'top_gainers',
     limit: int = 10,
-    start_date: str = '2022-05-13',
+    start_date: str = '2022-05-18',
     type_candle: str = 'a',
     normalize: bool = True,
     chart: bool = False,
@@ -41,7 +41,7 @@ stocks.screener.historical(
         Type of candle to display
     normalize : bool
         Boolean to normalize all stock prices using MinMax
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -66,7 +66,7 @@ stocks.screener.historical(
 stocks.screener.historical(
     preset_loaded: str = 'top_gainers',
     limit: int = 10,
-    start_date: str = '2022-05-13',
+    start_date: str = '2022-05-18',
     type_candle: str = 'a',
     normalize: bool = True,
     export: str = '',
@@ -97,7 +97,7 @@ stocks.screener.historical(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

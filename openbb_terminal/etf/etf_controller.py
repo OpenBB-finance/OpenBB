@@ -94,8 +94,6 @@ class ETFController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_fifty: dict = {str(c): {} for c in range(1, 50)}
             one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
             choices["search"] = {
                 "--name": None,
@@ -105,7 +103,7 @@ class ETFController(BaseController):
                 "--source": {
                     c: {} for c in get_ordered_list_sources(f"{self.PATH}search")
                 },
-                "--limit": one_to_fifty,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["load"] = {
@@ -115,7 +113,7 @@ class ETFController(BaseController):
                 "-s": "--start",
                 "--end": None,
                 "-e": "--end",
-                "--limit": one_to_fifty,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["weights"] = {"--min": one_to_hundred, "-m": "--min", "--raw": {}}
@@ -126,8 +124,8 @@ class ETFController(BaseController):
                 "--plotly": {},
                 "-p": "--plotly",
                 "--ma": None,
-                "--descending": {},
-                "-d": "--descending",
+                "--reverse": {},
+                "-r": "--reverse",
                 "--trend": {},
                 "-t": "--trend",
                 "--raw": {},
@@ -487,12 +485,16 @@ class ETFController(BaseController):
             help="Choose a column to sort by",
         )
         parser.add_argument(
-            "-d",
-            "--descending",
+            "-r",
+            "--reverse",
             action="store_true",
-            dest="descending",
+            dest="reverse",
             default=False,
-            help="Sort selected column descending",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "--raw",
@@ -539,7 +541,7 @@ class ETFController(BaseController):
                 qa_view.display_raw(
                     data=self.etf_data,
                     sortby=ns_parser.sort,
-                    ascend=not ns_parser.descending,
+                    ascend=ns_parser.reverse,
                     limit=ns_parser.num,
                 )
 

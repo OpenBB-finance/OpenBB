@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.rsharpe(
-    portfolio: pandas.core.frame.DataFrame,
+    portfolio_engine: pandas.core.frame.DataFrame,
     risk_free_rate: float = 0,
     window: str = '1y',
     chart: bool = False,
@@ -36,7 +36,7 @@ portfolio.rsharpe(
     window : str
         Rolling window to use
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -44,6 +44,14 @@ portfolio.rsharpe(
 
     pd.DataFrame
         Rolling sharpe ratio DataFrame
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.rsharpe(P)
+    {{< /highlight >}}
 
 |
 
@@ -55,7 +63,7 @@ portfolio.rsharpe(
 
 {{< highlight python >}}
 portfolio.rsharpe(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     risk_free_rate: float = 0,
     window: str = '1y',
     export: str = '',
@@ -72,8 +80,8 @@ portfolio.rsharpe(
 
 * **Parameters**
 
-    portfolio : PortfolioModel
-        Portfolio object
+    portfolio : PortfolioEngine
+        PortfolioEngine object
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
     window: str
@@ -82,6 +90,6 @@ portfolio.rsharpe(
         Export to file
     external_axes: Optional[List[plt.Axes]]
         Optional axes to display plot on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

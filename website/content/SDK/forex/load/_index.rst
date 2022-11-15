@@ -16,9 +16,9 @@ forex.load(
     from_symbol: str,
     resolution: str = 'd',
     interval: str = '1day',
-    start_date: str = '2021-11-09',
+    start_date: str = None,
     source: str = 'YahooFinance',
-    verbose: bool = True,
+    verbose: bool = False,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

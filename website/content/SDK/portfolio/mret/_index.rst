@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.mret(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = 'all',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -28,17 +28,27 @@ portfolio.mret(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
 * **Returns**
 
     pd.DataFrame
+        DataFrame with monthly returns
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.mret(P)
+    {{< /highlight >}}
 
 |
 
@@ -50,7 +60,7 @@ portfolio.mret(
 
 {{< highlight python >}}
 portfolio.mret(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = 'all',
     raw: bool = False,
     show_vals: bool = False,
@@ -68,8 +78,9 @@ portfolio.mret(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
     raw : False
@@ -80,6 +91,6 @@ portfolio.mret(
         Export certain type of data
     external_axes: plt.Axes
         Optional axes to display plot on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

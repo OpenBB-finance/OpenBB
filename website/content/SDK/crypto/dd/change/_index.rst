@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 crypto.dd.change(
     symbol: str,
     exchange: str = 'binance',
-    start_date: int = 1262322000,
-    end_date: int = 1668033690,
+    start_date: str = '2010-01-01',
+    end_date: str = None,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -35,11 +35,11 @@ crypto.dd.change(
         Asset symbol to search supply (e.g., BTC)
     exchange : str
         Exchange to check net position change (e.g., binance)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
-    chart: *bool*
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
+    chart: bool
        Flag to display chart
 
 
@@ -60,8 +60,8 @@ crypto.dd.change(
 crypto.dd.change(
     symbol: str,
     exchange: str = 'binance',
-    start_date: int = 1577836800,
-    end_date: int = 1609459200,
+    start_date: str = '2010-01-01',
+    end_date: str = None,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
@@ -83,14 +83,14 @@ crypto.dd.change(
         Exchange to check net position change (possible values are: aggregated, binance,
         bittrex, coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex,
         hitbtc, kraken, okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

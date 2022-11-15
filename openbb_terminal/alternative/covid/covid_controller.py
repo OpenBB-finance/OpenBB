@@ -43,28 +43,38 @@ class CovidController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["slopes"] = {
+                "--days": {},
+                "-d": "--days",
+                "--reverse": {},
+                "-r": "--reverse",
+                "--threshold": {},
+                "-t": "--threshold",
+                "--limit": None,
+                "-l": "--limit",
+            }
             choices["country"] = {
                 "--country": {c: None for c in self.COUNTRY_LIST},
                 "-c": "--country",
             }
             choices["ov"] = {
                 "--raw": {},
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["rates"] = {
                 "--raw": {},
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["cases"] = {
                 "--raw": {},
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["deaths"] = {
                 "--raw": {},
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "-l": "--limit",
             }
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -240,11 +250,16 @@ class CovidController(BaseController):
             default=30,
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            help="Show in ascending order",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-t",
@@ -264,6 +279,6 @@ class CovidController(BaseController):
             covid_view.display_case_slopes(
                 days_back=ns_parser.days,
                 limit=ns_parser.limit,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 threshold=ns_parser.threshold,
             )

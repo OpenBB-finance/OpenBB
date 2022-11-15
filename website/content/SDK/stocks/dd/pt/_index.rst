@@ -29,7 +29,7 @@ stocks.dd.pt(
 
     symbol : str
         Ticker symbol
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -50,7 +50,7 @@ stocks.dd.pt(
 stocks.dd.pt(
     symbol: str,
     data: pandas.core.frame.DataFrame,
-    start_date: str = '2022-11-09',
+    start_date: str = None,
     limit: int = 10,
     raw: bool = False,
     export: str = '',
@@ -72,7 +72,7 @@ stocks.dd.pt(
     data: DataFrame
         Due diligence stock dataframe
     start_date : str
-        Start date of the stock data
+        Start date of the stock data, format YYYY-MM-DD
     limit : int
         Number of latest price targets from analysts to print
     raw: bool
@@ -81,6 +81,6 @@ stocks.dd.pt(
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -17,8 +17,8 @@ crypto.dd.mt(
     symbol: str,
     timeseries_id: str,
     interval: str = '1d',
-    start_date: str = '2021-11-09',
-    end_date: str = '2022-11-09',
+    start_date: str = None,
+    end_date: str = None,
     chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}
@@ -42,7 +42,7 @@ crypto.dd.mt(
         Initial date like string (e.g., 2021-10-01)
     end : int
         End date like string (e.g., 2021-10-01)
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -65,8 +65,8 @@ crypto.dd.mt(
 crypto.dd.mt(
     symbol: str,
     timeseries_id: str,
-    start_date: str = '2021-11-09',
-    end_date: str = '2022-11-09',
+    start_date: str = None,
+    end_date: str = None,
     interval: str = '1d',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
@@ -97,6 +97,6 @@ crypto.dd.mt(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

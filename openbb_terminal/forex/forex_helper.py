@@ -11,9 +11,12 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from matplotlib.ticker import LogLocator, ScalarFormatter
 import mplfinance as mpf
+import yfinance as yf
 import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.forex import av_model, polygon_model
 from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
@@ -23,7 +26,6 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     lambda_long_number_format_y_axis,
 )
-from openbb_terminal.stocks import stocks_helper
 
 CANDLE_SORT = [
     "adjclose",
@@ -52,11 +54,10 @@ SOURCES_INTERVALS: Dict = {
         "90min",
         "1hour",
         "1day",
-        # These need to be cleaned up.
-        # "5day",
-        # "1week",
-        # "1month",
-        # "3month",
+        "5day",
+        "1week",
+        "1month",
+        "3month",
     ],
     "AlphaVantage": ["1min", "5min", "15min", "30min", "60min"],
 }
@@ -89,8 +90,6 @@ INTERVAL_MAPS: Dict = {
 
 logger = logging.getLogger(__name__)
 
-last_year = datetime.now() - timedelta(days=365)
-
 
 @log_start_end(log=logger)
 def load(
@@ -98,9 +97,9 @@ def load(
     from_symbol: str,
     resolution: str = "d",
     interval: str = "1day",
-    start_date: str = last_year.strftime("%Y-%m-%d"),
+    start_date: str = None,
     source: str = "YahooFinance",
-    verbose: bool = True,
+    verbose: bool = False,
 ) -> pd.DataFrame:
     """Load forex for two given symbols.
 
@@ -126,6 +125,10 @@ def load(
     pd.DataFrame
         The loaded data
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+
     if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
 
@@ -138,27 +141,37 @@ def load(
                 )
             return pd.DataFrame()
 
+        # Check interval in multiple ways
+        if interval in interval_map:
+            clean_interval = interval_map[interval]
+        elif interval in interval_map.values():
+            clean_interval = interval
+        else:
+            console.print(f"[red]'{interval}' is an invalid interval[/red]\n")
+            return pd.DataFrame()
+
         if source == "AlphaVantage":
             if "min" in interval:
                 resolution = "i"
-            return av_model.get_historical(
+            df = av_model.get_historical(
                 to_symbol=to_symbol,
                 from_symbol=from_symbol,
                 resolution=resolution,
-                interval=interval_map[interval],
+                interval=clean_interval,
                 start_date=start_date,
             )
+            df.index.name = "date"
+            return df
 
         if source == "YahooFinance":
-
-            # This works but its not pretty :(
-            interval = interval_map[interval] if interval != "1day" else "1440m"
-            return stocks_helper.load(
+            df = yf.download(
                 f"{from_symbol}{to_symbol}=X",
-                start_date=datetime.strptime(start_date, "%Y-%m-%d"),
-                interval=int(interval.replace("m", "")),
-                verbose=verbose,
+                start=datetime.strptime(start_date, "%Y-%m-%d"),
+                interval=clean_interval,
+                progress=verbose,
             )
+            df.index.name = "date"
+            return df
 
     if source == "Polygon":
         # Interval for polygon gets broken into multiplier and timeframe
@@ -167,12 +180,14 @@ def load(
         timeframe = temp[2]
         if timeframe == "min":
             timeframe = "minute"
-        return polygon_model.get_historical(
+        df = polygon_model.get_historical(
             f"{from_symbol}{to_symbol}",
             multiplier=multiplier,
             timespan=timeframe,
-            from_date=start_date,
+            start_date=start_date,
         )
+        df.index.name = "date"
+        return df
 
     console.print(f"Source {source} not supported")
     return pd.DataFrame()

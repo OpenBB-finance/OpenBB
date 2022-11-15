@@ -19,14 +19,10 @@ stocks.candle(
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = '',
-    start_date: Union[datetime.datetime, str,
-    NoneType] = datetime.datetime(
-    2019, 11, 5, 17, 41, 30, 338404, chart: bool = False,
-), interval: int = 1440,
-    end_date: Union[datetime.datetime, str,
-    NoneType] = datetime.datetime(
-    2022, 11, 9, 17, 41, 30, 338406, chart: bool = False,
-), prepost: bool = False,
+    start_date: Union[datetime.datetime, str, NoneType] = None,
+    interval: int = 1440,
+    end_date: Union[datetime.datetime, str, NoneType] = None,
+    prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',
     weekly: bool = False,

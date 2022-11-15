@@ -32,7 +32,7 @@ stocks.ins.lins(
 
     pd.DataFrame
         Latest insider trading activity
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -67,6 +67,6 @@ stocks.ins.lins(
         Number of latest insider activity to display
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

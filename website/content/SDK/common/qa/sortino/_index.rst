@@ -38,7 +38,7 @@ common.qa.sortino(
         length of the rolling window
     adjusted: bool
         adjust the sortino ratio
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -81,6 +81,6 @@ common.qa.sortino(
         length of the rolling window
     adjusted: bool
         adjust the sortino ratio
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -29,7 +29,7 @@ stocks.ins.act(
 
     symbol : str
         Ticker symbol to get insider activity data from
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -50,7 +50,7 @@ stocks.ins.act(
 stocks.ins.act(
     data: pandas.core.frame.DataFrame,
     symbol: str,
-    start_date: str = '2019-11-05',
+    start_date: str = None,
     interval: str = '1440min',
     limit: int = 10,
     raw: bool = False,
@@ -73,7 +73,7 @@ stocks.ins.act(
     symbol: str
         Due diligence ticker symbol
     start_date: str
-        Start date of the stock data
+        Initial date (e.g., 2021-10-01). Defaults to 3 years back
     interval: str
         Stock data interval
     limit: int
@@ -84,6 +84,6 @@ stocks.ins.act(
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

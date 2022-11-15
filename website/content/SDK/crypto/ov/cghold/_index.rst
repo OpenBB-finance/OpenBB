@@ -29,7 +29,7 @@ crypto.ov.cghold(
 
     endpoint : str
         "bitcoin" or "ethereum"
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -73,6 +73,6 @@ crypto.ov.cghold(
         Export dataframe data to csv,json,xlsx
     limit: int
         The number of rows to show
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

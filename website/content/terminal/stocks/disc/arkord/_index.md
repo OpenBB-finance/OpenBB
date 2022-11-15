@@ -10,7 +10,9 @@ optional arguments:
                         Limit of stocks to display. (default: 10)
   -s {date,volume,open,high,close,low,total,weight,shares} [{date,volume,open,high,close,low,total,weight,shares} ...], --sortby {date,volume,open,high,close,low,total,weight,shares} [{date,volume,open,high,close,low,total,weight,shares} ...]
                         Column to sort by (default: )
-  -a, --ascend          Flag to sort in ascending order (default: False)
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is show this help message (default: False)
   -b, --buy_only        Flag to look at buys only (default: False)
   -c, --sell_only       Flag to look at sells only (default: False)
   --fund {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}

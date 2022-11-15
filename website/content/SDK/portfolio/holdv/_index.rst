@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.holdv(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -27,9 +27,10 @@ portfolio.holdv(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
-    chart: *bool*
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
+    chart: bool
        Flag to display chart
 
 
@@ -37,6 +38,14 @@ portfolio.holdv(
 
     pd.DataFrame
         DataFrame of holdings
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.holdv(P)
+    {{< /highlight >}}
 
 |
 
@@ -48,7 +57,7 @@ portfolio.holdv(
 
 {{< highlight python >}}
 portfolio.holdv(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     unstack: bool = False,
     raw: bool = False,
     limit: int = 10,
@@ -66,8 +75,9 @@ portfolio.holdv(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     unstack: bool
         Individual assets over time
     raw : bool
@@ -78,6 +88,6 @@ portfolio.holdv(
         Format to export plot
     external_axes: plt.Axes
         Optional axes to display plot on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -14,9 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 stocks.ba.trend(
-    start_date: datetime.datetime = datetime.datetime(
-    2022, 11, 9, 17, 41, 29, 364353, chart: bool = False,
-), hour: int = 0,
+    start_date: str = None,
+    hour: int = 0,
     number: int = 10,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -33,14 +32,14 @@ stocks.ba.trend(
 
 * **Parameters**
 
-    start_date: datetime
-        Datetime object (e.g. datetime(2021, 12, 21)
+    start_date : str
+        Initial date, format YYYY-MM-DD
     hour: int
         Hour of the day in 24-hour notation (e.g. 14)
     number : int
         Number of results returned by API call
         Maximum 250 per api call
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -59,9 +58,8 @@ stocks.ba.trend(
 
 {{< highlight python >}}
 stocks.ba.trend(
-    start_date: datetime.datetime = datetime.datetime(
-    2022, 11, 9, 17, 41, 29, 364749, chart: bool = False,
-), hour: int = 0,
+    start_date: str = None,
+    hour: int = 0,
     number: int = 10,
     limit: int = 10,
     export: str = '',
@@ -78,8 +76,8 @@ stocks.ba.trend(
 
 * **Parameters**
 
-    start_date: datetime
-        Datetime object (e.g. datetime(2021, 12, 21)
+    start_date : str
+        Initial date, format YYYY-MM-DD
     hour: int
         Hour of the day in 24-hour notation (e.g. 14)
     number : int
@@ -90,6 +88,6 @@ stocks.ba.trend(
         Default: 10
     export: str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -32,7 +32,7 @@ forex.oanda.price(
         Oanda account ID, by default cfg.OANDA_ACCOUNT
     instrument : Union[str, None]
         The loaded currency pair, by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -69,6 +69,6 @@ forex.oanda.price(
         Oanda account ID
     instrument : Union[str, None]
         Instrument code or None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

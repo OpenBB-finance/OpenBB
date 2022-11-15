@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.ca.hist(
     similar: List[str],
-    start_date: str = '2021-11-08',
+    start_date: str = None,
     candle_type: str = 'a',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -34,10 +34,10 @@ stocks.ca.hist(
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date: str, optional
-        Start date of comparison. Defaults to 1 year previously
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type: str, optional
         Candle variable to compare, by default "a" for Adjusted Close. Possible values are: o, h, l, c, a, v, r
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -57,7 +57,7 @@ stocks.ca.hist(
 {{< highlight python >}}
 stocks.ca.hist(
     similar: List[str],
-    start_date: str = '2021-11-08',
+    start_date: str = None,
     candle_type: str = 'a',
     normalize: bool = True,
     export: str = '',
@@ -79,7 +79,7 @@ stocks.ca.hist(
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date: str, optional
-        Start date of comparison, by default 1 year ago
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type: str, optional
         OHLCA column to use or R to use daily returns calculated from Adjusted Close, by default "a" for Adjusted Close
     normalize: bool, optional
@@ -88,6 +88,6 @@ stocks.ca.hist(
         Format to export historical prices, by default ""
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

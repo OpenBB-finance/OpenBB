@@ -284,7 +284,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--plotly",
                 "--sort=Open",
-                "--descending",
+                "--reverse",
                 "--raw",
                 "--limit=1",
                 "--trend",
@@ -304,7 +304,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--plotly",
                 "--sort=Open",
-                "--descending",
+                "--reverse",
                 "--limit=1",
                 "--trend",
                 "--ma=20,30",

@@ -94,7 +94,7 @@ class DarkPoolShortsController(StockBaseController):
                 },
             }
             limit = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["shorted"] = limit
@@ -106,21 +106,21 @@ class DarkPoolShortsController(StockBaseController):
             choices["prom"] = {
                 "--num": None,
                 "-n": "--num",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--tier": {c: {} for c in ["T1", "T2", "OTCE"]},
                 "-t": "--tier",
             }
             choices["pos"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--sort": {c: {} for c in self.POS_CHOICES},
                 "-s": "--sort",
-                "--ascend": {},
-                "-a": "--ascend",
+                "--reverse": {},
+                "-r": "--reverse",
             }
             choices["sidtc"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--sort": {c: {} for c in ["float", "dtc", "si"]},
                 "-s": "--sort",
@@ -143,7 +143,7 @@ class DarkPoolShortsController(StockBaseController):
             choices["psi"] = {
                 "--nyse": {},
                 "--raw": {},
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--source": {
                     c: {} for c in get_ordered_list_sources(f"{self.PATH}psi")
@@ -359,12 +359,16 @@ class DarkPoolShortsController(StockBaseController):
             dest="sort_field",
         )
         parser.add_argument(
-            "-a",
-            "--ascending",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            dest="ascend",
-            help="Data in ascending order",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -373,7 +377,7 @@ class DarkPoolShortsController(StockBaseController):
             stockgrid_view.dark_pool_short_positions(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sort_field,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 

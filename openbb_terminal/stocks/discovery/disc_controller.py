@@ -125,7 +125,7 @@ class DiscoveryController(BaseController):
                 "-d": "--days",
                 "--start": None,
                 "-s": "--start",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["fipo"] = {
@@ -133,11 +133,11 @@ class DiscoveryController(BaseController):
                 "-d": "--days",
                 "--end": None,
                 "-e": "--end",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             limit = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["gainers"] = limit
@@ -150,18 +150,18 @@ class DiscoveryController(BaseController):
             choices["arkord"] = {
                 "--sortby": {c: {} for c in self.arkord_sortby_choices},
                 "-s": "--sortby",
-                "--ascend": {},
-                "-a": "--ascend",
+                "reverse": {},
+                "-r": "reverse",
                 "--buy_only": {},
                 "-b": "--buy_only",
                 "--sell_only": {},
                 "-c": "--sell_only",
                 "--fund": {c: {} for c in self.arkord_fund_choices},
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["upcoming"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--pages": one_to_hundred,
                 "-p": "--pages",
@@ -169,7 +169,7 @@ class DiscoveryController(BaseController):
             choices["trending"] = {
                 "--id": None,
                 "-i": "--id",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--date": None,
                 "-d": "--date",
@@ -177,12 +177,12 @@ class DiscoveryController(BaseController):
             choices["cnews"] = {
                 "--type": {c: {} for c in self.cnews_type_choices},
                 "-t": "--type",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["lowfloat"] = limit
             choices["hotpenny"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--source": {
                     c: {} for c in get_ordered_list_sources(f"{self.PATH}hotpenny")
@@ -194,9 +194,9 @@ class DiscoveryController(BaseController):
                 "-d": "--date",
                 "--sort": {c: {} for c in self.dividend_columns},
                 "-s": "--sort",
-                "--ascend": {},
-                "-a": "--ascend",
-                "--limit": one_to_hundred,
+                "--reverse": {},
+                "-r": "--reverse",
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["heatmap"]["--timeframe"] = {
@@ -257,12 +257,16 @@ class DiscoveryController(BaseController):
             dest="sort",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
-            default=False,
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in ascending order",
-            dest="ascend",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
@@ -277,7 +281,7 @@ class DiscoveryController(BaseController):
             nasdaq_view.display_dividend_calendar(
                 date=ns_parser.date.strftime("%Y-%m-%d"),
                 sortby=sort_col,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -635,12 +639,16 @@ class DiscoveryController(BaseController):
             default="",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-b",
@@ -675,7 +683,7 @@ class DiscoveryController(BaseController):
             ark_view.ark_orders_view(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sort_col,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 buys_only=ns_parser.buys_only,
                 sells_only=ns_parser.sells_only,
                 fund=ns_parser.fund,

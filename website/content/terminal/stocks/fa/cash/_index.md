@@ -15,8 +15,7 @@ optional arguments:
                         Number of latest years/quarters. (default: 1)
   -q, --quarter         Quarter fundamental data flag. (default: False)
   -r, --ratios          Shows percentage change of values. (default: False)
-  -p PLOT [PLOT ...], --plot PLOT [PLOT ...]
-                        Rows to plot. (-1 represents invalid data) (default: [])
+  -p PLOT, --plot PLOT  Rows to plot, comma separated. (-1 represents invalid data) (default: None)
   -s {polygon,av,yf,fmp}, --source {polygon,av,yf,fmp}
                         The source to get the data from (default: av)
   -h, --help            show this help message (default: False)

@@ -32,7 +32,7 @@ common.ta.fisher(
         Dataframe of OHLC prices
     window: int
         Length for indicator window
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -78,6 +78,6 @@ common.ta.fisher(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -29,7 +29,7 @@ economy.spectrum(
 
     group : str
        Group by category. Available groups can be accessed through get_groups().
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -61,6 +61,6 @@ economy.spectrum(
         Group by category. Available groups can be accessed through get_groups().
     export: str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
