@@ -1017,14 +1017,11 @@ def run_scripts(
         else:
             file_cmds = [" ".join(file_cmds)]
 
-        if not test_mode:
+        if not test_mode or verbose:
             terminal(file_cmds, test_mode=True)
         else:
-            if verbose:
+            with suppress_stdout():
                 terminal(file_cmds, test_mode=True)
-            else:
-                with suppress_stdout():
-                    terminal(file_cmds, test_mode=True)
 
 
 def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:

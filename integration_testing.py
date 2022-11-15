@@ -49,8 +49,8 @@ def build_test_path_list(path_list: List[str]) -> List[Path]:
         if chosen_path.is_file() and str(chosen_path).endswith(".openbb"):
             test_files.append(str(chosen_path))
         elif chosen_path.is_dir():
-            files = os.walk(script_path)
-            for root, _, files in files:
+            all_files = os.walk(script_path)
+            for root, _, files in all_files:
                 for name in files:
                     if name.endswith(".openbb"):
                         path_obj = f"{root}/{name}"
