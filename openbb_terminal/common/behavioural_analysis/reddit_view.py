@@ -115,8 +115,8 @@ def print_reddit_post(sub: tuple):
     date = sub_list[0]
     title = sub_list[3]
     link = sub_list[-1]
-    console.print(f"{date} - {title}")
-    console.print(f"{link}")
+    console.print(f"[yellow]{date} - {title}[/yellow]")
+    console.print(f"[blue]{link}[/blue]\n")
     columns = [
         "Subreddit",
         "Flair",
@@ -249,6 +249,7 @@ def display_spac_community(limit: int = 10, popular: bool = False):
     if not subs.empty:
         for sub in subs.iterrows():
             print_reddit_post(sub)
+            console.print("")
 
         if d_watchlist_tickers:
             lt_watchlist_sorted = sorted(
