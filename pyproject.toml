@@ -131,6 +131,7 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
+docstring-parser = "0.15"
 
 [tool.poetry.extras]
 prediction = ["torch"]
