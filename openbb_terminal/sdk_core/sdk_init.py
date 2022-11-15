@@ -357,6 +357,7 @@ from openbb_terminal.stocks.insider import (
 
 # Stocks - Options
 from openbb_terminal.stocks.options import (
+    options_sdk_helper,
     alphaquery_model as stocks_options_alphaquery_model,
     alphaquery_view as stocks_options_alphaquery_view,
     barchart_model as stocks_options_barchart_model,

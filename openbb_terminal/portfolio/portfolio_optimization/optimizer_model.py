@@ -500,7 +500,7 @@ def get_mean_risk_portfolio(
         else:
             setattr(port, upper_risk[risk_measure], float(target_risk))
 
-    weights: Optional[Union[dict, pd.DataFrame]] = port.optimization(
+    weights = port.optimization(
         model=model,
         rm=risk_measure,
         obj=objective,
@@ -1210,9 +1210,7 @@ def get_max_diversification_portfolio(
         port.budget = value
 
     # Estimate optimal portfolio:
-    weights: Optional[Union[dict, pd.DataFrame]] = port.optimization(
-        model="Classic", rm="MV", obj="Sharpe", rf=0, hist=True
-    )
+    weights = port.optimization(model="Classic", rm="MV", obj="Sharpe", rf=0, hist=True)
 
     if weights is not None:
         weights = weights.round(5)
@@ -1327,7 +1325,7 @@ def get_max_decorrelation_portfolio(
         port.budget = value
 
     # Estimate optimal portfolio:
-    weights: Optional[Union[dict, pd.DataFrame]] = port.optimization(
+    weights = port.optimization(
         model="Classic", rm="MV", obj="MinRisk", rf=0, hist=True
     )
 
@@ -1475,7 +1473,7 @@ def get_black_litterman_portfolio(
         equilibrium=equilibrium,
         factor=factor,
     )
-    weights: Optional[Union[dict, pd.DataFrame]] = pd.DataFrame(weights)
+    weights = pd.DataFrame(weights)
 
     if optimize:
         # Building the portfolio object
@@ -1854,7 +1852,7 @@ def get_risk_parity_portfolio(
     if target_return > -1:
         port.lowerret = float(target_return) / time_factor[freq.upper()]
 
-    weights: Optional[Union[dict, pd.DataFrame]] = port.rp_optimization(
+    weights = port.rp_optimization(
         model=model, rm=risk_measure, rf=risk_free_rate, b=risk_cont_, hist=hist
     )
 
@@ -2001,7 +1999,7 @@ def get_rel_risk_parity_portfolio(
     if target_return > -1:
         port.lowerret = float(target_return) / time_factor[freq.upper()]
 
-    weights: Optional[Union[dict, pd.DataFrame]] = port.rrp_optimization(
+    weights = port.rrp_optimization(
         model=model, version=version, l=penal_factor, b=risk_cont_, hist=hist
     )
 
@@ -2247,7 +2245,7 @@ def get_hcp_portfolio(
         b_sim=b_sim,
     )
 
-    weights: Optional[Union[dict, pd.DataFrame]] = port.optimization(
+    weights = port.optimization(
         model=model,
         codependence=codependence,
         covariance=covariance,
