@@ -1208,7 +1208,7 @@ def display_skewness(
         df,
         title="Skewness for Portfolio and Benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1239,7 +1239,7 @@ def display_kurtosis(
         df,
         title="Kurtosis for Portfolio and Benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1334,7 +1334,7 @@ def display_sharpe_ratio(
         df,
         title="Sharpe ratio for Portfolio and Benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1368,7 +1368,7 @@ def display_sortino_ratio(
         df,
         title="Sortino ratio for Portfolio and Benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1399,7 +1399,7 @@ def display_maximum_drawdown_ratio(
         df,
         title="Maximum drawdown for Portfolio and Benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metric_maxdrawdown", df
@@ -1426,7 +1426,7 @@ def display_gaintopain_ratio(
         df,
         title="Gain-to-pain ratio for portfolio and benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1484,7 +1484,7 @@ def display_information_ratio(
         df,
         title="Information ratio for portfolio",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1517,7 +1517,7 @@ def display_tail_ratio(
         df,
         title="Tail ratio for portfolio and benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metric_tail_ratio", df
@@ -1544,7 +1544,7 @@ def display_common_sense_ratio(
         df,
         title="Common sense ratio for portfolio and benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1606,7 +1606,7 @@ def display_calmar_ratio(
         df,
         title="Calmar ratio for portfolio and benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metric_calmar_ratio", df
@@ -1660,7 +1660,7 @@ def display_payoff_ratio(
         df,
         title="Portfolio's payoff ratio",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metric_payoff_ratio", df
@@ -1687,7 +1687,7 @@ def display_profit_factor(
         df,
         title="Portfolio's profit factor",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metric_profit_factor", df
