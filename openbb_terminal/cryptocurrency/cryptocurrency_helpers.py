@@ -6,7 +6,7 @@ from __future__ import annotations
 import os
 import json
 from datetime import datetime, timedelta
-from typing import Any
+from typing import Any, Tuple, Optional
 import difflib
 import logging
 
@@ -332,10 +332,30 @@ def get_coingecko_id(symbol: str):
 def get_coinpaprika_id(symbol: str):
     paprika_coins = get_list_of_coins()
     paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
-    coinpaprika_id, _ = coinpaprika_model.validate_coin(
-        symbol.upper(), paprika_coins_dict
-    )
+    coinpaprika_id, _ = validate_coin(symbol.upper(), paprika_coins_dict)
     return coinpaprika_id
+
+
+def validate_coin(symbol: str, coins_dct: dict) -> Tuple[Optional[Any], Optional[Any]]:
+    """Helper method that validates if proper coin id or symbol was provided [Source: CoinPaprika]
+
+    Parameters
+    ----------
+    symbol: str
+        id or symbol of coin for CoinPaprika
+    coins_dct: dict
+        dictionary of coins
+
+    Returns
+    -------
+    Tuple[str,str]
+        coin id, coin symbol
+    """
+
+    for key, value in coins_dct.items():
+        if symbol == value:
+            return key, value.lower()
+    return None, None
 
 
 def load_from_ccxt(
@@ -739,9 +759,7 @@ def load_deprecated(
     if source == "CoinPaprika":
         paprika_coins = get_list_of_coins()
         paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
-        current_coin, symbol = coinpaprika_model.validate_coin(
-            coin.upper(), paprika_coins_dict
-        )
+        current_coin, symbol = validate_coin(coin.upper(), paprika_coins_dict)
 
         if not symbol:
             return None, None, None, None, None, None

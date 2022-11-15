@@ -21,25 +21,6 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_coin(symbol: str = "eth-ethereum") -> dict:
-    """Get coin by id [Source: CoinPaprika]
-
-    Parameters
-    ----------
-    symbol: str
-        id of coin from coinpaprika e.g. Ethereum - > 'eth-ethereum'
-    Returns
-    -------
-    dict
-        Coin response
-    """
-
-    session = PaprikaSession()
-    coin = session.make_request(session.ENDPOINTS["coin"].format(symbol))
-    return coin
-
-
-@log_start_end(log=logger)
 def get_coin_twitter_timeline(
     symbol: str = "BTC", sortby: str = "date", ascend: bool = True
 ) -> pd.DataFrame:
@@ -396,29 +377,6 @@ def get_tickers_info_for_coin(
 
 
 @log_start_end(log=logger)
-def validate_coin(symbol: str, coins_dct: dict) -> Tuple[Optional[Any], Optional[Any]]:
-    """Helper method that validates if proper coin id or symbol was provided [Source: CoinPaprika]
-
-    Parameters
-    ----------
-    symbol: str
-        id or symbol of coin for CoinPaprika
-    coins_dct: dict
-        dictionary of coins
-
-    Returns
-    -------
-    Tuple[str,str]
-        coin id, coin symbol
-    """
-
-    for key, value in coins_dct.items():
-        if symbol == value:
-            return key, value.lower()
-    return None, None
-
-
-@log_start_end(log=logger)
 def basic_coin_info(symbol: str = "btc-bitcoin") -> pd.DataFrame:
     """Basic coin information [Source: CoinPaprika]
 
@@ -464,3 +422,22 @@ def basic_coin_info(symbol: str = "btc-bitcoin") -> pd.DataFrame:
     )
     df.dropna(subset=["Value"], inplace=True)
     return df
+
+
+@log_start_end(log=logger)
+def get_coin(symbol: str = "eth-ethereum") -> dict:
+    """Get coin by id [Source: CoinPaprika]
+
+    Parameters
+    ----------
+    symbol: str
+        id of coin from coinpaprika e.g. Ethereum - > 'eth-ethereum'
+    Returns
+    -------
+    dict
+        Coin response
+    """
+
+    session = PaprikaSession()
+    coin = session.make_request(session.ENDPOINTS["coin"].format(symbol))
+    return coin
