@@ -30,8 +30,8 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def display_historical(
     symbol: str,
-    start_date: str = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.utcnow().strftime("%Y-%m-%d"),
+    start_date: str = None,
+    end_date: str = None,
     number: int = 100,
     raw: bool = False,
     limit: int = 10,
@@ -64,6 +64,12 @@ def display_historical(
     Returns
     -------
     """
+
+    if start_date is None:
+        start_date = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.utcnow().strftime("%Y-%m-%d")
 
     supported_ticker = sentimentinvestor_model.check_supported_ticker(symbol)
 
@@ -146,7 +152,7 @@ def display_historical(
 @log_start_end(log=logger)
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def display_trending(
-    start_date: str = datetime.today().strftime("%Y-%m-%d"),
+    start_date: str = None,
     hour: int = 0,
     number: int = 10,
     limit: int = 10,
@@ -170,6 +176,9 @@ def display_trending(
     export: str
         Format to export data
     """
+
+    if start_date is None:
+        start_date = datetime.today().strftime("%Y-%m-%d")
 
     df = sentimentinvestor_model.get_trending(start_date, hour, number)
 

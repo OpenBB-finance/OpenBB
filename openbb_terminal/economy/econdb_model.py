@@ -483,8 +483,8 @@ def get_macro_data(
     parameter: str,
     country: str,
     transform: str = "",
-    start_date=pd.to_datetime("1900-01-01"),
-    end_date=datetime.today().date(),
+    start_date=None,
+    end_date=None,
     symbol: str = "",
 ) -> Tuple[Any, Union[str, Any]]:
     """Query the EconDB database to find specific macro data about a company [Source: EconDB]
@@ -517,6 +517,13 @@ def get_macro_data(
     units
         The units of the macro data, e.g. 'Bbl/day" for oil.
     """
+
+    if start_date is None:
+        start_date = pd.to_datetime("1900-01-01")
+
+    if end_date is None:
+        end_date = datetime.today().date()
+
     country = country.replace("_", " ")
     country = country.title()
     country = country.replace(" ", "_")
@@ -651,7 +658,7 @@ def get_aggregated_macro_data(
     countries: list = None,
     transform: str = "",
     start_date: str = "1900-01-01",
-    end_date=datetime.today().date(),
+    end_date: str = None,
     symbol: str = "",
 ) -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]:
     """This functions groups the data queried from the EconDB database [Source: EconDB]
@@ -680,6 +687,9 @@ def get_aggregated_macro_data(
     str
         Denomination which can be Trillions, Billions, Millions, Thousands
     """
+
+    if end_date is None:
+        end_date = datetime.today().strftime("%Y-%m-%d")
 
     if parameters is None:
         parameters = ["CPI"]
@@ -726,7 +736,7 @@ def get_treasuries(
     maturities: list = None,
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
-    end_date: str = str(datetime.today().date()),
+    end_date: str = None,
 ) -> pd.DataFrame:
     """Get U.S. Treasury rates [Source: EconDB]
 
@@ -749,6 +759,9 @@ def get_treasuries(
     treasury_data: pd.Dataframe
         Holds data of the selected types and maturities
     """
+
+    if end_date is None:
+        end_date = datetime.today().strftime("%Y-%m-%d")
 
     if instruments is None:
         instruments = ["nominal"]
