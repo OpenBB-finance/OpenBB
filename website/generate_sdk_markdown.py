@@ -32,7 +32,7 @@ class Trailmap:
     def __init__(self, trailmap: str, model: str, view: Optional[str] = None):
         tmap = trailmap.split(".")
         if len(tmap) == 1:
-            tmap = ["root", tmap[0]]
+            tmap = ["", tmap[0]]
         self.class_attr: str = tmap.pop(-1)
         self.category = tmap[0]
         self.location_path = tmap
@@ -61,6 +61,8 @@ class Trailmap:
                 add_juan = 0
                 if "__wrapped__" in dir(self.func_attr[key]):
                     self.func_attr[key] = self.func_attr[key].__wrapped__
+                    if "__wrapped__" in dir(self.func_attr[key]):
+                        self.func_attr[key] = self.func_attr[key].__wrapped__
                     add_juan = 1
                 self.lineon[key] = (
                     inspect.getsourcelines(self.func_attr[key])[1] + add_juan
