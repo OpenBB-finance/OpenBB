@@ -27,7 +27,12 @@ def get_put_call_ratio(
     window: int, optional
         Window to consider, by default 30
     start_date: str, optional
-        Start date to plot (e.g., 2021-10-01), by default last 366 days
+        Start date to plot  (e.g., 2021-10-01), by default last 366 days
+
+    Returns
+    -------
+    pd.DataFrame
+        Put call ratio
     """
 
     if start_date is None:

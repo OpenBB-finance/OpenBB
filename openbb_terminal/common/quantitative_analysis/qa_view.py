@@ -51,7 +51,7 @@ def lambda_color_red(val: Any) -> str:
 
 @log_start_end(log=logger)
 def display_summary(data: pd.DataFrame, export: str = "") -> None:
-    """Show summary statistics
+    """Prints table showing summary statistics
 
     Parameters
     ----------
@@ -86,7 +86,7 @@ def display_hist(
     bins: int = 15,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Generate of histogram of data
+    """Plots histogram of data
 
     Parameters
     ----------
@@ -157,7 +157,7 @@ def display_cdf(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot Cumulative Distribution Function
+    """Plots Cumulative Distribution Function
 
     Parameters
     ----------
@@ -262,7 +262,7 @@ def display_bw(
     yearly: bool = True,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Show box and whisker plots
+    """Plots box and whisker plots
 
     Parameters
     ----------
@@ -358,7 +358,7 @@ def display_acf(
     lags: int = 15,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Show Auto and Partial Auto Correlation of returns and change in returns
+    """Plots Auto and Partial Auto Correlation of returns and change in returns
 
     Parameters
     ----------
@@ -441,7 +441,7 @@ def display_qqplot(
     symbol: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Show QQ plot for data against normal quantiles
+    """Plots QQ plot for data against normal quantiles
 
     Parameters
     ----------
@@ -497,7 +497,7 @@ def display_cusum(
     drift: float = 2.1,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
+    """Plots Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 
     Parameters
     ----------
@@ -626,7 +626,7 @@ def display_seasonal(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display seasonal decomposition data
+    """Plots seasonal decomposition data
 
     Parameters
     ----------
@@ -767,7 +767,7 @@ def display_seasonal(
 
 @log_start_end(log=logger)
 def display_normality(data: pd.DataFrame, target: str, export: str = "") -> None:
-    """View normality statistics
+    """Prints table showing normality statistics
 
     Parameters
     ----------
@@ -807,7 +807,7 @@ def display_unitroot(
     kpss_reg: str = "c",
     export: str = "",
 ):
-    """Show unit root test calculations
+    """Prints table showing unit root test calculations
 
     Parameters
     ----------
@@ -848,7 +848,7 @@ def display_raw(
     limit: int = 20,
     export: str = "",
 ) -> None:
-    """Return raw stock data
+    """Prints table showing raw stock data
 
     Parameters
     ----------
@@ -1013,7 +1013,7 @@ def display_var(
     data_range: int = 0,
     portfolio: bool = False,
 ) -> None:
-    """Displays VaR of dataframe.
+    """Prints table showing VaR of dataframe.
 
     Parameters
     ----------
@@ -1071,7 +1071,7 @@ def display_es(
     percentile: float = 99.9,
     portfolio: bool = False,
 ) -> None:
-    """Displays expected shortfall.
+    """Prints table showing expected shortfall.
 
     Parameters
     ----------
@@ -1112,7 +1112,8 @@ def display_es(
 
 
 def display_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> None:
-    """Calculates the sharpe ratio
+    """Plots Calculated the sharpe ratio
+
     Parameters
     ----------
     data: pd.DataFrame
@@ -1138,7 +1139,8 @@ def display_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> N
 def display_sortino(
     data: pd.DataFrame, target_return: float, window: float, adjusted: bool
 ) -> None:
-    """Displays the sortino ratio
+    """Plots the sortino ratio
+
     Parameters
     ----------
     data: pd.DataFrame
@@ -1170,7 +1172,8 @@ def display_sortino(
 def display_omega(
     data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5
 ) -> None:
-    """Displays the omega ratio
+    """Plots the omega ratio
+
     Parameters
     ----------
     data: pd.DataFrame

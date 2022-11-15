@@ -48,6 +48,7 @@ def _make_request(endpoint: str) -> dict:
     ----------
     endpoint: str
         endpoint url
+
     Returns
     -------
     dict:
@@ -110,7 +111,7 @@ def get_staking_account_info(address: str = "") -> Tuple[pd.DataFrame, str]:
         terra blockchain address e.g. terra1jvwelvs7rdk6j3mqdztq5tya99w8lxk6l9hcqg
     Returns
     -------
-    Tuple[pd.DataFrame, str]:
+    Tuple[pd.DataFrame, str]
         luna delegations and summary report for given address
     """
 
@@ -266,6 +267,7 @@ def get_account_growth(cumulative: bool = True) -> pd.DataFrame:
     ----------
     cumulative: bool
         distinguish between periodical and cumulative account growth data
+
     Returns
     -------
     pd.DataFrame

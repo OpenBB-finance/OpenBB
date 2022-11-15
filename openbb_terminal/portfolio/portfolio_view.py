@@ -77,7 +77,7 @@ def load_info():
     """Prints instructions to load a CSV
 
     Returns
-    ----------
+    -------
     text : str
         Information on how to load a csv
     """

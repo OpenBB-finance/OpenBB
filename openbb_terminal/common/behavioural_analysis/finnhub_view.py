@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_FINNHUB_KEY"])
 def display_sentiment_stats(ticker: str, export: str = ""):
     """
-    Sentiment stats which displays buzz, news score, articles last week, articles weekly average,
+    Prints Sentiment stats which displays buzz, news score, articles last week, articles weekly average,
     bullish vs bearish percentages, sector average bullish percentage, and sector average news score
 
     Parameters

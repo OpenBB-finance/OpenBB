@@ -193,7 +193,7 @@ class OperationLogger:
             Keyword args
 
         Returns
-        -------
+        ----------
         dict
             Merged user args and signature defaults
         """
@@ -224,7 +224,7 @@ class OperationLogger:
             Function args
 
         Returns
-        -------
+        ----------
         dict
             Function args with API key removed
         """

@@ -21,7 +21,7 @@ def display_search_results(
     ascend: bool = True,
     export: str = "",
 ) -> None:
-    """Search over CoinPaprika. [Source: CoinPaprika]
+    """Prints table showing Search over CoinPaprika. [Source: CoinPaprika]
 
     Parameters
     ----------

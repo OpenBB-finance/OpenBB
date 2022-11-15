@@ -54,9 +54,10 @@ def get_coin_twitter_timeline(
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1twitter/get).
     ascend: bool
         Flag to sort data descending
+
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Twitter timeline for given coin.
         Columns: date, user_name, status, retweet_count, like_count
     """
@@ -118,9 +119,10 @@ def get_coin_events_by_id(
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1events/get).
     ascend: bool
         Flag to sort data ascending
+
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Events found for given coin
         Columns: id, date , date_to, name, description, is_conference, link, proof_image_link
     """
@@ -166,7 +168,7 @@ def get_coin_exchanges_by_id(
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         All exchanges for given coin
         Columns: id, name, adjusted_volume_24h_share, fiats
     """
@@ -211,7 +213,7 @@ def get_coin_markets_by_id(
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         All markets for given coin and currency
     """
 
@@ -264,7 +266,7 @@ def get_ohlc_historical(
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Open/High/Low/Close values with volume and market_cap.
     """
 
@@ -343,7 +345,7 @@ def get_tickers_info_for_coin(
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Most important ticker related information
         Columns: Metric, Value
     """
@@ -394,7 +396,7 @@ def validate_coin(symbol: str, coins_dct: dict) -> Tuple[Optional[Any], Optional
 
     Returns
     -------
-    Tuple[str,str]
+    Tuple[Optional[Any], Optional[Any]]
         coin id, coin symbol
     """
 

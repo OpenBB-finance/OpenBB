@@ -125,6 +125,11 @@ def get_defi_protocol(protocol: str) -> pd.DataFrame:
     """Returns information about historical tvl of a defi protocol.
     [Source: https://docs.llama.fi/api]
 
+    Parameters
+    ----------
+    protocol: str
+        Name of the protocol
+
     Returns
     -------
     pd.DataFrame
