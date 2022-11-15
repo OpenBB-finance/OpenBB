@@ -108,7 +108,7 @@ def display_chains(
         call_bool = False
         put_bool = True
 
-    option_chains = yfinance_model.get_full_option_chain(
+    option_chains = yfinance_model.get_option_chain_expiry(
         symbol=symbol,
         expiry=expiry,
         calls=call_bool,
