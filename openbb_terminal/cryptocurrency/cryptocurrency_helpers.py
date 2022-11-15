@@ -6,14 +6,12 @@ from __future__ import annotations
 import os
 import json
 from datetime import datetime, timedelta
-from typing import Any, Tuple, Optional
 import difflib
 import logging
 
 import pandas as pd
 import numpy as np
 import ccxt
-from binance.client import Client
 import matplotlib.pyplot as plt
 from matplotlib.ticker import LogLocator, ScalarFormatter
 import yfinance as yf
