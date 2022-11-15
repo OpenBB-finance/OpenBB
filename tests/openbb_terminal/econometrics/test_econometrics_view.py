@@ -148,34 +148,34 @@ def test_display_granger(time_series_y, time_series_x, lags, confidence_level):
     "datasets, significant, plot",
     [
         (
-            {
-                "y": common_model.load(
+            [
+                common_model.load(
                     "interest_inflation",
                     {},
                     {"interest_inflation": "interest_inflation"},
                 )["Dp"],
-                "x": common_model.load(
+                common_model.load(
                     "interest_inflation",
                     {},
                     {"interest_inflation": "interest_inflation"},
                 )["R"],
-            },
+            ],
             True,
             False,
         ),
         (
-            {
-                "y": common_model.load(
+            [
+                common_model.load(
                     "interest_inflation",
                     {},
                     {"interest_inflation": "interest_inflation"},
                 )["Dp"],
-                "x": common_model.load(
+                common_model.load(
                     "interest_inflation",
                     {},
                     {"interest_inflation": "interest_inflation"},
                 )["R"],
-            },
+            ],
             False,
             False,
         ),
@@ -183,5 +183,5 @@ def test_display_granger(time_series_y, time_series_x, lags, confidence_level):
 )
 def test_get_engle_granger_two_step_cointegration_test(datasets, significant, plot):
     econometrics_view.display_cointegration_test(
-        datasets=datasets, significant=significant, plot=plot
+        *datasets, significant=significant, plot=plot
     )
