@@ -967,7 +967,7 @@ def load_custom(file_path: str) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of stock data
     """
     # Double check that the file exists

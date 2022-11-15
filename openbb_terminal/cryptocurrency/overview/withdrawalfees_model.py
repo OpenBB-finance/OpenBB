@@ -128,7 +128,7 @@ def get_overall_withdrawal_fees(limit: int = 100) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Coin, Lowest, Average, Median, Highest, Exchanges Compared
     """
 
@@ -185,7 +185,7 @@ def get_overall_exchange_withdrawal_fees() -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Exchange, Coins, Lowest, Average, Median, Highest
     """
     exchange_withdrawal_fees = BeautifulSoup(

@@ -64,7 +64,7 @@ def get_profile(symbol: str) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of ticker profile
     """
     df = pd.DataFrame()
@@ -92,7 +92,7 @@ def get_quote(symbol: str) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of ticker quote
     """
 
@@ -145,7 +145,7 @@ def get_enterprise(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of enterprise information
     """
     df_fa = pd.DataFrame()

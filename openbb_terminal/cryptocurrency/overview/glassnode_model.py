@@ -32,7 +32,7 @@ def get_btc_rainbow(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         price over time
     """
 

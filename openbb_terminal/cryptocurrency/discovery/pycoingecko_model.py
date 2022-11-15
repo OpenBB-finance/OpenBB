@@ -315,7 +315,7 @@ def get_trending_coins() -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Trending Coins
     """
     client = CoinGeckoAPI()

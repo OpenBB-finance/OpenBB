@@ -102,7 +102,8 @@ class PortfolioEngine:
 
         Returns
         -------
-            pd.DataFrame: formatted transactions
+        pd.DataFrame
+            Formatted transactions
         """
 
         df = self.__transactions[
