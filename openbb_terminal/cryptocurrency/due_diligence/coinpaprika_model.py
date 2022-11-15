@@ -12,6 +12,7 @@ from dateutil import parser
 from openbb_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.cryptocurrency.cryptocurrency_helpers import get_coinpaprika_id
 
 # pylint: disable=unsupported-assignment-operation
 
@@ -40,14 +41,14 @@ def get_coin(symbol: str = "eth-ethereum") -> dict:
 
 @log_start_end(log=logger)
 def get_coin_twitter_timeline(
-    symbol: str = "eth-ethereum", sortby: str = "date", ascend: bool = True
+    symbol: str = "BTC", sortby: str = "date", ascend: bool = True
 ) -> pd.DataFrame:
     """Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
     Parameters
     ----------
     symbol: str
-        id of coin from coinpaprika e.g. Ethereum - > 'eth-ethereum'
+        Cryptocurrency symbol (e.g. BTC)
     sortby: str
         Key by which to sort data. Every column name is valid
         (see for possible values:
@@ -60,9 +61,11 @@ def get_coin_twitter_timeline(
         Twitter timeline for given coin.
         Columns: date, user_name, status, retweet_count, like_count
     """
+    # get coinpaprika id using crypto symbol
+    cp_id = get_coinpaprika_id(symbol)
 
     session = PaprikaSession()
-    res = session.make_request(session.ENDPOINTS["coin_tweeter"].format(symbol))
+    res = session.make_request(session.ENDPOINTS["coin_tweeter"].format(cp_id))
     if "error" in res:
         console.print(res)
         return pd.DataFrame()
@@ -88,7 +91,7 @@ def get_coin_twitter_timeline(
 
 @log_start_end(log=logger)
 def get_coin_events_by_id(
-    symbol: str = "eth-ethereum", sortby="date", ascend: bool = False
+    symbol: str = "BTC", sortby="date", ascend: bool = False
 ) -> pd.DataFrame:
     """Get all events related to given coin like conferences, start date of futures trading etc.
     [Source: CoinPaprika]
@@ -111,7 +114,7 @@ def get_coin_events_by_id(
     Parameters
     ----------
     symbol: str
-        id of coin from coinpaprika e.g. Ethereum - > 'eth-ethereum'
+        Cryptocurrency symbol (e.g. BTC)
     sortby: str
         Key by which to sort data. Every column name is valid
         (see for possible values:
@@ -124,9 +127,11 @@ def get_coin_events_by_id(
         Events found for given coin
         Columns: id, date , date_to, name, description, is_conference, link, proof_image_link
     """
+    # get coinpaprika id using crypto symbol
+    cp_id = get_coinpaprika_id(symbol)
 
     session = PaprikaSession()
-    res = session.make_request(session.ENDPOINTS["coin_events"].format(symbol))
+    res = session.make_request(session.ENDPOINTS["coin_events"].format(cp_id))
     if not res or "error" in res:
         return pd.DataFrame()
     data = pd.DataFrame(res)
@@ -148,7 +153,7 @@ def get_coin_events_by_id(
 
 @log_start_end(log=logger)
 def get_coin_exchanges_by_id(
-    symbol: str = "eth-ethereum",
+    symbol: str = "BTC",
     sortby: str = "adjusted_volume_24h_share",
     ascend: bool = True,
 ) -> pd.DataFrame:
@@ -157,7 +162,7 @@ def get_coin_exchanges_by_id(
     Parameters
     ----------
     symbol: str
-        Identifier of Coin from CoinPaprika
+        Cryptocurrency symbol (e.g. BTC)
     sortby: str
         Key by which to sort data. Every column name is valid (see for possible values:
         https://api.coinpaprika.com/v1).
@@ -170,9 +175,11 @@ def get_coin_exchanges_by_id(
         All exchanges for given coin
         Columns: id, name, adjusted_volume_24h_share, fiats
     """
+    # get coinpaprika id using crypto symbol
+    cp_id = get_coinpaprika_id(symbol)
 
     session = PaprikaSession()
-    res = session.make_request(session.ENDPOINTS["coin_exchanges"].format(symbol))
+    res = session.make_request(session.ENDPOINTS["coin_exchanges"].format(cp_id))
     df = pd.DataFrame(res)
 
     if "fiats" in df.columns.tolist():
@@ -185,7 +192,7 @@ def get_coin_exchanges_by_id(
 
 @log_start_end(log=logger)
 def get_coin_markets_by_id(
-    symbol: str = "eth-ethereum",
+    symbol: str = "BTC",
     quotes: str = "USD",
     sortby: str = "pct_volume_share",
     ascend: bool = True,
@@ -195,7 +202,7 @@ def get_coin_markets_by_id(
     Parameters
     ----------
     symbol: str
-        Coin Parpika identifier of coin e.g. eth-ethereum
+        Cryptocurrency symbol (e.g. BTC)
     quotes: str
         Comma separated list of quotes to return.
         Example: quotes=USD,BTC
@@ -214,10 +221,15 @@ def get_coin_markets_by_id(
     pandas.DataFrame
         All markets for given coin and currency
     """
+    if sortby in ["volume", "price"]:
+        sortby = f"{str(symbol).lower()}_{sortby}"
+
+    # get coinpaprika id using crypto symbol
+    cp_id = get_coinpaprika_id(symbol)
 
     session = PaprikaSession()
     markets = session.make_request(
-        session.ENDPOINTS["coin_markets"].format(symbol), quotes=quotes
+        session.ENDPOINTS["coin_markets"].format(cp_id), quotes=quotes
     )
     if "error" in markets:
         console.print(markets)
@@ -337,7 +349,7 @@ def get_tickers_info_for_coin(
     Parameters
     ----------
     symbol: str
-        Id of coin from CoinPaprika
+        Cryptocurrency symbol (e.g. BTC)
     quotes: str
         Comma separated quotes to return e.g quotes = USD, BTC
 
@@ -347,10 +359,12 @@ def get_tickers_info_for_coin(
         Most important ticker related information
         Columns: Metric, Value
     """
+    # get coinpaprika id using crypto symbol
+    cp_id = get_coinpaprika_id(symbol)
 
     session = PaprikaSession()
     tickers = session.make_request(
-        session.ENDPOINTS["ticker_info"].format(symbol), quotes=quotes
+        session.ENDPOINTS["ticker_info"].format(cp_id), quotes=quotes
     )
 
     for key, date in tickers.items():
@@ -411,15 +425,17 @@ def basic_coin_info(symbol: str = "btc-bitcoin") -> pd.DataFrame:
     Parameters
     ----------
     symbol: str
-        Coin id
+        Cryptocurrency symbol (e.g. BTC)
 
     Returns
     -------
     pd.DataFrame
         Metric, Value
     """
+    # get coinpaprika id using crypto symbol
+    cp_id = get_coinpaprika_id(symbol)
 
-    coin = get_coin(symbol)
+    coin = get_coin(cp_id)
     tags = coin.get("tags") or []
     keys = [
         "id",
