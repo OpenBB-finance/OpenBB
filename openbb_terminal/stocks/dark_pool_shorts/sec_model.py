@@ -58,8 +58,8 @@ def catching_diff_url_formats(ftd_urls: list) -> list:
 @log_start_end(log=logger)
 def get_fails_to_deliver(
     symbol: str,
-    start_date: str = (datetime.now() - timedelta(days=60)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: str = None,
+    end_date: str = None,
     limit: int = 0,
 ) -> pd.DataFrame:
     """Display fails-to-deliver data for a given ticker. [Source: SEC]
@@ -80,6 +80,13 @@ def get_fails_to_deliver(
     pd.DataFrame
         Fail to deliver data
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=60)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     ftds_data = pd.DataFrame()
     start = datetime.strptime(start_date, "%Y-%m-%d")
     end = datetime.strptime(end_date, "%Y-%m-%d")

@@ -81,8 +81,8 @@ base_url2 = "https://data.messari.io/api/v2/"
 def get_marketcap_dominance(
     symbol: str,
     interval: str = "1d",
-    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: str = None,
+    end_date: str = None,
 ) -> pd.DataFrame:
     """Returns market dominance of a coin over time
     [Source: https://messari.io/]
@@ -104,6 +104,12 @@ def get_marketcap_dominance(
         market dominance percentage over time
     """
 
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     df, _ = get_messari_timeseries(
         symbol=symbol,
         end_date=end_date,
@@ -120,8 +126,8 @@ def get_messari_timeseries(
     symbol: str,
     timeseries_id: str,
     interval: str = "1d",
-    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: str = None,
+    end_date: str = None,
 ) -> Tuple[pd.DataFrame, str]:
     """Returns messari timeseries
     [Source: https://messari.io/]
@@ -145,6 +151,12 @@ def get_messari_timeseries(
         Messari timeseries over time,
         Timeseries title
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     url = base_url + f"assets/{symbol}/metrics/{timeseries_id}/time-series"
 

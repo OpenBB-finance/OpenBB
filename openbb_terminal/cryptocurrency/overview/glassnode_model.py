@@ -17,7 +17,7 @@ api_url = "https://api.glassnode.com/v1/metrics/"
 @log_start_end(log=logger)
 def get_btc_rainbow(
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
 ) -> DataFrame:
     """Get bitcoin price data
     [Price data from source: https://glassnode.com]
@@ -35,6 +35,9 @@ def get_btc_rainbow(
     pd.DataFrame:
         price over time
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_data = get_close_price("BTC", start_date, end_date)
 

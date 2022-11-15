@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 def display_altcoin_index(
     period: int = 365,
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -49,6 +49,10 @@ def display_altcoin_index(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     if period in DAYS:
         df = get_altcoin_index(period, start_date, end_date)
 

@@ -42,12 +42,16 @@ repos:
             "--quiet-level=2",
             "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*,./website/config.toml",
           ]
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v0.982"
+  - repo: local
     hooks:
-      - id: mypy
-        args: ["--ignore-missing-imports", 'openbb_terminal']
-        additional_dependencies: [types-all]
+      -   id: mypy
+          name: mypy
+          description: ''
+          entry: mypy
+          language: python
+          'types_or': [python, pyi]
+          args: ["--ignore-missing-imports", "--scripts-are-modules"]
+          require_serial: true
   - repo: https://github.com/kynan/nbstripout
     rev: 0.6.1
     hooks:

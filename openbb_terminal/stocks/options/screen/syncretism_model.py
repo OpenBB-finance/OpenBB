@@ -10,8 +10,8 @@ import pandas as pd
 import requests
 import yfinance as yf
 
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import yfinance_model
 
