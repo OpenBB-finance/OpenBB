@@ -84,10 +84,8 @@ def get_fund_symbol_from_name(name: str) -> Tuple[str, str]:
 
     Returns
     -------
-    str
-        Name of Symbol matching provided name
-    str
-        Country in which matching symbol was found
+    Tuple[str, str]
+        Name of Symbol matching provided name, Country in which matching symbol was found
     """
     try:
         name_search_results = investpy.search_funds(by="name", value=name)
@@ -118,10 +116,8 @@ def get_fund_name_from_symbol(symbol: str) -> Tuple[str, str]:
 
     Returns
     -------
-    str
-        Name of fund matching provided symbol
-    str
-        Country matching symbol
+    Tuple[str, str]
+        Name of fund matching provided symbol, Country matching symbol
     """
     try:
         symbol_search_results = investpy.search_funds(by="symbol", value=symbol)
@@ -192,14 +188,8 @@ def get_fund_historical(
 
     Returns
     -------
-    pd.DataFrame:
-        Dataframe of OHLC prices
-    str:
-        Fund name
-    str:
-        Fund symbol
-    str:
-        Country that matches search results
+    Tuple[pd.DataFrame, str, str, str]
+        Dataframe of OHLC prices, Fund name, Fund symbol, Country that matches search results
     """
     try:
         if by_name:
