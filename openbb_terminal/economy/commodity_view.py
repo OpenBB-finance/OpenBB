@@ -17,7 +17,7 @@ def format_large_numbers(num: float) -> str:
         The number to convert
 
     Returns
-    ----------
+    -------
     num: str
         The formatted number
     """

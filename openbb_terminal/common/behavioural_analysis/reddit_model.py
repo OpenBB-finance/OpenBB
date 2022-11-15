@@ -49,7 +49,7 @@ l_sub_reddits = [
 def get_watchlists(
     limit: int = 5,
 ) -> Tuple[List[praw.models.reddit.submission.Submission], dict, int]:
-    """Get reddit users watchlists [Source: reddit]
+    """Get reddit users watchlists [Source: reddit].
 
     Parameters
     ----------
@@ -58,12 +58,10 @@ def get_watchlists(
 
     Returns
     -------
-    list[praw.models.reddit.submission.Submission]:
-        List of reddit submissions
-    dict:
-        Dictionary of tickers and counts
-    int
-        Count of how many posts were analyzed
+    Tuple[List[praw.models.reddit.submission.Submission], dict, int]
+        List of reddit submissions,
+        Dictionary of tickers and their count,
+        Count of how many posts were analyzed.
     """
     d_watchlist_tickers: dict = {}
     l_watchlist_author = []
@@ -156,7 +154,7 @@ def get_watchlists(
 def get_popular_tickers(
     limit: int = 10, post_limit: int = 50, subreddits: str = ""
 ) -> pd.DataFrame:
-    """Get popular tickers from list of subreddits [Source: reddit]
+    """Get popular tickers from list of subreddits [Source: reddit].
 
     Parameters
     ----------
@@ -328,7 +326,7 @@ def get_popular_tickers(
 def get_spac_community(
     limit: int = 10, popular: bool = False
 ) -> Tuple[pd.DataFrame, dict]:
-    """Get top tickers from r/SPACs [Source: reddit]
+    """Get top tickers from r/SPACs [Source: reddit].
 
     Parameters
     ----------
@@ -339,10 +337,9 @@ def get_spac_community(
 
     Returns
     -------
-    pd.DataFrame:
-        Dataframe of reddit submission
-    dict:
-        Dictionary of tickers and number of mentions
+    Tuple[pd.DataFrame, dict]
+        Dataframe of reddit submission,
+        Dictionary of tickers and number of mentions.
     """
     praw_api = praw.Reddit(
         client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -468,7 +465,7 @@ def get_spac_community(
 def get_spac(
     limit: int = 5,
 ) -> Tuple[pd.DataFrame, dict, int]:
-    """Get posts containing SPAC from top subreddits [Source: reddit]
+    """Get posts containing SPAC from top subreddits [Source: reddit].
 
     Parameters
     ----------
@@ -477,11 +474,9 @@ def get_spac(
 
     Returns
     -------
-    pd.DataFrame :
-        Dataframe of reddit submissions
-    dict :
-        Dictionary of tickers and counts
-    int :
+    Tuple[pd.DataFrame, dict, int]
+        Dataframe of reddit submission,
+        Dictionary of tickers and counts,
         Number of posts found.
     """
     praw_api = praw.Reddit(
@@ -614,7 +609,7 @@ def get_spac(
     ]
 )
 def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
-    """Get wsb posts [Source: reddit]
+    """Get wsb posts [Source: reddit].
 
     Parameters
     ----------
@@ -725,7 +720,7 @@ def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
 def get_due_dilligence(
     symbol: str, limit: int = 5, n_days: int = 3, show_all_flairs: bool = False
 ) -> pd.DataFrame:
-    """Gets due diligence posts from list of subreddits [Source: reddit]
+    """Gets due diligence posts from list of subreddits [Source: reddit].
 
     Parameters
     ----------
@@ -883,7 +878,7 @@ def get_posts_about(
     full_search: bool = True,
     subreddits: str = "all",
 ) -> Tuple[pd.DataFrame, list, float]:
-    """Finds posts related to a specific search term in Reddit
+    """Finds posts related to a specific search term in Reddit.
 
     Parameters
     ----------
@@ -892,11 +887,9 @@ def get_posts_about(
     limit: int
         Number of posts to get per subreddit
     sortby: str
-        Search type
-        Possibilities: "relevance", "hot", "top", "new", or "comments"
+        Search type (Possibilities: "relevance", "hot", "top", "new", or "comments")
     time_frame: str
-        Relative time of post
-        Possibilities: "hour", "day", "week", "month", "year", "all"
+        Relative time of post (Possibilities: "hour", "day", "week", "month", "year", "all")
     full_search: bool
         Enable comprehensive search for ticker
     subreddits: str
@@ -904,10 +897,10 @@ def get_posts_about(
 
     Returns
     -------
-    tuple[pd.DataFrame, list, float]:
+    Tuple[pd.DataFrame, list, float]:
         Dataframe of submissions related to the search term,
         List of polarity scores,
-        Average polarity score
+        Average polarity score.
     """
     praw_api = praw.Reddit(
         client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -994,7 +987,7 @@ def get_posts_about(
 def get_comments(
     post: praw.models.reddit.submission.Submission,
 ) -> List[praw.models.reddit.comment.Comment]:
-    """Recursively gets comments from a post
+    """Recursively gets comments from a post.
 
     Parameters
     ----------
@@ -1024,7 +1017,7 @@ def get_comments(
 
 @log_start_end(log=logger)
 def clean_reddit_text(docs: List[str]) -> List[str]:
-    """Tokenizes and cleans a list of documents for sentiment analysis
+    """Tokenizes and cleans a list of documents for sentiment analysis.
 
     Parameters
     ----------
@@ -1063,7 +1056,7 @@ def clean_reddit_text(docs: List[str]) -> List[str]:
     ]
 )
 def get_sentiment(post_data: List[str]) -> float:
-    """Find the sentiment of a post and related comments
+    """Find the sentiment of a post and related comments.
 
     Parameters
     ----------

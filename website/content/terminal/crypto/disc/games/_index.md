@@ -1,5 +1,5 @@
 ```
-usage: games [-l N] [-s {Name,Daily Users,Daily Volume [$]}] [--descend] [-l] [--export {csv,json,xlsx}] [-h]
+usage: games [-l LIMIT] [-s SORTBY [SORTBY ...]] [-h] [--export EXPORT]
 ```
 
 Shows top blockchain games [Source: https://dappradar.com/]

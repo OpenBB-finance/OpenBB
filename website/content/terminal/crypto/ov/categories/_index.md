@@ -1,5 +1,5 @@
 ```
-usage: categories [-l N] [-s {Rank,Name,Change_1h,Change_24h,Change_7d,Market_Cap,Volume_24h,Coins}] [--descend] [-l] [--export {csv,json,xlsx}] [--pie] [-h]
+usage: categories [-l N] [-s {Rank,Name,Change_1h,Change_24h,Change_7d,Market_Cap,Volume_24h,Coins}] [--reverse] [-l] [--export {csv,json,xlsx}] [--pie] [-h]
 
 ```
 

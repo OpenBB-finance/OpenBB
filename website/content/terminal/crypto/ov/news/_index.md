@@ -3,7 +3,7 @@ usage: news [-l N] [-k {news,media}]
             [--filter {rising,hot,bullish,bearish,important,saved,lol}]
             [-r {en,de,es,fr,nl,it,pt,ru}]
             [-s {published_at,domain,title,negative_votes,positive_votes}]
-            [--descend] [-l] [-h] [--export {png,jpg,pdf,svg}]
+            [--reverse] [-l] [-h] [--export {png,jpg,pdf,svg}]
 
 ```
 
@@ -27,8 +27,9 @@ optional arguments:
   -s {published_at,domain,title,negative_votes,positive_votes}, --sort {published_at,domain,title,negative_votes,positive_votes}
                         Sort by given column. Default: published_at (default:
                         published_at)
-  --descend             Flag to sort in descending order (lowest first)
-                        (default: True)
+  --reverse             Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is displayed. (default: False)
   -u, --urls           Flag to show urls. If you will use that flag you will
                         additional column with urls (default: False)
   -h, --help            show this help message (default: False)

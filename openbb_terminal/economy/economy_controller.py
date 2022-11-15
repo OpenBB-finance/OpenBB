@@ -186,8 +186,8 @@ class EconomyController(BaseController):
                 "-c": "--commodity",
                 "--sortby": {c: {} for c in self.wsj_sortby_cols_dict.keys()},
                 "-s": "--sortby",
-                "--ascend": {},
-                "-a": "--ascend",
+                "--reverse": {},
+                "-r": "--reverse",
             }
             self.choices["map"] = {
                 "--period": {c: {} for c in self.map_period_list},
@@ -252,16 +252,16 @@ class EconomyController(BaseController):
                 "-g": "--group",
                 "--sortby": {c: {} for c in self.valuation_sort_cols},
                 "-s": "--sortby",
-                "--ascend": {},
-                "-a": "--ascend",
+                "--reverse": {},
+                "-r": "--reverse",
             }
             self.choices["performance"] = {
                 "--group": {c: {} for c in self.d_GROUPS},
                 "-g": "--group",
                 "--sortby": {c: {} for c in self.performance_sort_list},
                 "-s": "--sortby",
-                "--ascend": {},
-                "-a": "--ascend",
+                "--reverse": {},
+                "-r": "--reverse",
             }
             self.choices["spectrum"] = {
                 "--group": {c: {} for c in self.d_GROUPS},
@@ -494,14 +494,17 @@ class EconomyController(BaseController):
             default="ticker",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
         ns_parser = self.parse_known_args_and_warn(
@@ -514,7 +517,7 @@ class EconomyController(BaseController):
                     finviz_view.display_future(
                         future_type=ns_parser.commodity.capitalize(),
                         sortby=ns_parser.sortby,
-                        ascend=ns_parser.ascend,
+                        ascend=ns_parser.reverse,
                         export=ns_parser.export,
                     )
                 else:
@@ -807,6 +810,7 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             parameters = list_from_str(ns_parser.parameter.upper())
+
             if ns_parser.query:
                 query = ns_parser.query.replace(",", " ")
                 df_search = fred_model.get_series_notes(search_query=query)
@@ -816,6 +820,11 @@ class EconomyController(BaseController):
 
                     self.fred_query = df_search["id"].head(ns_parser.limit)
                     self.update_runtime_choices()
+
+                if parameters:
+                    console.print(
+                        "\nWarning: -p/--parameter is ignored when using -q/--query."
+                    )
 
                 return self.queue
 
@@ -835,39 +844,41 @@ class EconomyController(BaseController):
                 if not series_dict:
                     return self.queue
 
-                df, detail = fred_model.get_aggregated_series_data(
+                df, detail = fred_view.display_fred_series(
                     series_ids=parameters,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
+                    limit=ns_parser.limit,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    get_data=True,
                 )
 
-                for series_id, data in detail.items():
-                    self.FRED_TITLES[series_id] = f"{data['title']} ({data['units']})"
-
                 if not df.empty:
-                    self.DATASETS["fred"] = pd.concat(
-                        [
-                            self.DATASETS["fred"],
-                            df,
-                        ]
-                    )
+
+                    for series_id, data in detail.items():
+                        self.FRED_TITLES[
+                            series_id
+                        ] = f"{data['title']} ({data['units']})"
+
+                        # Making data available at the class level
+                        self.DATASETS["fred"][series_id] = df[series_id]
 
                     self.stored_datasets = (
                         economy_helpers.update_stored_datasets_string(self.DATASETS)
                     )
 
-                    fred_view.display_fred_series(
-                        series_ids=parameters,
-                        start_date=ns_parser.start_date,
-                        end_date=ns_parser.end_date,
-                        limit=ns_parser.limit,
-                        raw=ns_parser.raw,
-                        export=ns_parser.export,
-                    )
-
                     self.update_runtime_choices()
                     if obbff.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
+
+                else:
+                    console.print("[red]No data found for the given Series ID[/red]")
+
+            elif not parameters and ns_parser.raw:
+                console.print(
+                    "Warning: -r/--raw should be combined with -p/--parameter."
+                )
 
     @log_start_end(log=logger)
     def call_index(self, other_args: List[str]):
@@ -1438,9 +1449,17 @@ class EconomyController(BaseController):
                                         f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]
                                 elif key == "fred":
-                                    dataset_yaxis1[self.FRED_TITLES[variable]] = data[
-                                        variable
-                                    ]
+                                    compound_detail = self.FRED_TITLES[variable]
+                                    detail = {
+                                        "units": compound_detail.split("(")[-1].split(
+                                            ")"
+                                        )[0],
+                                        "title": compound_detail.split("(")[0].strip(),
+                                    }
+                                    data_to_plot, title = fred_view.format_data_to_plot(
+                                        data[variable], detail
+                                    )
+                                    dataset_yaxis1[title] = data_to_plot
                                 elif (
                                     key == "index"
                                     and variable in yfinance_model.INDICES
@@ -1500,9 +1519,17 @@ class EconomyController(BaseController):
                                         f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]
                                 elif key == "fred":
-                                    dataset_yaxis2[self.FRED_TITLES[variable]] = data[
-                                        variable
-                                    ]
+                                    compound_detail = self.FRED_TITLES[variable]
+                                    detail = {
+                                        "units": compound_detail.split("(")[-1].split(
+                                            ")"
+                                        )[0],
+                                        "title": compound_detail.split("(")[0].strip(),
+                                    }
+                                    data_to_plot, title = fred_view.format_data_to_plot(
+                                        data[variable], detail
+                                    )
+                                    dataset_yaxis2[title] = data_to_plot
                                 elif (
                                     key == "index"
                                     and variable in yfinance_model.INDICES
@@ -1586,12 +1613,16 @@ class EconomyController(BaseController):
             help="Column to sort by",
         )
         parser.add_argument(
-            "-a",
-            "-ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
@@ -1608,7 +1639,7 @@ class EconomyController(BaseController):
             finviz_view.display_valuation(
                 group=ns_group,
                 sortby=ns_parser.sortby,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -1641,12 +1672,16 @@ class EconomyController(BaseController):
             help="Column to sort by",
         )
         parser.add_argument(
-            "-a",
-            "-ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
@@ -1662,7 +1697,7 @@ class EconomyController(BaseController):
             finviz_view.display_performance(
                 group=ns_group,
                 sortby=ns_parser.sortby,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 

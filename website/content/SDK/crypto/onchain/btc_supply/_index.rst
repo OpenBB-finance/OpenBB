@@ -38,7 +38,7 @@ crypto.onchain.btc_supply() -> pandas.core.frame.DataFrame
 {{< highlight python >}}
 crypto.onchain.btc_supply(
     start_date: str = '2010-01-01',
-    end_date: str = '2022-11-10',
+    end_date: str = None,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,

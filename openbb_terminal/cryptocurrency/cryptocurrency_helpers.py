@@ -1124,7 +1124,7 @@ def load_ta_data(
         interval: str
             Time interval for Binance
     Returns
-    ----------
+    -------
     Tuple[pd.DataFrame, str]
         df with prices
         quoted currency

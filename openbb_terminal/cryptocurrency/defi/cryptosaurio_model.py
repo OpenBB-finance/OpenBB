@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Tuple, Any
+from typing import Tuple
 import pandas as pd
 import requests
 
@@ -14,7 +14,7 @@ api_url = "https://barney.cryptosaurio.com"
 
 
 @log_start_end(log=logger)
-def get_anchor_data(address: str = "") -> Tuple[Any, Any, str]:
+def get_anchor_data(address: str = "") -> Tuple[pd.DataFrame, pd.DataFrame, str]:
     """Returns anchor protocol earnings data of a certain terra address
     [Source: https://cryptosaurio.com/]
 
@@ -22,11 +22,12 @@ def get_anchor_data(address: str = "") -> Tuple[Any, Any, str]:
     ----------
     address : str
         Terra address. Valid terra addresses start with 'terra'
+
     Returns
     -------
-    Tuple:
-        - pandas.DataFrame: Earnings over time in UST
-        - pandas.DataFrame: History of transactions
+    Tuple[pd.DataFrame, pd.DataFrame, str]
+        - pd.DataFrame: Earnings over time in UST
+        - pd.DataFrame: History of transactions
         - str:              Overall statistics
     """
 

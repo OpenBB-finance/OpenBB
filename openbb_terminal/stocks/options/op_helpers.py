@@ -1,11 +1,11 @@
 """Option helper functions"""
 __docformat__ = "numpy"
 
+import os
+from datetime import datetime, timedelta
 from math import e, log
 from typing import Union
-import os
 
-from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
@@ -366,7 +366,7 @@ class Option:
             The change in volatility
 
         Returns
-        -------
+        ----------
         num : float
             The Vanna
 
@@ -390,7 +390,7 @@ class Option:
             The change in volatility
 
         Returns
-        -------
+        ----------
         num : float
             The Vomma
 

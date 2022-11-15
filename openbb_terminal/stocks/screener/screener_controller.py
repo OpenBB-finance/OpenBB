@@ -102,8 +102,8 @@ class ScreenerController(BaseController):
                 "-s": "--sort",
                 "--limit": None,
                 "-l": "--limit",
-                "--ascend": {},
-                "-a": "--ascend",
+                "--reverse": {},
+                "-r": "--reverse",
             }
             choices["overview"] = screener_standard
             choices["valuation"] = screener_standard
@@ -299,12 +299,16 @@ class ScreenerController(BaseController):
             help="Limit of stocks to print",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            dest="ascend",
-            help="Set order to Ascend, the default is Descend",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-s",
@@ -335,7 +339,7 @@ class ScreenerController(BaseController):
                         loaded_preset=preset,
                         data_type="overview",
                         limit=ns_parser.limit,
-                        ascend=ns_parser.ascend,
+                        ascend=ns_parser.reverse,
                         sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
@@ -382,12 +386,16 @@ class ScreenerController(BaseController):
             help="Limit of stocks to print",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            dest="ascend",
-            help="Set order to Ascend, the default is Descend",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-s",
@@ -413,7 +421,7 @@ class ScreenerController(BaseController):
                         loaded_preset=self.preset,
                         data_type="valuation",
                         limit=ns_parser.limit,
-                        ascend=ns_parser.ascend,
+                        ascend=ns_parser.reverse,
                         sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
@@ -424,7 +432,7 @@ class ScreenerController(BaseController):
                     loaded_preset=self.preset,
                     data_type="valuation",
                     limit=ns_parser.limit,
-                    ascend=ns_parser.ascend,
+                    ascend=ns_parser.reverse,
                     sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
@@ -459,14 +467,17 @@ class ScreenerController(BaseController):
             default=10,
             help="Limit of stocks to print",
         )
-
         parser.add_argument(
-            "-a",
-            "--ascend",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            dest="ascend",
-            help="Set order to Ascend, the default is Descend",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-s",
@@ -492,7 +503,7 @@ class ScreenerController(BaseController):
                         loaded_preset=self.preset,
                         data_type="financial",
                         limit=ns_parser.limit,
-                        ascend=ns_parser.ascend,
+                        ascend=ns_parser.reverse,
                         sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
@@ -503,7 +514,7 @@ class ScreenerController(BaseController):
                     loaded_preset=self.preset,
                     data_type="financial",
                     limit=ns_parser.limit,
-                    ascend=ns_parser.ascend,
+                    ascend=ns_parser.reverse,
                     sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
@@ -539,12 +550,16 @@ class ScreenerController(BaseController):
             help="Limit of stocks to print",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            dest="ascend",
-            help="Set order to Ascend, the default is Descend",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-s",
@@ -571,7 +586,7 @@ class ScreenerController(BaseController):
                         loaded_preset=self.preset,
                         data_type="ownership",
                         limit=ns_parser.limit,
-                        ascend=ns_parser.ascend,
+                        ascend=ns_parser.reverse,
                         sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
@@ -582,7 +597,7 @@ class ScreenerController(BaseController):
                     loaded_preset=self.preset,
                     data_type="ownership",
                     limit=ns_parser.limit,
-                    ascend=ns_parser.ascend,
+                    ascend=ns_parser.reverse,
                     sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
@@ -618,12 +633,16 @@ class ScreenerController(BaseController):
             help="Limit of stocks to print",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            dest="ascend",
-            help="Set order to Ascend, the default is Descend",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-s",
@@ -650,7 +669,7 @@ class ScreenerController(BaseController):
                         loaded_preset=self.preset,
                         data_type="performance",
                         limit=ns_parser.limit,
-                        ascend=ns_parser.ascend,
+                        ascend=ns_parser.reverse,
                         sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
@@ -661,7 +680,7 @@ class ScreenerController(BaseController):
                     loaded_preset=self.preset,
                     data_type="performance",
                     limit=ns_parser.limit,
-                    ascend=ns_parser.ascend,
+                    ascend=ns_parser.store_true,
                     sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
@@ -697,12 +716,16 @@ class ScreenerController(BaseController):
             help="Limit of stocks to print",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            dest="ascend",
-            help="Set order to Ascend, the default is Descend",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-s",
@@ -729,7 +752,7 @@ class ScreenerController(BaseController):
                         loaded_preset=self.preset,
                         data_type="technical",
                         limit=ns_parser.limit,
-                        ascend=ns_parser.ascend,
+                        ascend=ns_parser.reverse,
                         sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
@@ -740,7 +763,7 @@ class ScreenerController(BaseController):
                     loaded_preset=self.preset,
                     data_type="technical",
                     limit=ns_parser.limit,
-                    ascend=ns_parser.ascend,
+                    ascend=ns_parser.reverse,
                     sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )

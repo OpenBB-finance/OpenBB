@@ -404,7 +404,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--commodity=energy",
                 "--source=Finviz",
                 "--sortby=ticker",
-                "-a",
+                "-r",
                 "--export=csv",
             ],
             "finviz_view.display_future",
@@ -422,7 +422,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--commodity=metals",
                 "--source=Finviz",
                 "--sortby=ticker",
-                "-a",
+                "--reverse",
                 "--export=csv",
             ],
             "finviz_view.display_future",
@@ -440,7 +440,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--commodity=meats",
                 "--source=Finviz",
                 "--sortby=ticker",
-                "-a",
+                "-r",
                 "--export=csv",
             ],
             "finviz_view.display_future",
@@ -458,7 +458,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--commodity=grains",
                 "--sortby=ticker",
                 "--source=Finviz",
-                "-a",
+                "--reverse",
                 "--export=csv",
             ],
             "finviz_view.display_future",
@@ -476,7 +476,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--commodity=softs",
                 "--sortby=ticker",
                 "--source=Finviz",
-                "-a",
+                "-r",
                 "--export=csv",
             ],
             "finviz_view.display_future",
@@ -493,7 +493,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "sector",
                 "--sortby=MarketCap",
-                "-a",
+                "--reverse",
                 "--export=csv",
             ],
             "finviz_view.display_valuation",
@@ -510,7 +510,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "basic_materials",
                 "--sortby=P/E",
-                "-a",
+                "-r",
                 "--export=csv",
             ],
             "finviz_view.display_valuation",
@@ -527,7 +527,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--g=sector",
                 "--sortby=Name",
-                "-a",
+                "--reverse",
                 "--export=csv",
             ],
             "finviz_view.display_performance",
@@ -872,6 +872,7 @@ def test_call_fred_query(mocker):
                 limit=100,
                 raw=False,
                 export="",
+                get_data=True,
             ),
         ),
         (
@@ -885,6 +886,7 @@ def test_call_fred_query(mocker):
                 limit=100,
                 raw=True,
                 export="csv",
+                get_data=True,
             ),
         ),
         (
@@ -898,6 +900,7 @@ def test_call_fred_query(mocker):
                 limit=100,
                 raw=False,
                 export="csv",
+                get_data=True,
             ),
         ),
     ],
@@ -922,7 +925,7 @@ def test_call_fred_params(mocked_func, other_args, called_args, called_kwargs, m
         new=False,
     )
 
-    mock = mocker.Mock()
+    mock = mocker.Mock(return_value=(MOCK_FRED_AGG, MOCK_DETAIL))
     mocker.patch(
         target=f"{path_controller}.{mocked_func}",
         new=mock,

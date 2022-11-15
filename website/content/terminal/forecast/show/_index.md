@@ -9,9 +9,11 @@ Show a portion of the loaded dataset
 optional arguments:
   -n {}, --name {AAPL,MSFT,TSLA}
                         The name of the database you want to show data for (default: None)
-  -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...]
+  -s SORTBY [SORTBY ...], --sortby SORTBY [SORTBY ...]
                         Sort based on a column in the DataFrame (default: )
-  -a, --ascend          Use this argument to sort in a descending order (default: False)
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is show this help message (default: False)
   --limit-col LIMIT_COL
                         Set the number of columns to display when showing the dataset (default: 10)
   -h, --help            show this help message (default: False)

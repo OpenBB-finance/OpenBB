@@ -33,12 +33,12 @@ logger = logging.getLogger(__name__)
 def display_active_addresses(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display active addresses of a certain symbol over time
+    """Plots active addresses of a certain symbol over time
     [Source: https://glassnode.org]
 
     Parameters
@@ -56,6 +56,9 @@ def display_active_addresses(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_addresses = get_active_addresses(symbol, interval, start_date, end_date)
 
@@ -94,11 +97,11 @@ def display_active_addresses(
 def display_non_zero_addresses(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display addresses with non-zero balance of a certain symbol
+    """Plots addresses with non-zero balance of a certain symbol
     [Source: https://glassnode.org]
 
     Parameters
@@ -114,6 +117,9 @@ def display_non_zero_addresses(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_addresses = get_non_zero_addresses(symbol, start_date, end_date)
 
@@ -153,11 +159,11 @@ def display_exchange_net_position_change(
     symbol: str,
     exchange: str = "binance",
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display 30d change of the supply held in exchange wallets.
+    """Plots 30d change of the supply held in exchange wallets.
     [Source: https://glassnode.org]
 
     Parameters
@@ -177,6 +183,9 @@ def display_exchange_net_position_change(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_addresses = get_exchange_net_position_change(
         symbol, exchange, start_date, end_date
@@ -231,12 +240,12 @@ def display_exchange_balances(
     symbol: str,
     exchange: str = "binance",
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     percentage: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display total amount of coins held on exchange addresses in units and percentage.
+    """Plots total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.org]
 
     Parameters
@@ -258,6 +267,9 @@ def display_exchange_balances(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_balance = get_exchange_balances(symbol, exchange, start_date, end_date)
 
@@ -307,12 +319,12 @@ def display_exchange_balances(
 def display_hashrate(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display dataframe with mean hashrate of btc or eth blockchain and symbol price.
+    """Plots dataframe with mean hashrate of btc or eth blockchain and symbol price.
     [Source: https://glassnode.org]
 
     Parameters
@@ -330,6 +342,9 @@ def display_hashrate(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df = get_hashrate(symbol, interval, start_date, end_date)
 

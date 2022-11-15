@@ -20,7 +20,7 @@ def display_news(
     export: str = "",
     sort: str = "published",
 ):
-    """Display news for a given term and source. [Source: Feedparser]
+    """Plots news for a given term and source. [Source: Feedparser]
 
     Parameters
     ----------
