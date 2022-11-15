@@ -88,12 +88,8 @@ def price_target_from_analysts(
         if start_date:
             df_analyst_data = df_analyst_data[start_date:]  # type: ignore
 
-        if "Adj Close" in data:
-            plot_column = "Adj Close"
-            legend_price_label = "Adjust Close"
-        else:
-            plot_column = "Close"
-            legend_price_label = "Close"
+        plot_column = "Close"
+        legend_price_label = "Close"
 
         ax.plot(data.index, data[plot_column].values)
 
@@ -120,8 +116,6 @@ def price_target_from_analysts(
 
         if not external_axes:
             theme.visualize_output()
-
-    console.print("")
 
     export_data(
         export,
