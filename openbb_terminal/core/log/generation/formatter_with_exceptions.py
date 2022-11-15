@@ -112,7 +112,7 @@ class FormatterWithExceptions(logging.Formatter):
         ei : logging._SysExcInfoType
             Exception to be logged
         Returns
-        -------
+        ----------
         str
             Formatted exception
         """
@@ -128,7 +128,7 @@ class FormatterWithExceptions(logging.Formatter):
         record : logging.LogRecord
             Logging record
         Returns
-        -------
+        ----------
         str
             Formatted_log message
         """

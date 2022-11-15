@@ -3,11 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Any, Tuple, Union
+from typing import Tuple, Union
 import pandas as pd
 import statsmodels.api as sm
 from statsmodels.tools.sm_exceptions import MissingDataError
-from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.seasonal import DecomposeResult, seasonal_decompose
 from statsmodels.tsa.stattools import adfuller, kpss
 from scipy import stats
 import numpy as np
@@ -45,7 +45,7 @@ def get_summary(data: pd.DataFrame) -> pd.DataFrame:
 @log_start_end(log=logger)
 def get_seasonal_decomposition(
     data: pd.DataFrame, multiplicative: bool = False
-) -> Tuple[Any, pd.DataFrame, pd.DataFrame]:
+) -> Tuple[DecomposeResult, pd.DataFrame, pd.DataFrame]:
     """Perform seasonal decomposition
 
     Parameters
@@ -57,12 +57,10 @@ def get_seasonal_decomposition(
 
     Returns
     -------
-    result: Any
-        Result of statsmodels seasonal_decompose
-    cycle: pd.DataFrame
-        Filtered cycle
-    trend: pd.DataFrame
-        Filtered Trend
+    Tuple[DecomposeResult, pd.DataFrame, pd.DataFrame]
+        DecomposeResult class from statsmodels (observed, seasonal, trend, residual, and weights),
+        Filtered cycle DataFrame,
+        Filtered trend DataFrame
     """
     seasonal_periods = 5
     # Hodrick-Prescott filter
@@ -538,6 +536,7 @@ def get_es(
 
 def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> pd.DataFrame:
     """Calculates the sharpe ratio
+
     Parameters
     ----------
     data: pd.DataFrame
@@ -567,6 +566,7 @@ def get_sortino(
     adjusted: bool = False,
 ) -> pd.DataFrame:
     """Calculates the sortino ratio
+
     Parameters
     ----------
     data: pd.DataFrame
@@ -605,6 +605,7 @@ def get_sortino(
 
 def get_omega_ratio(data: pd.DataFrame, threshold: float = 0) -> float:
     """Calculates the omega ratio
+
     Parameters
     ----------
     data: pd.DataFrame
@@ -639,6 +640,7 @@ def get_omega(
     data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5
 ) -> pd.DataFrame:
     """Get the omega series
+
     Parameters
     ----------
     data: pd.DataFrame
@@ -647,6 +649,11 @@ def get_omega(
         annualized target return threshold start of plotted threshold range
     threshold_end: float
         annualized target return threshold end of plotted threshold range
+
+    Returns
+    -------
+    omega: pd.DataFrame
+        omega series
     """
     threshold = np.linspace(threshold_start, threshold_end, 50)
     df = pd.DataFrame(threshold, columns=["threshold"])

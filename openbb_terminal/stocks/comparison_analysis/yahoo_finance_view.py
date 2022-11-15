@@ -67,7 +67,6 @@ def display_historical(
         Format to export historical prices, by default ""
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-
     """
     df_similar = yahoo_finance_model.get_historical(similar, start_date, candle_type)
 

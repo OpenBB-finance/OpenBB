@@ -321,7 +321,7 @@ def check_int_range(mini: int, maxi: int):
             Input integer
 
         Returns
-        -------
+        ----------
         num: int
             Input number if conditions are met
 
@@ -453,7 +453,7 @@ def check_proportion_range(num) -> float:
     num: float
         Input number if conditions are met
     Raises
-    -------
+    ----------
     argparse.ArgumentTypeError
         Input number not between min and max values
     """
@@ -1232,7 +1232,7 @@ def check_file_type_saved(valid_types: List[str] = None):
             filenames to be saved separated with comma
 
         Returns
-        -------
+        ----------
         str
             valid filenames separated with comma
         """

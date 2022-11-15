@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_newsletters(limit: int = 10, export: str = "") -> None:
-    """Display DeFi related substack newsletters.
+    """Prints table showing DeFi related substack newsletters.
     [Source: substack.com]
 
     Parameters

@@ -27,7 +27,7 @@ def load_analyze_tweets(
     start_date: Optional[str] = "",
     end_date: Optional[str] = "",
 ) -> pd.DataFrame:
-    """Load tweets from twitter API and analyzes using VADER
+    """Load tweets from twitter API and analyzes using VADER.
 
     Parameters
     ----------
@@ -127,7 +127,7 @@ def get_sentiment(
     n_tweets: int = 15,
     n_days_past: int = 2,
 ) -> pd.DataFrame:
-    """Get sentiments from symbol
+    """Get sentiments from symbol.
 
     Parameters
     ----------
@@ -137,6 +137,11 @@ def get_sentiment(
         Number of tweets to get per hour
     n_days_past: int
         Number of days to extract tweets for
+
+    Returns
+    -------
+    df_sentiment: pd.DataFrame
+        Dataframe of sentiment
     """
     # Date format string required by twitter
     dt_format = "%Y-%m-%dT%H:%M:%SZ"

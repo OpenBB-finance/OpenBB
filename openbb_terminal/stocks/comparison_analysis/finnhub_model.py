@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
 def get_similar_companies(symbol: str) -> List[str]:
-    """Get similar companies from Finhub
+    """Get similar companies from Finhub.
 
     Parameters
     ----------
