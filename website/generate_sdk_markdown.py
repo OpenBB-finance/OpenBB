@@ -122,7 +122,7 @@ def get_trailmaps() -> List[Trailmap]:
                 "[bold red]Forecasting is disabled. Forecasting will not be included in the Generation of Docs[/bold red]"
             )
             continue
-        with open(tmap_csv, "r") as csvfile:
+        with open(tmap_csv) as csvfile:
             reader = csv.reader(csvfile, delimiter=",")
             next(reader)
             for row in reader:
