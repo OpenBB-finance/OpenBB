@@ -29,10 +29,10 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
 )
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.cryptocurrency.due_diligence import pycoingecko_model
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
-from openbb_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
+from openbb_terminal.cryptocurrency.due_diligence import coinpaprika_model
+from openbb_terminal.cryptocurrency.discovery import pycoingecko_model
 
 logger = logging.getLogger(__name__)
 
@@ -316,52 +316,6 @@ def get_coingecko_id(symbol: str):
         if coin["symbol"] == symbol.lower():
             return coin["id"]
     return None
-
-
-def get_coinpaprika_id(symbol: str):
-    paprika_coins = get_list_of_coins()
-    paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
-    coinpaprika_id, _ = validate_coin(symbol.upper(), paprika_coins_dict)
-    return coinpaprika_id
-
-
-def get_list_of_coins() -> pd.DataFrame:
-    """Get list of all available coins on CoinPaprika  [Source: CoinPaprika]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Available coins on CoinPaprika
-        rank, id, name, symbol, type
-    """
-
-    session = PaprikaSession()
-    coins = session.make_request(session.ENDPOINTS["coins"])
-    df = pd.DataFrame(coins)
-    df = df[df["is_active"]]
-    return df[["rank", "id", "name", "symbol", "type"]]
-
-
-def validate_coin(symbol: str, coins_dct: dict) -> Tuple[Optional[Any], Optional[Any]]:
-    """Helper method that validates if proper coin id or symbol was provided [Source: CoinPaprika]
-
-    Parameters
-    ----------
-    symbol: str
-        id or symbol of coin for CoinPaprika
-    coins_dct: dict
-        dictionary of coins
-
-    Returns
-    -------
-    Tuple[str,str]
-        coin id, coin symbol
-    """
-
-    for key, value in coins_dct.items():
-        if symbol == value:
-            return key, value.lower()
-    return None, None
 
 
 def load_from_ccxt(
@@ -708,7 +662,7 @@ def find(
         df = df.merge(coins_df, on=key)
 
     elif source == "CoinPaprika":
-        coins_df = get_list_of_coins()
+        coins_df = coinpaprika_model.get_coin_list()
         coins_list = coins_df[key].to_list()
         keys = {"name": "title", "symbol": "upper", "id": "lower"}
 
@@ -726,7 +680,7 @@ def find(
         if len(query) > 5:
             key = "id"
 
-        coins_df_gecko = get_coin_list()
+        coins_df_gecko = pycoingecko_model.get_coin_list()
         coins_df_bin = load_binance_map()
         coins = pd.merge(
             coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
@@ -742,7 +696,7 @@ def find(
         if len(query) > 5:
             key = "id"
 
-        coins_df_gecko = get_coin_list()
+        coins_df_gecko = pycoingecko_model.get_coin_list()
         coins_df_bin = load_coinbase_map()
         coins = pd.merge(
             coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
@@ -819,8 +773,8 @@ def display_all_coins(
     sources = ["CoinGecko", "CoinPaprika", "Binance", "Coinbase"]
     limit, cutoff = 30, 0.75
     coins_func_map = {
-        "CoinGecko": get_coin_list,
-        "CoinPaprika": get_list_of_coins,
+        "CoinGecko": pycoingecko_model.get_coin_list,
+        "CoinPaprika": coinpaprika_model.get_coin_list,
         "Binance": load_binance_map,
         "Coinbase": load_coinbase_map,
     }
@@ -844,17 +798,17 @@ def display_all_coins(
     else:
 
         if source == "CoinGecko":
-            coins_df = get_coin_list().drop("index", axis=1)
+            coins_df = pycoingecko_model.get_coin_list().drop("index", axis=1)
             df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
             df = df[["index", "id", "name"]]
 
         elif source == "CoinPaprika":
-            coins_df = get_list_of_coins()
+            coins_df = coinpaprika_model.get_coin_list()
             df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
             df = df[["index", "id", "name"]]
 
         elif source == "Binance":
-            coins_df_gecko = get_coin_list()
+            coins_df_gecko = pycoingecko_model.get_coin_list()
             coins_df_bin = load_binance_map()
             coins_df_bin.columns = ["symbol", "id"]
             coins_df = pd.merge(
@@ -865,7 +819,7 @@ def display_all_coins(
             df.columns = ["index", "id", "name"]
 
         elif source == "Coinbase":
-            coins_df_gecko = get_coin_list()
+            coins_df_gecko = pycoingecko_model.get_coin_list()
             coins_df_cb = load_coinbase_map()
             coins_df_cb.columns = ["symbol", "id"]
             coins_df = pd.merge(

@@ -6,11 +6,11 @@ import textwrap
 
 import pandas as pd
 from dateutil import parser
+from typing import Tuple, Optional, Any
 
 from openbb_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.cryptocurrency.cryptocurrency_helpers import get_coinpaprika_id
 
 # pylint: disable=unsupported-assignment-operation
 
@@ -388,3 +388,49 @@ def get_coin(symbol: str = "eth-ethereum") -> dict:
     session = PaprikaSession()
     coin = session.make_request(session.ENDPOINTS["coin"].format(symbol))
     return coin
+
+
+def get_coinpaprika_id(symbol: str):
+    paprika_coins = get_coin_list()
+    paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
+    coinpaprika_id, _ = validate_coin(symbol.upper(), paprika_coins_dict)
+    return coinpaprika_id
+
+
+def get_coin_list() -> pd.DataFrame:
+    """Get list of all available coins on CoinPaprika  [Source: CoinPaprika]
+
+    Returns
+    -------
+    pandas.DataFrame
+        Available coins on CoinPaprika
+        rank, id, name, symbol, type
+    """
+
+    session = PaprikaSession()
+    coins = session.make_request(session.ENDPOINTS["coins"])
+    df = pd.DataFrame(coins)
+    df = df[df["is_active"]]
+    return df[["rank", "id", "name", "symbol", "type"]]
+
+
+def validate_coin(symbol: str, coins_dct: dict) -> Tuple[Optional[Any], Optional[Any]]:
+    """Helper method that validates if proper coin id or symbol was provided [Source: CoinPaprika]
+
+    Parameters
+    ----------
+    symbol: str
+        id or symbol of coin for CoinPaprika
+    coins_dct: dict
+        dictionary of coins
+
+    Returns
+    -------
+    Tuple[str,str]
+        coin id, coin symbol
+    """
+
+    for key, value in coins_dct.items():
+        if symbol == value:
+            return key, value.lower()
+    return None, None
