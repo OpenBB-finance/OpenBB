@@ -119,7 +119,7 @@ def display_fred_series(
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:
-            return pd.DataFrame(), {}
+            return None
 
         for s_id, sub_dict in detail.items():
 
@@ -166,7 +166,7 @@ def display_fred_series(
     if get_data:
         return data, detail
 
-    return
+    return None
 
 
 def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame, str]:
