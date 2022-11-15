@@ -30,7 +30,7 @@ d_candle_types = {
 @log_start_end(log=logger)
 def get_historical(
     similar: List[str],
-    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    start_date: str = None,
     candle_type: str = "a",
 ) -> pd.DataFrame:
     """Get historical prices for all comparison stocks
@@ -42,7 +42,7 @@ def get_historical(
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date: str, optional
-        Start date of comparison. Defaults to 1 year previously
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type: str, optional
         Candle variable to compare, by default "a" for Adjusted Close. Possible values are: o, h, l, c, a, v, r
 
@@ -51,6 +51,9 @@ def get_historical(
     pd.DataFrame
         Dataframe containing candle type variable for each ticker
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
     use_returns = False
     if candle_type.lower() == "r":
@@ -94,7 +97,7 @@ def get_historical(
 @log_start_end(log=logger)
 def get_correlation(
     similar: List[str],
-    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    start_date: str = None,
     candle_type: str = "a",
 ):
     """
@@ -107,10 +110,14 @@ def get_correlation(
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
-        Start date of comparison, by default 1 year ago
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
+
     df_similar = get_historical(similar, start_date, candle_type)
 
     correlations = df_similar.corr()
@@ -121,7 +128,7 @@ def get_correlation(
 @log_start_end(log=logger)
 def get_volume(
     similar: List[str],
-    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    start_date: str = None,
 ) -> pd.DataFrame:
     """Get stock volume. [Source: Yahoo Finance]
 
@@ -132,8 +139,11 @@ def get_volume(
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
-        Start date of comparison, by default 1 year ago
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
     df_similar = get_historical(similar, start_date, "v")
     df_similar = df_similar[similar]

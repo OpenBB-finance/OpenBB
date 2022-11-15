@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 crypto.dd.nonzero(
     symbol: str,
     start_date: str = '2010-01-01',
-    end_date: str = '2022-11-14',
+    end_date: str = None,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -57,7 +57,7 @@ crypto.dd.nonzero(
 crypto.dd.nonzero(
     symbol: str,
     start_date: str = '2010-01-01',
-    end_date: str = '2022-11-14',
+    end_date: str = None,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
