@@ -22,7 +22,6 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
     print_rich_table,
 )
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.comparison_analysis import yahoo_finance_model
 
 logger = logging.getLogger(__name__)

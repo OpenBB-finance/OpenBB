@@ -16,7 +16,6 @@ from openbb_terminal.helper_funcs import (
     get_user_agent,
     lambda_int_or_round_float,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
