@@ -59,7 +59,7 @@ def get_dividend_cal(date: str = None) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of dividend calendar
     """
     # TODO: HELP WANTED:

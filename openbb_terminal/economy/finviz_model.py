@@ -71,14 +71,14 @@ def get_valuation_data(
     Parameters
     ----------
     group : str
-       Group by category. Available groups can be accessed through get_groups().
+        Group by category. Available groups can be accessed through get_groups().
     sortby : str
         Column to sort by
     ascend : bool
         Flag to sort in ascending order
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         dataframe with valuation/performance data
     """
@@ -117,14 +117,14 @@ def get_performance_data(
     Parameters
     ----------
     group : str
-       Group by category. Available groups can be accessed through get_groups().
+        Group by category. Available groups can be accessed through get_groups().
     sortby : str
         Column to sort by
     ascend : bool
         Flag to sort in ascending order
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         dataframe with performance data
     """
@@ -171,7 +171,7 @@ def get_spectrum_data(group: str = "sector"):
     Parameters
     ----------
     group : str
-       Group by category. Available groups can be accessed through get_groups().
+        Group by category. Available groups can be accessed through get_groups().
     """
     if group not in GROUPS:
         console.print(
@@ -199,9 +199,9 @@ def get_futures(
         Flag to sort in ascending order
 
     Returns
-    ----------
+    -------
     pd.Dataframe
-       Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
+        Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
     """
     source = requests.get(
         "https://finviz.com/futures.ashx", headers={"User-Agent": get_user_agent()}

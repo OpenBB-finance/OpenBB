@@ -26,10 +26,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def plot_covid_ov(
-    country,
+    country: str,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Plot historical cases and deaths by country
+    """Plots historical cases and deaths by country.
 
     Parameters
     ----------
@@ -38,7 +38,6 @@ def plot_covid_ov(
     external_axis: Optional[List[plt.Axes]]
         List of external axes to include in plot
     """
-
     cases = covid_model.get_global_cases(country) / 1_000
     deaths = covid_model.get_global_deaths(country)
     ov = pd.concat([cases, deaths], axis=1)
@@ -77,11 +76,11 @@ def plot_covid_ov(
 
 
 def plot_covid_stat(
-    country,
+    country: str,
     stat: str = "cases",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Plot historical stat by country
+    """Plots historical stat by country.
 
     Parameters
     ----------
@@ -90,7 +89,6 @@ def plot_covid_stat(
     external_axis: Optional[List[plt.Axes]]
         List of external axes to include in plot
     """
-
     # This plot has 1 axis
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -129,13 +127,13 @@ def plot_covid_stat(
 
 @log_start_end(log=logger)
 def display_covid_ov(
-    country,
+    country: str,
     raw: bool = False,
     limit: int = 10,
     export: str = "",
     plot: bool = True,
 ) -> None:
-    """Show historical cases and deaths by country
+    """Prints table showing historical cases and deaths by country.
 
     Parameters
     ----------
@@ -150,7 +148,6 @@ def display_covid_ov(
     plot: bool
         Flag to display historical plot
     """
-
     if plot:
         plot_covid_ov(country)
     if raw:
@@ -169,14 +166,14 @@ def display_covid_ov(
 
 @log_start_end(log=logger)
 def display_covid_stat(
-    country,
+    country: str,
     stat: str = "cases",
     raw: bool = False,
     limit: int = 10,
     export: str = "",
     plot: bool = True,
 ) -> None:
-    """Show historical cases and deaths by country
+    """Prints table showing historical cases and deaths by country.
 
     Parameters
     ----------
@@ -193,7 +190,6 @@ def display_covid_stat(
     plot : bool
         Flag to plot data
     """
-
     if plot:
         plot_covid_stat(country, stat)
 
@@ -218,7 +214,7 @@ def display_case_slopes(
     ascend: bool = False,
     export: str = "",
 ) -> None:
-    """
+    """Prints table showing countries with the highest case slopes.
 
     Parameters
     ----------

@@ -49,7 +49,7 @@ def lambda_red_highlight(values) -> List[str]:
         dataframe values to color
 
     Returns
-    ----------
+    -------
     List[str]
         colored dataframes values
     """
@@ -65,7 +65,7 @@ def lambda_yellow_highlight(values) -> List[str]:
         dataframe values to color
 
     Returns
-    ----------
+    -------
     List[str]
         colored dataframes values
     """
@@ -81,7 +81,7 @@ def lambda_magenta_highlight(values):
         dataframe values to color
 
     Returns
-    ----------
+    -------
     List[str]
         colored dataframes values
     """
@@ -97,7 +97,7 @@ def lambda_green_highlight(values):
         dataframe values to color
 
     Returns
-    ----------
+    -------
     List[str]
         colored dataframes values
     """

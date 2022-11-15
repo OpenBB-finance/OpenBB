@@ -306,7 +306,7 @@ def is_reset(command: str) -> bool:
         The command to test
 
     Returns
-    ----------
+    -------
     answer : bool
         Whether the command is a reset command
     """

@@ -6,7 +6,6 @@ from typing import Any, List
 
 import finviz
 import pandas as pd
-from pandas.core.frame import DataFrame
 
 from openbb_terminal.decorators import log_start_end
 
@@ -31,7 +30,7 @@ def get_news(symbol: str) -> List[Any]:
 
 
 @log_start_end(log=logger)
-def get_analyst_data(symbol: str) -> DataFrame:
+def get_analyst_data(symbol: str) -> pd.DataFrame:
     """Get analyst data. [Source: Finviz]
 
     Parameters

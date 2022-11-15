@@ -22,7 +22,7 @@ def display_uni_tokens(
     ascend: bool = False,
     export: str = "",
 ) -> None:
-    """Displays tokens trade-able on Uniswap DEX.
+    """Prints table showing tokens trade-able on Uniswap DEX.
     [Source: https://thegraph.com/en/]
 
     Parameters
@@ -70,7 +70,7 @@ def display_uni_tokens(
 
 @log_start_end(log=logger)
 def display_uni_stats(export: str = "") -> None:
-    """Displays base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
+    """Prints table showing base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
     [Source: https://thegraph.com/en/]
 
     Parameters
@@ -109,7 +109,7 @@ def display_recently_added(
     ascend: bool = False,
     export: str = "",
 ) -> None:
-    """Displays Lastly added pairs on Uniswap DEX.
+    """Prints table showing Lastly added pairs on Uniswap DEX.
     [Source: https://thegraph.com/en/]
 
     Parameters
@@ -170,7 +170,7 @@ def display_recently_added(
 def display_uni_pools(
     limit: int = 20, sortby: str = "volumeUSD", ascend: bool = True, export: str = ""
 ) -> None:
-    """Displays uniswap pools by volume.
+    """Prints table showing uniswap pools by volume.
     [Source: https://thegraph.com/en/]
 
     Parameters
@@ -218,7 +218,7 @@ def display_uni_pools(
 def display_last_uni_swaps(
     limit: int = 10, sortby: str = "timestamp", ascend: bool = False, export: str = ""
 ) -> None:
-    """Displays last swaps done on Uniswap
+    """Prints table showing last swaps done on Uniswap
     [Source: https://thegraph.com/en/]
 
     Parameters

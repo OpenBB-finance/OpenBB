@@ -366,7 +366,7 @@ class Option:
             The change in volatility
 
         Returns
-        -------
+        ----------
         num : float
             The Vanna
 
@@ -390,7 +390,7 @@ class Option:
             The change in volatility
 
         Returns
-        -------
+        ----------
         num : float
             The Vomma
 

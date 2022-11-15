@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
 def print_and_record_reddit_post(
     submissions_dict: Dict, submission: praw.models.reddit.submission.Submission
 ):
-    """Prints reddit submission
+    """Prints reddit submission.
 
     Parameters
     ----------
@@ -103,7 +103,7 @@ def print_and_record_reddit_post(
     ]
 )
 def print_reddit_post(sub: tuple):
-    """Prints reddit submission
+    """Prints reddit submission.
 
     Parameters
     ----------
@@ -145,7 +145,7 @@ def print_reddit_post(sub: tuple):
     ]
 )
 def display_watchlist(limit: int = 5):
-    """Print other users watchlist. [Source: Reddit]
+    """Prints other users watchlist. [Source: Reddit].
 
     Parameters
     ----------
@@ -195,7 +195,7 @@ def display_watchlist(limit: int = 5):
 def display_popular_tickers(
     limit: int = 10, post_limit: int = 50, subreddits: str = "", export: str = ""
 ):
-    """Print latest popular tickers. [Source: Reddit]
+    """Prints table showing latest popular tickers. [Source: Reddit].
 
     Parameters
     ----------
@@ -238,7 +238,7 @@ def display_popular_tickers(
     ]
 )
 def display_spac_community(limit: int = 10, popular: bool = False):
-    """Look at tickers mentioned in r/SPACs [Source: Reddit]
+    """Prints tickers mentioned in r/SPACs [Source: Reddit].
 
     Parameters
     ----------
@@ -289,7 +289,7 @@ def display_spac_community(limit: int = 10, popular: bool = False):
     ]
 )
 def display_spac(limit: int = 5):
-    """Look at posts containing 'spac' in top communities
+    """Prints posts containing 'spac' in top communities.
 
     Parameters
     ----------
@@ -337,7 +337,7 @@ def display_spac(limit: int = 5):
     ]
 )
 def display_wsb_community(limit: int = 10, new: bool = False):
-    """Show WSB posts
+    """Prints WSB posts.
 
     Parameters
     ----------
@@ -366,7 +366,7 @@ def display_wsb_community(limit: int = 10, new: bool = False):
 def display_due_diligence(
     symbol: str, limit: int = 10, n_days: int = 3, show_all_flairs: bool = False
 ):
-    """Display Reddit due diligence data for a given ticker
+    """Prints Reddit due diligence data for a given ticker.
 
     Parameters
     ----------
@@ -410,7 +410,8 @@ def display_redditsent(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Determine Reddit sentiment about a search term
+    """Plots Reddit sentiment about a search term. Prints table showing if display is True.
+
     Parameters
     ----------
     symbol: str

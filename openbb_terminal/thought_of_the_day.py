@@ -50,7 +50,7 @@ class ThoughtOfTheDay:
             Author key - Marcus_Aurelius, Epictetus, Seneca, Marcus_Tullius_Cicero, Aristotle, Plato, Pythagoras
 
         Returns
-        -------
+        ----------
         dict
             Metadata dictionary that includes number of quotes, number of pages and first 30 quotes
         """
@@ -103,7 +103,7 @@ class ThoughtOfTheDay:
             A quote formatted by Goodreads
 
         Returns
-        -------
+        ----------
         str
             A string version of the quote
         """
