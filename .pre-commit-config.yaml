@@ -46,7 +46,7 @@ repos:
     rev: "v0.982"
     hooks:
       - id: mypy
-        args: ["--ignore-missing-imports", 'openbb_terminal']
+        args: ["--ignore-missing-imports", "openbb_terminal"]
         additional_dependencies: [types-all]
   - repo: https://github.com/kynan/nbstripout
     rev: 0.6.1

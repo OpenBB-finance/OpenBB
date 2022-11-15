@@ -714,14 +714,14 @@ class PortfolioController(BaseController):
 
                 # relative results - the proportions of return attribution
                 if ns_parser.type == "relative":
-                    categorisation_result = (
+                    categorization_result = (
                         attribution_model.percentage_attrib_categorizer(
                             bench_result, portfolio_result
                         )
                     )
 
-                    portfolio_view.display_attribution_categorisation(
-                        display=categorisation_result,
+                    portfolio_view.display_attribution_categorization(
+                        display=categorization_result,
                         time_period=ns_parser.period,
                         attrib_type="Contributions as % of PF",
                         plot_fields=["S&P500 [%]", "Portfolio [%]"],
@@ -730,12 +730,12 @@ class PortfolioController(BaseController):
 
                 # absolute - the raw values of return attribution
                 if ns_parser.type == "absolute":
-                    categorisation_result = attribution_model.raw_attrib_categorizer(
+                    categorization_result = attribution_model.raw_attrib_categorizer(
                         bench_result, portfolio_result
                     )
 
-                    portfolio_view.display_attribution_categorisation(
-                        display=categorisation_result,
+                    portfolio_view.display_attribution_categorization(
+                        display=categorization_result,
                         time_period=ns_parser.period,
                         attrib_type="Raw contributions (Return x PF Weight)",
                         plot_fields=["S&P500", "Portfolio"],

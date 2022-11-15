@@ -1708,7 +1708,7 @@ def display_omega(
 
 
 @log_start_end(log=logger)
-def display_attribution_categorisation(
+def display_attribution_categorization(
     display: pd.DataFrame,
     time_period: str,
     attrib_type: str,
@@ -1724,7 +1724,7 @@ def display_attribution_categorisation(
     if show_table:
         print_rich_table(
             display,
-            title=f"{attrib_type}: Portfolio vs. Benchmark Attribution Categorisation {time_period}",
+            title=f"{attrib_type}: Portfolio vs. Benchmark Attribution categorization {time_period}",
             show_index=True,
             floatfmt=".2f",
         )
