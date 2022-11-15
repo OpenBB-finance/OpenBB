@@ -5,7 +5,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b  # actions/checkout v3.0.2
+        uses: actions/checkout@v3
+
+      - name: Generate the new documentation
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+          - name: Install dependencies
+            run: pip install -r requirements.txt
+          - name: Run the script
+            run: python website/generate.py
+
+      - name: Commit Documentation
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automated Change
 
       - name: Setup hugo
         uses: peaceiris/actions-hugo@v2
