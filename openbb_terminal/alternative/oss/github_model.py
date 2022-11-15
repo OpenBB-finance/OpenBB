@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 # pylint: disable=C0201,W1401
 
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 import math
 from datetime import datetime
 import requests
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @check_api_key(["API_GITHUB_KEY"])
-def get_github_data(url: str, **kwargs) -> Dict[str, Any]:
+def get_github_data(url: str, **kwargs) -> Optional[Dict[str, Any]]:
     """Get repository stats.
 
     Parameters

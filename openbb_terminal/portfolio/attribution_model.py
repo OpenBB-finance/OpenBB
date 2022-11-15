@@ -1,6 +1,7 @@
 from datetime import datetime
 from datetime import date
 import logging
+from typing import Dict
 
 import yfinance as yf
 import pandas as pd
@@ -67,7 +68,7 @@ def get_spy_sector_contributions(
     weight_data = yf.Ticker(sectors_ticker).info["sectorWeightings"]
 
     # reformat Data
-    weights = {"SPY": {}}
+    weights: Dict[str, dict] = {"SPY": {}}
     for sector in weight_data:
         weights[sectors_ticker].update(sector)
 
