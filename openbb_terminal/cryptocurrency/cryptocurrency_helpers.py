@@ -31,6 +31,10 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
 from openbb_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from openbb_terminal.cryptocurrency.discovery import pycoingecko_model
+from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import (
+    get_ohlc,
+    get_coin_tokenomics,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -399,7 +403,7 @@ def load_from_coingecko(
         console.print(f"{symbol} not found in Coingecko\n")
         return df
 
-    df = pycoingecko_model.get_ohlc(coingecko_id, vs_currency, days)
+    df = get_ohlc(coingecko_id, vs_currency, days)
     df_coin = yf.download(
         f"{symbol}-{vs_currency}",
         end=datetime.now(),
@@ -585,7 +589,7 @@ def show_quick_performance(
     try:
         coingecko_id = get_coingecko_id(symbol)
 
-        coin_data_cg = pycoingecko_model.get_coin_tokenomics(coingecko_id)
+        coin_data_cg = get_coin_tokenomics(coingecko_id)
         if not coin_data_cg.empty:
             df.insert(
                 len(df.columns),
