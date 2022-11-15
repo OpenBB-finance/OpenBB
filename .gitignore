@@ -31,6 +31,7 @@ openbb_terminal/portfolio/portfolios/*
 !openbb_terminal/reports/templates/*.ipynb
 *_tests.csv
 integration_test_output/*
+openbb_terminal/reports/templates/*.html
 
 # pyinstaller artifacts
 *.pyo
