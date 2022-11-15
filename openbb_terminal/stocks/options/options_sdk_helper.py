@@ -82,7 +82,7 @@ def get_option_expirations(symbol: str, source: str = "Nasdaq") -> List:
     """
 
     if source == "Tradier":
-        return list(df.expiration.unique())
+        return tradier_model.option_expirations(symbol)
     if source == "YahooFinance":
         return yfinance_model.option_expirations(symbol)
     if source == "Nasdaq":
