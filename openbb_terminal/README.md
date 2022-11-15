@@ -25,12 +25,208 @@ First step in all options is to star the project
 
 ## Anaconda & Python
 
-This installation type supports both Windows and Unix systems (Linux + MacOS). However, on Windows it can become messy
-so it is easier to use Windows Subsystem Linux (WSL) on this operating system. WSL emulates a Linux machine inside your
-Windows system.
+This installation type supports both Windows and Unix systems (Linux + MacOS).
 
-If you are using macOS or other Linux operating systems you can jump the next section
-<a href="#installing-the-terminal">Installing the terminal</a>.
+**NOTE for Windows users:** Some _not all_ Windows users would prefer to use an environment
+similar to what Linux and macOS users use. In this case it is easier to use Windows Subsystem
+for Linux (WSL). WSL emulates a Linux machine inside your Windows system. If this is the case -
+jump to the <a href="#installing-wsl-(only-for-windows-users)">Installing WSL (Only for Windows users)</a>
+section before proceeding.
+
+### Installing the terminal
+
+These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
+
+This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.9.13
+
+Our current recommendation is to use this project with Anaconda's Python distribution - either full
+[**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or
+[**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html) (recommended).
+Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, the "Miniconda3 MacOSX 64-bit" version that works on both Intel and M1
+macs is recommended.
+
+**NOTE:** We recommend using `conda` and `poetry` because it just works. You can use other python
+distributions and use raw `pip` instead of `poetry` but you will very likely bump into installation
+issues.
+
+1. [Install Miniconda](https://docs.conda.io/en/latest/miniconda.html)
+
+   Miniconda is a python environment and package manager. It is required if you want to
+   have the dependencies working straight away.
+
+   - Follow the [link to the page with the latest installers for all platforms](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) or click direct links to installer packages based on your operating system:
+
+     - If you are using macOS click [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
+     - If you are using WSL or Linux click [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
+     - If you are using a Raspberry PI click [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
+     - If you are using Windows click [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe).
+       **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+
+   **NOTE for macOS users:** The link above gets you the Intel version of miniconda meaning if you're on an
+   Apple Silicon powered machine you will be using the terminal through Apple's rosetta2 layer. We recommend
+   sticking to this distribution for better compatibility until the dependency developers fully catch up with
+   Apple's transition to Apple Silicon.
+
+   - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output
+     should be something along the lines of: `conda 22.9.0`
+
+2. Install CMake
+
+   CMake is required by several python modules.
+
+   **On Linux or Raspberry Pi:**
+
+   ```bash
+   sudo apt update
+   sudo apt install -y gcc cmake
+   ```
+
+   **On macOS**
+
+   If you don't have homebrew installed:
+
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   brew install cmake
+   ```
+
+   If you have homebrew installed:
+
+   ```bash
+   brew install cmake
+   ```
+
+   **On Windows**
+
+   If you have followed the instructions in step 1 of this guide CMake was installed as a
+   part of you Microsoft C++ Build Tools
+
+3. Install git
+
+   ```bash
+   conda install -c anaconda git
+   ```
+
+4. Clone the Project
+
+   - Via HTTPS: `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`
+   - via SSH: `git clone git@github.com:OpenBB-finance/OpenBBTerminal.git`
+
+5. Navigate into the project's folder
+
+   ```bash
+   cd OpenBBTerminal/
+   ```
+
+6. Create Environment
+
+   You can name the environment whatever you want. Although you could use names such as:
+   `welikethestock`, `thisistheway` or `diamondhands`, we recommend something simple and
+   intuitive like `obb`. This is because this name will be used from now onwards.
+
+   Please note, the following setup has been confirmed to work for all OS (including M1)
+   with the standard miniconda distribution. If you are using a different distribution,
+   you will need to install it manually before proceeding.
+
+   ```bash
+   conda env create -n obb --file build/conda/conda-3-9-env.yaml
+   ```
+
+   Or, to include machine learning type:
+
+   ```bash
+   conda env create -n obb --file build/conda/conda-3-9-env-full.yaml
+   ```
+
+   Note: Using python 3.10+ can lead to undesirable functionality for certain commands.
+
+7. Activate the virtual environment
+
+   ```bash
+   conda activate obb
+   ```
+
+   Note: At the end, you can deactivate it with: `conda deactivate`.
+
+8. Install dependencies with poetry
+
+   Install the main dependencies with
+
+   ```bash
+   poetry install
+   ```
+
+   You are good to go with the core of the OpenBB Terminal. To install additional toolkits
+   proceed with the following commands:
+
+   To install the Portfolio Optimization Toolkit run:
+
+   ```bash
+   poetry install -E optimization
+   ```
+
+   To install the Machine Learning Toolkit run:
+
+   ```bash
+   poetry install -E prediction
+   ```
+
+9. You're ready to use the terminal!
+
+   ```bash
+   openbb
+   ```
+
+   Or if you are old-fashioned run:
+
+   ```bash
+   python terminal.py
+   ```
+
+10. (Windows - Optional and **only if you are not using WSL**) Speeding up opening process in the future
+
+   After you've installed OpenBB Terminal, you'll find a file named "OpenBB Terminal.bat". You can use this file
+   to open OpenBB Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues
+   while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if
+   the directories match up. This file assumes you used the default directories when installing.
+
+**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate obb`
+before you call `openbb` again.
+
+**TROUBLESHOOT:** If you are having troubles to install, check our _newest_
+<a href="https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md">
+<strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
+
+## Advanced User Install - Custom installation procedures
+
+By default we advice using `conda` and `poetry` for environment setup and dependency management.
+Conda ships binaries for packages like `numpy` so these dependencies are not built from source locally by `pip`.
+Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies
+use versions that are compatible with each other.
+
+If you are using a conda environment the `build/conda` folder contains multiple `.yaml` configuration
+files that you can choose from.
+
+If you are using other python distributions we highly recommend that you use some virtual
+environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
+
+Requirements files that you can find in the project root:
+
+- `requirements.txt` list all the dependencies without Machine Learning libraries
+- `requirements-full.txt` list all the dependencies without Machine Learning libraries
+
+You can install them with with pip
+
+ ```bash
+ pip install -r requirements.txt
+ ```
+
+The dependency tree is solved by poetry.
+
+Note: The libraries specified in the requirements files have been tested and work for
+the purpose of this project, however, these may be older versions. Hence, it is recommended
+for the user to set up a virtual python environment prior to installing these. This allows
+to keep dependencies required by different projects in separate places.
 
 ### Installing WSL (Only for Windows users)
 
@@ -55,173 +251,6 @@ you need some extra steps to be able to visualize the charts produced by the ter
 
 After this, `VcXsrv` should be running successfully and we can proceed to terminal installation.
 
-Although we **extremely** recommend using WSL to run the terminal on windows, if you don't want or can't for some reason,
-you can try install the terminal directly on Windows without WSL. If you'd like to see a video recording of the
-installation on Windows without WSL, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
-
-### Installing the terminal
-
-These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
-
-This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.9.13
-
-Our current recommendation is to use this project with Anaconda's Python distribution - either full
-[**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or
-[**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html) (recommended).
-Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, the "Miniconda3 MacOSX 64-bit" version that works on both Intel and M1
-macs is recommended.
-
-**NOTE:** We recommend using `conda` and `poetry` because it just works. You can use other python
-distributions and use raw `pip` instead of `poetry` but you will very likely bump into installation
-issues.
-
-1. [Install Anaconda](https://docs.anaconda.com/anaconda/install/index.html) (It's on the AUR as anaconda or miniconda3!)
-
-   - Follow the instructions specified on the website above:
-
-     - If you are using macOS click [Installing on MacOS](https://docs.anaconda.com/anaconda/install/mac-os/)
-     - If you are using WSL or Linux click [Installing on Linux](https://docs.anaconda.com/anaconda/install/linux/)
-     - If you are using Windows click [Installing on Windows](https://docs.anaconda.com/anaconda/install/windows/).
-       **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
-
-   - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output
-     should be something along the lines of: `conda 4.11.0`
-
-2. Install git
-
-   ```bash
-   conda install -c anaconda git
-   ```
-
-   **For Linux users only, run these additional commands:**
-
-   ```bash
-   sudo apt update
-   sudo apt install -y cmake gcc
-   pip install cmake
-   ```
-
-3. Clone the Project
-
-   - Via HTTPS: `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`
-   - via SSH: `git clone git@github.com:OpenBB-finance/OpenBBTerminal.git`
-
-4. Navigate into the project's folder
-
-   ```bash
-   cd OpenBBTerminal/
-   ```
-
-5. Create Environment
-
-   You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway`
-   or `diamondhands`, we recommend something simple and intuitive like `obb`. This is because this name will be used
-   from now onwards.
-
-   Please note, the following setup has been confirmed to work for all OS (including M1) with the standard
-   miniconda distribution.
-
-   `https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh`
-
-   If you are using a different distribution, you will need to install it manually before proceeding.
-
-   ```bash
-   conda env create -n obb --file build/conda/conda-3-9-env.yaml
-   ```
-
-   Or, to include machine learning type:
-
-   ```bash
-   conda env create -n obb --file build/conda/conda-3-9-env-full.yaml
-   ```
-
-   Note: Using python 3.10 can lead to undesirable functionality for certain commands.
-
-6. Activate the virtual environment
-
-   ```bash
-   conda activate obb
-   ```
-
-   Note: At the end, you can deactivate it with: `conda deactivate`.
-
-7. Install dependencies with poetry
-
-   Install the main dependencies with
-
-   ```bash
-   poetry install
-   ```
-
-   For machine learning instead type:
-
-   ```bash
-   poetry install -E prediction
-   ```
-
-   If you are having trouble with Poetry (e.g. on a non-conda python), simply install requirements.txt with pip
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-8. You're ready to use the terminal!
-
-   ```bash
-   python terminal.py
-   ```
-
-    If you are using macOS and if you get SyntaxError, you might need to run this instead
-
-    ```bash
-   python3 terminal.py
-   ```
-
-9. (Windows - Optional and **only if you are not using WSL**) Speeding up opening process in the future
-
-   After you've installed OpenBB Terminal, you'll find a file named "OpenBB Terminal.bat". You can use this file
-   to open OpenBB Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues
-   while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if
-   the directories match up. This file assumes you used the default directories when installing.
-
-10. Jupyter Lab (Optional. Early alpha). User the Terminal from Jupyter Lab
-
-    You can install Jupyter Lab extensions that help you manage settings and launch the terminal in a JL bash console
-    using the commands in the [jupyterlab/README.md](../jupyterlab/README.md)
-
-**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst`
-before you call `python terminal.py` again.
-
-**TROUBLESHOOT:** If you are having troubles to install, check our _newest_
-<a href="https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md">
-<strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
-
-## Advanced User Install - Custom installation procedures
-
-By default we advice using `conda` and `poetry` for environment setup and dependency management.
-Conda ships binaries for packages like `numpy` so these dependencies are
-not built from source locally by `pip`.
-Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies
-use versions that are compatible with each other.
-
-If you are using a conda environment the `build/conda` folder contains multiple `.yaml` configuration
-files that you can choose from.
-
-If you are using other python distributions we highly recommend that you use some virtual
-environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
-
-Requirements files that you can find in the project root:
-
-- `requirements.txt` list all the dependencies without Machine Learning libraries
-- `requirements-full.txt` list all the dependencies without Machine Learning libraries
-
-The dependency tree is solved by poetry.
-
-Note: The libraries specified in the requirements files have been tested and work for
-the purpose of this project, however, these may be older versions. Hence, it is recommended
-for the user to set up a virtual python environment prior to installing these. This allows
-to keep dependencies required by different projects in separate places.
-
 ## Update Terminal
 
 The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be update,
@@ -239,7 +268,7 @@ If this fails due to the fact that you had modified some python files, and there
 git stash
 ```
 
-Then, re-run `poetry install` or `pip install -r requirements.txt` to get any new dependencies.
+Then, re-run `poetry install` to get any new dependencies.
 
 Once installation is finished, you're ready to openbb.
 
@@ -249,100 +278,8 @@ If you `stashed` your changes previously, you can un-stash them with:
 git stash pop
 ```
 
-## Local Installation of GST on Raspberry Pi
-
-1. Running raspbian lite(headless) or desktop (both 64bit) we should first start off with an update/upgrade.
-
-   ```bash
-   sudo apt update && sudo apt upgrade
-   ```
-
-   Once completed reboot and lets reopen.
-
-2. [Install Miniforge](https://github.com/conda-forge/miniforge) The community version of anaconda/miniconda that has
-   Arm support.
-
-   - Follow the on screen prompts to install miniforge(conda).
-
-   ```bash
-   wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
-   ```
-
-   - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output
-     should be something along the lines of: `conda 4.9.2`
-
-3. Install git
-
-   ```bash
-   conda install -c anaconda git
-   ```
-
-4. Install Cmake
-
-   ```bash
-   sudo apt update
-   sudo apt install -y cmake
-   pip install cmake
-   ```
-
-5. Clone the Project
-
-   - Via HTTPS: `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`
-   - via SSH: `git clone git@github.com:OpenBB-finance/OpenBBTerminal.git`
-
-6. Navigate into the project's folder
-
-   ```bash
-   cd OpenBB/
-   ```
-
-7. Create Environment
-
-   You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway`
-   or `diamondhands`, we recommend something simple and intuitive like `gst`. This is because this name will be used
-   from now onwards.
-
-   ```bash
-   conda env create -n openbb python=3.9
-   ```
-
-8. Activate the virtual environment
-
-   ```bash
-   conda activate openbb
-   ```
-
-   Note: At the end, you can deactivate it with: `conda deactivate`.
-
-9. Update all poetry dependencies
-
-   ```bash
-   poetry update --lock
-   ```
-
-   Note: This is done to solve any issues with poetry dependencies for the arm architecture of the rpi
-
-10. Install using our updated poetry installation
-
-    ```bash
-    poetry install
-    ```
-
-11. Ready to rock on a Raspberry Pi!
-
-    ```bash
-    python terminal.py
-    ```
-
-    Note: For a headless installation using raspbian lite also follow the Jupyter Lab installation
-
-12. Jupyter Lab (Optional. Early alpha). User the Terminal from Jupyter Lab
-
-You can install Jupyter Lab extensions that help you manage settings and launch the terminal in a JL bash console
-using the commands in the [jupyterlab/README.md](jupyterlab/README.md)
-
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst`
-before you call `python terminal.py` again.
+before you call `openbb` again.
 
 ### API Keys
 
