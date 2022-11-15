@@ -75,6 +75,9 @@ jobs:
       - name: Install Package
         run: poetry install --no-interaction
 
+      - name: Install Optimization Toolkit
+        run: poetry install -E optimization --no-interaction
+
       - name: Run tests
         env:
           MPLBACKEND: Agg
