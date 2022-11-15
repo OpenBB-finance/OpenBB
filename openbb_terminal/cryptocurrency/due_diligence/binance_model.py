@@ -80,7 +80,7 @@ def get_binance_available_quotes_for_each_coin() -> dict:
 
     Returns
     -------
-    dict:
+    dict
         All quote assets for given coin
         {'ETH' : ['BTC', 'USDT' ...], 'UNI' : ['ETH', 'BTC','BUSD', ...]
 
@@ -116,7 +116,7 @@ def show_available_pairs_for_given_symbol(
 
     Parameters
     ----------
-    symbol:
+    symbol: str
         Uppercase symbol of coin e.g BTC, ETH, UNI, LUNA, DOT ...
 
     Returns

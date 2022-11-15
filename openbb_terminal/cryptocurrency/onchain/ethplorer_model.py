@@ -68,7 +68,7 @@ def split_cols_with_dot(column: str) -> str:
 
     Returns
     -------
-    str:
+    str
         Value of column with replaced format.
     """
 
@@ -87,7 +87,7 @@ def split_cols_with_dot(column: str) -> str:
 
         Returns
         ----------
-        str:
+        str
             Camel case string with no dots. E.g. price.availableSupply -> priceAvailableSupply.
         """
 
@@ -139,7 +139,7 @@ def make_request(
 
     Returns
     -------
-    Optional[dict]:
+    Optional[dict]
         dictionary with response data
     """
 
@@ -183,7 +183,7 @@ def get_token_decimals(address: str) -> Optional[int]:
 
     Returns
     -------
-    Optional[int]:
+    Optional[int]
         Number of decimals for given token.
     """
     response = make_request("getTokenInfo", address)
@@ -210,7 +210,7 @@ def get_address_info(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         DataFrame with list of tokens and their balances.
     """
 
@@ -270,7 +270,7 @@ def get_top_tokens(sortby: str = "rank", ascend: bool = False) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         DataFrame with list of top 50 tokens.
     """
 
@@ -311,7 +311,7 @@ def get_top_token_holders(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         DataFrame with list of top token holders.
     """
 
@@ -342,7 +342,7 @@ def get_address_history(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         DataFrame with balance historical transactions (last 100)
     """
     response = make_request("getAddressHistory", address, limit=100)
@@ -380,7 +380,7 @@ def get_token_info(address) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         DataFrame with information about provided ERC20 token.
     """
 
@@ -444,7 +444,7 @@ def get_tx_info(tx_hash) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         DataFrame with information about ERC20 token transaction.
     """
     decimals = None
@@ -495,7 +495,7 @@ def get_token_history(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         DataFrame with token historical transactions.
     """
 
@@ -553,7 +553,7 @@ def get_token_historical_price(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         DataFrame with token historical prices.
     """
 

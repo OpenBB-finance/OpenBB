@@ -55,8 +55,9 @@ def get_regressions_results(
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the regression model.
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used, the dependent variable, the independent variable and
+        the regression model.
     """
     regressions = {
         "OLS": lambda: get_ols(regression_variables, data, False),
@@ -92,8 +93,9 @@ def get_regression_data(
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the OLS model.
+    Tuple[DataFrame, Any, List[Any]]
+        The dataset used, the dependent variable, the independent variable and
+        the OLS model.
     """
 
     datasets = get_datasets(data)
@@ -155,8 +157,9 @@ def get_ols(
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the OLS model.
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used, the dependent variable, the independent variable and
+        the OLS model.
     """
     regression_df, dependent_variable, independent_variables = get_regression_data(
         regression_variables, data, "OLS"
@@ -212,8 +215,9 @@ def get_pols(
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the Pooled OLS model.
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used, the dependent variable, the independent variable and
+        the Pooled OLS model.
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
@@ -255,8 +259,9 @@ def get_re(
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the RandomEffects model.
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used, the dependent variable, the independent variable and
+        the RandomEffects model.
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
@@ -298,8 +303,9 @@ def get_bols(
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the Between OLS model.
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used, the dependent variable, the independent variable and
+        the Between OLS model.
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
@@ -347,8 +353,9 @@ def get_fe(
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the OLS model.
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used, the dependent variable, the independent variable and
+        the OLS model.
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
@@ -397,8 +404,9 @@ def get_fdols(
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the OLS model.
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used, the dependent variable, the independent variable and
+        the OLS model.
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
@@ -435,7 +443,8 @@ def get_comparison(regressions, export: str = ""):
 
     Returns
     -------
-    Returns a PanelModelComparison which shows an overview of the different regression results.
+    dict
+        Returns a PanelModelComparison which shows an overview of the different regression results.
     """
     comparison = {}
 
@@ -481,7 +490,8 @@ def get_dwat(residual: pd.DataFrame) -> pd.DataFrame:
 
     Returns
     -------
-    Test statistic of the Durbin Watson test.
+    dataframe
+        Test statistic of the Durbin Watson test.
     """
     # Durbin Watson test: The test statistic is approximately equal to 2*(1-r) where r is the
     # sample autocorrelation of the residuals. Thus, for r == 0, indicating no serial correlation,
@@ -506,7 +516,8 @@ def get_bgod(model: pd.DataFrame, lags: int = 3) -> tuple:
 
     Returns
     -------
-    Test results from the Breusch-Godfrey Test
+    tuple
+        Test results from the Breusch-Godfrey Test
     """
 
     lm_stat, p_value, f_stat, fp_value = acorr_breusch_godfrey(model, nlags=lags)
@@ -525,7 +536,8 @@ def get_bpag(model: pd.DataFrame) -> tuple:
 
     Returns
     -------
-    Test results from the Breusch-Pagan Test
+    tuple
+        Test results from the Breusch-Pagan Test
     """
 
     lm_stat, p_value, f_stat, fp_value = het_breuschpagan(model.resid, model.model.exog)
