@@ -14,8 +14,6 @@ class EconometricsRoot(Category):
         `bpag`: Calculate test statistics for heteroscedasticity\n
         `bpag_view`: Show Breusch-Pagan heteroscedasticity test\n
         `clean`: Clean up NaNs from the dataset\n
-        `coint`: Estimates long-run and short-run cointegration relationship for series y and x and apply\n
-        `coint_view`: Estimates long-run and short-run cointegration relationship for series y and x and apply\n
         `comparison`: Compare regression results between Panel Data regressions.\n
         `dwat`: Calculate test statistics for Durbing Watson autocorrelation\n
         `dwat_view`: Show Durbin-Watson autocorrelation tests\n
@@ -29,7 +27,7 @@ class EconometricsRoot(Category):
         `norm_view`: Determine the normality of a timeseries.\n
         `ols`: Performs an OLS regression on timeseries data. [Source: Statsmodels]\n
         `options`: Obtain columns-dataset combinations from loaded in datasets that can be used in other commands\n
-        `options_view`: Plot custom data\n
+        `options_chart`: Plot custom data\n
         `panel`: Based on the regression type, this function decides what regression to run.\n
         `panel_view`: Based on the regression type, this function decides what regression to run.\n
         `pols`: PooledOLS is just plain OLS that understands that various panel data structures.\n
@@ -46,10 +44,6 @@ class EconometricsRoot(Category):
         self.bpag = lib.econometrics_regression_model.get_bpag
         self.bpag_view = lib.econometrics_regression_view.display_bpag
         self.clean = lib.econometrics_model.clean
-        self.coint = (
-            lib.econometrics_model.get_engle_granger_two_step_cointegration_test
-        )
-        self.coint_view = lib.econometrics_view.display_cointegration_test
         self.comparison = lib.econometrics_regression_model.get_comparison
         self.dwat = lib.econometrics_regression_model.get_dwat
         self.dwat_view = lib.econometrics_regression_view.display_dwat
@@ -63,7 +57,7 @@ class EconometricsRoot(Category):
         self.norm_view = lib.econometrics_view.display_norm
         self.ols = lib.econometrics_regression_model.get_ols
         self.options = lib.econometrics_model.get_options
-        self.options_view = lib.econometrics_view.show_options
+        self.options_chart = lib.econometrics_view.show_options
         self.panel = lib.econometrics_regression_model.get_regressions_results
         self.panel_view = lib.econometrics_regression_view.display_panel
         self.pols = lib.econometrics_regression_model.get_pols

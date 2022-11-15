@@ -13,11 +13,11 @@ from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal.loggers import setup_logging
-from openbb_terminal.portfolio.portfolio_model import PortfolioModel as Portfolio
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.reports.reports_controller import ReportController
 
 from openbb_terminal.sdk_core.sdk_helpers import check_suppress_logging
+import openbb_terminal.sdk_core.sdk_init as lib
 from openbb_terminal.sdk_core import (
     controllers as ctrl,
     models as model,
@@ -33,11 +33,18 @@ SUPPRESS_LOGGING_CLASSES = {
 
 
 class OpenBBSDK:
-    """OpenBB SDK Class."""
+    """OpenBB SDK Class.
+
+    Attributes:
+        `news`: Get news for a given term and source. [Source: Feedparser]\n
+        `news_chart`: Plots news for a given term and source. [Source: Feedparser]\n
+    """
 
     def __init__(self, suppress_logging: bool = False):
         self.__suppress_logging = suppress_logging
         self.__check_initialize_logging()
+        self.news = lib.common_feedparser_model.get_news
+        self.news_chart = lib.common_feedparser_view.display_news
 
     def __check_initialize_logging(self):
         if not self.__suppress_logging:
@@ -61,19 +68,86 @@ class OpenBBSDK:
         return ctrl.AltController()
 
     @property
-    def common(self):
-        """OpenBB SDK Common Submodule
-
-        Submodules:
-            `qa`: Quantitative Analysis Module
-            `ta`: Technical Analysis Module
+    def qa(self):
+        """OpenBB SDK Qa Submodule
 
         Attributes:
-            `news`: Get news for a given term and source. [Source: Feedparser]\n
-            `news_view`: Display news for a given term and source. [Source: Feedparser]\n
+            `bw`: Plots box and whisker plots\n
+            `calculate_adjusted_var`: Calculates VaR, which is adjusted for skew and kurtosis (Cornish-Fischer-Expansion)\n
+            `decompose`: Perform seasonal decomposition\n
+            `es`: Gets Expected Shortfall for specified stock dataframe.\n
+            `es_print`: Prints table showing expected shortfall.\n
+            `kurtosis`: Kurtosis Indicator\n
+            `kurtosis_chart`: Plots rolling kurtosis\n
+            `normality`: Look at the distribution of returns and generate statistics on the relation to the normal curve.\n
+            `normality_print`: Prints table showing normality statistics\n
+            `omega`: Get the omega series\n
+            `omega_chart`: Plots the omega ratio\n
+            `quantile`: Overlay Median & Quantile\n
+            `quantile_chart`: Plots rolling quantile\n
+            `rolling`: Return rolling mean and standard deviation\n
+            `rolling_chart`: Plots mean std deviation\n
+            `sharpe`: Calculates the sharpe ratio\n
+            `sharpe_chart`: Plots Calculated the sharpe ratio\n
+            `skew`: Skewness Indicator\n
+            `skew_chart`: Plots rolling skew\n
+            `sortino`: Calculates the sortino ratio\n
+            `sortino_chart`: Plots the sortino ratio\n
+            `spread`: Standard Deviation and Variance\n
+            `spread_chart`: Plots rolling spread\n
+            `summary`: Print summary statistics\n
+            `summary_print`: Prints table showing summary statistics\n
+            `unitroot`: Calculate test statistics for unit roots\n
+            `unitroot_print`: Prints table showing unit root test calculations\n
+            `var`: Gets value at risk for specified stock dataframe.\n
+            `var_print`: Prints table showing VaR of dataframe.\n
         """
 
-        return ctrl.CommonController()
+        return model.QaRoot()
+
+    @property
+    def ta(self):
+        """OpenBB SDK Ta Submodule
+
+        Attributes:
+            `ad`: Calculate AD technical indicator\n
+            `ad_chart`: Plots AD technical indicator\n
+            `adosc`: Calculate AD oscillator technical indicator\n
+            `adosc_chart`: Plots AD Osc Indicator\n
+            `adx`: ADX technical indicator\n
+            `adx_chart`: Plots ADX indicator\n
+            `aroon`: Aroon technical indicator\n
+            `aroon_chart`: Plots Aroon indicator\n
+            `atr`: Average True Range\n
+            `atr_chart`: Plots ATR\n
+            `bbands`: Calculate Bollinger Bands\n
+            `bbands_chart`: Plots bollinger bands\n
+            `donchian`: Calculate Donchian Channels\n
+            `donchian_chart`: Plots donchian channels\n
+            `ema`: Gets exponential moving average (EMA) for stock\n
+            `fib`: Calculate Fibonacci levels\n
+            `fib_chart`: Plots Calculated fibonacci retracement levels\n
+            `fisher`: Fisher Transform\n
+            `hma`: Gets hull moving average (HMA) for stock\n
+            `kc`: Keltner Channels\n
+            `kc_chart`: Plots Keltner Channels Indicator\n
+            `ma`: Plots MA technical indicator\n
+            `macd`: Moving average convergence divergence\n
+            `macd_chart`: Plots MACD signal\n
+            `obv`: On Balance Volume\n
+            `obv_chart`: Plots OBV technical indicator\n
+            `rsi`: Relative strength index\n
+            `rsi_chart`: Plots RSI Indicator\n
+            `sma`: Gets simple moving average (EMA) for stock\n
+            `stoch`: Stochastic oscillator\n
+            `stoch_chart`: Plots stochastic oscillator signal\n
+            `vwap`: Gets volume weighted average price (VWAP)\n
+            `vwap_chart`: Plots VWMA technical indicator\n
+            `wma`: Gets weighted moving average (WMA) for stock\n
+            `zlma`: Gets zero-lagged exponential moving average (ZLEMA) for stock\n
+        """
+
+        return model.TaRoot()
 
     @property
     def crypto(self):
@@ -121,7 +195,7 @@ class OpenBBSDK:
             `norm_view`: Determine the normality of a timeseries.\n
             `ols`: Performs an OLS regression on timeseries data. [Source: Statsmodels]\n
             `options`: Obtain columns-dataset combinations from loaded in datasets that can be used in other commands\n
-            `options_view`: Plot custom data\n
+            `options_chart`: Plot custom data\n
             `panel`: Based on the regression type, this function decides what regression to run.\n
             `panel_view`: Based on the regression type, this function decides what regression to run.\n
             `pols`: PooledOLS is just plain OLS that understands that various panel data structures.\n
@@ -216,9 +290,9 @@ class OpenBBSDK:
             `ln_view`: Display a selection of ETFs based on name filtered by total assets. [Source: Finance Database]\n
             `load`: Load a symbol to perform analysis using the string above as a template.\n
             `news`: Get news for a given term. [Source: NewsAPI]\n
-            `news_view`: Display news for a given term. [Source: NewsAPI]\n
+            `news_print`: Prints table showing news for a given term. [Source: NewsAPI]\n
             `overview`: Get overview data for selected etf\n
-            `overview_view`: Print etf overview information\n
+            `overview_print`: Print etf overview information\n
             `summary`: Return summary description of ETF. [Source: Yahoo Finance]\n
             `summary_view`: Display ETF description summary. [Source: Yahoo Finance]\n
             `symbols`: Gets all etf names and symbols\n
@@ -239,7 +313,7 @@ class OpenBBSDK:
             `clean`: Clean up NaNs from the dataset\n
             `combine`: Adds the given column of df2 to df1\n
             `corr`: Returns correlation for a given df\n
-            `corr_view`: Plot correlation coefficients for dataset features\n
+            `corr_chart`: Plot correlation coefficients for dataset features\n
             `delta`: Calculate the %change of a variable based on a specific column\n
             `desc`: Returns statistics for a given df\n
             `ema`: A moving average provides an indication of the trend of the price movement\n
@@ -374,29 +448,24 @@ class OpenBBSDK:
             `po`: Portfolio Optimization Module
 
         Attributes:
-            `calmar`: Get calmar ratio\n
-            `commonsense`: Get common sense ratio\n
+            `load`: Get PortfolioEngine object\n
+            `show`: Get portfolio transactions\n
+            `bench`: Load benchmark into portfolio\n
             `distr`: Display daily returns\n
             `distr_view`: Display daily returns\n
             `dret`: Get daily returns\n
             `dret_view`: Display daily returns\n
             `es`: Get portfolio expected shortfall\n
-            `gaintopain`: Get Pain-to-Gain ratio based on historical data\n
             `holdp`: Get holdings of assets (in percentage)\n
             `holdp_view`: Display holdings of assets (in percentage)\n
             `holdv`: Get holdings of assets (absolute value)\n
             `holdv_view`: Display holdings of assets (absolute value)\n
-            `information`: Get information ratio\n
-            `jensens`: Get jensen's alpha\n
-            `kelly`: Gets kelly criterion\n
-            `kurtosis`: Class method that retrieves kurtosis for portfolio and benchmark selected\n
             `maxdd`: Calculate the drawdown (MDD) of historical series.  Note that the calculation is done\n
             `maxdd_view`: Display maximum drawdown curve\n
             `mret`: Get monthly returns\n
             `mret_view`: Display monthly returns\n
             `om`: Get omega ratio\n
             `om_view`: Display omega ratio\n
-            `payoff`: Gets payoff ratio\n
             `perf`: Get portfolio performance vs the benchmark\n
             `rbeta`: Get rolling beta using portfolio and benchmark returns\n
             `rbeta_view`: Display rolling beta\n
@@ -406,7 +475,7 @@ class OpenBBSDK:
             `rsort_view`: Display rolling sortino\n
             `rvol`: Get rolling volatility\n
             `rvol_view`: Display rolling volatility\n
-            `summary`: Get summary portfolio and benchmark returns\n
+            `summary`: Get portfolio and benchmark returns summary\n
             `var`: Get portfolio VaR\n
             `yret`: Get yearly returns\n
             `yret_view`: Display yearly returns\n

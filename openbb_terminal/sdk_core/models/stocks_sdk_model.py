@@ -30,68 +30,70 @@ class StocksBehavioralAnalysis(Category):
     """OpenBB SDK Behavioral Analysis Module.
 
     Attributes:
-        `bullbear`: Gets bullbear sentiment for ticker [Source: stocktwits]\n
-        `bullbear_view`: Print bullbear sentiment based on last 30 messages on the board.\n
-        `getdd`: Gets due diligence posts from list of subreddits [Source: reddit]\n
-        `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain]\n
-        `headlines_view`: Sentiment analysis from FinBrain\n
-        `hist`: Get hour-level sentiment data for the chosen symbol\n
+        `bullbear`: Gets bullbear sentiment for ticker [Source: stocktwits].\n
+        `bullbear_print`: Print bullbear sentiment based on last 30 messages on the board.\n
+        `getdd`: Gets due diligence posts from list of subreddits [Source: reddit].\n
+        `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].\n
+        `headlines_chart`: Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]\n
+        `hist`: Get hour-level sentiment data for the chosen symbol.\n
         `hist_view`: Display historical sentiment data of a ticker,\n
-        `infer`: Load tweets from twitter API and analyzes using VADER\n
-        `infer_view`: Infer sentiment from past n tweets\n
-        `mentions`: Get interest over time from google api [Source: google]\n
-        `mentions_view`: Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]\n
-        `messages`: Get last messages for a given ticker [Source: stocktwits]\n
-        `messages_view`: Print up to 30 of the last messages on the board. [Source: Stocktwits]\n
-        `popular`: Get popular tickers from list of subreddits [Source: reddit]\n
-        `popular_view`: Print latest popular tickers. [Source: Reddit]\n
-        `queries`: Get related queries from google api [Source: google]\n
-        `redditsent`: Finds posts related to a specific search term in Reddit\n
-        `redditsent_view`: Determine Reddit sentiment about a search term\n
-        `regions`: Get interest by region from google api [Source: google]\n
-        `regions_view`: Plot bars of regions based on stock's interest. [Source: Google]\n
-        `rise`: Get top rising related queries with this stock's query [Source: google]\n
-        `rise_view`: Print top rising related queries with this stock's query. [Source: Google]\n
-        `sentiment`: Get sentiments from symbol\n
-        `sentiment_view`: Plot sentiments from symbol\n
-        `spac`: Get posts containing SPAC from top subreddits [Source: reddit]\n
-        `spacc`: Get top tickers from r/SPACs [Source: reddit]\n
-        `stalker`: Gets messages from given user [Source: stocktwits]\n
-        `text_sent`: Find the sentiment of a post and related comments\n
+        `infer`: Load tweets from twitter API and analyzes using VADER.\n
+        `infer_print`: Prints Inference sentiment from past n tweets.\n
+        `mentions`: Get interest over time from google api [Source: google].\n
+        `mentions_chart`: Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].\n
+        `messages`: Get last messages for a given ticker [Source: stocktwits].\n
+        `messages_print`: Prints up to 30 of the last messages on the board. [Source: Stocktwits].\n
+        `popular`: Get popular tickers from list of subreddits [Source: reddit].\n
+        `popular_print`: Prints table showing latest popular tickers. [Source: Reddit].\n
+        `queries`: Get related queries from google api [Source: google].\n
+        `queries_print`: Prints table showing top related queries with this stock's query. [Source: Google].\n
+        `redditsent`: Finds posts related to a specific search term in Reddit.\n
+        `redditsent_chart`: Plots Reddit sentiment about a search term. Prints table showing if display is True.\n
+        `regions`: Get interest by region from google api [Source: google].\n
+        `regions_chart`: Plots bars of regions based on stock's interest. [Source: Google].\n
+        `rise`: Get top rising related queries with this stock's query [Source: google].\n
+        `rise_print`: Prints top rising related queries with this stock's query. [Source: Google].\n
+        `sentiment`: Get sentiments from symbol.\n
+        `sentiment_chart`: Plots sentiments from symbol\n
+        `spac`: Get posts containing SPAC from top subreddits [Source: reddit].\n
+        `spacc`: Get top tickers from r/SPACs [Source: reddit].\n
+        `stalker`: Gets messages from given user [Source: stocktwits].\n
+        `text_sent`: Find the sentiment of a post and related comments.\n
         `trend`: Get sentiment data on the most talked about tickers\n
         `trend_view`: Display most talked about tickers within\n
-        `trending`: Get trending tickers from stocktwits [Source: stocktwits]\n
-        `watchlist`: Get reddit users watchlists [Source: reddit]\n
-        `watchlist_view`: Print other users watchlist. [Source: Reddit]\n
-        `wsb`: Get wsb posts [Source: reddit]\n
+        `trending`: Get trending tickers from stocktwits [Source: stocktwits].\n
+        `watchlist`: Get reddit users watchlists [Source: reddit].\n
+        `watchlist_print`: Prints other users watchlist. [Source: Reddit].\n
+        `wsb`: Get wsb posts [Source: reddit].\n
     """
 
     def __init__(self):
         super().__init__()
         self.bullbear = lib.stocks_ba_stocktwits_model.get_bullbear
-        self.bullbear_view = lib.stocks_ba_stocktwits_view.display_bullbear
+        self.bullbear_print = lib.stocks_ba_stocktwits_view.display_bullbear
         self.getdd = lib.stocks_ba_reddit_model.get_due_dilligence
         self.headlines = lib.stocks_ba_finbrain_model.get_sentiment
-        self.headlines_view = lib.stocks_ba_finbrain_view.display_sentiment_analysis
+        self.headlines_chart = lib.stocks_ba_finbrain_view.display_sentiment_analysis
         self.hist = lib.stocks_ba_sentimentinvestor_model.get_historical
         self.hist_view = lib.stocks_ba_sentimentinvestor_view.display_historical
         self.infer = lib.stocks_ba_twitter_model.load_analyze_tweets
-        self.infer_view = lib.stocks_ba_twitter_view.display_inference
+        self.infer_print = lib.stocks_ba_twitter_view.display_inference
         self.mentions = lib.stocks_ba_google_model.get_mentions
-        self.mentions_view = lib.stocks_ba_google_view.display_mentions
+        self.mentions_chart = lib.stocks_ba_google_view.display_mentions
         self.messages = lib.stocks_ba_stocktwits_model.get_messages
-        self.messages_view = lib.stocks_ba_stocktwits_view.display_messages
+        self.messages_print = lib.stocks_ba_stocktwits_view.display_messages
         self.popular = lib.stocks_ba_reddit_model.get_popular_tickers
-        self.popular_view = lib.stocks_ba_reddit_view.display_popular_tickers
+        self.popular_print = lib.stocks_ba_reddit_view.display_popular_tickers
         self.queries = lib.stocks_ba_google_model.get_queries
+        self.queries_print = lib.stocks_ba_google_view.display_queries
         self.redditsent = lib.stocks_ba_reddit_model.get_posts_about
-        self.redditsent_view = lib.stocks_ba_reddit_view.display_redditsent
+        self.redditsent_chart = lib.stocks_ba_reddit_view.display_redditsent
         self.regions = lib.stocks_ba_google_model.get_regions
-        self.regions_view = lib.stocks_ba_google_view.display_regions
+        self.regions_chart = lib.stocks_ba_google_view.display_regions
         self.rise = lib.stocks_ba_google_model.get_rise
-        self.rise_view = lib.stocks_ba_google_view.display_rise
+        self.rise_print = lib.stocks_ba_google_view.display_rise
         self.sentiment = lib.stocks_ba_twitter_model.get_sentiment
-        self.sentiment_view = lib.stocks_ba_twitter_view.display_sentiment
+        self.sentiment_chart = lib.stocks_ba_twitter_view.display_sentiment
         self.spac = lib.stocks_ba_reddit_model.get_spac
         self.spacc = lib.stocks_ba_reddit_model.get_spac_community
         self.stalker = lib.stocks_ba_stocktwits_model.get_stalker
@@ -100,7 +102,7 @@ class StocksBehavioralAnalysis(Category):
         self.trend_view = lib.stocks_ba_sentimentinvestor_view.display_trending
         self.trending = lib.stocks_ba_stocktwits_model.get_trending
         self.watchlist = lib.stocks_ba_reddit_model.get_watchlists
-        self.watchlist_view = lib.stocks_ba_reddit_view.display_watchlist
+        self.watchlist_print = lib.stocks_ba_reddit_view.display_watchlist
         self.wsb = lib.stocks_ba_reddit_model.get_wsb_community
 
 
@@ -108,22 +110,22 @@ class StocksComparisonAnalysis(Category):
     """OpenBB SDK Comparison Analysis Module.
 
     Attributes:
-        `balance`: Get balance data. [Source: Marketwatch]\n
+        `balance`: Get balance data. [Source: Marketwatch].\n
         `cashflow`: Get cashflow data. [Source: Marketwatch]\n
-        `finnhub_peers`: Get similar companies from Finhub\n
-        `finviz_peers`: Get similar companies from Finviz\n
+        `finnhub_peers`: Get similar companies from Finhub.\n
+        `finviz_peers`: Get similar companies from Finviz.\n
         `hcorr`: Get historical price correlation. [Source: Yahoo Finance]\n
         `hcorr_view`: Correlation heatmap based on historical price comparison\n
         `hist`: Get historical prices for all comparison stocks\n
         `hist_view`: Display historical stock prices. [Source: Yahoo Finance]\n
-        `income`: Get income data. [Source: Marketwatch]\n
-        `income_view`: Display income data. [Source: Marketwatch]\n
+        `income`: Get income data. [Source: Marketwatch].\n
+        `income_view`: Display income data. [Source: Marketwatch].\n
         `polygon_peers`: Get similar companies from Polygon\n
-        `scorr`: Get correlation sentiments across similar companies. [Source: FinBrain]\n
-        `scorr_view`: Plot correlation sentiments heatmap across similar companies. [Source: FinBrain]\n
-        `screener`: Screener Overview\n
-        `sentiment`: Gets Sentiment analysis from several symbols provided by FinBrain's API\n
-        `sentiment_view`: Display sentiment for all ticker. [Source: FinBrain]\n
+        `scorr`: Get correlation sentiments across similar companies. [Source: FinBrain].\n
+        `scorr_chart`: Plot correlation sentiments heatmap across similar companies. [Source: FinBrain].\n
+        `screener`: Screener Overview.\n
+        `sentiment`: Gets Sentiment analysis from several symbols provided by FinBrain's API.\n
+        `sentiment_view`: Display sentiment for all ticker. [Source: FinBrain].\n
         `volume`: Get stock volume. [Source: Yahoo Finance]\n
         `volume_view`: Display stock volume. [Source: Yahoo Finance]\n
     """
@@ -142,7 +144,7 @@ class StocksComparisonAnalysis(Category):
         self.income_view = lib.stocks_ca_marketwatch_view.display_income_comparison
         self.polygon_peers = lib.stocks_ca_polygon_model.get_similar_companies
         self.scorr = lib.stocks_ca_finbrain_model.get_sentiment_correlation
-        self.scorr_view = lib.stocks_ca_finbrain_view.display_sentiment_correlation
+        self.scorr_chart = lib.stocks_ca_finbrain_view.display_sentiment_correlation
         self.screener = lib.stocks_ca_finviz_compare_model.get_comparison_data
         self.sentiment = lib.stocks_ca_finbrain_model.get_sentiments
         self.sentiment_view = lib.stocks_ca_finbrain_view.display_sentiment_compare
@@ -237,7 +239,7 @@ class StocksDarkpoolShorts(Category):
 
     Attributes:
         `ctb`: Get cost to borrow of stocks [Source: Stocksera]\n
-        `ctb_view`: Plots the cost to borrow of a stock. [Source: Stocksera]\n
+        `ctb_chart`: Plot the cost to borrow of a stock. [Source: Stocksera]\n
         `dpotc`: Get all FINRA data associated with a ticker\n
         `dpotc_view`: Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]\n
         `ftd`: Display fails-to-deliver data for a given ticker. [Source: SEC]\n
@@ -247,13 +249,13 @@ class StocksDarkpoolShorts(Category):
         `prom`: Get all FINRA ATS data, and parse most promising tickers based on linear regression\n
         `prom_view`: Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]\n
         `psi_q`: Plots the short interest of a stock. This corresponds to the\n
-        `psi_q_view`: Plots the short interest of a stock. This corresponds to the\n
+        `psi_q_chart`: Plot the short interest of a stock. This corresponds to the\n
         `psi_sg`: Get price vs short interest volume. [Source: Stockgrid]\n
-        `psi_sg_view`: Plot price vs short interest volume. [Source: Stockgrid]\n
+        `psi_sg_chart`: Plot price vs short interest volume. [Source: Stockgrid]\n
         `shorted`: Get most shorted stock screener [Source: Yahoo Finance]\n
         `sidtc`: Get short interest and days to cover. [Source: Stockgrid]\n
         `spos`: Get net short position. [Source: Stockgrid]\n
-        `spos_view`: Plot net short position. [Source: Stockgrid]\n
+        `spos_chart`: Plot net short position. [Source: Stockgrid]\n
         `volexch`: Gets short data for 5 exchanges [https://ftp.nyse.com] starting at 1/1/2021\n
         `volexch_view`: Display short data by exchange\n
     """
@@ -261,7 +263,7 @@ class StocksDarkpoolShorts(Category):
     def __init__(self):
         super().__init__()
         self.ctb = lib.stocks_dps_stocksera_model.get_cost_to_borrow
-        self.ctb_view = lib.stocks_dps_stocksera_view.plot_cost_to_borrow
+        self.ctb_chart = lib.stocks_dps_stocksera_view.plot_cost_to_borrow
         self.dpotc = lib.stocks_dps_finra_model.getTickerFINRAdata
         self.dpotc_view = lib.stocks_dps_finra_view.darkpool_ats_otc
         self.ftd = lib.stocks_dps_sec_model.get_fails_to_deliver
@@ -271,13 +273,13 @@ class StocksDarkpoolShorts(Category):
         self.prom = lib.stocks_dps_finra_model.getATSdata
         self.prom_view = lib.stocks_dps_finra_view.darkpool_otc
         self.psi_q = lib.stocks_dps_quandl_model.get_short_interest
-        self.psi_q_view = lib.stocks_dps_quandl_view.short_interest
+        self.psi_q_chart = lib.stocks_dps_quandl_view.short_interest
         self.psi_sg = lib.stocks_dps_stockgrid_model.get_short_interest_volume
-        self.psi_sg_view = lib.stocks_dps_stockgrid_view.short_interest_volume
+        self.psi_sg_chart = lib.stocks_dps_stockgrid_view.short_interest_volume
         self.shorted = lib.stocks_dps_yahoofinance_model.get_most_shorted
         self.sidtc = lib.stocks_dps_stockgrid_model.get_short_interest_days_to_cover
         self.spos = lib.stocks_dps_stockgrid_model.get_net_short_position
-        self.spos_view = lib.stocks_dps_stockgrid_view.net_short_position
+        self.spos_chart = lib.stocks_dps_stockgrid_view.net_short_position
         self.volexch = lib.stocks_dps_nyse_model.get_short_data_by_exchange
         self.volexch_view = lib.stocks_dps_nyse_view.display_short_by_exchange
 
@@ -433,7 +435,7 @@ class StocksInsiders(Category):
         `lins`: Get last insider activity for a given stock ticker. [Source: Finviz]\n
         `lins_view`: Display insider activity for a given stock ticker. [Source: Finviz]\n
         `print_insider_data`: Print insider data\n
-        `print_insider_data_view`: Print insider data\n
+        `print_insider_data_print`: Print insider data\n
     """
 
     def __init__(self):
@@ -445,7 +447,7 @@ class StocksInsiders(Category):
         self.print_insider_data = (
             lib.stocks_insider_openinsider_model.get_print_insider_data
         )
-        self.print_insider_data_view = (
+        self.print_insider_data_print = (
             lib.stocks_insider_openinsider_view.print_insider_data
         )
 
@@ -458,27 +460,21 @@ class StocksOptions(Category):
         `screen`: Screen Module
 
     Attributes:
-        `chains_nasdaq`: Get option chain for symbol at a given expiration\n
-        `chains_nasdaq_view`: Display option chain for given expiration\n
-        `chains_tr`: Display option chains [Source: Tradier]"\n
-        `chains_tr_view`: Display option chain\n
-        `chains_yf`: Gets option chain from yf for given ticker and expiration\n
-        `chains_yf_view`: Display option chains for given ticker and expiration\n
+        `chains`: Get Option Chain For A Stock.  No greek data is returned\n
         `closing`: Get closing prices for a given ticker\n
         `dividend`: Gets option chain from yf for given ticker and expiration\n
         `dte`: Gets days to expiration from yfinance option date\n
         `generate_data`: Gets x values, and y values before and after premiums\n
         `grhist`: Get histoical option greeks\n
-        `grhist_view`: Plots historical greeks for a given option. [Source: Syncretism]\n
+        `grhist_chart`: Plots historical greeks for a given option. [Source: Syncretism]\n
         `hist_ce`: Historic prices for a specific option [chartexchange]\n
         `hist_ce_view`: Return raw stock data[chartexchange]\n
         `hist_tr`: Gets historical option pricing.  This inputs either ticker, expiration, strike or the OCC chain ID and processes\n
-        `hist_tr_view`: Plot historical option prices\n
+        `hist_tr_chart`: Plot historical option prices\n
         `info`: Get info for a given ticker\n
         `info_view`: Scrapes Barchart.com for the options information\n
         `last_price`: Makes api request for last price\n
-        `option_chain`: Gets option chain from yf for given ticker and expiration\n
-        `option_expirations`: Get available expiration dates for given ticker\n
+        `expirations`: Get Option Chain Expirations\n
         `pcr`: Gets put call ratio over last time window [Source: AlphaQuery.com]\n
         `pcr_view`: Display put call ratio [Source: AlphaQuery.com]\n
         `price`: Get current price for a given ticker\n
@@ -486,40 +482,32 @@ class StocksOptions(Category):
         `unu`: Get unusual option activity from fdscanner.com\n
         `unu_view`: Displays the unusual options table\n
         `voi_yf`: Plot volume and open interest\n
-        `voi_yf_view`: Plot volume and open interest\n
+        `voi_yf_chart`: Plot volume and open interest\n
         `vol_yf`: Plot volume\n
-        `vol_yf_view`: Plot volume\n
+        `vol_yf_chart`: Plot volume\n
         `vsurf`: Gets IV surface for calls and puts for ticker\n
         `vsurf_view`: Display vol surface\n
-        `x_values`: Generates different price values that need to be tested\n
-        `y_values`: Generates y values for corresponding x values\n
     """
 
     def __init__(self):
         super().__init__()
-        self.chains_nasdaq = lib.stocks_options_nasdaq_model.get_chain_given_expiration
-        self.chains_nasdaq_view = lib.stocks_options_nasdaq_view.display_chains
-        self.chains_tr = lib.stocks_options_tradier_model.get_option_chains
-        self.chains_tr_view = lib.stocks_options_tradier_view.display_chains
-        self.chains_yf = lib.stocks_options_yfinance_model.get_option_chain
-        self.chains_yf_view = lib.stocks_options_yfinance_view.display_chains
+        self.chains = lib.options_sdk_helper.get_full_option_chain
         self.closing = lib.stocks_options_yfinance_model.get_closing
         self.dividend = lib.stocks_options_yfinance_model.get_dividend
         self.dte = lib.stocks_options_yfinance_model.get_dte
         self.generate_data = lib.stocks_options_yfinance_model.generate_data
         self.grhist = lib.stocks_options_screen_syncretism_model.get_historical_greeks
-        self.grhist_view = (
+        self.grhist_chart = (
             lib.stocks_options_screen_syncretism_view.view_historical_greeks
         )
         self.hist_ce = lib.stocks_options_chartexchange_model.get_option_history
         self.hist_ce_view = lib.stocks_options_chartexchange_view.display_raw
         self.hist_tr = lib.stocks_options_tradier_model.get_historical_options
-        self.hist_tr_view = lib.stocks_options_tradier_view.display_historical
+        self.hist_tr_chart = lib.stocks_options_tradier_view.display_historical
         self.info = lib.stocks_options_yfinance_model.get_info
         self.info_view = lib.stocks_options_barchart_view.print_options_data
         self.last_price = lib.stocks_options_tradier_model.last_price
-        self.option_chain = lib.stocks_options_yfinance_model.get_option_chain
-        self.option_expirations = lib.stocks_options_yfinance_model.option_expirations
+        self.expirations = lib.options_sdk_helper.get_option_expirations
         self.pcr = lib.stocks_options_alphaquery_model.get_put_call_ratio
         self.pcr_view = lib.stocks_options_alphaquery_view.display_put_call_ratio
         self.price = lib.stocks_options_yfinance_model.get_price
@@ -527,13 +515,11 @@ class StocksOptions(Category):
         self.unu = lib.stocks_options_fdscanner_model.unusual_options
         self.unu_view = lib.stocks_options_fdscanner_view.display_options
         self.voi_yf = lib.stocks_options_yfinance_model.get_volume_open_interest
-        self.voi_yf_view = lib.stocks_options_yfinance_view.plot_volume_open_interest
+        self.voi_yf_chart = lib.stocks_options_yfinance_view.plot_volume_open_interest
         self.vol_yf = lib.stocks_options_yfinance_model.get_vol
-        self.vol_yf_view = lib.stocks_options_yfinance_view.plot_vol
+        self.vol_yf_chart = lib.stocks_options_yfinance_view.plot_vol
         self.vsurf = lib.stocks_options_yfinance_model.get_iv_surface
         self.vsurf_view = lib.stocks_options_yfinance_view.display_vol_surface
-        self.x_values = lib.stocks_options_yfinance_model.get_x_values
-        self.y_values = lib.stocks_options_yfinance_model.get_y_values
 
 
 class StocksQuantitativeAnalysis(Category):

@@ -42,15 +42,15 @@ class ForexController(model.ForexRoot):
             `order`: Request creation of buy/sell trade order.\n
             `order_view`: Create a buy/sell order.\n
             `orderbook`: Request order book data for plotting.\n
-            `orderbook_view`: Plot the orderbook for the instrument if Oanda provides one.\n
+            `orderbook_chart`: Plot the orderbook for the instrument if Oanda provides one.\n
             `pending`: Request information on pending orders.\n
             `pending_view`: Get information about pending orders.\n
             `positionbook`: Request position book data for plotting.\n
-            `positionbook_view`: Plot a position book for an instrument if Oanda provides one.\n
+            `positionbook_chart`: Plot a position book for an instrument if Oanda provides one.\n
             `price`: Request price for a forex pair.\n
             `price_view`: View price for loaded currency pair.\n
             `summary`: Request Oanda account summary.\n
-            `summary_view`: Print Oanda account summary.\n
+            `summary_print`: Print Oanda account summary.\n
         """
 
         return model.ForexOanda()

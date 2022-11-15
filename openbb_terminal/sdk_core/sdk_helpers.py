@@ -80,6 +80,7 @@ from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.reports.reports_controller import ReportController
 
 from openbb_terminal.sdk_core.sdk_helpers import check_suppress_logging
+import openbb_terminal.sdk_core.sdk_init as lib
 from openbb_terminal.sdk_core import (
     controllers as ctrl,
     models as model,

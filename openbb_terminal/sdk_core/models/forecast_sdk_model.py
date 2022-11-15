@@ -14,7 +14,7 @@ class ForecastRoot(Category):
         `clean`: Clean up NaNs from the dataset\n
         `combine`: Adds the given column of df2 to df1\n
         `corr`: Returns correlation for a given df\n
-        `corr_view`: Plot correlation coefficients for dataset features\n
+        `corr_chart`: Plot correlation coefficients for dataset features\n
         `delta`: Calculate the %change of a variable based on a specific column\n
         `desc`: Returns statistics for a given df\n
         `ema`: A moving average provides an indication of the trend of the price movement\n
@@ -58,7 +58,7 @@ class ForecastRoot(Category):
             self.clean = lib.forecast_model.clean
             self.combine = lib.forecast_model.combine_dfs
             self.corr = lib.forecast_model.corr_df
-            self.corr_view = lib.forecast_view.display_corr
+            self.corr_chart = lib.forecast_view.display_corr
             self.delete = lib.forecast_model.delete_column
             self.delta = lib.forecast_model.add_delta
             self.desc = lib.forecast_model.describe_df

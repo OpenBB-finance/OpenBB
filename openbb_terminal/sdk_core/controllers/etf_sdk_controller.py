@@ -23,9 +23,9 @@ class EtfController(model.EtfRoot):
         `ln_view`: Display a selection of ETFs based on name filtered by total assets. [Source: Finance Database]\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
         `news`: Get news for a given term. [Source: NewsAPI]\n
-        `news_view`: Display news for a given term. [Source: NewsAPI]\n
+        `news_print`: Prints table showing news for a given term. [Source: NewsAPI]\n
         `overview`: Get overview data for selected etf\n
-        `overview_view`: Print etf overview information\n
+        `overview_print`: Print etf overview information\n
         `summary`: Return summary description of ETF. [Source: Yahoo Finance]\n
         `summary_view`: Display ETF description summary. [Source: Yahoo Finance]\n
         `symbols`: Gets all etf names and symbols\n

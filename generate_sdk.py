@@ -45,10 +45,6 @@ sub_names = {
 }
 
 sdk_init_funcs = """
-    def __init__(self, suppress_logging: bool = False):
-        self.__suppress_logging = suppress_logging
-        self.__check_initialize_logging()
-
     def __check_initialize_logging(self):
         if not self.__suppress_logging:
             self.__initialize_logging()
@@ -79,6 +75,7 @@ class Trailmap:
         self.location_path = tmap
         self.model = model
         self.view = view if view else None
+        self.view_name = ""
         self.model_func: Optional[str] = f"lib.{model}" if model else None
         self.view_func: Optional[str] = f"lib.{view}" if view else None
         self.short_doc: Dict[str, Optional[str]] = {}
@@ -112,6 +109,17 @@ class Trailmap:
                 self.func_def[key] = self.get_definition(key)
                 self.long_doc[key] = self.func_attr[key].__doc__
                 self.short_doc[key] = clean_attr_desc(self.func_attr[key])
+                self.view_name = (
+                    (
+                        "_chart"
+                        if "Plot" in self.short_doc[key]
+                        else "_print"
+                        if "Print" in self.short_doc[key]
+                        else "_view"
+                    )
+                    if key == "view"
+                    else ""
+                )
                 full_path = (
                     inspect.getfile(self.func_attr[key])
                     .replace("\\", "/")
@@ -282,7 +290,9 @@ class BuildCategoryModelClasses:
             f'"""OpenBB SDK {category.title()}{subcat} Submodule\r'
         )
 
-    def write_class_attr_docs(self, d: dict, f: TextIO, module: bool = True) -> None:
+    def write_class_attr_docs(
+        self, d: dict, f: TextIO, module: bool = True, sdk_root: bool = False
+    ) -> None:
         """Writes the class attribute docs to the category file.
 
         Parameters
@@ -293,6 +303,8 @@ class BuildCategoryModelClasses:
             The file to write to.
         module : bool, optional
             If the category is a module, by default True
+        sdk_root : bool, optional
+            If this is the sdk root file, by default False
         """
         add_indent = "" if module else "    "
         added_attributes = False
@@ -304,14 +316,22 @@ class BuildCategoryModelClasses:
                     added_attributes = True
 
                 for key in ["model", "view"]:
-                    view = "_view" if key == "view" else ""
                     if v.short_doc.get(key, None):
+                        view = v.view_name if key == "view" else ""
                         f.write(
                             f"{add_indent}        `{v.class_attr}{view}`: {v.short_doc[key]}\\n\r"
                         )
 
         if module:
             f.write('    """\r\r    def __init__(self):\r        super().__init__()\r')
+        elif sdk_root:
+            f.write(
+                (
+                    '    """\r\r    def __init__(self, suppress_logging: bool = False):\r'
+                    "        self.__suppress_logging = suppress_logging\r"
+                    "        self.__check_initialize_logging()\r"
+                )
+            )
         else:
             f.write(f'{add_indent}    """\r\r')
 
@@ -334,7 +354,7 @@ class BuildCategoryModelClasses:
 
         for v in d.values():
             if isinstance(v, Trailmap):
-                for attr, func in zip(["", "_view"], [v.model_func, v.view_func]):
+                for attr, func in zip(["", v.view_name], [v.model_func, v.view_func]):
                     if func:
                         f.write(
                             f"{add_indent}        self.{v.class_attr}{attr} = {func}\r"
@@ -537,11 +557,11 @@ class BuildCategoryModelClasses:
             f.write(
                 f'{get_sdk_imports_text()}class OpenBBSDK:\r    """OpenBB SDK Class.\r'
             )
-            root_attrs = self.categories.pop("")
+            root_attrs = self.categories.pop("root")
             if root_attrs:
-                self.write_class_attr_docs(root_attrs, f)
-                f.write(sdk_funcs)
+                self.write_class_attr_docs(root_attrs, f, False, True)
                 self.write_class_attributes(root_attrs, f)
+                f.write(sdk_funcs)
             else:
                 f.write(sdk_funcs)
 
@@ -560,7 +580,7 @@ class BuildCategoryModelClasses:
     def build(self) -> None:
         """Builds the SDK."""
         for category, d in self.categories.items():
-            if isinstance(d, Trailmap) or category == "":
+            if isinstance(d, Trailmap) or category == "root":
                 continue
             self.write_category_file(category, d)
 
@@ -613,3 +633,6 @@ def sort_csv():
     df = pd.read_csv(REPO_ROOT / "sdk_core/trail_map.csv")
     df.sort_values(by=["trail"], inplace=True)
     df.to_csv(REPO_ROOT / "sdk_core/trail_map.csv", index=False)
+
+
+generate_sdk()

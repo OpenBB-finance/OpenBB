@@ -13,3 +13,6 @@ from .futures_sdk_model import FuturesRoot
 from .keys_sdk_model import KeysRoot
 from .portfolio_sdk_model import PortfolioRoot
 from .stocks_sdk_model import StocksRoot
+from .root_sdk_model import RootRoot
+from .qa_sdk_model import QaRoot
+from .ta_sdk_model import TaRoot

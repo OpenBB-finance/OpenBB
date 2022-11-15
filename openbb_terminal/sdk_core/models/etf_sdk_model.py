@@ -20,9 +20,9 @@ class EtfRoot(Category):
         `ln_view`: Display a selection of ETFs based on name filtered by total assets. [Source: Finance Database]\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
         `news`: Get news for a given term. [Source: NewsAPI]\n
-        `news_view`: Display news for a given term. [Source: NewsAPI]\n
+        `news_print`: Prints table showing news for a given term. [Source: NewsAPI]\n
         `overview`: Get overview data for selected etf\n
-        `overview_view`: Print etf overview information\n
+        `overview_print`: Print etf overview information\n
         `summary`: Return summary description of ETF. [Source: Yahoo Finance]\n
         `summary_view`: Display ETF description summary. [Source: Yahoo Finance]\n
         `symbols`: Gets all etf names and symbols\n
@@ -45,9 +45,9 @@ class EtfRoot(Category):
         self.ln_view = lib.etf_financedatabase_view.display_etf_by_name
         self.load = lib.stocks_helper.load
         self.news = lib.common_newsapi_model.get_news
-        self.news_view = lib.common_newsapi_view.display_news
+        self.news_print = lib.common_newsapi_view.display_news
         self.overview = lib.etf_stockanalysis_model.get_etf_overview
-        self.overview_view = lib.etf_stockanalysis_view.view_overview
+        self.overview_print = lib.etf_stockanalysis_view.view_overview
         self.summary = lib.etf_yfinance_model.get_etf_summary_description
         self.summary_view = lib.etf_yfinance_view.display_etf_description
         self.symbols = lib.etf_stockanalysis_model.get_all_names_symbols
