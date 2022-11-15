@@ -36,40 +36,41 @@ class StocksController(model.StocksRoot):
         """OpenBB SDK Stocks Behavioral Analysis Submodule
 
         Attributes:
-            `bullbear`: Gets bullbear sentiment for ticker [Source: stocktwits]\n
+            `bullbear`: Gets bullbear sentiment for ticker [Source: stocktwits].\n
             `bullbear_view`: Print bullbear sentiment based on last 30 messages on the board.\n
-            `getdd`: Gets due diligence posts from list of subreddits [Source: reddit]\n
-            `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain]\n
-            `headlines_view`: Sentiment analysis from FinBrain\n
-            `hist`: Get hour-level sentiment data for the chosen symbol\n
+            `getdd`: Gets due diligence posts from list of subreddits [Source: reddit].\n
+            `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].\n
+            `headlines_view`: Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]\n
+            `hist`: Get hour-level sentiment data for the chosen symbol.\n
             `hist_view`: Display historical sentiment data of a ticker,\n
-            `infer`: Load tweets from twitter API and analyzes using VADER\n
-            `infer_view`: Infer sentiment from past n tweets\n
-            `mentions`: Get interest over time from google api [Source: google]\n
-            `mentions_view`: Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]\n
-            `messages`: Get last messages for a given ticker [Source: stocktwits]\n
-            `messages_view`: Print up to 30 of the last messages on the board. [Source: Stocktwits]\n
-            `popular`: Get popular tickers from list of subreddits [Source: reddit]\n
-            `popular_view`: Print latest popular tickers. [Source: Reddit]\n
-            `queries`: Get related queries from google api [Source: google]\n
-            `redditsent`: Finds posts related to a specific search term in Reddit\n
-            `redditsent_view`: Determine Reddit sentiment about a search term\n
-            `regions`: Get interest by region from google api [Source: google]\n
-            `regions_view`: Plot bars of regions based on stock's interest. [Source: Google]\n
-            `rise`: Get top rising related queries with this stock's query [Source: google]\n
-            `rise_view`: Print top rising related queries with this stock's query. [Source: Google]\n
-            `sentiment`: Get sentiments from symbol\n
-            `sentiment_view`: Plot sentiments from symbol\n
-            `spac`: Get posts containing SPAC from top subreddits [Source: reddit]\n
-            `spacc`: Get top tickers from r/SPACs [Source: reddit]\n
-            `stalker`: Gets messages from given user [Source: stocktwits]\n
-            `text_sent`: Find the sentiment of a post and related comments\n
+            `infer`: Load tweets from twitter API and analyzes using VADER.\n
+            `infer_view`: Prints Inference sentiment from past n tweets.\n
+            `mentions`: Get interest over time from google api [Source: google].\n
+            `mentions_view`: Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].\n
+            `messages`: Get last messages for a given ticker [Source: stocktwits].\n
+            `messages_view`: Prints up to 30 of the last messages on the board. [Source: Stocktwits].\n
+            `popular`: Get popular tickers from list of subreddits [Source: reddit].\n
+            `popular_view`: Prints table showing latest popular tickers. [Source: Reddit].\n
+            `queries`: Get related queries from google api [Source: google].\n
+            `queries_view`: Prints table showing top related queries with this stock's query. [Source: Google].\n
+            `redditsent`: Finds posts related to a specific search term in Reddit.\n
+            `redditsent_view`: Plots Reddit sentiment about a search term. Prints table showing if display is True.\n
+            `regions`: Get interest by region from google api [Source: google].\n
+            `regions_view`: Plots bars of regions based on stock's interest. [Source: Google].\n
+            `rise`: Get top rising related queries with this stock's query [Source: google].\n
+            `rise_view`: Prints top rising related queries with this stock's query. [Source: Google].\n
+            `sentiment`: Get sentiments from symbol.\n
+            `sentiment_view`: Plots sentiments from symbol\n
+            `spac`: Get posts containing SPAC from top subreddits [Source: reddit].\n
+            `spacc`: Get top tickers from r/SPACs [Source: reddit].\n
+            `stalker`: Gets messages from given user [Source: stocktwits].\n
+            `text_sent`: Find the sentiment of a post and related comments.\n
             `trend`: Get sentiment data on the most talked about tickers\n
             `trend_view`: Display most talked about tickers within\n
-            `trending`: Get trending tickers from stocktwits [Source: stocktwits]\n
-            `watchlist`: Get reddit users watchlists [Source: reddit]\n
-            `watchlist_view`: Print other users watchlist. [Source: Reddit]\n
-            `wsb`: Get wsb posts [Source: reddit]\n
+            `trending`: Get trending tickers from stocktwits [Source: stocktwits].\n
+            `watchlist`: Get reddit users watchlists [Source: reddit].\n
+            `watchlist_view`: Prints other users watchlist. [Source: Reddit].\n
+            `wsb`: Get wsb posts [Source: reddit].\n
         """
 
         return model.StocksBehavioralAnalysis()
@@ -79,22 +80,22 @@ class StocksController(model.StocksRoot):
         """OpenBB SDK Stocks Comparison Analysis Submodule
 
         Attributes:
-            `balance`: Get balance data. [Source: Marketwatch]\n
+            `balance`: Get balance data. [Source: Marketwatch].\n
             `cashflow`: Get cashflow data. [Source: Marketwatch]\n
-            `finnhub_peers`: Get similar companies from Finhub\n
-            `finviz_peers`: Get similar companies from Finviz\n
+            `finnhub_peers`: Get similar companies from Finhub.\n
+            `finviz_peers`: Get similar companies from Finviz.\n
             `hcorr`: Get historical price correlation. [Source: Yahoo Finance]\n
             `hcorr_view`: Correlation heatmap based on historical price comparison\n
             `hist`: Get historical prices for all comparison stocks\n
             `hist_view`: Display historical stock prices. [Source: Yahoo Finance]\n
-            `income`: Get income data. [Source: Marketwatch]\n
-            `income_view`: Display income data. [Source: Marketwatch]\n
+            `income`: Get income data. [Source: Marketwatch].\n
+            `income_view`: Display income data. [Source: Marketwatch].\n
             `polygon_peers`: Get similar companies from Polygon\n
-            `scorr`: Get correlation sentiments across similar companies. [Source: FinBrain]\n
-            `scorr_view`: Plot correlation sentiments heatmap across similar companies. [Source: FinBrain]\n
-            `screener`: Screener Overview\n
-            `sentiment`: Gets Sentiment analysis from several symbols provided by FinBrain's API\n
-            `sentiment_view`: Display sentiment for all ticker. [Source: FinBrain]\n
+            `scorr`: Get correlation sentiments across similar companies. [Source: FinBrain].\n
+            `scorr_view`: Plot correlation sentiments heatmap across similar companies. [Source: FinBrain].\n
+            `screener`: Screener Overview.\n
+            `sentiment`: Gets Sentiment analysis from several symbols provided by FinBrain's API.\n
+            `sentiment_view`: Display sentiment for all ticker. [Source: FinBrain].\n
             `volume`: Get stock volume. [Source: Yahoo Finance]\n
             `volume_view`: Display stock volume. [Source: Yahoo Finance]\n
         """
@@ -156,7 +157,7 @@ class StocksController(model.StocksRoot):
 
         Attributes:
             `ctb`: Get cost to borrow of stocks [Source: Stocksera]\n
-            `ctb_view`: Plots the cost to borrow of a stock. [Source: Stocksera]\n
+            `ctb_view`: Plot the cost to borrow of a stock. [Source: Stocksera]\n
             `dpotc`: Get all FINRA data associated with a ticker\n
             `dpotc_view`: Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]\n
             `ftd`: Display fails-to-deliver data for a given ticker. [Source: SEC]\n
@@ -166,7 +167,7 @@ class StocksController(model.StocksRoot):
             `prom`: Get all FINRA ATS data, and parse most promising tickers based on linear regression\n
             `prom_view`: Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]\n
             `psi_q`: Plots the short interest of a stock. This corresponds to the\n
-            `psi_q_view`: Plots the short interest of a stock. This corresponds to the\n
+            `psi_q_view`: Plot the short interest of a stock. This corresponds to the\n
             `psi_sg`: Get price vs short interest volume. [Source: Stockgrid]\n
             `psi_sg_view`: Plot price vs short interest volume. [Source: Stockgrid]\n
             `shorted`: Get most shorted stock screener [Source: Yahoo Finance]\n

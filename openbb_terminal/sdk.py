@@ -70,7 +70,7 @@ class OpenBBSDK:
 
         Attributes:
             `news`: Get news for a given term and source. [Source: Feedparser]\n
-            `news_view`: Display news for a given term and source. [Source: Feedparser]\n
+            `news_view`: Plots news for a given term and source. [Source: Feedparser]\n
         """
 
         return ctrl.CommonController()
@@ -216,7 +216,7 @@ class OpenBBSDK:
             `ln_view`: Display a selection of ETFs based on name filtered by total assets. [Source: Finance Database]\n
             `load`: Load a symbol to perform analysis using the string above as a template.\n
             `news`: Get news for a given term. [Source: NewsAPI]\n
-            `news_view`: Display news for a given term. [Source: NewsAPI]\n
+            `news_view`: Prints table showing news for a given term. [Source: NewsAPI]\n
             `overview`: Get overview data for selected etf\n
             `overview_view`: Print etf overview information\n
             `summary`: Return summary description of ETF. [Source: Yahoo Finance]\n
@@ -374,29 +374,24 @@ class OpenBBSDK:
             `po`: Portfolio Optimization Module
 
         Attributes:
-            `calmar`: Get calmar ratio\n
-            `commonsense`: Get common sense ratio\n
+            `load`: Get PortfolioEngine object\n
+            `show`: Get portfolio transactions\n
+            `bench`: Load benchmark into portfolio\n
             `distr`: Display daily returns\n
             `distr_view`: Display daily returns\n
             `dret`: Get daily returns\n
             `dret_view`: Display daily returns\n
             `es`: Get portfolio expected shortfall\n
-            `gaintopain`: Get Pain-to-Gain ratio based on historical data\n
             `holdp`: Get holdings of assets (in percentage)\n
             `holdp_view`: Display holdings of assets (in percentage)\n
             `holdv`: Get holdings of assets (absolute value)\n
             `holdv_view`: Display holdings of assets (absolute value)\n
-            `information`: Get information ratio\n
-            `jensens`: Get jensen's alpha\n
-            `kelly`: Gets kelly criterion\n
-            `kurtosis`: Class method that retrieves kurtosis for portfolio and benchmark selected\n
             `maxdd`: Calculate the drawdown (MDD) of historical series.  Note that the calculation is done\n
             `maxdd_view`: Display maximum drawdown curve\n
             `mret`: Get monthly returns\n
             `mret_view`: Display monthly returns\n
             `om`: Get omega ratio\n
             `om_view`: Display omega ratio\n
-            `payoff`: Gets payoff ratio\n
             `perf`: Get portfolio performance vs the benchmark\n
             `rbeta`: Get rolling beta using portfolio and benchmark returns\n
             `rbeta_view`: Display rolling beta\n
@@ -406,7 +401,7 @@ class OpenBBSDK:
             `rsort_view`: Display rolling sortino\n
             `rvol`: Get rolling volatility\n
             `rvol_view`: Display rolling volatility\n
-            `summary`: Get summary portfolio and benchmark returns\n
+            `summary`: Get portfolio and benchmark returns summary\n
             `var`: Get portfolio VaR\n
             `yret`: Get yearly returns\n
             `yret_view`: Display yearly returns\n

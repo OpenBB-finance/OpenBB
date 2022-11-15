@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import os
 import logging
 import textwrap
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 from datetime import datetime, timedelta
 from requests import HTTPError
 
@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def check_series_id(series_id: str) -> Tuple[bool, Dict]:
+def check_series_id(series_id: str) -> Tuple[bool, dict]:
     """Checks if series ID exists in fred
 
     Parameters
@@ -35,9 +35,8 @@ def check_series_id(series_id: str) -> Tuple[bool, Dict]:
 
     Returns
     -------
-    bool:
-        Boolean if series ID exists
-    dict:
+    Tuple[bool, Dict]
+        Boolean if series ID exists,
         Dictionary of series information
     """
     url = f"https://api.stlouisfed.org/fred/series?series_id={series_id}&api_key={cfg.API_FRED_KEY}&file_type=json"
@@ -69,12 +68,14 @@ def check_series_id(series_id: str) -> Tuple[bool, Dict]:
 @check_api_key(["API_FRED_KEY"])
 def get_series_notes(search_query: str, limit: int = -1) -> pd.DataFrame:
     """Get series notes. [Source: FRED]
+
     Parameters
     ----------
     search_query : str
         Text query to search on fred series notes database
     limit : int
         Maximum number of series notes to display
+
     Returns
     -------
     pd.DataFrame
@@ -125,12 +126,14 @@ def get_series_notes(search_query: str, limit: int = -1) -> pd.DataFrame:
 @check_api_key(["API_FRED_KEY"])
 def get_series_ids(search_query: str, limit: int = -1) -> pd.DataFrame:
     """Get Series IDs. [Source: FRED]
+
     Parameters
     ----------
     search_query : str
         Text query to search on fred series notes database
     limit : int
         Maximum number of series IDs to output
+
     Returns
     -------
     pd.Dataframe
@@ -169,6 +172,7 @@ def get_series_data(
     series_id: str, start_date: str = None, end_date: str = None
 ) -> pd.DataFrame:
     """Get Series data. [Source: FRED]
+
     Parameters
     ----------
     series_id : str
@@ -206,6 +210,7 @@ def get_aggregated_series_data(
     series_ids: List[str], start_date: str = None, end_date: str = None
 ) -> pd.DataFrame:
     """Get Series data. [Source: FRED]
+
     Parameters
     ----------
     series_ids : List[str]
@@ -261,9 +266,8 @@ def get_yield_curve(
 
     Returns
     -------
-    pd.DataFrame:
-        Dataframe of yields and maturities
-    str
+    Tuple[pd.DataFrame, datetime]
+        Dataframe of yields and maturities,
         Date for which the yield curve is obtained
     """
     fredapi_client = Fred(cfg.API_FRED_KEY)

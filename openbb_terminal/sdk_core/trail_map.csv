@@ -48,8 +48,6 @@ common.ta.stoch,common_ta_momentum_model.stoch,common_ta_momentum_view.display_s
 common.ta.vwap,common_ta_overlap_model.vwap,common_ta_overlap_view.view_vwap
 common.ta.wma,common_ta_overlap_model.wma,
 common.ta.zlma,common_ta_overlap_model.zlma,
-crypto.candles,crypto_helpers.plot_candles,
-crypto.chart,crypto_helpers.plot_chart,
 crypto.dd.active,crypto_dd_glassnode_model.get_active_addresses,crypto_dd_glassnode_view.display_active_addresses
 crypto.dd.balance,crypto_dd_binance_model.get_balance,crypto_dd_binance_view.display_balance
 crypto.dd.basic_info,crypto_dd_coinpaprika_model.basic_coin_info,
@@ -127,8 +125,6 @@ crypto.disc.top_dexes,crypto_disc_dappradar_model.get_top_dexes,crypto_disc_dapp
 crypto.disc.top_games,crypto_disc_dappradar_model.get_top_games,crypto_disc_dappradar_view.display_top_games
 crypto.disc.top_nfts,crypto_disc_dappradar_model.get_top_nfts,crypto_disc_dappradar_view.display_top_nfts
 crypto.disc.trending,crypto_disc_pycoingecko_model.get_trending_coins,crypto_disc_pycoingecko_view.display_trending
-crypto.find,crypto_helpers.find,
-crypto.load,crypto_helpers.load,
 crypto.nft.collections,crypto_nft_pricefloor_model.get_collections,crypto_nft_pricefloor_view.display_collections
 crypto.nft.fp,crypto_nft_pricefloor_model.get_floor_price,crypto_nft_pricefloor_view.display_floor_price
 crypto.nft.stats,crypto_nft_opensea_model.get_collection_stats,crypto_nft_opensea_view.display_collection_stats
@@ -189,6 +185,10 @@ crypto.ov.wf,crypto_ov_withdrawalfees_model.get_overall_withdrawal_fees,crypto_o
 crypto.ov.wfpe,crypto_ov_withdrawalfees_model.get_crypto_withdrawal_fees,crypto_ov_withdrawalfees_view.display_crypto_withdrawal_fees
 crypto.tools.apy,crypto_tools_model.calculate_apy,crypto_tools_view.display_apy
 crypto.tools.il,crypto_tools_model.calculate_il,crypto_tools_view.display_il
+crypto.candles,crypto_helpers.plot_candles,
+crypto.chart,crypto_helpers.plot_chart,
+crypto.find,crypto_helpers.find,
+crypto.load,crypto_helpers.load,
 econometrics.bgod,econometrics_regression_model.get_bgod,econometrics_regression_view.display_bgod
 econometrics.bols,econometrics_regression_model.get_bols,
 econometrics.bpag,econometrics_regression_model.get_bpag,econometrics_regression_view.display_bpag
@@ -348,18 +348,14 @@ keys.tokenterminal,keys_model.set_tokenterminal_key,
 keys.tradier,keys_model.set_tradier_key,
 keys.twitter,keys_model.set_twitter_key,
 keys.walert,keys_model.set_walert_key,
-portfolio.calmar,portfolio_model.get_calmar_ratio,
-portfolio.commonsense,portfolio_model.get_common_sense_ratio,
+portfolio.load,portfolio_model.generate_portfolio,
+portfolio.show,portfolio_model.get_transactions,
+portfolio.bench,portfolio_model.set_benchmark,
 portfolio.distr,portfolio_model.get_distribution_returns,portfolio_view.display_distribution_returns
 portfolio.dret,portfolio_model.get_daily_returns,portfolio_view.display_daily_returns
 portfolio.es,portfolio_model.get_es,
-portfolio.gaintopain,portfolio_model.get_gaintopain_ratio,
 portfolio.holdp,portfolio_model.get_holdings_percentage,portfolio_view.display_holdings_percentage
 portfolio.holdv,portfolio_model.get_holdings_value,portfolio_view.display_holdings_value
-portfolio.information,portfolio_model.get_information_ratio,
-portfolio.jensens,portfolio_model.get_jensens_alpha,
-portfolio.kelly,portfolio_model.get_kelly_criterion,
-portfolio.kurtosis,portfolio_model.get_kurtosis,
 portfolio.maxdd,portfolio_model.get_maximum_drawdown,portfolio_view.display_maximum_drawdown
 portfolio.metric.calmar,portfolio_model.get_calmar_ratio,
 portfolio.metric.commonsense,portfolio_model.get_common_sense_ratio,
@@ -380,7 +376,6 @@ portfolio.metric.trackerr,portfolio_model.get_tracking_error,
 portfolio.metric.volatility,portfolio_model.get_volatility,
 portfolio.mret,portfolio_model.get_monthly_returns,portfolio_view.display_monthly_returns
 portfolio.om,portfolio_model.get_omega,portfolio_view.display_omega
-portfolio.payoff,portfolio_model.get_payoff_ratio,
 portfolio.perf,portfolio_model.get_performance_vs_benchmark,
 portfolio.po.blacklitterman,portfolio_optimization_optimizer_model.get_black_litterman_portfolio,portfolio_optimization_optimizer_view.display_black_litterman
 portfolio.po.ef,portfolio_optimization_optimizer_model.get_ef,portfolio_optimization_optimizer_view.display_ef
@@ -418,7 +413,7 @@ stocks.ba.infer,stocks_ba_twitter_model.load_analyze_tweets,stocks_ba_twitter_vi
 stocks.ba.mentions,stocks_ba_google_model.get_mentions,stocks_ba_google_view.display_mentions
 stocks.ba.messages,stocks_ba_stocktwits_model.get_messages,stocks_ba_stocktwits_view.display_messages
 stocks.ba.popular,stocks_ba_reddit_model.get_popular_tickers,stocks_ba_reddit_view.display_popular_tickers
-stocks.ba.queries,stocks_ba_google_model.get_queries,
+stocks.ba.queries,stocks_ba_google_model.get_queries,stocks_ba_google_view.display_queries
 stocks.ba.redditsent,stocks_ba_reddit_model.get_posts_about,stocks_ba_reddit_view.display_redditsent
 stocks.ba.regions,stocks_ba_google_model.get_regions,stocks_ba_google_view.display_regions
 stocks.ba.rise,stocks_ba_google_model.get_rise,stocks_ba_google_view.display_rise

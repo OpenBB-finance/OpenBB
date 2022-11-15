@@ -14,8 +14,6 @@ class EconometricsRoot(Category):
         `bpag`: Calculate test statistics for heteroscedasticity\n
         `bpag_view`: Show Breusch-Pagan heteroscedasticity test\n
         `clean`: Clean up NaNs from the dataset\n
-        `coint`: Estimates long-run and short-run cointegration relationship for series y and x and apply\n
-        `coint_view`: Estimates long-run and short-run cointegration relationship for series y and x and apply\n
         `comparison`: Compare regression results between Panel Data regressions.\n
         `dwat`: Calculate test statistics for Durbing Watson autocorrelation\n
         `dwat_view`: Show Durbin-Watson autocorrelation tests\n
@@ -46,10 +44,6 @@ class EconometricsRoot(Category):
         self.bpag = lib.econometrics_regression_model.get_bpag
         self.bpag_view = lib.econometrics_regression_view.display_bpag
         self.clean = lib.econometrics_model.clean
-        self.coint = (
-            lib.econometrics_model.get_engle_granger_two_step_cointegration_test
-        )
-        self.coint_view = lib.econometrics_view.display_cointegration_test
         self.comparison = lib.econometrics_regression_model.get_comparison
         self.dwat = lib.econometrics_regression_model.get_dwat
         self.dwat_view = lib.econometrics_regression_view.display_dwat

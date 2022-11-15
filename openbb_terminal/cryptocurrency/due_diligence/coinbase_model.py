@@ -111,6 +111,7 @@ def get_trades(
         Last `limit` of trades. Maximum is 1000.
     side: str
         You can chose either sell or buy side. If side is not set then all trades will be displayed.
+
     Returns
     -------
     pd.DataFrame

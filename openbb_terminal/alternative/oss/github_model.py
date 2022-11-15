@@ -27,6 +27,7 @@ def get_github_data(url: str, **kwargs) -> Dict[str, Any]:
         github api endpoint
     params: dict
         params to pass to api endpoint
+
     Returns
     -------
     Dict[str, Any]
@@ -60,11 +61,12 @@ def search_repos(
     Parameters
     ----------
     sortby : str
-            Sort repos by {stars, forks}
+        Sort repos by {stars, forks}
     categories : str
-            Check for repo categories. If more than one separate with a comma: e.g., finance,investment. Default: None
+        Check for repo categories. If more than one separate with a comma: e.g., finance,investment. Default: None
     page : int
-            Page number to get repos
+        Page number to get repos
+
     Returns
     -------
     pd.DataFrame
@@ -89,7 +91,7 @@ def get_stars_history(repo: str) -> pd.DataFrame:
     Parameters
     ----------
     repo : str
-            Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
+        Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
 
     Returns
     -------
@@ -136,11 +138,11 @@ def get_top_repos(sortby: str, limit: int = 50, categories: str = "") -> pd.Data
     Parameters
     ----------
     sortby : str
-            Sort repos by {stars, forks}
+        Sort repos by {stars, forks}
     categories : str
-            Check for repo categories. If more than one separate with a comma: e.g., finance,investment. Default: None
+        Check for repo categories. If more than one separate with a comma: e.g., finance,investment. Default: None
     limit : int
-            Number of repos to search for
+        Number of repos to search for
     Returns
     -------
     pd.DataFrame
@@ -179,7 +181,7 @@ def get_repo_summary(repo: str) -> pd.DataFrame:
     Parameters
     ----------
     repo : str
-            Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
+        Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
 
     Returns
     -------

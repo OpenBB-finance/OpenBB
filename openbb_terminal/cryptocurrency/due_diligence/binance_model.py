@@ -121,10 +121,9 @@ def show_available_pairs_for_given_symbol(
 
     Returns
     -------
-    str:
-        Coin symbol
-    list:
-        Quoted assets for given symbol: ["BTC", "USDT" , "BUSD"]
+    Tuple[Union[str, None], list]
+        Tuple of symbol,
+        list of quoted assets for given symbol: ["BTC", "USDT" , "BUSD"]
     """
 
     symbol_upper = symbol.upper()
@@ -146,7 +145,6 @@ def get_order_book(
 
     Parameters
     ----------
-
     from_symbol: str
         Cryptocurrency symbol
     limit: int

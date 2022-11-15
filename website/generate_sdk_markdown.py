@@ -95,13 +95,17 @@ def generate_markdown_section(meta):
     markdown += f"```python title='{meta['path']}'\n{meta['func_def']}\n```\n"
     markdown += f"[Source Code]({meta['source_code_url']})\n\n"
     markdown += f"Description: {meta['description']}\n\n"
+
     markdown += "## Parameters\n\n"
-    markdown += "| Name | Type | Description | Default | Optional |\n"
-    markdown += "| ---- | ---- | ----------- | ------- | -------- |\n"
-    for param in meta["params"]:
-        description = param["doc"].replace("\n", "<br/>")
-        markdown += f"| {param['name']} | {param['type']} | {description} | {param['default']} | {param['optional']} |\n"
-    markdown += "\n"
+    if meta["params"]:
+        markdown += "| Name | Type | Description | Default | Optional |\n"
+        markdown += "| ---- | ---- | ----------- | ------- | -------- |\n"
+        for param in meta["params"]:
+            description = param["doc"].replace("\n", "<br/>")
+            markdown += f"| {param['name']} | {param['type']} | {description} | {param['default']} | {param['optional']} |\n"  # noqa: E501
+        markdown += "\n"
+    else:
+        markdown += "This function does not take any parameters.\n\n"
 
     markdown += "## Returns\n\n"
     if meta["returns"]:
@@ -133,6 +137,9 @@ def main():
         model_meta = get_function_meta(trailmap, "model") if trailmap.model else None
         view_meta = get_function_meta(trailmap, "view") if trailmap.view else None
         markdown = generate_markdown(model_meta, view_meta)
+
+        if trailmap.class_attr == "index":
+            trailmap.class_attr = "index_cmd"
 
         filepath = (
             "functions/"

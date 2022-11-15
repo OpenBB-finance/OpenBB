@@ -108,6 +108,11 @@ def get_covid_ov(
         Country to get data for
     limit: int
         Number of raw data to show
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of historical cases and deaths
     """
     cases = get_global_cases(country)
     deaths = get_global_deaths(country)
@@ -133,6 +138,11 @@ def get_covid_stat(
         Statistic to get.  Either "cases", "deaths" or "rates"
     limit: int
         Number of raw data to show
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of data for given country and statistic
     """
     if stat == "cases":
         data = get_global_cases(country)

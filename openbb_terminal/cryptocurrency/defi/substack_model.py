@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import concurrent.futures
 import logging
 import textwrap
+from typing import List, Tuple
 
 import pandas as pd
 import requests
@@ -17,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def scrape_substack(url: str) -> list:
+def scrape_substack(url: str) -> List[Tuple[str, str, str]]:
     """Helper method to scrape newsletters from substack.
     [Source: substack.com]
 
@@ -28,8 +29,11 @@ def scrape_substack(url: str) -> list:
 
     Returns
     -------
-    list
-        list of news from given newsletter
+    List[Tuple[str, str, str]]
+        List of tuples containing:
+            - title of newsletter
+            - url to newsletter
+            - str datetime of newsletter [Format: "%Y-%m-%d %H:%M:%S"]
     """
 
     req = requests.get(url)

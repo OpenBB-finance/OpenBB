@@ -39,7 +39,7 @@ def display_cci(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display CCI Indicator
+    """Plots CCI Indicator
 
     Parameters
     ----------
@@ -132,7 +132,7 @@ def display_macd(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot MACD signal
+    """Plots MACD signal
 
     Parameters
     ----------
@@ -225,7 +225,7 @@ def display_rsi(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display RSI Indicator
+    """Plots RSI Indicator
 
     Parameters
     ----------
@@ -313,7 +313,7 @@ def display_stoch(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Plot stochastic oscillator signal
+    """Plots stochastic oscillator signal
 
     Parameters
     ----------
@@ -410,7 +410,7 @@ def display_fisher(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display Fisher Indicator
+    """Plots Fisher Indicator
 
     Parameters
     ----------
@@ -503,7 +503,7 @@ def display_cg(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display center of gravity Indicator
+    """Plots center of gravity Indicator
 
     Parameters
     ----------
@@ -574,7 +574,7 @@ def display_clenow_momentum(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display clenow momentum
+    """Prints table and plots clenow momentum
 
     Parameters
     ----------
@@ -642,7 +642,7 @@ def display_demark(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display demark squential indicator
+    """Plots demark squential indicator
 
     Parameters
     ----------

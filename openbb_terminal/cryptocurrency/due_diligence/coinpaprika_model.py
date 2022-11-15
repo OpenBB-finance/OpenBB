@@ -54,6 +54,7 @@ def get_coin_twitter_timeline(
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1twitter/get).
     ascend: bool
         Flag to sort data descending
+
     Returns
     -------
     pd.DataFrame
@@ -118,6 +119,7 @@ def get_coin_events_by_id(
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1events/get).
     ascend: bool
         Flag to sort data ascending
+
     Returns
     -------
     pd.DataFrame
@@ -394,7 +396,7 @@ def validate_coin(symbol: str, coins_dct: dict) -> Tuple[Optional[Any], Optional
 
     Returns
     -------
-    Tuple[str,str]
+    Tuple[Optional[Any], Optional[Any]]
         coin id, coin symbol
     """
 

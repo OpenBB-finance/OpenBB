@@ -172,8 +172,8 @@ def _get_coins_info_helper(symbols: str = "USD") -> pd.DataFrame:
         id, name, symbol, rank, circulating_supply, total_supply, max_supply, beta_value, first_data_at,
         last_updated, price, volume_24h, volume_24h_change_24h, market_cap, market_cap_change_24h,
         percent_change_15m, percent_change_30m, percent_change_1h, percent_change_6h, percent_change_12h,
-       percent_change_24h, percent_change_7d, percent_change_30d, percent_change_1y,
-       ath_price, ath_date, percent_from_price_ath
+        percent_change_24h, percent_change_7d, percent_change_30d, percent_change_1y,
+        ath_price, ath_date, percent_from_price_ath
     """
 
     session = PaprikaSession()
@@ -432,7 +432,7 @@ def get_contract_platform(
     Returns
     -------
     pd.DataFrame
-         id, type, active
+        id, type, active
     """
 
     session = PaprikaSession()

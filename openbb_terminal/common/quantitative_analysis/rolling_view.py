@@ -32,7 +32,7 @@ def display_mean_std(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """View mean std deviation
+    """Plots mean std deviation
 
     Parameters
     ----------
@@ -141,7 +141,7 @@ def display_spread(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """View rolling spread
+    """Plots rolling spread
 
     Parameters
     ----------
@@ -252,7 +252,7 @@ def display_quantile(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """View rolling quantile
+    """Plots rolling quantile
 
     Parameters
     ----------
@@ -347,7 +347,7 @@ def display_skew(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """View rolling skew
+    """Plots rolling skew
 
     Parameters
     ----------
@@ -431,7 +431,7 @@ def display_kurtosis(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """View rolling kurtosis
+    """Plots rolling kurtosis
 
     Parameters
     ----------

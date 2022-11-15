@@ -1,13 +1,13 @@
 """Ccxt model"""
 __docformat__ = "numpy"
 
-from typing import Any, Dict
+from typing import Any, Dict, List
 import ccxt
 import pandas as pd
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_column_names
 
 
-def get_exchanges():
+def get_exchanges() -> List[str]:
     """Helper method to get all the exchanges supported by ccxt
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 
@@ -22,7 +22,7 @@ def get_exchanges():
     return ccxt.exchanges
 
 
-def get_binance_currencies():
+def get_binance_currencies() -> List[str]:
     """Helper method to get all the currenices supported by ccxt
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 

@@ -236,7 +236,7 @@ def get_fundamental_metrics(
 
     Returns
     -------
-    pandas.Series:
+    pd.Series:
         Project, Metric value
     """
     metric_values = {}

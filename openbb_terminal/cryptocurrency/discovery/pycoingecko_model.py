@@ -206,6 +206,7 @@ def get_gainers_or_losers(
         One from {14d,1h,1y,200d,24h,30d,7d}
     typ: str
         Either "gainers" or "losers"
+
     Returns
     -------
     pd.DataFrame

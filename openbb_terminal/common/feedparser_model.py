@@ -26,7 +26,7 @@ def get_news(
 
     Returns
     -------
-    articles : dict
+    articles: pd.DataFrame
         term to search on the news articles
     """
     # Necessary for installer so that it can locate the correct certificates for

@@ -22,7 +22,7 @@ def get_news(
     start_date: str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
     show_newest: bool = True,
     sources: str = "",
-) -> List[Tuple[Any, Any]]:
+) -> List[Tuple[pd.DataFrame, Any]]:
     """Get news for a given term. [Source: NewsAPI]
 
     Parameters
@@ -38,7 +38,7 @@ def get_news(
 
     Returns
     -------
-    tables : List[Tuple]
+    tables : List[Tuple[pd.DataFrame, Any]]
         List of tuples containing news df in first index and dict containing title of news df
     """
     link = (

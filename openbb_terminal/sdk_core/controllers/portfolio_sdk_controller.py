@@ -11,29 +11,24 @@ class PortfolioController(model.PortfolioRoot):
         `po`: Portfolio Optimization Module
 
     Attributes:
-        `calmar`: Get calmar ratio\n
-        `commonsense`: Get common sense ratio\n
+        `load`: Get PortfolioEngine object\n
+        `show`: Get portfolio transactions\n
+        `bench`: Load benchmark into portfolio\n
         `distr`: Display daily returns\n
         `distr_view`: Display daily returns\n
         `dret`: Get daily returns\n
         `dret_view`: Display daily returns\n
         `es`: Get portfolio expected shortfall\n
-        `gaintopain`: Get Pain-to-Gain ratio based on historical data\n
         `holdp`: Get holdings of assets (in percentage)\n
         `holdp_view`: Display holdings of assets (in percentage)\n
         `holdv`: Get holdings of assets (absolute value)\n
         `holdv_view`: Display holdings of assets (absolute value)\n
-        `information`: Get information ratio\n
-        `jensens`: Get jensen's alpha\n
-        `kelly`: Gets kelly criterion\n
-        `kurtosis`: Class method that retrieves kurtosis for portfolio and benchmark selected\n
         `maxdd`: Calculate the drawdown (MDD) of historical series.  Note that the calculation is done\n
         `maxdd_view`: Display maximum drawdown curve\n
         `mret`: Get monthly returns\n
         `mret_view`: Display monthly returns\n
         `om`: Get omega ratio\n
         `om_view`: Display omega ratio\n
-        `payoff`: Gets payoff ratio\n
         `perf`: Get portfolio performance vs the benchmark\n
         `rbeta`: Get rolling beta using portfolio and benchmark returns\n
         `rbeta_view`: Display rolling beta\n
@@ -43,7 +38,7 @@ class PortfolioController(model.PortfolioRoot):
         `rsort_view`: Display rolling sortino\n
         `rvol`: Get rolling volatility\n
         `rvol_view`: Display rolling volatility\n
-        `summary`: Get summary portfolio and benchmark returns\n
+        `summary`: Get portfolio and benchmark returns summary\n
         `var`: Get portfolio VaR\n
         `yret`: Get yearly returns\n
         `yret_view`: Display yearly returns\n
@@ -60,17 +55,17 @@ class PortfolioController(model.PortfolioRoot):
             `information`: Get information ratio\n
             `jensens`: Get jensen's alpha\n
             `kelly`: Gets kelly criterion\n
-            `kurtosis`: Class method that retrieves kurtosis for portfolio and benchmark selected\n
-            `maxdrawdown`: Class method that retrieves maximum drawdown ratio for portfolio and benchmark selected\n
+            `kurtosis`: Method that retrieves kurtosis for portfolio and benchmark selected\n
+            `maxdrawdown`: Method that retrieves maximum drawdown ratio for portfolio and benchmark selected\n
             `payoff`: Gets payoff ratio\n
             `profitfactor`: Gets profit factor\n
-            `rsquare`: Class method that retrieves R2 Score for portfolio and benchmark selected\n
-            `sharpe`: Class method that retrieves sharpe ratio for portfolio and benchmark selected\n
-            `skew`: Class method that retrieves skewness for portfolio and benchmark selected\n
-            `sortino`: Class method that retrieves sortino ratio for portfolio and benchmark selected\n
+            `rsquare`: Method that retrieves R2 Score for portfolio and benchmark selected\n
+            `sharpe`: Method that retrieves sharpe ratio for portfolio and benchmark selected\n
+            `skew`: Method that retrieves skewness for portfolio and benchmark selected\n
+            `sortino`: Method that retrieves sortino ratio for portfolio and benchmark selected\n
             `tail`: Get tail ratio\n
             `trackerr`: Get tracking error\n
-            `volatility`: Class method that retrieves volatility for portfolio and benchmark selected\n
+            `volatility`: Method that retrieves volatility for portfolio and benchmark selected\n
         """
 
         return model.PortfolioMetric()

@@ -29,7 +29,7 @@ def plot_covid_ov(
     country: str,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Plot historical cases and deaths by country.
+    """Plots historical cases and deaths by country.
 
     Parameters
     ----------
@@ -80,7 +80,7 @@ def plot_covid_stat(
     stat: str = "cases",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Plot historical stat by country.
+    """Plots historical stat by country.
 
     Parameters
     ----------
@@ -134,7 +134,7 @@ def display_covid_ov(
     export: str = "",
     plot: bool = True,
 ) -> None:
-    """Show historical cases and deaths by country.
+    """Prints table showing historical cases and deaths by country.
 
     Parameters
     ----------
@@ -174,7 +174,7 @@ def display_covid_stat(
     export: str = "",
     plot: bool = True,
 ) -> None:
-    """Show historical cases and deaths by country.
+    """Prints table showing historical cases and deaths by country.
 
     Parameters
     ----------
@@ -215,7 +215,7 @@ def display_case_slopes(
     ascend: bool = False,
     export: str = "",
 ) -> None:
-    """Show countries with the highest case slopes.
+    """Prints table showing countries with the highest case slopes.
 
     Parameters
     ----------

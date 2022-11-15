@@ -6,7 +6,7 @@ __docformat__ = "numpy"
 
 import logging
 import re
-from typing import Any, List
+from typing import List, Union
 
 import numpy as np
 import pandas as pd
@@ -99,7 +99,7 @@ COINS_COLUMNS = [
 
 
 @log_start_end(log=logger)
-def get_holdings_overview(endpoint: str = "bitcoin") -> List[Any]:
+def get_holdings_overview(endpoint: str = "bitcoin") -> List[Union[str, pd.DataFrame]]:
     """Returns public companies that holds ethereum or bitcoin [Source: CoinGecko]
 
     Parameters
@@ -109,7 +109,7 @@ def get_holdings_overview(endpoint: str = "bitcoin") -> List[Any]:
 
     Returns
     -------
-    List:
+    List[Union[str, pd.DataFrame]]:
         - str:              Overall statistics
         - pd.DataFrame: Companies holding crypto
     """
@@ -160,7 +160,7 @@ def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame
     Returns
     -------
     pd.DataFrame
-       Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h,Coins, Url
+        Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h,Coins, Url
     """
     if sort_filter in SORT_VALUES:
         client = CoinGeckoAPI()
@@ -296,7 +296,7 @@ def get_finance_products(sortby: str = "Name", ascend: bool = True) -> pd.DataFr
     Returns
     -------
     pd.DataFrame
-       Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate
+        Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate
     """
 
     client = CoinGeckoAPI()
@@ -319,14 +319,17 @@ def get_finance_products(sortby: str = "Name", ascend: bool = True) -> pd.DataFr
 def get_indexes(sortby: str = "Name", ascend: bool = True) -> pd.DataFrame:
     """Get list of crypto indexes from CoinGecko API [Source: CoinGecko]
 
+    Parameters
+    ----------
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data ascending
+
     Returns
     -------
     pd.DataFrame
         Name, Id, Market, Last, MultiAsset
-    sortby: str
-        Key by which to sort data
-    ascend: bool
-        Flag to sort data descending
     """
 
     client = CoinGeckoAPI()

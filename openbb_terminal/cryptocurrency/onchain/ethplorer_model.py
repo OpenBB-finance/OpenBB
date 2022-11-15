@@ -139,8 +139,8 @@ def make_request(
 
     Returns
     -------
-    dict
-    dictionary with response data
+    Optional[dict]:
+        dictionary with response data
     """
 
     base_url = "https://api.ethplorer.io/"
@@ -183,8 +183,8 @@ def get_token_decimals(address: str) -> Optional[int]:
 
     Returns
     -------
-    pd.DataFrame:
-        DataFrame with list of tokens and their balances.
+    Optional[int]:
+        Number of decimals for given token.
     """
     response = make_request("getTokenInfo", address)
     if response and "decimals" in response:

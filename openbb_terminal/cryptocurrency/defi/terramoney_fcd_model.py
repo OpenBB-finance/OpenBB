@@ -48,6 +48,7 @@ def _make_request(endpoint: str) -> dict:
     ----------
     endpoint: str
         endpoint url
+
     Returns
     -------
     dict:
@@ -266,6 +267,7 @@ def get_account_growth(cumulative: bool = True) -> pd.DataFrame:
     ----------
     cumulative: bool
         distinguish between periodical and cumulative account growth data
+
     Returns
     -------
     pd.DataFrame
