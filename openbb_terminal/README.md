@@ -6,7 +6,6 @@
     <ol>
       <li><a href="#anaconda--python">Anaconda & Python Installation</a></li>
       <li><a href="#docker-installation">Docker Installation</a></li>
-      <li><a href="#local-installation-of-gst-on-raspberry-pi">Raspberry-Pi-Installation - Portable GST</a></li>
       <li><a href="#api-keys">API Keys</a></li>
     </ol>
 </details>
