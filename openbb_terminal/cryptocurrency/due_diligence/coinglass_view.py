@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
 def display_funding_rate(symbol: str, export: str = "") -> None:
-    """Displays funding rate by exchange for a certain cryptocurrency
+    """Plots funding rate by exchange for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/]
 
     Parameters
@@ -56,7 +56,7 @@ def display_funding_rate(symbol: str, export: str = "") -> None:
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
 def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> None:
-    """Displays open interest by exchange for a certain cryptocurrency
+    """Plots open interest by exchange for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/]
 
     Parameters
@@ -90,7 +90,7 @@ def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> N
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
 def display_liquidations(symbol: str, export: str = "") -> None:
-    """Displays liquidation per day data for a certain cryptocurrency
+    """Plots liquidation per day data for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/#liquidation-chart]
 
     Parameters

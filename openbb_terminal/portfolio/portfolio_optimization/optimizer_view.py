@@ -743,7 +743,7 @@ def display_property_weighting(
     alpha=0.05,
     value: float = 1,
     table: bool = False,
-) -> Dict:
+) -> Dict[str, float]:
     """
     Builds a portfolio weighted by selected property
 

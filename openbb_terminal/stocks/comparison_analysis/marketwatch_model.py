@@ -23,7 +23,7 @@ def get_financial_comparisons(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
 ) -> pd.DataFrame:
-    """Get dataframe of income data from marketwatch
+    """Get dataframe of income data from marketwatch.
 
     Parameters
     ----------
@@ -40,7 +40,7 @@ def get_financial_comparisons(
     Returns
     -------
     pd.DataFrame
-        Dataframe of income statements
+        Dataframe of financial statements
 
     Raises
     ------
@@ -75,8 +75,8 @@ def get_income_comparison(
     similar: List[str],
     timeframe: str = str(datetime.today().year - 1),
     quarter: bool = False,
-):
-    """Get income data. [Source: Marketwatch]
+) -> pd.DataFrame:
+    """Get income data. [Source: Marketwatch].
 
     Parameters
     ----------
@@ -90,6 +90,11 @@ def get_income_comparison(
         Whether to use quarterly statements, by default False
     export : str, optional
         Format to export data
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of income statements
     """
     df_financials_compared = get_financial_comparisons(
         similar, "income", timeframe, quarter
@@ -103,8 +108,8 @@ def get_balance_comparison(
     similar: List[str],
     timeframe: str = str(datetime.today().year - 1),
     quarter: bool = False,
-):
-    """Get balance data. [Source: Marketwatch]
+) -> pd.DataFrame:
+    """Get balance data. [Source: Marketwatch].
 
     Parameters
     ----------
@@ -118,6 +123,11 @@ def get_balance_comparison(
         Whether to use quarterly statements, by default False
     export : str, optional
         Format to export data
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of balance comparisons
     """
     df_financials_compared = get_financial_comparisons(
         similar, "balance", timeframe, quarter
@@ -131,7 +141,7 @@ def get_cashflow_comparison(
     similar: List[str],
     timeframe: str = str(datetime.today().year - 1),
     quarter: bool = False,
-):
+) -> pd.DataFrame:
     """Get cashflow data. [Source: Marketwatch]
 
     Parameters
@@ -146,6 +156,11 @@ def get_cashflow_comparison(
         Whether to use quarterly statements, by default False
     export : str, optional
         Format to export data
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of cashflow comparisons
     """
     df_financials_compared = get_financial_comparisons(
         similar, "cashflow", timeframe, quarter
@@ -158,7 +173,7 @@ def get_cashflow_comparison(
 def prepare_df_financials(
     ticker: str, statement: str, quarter: bool = False
 ) -> pd.DataFrame:
-    """Builds a DataFrame with financial statements for a given company
+    """Builds a DataFrame with financial statements for a given company.
 
     Parameters
     ----------
@@ -279,9 +294,8 @@ def prepare_comparison_financials(
 
     Returns
     -------
-    List[str]
-        List of index headers
-    Dict[str, pd.DataFrame]
+    Tuple[List[str], Dict[str, pd.DataFrame]]
+        List of index headers,
         A dictionary of DataFrame with financial info from list of similar tickers
     """
 
@@ -343,6 +357,7 @@ def combine_similar_financials(
         Column label, which is a timeframe
     quarter: bool
         False for yearly data, True for quarterly
+
     Returns
     -------
     pd.DataFrame

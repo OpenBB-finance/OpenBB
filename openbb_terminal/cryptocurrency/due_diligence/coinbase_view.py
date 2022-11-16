@@ -25,7 +25,7 @@ def display_order_book(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Displays a list of available currency pairs for trading. [Source: Coinbase]
+    """Plots a list of available currency pairs for trading. [Source: Coinbase]
 
     Parameters
     ----------
@@ -51,14 +51,14 @@ def display_order_book(
 def display_trades(
     symbol: str, limit: int = 20, side: Optional[str] = None, export: str = ""
 ) -> None:
-    """Display last N trades for chosen trading pair. [Source: Coinbase]
+    """Prints table showing last N trades for chosen trading pair. [Source: Coinbase]
 
     Parameters
     ----------
     symbol: str
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
     limit: int
-        Last <limit> of trades. Maximum is 1000.
+        Last `limit` of trades. Maximum is 1000.
     side: Optional[str]
         You can chose either sell or buy side. If side is not set then all trades will be displayed.
     export : str
@@ -74,7 +74,7 @@ def display_trades(
 
 @log_start_end(log=logger)
 def display_candles(symbol: str, interval: str = "24h", export: str = "") -> None:
-    """Get candles for chosen trading pair and time interval. [Source: Coinbase]
+    """Prints table showing candles for chosen trading pair and time interval. [Source: Coinbase]
 
     Parameters
     ----------
@@ -97,7 +97,7 @@ def display_candles(symbol: str, interval: str = "24h", export: str = "") -> Non
 
 @log_start_end(log=logger)
 def display_stats(symbol: str, export: str = "") -> None:
-    """Get 24 hr stats for the product. Volume is in base currency units.
+    """Prints table showing 24 hr stats for the product. Volume is in base currency units.
     Open, high and low are in quote currency units.  [Source: Coinbase]
 
     Parameters

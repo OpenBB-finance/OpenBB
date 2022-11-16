@@ -29,7 +29,7 @@ def get_short_interest(symbol: str, nyse: bool = False) -> pd.DataFrame:
         data from NYSE if true, otherwise NASDAQ
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         short interest volume data
     """

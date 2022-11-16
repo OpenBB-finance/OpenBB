@@ -34,7 +34,7 @@ def show_plot(
         External axes to plot on
 
     Returns
-    ----------
+    -------
     Plots the data.
     """
     if external_axes is None:
@@ -47,6 +47,8 @@ def show_plot(
     ax_1_coloring = 0
     ax_2_coloring = -1
 
+    dataset_yaxis_1 = dataset_yaxis_1.dropna()
+
     for column in dataset_yaxis_1:
         ax1.plot(
             dataset_yaxis_1[column],
@@ -55,10 +57,21 @@ def show_plot(
         )
         ax_1_coloring += 1
 
+    ax1.legend(
+        [fill(column, 45) for column in dataset_yaxis_1.columns],
+        bbox_to_anchor=(0, 0.40, 1, -0.52),
+        loc="upper right",
+        mode="expand",
+        borderaxespad=0,
+        prop={"size": 9},
+    )
+
     theme.style_primary_axis(ax1)
 
     if not dataset_yaxis_2.empty:
         ax2 = ax1.twinx()
+
+        dataset_yaxis_2 = dataset_yaxis_2.dropna()
 
         for column in dataset_yaxis_2:
             ax2.plot(
@@ -78,15 +91,6 @@ def show_plot(
             borderaxespad=0,
             prop={"size": 9},
         )
-
-    ax1.legend(
-        [fill(column, 45) for column in dataset_yaxis_1.columns],
-        bbox_to_anchor=(0, 0.40, 1, -0.52),
-        loc="upper right",
-        mode="expand",
-        borderaxespad=0,
-        prop={"size": 9},
-    )
 
     if external_axes is None:
         theme.visualize_output()
@@ -119,7 +123,7 @@ def show_options(
         Whether you want to export the data.
 
     Returns
-    ----------
+    -------
     Plots the data.
     """
     if raw or export:

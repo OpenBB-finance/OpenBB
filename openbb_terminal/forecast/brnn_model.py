@@ -4,13 +4,13 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Any, Union, Optional, List, Tuple
-
+from typing import Union, Optional, List, Tuple
 
 import pandas as pd
 
 from darts import TimeSeries
 from darts.models import BlockRNNModel
+from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
 from darts.utils.likelihood_models import GaussianLikelihood
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
@@ -37,7 +37,13 @@ def get_brnn_data(
     model_save_name: str = "brnn_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
+) -> Tuple[
+    Optional[List[TimeSeries]],
+    Optional[List[TimeSeries]],
+    Optional[List[TimeSeries]],
+    Optional[float],
+    Optional[type[GlobalForecastingModel]],
+]:
     """Performs Block RNN forecasting
 
     Parameters
@@ -80,16 +86,12 @@ def get_brnn_data(
 
     Returns
     -------
-    list[TimeSeries]
-        Adjusted Data series
-    list[TimeSeries]
-        Historical forecast by best RNN model
-    list[TimeSeries]
-        list of Predictions
-    Optional[float]
-        Mean average precision error
-    Any
-        Best BRNN Model
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[Union[float, ndarray]], type[GlobalForecastingModel]]  # noqa: E501
+        Adjusted Data series,
+        Historical forecast by best RNN model,
+        list of Predictions,
+        Mean average precision error,
+        Best BRNN Model.
     """
 
     # TODO Check if torch GPU AVAILABLE

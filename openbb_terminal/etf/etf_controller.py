@@ -124,8 +124,8 @@ class ETFController(BaseController):
                 "--plotly": {},
                 "-p": "--plotly",
                 "--ma": None,
-                "--descending": {},
-                "-d": "--descending",
+                "--reverse": {},
+                "-r": "--reverse",
                 "--trend": {},
                 "-t": "--trend",
                 "--raw": {},
@@ -485,12 +485,16 @@ class ETFController(BaseController):
             help="Choose a column to sort by",
         )
         parser.add_argument(
-            "-d",
-            "--descending",
+            "-r",
+            "--reverse",
             action="store_true",
-            dest="descending",
+            dest="reverse",
             default=False,
-            help="Sort selected column descending",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "--raw",
@@ -537,7 +541,7 @@ class ETFController(BaseController):
                 qa_view.display_raw(
                     data=self.etf_data,
                     sortby=ns_parser.sort,
-                    ascend=not ns_parser.descending,
+                    ascend=ns_parser.reverse,
                     limit=ns_parser.num,
                 )
 

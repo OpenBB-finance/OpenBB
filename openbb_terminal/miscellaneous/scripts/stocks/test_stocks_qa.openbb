@@ -22,6 +22,7 @@ quantile
 skew
 kurtosis
 raw
+raw --sortby adjclose -r
 decompose
 cusum
 capm

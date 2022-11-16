@@ -1,4 +1,5 @@
 import logging
+from typing import Tuple
 
 from pythclient.pythaccounts import PythPriceAccount, PythPriceStatus
 from pythclient.solana import (
@@ -74,7 +75,7 @@ ASSETS = {
 
 
 @log_start_end(log=logger)
-async def get_price(symbol: str):
+async def get_price(symbol: str) -> Tuple[float, float, float]:
     """Returns price and confidence interval from pyth live feed. [Source: Pyth]
 
     Parameters
@@ -84,11 +85,9 @@ async def get_price(symbol: str):
 
     Returns
     -------
-    float
-        Price of the asset
-    float
-        Confidence level
-    float
+    Tuple[float, float, float]
+        Price of the asset,
+        Confidence level,
         Previous price of the asset
     """
 

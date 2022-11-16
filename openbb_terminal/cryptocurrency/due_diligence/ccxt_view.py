@@ -23,7 +23,7 @@ def display_order_book(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Displays order book for a coin in a given exchange
+    """Plots order book for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 
     Parameters
@@ -63,7 +63,7 @@ def display_order_book(
 def display_trades(
     exchange: str, symbol: str, to_symbol: str, limit: int = 10, export: str = ""
 ):
-    """Displays trades for a coin in a given exchange
+    """Prints table showing trades for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 
     Parameters

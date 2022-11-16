@@ -3,11 +3,12 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Union, Optional, List, Tuple
+from typing import Union, Optional, List, Tuple
 
 import warnings
-import numpy as np
 import pandas as pd
+from darts import TimeSeries
+
 from statsforecast.models import SeasonalNaive
 from statsforecast.core import StatsForecast
 
@@ -31,7 +32,13 @@ def get_seasonalnaive_data(
     n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
-) -> Tuple[list[np.ndarray], List[np.ndarray], List[np.ndarray], Optional[float], Any]:
+) -> Tuple[
+    Optional[List[type[TimeSeries]]],
+    Optional[List[type[TimeSeries]]],
+    Optional[List[type[TimeSeries]]],
+    Optional[float],
+    Optional[type[StatsForecast]],
+]:
 
     """Performs Seasonal Naive forecasting
     This is a wrapper around StatsForecast Seasonal Naive;
@@ -44,7 +51,7 @@ def get_seasonalnaive_data(
     ----------
     data : Union[pd.Series, np.ndarray]
         Input data.
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     seasonal_periods: int
         Number of seasonal periods in a year (7 for daily data)
@@ -58,15 +65,11 @@ def get_seasonalnaive_data(
 
     Returns
     -------
-    list[float]
-        Adjusted Data series
-    list[float]
-        List of historical fcast values
-    list[float]
-        List of predicted fcast values
-    Optional[float]
-        precision
-    Any
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], StatsForecast]
+        Adjusted Data series,
+        List of historical fcast values,
+        List of predicted fcast values,
+        Optional[float] - precision,
         Fit SeasonalNaive model object.
     """
 
@@ -141,6 +144,6 @@ def get_seasonalnaive_data(
         ticker_series,
         historical_fcast,
         forecast,
-        precision,
+        float(precision),
         fcst,
     )

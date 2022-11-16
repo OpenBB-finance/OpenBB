@@ -10,8 +10,8 @@ import pandas as pd
 import requests
 import yfinance as yf
 
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import yfinance_model
 
@@ -163,12 +163,11 @@ def get_screener_output(preset: str) -> Tuple[pd.DataFrame, str]:
     ----------
     preset: str
         Chosen preset
+
     Returns
     -------
-    pd.DataFrame:
-        DataFrame with screener data, or empty if errors
-    str:
-        String containing error message if supplied
+    Tuple[pd.DataFrame, str]
+        DataFrame with screener data or empty if errors, String containing error message if supplied
     """
     d_cols = {
         "contractSymbol": "CS",
@@ -256,6 +255,7 @@ def check_presets(preset_dict: dict) -> str:
     ----------
     preset_dict: dict
         Defined presets from configparser
+
     Returns
     -------
     error: str

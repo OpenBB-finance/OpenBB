@@ -1,5 +1,5 @@
 ```
-usage: ldapps [-l LIMIT] [-s {tvl,symbol,category,chains,change_1h,change_1d,change_7d,name}] [--descend] [--desc] [-h] [--export {csv,json,xlsx}]
+usage: ldapps [-l LIMIT] [-s {tvl,symbol,category,chains,change_1h,change_1d,change_7d,name}] [--reverse] [--desc] [-h] [--export {csv,json,xlsx}]
 ```
 
 Display information about listed DeFi Protocols on DeFi Llama. [Source:https://docs.llama.fi/api]
@@ -10,8 +10,9 @@ optional arguments:
                         Number of records to display (default: 10)
   -s {tvl,symbol,category,chains,change_1h,change_1d,change_7d,name}, --sort {tvl,symbol,category,chains,change_1h,change_1d,change_7d,name}
                         Sort by given column. Default: tvl (default: tvl)
-  --descend             Flag to sort in descending order (lowest first) (default: False)
-  --desc                Flag to display description of protocol (default: False)
+-r, --reverse           Data is sorted in descending order by default. Reverse
+                        flag will sort it in an ascending way. Only works when raw
+                        data is displayed. (default: False)  --desc                Flag to display description of protocol (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )

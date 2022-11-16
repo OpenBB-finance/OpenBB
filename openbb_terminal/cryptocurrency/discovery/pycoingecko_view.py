@@ -39,7 +39,7 @@ def display_coins(
     export: str = "",
     ascend: bool = False,
 ) -> None:
-    """Display top coins [Source: CoinGecko]
+    """Prints table showing top coins [Source: CoinGecko]
 
     Parameters
     ----------
@@ -103,7 +103,7 @@ def display_gainers(
     sortby: str = "market_cap_rank",
     export: str = "",
 ) -> None:
-    """Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
+    """Prints table showing Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
     Parameters
     ----------
@@ -149,7 +149,7 @@ def display_losers(
     export: str = "",
     sortby: str = "Market Cap Rank",
 ) -> None:
-    """Shows Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
+    """Prints table showing Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
 
     Parameters
     ----------
@@ -190,7 +190,7 @@ def display_losers(
 
 @log_start_end(log=logger)
 def display_trending(export: str = "") -> None:
-    """Display trending coins [Source: CoinGecko]
+    """Prints table showing trending coins [Source: CoinGecko]
 
     Parameters
     ----------
