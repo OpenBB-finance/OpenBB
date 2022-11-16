@@ -32,12 +32,8 @@ def beta_model(
 
     Returns
     -------
-    sr: pd.Series
-        Stock ticker symbols close-to-close returns
-    rr: pd.Series
-        Reference ticker symbols close-to-close returns
-    beta: float
-    alpha: float
+    Tuple[pd.Series, pd.Series, float, float]
+        Stock ticker symbols close-to-close returns, Reference ticker symbols close-to-close returns, beta, alpha
     """
     if data is None:
         data = stocks_helper.load(symbol)

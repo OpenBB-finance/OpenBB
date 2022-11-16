@@ -21,6 +21,8 @@ def get_last_insider_activity(symbol: str) -> pd.DataFrame:
     symbol : str
         Stock ticker symbol
 
+    Returns
+    -------
     pd.DataFrame
         Latest insider trading activity
     """

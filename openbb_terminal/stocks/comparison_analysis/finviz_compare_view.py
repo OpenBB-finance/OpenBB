@@ -1,4 +1,4 @@
-""" Finviz Comparison View """
+"""Finviz Comparison View"""
 __docformat__ = "numpy"
 
 import logging
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def screener(similar: List[str], data_type: str = "overview", export: str = ""):
-    """Screener
+    """Screener.
 
     Parameters
     ----------

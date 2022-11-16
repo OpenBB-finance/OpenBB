@@ -90,7 +90,7 @@ def display_twitter(
     ascend: bool = True,
     export: str = "",
 ) -> None:
-    """Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
+    """Prints table showing twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
     Parameters
     ----------
@@ -137,7 +137,7 @@ def display_events(
     links: bool = False,
     export: str = "",
 ) -> None:
-    """Get all events for given coin id. [Source: CoinPaprika]
+    """Prints table showing all events for given coin id. [Source: CoinPaprika]
 
     Parameters
     ----------
@@ -189,7 +189,7 @@ def display_exchanges(
     ascend: bool = True,
     export: str = "",
 ) -> None:
-    """Get all exchanges for given coin id. [Source: CoinPaprika]
+    """Prints table showing all exchanges for given coin id. [Source: CoinPaprika]
 
     Parameters
     ----------
@@ -236,7 +236,7 @@ def display_markets(
     links: bool = False,
     export: str = "",
 ) -> None:
-    """Get all markets for given coin id. [Source: CoinPaprika]
+    """Prints table showing all markets for given coin id. [Source: CoinPaprika]
 
     Parameters
     ----------
@@ -289,7 +289,7 @@ def display_price_supply(
     to_symbol: str = "USD",
     export: str = "",
 ) -> None:
-    """Get ticker information for single coin [Source: CoinPaprika]
+    """Prints table showing ticker information for single coin [Source: CoinPaprika]
 
     Parameters
     ----------
@@ -326,7 +326,7 @@ def display_basic(
     symbol: str = "BTC",
     export: str = "",
 ) -> None:
-    """Get basic information for coin. Like:
+    """Prints table showing basic information for coin. Like:
         name, symbol, rank, type, description, platform, proof_type, contract, tags, parent.
         [Source: CoinPaprika]
 

@@ -63,8 +63,8 @@ def get_profile(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    ----------
-    pd.DataFrame:
+    -------
+    pd.DataFrame
         Dataframe of ticker profile
     """
     df = pd.DataFrame()
@@ -91,8 +91,8 @@ def get_quote(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    ----------
-    pd.DataFrame:
+    -------
+    pd.DataFrame
         Dataframe of ticker quote
     """
 
@@ -144,8 +144,8 @@ def get_enterprise(
         Flag to get quarterly data
 
     Returns
-    ----------
-    pd.DataFrame:
+    -------
+    pd.DataFrame
         Dataframe of enterprise information
     """
     df_fa = pd.DataFrame()

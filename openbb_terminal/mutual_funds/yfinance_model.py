@@ -22,7 +22,7 @@ def get_information(name: str) -> Dict:
 
     Returns
     -------
-    dict
+    dict[str, Any]
         Dictionary containing fund information
     """
     return yf.Ticker(name).info

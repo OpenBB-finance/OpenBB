@@ -76,15 +76,27 @@ def get_shroom_data(sql: str):
 @check_api_key(["API_SHROOM_KEY"])
 def get_dapp_stats(
     platform: str = "curve",
-):
+) -> pd.DataFrame:
+    """Get dapp stats
+
+    Parameters
+    ----------
+    platform: str
+        platform to get stats for
+
+    Returns
+    -------
+    pd.DataFrame
+        dapp stats
+    """
     sql = f"""select
-      date_trunc('week', s.block_timestamp) as date,
-      sum(t.fee_usd) as fee,
-      count(distinct(s.from_address)) as n_users,
-      count(distinct(s.amount_usd)) as volume
+        date_trunc('week', s.block_timestamp) as date,
+        sum(t.fee_usd) as fee,
+        count(distinct(s.from_address)) as n_users,
+        count(distinct(s.amount_usd)) as volume
     from ethereum.dex_swaps s
     join ethereum.transactions t
-      on s.tx_id = t.tx_id
+        on s.tx_id = t.tx_id
     where platform = '{platform}'
     group by date
     order by date asc

@@ -34,9 +34,10 @@ def get_coin_twitter_timeline(
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1twitter/get).
     ascend: bool
         Flag to sort data descending
+
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Twitter timeline for given coin.
         Columns: date, user_name, status, retweet_count, like_count
     """
@@ -100,9 +101,10 @@ def get_coin_events_by_id(
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1events/get).
     ascend: bool
         Flag to sort data ascending
+
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Events found for given coin
         Columns: id, date , date_to, name, description, is_conference, link, proof_image_link
     """
@@ -150,7 +152,7 @@ def get_coin_exchanges_by_id(
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         All exchanges for given coin
         Columns: id, name, adjusted_volume_24h_share, fiats
     """
@@ -197,7 +199,7 @@ def get_coin_markets_by_id(
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         All markets for given coin and currency
     """
     if sortby in ["volume", "price"]:
@@ -235,7 +237,58 @@ def get_coin_markets_by_id(
 
 
 @log_start_end(log=logger)
-def get_tickers_info_for_coin(symbol: str = "BTC", quotes: str = "USD") -> pd.DataFrame:
+def get_ohlc_historical(
+    symbol: str = "eth-ethereum", quotes: str = "USD", days: int = 90
+) -> pd.DataFrame:
+    """
+    Open/High/Low/Close values with volume and market_cap. [Source: CoinPaprika]
+    Request example: https://api.coinpaprika.com/v1/coins/btc-bitcoin/ohlcv/historical?start=2019-01-01&end=2019-01-20
+    if the last day is current day it can an change with every request until actual close of the day at 23:59:59
+
+
+    Parameters
+    ----------
+    symbol: str
+        Paprika coin identifier e.g. eth-ethereum
+    quotes: str
+        returned data quote (available values: usd btc)
+    days: int
+        time range for chart in days. Maximum 365
+
+    Returns
+    -------
+    pd.DataFrame
+        Open/High/Low/Close values with volume and market_cap.
+    """
+
+    if quotes.lower() not in ["usd", "btc"]:
+        quotes = "USD"
+
+    if abs(int(days)) > 365:
+        days = 365
+
+    end = datetime.now().strftime("%Y-%m-%d")
+    start = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
+
+    session = PaprikaSession()
+    data = session.make_request(
+        session.ENDPOINTS["ohlcv_hist"].format(symbol),
+        quotes=quotes,
+        start=start,
+        end=end,
+    )
+    if "error" in data:
+        # console.print(
+        #    "Could not load data. Try use symbol (e.g., btc) instead of coin name (e.g., bitcoin)"
+        # )
+        return pd.DataFrame()
+    return pd.DataFrame(data)
+
+
+@log_start_end(log=logger)
+def get_tickers_info_for_coin(
+    symbol: str = "btc-bitcoin", quotes: str = "USD"
+) -> pd.DataFrame:
     """Get all most important ticker related information for given coin id [Source: CoinPaprika]
 
     .. code-block:: json
@@ -283,7 +336,7 @@ def get_tickers_info_for_coin(symbol: str = "BTC", quotes: str = "USD") -> pd.Da
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Most important ticker related information
         Columns: Metric, Value
     """
@@ -324,7 +377,30 @@ def get_tickers_info_for_coin(symbol: str = "BTC", quotes: str = "USD") -> pd.Da
 
 
 @log_start_end(log=logger)
-def basic_coin_info(symbol: str = "BTC") -> pd.DataFrame:
+def validate_coin(symbol: str, coins_dct: dict) -> Tuple[Optional[Any], Optional[Any]]:
+    """Helper method that validates if proper coin id or symbol was provided [Source: CoinPaprika]
+
+    Parameters
+    ----------
+    symbol: str
+        id or symbol of coin for CoinPaprika
+    coins_dct: dict
+        dictionary of coins
+
+    Returns
+    -------
+    Tuple[Optional[Any], Optional[Any]]
+        coin id, coin symbol
+    """
+
+    for key, value in coins_dct.items():
+        if symbol == value:
+            return key, value.lower()
+    return None, None
+
+
+@log_start_end(log=logger)
+def basic_coin_info(symbol: str = "btc-bitcoin") -> pd.DataFrame:
     """Basic coin information [Source: CoinPaprika]
 
     Parameters
