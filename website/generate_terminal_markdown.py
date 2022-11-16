@@ -20,7 +20,6 @@ def existing_markdown_file_examples(
             trail.remove(ctrl.trailmap.split(".")[0])
 
     examples_path = f"content/terminal/{'/'.join(trail)}/{cat['cmd_name']}/_index.md"
-    print(examples_path)
     examples_dict: Dict[str, Optional[Union[str, List[str]]]] = {}
 
     if os.path.exists(examples_path):
