@@ -127,6 +127,8 @@ class CryptoController(CryptoBaseController):
                         "Coinbase",
                     ]
                 },
+                "--coin": None,
+                "-c": "--coin",
             }
             choices["price"] = {
                 "--symbol": {c: {} for c in pyth_model.ASSETS.keys()},
