@@ -60,6 +60,9 @@ def get_global_cases(country: str) -> pd.DataFrame:
         .T
     )
     cases.index = pd.to_datetime(cases.index)
+    if country not in cases:
+        console.print("[red]The selection `{country}` is not a valid option.[/red]\n")
+        return pd.DataFrame()
     cases = pd.DataFrame(cases[country]).diff().dropna()
     if cases.shape[1] > 1:
         return pd.DataFrame(cases.sum(axis=1))
@@ -89,6 +92,9 @@ def get_global_deaths(country: str) -> pd.DataFrame:
         .T
     )
     deaths.index = pd.to_datetime(deaths.index)
+    if country not in deaths:
+        console.print("[red]The selection `{country}` is not a valid option.[/red]\n")
+        return pd.DataFrame()
     deaths = pd.DataFrame(deaths[country]).diff().dropna()
     if deaths.shape[1] > 1:
         return pd.DataFrame(deaths.sum(axis=1))
