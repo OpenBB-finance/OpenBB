@@ -56,11 +56,7 @@ def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
             if action.default is not None:
                 default = action.default
                 if isinstance(default, list):
-                    default = ", ".join(
-                        [str(x).replace("<", "").replace(">", "") for x in default]
-                    )
-            else:
-                default = None
+                    default = ", ".join([str(x) for x in default])
 
             choices = action.choices
             if choices is not None:
@@ -69,50 +65,35 @@ def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
                     listdict = []
                     for choice in choices:
                         if isinstance(choice, dict):
-                            listdict.append(
-                                [
-                                    f"{k}:  {v.replace('<', '').replace('>', '')}"
-                                    for k, v in choice.items()
-                                ]
-                            )
+                            listdict.append([f"{k}:  {v}" for k, v in choice.items()])
 
                     if listdict:
                         choices = listdict
 
                     choices = (
-                        ", ".join(
-                            [
-                                str(choice).replace("<", "").replace(">", "")
-                                for choice in choices
-                            ]
-                        )
+                        ", ".join([str(choice) for choice in choices])
                         if choices
                         else None
                     )
                 elif isinstance(choices, dict):
-                    choices = [
-                        f"{k}:  {v.replace('<', '').replace('>', '') if isinstance(v, str) else v}"
-                        for k, v in choices.items()
-                    ]
+                    choices = [f"{k}:  {v}" for k, v in choices.items()]
                     choices = ",  ".join(choices)
 
             doc = action.help
             if doc is not None:
                 # We do this to fix multiline docstrings for the markdown
-                doc = " ".join(doc.split()).replace("<", "").replace(">", "")
+                doc = " ".join(doc.split())
 
             for attr in [action.dest, action.default, doc]:
                 if attr is not None:
-                    attr = (
-                        str(attr).replace("<", "").replace(">", "").replace("call_", "")
-                    )
+                    attr = attr.replace("call_", "") if isinstance(attr, str) else attr
 
             actions.append(
                 {
                     "opt_name": action.dest if action.dest else "",
                     "doc": doc if doc else "",
-                    "default": str(default),
-                    "optional": action.required,
+                    "default": default,
+                    "optional": not action.required,
                     "choices": choices,
                 }
             )
@@ -121,7 +102,6 @@ def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
         if desc is not None:
             # We do this to fix multiline docstrings for the markdown
             desc = " ".join(desc.split())
-            desc = desc.replace("<", "").replace(">", "")
 
         param = {
             "cmd_name": cmd.replace("call_", ""),
@@ -182,7 +162,7 @@ def generate_markdown_section(meta: Dict[str, str], examples: Dict[str, str]) ->
         for image in examples["images"]:
             markdown += f"{image}\n\n"
 
-    return markdown
+    return markdown.replace("<", "").replace(">", "")
 
 
 def main():
