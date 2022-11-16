@@ -55,12 +55,12 @@ issues.
 
    - Follow the [link to the page with the latest installers for all platforms](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) or click direct links to installer packages based on your operating system:
 
-     - If you are using macOS click [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
-     - If you are using WSL or Linux click [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
-     - If you are using a Raspberry PI click [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
-     - If you are using Windows click [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe).
+      - If you are using macOS click [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
+      - If you are using WSL or Linux click [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
+      - If you are using a Raspberry PI click [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
+      - If you are using Windows click [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe).
 
-        **ONLY REQUIRED ON WINDOWS IF NOT USING WSL**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+         **ONLY REQUIRED ON WINDOWS IF NOT USING WSL**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
    **NOTE for macOS users:** The link above gets you the Intel version of miniconda meaning if you're on an
    Apple Silicon powered machine you will be using the terminal through Apple's rosetta2 layer. We recommend
@@ -72,121 +72,121 @@ issues.
 
 #### 2. Install CMake
 
-   CMake is required by several python modules.
+CMake is required by several python modules.
 
-   **On Linux or Raspberry Pi:**
+**On Linux or Raspberry Pi:**
 
-   ```bash
-   sudo apt update
-   sudo apt install -y gcc cmake
-   ```
+```bash
+sudo apt update
+sudo apt install -y gcc cmake
+```
 
-   **On macOS**
+**On macOS**
 
-   Check if you have homebrew installed by running `brew --version`
+Check if you have homebrew installed by running `brew --version`
 
-   If you don't have homebrew installed run:
+If you don't have homebrew installed run:
 
-   ```bash
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-   brew install cmake
-   ```
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install cmake
+```
 
-   If you have homebrew installed run:
+If you have homebrew installed run:
 
-   ```bash
-   brew install cmake
-   ```
+```bash
+brew install cmake
+```
 
-   **On Windows**
+**On Windows**
 
-   If you have followed the instructions in step 1 of this guide CMake was installed as a
-   part of you Microsoft C++ Build Tools
+If you have followed the instructions in step 1 of this guide CMake was installed as a
+part of you Microsoft C++ Build Tools
 
 #### 3. Install git
 
-   ```bash
-   conda install -c anaconda git
-   ```
+```bash
+conda install -c anaconda git
+```
 
 #### 4. Clone the Project
 
-   - Via HTTPS: `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`
-   - via SSH: `git clone git@github.com:OpenBB-finance/OpenBBTerminal.git`
+- Via HTTPS: `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`
+- via SSH: `git clone git@github.com:OpenBB-finance/OpenBBTerminal.git`
 
 #### 5. Navigate into the project's folder
 
-   ```bash
-   cd OpenBBTerminal/
-   ```
+```bash
+cd OpenBBTerminal/
+```
 
 #### 6. Create Environment
 
-   You can name the environment whatever you want. Although you could use names such as:
-   `welikethestock`, `thisistheway` or `diamondhands`, we recommend something simple and
-   intuitive like `obb`. This is because this name will be used from now onwards.
+You can name the environment whatever you want. Although you could use names such as:
+`welikethestock`, `thisistheway` or `diamondhands`, we recommend something simple and
+intuitive like `obb`. This is because this name will be used from now onwards.
 
-   Please note, the following setup has been confirmed to work for all OS (including M1)
-   with the standard miniconda distribution. If you are using a different distribution,
-   you will need to install it manually before proceeding.
+Please note, the following setup has been confirmed to work for all OS (including M1)
+with the standard miniconda distribution. If you are using a different distribution,
+you will need to install it manually before proceeding.
 
-   ```bash
-   conda env create -n obb --file build/conda/conda-3-9-env.yaml
-   ```
+```bash
+conda env create -n obb --file build/conda/conda-3-9-env.yaml
+```
 
-   Or, to include machine learning type:
+Or, to include machine learning type:
 
-   ```bash
-   conda env create -n obb --file build/conda/conda-3-9-env-full.yaml
-   ```
+```bash
+conda env create -n obb --file build/conda/conda-3-9-env-full.yaml
+```
 
-   Note: Using python 3.10+ can lead to undesirable functionality for certain commands.
+Note: Using python 3.10+ can lead to undesirable functionality for certain commands.
 
 #### 7. Activate the virtual environment
 
-   ```bash
-   conda activate obb
-   ```
+```bash
+conda activate obb
+```
 
-   Note: At the end, you can deactivate it with: `conda deactivate`.
+Note: At the end, you can deactivate it with: `conda deactivate`.
 
 #### 8. Install dependencies with poetry
 
-   Install the main dependencies with
+Install the main dependencies with
 
-   ```bash
-   poetry install
-   ```
+```bash
+poetry install
+```
 
-   You are good to go with the core of the OpenBB Terminal. To install additional toolkits
-   proceed with the following commands:
+You are good to go with the core of the OpenBB Terminal. To install additional toolkits
+proceed with the following commands:
 
-   To install the Portfolio Optimization Toolkit run:
+To install the Portfolio Optimization Toolkit run:
 
-   ```bash
-   poetry install -E optimization
-   ```
+```bash
+poetry install -E optimization
+```
 
-   To install the Machine Learning Toolkit run:
+To install the Machine Learning Toolkit run:
 
-   ```bash
-   poetry install -E prediction
-   ```
+```bash
+poetry install -E prediction
+```
 
 #### 9. You're ready to use the terminal!
 
-   ```bash
-   openbb
-   ```
+```bash
+openbb
+```
 
-   Or if you are old-fashioned run:
+Or if you are old-fashioned run:
 
-   ```bash
-   python terminal.py
-   ```
+```bash
+python terminal.py
+```
 
-**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate obb`
-before you call `openbb` again.
+**NOTE:** When you close the terminal and re-open it, the only command you need to re-call
+is `conda activate obb` before you call `openbb` again.
 
 **TROUBLESHOOT:** If you are having troubles to install, check out the
 [troubleshoot page](https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md).
