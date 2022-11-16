@@ -31,8 +31,8 @@ def get_news(
 
     Examples
     --------
-    from openbb_terminal.sdk import openbb
-    openbb.news()
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.news()
     """
     # Necessary for installer so that it can locate the correct certificates for
     # API calls and https

@@ -687,8 +687,8 @@ def get_aggregated_macro_data(
 
     Examples
     --------
-    from openbb_terminal.sdk import openbb
-    macro_df = openbb.economy.macro()
+    >>> from openbb_terminal.sdk import openbb
+    >>> macro_df = openbb.economy.macro()
     """
 
     if end_date is None:
@@ -764,8 +764,8 @@ def get_treasuries(
 
     Examples
     --------
-    from openbb_terminal.sdk import openbb
-    openbb.economy.treasury()
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.economy.treasury()
     """
 
     if end_date is None:

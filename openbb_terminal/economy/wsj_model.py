@@ -69,8 +69,8 @@ def market_overview() -> pd.DataFrame:
 
     Examples
     --------
-    from openbb_terminal.sdk import openbb
-    ov_df = openbb.economy.overview()
+    >>> from openbb_terminal.sdk import openbb
+    >>> ov_df = openbb.economy.overview()
     """
     url = (
         "https://www.wsj.com/market-data?id=%7B%22application%22%3A%22WSJ%22%2C%22instruments%22%3A%5B%7B%22symbol%22"
@@ -115,8 +115,8 @@ def top_commodities() -> pd.DataFrame:
 
     Examples
     --------
-    from openbb_terminal.sdk import openbb
-    fut_df = openbb.economy.futures()
+    >>> from openbb_terminal.sdk import openbb
+    >>> fut_df = openbb.economy.futures()
     """
     url = (
         "https://www.wsj.com/market-data/commodities?id=%7B%22application%22%3A%22WSJ%22%2C%22instruments%22%3A%5B%7"

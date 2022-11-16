@@ -36,8 +36,8 @@ def get_put_call_ratio(
 
     Examples
     --------
-    from openbb_terminal.sdk import openbb
-    pcr_df = openbb.stocks.options.pcr("B")
+    >>> from openbb_terminal.sdk import openbb
+    >>> pcr_df = openbb.stocks.options.pcr("B")
     """
 
     if start_date is None:

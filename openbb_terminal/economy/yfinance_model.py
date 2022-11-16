@@ -703,9 +703,9 @@ def get_indices(
 
     Examples
     --------
-    from openbb_terminal.sdk import openbb
-    openbb.economy.available_indices()
-    openbb.economy.index(["^GSPC", "sp400"])
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.economy.available_indices()
+    >>> openbb.economy.index(["^GSPC", "sp400"])
     """
 
     indices_data: pd.DataFrame = pd.DataFrame()

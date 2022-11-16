@@ -31,8 +31,8 @@ def unusual_options(limit: int = 100) -> Tuple[pd.DataFrame, pd.Timestamp]:
 
     Examples
     --------
-    from openbb_terminal.sdk import openbb
-    unu_df = openbb.stocks.options.unu()
+    >>> from openbb_terminal.sdk import openbb
+    >>> unu_df = openbb.stocks.options.unu()
     """
     pages = np.arange(0, limit // 20 + 1)
     data_list = []

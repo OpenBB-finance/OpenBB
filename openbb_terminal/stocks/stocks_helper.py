@@ -126,8 +126,8 @@ def search(
 
     Examples
     --------
-    from openbb_terminal.sdk import openbb
-    openbb.stocks.search(country="united states", exchange_country="Germany")
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.search(country="united states", exchange_country="Germany")
     """
     kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
@@ -508,8 +508,8 @@ def display_candle(
 
     Examples
     --------
-    from openbb_terminal.sdk import openbb
-    openbb.stocks.candle("AAPL")
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.candle("AAPL")
     """
 
     if start_date is None:
@@ -806,8 +806,8 @@ def load_ticker(
 
     Examples
     --------
-    from openbb_terminal.sdk import openbb
-    msft_df = openbb.stocks.load("MSFT")
+    >>> from openbb_terminal.sdk import openbb
+    >>> msft_df = openbb.stocks.load("MSFT")
     """
     df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
 

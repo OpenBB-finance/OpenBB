@@ -271,8 +271,8 @@ def get_yield_curve(
 
     Examples
     --------
-    from openbb_terminal.sdk import openbb
-    ycrv_df = openbb.economy.ycrv()
+    >>> from openbb_terminal.sdk import openbb
+    >>> ycrv_df = openbb.economy.ycrv()
     """
     fredapi_client = Fred(cfg.API_FRED_KEY)
     fred_series = {

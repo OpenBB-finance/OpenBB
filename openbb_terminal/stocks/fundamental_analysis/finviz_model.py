@@ -27,8 +27,8 @@ def get_data(symbol: str) -> pd.DataFrame:
 
     Examples
     --------
-    from openbb_terminal.sdk import openbb
-    openbb.stocks.fa.data("IWV")
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.fa.data("IWV")
     """
     d_finviz_stock = finviz.get_stock(symbol)
     df_fa = pd.DataFrame.from_dict(d_finviz_stock, orient="index", columns=["Values"])
