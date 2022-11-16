@@ -19,7 +19,7 @@ warnings.simplefilter("ignore")
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=E1123
+# pylint: disable=E1123,E1137
 
 
 def precision_format(best_model: str, index: str, val: float) -> str:

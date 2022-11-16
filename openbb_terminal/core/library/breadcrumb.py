@@ -5,10 +5,12 @@ from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
 from openbb_terminal.core.library.operation import Operation
 
+# pylint: disable=import-outside-toplevel
+
 
 class MetadataBuilder:
     @staticmethod
-    def build_dir_list(trail: str, trail_map: TrailMap) -> List[str]:
+    def get_option_list(trail: str, trail_map: TrailMap) -> List[str]:
         option_list = []
         for key in trail_map.map_dict:
             if trail == "":
@@ -23,30 +25,44 @@ class MetadataBuilder:
 
         return list(set(option_list))
 
+    @classmethod
+    def build_dir_list(cls, trail: str, trail_map: TrailMap) -> List[str]:
+        option_list = cls.get_option_list(trail=trail, trail_map=trail_map)
+
+        option_list_full = []
+        for option in option_list:
+            option_list_full.append(option)
+
+            option_view_trail = f"{trail}.{option}_chart"
+            if trail_map.get_view_function(trail=option_view_trail):
+                option_list_full.append(f"{option}_chart")
+
+        return option_list_full
+
     @staticmethod
-    def build_doc_string(trail: str, dir_list: List[str]) -> str:
+    def build_docstring(trail: str, dir_list: List[str]) -> str:
         if trail == "":
-            doc_string = """This is the OpenBB Terminal SDK.
+            docstring = """This is the OpenBB Terminal SDK.
             Use the SDK to get data directly into your jupyter notebook or directly use it in your application.
             For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/SDK/
             """
         else:
-            doc_string = (
+            docstring = (
                 trail.rsplit(".")[-1].upper()
                 + " Menu\n\nThe SDK commands of the the menu:"
             )
             for command in dir_list:
-                doc_string += f"\n\t<openbb>.{trail}.{command}"
+                docstring += f"\n\t<openbb>.{trail}.{command}"
 
-        return doc_string
+        return docstring
 
     @classmethod
     def build(cls, trail: str, trail_map: TrailMap) -> Metadata:
         dir_list = cls.build_dir_list(trail=trail, trail_map=trail_map)
-        doc_string = cls.build_doc_string(trail=trail, dir_list=dir_list)
+        docstring = cls.build_docstring(trail=trail, dir_list=dir_list)
         metadata = Metadata(
             dir_list=dir_list,
-            doc_string=doc_string,
+            docstring=docstring,
         )
         return metadata
 
@@ -83,7 +99,7 @@ class Breadcrumb:
         self._trail_map = trail_map
         self._trail = trail
 
-        self.__doc__ = metadata.doc_string
+        self.__doc__ = metadata.docstring
 
         if trail == "":
             BreadcrumbLogger()
@@ -100,7 +116,9 @@ class Breadcrumb:
         else:
             trail_next = f"{trail}.{name}"
 
-        if Operation.is_valid(trail=trail_next, trail_map=trail_map):
+        if trail_map.get_model_function(
+            trail=trail_next
+        ) or trail_map.get_view_function(trail=trail_next):
             next_crumb: Any = Operation(
                 trail=trail_next,
                 trail_map=trail_map,
@@ -117,6 +135,14 @@ class Breadcrumb:
             )
 
         return next_crumb
+
+    def about(self):
+        import webbrowser
+
+        trail = self._trail
+        url = "https://openbb-finance.github.io/OpenBBTerminal/SDK/"
+        url += "/".join(trail.split("."))
+        webbrowser.open(url)
 
 
 # pylint: disable=R0903
