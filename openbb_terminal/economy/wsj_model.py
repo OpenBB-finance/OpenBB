@@ -112,6 +112,11 @@ def top_commodities() -> pd.DataFrame:
     -------
     commodities: pd.DataFrame
         Dataframe containing name, price, net change and percent change
+
+    Examples
+    --------
+    from openbb_terminal.sdk import openbb
+    fut_df = openbb.economy.futures()
     """
     url = (
         "https://www.wsj.com/market-data/commodities?id=%7B%22application%22%3A%22WSJ%22%2C%22instruments%22%3A%5B%7"

@@ -761,6 +761,11 @@ def get_treasuries(
     -------
     treasury_data: pd.Dataframe
         Holds data of the selected types and maturities
+
+    Examples
+    --------
+    from openbb_terminal.sdk import openbb
+    openbb.economy.treasury()
     """
 
     if end_date is None:
