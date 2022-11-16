@@ -177,9 +177,10 @@ def generate_markdown_section(meta: Dict[str, str], examples: Dict[str, str]) ->
     if examples.get("example", None):
         markdown += "## Examples\n\n"
         markdown += f"```python\n{examples['example']}\n```\n\n"
-        if examples.get("images", []):
-            for image in examples["images"]:
-                markdown += f"{image}\n\n"
+
+    if examples.get("images", []):
+        for image in examples["images"]:
+            markdown += f"{image}\n\n"
 
     return markdown
 
