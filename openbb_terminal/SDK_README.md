@@ -39,8 +39,7 @@ you are using conda.
     (Optional) If you would like machine learning forecast features:
 
     ```shell
-    conda install -c conda-forge u8darts-torch=0.22.0 -y
-    conda install -c conda-forge pytorch-lightning=1.6.5 -y
+    conda create -n <environment> -c conda-forge python=3.9.6 u8darts=0.22.0 pytorch-lightning=1.6.5 -y
     ```
 
 3. **Install OpenBB Terminal**
