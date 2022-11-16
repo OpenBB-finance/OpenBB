@@ -128,7 +128,7 @@ class PortfolioEngine:
 
     @staticmethod
     def read_transactions(path: str) -> pd.DataFrame:
-        """Static method to read transactions from file.
+        """Read static method to read transactions from file.
 
         Parameters
         ----------
@@ -150,7 +150,7 @@ class PortfolioEngine:
 
     @log_start_end(log=logger)
     def __preprocess_transactions(self):
-        """Method to preprocess, format and compute auxiliary fields.
+        """Preprocess, format and compute auxiliary fields.
 
         Preprocessing steps:
             0. If optional fields not in the transactions add missing
@@ -364,7 +364,7 @@ class PortfolioEngine:
 
     @log_start_end(log=logger)
     def load_company_data(self):
-        """Method to populate company data for stocks such as sector, industry and country"""
+        """Load populate company data for stocks such as sector, industry and country"""
 
         for ticker_type, ticker_list in self.tickers.items():
             # yfinance only has sector, industry and country for stocks
@@ -559,7 +559,7 @@ class PortfolioEngine:
 
     @log_start_end(log=logger)
     def generate_portfolio_data(self):
-        """Generates portfolio data from transactions"""
+        """Generate portfolio data from transactions"""
 
         self.load_portfolio_historical_prices()
         self.populate_historical_trade_data()
@@ -617,7 +617,7 @@ class PortfolioEngine:
 
     @log_start_end(log=logger)
     def load_portfolio_historical_prices(self, use_close: bool = False):
-        """Loads historical adj close/close prices for tickers in list of trades
+        """Load historical adj close/close prices for tickers in list of trades
 
         Parameters
         ----------
@@ -744,7 +744,7 @@ class PortfolioEngine:
 
     @log_start_end(log=logger)
     def set_risk_free_rate(self, risk_free_rate: float):
-        """Sets risk free rate
+        """Set risk free rate
 
         Parameters
         ----------
@@ -756,7 +756,7 @@ class PortfolioEngine:
 
     @log_start_end(log=logger)
     def calculate_reserves(self):
-        """Takes dividends into account for returns calculation"""
+        """Take dividends into account for returns calculation"""
         # TODO: Add back cash dividends and deduct exchange costs
         console.print("Still has to be build.")
 

@@ -74,7 +74,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def load_info():
-    """Prints instructions to load a CSV
+    """Print instructions to load a CSV
 
     Returns
     -------
@@ -1774,7 +1774,7 @@ def display_es(
     distribution: str = "normal",
     percentile: float = 99.9,
 ):
-    """Displays expected shortfall
+    """Display expected shortfall
 
     Parameters
     ----------

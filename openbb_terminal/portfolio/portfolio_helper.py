@@ -6,6 +6,7 @@ from datetime import datetime, date
 import os
 from pathlib import Path
 import csv
+from typing import List
 from dateutil.relativedelta import relativedelta
 
 import yfinance as yf
@@ -159,15 +160,15 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
 def make_equal_length(df1: pd.DataFrame, df2: pd.DataFrame):
     """Filter dataframe by selected period
 
-     Parameters
-     ----------
-     df1: pd.DataFrame
-         The first DataFrame that needs to be compared.
-     df2: pd.DataFrame
-         The second DataFrame that needs to be compared.
+    Parameters
+    ----------
+    df1: pd.DataFrame
+        The first DataFrame that needs to be compared.
+    df2: pd.DataFrame
+        The second DataFrame that needs to be compared.
 
-     Returns
-     ----------
+    Returns
+    -------
     df1 and df2
          Both DataFrames returned
     """
@@ -181,10 +182,38 @@ def make_equal_length(df1: pd.DataFrame, df2: pd.DataFrame):
 
 
 def get_region_from_country(country: str) -> str:
+    """Get region from country
+
+    Parameters
+    ----------
+    country: str
+        The country to assign region.
+
+    Returns
+    -------
+    str
+        Region to which country belongs.
+    """
     return REGIONS[country]
 
 
-def get_info_update_file(ticker: str, file_path: Path, writemode: str) -> list:
+def get_info_update_file(ticker: str, file_path: Path, writemode: str) -> List[str]:
+    """Get info (Sector, Industry, Country and Region) from ticker and save information in file to access later.
+
+    Parameters
+    ----------
+    ticker: str
+        The ticker to get information.
+    file_path: str
+        The file to save information.
+    writemode: str
+        The mode to write into the file, 'w' or 'a'.
+
+    Returns
+    -------
+    List[str]
+        List with ticker information.
+    """
 
     # Pull ticker info from yf
     yf_ticker_info = yf.Ticker(ticker).info
@@ -217,6 +246,18 @@ def get_info_update_file(ticker: str, file_path: Path, writemode: str) -> list:
 
 
 def get_info_from_ticker(ticker: str) -> list:
+    """Get info (Sector, Industry, Country and Region) from ticker.
+
+    Parameters
+    ----------
+    ticker: str
+        The ticker to get information.
+
+    Returns
+    -------
+    List[str]
+        List with ticker information.
+    """
 
     filename = "tickers_info.csv"
 
@@ -236,12 +277,22 @@ def get_info_from_ticker(ticker: str) -> list:
         return ticker_info_list
     # file does not exist or is empty, so write it
     ticker_info_list = get_info_update_file(ticker, file_path, "w")
+
     return ticker_info_list
 
 
-def get_start_date_from_period(period) -> date:
-    """
-    Returns start date of a time period based on the period string (e.g. 10y, 3m, etc.)
+def get_start_date_from_period(period: str) -> date:
+    """Get start date of a time period based on the period string.
+
+    Parameters
+    ----------
+    period: str
+        Period to get start date from (e.g. 10y, 3m, etc.)
+
+    Returns
+    -------
+    date
+        Start date of the period.
     """
     if period == "10y":
         start_date = date.today() + relativedelta(years=-10)

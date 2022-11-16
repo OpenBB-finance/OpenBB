@@ -294,7 +294,7 @@ def get_gaintopain_ratio(
     benchmark_trades: pd.DataFrame,
     benchmark_returns: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Gets Pain-to-Gain ratio
+    """Get Pain-to-Gain ratio
 
     Parameters
     ----------
@@ -369,7 +369,7 @@ def get_gaintopain_ratio(
 
 @log_start_end(log=logger)
 def calculate_beta(portfolio_returns: pd.Series, benchmark_returns: pd.Series) -> float:
-    """Calculates the beta using portfolio and benchmark return values
+    """Calculate the beta using portfolio and benchmark return values
 
     Parameters
     ----------
@@ -443,7 +443,7 @@ def get_information_ratio(
     benchmark_trades: pd.DataFrame,
     benchmark_returns: pd.Series,
 ) -> pd.DataFrame:
-    """Calculates information ratio, which measures the active return of an investment
+    """Calculate information ratio, which measures the active return of an investment
     compared to the benchmark relative to the volatility of the active return
 
     Parameters
@@ -522,7 +522,7 @@ def get_information_ratio(
 def get_tail_ratio(
     portfolio_returns: pd.Series, benchmark_returns: pd.Series, window: str = "252d"
 ) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
-    """Returns the portfolios tail ratio
+    """Return the portfolios tail ratio
 
     Parameters
     ----------
@@ -833,7 +833,7 @@ def get_calmar_ratio(
 def get_kelly_criterion(
     portfolio_returns: pd.Series, portfolio_trades: pd.DataFrame
 ) -> pd.DataFrame:
-    """Gets kelly criterion
+    """Get kelly criterion
 
     Parameters
     ----------
@@ -875,7 +875,7 @@ def get_kelly_criterion(
 
 @log_start_end(log=logger)
 def get_payoff_ratio(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
-    """Gets payoff ratio
+    """Get payoff ratio
 
     Parameters
     ----------
@@ -929,7 +929,7 @@ def get_payoff_ratio(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_profit_factor(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
-    """Gets profit factor
+    """Get profit factor
 
     Parameters
     ----------

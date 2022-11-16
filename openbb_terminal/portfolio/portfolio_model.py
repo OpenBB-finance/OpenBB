@@ -414,7 +414,7 @@ def get_daily_returns(
 def join_allocation(
     portfolio: pd.DataFrame, benchmark: pd.DataFrame, column: str
 ) -> pd.DataFrame:
-    """Helper method to join portfolio and benchmark allocation by column
+    """Help method to join portfolio and benchmark allocation by column
 
     Parameters
     ----------
@@ -945,7 +945,7 @@ def get_regions_allocation(
 
 @log_start_end(log=logger)
 def get_r2_score(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
-    """Method that retrieves R2 Score for portfolio and benchmark selected
+    """Get R2 Score for portfolio and benchmark selected
 
     Parameters
     ----------
@@ -985,7 +985,7 @@ def get_r2_score(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_skewness(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
-    """Method that retrieves skewness for portfolio and benchmark selected
+    """Get skewness for portfolio and benchmark selected
 
     portfolio_engine: PortfolioEngine
         PortfolioEngine class instance, this will hold transactions and perform calculations.
@@ -1030,7 +1030,7 @@ def get_skewness(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_kurtosis(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
-    """Method that retrieves kurtosis for portfolio and benchmark selected
+    """Get kurtosis for portfolio and benchmark selected
 
     Parameters
     ----------
@@ -1077,7 +1077,7 @@ def get_kurtosis(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_stats(portfolio_engine: PortfolioEngine, window: str = "all") -> pd.DataFrame:
-    """Method that retrieves stats for portfolio and benchmark selected based on a certain interval
+    """Get stats for portfolio and benchmark selected based on a certain interval
 
     Parameters
     ----------
@@ -1109,7 +1109,7 @@ def get_stats(portfolio_engine: PortfolioEngine, window: str = "all") -> pd.Data
 
 @log_start_end(log=logger)
 def get_volatility(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
-    """Method that retrieves volatility for portfolio and benchmark selected
+    """Get volatility for portfolio and benchmark selected
 
     Parameters
     ----------
@@ -1160,7 +1160,7 @@ def get_volatility(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
 def get_sharpe_ratio(
     portfolio_engine: PortfolioEngine, risk_free_rate: float = 0
 ) -> pd.DataFrame:
-    """Method that retrieves sharpe ratio for portfolio and benchmark selected
+    """Get sharpe ratio for portfolio and benchmark selected
 
     Parameters
     ----------
@@ -1213,7 +1213,7 @@ def get_sharpe_ratio(
 def get_sortino_ratio(
     portfolio_engine: PortfolioEngine, risk_free_rate: float = 0
 ) -> pd.DataFrame:
-    """Method that retrieves sortino ratio for portfolio and benchmark selected
+    """Get sortino ratio for portfolio and benchmark selected
 
     Parameters
     ----------
@@ -1264,7 +1264,7 @@ def get_sortino_ratio(
 
 @log_start_end(log=logger)
 def get_maximum_drawdown_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
-    """Method that retrieves maximum drawdown ratio for portfolio and benchmark selected
+    """Get maximum drawdown ratio for portfolio and benchmark selected
 
     Parameters
     ----------
@@ -1559,7 +1559,7 @@ def get_calmar_ratio(
 
 @log_start_end(log=logger)
 def get_kelly_criterion(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
-    """Gets kelly criterion
+    """Get kelly criterion
 
     Parameters
     ----------
@@ -1588,7 +1588,7 @@ def get_kelly_criterion(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_payoff_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
-    """Gets payoff ratio
+    """Get payoff ratio
 
     Returns
     -------
@@ -1610,7 +1610,7 @@ def get_payoff_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_profit_factor(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
-    """Gets profit factor
+    """Get profit factor
 
     Parameters
     ----------
@@ -1641,7 +1641,6 @@ def get_performance_vs_benchmark(
     portfolio_engine: PortfolioEngine,
     show_all_trades: bool = False,
 ) -> pd.DataFrame:
-
     """Get portfolio performance vs the benchmark
 
     Parameters
@@ -1756,7 +1755,6 @@ def get_var(
     student_t: bool = False,
     percentile: float = 99.9,
 ) -> pd.DataFrame:
-
     """Get portfolio VaR
 
     Parameters
