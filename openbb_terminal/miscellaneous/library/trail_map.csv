@@ -412,7 +412,6 @@ stocks.fa.dupont,openbb_terminal.stocks.fundamental_analysis.av_model.get_dupont
 stocks.fa.earnings,openbb_terminal.stocks.fundamental_analysis.av_model.get_earnings,
 stocks.fa.fraud,openbb_terminal.stocks.fundamental_analysis.av_model.get_fraud_ratios,
 stocks.fa.income,openbb_terminal.stocks.fundamental_analysis.sdk_helpers.get_income_statement,
-stocks.fa.av_income,openbb_terminal.stocks.fundamental_analysis.av_model.get_income_statements,
 stocks.fa.av_metrics,openbb_terminal.stocks.fundamental_analysis.av_model.get_key_metrics,
 stocks.fa.av_overview,openbb_terminal.stocks.fundamental_analysis.av_model.get_overview,
 stocks.fa.mgmt,openbb_terminal.stocks.fundamental_analysis.business_insider_model.get_management,
@@ -426,17 +425,14 @@ stocks.fa.fmp_cash,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_cas
 stocks.fa.dcf,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_dcf,
 stocks.fa.enterprise,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_enterprise,
 stocks.fa.growth,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_financial_growth,
-stocks.fa.fmp_income,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_income,
 stocks.fa.fmp_metrics,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_key_metrics,
 stocks.fa.fmp_ratios,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_key_ratios,
 stocks.fa.profile,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_profile,
 stocks.fa.quote,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_quote,
 stocks.fa.score,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_score,
 stocks.fa.data,openbb_terminal.stocks.fundamental_analysis.finviz_model.get_data,
-stocks.fa.poly_financials,openbb_terminal.stocks.fundamental_analysis.polygon_model.get_financials,openbb_terminal.stocks.fundamental_analysis.polygon_view.display_fundamentals
 stocks.fa.cal,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_calendar_earnings,
 stocks.fa.divs,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_dividends,
-stocks.fa.yf_financials,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_financials,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_fundamentals
 stocks.fa.hq,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_hq,
 stocks.fa.info,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_info,
 stocks.fa.mktcap,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_mktcap,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_mktcap
