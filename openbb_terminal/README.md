@@ -1,5 +1,7 @@
 # OpenBB Terminal
 
+<!-- markdownlint-disable MD033 -->
+
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
@@ -16,7 +18,7 @@ There are currently four options to install the terminal:
 
 - [Using the Installer](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal) (recommended if you just want to use the terminal)
 - [Using Python](#anaconda--python) (recommended if you want to develop new features)
-- [Using Docker](#docker-installation) (alternative option to the installer if preferred)
+- [Using Docker](#docker-installation) (alternative option to the installer if preferred) <!-- markdownlint-disable-line MD051 -->
 
 First step in all options is to star the project
 
@@ -54,10 +56,10 @@ Miniconda is a python environment and package manager. It is required if you wan
 have the dependencies working straight away.
 
 - Follow the [link to the page with the latest installers for all platforms](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) or click direct links to installer packages based on your operating system:
-   - If you are using macOS click [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
-   - If you are using WSL or Linux click [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
-   - If you are using a Raspberry PI click [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
-   - If you are using Windows click [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe).
+  - If you are using macOS click [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
+  - If you are using WSL or Linux click [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
+  - If you are using a Raspberry PI click [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
+  - If you are using Windows click [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe).
 
       **ONLY REQUIRED ON WINDOWS IF NOT USING WSL**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
@@ -79,7 +81,7 @@ sudo apt update
 sudo apt install -y gcc cmake
 ```
 
-**On macOS**
+**On macOS:**
 
 Check if you have homebrew installed by running `brew --version`
 
@@ -96,7 +98,7 @@ If you have homebrew installed run:
 brew install cmake
 ```
 
-**On Windows**
+**On Windows:**
 
 If you have followed the instructions in step 1 of this guide CMake was installed as a
 part of you Microsoft C++ Build Tools
@@ -171,6 +173,7 @@ To install the Machine Learning Toolkit run:
 poetry install -E prediction
 ```
 
+<!-- markdownlint-disable-next-line MD026 -->
 #### 9. You're ready to use the terminal!
 
 ```bash
