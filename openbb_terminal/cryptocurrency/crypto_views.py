@@ -1,5 +1,4 @@
 import os
-import pandas as pd
 
 from openbb_terminal.helper_funcs import print_rich_table, export_data
 from openbb_terminal.cryptocurrency import crypto_models
