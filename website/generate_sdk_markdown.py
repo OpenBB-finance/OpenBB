@@ -108,7 +108,9 @@ class Trailmap:
             and funcspec.annotations["return"] is not None
             else "None"
         )
-        definition = f"def {getattr(self, f'{key}_func').split('.')[-1]}({definition }) -> {return_def}"
+        definition = (
+            f"def {getattr(self, key).split('.')[-1]}({definition }) -> {return_def}"
+        )
         return definition
 
 

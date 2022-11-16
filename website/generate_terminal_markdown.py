@@ -52,7 +52,9 @@ def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
             if action.default is not None:
                 default = action.default
                 if isinstance(default, list):
-                    default = ", ".join([str(x) for x in default])
+                    default = ", ".join(
+                        [str(x).replace("<", "").replace(">", "") for x in default]
+                    )
             else:
                 default = None
 
@@ -63,24 +65,37 @@ def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
                     listdict = []
                     for choice in choices:
                         if isinstance(choice, dict):
-                            listdict.append([f"{k}:  {v}" for k, v in choice.items()])
+                            listdict.append(
+                                [
+                                    f"{k}:  {v.replace('<', '').replace('>', '')}"
+                                    for k, v in choice.items()
+                                ]
+                            )
 
                     if listdict:
                         choices = listdict
 
                     choices = (
-                        ", ".join([str(choice) for choice in choices])
+                        ", ".join(
+                            [
+                                str(choice).replace("<", "").replace(">", "")
+                                for choice in choices
+                            ]
+                        )
                         if choices
                         else None
                     )
                 elif isinstance(choices, dict):
-                    choices = [f"{k}:  {v}" for k, v in choices.items()]
+                    choices = [
+                        f"{k}:  {v.replace('<', '').replace('>', '') if isinstance(v, str) else v}"
+                        for k, v in choices.items()
+                    ]
                     choices = ",  ".join(choices)
 
             doc = action.help
             if doc is not None:
                 # We do this to fix multiline docstrings for the markdown
-                doc = " ".join(doc.split())
+                doc = " ".join(doc.split()).replace("<", "").replace(">", "")
 
             for attr in [action.dest, action.default, doc]:
                 if attr is not None:
