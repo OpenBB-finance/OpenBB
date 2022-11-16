@@ -231,9 +231,7 @@ def display_exchange_rates(
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -296,9 +294,7 @@ def display_global_market_info(pie: bool = False, export: str = "") -> None:
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -328,9 +324,7 @@ def display_global_defi_info(export: str = "") -> None:
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -548,9 +542,7 @@ def display_exchanges(
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -626,9 +618,7 @@ def display_products(
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -665,9 +655,7 @@ def display_indexes(
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -706,6 +694,4 @@ def display_derivatives(
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")

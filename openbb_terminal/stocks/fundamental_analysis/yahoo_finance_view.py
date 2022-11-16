@@ -41,7 +41,6 @@ def open_headquarters_map(symbol: str):
         Fundamental analysis ticker symbol
     """
     webbrowser.open(yahoo_finance_model.get_hq(symbol))
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -53,7 +52,6 @@ def open_web(symbol: str):
         Fundamental analysis ticker symbol
     """
     webbrowser.open(yahoo_finance_model.get_website(symbol))
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -502,7 +500,6 @@ def display_earnings(symbol: str, limit: int, export: str):
     """
     earnings = yahoo_finance_model.get_earnings_history(symbol)
     if earnings.empty:
-        console.print("")
         return
     earnings = earnings.drop(columns={"Symbol", "Company"}).fillna("-")
     print_rich_table(

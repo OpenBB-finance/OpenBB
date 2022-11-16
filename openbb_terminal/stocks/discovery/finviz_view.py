@@ -8,7 +8,6 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 
 from openbb_terminal.stocks.discovery import finviz_model
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import export_data
 
 
@@ -22,7 +21,7 @@ def display_heatmap(timeframe: str, export: str = ""):
     export: str
         Format to export data
     """
-    console.print("")
+
     dfs = finviz_model.get_heatmap_data(timeframe)
     if dfs.empty:
         return
