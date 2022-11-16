@@ -20,7 +20,7 @@ def existing_markdown_file_examples(
 
     if os.path.exists(examples_path):
 
-        with open(examples_path, "r", encoding="utf-8") as f:
+        with open(examples_path, encoding="utf-8") as f:
             content = f.read()
 
             examples: Optional[str] = None
