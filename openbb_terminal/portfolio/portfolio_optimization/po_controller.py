@@ -637,7 +637,7 @@ class PortfolioOptimizationController(BaseController):
                 "--categories",
                 dest="categories",
                 type=lambda s: [str(item).upper() for item in s.split(",")],
-                default=[],
+                default=["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"],
                 help="Show selected categories",
             )
         if p:
@@ -854,35 +854,22 @@ class PortfolioOptimizationController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             portfolios = set(self.portfolios.keys())
-            if not ns_parser.categories:
-                categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
-            else:
-                categories = ns_parser.categories
 
-            flag = True
+            if not ns_parser.portfolios:
+                console.print(
+                    f"[yellow]Current Portfolios:[/yellow] {('None', ', '.join(portfolios))[bool(portfolios)]}"
+                )
+                console.print(
+                    f"\n[yellow]Current Categories:[/yellow] {('None', ', '.join(ns_parser.categories))[bool(ns_parser.categories)]}"
+                )
+
             for portfolio in ns_parser.portfolios:
                 if portfolio in portfolios:
-                    console.print("")
-                    console.print("Portfolio - " + portfolio)
-                    optimizer_view.display_weights(self.portfolios[portfolio])
-
-                    for category in categories:
-                        console.print("")
-                        optimizer_view.display_categories(
-                            weights=self.portfolios[portfolio],
-                            categories=self.categories,
-                            column=category,
-                            title="Category - " + category.title(),
-                        )
-                    flag = False
-
-            if flag:
-                console.print(
-                    f"Current Portfolios: {('None', ', '.join(portfolios))[bool(portfolios)]}"
-                )
-                console.print(
-                    f"\nCurrent Categories: {('None', ', '.join(categories))[bool(categories)]}"
-                )
+                    console.print("[yellow]Portfolio[/yellow]: " + portfolio + "\n")
+                    optimizer_view.display_show(
+                        weights=self.portfolios[portfolio],
+                        categories=ns_parser.categories,
+                    )
 
     @log_start_end(log=logger)
     def call_rpf(self, other_args: List[str]):

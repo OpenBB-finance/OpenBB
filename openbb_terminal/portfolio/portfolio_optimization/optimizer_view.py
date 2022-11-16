@@ -8,7 +8,7 @@ import logging
 import math
 import warnings
 from datetime import date
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -4029,3 +4029,31 @@ def additional_plots(
 
         if external_axes is None:
             theme.visualize_output(force_tight_layout=True)
+
+
+def display_show(weights: Dict, categories: Union[str, List[str]]):
+
+    if isinstance(categories, str):
+        categories = list(categories)
+
+    allowed_categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+    bad_input = []
+    for category in categories:
+        if category not in allowed_categories:
+            bad_input.append(category)
+
+    if bad_input:
+        a = ",".join(allowed_categories)
+        b = ",".join(bad_input)
+        console.print(f"[red]Category {b} not in {a}.[/red]\n")
+
+    display_weights(weights)
+
+    for category in categories:
+        console.print("")
+        display_categories(
+            weights=weights,
+            categories=categories,
+            column=category,
+            title="Category - " + category.title(),
+        )
