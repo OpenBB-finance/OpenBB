@@ -177,8 +177,6 @@ class ParametersController(BaseController):
 
             self.params, self.current_model = params_view.load_file(file_location)
 
-            console.print()
-
     @log_start_end(log=logger)
     def call_save(self, other_args: List[str]):
         """Process save command"""
@@ -216,7 +214,6 @@ class ParametersController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.current_model = ""
-            console.print("")
 
     @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
@@ -245,7 +242,6 @@ class ParametersController(BaseController):
                 )
                 return
             self.current_model = ns_parser.model
-            console.print("")
 
     @log_start_end(log=logger)
     def call_arg(self, other_args: List[str]):

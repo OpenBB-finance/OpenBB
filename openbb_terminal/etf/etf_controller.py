@@ -311,7 +311,7 @@ class ETFController(BaseController):
                 console.print(f"{self.etf_name} is: {quote_type.lower()}")
             holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
             if holdings.empty:
-                console.print("No company holdings found!\n")
+                console.print("No company holdings found!")
             else:
                 console.print("Top holdings found:")
                 for val in holdings["Name"].values[: ns_parser.limit].tolist():

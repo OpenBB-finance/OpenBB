@@ -349,7 +349,6 @@ class TerminalStyle:
     def visualize_output(self, force_tight_layout: bool = True):
         """Show chart in an interactive widget."""
         import openbb_terminal.feature_flags as obbff
-        from openbb_terminal.rich_config import console
 
         if obbff.USE_CMD_LOCATION_FIGURE:
             self.add_cmd_source(plt.gcf())
@@ -360,7 +359,6 @@ class TerminalStyle:
         if obbff.USE_ION:
             plt.ion()
         plt.show()
-        console.print()
 
 
 class AllowArgsWithWhiteSpace(argparse.Action):
