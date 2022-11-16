@@ -91,6 +91,7 @@ hidden_imports = [
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
+    "rich",
 ]
 
 
