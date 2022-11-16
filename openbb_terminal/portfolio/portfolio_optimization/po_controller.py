@@ -538,15 +538,18 @@ class PortfolioOptimizationController(BaseController):
         mt.add_cmd("maxdecorr", self.tickers)
         mt.add_cmd("blacklitterman", self.tickers)
         mt.add_cmd("ef", self.tickers)
+        mt.add_raw("\n")
 
         mt.add_info("_risk_parity_optimization_")
         mt.add_cmd("riskparity", self.tickers)
         mt.add_cmd("relriskparity", self.tickers)
+        mt.add_raw("\n")
 
         mt.add_info("_hierarchical_clustering_models_")
         mt.add_cmd("hrp", self.tickers)
         mt.add_cmd("herc", self.tickers)
         mt.add_cmd("nco", self.tickers)
+        mt.add_raw("\n")
 
         mt.add_info("_other_optimization_techniques_")
         mt.add_cmd("equal", self.tickers)
