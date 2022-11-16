@@ -203,7 +203,9 @@ def main():
             traceback.print_exc()
             console.print(f"[red]Failed to generate markdown for {ctrlstr}: {e}[/red]")
 
-    console.print("[green]Markdown files generated, check the functions folder[/green]")
+    console.print(
+        "[green]Markdown files generated, check the terminaltest folder[/green]"
+    )
 
 
 if __name__ == "__main__":
