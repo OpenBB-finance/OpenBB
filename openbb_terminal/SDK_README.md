@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD033 -->
 # OpenBB SDK
 
 OpenBB SDK gives you direct and programmatic access to all capabilities of the OpenBB Terminal.
@@ -24,7 +25,6 @@ The toolkits that you can extend the OpenBB SDK with are:
 
 - Portfolio Optimization Toolkit.
 - Forecasting Toolkit.
-
 
 ## System and Platform Requirements
 
@@ -139,21 +139,21 @@ theme = TerminalStyle("dark", "dark", "dark")
 
 Each and every command of OpenBB SDK has detailed documentation about input parameters and returned outputs. You can access them in multiple ways:
 
-**Approach 1: Press `shift + tab`**
+**Approach 1: Press `shift + tab`.**
 This will work out of the box if you're using Jupyter Notebook. In case your IDE is VSCode, you will need to install the [Jupyter PowerToys
 extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.vscode-jupyter-powertoys).
 
 <img width="788" alt="Screenshot 2022-10-03 at 23 31 55" src="https://user-images.githubusercontent.com/40023817/193697567-e7143252-c560-441e-84fd-cbe38aeaf0ea.png">
 
-**Approach 2: Type `help(command)`**
+**Approach 2: Type `help(command)`.**
 
 You can also type `help(command)`, see example below, to see the command' docstring.
 
 <img width="871" alt="Screenshot 2022-10-03 at 23 33 05" src="https://user-images.githubusercontent.com/40023817/193697676-39351008-386d-4c4c-89f2-3de7d8d4e89d.png">
 
-**Approach 3: Use OpenBB SDK Documentation page**
+**Approach 3: Use OpenBB SDK Documentation page.**
 
-Finally, if you prefer to check documentation on a web browser, [OpenBB SDK Documentation](https://openbb-finance.github.io/OpenBBTerminal/api/) will be your best friend. You can browse available commands and search for any specific one that you need.
+Finally, if you prefer to check documentation on a web browser, [OpenBB SDK Documentation](https://openbb-finance.github.io/OpenBBTerminal/sdk/) will be your best friend. You can browse available commands and search for any specific one that you need.
 
 <img width="1200" alt="Screenshot 2022-10-03 at 18 41 48" src="https://user-images.githubusercontent.com/40023817/193643316-c063df03-4172-487f-ba47-ee60f36a3fef.png">
 
@@ -193,7 +193,7 @@ d = {
         },
     "binance": {
         "key":"YYYYY",
-        "secret":"ZZZZZ"
+        "secret":"example"
     },
 }
 
