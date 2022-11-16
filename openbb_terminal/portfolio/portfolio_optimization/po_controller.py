@@ -950,7 +950,6 @@ class PortfolioOptimizationController(BaseController):
             self.portfolios = dict()
             self.update_runtime_choices()
             self.current_portfolio = filename
-        console.print()
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
