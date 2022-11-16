@@ -38,7 +38,7 @@ def display_order_book(
         Export dataframe data to csv,json,xlsx file
     """
     market_book = ccxt_model.get_orderbook(
-        exchange_id=exchange, symbol=symbol, to_symbol=to_symbol
+        exchange=exchange, symbol=symbol, to_symbol=to_symbol
     )
     bids = np.asarray(market_book["bids"], dtype=float)
     asks = np.asarray(market_book["asks"], dtype=float)
