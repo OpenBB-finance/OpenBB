@@ -2,7 +2,8 @@
 
 If you are visiting this page it means that you're having issues installing. We deeply apologize for that.
 
-Since the start of the project we've come across different types of issues experienced by the users. This page tries to combine issues, and their solutions. This will allow to give the best install experience to everyone regardless of any programming skills.
+Since the start of the project we've come across different types of issues experienced by the users.
+This page tries to combine issues, and their solutions. This will allow to give the best install experience to everyone regardless of any programming skills.
 
 <ol>
 <li>
@@ -94,7 +95,7 @@ as advised [here](https://github.com/python-poetry/poetry/issues/4210) and it sh
 
 In the case when you run into an error of the form `ModuleNotFoundError: No module named '_______'` before you start installing these modules that have not been found please check that you have most followed the recommended installation instructions. These errors often can occur when you have not activated the virtual environment where you have installed the terminal, or you have not used the `poetry install` command to install the dependencies.
 
-In case you wish to proceed with an alternative way to install the terminall feel free to install the missing packages via pip. For example if you get the error that `yfinance` is not found, you would run `pip install yfinance`
+In case you wish to proceed with an alternative way to install the terminal feel free to install the missing packages via pip. For example if you get the error that `yfinance` is not found, you would run `pip install yfinance`
 
 ### Machine Learning Troubles
 
