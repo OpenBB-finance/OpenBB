@@ -1,10 +1,10 @@
 # OpenBB SDK
 
-OpenBB SDK gives you direct and programmatic access to all capabilities from OpenBB Terminal.
+OpenBB SDK gives you direct and programmatic access to all capabilities of the OpenBB Terminal.
 You will have the necessary building blocks to create your own financial tools and applications,
-whether that be a visualization dashboard or a custom report on Jupyter Notebook.
+whether that be a visualization dashboard or a custom report in a Jupyter Notebook.
 
-With OpenBB SDK, you can access to normalized financial data from dozens of data providers,
+With OpenBB SDK, you can access normalized financial data from dozens of data providers,
 without having to develop your own integrations from scratch.
 On top of financial data feeds, OpenBB SDK also provides you with a toolbox to perform financial analysis
 on a variety of asset classes, including stocks, crypto, ETFs, funds; the economy as well as your portfolios.
@@ -14,6 +14,40 @@ This gives us an unrivaled speed of development and the ability to maintain stab
 Developing and maintaining an full-blown investment research infrastructure from the ground up takes a lot of time and effort.
 However, it does not have to be. Take advantage of OpenBB SDK with its out-of-the-box data connectors and financial analysis toolkit.
 So that you can focus on designing and building your financial reports and applications.
+
+## SDK structure
+
+The OpenBB SDK consists of the core package and extension toolkits.
+The core package includes all necessary functionality for you to start researching or developing your dashboards and applications.
+
+The toolkits that you can extend the OpenBB SDK with are:
+
+- Portfolio Optimization Toolkit.
+- Forecasting Toolkit.
+
+
+## System and Platform Requirements
+
+The SDK core package is expected to work in any officially supported python version 3.8 and higher (3.9 recommended).
+
+Optimization and Forecasting toolkits installation requires specific settings on computers powered by Apple Silicon, the newer Windows ARM and Raspberry Pi.
+
+### Minimal and Recommended System Requirements
+
+- A computer with a modern CPU (released in the past 5 years)
+- At least 8GB of RAM, 16+ recommended
+- SSD drive with at least 12GB of storage space available
+- Internet connection
+
+**NOTES ON THE INTERNET CONNECTIVITY:** Installation of the SDK with all the toolkits would require downloading around 4GB of data.
+Querying data does not require a lot of bandwidth but you will certainly have a more pleasant experience if you will be on a fast internet line. 4G networks provide a good enough experience so if you're traveling your personal hot-spot will do.
+While it's technically possible to use a subset of the functionality in off-line mode, you will not be able to use any data that is queried from the APIs of data providers and services.
+
+### Platform Specific Requirements
+
+**Portfolio Optimization Toolkit on Apple Silicon:** To install the Portfolio Optimization toolkit on M1/M2 macs you need to have CMake installed. Follow the [instructions in this section](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md#2-install-cmake)
+
+**Forecasting Toolkit on Apple Silicon:** To install the Forecasting toolkit on M1/M2 macs you need to use the x86_64 version of conda  and install certain dependencies from conda-forge. Follow the [instructions in this section](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md#1-install-miniconda)
 
 ## Installation
 
@@ -26,33 +60,47 @@ you are using conda.
 
 ### Steps
 
-1. **Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)**
+#### 1. **Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)**
 
-    Download the `x86_64` Miniconda for your respective system and follow along with it's installation instructions. The Miniconda architecture MUST be `x86_64` in order to use certain features.
+Download the `x86_64` Miniconda for your respective system and follow along with it's installation instructions. The Miniconda architecture MUST be `x86_64` in order to use the forecasting toolkit. Follow the [instructions in this section](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md#1-install-miniconda)
 
-2. **Create Environment**
+#### 2. **Create the virtual environment**
 
-    ```shell
-    conda create -n <environment> python=3.9.6 -y
-    ```
+```bash
+conda create -n obb python=3.9.6 -y
+```
 
-    (Optional) If you would like machine learning forecast features:
+(Optional) If you would like machine learning forecast features:
 
-    ```shell
-    conda create -n <environment> -c conda-forge python=3.9.6 u8darts=0.22.0 pytorch-lightning=1.6.5 -y
-    ```
+```bash
+conda create -n obb -c conda-forge python=3.9.6 u8darts=0.22.0 pytorch-lightning=1.6.5 -y
+```
 
-3. **Install OpenBB Terminal**
+#### 3. **Activate the virtual environment**
 
-    ```shell
-    pip install openbbterminal
-    ```
+```bash
+conda activate obb
+```
 
-    (Optional) If you would like machine learning forecast features:
+#### 4. **Install OpenBB SDK Core package**
 
-    ```shell
-    pip install "openbbterminal[prediction]"
-    ```
+```bash
+pip install openbbterminal
+```
+
+#### 5. **(Optional) Install the Toolkits**
+
+If you would like to use the Portfolio Optimization features:
+
+```bash
+pip install "openbbterminal[optimization]"
+```
+
+If you would like ML forecast features:
+
+```bash
+pip install "openbbterminal[prediction]"
+```
 
 ## Setup
 
@@ -113,7 +161,7 @@ Finally, if you prefer to check documentation on a web browser, [OpenBB SDK Docu
 
 You can set your external API keys through OpenBB SDK.
 
-* Single API setup
+- Single API setup
 
 ```python
 openbb.keys.fmp(key="example")
@@ -128,7 +176,7 @@ openbb.keys.reddit(
 
 ![image](https://user-images.githubusercontent.com/79287829/194706829-dd720d06-9027-4da6-87f1-f39c7d2d725a.png)
 
-* API key setup with persistence: `persist=True` means that your key will be saved and can be reused after, otherwise it will be lost when you restart the kernel.
+- API key setup with persistence: `persist=True` means that your key will be saved and can be reused after, otherwise it will be lost when you restart the kernel.
 
 ```python
 openbb.keys.fmp(key="example", persist=True)
@@ -136,7 +184,7 @@ openbb.keys.fmp(key="example", persist=True)
 
 ![image](https://user-images.githubusercontent.com/79287829/194706848-80302ffa-6e75-4f7a-b8ce-788e083977d4.png)
 
-* Set multiple keys from dictionary
+- Set multiple keys from dictionary
 
 ```python
 d = {
@@ -154,7 +202,7 @@ openbb.keys.set_keys(d)
 
 ![image](https://user-images.githubusercontent.com/79287829/194706945-f1e6937f-74e2-4702-9e5e-c463287d61bd.png)
 
-* Get info about API setup arguments
+- Get info about API setup arguments
 
 ```python
 openbb.keys.get_keys_info()
@@ -162,7 +210,7 @@ openbb.keys.get_keys_info()
 
 ![image](https://user-images.githubusercontent.com/79287829/194706740-54bcc166-460a-410d-b34d-23e8b6c7aaf2.png)
 
-* Get your defined keys
+- Get your defined keys
 
 ```python
 openbb.keys.mykeys()
@@ -295,7 +343,7 @@ weights_hrp
 
 <img width="736" alt="Screenshot 2022-10-04 at 13 34 39" src="https://user-images.githubusercontent.com/40023817/193820500-1bcde650-f517-4aed-b989-b2bd92bebbb8.png">
 
-After having obtained the asset allocation outcomes, you can plot a correlation heatmap across tickers, as well as their individual risk contributition.
+After having obtained the asset allocation outcomes, you can plot a correlation heatmap across tickers, as well as their individual risk contribution.
 
 ```python
 openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,heat=True)
