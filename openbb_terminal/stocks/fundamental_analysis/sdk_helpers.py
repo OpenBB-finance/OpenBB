@@ -61,8 +61,14 @@ def get_income_statement(
         )
         return df
     if source == "FinancialModelingPrep":
-        pass
+        df = fmp_model.get_income(
+            symbol=symbol, limit=limit, quarterly=quarterly, ratios=ratios
+        )
+        return df
     if source == "Polygon":
-        pass
+        df = polygon_model.get_financials(symbol, "income", quarterly, ratios)
+        return df
     if source == "EODHD":
-        pass
+        df = eodhd_model.get_financials(symbol, "income", quarterly, ratios)
+        return df
+    return pd.DataFrame()
