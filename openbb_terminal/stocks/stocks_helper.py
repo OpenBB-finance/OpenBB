@@ -36,7 +36,7 @@ from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
-from openbb_terminal.stocks.stocks_models import (
+from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
     load_stock_yf,
     load_stock_eodhd,
