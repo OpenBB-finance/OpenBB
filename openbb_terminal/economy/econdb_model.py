@@ -684,6 +684,11 @@ def get_aggregated_macro_data(
         A DataFrame with the requested macro data of all chosen countries,
         A dictionary containing the units of each country's parameter (e.g. EUR),
         A string denomination which can be Trillions, Billions, Millions, Thousands
+
+    Examples
+    --------
+    from openbb_terminal.sdk import openbb
+    macro_df = openbb.economy.macro()
     """
 
     if end_date is None:
