@@ -122,6 +122,8 @@ def get_covid_ov(
     """
     cases = get_global_cases(country)
     deaths = get_global_deaths(country)
+    if cases.empty or deaths.empty:
+        return pd.DataFrame()
     data = pd.concat([cases, deaths], axis=1)
     data.columns = ["Cases", "Deaths"]
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
