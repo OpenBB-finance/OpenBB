@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 import textwrap
 from typing import Tuple, Optional, Any
+from datetime import datetime, timedelta
 
 import pandas as pd
 from dateutil import parser
@@ -286,9 +287,7 @@ def get_ohlc_historical(
 
 
 @log_start_end(log=logger)
-def get_tickers_info_for_coin(
-    symbol: str = "btc-bitcoin", quotes: str = "USD"
-) -> pd.DataFrame:
+def get_tickers_info_for_coin(symbol: str = "BTC", quotes: str = "USD") -> pd.DataFrame:
     """Get all most important ticker related information for given coin id [Source: CoinPaprika]
 
     .. code-block:: json
@@ -377,30 +376,7 @@ def get_tickers_info_for_coin(
 
 
 @log_start_end(log=logger)
-def validate_coin(symbol: str, coins_dct: dict) -> Tuple[Optional[Any], Optional[Any]]:
-    """Helper method that validates if proper coin id or symbol was provided [Source: CoinPaprika]
-
-    Parameters
-    ----------
-    symbol: str
-        id or symbol of coin for CoinPaprika
-    coins_dct: dict
-        dictionary of coins
-
-    Returns
-    -------
-    Tuple[Optional[Any], Optional[Any]]
-        coin id, coin symbol
-    """
-
-    for key, value in coins_dct.items():
-        if symbol == value:
-            return key, value.lower()
-    return None, None
-
-
-@log_start_end(log=logger)
-def basic_coin_info(symbol: str = "btc-bitcoin") -> pd.DataFrame:
+def basic_coin_info(symbol: str = "BTC") -> pd.DataFrame:
     """Basic coin information [Source: CoinPaprika]
 
     Parameters
@@ -466,7 +442,7 @@ def get_coin(symbol: str = "eth-ethereum") -> dict:
     return coin
 
 
-def get_coinpaprika_id(symbol: str):
+def get_coinpaprika_id(symbol: str) -> Optional[str]:
     paprika_coins = get_coin_list()
     paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
     coinpaprika_id, _ = validate_coin(symbol.upper(), paprika_coins_dict)
@@ -490,8 +466,10 @@ def get_coin_list() -> pd.DataFrame:
     return df[["rank", "id", "name", "symbol", "type"]]
 
 
-def validate_coin(symbol: str, coins_dct: dict) -> Tuple[Optional[Any], Optional[Any]]:
-    """Helper method that validates if proper coin id or symbol was provided [Source: CoinPaprika]
+def validate_coin(symbol: str, coins_dct: dict) -> Tuple[Optional[str], Optional[str]]:
+    """
+    Helper method that validates if proper coin id or symbol was provided
+    [Source: CoinPaprika]
 
     Parameters
     ----------
@@ -502,7 +480,7 @@ def validate_coin(symbol: str, coins_dct: dict) -> Tuple[Optional[Any], Optional
 
     Returns
     -------
-    Tuple[str,str]
+    Tuple[Optional[str], Optional[str]]
         coin id, coin symbol
     """
 
