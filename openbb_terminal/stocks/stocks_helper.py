@@ -123,7 +123,6 @@ def search(
     export : str
         Export data
 
-
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
