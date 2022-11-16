@@ -59,4 +59,3 @@ Sector Average News Score: {round(100*d_stats['sectorAverageNewsScore'],2)} %"""
 
     else:
         console.print("No sentiment stats found.")
-    console.print("")

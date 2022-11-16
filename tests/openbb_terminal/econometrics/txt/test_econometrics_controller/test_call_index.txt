@@ -1,23 +1,19 @@
 The following args couldn't be interpreted: ['cancer']
-
    cancer  population
 0     1.0       445.0
 1     0.0       559.0
 2     3.0       677.0
 The following args couldn't be interpreted: ['cancer']
-
    cancer  population
 0     1.0       445.0
 1     0.0       559.0
 2     3.0       677.0
 The following args couldn't be interpreted: ['cancer']
-
    cancer  population
 0     1.0       445.0
 1     0.0       559.0
 2     3.0       677.0
 The following args couldn't be interpreted: ['cancer', 'oogabooga']
-
    cancer  population
 0     1.0       445.0
 1     0.0       559.0
