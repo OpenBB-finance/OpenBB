@@ -2,14 +2,13 @@ import csv
 import importlib
 import inspect
 import os
-
 from types import FunctionType
 from typing import Dict, List, Literal, Optional
 
 from docstring_parser import parse
 
-from openbb_terminal.rich_config import console
 from openbb_terminal.core.library.trail_map import FORECASTING, MISCELLANEOUS_DIRECTORY
+from openbb_terminal.rich_config import console
 
 MAP_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map.csv"
 MAP_FORECASTING_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map_forecasting.csv"
@@ -38,15 +37,12 @@ class Trailmap:
         self.location_path = tmap
         self.model = model
         self.view = view if view else None
-        self.model_func: Optional[str] = model if model else None
-        self.view_func: Optional[str] = view if view else None
         self.short_doc: Dict[str, Optional[str]] = {}
         self.long_doc: Dict[str, str] = {}
         self.lineon: Dict[str, int] = {}
         self.full_path: Dict[str, str] = {}
         self.func_def: Dict[str, str] = {}
         self.func_attr: Dict[str, FunctionType] = {}
-        self.params: Dict[str, Dict[str, inspect.Parameter]] = {}
         self.get_docstrings()
 
     def get_docstrings(self) -> None:
@@ -56,21 +52,22 @@ class Trailmap:
             if func:
                 module_path, function_name = func.rsplit(".", 1)
                 module = importlib.import_module(module_path)
-                self.func_attr[key] = getattr(module, function_name)
 
+                func_attr = getattr(module, function_name)
                 add_juan = 0
-                if "__wrapped__" in dir(self.func_attr[key]):
-                    self.func_attr[key] = self.func_attr[key].__wrapped__
-                    if "__wrapped__" in dir(self.func_attr[key]):
-                        self.func_attr[key] = self.func_attr[key].__wrapped__
+                if "__wrapped__" in dir(func_attr):
+                    func_attr = func_attr.__wrapped__
+                    if "__wrapped__" in dir(func_attr):
+                        func_attr = func_attr.__wrapped__
                     add_juan = 1
-                self.lineon[key] = (
-                    inspect.getsourcelines(self.func_attr[key])[1] + add_juan
-                )
+
+                self.func_attr[key] = func_attr
+                self.lineon[key] = inspect.getsourcelines(func_attr)[1] + add_juan
 
                 self.func_def[key] = self.get_definition(key)
-                self.long_doc[key] = self.func_attr[key].__doc__
-                self.short_doc[key] = clean_attr_desc(self.func_attr[key])
+                self.long_doc[key] = func_attr.__doc__
+                self.short_doc[key] = clean_attr_desc(func_attr)
+
                 full_path = (
                     inspect.getfile(self.func_attr[key])
                     .replace("\\", "/")
@@ -133,6 +130,9 @@ def get_trailmaps() -> List[Trailmap]:
 
 
 def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
+    """Gets the function meta data."""
+    if trailmap.func_attr[trail_type] is None:
+        return None
     doc_parsed = parse(trailmap.long_doc[trail_type])
     line = trailmap.lineon[trail_type]
     path = trailmap.full_path[trail_type]

@@ -1287,11 +1287,11 @@ class TechnicalAnalysisController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="kc",
             description="""
-                 Keltner Channels are volatility-based bands that are placed
-                 on either side of an asset's price and can aid in determining
-                 the direction of a trend.The Keltner channel uses the average
-                 true range (ATR) or volatility, with breaks above or below the top
-                 and bottom barriers signaling a continuation.
+                Keltner Channels are volatility-based bands that are placed
+                on either side of an asset's price and can aid in determining
+                the direction of a trend.The Keltner channel uses the average
+                true range (ATR) or volatility, with breaks above or below the top
+                and bottom barriers signaling a continuation.
             """,
         )
         parser.add_argument(
@@ -1395,13 +1395,13 @@ class TechnicalAnalysisController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="adosc",
             description="""
-                 Accumulation/Distribution Oscillator, also known as the Chaikin Oscillator
-                 is essentially a momentum indicator, but of the Accumulation-Distribution line
-                 rather than merely price. It looks at both the strength of price moves and the
-                 underlying buying and selling pressure during a given time period. The oscillator
-                 reading above zero indicates net buying pressure, while one below zero registers
-                 net selling pressure. Divergence between the indicator and pure price moves are
-                 the most common signals from the indicator, and often flag market turning points.
+                Accumulation/Distribution Oscillator, also known as the Chaikin Oscillator
+                is essentially a momentum indicator, but of the Accumulation-Distribution line
+                rather than merely price. It looks at both the strength of price moves and the
+                underlying buying and selling pressure during a given time period. The oscillator
+                reading above zero indicates net buying pressure, while one below zero registers
+                net selling pressure. Divergence between the indicator and pure price moves are
+                the most common signals from the indicator, and often flag market turning points.
             """,
         )
         parser.add_argument(
@@ -1589,7 +1589,7 @@ class TechnicalAnalysisController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="atr",
             description="""
-                 Averge True Range is used to measure volatility, especially volatility caused by
+                Averge True Range is used to measure volatility, especially volatility caused by
                 gaps or limit moves.
             """,
         )

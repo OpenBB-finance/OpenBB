@@ -131,8 +131,10 @@ def get_regression_data(
     Returns
     -------
     Tuple[DataFrame, Any, List[Any]]
-        The dataset used, the dependent variable, the independent variable and
-        the OLS model.
+        The dataset used,
+        Dependent variable,
+        Independent variable,
+        OLS model.
     """
 
     datasets = get_datasets(data)
@@ -195,34 +197,35 @@ def get_ols(
     >>> import openbb_terminal.sdk as openbb
     >>> df = openbb.econometrics.load("wage_panel")
     >>> OLS_model = openbb.econometrics.OLS(df["lwage"], df[["educ", "exper", "expersq"]])
-    >>> print(OLS_model.summary())
-                                        OLS Regression Results
-    =======================================================================================
-    Dep. Variable:                  lwage   R-squared (uncentered):                   0.920
-    Model:                            OLS   Adj. R-squared (uncentered):              0.919
-    Method:                 Least Squares   F-statistic:                          1.659e+04
-    Date:                Thu, 10 Nov 2022   Prob (F-statistic):                        0.00
-    Time:                        15:28:11   Log-Likelihood:                         -3091.3
-    No. Observations:                4360   AIC:                                      6189.
-    Df Residuals:                    4357   BIC:                                      6208.
-    Df Model:                           3
-    Covariance Type:            nonrobust
-    ==============================================================================
-                    coef    std err          t      P>|t|      [0.025      0.975]
-    ------------------------------------------------------------------------------
-    educ           0.0986      0.002     39.879      0.000       0.094       0.103
-    exper          0.1018      0.009     10.737      0.000       0.083       0.120
-    expersq       -0.0034      0.001     -4.894      0.000      -0.005      -0.002
-    ==============================================================================
-    Omnibus:                     1249.642   Durbin-Watson:                   0.954
-    Prob(Omnibus):                  0.000   Jarque-Bera (JB):             9627.436
-    Skew:                          -1.152   Prob(JB):                         0.00
-    Kurtosis:                       9.905   Cond. No.                         86.4
-    ==============================================================================
-
-    Notes:
-    [1] R² is computed without centering (uncentered) since the model does not contain a constant.
-    [2] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+    >>> print(OLS_model.summary())`
+    SDK Snippet:
+    >>>                              OLS Regression Results
+    >>> =======================================================================================
+    >>> Dep. Variable:                  lwage   R-squared (uncentered):                   0.920
+    >>> Model:                            OLS   Adj. R-squared (uncentered):              0.919
+    >>> Method:                 Least Squares   F-statistic:                          1.659e+04
+    >>> Date:                Thu, 10 Nov 2022   Prob (F-statistic):                        0.00
+    >>> Time:                        15:28:11   Log-Likelihood:                         -3091.3
+    >>> No. Observations:                4360   AIC:                                      6189.
+    >>> Df Residuals:                    4357   BIC:                                      6208.
+    >>> Df Model:                           3
+    >>> Covariance Type:            nonrobust
+    >>> ==============================================================================
+    >>>                 coef    std err          t      P>|t|      [0.025      0.975]
+    >>> ------------------------------------------------------------------------------
+    >>> educ           0.0986      0.002     39.879      0.000       0.094       0.103
+    >>> exper          0.1018      0.009     10.737      0.000       0.083       0.120
+    >>> expersq       -0.0034      0.001     -4.894      0.000      -0.005      -0.002
+    >>> ==============================================================================
+    >>> Omnibus:                     1249.642   Durbin-Watson:                   0.954
+    >>> Prob(Omnibus):                  0.000   Jarque-Bera (JB):             9627.436
+    >>> Skew:                          -1.152   Prob(JB):                         0.00
+    >>> Kurtosis:                       9.905   Cond. No.                         86.4
+    >>> ==============================================================================
+    >>> Notes:
+    >>> [1] R² is computed without centering (uncentered) since the model does not contain a constant.
+    >>> [2] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+    Results:
     """
 
     if X.empty or Y.empty:
@@ -245,14 +248,18 @@ def get_pols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
     Parameters
     ----------
-    Y: pd.DataFrame
-        Dataframe containing the dependent variable.
-    X: pd.DataFrame
-        Dataframe containing the independent variables.
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
 
     Returns
     -------
-    Any
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used,
+        Dependent variable,
+        Independent variable,
         PooledOLS model
     """
 
@@ -279,14 +286,18 @@ def get_re(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
     Parameters
     ----------
-    Y: pd.DataFrame
-        Dataframe containing the dependent variable.
-    X: pd.DataFrame
-        Dataframe containing the independent variables.
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
 
     Returns
     -------
-    Any
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used,
+        Dependent variable,
+        Independent variable,
         RandomEffects model
     """
 
@@ -313,15 +324,19 @@ def get_bols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
     Parameters
     ----------
-    Y: pd.DataFrame
-        Dataframe containing the dependent variable.
-    X: pd.DataFrame
-        Dataframe containing the independent variables.
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
 
     Returns
     -------
-    Any
-        BetweenOLS model
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used,
+        Dependent variable,
+        Independent variable,
+        Between OLS model.
     """
     if Y.empty or X.empty:
         model = None
@@ -351,10 +366,11 @@ def get_fe(
 
     Parameters
     ----------
-    Y: pd.DataFrame
-        Dataframe containing the dependent variable.
-    X: pd.DataFrame
-        Dataframe containing the independent variables.
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
     entity_effects : bool
         Whether to include entity effects
     time_effects : bool
@@ -362,7 +378,10 @@ def get_fe(
 
     Returns
     -------
-    Any
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used,
+        Dependent variable,
+        Independent variable,
         PanelOLS model with Fixed Effects
     """
     if X.empty or Y.empty:
@@ -395,14 +414,18 @@ def get_fdols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
     Parameters
     ----------
-    Y: pd.DataFrame
-        Dataframe containing the dependent variable.
-    X: pd.DataFrame
-        Dataframe containing the independent variables.
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
 
     Returns
     -------
-    Any
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used,
+        Dependent variable,
+        Independent variable,
         First Difference OLS model
     """
     if X.empty or Y.empty:
@@ -495,8 +518,9 @@ def get_dwat(
     >>> Y, X = df["lwage"], df[["exper","educ"]]
     >>> model = openbb.econometrics.ols(Y,X)
     >>> durbin_watson_value = openbb.econometrics.dwat(model)
-    >>> durbin_watson_value
-        0.96
+    SDK Snippet:
+    >>> 0.96
+    Result:
     """
     # Durbin Watson test: The test statistic is approximately equal to 2*(1-r) where r is the
     # sample autocorrelation of the residuals. Thus, for r == 0, indicating no serial correlation,
@@ -509,9 +533,7 @@ def get_dwat(
 
 
 @log_start_end(log=logger)
-def get_bgod(
-    model: statsmodels.regression.linear_model.RegressionResultsWrapper, lags: int = 3
-) -> pd.DataFrame:
+def get_bgod(model: pd.DataFrame, lags: int = 3) -> Tuple[float, float, float, float]:
     """Calculate test statistics for autocorrelation
 
     Parameters
