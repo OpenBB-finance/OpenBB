@@ -50,25 +50,23 @@ issues.
 
 #### 1. [Install Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 
-   Miniconda is a python environment and package manager. It is required if you want to
-   have the dependencies working straight away.
+Miniconda is a python environment and package manager. It is required if you want to
+have the dependencies working straight away.
 
-   - Follow the [link to the page with the latest installers for all platforms](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) or click direct links to installer packages based on your operating system:
+- Follow the [link to the page with the latest installers for all platforms](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) or click direct links to installer packages based on your operating system:
+   - If you are using macOS click [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
+   - If you are using WSL or Linux click [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
+   - If you are using a Raspberry PI click [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
+   - If you are using Windows click [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe).
 
-      - If you are using macOS click [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
-      - If you are using WSL or Linux click [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
-      - If you are using a Raspberry PI click [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
-      - If you are using Windows click [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe).
-
-         **ONLY REQUIRED ON WINDOWS IF NOT USING WSL**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+      **ONLY REQUIRED ON WINDOWS IF NOT USING WSL**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
    **NOTE for macOS users:** The link above gets you the Intel version of miniconda meaning if you're on an
    Apple Silicon powered machine you will be using the terminal through Apple's rosetta2 layer. We recommend
    sticking to this distribution for better compatibility until the dependency developers fully catch up with
    Apple's transition to Apple Silicon.
 
-   - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output
-     should be something along the lines of: `conda 22.9.0`
+- After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output should be something along the lines of: `conda 22.9.0`
 
 #### 2. Install CMake
 
@@ -286,31 +284,31 @@ terminal, see [this guide](https://openbb-finance.github.io/OpenBBTerminal/termi
 You can also use the environment variable to set your API Keys directly instead of using the Terminal, for the variable
 name in the code one just needs to remove the "GT\_", this can be found in [config_terminal.py](/openbb_terminal/config_terminal.py).
 
-| Website                                                                            | Environment Variables                                                                                                                                                 |
-| :--------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Alpha Vantage](https://www.alphavantage.co)                                       | OPENBB_API_KEY_ALPHAVANTAGE                                                                                                                                           |
-| [Binance](https://binance.com)                                                     | OPENBB_API_BINANCE_KEY <br/> OPENBB_API_BINANCE_SECRET                                                                                                                |
-| [BitQuery](https://bitquery.io/pricing)                                            | OPENBB_API_BITQUERY_KEY                                                                                                                                               |
-| [Coinbase](https://docs.pro.coinbase.com/)                                         | OPENBB_API_COINBASE_KEY <br/> OPENBB_API_COINBASE_SECRET <br/> OPENBB_API_COINBASE_PASS_PHRASE                                                                        |
-| [Coinglass](https://coinglass.github.io/API-Reference/#api-key)                    | OPENBB_API_COINGLASS_KEY                                                                                                                                              |
-| [CoinMarketCap](https://coinmarketcap.com)                                         | OPENBB_API_CMC_KEY <br/>                                                                                                                                              |
-| [Cryptopanic](https://cryptopanic.com/developers/api/)                             | OPENBB_API_CRYPTO_PANIC_KEY                                                                                                                                           |
-| [DEGIRO](https://www.degiro.fr)                                                    | OPENBB_DG_USERNAME <br/> OPENBB_DG_PASSWORD <br/> OPENBB_DG_TOTP_SECRET                                                                                               |
-| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API)              | OPENBB_API_ETHPLORER_KEY                                                                                                                                              |
-| [Financial Modeling Prep](https://financialmodelingprep.com)                       | OPENBB_API_KEY_FINANCIALMODELINGPREP                                                                                                                                  |
-| [Finnhub](https://finnhub.io)                                                      | OPENBB_API_FINNHUB_KEY                                                                                                                                                |
-| [FRED](https://fred.stlouisfed.org)                                                | OPENBB_API_FRED_KEY                                                                                                                                                   |
-| [GitHub](https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api) | OPENBB_API_GITHUB_KEY                                                                                                                                                 |
-| [Glassnode](https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key)    | OPENBB_API_GLASSNODE_KEY                                                                                                                                              |
-| [News](https://newsapi.org)                                                        | OPENBB_API_NEWS_TOKEN                                                                                                                                                 |
-| [Oanda](https://developer.oanda.com)                                               | OPENBB_OANDA_TOKEN <br/> OPENBB_OANDA_ACCOUNT                                                                                                                         |
-| [Polygon](https://polygon.io)                                                      | OPENBB_API_POLYGON_KEY                                                                                                                                                |
-| [Quandl](https://www.quandl.com)                                                   | OPENBB_API_KEY_QUANDL                                                                                                                                                 |
-| [Reddit](https://www.reddit.com)                                                   | OPENBB_API_REDDIT_CLIENT_ID <br> OPENBB_API_REDDIT_CLIENT_SECRET <br/> OPENBB_API_REDDIT_USERNAME <br/> OPENBB_API_REDDIT_USER_AGENT <br/> OPENBB_API_REDDIT_PASSWORD |
-| [SentimentInvestor](https://sentimentinvestor.com)                                 | OPENBB_API_SENTIMENTINVESTOR_TOKEN <br> OPENBB_API_SENTIMENTINVESTOR_KEY                                                                                              |
-| [Tradier](https://developer.tradier.com)                                           | OPENBB_TRADIER_TOKEN                                                                                                                                                  |
-| [Twitter](https://developer.twitter.com)                                           | OPENBB_API_TWITTER_KEY <br/> OPENBB_API_TWITTER_SECRET_KEY <br/> OPENBB_API_TWITTER_BEARER_TOKEN                                                                      |
-| [Whale Alert](https://docs.whale-alert.io/)                                        | OPENBB_API_WHALE_ALERT_KEY                                                                                                                                            |
+| Website | Environment Variables |
+| :------ | :-------------------- |
+| [Alpha Vantage](https://www.alphavantage.co) | OPENBB_API_KEY_ALPHAVANTAGE |
+| [Binance](https://binance.com) | OPENBB_API_BINANCE_KEY <br/> OPENBB_API_BINANCE_SECRET |
+| [BitQuery](https://bitquery.io/pricing) | OPENBB_API_BITQUERY_KEY |
+| [Coinbase](https://docs.pro.coinbase.com/) | OPENBB_API_COINBASE_KEY <br/> OPENBB_API_COINBASE_SECRET <br/> OPENBB_API_COINBASE_PASS_PHRASE |
+| [Coinglass](https://coinglass.github.io/API-Reference/#api-key) | OPENBB_API_COINGLASS_KEY |
+| [CoinMarketCap](https://coinmarketcap.com) | OPENBB_API_CMC_KEY <br/> |
+| [Cryptopanic](https://cryptopanic.com/developers/api/) | OPENBB_API_CRYPTO_PANIC_KEY |
+| [DEGIRO](https://www.degiro.fr) | OPENBB_DG_USERNAME <br/> OPENBB_DG_PASSWORD <br/> OPENBB_DG_TOTP_SECRET |
+| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API) | OPENBB_API_ETHPLORER_KEY |
+| [Financial Modeling Prep](https://financialmodelingprep.com) | OPENBB_API_KEY_FINANCIALMODELINGPREP |
+| [Finnhub](https://finnhub.io) | OPENBB_API_FINNHUB_KEY |
+| [FRED](https://fred.stlouisfed.org) | OPENBB_API_FRED_KEY |
+| [GitHub](https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api) | OPENBB_API_GITHUB_KEY |
+| [Glassnode](https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key) | OPENBB_API_GLASSNODE_KEY |
+| [News](https://newsapi.org) | OPENBB_API_NEWS_TOKEN |
+| [Oanda](https://developer.oanda.com) | OPENBB_OANDA_TOKEN <br/> OPENBB_OANDA_ACCOUNT |
+| [Polygon](https://polygon.io) | OPENBB_API_POLYGON_KEY |
+| [Quandl](https://www.quandl.com) | OPENBB_API_KEY_QUANDL |
+| [Reddit](https://www.reddit.com) | OPENBB_API_REDDIT_CLIENT_ID <br> OPENBB_API_REDDIT_CLIENT_SECRET <br/> OPENBB_API_REDDIT_USERNAME <br/> OPENBB_API_REDDIT_USER_AGENT <br/> OPENBB_API_REDDIT_PASSWORD |
+| [SentimentInvestor](https://sentimentinvestor.com) | OPENBB_API_SENTIMENTINVESTOR_TOKEN <br> OPENBB_API_SENTIMENTINVESTOR_KEY |
+| [Tradier](https://developer.tradier.com) | OPENBB_TRADIER_TOKEN |
+| [Twitter](https://developer.twitter.com) | OPENBB_API_TWITTER_KEY <br/> OPENBB_API_TWITTER_SECRET_KEY <br/> OPENBB_API_TWITTER_BEARER_TOKEN |
+| [Whale Alert](https://docs.whale-alert.io/) | OPENBB_API_WHALE_ALERT_KEY |
 
 Example:
 
