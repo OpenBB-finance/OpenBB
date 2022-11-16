@@ -6,7 +6,7 @@ __docformat__ = "numpy"
 import logging
 import warnings
 from itertools import combinations
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Tuple, Optional, Union
 
 import pandas as pd
 import statsmodels.api as sm
@@ -34,7 +34,7 @@ def get_options(
 
     Returns
     -------
-    option_tables: dict
+    Dict[Union[str, Any], pd.DataFrame]
         A dictionary with a DataFrame for each option. With dataset_name set, only shows one
         options table.
     """
@@ -85,7 +85,7 @@ def clean(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with cleaned up data
     """
     fill_dict = {
@@ -207,7 +207,9 @@ def get_root(
 
 
 @log_start_end(log=logger)
-def get_granger_causality(dependent_series, independent_series, lags=3):
+def get_granger_causality(
+    dependent_series: pd.Series, independent_series: pd.Series, lags: int = 3
+) -> dict:
     """Calculate granger tests
 
     Parameters
@@ -218,6 +220,11 @@ def get_granger_causality(dependent_series, independent_series, lags=3):
         The series that you want to test whether it Granger-causes time_series_y
     lags : int
         The amount of lags for the Granger test. By default, this is set to 3.
+
+    Returns
+    -------
+    dict
+        Dictionary containing results of Granger test
     """
     granger_set = pd.concat([dependent_series, independent_series], axis=1)
 
@@ -301,7 +308,9 @@ def get_coint_df(
     return pd.DataFrame()
 
 
-def get_engle_granger_two_step_cointegration_test(dependent_series, independent_series):
+def get_engle_granger_two_step_cointegration_test(
+    dependent_series: pd.Series, independent_series: pd.Series
+) -> Tuple[float, float, float, pd.Series, float, float]:
     """Estimates long-run and short-run cointegration relationship for series y and x and apply
     the two-step Engle & Granger test for cointegration.
 
@@ -323,35 +332,35 @@ def get_engle_granger_two_step_cointegration_test(dependent_series, independent_
     ----------
     dependent_series : pd.Series
         The first time series of the pair to analyse.
-
     independent_series : pd.Series
         The second time series of the pair to analyse.
 
     Returns
     -------
-    c : float
-        The constant term in the long-run relationship y_t = c + gamma * x_t + z_t. This
-        describes the static shift of y with respect to gamma * x.
+    Tuple[float, float, float, pd.Series, float, float]
+        c : float
+            The constant term in the long-run relationship y_t = c + gamma * x_t + z_t. This
+            describes the static shift of y with respect to gamma * x.
 
-    gamma : float
-        The gamma term in the long-run relationship y_t = c + gamma * x_t + z_t. This
-        describes the ratio between the const-shifted y and x.
+        gamma : float
+            The gamma term in the long-run relationship y_t = c + gamma * x_t + z_t. This
+            describes the ratio between the const-shifted y and x.
 
-    alpha : float
-        The alpha term in the short-run relationship y_t - y_(t-1) = alpha * z_(t-1) + epsilon. This
-        gives an indication of the strength of the error correction toward the long-run mean.
+        alpha : float
+            The alpha term in the short-run relationship y_t - y_(t-1) = alpha * z_(t-1) + epsilon. This
+            gives an indication of the strength of the error correction toward the long-run mean.
 
-    z : pd.Series
-        Series of residuals z_t from the long-run relationship y_t = c + gamma * x_t + z_t, representing
-        the value of the error correction term.
+        z : pd.Series
+            Series of residuals z_t from the long-run relationship y_t = c + gamma * x_t + z_t, representing
+            the value of the error correction term.
 
-    dfstat : float
-        The Dickey Fuller test-statistic for phi = 1 vs phi < 1 in the second equation. A more
-        negative value implies the existence of stronger cointegration.
+        dfstat : float
+            The Dickey Fuller test-statistic for phi = 1 vs phi < 1 in the second equation. A more
+            negative value implies the existence of stronger cointegration.
 
-    pvalue : float
-        The p-value corresponding to the Dickey Fuller test-statistic. A lower value implies
-        stronger rejection of no-cointegration, thus stronger evidence of cointegration.
+        pvalue : float
+            The p-value corresponding to the Dickey Fuller test-statistic. A lower value implies
+            stronger rejection of no-cointegration, thus stronger evidence of cointegration.
 
     """
     warnings.simplefilter(action="ignore", category=FutureWarning)

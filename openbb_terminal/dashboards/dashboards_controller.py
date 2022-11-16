@@ -167,7 +167,6 @@ def create_call_voila(other_args: List[str], name: str, filename: str = None) ->
             )
         else:
             console.print(f"Type: {cmd} voila/{file}\ninto a terminal to run.")
-        console.print("")
 
 
 def create_call_streamlit(
@@ -210,4 +209,3 @@ def create_call_streamlit(
             )
         else:
             console.print(f"Type: {cmd} stream/{file}\ninto a terminal to run.")
-        console.print("")

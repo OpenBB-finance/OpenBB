@@ -149,7 +149,6 @@ def display_simple_ema(
         console.print("Backtesting on intraday data is not yet supported.")
         console.print("Submit a feature request to let us know that you need it here:")
         console.print("https://openbb.co/request-a-feature")
-        console.print("")
         return
 
     # This plot has 1 axis
@@ -218,7 +217,6 @@ def display_emacross(
         console.print("Backtesting on intraday data is not yet supported.")
         console.print("Submit a feature request to let us know that you need it here:")
         console.print("https://openbb.co/request-a-feature")
-        console.print("")
         return
 
     # This plot has 1 axis
@@ -290,7 +288,6 @@ def display_rsi_strategy(
         console.print("Backtesting on intraday data is not yet supported.")
         console.print("Submit a feature request to let us know that you need it here:")
         console.print("https://openbb.co/request-a-feature")
-        console.print("")
         return
 
     # This plot has 1 axis

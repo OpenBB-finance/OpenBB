@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union, List, Optional
+from typing import Tuple, Union, List, Optional
 import warnings
 
 import pandas as pd
@@ -36,7 +36,13 @@ def get_tcn_data(
     model_save_name: str = "tcn_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
+) -> Tuple[
+    List[Optional[TimeSeries]],
+    List[Optional[TimeSeries]],
+    List[Optional[TimeSeries]],
+    Optional[float],
+    Optional[type[TCNModel]],
+]:
     """Perform TCN forecasting
 
     Parameters
@@ -82,16 +88,12 @@ def get_tcn_data(
 
     Returns
     -------
-    List[TimeSeries]
-        Adjusted Data series
-    List[TimeSeries]
-        Historical forecast by best RNN model
-    List[TimeSeries]
-        list of Predictions
-    Optional[float]
-        Mean average precision error
-    Any
-        Best TCN Model
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], type[TCNModel]]
+        Adjusted Data series,
+        Historical forecast by best RNN model,
+        list of Predictions,
+        Mean average precision error,
+        Best TCN Model.
     """
 
     # TODO Check if torch GPU AVAILABLE

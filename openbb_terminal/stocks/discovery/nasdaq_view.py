@@ -43,6 +43,7 @@ def display_top_retail(limit: int = 3, export: str = ""):
             show_index=False,
             title=f"[bold]{date} Top Retail:[/bold]",
         )
+        console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "rtat", retails)
 

@@ -307,7 +307,6 @@ class TechnicalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             webbrowser.open(f"https://www.tradingview.com/chart/?symbol={self.ticker}")
-            console.print("")
 
     @log_start_end(log=logger)
     def call_view(self, other_args: List[str]):

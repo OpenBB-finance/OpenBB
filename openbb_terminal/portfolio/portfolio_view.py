@@ -77,7 +77,7 @@ def load_info():
     """Prints instructions to load a CSV
 
     Returns
-    ----------
+    -------
     text : str
         Information on how to load a csv
     """
@@ -498,7 +498,6 @@ def display_monthly_returns(
             headers=benchmark_returns.columns,
             show_index=True,
         )
-        console.print("\n")
 
     else:
         if external_axes is None:

@@ -65,7 +65,7 @@ def lambda_red_highlight(val) -> str:
         dataframe values to color
 
     Returns
-    ----------
+    -------
     str
         colored dataframes values
     """
@@ -81,7 +81,7 @@ def lambda_green_highlight(val) -> str:
         dataframe values to color
 
     Returns
-    ----------
+    -------
     List[str]
         colored dataframes values
     """
@@ -98,7 +98,7 @@ def check_valid_option_chains_headers(headers: str) -> List[str]:
         Option chains headers
 
     Returns
-    ----------
+    -------
     List[str]
         List of columns string
     """
@@ -428,7 +428,6 @@ def plot_vol(
         "vol_tr",
         options,
     )
-    console.print("")
 
 
 @log_start_end(log=logger)

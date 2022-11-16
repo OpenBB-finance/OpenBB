@@ -38,7 +38,7 @@ def display_active_addresses(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display active addresses of a certain symbol over time
+    """Plots active addresses of a certain symbol over time
     [Source: https://glassnode.org]
 
     Parameters
@@ -101,7 +101,7 @@ def display_non_zero_addresses(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display addresses with non-zero balance of a certain symbol
+    """Plots addresses with non-zero balance of a certain symbol
     [Source: https://glassnode.org]
 
     Parameters
@@ -163,7 +163,7 @@ def display_exchange_net_position_change(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display 30d change of the supply held in exchange wallets.
+    """Plots 30d change of the supply held in exchange wallets.
     [Source: https://glassnode.org]
 
     Parameters
@@ -245,7 +245,7 @@ def display_exchange_balances(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display total amount of coins held on exchange addresses in units and percentage.
+    """Plots total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.org]
 
     Parameters
@@ -324,7 +324,7 @@ def display_hashrate(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display dataframe with mean hashrate of btc or eth blockchain and symbol price.
+    """Plots dataframe with mean hashrate of btc or eth blockchain and symbol price.
     [Source: https://glassnode.org]
 
     Parameters

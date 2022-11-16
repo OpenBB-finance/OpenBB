@@ -53,7 +53,7 @@ def display_messari_timeseries_list(
     only_free: bool = True,
     export: str = "",
 ) -> None:
-    """Display messari timeseries list
+    """Prints table showing messari timeseries list
     [Source: https://messari.io/]
 
     Parameters
@@ -110,7 +110,7 @@ def display_messari_timeseries(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display messari timeseries
+    """Plots messari timeseries
     [Source: https://messari.io/]
 
     Parameters
@@ -187,7 +187,7 @@ def display_marketcap_dominance(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display market dominance of a coin over time
+    """Plots market dominance of a coin over time
     [Source: https://messari.io/]
 
     Parameters
@@ -248,7 +248,7 @@ def display_marketcap_dominance(
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
 def display_links(symbol: str, export: str = "") -> None:
-    """Display coin links
+    """Prints table showing coin links
     [Source: https://messari.io/]
 
     Parameters
@@ -289,7 +289,7 @@ def display_roadmap(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display coin roadmap
+    """Plots coin roadmap
     [Source: https://messari.io/]
 
     Parameters
@@ -389,7 +389,7 @@ def display_tokenomics(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display coin tokenomics
+    """Plots coin tokenomics
     [Source: https://messari.io/]
 
     Parameters
@@ -472,7 +472,7 @@ def display_project_info(
     symbol: str,
     export: str = "",
 ) -> None:
-    """Display project info
+    """Prints table showing project info
     [Source: https://messari.io/]
 
     Parameters
@@ -512,7 +512,7 @@ def display_investors(
     symbol: str,
     export: str = "",
 ) -> None:
-    """Display coin investors
+    """Prints table showing coin investors
     [Source: https://messari.io/]
 
     Parameters
@@ -558,7 +558,7 @@ def display_team(
     symbol: str,
     export: str = "",
 ) -> None:
-    """Display coin team
+    """Prints table showing coin team
     [Source: https://messari.io/]
 
     Parameters
@@ -604,7 +604,7 @@ def display_governance(
     symbol: str,
     export: str = "",
 ) -> None:
-    """Display coin governance
+    """Prints table showing coin governance
     [Source: https://messari.io/]
 
     Parameters

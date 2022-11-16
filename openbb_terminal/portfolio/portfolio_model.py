@@ -34,7 +34,7 @@ class PortfolioEngine:
     Implements a Portfolio and related methods.
 
     Methods
-    -------
+    ----------
     read_transactions: Class method to read transactions from file
 
     __set_transactions:
@@ -102,7 +102,8 @@ class PortfolioEngine:
 
         Returns
         -------
-            pd.DataFrame: formatted transactions
+        pd.DataFrame
+            Formatted transactions
         """
 
         df = self.__transactions[
@@ -2676,7 +2677,7 @@ def get_main_text(data: pd.DataFrame) -> str:
         Stock holdings and returns with market returns
 
     Returns
-    ----------
+    -------
     text : str
         The main summary of performance
     """
@@ -2719,7 +2720,7 @@ def get_beta_text(data: pd.DataFrame) -> str:
         The beta history of the stock
 
     Returns
-    ----------
+    -------
     text : str
         The beta history for a ticker
     """

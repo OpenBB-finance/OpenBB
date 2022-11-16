@@ -91,7 +91,7 @@ def display_orders(
     Parameters
     ----------
     limit: int
-        Last <limit> of trades. Maximum is 1000.
+        Last `limit` of trades. Maximum is 1000.
     sortby: str
         Key to sort by
     descend: bool
@@ -130,7 +130,7 @@ def display_deposits(
     Parameters
     ----------
     limit: int
-        Last <limit> of trades. Maximum is 1000.
+        Last `limit` of trades. Maximum is 1000.
     sortby: str
         Key to sort by
     descend: bool

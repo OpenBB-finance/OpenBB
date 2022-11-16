@@ -7,13 +7,13 @@ class Metadata:
         return self.__dir_list
 
     @property
-    def doc_string(self) -> str:
-        return self.__doc_string
+    def docstring(self) -> str:
+        return self.__docstring
 
     def __init__(
         self,
         dir_list: List[str],
-        doc_string: str = "",
+        docstring: str = "",
     ) -> None:
         self.__dir_list = dir_list
-        self.__doc_string = doc_string
+        self.__docstring = docstring

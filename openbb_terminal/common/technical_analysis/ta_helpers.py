@@ -25,7 +25,7 @@ def check_columns(
         Whether to check for close column
 
     Returns
-    ----------
+    -------
     Optional[str]
         The name of the close column, none if df is invalid
 

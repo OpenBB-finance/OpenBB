@@ -5,10 +5,13 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from datetime import date
 
+
 import numpy as np
+from numpy._typing import NDArray
+from numpy import floating
 import pandas as pd
 import riskfolio as rp
 from dateutil.relativedelta import relativedelta, FR
@@ -172,7 +175,7 @@ def get_equal_weights(
     threshold: float = 0,
     method: str = "time",
     value: float = 1.0,
-) -> Tuple:
+) -> Tuple[Dict[str, float], pd.DataFrame]:
     """Equally weighted portfolio, where weight = 1/# of symbols
 
     Parameters
@@ -209,8 +212,8 @@ def get_equal_weights(
 
     Returns
     -------
-    dict
-        Dictionary of weights where keys are the tickers
+    Tuple[Dict[str, float], pd.DataFrame]
+        Dictionary of weights where keys are the tickers, dataframe of stock returns
     """
 
     stock_prices = yahoo_finance_model.process_stocks(
@@ -243,7 +246,7 @@ def get_property_weights(
     method: str = "time",
     s_property: str = "marketCap",
     value: float = 1.0,
-) -> Tuple:
+) -> Tuple[Optional[Dict[str, Any]], Optional[pd.DataFrame]]:
     """Calculate portfolio weights based on selected property
 
     Parameters
@@ -263,11 +266,9 @@ def get_property_weights(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-
         - 'D' for daily returns.
         - 'W' for weekly returns.
         - 'M' for monthly returns.
-
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
         returns.
@@ -282,7 +283,7 @@ def get_property_weights(
 
     Returns
     -------
-    Dict
+    Tuple[Dict[str, Any], pd.DataFrame]
         Dictionary of portfolio weights or allocations
     """
 
@@ -339,7 +340,7 @@ def get_mean_risk_portfolio(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a mean risk optimal portfolio
 
     Parameters
@@ -444,8 +445,9 @@ def get_mean_risk_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -536,7 +538,7 @@ def get_max_sharpe(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a maximal return/risk ratio portfolio
 
@@ -630,8 +632,9 @@ def get_max_sharpe(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
@@ -682,7 +685,7 @@ def get_min_risk(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a maximal return/risk ratio portfolio
 
@@ -776,8 +779,9 @@ def get_min_risk(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
@@ -828,7 +832,7 @@ def get_max_util(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a maximal return/risk ratio portfolio
 
@@ -922,8 +926,9 @@ def get_max_util(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
@@ -974,7 +979,7 @@ def get_max_ret(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a maximal return/risk ratio portfolio
 
@@ -1068,8 +1073,9 @@ def get_max_ret(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
@@ -1113,7 +1119,7 @@ def get_max_diversification_portfolio(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a maximal diversification portfolio
 
     Parameters
@@ -1171,8 +1177,9 @@ def get_max_diversification_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1227,7 +1234,7 @@ def get_max_decorrelation_portfolio(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a maximal decorrelation portfolio
 
     Parameters
@@ -1285,8 +1292,9 @@ def get_max_decorrelation_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1350,7 +1358,7 @@ def get_black_litterman_portfolio(
     optimize: bool = True,
     value: float = 1.0,
     value_short: float = 0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a maximal diversification portfolio
 
     Parameters
@@ -1420,8 +1428,9 @@ def get_black_litterman_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1519,7 +1528,16 @@ def get_ef(
     value_short: float = 0.0,
     n_portfolios: int = 100,
     seed: int = 123,
-) -> Tuple:
+) -> Tuple[
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    Optional[pd.DataFrame],
+    NDArray[floating],
+    NDArray[floating],
+    rp.Portfolio,
+]:
     """
     Get efficient frontier
 
@@ -1587,8 +1605,18 @@ def get_ef(
 
     Returns
     -------
-    Tuple
-        Parameters to create efficient frontier: frontier, mu, cov, stock_returns, weights, X1, Y1, port
+    Tuple[
+        pd.DataFrame,
+        pd.DataFrame,
+        pd.DataFrame,
+        pd.DataFrame,
+        Optional[pd.DataFrame],
+        NDArray[floating],
+        NDArray[floating],
+        rp.Portfolio,
+    ]
+        Parameters to create efficient frontier:
+        frontier, mu, cov, stock_returns, weights, X1, Y1, port
     """
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1618,7 +1646,7 @@ def get_ef(
         port.budget = value
 
     # Estimate tangency portfolio:
-    weights = port.optimization(
+    weights: Optional[pd.DataFrame] = port.optimization(
         model="Classic",
         rm=risk_choices[risk_measure.lower()],
         obj="Sharpe",
@@ -1698,7 +1726,7 @@ def get_risk_parity_portfolio(
     covariance: str = "hist",
     d_ewma: float = 0.94,
     value: float = 1.0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a risk parity portfolio using the risk budgeting approach
 
     Parameters
@@ -1787,8 +1815,9 @@ def get_risk_parity_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1855,7 +1884,7 @@ def get_rel_risk_parity_portfolio(
     covariance: str = "hist",
     d_ewma: float = 0.94,
     value: float = 1.0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a relaxed risk parity portfolio using the least squares approach
 
     Parameters
@@ -1935,8 +1964,9 @@ def get_rel_risk_parity_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -2012,7 +2042,7 @@ def get_hcp_portfolio(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds hierarchical clustering based portfolios
 
     Parameters
@@ -2186,8 +2216,9 @@ def get_hcp_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -2269,7 +2300,7 @@ def get_hrp(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a hierarchical risk parity portfolio
 
@@ -2436,6 +2467,12 @@ def get_hrp(
         Amount to allocate to portfolio in short positions, by default 0.0
     table: bool, optional
         True if plot table weights, by default False
+
+    Returns
+    -------
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     weights, stock_returns = get_hcp_portfolio(
         symbols=symbols,
@@ -2499,7 +2536,7 @@ def get_herc(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a hierarchical risk parity portfolio
 
@@ -2666,6 +2703,12 @@ def get_herc(
         Amount to allocate to portfolio in short positions, by default 0.0
     table: bool, optional
         True if plot table weights, by default False
+
+    Returns
+    -------
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     weights, stock_returns = get_hcp_portfolio(
         symbols=symbols,
@@ -2729,7 +2772,7 @@ def get_nco(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
-) -> Tuple:
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a hierarchical risk parity portfolio
 
@@ -2896,6 +2939,12 @@ def get_nco(
         Amount to allocate to portfolio in short positions, by default 0.0
     table: bool, optional
         True if plot table weights, by default False
+
+    Returns
+    -------
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     weights, stock_returns = get_hcp_portfolio(
         symbols=symbols,
@@ -2940,7 +2989,7 @@ def black_litterman(
     risk_free_rate: float = 0,
     equilibrium: bool = True,
     factor: float = 252,
-) -> Tuple:
+) -> Tuple[dict, dict, dict]:
     """
     Calculates Black-Litterman estimates following He and Litterman (1999)
 
@@ -2968,9 +3017,10 @@ def black_litterman(
 
     Returns
     -------
-    Tuple:
+    Tuple[dict, dict, dict]
         Black-Litterman model estimates of expected returns,
-        covariance matrix and portfolio weights.
+        Covariance matrix,
+        Portfolio weights.
     """
     symbols = stock_returns.columns.tolist()
     benchmark = pd.Series(benchmark).to_numpy().reshape(-1, 1)

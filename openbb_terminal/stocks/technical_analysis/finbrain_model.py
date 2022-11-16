@@ -22,7 +22,7 @@ def get_technical_summary_report(symbol: str) -> str:
 
     Returns
     -------
-    report:str
+    report: str
         technical summary report
     """
     result = requests.get(f"https://api.finbrain.tech/v0/technicalSummary/{symbol}")

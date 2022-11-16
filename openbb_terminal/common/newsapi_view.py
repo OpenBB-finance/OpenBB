@@ -25,7 +25,7 @@ def display_news(
     sources: str = "",
     export: str = "",
 ) -> None:
-    """Display news for a given term. [Source: NewsAPI]
+    """Prints table showing news for a given term. [Source: NewsAPI]
 
     Parameters
     ----------

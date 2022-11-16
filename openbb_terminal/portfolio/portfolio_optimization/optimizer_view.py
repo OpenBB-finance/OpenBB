@@ -232,7 +232,7 @@ def portfolio_performance(
     factor_1 = str(int(time_factor[freq])) + ") "
     factor_2 = "√" + factor_1
 
-    print("Annual (by " + factor_1 + f"expected return: {100 * mu:.2f}%")
+    print("\nAnnual (by " + factor_1 + f"expected return: {100 * mu:.2f}%")
     print("Annual (by " + factor_2 + f"volatility: {100 * sigma:.2f}%")
     print(f"Sharpe ratio: {sharpe:.4f}")
 
@@ -708,7 +708,7 @@ def display_equal_weight(
     )
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -721,7 +721,6 @@ def display_equal_weight(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -743,7 +742,7 @@ def display_property_weighting(
     alpha=0.05,
     value: float = 1,
     table: bool = False,
-) -> Dict:
+) -> Dict[str, float]:
     """
     Builds a portfolio weighted by selected property
 
@@ -823,7 +822,7 @@ def display_property_weighting(
     )
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -836,7 +835,6 @@ def display_property_weighting(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1010,7 +1008,7 @@ def display_mean_risk(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1023,7 +1021,6 @@ def display_mean_risk(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1183,7 +1180,7 @@ def display_max_sharpe(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1196,7 +1193,6 @@ def display_max_sharpe(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1352,7 +1348,7 @@ def display_min_risk(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1365,7 +1361,6 @@ def display_min_risk(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1521,7 +1516,7 @@ def display_max_util(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1534,7 +1529,6 @@ def display_max_util(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1690,7 +1684,7 @@ def display_max_ret(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1703,7 +1697,6 @@ def display_max_ret(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1805,7 +1798,7 @@ def display_max_div(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1818,7 +1811,6 @@ def display_max_div(
             # b_sim=None,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1921,7 +1913,7 @@ def display_max_decorr(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1934,7 +1926,6 @@ def display_max_decorr(
             # b_simb_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -2062,7 +2053,7 @@ def display_black_litterman(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -2075,7 +2066,6 @@ def display_black_litterman(
             # b_simb_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -2438,7 +2428,7 @@ def display_risk_parity(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -2447,7 +2437,6 @@ def display_risk_parity(
             risk_free_rate=risk_free_rate,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -2580,7 +2569,7 @@ def display_rel_risk_parity(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -2588,7 +2577,6 @@ def display_rel_risk_parity(
             risk_measure=risk_choices["mv"],
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -2846,7 +2834,7 @@ def display_hcp(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -2859,7 +2847,6 @@ def display_hcp(
             b_sim=b_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -3091,7 +3078,7 @@ def display_hrp(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -3104,7 +3091,6 @@ def display_hrp(
             b_sim=b_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -3344,7 +3330,7 @@ def display_herc(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -3357,7 +3343,6 @@ def display_herc(
             b_sim=b_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -3608,7 +3593,7 @@ def display_nco(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -3621,7 +3606,6 @@ def display_nco(
             b_sim=b_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 

@@ -33,7 +33,7 @@ def display_bbands(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Show bollinger bands
+    """Plots bollinger bands
 
     Parameters
     ----------
@@ -117,7 +117,7 @@ def display_donchian(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Show donchian channels
+    """Plots donchian channels
 
     Parameters
     ----------
@@ -201,7 +201,7 @@ def view_kc(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """View Keltner Channels Indicator
+    """Plots Keltner Channels Indicator
 
     Parameters
     ----------
@@ -295,7 +295,7 @@ def display_atr(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Show ATR
+    """Plots ATR
 
     Parameters
     ----------

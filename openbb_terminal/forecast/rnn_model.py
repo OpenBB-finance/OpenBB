@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Any, Tuple, Union, List, Optional
+from typing import Tuple, Union, List, Optional
 
 import pandas as pd
 
@@ -35,7 +35,13 @@ def get_rnn_data(
     input_chunk_size: int = 14,
     force_reset: bool = True,
     save_checkpoints: bool = True,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
+) -> Tuple[
+    Optional[List[type[TimeSeries]]],
+    Optional[List[type[TimeSeries]]],
+    Optional[List[type[TimeSeries]]],
+    Optional[float],
+    Optional[type[RNNModel]],
+]:
     """Perform RNN forecasting
 
     Parameters
@@ -73,15 +79,11 @@ def get_rnn_data(
 
     Returns
     -------
-    List[TimeSeries]
-        Adjusted Data series
-    List[TimeSeries]
-        Historical forecast by best RNN model
-    List[TimeSeries]
-        list of Predictions
-    float
-        Mean average precision error
-    Any
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], type[RNNModel]]
+        Adjusted Data series,
+        Historical forecast by best RNN model,
+        list of Predictions,
+        Mean average precision error,
         Best RNN Model
     """
 

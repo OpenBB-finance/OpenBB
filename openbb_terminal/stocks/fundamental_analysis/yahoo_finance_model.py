@@ -263,7 +263,7 @@ def get_dividends(symbol: str) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of dividends and dates
     """
     return pd.DataFrame(yf.Ticker(symbol).dividends)
@@ -285,7 +285,7 @@ def get_mktcap(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of estimated market cap over time
     str:
         Currency of ticker
@@ -319,7 +319,7 @@ def get_splits(symbol: str) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of forward and reverse splits
     """
     data = yf.Ticker(symbol).splits
