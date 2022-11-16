@@ -12,15 +12,15 @@
 
 {{< highlight python >}}
 portfolio.metric.kelly(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     chart: bool = False,
-)
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 .. raw:: html
 
     <p>
-    Gets kelly criterion
+    Get kelly criterion
     </p>
 
 * **Parameters**
@@ -38,6 +38,6 @@ portfolio.metric.kelly(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.metric.kelly(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.metric.kelly(p)
     {{< /highlight >}}

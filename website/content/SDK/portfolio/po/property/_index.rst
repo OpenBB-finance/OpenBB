@@ -26,7 +26,7 @@ portfolio.po.property(
     s_property: str = 'marketCap',
     value: float = 1.0,
     chart: bool = False,
-) -> Tuple
+) -> Tuple[Optional[Dict[str, Any]], Optional[pandas.core.frame.DataFrame]]
 {{< /highlight >}}
 
 .. raw:: html
@@ -52,11 +52,9 @@ portfolio.po.property(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-
         - 'D' for daily returns.
         - 'W' for weekly returns.
         - 'M' for monthly returns.
-
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
         returns.
@@ -74,7 +72,7 @@ portfolio.po.property(
 
 * **Returns**
 
-    Dict
+    Tuple[Dict[str, Any], pd.DataFrame]
         Dictionary of portfolio weights or allocations
 
 |
@@ -101,7 +99,7 @@ portfolio.po.property(
     value: float = 1,
     table: bool = False,
     chart: bool = False,
-) -> Dict
+) -> Dict[str, float]
 {{< /highlight >}}
 
 .. raw:: html
