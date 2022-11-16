@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import textwrap
-from typing import Tuple, Optional, Any
+from typing import Tuple, Optional
 from datetime import datetime, timedelta
 
 import pandas as pd
