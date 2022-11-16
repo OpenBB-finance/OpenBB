@@ -36,7 +36,7 @@ def display_adx(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot ADX indicator
+    """Plots ADX indicator
 
     Parameters
     ----------
@@ -126,7 +126,7 @@ def display_aroon(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot Aroon indicator
+    """Plots Aroon indicator
 
     Parameters
     ----------

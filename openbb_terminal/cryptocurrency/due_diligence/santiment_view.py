@@ -1,7 +1,6 @@
 import logging
 import os
 from typing import List, Optional
-from datetime import datetime, timedelta
 
 from matplotlib import pyplot as plt
 
@@ -26,11 +25,9 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SANTIMENT_KEY"])
 def display_github_activity(
     symbol: str,
-    start_date: str = (datetime.now() - timedelta(days=365)).strftime(
-        "%Y-%m-%dT%H:%M:%SZ"
-    ),
+    start_date: str = None,
     dev_activity: bool = False,
-    end_date: str = (datetime.now()).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    end_date: str = None,
     interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,

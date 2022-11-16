@@ -29,7 +29,7 @@ def display_dex_trades(
     ascend: bool = True,
     export: str = "",
 ) -> None:
-    """Trades on Decentralized Exchanges aggregated by DEX or Month
+    """Prints table showing Trades on Decentralized Exchanges aggregated by DEX or Month
     [Source: https://graphql.bitquery.io/]
 
     Parameters
@@ -93,7 +93,7 @@ def display_daily_volume_for_given_pair(
     ascend: bool = True,
     export: str = "",
 ) -> None:
-    """Display daily volume for given pair
+    """Prints table showing daily volume for given pair
     [Source: https://graphql.bitquery.io/]
 
     Parameters
@@ -166,7 +166,7 @@ def display_dex_volume_for_token(
     ascend: bool = True,
     export: str = "",
 ) -> None:
-    """Display token volume on different Decentralized Exchanges.
+    """Prints table showing token volume on different Decentralized Exchanges.
     [Source: https://graphql.bitquery.io/]
 
     Parameters
@@ -183,6 +183,7 @@ def display_dex_volume_for_token(
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
+
     Returns
     -------
     pd.DataFrame
@@ -229,8 +230,8 @@ def display_ethereum_unique_senders(
     ascend: bool = True,
     export: str = "",
 ) -> None:
-    """Display number of unique ethereum addresses which made a transaction in given time interval
-     [Source: https://graphql.bitquery.io/]
+    """Prints table showing number of unique ethereum addresses which made a transaction in given time interval
+    [Source: https://graphql.bitquery.io/]
 
     Parameters
     ----------
@@ -247,6 +248,7 @@ def display_ethereum_unique_senders(
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
+
     Returns
     -------
     pd.DataFrame
@@ -290,8 +292,8 @@ def display_most_traded_pairs(
     ascend: bool = True,
     export: str = "",
 ) -> None:
-    """Display most traded crypto pairs on given decentralized exchange in chosen time period.
-     [Source: https://graphql.bitquery.io/]
+    """Prints table showing most traded crypto pairs on given decentralized exchange in chosen time period.
+    [Source: https://graphql.bitquery.io/]
 
     Parameters
     ----------
@@ -349,7 +351,7 @@ def display_spread_for_crypto_pair(
     ascend: bool = True,
     export: str = "",
 ) -> None:
-    """Display an average bid and ask prices, average spread for given crypto pair for chosen
+    """Prints table showing an average bid and ask prices, average spread for given crypto pair for chosen
     time period. [Source: https://graphql.bitquery.io/]
 
     Parameters

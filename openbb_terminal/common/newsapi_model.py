@@ -19,10 +19,10 @@ logger = logging.getLogger(__name__)
 def get_news(
     query: str,
     limit: int = 10,
-    start_date: str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
+    start_date: str = None,
     show_newest: bool = True,
     sources: str = "",
-) -> List[Tuple[Any, Any]]:
+) -> List[Tuple[pd.DataFrame, Any]]:
     """Get news for a given term. [Source: NewsAPI]
 
     Parameters
@@ -37,10 +37,15 @@ def get_news(
         sources to exclusively show news from (comma separated)
 
     Returns
-    ----------
-    tables : List[Tuple]
-        List of tuples containing news df in first index and dict containing title of news df
+    -------
+    tables : List[Tuple[pd.DataFrame, dict]]
+        List of tuples containing news df in first index,
+        dict containing title of news df.
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
+
     link = (
         f"https://newsapi.org/v2/everything?q={query}&from={start_date}&sortBy=publishedAt"
         "&language=en"
@@ -83,7 +88,7 @@ def get_news(
     else:
         console.print(f"Error in request: {response.json()['message']}", "\n")
 
-    tables = []
+    tables: List[Tuple[pd.DataFrame, dict]] = []
     if articles:
         for idx, article in enumerate(articles):
             # Unnecessary to use source name because contained in link article["source"]["name"]

@@ -35,4 +35,3 @@ def print_brokers_holdings(portfolio):
             console.print(to_print, "green")
         else:
             console.print(to_print, "red")
-    console.print("")

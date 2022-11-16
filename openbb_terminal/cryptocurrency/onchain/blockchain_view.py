@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_btc_circulating_supply(
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -44,6 +44,9 @@ def display_btc_circulating_supply(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df = blockchain_model.get_btc_circulating_supply()
 
@@ -84,7 +87,7 @@ def display_btc_circulating_supply(
 @log_start_end(log=logger)
 def display_btc_confirmed_transactions(
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -101,6 +104,9 @@ def display_btc_confirmed_transactions(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df = blockchain_model.get_btc_confirmed_transactions()
 
