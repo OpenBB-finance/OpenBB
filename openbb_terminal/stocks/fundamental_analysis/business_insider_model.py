@@ -67,7 +67,6 @@ def get_management(symbol: str) -> pd.DataFrame:
         console.print(
             f"[red]No management information in Business Insider for {symbol}[/red]"
         )
-        console.print("")
         return pd.DataFrame()
 
     l_titles = [

@@ -581,7 +581,7 @@ def plot_explainability(
     shap_explain = ShapExplainer(model)
     shap_explain.summary_plot(horizons=1)
     if explainability_raw:
-        console.print("")
+        console.print("\n")
         console.print("[green]Exporting Raw Explainability DataFrame[/green]")
         raw_df = shap_explain.explain().get_explanation(horizon=1).pd_dataframe()
         export_data(

@@ -31,4 +31,3 @@ def display_analysis(symbol: str, export: str = "") -> None:
         )
     else:
         console.print("Filings not found from eclect.us")
-    console.print("")

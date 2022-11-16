@@ -250,5 +250,4 @@ def screener(
 
         return list(df_screen.head(n=limit)["Ticker"].values)
 
-    console.print("")
     return []

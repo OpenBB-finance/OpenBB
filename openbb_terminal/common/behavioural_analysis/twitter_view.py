@@ -71,7 +71,7 @@ def display_inference(symbol: str, limit: int = 100, export: str = ""):
     console.print(
         f"Of the last {len(df_tweets)} tweets, {100*percent_neg:.2f} % had a higher negative sentiment"
     )
-    console.print("")
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "infer", df_tweets)
 
 
