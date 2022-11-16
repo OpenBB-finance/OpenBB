@@ -53,8 +53,8 @@ def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
             if action.dest == "help":
                 continue
 
-            if action.default is not None:
-                default = action.default
+            default = action.default
+            if default is not None:
                 if isinstance(default, list):
                     default = ", ".join([str(x) for x in default])
 
