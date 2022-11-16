@@ -229,7 +229,6 @@ class ComparisonAnalysisController(BaseController):
                     )
                 else:
                     self.ticker = ns_parser.ticker.upper()
-            console.print()
 
     @log_start_end(log=logger)
     def call_tsne(self, other_args: List[str]):

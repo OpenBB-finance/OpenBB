@@ -605,7 +605,6 @@ def show_quick_performance(
     except Exception:
         pass
 
-    console.print()
     exchange_str = f"in {exchange.capitalize()}" if source == "ccxt" else ""
     print_rich_table(
         df,
@@ -614,6 +613,7 @@ def show_quick_performance(
         title=f"{symbol.upper()}/{current_currency.upper()} Performance {exchange_str}",
     )
     console.print()
+
 
 
 def load_yf_data(symbol: str, currency: str, interval: str, days: int):
@@ -645,6 +645,7 @@ def display_all_coins(
     It will search for coin that has similar name to polka and display top 25 matches.
         -c, --coin stands for coin - you provide here your search query
         -t, --top it displays top N number of records.
+
     Parameters
     ----------
     limit: int
@@ -722,7 +723,6 @@ def display_all_coins(
         else:
             df = pd.DataFrame(columns=["index", "id", "symbol"])
             console.print("Couldn't find any coins")
-        console.print("")
 
     try:
         df = df[skip : skip + limit]  # noqa

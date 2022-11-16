@@ -721,7 +721,6 @@ class OptionsController(BaseController):
                 self.expiry_dates = nasdaq_model.get_expirations(self.ticker)
             else:
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
-            console.print("")
 
             if self.ticker and self.selected_date:
                 try:
@@ -775,7 +774,6 @@ class OptionsController(BaseController):
                 # Print possible expiry dates
                 if ns_parser.index == -1 and not ns_parser.date:
                     tradier_view.display_expiry_dates(self.expiry_dates)
-                    console.print("")
                 elif ns_parser.date:
                     if ns_parser.date in self.expiry_dates:
                         console.print(f"Expiration set to {ns_parser.date} \n")
