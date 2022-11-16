@@ -81,7 +81,6 @@ class FeatureFlagsController(BaseController):
         set_key(
             obbff.USER_ENV_FILE, "OPENBB_RETRY_WITH_LOAD", str(obbff.RETRY_WITH_LOAD)
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_tab(self, _):
@@ -90,7 +89,6 @@ class FeatureFlagsController(BaseController):
         set_key(
             obbff.USER_ENV_FILE, "OPENBB_USE_TABULATE_DF", str(obbff.USE_TABULATE_DF)
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_cls(self, _):
@@ -101,14 +99,12 @@ class FeatureFlagsController(BaseController):
             "OPENBB_USE_CLEAR_AFTER_CMD",
             str(obbff.USE_CLEAR_AFTER_CMD),
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_color(self, _):
         """Process color command"""
         obbff.USE_COLOR = not obbff.USE_COLOR
         set_key(obbff.USER_ENV_FILE, "OPENBB_USE_COLOR", str(obbff.USE_COLOR))
-        console.print("")
 
     @log_start_end(log=logger)
     def call_promptkit(self, _):
@@ -119,7 +115,6 @@ class FeatureFlagsController(BaseController):
             "OPENBB_USE_PROMPT_TOOLKIT",
             str(obbff.USE_PROMPT_TOOLKIT),
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_thoughts(self, _):
@@ -130,7 +125,6 @@ class FeatureFlagsController(BaseController):
             "OPENBB_ENABLE_THOUGHTS_DAY",
             str(obbff.ENABLE_THOUGHTS_DAY),
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_reporthtml(self, _):
@@ -141,7 +135,6 @@ class FeatureFlagsController(BaseController):
             "OPENBB_OPEN_REPORT_AS_HTML",
             str(obbff.OPEN_REPORT_AS_HTML),
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_exithelp(self, _):
@@ -152,7 +145,6 @@ class FeatureFlagsController(BaseController):
             "OPENBB_ENABLE_EXIT_AUTO_HELP",
             str(obbff.ENABLE_EXIT_AUTO_HELP),
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_rcontext(self, _):
@@ -163,21 +155,18 @@ class FeatureFlagsController(BaseController):
             "OPENBB_REMEMBER_CONTEXTS",
             str(obbff.REMEMBER_CONTEXTS),
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_dt(self, _):
         """Process dt command"""
         obbff.USE_DATETIME = not obbff.USE_DATETIME
         set_key(obbff.USER_ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
-        console.print("")
 
     @log_start_end(log=logger)
     def call_rich(self, _):
         """Process rich command"""
         obbff.ENABLE_RICH = not obbff.ENABLE_RICH
         set_key(obbff.USER_ENV_FILE, "OPENBB_ENABLE_RICH", str(obbff.ENABLE_RICH))
-        console.print("")
 
     @log_start_end(log=logger)
     def call_richpanel(self, _):
@@ -188,21 +177,18 @@ class FeatureFlagsController(BaseController):
             "OPENBB_ENABLE_RICH_PANEL",
             str(obbff.ENABLE_RICH_PANEL),
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_ion(self, _):
         """Process ion command"""
         obbff.USE_ION = not obbff.USE_ION
         set_key(obbff.USER_ENV_FILE, "OPENBB_USE_ION", str(obbff.USE_ION))
-        console.print("")
 
     @log_start_end(log=logger)
     def call_watermark(self, _):
         """Process watermark command"""
         obbff.USE_WATERMARK = not obbff.USE_WATERMARK
         set_key(obbff.USER_ENV_FILE, "OPENBB_USE_WATERMARK", str(obbff.USE_WATERMARK))
-        console.print("")
 
     @log_start_end(log=logger)
     def call_cmdloc(self, _):
@@ -213,7 +199,6 @@ class FeatureFlagsController(BaseController):
             "OPENBB_USE_CMD_LOCATION_FIGURE",
             str(obbff.USE_CMD_LOCATION_FIGURE),
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_tbhint(self, _):
@@ -226,4 +211,3 @@ class FeatureFlagsController(BaseController):
             "OPENBB_TOOLBAR_HINT",
             str(obbff.TOOLBAR_HINT),
         )
-        console.print("")

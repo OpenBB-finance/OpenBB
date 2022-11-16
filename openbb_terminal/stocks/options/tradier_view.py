@@ -428,7 +428,6 @@ def plot_vol(
         "vol_tr",
         options,
     )
-    console.print("")
 
 
 @log_start_end(log=logger)

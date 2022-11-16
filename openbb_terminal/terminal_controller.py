@@ -910,7 +910,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 an_input,
             )
             console.print(
-                f"[red]The command '{an_input}' doesn't exist on the / menu.[/red]",
+                f"[red]The command '{an_input}' doesn't exist on the / menu.[/red]\n",
             )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
@@ -932,10 +932,8 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 else:
                     an_input = similar_cmd[0]
 
-                console.print(f"\n[green]Replacing by '{an_input}'.[/green]")
+                console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
-            else:
-                console.print("\n")
 
 
 def insert_start_slash(cmds: List[str]) -> List[str]:

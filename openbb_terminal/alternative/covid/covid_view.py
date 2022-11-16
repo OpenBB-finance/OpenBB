@@ -95,7 +95,6 @@ def plot_covid_stat(
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
-        console.print("")
         return
 
     if stat == "cases":

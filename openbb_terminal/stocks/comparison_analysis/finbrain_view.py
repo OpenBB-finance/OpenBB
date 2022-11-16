@@ -115,7 +115,6 @@ def display_sentiment_compare(
             "sentiment",
             df_sentiment,
         )
-    console.print("")
 
 
 @log_start_end(log=logger)
