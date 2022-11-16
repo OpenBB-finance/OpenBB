@@ -30,7 +30,7 @@ This installation type supports both Windows and Unix systems (Linux + MacOS).
 **NOTE for Windows users:** Some _not all_ Windows users would prefer to use an environment
 similar to what Linux and macOS users use. In this case it is easier to use Windows Subsystem
 for Linux (WSL). WSL emulates a Linux machine inside your Windows system. If this is the case -
-jump to the <a href="#installing-wsl-(only-for-windows-users)">Installing WSL (Only for Windows users)</a>
+jump to the <a href="#installing-wsl-only-for-windows-users)">Installing WSL (Only for Windows users)</a>
 section before proceeding.
 
 ### Installing the terminal
@@ -49,7 +49,7 @@ macs is recommended.
 distributions and use raw `pip` instead of `poetry` but you will very likely bump into installation
 issues.
 
-1. [Install Miniconda](https://docs.conda.io/en/latest/miniconda.html)
+#### 1. [Install Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 
    Miniconda is a python environment and package manager. It is required if you want to
    have the dependencies working straight away.
@@ -60,7 +60,8 @@ issues.
      - If you are using WSL or Linux click [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
      - If you are using a Raspberry PI click [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
      - If you are using Windows click [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe).
-       **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+
+        **ONLY REQUIRED ON WINDOWS IF NOT USING WSL**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
    **NOTE for macOS users:** The link above gets you the Intel version of miniconda meaning if you're on an
    Apple Silicon powered machine you will be using the terminal through Apple's rosetta2 layer. We recommend
@@ -70,7 +71,7 @@ issues.
    - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output
      should be something along the lines of: `conda 22.9.0`
 
-2. Install CMake
+#### 2. Install CMake
 
    CMake is required by several python modules.
 
@@ -83,14 +84,16 @@ issues.
 
    **On macOS**
 
-   If you don't have homebrew installed:
+   Check if you have homebrew installed by running `brew --version`
+
+   If you don't have homebrew installed run:
 
    ```bash
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
    brew install cmake
    ```
 
-   If you have homebrew installed:
+   If you have homebrew installed run:
 
    ```bash
    brew install cmake
@@ -101,24 +104,24 @@ issues.
    If you have followed the instructions in step 1 of this guide CMake was installed as a
    part of you Microsoft C++ Build Tools
 
-3. Install git
+#### 3. Install git
 
    ```bash
    conda install -c anaconda git
    ```
 
-4. Clone the Project
+#### 4. Clone the Project
 
    - Via HTTPS: `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`
    - via SSH: `git clone git@github.com:OpenBB-finance/OpenBBTerminal.git`
 
-5. Navigate into the project's folder
+#### 5. Navigate into the project's folder
 
    ```bash
    cd OpenBBTerminal/
    ```
 
-6. Create Environment
+#### 6. Create Environment
 
    You can name the environment whatever you want. Although you could use names such as:
    `welikethestock`, `thisistheway` or `diamondhands`, we recommend something simple and
@@ -140,7 +143,7 @@ issues.
 
    Note: Using python 3.10+ can lead to undesirable functionality for certain commands.
 
-7. Activate the virtual environment
+#### 7. Activate the virtual environment
 
    ```bash
    conda activate obb
@@ -148,7 +151,7 @@ issues.
 
    Note: At the end, you can deactivate it with: `conda deactivate`.
 
-8. Install dependencies with poetry
+#### 8. Install dependencies with poetry
 
    Install the main dependencies with
 
@@ -171,7 +174,7 @@ issues.
    poetry install -E prediction
    ```
 
-9. You're ready to use the terminal!
+#### 9. You're ready to use the terminal!
 
    ```bash
    openbb
@@ -183,19 +186,13 @@ issues.
    python terminal.py
    ```
 
-10. (Windows - Optional and **only if you are not using WSL**) Speeding up opening process in the future
-
-   After you've installed OpenBB Terminal, you'll find a file named "OpenBB Terminal.bat". You can use this file
-   to open OpenBB Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues
-   while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if
-   the directories match up. This file assumes you used the default directories when installing.
-
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate obb`
 before you call `openbb` again.
 
-**TROUBLESHOOT:** If you are having troubles to install, check our _newest_
-<a href="https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md">
-<strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
+**TROUBLESHOOT:** If you are having troubles to install, check out the
+[troubleshoot page](https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md).
+
+You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
 ## Advanced User Install - Custom installation procedures
 
