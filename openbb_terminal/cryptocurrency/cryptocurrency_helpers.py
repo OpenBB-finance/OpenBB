@@ -615,7 +615,6 @@ def show_quick_performance(
     console.print()
 
 
-
 def load_yf_data(symbol: str, currency: str, interval: str, days: int):
     df_coin = yf.download(
         f"{symbol.upper()}-{currency.upper()}",
