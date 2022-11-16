@@ -97,7 +97,6 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
         f"overview_{country.replace(' ','_')}",
         overview,
     )
-    console.print("\n")
 
 
 @log_start_end(log=logger)

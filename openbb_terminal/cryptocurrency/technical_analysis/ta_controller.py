@@ -285,7 +285,6 @@ class TechnicalAnalysisController(CryptoBaseController):
             webbrowser.open(
                 f"https://www.tradingview.com/chart/?symbol={self.coin}usdt"
             )
-            console.print("")
 
     # COMMON
     # TODO: Go through all models and make sure all needed columns are in dfs
