@@ -121,7 +121,6 @@ def darkpool_ats_otc(
 
     if not external_axes:
         theme.visualize_output()
-    console.print("")
 
     export_data(
         export,
@@ -222,7 +221,6 @@ def darkpool_otc(
         )[:limit]
 
         plot_dark_pools_ats(df_ats, symbols, external_axes)
-        console.print("")
 
         export_data(
             export,

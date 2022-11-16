@@ -44,4 +44,3 @@ def show_top_mover(sort_type: str = "gainers", limit: int = 10, export=""):
         sort_type,
         data,
     )
-    console.print("")

@@ -498,7 +498,6 @@ def display_monthly_returns(
             headers=benchmark_returns.columns,
             show_index=True,
         )
-        console.print("\n")
 
     else:
         if external_axes is None:

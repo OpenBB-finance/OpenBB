@@ -18,7 +18,6 @@ from openbb_terminal.helper_funcs import (
     reindex_dates,
     is_valid_axes_count,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -413,7 +412,6 @@ def display_skew(
     if external_axes is None:
         theme.visualize_output()
 
-    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -500,7 +498,6 @@ def display_kurtosis(
     if external_axes is None:
         theme.visualize_output()
 
-    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
