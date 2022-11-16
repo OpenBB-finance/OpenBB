@@ -12,9 +12,9 @@ from openbb_terminal.cryptocurrency import cryptocurrency_helpers, pyth_model, p
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
     display_all_coins,
-    find,
     plot_chart,
 )
+from openbb_terminal.cryptocurrency.crypto_views import find
 from openbb_terminal.cryptocurrency.due_diligence import (
     binance_view,
     coinpaprika_view,
@@ -125,7 +125,6 @@ class CryptoController(CryptoBaseController):
                         "CoinPaprika",
                         "Binance",
                         "Coinbase",
-                        "YahooFinance",
                     ]
                 },
             }
