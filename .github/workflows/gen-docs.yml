@@ -36,7 +36,9 @@ jobs:
       - name: Install Package
         run: poetry install --no-interaction
 
-      - run: python website/generate_sdk_markdown.py
+      - run: |
+          source $VENV
+          python website/generate_sdk_markdown.py
 
       - name: Commit Documentation
         uses: stefanzweifel/git-auto-commit-action@v4
