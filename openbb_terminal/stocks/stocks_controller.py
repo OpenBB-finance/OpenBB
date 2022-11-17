@@ -33,7 +33,7 @@ from openbb_terminal.rich_config import (
     translate,
 )
 from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.stocks import stocks_views
+from openbb_terminal.stocks import stocks_view
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
@@ -368,7 +368,7 @@ class StocksController(StockBaseController):
             other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            stocks_views.display_quote(ns_parser.s_ticker)
+            stocks_view.display_quote(ns_parser.s_ticker)
 
     @log_start_end(log=logger)
     def call_codes(self, _):
