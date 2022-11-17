@@ -9,6 +9,7 @@ import openbb_terminal.config_terminal as cfg
 
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
+from openbb_terminal.core.log.generation.duplicates_filter import DuplicatesFilter
 
 # pylint: disable=import-outside-toplevel
 
@@ -129,6 +130,8 @@ class OperationLogger:
         self.__logger = logger or getLogger(self.__method_chosen.__module__)
         self.__args = args
         self.__kwargs = kwargs
+
+        self.__logger.addFilter(DuplicatesFilter())
 
     def log_before_call(
         self,
