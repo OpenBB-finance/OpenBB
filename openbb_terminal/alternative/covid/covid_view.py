@@ -40,6 +40,8 @@ def plot_covid_ov(
     """
     cases = covid_model.get_global_cases(country) / 1_000
     deaths = covid_model.get_global_deaths(country)
+    if cases.empty or deaths.empty:
+        return
     ov = pd.concat([cases, deaths], axis=1)
     ov.columns = ["Cases", "Deaths"]
 
@@ -148,6 +150,8 @@ def display_covid_ov(
     plot: bool
         Flag to display historical plot
     """
+    if country.lower() == "us":
+        country = "US"
     if plot:
         plot_covid_ov(country)
     if raw:
