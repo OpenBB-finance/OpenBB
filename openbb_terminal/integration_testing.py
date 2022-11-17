@@ -13,7 +13,10 @@ import sys
 import os
 
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    MISCELLANEOUS_DIRECTORY,
+    REPOSITORY_DIRECTORY,
+)
 from openbb_terminal.terminal_controller import run_scripts
 
 logger = logging.getLogger(__name__)
@@ -75,8 +78,10 @@ def format_failures(fails: dict) -> None:
         # Write results to CSV
         timestamp = datetime.now().timestamp()
         stamp_str = str(timestamp).replace(".", "")
+        whole_path = Path(REPOSITORY_DIRECTORY / "integration_test_summary")
+        whole_path.mkdir(parents=True, exist_ok=True)
         output_path = f"{stamp_str}_tests.csv"
-        with open(output_path, "w") as file:  # type: ignore
+        with open(whole_path / output_path, "w") as file:  # type: ignore
             header = ["Script File", "Type", "Error", "Stacktrace"]
             writer = csv.DictWriter(file, fieldnames=header)  # type: ignore
             writer.writeheader()
@@ -95,7 +100,7 @@ def format_failures(fails: dict) -> None:
                     }
                 )
 
-        console.print(f"CSV of errors saved to {output_path}")
+        console.print(f"CSV of errors saved to {whole_path / output_path}")
 
 
 def run_test_list(
@@ -145,7 +150,8 @@ def parse_args_and_run():
         description="Integration tests for the OpenBB Terminal.",
     )
     parser.add_argument(
-        "--file",
+        "-p",
+        "--path",
         help=(
             "The path or .openbb file to run. Starts at "
             "OpenBBTermina/openbb_terminal/miscellaneous/scripts"
@@ -157,6 +163,7 @@ def parse_args_and_run():
     )
     parser.add_argument(
         "-t",
+        "--test",
         action="store_true",
         help=(
             "Run the terminal in testing mode. Also run this option and '-h'"
@@ -181,10 +188,9 @@ def parse_args_and_run():
             default="",
         )
 
-    if sys.argv[1:] and "-" not in sys.argv[1][0]:
-        sys.argv.insert(1, "--file")
     ns_parser, _ = parser.parse_known_args()
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
+    print(ns_parser.path)
     run_test_list(
         path_list=ns_parser.path,
         verbose=ns_parser.verbose,

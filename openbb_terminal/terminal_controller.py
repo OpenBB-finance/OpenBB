@@ -29,6 +29,7 @@ from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_ENV_FILE,
+    REPOSITORY_DIRECTORY,
     USER_DATA_DIRECTORY,
     USER_ENV_FILE,
     USER_ROUTINES_DIRECTORY,
@@ -1022,11 +1023,9 @@ def run_scripts(
         else:
             timestamp = datetime.now().timestamp()
             stamp_str = str(timestamp).replace(".", "")
-            base_path = Path(__file__).parent.parent
-            whole_path = Path(base_path / "integration_test_output")
+            whole_path = Path(REPOSITORY_DIRECTORY / "integration_test_output")
             whole_path.mkdir(parents=True, exist_ok=True)
             first_cmd = file_cmds[0].split("/")[1]
-            print(first_cmd)
             with open(
                 whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
             ) as output:
@@ -1159,6 +1158,7 @@ def parse_args_and_run():
     )
     parser.add_argument(
         "-t",
+        "--test",
         action="store_true",
         help=(
             "Run the terminal in testing mode. Also run this option and '-h'"
