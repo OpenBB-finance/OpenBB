@@ -81,7 +81,6 @@ sub_names_full = {
     "keys": "Keys",
     "nft": "NFTs",
     "onchain": "OnChain",
-    "oss": "Open Source Software",
     "ov": "Overview",
     "po": "Portfolio Optimization",
     "qa": "Quantitative Analysis",

@@ -127,7 +127,6 @@ title: {cmd_meta["cmd_name"]}
 description: OpenBB Terminal Function
 ---\n\n"""
 
-    markdown += f"# {cmd_meta['category_name']}\n\n"
     markdown += generate_markdown_section(cmd_meta, examples)
 
     return markdown
@@ -137,12 +136,11 @@ def generate_markdown_section(meta: Dict[str, str], examples: Dict[str, str]) ->
     """Generate markdown section"""
 
     # head meta https://docusaurus.io/docs/markdown-features/head-metadata
-    markdown = f"## {meta['cmd_name']}\n\n"
-    markdown += f"### Description: \n\n{meta['description']}\n\n"
-    markdown += f"### Usage: \n```python\n{meta['usage']}```\n\n"
+    markdown = f"# {meta['cmd_name']}\n\n{meta['description']}\n\n"
+    markdown += f"### Usage \n```python\n{meta['usage']}```\n\n"
 
+    markdown += "## Parameters\n\n"
     if meta["actions"]:
-        markdown += "## Parameters\n\n"
         markdown += "| Name | Description | Default | Optional | Choices |\n"
         markdown += "| ---- | ----------- | ------- | -------- | ------- |\n"
 
@@ -152,6 +150,9 @@ def generate_markdown_section(meta: Dict[str, str], examples: Dict[str, str]) ->
                     f"| {param['opt_name']} | {param['doc']} | {param['default']} "
                     f"| {param['optional']} | {param['choices']} |\n"
                 )
+    else:
+        markdown += "This command has no parameters\n"
+
     markdown += "\n\n"
 
     if examples.get("example", None):
@@ -183,7 +184,7 @@ def main():
             for cat in cmd_meta["cmds"]:
                 examples = existing_markdown_file_examples(ctrl, cat)
 
-                cat["category_name"] = (
+                cat["sub_name"] = (
                     ctrl.name.title()
                     if ctrl.name not in sub_names_full
                     else sub_names_full[ctrl.name]
@@ -193,7 +194,13 @@ def main():
                 if cat["cmd_name"] == "index":
                     cat["cmd_name"] = "index_cmd"
 
-                filepath = f"terminaltest/{'/'.join(ctrl.trailmap.split('.'))}/{cat['cmd_name']}.md"
+                trail = []
+                for sub in ctrl.trailmap.split("."):
+                    if sub_names_full.get(sub, None):
+                        sub = sub_names_full[sub].lower()
+                    trail.append(sub)
+
+                filepath = f"terminaltest/{'/'.join(trail)}/{cat['cmd_name']}.md"
 
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
                 with open(filepath, "w", encoding="utf-8") as f:
