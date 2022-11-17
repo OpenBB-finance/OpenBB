@@ -30,6 +30,7 @@ openbb_terminal/portfolio/portfolios/*
 .coverage.*
 !openbb_terminal/reports/templates/*.ipynb
 *_tests.csv
+*_sdk_audit.csv
 
 # pyinstaller artifacts
 *.pyo
