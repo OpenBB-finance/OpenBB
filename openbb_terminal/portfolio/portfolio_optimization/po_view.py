@@ -7,32 +7,25 @@ __docformat__ = "numpy"
 import logging
 import math
 import warnings
-from datetime import date
-from typing import Any, Dict, List, Optional, Union
+from typing import List, Optional
 
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import riskfolio as rp
-from dateutil.relativedelta import relativedelta, FR
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale, print_rich_table
-from openbb_terminal.portfolio.portfolio_optimization import (
-    optimizer_helper,
-    optimizer_model,
-    po_model,
-)
-from openbb_terminal.portfolio.portfolio_optimization.optimizer_view import (
-    pie_chart_weights,
+from openbb_terminal.helper_funcs import plot_autoscale
+from openbb_terminal.portfolio.portfolio_optimization.po_model import (
+    validate_inputs,
+    get_ef,
 )
 from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
-from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")
 
@@ -75,7 +68,7 @@ time_factor = {
 
 
 @log_start_end(log=logger)
-def display_ef(symbols: List[str] = None, engine: PoEngine = None, **kwargs):
+def display_ef(symbols: List[str] = None, portfolio: PoEngine = None, **kwargs):
     """
     Display efficient frontier
 
@@ -83,11 +76,11 @@ def display_ef(symbols: List[str] = None, engine: PoEngine = None, **kwargs):
     ----------
     symbols : List[str], optional
         List of symbols, by default None
-    engine : PoEngine, optional
+    portfolio : PoEngine, optional
         Portfolio optimization engine, by default None
     """
 
-    symbols, engine, parameters = po_model.validate_inputs(symbols, engine, kwargs)
+    symbols, portfolio, parameters = validate_inputs(symbols, portfolio, kwargs)
 
     n_portfolios: int = 100
     if n_portfolios in parameters:
@@ -122,9 +115,9 @@ def display_ef(symbols: List[str] = None, engine: PoEngine = None, **kwargs):
     if "external_axes" in parameters:
         external_axes = parameters.pop("external_axes")
 
-    frontier, mu, cov, stock_returns, weights, X1, Y1, port = po_model.get_ef(
+    frontier, mu, cov, stock_returns, weights, X1, Y1, port = get_ef(
         symbols,
-        engine,
+        portfolio,
         **parameters,
     )
 
@@ -235,57 +228,22 @@ def display_ef(symbols: List[str] = None, engine: PoEngine = None, **kwargs):
 
 
 @log_start_end(log=logger)
-def display_plot(engine: PoEngine = None, **kwargs):
+def display_plot(portfolio: PoEngine = None, **kwargs):
     """
     Display efficient frontier
 
     Parameters
     ----------
-    engine : PoEngine, optional
+    portfolio : PoEngine, optional
         Portfolio optimization engine, by default None
     """
 
-    if engine is None:
+    if portfolio is None:
         return
 
-    _, engine, parameters = po_model.validate_inputs(engine=engine, kwargs=kwargs)
+    _, portfolio, parameters = validate_inputs(portfolio=portfolio, kwargs=kwargs)
 
-    category: str = "SECTOR"
-    if "category" in parameters:
-        category = parameters["category"]
-
-    title_opt: str = ""
-    if "title" in parameters:
-        title_opt = parameters["title"]
-
-    freq: str = "D"
-    if "freq" in parameters:
-        freq = parameters["freq"]
-
-    risk_measure: str = "MV"
-    if "risk_measure" in parameters:
-        risk_measure = parameters["risk_measure"]
-
-    risk_free_rate: float = 0
-    if "risk_free_rate" in parameters:
-        risk_free_rate = parameters["risk_free_rate"]
-
-    alpha: float = 0.05
-    if "alpha" in parameters:
-        alpha = parameters["alpha"]
-
-    a_sim: float = 100
-    if "a_sim" in parameters:
-        a_sim = parameters["a_sim"]
-
-    beta: float = 0
-    if "beta" in parameters:
-        beta = parameters["beta"]
-
-    b_sim: float = 0
-    if "b_sim" in parameters:
-        b_sim = parameters["b_sim"]
-
+    # Choose chart
     pie: bool = False
     if "pie" in parameters:
         pie = parameters["pie"]
@@ -306,18 +264,47 @@ def display_plot(engine: PoEngine = None, **kwargs):
     if "heat" in parameters:
         heat = parameters["heat"]
 
-    external_axes: Optional[List[plt.Axes]] = None
-    if "external_axes" in parameters:
-        external_axes = parameters["external_axes"]
+    # Chart arguments
+    if "category" not in parameters:
+        parameters["category"] = "SECTOR"
 
-    weights: pd.DataFrame = engine.get_weights_df()
-    data: pd.DataFrame = engine.get_returns()
+    if "title" not in parameters:
+        parameters["title"] = ""
+
+    if "freq" not in parameters:
+        parameters["freq"] = "D"
+
+    if "risk_measure" not in parameters:
+        parameters["risk_measure"] = "MV"
+
+    if "risk_free_rate" not in parameters:
+        parameters["risk_free_rate"] = 0.0
+
+    if "alpha" not in parameters:
+        parameters["alpha"] = 0.05
+
+    if "a_sim" not in parameters:
+        parameters["a_sim"] = 100.0
+
+    if "beta" not in parameters:
+        parameters["beta"] = 0.0
+
+    if "b_sim" not in parameters:
+        parameters["b_sim"] = 0.0
+
+    if "external_axes" not in parameters:
+        parameters["external_axes"] = None
+
+    weights: pd.DataFrame = portfolio.get_weights_df()
+    data: pd.DataFrame = portfolio.get_returns()
+
+    category = parameters["category"]
 
     if category:
         # weights = pd.DataFrame.from_dict(
         #     data=weights, orient="index", columns=["value"], dtype=float
         # )
-        category_dict = engine.get_category(category)
+        category_dict = portfolio.get_category(category)
         category_df = pd.DataFrame.from_dict(
             data=category_dict, orient="index", columns=["category"]
         )
@@ -355,174 +342,346 @@ def display_plot(engine: PoEngine = None, **kwargs):
         weights.index = [i.title() for i in weights.index]
         weights = weights.to_dict()
 
+        parameters["weights"] = weights
+        parameters["data"] = data
+        parameters["colors"] = theme.get_colors()
+
+        if pie:
+            display_pie(**parameters)
+
+        if hist:
+            display_hist(**parameters)
+
+        if dd:
+            display_dd(**parameters)
+
+        if rc_chart:
+            display_rc_chart(**parameters)
+
+        if heat:
+            display_heat(**parameters)
+
+
+@log_start_end(log=logger)
+def display_heat(**kwargs):
+
+    weights = kwargs["weights"]
+    data: pd.DataFrame = kwargs["data"]
+    category = kwargs["category"]
+    title: str = kwargs["title"]
+    external_axes: Optional[List[plt.Axes]] = kwargs["external_axes"]
+
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
+
+    if len(weights) <= 3:
+        number_of_clusters = len(weights)
+    else:
+        number_of_clusters = None
+
+    ax = rp.plot_clusters(
+        returns=data,
+        codependence="pearson",
+        linkage="ward",
+        k=number_of_clusters,
+        max_k=10,
+        leaf_order=True,
+        dendrogram=True,
+        cmap="RdYlBu",
+        # linecolor='tab:purple',
+        ax=ax,
+    )
+
+    ax = ax.get_figure().axes
+    ax[0].grid(False)
+    ax[0].axis("off")
+
+    if category is None:
+        # Vertical dendrogram
+        l, b, w, h = ax[4].get_position().bounds
+        l1 = l * 0.5
+        w1 = w * 0.2
+        b1 = h * 0.05
+        ax[4].set_position([l - l1, b + b1, w * 0.8, h * 0.95])
+        # Heatmap
+        l, b, w, h = ax[1].get_position().bounds
+        ax[1].set_position([l - l1 - w1, b + b1, w * 0.8, h * 0.95])
+        w2 = w * 0.2
+        # colorbar
+        l, b, w, h = ax[2].get_position().bounds
+        ax[2].set_position([l - l1 - w1 - w2, b, w, h])
+        # Horizontal dendrogram
+        l, b, w, h = ax[3].get_position().bounds
+        ax[3].set_position([l - l1 - w1, b, w * 0.8, h])
+    else:
+        # Vertical dendrogram
+        l, b, w, h = ax[4].get_position().bounds
+        l1 = l * 0.5
+        w1 = w * 0.4
+        b1 = h * 0.2
+        ax[4].set_position([l - l1, b + b1, w * 0.6, h * 0.8])
+        # Heatmap
+        l, b, w, h = ax[1].get_position().bounds
+        ax[1].set_position([l - l1 - w1, b + b1, w * 0.6, h * 0.8])
+        w2 = w * 0.05
+        # colorbar
+        l, b, w, h = ax[2].get_position().bounds
+        ax[2].set_position([l - l1 - w1 - w2, b, w, h])
+        # Horizontal dendrogram
+        l, b, w, h = ax[3].get_position().bounds
+        ax[3].set_position([l - l1 - w1, b, w * 0.6, h])
+
+    title = "Portfolio - " + title + "\n"
+    title += ax[3].get_title(loc="left")
+    ax[3].set_title(title)
+
+    if external_axes is None:
+        theme.visualize_output(force_tight_layout=True)
+
+
+@log_start_end(log=logger)
+def display_rc_chart(**kwargs):
+
+    weights = kwargs["weights"]
+    data: pd.DataFrame = kwargs["data"]
+    colors = kwargs["colors"]
+    risk_measure = kwargs["risk_measure"]
+    risk_free_rate = kwargs["risk_free_rate"]
+    title: str = kwargs["title"]
+    alpha = kwargs["alpha"]
+    a_sim = kwargs["a_sim"]
+    beta = kwargs["beta"]
+    b_sim = kwargs["b_sim"]
+    freq = kwargs["freq"]
+    external_axes: Optional[List[plt.Axes]] = kwargs["external_axes"]
+
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
+
+    ax = rp.plot_risk_con(
+        w=pd.Series(weights).to_frame(),
+        cov=data.cov(),
+        returns=data,
+        rm=risk_choices[risk_measure.lower()],
+        rf=risk_free_rate,
+        alpha=alpha,
+        a_sim=a_sim,
+        beta=beta,
+        b_sim=b_sim,
+        color=colors[1],
+        t_factor=time_factor[freq.upper()],
+        ax=ax,
+    )
+
+    # Changing colors
+    for i in ax.get_children()[:-1]:
+        if isinstance(i, matplotlib.patches.Rectangle):
+            i.set_width(i.get_width())
+            i.set_color(colors[0])
+
+    title = "Portfolio - " + title + "\n"
+    title += ax.get_title(loc="left")
+    ax.set_title(title)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+
+@log_start_end(log=logger)
+def display_hist(**kwargs):
+
+    weights = kwargs["weights"]
+    data: pd.DataFrame = kwargs["data"]
+    colors = kwargs["colors"]
+    title: str = kwargs["title"]
+    alpha = kwargs["alpha"]
+    external_axes: Optional[List[plt.Axes]] = kwargs["external_axes"]
+
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
+
+    ax = rp.plot_hist(data, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax)
+    ax.legend(fontsize="x-small", loc="best")
+
+    # Changing colors
+    for i in ax.get_children()[:-1]:
+        if isinstance(i, matplotlib.patches.Rectangle):
+            i.set_color(colors[0])
+            i.set_alpha(0.7)
+
+    k = 1
+    for i, j in zip(ax.get_legend().get_lines()[::-1], ax.get_lines()[::-1]):
+        i.set_color(colors[k])
+        j.set_color(colors[k])
+        k += 1
+
+    title = "Portfolio - " + title + "\n"
+    title += ax.get_title(loc="left")
+    ax.set_title(title)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+
+@log_start_end(log=logger)
+def display_dd(**kwargs):
+
+    weights = kwargs["weights"]
+    data: pd.DataFrame = kwargs["data"]
+    colors = kwargs["colors"]
+    title: str = kwargs["title"]
+    alpha = kwargs["alpha"]
+    external_axes: Optional[List[plt.Axes]] = kwargs["external_axes"]
+
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
+
+    nav = data.cumsum()
+    ax = rp.plot_drawdown(nav=nav, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax)
+
+    ax[0].remove()
+    ax = ax[1]
+    fig = ax.get_figure()
+    gs = GridSpec(1, 1, figure=fig)
+    ax.set_position(gs[0].get_position(fig))
+    ax.set_subplotspec(gs[0])
+
+    # Changing colors
+    ax.get_lines()[0].set_color(colors[0])
+    k = 1
+    for i, j in zip(ax.get_legend().get_lines()[::-1], ax.get_lines()[1:][::-1]):
+        i.set_color(colors[k])
+        j.set_color(colors[k])
+        k += 1
+
+    ax.get_children()[1].set_facecolor(colors[0])
+    ax.get_children()[1].set_alpha(0.7)
+
+    title = "Portfolio - " + title + "\n"
+    title += ax.get_title(loc="left")
+    ax.set_title(title)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+
+@log_start_end(log=logger)
+def display_pie(**kwargs):
+    """Show a pie chart of holdings
+
+    Parameters
+    ----------
+    weights: dict
+        Weights to display, where keys are tickers, and values are either weights or values if -v specified
+    title: str
+        Title to be used on the plot title
+    external_axes:Optiona[List[plt.Axes]]
+        Optional external axes to plot data on
+    """
+
+    weights = kwargs["weights"]
+    title: str = kwargs["title"]
+    external_axes: Optional[List[plt.Axes]] = kwargs["external_axes"]
+
+    if not weights:
+        return
+
+    init_stocks = list(weights.keys())
+    init_sizes = list(weights.values())
+    symbols = []
+    sizes = []
+    for stock, size in zip(init_stocks, init_sizes):
+        if size > 0:
+            symbols.append(stock)
+            sizes.append(size)
+
+    total_size = np.sum(sizes)
     colors = theme.get_colors()
-    if pie:
-        pie_chart_weights(weights, title_opt, external_axes)
 
-    if hist:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes[0]
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
 
-        ax = rp.plot_hist(data, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax)
-        ax.legend(fontsize="x-small", loc="best")
-
-        # Changing colors
-        for i in ax.get_children()[:-1]:
-            if isinstance(i, matplotlib.patches.Rectangle):
-                i.set_color(colors[0])
-                i.set_alpha(0.7)
-
-        k = 1
-        for i, j in zip(ax.get_legend().get_lines()[::-1], ax.get_lines()[::-1]):
-            i.set_color(colors[k])
-            j.set_color(colors[k])
-            k += 1
-
-        title = "Portfolio - " + title_opt + "\n"
-        title += ax.get_title(loc="left")
-        ax.set_title(title)
-
-        if external_axes is None:
-            theme.visualize_output()
-
-    if dd:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes[0]
-
-        nav = data.cumsum()
-        ax = rp.plot_drawdown(
-            nav=nav, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax
+    if math.isclose(sum(sizes), 1, rel_tol=0.1):
+        _, _, autotexts = ax.pie(
+            sizes,
+            labels=symbols,
+            autopct=my_autopct,
+            colors=colors,
+            textprops=dict(color="white"),
+            wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+            labeldistance=1.05,
+            startangle=45,
+            normalize=True,
         )
-
-        ax[0].remove()
-        ax = ax[1]
-        fig = ax.get_figure()
-        gs = GridSpec(1, 1, figure=fig)
-        ax.set_position(gs[0].get_position(fig))
-        ax.set_subplotspec(gs[0])
-
-        # Changing colors
-        ax.get_lines()[0].set_color(colors[0])
-        k = 1
-        for i, j in zip(ax.get_legend().get_lines()[::-1], ax.get_lines()[1:][::-1]):
-            i.set_color(colors[k])
-            j.set_color(colors[k])
-            k += 1
-
-        ax.get_children()[1].set_facecolor(colors[0])
-        ax.get_children()[1].set_alpha(0.7)
-
-        title = "Portfolio - " + title_opt + "\n"
-        title += ax.get_title(loc="left")
-        ax.set_title(title)
-
-        if external_axes is None:
-            theme.visualize_output()
-
-    if rc_chart:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes[0]
-
-        ax = rp.plot_risk_con(
-            w=pd.Series(weights).to_frame(),
-            cov=data.cov(),
-            returns=data,
-            rm=risk_choices[risk_measure.lower()],
-            rf=risk_free_rate,
-            alpha=alpha,
-            a_sim=a_sim,
-            beta=beta,
-            b_sim=b_sim,
-            color=colors[1],
-            t_factor=time_factor[freq.upper()],
-            ax=ax,
+        plt.setp(autotexts, color="white", fontweight="bold")
+    else:
+        _, _, autotexts = ax.pie(
+            sizes,
+            labels=symbols,
+            autopct="",
+            colors=colors,
+            textprops=dict(color="white"),
+            wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+            labeldistance=1.05,
+            startangle=45,
+            normalize=True,
         )
+        plt.setp(autotexts, color="white", fontweight="bold")
+        for i, a in enumerate(autotexts):
+            if sizes[i] / total_size > 0.05:
+                a.set_text(f"{sizes[i]:.2f}")
+            else:
+                a.set_text("")
 
-        # Changing colors
-        for i in ax.get_children()[:-1]:
-            if isinstance(i, matplotlib.patches.Rectangle):
-                i.set_width(i.get_width())
-                i.set_color(colors[0])
+    ax.axis("equal")
 
-        title = "Portfolio - " + title_opt + "\n"
-        title += ax.get_title(loc="left")
-        ax.set_title(title)
+    # leg1 = ax.legend(
+    #     wedges,
+    #     [str(s) for s in stocks],
+    #     title="  Ticker",
+    #     loc="upper left",
+    #     bbox_to_anchor=(0.80, 0, 0.5, 1),
+    #     frameon=False,
+    # )
+    # leg2 = ax.legend(
+    #     wedges,
+    #     [
+    #         f"{' ' if ((100*s/total_size) < 10) else ''}{100*s/total_size:.2f}%"
+    #         for s in sizes
+    #     ],
+    #     title=" ",
+    #     loc="upper left",
+    #     handlelength=0,
+    #     bbox_to_anchor=(0.91, 0, 0.5, 1),
+    #     frameon=False,
+    # )
+    # ax.add_artist(leg1)
+    # ax.add_artist(leg2)
 
-        if external_axes is None:
-            theme.visualize_output()
+    plt.setp(autotexts, size=8, weight="bold")
 
-    if heat:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes[0]
+    title = "Portfolio - " + title + "\n"
+    title += "Portfolio Composition"
+    ax.set_title(title)
 
-        if len(weights) <= 3:
-            number_of_clusters = len(weights)
-        else:
-            number_of_clusters = None
+    if external_axes is None:
+        theme.visualize_output()
 
-        ax = rp.plot_clusters(
-            returns=data,
-            codependence="pearson",
-            linkage="ward",
-            k=number_of_clusters,
-            max_k=10,
-            leaf_order=True,
-            dendrogram=True,
-            cmap="RdYlBu",
-            # linecolor='tab:purple',
-            ax=ax,
-        )
 
-        ax = ax.get_figure().axes
-        ax[0].grid(False)
-        ax[0].axis("off")
+@log_start_end(log=logger)
+def my_autopct(x):
+    """Function for autopct of plt.pie.  This results in values not being printed in the pie if they are 'too small'"""
+    if x > 4:
+        return f"{x:.2f} %"
 
-        if category is None:
-            # Vertical dendrogram
-            l, b, w, h = ax[4].get_position().bounds
-            l1 = l * 0.5
-            w1 = w * 0.2
-            b1 = h * 0.05
-            ax[4].set_position([l - l1, b + b1, w * 0.8, h * 0.95])
-            # Heatmap
-            l, b, w, h = ax[1].get_position().bounds
-            ax[1].set_position([l - l1 - w1, b + b1, w * 0.8, h * 0.95])
-            w2 = w * 0.2
-            # colorbar
-            l, b, w, h = ax[2].get_position().bounds
-            ax[2].set_position([l - l1 - w1 - w2, b, w, h])
-            # Horizontal dendrogram
-            l, b, w, h = ax[3].get_position().bounds
-            ax[3].set_position([l - l1 - w1, b, w * 0.8, h])
-        else:
-            # Vertical dendrogram
-            l, b, w, h = ax[4].get_position().bounds
-            l1 = l * 0.5
-            w1 = w * 0.4
-            b1 = h * 0.2
-            ax[4].set_position([l - l1, b + b1, w * 0.6, h * 0.8])
-            # Heatmap
-            l, b, w, h = ax[1].get_position().bounds
-            ax[1].set_position([l - l1 - w1, b + b1, w * 0.6, h * 0.8])
-            w2 = w * 0.05
-            # colorbar
-            l, b, w, h = ax[2].get_position().bounds
-            ax[2].set_position([l - l1 - w1 - w2, b, w, h])
-            # Horizontal dendrogram
-            l, b, w, h = ax[3].get_position().bounds
-            ax[3].set_position([l - l1 - w1, b, w * 0.6, h])
-
-        title = "Portfolio - " + title_opt + "\n"
-        title += ax[3].get_title(loc="left")
-        ax[3].set_title(title)
-
-        if external_axes is None:
-            theme.visualize_output(force_tight_layout=True)
+    return ""
