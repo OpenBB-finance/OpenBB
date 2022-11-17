@@ -38,43 +38,6 @@ warnings.filterwarnings("ignore")
 
 logger = logging.getLogger(__name__)
 
-objectives_choices = {
-    "minrisk": "MinRisk",
-    "sharpe": "Sharpe",
-    "utility": "Utility",
-    "maxret": "MaxRet",
-    "erc": "ERC",
-}
-
-risk_names = {
-    "mv": "volatility",
-    "mad": "mean absolute deviation",
-    "gmd": "gini mean difference",
-    "msv": "semi standard deviation",
-    "var": "value at risk (VaR)",
-    "cvar": "conditional value at risk (CVaR)",
-    "tg": "tail gini",
-    "evar": "entropic value at risk (EVaR)",
-    "rg": "range",
-    "cvrg": "CVaR range",
-    "tgrg": "tail gini range",
-    "wr": "worst realization",
-    "flpm": "first lower partial moment",
-    "slpm": "second lower partial moment",
-    "mdd": "maximum drawdown uncompounded",
-    "add": "average drawdown uncompounded",
-    "dar": "drawdown at risk (DaR) uncompounded",
-    "cdar": "conditional drawdown at risk (CDaR) uncompounded",
-    "edar": "entropic drawdown at risk (EDaR) uncompounded",
-    "uci": "ulcer index uncompounded",
-    "mdd_rel": "maximum drawdown compounded",
-    "add_rel": "average drawdown compounded",
-    "dar_rel": "drawdown at risk (DaR) compounded",
-    "cdar_rel": "conditional drawdown at risk (CDaR) compounded",
-    "edar_rel": "entropic drawdown at risk (EDaR) compounded",
-    "uci_rel": "ulcer index compounded",
-}
-
 risk_choices = {
     "mv": "MV",
     "mad": "MAD",
@@ -109,8 +72,6 @@ time_factor = {
     "W": 52.0,
     "M": 12.0,
 }
-
-dict_conversion = {"period": "historic_period", "start": "start_period"}
 
 
 @log_start_end(log=logger)
