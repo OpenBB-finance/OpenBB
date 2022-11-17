@@ -21,7 +21,9 @@ Description: Get treasury maturity options [Source: EconDB]
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Contains the name of the instruments and a string containing all options. |
 
 ## Examples
 

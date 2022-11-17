@@ -19,13 +19,12 @@ Description: Get 5 year monthly historical performance for a ticker with dividen
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | A ticker symbol in string form | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| data | pd.DataFrame | A dataframe with historical information | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | A dataframe with historical information |
 
 ## Examples
 

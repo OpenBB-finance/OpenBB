@@ -28,13 +28,12 @@ Description: Stochastic oscillator
 | fastkperiod | int | Fast k period | None | False |
 | slowdperiod | int | Slow d period | None | False |
 | slowkperiod | int | Slow k period | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | Dataframe of technical indicator | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Dataframe of technical indicator |
 
 ## Examples
 

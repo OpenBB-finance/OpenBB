@@ -27,7 +27,9 @@ Description: Displays the 30-day history of the Anchor Yield Reserve.
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Dataframe containing historical data |
 
 ## Examples
 

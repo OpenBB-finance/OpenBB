@@ -20,13 +20,12 @@ Description: Get Series IDs. [Source: FRED]
 | ---- | ---- | ----------- | ------- | -------- |
 | search_query | str | Text query to search on fred series notes database | None | False |
 | limit | int | Maximum number of series IDs to output | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.Dataframe | None | Dataframe with series IDs and titles | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.Dataframe | Dataframe with series IDs and titles |
 
 ## Examples
 

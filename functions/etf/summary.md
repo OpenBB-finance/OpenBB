@@ -25,13 +25,12 @@ Description: Return summary description of ETF. [Source: Yahoo Finance]
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | name | str | ETF name | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| str | None | Summary description of the ETF | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| str | Summary description of the ETF |
 
 ## Examples
 

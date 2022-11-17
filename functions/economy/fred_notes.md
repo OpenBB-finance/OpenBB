@@ -20,13 +20,12 @@ Description: Get series notes. [Source: FRED]
 | ---- | ---- | ----------- | ------- | -------- |
 | search_query | str | Text query to search on fred series notes database | None | False |
 | limit | int | Maximum number of series notes to display | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | DataFrame of matched series | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | DataFrame of matched series |
 
 ## Examples
 

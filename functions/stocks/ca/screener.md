@@ -22,13 +22,12 @@ Description: Screener Overview
 Comparable companies can be accessed through
 finnhub_peers(), finviz_peers(), polygon_peers(). | None | False |
 | data_type | str | Data type between: overview, valuation, financial, ownership, performance, technical | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | Dataframe with overview, valuation, financial, ownership, performance or technical | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Dataframe with overview, valuation, financial, ownership, performance or technical |
 
 ## Examples
 

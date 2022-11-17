@@ -28,13 +28,12 @@ Description: Relative strength index
 | window | int | Length of window | None | False |
 | scalar | float | Scalar variable | None | False |
 | drift | int | Drift variable | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | Dataframe of technical indicator | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Dataframe of technical indicator |
 
 ## Examples
 

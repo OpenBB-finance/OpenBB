@@ -31,7 +31,7 @@ Description: Get list of financial products from CoinGecko API
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate |
+| pd.DataFrame | Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate |
 
 ## Examples
 

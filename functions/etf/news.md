@@ -28,13 +28,12 @@ Description: Get news for a given term. [Source: NewsAPI]
 | start_date | str | date to start searching articles from formatted YYYY-MM-DD | None | False |
 | show_newest | bool | flag to show newest articles first | None | False |
 | sources | str | sources to exclusively show news from (comma separated) | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| tables | List[Tuple] | List of tuples containing news df in first index and dict containing title of news df | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| List[Tuple] | List of tuples containing news df in first index and dict containing title of news df |
 
 ## Examples
 

@@ -27,13 +27,12 @@ Description: Get Series data. [Source: FRED]
 | series_ids | List[str] | Series ID to get data from | None | False |
 | start_date | str | Start date to get data from, format yyyy-mm-dd | None | False |
 | end_date | str | End data to get from, format yyyy-mm-dd | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | Series data | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Series data |
 
 ## Examples
 

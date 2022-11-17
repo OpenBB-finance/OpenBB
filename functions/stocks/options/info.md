@@ -25,13 +25,12 @@ Description: Get info for a given ticker
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | The ticker symbol to get the price for | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| price | float | The info for a given ticker | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| float | The info for a given ticker |
 
 ## Examples
 

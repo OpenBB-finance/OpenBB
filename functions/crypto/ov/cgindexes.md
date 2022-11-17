@@ -29,7 +29,7 @@ Description: Get list of crypto indexes from CoinGecko API [Source: CoinGecko]
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Name, Id, Market, Last, MultiAsset |
+| pd.DataFrame | Name, Id, Market, Last, MultiAsset |
 
 ## Examples
 

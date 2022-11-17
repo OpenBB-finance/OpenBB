@@ -33,7 +33,7 @@ Description: Get N coins from CoinGecko [Source: CoinGecko]
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | N coins |
+| pd.DataFrame | N coins |
 
 ## Examples
 

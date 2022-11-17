@@ -31,7 +31,7 @@ Description: Get list of financial platforms from CoinGecko API [Source: CoinGec
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Rank, Name, Category, Centralized, Url |
+| pd.DataFrame | Rank, Name, Category, Centralized, Url |
 
 ## Examples
 

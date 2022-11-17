@@ -25,13 +25,12 @@ Description: Return a selection of ETFs based on category filtered by total asse
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | category | str | Search by category to find ETFs matching the criteria. | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| data | Dict | Dictionary with ETFs that match a certain description | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| Dict[str, Any] | Dictionary with ETFs that match a certain description |
 
 ## Examples
 

@@ -31,7 +31,7 @@ Description: Get list of crypto derivatives from CoinGecko API [Source: CoinGeck
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread,
+| pd.DataFrame | Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread,
 Funding_Rate, Volume_24h, |
 
 ## Examples

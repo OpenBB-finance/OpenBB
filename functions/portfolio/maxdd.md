@@ -26,14 +26,12 @@ Description: Calculate the drawdown (MDD) of historical series.  Note that the c
 | ---- | ---- | ----------- | ------- | -------- |
 | data | pd.Series | Series of input values | None | False |
 | is_returns | bool | Flag to indicate inputs are returns | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.Series | None | Holdings series | None | None |
-| pd.Series | None | Drawdown series | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.Series | Holdings series |
 
 ## Examples
 

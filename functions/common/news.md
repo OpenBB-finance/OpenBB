@@ -27,13 +27,12 @@ Description: Get news for a given term and source. [Source: Feedparser]
 | term | str | term to search on the news articles | None | False |
 | sources | str | sources to exclusively show news from (separated by commas) | None | False |
 | sort | str | the column to sort by | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| articles | dict | term to search on the news articles | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| dict | term to search on the news articles |
 
 ## Examples
 

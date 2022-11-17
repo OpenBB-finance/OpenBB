@@ -24,6 +24,7 @@ Description: Get stats of a nft collection [Source: opensea.io]
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
+| slug | str | Opensea collection slug. If the name of the collection is Mutant Ape Yacht Club the slug is mutant-ape-yacht-club | None | False |
 
 ## Returns
 

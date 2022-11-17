@@ -34,7 +34,7 @@ https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1twitter
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Twitter timeline for given coin.
+| pd.DataFrame | Twitter timeline for given coin.
 Columns: date, user_name, status, retweet_count, like_count |
 
 ## Examples

@@ -21,13 +21,12 @@ Description: Get group (sectors, industry or country) valuation data. [Source: F
 | group | str | Group by category. Available groups can be accessed through get_groups(). | None | False |
 | sortby | str | Column to sort by | None | False |
 | ascend | bool | Flag to sort in ascending order | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | dataframe with valuation/performance data | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | dataframe with valuation/performance data |
 
 ## Examples
 

@@ -23,7 +23,7 @@ Description: Get global statistics about crypto from CoinGecko API like:
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Metric, Value |
+| pd.DataFrame | Metric, Value |
 
 ## Examples
 

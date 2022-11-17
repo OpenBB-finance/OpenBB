@@ -48,7 +48,7 @@ returns. | None | False |
 
 | Type | Description |
 | ---- | ----------- |
-| Dict | Dictionary of portfolio weights or allocations |
+| Tuple[Dict[str, Any], pd.DataFrame] | Dictionary of portfolio weights or allocations |
 
 ## Examples
 

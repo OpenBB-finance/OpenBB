@@ -23,7 +23,7 @@ Description: Get list of coins available on CoinGecko [Source: CoinGecko]
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Coins available on CoinGecko
+| pd.DataFrame | Coins available on CoinGecko
 Columns: id, symbol, name |
 
 ## Examples

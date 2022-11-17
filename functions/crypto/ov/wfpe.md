@@ -31,7 +31,7 @@ Description: Scrapes coin withdrawal fees per exchange
 | Type | Description |
 | ---- | ----------- |
 |  | - str:              Overall statistics (exchanges, lowest, average and median)
-- pandas.DataFrame: Exchange, Withdrawal Fee, Minimum Withdrawal Amount |
+- pd.DataFrame: Exchange, Withdrawal Fee, Minimum Withdrawal Amount |
 
 ## Examples
 

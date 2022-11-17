@@ -26,13 +26,12 @@ Description: Plots the short interest of a stock. This corresponds to the
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | ticker to get short interest from | None | False |
 | nyse | bool | data from NYSE if true, otherwise NASDAQ | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | short interest volume data | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | short interest volume data |
 
 ## Examples
 

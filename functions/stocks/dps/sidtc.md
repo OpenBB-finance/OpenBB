@@ -20,13 +20,12 @@ Description: Get short interest and days to cover. [Source: Stockgrid]
 | ---- | ---- | ----------- | ------- | -------- |
 | sortby | str | Field for which to sort by, where 'float': Float Short %%,
 'dtc': Days to Cover, 'si': Short Interest | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | Short interest and days to cover data | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Short interest and days to cover data |
 
 ## Examples
 

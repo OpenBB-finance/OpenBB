@@ -32,7 +32,7 @@ Description: Gets all contract addresses for given platform [Source: CoinPaprika
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | id, type, active |
+| pd.DataFrame | id, type, active |
 
 ## Examples
 

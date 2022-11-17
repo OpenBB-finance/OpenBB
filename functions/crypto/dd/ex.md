@@ -33,7 +33,7 @@ https://api.coinpaprika.com/v1). | None | False |
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | All exchanges for given coin
+| pd.DataFrame | All exchanges for given coin
 Columns: id, name, adjusted_volume_24h_share, fiats |
 
 ## Examples

@@ -38,7 +38,7 @@ API documentation (see https://api.coinpaprika.com/docs#tag/Tools/paths/~1search
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Search Results
+| pd.DataFrame | Search Results
 Columns: Metric, Value |
 
 ## Examples

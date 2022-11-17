@@ -23,7 +23,7 @@ Description: Get list of all available coins on CoinPaprika  [Source: CoinPaprik
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Available coins on CoinPaprika
+| pd.DataFrame | Available coins on CoinPaprika
 rank, id, name, symbol, type |
 
 ## Examples

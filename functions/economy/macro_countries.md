@@ -21,7 +21,9 @@ Description: This function returns the available countries and respective curren
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| Dict[str, str] | A dictionary with the available countries and respective currencies. |
 
 ## Examples
 

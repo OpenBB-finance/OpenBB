@@ -30,13 +30,12 @@ Available options can be accessed through economy.treasury_maturities(). | None 
 | frequency | str | Frequency of the data, this can be annually, monthly, weekly or daily. | None | False |
 | start_date | str | Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31. | None | False |
 | end_date | str | End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05. | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| treasury_data | pd.Dataframe | Holds data of the selected types and maturities | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.Dataframe | Holds data of the selected types and maturities |
 
 ## Examples
 
@@ -67,13 +66,12 @@ Available options can be accessed through economy.treasury_maturities(). | None 
 | raw | bool | Whether to display the raw output. | None | False |
 | external_axes | Optional[List[plt.axes]] | External axes to plot on | None | False |
 | export | str | Export data to csv,json,xlsx or png,jpg,pdf,svg file | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| Plots the Treasury Series. | None | None | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| Plots the Treasury Series. | None |
 
 ## Examples
 
