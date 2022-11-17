@@ -203,6 +203,5 @@ def build_controller_choice_map(controller) -> dict:
     except Exception as exception:
         if environ["DEBUG_MODE"] == "true":
             raise exception
-        raise exception
 
     return controller_choice_map
