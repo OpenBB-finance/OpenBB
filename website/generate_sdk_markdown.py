@@ -2,8 +2,18 @@ import csv
 import importlib
 import inspect
 import os
-from types import FunctionType
-from typing import Dict, List, Literal, Optional
+from types import FunctionType, UnionType
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    ForwardRef,
+    Iterable,
+    List,
+    Literal,
+    Optional,
+    Union,
+)
 
 from docstring_parser import parse
 
@@ -27,13 +37,112 @@ def clean_attr_desc(attr: Optional[FunctionType] = None) -> Optional[str]:
     )
 
 
+def normalise_optional_params(parameters: Iterable[Any]) -> tuple[Any, ...]:
+    none_cls = type(None)
+    return tuple(p for p in parameters if p is not none_cls) + (none_cls,)
+
+
+def evaluate_annotation(
+    tp: Any,
+    _globals: dict[str, Any],
+    _locals: dict[str, Any],
+    cache: dict[str, Any],
+    *,
+    implicit_str: bool = True,
+):
+    if isinstance(tp, ForwardRef):
+        tp = tp.__forward_arg__
+        # ForwardRefs always evaluate their internals
+        implicit_str = True
+
+    if implicit_str and isinstance(tp, str):
+        if tp in cache:
+            return cache[tp]
+        evaluated = eval(tp, _globals, _locals)  # pylint: disable=W0123
+        cache[tp] = evaluated
+        return evaluate_annotation(evaluated, _globals, _locals, cache)
+
+    if hasattr(tp, "__args__"):
+        implicit_str = True
+        is_literal = False
+        args = tp.__args__
+        if not hasattr(tp, "__origin__"):
+            if tp.__class__ is UnionType:
+                converted = Union[args]  # type: ignore
+                return evaluate_annotation(converted, _globals, _locals, cache)
+
+            return tp
+        if tp.__origin__ is Union:
+            try:
+                if args.index(type(None)) != len(args) - 1:
+                    args = normalise_optional_params(tp.__args__)
+            except ValueError:
+                pass
+        if tp.__origin__ is Literal:
+            implicit_str = False
+            is_literal = True
+
+        evaluated_args = tuple(
+            evaluate_annotation(
+                arg, _globals, _locals, cache, implicit_str=implicit_str
+            )
+            for arg in args
+        )
+
+        if is_literal and not all(
+            isinstance(x, (str, int, bool, type(None))) for x in evaluated_args
+        ):
+            raise TypeError(
+                "Literal arguments must be of type str, int, bool, or NoneType."
+            )
+
+        if evaluated_args == args:
+            return tp
+
+        try:
+            return tp.copy_with(evaluated_args)
+        except AttributeError:
+            return tp.__origin__[evaluated_args]
+
+    return tp
+
+
+def get_signature_parameters(
+    function: Callable[..., Any], globalns: dict[str, Any]
+) -> dict[str, inspect.Parameter]:
+    signature = inspect.signature(function)
+    params = {}
+    cache: dict[str, Any] = {}
+    eval_annotation = evaluate_annotation
+    for name, parameter in signature.parameters.items():
+        annotation = parameter.annotation
+        if annotation is parameter.empty:
+            params[name] = parameter
+            continue
+        if annotation is None:
+            params[name] = parameter.replace(annotation=type(None))
+            continue
+
+        annotation = eval_annotation(annotation, globalns, globalns, cache)
+
+        params[name] = parameter.replace(annotation=annotation)
+
+    return_type = signature.return_annotation
+    if return_type is not signature.empty:
+        return_type = eval_annotation(return_type, globalns, globalns, cache)
+
+    params["return"] = inspect.Parameter(
+        "return", inspect.Parameter.POSITIONAL_OR_KEYWORD, annotation=return_type
+    )
+    return params
+
+
 class Trailmap:
     def __init__(self, trailmap: str, model: str, view: Optional[str] = None):
         tmap = trailmap.split(".")
         if len(tmap) == 1:
             tmap = ["", tmap[0]]
         self.class_attr: str = tmap.pop(-1)
-        self.category = tmap[0]
         self.location_path = tmap
         self.model = model
         self.view = view if view else None
@@ -43,6 +152,7 @@ class Trailmap:
         self.full_path: Dict[str, str] = {}
         self.func_def: Dict[str, str] = {}
         self.func_attr: Dict[str, FunctionType] = {}
+        self.params: Dict[str, Dict[str, inspect.Parameter]] = {}
         self.get_docstrings()
 
     def get_docstrings(self) -> None:
@@ -64,10 +174,16 @@ class Trailmap:
                 self.func_attr[key] = func_attr
                 self.lineon[key] = inspect.getsourcelines(func_attr)[1] + add_juan
 
-                self.func_def[key] = self.get_definition(key)
                 self.long_doc[key] = func_attr.__doc__
                 self.short_doc[key] = clean_attr_desc(func_attr)
 
+                self.params[key] = {}
+                for k, p in get_signature_parameters(
+                    func_attr, func_attr.__globals__
+                ).items():
+                    self.params[key][k] = p
+
+                self.func_def[key] = self.get_definition(key)
                 full_path = (
                     inspect.getfile(self.func_attr[key])
                     .replace("\\", "/")
@@ -77,17 +193,15 @@ class Trailmap:
 
     def get_definition(self, key: str) -> str:
         """Creates the function definition to be used in SDK docs."""
-        funcspec = inspect.getfullargspec(self.func_attr[key])
-
+        funcspec = self.params[key]
         definition = ""
         added_comma = False
-        for arg in funcspec.args:
+        return_type = ""
+        for arg in funcspec:
+
             annotation = (
-                funcspec.annotations[arg] if arg in funcspec.annotations else "Any"
-            )
-            if arg in funcspec.annotations:
-                annotation = (
-                    str(annotation)
+                (
+                    str(funcspec[arg].annotation)
                     .replace("<class '", "")
                     .replace("'>", "")
                     .replace("typing.", "")
@@ -95,19 +209,33 @@ class Trailmap:
                     .replace("pandas.core.series.", "pd.")
                     .replace("openbb_terminal.portfolio.", "")
                 )
-            definition += f"{arg}: {annotation}, "
+                if funcspec[arg].annotation != inspect.Parameter.empty
+                else "Any"
+            )
+            if arg == "return":
+                return_type = annotation
+                continue
+
+            default = ""
+            if funcspec[arg].default is not funcspec[arg].empty:
+                arg_default = (
+                    funcspec[arg].default
+                    if funcspec[arg].default is not inspect.Parameter.empty
+                    else None
+                )
+                default = (
+                    f" = {arg_default}"
+                    if not isinstance(arg_default, str)
+                    else f' = "{arg_default}"'
+                )
+            definition += f"{arg}: {annotation}{default}, "
             added_comma = True
 
         if added_comma:
             definition = definition[:-2]
 
-        return_def = (
-            funcspec.annotations["return"].__name__
-            if "return" in funcspec.annotations
-            and hasattr(funcspec.annotations["return"], "__name__")
-            and funcspec.annotations["return"] is not None
-            else "None"
-        )
+        return_def = return_type if return_type != "Any" else "None"
+
         definition = (
             f"def {getattr(self, key).split('.')[-1]}({definition }) -> {return_def}"
         )
@@ -148,13 +276,21 @@ def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
     function_name = trailmap.view if trail_type == "view" else trailmap.model
     params = []
     for param in doc_parsed.params:
+        arg_default = (
+            trailmap.params[trail_type][param.arg_name].default
+            if param.arg_name in trailmap.params[trail_type]
+            else None
+        )
         params.append(
             {
                 "name": param.arg_name,
                 "doc": param.description,
                 "type": param.type_name,
-                "default": param.default,
-                "optional": param.is_optional,
+                "default": arg_default
+                if arg_default is not inspect.Parameter.empty
+                else None,
+                "optional": bool(arg_default is not inspect.Parameter.empty)
+                or param.is_optional,
             }
         )
     if doc_parsed.returns:
@@ -219,10 +355,10 @@ import TabItem from '@theme/TabItem';\n\n"""
 def generate_markdown_section(meta):
     # head meta https://docusaurus.io/docs/markdown-features/head-metadata
     # use real description but need to parse it
-    markdown = f"## {meta['function_name']}\n\n"
-    markdown += f"```python title='{meta['path']}'\n{meta['func_def']}\n```\n"
-    markdown += f"[Source Code]({meta['source_code_url']})\n\n"
-    markdown += f"Description: {meta['description']}\n\n"
+    markdown = (
+        f"{meta['description']}\n\nSource Code: [[link]({meta['source_code_url']})]\n\n"
+    )
+    markdown += f"```python\n{meta['func_def']}\n```\n"
 
     markdown += "## Parameters\n\n"
     if meta["params"]:
@@ -248,10 +384,9 @@ def generate_markdown_section(meta):
     else:
         markdown += "This function does not return anything\n\n"
 
-    markdown += "## Examples\n\n"
     for example in meta["examples"]:
+        markdown += "## Examples\n\n"
         markdown += f"{example['description']}\n"
-
         if isinstance(example["snippet"], str):
             snippet = example["snippet"].replace(">>> ", "")
             markdown += f"```python\n{snippet}\n```\n\n"

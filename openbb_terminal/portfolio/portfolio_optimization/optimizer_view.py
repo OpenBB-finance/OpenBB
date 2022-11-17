@@ -737,9 +737,9 @@ def display_property_weighting(
     threshold: float = 0,
     method: str = "time",
     s_property: str = "marketCap",
-    risk_measure="mv",
+    risk_measure: str = "mv",
     risk_free_rate: float = 0,
-    alpha=0.05,
+    alpha: float = 0.05,
     value: float = 1,
     table: bool = False,
 ) -> Dict[str, float]:
@@ -3723,7 +3723,7 @@ def pie_chart_weights(
 
 @log_start_end(log=logger)
 def additional_plots(
-    weights,
+    weights: Dict,
     data: pd.DataFrame,
     category: Dict = None,
     title_opt: str = "",

@@ -43,7 +43,7 @@ def get_collections() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_floor_price(slug) -> pd.DataFrame:
+def get_floor_price(slug: str) -> pd.DataFrame:
     """Get nft collections [Source: https://nftpricefloor.com/]
 
     Parameters

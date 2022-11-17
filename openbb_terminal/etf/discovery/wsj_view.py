@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def show_top_mover(sort_type: str = "gainers", limit: int = 10, export=""):
+def show_top_mover(sort_type: str = "gainers", limit: int = 10, export: str = ""):
     """
     Show top ETF movers from wsj.com
 
