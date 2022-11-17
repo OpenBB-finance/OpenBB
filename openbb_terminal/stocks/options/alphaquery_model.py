@@ -33,6 +33,11 @@ def get_put_call_ratio(
     -------
     pd.DataFrame
         Put call ratio
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> pcr_df = openbb.stocks.options.pcr("B")
     """
 
     if start_date is None:

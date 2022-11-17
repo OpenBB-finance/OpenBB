@@ -46,19 +46,22 @@ class ForexController(BaseController):
     """Forex Controller class."""
 
     CHOICES_COMMANDS = [
+        "fwd",
+        "candle",
         "load",
         "quote",
-        "candle",
-        "resources",
-        "fwd",
-        "forecast",
-        "oanda",
     ]
-    CHOICES_MENUS = ["ta", "qa", "Oanda"]
+    CHOICES_MENUS = [
+        "forecast",
+        "qa",
+        "oanda",
+        "ta",
+    ]
     RESOLUTION = ["i", "d", "w", "m"]
 
     PATH = "/forex/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""
@@ -71,39 +74,10 @@ class ForexController(BaseController):
         self.data = pd.DataFrame()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices: dict = self.choices
 
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"] = {c: {} for c in FX_TICKERS}
+            choices["load"].update({c: {} for c in FX_TICKERS})
             choices["load"]["--ticker"] = {c: {} for c in FX_TICKERS}
-            choices["load"]["-t"] = "--ticker"
-            choices["load"]["--resolution"] = {c: {} for c in self.RESOLUTION}
-            choices["load"]["-r"] = "--resolution"
-            choices["load"]["--interval"] = {
-                c: {} for c in SOURCES_INTERVALS["YahooFinance"]
-            }
-            choices["load"]["--start"] = None
-            choices["load"]["-s"] = "--start"
-            choices["load"]["--source"] = {c: {} for c in FOREX_SOURCES}
-            choices["quote"]["--source"] = {
-                c: {} for c in get_ordered_list_sources(f"{self.PATH}quote")
-            }
-            choices["candle"] = {
-                "--sort": {c: {} for c in forex_helper.CANDLE_SORT},
-                "--plotly": {},
-                "-p": "--plotly",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--raw": {},
-                "--trend": {},
-                "-t": "--trend",
-                "--ma": None,
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
