@@ -126,6 +126,5 @@ def dict_to_df(d: dict) -> pd.DataFrame:
         return pd.DataFrame()
 
     df = pd.DataFrame.from_dict(data=d, orient="index", columns=["value"])
-    df.index.name = "Symbol"
 
     return df

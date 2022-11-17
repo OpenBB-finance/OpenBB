@@ -6,6 +6,7 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Dict, List, Optional, Tuple, Union
+import warnings
 
 import pandas as pd
 from numpy.typing import NDArray
@@ -18,6 +19,8 @@ from openbb_terminal.portfolio.portfolio_optimization import (
 )
 from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.rich_config import console
+
+warnings.filterwarnings("ignore")
 
 logger = logging.getLogger(__name__)
 
@@ -105,7 +108,7 @@ def validate_inputs(symbols, engine, kwargs) -> Tuple[List[str], PoEngine, dict]
         parameters = kwargs
     elif engine:
         symbols = engine.get_symbols()
-        parameters = engine.get_params()
+        parameters = engine.get_params().copy()
         parameters.update(kwargs)
     else:
         console.print("No symbols or engine provided")
