@@ -93,7 +93,8 @@ exit
 ### Conda Terminal
 
 After navigating to the location of the OpenBBTerminal repo, one can run integration tests in a
-few different ways using the wildcard expression.
+few different ways using the wildcard expression. Please include a `-t` with `terminal.py` to run
+the tests.
 
 - Run all integration tests:
 
