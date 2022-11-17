@@ -28,6 +28,7 @@ from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_helper,
     optimizer_model,
     optimizer_view,
+    statics,
 )
 from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 from openbb_terminal.portfolio.portfolio_optimization.parameters import (
@@ -88,191 +89,6 @@ class PortfolioOptimizationController(BaseController):
         "yolo",
         "file",
         "params",
-    ]
-
-    PERIOD_CHOICES = [
-        "1d",
-        "5d",
-        "1mo",
-        "3mo",
-        "6mo",
-        "1y",
-        "2y",
-        "5y",
-        "10y",
-        "ytd",
-        "max",
-    ]
-
-    MEAN_RISK_CHOICES = [
-        "MV",
-        "MAD",
-        "MSV",
-        "FLPM",
-        "SLPM",
-        "CVaR",
-        "EVaR",
-        "WR",
-        "ADD",
-        "UCI",
-        "CDaR",
-        "EDaR",
-        "MDD",
-    ]
-
-    RISK_PARITY_CHOICES = [
-        "MV",
-        "MAD",
-        "MSV",
-        "FLPM",
-        "SLPM",
-        "CVaR",
-        "EVaR",
-        "CDaR",
-        "EDaR",
-        "UCI",
-    ]
-
-    REL_RISK_PARITY_CHOICES = [
-        "A",
-        "B",
-        "C",
-    ]
-
-    HCP_CHOICES = [
-        "MV",
-        "MAD",
-        "GMD",
-        "MSV",
-        "VaR",
-        "CVaR",
-        "TG",
-        "EVaR",
-        "RG",
-        "CVRG",
-        "TGRG",
-        "WR",
-        "FLPM",
-        "SLPM",
-        "MDD",
-        "ADD",
-        "DaR",
-        "CDaR",
-        "EDaR",
-        "UCI",
-        "MDD_Rel",
-        "ADD_Rel",
-        "DaR_Rel",
-        "CDaR_Rel",
-        "EDaR_Rel",
-        "UCI_Rel",
-    ]
-
-    RISK_CHOICES = {
-        "mv": "MV",
-        "mad": "MAD",
-        "gmd": "GMD",
-        "msv": "MSV",
-        "var": "VaR",
-        "cvar": "CVaR",
-        "tg": "TG",
-        "evar": "EVaR",
-        "rg": "RG",
-        "cvrg": "CVRG",
-        "tgrg": "TGRG",
-        "wr": "WR",
-        "flpm": "FLPM",
-        "slpm": "SLPM",
-        "mdd": "MDD",
-        "add": "ADD",
-        "dar": "DaR",
-        "cdar": "CDaR",
-        "edar": "EDaR",
-        "uci": "UCI",
-        "mdd_rel": "MDD_Rel",
-        "add_rel": "ADD_Rel",
-        "dar_rel": "DaR_Rel",
-        "cdar_rel": "CDaR_Rel",
-        "edar_rel": "EDaR_Rel",
-        "uci_rel": "UCI_Rel",
-    }
-    MEAN_CHOICES = [
-        "hist",
-        "ewma1",
-        "ewma2",
-    ]
-
-    CODEPENDENCE_CHOICES = [
-        "pearson",
-        "spearman",
-        "abs_pearson",
-        "abs_spearman",
-        "distance",
-        "mutual_info",
-        "tail",
-    ]
-
-    COVARIANCE_CHOICES = [
-        "hist",
-        "ewma1",
-        "ewma2",
-        "ledoit",
-        "oas",
-        "shrunk",
-        "gl",
-        "jlogo",
-        "fixed",
-        "spectral",
-        "shrink",
-    ]
-
-    OBJECTIVE_CHOICES = [
-        "MinRisk",
-        "Utility",
-        "Sharpe",
-        "MaxRet",
-    ]
-
-    NCO_OBJECTIVE_CHOICES = [
-        "MinRisk",
-        "Utility",
-        "Sharpe",
-        "ERC",
-    ]
-
-    LINKAGE_CHOICES = [
-        "single",
-        "complete",
-        "average",
-        "weighted",
-        "centroid",
-        "median",
-        "ward",
-        "dbht",
-    ]
-
-    BINS_CHOICES = [
-        "KN",
-        "FD",
-        "SC",
-        "HGR",
-    ]
-
-    FREQ_CHOICES = [
-        "d",
-        "w",
-        "m",
-    ]
-
-    METHOD_CHOICES = [
-        "linear",
-        "time",
-        "nearest",
-        "zero",
-        "slinear",
-        "quadratic",
-        "cubic",
-        "barycentric",
     ]
 
     PATH = "/portfolio/po/"
@@ -396,14 +212,14 @@ class PortfolioOptimizationController(BaseController):
             self.choices["plot"]["--heat"] = None
             self.choices["plot"]["-he"] = "--heat"
             self.choices["plot"]["--risk-measure"] = {
-                c: {} for c in self.MEAN_RISK_CHOICES
+                c: {} for c in statics.MEAN_RISK_CHOICES
             }
             self.choices["plot"]["-rm"] = "--risk-measure"
-            self.choices["plot"]["--method"] = {c: {} for c in self.METHOD_CHOICES}
+            self.choices["plot"]["--method"] = {c: {} for c in statics.METHOD_CHOICES}
             self.choices["plot"]["-mt"] = "--method"
             self.choices["plot"]["--categories"] = None
             self.choices["plot"]["-ct"] = "--categories"
-            self.choices["plot"]["--period"] = {c: {} for c in self.PERIOD_CHOICES}
+            self.choices["plot"]["--period"] = {c: {} for c in statics.PERIOD_CHOICES}
             self.choices["plot"]["-p"] = "--period"
             self.choices["plot"]["--start"] = None
             self.choices["plot"]["-s"] = "--start"
@@ -425,11 +241,11 @@ class PortfolioOptimizationController(BaseController):
             self.choices["rpf"]["--portfolios"] = None
             self.choices["rpf"]["--pf"] = "--portfolios"
             for fn in models:
-                self.choices[fn]["-p"] = {c: {} for c in self.PERIOD_CHOICES}
-                self.choices[fn]["--period"] = {c: {} for c in self.PERIOD_CHOICES}
-                self.choices[fn]["--freq"] = {c: {} for c in self.FREQ_CHOICES}
-                self.choices[fn]["-mt"] = {c: {} for c in self.METHOD_CHOICES}
-                self.choices[fn]["--method"] = {c: {} for c in self.METHOD_CHOICES}
+                self.choices[fn]["-p"] = {c: {} for c in statics.PERIOD_CHOICES}
+                self.choices[fn]["--period"] = {c: {} for c in statics.PERIOD_CHOICES}
+                self.choices[fn]["--freq"] = {c: {} for c in statics.FREQ_CHOICES}
+                self.choices[fn]["-mt"] = {c: {} for c in statics.METHOD_CHOICES}
+                self.choices[fn]["--method"] = {c: {} for c in statics.METHOD_CHOICES}
                 self.choices[fn]["--name"] = None
                 self.choices[fn]["--start"] = None
                 self.choices[fn]["-s"] = "--start"
@@ -437,22 +253,22 @@ class PortfolioOptimizationController(BaseController):
                 self.choices[fn]["-e"] = "--end"
 
             for fn in ["maxsharpe", "minrisk", "maxutil", "maxret", "nco", "ef"]:
-                self.choices[fn]["-rm"] = {c: {} for c in self.MEAN_RISK_CHOICES}
+                self.choices[fn]["-rm"] = {c: {} for c in statics.MEAN_RISK_CHOICES}
                 self.choices[fn]["--risk-measure"] = {
-                    c: {} for c in self.MEAN_RISK_CHOICES
+                    c: {} for c in statics.MEAN_RISK_CHOICES
                 }
 
             self.choices["riskparity"]["-rm"] = {
-                c: {} for c in self.RISK_PARITY_CHOICES
+                c: {} for c in statics.RISK_PARITY_CHOICES
             }
             self.choices["riskparity"]["--risk-measure"] = {
-                c: {} for c in self.RISK_PARITY_CHOICES
+                c: {} for c in statics.RISK_PARITY_CHOICES
             }
             self.choices["relriskparity"]["-ve"] = {
-                c: {} for c in self.RISK_PARITY_CHOICES
+                c: {} for c in statics.RISK_PARITY_CHOICES
             }
             self.choices["relriskparity"]["--version"] = {
-                c: {} for c in self.RISK_PARITY_CHOICES
+                c: {} for c in statics.RISK_PARITY_CHOICES
             }
 
             for fn in [
@@ -463,46 +279,48 @@ class PortfolioOptimizationController(BaseController):
                 "riskparity",
                 "relriskparity",
             ]:
-                self.choices[fn]["-m"] = {c: {} for c in self.MEAN_CHOICES}
-                self.choices[fn]["--mean"] = {c: {} for c in self.MEAN_CHOICES}
-                self.choices[fn]["-cv"] = {c: {} for c in self.COVARIANCE_CHOICES}
+                self.choices[fn]["-m"] = {c: {} for c in statics.MEAN_CHOICES}
+                self.choices[fn]["--mean"] = {c: {} for c in statics.MEAN_CHOICES}
+                self.choices[fn]["-cv"] = {c: {} for c in statics.COVARIANCE_CHOICES}
                 self.choices[fn]["--covariance"] = {
-                    c: {} for c in self.COVARIANCE_CHOICES
+                    c: {} for c in statics.COVARIANCE_CHOICES
                 }
 
             for fn in ["maxdiv", "maxdecorr"]:
-                self.choices[fn]["-cv"] = {c: {} for c in self.COVARIANCE_CHOICES}
+                self.choices[fn]["-cv"] = {c: {} for c in statics.COVARIANCE_CHOICES}
                 self.choices[fn]["--covariance"] = {
-                    c: {} for c in self.COVARIANCE_CHOICES
+                    c: {} for c in statics.COVARIANCE_CHOICES
                 }
 
             for fn in ["hrp", "herc"]:
-                self.choices[fn]["-rm"] = {c: {} for c in self.HCP_CHOICES}
-                self.choices[fn]["--risk-measure"] = {c: {} for c in self.HCP_CHOICES}
+                self.choices[fn]["-rm"] = {c: {} for c in statics.HCP_CHOICES}
+                self.choices[fn]["--risk-measure"] = {
+                    c: {} for c in statics.HCP_CHOICES
+                }
 
             for fn in ["hrp", "herc", "nco"]:
-                self.choices[fn]["-cd"] = {c: {} for c in self.CODEPENDENCE_CHOICES}
+                self.choices[fn]["-cd"] = {c: {} for c in statics.CODEPENDENCE_CHOICES}
                 self.choices[fn]["--codependence"] = {
-                    c: {} for c in self.CODEPENDENCE_CHOICES
+                    c: {} for c in statics.CODEPENDENCE_CHOICES
                 }
-                self.choices[fn]["-cv"] = {c: {} for c in self.COVARIANCE_CHOICES}
+                self.choices[fn]["-cv"] = {c: {} for c in statics.COVARIANCE_CHOICES}
                 self.choices[fn]["--covariance"] = {
-                    c: {} for c in self.COVARIANCE_CHOICES
+                    c: {} for c in statics.COVARIANCE_CHOICES
                 }
-                self.choices[fn]["-lk"] = {c: {} for c in self.LINKAGE_CHOICES}
-                self.choices[fn]["--linkage"] = {c: {} for c in self.LINKAGE_CHOICES}
-                self.choices[fn]["-bi"] = {c: {} for c in self.BINS_CHOICES}
-                self.choices[fn]["--bins-info"] = {c: {} for c in self.BINS_CHOICES}
+                self.choices[fn]["-lk"] = {c: {} for c in statics.LINKAGE_CHOICES}
+                self.choices[fn]["--linkage"] = {c: {} for c in statics.LINKAGE_CHOICES}
+                self.choices[fn]["-bi"] = {c: {} for c in statics.BINS_CHOICES}
+                self.choices[fn]["--bins-info"] = {c: {} for c in statics.BINS_CHOICES}
 
             self.choices["blacklitterman"]["-o"] = {
-                c: {} for c in self.OBJECTIVE_CHOICES
+                c: {} for c in statics.OBJECTIVE_CHOICES
             }
             self.choices["blacklitterman"]["--objective"] = {
-                c: {} for c in self.OBJECTIVE_CHOICES
+                c: {} for c in statics.OBJECTIVE_CHOICES
             }
-            self.choices["nco"]["-o"] = {c: {} for c in self.NCO_OBJECTIVE_CHOICES}
+            self.choices["nco"]["-o"] = {c: {} for c in statics.NCO_OBJECTIVE_CHOICES}
             self.choices["nco"]["--objective"] = {
-                c: {} for c in self.NCO_OBJECTIVE_CHOICES
+                c: {} for c in statics.NCO_OBJECTIVE_CHOICES
             }
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -610,7 +428,7 @@ class PortfolioOptimizationController(BaseController):
                         'EDaR' : Entropic Drawdown at Risk of uncompounded returns
                         'MDD' : Maximum Drawdown of uncompounded returns
                         """,
-                choices=self.MEAN_RISK_CHOICES,
+                choices=statics.MEAN_RISK_CHOICES,
             )
         if mt:
             parser.add_argument(
@@ -702,7 +520,7 @@ class PortfolioOptimizationController(BaseController):
                         'w': for weekly returns
                         'm': for monthly returns
                         """,
-                choices=self.FREQ_CHOICES,
+                choices=statics.FREQ_CHOICES,
             )
         if mn:
             parser.add_argument(
@@ -1373,7 +1191,7 @@ class PortfolioOptimizationController(BaseController):
             else "hist",
             dest="expected_return",
             help="Method used to estimate the expected return vector",
-            choices=self.MEAN_CHOICES,
+            choices=statics.MEAN_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -1395,7 +1213,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-de",
@@ -1560,7 +1378,7 @@ class PortfolioOptimizationController(BaseController):
             else "hist",
             dest="expected_return",
             help="Method used to estimate expected returns vector",
-            choices=self.MEAN_CHOICES,
+            choices=statics.MEAN_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -1580,7 +1398,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-de",
@@ -1755,7 +1573,7 @@ class PortfolioOptimizationController(BaseController):
             else "hist",
             dest="expected_return",
             help="Method used to estimate the expected return vector",
-            choices=self.MEAN_CHOICES,
+            choices=statics.MEAN_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -1777,7 +1595,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-de",
@@ -1944,7 +1762,7 @@ class PortfolioOptimizationController(BaseController):
             else "hist",
             dest="expected_return",
             help="Method used to estimate the expected return vector",
-            choices=self.MEAN_CHOICES,
+            choices=statics.MEAN_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -1966,7 +1784,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-de",
@@ -2127,7 +1945,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-de",
@@ -2273,7 +2091,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-de",
@@ -2415,7 +2233,7 @@ class PortfolioOptimizationController(BaseController):
             else "Sharpe",
             dest="objective",
             help="Objective function used to optimize the portfolio",
-            choices=self.OBJECTIVE_CHOICES,
+            choices=statics.OBJECTIVE_CHOICES,
         )
         parser.add_argument(
             "-pv",
@@ -2768,7 +2586,7 @@ class PortfolioOptimizationController(BaseController):
                     'CDaR' : Conditional Drawdown at Risk of uncompounded returns
                     'EDaR' : Entropic Drawdown at Risk of uncompounded returns
                     """,
-            choices=self.RISK_PARITY_CHOICES,
+            choices=statics.RISK_PARITY_CHOICES,
         )
         parser.add_argument(
             "-rc",
@@ -2921,7 +2739,7 @@ class PortfolioOptimizationController(BaseController):
                 'A': risk parity without regularization and penalization constraints
                 'B': with regularization constraint but without penalization constraint
                 'C': with regularization and penalization constraints""",
-            choices=self.REL_RISK_PARITY_CHOICES,
+            choices=statics.REL_RISK_PARITY_CHOICES,
         )
         parser.add_argument(
             "-rc",
@@ -3085,7 +2903,7 @@ class PortfolioOptimizationController(BaseController):
                 'distance': distance correlation matrix
                 'mutual_info': mutual information codependence matrix
                 'tail': tail index codependence matrix""",
-            choices=self.CODEPENDENCE_CHOICES,
+            choices=statics.CODEPENDENCE_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -3107,7 +2925,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-rm",
@@ -3144,7 +2962,7 @@ class PortfolioOptimizationController(BaseController):
                     'EDaR_Rel' : Entropic Drawdown at Risk of compounded returns
                     'MDD_Rel' : Maximum Drawdown of compounded returns
                     """,
-            choices=self.HCP_CHOICES,
+            choices=statics.HCP_CHOICES,
         )
         parser.add_argument(
             "-as",
@@ -3185,7 +3003,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["linkage"] if "linkage" in self.params else "single",
             dest="linkage",
             help="Linkage method of hierarchical clustering",
-            choices=self.LINKAGE_CHOICES,
+            choices=statics.LINKAGE_CHOICES,
         )
         parser.add_argument(
             "-k",
@@ -3388,7 +3206,7 @@ class PortfolioOptimizationController(BaseController):
                 'distance': distance correlation matrix
                 'mutual_info': mutual information codependence matrix
                 'tail': tail index codependence matrix""",
-            choices=self.CODEPENDENCE_CHOICES,
+            choices=statics.CODEPENDENCE_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -3410,7 +3228,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-rm",
@@ -3447,7 +3265,7 @@ class PortfolioOptimizationController(BaseController):
                     'EDaR_Rel' : Entropic Drawdown at Risk of compounded returns
                     'MDD_Rel' : Maximum Drawdown of compounded returns
                     """,
-            choices=self.HCP_CHOICES,
+            choices=statics.HCP_CHOICES,
         )
         parser.add_argument(
             "-as",
@@ -3488,7 +3306,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["linkage"] if "linkage" in self.params else "single",
             dest="linkage",
             help="Linkage method of hierarchical clustering",
-            choices=self.LINKAGE_CHOICES,
+            choices=statics.LINKAGE_CHOICES,
         )
         parser.add_argument(
             "-k",
@@ -3693,7 +3511,7 @@ class PortfolioOptimizationController(BaseController):
                 'distance': distance correlation matrix
                 'mutual_info': mutual information codependence matrix
                 'tail': tail index codependence matrix""",
-            choices=self.CODEPENDENCE_CHOICES,
+            choices=statics.CODEPENDENCE_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -3715,7 +3533,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-o",
@@ -3725,7 +3543,7 @@ class PortfolioOptimizationController(BaseController):
             else "MinRisk",
             dest="objective",
             help="Objective function used to optimize the portfolio",
-            choices=self.NCO_OBJECTIVE_CHOICES,
+            choices=statics.NCO_OBJECTIVE_CHOICES,
         )
         parser.add_argument(
             "-ra",
@@ -3743,7 +3561,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["linkage"] if "linkage" in self.params else "single",
             dest="linkage",
             help="Linkage method of hierarchical clustering",
-            choices=self.LINKAGE_CHOICES,
+            choices=statics.LINKAGE_CHOICES,
         )
         parser.add_argument(
             "-k",
