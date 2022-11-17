@@ -19,6 +19,18 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def show_available_pairs_for_given_symbol(symbol: str = "ETH") -> Tuple[str, list]:
+    """Return all available quoted assets for given symbol. [Source: Coinbase]
+
+    Parameters
+    ----------
+    symbol: str
+        Uppercase symbol of coin e.g BTC, ETH, UNI, LUNA, DOT ...
+
+    Returns
+    -------
+    Tuple[str, list]
+        Symbol and list of available pairs
+    """
     pairs = make_coinbase_request("/products")
     df = pd.DataFrame(pairs)[["base_currency", "quote_currency"]]
 
@@ -111,6 +123,7 @@ def get_trades(
         Last `limit` of trades. Maximum is 1000.
     side: str
         You can chose either sell or buy side. If side is not set then all trades will be displayed.
+
     Returns
     -------
     pd.DataFrame

@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union, List, Optional
+from typing import Tuple, Union, List, Optional
 
 import warnings
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
@@ -43,7 +43,13 @@ def get_tft_data(
     model_save_name: str = "tft_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
+) -> Tuple[
+    Optional[List[TimeSeries]],
+    Optional[List[TimeSeries]],
+    Optional[List[TimeSeries]],
+    Optional[float],
+    Optional[type[TFTModel]],
+]:
 
     """Performs Temporal Fusion Transformer forecasting
     The TFT applies multi-head attention queries on future inputs from mandatory future_covariates.
@@ -57,7 +63,7 @@ def get_tft_data(
     ----------
     data (Union[pd.Series, pd.DataFrame]):
         Input Data
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     n_predict (int, optional):
         Days to predict. Defaults to 5.
@@ -97,19 +103,13 @@ def get_tft_data(
         Whether or not to automatically save the untrained model and checkpoints from training.
         Defaults to True.
 
-
-
     Returns
     -------
-    List[float]
-        Adjusted Data series
-    List[float]
-        List of historical fcast values
-    List[float]
-        List of predicted fcast values
-    Optional[float]
-        precision
-    Any
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], type[TFTModel]]:
+        Adjusted Data series,
+        List of historical fcast values,
+        List of predicted fcast values,
+        Optional[float] - precision,
         Fit Prob. TFT model object.
     """
 

@@ -130,10 +130,8 @@ def get_short_interest_volume(symbol: str) -> Tuple[pd.DataFrame, List]:
 
     Returns
     -------
-    pd.DataFrame
-        Short interest volume data
-    List
-        Price data
+    Tuple[pd.DataFrame, List]
+        Short interest volume data, Price data
     """
     link = f"https://stockgridapp.herokuapp.com/get_dark_pool_individual_data?ticker={symbol}"
     response = requests.get(link)

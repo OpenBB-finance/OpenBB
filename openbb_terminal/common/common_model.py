@@ -68,7 +68,7 @@ def load(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with custom data
     """
     if data_files is None:

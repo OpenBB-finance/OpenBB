@@ -105,6 +105,7 @@ numpy = "1.23.4"
 papermill = "^2.4.0"
 stocksera = "^0.1.21"
 ipython = "8.5.0"
+protobuf = "3.20.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"

@@ -117,13 +117,18 @@ def get_historical_futures(symbols: List[str], expiry: str = "") -> pd.DataFrame
 @log_start_end(log=logger)
 def get_curve_futures(
     symbol: str = "",
-):
+) -> pd.DataFrame:
     """Get curve futures [Source: Yahoo Finance]
 
     Parameters
     ----------
     symbol: str
         symbol to get forward curve
+
+    Returns
+    -------
+    pd.DataFrame
+        Dictionary with sector weightings allocation
     """
     if symbol not in FUTURES_DATA["Ticker"].unique().tolist():
         return pd.DataFrame()

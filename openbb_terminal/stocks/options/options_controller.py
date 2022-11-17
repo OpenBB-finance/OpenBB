@@ -9,17 +9,16 @@ from typing import Any, List
 import numpy as np
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.config_terminal import API_TRADIER_TOKEN
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    valid_date,
     parse_and_split_input,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -42,8 +41,8 @@ from openbb_terminal.stocks.options.hedge import hedge_controller
 from openbb_terminal.stocks.options.pricing import pricing_controller
 from openbb_terminal.stocks.options.screen import (
     screener_controller,
-    syncretism_view,
     syncretism_model,
+    syncretism_view,
 )
 
 # pylint: disable=R1710,C0302,R0916
@@ -52,6 +51,9 @@ from openbb_terminal.stocks.options.screen import (
 #       - At the moment there's too much logic in the controller to implement an
 #         API wrapper. Please refactor functions like 'call_exp'
 
+# TODO: Additional refactoring -- load should bring in a df from the sdk_helpers functions and we can get expirations
+# from there.  Additionally each view function should be made a function that takes the df and plots it instead of
+# getting the new chain
 
 logger = logging.getLogger(__name__)
 
@@ -719,7 +721,6 @@ class OptionsController(BaseController):
                 self.expiry_dates = nasdaq_model.get_expirations(self.ticker)
             else:
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
-            console.print("")
 
             if self.ticker and self.selected_date:
                 try:
@@ -773,7 +774,6 @@ class OptionsController(BaseController):
                 # Print possible expiry dates
                 if ns_parser.index == -1 and not ns_parser.date:
                     tradier_view.display_expiry_dates(self.expiry_dates)
-                    console.print("")
                 elif ns_parser.date:
                     if ns_parser.date in self.expiry_dates:
                         console.print(f"Expiration set to {ns_parser.date} \n")

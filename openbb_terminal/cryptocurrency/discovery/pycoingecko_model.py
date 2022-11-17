@@ -113,6 +113,13 @@ def read_file_data(file_name: str) -> dict:
 
 @log_start_end(log=logger)
 def get_categories_keys() -> List[str]:
+    """Get list of categories keys
+
+    Returns
+    -------
+    List[str]
+        List of categories keys
+    """
     categories = read_file_data("coingecko_categories.json")
     return list(categories.keys())
 
@@ -206,6 +213,7 @@ def get_gainers_or_losers(
         One from {14d,1h,1y,200d,24h,30d,7d}
     typ: str
         Either "gainers" or "losers"
+
     Returns
     -------
     pd.DataFrame
@@ -314,7 +322,7 @@ def get_trending_coins() -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Trending Coins
     """
     client = CoinGeckoAPI()

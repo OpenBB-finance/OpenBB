@@ -24,7 +24,7 @@ global_deaths_time_series = (
 
 @log_start_end(log=logger)
 def get_global_cases(country: str) -> pd.DataFrame:
-    """Get historical cases for given country
+    """Get historical cases for given country.
 
     Parameters
     ----------
@@ -60,6 +60,9 @@ def get_global_cases(country: str) -> pd.DataFrame:
         .T
     )
     cases.index = pd.to_datetime(cases.index)
+    if country not in cases:
+        console.print("[red]The selection `{country}` is not a valid option.[/red]\n")
+        return pd.DataFrame()
     cases = pd.DataFrame(cases[country]).diff().dropna()
     if cases.shape[1] > 1:
         return pd.DataFrame(cases.sum(axis=1))
@@ -68,7 +71,7 @@ def get_global_cases(country: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_global_deaths(country: str) -> pd.DataFrame:
-    """Get historical deaths for given country
+    """Get historical deaths for given country.
 
     Parameters
     ----------
@@ -89,6 +92,9 @@ def get_global_deaths(country: str) -> pd.DataFrame:
         .T
     )
     deaths.index = pd.to_datetime(deaths.index)
+    if country not in deaths:
+        console.print("[red]The selection `{country}` is not a valid option.[/red]\n")
+        return pd.DataFrame()
     deaths = pd.DataFrame(deaths[country]).diff().dropna()
     if deaths.shape[1] > 1:
         return pd.DataFrame(deaths.sum(axis=1))
@@ -100,7 +106,7 @@ def get_covid_ov(
     country: str,
     limit: int = 100,
 ) -> pd.DataFrame:
-    """Get historical cases and deaths by country
+    """Get historical cases and deaths by country.
 
     Parameters
     ----------
@@ -108,9 +114,18 @@ def get_covid_ov(
         Country to get data for
     limit: int
         Number of raw data to show
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of historical cases and deaths
     """
+    if country.lower() == "us":
+        country = "US"
     cases = get_global_cases(country)
     deaths = get_global_deaths(country)
+    if cases.empty or deaths.empty:
+        return pd.DataFrame()
     data = pd.concat([cases, deaths], axis=1)
     data.columns = ["Cases", "Deaths"]
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
@@ -123,7 +138,7 @@ def get_covid_stat(
     stat: str = "cases",
     limit: int = 10,
 ) -> pd.DataFrame:
-    """Show historical cases and deaths by country
+    """Show historical cases and deaths by country.
 
     Parameters
     ----------
@@ -133,6 +148,11 @@ def get_covid_stat(
         Statistic to get.  Either "cases", "deaths" or "rates"
     limit: int
         Number of raw data to show
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of data for given country and statistic
     """
     if stat == "cases":
         data = get_global_cases(country)
@@ -156,7 +176,7 @@ def get_case_slopes(
     threshold: int = 10000,
     ascend: bool = False,
 ) -> pd.DataFrame:
-    """Load cases and find slope over period
+    """Load cases and find slope over period.
 
     Parameters
     ----------
@@ -174,7 +194,6 @@ def get_case_slopes(
     pd.DataFrame
         Dataframe containing slopes
     """
-
     # Ignore the pandas warning for setting a slace with a value
     warnings.filterwarnings("ignore")
     data = pd.read_csv(global_cases_time_series)

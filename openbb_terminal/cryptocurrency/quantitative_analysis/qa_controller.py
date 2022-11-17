@@ -237,7 +237,6 @@ class QaController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.target = ns_parser.target
-            console.print("")
 
     @log_start_end(log=logger)
     def call_raw(self, other_args: List[str]):

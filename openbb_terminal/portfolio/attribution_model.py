@@ -1,6 +1,7 @@
 from datetime import datetime
 from datetime import date
 import logging
+from typing import Dict
 
 import yfinance as yf
 import pandas as pd
@@ -41,7 +42,7 @@ PF_SECTORS_MAP = {
 @log_start_end(log=logger)
 def get_spy_sector_contributions(
     start_date, end_date=date.today()
-):  # format like 2015-01-15 (YYYY-MM-DD)
+) -> pd.DataFrame:  # format like 2015-01-15 (YYYY-MM-DD)
     """
     Fetches sector contributions for the SPY for a fixed period
 
@@ -55,7 +56,7 @@ def get_spy_sector_contributions(
     Returns
     -------
     contributions : pd.DataFrame
-        dataframe with SPY raw contributions
+        DataFrame with contributions for each sector
     """
 
     # Sector Map
@@ -67,7 +68,7 @@ def get_spy_sector_contributions(
     weight_data = yf.Ticker(sectors_ticker).info["sectorWeightings"]
 
     # reformat Data
-    weights = {"SPY": {}}
+    weights: Dict[str, dict] = {"SPY": {}}
     for sector in weight_data:
         weights[sectors_ticker].update(sector)
 
@@ -97,7 +98,9 @@ def get_spy_sector_contributions(
 
 
 @log_start_end(log=logger)
-def get_portfolio_sector_contributions(start_date, portfolio_trades: pd.DataFrame):
+def get_portfolio_sector_contributions(
+    start_date, portfolio_trades: pd.DataFrame
+) -> pd.DataFrame:
 
     """
     Calculates sector contributions for the loaded portfolio for a fixed period. This is done
@@ -191,7 +194,9 @@ def get_portfolio_sector_contributions(start_date, portfolio_trades: pd.DataFram
 
 
 @log_start_end(log=logger)
-def percentage_attrib_categorizer(bench_df: pd.DataFrame, pf_df: pd.DataFrame):
+def percentage_attrib_categorizer(
+    bench_df: pd.DataFrame, pf_df: pd.DataFrame
+) -> pd.DataFrame:
     """
     Merges S&P500 benchmark attribution and portfolio attribution dataframes and calculates
     excess attribution, attribution ratio, attribution direction and attribution sensitivity.
@@ -264,7 +269,7 @@ def percentage_attrib_categorizer(bench_df: pd.DataFrame, pf_df: pd.DataFrame):
 
 
 @log_start_end(log=logger)
-def raw_attrib_categorizer(bench_df, pf_df):
+def raw_attrib_categorizer(bench_df, pf_df) -> pd.DataFrame:
     """
     Merges S&P500 benchmark attribution and portfolio attribution dataframes and calculates
     excess attribution, attribution ratio, attribution direction and attribution sensitivity.
@@ -336,7 +341,7 @@ def raw_attrib_categorizer(bench_df, pf_df):
 
 
 @log_start_end(log=logger)
-def get_daily_sector_prices(start_date, end_date):
+def get_daily_sector_prices(start_date, end_date) -> dict:
     """
     fetches daily sector prices for S&P500 for a fixed time period
 
@@ -349,7 +354,7 @@ def get_daily_sector_prices(start_date, end_date):
 
     Returns
     -------
-    sp500_tickers_data : Dictionary
+    sp500_tickers_data : dict
         dictionary of dataframes with SPY daily sector prices
     """
     # sector ticker information

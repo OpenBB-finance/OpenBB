@@ -26,7 +26,7 @@ def display_news(
     ascend: bool = True,
     export: str = "",
 ) -> None:
-    """Display recent posts from CryptoPanic news aggregator platform.
+    """Prints table showing recent posts from CryptoPanic news aggregator platform.
     [Source: https://cryptopanic.com/]
 
     Parameters

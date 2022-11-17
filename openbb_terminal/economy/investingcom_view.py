@@ -201,7 +201,6 @@ def display_spread_matrix(
                 theme.visualize_output()
 
         export_data(export, os.path.dirname(os.path.abspath(__file__)), "spread", df)
-        console.print("")
 
 
 @log_start_end(log=logger)

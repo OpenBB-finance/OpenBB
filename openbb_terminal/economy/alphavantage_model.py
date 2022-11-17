@@ -53,6 +53,7 @@ def get_real_gdp(
         Interval for GDP, by default "a" for annual, by default "q"
     start_year : int, optional
         Start year for plot, by default 2010
+
     Returns
     -------
     pd.DataFrame

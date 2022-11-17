@@ -1,4 +1,3 @@
-
                   0
 cancer      float64
 population  float64

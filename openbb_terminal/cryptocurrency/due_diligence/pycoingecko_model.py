@@ -319,7 +319,7 @@ class Coin:
 
         Returns
         ----------
-        Tuple[str, str]
+        Tuple[Optional[Any], Optional[Any]]
             - str with coin
             - str with symbol
         """
@@ -335,21 +335,21 @@ class Coin:
         return None, None
 
     @log_start_end(log=logger)
-    def coin_list(self) -> list:
+    def coin_list(self) -> List[Dict[str, Any]]:
         """List all available coins [Source: CoinGecko]
 
         Returns
         ----------
-        Dict[str, Any]
+        List[Dict[str, Any]]
             list of all available coin ids
         """
 
         return [token.get("id") for token in self._coin_list]
 
     @log_start_end(log=logger)
-    def _get_coin_info(self) -> dict:
+    def _get_coin_info(self) -> Dict[str, Any]:
         """Helper method which fetch the coin information by id from CoinGecko API like:
-         (name, price, market, ... including exchange tickers) [Source: CoinGecko]
+        (name, price, market, ... including exchange tickers) [Source: CoinGecko]
 
         Returns
         ----------
@@ -361,7 +361,7 @@ class Coin:
         return self.client.get_coin_by_id(self.coin_symbol, **params)
 
     @log_start_end(log=logger)
-    def _get_links(self) -> Dict:
+    def _get_links(self) -> Dict[str, Any]:
         """Helper method that extracts links from coin [Source: CoinGecko]
 
         Returns
@@ -373,7 +373,7 @@ class Coin:
         return self.coin.get("links", {})
 
     @log_start_end(log=logger)
-    def get_repositories(self) -> Optional[Any]:
+    def get_repositories(self) -> Optional[Dict[str, Any]]:
         """Get list of all repositories for given coin [Source: CoinGecko]
 
         Returns
@@ -509,7 +509,7 @@ class Coin:
         return self.coin.get("categories", {})
 
     @log_start_end(log=logger)
-    def _get_base_market_data_info(self) -> dict:
+    def _get_base_market_data_info(self) -> Union[Dict[str, Any], Any]:
         """Helper method that fetches all the base market/price information about given coin. [Source: CoinGecko]
 
         Returns

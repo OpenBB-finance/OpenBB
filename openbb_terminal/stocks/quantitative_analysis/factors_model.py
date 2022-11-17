@@ -87,10 +87,8 @@ def capm_information(symbol: str) -> Tuple[float, float]:
 
     Returns
     -------
-    beta : float
-        The beta for a stock
-    sys : float
-        The systematic risk for a stock
+    Tuple[float, float]
+        The beta for a stock, The systematic risk for a stock
     """
     df_f = get_fama_raw()
     df_h = get_historical_5(symbol)

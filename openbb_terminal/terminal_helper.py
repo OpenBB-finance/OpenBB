@@ -154,7 +154,6 @@ def open_openbb_documentation(
     full_url = f"{url}{path}".replace("//", "/")
 
     webbrowser.open(full_url)
-    console.print("")
 
 
 def hide_splashscreen():
@@ -233,9 +232,9 @@ def check_for_updates() -> None:
                     "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
                 )
                 break
-            if int(lastest_split[i]) < int(
-                current[i]
-            ) or release == obbff.VERSION.replace("m", ""):
+            if int(lastest_split[i]) < int(current[i]):
+                console.print("[yellow]You are using an unreleased version[/yellow]")
+            if release == obbff.VERSION.replace("m", ""):
                 console.print("[green]You are using the latest version[/green]")
                 break
     else:
@@ -243,7 +242,7 @@ def check_for_updates() -> None:
             "[yellow]Unable to check for updates... "
             + "Check your internet connection and try again...[/yellow]"
         )
-    console.print("")
+    console.print("\n")
 
 
 def welcome_message():
@@ -254,13 +253,12 @@ def welcome_message():
     console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}")
 
     if obbff.ENABLE_THOUGHTS_DAY:
-        console.print("-------------------")
+        console.print("---------------------------------")
         try:
             thought.get_thought_of_the_day()
         except Exception as e:
             logger.exception("Exception: %s", str(e))
             console.print(e)
-    console.print("")
 
 
 def reset(queue: List[str] = None):

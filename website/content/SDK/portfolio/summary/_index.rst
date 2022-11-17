@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.summary(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = 'all',
     risk_free_rate: float = 0,
     chart: bool = False,
@@ -22,13 +22,14 @@ portfolio.summary(
 .. raw:: html
 
     <p>
-    Get summary portfolio and benchmark returns
+    Get portfolio and benchmark returns summary
     </p>
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
     risk_free_rate : float
@@ -37,3 +38,12 @@ portfolio.summary(
 * **Returns**
 
     pd.DataFrame
+        DataFrame with portfolio and benchmark returns summary
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.summary(P)
+    {{< /highlight >}}

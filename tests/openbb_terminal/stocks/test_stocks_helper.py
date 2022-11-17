@@ -7,7 +7,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.stocks import stocks_views
+from openbb_terminal.stocks import stocks_view
 from openbb_terminal import helper_funcs
 
 
@@ -27,7 +27,7 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_quote():
-    stocks_views.display_quote("GME")
+    stocks_view.display_quote("GME")
 
 
 @pytest.mark.default_cassette("test_search")

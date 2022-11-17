@@ -1,3 +1,2 @@
-
 Perform an OLS regression before estimating the Breusch-Pagan statistic.
 

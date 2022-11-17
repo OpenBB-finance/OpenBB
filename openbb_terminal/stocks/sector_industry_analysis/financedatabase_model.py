@@ -256,7 +256,7 @@ def get_companies_per_industry_in_country(
     country: str = "United States",
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
-):
+) -> dict:
     """Get number of companies per industry in a specific country (and specific market cap).
     [Source: Finance Database]
 
