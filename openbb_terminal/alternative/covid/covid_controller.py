@@ -127,6 +127,8 @@ class CovidController(BaseController):
                     )
                     return
                 country = ns_parser.country.title().replace("_", " ")
+                if country == "Us":
+                    country = "US"
                 self.country = country
                 console.print(f"[cyan]{country}[/cyan] loaded\n")
             else:
