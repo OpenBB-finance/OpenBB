@@ -31,13 +31,12 @@ Intraday data cannot extend last 60 days | None | False |
 | end_date | str | The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05. | None | False |
 | column | str | Which column to load in, by default this is the Adjusted Close. | this | False |
 | returns | bool | Flag to show cumulative returns on index | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.Dataframe | None | Dataframe with historical data on selected indices. | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.Dataframe | Dataframe with historical data on selected indices. |
 
 ## Examples
 
@@ -70,13 +69,12 @@ Intraday data cannot extend last 60 days | None | False |
 | raw | bool | Whether to display the raw output. | None | False |
 | external_axes | Optional[List[plt.axes]] | External axes to plot on | None | False |
 | export | str | Export data to csv,json,xlsx or png,jpg,pdf,svg file | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| Plots the Series. | None | None | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| Plots the Series. | None |
 
 ## Examples
 

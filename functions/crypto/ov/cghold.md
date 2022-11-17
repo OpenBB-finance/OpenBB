@@ -31,7 +31,7 @@ Description: Returns public companies that holds ethereum or bitcoin [Source: Co
 | Type | Description |
 | ---- | ----------- |
 |  | - str:              Overall statistics
-- pandas.DataFrame: Companies holding crypto |
+- pd.DataFrame: Companies holding crypto |
 
 ## Examples
 

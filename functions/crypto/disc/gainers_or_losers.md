@@ -28,7 +28,7 @@ API documentation (see /coins/markets in https://www.coingecko.com/en/api/docume
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Top Gainers / Top Losers - coins which gain/lost most in price in given period of time.
+| pd.DataFrame | Top Gainers / Top Losers - coins which gain/lost most in price in given period of time.
 Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url |
 
 ## Examples

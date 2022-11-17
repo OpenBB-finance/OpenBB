@@ -21,7 +21,9 @@ Description: This function returns the available macro parameters with detail.
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| Dict[str, Dict[str, str]] | A dictionary with the available macro parameters. |
 
 ## Examples
 

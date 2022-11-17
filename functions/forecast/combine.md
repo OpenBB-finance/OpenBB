@@ -22,13 +22,12 @@ Description: Adds the given column of df2 to df1
 | df2 | pd.DataFrame | The dataframe to lose a column | None | False |
 | column | str | The column to transfer | None | False |
 | dataset | str | A name for df2 (shows in name of new column) | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| data | pd.DataFrame | The new dataframe | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | The new dataframe |
 
 ## Examples
 

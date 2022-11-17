@@ -24,6 +24,11 @@ Description: Get daily volume for given pair [Source: https://graphql.bitquery.i
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
+| limit | int | Last n days to query data | None | False |
+| symbol | str | ERC20 token symbol | None | False |
+| to_symbol | str | Quote currency. | None | False |
+| sortby | str | Key by which to sort data | None | False |
+| ascend | bool | Flag to sort data ascending | None | False |
 
 ## Returns
 

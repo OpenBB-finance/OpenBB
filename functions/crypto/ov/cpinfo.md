@@ -32,7 +32,7 @@ Description: Returns basic coin information for all coins from CoinPaprika API [
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | rank, name, symbol, price, volume_24h, circulating_supply, total_supply,
+| pd.DataFrame | rank, name, symbol, price, volume_24h, circulating_supply, total_supply,
 max_supply, market_cap, beta_value, ath_price, |
 
 ## Examples

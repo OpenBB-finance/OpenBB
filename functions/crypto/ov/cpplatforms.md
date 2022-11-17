@@ -29,7 +29,7 @@ Description: List all smart contract platforms like ethereum, solana, cosmos, po
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | index, platform_id |
+| pd.DataFrame | index, platform_id |
 
 ## Examples
 

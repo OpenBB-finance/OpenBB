@@ -29,7 +29,7 @@ Description: Return data frame with most important global crypto statistics like
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Most important global crypto statistics
+| pd.DataFrame | Most important global crypto statistics
 Metric, Value |
 
 ## Examples

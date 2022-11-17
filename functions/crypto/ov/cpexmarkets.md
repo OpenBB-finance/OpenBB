@@ -33,7 +33,7 @@ Description: List markets by exchange ID [Source: CoinPaprika]
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | pair, base_currency_name, quote_currency_name, market_url,
+| pd.DataFrame | pair, base_currency_name, quote_currency_name, market_url,
 category, reported_volume_24h_share, trust_score, |
 
 ## Examples

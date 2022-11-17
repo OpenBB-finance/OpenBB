@@ -27,7 +27,9 @@ Description: Get real-time performance sector data
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.Dataframe | Real-time performance data |
 
 ## Examples
 

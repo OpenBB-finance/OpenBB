@@ -20,13 +20,12 @@ Description: Fisher Transform
 | ---- | ---- | ----------- | ------- | -------- |
 | data | pd.DataFrame | Dataframe of OHLC prices | None | False |
 | window | int | Length for indicator window | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| df_ta | pd.DataFrame | Dataframe of technical indicator | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Dataframe of technical indicator |
 
 ## Examples
 

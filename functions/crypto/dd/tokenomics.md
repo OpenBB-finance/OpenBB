@@ -24,7 +24,7 @@ Description: Get tokenomics for given coin. [Source: CoinGecko]
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Metric, Value with tokenomics |
+| pd.DataFrame | Metric, Value with tokenomics |
 
 ## Examples
 

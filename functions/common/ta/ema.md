@@ -21,13 +21,12 @@ Description: Gets exponential moving average (EMA) for stock
 | data | pd.Series | Dataframe of dates and prices | None | False |
 | length | int | Length of EMA window | None | False |
 | offset | int | Length of offset | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | Dataframe containing prices and EMA | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Dataframe containing prices and EMA |
 
 ## Examples
 

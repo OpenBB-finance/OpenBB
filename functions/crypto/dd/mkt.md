@@ -39,7 +39,7 @@ https://api.coinpaprika.com/v1). | None | False |
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | All markets for given coin and currency |
+| pd.DataFrame | All markets for given coin and currency |
 
 ## Examples
 

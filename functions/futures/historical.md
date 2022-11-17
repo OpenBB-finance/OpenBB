@@ -14,7 +14,7 @@ import TabItem from '@theme/TabItem';
 ## futures_yfinance_model.get_historical_futures
 
 ```python title='openbb_terminal/futures/yfinance_model.py'
-def get_historical_futures(symbols: List[str], expiry: str) -> None:
+def get_historical_futures(symbols: List[str], expiry: str) -> DataFrame:
 ```
 [Source Code](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/futures/yfinance_model.py#L79)
 
@@ -26,13 +26,12 @@ Description: Get historical futures [Source: Yahoo Finance]
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | List[str] | List of future timeseries symbols to display | None | False |
 | expiry | str | Future expiry date with format YYYY-MM | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| Dict | None | Dictionary with sector weightings allocation | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Dictionary with sector weightings allocation |
 
 ## Examples
 

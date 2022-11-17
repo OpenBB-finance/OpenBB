@@ -32,7 +32,7 @@ Description: List exchanges from CoinPaprika API [Source: CoinPaprika]
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | rank, name, currencies, markets, fiats, confidence_score, reported_volume_24h,
+| pd.DataFrame | rank, name, currencies, markets, fiats, confidence_score, reported_volume_24h,
 reported_volume_7d ,reported_volume_30d, sessions_per_month, |
 
 ## Examples

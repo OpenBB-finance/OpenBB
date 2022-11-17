@@ -19,13 +19,12 @@ Description: Get closing prices for a given ticker
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | The ticker symbol to get the price for | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| price | List[float] | A list of closing prices for a ticker | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| List[float] | A list of closing prices for a ticker |
 
 ## Examples
 

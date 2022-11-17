@@ -20,13 +20,12 @@ Description: Search indices by keyword. [Source: FinanceDatabase]
 | ---- | ---- | ----------- | ------- | -------- |
 | keyword | list | The keyword you wish to search for. This can include spaces. | None | False |
 | limit | int | The amount of views you want to show, by default this is set to 10. | this | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.Dataframe | None | Dataframe with the available options. | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.Dataframe | Dataframe with the available options. |
 
 ## Examples
 

@@ -22,13 +22,12 @@ Description: Screener Overview
 | data_type | str | Data type between: overview, valuation, financial, ownership, performance, technical | None | False |
 | limit | int | Limit of stocks filtered with presets to print | None | False |
 | ascend | bool | Ascended order of stocks filtered to print | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | Dataframe with loaded filtered stocks | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Dataframe with loaded filtered stocks |
 
 ## Examples
 

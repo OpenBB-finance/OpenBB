@@ -25,14 +25,12 @@ Description: Get price vs short interest volume. [Source: Stockgrid]
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Stock to get data from | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | Short interest volume data | None | None |
-| List | None | Price data | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Short interest volume data |
 
 ## Examples
 

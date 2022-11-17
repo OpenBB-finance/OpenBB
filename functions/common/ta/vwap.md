@@ -26,13 +26,12 @@ Description: Gets volume weighted average price (VWAP)
 | ---- | ---- | ----------- | ------- | -------- |
 | data | pd.DataFrame | Dataframe of dates and prices | None | False |
 | offset | int | Length of offset | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| df_vwap | pd.DataFrame | Dataframe with VWAP data | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Dataframe with VWAP data |
 
 ## Examples
 

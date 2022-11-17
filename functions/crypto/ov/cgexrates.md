@@ -31,7 +31,7 @@ Description: Get list of crypto, fiats, commodity exchange rates from CoinGecko 
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Index, Name, Unit, Value, Type |
+| pd.DataFrame | Index, Name, Unit, Value, Type |
 
 ## Examples
 

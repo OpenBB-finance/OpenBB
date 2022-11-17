@@ -34,7 +34,7 @@ https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1events/
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Events found for given coin
+| pd.DataFrame | Events found for given coin
 Columns: id, date , date_to, name, description, is_conference, link, proof_image_link |
 
 ## Examples

@@ -21,13 +21,12 @@ Description: Gets weighted moving average (WMA) for stock
 | data | pd.Series | Dataframe of dates and prices | None | False |
 | length | int | Length of SMA window | None | False |
 | offset | int | Length of offset | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| df_ta | pd.DataFrame | Dataframe containing prices and WMA | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Dataframe containing prices and WMA |
 
 ## Examples
 

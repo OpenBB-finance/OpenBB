@@ -25,13 +25,12 @@ Description: Get overview data for selected etf
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | etf_symbol | str | Etf symbol to get overview for | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| df | pd.DataFrame | Dataframe of stock overview data | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Dataframe of stock overview data |
 
 ## Examples
 

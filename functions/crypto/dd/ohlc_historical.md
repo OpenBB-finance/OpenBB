@@ -26,7 +26,7 @@ Description: Open/High/Low/Close values with volume and market_cap. [Source: Coi
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Open/High/Low/Close values with volume and market_cap. |
+| pd.DataFrame | Open/High/Low/Close values with volume and market_cap. |
 
 ## Examples
 

@@ -25,13 +25,12 @@ Description: Return sector weightings allocation of ETF. [Source: Yahoo Finance]
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | name | str | ETF name | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| Dict | None | Dictionary with sector weightings allocation | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| Dict[str, Any] | Dictionary with sector weightings allocation |
 
 ## Examples
 

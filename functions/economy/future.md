@@ -21,13 +21,12 @@ Description: Get futures data. [Source: Finviz]
 | future_type | str | From the following: Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies | None | False |
 | sortby | str | Column to sort by | None | False |
 | ascend | bool | Flag to sort in ascending order | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.Dataframe | None | Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.Dataframe | Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies |
 
 ## Examples
 

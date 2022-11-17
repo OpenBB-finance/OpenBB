@@ -31,7 +31,7 @@ Description: Get current exchange rate quote from alpha vantage.
 
 | Type | Description |
 | ---- | ----------- |
-| Dict | Dictionary of exchange rate |
+| Dict[str, Any] | Dictionary of exchange rate |
 
 ## Examples
 

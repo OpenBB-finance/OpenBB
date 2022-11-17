@@ -19,13 +19,12 @@ Description: Gets ticker quote from FMP
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Stock ticker symbol | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame |  | Dataframe of ticker quote | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+|  | Dataframe of ticker quote |
 
 ## Examples
 

@@ -26,7 +26,7 @@ Description: Get prices for given coin. [Source: CoinGecko]
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Prices for given coin
+| pd.DataFrame | Prices for given coin
 Columns: time, price, currency |
 
 ## Examples

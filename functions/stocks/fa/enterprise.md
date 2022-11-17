@@ -21,13 +21,12 @@ Description: Financial Modeling Prep ticker enterprise
 | symbol | str | Fundamental analysis ticker symbol | None | False |
 | limit | int | Number to get | None | False |
 | quarterly | bool | Flag to get quarterly data | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame |  | Dataframe of enterprise information | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+|  | Dataframe of enterprise information |
 
 ## Examples
 

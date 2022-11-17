@@ -30,15 +30,12 @@ Description: This functions groups the data queried from the EconDB database [So
 | start_date | str | The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31. | None | False |
 | end_date | str | The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05. | None | False |
 | symbol | str | In what currency you wish to convert all values. | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | A DataFrame with the requested macro data of all chosen countries | None | None |
-| Dictionary | None | A dictionary containing the units of each country's parameter (e.g. EUR) | None | None |
-| str | None | Denomination which can be Trillions, Billions, Millions, Thousands | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | A DataFrame with the requested macro data of all chosen countries |
 
 ## Examples
 
@@ -75,13 +72,12 @@ Description: Show the received macro data about a company [Source: EconDB]
 | raw | bool | Whether to display the raw output. | None | False |
 | external_axes | Optional[List[plt.axes]] | External axes to plot on | None | False |
 | export | str | Export data to csv,json,xlsx or png,jpg,pdf,svg file | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| Plots the Series. | None | None | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| Plots the Series. | None |
 
 ## Examples
 

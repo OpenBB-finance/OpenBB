@@ -31,7 +31,7 @@ Description: Get all most important ticker related information for given coin id
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Most important ticker related information
+| pd.DataFrame | Most important ticker related information
 Columns: Metric, Value |
 
 ## Examples

@@ -24,6 +24,10 @@ Description: Get the last 100 swaps done on Uniswap [Source: https://thegraph.co
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
+| limit | int | Number of swaps to return. Maximum possible number: 1000. | None | False |
+| sortby | str | Key by which to sort data. The table can be sorted by every of its columns
+(see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2). | None | False |
+| ascend | bool | Flag to sort data descending | None | False |
 
 ## Returns
 

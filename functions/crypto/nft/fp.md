@@ -24,6 +24,7 @@ Description: Get nft collections [Source: https://nftpricefloor.com/]
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
+| slug | str | nft collection slug | None | False |
 
 ## Returns
 

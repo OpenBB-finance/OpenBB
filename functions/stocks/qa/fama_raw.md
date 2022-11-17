@@ -21,7 +21,9 @@ Description: Gets base Fama French data to calculate risk
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | A data with fama french model information |
 
 ## Examples
 

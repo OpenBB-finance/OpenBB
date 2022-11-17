@@ -28,13 +28,12 @@ Description: Display fails-to-deliver data for a given ticker. [Source: SEC]
 | start_date | str | Start of data, in YYYY-MM-DD format | None | False |
 | end_date | str | End of data, in YYYY-MM-DD format | None | False |
 | limit | int | Number of latest fails-to-deliver being printed | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | Fail to deliver data | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Fail to deliver data |
 
 ## Examples
 

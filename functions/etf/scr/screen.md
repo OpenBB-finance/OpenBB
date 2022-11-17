@@ -19,13 +19,12 @@ Description: Screens the etfs pulled from my repo (https://github.com/jmaslek/et
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | preset | str | Screener to use from presets | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| df | pd.DataFrame | Screened dataframe | None | False |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Screened dataframe |
 
 ## Examples
 

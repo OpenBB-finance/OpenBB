@@ -30,7 +30,7 @@ Description: Gets Sentiment analysis provided by FinBrain's API [Source: finbrai
 
 | Type | Description |
 | ---- | ----------- |
-| DataFrame() | Empty if there was an issue with data retrieval |
+| pd.DataFrame | Empty if there was an issue with data retrieval |
 
 ## Examples
 

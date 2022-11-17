@@ -23,13 +23,12 @@ Description: Get dark pool short positions. [Source: Stockgrid]
 'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position [1M],
 'dpp_dollar': DP Position ($1B) | None | False |
 | ascend | bool | Data in ascending order | None | False |
-| Returns | None | None | None | None |
-| ---------- | None | None | None | None |
-| pd.DataFrame | None | Dark pool short position data | None | None |
 
 ## Returns
 
-This function does not return anything
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Dark pool short position data |
 
 ## Examples
 

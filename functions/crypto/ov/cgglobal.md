@@ -29,7 +29,7 @@ Description: Get global statistics about crypto markets from CoinGecko API like:
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Market_Cap, Volume, Market_Cap_Percentage |
+| pd.DataFrame | Market_Cap, Volume, Market_Cap_Percentage |
 
 ## Examples
 

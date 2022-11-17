@@ -29,7 +29,7 @@ Description: Get global statistics about Decentralized Finances [Source: CoinGec
 
 | Type | Description |
 | ---- | ----------- |
-| pandas.DataFrame | Metric, Value |
+| pd.DataFrame | Metric, Value |
 
 ## Examples
 
