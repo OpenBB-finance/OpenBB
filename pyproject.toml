@@ -134,6 +134,7 @@ nbmake = ">0.5.0"
 [tool.poetry.extras]
 prediction = ["torch"]
 optimization = ["Riskfolio-Lib"]
+all = ["torch", "Riskfolio-Lib"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]
 
