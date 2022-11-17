@@ -120,6 +120,8 @@ def get_covid_ov(
     pd.DataFrame
         Dataframe of historical cases and deaths
     """
+    if country.lower() == "us":
+        country = "US"
     cases = get_global_cases(country)
     deaths = get_global_deaths(country)
     if cases.empty or deaths.empty:
