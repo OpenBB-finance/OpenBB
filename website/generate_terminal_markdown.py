@@ -31,7 +31,7 @@ def existing_markdown_file_examples(
             if "Example:" in content:
                 example_split = content.split("Example:")[1].split("```")
                 if example_split and len(example_split) > 1:
-                    examples = f"{example_split[1]}"
+                    examples = f"{example_split[1].strip()}"
 
             examples_dict["example"] = examples
             images = [
@@ -65,7 +65,7 @@ def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
                     listdict = []
                     for choice in choices:
                         if isinstance(choice, dict):
-                            listdict.append([f"{k}:  {v}" for k, v in choice.items()])
+                            listdict.append([f"{k}" for k in choice])
 
                     if listdict:
                         choices = listdict
@@ -76,7 +76,7 @@ def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
                         else None
                     )
                 elif isinstance(choices, dict):
-                    choices = [f"{k}:  {v}" for k, v in choices.items()]
+                    choices = [f"{k}" for k in choices]
                     choices = ",  ".join(choices)
 
             doc = action.help
