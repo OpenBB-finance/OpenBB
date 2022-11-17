@@ -26,6 +26,7 @@ from openbb_terminal.portfolio.portfolio_optimization.po_model import (
     get_ef,
 )
 from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
+from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")
 
@@ -80,7 +81,9 @@ def display_ef(symbols: List[str] = None, portfolio_engine: PoEngine = None, **k
         Portfolio optimization engine, by default None
     """
 
-    symbols, portfolio_engine, parameters = validate_inputs(symbols, portfolio_engine, kwargs)
+    symbols, portfolio_engine, parameters = validate_inputs(
+        symbols, portfolio_engine, kwargs
+    )
 
     n_portfolios: int = 100
     if n_portfolios in parameters:
@@ -228,7 +231,7 @@ def display_ef(symbols: List[str] = None, portfolio_engine: PoEngine = None, **k
 
 
 @log_start_end(log=logger)
-def display_plot(portfolio_engine: PoEngine = None, **kwargs):
+def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **kwargs):
     """
     Display efficient frontier
 
@@ -236,69 +239,58 @@ def display_plot(portfolio_engine: PoEngine = None, **kwargs):
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+    chart_type : str, optional
+        Chart type can "pie", "hist", "dd" or "rc_chart", by default "pie"
     """
 
     if portfolio_engine is None:
+        console.print("No portfolio engine found.")
         return
 
-    _, portfolio_engine, parameters = validate_inputs(portfolio_engine=portfolio_engine, kwargs=kwargs)
+    available_categories = portfolio_engine.get_available_categories()
+    if not available_categories:
+        console.print("No categories found.")
+        return
+    msg = ", ".join(available_categories)
+    if "category" not in kwargs:
+        console.print(f"Please specify a category from the following: {msg}")
+        return
+    elif kwargs["category"] not in available_categories:
+        console.print(f"Please specify a category from the following: {msg}")
+        return
+    category = kwargs["category"]
 
-    # Choose chart
-    pie: bool = False
-    if "pie" in parameters:
-        pie = parameters["pie"]
-
-    hist: bool = False
-    if "hist" in parameters:
-        hist = parameters["hist"]
-
-    dd: bool = False
-    if "dd" in parameters:
-        dd = parameters["dd"]
-
-    rc_chart: bool = False
-    if "rc_chart" in parameters:
-        rc_chart = parameters["rc_chart"]
-
-    heat: bool = False
-    if "heat" in parameters:
-        heat = parameters["heat"]
-
-    # Chart arguments
-    if "category" not in parameters:
-        parameters["category"] = "SECTOR"
-
-    if "title" not in parameters:
-        parameters["title"] = ""
-
-    if "freq" not in parameters:
-        parameters["freq"] = "D"
-
-    if "risk_measure" not in parameters:
-        parameters["risk_measure"] = "MV"
-
-    if "risk_free_rate" not in parameters:
-        parameters["risk_free_rate"] = 0.0
-
-    if "alpha" not in parameters:
-        parameters["alpha"] = 0.05
-
-    if "a_sim" not in parameters:
-        parameters["a_sim"] = 100.0
-
-    if "beta" not in parameters:
-        parameters["beta"] = 0.0
-
-    if "b_sim" not in parameters:
-        parameters["b_sim"] = 0.0
-
-    if "external_axes" not in parameters:
-        parameters["external_axes"] = None
+    _, portfolio_engine, parameters = validate_inputs(
+        portfolio_engine=portfolio_engine, kwargs=kwargs
+    )
 
     weights: pd.DataFrame = portfolio_engine.get_weights_df()
-    data: pd.DataFrame = portfolio_engine.get_returns()
+    if weights.empty:
+        return
 
-    category = parameters["category"]
+    data: pd.DataFrame = portfolio_engine.get_returns()
+    if data.empty:
+        return
+
+    # Chart arguments
+    if "title" not in parameters:
+        parameters["title"] = ""
+    if "freq" not in parameters:
+        parameters["freq"] = "D"
+    if "risk_measure" not in parameters:
+        parameters["risk_measure"] = "MV"
+    if "risk_free_rate" not in parameters:
+        parameters["risk_free_rate"] = 0.0
+    if "alpha" not in parameters:
+        parameters["alpha"] = 0.05
+    if "a_sim" not in parameters:
+        parameters["a_sim"] = 100.0
+    if "beta" not in parameters:
+        parameters["beta"] = 0.0
+    if "b_sim" not in parameters:
+        parameters["b_sim"] = 0.0
+    if "external_axes" not in parameters:
+        parameters["external_axes"] = None
 
     if category:
         # weights = pd.DataFrame.from_dict(
@@ -346,20 +338,25 @@ def display_plot(portfolio_engine: PoEngine = None, **kwargs):
         parameters["data"] = data
         parameters["colors"] = theme.get_colors()
 
-        if pie:
+        if chart_type == "pie":
             display_pie(**parameters)
+            return
 
-        if hist:
+        if chart_type == "hist":
             display_hist(**parameters)
+            return
 
-        if dd:
+        if chart_type == "dd":
             display_dd(**parameters)
+            return
 
-        if rc_chart:
+        if chart_type == "rc_chart":
             display_rc_chart(**parameters)
+            return
 
-        if heat:
+        if chart_type == "heat":
             display_heat(**parameters)
+            return
 
 
 @log_start_end(log=logger)

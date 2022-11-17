@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
-from typing import Dict, List, Optional, Tuple, Union
+from typing import List, Optional, Tuple, Union
 import warnings
 
 import pandas as pd
@@ -14,15 +14,63 @@ from numpy import floating
 from riskfolio import rp
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.portfolio_engine.portfolio_optimization import (
+from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_model,
 )
-from openbb_terminal.portfolio_engine.portfolio_optimization.po_engine import PoEngine
+from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")
 
 logger = logging.getLogger(__name__)
+
+PARAM_TYPES = {
+    "interval": str,
+    "start_date": str,
+    "end_date": str,
+    "log_returns": bool,
+    "freq": str,
+    "maxnan": float,
+    "threshold": float,
+    "method": str,
+    "risk_measure": str,
+    "objective": str,
+    "risk_free_rate": float,
+    "risk_aversion": float,
+    "alpha": float,
+    "target_return": float,
+    "target_risk": float,
+    "mean": str,
+    "covariance": str,
+    "d_ewma": float,
+    "value": float,
+    "value_short": float,
+}
+
+
+def validate_parameters(parameters):
+    """Validate parameters
+
+    Parameters
+    ----------
+    parameters : dict
+        Keyword arguments
+    """
+    for key, value in parameters.items():
+        if key in PARAM_TYPES:
+            expected_type = PARAM_TYPES[key]
+            if not isinstance(value, expected_type):
+                if expected_type is str:
+                    parameters.update({key: str(value)})
+                elif expected_type is float:
+                    parameters.update({key: float(value)})
+                elif expected_type is bool:
+                    parameters.update({key: bool(value)})
+                else:
+                    console.print(
+                        f"[info]Parameter {key} should be of type {expected_type.__name__}. Casting failed, reverting to default.[/info]"
+                    )
+                    parameters.pop(key)
 
 
 @log_start_end(log=logger)
@@ -113,7 +161,9 @@ def validate_inputs(
         parameters = portfolio_engine.get_params().copy()
         parameters.update(kwargs)
     else:
-        console.print("No symbols or portfolio provided")
+        console.print("No 'symbols' or 'portfolio_engine' provided.")
+
+    validate_parameters(parameters)
 
     return symbols, portfolio_engine, parameters
 
@@ -144,6 +194,7 @@ def get_maxsharpe(
         return pd.DataFrame()
 
     weights, returns = optimizer_model.get_max_sharpe(symbols=symbols, **parameters)
+
     portfolio_engine.set_weights(weights=weights)
     portfolio_engine.set_returns(returns=returns)
 
@@ -668,7 +719,7 @@ def get_property(
     symbols: List[str] = None,
     portfolio_engine: PoEngine = None,
     prop: str = None,
-    **kwargs
+    **kwargs,
 ) -> pd.DataFrame:
     """Optimize weighted according to dividend yield
 

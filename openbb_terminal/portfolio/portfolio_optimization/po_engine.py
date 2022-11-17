@@ -57,6 +57,16 @@ class PoEngine:
     def get_symbols(self):
         return self._symbols
 
+    def get_available_categories(self) -> List[str]:
+        """Get the available categories
+
+        Returns
+        -------
+        List[str]
+            Available categories
+        """
+        return list(self._categories.keys())
+
     def get_category(self, category: str = "ASSET_CLASS") -> Dict[str, str]:
         """Get the category
 
@@ -70,12 +80,12 @@ class PoEngine:
         Dict[str, str]
             Category
         """
-        d = self.get_categories()
+        d = self.get_categories_dict()
         if category in d:
             return d[category]
         return {}
 
-    def get_categories(self) -> Dict[str, Dict[str, str]]:
+    def get_categories_dict(self) -> Dict[str, Dict[str, str]]:
         """Get the categories
 
         Returns
@@ -207,4 +217,7 @@ class PoEngine:
         pd.DataFrame
             Stock returns
         """
+        if self._returns.empty:
+            console.print("No returns found. Please perform some optimization.")
+            return pd.DataFrame()
         return self._returns
