@@ -194,11 +194,11 @@ def display_covid_stat(
     plot : bool
         Flag to plot data
     """
+    data = covid_model.get_covid_stat(country, stat, limit)
     if plot:
         plot_covid_stat(country, stat)
 
     if raw:
-        data = covid_model.get_covid_stat(country, stat, limit)
         print_rich_table(
             data,
             headers=[stat.title()],
@@ -207,6 +207,12 @@ def display_covid_stat(
             title=f"[bold]{country} COVID {stat}[/bold]",
         )
     if export:
+        data["date"] = data.index
+        data = data.reset_index(drop=True)
+        # make sure date is first column in export
+        cols = data.columns.tolist()
+        cols = cols[-1:] + cols[:-1]
+        data = data[cols]
         export_data(export, os.path.dirname(os.path.abspath(__file__)), stat, data)
 
 
