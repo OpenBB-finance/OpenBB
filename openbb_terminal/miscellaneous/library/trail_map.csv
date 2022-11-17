@@ -505,7 +505,7 @@ stocks.candle,openbb_terminal.stocks.stocks_helper.display_candle,
 crypto.load,openbb_terminal.cryptocurrency.cryptocurrency_helpers.load,
 crypto.price,openbb_terminal.cryptocurrency.pyth_model.get_price,
 crypto.find,openbb_terminal.cryptocurrency.cryptocurrency_helpers.find,
-crypto.chart,openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_chart,openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_chart
+crypto.chart,openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_chart,
 crypto.candles,openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_candles,
 etf.candle,openbb_terminal.stocks.stocks_helper.display_candle,
 forex.candle,openbb_terminal.forex.forex_helper.display_candle,
