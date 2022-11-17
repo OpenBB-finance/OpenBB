@@ -48,8 +48,8 @@ PARAM_TYPES = {
 }
 
 
-def validate_parameters(parameters):
-    """Validate parameters
+def validate_parameters_type(parameters):
+    """Validate parameters type
 
     Parameters
     ----------
@@ -163,7 +163,7 @@ def validate_inputs(
     else:
         console.print("No 'symbols' or 'portfolio_engine' provided.")
 
-    validate_parameters(parameters)
+    validate_parameters_type(parameters)
 
     return symbols, portfolio_engine, parameters
 
