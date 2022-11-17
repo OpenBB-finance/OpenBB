@@ -20,7 +20,7 @@ optional arguments:
 ```
 
 ```
-2022 Feb 14, 10:26 (✨) /alternative/covid/ $ slopes
+2022 Feb 14, 10:26 (🦋) /alternative/covid/ $ slopes
 Highest Sloping Cases (Cases/Day)
 ┌────────────────┬───────────┐
 │ Country        │ Slope     │

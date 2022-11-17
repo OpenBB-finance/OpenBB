@@ -2,7 +2,7 @@
 usage: overview [-h] [--export {csv,json,xlsx}]
 ```
 
-Prints an overview about the company. Also, the C i k field corresponds to Central Index Key, which can be used to search a company on https://www.sec.gov/edgar/searchedgar/cik.htm [Source: Alpha Vantage]
+Prints an overview about the company. Also, the C i k field corresponds to Central Index Key, which can be used to search a company on <https://www.sec.gov/edgar/searchedgar/cik.htm> [Source: Alpha Vantage]
 
 ```
 optional arguments:
@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 07:03 (✨) /stocks/fa/ $ overview
+2022 Feb 16, 07:03 (🦋) /stocks/fa/ $ overview
                               TSLA Overview
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                               ┃                                       ┃
@@ -109,6 +110,7 @@ Example:
 │ Ex dividend date              │ None                                  │
 └───────────────────────────────┴───────────────────────────────────────┘
 ```
+
 ```
 Company Description:
 

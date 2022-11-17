@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 10:42 (✨) /stocks/ba/ $ spac
+2022 Feb 16, 10:42 (🦋) /stocks/ba/ $ spac
 2022-02-15 22:31:56 - 2020 vs 2021
 https://old.reddit.com/r/wallstreetbets/comments/stfcdu/2020_vs_2021/
 

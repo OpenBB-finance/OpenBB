@@ -25,8 +25,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:18 (✨) /crypto/ov/ $ info
+2022 Feb 15, 08:18 (🦋) /crypto/ov/ $ info
 
 Displaying data vs USD
                                                                     Basic Coin Information

@@ -14,8 +14,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 10:40 (✨) /stocks/ba/ $ rise
+2022 Feb 16, 10:40 (🦋) /stocks/ba/ $ rise
 Top rising AAPL's related queries
 ┏━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
 ┃ query           ┃ value  ┃

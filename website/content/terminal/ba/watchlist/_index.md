@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 10:52 (✨) /stocks/ba/ $ watchlist
+2022 Feb 16, 10:52 (🦋) /stocks/ba/ $ watchlist
 2022-02-16 14:16:31 - Morning Update for Wednesday, 2/16/22
 https://old.reddit.com/r/StockMarket/comments/stwy68/morning_update_for_wednesday_21622/
 

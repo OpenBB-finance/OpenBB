@@ -17,8 +17,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 11:18 (✨) /stocks/qa/ $ var
+2022 Feb 16, 11:18 (🦋) /stocks/qa/ $ var
           FB Value at Risk
 ┏━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
 ┃       ┃ VaR:    ┃ Historical VaR: ┃

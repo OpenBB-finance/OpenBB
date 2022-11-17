@@ -20,8 +20,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 10:50 (✨) /stocks/ba/ $ trend
+2022 Feb 16, 10:50 (🦋) /stocks/ba/ $ trend
  Most trending stocks at 2022-02-16 00:00
 ┏━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━┳━━━━━━┓
 ┃ TICKER ┃ TOTAL  ┃ LIKES  ┃ RHI  ┃ AHI  ┃

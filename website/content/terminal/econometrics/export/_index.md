@@ -13,9 +13,10 @@ optional arguments:
 ```
 
 Example:
-```
-2022 Feb 24, 04:35 (✨) /econometrics/ $ load ThesisData.xlsx thesis
 
-2022 Feb 24, 04:36 (✨) /econometrics/ $ export thesis -t csv
+```
+2022 Feb 24, 04:35 (🦋) /econometrics/ $ load ThesisData.xlsx thesis
+
+2022 Feb 24, 04:36 (🦋) /econometrics/ $ export thesis -t csv
 Saved file: /Users/jeroenbouma/My Drive/Programming/Python/OpenBBTerminal/exports/statistics/thesis_20220224_103614.csv
 ```

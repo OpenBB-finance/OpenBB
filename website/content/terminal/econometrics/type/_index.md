@@ -16,9 +16,9 @@ optional arguments:
 Example:
 
 ```txt
-2022 Feb 28, 15:53 (✨) /econometrics/ $ load wage_panel -a wp
+2022 Feb 28, 15:53 (🦋) /econometrics/ $ load wage_panel -a wp
 
-2022 Feb 28, 15:53 (✨) /econometrics/ $ type
+2022 Feb 28, 15:53 (🦋) /econometrics/ $ type
            wp
 ┏━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ column     ┃ dtype   ┃
@@ -50,10 +50,10 @@ Example:
 ```
 
 ```txt
-2022 Feb 28, 15:54 (✨) /econometrics/ $ type wp.year --format category
+2022 Feb 28, 15:54 (🦋) /econometrics/ $ type wp.year --format category
 Update 'wp.year' dataset with type 'category'
 
-2022 Feb 28, 15:55 (✨) /econometrics/ $ type
+2022 Feb 28, 15:55 (🦋) /econometrics/ $ type
            wp
 ┏━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ column     ┃ dtype    ┃

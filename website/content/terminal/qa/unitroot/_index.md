@@ -4,9 +4,9 @@ usage: unitroot [-r {c,ct,ctt,nc}] [-k {c,ct}] [--export {csv,json,xlsx}] [-h]
 
 Unit root test / stationarity (ADF, KPSS)
 
-In statistics, a unit root test tests whether a time series variable is non-stationary and possesses a unit root. The null hypothesis is generally defined as the presence of a unit root and the alternative hypothesis is either stationarity, trend stationarity or explosive root depending on the test used. 
+In statistics, a unit root test tests whether a time series variable is non-stationary and possesses a unit root. The null hypothesis is generally defined as the presence of a unit root and the alternative hypothesis is either stationarity, trend stationarity or explosive root depending on the test used.
 
-See the Wiki page on this subject for more information: https://en.wikipedia.org/wiki/Unit_root_test
+See the Wiki page on this subject for more information: <https://en.wikipedia.org/wiki/Unit_root_test>
 
 ```
 optional arguments:
@@ -20,8 +20,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 11:16 (✨) /stocks/qa/ $ unitroot
+2022 Feb 16, 11:16 (🦋) /stocks/qa/ $ unitroot
          Unit Root Calculation
 ┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┓
 ┃                ┃ ADF        ┃ KPSS   ┃

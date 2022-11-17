@@ -16,8 +16,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 25, 06:50 (✨) /stocks/qa/ $ es
+2022 Feb 25, 06:50 (🦋) /stocks/qa/ $ es
       TSLA Expected Shortfall
 ┏━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃       ┃ ES:     ┃ Historical ES: ┃

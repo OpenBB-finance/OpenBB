@@ -14,9 +14,11 @@ optional arguments:
   --export {csv,json,xlsx,png,jpg,pdf,svg}
                         Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
+
 Example:
+
 ```
-2022 Feb 19, 13:16 (✨) /stocks/ba/ $ sentiment
+2022 Feb 19, 13:16 (🦋) /stocks/ba/ $ sentiment
 From 2022-02-19 retrieving 360 tweets (15 tweets/hour)
 From 2022-02-18 retrieving 360 tweets (15 tweets/hour)
 From 2022-02-17 retrieving 360 tweets (15 tweets/hour)

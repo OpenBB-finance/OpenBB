@@ -4,7 +4,7 @@ usage: normality [--export {csv,json,xlsx}] [-h]
 
 Normality tests
 
-To learn more about this subject, visit the Wiki page: https://en.wikipedia.org/wiki/Normality_test
+To learn more about this subject, visit the Wiki page: <https://en.wikipedia.org/wiki/Normality_test>
 
 A 2011 study concludes that Shapiro–Wilk has the best power for a given significance, followed closely by Anderson–Darling when comparing the Shapiro–Wilk, Kolmogorov–Smirnov, Lilliefors, and Anderson–Darling tests.
 
@@ -16,8 +16,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 11:11 (✨) /stocks/qa/ $ normality
+2022 Feb 16, 11:11 (🦋) /stocks/qa/ $ normality
             Normality Statistics
 ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
 ┃                    ┃ Statistic ┃ p-value ┃

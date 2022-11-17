@@ -6,13 +6,14 @@ Plot historical sentiment data of RHI and AHI by hour. Source: [Sentiment Invest
 
 AHI (Absolute Hype Index)
 ---
+
 AHI is a measure of how much people are talking about a stock on social media.
 It is calculated by dividing the total number of mentions for the chosen stock on a social network by the mean number of mentions any stock receives on that social medium.
 
 RHI (Relative Hype Index)
 ---
-RHI is a measure of whether people are talking about a stock more or less than usual, calculated by dividing the mean AHI for the past day by the mean AHI for for the past week for that stock.
 
+RHI is a measure of whether people are talking about a stock more or less than usual, calculated by dividing the mean AHI for the past day by the mean AHI for for the past week for that stock.
 
 ```
 optional arguments:
@@ -28,9 +29,11 @@ optional arguments:
   -l LIMIT, --limit LIMIT
                         Number of entries to show in data. (default: 10)
 ```
+
 Example:
+
 ```
-2022 Feb 16, 10:23 (✨) /stocks/ba/ $ load TSLA
+2022 Feb 16, 10:23 (🦋) /stocks/ba/ $ load TSLA
 
 Loading Daily TSLA stock with starting period 2019-02-11 for analysis.
 
@@ -39,11 +42,7 @@ Timezone: America/New_York
 Currency: USD
 Market:   CLOSED
 
-2022 Feb 16, 10:23 (✨) /stocks/ba/ $ hist
+2022 Feb 16, 10:23 (🦋) /stocks/ba/ $ hist
 ```
 
 ![hist](https://user-images.githubusercontent.com/46355364/154296923-af6a4b2d-ab16-44d1-8270-e5926f4bac16.png)
-
-
-
-

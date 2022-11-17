@@ -17,7 +17,7 @@ Below you can find a comparison of the regression estimates based on the dataset
 To replicate this result, please have a look at [panel](https://openbb-finance.github.io/OpenBBTerminal/terminal/econometrics/panel/).
 
 ```
-2022 Feb 25, 08:56 (✨) /econometrics/ $ compare
+2022 Feb 25, 08:56 (🦋) /econometrics/ $ compare
                                                                      Model Comparison
 ==========================================================================================================================================================
                                   POLS           BOLS                RE             FE          FE_EE          FE_IE       FE_EE_IE                  FDOLS

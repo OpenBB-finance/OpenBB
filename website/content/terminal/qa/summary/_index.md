@@ -2,7 +2,7 @@
 usage: summary [--export {csv,json,xlsx}] [-h]
 ```
 
-Summary of statistics derived from the target variable. 
+Summary of statistics derived from the target variable.
 
 ```
 optional arguments:
@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 11:16 (✨) /stocks/qa/ $ summary
+2022 Feb 16, 11:16 (🦋) /stocks/qa/ $ summary
 
                                                  Summary Statistics
 ┏━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┓

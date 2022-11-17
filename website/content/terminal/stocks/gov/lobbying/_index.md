@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 07:27 (✨) /stocks/gov/ $ lobbying
+2022 Feb 16, 07:27 (🦋) /stocks/gov/ $ lobbying
 2021-01-21: TESLA INC N/A
 
 2020-10-20: TESLA INC N/A

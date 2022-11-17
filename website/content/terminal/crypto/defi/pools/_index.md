@@ -2,7 +2,7 @@
 usage: pairs [-l LIMIT] [-s {volumeUSD,token0.name,token0.symbol,token1.name,token1.symbol,volumeUSD,txCount}] [--reverse] [-h] [--export {csv,json,xlsx}]
 ```
 
-Display uniswap pools by volume. [Source: https://thegraph.com/en/]
+Display uniswap pools by volume. [Source: <https://thegraph.com/en/>]
 
 ```
 optional arguments:
@@ -19,8 +19,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 06:28 (✨) /crypto/defi/ $ pools
+2022 Feb 15, 06:28 (🦋) /crypto/defi/ $ pools
                                            Uniswap Pools
 ┌───────────────────────┬───────────────┬───────────────────┬───────────────┬───────────┬─────────┐
 │ token0.name           │ token0.symbol │ token1.name       │ token1.symbol │ volumeUSD │ txCount │

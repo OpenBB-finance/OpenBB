@@ -17,8 +17,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 11:05 (✨) /stocks/qa/ $ raw
+2022 Feb 16, 11:05 (🦋) /stocks/qa/ $ raw
         Raw Data
 ┏━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃            ┃ Adjclose ┃

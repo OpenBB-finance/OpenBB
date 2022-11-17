@@ -3,7 +3,7 @@ usage: infer [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
 Displays a quick sentiment inference from last tweets that contain the ticker. This model splits the text into character-level tokens and uses vader
-sentiment analysis. Source: https://Twitter.com
+sentiment analysis. Source: <https://Twitter.com>
 
 ```
 optional arguments:
@@ -15,8 +15,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 19, 13:05 (✨) /stocks/ba/ $ infer
+2022 Feb 19, 13:05 (🦋) /stocks/ba/ $ infer
 From: 2022-02-19 17:08:20
 To:   2022-02-19 18:04:18
 100 tweets were analyzed.

@@ -2,7 +2,7 @@
 usage: ownership [--export {csv,json,xlsx}] [-h]
 ```
 
-Compare the outstanding shares, market cap, short interest and more. Source: https://finviz.com
+Compare the outstanding shares, market cap, short interest and more. Source: <https://finviz.com>
 
 ```
 optional arguments:
@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:41 (✨) /stocks/ca/ $ ownership
+2022 Feb 15, 08:41 (🦋) /stocks/ca/ $ ownership
                                                                                          Stock Screener
 ┌────────┬──────────────────┬────────────────┬────────────────┬─────────────┬───────────────┬──────────┬────────────┬─────────────┬─────────────┬──────────────┬─────────┬────────┬─────────────┐
 │ Ticker │ Market Cap       │ Outstanding    │ Float          │ Insider Own │ Insider Trans │ Inst Own │ Inst Trans │ Float Short │ Short Ratio │ Avg Volume   │ Price   │ Change │ Volume      │

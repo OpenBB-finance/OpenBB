@@ -2,7 +2,7 @@
 usage: recom [-s {crypto,forex,cfd}] [-e EXCHANGE] [-i {1M,1W,1d,4h,1h,15m,5m,1m}] [--export {csv,json,xlsx}] [-h]
 ```
 
-Print tradingview recommendation based on technical indicators. [Source: https://pypi.org/project/tradingview-ta/]
+Print tradingview recommendation based on technical indicators. [Source: <https://pypi.org/project/tradingview-ta/>]
 
 ```
 optional arguments:
@@ -20,8 +20,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 11:31 (✨) /stocks/ta/ $ recom
+2022 Feb 16, 11:31 (🦋) /stocks/ta/ $ recom
                Ticker Recommendation
 ┏━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━┳━━━━━━┳━━━━━━━━━┓
 ┃         ┃ RECOMMENDATION ┃ BUY ┃ SELL ┃ NEUTRAL ┃

@@ -13,8 +13,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 07:56 (✨) /crypto/nft/ $ stats mutant-ape-yacht-club
+2022 Feb 15, 07:56 (🦋) /crypto/nft/ $ stats mutant-ape-yacht-club
                      Collection Stats
 ┌────────────────────────────────┬───────────────────────┐
 │ Metric                         │ Value                 │

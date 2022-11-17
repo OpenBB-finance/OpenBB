@@ -14,8 +14,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 10:38 (✨) /stocks/ba/ $ queries
+2022 Feb 16, 10:38 (🦋) /stocks/ba/ $ queries
  Top AMZN's related queries
 ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
 ┃ query            ┃ value ┃

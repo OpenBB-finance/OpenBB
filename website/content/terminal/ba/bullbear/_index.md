@@ -10,8 +10,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 10:07 (✨) /stocks/ba/ $ bullbear
+2022 Feb 16, 10:07 (🦋) /stocks/ba/ $ bullbear
 Watchlist count: 381324
 
 Last 16 sentiment messages:

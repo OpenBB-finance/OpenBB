@@ -17,13 +17,14 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 04:13 (✨) /stocks/disc/ $ trending -i 10
+2022 Feb 16, 04:13 (🦋) /stocks/disc/ $ trending -i 10
 2010-03-21 08:33:21   Deutsche Bank's Marc Greenberg can't justify the BUD deal. But he says Bud Light Lime is the...
 https://seekingalpha.com/news/10
 
  Deutsche Bank's Marc Greenberg can't justify the BUD deal. But he says Bud Light Lime is the beer to beat.
-2022 Feb 16, 04:13 (✨) /stocks/disc/ $ trending -l 10
+2022 Feb 16, 04:13 (🦋) /stocks/disc/ $ trending -l 10
 2022-02-16 02:00:18 - 3800145 - Shopify Q4 Earnings Preview: What to Expect
 https://seekingalpha.com/news/3800145-shopify-q4-earnings-preview-what-to-expect
 

@@ -15,8 +15,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 10:31 (✨) /stocks/ba/ $ popular
+2022 Feb 16, 10:31 (🦋) /stocks/ba/ $ popular
 Search for latest tickers for 50 'Superstonk' posts
   217 potential tickers found.
 Search for latest tickers for 50 'pennystocks' posts
@@ -33,7 +34,7 @@ Search for latest tickers for 50 'investing' posts
   37 potential tickers found.
 Search for latest tickers for 50 'wallstreetbets' posts
   31 potential tickers found.
-  
+
                                                              The following TOP 10 tickers have been mentioned:
 ┏━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Mentions ┃ Ticker ┃ Company                                                ┃ Sector               ┃ Price  ┃ Change  ┃ Perf Month ┃ URL                                  ┃
