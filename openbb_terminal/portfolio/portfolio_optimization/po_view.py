@@ -68,7 +68,7 @@ time_factor = {
 
 
 @log_start_end(log=logger)
-def display_ef(symbols: List[str] = None, portfolio: PoEngine = None, **kwargs):
+def display_ef(symbols: List[str] = None, portfolio_engine: PoEngine = None, **kwargs):
     """
     Display efficient frontier
 
@@ -76,11 +76,11 @@ def display_ef(symbols: List[str] = None, portfolio: PoEngine = None, **kwargs):
     ----------
     symbols : List[str], optional
         List of symbols, by default None
-    portfolio : PoEngine, optional
+    portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
     """
 
-    symbols, portfolio, parameters = validate_inputs(symbols, portfolio, kwargs)
+    symbols, portfolio_engine, parameters = validate_inputs(symbols, portfolio_engine, kwargs)
 
     n_portfolios: int = 100
     if n_portfolios in parameters:
@@ -117,7 +117,7 @@ def display_ef(symbols: List[str] = None, portfolio: PoEngine = None, **kwargs):
 
     frontier, mu, cov, stock_returns, weights, X1, Y1, port = get_ef(
         symbols,
-        portfolio,
+        portfolio_engine,
         **parameters,
     )
 
@@ -228,20 +228,20 @@ def display_ef(symbols: List[str] = None, portfolio: PoEngine = None, **kwargs):
 
 
 @log_start_end(log=logger)
-def display_plot(portfolio: PoEngine = None, **kwargs):
+def display_plot(portfolio_engine: PoEngine = None, **kwargs):
     """
     Display efficient frontier
 
     Parameters
     ----------
-    portfolio : PoEngine, optional
+    portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
     """
 
-    if portfolio is None:
+    if portfolio_engine is None:
         return
 
-    _, portfolio, parameters = validate_inputs(portfolio=portfolio, kwargs=kwargs)
+    _, portfolio_engine, parameters = validate_inputs(portfolio_engine=portfolio_engine, kwargs=kwargs)
 
     # Choose chart
     pie: bool = False
@@ -295,8 +295,8 @@ def display_plot(portfolio: PoEngine = None, **kwargs):
     if "external_axes" not in parameters:
         parameters["external_axes"] = None
 
-    weights: pd.DataFrame = portfolio.get_weights_df()
-    data: pd.DataFrame = portfolio.get_returns()
+    weights: pd.DataFrame = portfolio_engine.get_weights_df()
+    data: pd.DataFrame = portfolio_engine.get_returns()
 
     category = parameters["category"]
 
@@ -304,7 +304,7 @@ def display_plot(portfolio: PoEngine = None, **kwargs):
         # weights = pd.DataFrame.from_dict(
         #     data=weights, orient="index", columns=["value"], dtype=float
         # )
-        category_dict = portfolio.get_category(category)
+        category_dict = portfolio_engine.get_category(category)
         category_df = pd.DataFrame.from_dict(
             data=category_dict, orient="index", columns=["category"]
         )
