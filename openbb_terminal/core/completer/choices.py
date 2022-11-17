@@ -116,7 +116,7 @@ def _get_argument_parser(
         ArgumentParser: ArgumentParser instance from the command function.
     """
 
-    if not command in controller.CHOICES_COMMANDS:
+    if command not in controller.CHOICES_COMMANDS:
         raise AttributeError(f"Invalid command : '{command}'")
 
     bound_mock_parse_known_args_and_warn = MethodType(
