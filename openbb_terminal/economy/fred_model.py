@@ -268,6 +268,11 @@ def get_yield_curve(
     Tuple[pd.DataFrame, datetime]
         Dataframe of yields and maturities,
         Date for which the yield curve is obtained
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> ycrv_df = openbb.economy.ycrv()
     """
     fredapi_client = Fred(cfg.API_FRED_KEY)
     fred_series = {

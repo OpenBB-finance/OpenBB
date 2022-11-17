@@ -60,6 +60,9 @@ def get_global_cases(country: str) -> pd.DataFrame:
         .T
     )
     cases.index = pd.to_datetime(cases.index)
+    if country not in cases:
+        console.print("[red]The selection `{country}` is not a valid option.[/red]\n")
+        return pd.DataFrame()
     cases = pd.DataFrame(cases[country]).diff().dropna()
     if cases.shape[1] > 1:
         return pd.DataFrame(cases.sum(axis=1))
@@ -89,6 +92,9 @@ def get_global_deaths(country: str) -> pd.DataFrame:
         .T
     )
     deaths.index = pd.to_datetime(deaths.index)
+    if country not in deaths:
+        console.print("[red]The selection `{country}` is not a valid option.[/red]\n")
+        return pd.DataFrame()
     deaths = pd.DataFrame(deaths[country]).diff().dropna()
     if deaths.shape[1] > 1:
         return pd.DataFrame(deaths.sum(axis=1))
@@ -114,8 +120,12 @@ def get_covid_ov(
     pd.DataFrame
         Dataframe of historical cases and deaths
     """
+    if country.lower() == "us":
+        country = "US"
     cases = get_global_cases(country)
     deaths = get_global_deaths(country)
+    if cases.empty or deaths.empty:
+        return pd.DataFrame()
     data = pd.concat([cases, deaths], axis=1)
     data.columns = ["Cases", "Deaths"]
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
