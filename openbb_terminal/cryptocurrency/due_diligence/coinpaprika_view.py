@@ -13,7 +13,6 @@ from openbb_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -108,11 +107,7 @@ def display_twitter(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
-    # get coinpaprika id using crypto symbol
-    cp_id = cryptocurrency_helpers.get_coinpaprika_id(symbol)
-
-    df = coinpaprika_model.get_coin_twitter_timeline(cp_id, sortby, ascend)
+    df = coinpaprika_model.get_coin_twitter_timeline(symbol, sortby, ascend)
 
     if df.empty:
         console.print(f"Couldn't find any tweets for coin {symbol}", "\n")
@@ -161,10 +156,7 @@ def display_events(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    # get coinpaprika id using crypto symbol
-    cp_id = cryptocurrency_helpers.get_coinpaprika_id(symbol)
-
-    df = coinpaprika_model.get_coin_events_by_id(cp_id, sortby, ascend)
+    df = coinpaprika_model.get_coin_events_by_id(symbol, sortby, ascend)
 
     if df.empty:
         console.print(f"Couldn't find any events for coin {symbol}\n")
@@ -213,11 +205,7 @@ def display_exchanges(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
-    # get coinpaprika id using crypto symbol
-    cp_id = cryptocurrency_helpers.get_coinpaprika_id(symbol)
-
-    df = coinpaprika_model.get_coin_exchanges_by_id(cp_id, sortby, ascend)
+    df = coinpaprika_model.get_coin_exchanges_by_id(symbol, sortby, ascend)
 
     if df.empty:
         console.print("No data found", "\n")
@@ -268,14 +256,9 @@ def display_markets(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
-    if sortby in ["volume", "price"]:
-        sortby = f"{str(to_symbol).lower()}_{sortby}"
-
-    # get coinpaprika id using crypto symbol
-    cp_id = cryptocurrency_helpers.get_coinpaprika_id(from_symbol)
-
-    df = coinpaprika_model.get_coin_markets_by_id(cp_id, to_symbol, sortby, ascend)
+    df = coinpaprika_model.get_coin_markets_by_id(
+        from_symbol, to_symbol, sortby, ascend
+    )
 
     if df.empty:
         console.print("There is no data \n")
@@ -318,10 +301,7 @@ def display_price_supply(
         Export dataframe data to csv,json,xlsx
 
     """
-    # get coinpaprika id using crypto symbol
-    cp_id = cryptocurrency_helpers.get_coinpaprika_id(from_symbol)
-
-    df = coinpaprika_model.get_tickers_info_for_coin(cp_id, to_symbol)
+    df = coinpaprika_model.get_tickers_info_for_coin(from_symbol, to_symbol)
 
     if df.empty:
         console.print("No data found", "\n")
@@ -357,10 +337,7 @@ def display_basic(
     export: str
         Export dataframe data to csv,json,xlsx
     """
-    # get coinpaprika id using crypto symbol
-    cp_id = cryptocurrency_helpers.get_coinpaprika_id(symbol)
-
-    df = coinpaprika_model.basic_coin_info(cp_id)
+    df = coinpaprika_model.basic_coin_info(symbol)
 
     if df.empty:
         console.print("No data available\n")

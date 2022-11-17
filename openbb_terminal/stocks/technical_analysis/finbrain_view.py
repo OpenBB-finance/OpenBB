@@ -23,4 +23,3 @@ def technical_summary_report(symbol: str):
     report = finbrain_model.get_technical_summary_report(symbol)
     if report:
         console.print(report.replace(". ", ".\n"))
-    console.print("")

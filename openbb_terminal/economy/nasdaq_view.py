@@ -105,7 +105,6 @@ def display_big_mac_index(
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "bigmac", big_mac
         )
-        console.print("")
     else:
         logger.error("Unable to get big mac data")
         console.print("[red]Unable to get big mac data[/red]\n")

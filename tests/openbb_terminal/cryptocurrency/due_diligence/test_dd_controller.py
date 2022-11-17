@@ -543,11 +543,6 @@ def test_call_func(
         target=f"{path_controller}.ccxt_model.get_binance_currencies",
         return_value=["BITCOIN"],
     )
-    # MOCK GET_COINPAPRIKA_ID
-    mocker.patch(
-        target=f"{path_controller}.cryptocurrency_helpers.get_coinpaprika_id",
-        return_value=True,
-    )
 
     # MOCK SHOW_AVAILABLE_PAIRS_FOR_GIVEN_SYMBOL
     mocker.patch(
