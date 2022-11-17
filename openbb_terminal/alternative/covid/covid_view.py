@@ -194,11 +194,11 @@ def display_covid_stat(
     plot : bool
         Flag to plot data
     """
+    data = covid_model.get_covid_stat(country, stat, limit)
     if plot:
         plot_covid_stat(country, stat)
 
     if raw:
-        data = covid_model.get_covid_stat(country, stat, limit)
         print_rich_table(
             data,
             headers=[stat.title()],
