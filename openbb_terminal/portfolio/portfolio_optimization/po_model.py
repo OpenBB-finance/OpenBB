@@ -74,7 +74,7 @@ def validate_parameters_type(parameters):
 
 
 @log_start_end(log=logger)
-def load(
+def generate_portfolio(
     symbols: List[str] = None,
     symbols_file_path: str = None,
     parameters_file_path: str = None,
@@ -111,7 +111,7 @@ def load(
 
 
 @log_start_end(log=logger)
-def file(
+def load_parameters_file(
     parameters_file_path: str,
     portfolio_engine: PoEngine,
 ):
