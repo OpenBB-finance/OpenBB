@@ -99,7 +99,7 @@ def get_balance_sheet(
     Returns
     -------
     pd.DataFrame
-        Dataframe of income statement
+        Dataframe of balance sheet
 
     Examples
     --------
@@ -112,7 +112,7 @@ def get_balance_sheet(
     if source == "YahooFinance":
         if quarterly:
             print(
-                "Quarterly income statement not available from Yahoo Finance.  Returning annual"
+                "Quarterly statements not available from Yahoo Finance.  Returning annual"
             )
         df = yahoo_finance_model.get_financials(
             symbol=symbol, statement="balance-sheet", ratios=ratios
@@ -133,5 +133,68 @@ def get_balance_sheet(
         return df
     if source == "EODHD":
         df = eodhd_model.get_financials(symbol, "balance", quarterly, ratios)
+        return df
+    return pd.DataFrame()
+
+
+def get_cash_flow(
+    symbol: str,
+    quarterly: bool = False,
+    ratios: bool = False,
+    source: str = "YahooFinance",
+    limit: int = 10,
+) -> pd.DataFrame:
+    """Get Cash Flow.
+
+    Parameters
+    ----------
+    symbol : str
+        Symbol to get cash flow for
+    source : str, optional
+        Data source for cash flow, by default "YahooFinance"
+    quarterly : bool, optional
+        Flag to get quarterly data
+    ratios : bool, optional
+       Flag to return data as a percent change.
+    limit : int
+        Number of statements to return (free tiers may be limited to 5 years)
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of cash flow
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> cash_flow = openbb.stocks.fa.cash("AAPL", source="YahooFinance)
+
+    If you have a premium AlphaVantage key, you can use the quarterly flag to get quarterly statements
+    >>> quarterly_income_statement = openbb.stocks.fa.cash("AAPL", source="AlphaVantage", quarterly=True)
+    """
+    if source == "YahooFinance":
+        if quarterly:
+            print(
+                "Quarterly statements not available from Yahoo Finance.  Returning annual"
+            )
+        df = yahoo_finance_model.get_financials(
+            symbol=symbol, statement="cash-flow", ratios=ratios
+        )
+        return df
+    if source == "AlphaVantage":
+        df = av_model.get_cash_flow(
+            symbol=symbol, quarterly=quarterly, ratios=ratios, limit=limit
+        )
+        return df
+    if source == "FinancialModelingPrep":
+        df = fmp_model.get_cash(
+            symbol=symbol, limit=limit, quarterly=quarterly, ratios=ratios
+        )
+        return df
+    if source == "Polygon":
+        df = polygon_model.get_financials(symbol, "cash", quarterly, ratios)
+        return df
+    if source == "EODHD":
+        df = eodhd_model.get_financials(symbol, "cash", quarterly, ratios)
         return df
     return pd.DataFrame()

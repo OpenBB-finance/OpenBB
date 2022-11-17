@@ -391,9 +391,11 @@ def get_cash(
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
+        return pd.DataFrame()
     # Premium feature, API plan is not authorized
     except HTTPError as e:
         console.print(e)
+        return pd.DataFrame()
 
     if ratios:
         types = df_fa.copy().applymap(lambda x: isinstance(x, (float, int))).all(axis=1)
