@@ -98,13 +98,13 @@ few different ways using the wildcard expression.
 - Run all integration tests:
 
     ```zsh
-    python testing.py
+    python terminal.py -t
     ```
 
 - Run some integration tests:
 
     ```zsh
-    python testing.py stocks crypto
+    python terminal.py stocks crypto -t
     ```
 
     *This specific example runs all of the stocks integration tests. One can use this same format for different tests.*
@@ -112,7 +112,7 @@ few different ways using the wildcard expression.
 - Run one integration tests:
 
     ```zsh
-    python testing.py scripts/test_alt_covid.openbb
+    python terminal.py scripts/test_alt_covid.openbb -t
     ```
 
     *Note that the base path is `OpenBBTerminal/openbb_terminal/miscellaneous/scripts`.*
@@ -120,13 +120,13 @@ few different ways using the wildcard expression.
 - Run integration tests with arguments by adding --key=value
 
     ```zsh
-    python testing.py --ticker=aapl
+    python terminal.py --ticker=aapl -t
     ```
 
 - To see a lot of possible keys, run the following:
 
     ```zsh
-    python testing.py -h
+    python terminal.py -h -t
     ```
 
 If there are any test failures a csv will be generated with detailed information on the failures.

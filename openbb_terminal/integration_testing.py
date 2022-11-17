@@ -137,7 +137,8 @@ def run_test_list(
     )
 
 
-if __name__ == "__main__":
+def parse_args_and_run():
+    """Parse input arguments and run integration tests."""
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="testing",
@@ -145,11 +146,22 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--file",
-        help="The path or .openbb file to run. Starts at OpenBBTermina/openbb_terminal/miscellaneous/scripts",
+        help=(
+            "The path or .openbb file to run. Starts at "
+            "OpenBBTermina/openbb_terminal/miscellaneous/scripts"
+        ),
         dest="path",
         nargs="+",
         default="",
         type=str,
+    )
+    parser.add_argument(
+        "-t",
+        action="store_true",
+        help=(
+            "Run the terminal in testing mode. Also run this option and '-h'"
+            " to see testing argument options."
+        ),
     )
     parser.add_argument(
         "-v",
@@ -178,3 +190,7 @@ if __name__ == "__main__":
         verbose=ns_parser.verbose,
         special_arguments=special_args_dict,
     )
+
+
+if __name__ == "__main__":
+    parse_args_and_run()

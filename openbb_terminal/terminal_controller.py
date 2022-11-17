@@ -1160,6 +1160,14 @@ def parse_args_and_run():
         type=str,
     )
     parser.add_argument(
+        "-t",
+        action="store_true",
+        help=(
+            "Run the terminal in testing mode. Also run this option and '-h'"
+            " to see testing argument options."
+        ),
+    )
+    parser.add_argument(
         "-f",
         help=argparse.SUPPRESS,
         dest="module_file",
