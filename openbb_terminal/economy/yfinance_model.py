@@ -700,6 +700,12 @@ def get_indices(
     -------
     pd.Dataframe
         Dataframe with historical data on selected indices.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.economy.available_indices()
+    >>> openbb.economy.index(["^GSPC", "sp400"])
     """
 
     indices_data: pd.DataFrame = pd.DataFrame()
