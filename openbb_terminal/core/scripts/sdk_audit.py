@@ -200,7 +200,7 @@ def main():
     sdk_df = get_sdk()
 
     final_df = funcs_df.merge(sdk_df, how="outer", left_index=True, right_index=True)
-    final_df = final_df.sort_values("trail")
+    final_df = final_df.sort_values("name")
     final_df = get_nonconforming_functions(final_df)
     # Do this so that the duplicated method also checks the name column
     final_df = final_df.reset_index()
