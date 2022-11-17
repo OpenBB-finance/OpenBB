@@ -20,8 +20,8 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_FINNHUB_KEY"])
 def get_company_news(
     symbol: str,
-    start_date: str = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: str = None,
+    end_date: str = None,
 ) -> List[Dict]:
     """Get news from a company. [Source: Finnhub]
 
@@ -35,10 +35,17 @@ def get_company_news(
         date to end searching articles, with format YYYY-MM-DD
 
     Returns
-    ----------
+    -------
     articles : List
         term to search on the news articles
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     try:
         finnhub_client = finnhub.Client(api_key=cfg.API_FINNHUB_KEY)
         articles = finnhub_client.company_news(
@@ -63,7 +70,7 @@ def process_news_headlines_sentiment(
         list of articles with `headline` and `datetime` keys
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Headlines sentiment using VADER model over time
     """

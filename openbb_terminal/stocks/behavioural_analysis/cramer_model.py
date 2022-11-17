@@ -109,7 +109,7 @@ def get_cramer_ticker(symbol: str) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with dates and recommendations
     """
 

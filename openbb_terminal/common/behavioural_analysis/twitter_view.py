@@ -1,4 +1,4 @@
-"""Twitter view"""
+"""Twitter view."""
 __docformat__ = "numpy"
 
 import logging
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_inference(symbol: str, limit: int = 100, export: str = ""):
-    """Infer sentiment from past n tweets
+    """Prints Inference sentiment from past n tweets.
 
     Parameters
     ----------
@@ -71,7 +71,7 @@ def display_inference(symbol: str, limit: int = 100, export: str = ""):
     console.print(
         f"Of the last {len(df_tweets)} tweets, {100*percent_neg:.2f} % had a higher negative sentiment"
     )
-    console.print("")
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "infer", df_tweets)
 
 
@@ -84,7 +84,7 @@ def display_sentiment(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot sentiments from symbol
+    """Plots sentiments from symbol
 
     Parameters
     ----------

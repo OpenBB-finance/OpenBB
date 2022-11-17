@@ -35,7 +35,7 @@ def fibonacci_retracement(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Calculate fibonacci retracement levels
+    """Plots Calculated fibonacci retracement levels
 
     Parameters
     ----------

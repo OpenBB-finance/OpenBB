@@ -1,8 +1,8 @@
-""" Finviz Comparison Model """
+"""Finviz Comparison Model"""
 __docformat__ = "numpy"
 
 import logging
-from typing import List, Tuple
+from typing import List
 
 import pandas as pd
 from finvizfinance.screener import (
@@ -22,10 +22,8 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_similar_companies(
-    symbol: str, compare_list: List[str] = None
-) -> Tuple[List[str], str]:
-    """Get similar companies from Finviz
+def get_similar_companies(symbol: str, compare_list: List[str] = None) -> List[str]:
+    """Get similar companies from Finviz.
 
     Parameters
     ----------
@@ -53,7 +51,7 @@ def get_similar_companies(
 
 @log_start_end(log=logger)
 def get_comparison_data(similar: List[str], data_type: str = "overview"):
-    """Screener Overview
+    """Screener Overview.
 
     Parameters
     ----------
@@ -65,7 +63,7 @@ def get_comparison_data(similar: List[str], data_type: str = "overview"):
         Data type between: overview, valuation, financial, ownership, performance, technical
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe with overview, valuation, financial, ownership, performance or technical
     """

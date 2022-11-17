@@ -321,7 +321,7 @@ def check_int_range(mini: int, maxi: int):
             Input integer
 
         Returns
-        -------
+        ----------
         num: int
             Input number if conditions are met
 
@@ -453,7 +453,7 @@ def check_proportion_range(num) -> float:
     num: float
         Input number if conditions are met
     Raises
-    -------
+    ----------
     argparse.ArgumentTypeError
         Input number not between min and max values
     """
@@ -614,7 +614,6 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
     plt.setp(ax[1].get_xticklabels(), rotation=20, horizontalalignment="right")
 
     plt.show()
-    console.print("")
 
 
 def us_market_holidays(years) -> list:
@@ -993,7 +992,7 @@ def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
         (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
     except SystemExit:
         # In case the command has required argument that isn't specified
-        console.print("")
+        console.print("\n")
         return None
 
     if ns_parser.help:
@@ -1003,7 +1002,7 @@ def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
 
     if l_unknown_args:
         console.print(f"The following args couldn't be interpreted: {l_unknown_args}")
-        console.print("")
+        console.print("\n")
 
     return ns_parser
 
@@ -1232,7 +1231,7 @@ def check_file_type_saved(valid_types: List[str] = None):
             filenames to be saved separated with comma
 
         Returns
-        -------
+        ----------
         str
             valid filenames separated with comma
         """
@@ -1672,7 +1671,6 @@ def screenshot() -> None:
             plt.savefig(img_buf, format="png")
             shot = Image.open(img_buf)
             screenshot_to_canvas(shot, plot_exists=True)
-            console.print("")
 
         else:
             console.print("No plots found.\n")

@@ -38,21 +38,22 @@ def view_available_presets(preset: str):
         preset_choices = syncretism_model.get_preset_choices()
         preset_filter.read(preset_choices[preset])
         filters_headers = ["FILTER"]
-        console.print("")
 
-        for filter_header in filters_headers:
+        for i, filter_header in enumerate(filters_headers):
             console.print(f" - {filter_header} -")
             d_filters = {**preset_filter[filter_header]}
             d_filters = {k: v for k, v in d_filters.items() if v}
+
             if d_filters:
                 max_len = len(max(d_filters, key=len)) + 2
                 for key, value in d_filters.items():
                     console.print(f"{key}{(max_len-len(key))*' '}: {value}")
-            console.print("")
+
+            if i < len(filters_headers) - 1:
+                console.print("\n")
 
     else:
         console.print("Please provide a preset template.")
-    console.print("")
 
 
 @log_start_end(log=logger)

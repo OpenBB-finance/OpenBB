@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import logging
 import os
 import webbrowser
-from datetime import datetime, timedelta
 from typing import List, Optional
 from fractions import Fraction
 
@@ -42,7 +41,6 @@ def open_headquarters_map(symbol: str):
         Fundamental analysis ticker symbol
     """
     webbrowser.open(yahoo_finance_model.get_hq(symbol))
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -54,7 +52,6 @@ def open_web(symbol: str):
         Fundamental analysis ticker symbol
     """
     webbrowser.open(yahoo_finance_model.get_website(symbol))
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -337,7 +334,7 @@ def display_splits(
 @log_start_end(log=logger)
 def display_mktcap(
     symbol: str,
-    start_date: str = (datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d"),
+    start_date: str = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -348,12 +345,13 @@ def display_mktcap(
     symbol: str
         Stock ticker symbol
     start_date: str
-        Start date to display market cap
+        Initial date (e.g., 2021-10-01). Defaults to 3 years back
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
     df_mktcap, currency = yahoo_finance_model.get_mktcap(symbol, start_date)
     if df_mktcap.empty:
         console.print("No Market Cap data available.\n")
@@ -502,7 +500,6 @@ def display_earnings(symbol: str, limit: int, export: str):
     """
     earnings = yahoo_finance_model.get_earnings_history(symbol)
     if earnings.empty:
-        console.print("")
         return
     earnings = earnings.drop(columns={"Symbol", "Company"}).fillna("-")
     print_rich_table(

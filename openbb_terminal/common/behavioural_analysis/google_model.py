@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_mentions(symbol: str) -> pd.DataFrame:
-    """Get interest over time from google api [Source: google]
+    """Get interest over time from google api [Source: google].
 
     Parameters
     ----------
@@ -42,7 +42,7 @@ def get_mentions(symbol: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_regions(symbol: str) -> pd.DataFrame:
-    """Get interest by region from google api [Source: google]
+    """Get interest by region from google api [Source: google].
 
     Parameters
     ----------
@@ -71,7 +71,7 @@ def get_regions(symbol: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
-    """Get related queries from google api [Source: google]
+    """Get related queries from google api [Source: google].
 
     Parameters
     ----------
@@ -82,8 +82,8 @@ def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
 
     Returns
     -------
-    dict : {'top': pd.DataFrame or None, 'rising': pd.DataFrame or None}
-
+    pd.DataFrame
+        Dataframe of related queries
     """
     try:
         pytrend = TrendReq()
@@ -104,7 +104,7 @@ def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_rise(symbol: str, limit: int = 10) -> pd.DataFrame:
-    """Get top rising related queries with this stock's query [Source: google]
+    """Get top rising related queries with this stock's query [Source: google].
 
     Parameters
     ----------

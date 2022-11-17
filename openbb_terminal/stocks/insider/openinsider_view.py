@@ -49,7 +49,7 @@ def lambda_red_highlight(values) -> List[str]:
         dataframe values to color
 
     Returns
-    ----------
+    -------
     List[str]
         colored dataframes values
     """
@@ -65,7 +65,7 @@ def lambda_yellow_highlight(values) -> List[str]:
         dataframe values to color
 
     Returns
-    ----------
+    -------
     List[str]
         colored dataframes values
     """
@@ -81,7 +81,7 @@ def lambda_magenta_highlight(values):
         dataframe values to color
 
     Returns
-    ----------
+    -------
     List[str]
         colored dataframes values
     """
@@ -97,7 +97,7 @@ def lambda_green_highlight(values):
         dataframe values to color
 
     Returns
-    ----------
+    -------
     List[str]
         colored dataframes values
     """
@@ -168,7 +168,6 @@ def print_insider_filter(
         link = get_open_insider_link(preset)
 
     if not link:
-        console.print("")
         return
 
     df_insider = get_open_insider_data(link, has_company_name=bool(not symbol))
@@ -247,5 +246,3 @@ def print_insider_filter(
 
         for tradetype in l_utradetype:
             console.print(d_trade_types[tradetype])
-
-    console.print("")

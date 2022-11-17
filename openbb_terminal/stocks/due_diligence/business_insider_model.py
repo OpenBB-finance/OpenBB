@@ -84,6 +84,11 @@ def get_estimates(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame
         Quarter earnings estimates
     df_quarter_revenues : pd.DataFrame
         Quarter revenues estimates
+
+    Returns
+    -------
+    Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]
+        Year estimates, quarter earnings estimates, quarter revenues estimates
     """
     url_market_business_insider = (
         f"https://markets.businessinsider.com/stocks/{symbol.lower()}-stock"

@@ -48,6 +48,7 @@ from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
+from openbb_terminal.core.completer.choices import build_controller_choice_map
 
 logger = logging.getLogger(__name__)
 
@@ -107,6 +108,7 @@ class BaseController(metaclass=ABCMeta):
     TRY_RELOAD = False
     PATH: str = ""
     FILE_PATH: str = ""
+    CHOICES_GENERATION = False
 
     def __init__(self, queue: List[str] = None) -> None:
         """Create the base class for any controller in the codebase.
@@ -165,6 +167,16 @@ class BaseController(metaclass=ABCMeta):
         support_choices["--type"] = {c: None for c in (SUPPORT_TYPE)}
 
         self.SUPPORT_CHOICES = support_choices
+
+        self.choices = self.build_choices()
+
+    def build_choices(self):
+        if self.CHOICES_GENERATION:
+            choices = build_controller_choice_map(controller=self)
+        else:
+            choices = {}
+
+        return choices
 
     def check_path(self) -> None:
         """Check if command path is valid."""
@@ -243,7 +255,7 @@ class BaseController(metaclass=ABCMeta):
             User input string
 
         Returns
-        -------
+        ----------
         list
             Command queue as list
         """
@@ -300,7 +312,7 @@ class BaseController(metaclass=ABCMeta):
         """Process and dispatch input.
 
         Returns
-        -------
+        ----------
         List[str]
             list of commands in the queue to execute
         """
@@ -448,7 +460,7 @@ class BaseController(metaclass=ABCMeta):
         if os.path.isfile(self.FILE_PATH):
             with open(self.FILE_PATH) as f:
                 console.print(Markdown(f.read()))
-            console.print("")
+
         else:
             console.print("No resources available.\n")
 
@@ -456,7 +468,6 @@ class BaseController(metaclass=ABCMeta):
     def call_support(self, other_args: List[str]) -> None:
         """Process support command."""
         self.save_class()
-        console.print("")
 
         path_split = [x for x in self.PATH.split("/") if x != ""]
         main_menu = path_split[0] if len(path_split) else "home"
@@ -693,7 +704,7 @@ class BaseController(metaclass=ABCMeta):
             Add a --limit flag with this number default
 
         Returns
-        -------
+        ----------
         ns_parser:
             Namespace with parsed arguments
         """
@@ -720,6 +731,7 @@ class BaseController(metaclass=ABCMeta):
                 type=check_file_type_saved(choices_export),
                 dest="export",
                 help=help_export,
+                choices=choices_export,
             )
 
         if raw:
@@ -758,7 +770,7 @@ class BaseController(metaclass=ABCMeta):
             (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
         except SystemExit:
             # In case the command has required argument that isn't specified
-            console.print("")
+
             return None
 
         if ns_parser.help:
@@ -775,7 +787,6 @@ class BaseController(metaclass=ABCMeta):
             console.print(
                 f"The following args couldn't be interpreted: {l_unknown_args}"
             )
-            console.print("")
 
         return ns_parser
 
@@ -877,7 +888,7 @@ class BaseController(metaclass=ABCMeta):
                         self.PATH,
                     )
                 console.print(
-                    f"[red]The command '{an_input}' doesn't exist on the {self.PATH} menu.[/red]",
+                    f"[red]The command '{an_input}' doesn't exist on the {self.PATH} menu.[/red]\n",
                 )
                 similar_cmd = difflib.get_close_matches(
                     an_input.split(" ")[0] if " " in an_input else an_input,
@@ -901,7 +912,7 @@ class BaseController(metaclass=ABCMeta):
                         an_input = similar_cmd[0]
                     if not self.contains_keys(an_input):
                         logger.warning("Replacing by %s", an_input)
-                    console.print(f"\n[green]Replacing by '{an_input}'.[/green]\n")
+                    console.print(f"[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)
                 else:
                     if self.TRY_RELOAD and obbff.RETRY_WITH_LOAD:
