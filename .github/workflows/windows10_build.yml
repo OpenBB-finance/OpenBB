@@ -57,7 +57,7 @@ jobs:
           pyinstaller build/pyinstaller/terminal.spec --clean
       - name: Move Files into App Folder
         run: cp -r .\dist\OpenBBTerminal\ .\build\nsis\app\
-      # dont need this because log collection is turned off
+      # don't need this because log collection is turned off
       # - name: Remove Log Data
       #   run: Remove-Item .\build\nsis\app\openbb_terminal\logs\ -Recurse
       - name: Build Exe File

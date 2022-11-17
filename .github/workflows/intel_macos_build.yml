@@ -79,7 +79,7 @@ jobs:
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
           MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
           MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
-        run: | # when pushing to main, make to generate new cert, and utilize secrets to store newpassowrd, and identity
+        run: | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
           echo "Decoding"
           echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
           echo "Creating Keychain"
