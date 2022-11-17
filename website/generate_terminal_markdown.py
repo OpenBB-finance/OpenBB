@@ -183,12 +183,6 @@ def main():
 
             for cat in cmd_meta["cmds"]:
                 examples = existing_markdown_file_examples(ctrl, cat)
-
-                cat["sub_name"] = (
-                    ctrl.name.title()
-                    if ctrl.name not in sub_names_full
-                    else sub_names_full[ctrl.name]
-                )
                 markdown = generate_markdown(cat, examples)
 
                 if cat["cmd_name"] == "index":
