@@ -51,6 +51,8 @@ jobs:
           source ~/.zshrc
       - name: Run Poetry
         run: poetry install
+      - name: Install Portfolio Optimization Toolkit
+        run: poetry install -E optimization
       - name: Install Pyinstaller
         run: poetry install -E installer
       - name: Install Prediction Modules
