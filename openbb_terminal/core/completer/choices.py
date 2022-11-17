@@ -163,11 +163,11 @@ def _get_argument_parser(
 
 
 def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
-    choice_map = {}
+    choice_map: dict = {}
     for action in argument_parser._actions:  # pylint: disable=protected-access
         if len(action.option_strings) == 1:
             long_name = action.option_strings[0]
-            short_name = {}
+            short_name = ""
         elif len(action.option_strings) == 2:
             short_name = action.option_strings[0]
             long_name = action.option_strings[1]
@@ -187,7 +187,7 @@ def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
 
 def build_controller_choice_map(controller) -> dict:
     command_list = controller.CHOICES_COMMANDS
-    controller_choice_map = {c: {} for c in controller.controller_choices}
+    controller_choice_map: dict = {c: {} for c in controller.controller_choices}
     controller_choice_map["support"] = controller.SUPPORT_CHOICES
     controller_choice_map["about"] = controller.ABOUT_CHOICES
 
