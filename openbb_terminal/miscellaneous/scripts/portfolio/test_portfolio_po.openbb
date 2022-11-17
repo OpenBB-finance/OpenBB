@@ -1,23 +1,6 @@
 portfolio
 po
-load OpenBB_Portfolio_Template_v1.0.0.xlsx
-file --file OpenBB_Parameters_Template_v1.0.0.xlsx
-file -f defaults.ini
-params
-set maxsharpe
-arg log_returns True
-..
-maxsharpe
-minrisk
-maxutil
-maxret
-maxdiv
-maxdecorr
-ef
-riskparity
-relriskparity
-hrp
-herc
-nco
+load 50_30_10_10_Portfolio.xlsx
 equal
+show NAME_0
 exit

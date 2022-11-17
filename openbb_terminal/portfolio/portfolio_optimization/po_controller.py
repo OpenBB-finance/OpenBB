@@ -868,7 +868,8 @@ class PortfolioOptimizationController(BaseController):
                     console.print("[yellow]Portfolio[/yellow]: " + portfolio + "\n")
                     optimizer_view.display_show(
                         weights=self.portfolios[portfolio],
-                        categories=ns_parser.categories,
+                        tables=ns_parser.categories,
+                        categories=self.categories,
                     )
 
     @log_start_end(log=logger)

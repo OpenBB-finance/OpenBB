@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 from datetime import date
 
 
@@ -175,7 +175,7 @@ def get_equal_weights(
     threshold: float = 0,
     method: str = "time",
     value: float = 1.0,
-) -> Tuple[Dict[str, float], pd.DataFrame]:
+) -> Union[Tuple[Dict[str, float], pd.DataFrame], None]:
     """Equally weighted portfolio, where weight = 1/# of symbols
 
     Parameters
@@ -636,6 +636,7 @@ def get_max_sharpe(
         Dictionary of portfolio weights,
         DataFrame of stock returns.
     """
+
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
         interval=interval,
@@ -1339,9 +1340,9 @@ def get_max_decorrelation_portfolio(
 @log_start_end(log=logger)
 def get_black_litterman_portfolio(
     symbols: List[str],
-    benchmark: Dict,
-    p_views: List,
-    q_views: List,
+    p_views: List = None,
+    q_views: List = None,
+    benchmark: Dict = None,
     interval: str = "3y",
     start_date: str = "",
     end_date: str = "",
@@ -1618,6 +1619,9 @@ def get_ef(
         Parameters to create efficient frontier:
         frontier, mu, cov, stock_returns, weights, X1, Y1, port
     """
+
+    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -3122,9 +3126,62 @@ def generate_random_portfolios(
 @log_start_end(log=logger)
 def get_properties() -> List[str]:
     """Get properties to use on property optimization.
+
     Returns
     -------
     List[str]:
         List of available properties to use on property optimization.
     """
     return optimizer_helper.valid_property_infos
+
+
+@log_start_end(log=logger)
+def get_categories(
+    weights: dict, categories: dict, column: str = "ASSET_CLASS"
+) -> pd.DataFrame:
+    """Get categories from dictionary
+
+    Parameters
+    ----------
+    weights : dict
+        Dictionary with weights
+    categories: dict
+        Dictionary with categories
+    column : str, optional
+        Column name to use on categories, by default "ASSET_CLASS"
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with weights
+    """
+
+    if not weights:
+        return pd.DataFrame()
+
+    df = pd.DataFrame.from_dict(
+        data=weights, orient="index", columns=["value"], dtype=float
+    )
+    categories_df = pd.DataFrame.from_dict(data=categories, dtype=float)
+
+    col = list(categories_df.columns).index(column)
+    categories_df = df.join(categories_df.iloc[:, [col, 4, 5]], how="inner")
+    categories_df.set_index(column, inplace=True)
+    categories_df.groupby(level=0).sum()
+
+    df = pd.pivot_table(
+        categories_df,
+        values=["value", "CURRENT_INVESTED_AMOUNT"],
+        index=["CURRENCY", column],
+        aggfunc=np.sum,
+    )
+    df["CURRENT_WEIGHTS"] = (
+        df["CURRENT_INVESTED_AMOUNT"].groupby(level=0).transform(lambda x: x / sum(x))
+    )
+    df["value"] = df["value"].groupby(level=0).transform(lambda x: x / sum(x))
+    df = pd.concat(
+        [d.append(d.sum().rename((k, "TOTAL " + k))) for k, d in df.groupby(level=0)]
+    )
+    df = df.iloc[:, [0, 2, 1]]
+
+    return df
