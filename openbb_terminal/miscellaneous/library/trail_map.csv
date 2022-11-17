@@ -358,7 +358,7 @@ portfolio.po.mktcap,openbb_terminal.portfolio.portfolio_optimization.po_model.ge
 portfolio.po.dividend,openbb_terminal.portfolio.portfolio_optimization.po_model.get_dividend,,
 portfolio.po.property,openbb_terminal.portfolio.portfolio_optimization.po_model.get_property,,
 portfolio.po.get_properties,openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_properties,,
-portfolio.po.plot,openbb_terminal.portfolio.portfolio_optimization.optimizer_view.additional_plots,openbb_terminal.portfolio.portfolio_optimization.optimizer_view.additional_plots,
+portfolio.po.plot,openbb_terminal.portfolio.portfolio_optimization.po_view.display_plot,openbb_terminal.portfolio.portfolio_optimization.po_view.display_plot,
 stocks.ba.cnews,openbb_terminal.stocks.behavioural_analysis.finnhub_model.get_company_news,,
 stocks.ba.snews,openbb_terminal.stocks.behavioural_analysis.finnhub_model.get_headlines_sentiment,openbb_terminal.stocks.behavioural_analysis.finnhub_view.display_stock_price_headlines_sentiment,
 stocks.ca.sentiment,openbb_terminal.stocks.comparison_analysis.finbrain_model.get_sentiments,openbb_terminal.stocks.comparison_analysis.finbrain_view.display_sentiment_compare,

@@ -85,7 +85,9 @@ def file(
     engine.set_params_from_file(parameters_file_path)
 
 
-def validate_inputs(symbols, engine, kwargs) -> Tuple[List[str], PoEngine, dict]:
+def validate_inputs(
+    symbols=None, engine=None, kwargs=None
+) -> Tuple[List[str], PoEngine, dict]:
     """Check valid inputs
 
     Parameters
@@ -95,7 +97,7 @@ def validate_inputs(symbols, engine, kwargs) -> Tuple[List[str], PoEngine, dict]
     engine : PoEngine, optional
         Portfolio optimization engine, by default None
     kwargs : dict
-        Keyword arguments
+        Keyword arguments, by default None
 
     Returns
     -------
@@ -139,10 +141,11 @@ def get_maxsharpe(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_max_sharpe(symbols=symbols, **parameters)
+    weights, returns = optimizer_model.get_max_sharpe(symbols=symbols, **parameters)
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -168,10 +171,11 @@ def get_minrisk(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_min_risk(symbols=symbols, **parameters)
+    weights, returns = optimizer_model.get_min_risk(symbols=symbols, **parameters)
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -197,10 +201,11 @@ def get_maxutil(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_max_util(symbols=symbols, **parameters)
+    weights, returns = optimizer_model.get_max_util(symbols=symbols, **parameters)
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -226,10 +231,11 @@ def get_maxret(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_max_ret(symbols=symbols, **parameters)
+    weights, returns = optimizer_model.get_max_ret(symbols=symbols, **parameters)
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -255,12 +261,13 @@ def get_maxdiv(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_max_diversification_portfolio(
+    weights, returns = optimizer_model.get_max_diversification_portfolio(
         symbols=symbols, **parameters
     )
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -286,12 +293,13 @@ def get_maxdecorr(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_max_decorrelation_portfolio(
+    weights, returns = optimizer_model.get_max_decorrelation_portfolio(
         symbols=symbols, **parameters
     )
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -317,12 +325,13 @@ def get_blacklitterman(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_black_litterman_portfolio(
+    weights, returns = optimizer_model.get_black_litterman_portfolio(
         symbols=symbols, **parameters
     )
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -365,12 +374,13 @@ def get_ef(
     if not symbols:
         return pd.DataFrame()
 
-    frontier, mu, cov, stock_returns, weights, X1, Y1, port = optimizer_model.get_ef(
+    frontier, mu, cov, returns, weights, X1, Y1, port = optimizer_model.get_ef(
         symbols=symbols, **parameters
     )
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return frontier, mu, cov, stock_returns, weights, X1, Y1, port
+    return frontier, mu, cov, returns, weights, X1, Y1, port
 
 
 @log_start_end(log=logger)
@@ -396,12 +406,13 @@ def get_riskparity(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_risk_parity_portfolio(
+    weights, returns = optimizer_model.get_risk_parity_portfolio(
         symbols=symbols, **parameters
     )
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -427,12 +438,13 @@ def get_relriskparity(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_rel_risk_parity_portfolio(
+    weights, returns = optimizer_model.get_rel_risk_parity_portfolio(
         symbols=symbols, **parameters
     )
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -458,10 +470,11 @@ def get_hrp(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_hrp(symbols=symbols, **parameters)
+    weights, returns = optimizer_model.get_hrp(symbols=symbols, **parameters)
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -487,10 +500,11 @@ def get_herc(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_herc(symbols=symbols, **parameters)
+    weights, returns = optimizer_model.get_herc(symbols=symbols, **parameters)
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -516,10 +530,11 @@ def get_nco(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_nco(symbols=symbols, **parameters)
+    weights, returns = optimizer_model.get_nco(symbols=symbols, **parameters)
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -545,10 +560,11 @@ def get_equal(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_equal_weights(symbols=symbols, **parameters)
+    weights, returns = optimizer_model.get_equal_weights(symbols=symbols, **parameters)
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -574,12 +590,13 @@ def get_mktcap(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_property_weights(
+    weights, returns = optimizer_model.get_property_weights(
         symbols=symbols, s_property="marketCap", **parameters
     )
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -605,12 +622,13 @@ def get_dividend(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_property_weights(
+    weights, returns = optimizer_model.get_property_weights(
         symbols=symbols, s_property="dividendYield", **parameters
     )
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -634,7 +652,7 @@ def get_property(
         DataFrame with equal weights
     """
 
-    if property is None:
+    if prop is None:
         console.print("No property provided")
         return pd.DataFrame()
 
@@ -642,12 +660,13 @@ def get_property(
     if not symbols:
         return pd.DataFrame()
 
-    weights, _ = optimizer_model.get_property_weights(
+    weights, returns = optimizer_model.get_property_weights(
         symbols=symbols, s_property=prop, **parameters
     )
     engine.set_weights(weights=weights)
+    engine.set_returns(returns=returns)
 
-    return engine.get_weights()
+    return engine.get_weights_df()
 
 
 @log_start_end(log=logger)
@@ -667,10 +686,15 @@ def show(
         Tuple of DataFrames with portfolio optimization results
     """
 
-    weights = engine.get_weights()
+    weights = engine.get_weights_df()
     asset_class = engine.get_category_df(category="ASSET_CLASS")
     country = engine.get_category_df(category="COUNTRY")
     sector = engine.get_category_df(category="SECTOR")
     industry = engine.get_category_df(category="INDUSTRY")
+
+    if all(
+        [weights.empty, asset_class.empty, country.empty, sector.empty, industry.empty]
+    ):
+        console.print("No portfolio optimization results to show")
 
     return weights, asset_class, country, sector, industry

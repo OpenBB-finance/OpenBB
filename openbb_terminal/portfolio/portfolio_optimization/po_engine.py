@@ -7,6 +7,7 @@ from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_helper,
 )
 from openbb_terminal.portfolio.portfolio_optimization.parameters import params_view
+from openbb_terminal.rich_config import console
 
 
 class PoEngine:
@@ -15,7 +16,7 @@ class PoEngine:
     def __init__(
         self,
         symbols: List[str] = None,
-        categories: Dict[str, float] = None,
+        categories: Dict[str, Dict[str, str]] = None,
         symbols_file_path: str = None,
         parameters_file_path: str = None,
     ):
@@ -33,8 +34,9 @@ class PoEngine:
             Parameters file path, by default None
         """
 
-        self._categories: Dict[str, float] = categories or {}
+        self._categories: Dict[str, Dict[str, str]] = categories or {}
         self._weights: Dict[str, float] = {}
+        self._returns: pd.DataFrame = None
         self._params: Dict[str, float] = {}
         self._current_model: str
 
@@ -55,8 +57,51 @@ class PoEngine:
     def get_symbols(self):
         return self._symbols
 
-    def get_categories(self):
+    def get_category(self, category: str = "ASSET_CLASS") -> Dict[str, str]:
+        """Get the category
+
+        Parameters
+        ----------
+        category : str, optional
+            Category, by default "ASSET_CLASS"
+
+        Returns
+        -------
+        Dict[str, str]
+            Category
+        """
+        d = self.get_categories()
+        if category in d:
+            return d[category]
+        return {}
+
+    def get_categories(self) -> Dict[str, Dict[str, str]]:
+        """Get the categories
+
+        Returns
+        -------
+        Dict[str, Dict[str, str]]
+            Categories
+        """
+        if not self._categories:
+            console.print("No categories found. Use 'load' to load a file.")
+            return {}
         return self._categories
+
+    def get_category_df(self, category: str = "ASSET_CLASS") -> pd.DataFrame:
+        """Get the category df
+
+        Returns
+        -------
+        pd.DataFrame
+            Category DataFrame
+        """
+        if not self._categories:
+            console.print("No categories found. Use 'load' to load a file.")
+            return pd.DataFrame()
+        return optimizer_model.get_categories(
+            weights=self._weights, categories=self._categories, column=category
+        )
 
     def set_weights(self, weights: Dict[str, float]):
         """Set the weights
@@ -68,7 +113,20 @@ class PoEngine:
         """
         self._weights = weights
 
-    def get_weights(self) -> pd.DataFrame:
+    def get_weights(self) -> Dict[str, float]:
+        """Get the weights
+
+        Returns
+        -------
+        Dict[str, float]
+            Weights
+        """
+        if not self._weights:
+            console.print("No weights found. Please perform some optimization.")
+            return {}
+        return self._weights
+
+    def get_weights_df(self) -> pd.DataFrame:
         """Get the weights
 
         Returns
@@ -76,6 +134,9 @@ class PoEngine:
         pd.DataFrame
             Weights
         """
+        if not self._weights:
+            console.print("No weights found. Please perform some optimization.")
+            return pd.DataFrame()
         return optimizer_helper.dict_to_df(self._weights)
 
     def set_params(self, params: Dict[str, float]):
@@ -128,14 +189,22 @@ class PoEngine:
         """
         return self._current_model
 
-    def get_category_df(self, category: str = "ASSET_CLASS") -> pd.DataFrame:
-        """Get the category df
+    def set_returns(self, returns: pd.DataFrame):
+        """Set the stock returns
+
+        Parameters
+        ----------
+        returns : pd.DataFrame
+            Stock returns
+        """
+        self._returns = returns
+
+    def get_returns(self) -> pd.DataFrame:
+        """Get the stock returns
 
         Returns
         -------
         pd.DataFrame
-            Category DataFrame
+            Stock returns
         """
-        return optimizer_model.get_categories(
-            weights=self._weights, categories=self._categories, column=category
-        )
+        return self._returns
