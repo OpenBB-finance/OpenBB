@@ -74,7 +74,6 @@ ASSETS = {
 }
 
 
-@log_start_end(log=logger)
 async def get_price(symbol: str) -> Tuple[float, float, float]:
     """Returns price and confidence interval from pyth live feed. [Source: Pyth]
 
