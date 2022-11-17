@@ -216,10 +216,10 @@ import TabItem from '@theme/TabItem';\n\n"""
 def generate_markdown_section(meta):
     # head meta https://docusaurus.io/docs/markdown-features/head-metadata
     # use real description but need to parse it
-    markdown = f"## {meta['function_name']}\n\n"
-    markdown += f"```python title='{meta['path']}'\n{meta['func_def']}\n```\n"
-    markdown += f"[Source Code]({meta['source_code_url']})\n\n"
-    markdown += f"Description: {meta['description']}\n\n"
+    markdown = (
+        f"{meta['description']}\n\nSource Code: [[link]({meta['source_code_url']})]\n\n"
+    )
+    markdown += f"```python\n{meta['func_def']}\n```\n"
 
     markdown += "## Parameters\n\n"
     if meta["params"]:
@@ -245,8 +245,8 @@ def generate_markdown_section(meta):
     else:
         markdown += "This function does not return anything\n\n"
 
-    markdown += "## Examples\n\n"
     for example in meta["examples"]:
+        markdown += "## Examples\n\n"
         markdown += f"{example['description']}\n"
         if isinstance(example["snippet"], str):
             snippet = example["snippet"].replace(">>> ", "")
