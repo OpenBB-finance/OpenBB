@@ -344,9 +344,9 @@ def display_most_traded_pairs(
 @log_start_end(log=logger)
 @check_api_key(["API_BITQUERY_KEY"])
 def display_spread_for_crypto_pair(
-    symbol="ETH",
-    to_symbol="USDC",
-    days: int = 10,
+    symbol="WETH",
+    to_symbol="USDT",
+    limit: int = 10,
     sortby: str = "date",
     ascend: bool = True,
     export: str = "",
@@ -356,12 +356,12 @@ def display_spread_for_crypto_pair(
 
     Parameters
     ----------
-    days:  int
-        Last n days to query data
     symbol: str
         ERC20 token symbol
     to_symbol: str
         Quoted currency.
+    limit:  int
+        Last n days to query data
     sortby: str
         Key by which to sort data
     ascend: bool
@@ -376,7 +376,7 @@ def display_spread_for_crypto_pair(
     """
 
     df = bitquery_model.get_spread_for_crypto_pair(
-        symbol=symbol, to_symbol=to_symbol, limit=days, sortby=sortby, ascend=ascend
+        symbol=symbol, to_symbol=to_symbol, limit=limit, sortby=sortby, ascend=ascend
     )
     if not df.empty:
 
