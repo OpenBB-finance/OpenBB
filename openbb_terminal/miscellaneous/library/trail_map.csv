@@ -451,7 +451,7 @@ stocks.options.unu,openbb_terminal.stocks.options.fdscanner_model.unusual_option
 stocks.options.screen.check_presets,openbb_terminal.stocks.options.screen.syncretism_model.check_presets,
 stocks.options.grhist,openbb_terminal.stocks.options.screen.syncretism_model.get_historical_greeks,openbb_terminal.stocks.options.screen.syncretism_view.view_historical_greeks
 stocks.options.screen.screener_output,openbb_terminal.stocks.options.screen.syncretism_model.get_screener_output,openbb_terminal.stocks.options.screen.syncretism_view.view_screener_output
-stocks.options.hist_tr,openbb_terminal.stocks.options.tradier_model.get_historical_options,openbb_terminal.stocks.options.tradier_view.display_historical
+stocks.options.hist,openbb_terminal.stocks.options.options_sdk_helper.hist,
 stocks.options.chains,openbb_terminal.stocks.options.options_sdk_helper.get_full_option_chain
 stocks.options.last_price,openbb_terminal.stocks.options.tradier_model.last_price,
 stocks.options.expirations,openbb_terminal.stocks.options.options_sdk_helper.get_option_expirations
