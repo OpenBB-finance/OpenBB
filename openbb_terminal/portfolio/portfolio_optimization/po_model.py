@@ -324,10 +324,17 @@ def get_maxsharpe(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.maxsharpe(symbols=["AAPL", "MSFT", "AMZN"])
+    (      value
+     AAPL    1.0
+     MSFT    0.0
+     AMZN    0.0,
+     {'Return': 0.3448948339574538,
+      'Volatility': 0.36513261935342495,
+      'Sharpe ratio': 0.9445741510802071})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.maxsharpe(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.maxsharpe(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -454,10 +461,17 @@ def get_minrisk(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.minrisk(symbols=["AAPL", "MSFT", "AMZN"])
+        (        value
+         AAPL  0.25044
+         MSFT  0.49509
+         AMZN  0.25447,
+         {'Return': 0.2248615963428331,
+          'Volatility': 0.32736590080425004,
+          'Sharpe ratio': 0.6868815468880802})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.minrisk(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.minrisk(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -584,10 +598,17 @@ def get_maxutil(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.maxutil(symbols=["AAPL", "MSFT", "AMZN"])
+        (      value
+         AAPL    1.0
+         MSFT    0.0
+         AMZN    0.0,
+         {'Return': 0.3448948339574538,
+          'Volatility': 0.36513261935342495,
+          'Sharpe ratio': 0.9445741510802071})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.maxutil(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.maxutil(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -714,10 +735,17 @@ def get_maxret(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.maxret(symbols=["AAPL", "MSFT", "AMZN"])
+    (      value
+     AAPL    1.0
+     MSFT    0.0
+     AMZN    0.0,
+     {'Return': 0.3448948339574538,
+      'Volatility': 0.36513261935342495,
+      'Sharpe ratio': 0.9445741510802071})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.maxret(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.maxret(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -821,10 +849,17 @@ def get_maxdiv(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.maxdiv(symbols=["AAPL", "MSFT", "AMZN"])
+    (        value
+     AAPL  0.33696
+     MSFT  0.26766
+     AMZN  0.39538,
+     {'Return': 0.21717206203731806,
+      'Volatility': 0.3310292858117002,
+      'Sharpe ratio': 0.6560509034866852})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.maxdiv(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.maxdiv(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -906,10 +941,17 @@ def get_maxdecorr(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.maxdecorr(symbols=["AAPL", "MSFT", "AMZN"])
+    (        value
+     AAPL  0.33444
+     MSFT  0.24963
+     AMZN  0.41593,
+     {'Return': 0.2142767096699773,
+      'Volatility': 0.33184082287769623,
+      'Sharpe ratio': 0.6457213666835423})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.maxdecorr(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.maxdecorr(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1000,10 +1042,17 @@ def get_blacklitterman(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.blacklitterman(symbols=["AAPL", "MSFT", "AMZN"])
+    (        value
+     AAPL  0.48920
+     MSFT  0.28391
+     AMZN  0.22689,
+     {'Return': 0.2563301105112327,
+      'Volatility': 0.33132073874339424,
+      'Sharpe ratio': 0.7736615325784322})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.blacklitterman(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.blacklitterman(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1109,11 +1158,11 @@ def get_ef(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.get_ef(symbols=["AAPL", "MSFT", "AMZN"])
+    >>> frontier = openbb.portfolio.po.get_ef(symbols=["AAPL", "MSFT", "AMZN"])
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.get_ef(portfolio_engine=p)
+    >>> frontier = openbb.portfolio.po.get_ef(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1225,10 +1274,17 @@ def get_riskparity(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.riskparity(symbols=["AAPL", "MSFT", "AMZN"])
+    (        value
+     AAPL  0.33201
+     MSFT  0.34953
+     AMZN  0.31846,
+     {'Return': 0.19946644069106015,
+      'Volatility': 0.29074583524705444,
+      'Sharpe ratio': 0.6860508956957826})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.riskparity(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.riskparity(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1353,10 +1409,17 @@ def get_relriskparity(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.relriskparity(symbols=["AAPL", "MSFT", "AMZN"])
+    (        value
+     AAPL  0.33204
+     MSFT  0.34949
+     AMZN  0.31847,
+     {'Return': 0.19946844097475216,
+      'Volatility': 0.290746544981364,
+      'Sharpe ratio': 0.6860561008129521})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.relriskparity(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.relriskparity(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1540,10 +1603,17 @@ def get_hrp(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.hrp(symbols=["AAPL", "MSFT", "AMZN"])
+    (        value
+     AAPL  0.26729
+     MSFT  0.30277
+     AMZN  0.42994,
+     {'Return': 0.20463517260107467,
+      'Volatility': 0.3313935169747041,
+      'Sharpe ratio': 0.6174990219156727})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.hrp(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.hrp(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1725,10 +1795,17 @@ def get_herc(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.herc(symbols=["AAPL", "MSFT", "AMZN"])
+    (        value
+     AAPL  0.17521
+     MSFT  0.19846
+     AMZN  0.62633,
+     {'Return': 0.16899696275924703,
+      'Volatility': 0.34337400112782096,
+      'Sharpe ratio': 0.49216586638525933})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.herc(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.herc(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1910,10 +1987,17 @@ def get_nco(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.nco(symbols=["AAPL", "MSFT", "AMZN"])
+    (        value
+     AAPL  0.25044
+     MSFT  0.49509
+     AMZN  0.25447,
+     {'Return': 0.2248615963428331,
+      'Volatility': 0.32736590080425004,
+      'Sharpe ratio': 0.6868815468880802})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.nco(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.nco(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1983,26 +2067,7 @@ def get_equal(
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.equal(portfolio_engine=p)
-    (         value
-     AAPL   0.06667
-     AMZN   0.06667
-     APTV   0.06667
-     ASML   0.06667
-     BABA   0.06667
-     GOOGL  0.06667
-     HYG    0.06667
-     IYR    0.06667
-     NKE    0.06667
-     PEX    0.06667
-     PSP    0.06667
-     REZ    0.06667
-     TIP    0.06667
-     TLT    0.06667
-     TSM    0.06667,
-     {'Return': 0.10222818195764598,
-      'Volatility': 0.23792462904669162,
-      'Sharpe ratio': 0.4296662450089779})
+    >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -2064,10 +2129,17 @@ def get_mktcap(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.mktcap(symbols=["AAPL", "MSFT", "AMZN"])
+    (         value
+     AAPL  0.465338
+     MSFT  0.345488
+     AMZN  0.189175,
+     {'Return': 0.25830567048487474,
+      'Volatility': 0.33058479906988086,
+      'Sharpe ratio': 0.7813597939519071})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.mktcap(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.mktcap(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -2129,10 +2201,17 @@ def get_dividend(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.dividend(symbols=["AAPL", "MSFT", "AMZN"])
+    (         value
+     AAPL  0.350575
+     MSFT  0.649425
+     AMZN  0.000000,
+     {'Return': 0.26879215033541076,
+      'Volatility': 0.3348681656035649,
+      'Sharpe ratio': 0.8026805111526232})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.dividend(portfolio_engine=p)
+    >>> weights, performance = openbb.portfolio.po.dividend(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -2200,10 +2279,17 @@ def get_property(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.property(symbols=["AAPL", "MSFT", "AMZN"], prop="forwardPE")
+    (         value
+     AAPL  0.223192
+     MSFT  0.215707
+     AMZN  0.561101,
+     {'Return': 0.18287266638517774,
+      'Volatility': 0.3386418179319469,
+      'Sharpe ratio': 0.5400179679578959})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> openbb.portfolio.po.property(portfolio_engine=p, prop="forwardPE")
+    >>> weights, performance = openbb.portfolio.po.property(portfolio_engine=p, prop="forwardPE")
     """
 
     if prop is None:

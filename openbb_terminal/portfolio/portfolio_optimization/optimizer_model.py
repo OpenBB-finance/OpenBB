@@ -2107,7 +2107,7 @@ def get_hcp_portfolio(
 
     codependence = kwargs.get("codependence", "pearson")
     linkage = kwargs.get("linkage", "single")
-    k = kwargs.get("k", 0)
+    k = kwargs.get("k", None)
     max_k = kwargs.get("max_k", 10)
     bins_info = kwargs.get("bins_info", "KN")
     alpha_tail = kwargs.get("alpha_tail", 0.05)
