@@ -953,6 +953,7 @@ def run_scripts(
     verbose: bool = False,
     routines_args: List[str] = None,
     special_arguments: Optional[Dict[str, str]] = None,
+    output: bool = True,
 ):
     """Run given .openbb scripts.
 
@@ -969,7 +970,10 @@ def run_scripts(
         E.g. GME,AMC,BTC-USD
     special_arguments: Optional[Dict[str, str]]
         Replace `${key=default}` with `value` for every key in the dictionary
+    output: bool
+        Whether to log tests to txt files
     """
+    print(f"Output is: {output}")
     if not path.exists():
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
         if not test_mode:
@@ -1028,9 +1032,12 @@ def run_scripts(
             first_cmd = file_cmds[0].split("/")[1]
             with open(
                 whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
-            ) as output:
+            ) as output_file:
                 with suppress_stdout():
-                    with contextlib.redirect_stdout(output):
+                    if output:
+                        with contextlib.redirect_stdout(output_file):
+                            terminal(file_cmds, test_mode=True)
+                    else:
                         terminal(file_cmds, test_mode=True)
 
 

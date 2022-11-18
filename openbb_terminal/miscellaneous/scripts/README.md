@@ -105,7 +105,7 @@ the tests.
 - Run some integration tests:
 
     ```zsh
-    python terminal.py -p stocks cryptocurrency -t
+    python terminal.py -f stocks cryptocurrency -t
     ```
 
     *This specific example runs all of the stocks integration tests. One can use this same format for different tests.*
@@ -113,7 +113,7 @@ the tests.
 - Run one integration tests:
 
     ```zsh
-    python terminal.py -p alternative/test_alt_covid.openbb -t
+    python terminal.py -f alternative/test_alt_covid.openbb -t
     ```
 
     *Note that the base path is `OpenBBTerminal/openbb_terminal/miscellaneous/scripts`.*

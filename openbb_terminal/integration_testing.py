@@ -63,48 +63,51 @@ def build_test_path_list(path_list: List[str]) -> List[Path]:
     return [Path(x) for x in test_files_unique]
 
 
-def format_failures(fails: dict) -> None:
+def format_failures(fails: dict, output: bool) -> None:
     """Generates the message and csv from the fails dictionary
 
     Parameters
     -----------
     fails: dict
         The dictionary with failure information
+    output: bool
+        Whether or not to save output into a CSV file
     """
     if fails:
         console.print("\n[red]Failures:[/red]\n")
         for file, exception in fails.items():
             logger.error("%s: %s failed", file, exception["exception"])
         # Write results to CSV
-        timestamp = datetime.now().timestamp()
-        stamp_str = str(timestamp).replace(".", "")
-        whole_path = Path(REPOSITORY_DIRECTORY / "integration_test_summary")
-        whole_path.mkdir(parents=True, exist_ok=True)
-        output_path = f"{stamp_str}_tests.csv"
-        with open(whole_path / output_path, "w") as file:  # type: ignore
-            header = ["Script File", "Type", "Error", "Stacktrace"]
-            writer = csv.DictWriter(file, fieldnames=header)  # type: ignore
-            writer.writeheader()
-            for file, exception in fails.items():
-                clean_type = (
-                    str(type(exception["exception"]))
-                    .replace("<class '", "")
-                    .replace("'>", "")
-                )
-                writer.writerow(
-                    {
-                        "Script File": file,
-                        "Type": clean_type,
-                        "Error": exception["exception"],
-                        "Stacktrace": exception["traceback"],
-                    }
-                )
+        if output:
+            timestamp = datetime.now().timestamp()
+            stamp_str = str(timestamp).replace(".", "")
+            whole_path = Path(REPOSITORY_DIRECTORY / "integration_test_summary")
+            whole_path.mkdir(parents=True, exist_ok=True)
+            output_path = f"{stamp_str}_tests.csv"
+            with open(whole_path / output_path, "w") as file:  # type: ignore
+                header = ["Script File", "Type", "Error", "Stacktrace"]
+                writer = csv.DictWriter(file, fieldnames=header)  # type: ignore
+                writer.writeheader()
+                for file, exception in fails.items():
+                    clean_type = (
+                        str(type(exception["exception"]))
+                        .replace("<class '", "")
+                        .replace("'>", "")
+                    )
+                    writer.writerow(
+                        {
+                            "Script File": file,
+                            "Type": clean_type,
+                            "Error": exception["exception"],
+                            "Stacktrace": exception["traceback"],
+                        }
+                    )
 
-        console.print(f"CSV of errors saved to {whole_path / output_path}")
+            console.print(f"CSV of errors saved to {whole_path / output_path}")
 
 
 def run_test_list(
-    path_list: List[str], verbose: bool, special_arguments: Dict[str, str]
+    path_list: List[str], verbose: bool, special_arguments: Dict[str, str], output: bool
 ):
     """Run commands in test mode."""
     os.environ["DEBUG_MODE"] = "true"
@@ -126,6 +129,7 @@ def run_test_list(
                 test_mode=True,
                 verbose=verbose,
                 special_arguments=special_arguments,
+                output=output,
             )
             SUCCESSES += 1
         except Exception as e:
@@ -136,7 +140,7 @@ def run_test_list(
             }
             FAILURES += 1
         i += 1
-    format_failures(fails)
+    format_failures(fails, output)
     console.print(
         f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
     )
@@ -150,8 +154,8 @@ def parse_args_and_run():
         description="Integration tests for the OpenBB Terminal.",
     )
     parser.add_argument(
-        "-p",
-        "--path",
+        "-f",
+        "--file",
         help=(
             "The path or .openbb file to run. Starts at "
             "OpenBBTermina/openbb_terminal/miscellaneous/scripts"
@@ -169,6 +173,13 @@ def parse_args_and_run():
             "Run the terminal in testing mode. Also run this option and '-h'"
             " to see testing argument options."
         ),
+    )
+    parser.add_argument(
+        "--no-output",
+        action="store_true",
+        default=False,
+        dest="no_output",
+        help="Blocks creation of CSV files and logs",
     )
     parser.add_argument(
         "-v",
@@ -190,11 +201,11 @@ def parse_args_and_run():
 
     ns_parser, _ = parser.parse_known_args()
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
-    print(ns_parser.path)
     run_test_list(
         path_list=ns_parser.path,
         verbose=ns_parser.verbose,
         special_arguments=special_args_dict,
+        output=not ns_parser.no_output,
     )
 
 

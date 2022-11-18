@@ -80,6 +80,7 @@ class StocksController(StockBaseController):
     sector = financedatabase.show_options("equities", "sectors")
     industry = financedatabase.show_options("equities", "industries")
     TOB_EXCHANGES = ["BZX", "EDGX", "BYX", "EDGA"]
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Construct stocks controller."""
@@ -87,39 +88,8 @@ class StocksController(StockBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
 
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = self.choices_default
 
-            choices["load"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
-                "-i": "--interval",
-                "--prepost": {},
-                "-p": "--prepost",
-                "--file": None,
-                "-f": "--file",
-                "--monthly": {},
-                "-m": "--monthly",
-                "--weekly": {},
-                "-w": "--weekly",
-                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
-                "-r": "--iexrange",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
-                },
-            }
-            choices["quote"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-            }
-            choices["tob"] = {
-                "--exchange": {c: {} for c in self.TOB_EXCHANGES},
-                "-e": "--exchange",
-            }
             choices["search"] = {
                 "--query": None,
                 "-q": "--query",
