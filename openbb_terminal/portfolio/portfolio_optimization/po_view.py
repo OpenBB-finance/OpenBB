@@ -285,7 +285,9 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
     ['ASSET_CLASS',
      'SECTOR',
      'INDUSTRY',
-     'COUNTRY']
+     'COUNTRY',
+     'CURRENT_INVESTED_AMOUNT',
+     'CURRENCY']
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type="pie")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="INDUSTRY", chart_type="dd")

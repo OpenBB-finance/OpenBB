@@ -2416,7 +2416,9 @@ def show(
     ['ASSET_CLASS',
      'SECTOR',
      'INDUSTRY',
-     'COUNTRY']
+     'COUNTRY',
+     'CURRENT_INVESTED_AMOUNT',
+     'CURRENCY']
     >>> weights_df, category_df = openbb.portfolio.po.show(portfolio_engine=p, category="ASSET_CLASS")
     """
 
