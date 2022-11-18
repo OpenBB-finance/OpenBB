@@ -74,7 +74,7 @@ class ForexController(BaseController):
         self.data = pd.DataFrame()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = self.choices
+            choices: dict = choices_default
 
             choices["load"].update({c: {} for c in FX_TICKERS})
 

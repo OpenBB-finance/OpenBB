@@ -111,7 +111,7 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_GENERATION = False
 
     @property
-    def choices(self):
+    def choices_default(self):
         if self.CHOICES_GENERATION:
             choices = build_controller_choice_map(controller=self)
         else:

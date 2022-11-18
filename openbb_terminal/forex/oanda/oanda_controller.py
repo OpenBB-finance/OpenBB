@@ -57,7 +57,7 @@ class OandaController(BaseController):
         self.instrument: Union[str, None] = None
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = self.choices
+            choices: dict = choices_default
             # TODO: We currently use the Alpha Vantage currency list for autocompletion
             # This leads to messages like `USD_EUR is not a valid instrument.`
             # In Oanda they have their own list of available instruments. It would be
