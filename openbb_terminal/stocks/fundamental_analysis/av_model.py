@@ -729,7 +729,6 @@ def get_dupont(symbol: str) -> pd.DataFrame:
     try:
         fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         # pylint: disable=unbalanced-tuple-unpacking
-        df_cf, _ = fd.get_cash_flow_annual(symbol=symbol)
         df_bs, _ = fd.get_balance_sheet_annual(symbol=symbol)
         df_is, _ = fd.get_income_statement_annual(symbol=symbol)
 
