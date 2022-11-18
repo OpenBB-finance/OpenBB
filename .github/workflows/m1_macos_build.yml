@@ -65,7 +65,6 @@ jobs:
       # This is basically the same as build4mac.sh
       - name: Build Bundle
         run: |
-          conda remove --force sigtool -y
           pyinstaller build/pyinstaller/terminal.spec --clean
           osascript build/pyinstaller/setup_icons.applescript
           mkdir DMG
