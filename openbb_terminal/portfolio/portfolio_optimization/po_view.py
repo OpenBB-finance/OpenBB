@@ -379,11 +379,10 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
             display_rc_chart(**parameters)
         elif chart_type == "heat":
             display_heat(**parameters)
-        return
-
-        console.print(
-            "Invalid chart type, please choose from the following: pie, hist, dd, rc, heat"
-        )
+        else:
+            console.print(
+                "Invalid chart type, please choose from the following: pie, hist, dd, rc, heat"
+            )
 
 
 @log_start_end(log=logger)
