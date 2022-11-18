@@ -7,7 +7,7 @@ __docformat__ = "numpy"
 import logging
 import math
 import warnings
-from typing import List, Optional
+from typing import List
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -25,47 +25,16 @@ from openbb_terminal.portfolio.portfolio_optimization.po_model import (
     validate_inputs,
     get_ef,
 )
+from openbb_terminal.portfolio.portfolio_optimization.statics import (
+    RISK_CHOICES,
+    TIME_FACTOR,
+)
 from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")
 
 logger = logging.getLogger(__name__)
-
-risk_choices = {
-    "mv": "MV",
-    "mad": "MAD",
-    "gmd": "GMD",
-    "msv": "MSV",
-    "var": "VaR",
-    "cvar": "CVaR",
-    "tg": "TG",
-    "evar": "EVaR",
-    "rg": "RG",
-    "cvrg": "CVRG",
-    "tgrg": "TGRG",
-    "wr": "WR",
-    "flpm": "FLPM",
-    "slpm": "SLPM",
-    "mdd": "MDD",
-    "add": "ADD",
-    "dar": "DaR",
-    "cdar": "CDaR",
-    "edar": "EDaR",
-    "uci": "UCI",
-    "mdd_rel": "MDD_Rel",
-    "add_rel": "ADD_Rel",
-    "dar_rel": "DaR_Rel",
-    "cdar_rel": "CDaR_Rel",
-    "edar_rel": "EDaR_Rel",
-    "uci_rel": "UCI_Rel",
-}
-
-time_factor = {
-    "D": 252.0,
-    "W": 52.0,
-    "M": 12.0,
-}
 
 
 @log_start_end(log=logger)
@@ -102,7 +71,7 @@ def display_ef(symbols: List[str] = None, portfolio_engine: PoEngine = None, **k
         **parameters,
     )
 
-    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+    risk_free_rate = risk_free_rate / TIME_FACTOR[freq.upper()]
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -114,7 +83,7 @@ def display_ef(symbols: List[str] = None, portfolio_engine: PoEngine = None, **k
         mu=mu,
         cov=cov,
         returns=stock_returns,
-        rm=risk_choices[risk_measure.lower()],
+        rm=RISK_CHOICES[risk_measure.lower()],
         rf=risk_free_rate,
         alpha=alpha,
         cmap="RdYlBu",
@@ -123,35 +92,35 @@ def display_ef(symbols: List[str] = None, portfolio_engine: PoEngine = None, **k
         marker="*",
         s=16,
         c="r",
-        t_factor=time_factor[freq.upper()],
+        t_factor=TIME_FACTOR[freq.upper()],
         ax=ax,
     )
 
     # Add risk free line
     if tangency:
-        ret_sharpe = (mu @ weights).to_numpy().item() * time_factor[freq.upper()]
+        ret_sharpe = (mu @ weights).to_numpy().item() * TIME_FACTOR[freq.upper()]
         risk_sharpe = rp.Sharpe_Risk(
             weights,
             cov=cov,
             returns=stock_returns,
-            rm=risk_choices[risk_measure.lower()],
+            rm=RISK_CHOICES[risk_measure.lower()],
             rf=risk_free_rate,
             alpha=alpha,
             # a_sim=a_sim,
             # beta=beta,
             # b_sim=b_sim,
         )
-        if risk_choices[risk_measure.lower()] not in [
+        if RISK_CHOICES[risk_measure.lower()] not in [
             "ADD",
             "MDD",
             "CDaR",
             "EDaR",
             "UCI",
         ]:
-            risk_sharpe = risk_sharpe * time_factor[freq.upper()] ** 0.5
+            risk_sharpe = risk_sharpe * TIME_FACTOR[freq.upper()] ** 0.5
 
         y = ret_sharpe * 1.5
-        b = risk_free_rate * time_factor[freq.upper()]
+        b = risk_free_rate * TIME_FACTOR[freq.upper()]
         m = (ret_sharpe - b) / risk_sharpe
         x2 = (y - b) / m
         x = [0, x2]
@@ -171,26 +140,26 @@ def display_ef(symbols: List[str] = None, portfolio_engine: PoEngine = None, **k
                 weight_df,
                 cov=port.cov[ticker][ticker],
                 returns=stock_returns.loc[:, [ticker]],
-                rm=risk_choices[risk_measure.lower()],
+                rm=RISK_CHOICES[risk_measure.lower()],
                 rf=risk_free_rate,
                 alpha=alpha,
             )
 
-            if risk_choices[risk_measure.lower()] not in [
+            if RISK_CHOICES[risk_measure.lower()] not in [
                 "MDD",
                 "ADD",
                 "CDaR",
                 "EDaR",
                 "UCI",
             ]:
-                risk = risk * time_factor[freq.upper()] ** 0.5
+                risk = risk * TIME_FACTOR[freq.upper()] ** 0.5
 
             ticker_plot = ticker_plot.append(
                 {"ticker": ticker, "var": risk}, ignore_index=True
             )
         ticker_plot = ticker_plot.set_index("ticker")
         ticker_plot = ticker_plot.merge(
-            port.mu.T * time_factor[freq.upper()], right_index=True, left_index=True
+            port.mu.T * TIME_FACTOR[freq.upper()], right_index=True, left_index=True
         )
         ticker_plot = ticker_plot.rename(columns={0: "ret"})
         ax.scatter(ticker_plot["var"], ticker_plot["ret"])
@@ -421,14 +390,14 @@ def display_rc_chart(**kwargs):
         w=pd.Series(weights).to_frame(),
         cov=data.cov(),
         returns=data,
-        rm=risk_choices[risk_measure.lower()],
+        rm=RISK_CHOICES[risk_measure.lower()],
         rf=risk_free_rate,
         alpha=alpha,
         a_sim=a_sim,
         beta=beta,
         b_sim=b_sim,
         color=colors[1],
-        t_factor=time_factor[freq.upper()],
+        t_factor=TIME_FACTOR[freq.upper()],
         ax=ax,
     )
 

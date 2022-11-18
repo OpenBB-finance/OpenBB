@@ -279,8 +279,9 @@ def get_property_weights(
     maxnan = kwargs.get("maxnan", 0.05)
     threshold = kwargs.get("threshold", 0.0)
     method = kwargs.get("method", "time")
-    s_property = kwargs.get("s_property", "marketCap")
     value = kwargs.get("value", 1.0)
+
+    s_property = kwargs.get("s_property", "marketCap")
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -434,6 +435,9 @@ def get_mean_risk_portfolio(
     maxnan = kwargs.get("maxnan", 0.05)
     threshold = kwargs.get("threshold", 0.0)
     method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1.0)
+    value_short = kwargs.get("value_short", 0.0)
+
     risk_measure = kwargs.get("risk_measure", "MV")
     objective = kwargs.get("objective", "Sharpe")
     risk_free_rate = kwargs.get("risk_free_rate", 0.0)
@@ -444,8 +448,6 @@ def get_mean_risk_portfolio(
     mean = kwargs.get("mean", "hist")
     covariance = kwargs.get("covariance", "hist")
     d_ewma = kwargs.get("d_ewma", 0.94)
-    value = kwargs.get("value", 1.0)
-    value_short = kwargs.get("value_short", 0.0)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1036,10 +1038,11 @@ def get_max_diversification_portfolio(
     maxnan = kwargs.get("maxnan", 0.05)
     threshold = kwargs.get("threshold", 0.0)
     method = kwargs.get("method", "time")
-    covariance = kwargs.get("covariance", "hist")
-    d_ewma = kwargs.get("d_ewma", 0.94)
     value = kwargs.get("value", 1.0)
     value_short = kwargs.get("value_short", 0.0)
+
+    covariance = kwargs.get("covariance", "hist")
+    d_ewma = kwargs.get("d_ewma", 0.94)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1154,10 +1157,11 @@ def get_max_decorrelation_portfolio(
     maxnan = kwargs.get("maxnan", 0.05)
     threshold = kwargs.get("threshold", 0.0)
     method = kwargs.get("method", "time")
-    covariance = kwargs.get("covariance", "hist")
-    d_ewma = kwargs.get("d_ewma", 0.94)
     value = kwargs.get("value", 1.0)
     value_short = kwargs.get("value_short", 0.0)
+
+    covariance = kwargs.get("covariance", "hist")
+    d_ewma = kwargs.get("d_ewma", 0.94)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1278,9 +1282,6 @@ def get_black_litterman_portfolio(
         DataFrame of stock returns.
     """
 
-    benchmark = kwargs.get("benchmark", None)
-    p_views = kwargs.get("p_views", None)
-    q_views = kwargs.get("q_views", None)
     interval = kwargs.get("interval", "3y")
     start_date = kwargs.get("start_date", "")
     end_date = kwargs.get("end_date", "")
@@ -1289,14 +1290,18 @@ def get_black_litterman_portfolio(
     maxnan = kwargs.get("maxnan", 0.05)
     threshold = kwargs.get("threshold", 0.0)
     method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1.0)
+    value_short = kwargs.get("value_short", 0.0)
+
+    benchmark = kwargs.get("benchmark", None)
+    p_views = kwargs.get("p_views", None)
+    q_views = kwargs.get("q_views", None)
     objective = kwargs.get("objective", "Sharpe")
     risk_free_rate = kwargs.get("risk_free_rate", 0)
     risk_aversion = kwargs.get("risk_aversion", 1)
     delta = kwargs.get("delta", None)
     equilibrium = kwargs.get("equilibrium", True)
     optimize = kwargs.get("optimize", True)
-    value = kwargs.get("value", 1.0)
-    value_short = kwargs.get("value_short", 0.0)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1479,11 +1484,12 @@ def get_ef(
     maxnan = kwargs.get("maxnan", 0.05)
     threshold = kwargs.get("threshold", 0.05)
     method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1.0)
+    value_short = kwargs.get("value_short", 0.0)
+
     risk_measure = kwargs.get("risk_measure", "MV")
     risk_free_rate = kwargs.get("risk_free_rate", 0.0)
     alpha = kwargs.get("alpha", 0.05)
-    value = kwargs.get("value", 1.0)
-    value_short = kwargs.get("value_short", 0.0)
     n_portfolios = kwargs.get("n_portfolios", 100)
     seed = kwargs.get("seed", 123)
 
@@ -1683,15 +1689,16 @@ def get_risk_parity_portfolio(
     maxnan = kwargs.get("maxnan", 0.05)
     threshold = kwargs.get("threshold", 0.05)
     method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1)
+
     risk_measure = kwargs.get("risk_measure", "MV")
-    risk_cont = kwargs.get("risk_cont", None)
     risk_free_rate = kwargs.get("risk_free_rate", 0)
     alpha = kwargs.get("alpha", 0.05)
     target_return = kwargs.get("target_return", -1.0)
     mean = kwargs.get("mean", "hist")
     covariance = kwargs.get("covariance", "hist")
     d_ewma = kwargs.get("d_ewma", 0.94)
-    value = kwargs.get("value", 1)
+    risk_cont = kwargs.get("risk_cont", None)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1836,14 +1843,15 @@ def get_rel_risk_parity_portfolio(
     maxnan = kwargs.get("maxnan", 0.05)
     threshold = kwargs.get("threshold", 0.05)
     method = kwargs.get("method", "time")
-    version = kwargs.get("version", "A")
-    risk_cont = kwargs.get("risk_cont", None)
-    penal_factor = kwargs.get("penal_factor", 1)
+    value = kwargs.get("value", 1)
+
     target_return = kwargs.get("target_return", -1)
     mean = kwargs.get("mean", "hist")
     covariance = kwargs.get("covariance", "hist")
     d_ewma = kwargs.get("d_ewma", 0.94)
-    value = kwargs.get("value", 1)
+    risk_cont = kwargs.get("risk_cont", None)
+    version = kwargs.get("version", "A")
+    penal_factor = kwargs.get("penal_factor", 1)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -2080,9 +2088,8 @@ def get_hcp_portfolio(
     maxnan = kwargs.get("maxnan", 0.05)
     threshold = kwargs.get("threshold", 0.0)
     method = kwargs.get("method", "time")
-    model = kwargs.get("model", "HRP")
-    codependence = kwargs.get("codependence", "pearson")
-    covariance = kwargs.get("covariance", "hist")
+    value = kwargs.get("value", 1.0)
+
     objective = kwargs.get("objective", "MinRisk")
     risk_measure = kwargs.get("risk_measure", "MV")
     risk_free_rate = kwargs.get("risk_free_rate", 0.0)
@@ -2091,14 +2098,18 @@ def get_hcp_portfolio(
     a_sim = kwargs.get("a_sim", 100)
     beta = kwargs.get("beta", None)
     b_sim = kwargs.get("b_sim", None)
+    covariance = kwargs.get("covariance", "hist")
+    d_ewma = kwargs.get("d_ewma", 0.94)
+
+    model = kwargs.get("model", "HRP")
+
+    codependence = kwargs.get("codependence", "pearson")
     linkage = kwargs.get("linkage", "single")
     k = kwargs.get("k", 0)
     max_k = kwargs.get("max_k", 10)
     bins_info = kwargs.get("bins_info", "KN")
     alpha_tail = kwargs.get("alpha_tail", 0.05)
     leaf_order = kwargs.get("leaf_order", True)
-    d_ewma = kwargs.get("d_ewma", 0.94)
-    value = kwargs.get("value", 1.0)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
