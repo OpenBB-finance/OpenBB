@@ -1,6 +1,26 @@
 portfolio
 po
 load 50_30_10_10_Portfolio.xlsx
+maxsharpe
+minrisk
+maxutil
+maxret
+maxdiv
+maxdecorr
+blacklitterman
+ef
+equal
+riskparity
+relriskparity
+hrp
+herc
+nco
 equal
 show NAME_0
+plot NAME_0 -pi
+plot NAME_0 -hi
+plot NAME_0 -dd
+plot NAME_0 -rc
+plot NAME_0 -he
+rpf NAME_0
 exit
