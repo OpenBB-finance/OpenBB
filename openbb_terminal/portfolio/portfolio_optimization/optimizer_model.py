@@ -185,10 +185,9 @@ def get_equal_weights(
     freq: str, optional
         Frequency of returns, by default "D". Options: "D" for daily, "W" for weekly, "M" for monthly
     maxnan: float
-        Max percentage of nan values accepted per asset to be included in
-        returns.
+        Maximum percentage of NaNs allowed in the data, by default 0.05
     threshold: float
-        Value used to replace outliers that are higher to threshold.
+        Value used to replace outliers that are higher than threshold.
     method: str
         Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     value : float, optional
@@ -196,7 +195,7 @@ def get_equal_weights(
 
     Returns
     -------
-    Tuple[Dict[str, float], pd.DataFrame]
+    Union[Tuple[Dict[str, float], pd.DataFrame], None]
         Dictionary of weights where keys are the tickers, dataframe of stock returns
     """
 

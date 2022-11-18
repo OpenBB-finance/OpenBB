@@ -616,21 +616,48 @@ def get_nco(
 
 @log_start_end(log=logger)
 def get_equal(
-    symbols: List[str] = None, portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
 ) -> pd.DataFrame:
-    """Optimize equally weighted
+    """Equally weighted portfolio, where weight = 1/# of symbols
 
     Parameters
     ----------
+    portfolio_engine : PoEngine, optional
+        Portfolio optimization engine, by default None
     symbols : List[str], optional
         List of symbols, by default None
-    portfolio_engine : PoEngine, optional
-        Portfolio optimization portfolio_engine, by default None
+    interval : str, optional
+        Interval to get data, by default "3y"
+    start_date : str, optional
+        If not using interval, start date string (YYYY-MM-DD), by default ""
+    end_date : str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last weekday, by default ""
+    log_returns : bool, optional
+        If True use log returns, else arithmetic returns, by default False
+    freq : str, optional
+        Frequency of returns, by default "D". Options: "D" for daily, "W" for weekly, "M" for monthly
+    maxnan: float
+        Maximum percentage of NaNs allowed in the data, by default 0.05
+    threshold: float
+        Value used to replace outliers that are higher than threshold.
+    method: str
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
+    value : float, optional
+        Amount to allocate.  Returns percentages if set to 1.
 
     Returns
     -------
     pd.DataFrame
         DataFrame with equal weights
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.portfolio.po.equal(symbols=["AAPL", "MSFT", "AMZN"])
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="50_30_10_10_Portfolio.xlsx")
+    >>> openbb.portfolio.po.equal(portfolio_engine=p)
     """
 
     symbols, portfolio_engine, parameters = validate_inputs(
