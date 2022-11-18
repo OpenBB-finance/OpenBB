@@ -175,7 +175,7 @@ def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
             raise AttributeError(f"Invalid argument_parser: {argument_parser}")
 
         if action.choices:
-            choice_map[long_name] = {c: {} for c in action.choices}
+            choice_map[long_name] = {str(c): {} for c in action.choices}
         else:
             choice_map[long_name] = {}
 

@@ -744,7 +744,7 @@ class TechnicalAnalysisController(StockBaseController):
             type=check_positive_float,
             default=2,
             help="std",
-            choices=[str(i) for i in np.arange(0.0, 10, 0.25)],
+            choices=np.arange(0.0, 10, 0.25).tolist(),
             metavar="N_STD",
         )
 

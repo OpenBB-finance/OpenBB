@@ -578,7 +578,7 @@ class QaController(CryptoBaseController):
             type=check_proportion_range,
             default=0.5,
             help="quantile",
-            choices=[str(i) for i in np.arange(0.0, 1.0, 0.01)],
+            choices=np.arange(0.0, 1.0, 0.01).tolist(),
             metavar="N_QUANTILE",
         )
         ns_parser = self.parse_known_args_and_warn(
