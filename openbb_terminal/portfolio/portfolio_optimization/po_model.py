@@ -70,9 +70,9 @@ def generate_portfolio(
     symbols : List[str], optional
         List of symbols, by default None
     symbols_file_path : str, optional
-        Symbols file path, by default None
+        Symbols file full path, by default None
     parameters_file_path : str, optional
-        Parameters file path, by default None
+        Parameters file full path, by default None
 
     Returns
     -------
@@ -96,25 +96,59 @@ def generate_portfolio(
 
 @log_start_end(log=logger)
 def load_parameters_file(
-    parameters_file_path: str,
     portfolio_engine: PoEngine,
-):
+    parameters_file_path: str,
+) -> Dict:
     """Load portfolio optimization engine from file
 
     Parameters
     ----------
-    parameters_file_path : str
-        Parameters file path, by default None
     portfolio_engine : PoEngine
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
+    parameters_file_path : str
+        Parameters file full path, by default None
 
     Returns
     -------
     Dict
-        Parameters
+        Loaded parameters
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p.get_params()
+    {}
+    >>> parameters = openbb.portfolio.po.file(portfolio_engine=p, parameters_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/optimization/defaults.ini")
+    Parameters:
+        interval    : 3y
+        log_returns : 0
+        freq        : d
+        maxnan      : 0.05
+        threshold   : 0.3
+        alpha       : 0.05
+    >>> p.get_params()
+    {'interval': '3y',
+     'log_returns': '0',
+     'freq': 'd',
+     'maxnan': '0.05',
+     'threshold': '0.3',
+     'alpha': '0.05'}
+    >>> p.set_params({"risk_free_rate": 0.05})
+    >>> p.get_params()
+    {'interval': '3y',
+    'log_returns': '0',
+    'freq': 'd',
+    'maxnan': '0.05',
+    'threshold': '0.3',
+    'alpha': '0.05',
+    'risk_free_rate': 0.05}
+    >>> weights, performance = openbb.portfolio.po.maxsharpe(portfolio_engine=p)
     """
 
     portfolio_engine.set_params_from_file(parameters_file_path)
+    return portfolio_engine.get_params()
 
 
 @log_start_end(log=logger)
@@ -333,7 +367,7 @@ def get_maxsharpe(
       'Sharpe ratio': 0.9445741510802071})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.maxsharpe(portfolio_engine=p)
     """
 
@@ -470,7 +504,7 @@ def get_minrisk(
           'Sharpe ratio': 0.6868815468880802})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.minrisk(portfolio_engine=p)
     """
 
@@ -607,7 +641,7 @@ def get_maxutil(
           'Sharpe ratio': 0.9445741510802071})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.maxutil(portfolio_engine=p)
     """
 
@@ -744,7 +778,7 @@ def get_maxret(
       'Sharpe ratio': 0.9445741510802071})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.maxret(portfolio_engine=p)
     """
 
@@ -858,7 +892,7 @@ def get_maxdiv(
       'Sharpe ratio': 0.6560509034866852})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.maxdiv(portfolio_engine=p)
     """
 
@@ -950,7 +984,7 @@ def get_maxdecorr(
       'Sharpe ratio': 0.6457213666835423})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.maxdecorr(portfolio_engine=p)
     """
 
@@ -1051,7 +1085,7 @@ def get_blacklitterman(
       'Sharpe ratio': 0.7736615325784322})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.blacklitterman(portfolio_engine=p)
     """
 
@@ -1161,7 +1195,7 @@ def get_ef(
     >>> frontier = openbb.portfolio.po.ef(symbols=["AAPL", "MSFT", "AMZN"])
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> frontier = openbb.portfolio.po.ef(portfolio_engine=p)
     """
 
@@ -1283,7 +1317,7 @@ def get_riskparity(
       'Sharpe ratio': 0.6860508956957826})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.riskparity(portfolio_engine=p)
     """
 
@@ -1418,7 +1452,7 @@ def get_relriskparity(
       'Sharpe ratio': 0.6860561008129521})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.relriskparity(portfolio_engine=p)
     """
 
@@ -1612,7 +1646,7 @@ def get_hrp(
       'Sharpe ratio': 0.6174990219156727})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.hrp(portfolio_engine=p)
     """
 
@@ -1804,7 +1838,7 @@ def get_herc(
       'Sharpe ratio': 0.49216586638525933})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.herc(portfolio_engine=p)
     """
 
@@ -1996,7 +2030,7 @@ def get_nco(
       'Sharpe ratio': 0.6868815468880802})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.nco(portfolio_engine=p)
     """
 
@@ -2066,7 +2100,7 @@ def get_equal(
       'Sharpe ratio': 0.6826854123607685})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
     """
 
@@ -2138,7 +2172,7 @@ def get_mktcap(
       'Sharpe ratio': 0.7813597939519071})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.mktcap(portfolio_engine=p)
     """
 
@@ -2210,7 +2244,7 @@ def get_dividend(
       'Sharpe ratio': 0.8026805111526232})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.dividend(portfolio_engine=p)
     """
 
@@ -2288,7 +2322,7 @@ def get_property(
       'Sharpe ratio': 0.5400179679578959})
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.property(portfolio_engine=p, prop="forwardPE")
     """
 
@@ -2365,7 +2399,7 @@ def show(
     >>> weights_df, category_df = openbb.portfolio.po.show(portfolio_engine=p, category="SECTOR")
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
     >>> p.get_available_categories()
     ['ASSET_CLASS',
