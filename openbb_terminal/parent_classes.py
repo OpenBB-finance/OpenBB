@@ -110,6 +110,15 @@ class BaseController(metaclass=ABCMeta):
     FILE_PATH: str = ""
     CHOICES_GENERATION = False
 
+    @property
+    def choices(self):
+        if self.CHOICES_GENERATION:
+            choices = build_controller_choice_map(controller=self)
+        else:
+            choices = {}
+
+        return choices
+
     def __init__(self, queue: List[str] = None) -> None:
         """Create the base class for any controller in the codebase.
 
@@ -167,16 +176,6 @@ class BaseController(metaclass=ABCMeta):
         support_choices["--type"] = {c: None for c in (SUPPORT_TYPE)}
 
         self.SUPPORT_CHOICES = support_choices
-
-        self.choices = self.build_choices()
-
-    def build_choices(self):
-        if self.CHOICES_GENERATION:
-            choices = build_controller_choice_map(controller=self)
-        else:
-            choices = {}
-
-        return choices
 
     def check_path(self) -> None:
         """Check if command path is valid."""

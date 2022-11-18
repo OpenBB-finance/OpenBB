@@ -64,6 +64,7 @@ class QaController(CryptoBaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
+        super().__init__(queue)
 
         data["Returns"] = data["Close"].pct_change()
         data["LogRet"] = np.log(data["Close"]) - np.log(data["Close"].shift(1))
@@ -75,7 +76,6 @@ class QaController(CryptoBaseController):
         self.ticker = f"{from_symbol}/{to_symbol}"
         self.target = "Close"
 
-        super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices
