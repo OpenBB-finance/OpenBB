@@ -108,7 +108,7 @@ class BaseController(metaclass=ABCMeta):
     TRY_RELOAD = False
     PATH: str = ""
     FILE_PATH: str = ""
-    CHOICES_GENERATION = True
+    CHOICES_GENERATION = False
 
     def __init__(self, queue: List[str] = None) -> None:
         """Create the base class for any controller in the codebase.
@@ -925,6 +925,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
 
     def __init__(self, queue):
         """Instantiate the base class for Stock Controllers that use a load function."""
+        super().__init__(queue)
         self.stock = pd.DataFrame()
         self.interval = "1440min"
         self.ticker = ""
@@ -932,7 +933,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         self.suffix = ""  # To hold suffix for Yahoo Finance
         self.add_info = stocks_helper.additional_info_about_ticker("")
         self.TRY_RELOAD = True
-        super().__init__(queue)
 
     def call_load(self, other_args: List[str]):
         """Process load command."""
@@ -1120,6 +1120,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
 
     def __init__(self, queue):
         """Instantiate the base class for Crypto Controllers that use a load function."""
+        super().__init__(queue)
 
         self.symbol = ""
         self.vs = ""
@@ -1133,8 +1134,6 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         self.resolution = "1D"
         self.TRY_RELOAD = True
         self.exchanges = cryptocurrency_helpers.get_exchanges_ohlc()
-
-        super().__init__(queue)
 
     def call_load(self, other_args):
         """Process load command."""

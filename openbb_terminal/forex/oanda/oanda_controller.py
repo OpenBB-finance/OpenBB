@@ -45,6 +45,7 @@ class OandaController(BaseController):
         "calendar",
     ]
     PATH = "/forex/oanda/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""

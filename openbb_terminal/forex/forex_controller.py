@@ -61,6 +61,7 @@ class ForexController(BaseController):
 
     PATH = "/forex/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""

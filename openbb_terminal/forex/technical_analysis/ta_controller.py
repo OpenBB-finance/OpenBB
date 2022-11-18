@@ -59,6 +59,7 @@ class TechnicalAnalysisController(StockBaseController):
     ]
 
     PATH = "/forex/ta/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self,

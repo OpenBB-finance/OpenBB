@@ -54,6 +54,7 @@ class QaController(CryptoBaseController):
     KPS_REG = ["c", "ct"]
 
     PATH = "/forex/qa/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self,
