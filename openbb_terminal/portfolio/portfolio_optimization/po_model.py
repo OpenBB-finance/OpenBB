@@ -2374,7 +2374,8 @@ def show(
         After loading a portfolio with `portfolio.po.load` you can use
         the object method `get_available_categories()` to get a list of available categories.
         You can also use the object method `set_categories_dict()` to set a custom dictionary
-        of categories.
+        of categories. The dictionary must contain "CURRENT_INVESTED_AMOUNT" and "CURRENT_WEIGHTS"
+        as keys as shown in the example below.
 
     Returns
     -------
