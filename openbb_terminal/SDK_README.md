@@ -102,6 +102,14 @@ If you would like ML forecast features:
 pip install "openbbterminal[prediction]"
 ```
 
+If you would like to use both Portfolio Optimization and ML forecast features:
+
+```bash
+pip install "openbbterminal[all]"
+```
+
+Congratulations! You have successfully installed `openbbterminal` on an environment and are now able to begin using it. However, it is important to note that if you close out of your CLI you must re-activate your environment in order begin using it again.
+
 ## Setup
 
 ### 1. Import OpenBB SDK

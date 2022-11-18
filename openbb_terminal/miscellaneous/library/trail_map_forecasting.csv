@@ -6,7 +6,7 @@ forecast.clean,openbb_terminal.forecast.forecast_model.clean,
 forecast.combine,openbb_terminal.forecast.forecast_model.combine_dfs,
 forecast.desc,openbb_terminal.forecast.forecast_model.describe_df,openbb_terminal.forecast.forecast_view.describe_df
 forecast.corr,openbb_terminal.forecast.forecast_model.corr_df,openbb_terminal.forecast.forecast_view.display_corr
-forecast.season,openbb_terminal.forecast.forecast_view.display_seasonality,
+forecast.season,,openbb_terminal.forecast.forecast_view.display_seasonality
 forecast.delete,openbb_terminal.forecast.forecast_model.delete_column,
 forecast.rename,openbb_terminal.forecast.forecast_model.rename_column,
 forecast.export,openbb_terminal.forecast.forecast_view.export_df,
