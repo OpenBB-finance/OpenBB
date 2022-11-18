@@ -170,7 +170,6 @@ jobs:
             cp -R OpenBB\ Terminal ~/Desktop
       - name: Unmount DMG
         run: hdiutil detach /dev/disk3
-        continue-on-error: true
       - name: Run Integration Tests
         run: /Users/openbb/Desktop/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Users/openbb/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/openbb_terminal/miscellaneous/scripts/*.openbb -t
       - name: Remove OpenBB Folder
