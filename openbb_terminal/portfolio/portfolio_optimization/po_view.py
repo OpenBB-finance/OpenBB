@@ -370,15 +370,15 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
         valid_kwargs["colors"] = theme.get_colors()
 
         if chart_type == "pie":
-            display_pie(**parameters)
+            display_pie(**kwargs)
         elif chart_type == "hist":
-            display_hist(**parameters)
+            display_hist(**kwargs)
         elif chart_type == "dd":
-            display_dd(**parameters)
+            display_dd(**kwargs)
         elif chart_type == "rc_chart":
-            display_rc_chart(**parameters)
+            display_rc_chart(**kwargs)
         elif chart_type == "heat":
-            display_heat(**parameters)
+            display_heat(**kwargs)
         else:
             console.print(
                 "Invalid chart type, please choose from the following: pie, hist, dd, rc, heat"
