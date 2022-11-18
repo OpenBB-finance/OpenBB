@@ -80,7 +80,6 @@ class QaController(CryptoBaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices
             choices["pick"].update({c: {} for c in list(data.columns)})
-            choices["pick"]["--target"] = {c: {} for c in list(data.columns)}
             choices["load"] = {
                 "--interval": {
                     c: {}
