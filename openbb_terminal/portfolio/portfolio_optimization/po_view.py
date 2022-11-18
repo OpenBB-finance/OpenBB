@@ -250,7 +250,7 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
     if "category" not in kwargs:
         console.print(f"Please specify a category from the following: {msg}")
         return
-    elif kwargs["category"] not in available_categories:
+    if kwargs["category"] not in available_categories:
         console.print(f"Please specify a category from the following: {msg}")
         return
     category = kwargs["category"]
@@ -315,23 +315,15 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
 
         if chart_type == "pie":
             display_pie(**parameters)
-            return
-
-        if chart_type == "hist":
+        elif chart_type == "hist":
             display_hist(**parameters)
-            return
-
-        if chart_type == "dd":
+        elif chart_type == "dd":
             display_dd(**parameters)
-            return
-
-        if chart_type == "rc_chart":
+        elif chart_type == "rc_chart":
             display_rc_chart(**parameters)
-            return
-
-        if chart_type == "heat":
+        elif chart_type == "heat":
             display_heat(**parameters)
-            return
+        return
 
 
 @log_start_end(log=logger)
