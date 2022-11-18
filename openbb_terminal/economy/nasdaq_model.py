@@ -38,6 +38,16 @@ def get_economic_calendar(
     -------
     pd.DataFrame
         Economic calendar
+
+    Examples
+    --------
+    Get todays economic calendar for the United States
+    >>> from openbb_terminal.sdk import openbb
+    >>> calendar = openbb.economy.events("United States")
+
+    To get multiple countries for a given date, pass the same start and end date as well as
+    a list of countries
+    >>> calendars = openbb.economy.events(["United States","Canada"], start_date="2022-11-18", end_date="2022-11-18")
     """
 
     if start_date is None:
@@ -128,7 +138,7 @@ def get_country_codes() -> List[str]:
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
 def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
-    """Gets the Big Mac index calculated by the Economist
+    """Get the Big Mac index calculated by the Economist
 
     Parameters
     ----------
