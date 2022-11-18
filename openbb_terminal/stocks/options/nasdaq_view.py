@@ -94,7 +94,7 @@ def display_oi(
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Open Interest (1k) ")
     ax.set_xlim(min_strike, max_strike)
-    ax.legend(loc="best")
+    ax.legend(loc="best", fontsite="x-small")
     ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiry}")
 
     theme.style_primary_axis(ax)
@@ -184,7 +184,7 @@ def display_volume(
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Volume (1k) ")
     ax.set_xlim(min_strike, max_strike)
-    ax.legend(loc="best")
+    ax.legend(loc="best", fontsize="x-small")
     ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
 
     theme.style_primary_axis(ax)
@@ -301,7 +301,7 @@ def display_volume_and_oi(
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Volume or OI (1k)")
     ax.set_xlim(min_strike, max_strike)
-    ax.legend(loc="best")
+    ax.legend(loc="best", fontsize="xx-small")
     ax.set_title(f"Volume and Open Interest for {symbol.upper()} expiring {expiry}")
 
     theme.style_primary_axis(ax)
