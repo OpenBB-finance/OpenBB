@@ -2910,7 +2910,11 @@ def get_categories(
     categories_df = pd.DataFrame.from_dict(data=categories, dtype=float)
 
     col = list(categories_df.columns).index(column)
-    categories_df = df.join(categories_df.iloc[:, [col, 4, 5]], how="inner")
+    col_inv_amt = list(categories_df.columns).index("CURRENT_INVESTED_AMOUNT")
+    col_crncy = list(categories_df.columns).index("CURRENCY")
+    categories_df = df.join(
+        categories_df.iloc[:, [col, col_inv_amt, col_crncy]], how="inner"
+    )
     categories_df.set_index(column, inplace=True)
     categories_df.groupby(level=0).sum()
 
