@@ -32,14 +32,10 @@ jobs:
         run: |
           conda activate obb
           poetry install
-      - name: Install Portfolio Optimization Toolkit
+      - name: Poetry Install Portfolio Optimization and Forecasting Toolkits
         run: |
           conda activate obb
-          poetry install -E optimization
-      - name: Poetry Install Predictions
-        run: |
-          conda activate obb
-          poetry install -E prediction
+          poetry install -E all
       - name: Poetry Install Installer
         run: |
           conda activate obb

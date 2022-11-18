@@ -51,12 +51,10 @@ jobs:
           source ~/.zshrc
       - name: Run Poetry
         run: poetry install
-      - name: Install Portfolio Optimization Toolkit
-        run: poetry install -E optimization
       - name: Install Pyinstaller
         run: poetry install -E installer
-      - name: Install Prediction Modules
-        run: poetry install -E prediction
+      - name: Poetry Install Portfolio Optimization and Forecasting Toolkits
+        run: poetry install -E all
       - name: Install Specific Papermill
         run: |
           pip uninstall papermill -y
