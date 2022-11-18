@@ -67,24 +67,7 @@ jobs:
           path: '.\build\nsis\OpenBB Terminal Setup.exe'
       - name: Run Integration Tests
         run: |
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\alternative -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\cryptocurrency -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\dashboards -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\econometrics -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\economy -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\etf -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\forecast -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\forex -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\mutual_funds -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\portfolio -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\reports -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\stocks -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\test_futures.openbb -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\test_keys.openbb -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\test_news.openbb -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\test_reports_run.openbb -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\test_shroom.openbb -t
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\test_stocks_th.openbb -t
+          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts -t
       # Cleaning ------------------------
       # Make sure to add Remove-Item C:\Users\Administrator\Desktop\OPENBB-exports -Recurse whenever integration tests get fixed
       - name: Remove Previous Build
