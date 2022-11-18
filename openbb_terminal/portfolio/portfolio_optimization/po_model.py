@@ -129,6 +129,7 @@ def validate_inputs(
         List of symbols, by default None
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     kwargs : dict
         Keyword arguments, by default None
 
@@ -226,6 +227,7 @@ def get_maxsharpe(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -355,6 +357,7 @@ def get_minrisk(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -484,6 +487,7 @@ def get_maxutil(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -613,6 +617,7 @@ def get_maxret(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -742,6 +747,7 @@ def get_maxdiv(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -848,6 +854,7 @@ def get_maxdecorr(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -932,6 +939,7 @@ def get_blacklitterman(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -1034,6 +1042,7 @@ def get_ef(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -1096,6 +1105,15 @@ def get_ef(
         NDArray[floating],
         rp.Portfolio,
     ]
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.portfolio.po.get_ef(symbols=["AAPL", "MSFT", "AMZN"])
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> openbb.portfolio.po.get_ef(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1123,6 +1141,7 @@ def get_riskparity(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -1201,6 +1220,15 @@ def get_riskparity(
     -------
     Tuple[pd.DataFrame, Dict]
         Tuple with weights and performance dictionary
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.portfolio.po.riskparity(symbols=["AAPL", "MSFT", "AMZN"])
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> openbb.portfolio.po.riskparity(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1230,6 +1258,7 @@ def get_relriskparity(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -1319,6 +1348,15 @@ def get_relriskparity(
     -------
     Tuple[pd.DataFrame, Dict]
         Tuple with weights and performance dictionary
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.portfolio.po.relriskparity(symbols=["AAPL", "MSFT", "AMZN"])
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> openbb.portfolio.po.relriskparity(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1348,6 +1386,7 @@ def get_hrp(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -1496,6 +1535,15 @@ def get_hrp(
     -------
     Tuple[pd.DataFrame, Dict]
         Tuple with weights and performance dictionary
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.portfolio.po.hrp(symbols=["AAPL", "MSFT", "AMZN"])
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> openbb.portfolio.po.hrp(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1523,6 +1571,7 @@ def get_herc(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -1671,6 +1720,15 @@ def get_herc(
     -------
     Tuple[pd.DataFrame, Dict]
         Tuple with weights and performance dictionary
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.portfolio.po.herc(symbols=["AAPL", "MSFT", "AMZN"])
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> openbb.portfolio.po.herc(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1698,6 +1756,7 @@ def get_nco(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -1846,6 +1905,15 @@ def get_nco(
     -------
     Tuple[pd.DataFrame, Dict]
         Tuple with weights and performance dictionary
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.portfolio.po.nco(symbols=["AAPL", "MSFT", "AMZN"])
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> openbb.portfolio.po.nco(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1873,6 +1941,7 @@ def get_equal(
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -1904,10 +1973,36 @@ def get_equal(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.portfolio.po.equal(symbols=["AAPL", "MSFT", "AMZN"])
+    (        value
+     AAPL  0.33333
+     MSFT  0.33333
+     AMZN  0.33333,
+     {'Return': 0.22459515482054027,
+      'Volatility': 0.32898777497511816,
+      'Sharpe ratio': 0.6826854123607685})
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> openbb.portfolio.po.equal(portfolio_engine=p)
+    (         value
+     AAPL   0.06667
+     AMZN   0.06667
+     APTV   0.06667
+     ASML   0.06667
+     BABA   0.06667
+     GOOGL  0.06667
+     HYG    0.06667
+     IYR    0.06667
+     NKE    0.06667
+     PEX    0.06667
+     PSP    0.06667
+     REZ    0.06667
+     TIP    0.06667
+     TLT    0.06667
+     TSM    0.06667,
+     {'Return': 0.10222818195764598,
+      'Volatility': 0.23792462904669162,
+      'Sharpe ratio': 0.4296662450089779})
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1930,13 +2025,14 @@ def get_equal(
 @log_start_end(log=logger)
 def get_mktcap(
     symbols: List[str] = None, portfolio_engine: PoEngine = None, **kwargs
-) -> pd.DataFrame:
+) -> Tuple[pd.DataFrame, Dict]:
     """Optimize weighted according to market capitalization
 
     Parameters
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -1963,6 +2059,15 @@ def get_mktcap(
     -------
     Tuple[pd.DataFrame, Dict]
         Tuple with weights and performance dictionary
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.portfolio.po.mktcap(symbols=["AAPL", "MSFT", "AMZN"])
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> openbb.portfolio.po.mktcap(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -1985,13 +2090,14 @@ def get_mktcap(
 @log_start_end(log=logger)
 def get_dividend(
     symbols: List[str] = None, portfolio_engine: PoEngine = None, **kwargs
-) -> pd.DataFrame:
+) -> Tuple[pd.DataFrame, Dict]:
     """Optimize weighted according to dividend yield
 
     Parameters
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -2018,6 +2124,15 @@ def get_dividend(
     -------
     Tuple[pd.DataFrame, Dict]
         Tuple with weights and performance dictionary
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.portfolio.po.dividend(symbols=["AAPL", "MSFT", "AMZN"])
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> openbb.portfolio.po.dividend(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -2043,13 +2158,14 @@ def get_property(
     portfolio_engine: PoEngine = None,
     prop: str = "marketCap",
     **kwargs,
-) -> pd.DataFrame:
+) -> Tuple[pd.DataFrame, Dict]:
     """Optimize weighted according to property
 
     Parameters
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     prop : str, optional
@@ -2079,6 +2195,15 @@ def get_property(
     -------
     Tuple[pd.DataFrame, Dict]
         Tuple with weights and performance dictionary
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.portfolio.po.property(symbols=["AAPL", "MSFT", "AMZN"], prop="forwardPE")
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> openbb.portfolio.po.property(portfolio_engine=p, prop="forwardPE")
     """
 
     if prop is None:
@@ -2113,11 +2238,55 @@ def show(
     ----------
     portfolio_engine : PoEngine
         Portfolio optimization engine
+        Use `portfolio.po.load` to load a portfolio engine
+    category : str, optional
+        Category to show, by default None
+        After loading a portfolio with `portfolio.po.load` you can use
+        the object method `get_available_categories()` to get a list of available categories.
+        You can also use the object method `set_categories_dict()` to set a custom dictionary
+        of categories.
 
     Returns
     -------
     Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame]]
         Portfolio weights and categories
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
+    >>> d = {
+            "SECTOR": {
+                "AAPL": "INFORMATION TECHNOLOGY",
+                "MSFT": "INFORMATION TECHNOLOGY",
+                "AMZN": "CONSUMER DISCRETIONARY",
+            },
+            "CURRENT_INVESTED_AMOUNT": {
+                "AAPL": "100000.0",
+                "MSFT": "200000.0",
+                "AMZN": "300000.0",
+            },
+            "CURRENCY": {
+                "AAPL": "USD",
+                "MSFT": "USD",
+                "AMZN": "USD",
+            },
+        }
+    >>> p.set_categories_dict(categories=d)
+    >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
+    >>> p.get_available_categories()
+    ['SECTOR']
+    >>> weights_df, category_df = openbb.portfolio.po.show(portfolio_engine=p, category="SECTOR")
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
+    >>> p.get_available_categories()
+    ['ASSET_CLASS',
+     'SECTOR',
+     'INDUSTRY',
+     'COUNTRY']
+    >>> weights_df, category_df = openbb.portfolio.po.show(portfolio_engine=p, category="ASSET_CLASS")
     """
 
     weights = portfolio_engine.get_weights_df()

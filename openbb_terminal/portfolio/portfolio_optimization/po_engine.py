@@ -67,19 +67,33 @@ class PoEngine:
         """
         return list(self._categories.keys())
 
-    def get_category(self, category: str = "ASSET_CLASS") -> Dict[str, str]:
+    def set_categories_dict(self, categories: Dict[str, Dict[str, str]]):
+        """Set the categories
+
+        Parameters
+        ----------
+        categories : Dict[str, Dict[str, str]]
+            Categories
+        """
+        self._categories = categories
+
+    def get_category(self, category: str = None) -> Dict[str, str]:
         """Get the category
 
         Parameters
         ----------
         category : str, optional
-            Category, by default "ASSET_CLASS"
+            Category, by default None
 
         Returns
         -------
         Dict[str, str]
             Category
         """
+        if category is None:
+            console.print("No category provided. Please provide a category.")
+            return {}
+
         d = self.get_categories_dict()
         if category in d:
             return d[category]
@@ -106,6 +120,9 @@ class PoEngine:
         pd.DataFrame
             Category DataFrame
         """
+        if category is None:
+            console.print("No category provided. Please provide a category.")
+            return pd.DataFrame()
         if not self._categories:
             console.print("No categories found. Use 'load' to load a file.")
             return pd.DataFrame()

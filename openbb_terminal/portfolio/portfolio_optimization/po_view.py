@@ -45,6 +45,7 @@ def display_ef(portfolio_engine: PoEngine = None, symbols: List[str] = None, **k
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     symbols : List[str], optional
         List of symbols, by default None
     interval : str, optional
@@ -232,6 +233,7 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
     ----------
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+        Use `portfolio.po.load` to load a portfolio engine
     chart_type : str, optional
         Chart type can "pie", "hist", "dd" or "rc_chart", by default "pie"
     """
