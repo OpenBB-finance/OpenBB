@@ -30,7 +30,7 @@ you are using conda.
 
     Download the `x86_64` Miniconda for your respective system and follow along with it's installation instructions. The Miniconda architecture MUST be `x86_64` in order to use certain features.
 
-2. **Create Environment**
+2. **Create & Activate Environment**
 
     ```shell
     conda create -n <environment> python=3.9.6 -y
@@ -40,6 +40,10 @@ you are using conda.
 
     ```shell
     conda create -n <environment> -c conda-forge python=3.9.6 u8darts=0.22.0 pytorch-lightning=1.6.5 -y
+    ```
+
+    ```shell
+    conda activate <environment>
     ```
 
 3. **Install OpenBB Terminal**
@@ -53,6 +57,8 @@ you are using conda.
     ```shell
     pip install "openbbterminal[prediction]"
     ```
+
+    Congratulations! You have successfully installed `openbbterminal` on an environment and are now able to begin using it. However, it is important to note that if you close out of your CLI you must re-activate your environment in order begin using it again.
 
 ## Setup
 
