@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  portfolio.maxdd( portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine, is_returns: bool = False, chart: bool = False, ) -&gt; pandas.core.series.Series .. raw:: html  Calculate the drawdown (MDD) of historical series. Note that the calculation is done on cumulative returns (or prices). The definition of drawdown is DD = (current value - rolling maximum) / rolling maximum * **Parameters** data: pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  portfolio.maxdd( portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine, is_returns: bool = False, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, pandas.core.series.Series] .. raw:: html  Calculate the drawdown (MDD) of historical series. Note that the calculation is done on cumulative returns (or prices). The definition of drawdown is DD = (current value - rolling maximum) / rolling maximum * **Parameters** data: pd.">
 
 
 
@@ -47942,10 +47942,10 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     </h3>
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">portfolio</span><span class="o">.</span><span class="n">maxdd</span><span class="p">(</span>
-    <span class="n">portfolio_engine</span><span class="p">:</span> <span class="n">openbb_terminal</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">portfolio_model</span><span class="o">.</span><span class="n">PortfolioEngine</span><span class="p">,</span>
+    <span class="n">portfolio_engine</span><span class="p">:</span> <span class="n">openbb_terminal</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">portfolio_engine</span><span class="o">.</span><span class="n">PortfolioEngine</span><span class="p">,</span>
     <span class="n">is_returns</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span></code></pre></div>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span></code></pre></div>
 
 .. raw:: html
 
@@ -47976,8 +47976,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 * **Examples**
 
     <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python">    <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">openbb_terminal.sdk</span> <span class="kn">import</span> <span class="n">openbb</span>
-    <span class="o">&gt;&gt;&gt;</span> <span class="n">P</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv&#34;</span><span class="p">)</span>
-    <span class="o">&gt;&gt;&gt;</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">maxdd</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+    <span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv&#34;</span><span class="p">)</span>
+    <span class="o">&gt;&gt;&gt;</span> <span class="n">output</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">maxdd</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
     </code></pre></div>
 
 |
@@ -47989,7 +47989,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     </h3>
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">portfolio</span><span class="o">.</span><span class="n">maxdd</span><span class="p">(</span>
-    <span class="n">portfolio_engine</span><span class="p">:</span> <span class="n">openbb_terminal</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">portfolio_model</span><span class="o">.</span><span class="n">PortfolioEngine</span><span class="p">,</span>
+    <span class="n">portfolio_engine</span><span class="p">:</span> <span class="n">openbb_terminal</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">portfolio_engine</span><span class="o">.</span><span class="n">PortfolioEngine</span><span class="p">,</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">external_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>

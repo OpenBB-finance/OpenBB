@@ -47971,7 +47971,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     <span class="n">value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">value_short</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span></code></pre></div>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span></code></pre></div>
 
 .. raw:: html
 
@@ -48049,8 +48049,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 * **Returns**
 
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
 
 |
 

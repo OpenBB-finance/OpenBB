@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  portfolio.po.equal( symbols: List[str], interval: str = &#39;3y&#39;, start_date: str = &#39;&#39;, end_date: str = &#39;&#39;, log_returns: bool = False, freq: str = &#39;D&#39;, maxnan: float = 0.05, threshold: float = 0, method: str = &#39;time&#39;, value: float = 1.0, chart: bool = False, ) -&gt; Tuple .. raw:: html  Equally weighted portfolio, where weight = 1/# of symbols * **Parameters** symbols : List[str] List of portfolio stocks interval : str, optional interval to get stock data, by default &#34;">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  portfolio.po.equal( symbols: List[str], interval: str = &#39;3y&#39;, start_date: str = &#39;&#39;, end_date: str = &#39;&#39;, log_returns: bool = False, freq: str = &#39;D&#39;, maxnan: float = 0.05, threshold: float = 0, method: str = &#39;time&#39;, value: float = 1.0, chart: bool = False, ) -&gt; Tuple[Dict[str, float], pandas.core.frame.DataFrame] .. raw:: html  Equally weighted portfolio, where weight = 1/# of symbols * **Parameters** symbols : List[str] List of portfolio stocks interval : str, optional interval to get stock data, by default &#34;">
 
 
 
@@ -47959,7 +47959,7 @@ code, img {
     <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span>
     <span class="n">value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span></code></pre></div>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span></code></pre></div>
 
 .. raw:: html
 
@@ -48001,8 +48001,8 @@ code, img {
 
 * **Returns**
 
-    dict
-        Dictionary of weights where keys are the tickers
+    Tuple[Dict[str, float], pd.DataFrame]
+        Dictionary of weights where keys are the tickers, dataframe of stock returns
 
     </article>
  

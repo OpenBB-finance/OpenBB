@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  portfolio.load( transactions_file_path: str, benchmark_symbol: str = &#39;SPY&#39;, full_shares: bool = False, risk_free_rate: float = 0, chart: bool = False, ) -&gt; openbb_terminal.portfolio.portfolio_model.PortfolioEngine .. raw:: html  Get PortfolioEngine object * **Parameters** transactions_file_path : str Path to transactions file benchmark_symbol : str Benchmark ticker to download data full_shares : bool Whether to mimic the portfolio trades exactly (partial shares) or round down the quantity to the nearest number risk_free_rate : float Risk free rate in float format * **Returns** PortfolioEngine PortfolioEngine class instance, this will hold transactions and perform calculations * **Examples** &gt;&gt;&gt; from openbb_terminal.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  portfolio.load( transactions_file_path: str, benchmark_symbol: str = &#39;SPY&#39;, full_shares: bool = False, risk_free_rate: float = 0, chart: bool = False, ) -&gt; openbb_terminal.portfolio.portfolio_engine.PortfolioEngine .. raw:: html  Get PortfolioEngine object * **Parameters** transactions_file_path : str Path to transactions file benchmark_symbol : str Benchmark ticker to download data full_shares : bool Whether to mimic the portfolio trades exactly (partial shares) or round down the quantity to the nearest number risk_free_rate : float Risk free rate in float format * **Returns** PortfolioEngine PortfolioEngine class instance, this will hold transactions and perform calculations * **Examples** &gt;&gt;&gt; from openbb_terminal.">
 
 
 
@@ -47945,7 +47945,7 @@ code, img {
     <span class="n">full_shares</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">risk_free_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">openbb_terminal</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">portfolio_model</span><span class="o">.</span><span class="n">PortfolioEngine</span></code></pre></div>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">openbb_terminal</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">portfolio_engine</span><span class="o">.</span><span class="n">PortfolioEngine</span></code></pre></div>
 
 .. raw:: html
 
@@ -47973,7 +47973,7 @@ code, img {
 * **Examples**
 
     <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python">    <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">openbb_terminal.sdk</span> <span class="kn">import</span> <span class="n">openbb</span>
-    <span class="o">&gt;&gt;&gt;</span> <span class="n">P</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv&#34;</span><span class="p">)</span>
+    <span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv&#34;</span><span class="p">)</span>
     </code></pre></div>
 
     </article>

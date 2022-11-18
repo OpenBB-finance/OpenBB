@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  portfolio.metric.payoff( portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine, chart: bool = False, ) .. raw:: html  Gets payoff ratio Returns ------- pd.DataFrame DataFrame of payoff ratio of the portfolio during different time periods Examples --------  from openbb_terminal.sdk import openbb  P = openbb.portfolio.load(&#34;openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv&#34;)  openbb.portfolio.metric.payoff(P) * **Returns** pd.DataFrame DataFrame of payoff ratio of the portfolio during different time periods * **Examples** &gt;&gt;&gt; from openbb_terminal.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  portfolio.metric.payoff( portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get payoff ratio Returns ------- pd.DataFrame DataFrame of payoff ratio of the portfolio during different time periods Examples --------  from openbb_terminal.sdk import openbb  p = openbb.portfolio.load(&#34;openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv&#34;)  output = openbb.portfolio.metric.payoff(p) During some time periods there were no losing trades.">
 
 
 
@@ -47948,14 +47948,14 @@ code, img {
     </h3>
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">portfolio</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">payoff</span><span class="p">(</span>
-    <span class="n">portfolio_engine</span><span class="p">:</span> <span class="n">openbb_terminal</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">portfolio_model</span><span class="o">.</span><span class="n">PortfolioEngine</span><span class="p">,</span>
+    <span class="n">portfolio_engine</span><span class="p">:</span> <span class="n">openbb_terminal</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">portfolio_engine</span><span class="o">.</span><span class="n">PortfolioEngine</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span></code></pre></div>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></code></pre></div>
 
 .. raw:: html
 
     <p>
-    Gets payoff ratio
+    Get payoff ratio
 
     Returns
     -------
@@ -47965,8 +47965,9 @@ code, img {
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.metric.payoff(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.metric.payoff(p)
+    During some time periods there were no losing trades. Thus some values could not be calculated.
     </p>
 
 * **Returns**
@@ -47977,8 +47978,9 @@ code, img {
 * **Examples**
 
     <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python">    <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">openbb_terminal.sdk</span> <span class="kn">import</span> <span class="n">openbb</span>
-    <span class="o">&gt;&gt;&gt;</span> <span class="n">P</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv&#34;</span><span class="p">)</span>
-    <span class="o">&gt;&gt;&gt;</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">payoff</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+    <span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv&#34;</span><span class="p">)</span>
+    <span class="o">&gt;&gt;&gt;</span> <span class="n">output</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">payoff</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="n">During</span> <span class="n">some</span> <span class="n">time</span> <span class="n">periods</span> <span class="n">there</span> <span class="n">were</span> <span class="n">no</span> <span class="n">losing</span> <span class="n">trades</span><span class="o">.</span> <span class="n">Thus</span> <span class="n">some</span> <span class="n">values</span> <span class="n">could</span> <span class="ow">not</span> <span class="n">be</span> <span class="n">calculated</span><span class="o">.</span>
     </code></pre></div>
 
     </article>

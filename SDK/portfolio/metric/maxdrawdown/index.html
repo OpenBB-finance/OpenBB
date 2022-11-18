@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  portfolio.metric.maxdrawdown( portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Method that retrieves maximum drawdown ratio for portfolio and benchmark selected * **Parameters** portfolio_engine: PortfolioEngine PortfolioEngine class instance, this will hold transactions and perform calculations. Use `portfolio.load` to create a PortfolioEngine. * **Returns** pd.DataFrame DataFrame with maximum drawdown for portfolio and benchmark for different periods * **Examples** &gt;&gt;&gt; from openbb_terminal.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  portfolio.metric.maxdrawdown( portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get maximum drawdown ratio for portfolio and benchmark selected * **Parameters** portfolio_engine: PortfolioEngine PortfolioEngine class instance, this will hold transactions and perform calculations. Use `portfolio.load` to create a PortfolioEngine. * **Returns** pd.DataFrame DataFrame with maximum drawdown for portfolio and benchmark for different periods * **Examples** &gt;&gt;&gt; from openbb_terminal.">
 
 
 
@@ -47948,14 +47948,14 @@ code, img {
     </h3>
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">portfolio</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">maxdrawdown</span><span class="p">(</span>
-    <span class="n">portfolio_engine</span><span class="p">:</span> <span class="n">openbb_terminal</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">portfolio_model</span><span class="o">.</span><span class="n">PortfolioEngine</span><span class="p">,</span>
+    <span class="n">portfolio_engine</span><span class="p">:</span> <span class="n">openbb_terminal</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">portfolio_engine</span><span class="o">.</span><span class="n">PortfolioEngine</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></code></pre></div>
 
 .. raw:: html
 
     <p>
-    Method that retrieves maximum drawdown ratio for portfolio and benchmark selected
+    Get maximum drawdown ratio for portfolio and benchmark selected
     </p>
 
 * **Parameters**
@@ -47972,8 +47972,8 @@ code, img {
 * **Examples**
 
     <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python">    <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">openbb_terminal.sdk</span> <span class="kn">import</span> <span class="n">openbb</span>
-    <span class="o">&gt;&gt;&gt;</span> <span class="n">P</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv&#34;</span><span class="p">)</span>
-    <span class="o">&gt;&gt;&gt;</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">maxdrawdown</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+    <span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv&#34;</span><span class="p">)</span>
+    <span class="o">&gt;&gt;&gt;</span> <span class="n">output</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">maxdrawdown</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
     </code></pre></div>
 
     </article>

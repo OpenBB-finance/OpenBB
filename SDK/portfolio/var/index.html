@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  portfolio.var( portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine, use_mean: bool = False, adjusted_var: bool = False, student_t: bool = False, percentile: float = 99.9, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get portfolio VaR * **Parameters** portfolio_engine: PortfolioEngine PortfolioEngine class instance, this will hold transactions and perform calculations. Use `portfolio.load` to create a PortfolioEngine. use_mean: bool if one should use the data mean return adjusted_var: bool if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion) student_t: bool If one should use the student-t distribution percentile: float var percentile (%) * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  portfolio.var( portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine, use_mean: bool = False, adjusted_var: bool = False, student_t: bool = False, percentile: float = 99.9, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get portfolio VaR * **Parameters** portfolio_engine: PortfolioEngine PortfolioEngine class instance, this will hold transactions and perform calculations. Use `portfolio.load` to create a PortfolioEngine. use_mean: bool if one should use the data mean return adjusted_var: bool if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion) student_t: bool If one should use the student-t distribution percentile: float var percentile (%) * **Returns** pd.">
 
 
 
@@ -47940,7 +47940,7 @@ code, img {
     </h3>
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">portfolio</span><span class="o">.</span><span class="n">var</span><span class="p">(</span>
-    <span class="n">portfolio_engine</span><span class="p">:</span> <span class="n">openbb_terminal</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">portfolio_model</span><span class="o">.</span><span class="n">PortfolioEngine</span><span class="p">,</span>
+    <span class="n">portfolio_engine</span><span class="p">:</span> <span class="n">openbb_terminal</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">portfolio_engine</span><span class="o">.</span><span class="n">PortfolioEngine</span><span class="p">,</span>
     <span class="n">use_mean</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">adjusted_var</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">student_t</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -47976,8 +47976,8 @@ code, img {
 * **Examples**
 
     <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python">    <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">openbb_terminal.sdk</span> <span class="kn">import</span> <span class="n">openbb</span>
-    <span class="o">&gt;&gt;&gt;</span> <span class="n">P</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv&#34;</span><span class="p">)</span>
-    <span class="o">&gt;&gt;&gt;</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+    <span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv&#34;</span><span class="p">)</span>
+    <span class="o">&gt;&gt;&gt;</span> <span class="n">output</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
     </code></pre></div>
 
     </article>
