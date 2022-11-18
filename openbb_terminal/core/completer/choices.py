@@ -152,7 +152,7 @@ def _get_argument_parser(
     else:
         raise AssertionError(
             "One of these functions should be called once:\n"
-            " - parse_known_args_and_warn\n"
+            " - patch_parse_simple_args\n"
             " - parse_known_args_and_warn\n"
         )
 
