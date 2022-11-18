@@ -1,3 +1,6 @@
+"""Allocation Model"""
+__docformat__ = "numpy"
+
 import logging
 from typing import Dict, Tuple
 
