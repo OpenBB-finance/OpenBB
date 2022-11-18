@@ -29,7 +29,7 @@ def futures(source="WSJ", future_type: str = "Indices") -> pd.DataFrame:
     >>> futures_sorted = openbb.economy.futures().sort_values(by="%Chg", ascending=False)
 
     FinViz provides different options for future types.  We can get Meats with the following command:
-    >>> meat_future = openbb.economy.futures(source="Finviz", future_type="Meats")
+    >>> meat_futures = openbb.economy.futures(source="Finviz", future_type="Meats")
 
     """
 

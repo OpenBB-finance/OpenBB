@@ -276,7 +276,7 @@ etf.etf_by_name,openbb_terminal.etf.stockanalysis_model.get_etfs_by_name,
 etf.weights,openbb_terminal.etf.yfinance_model.get_etf_sector_weightings,
 etf.summary,openbb_terminal.etf.yfinance_model.get_etf_summary_description,
 forex.get_currency_list,openbb_terminal.forex.av_model.get_currency_list,
-forex.quote,openbb_terminal.forex.av_model.get_quote,
+forex.quote,openbb_terminal.forex.sdk_helpers.quote,
 forex.fwd,openbb_terminal.forex.fxempire_model.get_forward_rates,
 forex.oanda.summary,openbb_terminal.forex.oanda.oanda_model.account_summary_request,openbb_terminal.forex.oanda.oanda_view.get_account_summary
 forex.oanda.cancel,openbb_terminal.forex.oanda.oanda_model.cancel_pending_order_request,openbb_terminal.forex.oanda.oanda_view.cancel_pending_order
