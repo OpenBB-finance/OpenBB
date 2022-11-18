@@ -85,38 +85,16 @@ def display_ef(symbols: List[str] = None, portfolio_engine: PoEngine = None, **k
         symbols, portfolio_engine, kwargs
     )
 
-    n_portfolios: int = 100
-    if n_portfolios in parameters:
-        n_portfolios = parameters["n_portfolios"]
-
-    freq: str = "D"
-    if "freq" in parameters:
-        freq = parameters["freq"]
-
-    risk_measure: str = "MV"
-    if "risk_measure" in parameters:
-        risk_measure = parameters["risk_measure"]
-
-    risk_free_rate: float = 0.0
-    if "risk_free_rate" in parameters:
-        risk_free_rate = parameters["risk_free_rate"]
-
-    alpha: float = 0.05
-    if "alpha" in parameters:
-        alpha = parameters["alpha"]
+    n_portfolios = parameters.get("n_portfolios", 100)
+    freq = parameters.get("freq", "D")
+    risk_measure = parameters.get("risk_measure", "MV")
+    risk_free_rate = parameters.get("risk_free_rate", 0.0)
+    alpha = parameters.get("alpha", 0.05)
 
     # Pop chart args
-    tangency: bool = False
-    if "tangency" in parameters:
-        tangency = parameters.pop("tangency")
-
-    plot_tickers: bool = False
-    if "plot_tickers" in parameters:
-        plot_tickers = parameters.pop("plot_tickers")
-
-    external_axes: Optional[List[plt.Axes]] = None
-    if "external_axes" in parameters:
-        external_axes = parameters.pop("external_axes")
+    tangency = parameters.pop("tangency", False)
+    plot_tickers = parameters.pop("plot_tickers", False)
+    external_axes = parameters.pop("external_axes", None)
 
     frontier, mu, cov, stock_returns, weights, X1, Y1, port = get_ef(
         symbols,
@@ -272,26 +250,6 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
     if data.empty:
         return
 
-    # Chart arguments
-    if "title" not in parameters:
-        parameters["title"] = ""
-    if "freq" not in parameters:
-        parameters["freq"] = "D"
-    if "risk_measure" not in parameters:
-        parameters["risk_measure"] = "MV"
-    if "risk_free_rate" not in parameters:
-        parameters["risk_free_rate"] = 0.0
-    if "alpha" not in parameters:
-        parameters["alpha"] = 0.05
-    if "a_sim" not in parameters:
-        parameters["a_sim"] = 100.0
-    if "beta" not in parameters:
-        parameters["beta"] = 0.0
-    if "b_sim" not in parameters:
-        parameters["b_sim"] = 0.0
-    if "external_axes" not in parameters:
-        parameters["external_axes"] = None
-
     if category:
         # weights = pd.DataFrame.from_dict(
         #     data=weights, orient="index", columns=["value"], dtype=float
@@ -362,11 +320,11 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
 @log_start_end(log=logger)
 def display_heat(**kwargs):
 
-    weights = kwargs["weights"]
-    data: pd.DataFrame = kwargs["data"]
-    category = kwargs["category"]
-    title: str = kwargs["title"]
-    external_axes: Optional[List[plt.Axes]] = kwargs["external_axes"]
+    weights = kwargs.get("weights", None)
+    data = kwargs.get("data", None)
+    category = kwargs.get("category", None)
+    title = kwargs.get("title", "")
+    external_axes = kwargs.get("external_axes", None)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -441,18 +399,18 @@ def display_heat(**kwargs):
 @log_start_end(log=logger)
 def display_rc_chart(**kwargs):
 
-    weights = kwargs["weights"]
-    data: pd.DataFrame = kwargs["data"]
-    colors = kwargs["colors"]
-    risk_measure = kwargs["risk_measure"]
-    risk_free_rate = kwargs["risk_free_rate"]
-    title: str = kwargs["title"]
-    alpha = kwargs["alpha"]
-    a_sim = kwargs["a_sim"]
-    beta = kwargs["beta"]
-    b_sim = kwargs["b_sim"]
-    freq = kwargs["freq"]
-    external_axes: Optional[List[plt.Axes]] = kwargs["external_axes"]
+    weights = kwargs.get("weights", None)
+    data = kwargs.get("data", None)
+    colors = kwargs.get("colors", None)
+    risk_measure = kwargs.get("risk_measure", "MV")
+    risk_free_rate = kwargs.get("risk_free_rate", 0.0)
+    title = kwargs.get("title", "")
+    alpha = kwargs.get("alpha", 0.05)
+    a_sim = kwargs.get("a_sim", 100.0)
+    beta = kwargs.get("beta", 0.0)
+    b_sim = kwargs.get("b_sim", 0.0)
+    freq = kwargs.get("freq", "D")
+    external_axes = kwargs.get("external_axes", None)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -491,12 +449,12 @@ def display_rc_chart(**kwargs):
 @log_start_end(log=logger)
 def display_hist(**kwargs):
 
-    weights = kwargs["weights"]
-    data: pd.DataFrame = kwargs["data"]
-    colors = kwargs["colors"]
-    title: str = kwargs["title"]
-    alpha = kwargs["alpha"]
-    external_axes: Optional[List[plt.Axes]] = kwargs["external_axes"]
+    weights = kwargs.get("weights", None)
+    data = kwargs.get("data", None)
+    colors = kwargs.get("colors", None)
+    title = kwargs.get("title", "")
+    alpha = kwargs.get("alpha", 0.05)
+    external_axes = kwargs.get("external_axes", None)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -529,12 +487,12 @@ def display_hist(**kwargs):
 @log_start_end(log=logger)
 def display_dd(**kwargs):
 
-    weights = kwargs["weights"]
-    data: pd.DataFrame = kwargs["data"]
-    colors = kwargs["colors"]
-    title: str = kwargs["title"]
-    alpha = kwargs["alpha"]
-    external_axes: Optional[List[plt.Axes]] = kwargs["external_axes"]
+    weights = kwargs.get("weights", None)
+    data = kwargs.get("data", None)
+    colors = kwargs.get("colors", None)
+    title = kwargs.get("title", "")
+    alpha = kwargs.get("alpha", 0.05)
+    external_axes = kwargs.get("external_axes", None)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -584,9 +542,10 @@ def display_pie(**kwargs):
         Optional external axes to plot data on
     """
 
-    weights = kwargs["weights"]
-    title: str = kwargs["title"]
-    external_axes: Optional[List[plt.Axes]] = kwargs["external_axes"]
+    weights = kwargs.get("weights", None)
+    colors = kwargs.get("colors", None)
+    title = kwargs.get("title", "")
+    external_axes = kwargs.get("external_axes", None)
 
     if not weights:
         return
