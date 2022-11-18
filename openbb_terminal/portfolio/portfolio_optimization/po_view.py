@@ -376,7 +376,7 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
         elif chart_type == "dd":
             display_dd(**kwargs)
         elif chart_type == "rc_chart":
-            display_rc_chart(**kwargs)
+            display_rc(**kwargs)
         elif chart_type == "heat":
             display_heat(**kwargs)
         else:
