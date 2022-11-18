@@ -72,7 +72,7 @@ repos:
           ["--baseline", ".secrets.baseline", "--exclude-files", "cassettes/*", "--exclude-files", "website/content/api/*"]
         exclude: package.lock.json
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.1.0
+    rev: v3.2.2
     hooks:
       - id: pyupgrade
         args: [--py38-plus]

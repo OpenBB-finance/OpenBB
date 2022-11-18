@@ -769,9 +769,7 @@ class BehaviouralAnalysisController(StockBaseController):
                             "[red]Ticker provided doesn't exist, load another one.\n[/red]"
                         )
                 else:
-                    console.print(
-                        "[red]Words or sentences to be correlated against with, need to be provided.\n[/red]"
-                    )
+                    console.print("[red]Please provide a phrase for analysis.\n[/red]")
             else:
                 console.print(
                     "[red]No ticker loaded. Please load using 'load <ticker>'.\n[/red]"
