@@ -27,7 +27,9 @@ from openbb_terminal.portfolio import statics
 from openbb_terminal.portfolio import portfolio_view
 from openbb_terminal.portfolio import portfolio_helper
 from openbb_terminal.portfolio import attribution_model
-from openbb_terminal.portfolio.portfolio_optimization import po_controller
+from openbb_terminal.portfolio.portfolio_optimization.po_controller import (
+    PortfolioOptimizationController,
+)
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.common.quantitative_analysis import qa_view
 
@@ -392,7 +394,7 @@ class PortfolioController(BaseController):
         else:
             tickers = self.portfolio.tickers_list
         self.queue = self.load_class(
-            po_controller.PortfolioOptimizationController,
+            PortfolioOptimizationController,
             tickers,
             None,
             None,

@@ -194,7 +194,7 @@ def first_time_user() -> bool:
     If this is true, it also adds an env variable to make sure this does not run again.
 
     Returns
-    ----------
+    -------
     bool
         Whether or not the user is a first time user
     """
