@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 from datetime import date
 
 
@@ -166,45 +166,28 @@ def d_period(interval: str = "1y", start_date: str = "", end_date: str = ""):
 @log_start_end(log=logger)
 def get_equal_weights(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    value: float = 1.0,
-) -> Tuple[Dict[str, float], pd.DataFrame]:
+    **kwargs,
+) -> Union[Tuple[Dict[str, float], pd.DataFrame], None]:
     """Equally weighted portfolio, where weight = 1/# of symbols
 
     Parameters
     ----------
     symbols : List[str]
-        List of portfolio stocks
+        List of symbols to be included in the portfolio
     interval : str, optional
-        interval to get stock data, by default "3mo"
+        Interval to get data, by default "3y"
     start_date: str, optional
-        If not using interval, start date string (YYYY-MM-DD)
+        If not using interval, start date string (YYYY-MM-DD), by default ""
     end_date: str, optional
-        If not using interval, end date string (YYYY-MM-DD). If empty use last
-        weekday.
+        If not using interval, end date string (YYYY-MM-DD). If empty use last weekday, by default ""
     log_returns: bool, optional
-        If True calculate log returns, else arithmetic returns. Default value
-        is False
+        If True use log returns, else arithmetic returns, by default False
     freq: str, optional
-        The frequency used to calculate returns. Default value is 'D'. Possible
-        values are:
-
-        - 'D' for daily returns.
-        - 'W' for weekly returns.
-        - 'M' for m' for monthly returns.
-
+        Frequency of returns, by default "D". Options: "D" for daily, "W" for weekly, "M" for monthly
     maxnan: float
-        Max percentage of nan values accepted per asset to be included in
-        returns.
+        Maximum percentage of NaNs allowed in the data, by default 0.05
     threshold: float
-        Value used to replace outliers that are higher to threshold.
+        Value used to replace outliers that are higher than threshold.
     method: str
         Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     value : float, optional
@@ -212,9 +195,19 @@ def get_equal_weights(
 
     Returns
     -------
-    Tuple[Dict[str, float], pd.DataFrame]
+    Union[Tuple[Dict[str, float], pd.DataFrame], None]
         Dictionary of weights where keys are the tickers, dataframe of stock returns
     """
+
+    interval = kwargs.get("interval", "3y")
+    start_date = kwargs.get("start_date", "")
+    end_date = kwargs.get("end_date", "")
+    log_returns = kwargs.get("log_returns", False)
+    freq = kwargs.get("freq", "D")
+    maxnan = kwargs.get("maxnan", 0.05)
+    threshold = kwargs.get("threshold", 0.0)
+    method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1.0)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -236,16 +229,7 @@ def get_equal_weights(
 @log_start_end(log=logger)
 def get_property_weights(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    s_property: str = "marketCap",
-    value: float = 1.0,
+    **kwargs,
 ) -> Tuple[Optional[Dict[str, Any]], Optional[pd.DataFrame]]:
     """Calculate portfolio weights based on selected property
 
@@ -287,6 +271,18 @@ def get_property_weights(
         Dictionary of portfolio weights or allocations
     """
 
+    interval = kwargs.get("interval", "3y")
+    start_date = kwargs.get("start_date", "")
+    end_date = kwargs.get("end_date", "")
+    log_returns = kwargs.get("log_returns", False)
+    freq = kwargs.get("freq", "D")
+    maxnan = kwargs.get("maxnan", 0.05)
+    threshold = kwargs.get("threshold", 0.0)
+    method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1.0)
+
+    s_property = kwargs.get("s_property", "marketCap")
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -320,26 +316,7 @@ def get_property_weights(
 @log_start_end(log=logger)
 def get_mean_risk_portfolio(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    objective: str = "Sharpe",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    target_risk: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0.0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a mean risk optimal portfolio
 
@@ -449,6 +426,31 @@ def get_mean_risk_portfolio(
         Dictionary of portfolio weights,
         DataFrame of stock returns.
     """
+
+    interval = kwargs.get("interval", "3y")
+    start_date = kwargs.get("start_date", "")
+    end_date = kwargs.get("end_date", "")
+    log_returns = kwargs.get("log_returns", False)
+    freq = kwargs.get("freq", "D")
+    maxnan = kwargs.get("maxnan", 0.05)
+    threshold = kwargs.get("threshold", 0.0)
+    method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1.0)
+    value_short = kwargs.get("value_short", 0.0)
+
+    risk_measure = kwargs.get("risk_measure", "MV")
+    objective = kwargs.get("objective", "Sharpe")
+    risk_free_rate = kwargs.get("risk_free_rate", 0.0)
+    risk_aversion = kwargs.get("risk_aversion", 1.0)
+    alpha = kwargs.get("alpha", 0.05)
+    target_return = kwargs.get("target_return", -1.0)
+    target_risk = kwargs.get("target_risk", -1.0)
+    mean = kwargs.get("mean", "hist")
+    covariance = kwargs.get("covariance", "hist")
+    d_ewma = kwargs.get("d_ewma", 0.94)
+
+    risk_measure = risk_measure.upper()
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -519,25 +521,7 @@ def get_mean_risk_portfolio(
 @log_start_end(log=logger)
 def get_max_sharpe(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    target_risk: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0.0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a maximal return/risk ratio portfolio
@@ -636,28 +620,11 @@ def get_max_sharpe(
         Dictionary of portfolio weights,
         DataFrame of stock returns.
     """
+
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-        risk_measure=risk_choices[risk_measure.lower()],
         objective=objectives_choices["sharpe"],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        target_return=target_return,
-        target_risk=target_risk,
-        mean=mean,
-        covariance=covariance,
-        d_ewma=d_ewma,
-        value=value,
-        value_short=value_short,
+        **kwargs,
     )
 
     return weights, stock_returns
@@ -666,25 +633,7 @@ def get_max_sharpe(
 @log_start_end(log=logger)
 def get_min_risk(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    target_risk: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0.0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a maximal return/risk ratio portfolio
@@ -783,28 +732,11 @@ def get_min_risk(
         Dictionary of portfolio weights,
         DataFrame of stock returns.
     """
+
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-        risk_measure=risk_choices[risk_measure.lower()],
         objective=objectives_choices["minrisk"],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        target_return=target_return,
-        target_risk=target_risk,
-        mean=mean,
-        covariance=covariance,
-        d_ewma=d_ewma,
-        value=value,
-        value_short=value_short,
+        **kwargs,
     )
 
     return weights, stock_returns
@@ -813,25 +745,7 @@ def get_min_risk(
 @log_start_end(log=logger)
 def get_max_util(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    target_risk: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0.0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a maximal return/risk ratio portfolio
@@ -930,28 +844,11 @@ def get_max_util(
         Dictionary of portfolio weights,
         DataFrame of stock returns.
     """
+
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-        risk_measure=risk_choices[risk_measure.lower()],
         objective=objectives_choices["utility"],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        target_return=target_return,
-        target_risk=target_risk,
-        mean=mean,
-        covariance=covariance,
-        d_ewma=d_ewma,
-        value=value,
-        value_short=value_short,
+        **kwargs,
     )
 
     return weights, stock_returns
@@ -960,25 +857,7 @@ def get_max_util(
 @log_start_end(log=logger)
 def get_max_ret(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    target_risk: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0.0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a maximal return/risk ratio portfolio
@@ -1079,26 +958,8 @@ def get_max_ret(
     """
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-        risk_measure=risk_choices[risk_measure.lower()],
         objective=objectives_choices["maxret"],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        target_return=target_return,
-        target_risk=target_risk,
-        mean=mean,
-        covariance=covariance,
-        d_ewma=d_ewma,
-        value=value,
-        value_short=value_short,
+        **kwargs,
     )
 
     return weights, stock_returns
@@ -1107,18 +968,7 @@ def get_max_ret(
 @log_start_end(log=logger)
 def get_max_diversification_portfolio(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a maximal diversification portfolio
 
@@ -1181,6 +1031,21 @@ def get_max_diversification_portfolio(
         Dictionary of portfolio weights,
         DataFrame of stock returns.
     """
+
+    interval = kwargs.get("interval", "3y")
+    start_date = kwargs.get("start_date", "")
+    end_date = kwargs.get("end_date", "")
+    log_returns = kwargs.get("log_returns", False)
+    freq = kwargs.get("freq", "D")
+    maxnan = kwargs.get("maxnan", 0.05)
+    threshold = kwargs.get("threshold", 0.0)
+    method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1.0)
+    value_short = kwargs.get("value_short", 0.0)
+
+    covariance = kwargs.get("covariance", "hist")
+    d_ewma = kwargs.get("d_ewma", 0.94)
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -1222,18 +1087,7 @@ def get_max_diversification_portfolio(
 @log_start_end(log=logger)
 def get_max_decorrelation_portfolio(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a maximal decorrelation portfolio
 
@@ -1296,6 +1150,21 @@ def get_max_decorrelation_portfolio(
         Dictionary of portfolio weights,
         DataFrame of stock returns.
     """
+
+    interval = kwargs.get("interval", "3y")
+    start_date = kwargs.get("start_date", "")
+    end_date = kwargs.get("end_date", "")
+    log_returns = kwargs.get("log_returns", False)
+    freq = kwargs.get("freq", "D")
+    maxnan = kwargs.get("maxnan", 0.05)
+    threshold = kwargs.get("threshold", 0.0)
+    method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1.0)
+    value_short = kwargs.get("value_short", 0.0)
+
+    covariance = kwargs.get("covariance", "hist")
+    d_ewma = kwargs.get("d_ewma", 0.94)
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -1339,25 +1208,7 @@ def get_max_decorrelation_portfolio(
 @log_start_end(log=logger)
 def get_black_litterman_portfolio(
     symbols: List[str],
-    benchmark: Dict,
-    p_views: List,
-    q_views: List,
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    objective: str = "Sharpe",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    delta: float = None,
-    equilibrium: bool = True,
-    optimize: bool = True,
-    value: float = 1.0,
-    value_short: float = 0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a maximal diversification portfolio
 
@@ -1432,6 +1283,28 @@ def get_black_litterman_portfolio(
         Dictionary of portfolio weights,
         DataFrame of stock returns.
     """
+
+    interval = kwargs.get("interval", "3y")
+    start_date = kwargs.get("start_date", "")
+    end_date = kwargs.get("end_date", "")
+    log_returns = kwargs.get("log_returns", False)
+    freq = kwargs.get("freq", "D")
+    maxnan = kwargs.get("maxnan", 0.05)
+    threshold = kwargs.get("threshold", 0.0)
+    method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1.0)
+    value_short = kwargs.get("value_short", 0.0)
+
+    benchmark = kwargs.get("benchmark", None)
+    p_views = kwargs.get("p_views", None)
+    q_views = kwargs.get("q_views", None)
+    objective = kwargs.get("objective", "Sharpe")
+    risk_free_rate = kwargs.get("risk_free_rate", 0)
+    risk_aversion = kwargs.get("risk_aversion", 1)
+    delta = kwargs.get("delta", None)
+    equilibrium = kwargs.get("equilibrium", True)
+    optimize = kwargs.get("optimize", True)
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -1513,21 +1386,7 @@ def get_black_litterman_portfolio(
 @log_start_end(log=logger)
 def get_ef(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    alpha: float = 0.05,
-    value: float = 1.0,
-    value_short: float = 0.0,
-    n_portfolios: int = 100,
-    seed: int = 123,
+    **kwargs,
 ) -> Tuple[
     pd.DataFrame,
     pd.DataFrame,
@@ -1618,6 +1477,26 @@ def get_ef(
         Parameters to create efficient frontier:
         frontier, mu, cov, stock_returns, weights, X1, Y1, port
     """
+
+    interval = kwargs.get("interval", "3y")
+    start_date = kwargs.get("start_date", "")
+    end_date = kwargs.get("end_date", "")
+    log_returns = kwargs.get("log_returns", False)
+    freq = kwargs.get("freq", "D")
+    maxnan = kwargs.get("maxnan", 0.05)
+    threshold = kwargs.get("threshold", 0.05)
+    method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1.0)
+    value_short = kwargs.get("value_short", 0.0)
+
+    risk_measure = kwargs.get("risk_measure", "MV")
+    risk_free_rate = kwargs.get("risk_free_rate", 0.0)
+    alpha = kwargs.get("alpha", 0.05)
+    n_portfolios = kwargs.get("n_portfolios", 100)
+    seed = kwargs.get("seed", 123)
+
+    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -1709,23 +1588,7 @@ def get_ef(
 @log_start_end(log=logger)
 def get_risk_parity_portfolio(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_cont: List[str] = None,
-    risk_free_rate: float = 0,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a risk parity portfolio using the risk budgeting approach
 
@@ -1819,6 +1682,26 @@ def get_risk_parity_portfolio(
         Dictionary of portfolio weights,
         DataFrame of stock returns.
     """
+
+    interval = kwargs.get("interval", "3y")
+    start_date = kwargs.get("start_date", "")
+    end_date = kwargs.get("end_date", "")
+    log_returns = kwargs.get("log_returns", False)
+    freq = kwargs.get("freq", "D")
+    maxnan = kwargs.get("maxnan", 0.05)
+    threshold = kwargs.get("threshold", 0.05)
+    method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1)
+
+    risk_measure = kwargs.get("risk_measure", "MV")
+    risk_free_rate = kwargs.get("risk_free_rate", 0)
+    alpha = kwargs.get("alpha", 0.05)
+    target_return = kwargs.get("target_return", -1.0)
+    mean = kwargs.get("mean", "hist")
+    covariance = kwargs.get("covariance", "hist")
+    d_ewma = kwargs.get("d_ewma", 0.94)
+    risk_cont = kwargs.get("risk_cont", None)
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -1868,22 +1751,7 @@ def get_risk_parity_portfolio(
 @log_start_end(log=logger)
 def get_rel_risk_parity_portfolio(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    version: str = "A",
-    risk_cont: List[str] = None,
-    penal_factor: float = 1,
-    target_return: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a relaxed risk parity portfolio using the least squares approach
 
@@ -1968,6 +1836,25 @@ def get_rel_risk_parity_portfolio(
         Dictionary of portfolio weights,
         DataFrame of stock returns.
     """
+
+    interval = kwargs.get("interval", "3y")
+    start_date = kwargs.get("start_date", "")
+    end_date = kwargs.get("end_date", "")
+    log_returns = kwargs.get("log_returns", False)
+    freq = kwargs.get("freq", "D")
+    maxnan = kwargs.get("maxnan", 0.05)
+    threshold = kwargs.get("threshold", 0.05)
+    method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1)
+
+    target_return = kwargs.get("target_return", -1)
+    mean = kwargs.get("mean", "hist")
+    covariance = kwargs.get("covariance", "hist")
+    d_ewma = kwargs.get("d_ewma", 0.94)
+    risk_cont = kwargs.get("risk_cont", None)
+    version = kwargs.get("version", "A")
+    penal_factor = kwargs.get("penal_factor", 1)
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -2015,33 +1902,7 @@ def get_rel_risk_parity_portfolio(
 @log_start_end(log=logger)
 def get_hcp_portfolio(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    model: str = "HRP",
-    codependence: str = "pearson",
-    covariance: str = "hist",
-    objective: str = "MinRisk",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    alpha: float = 0.05,
-    a_sim: int = 100,
-    beta: float = None,
-    b_sim: int = None,
-    linkage: str = "single",
-    k: int = 0,
-    max_k: int = 10,
-    bins_info: str = "KN",
-    alpha_tail: float = 0.05,
-    leaf_order: bool = True,
-    d_ewma: float = 0.94,
-    value: float = 1.0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds hierarchical clustering based portfolios
 
@@ -2220,6 +2081,40 @@ def get_hcp_portfolio(
         Dictionary of portfolio weights,
         DataFrame of stock returns.
     """
+
+    interval = kwargs.get("interval", "3y")
+    start_date = kwargs.get("start_date", "")
+    end_date = kwargs.get("end_date", "")
+    log_returns = kwargs.get("log_returns", False)
+    freq = kwargs.get("freq", "D")
+    maxnan = kwargs.get("maxnan", 0.05)
+    threshold = kwargs.get("threshold", 0.0)
+    method = kwargs.get("method", "time")
+    value = kwargs.get("value", 1.0)
+
+    objective = kwargs.get("objective", "MinRisk")
+    risk_measure = kwargs.get("risk_measure", "MV")
+    risk_free_rate = kwargs.get("risk_free_rate", 0.0)
+    risk_aversion = kwargs.get("risk_aversion", 1.0)
+    alpha = kwargs.get("alpha", 0.05)
+    a_sim = kwargs.get("a_sim", 100)
+    beta = kwargs.get("beta", None)
+    b_sim = kwargs.get("b_sim", None)
+    covariance = kwargs.get("covariance", "hist")
+    d_ewma = kwargs.get("d_ewma", 0.94)
+
+    model = kwargs.get("model", "HRP")
+
+    codependence = kwargs.get("codependence", "pearson")
+    linkage = kwargs.get("linkage", "single")
+    k = kwargs.get("k", None)
+    max_k = kwargs.get("max_k", 10)
+    bins_info = kwargs.get("bins_info", "KN")
+    alpha_tail = kwargs.get("alpha_tail", 0.05)
+    leaf_order = kwargs.get("leaf_order", True)
+
+    risk_measure = risk_measure.upper()
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -2274,32 +2169,7 @@ def get_hcp_portfolio(
 @log_start_end(log=logger)
 def get_hrp(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    codependence: str = "pearson",
-    covariance: str = "hist",
-    objective: str = "minrisk",
-    risk_measure: str = "mv",
-    risk_free_rate: float = 0.0,
-    risk_aversion: float = 1.0,
-    alpha: float = 0.05,
-    a_sim: int = 100,
-    beta: float = None,
-    b_sim: int = None,
-    linkage: str = "single",
-    k: int = 0,
-    max_k: int = 10,
-    bins_info: str = "KN",
-    alpha_tail: float = 0.05,
-    leaf_order: bool = True,
-    d_ewma: float = 0.94,
-    value: float = 1.0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a hierarchical risk parity portfolio
@@ -2474,35 +2344,11 @@ def get_hrp(
         Dictionary of portfolio weights,
         DataFrame of stock returns.
     """
+
     weights, stock_returns = get_hcp_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
         model="HRP",
-        codependence=codependence,
-        covariance=covariance,
-        objective=objectives_choices[objective],
-        risk_measure=risk_choices[risk_measure.lower()],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        a_sim=a_sim,
-        beta=beta,
-        b_sim=b_sim,
-        linkage=linkage,
-        k=k,
-        max_k=max_k,
-        bins_info=bins_info,
-        alpha_tail=alpha_tail,
-        leaf_order=leaf_order,
-        d_ewma=d_ewma,
-        value=value,
+        **kwargs,
     )
     return weights, stock_returns
 
@@ -2510,32 +2356,7 @@ def get_hrp(
 @log_start_end(log=logger)
 def get_herc(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    codependence: str = "pearson",
-    covariance: str = "hist",
-    objective: str = "minrisk",
-    risk_measure: str = "mv",
-    risk_free_rate: float = 0.0,
-    risk_aversion: float = 1.0,
-    alpha: float = 0.05,
-    a_sim: int = 100,
-    beta: float = None,
-    b_sim: int = None,
-    linkage: str = "single",
-    k: int = 0,
-    max_k: int = 10,
-    bins_info: str = "KN",
-    alpha_tail: float = 0.05,
-    leaf_order: bool = True,
-    d_ewma: float = 0.94,
-    value: float = 1.0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a hierarchical risk parity portfolio
@@ -2712,33 +2533,8 @@ def get_herc(
     """
     weights, stock_returns = get_hcp_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
         model="HERC",
-        codependence=codependence,
-        covariance=covariance,
-        objective=objectives_choices[objective],
-        risk_measure=risk_choices[risk_measure.lower()],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        a_sim=a_sim,
-        beta=beta,
-        b_sim=b_sim,
-        linkage=linkage,
-        k=k,
-        max_k=max_k,
-        bins_info=bins_info,
-        alpha_tail=alpha_tail,
-        leaf_order=leaf_order,
-        d_ewma=d_ewma,
-        value=value,
+        **kwargs,
     )
     return weights, stock_returns
 
@@ -2746,32 +2542,7 @@ def get_herc(
 @log_start_end(log=logger)
 def get_nco(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    codependence: str = "pearson",
-    covariance: str = "hist",
-    objective: str = "minrisk",
-    risk_measure: str = "mv",
-    risk_free_rate: float = 0.0,
-    risk_aversion: float = 1.0,
-    alpha: float = 0.05,
-    a_sim: int = 100,
-    beta: float = None,
-    b_sim: int = None,
-    linkage: str = "single",
-    k: int = None,
-    max_k: int = 10,
-    bins_info: str = "KN",
-    alpha_tail: float = 0.05,
-    leaf_order: bool = True,
-    d_ewma: float = 0.94,
-    value: float = 1.0,
+    **kwargs,
 ) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a hierarchical risk parity portfolio
@@ -2948,33 +2719,8 @@ def get_nco(
     """
     weights, stock_returns = get_hcp_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
         model="NCO",
-        codependence=codependence,
-        covariance=covariance,
-        objective=objectives_choices[objective.lower()],
-        risk_measure=risk_choices[risk_measure.lower()],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        a_sim=a_sim,
-        beta=beta,
-        b_sim=b_sim,
-        linkage=linkage,
-        k=k,
-        max_k=max_k,
-        bins_info=bins_info,
-        alpha_tail=alpha_tail,
-        leaf_order=leaf_order,
-        d_ewma=d_ewma,
-        value=value,
+        **kwargs,
     )
     return weights, stock_returns
 
@@ -2983,12 +2729,7 @@ def get_nco(
 def black_litterman(
     stock_returns: pd.DataFrame,
     benchmark,
-    p_views=None,
-    q_views=None,
-    delta=None,
-    risk_free_rate: float = 0,
-    equilibrium: bool = True,
-    factor: float = 252,
+    **kwargs,
 ) -> Tuple[dict, dict, dict]:
     """
     Calculates Black-Litterman estimates following He and Litterman (1999)
@@ -2998,7 +2739,7 @@ def black_litterman(
     stock_returns: pd.DataFrame
         _description_
     benchmark: Dict
-        lala
+        Dict of portfolio weights
     p_views: List
         Matrix P of views that shows relationships among assets and returns.
         Default value to None.
@@ -3022,6 +2763,14 @@ def black_litterman(
         Covariance matrix,
         Portfolio weights.
     """
+
+    p_views = kwargs.get("p_views", None)
+    q_views = kwargs.get("q_views", None)
+    delta = kwargs.get("delta", None)
+    risk_free_rate = kwargs.get("risk_free_rate", 0)
+    equilibrium = kwargs.get("equilibrium", True)
+    factor = kwargs.get("factor", 252)
+
     symbols = stock_returns.columns.tolist()
     benchmark = pd.Series(benchmark).to_numpy().reshape(-1, 1)
 
@@ -3122,9 +2871,66 @@ def generate_random_portfolios(
 @log_start_end(log=logger)
 def get_properties() -> List[str]:
     """Get properties to use on property optimization.
+
     Returns
     -------
     List[str]:
         List of available properties to use on property optimization.
     """
     return optimizer_helper.valid_property_infos
+
+
+@log_start_end(log=logger)
+def get_categories(
+    weights: dict, categories: dict, column: str = "ASSET_CLASS"
+) -> pd.DataFrame:
+    """Get categories from dictionary
+
+    Parameters
+    ----------
+    weights : dict
+        Dictionary with weights
+    categories: dict
+        Dictionary with categories
+    column : str, optional
+        Column name to use on categories, by default "ASSET_CLASS"
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with weights
+    """
+
+    if not weights:
+        return pd.DataFrame()
+
+    df = pd.DataFrame.from_dict(
+        data=weights, orient="index", columns=["value"], dtype=float
+    )
+    categories_df = pd.DataFrame.from_dict(data=categories, dtype=float)
+
+    col = list(categories_df.columns).index(column)
+    col_inv_amt = list(categories_df.columns).index("CURRENT_INVESTED_AMOUNT")
+    col_crncy = list(categories_df.columns).index("CURRENCY")
+    categories_df = df.join(
+        categories_df.iloc[:, [col, col_inv_amt, col_crncy]], how="inner"
+    )
+    categories_df.set_index(column, inplace=True)
+    categories_df.groupby(level=0).sum()
+
+    df = pd.pivot_table(
+        categories_df,
+        values=["value", "CURRENT_INVESTED_AMOUNT"],
+        index=["CURRENCY", column],
+        aggfunc=np.sum,
+    )
+    df["CURRENT_WEIGHTS"] = (
+        df["CURRENT_INVESTED_AMOUNT"].groupby(level=0).transform(lambda x: x / sum(x))
+    )
+    df["value"] = df["value"].groupby(level=0).transform(lambda x: x / sum(x))
+    df = pd.concat(
+        [d.append(d.sum().rename((k, "TOTAL " + k))) for k, d in df.groupby(level=0)]
+    )
+    df = df.iloc[:, [0, 2, 1]]
+
+    return df
