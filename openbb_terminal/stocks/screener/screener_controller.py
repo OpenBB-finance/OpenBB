@@ -636,7 +636,7 @@ class ScreenerController(BaseController):
             choices=screener_helper.finviz_choices("technical"),
             type=str.lower,
             dest="sort",
-            default="",
+            default="Ticker",
             help="Sort elements of the table.",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -660,10 +660,13 @@ class ScreenerController(BaseController):
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
         if self.screen_tickers:
-            self.queue = ca_controller.ComparisonAnalysisController(
-                self.screen_tickers, self.queue
-            ).menu(custom_path_menu_above="/stocks/")
+            self.queue = self.load_class(
+                ca_controller.ComparisonAnalysisController,
+                self.screen_tickers,
+                self.queue,
+            )
         else:
             console.print(
-                "Some tickers must be screened first through one of the presets!\n"
+                "Please select a screener using 'set' and then run 'historical' "
+                "before going to the CA menu.\n"
             )
