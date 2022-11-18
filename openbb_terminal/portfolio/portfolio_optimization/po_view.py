@@ -38,37 +38,83 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_ef(symbols: List[str] = None, portfolio_engine: PoEngine = None, **kwargs):
-    """
-    Display efficient frontier
+def display_ef(portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs):
+    """Display efficient frontier
 
     Parameters
     ----------
-    symbols : List[str], optional
-        List of symbols, by default None
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
+    symbols : List[str], optional
+        List of symbols, by default None
+    interval : str, optional
+        Interval to get data, by default '3y'
+    start_date : str, optional
+        If not using interval, start date string (YYYY-MM-DD), by default ""
+    end_date : str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last weekday, by default ""
+    log_returns : bool, optional
+        If True use log returns, else arithmetic returns, by default False
+    freq : str, optional
+        Frequency of returns, by default 'D'. Options: 'D' for daily, 'W' for weekly, 'M' for monthly
+    maxnan: float, optional
+        Maximum percentage of NaNs allowed in the data, by default 0.05
+    threshold: float, optional
+        Value used to replace outliers that are higher than threshold, by default 0.0
+    method: str, optional
+        Method used to fill nan values, by default 'time'
+        For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
+    value : float, optional
+        Amount to allocate to portfolio in long positions, by default 1.0
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions, by default 0.0
+    risk_measure: str, optional
+        The risk measure used to optimize the portfolio, by default 'MV'
+        Possible values are:
+
+        - 'MV': Standard Deviation.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
+        - 'FLPM': First Lower Partial Moment (Omega Ratio).
+        - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
+        - 'CVaR': Conditional Value at Risk.
+        - 'EVaR': Entropic Value at Risk.
+        - 'WR': Worst Realization.
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
+
+    risk_free_rate: float, optional
+        Risk free rate, annualized. Used for 'FLPM' and 'SLPM' and Sharpe objective function, by default 0.0
+    alpha: float, optional
+        Significance level of VaR, CVaR, EDaR, DaR, CDaR, EDaR, Tail Gini of losses, by default 0.05
+    n_portfolios: int, optional
+        Number of portfolios to simulate, by default 100
+    seed: int, optional
+        Seed used to generate random portfolios, by default 123
     """
 
-    symbols, portfolio_engine, parameters = validate_inputs(
+    valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
         symbols, portfolio_engine, kwargs
     )
 
-    n_portfolios = parameters.get("n_portfolios", 100)
-    freq = parameters.get("freq", "D")
-    risk_measure = parameters.get("risk_measure", "MV")
-    risk_free_rate = parameters.get("risk_free_rate", 0.0)
-    alpha = parameters.get("alpha", 0.05)
+    n_portfolios = valid_kwargs.get("n_portfolios", 100)
+    freq = valid_kwargs.get("freq", "D")
+    risk_measure = valid_kwargs.get("risk_measure", "MV")
+    risk_free_rate = valid_kwargs.get("risk_free_rate", 0.0)
+    alpha = valid_kwargs.get("alpha", 0.05)
 
     # Pop chart args
-    tangency = parameters.pop("tangency", False)
-    plot_tickers = parameters.pop("plot_tickers", False)
-    external_axes = parameters.pop("external_axes", None)
+    tangency = valid_kwargs.pop("tangency", False)
+    plot_tickers = valid_kwargs.pop("plot_tickers", False)
+    external_axes = valid_kwargs.pop("external_axes", None)
 
     frontier, mu, cov, stock_returns, weights, X1, Y1, port = get_ef(
-        symbols,
-        portfolio_engine,
-        **parameters,
+        valid_portfolio_engine,
+        valid_symbols,
+        **valid_kwargs,
     )
 
     risk_free_rate = risk_free_rate / TIME_FACTOR[freq.upper()]

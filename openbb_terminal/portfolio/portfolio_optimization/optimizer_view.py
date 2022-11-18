@@ -2137,22 +2137,22 @@ def display_ef(
     """
 
     frontier, mu, cov, stock_returns, weights, X1, Y1, port = optimizer_model.get_ef(
-        symbols,
-        interval,
-        start_date,
-        end_date,
-        log_returns,
-        freq,
-        maxnan,
-        threshold,
-        method,
-        risk_measure,
-        risk_free_rate,
-        alpha,
-        value,
-        value_short,
-        n_portfolios,
-        seed,
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
+        log_returns=log_returns,
+        freq=freq,
+        maxnan=maxnan,
+        threshold=threshold,
+        method=method,
+        risk_measure=risk_measure,
+        risk_free_rate=risk_free_rate,
+        alpha=alpha,
+        value=value,
+        value_short=value_short,
+        n_portfolios=n_portfolios,
+        seed=seed,
     )
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
