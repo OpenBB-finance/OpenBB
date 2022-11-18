@@ -1158,11 +1158,11 @@ def get_ef(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> frontier = openbb.portfolio.po.get_ef(symbols=["AAPL", "MSFT", "AMZN"])
+    >>> frontier = openbb.portfolio.po.ef(symbols=["AAPL", "MSFT", "AMZN"])
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> frontier = openbb.portfolio.po.get_ef(portfolio_engine=p)
+    >>> frontier = openbb.portfolio.po.ef(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -2388,7 +2388,7 @@ def show(
 
         msg = ", ".join(available_categories)
         if category not in available_categories:
-            console.print(f"Please specify a category from the following: {msg}")
+            console.print(f"Please specify a category from the following: {msg}.")
             return weights, pd.DataFrame()
 
         category_df = portfolio_engine.get_category_df(category=category)
