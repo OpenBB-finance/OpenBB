@@ -325,7 +325,7 @@ def plot_oi(
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Open Interest [1k] ")
     ax.set_xlim(min_strike, max_strike)
-    ax.legend()
+    ax.legend(fontsize="x-small")
     ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiry}")
 
     theme.style_primary_axis(ax)
@@ -416,7 +416,7 @@ def plot_vol(
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Volume [1k] ")
     ax.set_xlim(min_strike, max_strike)
-    ax.legend()
+    ax.legend(fontsize="x-small")
     ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
     theme.style_primary_axis(ax)
     if external_axes is None:
@@ -637,7 +637,7 @@ def plot_volume_open_interest(
         f"Max pain = {max_pain}",
     ]
 
-    ax.legend(handles=handles[:], labels=labels, loc="lower left")
+    ax.legend(fontsize="xx-small", handles=handles[:], labels=labels, loc="lower left")
     sns.despine(left=True, bottom=True)
     theme.style_primary_axis(ax)
 
