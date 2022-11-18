@@ -61,7 +61,6 @@ class ForexController(BaseController):
 
     PATH = "/forex/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
-    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""
@@ -77,7 +76,6 @@ class ForexController(BaseController):
             choices: dict = self.choices
 
             choices["load"].update({c: {} for c in FX_TICKERS})
-            choices["load"]["--ticker"] = {c: {} for c in FX_TICKERS}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -125,6 +123,8 @@ class ForexController(BaseController):
             dest="ticker",
             help="Currency pair to load.",
             type=parse_forex_symbol,
+            metavar="TICKER",
+            choices=FX_TICKERS,
         )
         parser.add_argument(
             "-r",

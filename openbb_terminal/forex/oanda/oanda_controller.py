@@ -43,8 +43,6 @@ class OandaController(BaseController):
         "candles",
         "pending",
         "calendar",
-        # "news",
-        # "reddit",
     ]
     PATH = "/forex/oanda/"
 
@@ -58,17 +56,12 @@ class OandaController(BaseController):
         self.instrument: Union[str, None] = None
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = self.choices
             # TODO: We currently use the Alpha Vantage currency list for autocompletion
             # This leads to messages like `USD_EUR is not a valid instrument.`
             # In Oanda they have their own list of available instruments. It would be
             # Great to fetch these lists and store them locally like it's done for
             # other currency codes (see ./av_forex_currencies.csv and how it's handled).
-            choices["to"] = {c: None for c in forex_helper.YF_CURRENCY_LIST}
-            choices["from"] = {c: None for c in forex_helper.YF_CURRENCY_LIST}
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -115,6 +108,8 @@ class OandaController(BaseController):
             required="-h" not in other_args,
             type=av_model.check_valid_forex_currency,
             dest="to_symbol",
+            choices=forex_helper.YF_CURRENCY_LIST,
+            metavar="TO_SYMBOL",
         )
 
         if (
@@ -151,6 +146,8 @@ class OandaController(BaseController):
             required="-h" not in other_args,
             type=av_model.check_valid_forex_currency,
             dest="from_symbol",
+            choices=forex_helper.YF_CURRENCY_LIST,
+            metavar="FROM_SYMBOL",
         )
 
         if (
