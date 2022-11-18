@@ -12,10 +12,10 @@
 
 {{< highlight python >}}
 portfolio.metric.calmar(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     window: int = 756,
     chart: bool = False,
-)
+) -> Tuple[pandas.core.frame.DataFrame, pandas.core.series.Series]
 {{< /highlight >}}
 
 .. raw:: html
@@ -43,6 +43,6 @@ portfolio.metric.calmar(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.metric.calmar(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.metric.calmar(p)
     {{< /highlight >}}
