@@ -102,3 +102,7 @@ jobs:
         run: rm -rf /Users/openbb/Desktop/OpenBB\ Terminal
       - name: Remove OpenBB Exports Folder
         run: rm -rf ~/Desktop/OPENBB-exports
+      - name: Deactivate & Delete Environment
+        run: |
+          conda deactivate
+          conda env remove -n build_env
