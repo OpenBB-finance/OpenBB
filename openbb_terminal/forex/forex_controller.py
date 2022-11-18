@@ -74,10 +74,9 @@ class ForexController(BaseController):
         self.data = pd.DataFrame()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = self.choices
+            choices: dict = self.choices_default
 
             choices["load"].update({c: {} for c in FX_TICKERS})
-            choices["load"]["--ticker"] = {c: {} for c in FX_TICKERS}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -125,6 +124,8 @@ class ForexController(BaseController):
             dest="ticker",
             help="Currency pair to load.",
             type=parse_forex_symbol,
+            metavar="TICKER",
+            choices=FX_TICKERS,
         )
         parser.add_argument(
             "-r",
