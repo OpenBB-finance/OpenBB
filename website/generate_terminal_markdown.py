@@ -138,9 +138,9 @@ def generate_markdown_section(meta: Dict[str, str], examples: Dict[str, str]) ->
 
     # head meta https://docusaurus.io/docs/markdown-features/head-metadata
     markdown = f"# {meta['cmd_name']}\n\n{meta['description']}\n\n"
-    markdown += f"### Usage \n```python\n{meta['usage']}```\n\n"
+    markdown += f"### Usage\n\n```python\n{meta['usage']}```\n\n"
 
-    markdown += "## Parameters\n\n"
+    markdown += "---\n\n## Parameters\n\n"
     if meta["actions"]:
         markdown += "| Name | Description | Default | Optional | Choices |\n"
         markdown += "| ---- | ----------- | ------- | -------- | ------- |\n"
@@ -152,18 +152,17 @@ def generate_markdown_section(meta: Dict[str, str], examples: Dict[str, str]) ->
                     f"| {param['optional']} | {param['choices']} |\n"
                 )
     else:
-        markdown += "This command has no parameters\n"
-
-    markdown += "\n\n"
+        markdown += "This command has no parameters\n\n"
 
     if examples.get("example", None):
-        markdown += "## Examples\n\n"
+        markdown += "---\n\n## Examples\n\n"
         markdown += f"```python\n{examples['example']}\n```\n\n"
 
     if examples.get("images", []):
         for image in examples["images"]:
             markdown += f"{image}\n\n"
 
+    markdown += "---\n\n"
     return markdown.replace("<", "").replace(">", "")
 
 

@@ -358,20 +358,20 @@ def generate_markdown_section(meta):
     markdown = (
         f"{meta['description']}\n\nSource Code: [[link]({meta['source_code_url']})]\n\n"
     )
-    markdown += f"```python\n{meta['func_def']}\n```\n"
+    markdown += f"```python\n{meta['func_def']}\n```\n\n"
 
-    markdown += "## Parameters\n\n"
+    markdown += "---\n\n## Parameters\n\n"
     if meta["params"]:
         markdown += "| Name | Type | Description | Default | Optional |\n"
         markdown += "| ---- | ---- | ----------- | ------- | -------- |\n"
         for param in meta["params"]:
             description = param["doc"].replace("\n", "<br/>")
             markdown += f"| {param['name']} | {param['type']} | {description} | {param['default']} | {param['optional']} |\n"  # noqa: E501
-        markdown += "\n"
+        markdown += "\n\n"
     else:
         markdown += "This function does not take any parameters.\n\n"
 
-    markdown += "## Returns\n\n"
+    markdown += "---\n\n## Returns\n\n"
     if meta["returns"]:
         markdown += "| Type | Description |\n"
         markdown += "| ---- | ----------- |\n"
@@ -380,16 +380,18 @@ def generate_markdown_section(meta):
             if meta["returns"]["doc"]
             else ""
         )
-        markdown += f"| {meta['returns']['type']} | {return_desc} |\n\n"
+        markdown += f"| {meta['returns']['type']} | {return_desc} |\n"
     else:
         markdown += "This function does not return anything\n\n"
 
+    markdown += "---\n\n## Examples\n" if meta["examples"] else ""
     for example in meta["examples"]:
-        markdown += "## Examples\n\n"
         markdown += f"{example['description']}\n"
         if isinstance(example["snippet"], str):
             snippet = example["snippet"].replace(">>> ", "")
             markdown += f"```python\n{snippet}\n```\n\n"
+
+    markdown += "---\n\n"
 
     return markdown
 
