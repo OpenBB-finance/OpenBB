@@ -152,7 +152,7 @@ def _get_argument_parser(
     else:
         raise AssertionError(
             "One of these functions should be called once:\n"
-            " - parse_known_args_and_warn\n"
+            " - patch_parse_simple_args\n"
             " - parse_known_args_and_warn\n"
         )
 
@@ -201,7 +201,7 @@ def build_controller_choice_map(controller) -> dict:
                 argument_parser=argument_parser
             )
     except Exception as exception:
-        if environ["DEBUG_MODE"] == "true":
+        if environ.get("DEBUG_MODE", "false") == "true":
             raise exception
 
     return controller_choice_map
