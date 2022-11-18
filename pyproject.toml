@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "OpenBBTerminal"
-version = "1.9.1"
+version = "1.9.1.9"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
@@ -104,6 +104,8 @@ papermill = "^2.4.0"
 stocksera = "^0.1.21"
 ipython = "8.5.0"
 protobuf = "3.20.1"
+pytorch-lightning = {version = "1.6.5", optional = true}
+u8darts = {extras = ["torch"], version = "0.22.0", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
@@ -132,9 +134,9 @@ types-six = "^1.16.12"
 nbmake = ">0.5.0"
 
 [tool.poetry.extras]
-prediction = ["torch"]
+prediction = ["torch", "pytorch-lightning", "u8darts"]
 optimization = ["Riskfolio-Lib"]
-all = ["torch", "Riskfolio-Lib"]
+all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]
 
