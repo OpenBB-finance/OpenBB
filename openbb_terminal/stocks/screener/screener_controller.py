@@ -71,6 +71,7 @@ class ScreenerController(BaseController):
 
     historical_candle_choices = ["o", "h", "l", "c", "a"]
     PATH = "/stocks/scr/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -80,37 +81,7 @@ class ScreenerController(BaseController):
         self.screen_tickers: List = list()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            choices["view"] = {c: {} for c in self.preset_choices}
-            choices["set"] = {c: {} for c in self.preset_choices}
-            choices["historical"] = {
-                "--start": None,
-                "-s": "--start",
-                "--type": {c: {} for c in self.historical_candle_choices},
-                "--no-scale": {},
-                "-n": "--no-scale",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            screener_standard = {
-                "--preset": {c: {} for c in self.preset_choices},
-                "-p": "--preset",
-                "--sort": {c: {} for c in finviz_view.d_cols_to_sort["overview"]},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            # TODO THIS IS BROKEN, CHAVI REFACTOR WILL FIX
-            choices["overview"] = screener_standard
-            choices["valuation"] = screener_standard
-            choices["financial"] = screener_standard
-            choices["ownership"] = screener_standard
-            choices["performance"] = screener_standard
-            choices["technical"] = screener_standard
-
+            choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def parse_input(self, an_input: str) -> List:
