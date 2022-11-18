@@ -26,7 +26,7 @@ def check_premium_key(json_response: Dict) -> bool:
         "any of the premium plans at https://www.alphavantage.co/premium/ to instantly unlock all premium endpoints"
     }:
         console.print(
-            "This is a premium endpoint for AlphaVantage. Please use a premium key\n"
+            "This is a premium endpoint for AlphaVantage. Please use a premium key.\n"
         )
         return True
     return False
@@ -614,8 +614,11 @@ def get_fraud_ratios(symbol: str, detail: bool = False) -> pd.DataFrame:
         df_bs, _ = fd.get_balance_sheet_annual(symbol=symbol)
         df_is, _ = fd.get_income_statement_annual(symbol=symbol)
 
-    except Exception as e:
-        console.print(e)
+    except ValueError as e:
+        if "premium endpoint" in str(e):
+            console.print(
+                "This is a premium endpoint for AlphaVantage. Please use a premium key.\n"
+            )
         return pd.DataFrame()
 
     # pylint: disable=no-member
@@ -726,11 +729,15 @@ def get_dupont(symbol: str) -> pd.DataFrame:
     try:
         fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         # pylint: disable=unbalanced-tuple-unpacking
+        df_cf, _ = fd.get_cash_flow_annual(symbol=symbol)
         df_bs, _ = fd.get_balance_sheet_annual(symbol=symbol)
         df_is, _ = fd.get_income_statement_annual(symbol=symbol)
 
-    except Exception as e:
-        console.print(e)
+    except ValueError as e:
+        if "premium endpoint" in str(e):
+            console.print(
+                "This is a premium endpoint for AlphaVantage. Please use a premium key.\n"
+            )
         return pd.DataFrame()
 
     # pylint: disable=no-member
