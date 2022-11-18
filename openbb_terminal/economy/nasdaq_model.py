@@ -138,7 +138,7 @@ def get_country_codes() -> List[str]:
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
 def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
-    """Gets the Big Mac index calculated by the Economist
+    """Get the Big Mac index calculated by the Economist
 
     Parameters
     ----------
