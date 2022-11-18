@@ -78,6 +78,16 @@ def generate_portfolio(
     -------
     PoEngine
         Portfolio optimization engine
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
+    >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
     """
 
     if symbols:
