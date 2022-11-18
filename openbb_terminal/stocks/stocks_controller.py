@@ -50,7 +50,6 @@ class StocksController(StockBaseController):
         "tob",
         "candle",
         "news",
-        "resources",
         "codes",
     ]
     CHOICES_MENUS = [
@@ -90,14 +89,6 @@ class StocksController(StockBaseController):
 
             choices: dict = self.choices_default
 
-            choices["quote"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-            }
-            choices["tob"] = {
-                "--exchange": {c: {} for c in self.TOB_EXCHANGES},
-                "-e": "--exchange",
-            }
             choices["search"] = {
                 "--query": None,
                 "-q": "--query",
