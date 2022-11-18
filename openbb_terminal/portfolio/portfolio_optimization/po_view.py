@@ -300,6 +300,7 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
         return
 
     available_categories = portfolio_engine.get_available_categories()
+
     if not available_categories:
         console.print("No categories found.")
         return
@@ -307,9 +308,11 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
     if "category" not in kwargs:
         console.print(f"Please specify a category from the following: {msg}")
         return
-    elif kwargs["category"] not in available_categories:
+
+    if kwargs["category"] not in available_categories:
         console.print(f"Please specify a category from the following: {msg}")
         return
+
     category = kwargs["category"]
 
     _, valid_portfolio_engine, valid_kwargs = validate_inputs(

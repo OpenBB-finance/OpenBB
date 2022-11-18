@@ -1,5 +1,5 @@
-import pandas as pd
 from typing import Dict, List
+import pandas as pd
 
 from openbb_terminal.portfolio.portfolio_optimization import (
     excel_model,
