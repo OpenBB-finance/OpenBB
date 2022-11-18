@@ -81,7 +81,7 @@ class TechnicalAnalysisController(StockBaseController):
         self.data["Adj Close"] = data["Close"]
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = choices_default
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
