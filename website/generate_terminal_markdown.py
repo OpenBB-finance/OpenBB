@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import traceback
 from typing import Dict, List, Optional, Union
@@ -42,6 +43,7 @@ def existing_markdown_file_examples(
     return examples_dict
 
 
+# pylint: disable=isinstance-second-argument-not-valid-type
 def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
     """Get commands and parsers from ControllerDoc"""
 
@@ -57,6 +59,11 @@ def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
             if default is not None:
                 if isinstance(default, list):
                     default = ", ".join([str(x) for x in default])
+                elif isinstance(default, datetime):
+                    if "start" in action.dest:
+                        default = "datetime.now() - timedelta(days=365)"
+                    elif "end" in action.dest or "date" in action.dest:
+                        default = "datetime.now()"
 
             choices = action.choices
             if choices is not None:
@@ -64,29 +71,23 @@ def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
                 if isinstance(choices, list):
                     listdict = []
                     for choice in choices:
-                        if isinstance(choice, dict):
+                        if isinstance(choice, (dict, type({}.keys()))):
                             listdict.append([f"{k}" for k in choice])
 
                     if listdict:
                         choices = listdict
+                    else:
+                        choices = [f"{x}" for x in choices]
+                    choices = ", ".join(choices) if len(choices) > 0 else None
 
-                    choices = (
-                        ", ".join([str(choice) for choice in choices])
-                        if choices
-                        else None
-                    )
-                elif isinstance(choices, dict):
+                elif isinstance(choices, (dict, type({}.keys()))):
                     choices = [f"{k}" for k in choices]
-                    choices = ",  ".join(choices)
+                    choices = ", ".join(choices) if len(choices) > 0 else None
 
             doc = action.help
             if doc is not None:
                 # We do this to fix multiline docstrings for the markdown
                 doc = " ".join(doc.split())
-
-            for attr in [action.dest, action.default, doc]:
-                if attr is not None:
-                    attr = attr.replace("call_", "") if isinstance(attr, str) else attr
 
             actions.append(
                 {
