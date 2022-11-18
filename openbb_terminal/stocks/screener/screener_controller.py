@@ -12,7 +12,6 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -311,7 +310,6 @@ class ScreenerController(BaseController):
         parser.add_argument(
             "-s",
             "--sort",
-            action=AllowArgsWithWhiteSpace,
             choices=screener_helper.finviz_choices("overview"),
             type=str.lower,
             dest="sort",
@@ -391,7 +389,6 @@ class ScreenerController(BaseController):
             choices=screener_helper.finviz_choices("valuation"),
             type=str.lower,
             metavar="SORT",
-            action=AllowArgsWithWhiteSpace,
             help="Sort elements of the table.",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -456,7 +453,6 @@ class ScreenerController(BaseController):
         parser.add_argument(
             "-s",
             "--sort",
-            action=AllowArgsWithWhiteSpace,
             choices=screener_helper.finviz_choices("financial"),
             type=str.lower,
             dest="sort",
@@ -531,7 +527,6 @@ class ScreenerController(BaseController):
             default="Ticker",
             choices=screener_helper.finviz_choices("ownership"),
             type=str.lower,
-            action=AllowArgsWithWhiteSpace,
             help="Sort elements of the table.",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -597,7 +592,6 @@ class ScreenerController(BaseController):
         parser.add_argument(
             "-s",
             "--sort",
-            action=AllowArgsWithWhiteSpace,
             choices=screener_helper.finviz_choices("performance"),
             type=str.lower,
             dest="sort",
@@ -667,7 +661,6 @@ class ScreenerController(BaseController):
         parser.add_argument(
             "-s",
             "--sort",
-            action=AllowArgsWithWhiteSpace,
             choices=screener_helper.finviz_choices("technical"),
             type=str.lower,
             dest="sort",
