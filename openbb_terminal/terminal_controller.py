@@ -103,6 +103,7 @@ class TerminalController(BaseController):
     GUESS_NUMBER_TRIES_LEFT = 0
     GUESS_SUM_SCORE = 0.0
     GUESS_CORRECTLY = 0
+    CHOICES_GENERATION = False
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Construct terminal controller."""

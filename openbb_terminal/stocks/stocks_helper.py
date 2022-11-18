@@ -36,7 +36,7 @@ from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
-from openbb_terminal.stocks.stocks_models import (
+from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
     load_stock_yf,
     load_stock_eodhd,
@@ -122,6 +122,11 @@ def search(
         The limit of companies shown.
     export : str
         Export data
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.search(country="united states", exchange_country="Germany")
     """
     kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
@@ -499,6 +504,11 @@ def display_candle(
         Flag to display raw data, by default False
     yscale: str
         Linear or log for yscale
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.candle("AAPL")
     """
 
     if start_date is None:
@@ -792,6 +802,11 @@ def load_ticker(
     DataFrame
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
         date_id, OC-High, OC-Low.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> msft_df = openbb.stocks.load("MSFT")
     """
     df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
 

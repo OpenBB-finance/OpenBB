@@ -111,9 +111,12 @@ def historical(
     l_stocks = screen.screener_view(verbose=0)
     limit_random_stocks = False
 
-    df_screener = pd.DataFrame()
+    final_screener = pd.DataFrame()
 
     if l_stocks:
+        if len(l_stocks) < 2:
+            console.print("Please select two or more tickers.\n")
+            return pd.DataFrame(), [], False
         if len(l_stocks) > limit:
             random.shuffle(l_stocks)
             l_stocks = sorted(l_stocks[:limit])
@@ -123,25 +126,29 @@ def historical(
             )
             limit_random_stocks = True
 
+        selector = d_candle_types[type_candle]
         df_screener = yf.download(
             l_stocks, start=start_date, progress=False, threads=False
-        )[d_candle_types[type_candle]][l_stocks]
-        df_screener = df_screener[l_stocks]
+        )[selector]
+        clean_screener = df_screener[l_stocks]
+        final_screener = clean_screener[l_stocks]
 
-        if np.any(df_screener.isna()):
-            nan_tickers = df_screener.columns[df_screener.isna().sum() >= 1].to_list()
+        if np.any(final_screener.isna()):
+            nan_tickers = final_screener.columns[
+                final_screener.isna().sum() >= 1
+            ].to_list()
             console.print(
                 f"NaN values found in: {', '.join(nan_tickers)}.  Replacing with zeros."
             )
-            df_screener = df_screener.fillna(0)
+            final_screener = final_screener.fillna(0)
 
         # This puts everything on 0-1 scale for visualizing
         if normalize:
             mm_scale = MinMaxScaler()
-            df_screener = pd.DataFrame(
-                mm_scale.fit_transform(df_screener),
-                columns=df_screener.columns,
-                index=df_screener.index,
+            final_screener = pd.DataFrame(
+                mm_scale.fit_transform(final_screener),
+                columns=final_screener.columns,
+                index=final_screener.index,
             )
 
-    return df_screener, l_stocks, limit_random_stocks
+    return final_screener, l_stocks, limit_random_stocks
