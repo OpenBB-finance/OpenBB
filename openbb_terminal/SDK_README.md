@@ -49,6 +49,9 @@ While it's technically possible to use a subset of the functionality in off-line
 
 **Forecasting Toolkit on Apple Silicon:** To install the Forecasting toolkit on M1/M2 macs you need to use the x86_64 version of conda  and install certain dependencies from conda-forge. Follow the [instructions in this section](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md#1-install-miniconda)
 
+**Base Linux Docker containers:** To have the package work in base linux containers like python's `slim-buster` you need to install a C anc C++ compiler that's not bundled with the distribution.
+Run `sudo apt update && sudo apt install gcc cmake`
+
 ## Installation
 
 We provide a simple installation method in order to utilize the OpenBB SDK. You must first create an environment,
@@ -73,7 +76,7 @@ conda create -n obb python=3.9.6 -y
 (Optional) If you would like machine learning forecast features:
 
 ```bash
-conda create -n obb -c conda-forge python=3.9.6 u8darts=0.22.0 pytorch-lightning=1.6.5 -y
+conda create -n obb -c conda-forge python=3.9.6 lightgbm=3.3.3 -y
 ```
 
 #### 3. **Activate the virtual environment**
