@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import pandas as pd
 
 # These are all the possible yfinance properties
 valid_property_infos = [
@@ -105,3 +106,25 @@ def check_valid_property_type(check_property: str) -> str:
         return check_property
 
     raise argparse.ArgumentTypeError(f"{check_property} is not a valid info")
+
+
+def dict_to_df(d: dict) -> pd.DataFrame:
+    """Convert a dictionary to a DataFrame
+
+    Parameters
+    ----------
+    d : dict
+        Dictionary to convert
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with dictionary
+    """
+
+    if not d:
+        return pd.DataFrame()
+
+    df = pd.DataFrame.from_dict(data=d, orient="index", columns=["value"])
+
+    return df
