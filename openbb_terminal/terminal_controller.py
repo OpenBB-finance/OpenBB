@@ -973,7 +973,6 @@ def run_scripts(
     output: bool
         Whether to log tests to txt files
     """
-    print(f"Output is: {output}")
     if not path.exists():
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
         if not test_mode:
@@ -1025,20 +1024,21 @@ def run_scripts(
         if not test_mode or verbose:
             terminal(file_cmds, test_mode=True)
         else:
-            timestamp = datetime.now().timestamp()
-            stamp_str = str(timestamp).replace(".", "")
-            whole_path = Path(REPOSITORY_DIRECTORY / "integration_test_output")
-            whole_path.mkdir(parents=True, exist_ok=True)
-            first_cmd = file_cmds[0].split("/")[1]
-            with open(
-                whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
-            ) as output_file:
-                with suppress_stdout():
-                    if output:
+            with suppress_stdout():
+                print(f"To ensure: {output}")
+                if output:
+                    timestamp = datetime.now().timestamp()
+                    stamp_str = str(timestamp).replace(".", "")
+                    whole_path = Path(REPOSITORY_DIRECTORY / "integration_test_output")
+                    whole_path.mkdir(parents=True, exist_ok=True)
+                    first_cmd = file_cmds[0].split("/")[1]
+                    with open(
+                        whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
+                    ) as output_file:
                         with contextlib.redirect_stdout(output_file):
                             terminal(file_cmds, test_mode=True)
-                    else:
-                        terminal(file_cmds, test_mode=True)
+                else:
+                    terminal(file_cmds, test_mode=True)
 
 
 def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
