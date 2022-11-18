@@ -1,5 +1,7 @@
 # TROUBLESHOOT
 
+<!-- markdownlint-disable MD033 -->
+
 If you are visiting this page it means that you're having issues installing. We deeply apologize for that.
 
 Since the start of the project we've come across different types of issues experienced by the users. This page tries to combine issues, and their solutions.
