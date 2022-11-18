@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union, List, Optional
+from typing import Tuple, Union, List, Optional
 import warnings
 
 
@@ -29,7 +29,13 @@ def get_linear_regression_data(
     output_chunk_length: int = 5,
     lags: Union[int, List[int]] = 14,
     random_state: Optional[int] = None,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
+) -> Tuple[
+    List[TimeSeries],
+    List[TimeSeries],
+    List[TimeSeries],
+    float,
+    LinearRegressionModel,
+]:
     """Perform Linear Regression Forecasting
 
     Parameters
@@ -55,16 +61,12 @@ def get_linear_regression_data(
 
     Returns
     -------
-    List[TimeSeries]
-        Adjusted Data series
-    List[TimeSeries]
-        Historical forecast by best RNN model
-    List[TimeSeries]
-        list of Predictions
-    float
-        Mean average precision error
-    Any
-        Best Linear Regression Model
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, LinearRegressionModel]
+        Adjusted Data series,
+        Historical forecast by best RNN model,
+        list of Predictions,
+        Mean average precision error,
+        Best Linear Regression Model.
     """
     use_scalers = False
     probabilistic = True

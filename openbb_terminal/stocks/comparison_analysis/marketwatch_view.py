@@ -26,7 +26,7 @@ def display_income_comparison(
     quarter: bool = False,
     export: str = "",
 ):
-    """Display income data. [Source: Marketwatch]
+    """Display income data. [Source: Marketwatch].
 
     Parameters
     ----------

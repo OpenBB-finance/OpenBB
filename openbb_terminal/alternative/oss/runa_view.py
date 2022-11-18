@@ -32,7 +32,7 @@ def display_rossindex(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display list of startups from ross index [Source: https://runacap.com/]
+    """Plots list of startups from ross index [Source: https://runacap.com/]
 
     Parameters
     ----------

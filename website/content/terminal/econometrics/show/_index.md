@@ -2,7 +2,7 @@
 usage: show [-n {OPTIONS}] [-l LIMIT] [-s SORTCOL [SORTCOL ...]] [-a] [-h]
 ```
 
-Show a portion of the, with `--name` defined, dataset or show a portion of all datasets when 
+Show a portion of the, with `--name` defined, dataset or show a portion of all datasets when
 `--name` is not defined.
 
 ```
@@ -11,9 +11,11 @@ optional arguments:
                         The name of the database you want to show data for (default: None)
   -l LIMIT, --limit LIMIT
                         The amount of data you wish to show (default: 10)
-  -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...]
+  -s SORTBY, --sortby SORTBY
                         Sort based on a column in the DataFrame (default: )
-  -a, --ascend          Use this argument to sort in a descending order (default: False)
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is displayed. (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
@@ -27,7 +29,7 @@ Example:
 
 2022 Mar 04, 05:57 (✨) /econometrics/ $ show ll -s unemp
 
-                    Dataset ll | Showing 10 of 16 rows                     
+                    Dataset ll | Showing 10 of 16 rows
 ┏━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┓
 ┃        ┃ totemp   ┃ gnpdefl ┃ gnp       ┃ unemp   ┃ armed   ┃ pop       ┃
 ┡━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━┩
@@ -55,7 +57,7 @@ Example:
 2022 Mar 04, 05:57 (✨) /econometrics/ $ load wage_panel -a wp
 
 2022 Mar 04, 05:58 (✨) /econometrics/ $ show
-                    Dataset ll | Showing 10 of 16 rows                     
+                    Dataset ll | Showing 10 of 16 rows
 ┏━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┓
 ┃        ┃ totemp   ┃ gnpdefl ┃ gnp       ┃ unemp   ┃ armed   ┃ pop       ┃
 ┡━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━┩
@@ -80,7 +82,7 @@ Example:
 │ 1956.0 │ 67857.00 │ 104.60  │ 419180.00 │ 2822.00 │ 2857.00 │ 118734.00 │
 └────────┴──────────┴─────────┴───────────┴─────────┴─────────┴───────────┘
 
-                                      Dataset wp | Showing 10 of 4360 rows                                       
+                                      Dataset wp | Showing 10 of 4360 rows
 ┏━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃   ┃ nr    ┃ year    ┃ black ┃ exper ┃ hisp ┃ hours   ┃ married ┃ educ  ┃ union ┃ lwage ┃ expersq ┃ occupation ┃
 ┡━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩

@@ -28,7 +28,7 @@ def calculate_apy(apr: float, compounding_times: int) -> Tuple[pd.DataFrame, str
 
     Returns
     -------
-    Tuple:
+    Tuple[pd.DataFrame, str]
         - pd.DataFrame: dataframe with results
         - str: narrative version of results
     """
@@ -75,7 +75,7 @@ def calculate_il(
 
     Returns
     -------
-    Tuple:
+    Tuple[pd.DataFrame, str]
         - pd.DataFrame: dataframe with results
         - str: narrative version of results
     """

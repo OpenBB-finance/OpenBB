@@ -33,7 +33,7 @@ from openbb_terminal.rich_config import (
     translate,
 )
 from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.stocks import stocks_views
+from openbb_terminal.stocks import stocks_view
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
@@ -140,8 +140,8 @@ class StocksController(StockBaseController):
                 "--sort": {c: {} for c in stocks_helper.CANDLE_SORT},
                 "--plotly": {},
                 "-p": "--plotly",
-                "--descending": {},
-                "-d": "--descending",
+                "--reverse": {},
+                "-r": "--reverse",
                 "--raw": {},
                 "--trend": {},
                 "-t": "--trend",
@@ -368,7 +368,7 @@ class StocksController(StockBaseController):
             other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            stocks_views.display_quote(ns_parser.s_ticker)
+            stocks_view.display_quote(ns_parser.s_ticker)
 
     @log_start_end(log=logger)
     def call_codes(self, _):
@@ -412,12 +412,16 @@ class StocksController(StockBaseController):
             help="Choose a column to sort by. Only works when raw data is displayed.",
         )
         parser.add_argument(
-            "-d",
-            "--descending",
+            "-r",
+            "--reverse",
             action="store_true",
-            dest="descending",
+            dest="reverse",
             default=False,
-            help="Sort selected column descending. Only works when raw data is displayed.",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "--raw",
@@ -465,7 +469,7 @@ class StocksController(StockBaseController):
                 qa_view.display_raw(
                     data=self.stock,
                     sortby=ns_parser.sort,
-                    ascend=not ns_parser.descending,
+                    ascend=ns_parser.reverse,
                     limit=ns_parser.limit,
                 )
 

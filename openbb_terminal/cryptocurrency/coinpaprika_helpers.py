@@ -50,7 +50,7 @@ class PaprikaSession:
         kwargs:
             additional parameters that will be added to payload
         Returns
-        -------
+        ----------
         dict with response data
         """
 

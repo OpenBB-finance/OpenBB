@@ -14,10 +14,10 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.maxdd(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     is_returns: bool = False,
     chart: bool = False,
-) -> pandas.core.series.Series
+) -> Tuple[pandas.core.frame.DataFrame, pandas.core.series.Series]
 {{< /highlight >}}
 
 .. raw:: html
@@ -46,6 +46,14 @@ portfolio.maxdd(
     pd.Series
         Drawdown series
 
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.maxdd(p)
+    {{< /highlight >}}
+
 |
 
 .. raw:: html
@@ -56,7 +64,7 @@ portfolio.maxdd(
 
 {{< highlight python >}}
 portfolio.maxdd(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
@@ -71,8 +79,8 @@ portfolio.maxdd(
 
 * **Parameters**
 
-    portfolio : PortfolioModel
-        Portfolio object
+    portfolio : PortfolioEngine
+        PortfolioEngine object
     export: str
         Format to export data
     external_axes: plt.Axes

@@ -33,7 +33,7 @@ def plot_short_interest(
     nyse: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plots the short interest of a stock. This corresponds to the
+    """Plot the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been
     covered or closed out. Either NASDAQ or NYSE [Source: Quandl]
 
@@ -47,7 +47,6 @@ def plot_short_interest(
         data from NYSE if true, otherwise NASDAQ
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-
     """
 
     # This plot has 2 axes
@@ -103,7 +102,7 @@ def short_interest(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plots the short interest of a stock. This corresponds to the
+    """Plot the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been
     covered or closed out. Either NASDAQ or NYSE [Source: Quandl]
 

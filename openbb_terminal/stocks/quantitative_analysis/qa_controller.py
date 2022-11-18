@@ -172,8 +172,8 @@ class QaController(StockBaseController):
             choices["raw"] = {
                 "--limit": None,
                 "-l": "--limit",
-                "--descend": {},
-                "-d": "--descend",
+                "--reverse": {},
+                "-r": "--reverse",
                 "--export": {x: {} for x in ["csv", "json", "xlsx"]},
                 "--sortby": {c.lower(): {} for c in stocks_helper.CANDLE_SORT},
                 "-s": "--sortby",
@@ -309,7 +309,6 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.target = ns_parser.target
-        console.print("")
 
     @log_start_end(log=logger)
     def call_raw(self, other_args: List[str]):
@@ -330,12 +329,16 @@ class QaController(StockBaseController):
             dest="limit",
         )
         parser.add_argument(
-            "-d",
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            dest="descend",
-            help="Sort in descending order",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-s",
@@ -354,7 +357,7 @@ class QaController(StockBaseController):
                 data=self.stock,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 

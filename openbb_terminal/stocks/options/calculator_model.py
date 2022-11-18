@@ -35,12 +35,9 @@ def pnl_calculator(
 
     Returns
     -------
-    price_at_expiry : np.ndarray
-        Array of prices
-    pnl: np.ndarray
-        Array of calculated profit/loss
-    break_even: float
-        Breakeven point
+    Tuple[np.ndarray, np.ndarray, float]
+        Array of prices, array of profits/losses, breakeven price
+
     """
 
     if "x_min" in kwargs and "x_max" in kwargs:

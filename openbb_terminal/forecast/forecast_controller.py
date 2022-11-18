@@ -59,6 +59,7 @@ from openbb_terminal.forecast import (
     autoarima_view,
     autoces_view,
     autoets_view,
+    mstl_view,
     rwd_view,
     seasonalnaive_view,
     expo_model,
@@ -119,6 +120,7 @@ class ForecastController(BaseController):
         "autoarima",
         "autoces",
         "autoets",
+        "mstl",
         "rwd",
         "seasonalnaive",
         "expo",
@@ -225,6 +227,12 @@ class ForecastController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
             self.update_runtime_choices()
 
+    def call_exit(self, _) -> None:
+        """Process exit terminal command from forecast menu."""
+        self.save_class()
+        for _ in range(self.PATH.count("/") + 1):
+            self.queue.insert(0, "quit")
+
     def update_runtime_choices(self):
         # Load in any newly exported files
         self.DATA_FILES = forecast_model.get_default_files()
@@ -262,6 +270,7 @@ class ForecastController(BaseController):
                 "autoarima",
                 "autoces",
                 "autoets",
+                "mstl",
                 "rwd",
                 "seasonalnaive",
                 "expo",
@@ -346,6 +355,7 @@ class ForecastController(BaseController):
         mt.add_cmd("autoarima", self.files)
         mt.add_cmd("autoces", self.files)
         mt.add_cmd("autoets", self.files)
+        mt.add_cmd("mstl", self.files)
         mt.add_cmd("rwd", self.files)
         mt.add_cmd("seasonalnaive", self.files)
         mt.add_cmd("expo", self.files)
@@ -838,20 +848,24 @@ class ForecastController(BaseController):
         )
         parser.add_argument(
             "-s",
-            "--sortcol",
+            "--sortby",
             help="Sort based on a column in the DataFrame",
             nargs="+",
             type=str,
-            dest="sortcol",
+            dest="sortby",
             default="",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
-            help="Use this argument to sort in a descending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            dest="ascend",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "--limit-col",
@@ -884,15 +898,15 @@ class ForecastController(BaseController):
                     console.print(
                         f"[red]No data available for {ns_parser.name}.[/red]\n"
                     )
-                elif ns_parser.sortcol:
-                    sort_column = " ".join(ns_parser.sortcol)
+                elif ns_parser.sortby:
+                    sort_column = " ".join(ns_parser.sortby)
                     if sort_column not in self.datasets[name].columns:
                         console.print(
                             f"[red]{sort_column} not a valid column."
                             "Showing without sorting.\n[/red]"
                         )
                     else:
-                        df = df.sort_values(by=sort_column, ascending=ns_parser.ascend)
+                        df = df.sort_values(by=sort_column, ascending=ns_parser.reverse)
 
                 forecast_view.show_df(
                     df, ns_parser.limit, ns_parser.limit_col, name, ns_parser.export
@@ -1910,6 +1924,61 @@ class ForecastController(BaseController):
                 return
 
             autoets_view.display_autoets_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
+
+    # MSTL Model
+    @log_start_end(log=logger)
+    def call_mstl(self, other_args: List[str]):
+        """Process mstl command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="mstl",
+            description="""
+                Perform Multiple Seasonalities and Trend using Loess (MSTL) forecast:
+                https://nixtla.github.io/statsforecast/examples/multipleseasonalities.html
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=True,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            mstl_view.display_mstl_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 dataset_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,

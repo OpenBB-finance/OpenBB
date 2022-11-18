@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.disc.ipo(
-    start_date: str = '2022-11-05',
-    end_date: str = '2022-11-10',
+    start_date: str = None,
+    end_date: str = None,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -27,11 +27,11 @@ stocks.disc.ipo(
 * **Parameters**
 
     start_date : str
-        start date (%Y-%m-%d) to get IPO calendar
+        Initial date, format YYYY-MM-DD
     end_date : str
-        end date (%Y-%m-%d) to get IPO calendar
+        Final date, format YYYY-MM-DD
 
 * **Returns**
 
     pd.DataFrame
-        Get dataframe with economic calendar events
+        Get dataframe with IPO calendar events

@@ -63,9 +63,10 @@ def make_request(**kwargs: Any) -> Optional[dict]:
     ----------
     kwargs: Any
         Keyword arguments with parameters for GET request to cryptopanic api.
+
     Returns
     -------
-    dict:
+    Optional[dict]
         response from api request
     """
 

@@ -20,7 +20,7 @@ def get_sector_data() -> pd.DataFrame:
     """Get real-time performance sector data
 
     Returns
-    ----------
+    -------
     df_sectors : pd.Dataframe
         Real-time performance data
     """
@@ -53,6 +53,7 @@ def get_real_gdp(
         Interval for GDP, by default "a" for annual, by default "q"
     start_year : int, optional
         Start year for plot, by default 2010
+
     Returns
     -------
     pd.DataFrame

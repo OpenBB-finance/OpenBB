@@ -43,6 +43,16 @@ class CovidController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["slopes"] = {
+                "--days": {},
+                "-d": "--days",
+                "--reverse": {},
+                "-r": "--reverse",
+                "--threshold": {},
+                "-t": "--threshold",
+                "--limit": None,
+                "-l": "--limit",
+            }
             choices["country"] = {
                 "--country": {c: None for c in self.COUNTRY_LIST},
                 "-c": "--country",
@@ -117,6 +127,8 @@ class CovidController(BaseController):
                     )
                     return
                 country = ns_parser.country.title().replace("_", " ")
+                if country == "Us":
+                    country = "US"
                 self.country = country
                 console.print(f"[cyan]{country}[/cyan] loaded\n")
             else:
@@ -240,11 +252,16 @@ class CovidController(BaseController):
             default=30,
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            help="Show in ascending order",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-t",
@@ -264,6 +281,6 @@ class CovidController(BaseController):
             covid_view.display_case_slopes(
                 days_back=ns_parser.days,
                 limit=ns_parser.limit,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 threshold=ns_parser.threshold,
             )

@@ -93,7 +93,7 @@ def get_screener_data(
         Ascended order of stocks filtered to print
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe with loaded filtered stocks
     """

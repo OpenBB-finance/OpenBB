@@ -6,14 +6,12 @@ from __future__ import annotations
 import os
 import json
 from datetime import datetime, timedelta
-from typing import Any
 import difflib
 import logging
 
 import pandas as pd
 import numpy as np
 import ccxt
-from binance.client import Client
 import matplotlib.pyplot as plt
 from matplotlib.ticker import LogLocator, ScalarFormatter
 import yfinance as yf
@@ -29,21 +27,14 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
 )
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.cryptocurrency.due_diligence import (
-    pycoingecko_model,
-    coinpaprika_model,
-)
-from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import get_coin_list
-from openbb_terminal.cryptocurrency.overview.coinpaprika_model import get_list_of_coins
-from openbb_terminal.cryptocurrency.due_diligence.binance_model import (
-    check_valid_binance_str,
-    show_available_pairs_for_given_symbol,
-)
-
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.cryptocurrency.due_diligence import coinbase_model
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
+from openbb_terminal.cryptocurrency.due_diligence import coinpaprika_model
+from openbb_terminal.cryptocurrency.discovery import pycoingecko_model
+from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import (
+    get_ohlc,
+    get_coin_tokenomics,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -329,15 +320,6 @@ def get_coingecko_id(symbol: str):
     return None
 
 
-def get_coinpaprika_id(symbol: str):
-    paprika_coins = get_list_of_coins()
-    paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
-    coinpaprika_id, _ = coinpaprika_model.validate_coin(
-        symbol.upper(), paprika_coins_dict
-    )
-    return coinpaprika_id
-
-
 def load_from_ccxt(
     symbol: str,
     start_date: datetime = (datetime.now() - timedelta(days=1100)),
@@ -421,7 +403,7 @@ def load_from_coingecko(
         console.print(f"{symbol} not found in Coingecko\n")
         return df
 
-    df = pycoingecko_model.get_ohlc(coingecko_id, vs_currency, days)
+    df = get_ohlc(coingecko_id, vs_currency, days)
     df_coin = yf.download(
         f"{symbol}-{vs_currency}",
         end=datetime.now(),
@@ -607,7 +589,7 @@ def show_quick_performance(
     try:
         coingecko_id = get_coingecko_id(symbol)
 
-        coin_data_cg = pycoingecko_model.get_coin_tokenomics(coingecko_id)
+        coin_data_cg = get_coin_tokenomics(coingecko_id)
         if not coin_data_cg.empty:
             df.insert(
                 len(df.columns),
@@ -623,7 +605,6 @@ def show_quick_performance(
     except Exception:
         pass
 
-    console.print()
     exchange_str = f"in {exchange.capitalize()}" if source == "ccxt" else ""
     print_rich_table(
         df,
@@ -631,365 +612,7 @@ def show_quick_performance(
         headers=df.columns,
         title=f"{symbol.upper()}/{current_currency.upper()} Performance {exchange_str}",
     )
-    console.print()
 
-
-# pylint: disable=R0912
-# TODO: verify vs, interval, days, depending on source
-def load_deprecated(
-    coin: str,
-    source: str = "CoinPaprika",
-    days: int = 60,
-    vs: str = "usd",
-    interval: str = "1day",
-    should_load_ta_data: bool = False,
-):
-    """Load cryptocurrency from given source. Available sources are: CoinGecko, CoinPaprika,
-    Coinbase, Binance and Yahoo Finance
-
-    Loading coin from Binance and CoinPaprika means validation if given coins exists in chosen source,
-    if yes then id of the coin is returned as a string.
-    In case of CoinGecko load will return Coin object, if provided coin exists. Coin object has access to different coin
-    information.
-
-    Parameters
-    ----------
-    coin: str
-        Coin symbol or id which is checked if exists in chosen data source.
-    source : str
-        Source of the loaded data. CoinGecko, CoinPaprika, Yahoo Finance or Binance
-
-    Returns
-    -------
-    Tuple[Union[str, pycoingecko_model.Coin], str, str]
-        - str or Coin object for provided coin
-        - str with source of the loaded data. CoinGecko, CoinPaprika, Yahoo Finance or Binance
-        - str with symbol
-        - Dataframe with coin map to different sources
-    """
-    if source in ("CoinGecko", "CoinPaprika"):
-        if vs not in ("USD", "BTC", "usd", "btc"):
-            console.print("You can only compare with usd or btc (e.g., --vs usd)\n")
-            return None, None, None, None, None, None
-        if interval != "1day":
-            console.print(
-                "Only daily data is supported for coingecko and coinpaprika (e.g., -i 1day)\n"
-            )
-            return None, None, None, None, None, None
-
-    current_coin: Any | None = ""
-
-    coins_map_df = prepare_all_coins_df().set_index("Symbol").dropna(thresh=2)
-
-    if source == "CoinGecko":
-        coingecko = pycoingecko_model.Coin(coin.lower(), False)
-
-        if not coingecko.symbol:
-            return None, None, None, None, None, None
-        try:
-            coin_map_df = coins_map_df.loc[coingecko.symbol].copy()
-            if not isinstance(coin_map_df, pd.Series):
-                pd.options.mode.chained_assignment = None
-                coin_map_df["null_values"] = coin_map_df.isna().sum(axis=1)
-                coin_map_df = coin_map_df[
-                    coin_map_df.null_values == coin_map_df.null_values.min()
-                ]
-                try:
-                    coin_map_df = coin_map_df.iloc[0]
-                except IndexError:
-                    return None, None, None, None, None, None
-
-            coin_map_df.fillna("")
-        except KeyError:
-            coin_map_df = pd.Series(
-                {
-                    "CoinGecko": coingecko,
-                    "CoinPaprika": "",
-                    "Binance": "",
-                    "Coinbase": "",
-                    "YahooFinance": "",
-                }
-            )
-        # if it is dataframe, it means that found more than 1 coin
-        if should_load_ta_data:
-            df_prices, currency = load_ta_data(
-                coin_map_df=coin_map_df,
-                source=source,
-                currency=vs,
-                days=days,
-                limit=0,
-                interval=interval,
-            )
-            return (
-                coin_map_df["CoinGecko"],
-                source,
-                coingecko.symbol,
-                coin_map_df,
-                df_prices,
-                currency,
-            )
-        return (
-            str(coingecko),
-            source,
-            coingecko.symbol,
-            coin_map_df,
-            None,
-            None,
-        )
-    if source == "CoinPaprika":
-        paprika_coins = get_list_of_coins()
-        paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
-        current_coin, symbol = coinpaprika_model.validate_coin(
-            coin.upper(), paprika_coins_dict
-        )
-
-        if not symbol:
-            return None, None, None, None, None, None
-
-        try:
-            coin_map_df = coins_map_df.loc[
-                coins_map_df.index == symbol.upper() if symbol is not None else symbol
-            ]
-
-            if not isinstance(coin_map_df, pd.Series):
-                pd.options.mode.chained_assignment = None
-                coin_map_df["null_values"] = coin_map_df.isnull().sum(axis=1)
-
-                coin_map_df = coin_map_df.loc[
-                    coin_map_df.null_values == coin_map_df.null_values.min()
-                ]
-
-                try:
-                    coin_map_df = coin_map_df.iloc[0]
-                except IndexError:
-                    return None, None, None, None, None, None
-
-            coin_map_df.fillna("")
-        except KeyError:
-            coin_map_df = pd.Series(
-                {
-                    "CoinGecko": "",
-                    "CoinPaprika": symbol,
-                    "Binance": "",
-                    "Coinbase": "",
-                    "YahooFinance": "",
-                }
-            )
-
-        if should_load_ta_data:
-            df_prices, currency = load_ta_data(
-                coin_map_df=coin_map_df,
-                source=source,
-                currency=vs,
-                days=days,
-                limit=0,
-                interval=interval,
-            )
-
-            if not df_prices.empty:
-                return (current_coin, source, symbol, coin_map_df, df_prices, currency)
-        return (current_coin, source, symbol, coin_map_df, None, None)
-    if source == "Binance":
-        if vs == "usd":
-            vs = "USDT"
-        if interval not in SOURCES_INTERVALS["Binance"]:
-            console.print(
-                "Interval not available on binance. Run command again with one supported (e.g., -i 1day):\n",
-                SOURCES_INTERVALS["Binance"],
-            )
-            return None, None, None, None, None, None
-
-        # TODO: convert bitcoin to btc before searching pairs
-        parsed_coin = coin.upper()
-        current_coin, pairs = show_available_pairs_for_given_symbol(parsed_coin)
-        if len(pairs) > 0:
-            if vs not in pairs:
-                console.print(
-                    "vs specified not supported by binance. Run command again with one supported (e.g., --vs USDT):\n",
-                    pairs,
-                )
-                return None, None, None, None, None, None
-            try:
-                coin_map_df = coins_map_df.loc[parsed_coin.lower()].copy()
-                if not isinstance(coin_map_df, pd.Series):
-                    coin_map_df["null_values"] = coin_map_df.apply(
-                        lambda x: sum(x.isnull().values), axis=1
-                    )
-                    coin_map_df = coin_map_df[
-                        coin_map_df.null_values == coin_map_df.null_values.min()
-                    ]
-                    coin_map_df = coin_map_df.iloc[0]
-                coin_map_df.fillna("")
-            except KeyError:
-                coin_map_df = pd.Series(
-                    {
-                        "CoinGecko": "",
-                        "CoinPaprika": "",
-                        "Binance": parsed_coin.lower(),
-                        "Coinbase": "",
-                        "YahooFinance": "",
-                    }
-                )
-            # console.print(f"Coin found : {current_coin}\n")
-            if should_load_ta_data:
-                df_prices, currency = load_ta_data(
-                    coin_map_df=coin_map_df,
-                    source=source,
-                    currency=vs,
-                    days=0,
-                    limit=days,
-                    interval=interval,
-                )
-                return (
-                    current_coin,
-                    source,
-                    parsed_coin,
-                    coin_map_df,
-                    df_prices,
-                    currency,
-                )
-            return (current_coin, source, parsed_coin, coin_map_df, None, None)
-        return None, None, None, None, None, None
-
-    if source == "Coinbase":
-        if vs == "usd":
-            vs = "USDT"
-        if interval not in SOURCES_INTERVALS["Coinbase"]:
-            console.print(
-                "Interval not available on coinbase. Run command again with one supported (e.g., -i 1day):\n",
-                SOURCES_INTERVALS["Coinbase"],
-            )
-            return None, None, None, None, None, None
-
-        # TODO: convert bitcoin to btc before searching pairs
-        coinbase_coin = coin.upper()
-        current_coin, pairs = coinbase_model.show_available_pairs_for_given_symbol(
-            coinbase_coin
-        )
-        if vs not in pairs:
-            if len(pairs) > 0:
-                console.print(
-                    "vs specified not supported by coinbase. Run command again with one supported (e.g., --vs USDT):\n",
-                    pairs,
-                )
-            return None, None, None, None, None, None
-        if len(pairs) > 0:
-            # console.print(f"Coin found : {current_coin}\n")
-            try:
-                coin_map_df = coins_map_df.loc[coin].copy()
-                if not isinstance(coin_map_df, pd.Series):
-                    coin_map_df["null_values"] = coin_map_df.apply(
-                        lambda x: sum(x.isnull().values), axis=1
-                    )
-                    coin_map_df = coin_map_df[
-                        coin_map_df.null_values == coin_map_df.null_values.min()
-                    ]
-                    coin_map_df = coin_map_df.iloc[0]
-                coin_map_df.fillna("")
-            except KeyError:
-                coin_map_df = pd.Series(
-                    {
-                        "CoinGecko": "",
-                        "CoinPaprika": "",
-                        "Binance": "",
-                        "Coinbase": coin,
-                        "YahooFinance": "",
-                    }
-                )
-            if should_load_ta_data:
-                df_prices, currency = load_ta_data(
-                    coin_map_df=coin_map_df,
-                    source=source,
-                    currency=vs,
-                    days=0,
-                    limit=days,
-                    interval=interval,
-                )
-                return (current_coin, source, coin, coin_map_df, df_prices, currency)
-            return (current_coin, source, coin, coin_map_df, None, None)
-        return None, None, None, None, None, None
-
-    if source == "YahooFinance":
-        if vs.upper() not in YF_CURRENCY:
-            console.print(
-                "vs specified not supported by Yahoo Finance. Run command again with one supported (e.g., --vs USD):\n",
-                YF_CURRENCY,
-            )
-            return None, None, None, None, None, None
-
-        if interval not in SOURCES_INTERVALS["YahooFinance"]:
-            console.print(
-                "Interval not available on YahooFinance. Run command again with one supported (e.g., -i 1day):\n",
-                SOURCES_INTERVALS["YahooFinance"],
-            )
-            return None, None, None, None, None, None
-
-        # Search coin using crypto symbol
-        coin_map_df = coins_map_df.loc[coins_map_df.index == coin]
-        # Search coin using yfinance id
-        # coin_map_df_2 = coins_map_df.loc[
-        #    coins_map_df.YahooFinance == f"{coin.upper()}-{vs.upper()}"
-        # ]
-        # Search coin using crypto full name
-        # coin_map_df_3 = coins_map_df.loc[coins_map_df.CoinGecko == coin]
-
-        # for _df in [coin_map_df_1, coin_map_df_2, coin_map_df_3]:
-        #    if not _df.empty:
-        #        coin_map_df = _df
-        #        break
-
-        if coin_map_df.empty or (coin_map_df["YahooFinance"]).isna().all():
-            # console.print(
-            #    f"Cannot find {coin} against {vs} on Yahoo finance. Try another source or currency.\n"
-            # )
-            return None, None, None, None, None, None
-
-        # Filter for the currency
-        try:
-            coin_map_df = coin_map_df[
-                coin_map_df["YahooFinance"].str.upper().str.contains(vs.upper())
-            ]
-
-            coin_map_df = (
-                coin_map_df.dropna().iloc[0]
-                if isinstance(coin_map_df, pd.DataFrame)
-                else coin_map_df
-            )
-        except Exception:
-            return None, None, None, None, None, None
-
-        if should_load_ta_data:
-            df_prices, currency = load_ta_data(
-                coin_map_df=coin_map_df,
-                source=source,
-                currency=vs,
-                days=days,
-                limit=0,
-                interval=interval,
-            )
-
-            return (
-                coin_map_df["YahooFinance"],
-                source,
-                coin,
-                coin_map_df,
-                df_prices,
-                currency,
-            )
-
-        return (
-            coin_map_df["YahooFinance"],
-            source,
-            coin,
-            coin_map_df,
-            None,
-            None,
-        )
-
-    return None, None, None, None, None, None
-
-
-FIND_KEYS = ["id", "symbol", "name"]
 
 # TODO: Find better algorithm then difflib.get_close_matches to find most similar coins
 
@@ -1027,7 +650,7 @@ def find(
     """
 
     if source == "CoinGecko":
-        coins_df = get_coin_list()
+        coins_df = pycoingecko_model.get_coin_list()
         coins_list = coins_df[key].to_list()
         if key in ["symbol", "id"]:
             query = query.lower()
@@ -1039,7 +662,7 @@ def find(
         df = df.merge(coins_df, on=key)
 
     elif source == "CoinPaprika":
-        coins_df = get_list_of_coins()
+        coins_df = coinpaprika_model.get_coin_list()
         coins_list = coins_df[key].to_list()
         keys = {"name": "title", "symbol": "upper", "id": "lower"}
 
@@ -1057,7 +680,7 @@ def find(
         if len(query) > 5:
             key = "id"
 
-        coins_df_gecko = get_coin_list()
+        coins_df_gecko = pycoingecko_model.get_coin_list()
         coins_df_bin = load_binance_map()
         coins = pd.merge(
             coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
@@ -1073,7 +696,7 @@ def find(
         if len(query) > 5:
             key = "id"
 
-        coins_df_gecko = get_coin_list()
+        coins_df_gecko = pycoingecko_model.get_coin_list()
         coins_df_bin = load_coinbase_map()
         coins = pd.merge(
             coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
@@ -1101,188 +724,6 @@ def find(
         "find",
         df,
     )
-
-
-def load_ta_data(
-    coin_map_df: pd.DataFrame, source: str, currency: str, **kwargs: Any
-) -> tuple[pd.DataFrame, str]:
-    """Load data for Technical Analysis
-
-    Parameters
-    ----------
-    coin_map_df: pd.DataFrame
-        Cryptocurrency
-    source: str
-        Source of data: CoinGecko, Binance, CoinPaprika, Yahoo Finance
-    currency: str
-        Quotes currency
-    kwargs:
-        days: int
-            Days limit for coingecko, coinpaprika
-        limit: int
-            Limit for binance quotes
-        interval: str
-            Time interval for Binance
-    Returns
-    ----------
-    Tuple[pd.DataFrame, str]
-        df with prices
-        quoted currency
-    """
-
-    limit = kwargs.get("limit", 100)
-    interval = kwargs.get("interval", "1day")
-    days = kwargs.get("days", 30)
-
-    if source == "Binance":
-        client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
-
-        interval_map = {
-            "1day": client.KLINE_INTERVAL_1DAY,
-            "3day": client.KLINE_INTERVAL_3DAY,
-            "1hour": client.KLINE_INTERVAL_1HOUR,
-            "2hour": client.KLINE_INTERVAL_2HOUR,
-            "4hour": client.KLINE_INTERVAL_4HOUR,
-            "6hour": client.KLINE_INTERVAL_6HOUR,
-            "8hour": client.KLINE_INTERVAL_8HOUR,
-            "12hour": client.KLINE_INTERVAL_12HOUR,
-            "1week": client.KLINE_INTERVAL_1WEEK,
-            "1min": client.KLINE_INTERVAL_1MINUTE,
-            "3min": client.KLINE_INTERVAL_3MINUTE,
-            "5min": client.KLINE_INTERVAL_5MINUTE,
-            "15min": client.KLINE_INTERVAL_15MINUTE,
-            "30min": client.KLINE_INTERVAL_30MINUTE,
-            "1month": client.KLINE_INTERVAL_1MONTH,
-        }
-
-        symbol_binance = coin_map_df["Binance"]
-
-        pair = symbol_binance.upper() + currency.upper()
-
-        if check_valid_binance_str(pair):
-            # console.print(f"{symbol_binance} loaded vs {currency.upper()}")
-
-            candles = client.get_klines(
-                symbol=pair,
-                interval=interval_map[interval],
-                limit=limit,
-            )
-            candles_df = pd.DataFrame(candles).astype(float).iloc[:, :6]
-            candles_df.columns = [
-                "date",
-                "Open",
-                "High",
-                "Low",
-                "Close",
-                "Volume",
-            ]
-            df_coin = candles_df.set_index(
-                pd.to_datetime(candles_df["date"], unit="ms")
-            ).drop("date", axis=1)
-
-            return df_coin, currency
-        return pd.DataFrame(), currency
-
-    if source == "CoinPaprika":
-        symbol_coinpaprika = coin_map_df["CoinPaprika"]
-        df = coinpaprika_model.get_ohlc_historical(
-            symbol_coinpaprika, currency.upper(), days
-        )
-
-        if df.empty:
-            # console.print("No data found", "\n")
-            return pd.DataFrame(), ""
-
-        df.drop(["time_close"], axis=1, inplace=True)
-
-        if "market_cap" in df.columns:
-            df.drop(["market_cap"], axis=1, inplace=True)
-
-        df.columns = [
-            "date",
-            "Open",
-            "High",
-            "Low",
-            "Close",
-            "Volume",
-        ]
-        df = df.set_index(pd.to_datetime(df["date"])).drop("date", axis=1)
-        return df, currency
-
-    if source == "CoinGecko":
-        if isinstance(coin_map_df["CoinGecko"], str):
-            coin_id = coin_map_df["CoinGecko"]
-        else:
-            coin_id = coin_map_df["CoinGecko"].coin["id"]
-
-        # coin = pycoingecko_model.Coin(symbol_coingecko)
-        df = pycoingecko_model.get_coin_market_chart(coin_id, currency, days)
-        df = df["price"].resample("1D").ohlc().ffill()
-        df.columns = [
-            "Open",
-            "High",
-            "Low",
-            "Close",
-        ]
-        df.index.name = "date"
-        return df, currency
-
-    if source == "Coinbase":
-        symbol_coinbase = coin_map_df["Coinbase"]
-        coin, currency = symbol_coinbase.upper(), currency.upper()
-        pair = f"{coin}-{currency}"
-
-        if coinbase_model.check_validity_of_product(pair):
-            # console.print(f"{coin} loaded vs {currency}")
-
-            df = coinbase_model.get_candles(
-                symbol=pair,
-                interval=interval or "24hour",
-            ).head(limit)
-
-            df_coin = df.set_index(pd.to_datetime(df["date"], unit="s")).drop(
-                "date", axis=1
-            )
-
-            return df_coin[::-1], currency
-
-    if source == "YahooFinance":
-
-        interval_map = {
-            "1min": "1m",
-            "2min": "2m",
-            "5min": "5m",
-            "15min": "15m",
-            "30min": "30m",
-            "60min": "60m",
-            "90min": "90m",
-            "1hour": "1h",
-            "1day": "1d",
-            "5day": "5d",
-            "1week": "1wk",
-            "1month": "1mo",
-            "3month": "3mo",
-        }
-
-        symbol_yf = coin_map_df["YahooFinance"]
-
-        df_coin = yf.download(
-            symbol_yf,
-            end=datetime.now(),
-            start=datetime.now() - timedelta(days=days),
-            progress=False,
-            interval=interval_map[interval],
-        ).sort_index(ascending=False)
-
-        df_coin.index.names = ["date"]
-
-        if df_coin.empty:
-            console.print(f"Could not download data for {symbol_yf} from Yahoo Finance")
-            return pd.DataFrame(), currency
-
-        return df_coin[::-1], currency
-
-    return pd.DataFrame(), currency
 
 
 def load_yf_data(symbol: str, currency: str, interval: str, days: int):
@@ -1314,6 +755,7 @@ def display_all_coins(
     It will search for coin that has similar name to polka and display top 25 matches.
         -c, --coin stands for coin - you provide here your search query
         -t, --top it displays top N number of records.
+
     Parameters
     ----------
     limit: int
@@ -1332,8 +774,8 @@ def display_all_coins(
     sources = ["CoinGecko", "CoinPaprika", "Binance", "Coinbase"]
     limit, cutoff = 30, 0.75
     coins_func_map = {
-        "CoinGecko": get_coin_list,
-        "CoinPaprika": get_list_of_coins,
+        "CoinGecko": pycoingecko_model.get_coin_list,
+        "CoinPaprika": coinpaprika_model.get_coin_list,
         "Binance": load_binance_map,
         "Coinbase": load_coinbase_map,
     }
@@ -1357,17 +799,17 @@ def display_all_coins(
     else:
 
         if source == "CoinGecko":
-            coins_df = get_coin_list().drop("index", axis=1)
+            coins_df = pycoingecko_model.get_coin_list().drop("index", axis=1)
             df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
             df = df[["index", "id", "name"]]
 
         elif source == "CoinPaprika":
-            coins_df = get_list_of_coins()
+            coins_df = coinpaprika_model.get_coin_list()
             df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
             df = df[["index", "id", "name"]]
 
         elif source == "Binance":
-            coins_df_gecko = get_coin_list()
+            coins_df_gecko = pycoingecko_model.get_coin_list()
             coins_df_bin = load_binance_map()
             coins_df_bin.columns = ["symbol", "id"]
             coins_df = pd.merge(
@@ -1378,7 +820,7 @@ def display_all_coins(
             df.columns = ["index", "id", "name"]
 
         elif source == "Coinbase":
-            coins_df_gecko = get_coin_list()
+            coins_df_gecko = pycoingecko_model.get_coin_list()
             coins_df_cb = load_coinbase_map()
             coins_df_cb.columns = ["symbol", "id"]
             coins_df = pd.merge(
@@ -1391,7 +833,6 @@ def display_all_coins(
         else:
             df = pd.DataFrame(columns=["index", "id", "symbol"])
             console.print("Couldn't find any coins")
-        console.print("")
 
     try:
         df = df[skip : skip + limit]  # noqa

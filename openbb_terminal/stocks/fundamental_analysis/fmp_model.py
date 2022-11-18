@@ -63,8 +63,8 @@ def get_profile(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    ----------
-    pd.DataFrame:
+    -------
+    pd.DataFrame
         Dataframe of ticker profile
     """
     df = pd.DataFrame()
@@ -91,8 +91,8 @@ def get_quote(symbol: str) -> pd.DataFrame:
         Stock ticker symbol
 
     Returns
-    ----------
-    pd.DataFrame:
+    -------
+    pd.DataFrame
         Dataframe of ticker quote
     """
 
@@ -144,8 +144,8 @@ def get_enterprise(
         Flag to get quarterly data
 
     Returns
-    ----------
-    pd.DataFrame:
+    -------
+    pd.DataFrame
         Dataframe of enterprise information
     """
     df_fa = pd.DataFrame()
@@ -252,9 +252,11 @@ def get_income(
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
+        return pd.DataFrame()
     # Premium feature, API plan is not authorized
     except HTTPError as e:
         console.print(e)
+        return pd.DataFrame()
 
     if ratios:
         types = df_fa.copy().applymap(lambda x: isinstance(x, (float, int))).all(axis=1)
@@ -321,9 +323,11 @@ def get_balance(
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
+        return pd.DataFrame()
     # Premium feature, API plan is not authorized
     except HTTPError as e:
         console.print(e)
+        return pd.DataFrame()
 
     if ratios:
         types = df_fa.copy().applymap(lambda x: isinstance(x, (float, int))).all(axis=1)
@@ -387,9 +391,11 @@ def get_cash(
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
+        return pd.DataFrame()
     # Premium feature, API plan is not authorized
     except HTTPError as e:
         console.print(e)
+        return pd.DataFrame()
 
     if ratios:
         types = df_fa.copy().applymap(lambda x: isinstance(x, (float, int))).all(axis=1)

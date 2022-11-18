@@ -34,7 +34,7 @@ def display_luna_circ_supply_change(
     limit: int = 5,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display Luna circulating supply stats
+    """Plots and prints table showing Luna circulating supply stats
 
     Parameters
     ----------

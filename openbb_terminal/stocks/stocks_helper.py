@@ -36,7 +36,7 @@ from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
-from openbb_terminal.stocks.stocks_models import (
+from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
     load_stock_yf,
     load_stock_eodhd,
@@ -122,6 +122,11 @@ def search(
         The limit of companies shown.
     export : str
         Export data
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.search(country="united states", exchange_country="Germany")
     """
     kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
@@ -217,11 +222,9 @@ def search(
 
 def load(
     symbol: str,
-    start_date: Optional[Union[datetime, str]] = (
-        datetime.now() - timedelta(days=1100)
-    ).strftime("%Y-%m-%d"),
+    start_date: Optional[Union[datetime, str]] = None,
     interval: int = 1440,
-    end_date: Optional[Union[datetime, str]] = datetime.now().strftime("%Y-%m-%d"),
+    end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
     iexrange: str = "ytd",
@@ -287,6 +290,13 @@ def load(
     df_stock_candidate: pd.DataFrame
         Dataframe of data
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
 
@@ -438,11 +448,9 @@ def display_candle(
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = "",
-    start_date: Optional[Union[datetime, str]] = (
-        datetime.today() - timedelta(days=1100)
-    ).strftime("%Y-%m-%d"),
+    start_date: Optional[Union[datetime, str]] = None,
     interval: int = 1440,
-    end_date: Optional[Union[datetime, str]] = datetime.today().strftime("%Y-%m-%d"),
+    end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
     iexrange: str = "ytd",
@@ -496,7 +504,19 @@ def display_candle(
         Flag to display raw data, by default False
     yscale: str
         Linear or log for yscale
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.candle("AAPL")
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
 
@@ -782,6 +802,11 @@ def load_ticker(
     DataFrame
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
         date_id, OC-High, OC-Low.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> msft_df = openbb.stocks.load("MSFT")
     """
     df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
 
@@ -957,7 +982,7 @@ def load_custom(file_path: str) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of stock data
     """
     # Double check that the file exists

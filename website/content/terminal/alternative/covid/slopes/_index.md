@@ -7,7 +7,9 @@ Show countries with highest slopes in cases.
 ```
 optional arguments:
   -d DAYS, --days DAYS  Number of days back to look (default: 30)
-  -a, --ascend          Show in ascending order (default: False)
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is displayed. (default: False)
   -t THRESHOLD, --threshold THRESHOLD
                         Threshold for total cases over period (default: 10000)
   -h, --help            show this help message (default: False)
@@ -17,7 +19,7 @@ optional arguments:
                         Number of entries to show in data. (default: 10)
 ```
 
-```    
+```
 2022 Feb 14, 10:26 (✨) /alternative/covid/ $ slopes
 Highest Sloping Cases (Cases/Day)
 ┌────────────────┬───────────┐

@@ -32,7 +32,7 @@ def display_ad(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot AD technical indicator
+    """Plots AD technical indicator
 
     Parameters
     ----------
@@ -147,7 +147,7 @@ def display_adosc(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display AD Osc Indicator
+    """Plots AD Osc Indicator
 
     Parameters
     ----------
@@ -156,7 +156,7 @@ def display_adosc(
     use_open : bool
         Whether to use open prices in calculation
     fast: int
-         Length of fast window
+        Length of fast window
     slow : int
         Length of slow window
     symbol : str
@@ -252,7 +252,7 @@ def display_obv(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot OBV technical indicator
+    """Plots OBV technical indicator
 
     Parameters
     ----------

@@ -8,9 +8,8 @@ from typing import List
 import numpy as np
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.menu import session
@@ -141,7 +140,6 @@ class PricingController(BaseController):
             new = {"Price": ns_parser.price, "Chance": ns_parser.chance}
             df = df.append(new, ignore_index=True)
             self.prices = df.sort_values("Price")
-            console.print("")
 
     @log_start_end(log=logger)
     def call_rmv(self, other_args: List[str]):
@@ -176,7 +174,6 @@ class PricingController(BaseController):
                 self.prices = pd.DataFrame(columns=["Price", "Chance"])
             else:
                 self.prices = self.prices[(self.prices["Price"] != ns_parser.price)]
-            console.print("")
 
     @log_start_end(log=logger)
     def call_show(self, other_args):
