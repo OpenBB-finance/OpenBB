@@ -41,6 +41,8 @@ PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "screener"
 class ScreenerController(BaseController):
     """Screener Controller class"""
 
+    CHOICES_MENUS = ["ca"]
+
     CHOICES_COMMANDS = [
         "view",
         "set",
@@ -51,7 +53,6 @@ class ScreenerController(BaseController):
         "ownership",
         "performance",
         "technical",
-        "ca",
     ]
 
     PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
