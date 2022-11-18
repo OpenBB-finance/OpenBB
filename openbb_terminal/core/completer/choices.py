@@ -140,8 +140,8 @@ def _get_argument_parser(
 
     command = "call_" + command
     command_func = getattr(controller, command)
-    command_func = unwrap(command_func)
-    command_func(controller, [])
+    command_func = unwrap(func=command_func, stop=(lambda f: isinstance(f, MethodType)))
+    command_func([])
 
     if parse_known_args_and_warn.call_count == 1:
         args = parse_known_args_and_warn.call_args.args
