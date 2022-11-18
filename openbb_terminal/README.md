@@ -173,6 +173,12 @@ To install the Machine Learning Toolkit run:
 poetry install -E prediction
 ```
 
+To install both the Portfolio Optimization and the Machine Learning Toolkit run:
+
+```bash
+poetry install -E all
+```
+
 <!-- markdownlint-disable-next-line MD026 -->
 #### 9. You're ready to use the terminal!
 
