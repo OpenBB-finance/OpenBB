@@ -656,7 +656,7 @@ def get_equal(
     >>> openbb.portfolio.po.equal(symbols=["AAPL", "MSFT", "AMZN"])
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="50_30_10_10_Portfolio.xlsx")
+    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> openbb.portfolio.po.equal(portfolio_engine=p)
     """
 
