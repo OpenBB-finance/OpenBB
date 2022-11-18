@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.metric.sortino(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     risk_free_rate: float = 0,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -21,7 +21,7 @@ portfolio.metric.sortino(
 .. raw:: html
 
     <p>
-    Method that retrieves sortino ratio for portfolio and benchmark selected
+    Get sortino ratio for portfolio and benchmark selected
     </p>
 
 * **Parameters**
@@ -41,6 +41,6 @@ portfolio.metric.sortino(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.metric.sortino(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.metric.sortino(p)
     {{< /highlight >}}

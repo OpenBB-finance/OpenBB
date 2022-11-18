@@ -14,10 +14,10 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.distr(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     window: str = 'all',
     chart: bool = False,
-)
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 .. raw:: html
@@ -37,12 +37,17 @@ portfolio.distr(
        Flag to display chart
 
 
+* **Returns**
+
+    pd.DataFrame
+        DataFrame of returns distribution
+
 * **Examples**
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.distr(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.distr(p)
     {{< /highlight >}}
 
 |
@@ -55,7 +60,7 @@ portfolio.distr(
 
 {{< highlight python >}}
 portfolio.distr(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     window: str = 'all',
     raw: bool = False,
     export: str = '',

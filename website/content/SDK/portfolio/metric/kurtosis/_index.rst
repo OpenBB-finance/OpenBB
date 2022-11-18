@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.metric.kurtosis(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -20,7 +20,7 @@ portfolio.metric.kurtosis(
 .. raw:: html
 
     <p>
-    Method that retrieves kurtosis for portfolio and benchmark selected
+    Get kurtosis for portfolio and benchmark selected
     </p>
 
 * **Parameters**
@@ -38,6 +38,6 @@ portfolio.metric.kurtosis(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.metric.kurtosis(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.metric.kurtosis(p)
     {{< /highlight >}}

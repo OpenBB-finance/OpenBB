@@ -31,7 +31,7 @@ portfolio.po.ef(
     n_portfolios: int = 100,
     seed: int = 123,
     chart: bool = False,
-) -> Tuple
+) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, Optional[pandas.core.frame.DataFrame], numpy.ndarray[Any, numpy.dtype[numpy.floating]], numpy.ndarray[Any, numpy.dtype[numpy.floating]], riskfolio.Portfolio.Portfolio]
 {{< /highlight >}}
 
 .. raw:: html
@@ -107,8 +107,18 @@ portfolio.po.ef(
 
 * **Returns**
 
-    Tuple
-        Parameters to create efficient frontier: frontier, mu, cov, stock_returns, weights, X1, Y1, port
+    Tuple[
+        pd.DataFrame,
+        pd.DataFrame,
+        pd.DataFrame,
+        pd.DataFrame,
+        Optional[pd.DataFrame],
+        NDArray[floating],
+        NDArray[floating],
+        rp.Portfolio,
+    ]
+        Parameters to create efficient frontier:
+        frontier, mu, cov, stock_returns, weights, X1, Y1, port
 
 |
 
