@@ -2535,7 +2535,7 @@ def get_assets_allocation(
 
 
 def get_sectors_allocation(
-    portfolio_engine: PortfolioEngine = None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
     recalculate: bool = False,
@@ -2579,7 +2579,7 @@ def get_sectors_allocation(
 
 
 def get_countries_allocation(
-    portfolio_engine: PortfolioEngine = None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
     recalculate: bool = False,
@@ -2623,7 +2623,7 @@ def get_countries_allocation(
 
 
 def get_regions_allocation(
-    portfolio_engine: PortfolioEngine = None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
     recalculate: bool = False,

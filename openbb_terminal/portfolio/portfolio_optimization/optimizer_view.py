@@ -8,7 +8,7 @@ import logging
 import math
 import warnings
 from datetime import date
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -3723,7 +3723,7 @@ def pie_chart_weights(
 
 @log_start_end(log=logger)
 def additional_plots(
-    weights: Dict,
+    weights: Union[Dict, pd.DataFrame],
     data: pd.DataFrame,
     category: Dict = None,
     title_opt: str = "",
