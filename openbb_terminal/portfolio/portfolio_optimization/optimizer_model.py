@@ -10,7 +10,7 @@ from datetime import date
 
 
 import numpy as np
-from numpy._typing import NDArray
+from numpy.typing import NDArray
 from numpy import floating
 import pandas as pd
 import riskfolio as rp

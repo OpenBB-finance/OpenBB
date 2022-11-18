@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.summary(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     window: str = 'all',
     risk_free_rate: float = 0,
     chart: bool = False,
@@ -44,6 +44,6 @@ portfolio.summary(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.summary(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.summary(p)
     {{< /highlight >}}

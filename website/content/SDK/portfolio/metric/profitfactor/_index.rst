@@ -12,15 +12,15 @@
 
 {{< highlight python >}}
 portfolio.metric.profitfactor(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     chart: bool = False,
-)
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 .. raw:: html
 
     <p>
-    Gets profit factor
+    Get profit factor
     </p>
 
 * **Parameters**
@@ -38,6 +38,7 @@ portfolio.metric.profitfactor(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.metric.profitfactor(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.metric.profitfactor(p)
+    During some time periods there were no losing trades. Thus some values could not be calculated.
     {{< /highlight >}}
