@@ -276,6 +276,7 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="dd")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="rc")
+    >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="heat")
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -289,6 +290,7 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="INDUSTRY", chart_type="dd")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="COUNTRY", chart_type="rc")
+    >>> openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type="heat")
     """
 
     if portfolio_engine is None:
@@ -383,7 +385,9 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
             display_heat(**valid_kwargs)
             return
 
-        console.print("Invalid chart type, please choose from the following: pie, hist, dd, rc, heat")
+        console.print(
+            "Invalid chart type, please choose from the following: pie, hist, dd, rc, heat"
+        )
 
 
 @log_start_end(log=logger)
