@@ -2105,7 +2105,8 @@ def get_property(
 @log_start_end(log=logger)
 def show(
     portfolio_engine: PoEngine,
-) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    category: str = None,
+) -> Union[pd.DataFrame, pd.DataFrame]:
     """Show portfolio optimization results
 
     Parameters
@@ -2115,19 +2116,27 @@ def show(
 
     Returns
     -------
-    Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]
-        Tuple of DataFrames with portfolio optimization results
+    Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame]]
+        Portfolio weights and categories
     """
 
     weights = portfolio_engine.get_weights_df()
-    asset_class = portfolio_engine.get_category_df(category="ASSET_CLASS")
-    country = portfolio_engine.get_category_df(category="COUNTRY")
-    sector = portfolio_engine.get_category_df(category="SECTOR")
-    industry = portfolio_engine.get_category_df(category="INDUSTRY")
 
-    if all(
-        [weights.empty, asset_class.empty, country.empty, sector.empty, industry.empty]
-    ):
-        console.print("No portfolio optimization results to show")
+    if weights.empty:
+        return pd.DataFrame()
 
-    return weights, asset_class, country, sector, industry
+    if category is not None:
+        available_categories = portfolio_engine.get_available_categories()
+        if not available_categories:
+            console.print("No categories found.")
+            return weights, pd.DataFrame()
+
+        msg = ", ".join(available_categories)
+        if category not in available_categories:
+            console.print(f"Please specify a category from the following: {msg}")
+            return weights, pd.DataFrame()
+
+        category_df = portfolio_engine.get_category_df(category=category)
+        return weights, category_df
+
+    return weights, pd.DataFrame()

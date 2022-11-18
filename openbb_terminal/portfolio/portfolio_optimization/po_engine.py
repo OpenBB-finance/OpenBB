@@ -98,7 +98,7 @@ class PoEngine:
             return {}
         return self._categories
 
-    def get_category_df(self, category: str = "ASSET_CLASS") -> pd.DataFrame:
+    def get_category_df(self, category: str = None) -> pd.DataFrame:
         """Get the category df
 
         Returns
