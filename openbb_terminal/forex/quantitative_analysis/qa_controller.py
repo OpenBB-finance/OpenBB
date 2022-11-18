@@ -76,7 +76,6 @@ class QaController(CryptoBaseController):
         self.ticker = f"{from_symbol}/{to_symbol}"
         self.target = "Close"
 
-
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices
             choices["pick"].update({c: {} for c in list(data.columns)})
