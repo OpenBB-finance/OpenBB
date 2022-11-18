@@ -436,7 +436,6 @@ def display_dupont(
     """
     df = av_model.get_dupont(symbol)
     if df.empty:
-        console.print("[red]Invalid response from AlphaVantage[/red]\n")
         return
     if raw:
         print_rich_table(

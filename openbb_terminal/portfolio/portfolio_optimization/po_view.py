@@ -95,6 +95,15 @@ def display_ef(portfolio_engine: PoEngine = None, symbols: List[str] = None, **k
         Number of portfolios to simulate, by default 100
     seed: int, optional
         Seed used to generate random portfolios, by default 123
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> frontier = openbb.portfolio.po.ef_chart(symbols=["AAPL", "MSFT", "AMZN"])
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> frontier = openbb.portfolio.po.ef_chart(portfolio_engine=p)
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
@@ -235,7 +244,55 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
     chart_type : str, optional
-        Chart type can "pie", "hist", "dd" or "rc_chart", by default "pie"
+        Chart type, by default "pie"
+        Options are "pie", "hist", "dd" or "rc"
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
+    >>> d = {
+            "SECTOR": {
+                "AAPL": "INFORMATION TECHNOLOGY",
+                "MSFT": "INFORMATION TECHNOLOGY",
+                "AMZN": "CONSUMER DISCRETIONARY",
+            },
+            "CURRENT_INVESTED_AMOUNT": {
+                "AAPL": "100000.0",
+                "MSFT": "200000.0",
+                "AMZN": "300000.0",
+            },
+            "CURRENCY": {
+                "AAPL": "USD",
+                "MSFT": "USD",
+                "AMZN": "USD",
+            },
+        }
+    >>> p.set_categories_dict(categories=d)
+    >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
+    >>> p.get_available_categories()
+    ['SECTOR']
+    >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="pie")
+    >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
+    >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="dd")
+    >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="rc")
+    >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="heat")
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
+    >>> p.get_available_categories()
+    ['ASSET_CLASS',
+     'SECTOR',
+     'INDUSTRY',
+     'COUNTRY',
+     'CURRENT_INVESTED_AMOUNT',
+     'CURRENCY']
+    >>> openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type="pie")
+    >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
+    >>> openbb.portfolio.po.plot(portfolio_engine=p, category="INDUSTRY", chart_type="dd")
+    >>> openbb.portfolio.po.plot(portfolio_engine=p, category="COUNTRY", chart_type="rc")
+    >>> openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type="heat")
     """
 
     if portfolio_engine is None:
@@ -243,6 +300,7 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
         return
 
     available_categories = portfolio_engine.get_available_categories()
+
     if not available_categories:
         console.print("No categories found.")
         return
@@ -253,25 +311,23 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
     if kwargs["category"] not in available_categories:
         console.print(f"Please specify a category from the following: {msg}")
         return
+
     category = kwargs["category"]
 
-    _, portfolio_engine, parameters = validate_inputs(
+    _, valid_portfolio_engine, valid_kwargs = validate_inputs(
         portfolio_engine=portfolio_engine, kwargs=kwargs
     )
 
-    weights: pd.DataFrame = portfolio_engine.get_weights_df()
+    weights: pd.DataFrame = valid_portfolio_engine.get_weights_df()
     if weights.empty:
         return
 
-    data: pd.DataFrame = portfolio_engine.get_returns()
+    data: pd.DataFrame = valid_portfolio_engine.get_returns()
     if data.empty:
         return
 
     if category:
-        # weights = pd.DataFrame.from_dict(
-        #     data=weights, orient="index", columns=["value"], dtype=float
-        # )
-        category_dict = portfolio_engine.get_category(category)
+        category_dict = valid_portfolio_engine.get_category(category)
         category_df = pd.DataFrame.from_dict(
             data=category_dict, orient="index", columns=["category"]
         )
@@ -309,9 +365,9 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
         weights.index = [i.title() for i in weights.index]
         weights = weights.to_dict()
 
-        parameters["weights"] = weights
-        parameters["data"] = data
-        parameters["colors"] = theme.get_colors()
+        valid_kwargs["weights"] = weights
+        valid_kwargs["data"] = data
+        valid_kwargs["colors"] = theme.get_colors()
 
         if chart_type == "pie":
             display_pie(**parameters)
@@ -324,6 +380,10 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
         elif chart_type == "heat":
             display_heat(**parameters)
         return
+
+        console.print(
+            "Invalid chart type, please choose from the following: pie, hist, dd, rc, heat"
+        )
 
 
 @log_start_end(log=logger)
@@ -406,7 +466,7 @@ def display_heat(**kwargs):
 
 
 @log_start_end(log=logger)
-def display_rc_chart(**kwargs):
+def display_rc(**kwargs):
 
     weights = kwargs.get("weights", None)
     data = kwargs.get("data", None)

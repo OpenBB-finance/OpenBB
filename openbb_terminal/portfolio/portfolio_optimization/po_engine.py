@@ -173,7 +173,7 @@ class PoEngine:
         params : Dict[str, float]
             Parameters
         """
-        self._params = params
+        self._params.update(params)
 
     def get_params(self) -> Dict:
         """Get the parameters

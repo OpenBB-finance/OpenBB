@@ -677,9 +677,10 @@ class PortfolioOptimizationController(BaseController):
                 console.print(
                     f"[yellow]Current Portfolios:[/yellow] {('None', ', '.join(portfolios))[bool(portfolios)]}"
                 )
-                console.print(
-                    f"\n[yellow]Current Categories:[/yellow] {('None', ', '.join(ns_parser.categories))[bool(ns_parser.categories)]}"
-                )
+                c = ("None", ", ".join(ns_parser.categories))[
+                    bool(ns_parser.categories)
+                ]
+                console.print(f"\n[yellow]Current Categories:[/yellow] {c}")
 
             for portfolio in ns_parser.portfolios:
                 if portfolio in portfolios:

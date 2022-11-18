@@ -227,6 +227,12 @@ class ForecastController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
             self.update_runtime_choices()
 
+    def call_exit(self, _) -> None:
+        """Process exit terminal command from forecast menu."""
+        self.save_class()
+        for _ in range(self.PATH.count("/") + 1):
+            self.queue.insert(0, "quit")
+
     def update_runtime_choices(self):
         # Load in any newly exported files
         self.DATA_FILES = forecast_model.get_default_files()

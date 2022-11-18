@@ -28,6 +28,11 @@ def unusual_options(limit: int = 100) -> Tuple[pd.DataFrame, pd.Timestamp]:
     -------
     Tuple[pd.DataFrame, pd.Timestamp]
         Dataframe containing options information, Timestamp indicated when data was updated from website
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> unu_df = openbb.stocks.options.unu()
     """
     pages = np.arange(0, limit // 20 + 1)
     data_list = []
