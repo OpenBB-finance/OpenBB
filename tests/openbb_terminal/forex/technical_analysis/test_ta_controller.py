@@ -429,7 +429,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_bbands",
             [
                 "1",
-                "--std=2",
+                "--std=1.0",
                 "--mamode=ema",
                 "--export=csv",
             ],
