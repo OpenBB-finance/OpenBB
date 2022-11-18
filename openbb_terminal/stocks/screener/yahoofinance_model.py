@@ -111,7 +111,7 @@ def historical(
     l_stocks = screen.screener_view(verbose=0)
     limit_random_stocks = False
 
-    df_screener = pd.DataFrame()
+    final_screener = pd.DataFrame()
 
     if l_stocks:
         if len(l_stocks) < 2:
