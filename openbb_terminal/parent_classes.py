@@ -48,6 +48,7 @@ from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
+from openbb_terminal.core.completer.choices import build_controller_choice_map
 
 logger = logging.getLogger(__name__)
 
@@ -107,6 +108,16 @@ class BaseController(metaclass=ABCMeta):
     TRY_RELOAD = False
     PATH: str = ""
     FILE_PATH: str = ""
+    CHOICES_GENERATION = False
+
+    @property
+    def choices_default(self):
+        if self.CHOICES_GENERATION:
+            choices = build_controller_choice_map(controller=self)
+        else:
+            choices = {}
+
+        return choices
 
     def __init__(self, queue: List[str] = None) -> None:
         """Create the base class for any controller in the codebase.
@@ -719,6 +730,7 @@ class BaseController(metaclass=ABCMeta):
                 type=check_file_type_saved(choices_export),
                 dest="export",
                 help=help_export,
+                choices=choices_export,
             )
 
         if raw:

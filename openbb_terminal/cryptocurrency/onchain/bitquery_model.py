@@ -725,8 +725,8 @@ def get_most_traded_pairs(
 def get_spread_for_crypto_pair(
     symbol: str = "WETH",
     to_symbol: str = "USDT",
-    limit: int = 30,
-    sortby: str = "tradeAmount",
+    limit: int = 10,
+    sortby: str = "date",
     ascend: bool = True,
 ) -> pd.DataFrame:
     """Get an average bid and ask prices, average spread for given crypto pair for chosen time period.
@@ -734,12 +734,12 @@ def get_spread_for_crypto_pair(
 
     Parameters
     ----------
-    limit:  int
-        Last n days to query data
     symbol: str
         ERC20 token symbol
     to_symbol: str
         Quoted currency.
+    limit:  int
+        Last n days to query data
     sortby: str
         Key by which to sort data
     ascend: bool

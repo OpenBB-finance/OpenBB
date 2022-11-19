@@ -1,3 +1,6 @@
+"""Statics"""
+__docformat__ = "numpy"
+
 BENCHMARK_LIST = {
     "SPDR S&P 500 ETF Trust (SPY)": "SPY",
     "iShares Core S&P 500 ETF (IVV)": "IVV",
