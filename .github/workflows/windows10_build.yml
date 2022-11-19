@@ -49,7 +49,6 @@ jobs:
       - name: Build Terminal.spec file
         run: |
           conda activate obb
-          conda remove --force sigtool -y
           pyinstaller build/pyinstaller/terminal.spec --clean
       - name: Move Files into App Folder
         run: cp -r .\dist\OpenBBTerminal\ .\build\nsis\app\
