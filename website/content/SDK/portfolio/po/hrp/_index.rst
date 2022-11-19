@@ -42,7 +42,7 @@ portfolio.po.hrp(
     d_ewma: float = 0.94,
     value: float = 1.0,
     chart: bool = False,
-) -> Tuple
+) -> Tuple[Optional[dict], pandas.core.frame.DataFrame]
 {{< /highlight >}}
 
 .. raw:: html
@@ -217,6 +217,12 @@ portfolio.po.hrp(
     chart: bool
        Flag to display chart
 
+
+* **Returns**
+
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
 
 |
 

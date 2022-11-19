@@ -140,8 +140,8 @@ def _get_argument_parser(
 
     command = "call_" + command
     command_func = getattr(controller, command)
-    command_func = unwrap(command_func)
-    command_func(controller, [])
+    command_func = unwrap(func=command_func, stop=(lambda f: isinstance(f, MethodType)))
+    command_func([])
 
     if parse_known_args_and_warn.call_count == 1:
         args = parse_known_args_and_warn.call_args.args
@@ -152,7 +152,7 @@ def _get_argument_parser(
     else:
         raise AssertionError(
             "One of these functions should be called once:\n"
-            " - parse_known_args_and_warn\n"
+            " - patch_parse_simple_args\n"
             " - parse_known_args_and_warn\n"
         )
 
@@ -175,7 +175,7 @@ def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
             raise AttributeError(f"Invalid argument_parser: {argument_parser}")
 
         if action.choices:
-            choice_map[long_name] = {c: {} for c in action.choices}
+            choice_map[long_name] = {str(c): {} for c in action.choices}
         else:
             choice_map[long_name] = {}
 
@@ -201,7 +201,7 @@ def build_controller_choice_map(controller) -> dict:
                 argument_parser=argument_parser
             )
     except Exception as exception:
-        if environ["DEBUG_MODE"] == "true":
+        if environ.get("DEBUG_MODE", "false") == "true":
             raise exception
 
     return controller_choice_map

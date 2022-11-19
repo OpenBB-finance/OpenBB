@@ -1,3 +1,6 @@
+"""Attribution Model"""
+__docformat__ = "numpy"
+
 from datetime import datetime
 from datetime import date
 import logging
@@ -44,7 +47,7 @@ def get_spy_sector_contributions(
     start_date, end_date=date.today()
 ) -> pd.DataFrame:  # format like 2015-01-15 (YYYY-MM-DD)
     """
-    Fetches sector contributions for the SPY for a fixed period
+    Fetch sector contributions for the SPY for a fixed period
 
     Parameters
     ----------
@@ -101,9 +104,7 @@ def get_spy_sector_contributions(
 def get_portfolio_sector_contributions(
     start_date, portfolio_trades: pd.DataFrame
 ) -> pd.DataFrame:
-
-    """
-    Calculates sector contributions for the loaded portfolio for a fixed period. This is done
+    """Calculate sector contributions for the loaded portfolio for a fixed period. This is done
     by calculating the daily attribution of each asset (% change in adj_close * Weight in PF)
     then grouping by sector and summing the contribution.
 
@@ -198,7 +199,7 @@ def percentage_attrib_categorizer(
     bench_df: pd.DataFrame, pf_df: pd.DataFrame
 ) -> pd.DataFrame:
     """
-    Merges S&P500 benchmark attribution and portfolio attribution dataframes and calculates
+    Merge S&P500 benchmark attribution and portfolio attribution dataframes and calculates
     excess attribution, attribution ratio, attribution direction and attribution sensitivity.
     Returns attribution results as a proportion of the portfolio.
 
@@ -270,8 +271,7 @@ def percentage_attrib_categorizer(
 
 @log_start_end(log=logger)
 def raw_attrib_categorizer(bench_df, pf_df) -> pd.DataFrame:
-    """
-    Merges S&P500 benchmark attribution and portfolio attribution dataframes and calculates
+    """Merge S&P500 benchmark attribution and portfolio attribution dataframes and calculates
     excess attribution, attribution ratio, attribution direction and attribution sensitivity.
     Returns attribution results as raw values
 
@@ -342,8 +342,7 @@ def raw_attrib_categorizer(bench_df, pf_df) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_daily_sector_prices(start_date, end_date) -> dict:
-    """
-    fetches daily sector prices for S&P500 for a fixed time period
+    """Fetch daily sector prices for S&P500 for a fixed time period
 
     Parameters
     ----------
