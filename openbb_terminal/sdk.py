@@ -1888,6 +1888,10 @@ functions = {
         "model": "openbb_terminal.stocks.tradinghours.bursa_model.get_bursa",
         "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_exchange",
     },
+    "stocks.th.holidays": {
+        "model": "openbb_terminal.stocks.tradinghours.pandas_market_cal_model.get_exchange_holidays",
+        "view": "openbb_terminal.stocks.tradinghours.pandas_market_cal_view.display_exchange_holidays",
+    },
     "stocks.load": {"model": "openbb_terminal.stocks.stocks_helper.load"},
     "etf.load": {"model": "openbb_terminal.stocks.stocks_helper.load"},
     "stocks.process_candle": {
