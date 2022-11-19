@@ -33,8 +33,7 @@ def display_eps_estimates(symbol: str):
             title=f"{symbol.upper()} EPS History and Estimations",
         )
     else:
-        logger.error("Invalid data")
-        console.print("[red]Invalid data[/red]\n")
+        console.print("No data found.")
         return
 
 @log_start_end(log=logger)
@@ -46,6 +45,7 @@ def display_rev_estimates(symbol: str):
     symbol: str
         ticker of company
     """
+
     rev_estimates = seeking_alpha_model.get_estimates_rev(symbol)
 
     if not rev_estimates.empty:
@@ -56,6 +56,5 @@ def display_rev_estimates(symbol: str):
             title=f"{symbol.upper()} Revenue History and Estimations",
         )
     else:
-        logger.error("Invalid data")
-        console.print("[red]Invalid data[/red]\n")
+        console.print("No data found.")
         return

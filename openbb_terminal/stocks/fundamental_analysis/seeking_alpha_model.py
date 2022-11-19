@@ -68,57 +68,62 @@ def get_estimates_eps(ticker: str) -> pd.DataFrame:
         ]
     )
 
-    seek_object = response.json()["estimates"][str(seek_id)]
+    # if no estimations exist, response is empty "reviews" and "reviews"
+    # {"revisions":{},"estimates":{}}
+    try:
+        seek_object = response.json()["estimates"][str(seek_id)]
 
-    items = len(seek_object["eps_normalized_num_of_estimates"].keys())
+        items = len(seek_object["eps_normalized_num_of_estimates"].keys())
 
-    for i in range(0, items - 3):
-        # python_dict
-        eps_estimates = {}
-        eps_estimates["fiscalyear"] = seek_object["eps_normalized_num_of_estimates"][
-            str(i)
-        ][0]["period"]["fiscalyear"]
-        eps_estimates["analysts"] = seek_object["eps_normalized_num_of_estimates"][
-            str(i)
-        ][0]["dataitemvalue"]
-        try:
-            eps_estimates["actual"] = seek_object["eps_normalized_actual"][str(i)][0][
-                "dataitemvalue"
-            ]
-        except:
-            eps_estimates["actual"] = 0
-        eps_estimates["consensus_low"] = seek_object["eps_normalized_consensus_low"][
-            str(i)
-        ][0]["dataitemvalue"]
-        eps_estimates["consensus_high"] = seek_object["eps_normalized_consensus_high"][
-            str(i)
-        ][0]["dataitemvalue"]
-        eps_estimates["consensus_mean"] = seek_object["eps_normalized_consensus_mean"][
-            str(i)
-        ][0]["dataitemvalue"]
-
-        try:
-            this = float(eps_estimates["consensus_mean"])
+        for i in range(0, items - 3):
+            # python_dict
+            eps_estimates = {}
+            eps_estimates["fiscalyear"] = seek_object["eps_normalized_num_of_estimates"][
+                str(i)
+            ][0]["period"]["fiscalyear"]
+            eps_estimates["analysts"] = seek_object["eps_normalized_num_of_estimates"][
+                str(i)
+            ][0]["dataitemvalue"]
             try:
-                prev = float(
-                    seek_object["eps_normalized_actual"][str(i - 1)][0]["dataitemvalue"]
-                )
+                eps_estimates["actual"] = seek_object["eps_normalized_actual"][str(i)][0][
+                    "dataitemvalue"
+                ]
             except:
-                prev = float(
-                    seek_object["eps_normalized_consensus_mean"][str(i - 1)][0][
-                        "dataitemvalue"
-                    ]
-                )
+                eps_estimates["actual"] = 0
+            eps_estimates["consensus_low"] = seek_object["eps_normalized_consensus_low"][
+                str(i)
+            ][0]["dataitemvalue"]
+            eps_estimates["consensus_high"] = seek_object["eps_normalized_consensus_high"][
+                str(i)
+            ][0]["dataitemvalue"]
+            eps_estimates["consensus_mean"] = seek_object["eps_normalized_consensus_mean"][
+                str(i)
+            ][0]["dataitemvalue"]
 
-            percent = ((this / prev) - 1) * 100
-        except:
-            percent = f"{0}"
+            try:
+                this = float(eps_estimates["consensus_mean"])
+                try:
+                    prev = float(
+                        seek_object["eps_normalized_actual"][str(i - 1)][0]["dataitemvalue"]
+                    )
+                except:
+                    prev = float(
+                        seek_object["eps_normalized_consensus_mean"][str(i - 1)][0][
+                            "dataitemvalue"
+                        ]
+                    )
 
-        eps_estimates["change %"] = percent
+                percent = ((this / prev) - 1) * 100
+            except:
+                percent = f"{0}"
 
-        # df append replacement
-        new_row = pd.DataFrame(eps_estimates, index=[0])
-        output = pd.concat([output, new_row])
+            eps_estimates["change %"] = percent
+
+            # df append replacement
+            new_row = pd.DataFrame(eps_estimates, index=[0])
+            output = pd.concat([output, new_row])
+    except:
+        pass
 
     return output
 
@@ -170,6 +175,7 @@ def get_estimates_rev(ticker: str) -> pd.DataFrame:
     )
 
     # init
+    # pd.empty should deliver true if no data-rows are added
     output = pd.DataFrame(
         columns=[
             "fiscalyear",
@@ -182,56 +188,62 @@ def get_estimates_rev(ticker: str) -> pd.DataFrame:
         ]
     )
 
-    seek_object = response.json()["estimates"][seek_id]
+    # if no estimations exist, response is empty "reviews" and "reviews"
+    # {"revisions":{},"estimates":{}}
+    try:
+        seek_object = response.json()["estimates"][seek_id]
 
-    items = len(seek_object["revenue_num_of_estimates"].keys())
+        items = len(seek_object["revenue_num_of_estimates"].keys())
 
-    for i in range(0, items - 3):
-        revenue_estimates = {}
-        revenue_estimates["fiscalyear"] = seek_object["revenue_num_of_estimates"][
-            str(i)
-        ][0]["period"]["fiscalyear"]
-        revenue_estimates["consensus_mean"] = seek_object["revenue_consensus_mean"][
-            str(i)
-        ][0]["dataitemvalue"]
-        revenue_estimates["analysts"] = seek_object["revenue_num_of_estimates"][str(i)][
-            0
-        ]["dataitemvalue"]
-        if i < 1:
-            revenue_estimates["actual"] = seek_object["revenue_actual"][str(i)][0][
-                "dataitemvalue"
-            ]
-        else:
-            revenue_estimates["actual"] = 0
-        revenue_estimates["consensus_low"] = seek_object["revenue_consensus_low"][
-            str(i)
-        ][0]["dataitemvalue"]
-        revenue_estimates["consensus_high"] = seek_object["revenue_consensus_high"][
-            str(i)
-        ][0]["dataitemvalue"]
+        for i in range(0, items - 3):
+            # python_dict
+            revenue_estimates = {}
+            revenue_estimates["fiscalyear"] = seek_object["revenue_num_of_estimates"][
+                str(i)
+            ][0]["period"]["fiscalyear"]
+            revenue_estimates["consensus_mean"] = seek_object["revenue_consensus_mean"][
+                str(i)
+            ][0]["dataitemvalue"]
+            revenue_estimates["analysts"] = seek_object["revenue_num_of_estimates"][
+                str(i)
+            ][0]["dataitemvalue"]
+            if i < 1:
+                revenue_estimates["actual"] = seek_object["revenue_actual"][str(i)][0][
+                    "dataitemvalue"
+                ]
+            else:
+                revenue_estimates["actual"] = 0
+            revenue_estimates["consensus_low"] = seek_object["revenue_consensus_low"][
+                str(i)
+            ][0]["dataitemvalue"]
+            revenue_estimates["consensus_high"] = seek_object["revenue_consensus_high"][
+                str(i)
+            ][0]["dataitemvalue"]
 
-        try:
-            this = float(revenue_estimates["consensus_mean"])
-            # if actual revenue is available, take it for the calc
             try:
-                prev = float(
-                    seek_object["revenue_actual"][str(i - 1)][0]["dataitemvalue"]
-                )
+                this = float(revenue_estimates["consensus_mean"])
+                # if actual revenue is available, take it for the calc
+                try:
+                    prev = float(
+                        seek_object["revenue_actual"][str(i - 1)][0]["dataitemvalue"]
+                    )
+                except:
+                    prev = float(
+                        seek_object["revenue_consensus_mean"][str(i - 1)][0][
+                            "dataitemvalue"
+                        ]
+                    )
+
+                percent = ((this / prev) - 1) * 100
             except:
-                prev = float(
-                    seek_object["revenue_consensus_mean"][str(i - 1)][0][
-                        "dataitemvalue"
-                    ]
-                )
+                percent = float(0)
 
-            percent = ((this / prev) - 1) * 100
-        except:
-            percent = float(0)
-
-        revenue_estimates["change %"] = percent
-        # df append replacement
-        new_row = pd.DataFrame(revenue_estimates, index=[0])
-        output = pd.concat([output, new_row])
+            revenue_estimates["change %"] = percent
+            # df append replacement
+            new_row = pd.DataFrame(revenue_estimates, index=[0])
+            output = pd.concat([output, new_row])
+    except:
+        pass
 
     return output
 
@@ -271,13 +283,18 @@ def get_seekingalpha_id(ticker: str) -> str:
         "Sec-Fetch-Site": "same-origin",
         "Referer": "https://seekingalpha.com/",
         "Connection": "keep-alive",
-        "TE": "trailers",
+        # "TE": "trailers",
     }
 
     response = requests.request(
         "GET", url, data=payload, headers=headers, params=querystring
     )
 
-    seekingalphaID = str(response.json()["symbols"][0]["id"])
+    
+    try:
+        seekingalphaID = str(response.json()["symbols"][0]["id"])
+    except:
+        # for some reason no mapping possible
+        seekingalphaID = 0
 
     return seekingalphaID
