@@ -1675,6 +1675,8 @@ main:
                 ref: /terminal/stocks/th/open
               - name: symbol
                 ref: /terminal/stocks/th/symbol
+              - name: holidays
+                ref: /terminal/stocks/th/holidays
 # CODE BELOW THIS WILL BE DELETED FREQUENTLY BY PYTHON, DO NOT EDIT THIS
   - name: SDK
     ref: /SDK
