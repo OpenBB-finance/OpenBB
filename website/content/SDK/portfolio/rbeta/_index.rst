@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.rbeta(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     window: str = '1y',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -46,8 +46,8 @@ portfolio.rbeta(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.rbeta(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.rbeta(p)
     {{< /highlight >}}
 
 |
@@ -60,7 +60,7 @@ portfolio.rbeta(
 
 {{< highlight python >}}
 portfolio.rbeta(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     window: str = '1y',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,

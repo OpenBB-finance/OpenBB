@@ -12,10 +12,10 @@
 
 {{< highlight python >}}
 portfolio.metric.tail(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     window: int = 252,
     chart: bool = False,
-)
+) -> Tuple[pandas.core.frame.DataFrame, pandas.core.series.Series, pandas.core.series.Series]
 {{< /highlight >}}
 
 .. raw:: html
@@ -45,6 +45,6 @@ portfolio.metric.tail(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.metric.tail(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.metric.tail(p)
     {{< /highlight >}}
