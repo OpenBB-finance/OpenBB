@@ -50,6 +50,7 @@ class FuturesController(BaseController):
     curve_type = "futures"
 
     PATH = "/futures/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -60,30 +61,10 @@ class FuturesController(BaseController):
         self.all_categories = yfinance_model.FUTURES_DATA["Category"].unique().tolist()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            self.choices: dict = {c: {} for c in self.controller_choices}
+            self.choices: dict =  self.choices_default
 
-            self.choices["search"] = {
-                "--category": {c: None for c in self.all_categories},
-                "-c": "--category",
-                "--exchange": {c: None for c in self.all_exchanges},
-                "-e": "--exchange",
-                "--description": {},
-                "-d": "--description",
-            }
-
-            self.choices["support"] = self.SUPPORT_CHOICES
-            self.choices["about"] = self.ABOUT_CHOICES
-
-            self.choices["historical"] = {c: None for c in self.all_tickers}
-            self.choices["historical"]["--ticker"] = {c: None for c in self.all_tickers}
-            self.choices["historical"]["-t"] = "--ticker"
-            self.choices["historical"]["--start"] = {}
-            self.choices["historical"]["-s"] = "--start"
-            self.choices["historical"]["--expiry"] = {}
-            self.choices["historical"]["-e"] = "--expiry"
-            self.choices["curve"] = {c: None for c in self.all_tickers}
-            self.choices["curve"]["--ticker"] = {c: None for c in self.all_tickers}
-            self.choices["curve"]["-t"] = "--ticker"
+            self.choices["historical"].update({c: None for c in self.all_tickers})
+            self.choices["curve"].update({c: None for c in self.all_tickers})
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)  # type: ignore
 
@@ -176,6 +157,8 @@ class FuturesController(BaseController):
             default="",
             help="Future ticker to display timeseries separated by comma when multiple, e.g.: BLK,QI",
             required="-h" not in other_args,
+            choices=self.all_tickers,
+            metavar="TICKER",
         )
         parser.add_argument(
             "-s",
@@ -227,8 +210,9 @@ class FuturesController(BaseController):
             type=str,
             default="",
             help="Future curve to be selected",
-            metavar="Futures symbol",
             required="-h" not in other_args,
+            metavar="TICKER",
+            choices=self.all_tickers,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
