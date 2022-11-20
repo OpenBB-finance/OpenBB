@@ -14,9 +14,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.holdp(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     chart: bool = False,
-)
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 .. raw:: html
@@ -34,12 +34,17 @@ portfolio.holdp(
        Flag to display chart
 
 
+* **Returns**
+
+    pd.DataFrame
+        DataFrame of holdings percentage
+
 * **Examples**
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.holdp(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.holdp(p)
     {{< /highlight >}}
 
 |
@@ -52,7 +57,7 @@ portfolio.holdp(
 
 {{< highlight python >}}
 portfolio.holdp(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     unstack: bool = False,
     raw: bool = False,
     limit: int = 10,

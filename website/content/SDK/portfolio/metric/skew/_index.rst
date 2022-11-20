@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.metric.skew(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -20,7 +20,7 @@ portfolio.metric.skew(
 .. raw:: html
 
     <p>
-    Method that retrieves skewness for portfolio and benchmark selected
+    Get skewness for portfolio and benchmark selected
 
     portfolio_engine: PortfolioEngine
         PortfolioEngine class instance, this will hold transactions and perform calculations.
@@ -34,8 +34,8 @@ portfolio.metric.skew(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.metric.skew(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.metric.skew(p)
     </p>
 
 * **Returns**
@@ -47,6 +47,6 @@ portfolio.metric.skew(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.metric.skew(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.metric.skew(p)
     {{< /highlight >}}

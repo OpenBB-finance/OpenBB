@@ -12,15 +12,15 @@
 
 {{< highlight python >}}
 portfolio.metric.payoff(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     chart: bool = False,
-)
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 .. raw:: html
 
     <p>
-    Gets payoff ratio
+    Get payoff ratio
 
     Returns
     -------
@@ -30,8 +30,9 @@ portfolio.metric.payoff(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.metric.payoff(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.metric.payoff(p)
+    During some time periods there were no losing trades. Thus some values could not be calculated.
     </p>
 
 * **Returns**
@@ -43,6 +44,7 @@ portfolio.metric.payoff(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.metric.payoff(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.metric.payoff(p)
+    During some time periods there were no losing trades. Thus some values could not be calculated.
     {{< /highlight >}}

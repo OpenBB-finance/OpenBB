@@ -28,7 +28,7 @@ portfolio.po.maxdiv(
     value: float = 1.0,
     value_short: float = 0,
     chart: bool = False,
-) -> Tuple
+) -> Tuple[Optional[dict], pandas.core.frame.DataFrame]
 {{< /highlight >}}
 
 .. raw:: html
@@ -95,8 +95,9 @@ portfolio.po.maxdiv(
 
 * **Returns**
 
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
 
 |
 
