@@ -7,6 +7,8 @@ from openbb_terminal.core.library.operation import Operation
 
 # pylint: disable=import-outside-toplevel
 
+TRAIL_STACK = []
+
 
 class MetadataBuilder:
     @staticmethod
@@ -115,6 +117,7 @@ class Breadcrumb:
             trail_next = name
         else:
             trail_next = f"{trail}.{name}"
+            self.__append_trail_stack(trail_next)
 
         if trail_map.get_model_function(
             trail=trail_next
@@ -122,6 +125,7 @@ class Breadcrumb:
             next_crumb: Any = Operation(
                 trail=trail_next,
                 trail_map=trail_map,
+                trail_stack=TRAIL_STACK,
             )
         elif name in self._metadata.dir_list:
             next_crumb = Breadcrumb(
@@ -143,6 +147,11 @@ class Breadcrumb:
         url = "https://openbb-finance.github.io/OpenBBTerminal/SDK/"
         url += "/".join(trail.split("."))
         webbrowser.open(url)
+
+    def __append_trail_stack(self, trail: str):
+        if len(TRAIL_STACK) > 9:
+            TRAIL_STACK.pop(0)
+        TRAIL_STACK.append(trail)
 
 
 # pylint: disable=R0903

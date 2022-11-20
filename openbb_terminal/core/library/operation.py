@@ -72,6 +72,7 @@ class Operation:
         trail: str,
         trail_map: Optional[TrailMap] = None,
         metadata: Optional[Metadata] = None,
+        trail_stack: Optional[List[str]] = None,
     ) -> None:
         trail_map = trail_map or TrailMap()
 
@@ -85,9 +86,9 @@ class Operation:
         self._trail = trail
         self._trail_map = trail_map
         self._method = method
-
         self.__doc__ = metadata.docstring
         self.__signature__ = signature(method)
+        self.__trail_stack = trail_stack or []
 
     def __call__(self, *args: Any, **kwargs: Any) -> Any:
         method = self._method
@@ -97,6 +98,7 @@ class Operation:
             method_chosen=method,
             args=args,
             kwargs=kwargs,
+            trail_stack=self.__trail_stack,
         )
 
         operation_logger.log_before_call()
@@ -124,19 +126,21 @@ class OperationLogger:
         args: Any,
         kwargs: Any,
         logger: Optional[Logger] = None,
+        trail_stack: Optional[List[str]] = None,
     ) -> None:
         self.__trail = trail
         self.__method_chosen = method_chosen
         self.__logger = logger or getLogger(self.__method_chosen.__module__)
         self.__args = args
         self.__kwargs = kwargs
+        self.__trail_stack = trail_stack or []
 
-        self.__logger.addFilter(DuplicatesFilter())
+        # self.__logger.addFilter(DuplicatesFilter())
 
     def log_before_call(
         self,
     ):
-        if not cfg.LOGGING_SUPPRESS:
+        if self.__check_logging_conditions():
             logger = self.__logger
             self.__log_start(logger=logger, method_chosen=self.__method_chosen)
             self.__log_method_info(
@@ -247,7 +251,7 @@ class OperationLogger:
         self,
         method_result: Any,
     ):
-        if not cfg.LOGGING_SUPPRESS:
+        if self.__check_logging_conditions():
             logger = self.__logger
             self.__log_exception_if_any(
                 logger=logger,
@@ -277,3 +281,12 @@ class OperationLogger:
             "END",
             extra={"func_name_override": method_chosen.__name__},
         )
+
+    def __check_logging_conditions(self):
+        return not cfg.LOGGING_SUPPRESS and not self.__check_trail_stack()
+
+    def __check_trail_stack(self) -> bool:
+        if len(self.__trail_stack) > 1:
+            trail_len = len(self.__trail.split("."))
+            return self.__trail_stack[-trail_len] == self.__trail
+        return False
