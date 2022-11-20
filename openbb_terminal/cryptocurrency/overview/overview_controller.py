@@ -51,7 +51,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 
 logger = logging.getLogger(__name__)
 
@@ -97,7 +96,9 @@ class OverviewController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
-            choices["wfpe"].update({c: {} for c in withdrawalfees_model.POSSIBLE_CRYPTOS})
+            choices["wfpe"].update(
+                {c: {} for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
+            )
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
