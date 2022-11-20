@@ -193,6 +193,11 @@ def __patch_controller_functions(controller):
         controller,
     )
 
+    rich = patch(
+        target="openbb_terminal.rich_config.ConsoleAndPanel.print",
+        return_value=None,
+    )
+
     patcher_list = [
         patch(
             target="openbb_terminal.parent_classes.parse_simple_args",
@@ -207,12 +212,14 @@ def __patch_controller_functions(controller):
         ),
     ]
 
+    rich.start()
     patched_function_list = []
     for patcher in patcher_list:
         patched_function_list.append(patcher.start())
 
     yield patched_function_list
 
+    rich.stop()
     for patcher in patcher_list:
         patcher.stop()
 
