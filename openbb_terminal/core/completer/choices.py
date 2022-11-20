@@ -298,8 +298,8 @@ def build_controller_choice_map(controller) -> dict:
     controller_choice_map["support"] = controller.SUPPORT_CHOICES
     controller_choice_map["about"] = controller.ABOUT_CHOICES
 
-    try:
-        for command in command_list:
+    for command in command_list:
+        try:
             argument_parser = _get_argument_parser(
                 controller=controller,
                 command=command,
@@ -307,9 +307,9 @@ def build_controller_choice_map(controller) -> dict:
             controller_choice_map[command] = _build_command_choice_map(
                 argument_parser=argument_parser
             )
-    except Exception as exception:
-        if environ.get("DEBUG_MODE", "false") == "true":
+        except Exception as exception:
+            if environ.get("DEBUG_MODE", "false") == "true":
+                raise exception
             raise exception
-        raise exception
 
     return controller_choice_map
