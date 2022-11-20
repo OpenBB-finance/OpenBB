@@ -80,13 +80,15 @@ class CryptoController(CryptoBaseController):
     }
     PATH = "/crypto/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = self.choices_default
+
             choices["load"] = {
                 "--interval": {
                     c: {}
@@ -111,37 +113,6 @@ class CryptoController(CryptoBaseController):
                 "--end": None,
                 "-e": "--end",
             }
-            choices["find"] = {
-                "--key": {c: {} for c in FIND_KEYS},
-                "-k": "--key",
-                "--limit": None,
-                "-l": "--limit",
-                "--skip": {str(c): {} for c in range(1, 300)},
-                "-s": "--skip",
-                "--source": {
-                    c: {}
-                    for c in [
-                        "CoinGecko",
-                        "CoinPaprika",
-                        "Binance",
-                        "Coinbase",
-                        "YahooFinance",
-                    ]
-                },
-            }
-            choices["price"] = {
-                "--symbol": {c: {} for c in pyth_model.ASSETS.keys()},
-                "-s": "--symbol",
-            }
-            choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
-            choices["prt"]["--vs"] = None
-            choices["prt"]["--price"] = None
-            choices["prt"]["-p"] = "--price"
-            choices["prt"]["--top"] = None
-            choices["prt"]["-t"] = None
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -181,79 +152,78 @@ class CryptoController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_prt(self, other_args):
         """Process prt command"""
-        if self.symbol:
-            parser = argparse.ArgumentParser(
-                add_help=False,
-                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="prt",
-                description="Potential Returns Tool"
-                "Tool to check returns if loaded coin reaches provided price or other crypto market cap"
-                "Uses CoinGecko to grab coin data (price and market cap).",
-            )
-            parser.add_argument(
-                "--vs",
-                help="Coin to compare with",
-                dest="vs",
-                type=str,
-                # required="-h" not in other_args,
-                default=None,
-            )
-            parser.add_argument(
-                "-p",
-                "--price",
-                help="Desired price",
-                dest="price",
-                type=int,
-                default=None,
-            )
-            parser.add_argument(
-                "-t",
-                "--top",
-                help="Compare with top N coins",
-                dest="top",
-                type=int,
-                default=None,
-            )
-            if other_args and "-" not in other_args[0][0]:
-                other_args.insert(0, "--vs")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="prt",
+            description="Potential Returns Tool"
+            "Tool to check returns if loaded coin reaches provided price or other crypto market cap"
+            "Uses CoinGecko to grab coin data (price and market cap).",
+        )
+        parser.add_argument(
+            "--vs",
+            help="Coin to compare with",
+            dest="vs",
+            type=str,
+            # required="-h" not in other_args,
+            default=None,
+        )
+        parser.add_argument(
+            "-p",
+            "--price",
+            help="Desired price",
+            dest="price",
+            type=int,
+            default=None,
+        )
+        parser.add_argument(
+            "-t",
+            "--top",
+            help="Compare with top N coins",
+            dest="top",
+            type=int,
+            default=None,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--vs")
 
-            ns_parser = self.parse_known_args_and_warn(
-                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
-            if ns_parser:
-                num_args = 0
-                for arg in vars(ns_parser):
-                    if getattr(ns_parser, arg):
-                        num_args = num_args + 1
-                        if num_args > 1:
-                            console.print("[red]Please chose only one flag[/red]\n")
-                            return
-                current_coin_id = cryptocurrency_helpers.get_coingecko_id(self.symbol)
-                if ns_parser.vs is not None:
-                    coin_found = cryptocurrency_helpers.get_coingecko_id(ns_parser.vs)
-                    if not coin_found:
-                        console.print(
-                            f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n"
-                        )
+        if ns_parser and self.symbol:
+            num_args = 0
+            for arg in vars(ns_parser):
+                if getattr(ns_parser, arg):
+                    num_args = num_args + 1
+                    if num_args > 1:
+                        console.print("[red]Please chose only one flag[/red]\n")
                         return
-                else:
-                    coin_found = None
-                if (
-                    ns_parser.vs is None
-                    and ns_parser.top is None
-                    and ns_parser.price is None
-                ):
+            current_coin_id = cryptocurrency_helpers.get_coingecko_id(self.symbol)
+            if ns_parser.vs is not None:
+                coin_found = cryptocurrency_helpers.get_coingecko_id(ns_parser.vs)
+                if not coin_found:
                     console.print(
-                        "[red]Please chose a flag: --top, --vs, or --price [/red]\n"
+                        f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n"
                     )
                     return
-                pycoingecko_view.display_coin_potential_returns(
-                    current_coin_id,
-                    coin_found,
-                    ns_parser.top,
-                    ns_parser.price,
+            else:
+                coin_found = None
+            if (
+                ns_parser.vs is None
+                and ns_parser.top is None
+                and ns_parser.price is None
+            ):
+                console.print(
+                    "[red]Please chose a flag: --top, --vs, or --price [/red]\n"
                 )
+                return
+            pycoingecko_view.display_coin_potential_returns(
+                current_coin_id,
+                coin_found,
+                ns_parser.top,
+                ns_parser.price,
+            )
         else:
             console.print("[red]Please load a coin first![/red]\n")
 
@@ -273,6 +243,8 @@ class CryptoController(CryptoBaseController):
             type=str,
             dest="symbol",
             help="Symbol of coin to load data for, ~100 symbols are available",
+            choices=pyth_model.ASSETS.keys(),
+            metavar="SYMBOL",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
@@ -526,6 +498,8 @@ class CryptoController(CryptoBaseController):
             dest="skip",
             help="Skip n of records",
             type=check_positive,
+            choices=range(1, 300),
+            metavar="SKIP",
         )
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
