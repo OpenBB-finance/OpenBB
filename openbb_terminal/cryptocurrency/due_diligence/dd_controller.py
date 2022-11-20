@@ -140,16 +140,16 @@ class DueDiligenceController(CryptoBaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
-            choices["ob"] = {c: {} for c in self.ccxt_exchanges}
-            choices["trades"] = {c: {} for c in self.ccxt_exchanges}
-            choices["change"] = {
+            choices["ob"].update({c: {} for c in self.ccxt_exchanges})
+            choices["trades"].update({c: {} for c in self.ccxt_exchanges})
+            choices["change"].update({
                 c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
-            }
-            choices["eb"] = {
+            })
+            choices["eb"].update({
                 c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
-            }
-            choices["mt"] = {c: None for c in self.messari_timeseries}
-            choices["desc"] = {c: None for c in tokenterminal_model.get_project_ids()}
+            })
+            choices["mt"].update({c: None for c in self.messari_timeseries})
+            choices["desc"].update({c: None for c in tokenterminal_model.get_project_ids()})
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
