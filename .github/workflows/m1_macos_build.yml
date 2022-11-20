@@ -11,6 +11,9 @@ jobs:
   Build:
     name: M1 MacOS Build
     runs-on: [self-hosted, macos, ARM64]
+    defaults:
+      run:
+        shell: bash
     steps:
       # Checkout repository main branch. this allows for the commit hashes to line up
       - name: Checkout
@@ -45,10 +48,10 @@ jobs:
           activate-environment: build_env
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
-      - name: Initialize Conda and Reset Terminal
-        run: |
-          conda activate build_env
-          conda env list
+      # - name: Initialize Conda and Reset Terminal
+      #   run: |
+      #     conda activate build_env
+      #     conda env list
       - name: Run Poetry
         run: poetry install
       - name: Install Pyinstaller
