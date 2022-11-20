@@ -142,14 +142,16 @@ class DueDiligenceController(CryptoBaseController):
 
             choices["ob"].update({c: {} for c in self.ccxt_exchanges})
             choices["trades"].update({c: {} for c in self.ccxt_exchanges})
-            choices["change"].update({
-                c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
-            })
-            choices["eb"].update({
-                c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
-            })
+            choices["change"].update(
+                {c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES}
+            )
+            choices["eb"].update(
+                {c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES}
+            )
             choices["mt"].update({c: None for c in self.messari_timeseries})
-            choices["desc"].update({c: None for c in tokenterminal_model.get_project_ids()})
+            choices["desc"].update(
+                {c: None for c in tokenterminal_model.get_project_ids()}
+            )
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

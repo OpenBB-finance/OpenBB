@@ -103,7 +103,9 @@ class OnchainController(BaseController):
             choices: dict = self.choices_default
 
             choices["hr"].update({c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS})
-            choices["ds"].update({c: None for c in shroom_model.DAPP_STATS_PLATFORM_CHOICES})
+            choices["ds"].update(
+                {c: None for c in shroom_model.DAPP_STATS_PLATFORM_CHOICES}
+            )
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -828,7 +830,7 @@ class OnchainController(BaseController):
         )
 
         if ns_parser:
-            if  self.address:
+            if self.address:
                 ethplorer_view.display_token_info(
                     social=ns_parser.social,
                     address=self.address,
@@ -1278,7 +1280,9 @@ class OnchainController(BaseController):
             ),
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED,
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
 
         if ns_parser:
