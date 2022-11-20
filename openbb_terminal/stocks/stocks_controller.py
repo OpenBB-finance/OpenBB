@@ -50,6 +50,7 @@ class StocksController(StockBaseController):
         "tob",
         "candle",
         "news",
+        "resources",
         "codes",
     ]
     CHOICES_MENUS = [
