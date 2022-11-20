@@ -212,14 +212,16 @@ def __patch_controller_functions(controller):
         ),
     ]
 
-    rich.start()
+    if environ.get("DEBUG_MODE", "false") != "true":
+        rich.start()
     patched_function_list = []
     for patcher in patcher_list:
         patched_function_list.append(patcher.start())
 
     yield patched_function_list
 
-    rich.stop()
+    if environ.get("DEBUG_MODE", "false") != "true":
+        rich.stop()
     for patcher in patcher_list:
         patcher.stop()
 
@@ -300,6 +302,8 @@ def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
 
 
 def build_controller_choice_map(controller) -> dict:
+    environ["DEBUG_MODE"] = "true"
+
     command_list = controller.CHOICES_COMMANDS
     controller_choice_map: dict = {c: {} for c in controller.controller_choices}
     controller_choice_map["support"] = controller.SUPPORT_CHOICES
@@ -317,6 +321,5 @@ def build_controller_choice_map(controller) -> dict:
         except Exception as exception:
             if environ.get("DEBUG_MODE", "false") == "true":
                 raise exception
-            raise exception
 
     return controller_choice_map
