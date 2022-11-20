@@ -75,7 +75,7 @@ class NFTController(BaseController):
             help="NFT floor price collection slug (e.g., bored-ape-yacht-club)",
             dest="slug",
             required="-h" not in other_args,
-            choices=self.nft_price_floor_collections.tolist(),
+            choices=self.nft_price_floor_collections,
             metavar="SLUG",
         )
         if other_args and not other_args[0][0] == "-":

@@ -13,8 +13,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_non_negative_float,
-    check_percentage_range,
+    check_non_negative,
     check_positive,
     check_positive_float,
 )
@@ -65,7 +64,7 @@ class ToolsController(BaseController):
             "-a",
             "--priceChangeA",
             dest="priceChangeA",
-            type=check_non_negative_float,
+            type=check_non_negative,
             help="Token A price change in percentage",
             default=0,
             choices=range(1, 101),
@@ -75,7 +74,7 @@ class ToolsController(BaseController):
             "-b",
             "--priceChangeB",
             dest="priceChangeB",
-            type=check_non_negative_float,
+            type=check_non_negative,
             help="Token B price change in percentage",
             default=100,
             choices=range(1, 101),
@@ -85,7 +84,7 @@ class ToolsController(BaseController):
             "-p",
             "--proportion",
             dest="proportion",
-            type=check_percentage_range,
+            type=check_positive,
             help="""Pool proportion. E.g., 50 means that pool contains 50%% of token A and 50%% of token B,
             30 means that pool contains 30%% of token A and 70%% of token B""",
             default=50,
@@ -142,7 +141,7 @@ class ToolsController(BaseController):
         parser.add_argument(
             "--apr",
             dest="apr",
-            type=check_positive_float,
+            type=check_positive,
             help="APR value in percentage to convert",
             default=100,
             choices=range(1, 101),
