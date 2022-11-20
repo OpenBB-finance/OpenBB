@@ -19,9 +19,11 @@ jobs:
         run: git log
       # Install create-dmg
       - name: Install create-dmg
+        shell: bash -l {0}
         run: brew install create-dmg
       # The following commands to clear previous PATHS and restore to defaults since we have to maintain the instance ourselves
       - name: Clean Previous Path
+        shell: bash -l {0}
         run: |
           export PATH=""
           export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -45,26 +47,27 @@ jobs:
           activate-environment: build_env
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
-      # - name: Initialize Conda and Reset Terminal
-      #   run: |
-      #     conda activate build_env
-      #     conda env list
       - name: Run Poetry
         shell: bash -l {0}
         run: poetry install
       - name: Install Pyinstaller
+        shell: bash -l {0}
         run: poetry install -E installer
       - name: Poetry Install Portfolio Optimization and Forecasting Toolkits
+        shell: bash -l {0}
         run: poetry install -E all
       - name: Install Specific Papermill
+        shell: bash -l {0}
         run: |
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
       # Double Checking Version Number
       - name: Check OpenBB Version
+        shell: bash -l {0}
         run: pip list | grep openbb
       # This is basically the same as build4mac.sh
       - name: Build Bundle
+        shell: bash -l {0}
         run: |
           pyinstaller build/pyinstaller/terminal.spec --clean
           osascript build/pyinstaller/setup_icons.applescript
@@ -72,8 +75,10 @@ jobs:
           cp -r build/pyinstaller/macOS_package_assets/* DMG/
           mv dist/OpenBBTerminal DMG/OpenBB\ Terminal/.OpenBB
       - name: Create DMG
+        shell: bash -l {0}
         run: create-dmg --volname "OpenBB Terminal" --volicon "images/dmg_volume.icns" --background "images/openbb_dmg_background.png" --icon "OpenBB Terminal" 190 250 --window-pos 190 120 --window-size 800 400 --icon-size 100 --text-size 14 --app-drop-link 600 250 --eula LICENSE --format UDZO --no-internet-enable "OpenBB Terminal".dmg DMG
       - name: Clean up Build Artifacts
+        shell: bash -l {0}
         run: |
           rm -rf build/terminal
           rm -rf dist
@@ -84,21 +89,27 @@ jobs:
           name: M1 MacOS DMG Artifact
           path: OpenBB\ Terminal.dmg
       - name: Convert & Mount DMG
+        shell: bash -l {0}
         run: |
           hdiutil convert OpenBB\ Terminal.dmg -format UDTO -o openbbterminal.cdr
           hdiutil attach openbbterminal.cdr
           rm -rf openbbterminal.cdr
       - name: Directory Change
+        shell: bash -l {0}
         run: |
             cd
             cd /Volumes/OpenBB\ Terminal
             ls
             cp -R OpenBB\ Terminal ~/Desktop
       - name: Unmount DMG
+        shell: bash -l {0}
         run: hdiutil detach /dev/disk4
       - name: Run Integration Tests
+        shell: bash -l {0}
         run: /Users/openbb/Desktop/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Users/openbb/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/openbb_terminal/miscellaneous/scripts -t
       - name: Remove OpenBB Folder
+        shell: bash -l {0}
         run: rm -rf /Users/openbb/Desktop/OpenBB\ Terminal
       - name: Remove OpenBB Exports Folder
+        shell: bash -l {0}
         run: rm -rf ~/Desktop/OPENBB-exports
