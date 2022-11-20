@@ -17,7 +17,7 @@ portfolio.load(
     full_shares: bool = False,
     risk_free_rate: float = 0,
     chart: bool = False,
-) -> openbb_terminal.portfolio.portfolio_model.PortfolioEngine
+) -> openbb_terminal.portfolio.portfolio_engine.PortfolioEngine
 {{< /highlight >}}
 
 .. raw:: html
@@ -47,5 +47,5 @@ portfolio.load(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
     {{< /highlight >}}

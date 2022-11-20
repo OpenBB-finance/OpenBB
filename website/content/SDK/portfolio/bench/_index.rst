@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.bench(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     symbol: str,
     full_shares: bool = False,
     chart: bool = False,
@@ -28,7 +28,8 @@ portfolio.bench(
 * **Parameters**
 
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     symbol: str
         Benchmark symbol to download data
     full_shares: bool
@@ -39,6 +40,6 @@ portfolio.bench(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.bench(P, symbol="SPY")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.bench(p, symbol="SPY")
     {{< /highlight >}}

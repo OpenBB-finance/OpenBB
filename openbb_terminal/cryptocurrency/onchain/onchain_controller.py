@@ -136,8 +136,6 @@ class OnchainController(BaseController):
                 "--since": None,
                 "-s": "--since",
             }
-            choices["baas"]["-c"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
-            choices["baas"]["--coin"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
             choices["balance"] = {
                 "--sort": {c: None for c in ethplorer_model.BALANCE_FILTERS},
                 "-s": "--sort",
@@ -253,6 +251,8 @@ class OnchainController(BaseController):
                 "-c": "--coin",
                 "--vs": {c: {} for c in bitquery_model.CURRENCIES},
                 "-vs": "--vs",
+                "--limit": None,
+                "-l": "--limit",
                 "--sort": {c: {} for c in bitquery_model.BAAS_FILTERS},
                 "-s": "--sort",
                 "--reverse": {},
@@ -1566,9 +1566,9 @@ class OnchainController(BaseController):
             "-vs", "--vs", dest="vs", type=str, help="Quote currency", default="USDT"
         )
         parser.add_argument(
-            "-d",
-            "--days",
-            dest="days",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
             help="Number of days to display data for.",
             default=10,
@@ -1606,7 +1606,7 @@ class OnchainController(BaseController):
                     bitquery_view.display_spread_for_crypto_pair(
                         symbol=ns_parser.coin,
                         to_symbol=ns_parser.vs,
-                        days=ns_parser.days,
+                        limit=ns_parser.limit,
                         sortby=ns_parser.sortby,
                         ascend=ns_parser.reverse,
                         export=ns_parser.export,
@@ -1630,7 +1630,7 @@ class OnchainController(BaseController):
                                 bitquery_view.display_spread_for_crypto_pair(
                                     token=token,
                                     to_symbol=ns_parser.vs,
-                                    days=ns_parser.days,
+                                    limit=ns_parser.limit,
                                     sortby=ns_parser.sortby,
                                     ascend=ns_parser.reverse,
                                     export=ns_parser.export,

@@ -23,7 +23,7 @@ portfolio.po.equal(
     method: str = 'time',
     value: float = 1.0,
     chart: bool = False,
-) -> Tuple
+) -> Tuple[Dict[str, float], pandas.core.frame.DataFrame]
 {{< /highlight >}}
 
 .. raw:: html
@@ -66,5 +66,5 @@ portfolio.po.equal(
 
 * **Returns**
 
-    dict
-        Dictionary of weights where keys are the tickers
+    Tuple[Dict[str, float], pd.DataFrame]
+        Dictionary of weights where keys are the tickers, dataframe of stock returns

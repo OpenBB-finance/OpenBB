@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.perf(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     show_all_trades: bool = False,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -41,6 +41,6 @@ portfolio.perf(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.perf(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.perf(p)
     {{< /highlight >}}

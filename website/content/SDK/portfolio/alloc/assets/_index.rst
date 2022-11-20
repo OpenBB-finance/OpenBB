@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.alloc.assets(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     tables: bool = False,
     limit: int = 10,
     recalculate: bool = False,
@@ -47,6 +47,6 @@ portfolio.alloc.assets(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.alloc.assets(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.alloc.assets(p)
     {{< /highlight >}}

@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.metric.rsquare(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -20,7 +20,7 @@ portfolio.metric.rsquare(
 .. raw:: html
 
     <p>
-    Method that retrieves R2 Score for portfolio and benchmark selected
+    Get R2 Score for portfolio and benchmark selected
     </p>
 
 * **Parameters**
@@ -38,6 +38,6 @@ portfolio.metric.rsquare(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.metric.rsquare(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.metric.rsquare(p)
     {{< /highlight >}}

@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.metric.volatility(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -20,7 +20,7 @@ portfolio.metric.volatility(
 .. raw:: html
 
     <p>
-    Method that retrieves volatility for portfolio and benchmark selected
+    Get volatility for portfolio and benchmark selected
     </p>
 
 * **Parameters**
@@ -38,6 +38,6 @@ portfolio.metric.volatility(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.metric.volatility(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.metric.volatility(p)
     {{< /highlight >}}

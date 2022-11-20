@@ -198,3 +198,39 @@ def get_cash_flow(
         df = eodhd_model.get_financials(symbol, "cash", quarterly, ratios)
         return df
     return pd.DataFrame()
+
+
+def earnings(
+    symbol: str, source: str = "YahooFinance", quarterly: bool = False
+) -> pd.DataFrame:
+    """Get earnings data.
+
+    Parameters
+    ----------
+    symbol : str
+        Stock ticker
+    source : str, optional
+         Source to use, by default "AlphaVantage"
+    quarterly : bool, optional
+        Flag to get quarterly data (AlphaVantage only), by default False.
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of earnings
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> aapl_earnings = openbb.stocks.fa.earnings("AAPL", source ="YahooFinance)
+
+    To obtain quarterly earnings, use the quarterly flag with AlphaVantage
+    >>> aapl_earnings = openbb.stocks.fa.metrics("earnings", source ="AlphaVantage, quarterly=True)
+    """
+    if source == "YahooFinance":
+        df = yahoo_finance_model.get_earnings_history(symbol)
+        return df
+    if source == "AlphaVantage":
+        df = av_model.get_earnings(symbol, quarterly)
+        return df
+    return pd.DataFrame()
