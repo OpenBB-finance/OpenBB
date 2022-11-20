@@ -47,7 +47,8 @@ jobs:
           use-only-tar-bz2: true # Needed for caching some reason
       - name: Initialize Conda and Reset Terminal
         run: |
-          conda list
+          conda env list
+          exit
       - name: Run Poetry
         run: poetry install
       - name: Install Pyinstaller
