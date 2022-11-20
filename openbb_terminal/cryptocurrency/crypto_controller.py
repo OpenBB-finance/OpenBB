@@ -191,41 +191,42 @@ class CryptoController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser and self.symbol:
-            num_args = 0
-            for arg in vars(ns_parser):
-                if getattr(ns_parser, arg):
-                    num_args = num_args + 1
-                    if num_args > 1:
-                        console.print("[red]Please chose only one flag[/red]\n")
+        if ns_parser:
+            if self.symbol:
+                num_args = 0
+                for arg in vars(ns_parser):
+                    if getattr(ns_parser, arg):
+                        num_args = num_args + 1
+                        if num_args > 1:
+                            console.print("[red]Please chose only one flag[/red]\n")
+                            return
+                current_coin_id = cryptocurrency_helpers.get_coingecko_id(self.symbol)
+                if ns_parser.vs is not None:
+                    coin_found = cryptocurrency_helpers.get_coingecko_id(ns_parser.vs)
+                    if not coin_found:
+                        console.print(
+                            f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n"
+                        )
                         return
-            current_coin_id = cryptocurrency_helpers.get_coingecko_id(self.symbol)
-            if ns_parser.vs is not None:
-                coin_found = cryptocurrency_helpers.get_coingecko_id(ns_parser.vs)
-                if not coin_found:
+                else:
+                    coin_found = None
+                if (
+                    ns_parser.vs is None
+                    and ns_parser.top is None
+                    and ns_parser.price is None
+                ):
                     console.print(
-                        f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n"
+                        "[red]Please chose a flag: --top, --vs, or --price [/red]\n"
                     )
                     return
-            else:
-                coin_found = None
-            if (
-                ns_parser.vs is None
-                and ns_parser.top is None
-                and ns_parser.price is None
-            ):
-                console.print(
-                    "[red]Please chose a flag: --top, --vs, or --price [/red]\n"
+                pycoingecko_view.display_coin_potential_returns(
+                    current_coin_id,
+                    coin_found,
+                    ns_parser.top,
+                    ns_parser.price,
                 )
-                return
-            pycoingecko_view.display_coin_potential_returns(
-                current_coin_id,
-                coin_found,
-                ns_parser.top,
-                ns_parser.price,
-            )
-        else:
-            console.print("[red]Please load a coin first![/red]\n")
+            else:
+                console.print("[red]Please load a coin first![/red]\n")
 
     @log_start_end(log=logger)
     def call_price(self, other_args):
