@@ -36,8 +36,8 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_positive,
     check_non_negative,
+    check_positive,
     valid_date,
 )
 from openbb_terminal.menu import session
