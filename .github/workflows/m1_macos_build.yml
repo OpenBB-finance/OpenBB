@@ -42,13 +42,12 @@ jobs:
           show-channel-urls: true
           channel-priority: flexible
           environment-file: build/conda/conda-3-9-env-full.yaml
-          activate-environment: build_env
+          activate-environment: buildenv
+          auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
       - name: Initialize Conda and Reset Terminal
         run: |
-          conda init
-          exec zsh -l
-          source ~/.zshrc
+          conda list
       - name: Run Poetry
         run: poetry install
       - name: Install Pyinstaller
