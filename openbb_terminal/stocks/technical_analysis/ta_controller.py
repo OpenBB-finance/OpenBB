@@ -567,12 +567,13 @@ class TechnicalAnalysisController(StockBaseController):
         if ns_parser:
             # Daily
             if self.interval == "1440min":
-                if not ns_parser.start:
+                if ns_parser.start:
+                    interval_text = "Daily"
+                else:
                     console.print(
                         "If no date conditions, VWAP should be used with intraday data. \n"
                     )
                     return
-                interval_text = "Daily"
             else:
                 interval_text = self.interval
 
@@ -1410,16 +1411,16 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
-            if self.interval != "1440min":
-                console.print(
-                    "[red]This regression should be performed with daily data and at least 90 days.[/red]"
-                )
-            else:
+            if self.interval == "1440min":
                 momentum_view.display_clenow_momentum(
                     self.stock["Adj Close"],
                     self.ticker.upper(),
                     ns_parser.period,
                     ns_parser.export,
+                )
+            else:
+                console.print(
+                    "[red]This regression should be performed with daily data and at least 90 days.[/red]"
                 )
 
     @log_start_end(log=logger)

@@ -896,11 +896,11 @@ class BehaviouralAnalysisController(StockBaseController):
         )
 
         if ns_parser:
-            if not self.ticker:
+            if self.ticker:
+                cramer_view.display_cramer_ticker(
+                    symbol=self.ticker, raw=ns_parser.raw, export=ns_parser.export
+                )
+            else:
                 console.print(
                     "[red]No ticker loaded.  Please use load <ticker> first.\n[/red]"
                 )
-                return
-            cramer_view.display_cramer_ticker(
-                symbol=self.ticker, raw=ns_parser.raw, export=ns_parser.export
-            )

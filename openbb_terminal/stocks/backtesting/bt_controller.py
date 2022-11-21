@@ -202,7 +202,6 @@ class BacktestingController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-
             if ns_parser.long < ns_parser.short:
                 console.print("Short EMA period is longer than Long EMA period\n")
 

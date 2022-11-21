@@ -582,13 +582,13 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not self.suffix:
-            if ns_parser:
+        if ns_parser:
+            if not self.suffix:
                 yahoo_finance_view.display_shareholders(
                     self.ticker, holder=ns_parser.holder, export=ns_parser.export
                 )
-        else:
-            console.print("Only US tickers are recognized.", "\n")
+            else:
+                console.print("Only US tickers are recognized.", "\n")
 
     @log_start_end(log=logger)
     def call_sust(self, other_args: List[str]):
@@ -609,13 +609,13 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not self.suffix:
-            if ns_parser:
+        if ns_parser:
+            if not self.suffix:
                 yahoo_finance_view.display_sustainability(
                     self.ticker, export=ns_parser.export
                 )
-        else:
-            console.print("Only US tickers are recognized.", "\n")
+            else:
+                console.print("Only US tickers are recognized.", "\n")
 
     @log_start_end(log=logger)
     def call_cal(self, other_args: List[str]):
@@ -632,13 +632,13 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not self.suffix:
-            if ns_parser:
+        if ns_parser:
+            if not self.suffix:
                 yahoo_finance_view.display_calendar_earnings(
                     symbol=self.ticker, export=ns_parser.export
                 )
-        else:
-            console.print("Only US tickers are recognized.", "\n")
+            else:
+                console.print("Only US tickers are recognized.", "\n")
 
     @log_start_end(log=logger)
     def call_web(self, other_args: List[str]):
@@ -654,11 +654,11 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not self.suffix:
-            if ns_parser:
+        if ns_parser:
+            if not self.suffix:
                 yahoo_finance_view.open_web(self.ticker)
-        else:
-            console.print("Only US tickers are recognized.", "\n")
+            else:
+                console.print("Only US tickers are recognized.", "\n")
 
     @log_start_end(log=logger)
     def call_hq(self, other_args: List[str]):
@@ -674,11 +674,11 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not self.suffix:
-            if ns_parser:
+        if ns_parser:
+            if not self.suffix:
                 yahoo_finance_view.open_headquarters_map(self.ticker)
-        else:
-            console.print("Only US tickers are recognized.", "\n")
+            else:
+                console.print("Only US tickers are recognized.", "\n")
 
     @log_start_end(log=logger)
     def call_divs(self, other_args: List[str]):
@@ -708,16 +708,16 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not self.suffix:
-            if ns_parser:
+        if ns_parser:
+            if not self.suffix:
                 yahoo_finance_view.display_dividends(
                     symbol=self.ticker,
                     limit=ns_parser.limit,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-        else:
-            console.print("Only US tickers are recognized.", "\n")
+            else:
+                console.print("Only US tickers are recognized.", "\n")
 
     @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):

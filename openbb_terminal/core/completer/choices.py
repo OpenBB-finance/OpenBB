@@ -302,8 +302,6 @@ def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
 
 
 def build_controller_choice_map(controller) -> dict:
-    environ["DEBUG_MODE"] = "true"
-
     command_list = controller.CHOICES_COMMANDS
     controller_choice_map: dict = {c: {} for c in controller.controller_choices}
     controller_choice_map["support"] = controller.SUPPORT_CHOICES

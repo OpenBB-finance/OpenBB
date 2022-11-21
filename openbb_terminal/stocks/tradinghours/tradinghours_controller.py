@@ -178,7 +178,9 @@ class TradingHoursController(BaseController):
                 bursa_view.display_exchange(ns_parser.exchange)
             else:
                 logger.error("Select the exchange you want to know about.")
-                console.print("[red]Select the exchange you want to know about.[/red]\n")
+                console.print(
+                    "[red]Select the exchange you want to know about.[/red]\n"
+                )
 
     @log_start_end(log=logger)
     def call_open(self, other_args: List[str]):
