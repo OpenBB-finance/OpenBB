@@ -1406,22 +1406,21 @@ class TechnicalAnalysisController(StockBaseController):
             type=check_positive,
         )
 
-        if self.interval != "1440min":
-            console.print(
-                "[red]This regression should be performed with daily data and at least 90 days.[/red]"
-            )
-            return
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
-            momentum_view.display_clenow_momentum(
-                self.stock["Adj Close"],
-                self.ticker.upper(),
-                ns_parser.period,
-                ns_parser.export,
-            )
+            if self.interval != "1440min":
+                console.print(
+                    "[red]This regression should be performed with daily data and at least 90 days.[/red]"
+                )
+            else:
+                momentum_view.display_clenow_momentum(
+                    self.stock["Adj Close"],
+                    self.ticker.upper(),
+                    ns_parser.period,
+                    ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_demark(self, other_args: List[str]):
