@@ -61,7 +61,7 @@ class FuturesController(BaseController):
         self.all_categories = yfinance_model.FUTURES_DATA["Category"].unique().tolist()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            self.choices: dict =  self.choices_default
+            self.choices: dict = self.choices_default
 
             self.choices["historical"].update({c: None for c in self.all_tickers})
             self.choices["historical"]["--ticker"] = {c: None for c in self.all_tickers}
