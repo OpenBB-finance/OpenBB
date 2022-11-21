@@ -21,7 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.dark_pool_shorts import (
     finra_view,
     quandl_view,
@@ -55,6 +55,7 @@ class DarkPoolShortsController(StockBaseController):
     ]
     POS_CHOICES = ["sv", "sv_pct", "nsv", "nsv_dollar", "dpp", "dpp_dollar"]
     PATH = "/stocks/dps/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self, ticker: str, start: str, stock: pd.DataFrame, queue: List[str] = None
@@ -67,88 +68,7 @@ class DarkPoolShortsController(StockBaseController):
         self.stock = stock
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["load"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
-                "-i": "--interval",
-                "--prepost": {},
-                "-p": "--prepost",
-                "--file": None,
-                "-f": "--file",
-                "--monthly": {},
-                "-m": "--monthly",
-                "--weekly": {},
-                "-w": "--weekly",
-                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
-                "-r": "--iexrange",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
-                },
-            }
-            limit = {
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["shorted"] = limit
-            choices["hsi"] = limit
-            choices["ctb"] = {
-                "--number": one_to_hundred,
-                "-n": "--number",
-            }
-            choices["prom"] = {
-                "--num": None,
-                "-n": "--num",
-                "--limit": None,
-                "-l": "--limit",
-                "--tier": {c: {} for c in ["T1", "T2", "OTCE"]},
-                "-t": "--tier",
-            }
-            choices["pos"] = {
-                "--limit": None,
-                "-l": "--limit",
-                "--sort": {c: {} for c in self.POS_CHOICES},
-                "-s": "--sort",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["sidtc"] = {
-                "--limit": None,
-                "-l": "--limit",
-                "--sort": {c: {} for c in ["float", "dtc", "si"]},
-                "-s": "--sort",
-            }
-            choices["ftd"] = {
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--num": one_to_hundred,
-                "-n": "--num",
-                "--raw": {},
-            }
-            choices["spos"] = {
-                "--num": one_to_hundred,
-                "-n": "--num",
-                "--raw": {},
-                "-r": "--raw",
-            }
-            choices["psi"] = {
-                "--nyse": {},
-                "--raw": {},
-                "--limit": None,
-                "-l": "--limit",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}psi")
-                },
-            }
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
