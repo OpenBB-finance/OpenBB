@@ -1105,3 +1105,39 @@ def show_codes_polygon(ticker: str):
     print_rich_table(
         polygon_df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
     )
+
+
+def format_parse_choices(choices: List[str]) -> List[str]:
+    """Formats a list of strings to be lowercase and replace spaces with underscores.
+
+    Parameters
+    ----------
+    choices: List[str]
+        The options to be formatted
+
+    Returns
+    -------
+    clean_choices: List[str]
+        The cleaned options
+
+    """
+    return [x.lower().replace(" ", "_") for x in choices]
+
+
+def map_parse_choices(choices: List[str]) -> Dict[str, str]:
+    """Creates a mapping of clean arguments (keys) to original arguments (values)
+
+    Parameters
+    ----------
+    choices: List[str]
+        The options to be formatted
+
+    Returns
+    -------
+    clean_choices: Dict[str, str]
+        The mappung
+
+    """
+    the_dict = {x.lower().replace(" ", "_"): x for x in choices}
+    the_dict[""] = ""
+    return the_dict

@@ -36,6 +36,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_non_negative,
     check_positive,
     valid_date,
 )
@@ -112,6 +113,7 @@ class DueDiligenceController(CryptoBaseController):
     }
 
     PATH = "/crypto/dd/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self,
@@ -136,103 +138,20 @@ class DueDiligenceController(CryptoBaseController):
         if not df_mt.empty:
             self.messari_timeseries = df_mt.index.to_list()
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["ob"] = {c: {} for c in self.ccxt_exchanges}
-            choices["ob"]["-e"] = {c: {} for c in self.ccxt_exchanges}
-            choices["ob"]["--vs"] = {c: {} for c in self.binance_currencies}
-            choices["trades"] = {c: {} for c in self.ccxt_exchanges}
-            choices["trades"]["-e"] = {c: {} for c in self.ccxt_exchanges}
-            choices["trades"]["--vs"] = {c: {} for c in self.binance_currencies}
-            choices["active"]["-i"] = {
-                c: None for c in glassnode_model.INTERVALS_ACTIVE_ADDRESSES
-            }
-            choices["change"] = {
-                c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
-            }
-            choices["eb"] = {
-                c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
-            }
-            choices["eb"]["--since"] = None
-            choices["eb"]["-s"] = None
-            choices["eb"]["--until"] = None
-            choices["eb"]["-u"] = None
-            choices["eb"]["--pct"] = {}
-            choices["eb"]["-p"] = {}
-            choices["oi"]["--interval"] = {c: {} for c in coinglass_model.INTERVALS}
-            choices["oi"]["-i"] = "--interval"
-            choices["stats"]["--vs"] = {c: {} for c in self.coinbase_currencies}
-            choices["atl"]["--vs"] = {c: {} for c in FILTERS_VS_USD_BTC}
-            choices["ath"]["--vs"] = {c: {} for c in FILTERS_VS_USD_BTC}
-            choices["mkt"] = {
-                "--vs": {c: {} for c in coinpaprika_view.CURRENCIES},
-                "--sort": {c: {} for c in coinpaprika_view.MARKET_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--urls": {},
-                "-u": "--urls",
-            }
-            choices["ex"] = {
-                "--sort": {c: {} for c in coinpaprika_view.EX_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["events"] = {
-                "--sort": {c: {} for c in coinpaprika_view.EVENTS_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["twitter"] = {
-                "--sort": {c: {} for c in coinpaprika_view.TWEETS_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["news"] = {
-                "--sort": {c: {} for c in cryptopanic_model.SORT_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "--urls": {},
-                "-u": "--urls",
-                "--kind": {c: {} for c in cryptopanic_model.CATEGORIES},
-                "-k": "--kind",
-                "--filter": {c: {} for c in cryptopanic_model.FILTERS},
-                "--region": {c: {} for c in cryptopanic_model.REGIONS},
-                "-r": "--region",
-            }
-            choices["mt"] = {c: None for c in self.messari_timeseries}
-            choices["mt"]["-i"] = {c: None for c in messari_model.INTERVALS_TIMESERIES}
-            choices["mcapdom"]["-i"] = {
-                c: None for c in messari_model.INTERVALS_TIMESERIES
-            }
-            choices["ps"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
-            choices["news"]["-k"] = {c: None for c in cryptopanic_model.CATEGORIES}
-            choices["news"]["--filter"] = {c: None for c in cryptopanic_model.FILTERS}
-            choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
-            choices["news"]["-s"] = {c: None for c in cryptopanic_model.SORT_FILTERS}
-            choices["funot"]["-m"] = {c: None for c in tokenterminal_model.METRICS}
-            choices["funot"]["-p"] = {
-                c: None for c in tokenterminal_model.get_project_ids()
-            }
-            choices["desc"]["-p"] = {
-                c: None for c in tokenterminal_model.get_project_ids()
-            }
-            choices["desc"] = {c: None for c in tokenterminal_model.get_project_ids()}
+            choices: dict = self.choices_default
 
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices["ob"].update({c: {} for c in self.ccxt_exchanges})
+            choices["trades"].update({c: {} for c in self.ccxt_exchanges})
+            choices["change"].update(
+                {c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES}
+            )
+            choices["eb"].update(
+                {c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES}
+            )
+            choices["mt"].update({c: None for c in self.messari_timeseries})
+            choices["desc"].update(
+                {c: None for c in tokenterminal_model.get_project_ids()}
+            )
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -602,9 +521,9 @@ class DueDiligenceController(CryptoBaseController):
             "-i",
             "--interval",
             dest="interval",
-            type=str,
+            type=check_non_negative,
             help="Frequency interval. Default: 0",
-            default="0",
+            default=0,
             choices=coinglass_model.INTERVALS,
         )
 
@@ -612,15 +531,10 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
-        try:
-            interval = int(ns_parser.interval)
-        except ValueError:
-            console.print("[red]Interval must be an integer value[/red]\n")
-
         if ns_parser:
             coinglass_view.display_open_interest(
                 symbol=self.symbol.upper(),
-                interval=interval,
+                interval=ns_parser.interval,
                 export=ns_parser.export,
             )
 
@@ -901,6 +815,8 @@ class DueDiligenceController(CryptoBaseController):
             dest="vs",
             default="usdt",
             type=str.lower,
+            choices=self.binance_currencies,
+            metavar="VS",
         )
 
         if other_args and not other_args[0][0] == "-":
@@ -944,6 +860,8 @@ class DueDiligenceController(CryptoBaseController):
             dest="vs",
             default="usdt",
             type=str.lower,
+            choices=self.binance_currencies,
+            metavar="VS",
         )
 
         if other_args and not other_args[0][0] == "-":
@@ -1657,6 +1575,8 @@ class DueDiligenceController(CryptoBaseController):
             type=str,
             help="Messari timeseries id",
             default="",
+            choices=self.messari_timeseries,
+            metavar="TIMESERIES",
         )
 
         parser.add_argument(

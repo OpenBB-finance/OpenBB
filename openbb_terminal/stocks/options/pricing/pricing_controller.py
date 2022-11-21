@@ -5,7 +5,6 @@ import argparse
 import logging
 from typing import List
 
-import numpy as np
 import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
@@ -30,6 +29,7 @@ class PricingController(BaseController):
         "rnval",
     ]
     PATH = "/stocks/options/pricing/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self,
@@ -46,34 +46,7 @@ class PricingController(BaseController):
         self.prices = prices
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            zero_to_one_detailed: dict = {
-                str(c): {} for c in np.arange(0.0, 1.0, 0.005)
-            }
-            choices["add"] = {
-                "--price": None,
-                "-p": "--price",
-                "--chance": zero_to_one_detailed,
-                "-c": "--chance",
-            }
-            choices["rmv"] = {
-                "--price": None,
-                "-p": "--price",
-                "--all": {},
-                "-a": "--all",
-            }
-            choices["rnval"] = {
-                "--put": {},
-                "-p": "--put",
-                "--min": None,
-                "-m": "--min",
-                "--max": None,
-                "-M": "--max",
-                "--risk": zero_to_one_detailed,
-                "-r": "--risk",
-            }
-
+            choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
