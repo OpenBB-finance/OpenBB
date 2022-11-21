@@ -102,6 +102,9 @@ class Trailmap:
                 self.short_doc[key] = clean_attr_desc(func_attr)
 
                 self.params[key] = {}
+                print(
+                    f"Getting parameters for {func_attr} at {module_path} with {self.lineon[key]}"
+                )
                 for k, p in get_signature_parameters(
                     func_attr, func_attr.__globals__
                 ).items():
