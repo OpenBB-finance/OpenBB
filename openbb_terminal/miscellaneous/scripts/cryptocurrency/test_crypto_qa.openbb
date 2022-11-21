@@ -1,5 +1,5 @@
 crypto
-load ${crypto=eth}
+load eth
 qa
 
 # summary

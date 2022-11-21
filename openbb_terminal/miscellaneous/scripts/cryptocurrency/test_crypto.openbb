@@ -1,36 +1,37 @@
 crypto
-load ${crypto=eth}
+load eth
 
 # Find
-find ${crypto=eth}
-find ${crypto=eth} --key symbol
-find ${crypto=eth} --key id
-find ${crypto_full=etherium} --key name
-find ${crypto=eth} --limit 5
-find ${crypto=eth} --skip 3 # Bug that only skips second similar coins but not first
-find ${crypto=eth} --source CoinGecko
-find ${crypto=eth} --source CoinPaprika
-find ${crypto=eth} --source Binance
-find ${crypto=eth} --source Coinbase
+find eth
+find eth --key symbol
+find eth --key id
+find ethereum --key name
+find eth --limit 5
+find eth --skip 3 # Bug that only skips second similar coins but not first
+find eth --source CoinGecko
+find eth --source CoinPaprika
+find eth --source Binance
+find eth --source Coinbase
 # Bug with this source
-# find ${crypto=eth} --source Yahoofinance
+# find eth --source Yahoofinance
 
 # Price
-price ${crypto=eth}
+# price eth
+price eth
 
 # Headlines
 headlines
-headlines ${crypto=ETH}
+headlines ETH
 
 # Candle
 candle
 candle --log
 
 # PRT
-prt --vs ${crypto_vs=btc}
+prt --vs btc
 # Bug where we need --vs when we don't actually need it
 # prt --top 3
 # Bug where --price doesn't seem to do anything
-# prt --vs ${crypto_vs=btc} --price 1000
+# prt --vs btc --price 1000
 
 exit

@@ -1,5 +1,5 @@
 stocks
-load ${ticker=aapl}
+load aapl
 dd
 analyst
 rating
@@ -14,6 +14,6 @@ est -e quarterearnings
 sec
 supplier
 customer
-load ${ticker=tsla}
+load tsla
 arktrades
 exit

@@ -3,6 +3,13 @@ reports
 ## defaults
 crypto
 
-crypto --symbol ${crypto=BTC}
+## simple coin
+crypto --symbol BTC
+
+## small-cap coin
+crypto --symbol STEPN
+
+## shitcoins
+crypto --symbol LUCKY
 
 exit

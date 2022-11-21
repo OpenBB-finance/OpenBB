@@ -1,5 +1,5 @@
 stocks
-load ${ticker=aapl}
+load aapl
 ca
 tsne
 historical
@@ -8,7 +8,7 @@ hcorr
 hcorr --raw
 hcorr -t h --display-full-matrix
 volume
-ticker ${ticker=msft}
+ticker msft
 income
 income -t 31-Mar-2022 -q
 balance
@@ -25,7 +25,7 @@ financial
 ownership
 performance
 technical
-ticker -t ${ticker=tsla}
+ticker -t tsla
 get --source Polygon
 get --source Finnhub
 get

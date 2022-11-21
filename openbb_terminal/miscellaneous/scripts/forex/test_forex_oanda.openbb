@@ -4,21 +4,21 @@ oanda -argument
 oanda
 from -h
 from -argument
-from ${currency=usd}
+from usd
 to -h
 to -argument
-to ${currency_vs=chf}
+to chf
 price -h
 price -argument
 price
-from ${currency=eur}
+from eur
 price
-from ${currency=ils}
+from ils
 price
 summary -h
 summary
 from usd
-to ${currency_vs=chf}
+to chf
 orderbook -h
 orderbook
 list -h
@@ -53,8 +53,8 @@ candles -a -b -c -e -v
 calendar
 calendar -h
 calendar -argument
-from ${currency=eur}
-to ${currency_vs=jpy}
+from eur
+to jpy
 calendar
 to gbp
 calendar

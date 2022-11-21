@@ -1,5 +1,5 @@
 stocks
-load ${ticker=aapl}
+load aapl
 ta
 view
 recom
@@ -29,7 +29,7 @@ ad
 adosc
 obv
 fib
-load ${ticker=ionq} -i 1
+load ionq -i 1
 ema -l 20,30,50
 sma -l 3
 wma -l 5
@@ -54,7 +54,7 @@ ad --open
 adosc --open --fast 4 --slow 10
 obv
 fib
-load ${ticker=aapl} --source Polygon
+load aapl --source Polygon
 ema
 sma
 wma

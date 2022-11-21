@@ -8,7 +8,7 @@ It aims to provide necessary information in order to:
 - Run `integration tests`
 - Identify errors noted from `integration tests`
 
-## 1.1. Why have integration tests ?
+## 1.1. Why having integration tests ?
 
 The purpose of integration tests is to provide standard usage examples that can be programmatically run
 to make sure that a specific functionality of the terminal and the process to utilize that functionality
@@ -27,10 +27,6 @@ All the `integration tests` should be insides the `scripts` folder. The naming c
 should be `test_<menu>_<command>.openbb` if you are testing a specific command or `test_<menu>.openbb`
 if you are testing the entire menu. However, it is encouraged to create as specific of integration tests
 as possible to identify errors more precisely. Additionally, all tests must end with the `exit` command.
-
-These files can be given dynamic output with the following syntax `${key=default}`. Please note that
-both key and default can only contain letters and numbers with NO special characters. Each dynamic
-argument MUST contain a key and a default value.
 
 ### Examples
 
@@ -98,13 +94,13 @@ few different ways using the wildcard expression.
 - Run all integration tests:
 
     ```zsh
-    python testing.py
+    python terminal.py scripts/*.openbb -t
     ```
 
 - Run some integration tests:
 
     ```zsh
-    python testing.py stocks crypto
+    python terminal.py scripts/test_stocks_*.openbb -t
     ```
 
     *This specific example runs all of the stocks integration tests. One can use this same format for different tests.*
@@ -112,24 +108,8 @@ few different ways using the wildcard expression.
 - Run one integration tests:
 
     ```zsh
-    python testing.py scripts/test_alt_covid.openbb
+    python terminal.py scripts/test_alt_covid.openbb -t
     ```
-
-    *Note that the base path is `OpenBBTerminal/openbb_terminal/miscellaneous/scripts`.*
-
-- Run integration tests with arguments by adding --key=value
-
-    ```zsh
-    python testing.py --ticker=aapl
-    ```
-
-- To see a lot of possible keys, run the following:
-
-    ```zsh
-    python testing.py -h
-    ```
-
-If there are any test failures a csv will be generated with detailed information on the failures.
 
 ### Installer Terminal
 
@@ -180,5 +160,3 @@ If the `-t` argument is not given, then the reason why a specific failure occurs
 test is printed inline while the test is being run.
 
 If there is an error, one can identify the command and or series of steps that causes it fairly easily.
-
-Output from the integration tests can also be viewed in the `integration_test_output` folder .
