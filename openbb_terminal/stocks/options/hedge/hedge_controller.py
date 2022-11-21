@@ -185,7 +185,7 @@ class HedgeController(BaseController):
             help="Short the option instead of buying it",
             default=False,
         )
-        opt_type = (
+        option_type = (
             self.put_index_choices if "-p" in other_args else self.call_index_choices
         )
         parser.add_argument(
@@ -195,7 +195,7 @@ class HedgeController(BaseController):
             help="The identifier of the option as found in the list command",
             required="-h" not in other_args and "-k" not in other_args,
             type=int,
-            choices=opt_type,
+            choices=option_type,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
@@ -437,7 +437,7 @@ class HedgeController(BaseController):
                 side = 1
 
             self.amount = float(amount_type)
-            self.strike = strike_type
+            self.strike = float(strike_type)
 
             index = -1
             date_obj = datetime.strptime(self.expiration, "%Y-%m-%d")
