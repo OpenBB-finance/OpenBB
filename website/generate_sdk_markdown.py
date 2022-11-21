@@ -2,7 +2,7 @@ import csv
 import importlib
 import inspect
 import os
-from types import FunctionType, UnionType
+from types import FunctionType
 from typing import (
     Any,
     Callable,
@@ -22,6 +22,8 @@ from openbb_terminal.rich_config import console
 
 MAP_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map.csv"
 MAP_FORECASTING_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map_forecasting.csv"
+
+UnionType = type(int | str)
 
 
 def clean_attr_desc(attr: Optional[FunctionType] = None) -> Optional[str]:
@@ -127,13 +129,6 @@ def get_signature_parameters(
 
         params[name] = parameter.replace(annotation=annotation)
 
-    return_type = signature.return_annotation
-    if return_type is not signature.empty:
-        return_type = eval_annotation(return_type, globalns, globalns, cache)
-
-    params["return"] = inspect.Parameter(
-        "return", inspect.Parameter.POSITIONAL_OR_KEYWORD, annotation=return_type
-    )
     return params
 
 
@@ -196,7 +191,6 @@ class Trailmap:
         funcspec = self.params[key]
         definition = ""
         added_comma = False
-        return_type = ""
         for arg in funcspec:
 
             annotation = (
@@ -212,9 +206,6 @@ class Trailmap:
                 if funcspec[arg].annotation != inspect.Parameter.empty
                 else "Any"
             )
-            if arg == "return":
-                return_type = annotation
-                continue
 
             default = ""
             if funcspec[arg].default is not funcspec[arg].empty:
@@ -234,11 +225,10 @@ class Trailmap:
         if added_comma:
             definition = definition[:-2]
 
-        return_def = return_type if return_type != "Any" else "None"
+        sdk_name = self.class_attr if key != "view" else f"{self.class_attr}_chart"
+        sdk_path = f"openbb.{'.'.join(self.location_path)}.{sdk_name}"
 
-        definition = (
-            f"def {getattr(self, key).split('.')[-1]}({definition }) -> {return_def}"
-        )
+        definition = f"{sdk_path}({definition })"
         return definition
 
 
@@ -343,7 +333,7 @@ import TabItem from '@theme/TabItem';\n\n"""
 <TabItem value="model" label="Model" default>\n
 {generate_markdown_section(meta_model)}\n
 </TabItem>
-<TabItem value="view" label="View">\n
+<TabItem value="view" label="Chart">\n
 {generate_markdown_section(meta_view)}\n
 </TabItem>
 </Tabs>"""
