@@ -19,7 +19,8 @@ def display_keys(show: bool = False, export: str = ""):
     Parameters
     ----------
         show: bool
-            Flag to choose whether to show actual keys or not, default is False
+            Flag to choose whether to show actual keys or not.
+            By default False.
         export : str
             Export dataframe data to csv,json,xlsx file
     """
