@@ -2,7 +2,7 @@
 usage: losers [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Calls a list of the biggest losers for the day in US markets [Source: https://finance.yahoo.com/losers/]
+Calls a list of the biggest losers for the day in US markets [Source: <https://finance.yahoo.com/losers/>]
 
 ```
 optional arguments:
@@ -14,8 +14,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 04:07 (✨) /stocks/disc/ $ losers -l 25
+2022 Feb 16, 04:07 (🦋) /stocks/disc/ $ losers -l 25
                                                                          Display Losers
 ┏━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃ Symbol ┃ Name                                             ┃ Price (Intraday) ┃ Change ┃ % Change ┃ Volume  ┃ Avg Vol (3 month) ┃ Market Cap ┃ PE Ratio (TTM) ┃

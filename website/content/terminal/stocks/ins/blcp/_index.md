@@ -2,7 +2,7 @@
 usage: blcp [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Search a SEC Form 4 database for the latest excutive and director dispositions or acquisitions and the corporations they are associated with. Sourece: http://openinsider.com
+Search a SEC Form 4 database for the latest excutive and director dispositions or acquisitions and the corporations they are associated with. Sourece: <http://openinsider.com>
 
 ```
 optional arguments:
@@ -14,8 +14,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 07:45 (✨) /stocks/ins/ $ blcp
+2022 Feb 16, 07:45 (🦋) /stocks/ins/ $ blcp
                                                                                   Insider Data
 ┏━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━┓
 ┃ X  ┃ Filing Date ┃ Trade Date ┃ Ticker ┃ Company Name         ┃ Insider Name        ┃ Title      ┃ Trade Type   ┃ Price  ┃ Qty        ┃ Owned      ┃ Diff Own ┃ Value        ┃

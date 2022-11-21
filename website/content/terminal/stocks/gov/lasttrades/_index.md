@@ -17,8 +17,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 07:24 (✨) /stocks/gov/ $ lasttrades
+2022 Feb 16, 07:24 (🦋) /stocks/gov/ $ lasttrades
 
 Last transactions for CONGRESS
 
@@ -83,8 +84,9 @@ Last transactions for CONGRESS
 │ 2022-01-31       │ NVDA   │ Thomas R. Carper          │ Purchase    │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
 └──────────────────┴────────┴───────────────────────────┴─────────────┴───────────────────────┴─────────────────┴─────────────┘
 ```
+
 ```
-2022 Feb 16, 07:25 (✨) /stocks/gov/ $ lasttrades -r Thomas R. Carper
+2022 Feb 16, 07:25 (🦋) /stocks/gov/ $ lasttrades -r Thomas R. Carper
 
 Last transactions for CONGRESS
 

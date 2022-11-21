@@ -18,8 +18,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 08:45 (✨) /stocks/options/ $ calc -s 30 -p 6 -m 1 -M 50
+2022 Feb 16, 08:45 (🦋) /stocks/options/ $ calc -s 30 -p 6 -m 1 -M 50
 
 Strike: $30.0
 Premium: $6.0

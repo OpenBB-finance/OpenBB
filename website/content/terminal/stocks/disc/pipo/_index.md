@@ -2,7 +2,7 @@
 usage: pipo [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Browse IPOs from recent history, use the '-l' argument in the command string to include the number of previous days [Source: https://finnhub.io]
+Browse IPOs from recent history, use the '-l' argument in the command string to include the number of previous days [Source: <https://finnhub.io>]
 
 ```
 optional arguments:
@@ -14,8 +14,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 04:10 (✨) /stocks/disc/ $ pipo
+2022 Feb 16, 04:10 (🦋) /stocks/disc/ $ pipo
                                                                IPO Dates
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 ┃ Past       ┃ Exchange       ┃ Name                          ┃ Number of Shares ┃ Price      ┃ Status   ┃ symbol ┃ Total Shares Value ┃

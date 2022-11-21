@@ -348,7 +348,7 @@ portfolio.po.relriskparity,openbb_terminal.portfolio.portfolio_optimization.po_m
 portfolio.po.hrp,openbb_terminal.portfolio.portfolio_optimization.po_model.get_hrp,
 portfolio.po.herc,openbb_terminal.portfolio.portfolio_optimization.po_model.get_herc,
 portfolio.po.nco,openbb_terminal.portfolio.portfolio_optimization.po_model.get_nco,
-portfolio.po.hcp,openbb_terminal.portfolio.portfolio_optimization.po_model.get_hcp,
+portfolio.po.hcp,openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hcp_portfolio,
 portfolio.po.equal,openbb_terminal.portfolio.portfolio_optimization.po_model.get_equal,
 portfolio.po.mktcap,openbb_terminal.portfolio.portfolio_optimization.po_model.get_mktcap,
 portfolio.po.dividend,openbb_terminal.portfolio.portfolio_optimization.po_model.get_dividend,

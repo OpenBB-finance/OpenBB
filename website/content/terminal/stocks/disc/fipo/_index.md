@@ -2,7 +2,7 @@
 usage: fipo [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-See future IPOs dates. [Source: https://finnhub.io]
+See future IPOs dates. [Source: <https://finnhub.io>]
 
 ```
 optional arguments:
@@ -14,8 +14,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 03:59 (✨) /stocks/disc/ $ fipo
+2022 Feb 16, 03:59 (🦋) /stocks/disc/ $ fipo
                                                        Future IPO Dates
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 ┃ Future     ┃ Exchange       ┃ Name                 ┃ Number of Shares ┃ Price      ┃ Status   ┃ symbol ┃ Total Shares Value ┃

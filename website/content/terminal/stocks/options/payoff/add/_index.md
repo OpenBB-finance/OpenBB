@@ -16,23 +16,24 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 09:23 (✨) /stocks/options/payoff/ $ add 3
+2022 Feb 16, 09:23 (🦋) /stocks/options/payoff/ $ add 3
 #       Type    Hold    Strike  Cost
 0       call    Long    730.0   189.05
 
-2022 Feb 16, 09:23 (✨) /stocks/options/payoff/ $ add 7
+2022 Feb 16, 09:23 (🦋) /stocks/options/payoff/ $ add 7
 #       Type    Hold    Strike  Cost
 0       call    Long    730.0   189.05
 1       call    Long    780.0   141.96
 
-2022 Feb 16, 09:23 (✨) /stocks/options/payoff/ $ add 15
+2022 Feb 16, 09:23 (🦋) /stocks/options/payoff/ $ add 15
 #       Type    Hold    Strike  Cost
 0       call    Long    730.0   189.05
 1       call    Long    780.0   141.96
 2       call    Long    850.0   102.0
 
-2022 Feb 16, 09:23 (✨) /stocks/options/payoff/ $ add 20
+2022 Feb 16, 09:23 (🦋) /stocks/options/payoff/ $ add 20
 #       Type    Hold    Strike  Cost
 0       call    Long    730.0   189.05
 1       call    Long    780.0   141.96
