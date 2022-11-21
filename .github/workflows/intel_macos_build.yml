@@ -100,6 +100,19 @@ jobs:
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*.dylib
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*.dylib
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/.dylibs/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/stan/lib/stan_math/lib/tbb/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/.dylibs/*.dylib
+          echo "Code Signing Other Files"
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/prophet_model.bin
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/diagnose
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/print
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/stanc
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/stansummary
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/pyarrow/plasma-store-server
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/protoc
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/protoc-3.13.0.0
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/torch_shm_manager
           echo "Code Sign OpenBB Executable File"
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/OpenBBTerminal
       - name: Create DMG
