@@ -123,8 +123,7 @@ def set_keys(
     Parameters
     ----------
     keys_dict: Dict[str, Dict[str, Union[str, bool]]]
-        E.g. {"fred": {"key":"XXXXX"}, "binance": {"key":"YYYYY", "secret":"ZZZZZ"}}
-        More info on APIs can be found through get_keys_info().
+        More info on the required inputs for each API can be found on `keys.get_keys_info()`
     persist: bool
         If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
         If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -135,7 +134,16 @@ def set_keys(
     Returns
     -------
     dict
-        Status of each key set. E.g. {"fred": "defined, test passed", "binance": "defined, test failed"}
+        Status of each key set.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> d = {
+            "fred": {"key": "XXXXX"},
+            "binance": {"key": "YYYYY", "secret": "ZZZZZ"},
+        }
+    >>> openbb.keys.set_keys(keys_dict=d)
     """
 
     status_dict = {}
