@@ -551,6 +551,7 @@ keys.eodhd,openbb_terminal.keys_model.set_eodhd_key,
 keys.santiment,openbb_terminal.keys_model.set_santiment_key,
 keys.tokenterminal,openbb_terminal.keys_model.set_tokenterminal_key,
 keys.shroom,openbb_terminal.keys_model.set_shroom_key,
+keys.stocksera,openbb_terminal.keys_model.set_stocksera_key,
 futures.search,openbb_terminal.futures.yfinance_model.get_search_futures,
 futures.historical,openbb_terminal.futures.yfinance_model.get_historical_futures,openbb_terminal.futures.yfinance_view.display_historical
 futures.curve,openbb_terminal.futures.yfinance_model.get_curve_futures,openbb_terminal.futures.yfinance_view.display_curve
