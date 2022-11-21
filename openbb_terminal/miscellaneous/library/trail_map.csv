@@ -46,6 +46,7 @@ qa.sortino,openbb_terminal.common.quantitative_analysis.qa_model.get_sortino,ope
 qa.summary,openbb_terminal.common.quantitative_analysis.qa_model.get_summary,openbb_terminal.common.quantitative_analysis.qa_view.display_summary
 qa.unitroot,openbb_terminal.common.quantitative_analysis.qa_model.get_unitroot,openbb_terminal.common.quantitative_analysis.qa_view.display_unitroot
 qa.var,openbb_terminal.common.quantitative_analysis.qa_model.get_var,openbb_terminal.common.quantitative_analysis.qa_view.display_var
+qa.cusum,openbb_terminal.common.quantitative_analysis.qa_view.display_cusum,
 qa.kurtosis,openbb_terminal.common.quantitative_analysis.rolling_model.get_kurtosis,openbb_terminal.common.quantitative_analysis.rolling_view.display_kurtosis
 qa.quantile,openbb_terminal.common.quantitative_analysis.rolling_model.get_quantile,openbb_terminal.common.quantitative_analysis.rolling_view.display_quantile
 qa.rolling,openbb_terminal.common.quantitative_analysis.rolling_model.get_rolling_avg,openbb_terminal.common.quantitative_analysis.rolling_view.display_mean_std
@@ -463,16 +464,17 @@ stocks.options.screen.check_presets,openbb_terminal.stocks.options.screen.syncre
 stocks.options.grhist,openbb_terminal.stocks.options.screen.syncretism_model.get_historical_greeks,openbb_terminal.stocks.options.screen.syncretism_view.view_historical_greeks
 stocks.options.screen.screener_output,openbb_terminal.stocks.options.screen.syncretism_model.get_screener_output,openbb_terminal.stocks.options.screen.syncretism_view.view_screener_output
 stocks.options.hist_tr,openbb_terminal.stocks.options.tradier_model.get_historical_options,openbb_terminal.stocks.options.tradier_view.display_historical
-stocks.options.chains,openbb_terminal.stocks.options.options_sdk_helper.get_full_option_chain
+stocks.options.chains,openbb_terminal.stocks.options.options_sdk_helper.get_full_option_chain,
 stocks.options.last_price,openbb_terminal.stocks.options.tradier_model.last_price,
-stocks.options.expirations,openbb_terminal.stocks.options.options_sdk_helper.get_option_expirations
+stocks.options.expirations,openbb_terminal.stocks.options.options_sdk_helper.get_option_expirations,
 stocks.options.process_chains,openbb_terminal.stocks.options.tradier_model.process_chains,
 stocks.options.generate_data,openbb_terminal.stocks.options.yfinance_model.generate_data,
 stocks.options.dte,openbb_terminal.stocks.options.yfinance_model.get_dte,
 stocks.options.vsurf,openbb_terminal.stocks.options.yfinance_model.get_iv_surface,openbb_terminal.stocks.options.yfinance_view.display_vol_surface
-stocks.qa.capm_information,openbb_terminal.stocks.quantitative_analysis.factors_model.capm_information,
+stocks.qa.capm,openbb_terminal.stocks.quantitative_analysis.factors_model.capm_information,
 stocks.qa.fama_raw,openbb_terminal.stocks.quantitative_analysis.factors_model.get_fama_raw,
 stocks.qa.historical_5,openbb_terminal.stocks.quantitative_analysis.factors_model.get_historical_5,
+stocks.qa.beta,openbb_terminal.stocks.quantitative_analysis.beta_model.beta_model,openbb_terminal.stocks.quantitative_analysis.beta_view.beta_view
 stocks.screener.screener_data,openbb_terminal.stocks.screener.finviz_model.get_screener_data,openbb_terminal.stocks.screener.finviz_view.screener
 stocks.screener.historical,openbb_terminal.stocks.screener.yahoofinance_model.historical,openbb_terminal.stocks.screener.yahoofinance_view.historical
 stocks.sia.filter_stocks,openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.filter_stocks,
@@ -547,4 +549,4 @@ keys.shroom,openbb_terminal.keys_model.set_shroom_key,
 futures.search,openbb_terminal.futures.yfinance_model.get_search_futures,
 futures.historical,openbb_terminal.futures.yfinance_model.get_historical_futures,openbb_terminal.futures.yfinance_view.display_historical
 futures.curve,openbb_terminal.futures.yfinance_model.get_curve_futures,openbb_terminal.futures.yfinance_view.display_curve
-economy.get_groups,openbb_terminal.economy.finviz_model.get_groups
+economy.get_groups,openbb_terminal.economy.finviz_model.get_groups,

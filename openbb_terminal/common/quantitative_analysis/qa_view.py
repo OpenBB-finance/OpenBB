@@ -511,6 +511,12 @@ def display_cusum(
         Drift parameter
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.cusum(data=df, target="Adj Close")
     """
     target_series = data[target].values
 
