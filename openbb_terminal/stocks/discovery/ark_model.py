@@ -40,8 +40,8 @@ def get_ark_orders(
     Returns
     -------
     DataFrame
-        ARK orders data frame with the following columns:
-        ticker, date, shares, weight, fund, direction
+        ARK orders data frame with the following columns -
+        (ticker, date, shares, weight, fund, direction)
     """
     url_orders = "https://cathiesark.com/ark-funds-combined/trades"
 
@@ -107,20 +107,18 @@ def add_order_total(data: DataFrame) -> DataFrame:
     Parameters
     ----------
     data: DataFrame
-        ARK orders data frame with the following columns:
-        ticker, date, shares, weight, fund, direction
+        ARK orders data frame with the following columns -
+        (ticker, date, shares, weight, fund, direction)
 
     Returns
     -------
     DataFrame
-        ARK orders data frame with the following columns:
-        ticker, date, shares, volume, open, close, high, low, total, weight, fund, direction
+        ARK orders data frame with the following columns -
+        (ticker, date, shares, volume, open, close, high, low, total, weight, fund, direction)
     """
     start_date = data["date"].iloc[-1] - timedelta(days=1)
 
     tickers = " ".join(data["ticker"].unique())
-
-    console.print("")
 
     prices = yf.download(tickers, start=start_date, progress=False)
 

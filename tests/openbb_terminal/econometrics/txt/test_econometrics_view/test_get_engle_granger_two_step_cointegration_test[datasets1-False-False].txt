@@ -1,2 +1,2 @@
-     Constant     Gamma   Alpha  Dickey-Fuller       P Value
-y/x -0.003126  0.154512 -1.2884     -13.123662  1.544757e-24
+      Constant     Gamma   Alpha  Dickey-Fuller       P Value
+Dp/R -0.003126  0.154512 -1.2884     -13.123662  1.544757e-24

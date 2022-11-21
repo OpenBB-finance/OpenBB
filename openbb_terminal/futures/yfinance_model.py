@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import os
 import sys
 import logging
-from typing import Dict, List
+from typing import List
 from datetime import datetime
 
 import yfinance as yf
@@ -76,7 +76,7 @@ def get_search_futures(
 
 
 @log_start_end(log=logger)
-def get_historical_futures(symbols: List[str], expiry: str = "") -> Dict:
+def get_historical_futures(symbols: List[str], expiry: str = "") -> pd.DataFrame:
     """Get historical futures [Source: Yahoo Finance]
 
     Parameters
@@ -87,8 +87,8 @@ def get_historical_futures(symbols: List[str], expiry: str = "") -> Dict:
         Future expiry date with format YYYY-MM
 
     Returns
-    ----------
-    Dict
+    -------
+    pd.DataFrame
         Dictionary with sector weightings allocation
     """
     if expiry:
@@ -117,13 +117,18 @@ def get_historical_futures(symbols: List[str], expiry: str = "") -> Dict:
 @log_start_end(log=logger)
 def get_curve_futures(
     symbol: str = "",
-):
+) -> pd.DataFrame:
     """Get curve futures [Source: Yahoo Finance]
 
     Parameters
     ----------
     symbol: str
         symbol to get forward curve
+
+    Returns
+    -------
+    pd.DataFrame
+        Dictionary with sector weightings allocation
     """
     if symbol not in FUTURES_DATA["Ticker"].unique().tolist():
         return pd.DataFrame()

@@ -57,7 +57,7 @@ def get_options(
 
     Returns
     -------
-    option_tables: dict
+    option_tables: Dict[Union[str, Any], pd.DataFrame]
         A dictionary with a DataFrame for each option. With dataset_name set, only shows one
         options table.
     """
@@ -106,7 +106,7 @@ def clean(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with cleaned up data
     """
     kwargs = {}
@@ -161,7 +161,7 @@ def add_ema(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added EMA column
     """
     dataset[f"EMA_{period}"] = (
@@ -194,7 +194,7 @@ def add_sto(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added STO K & D columns
     """
 
@@ -239,7 +239,7 @@ def add_rsi(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added RSI column
     """
 
@@ -281,7 +281,7 @@ def add_roc(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added ROC column
     """
     M = dataset[target_column].diff(period - 1)
@@ -310,7 +310,7 @@ def add_momentum(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added MOM column
     """
 
@@ -375,7 +375,7 @@ def add_signal(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added signal column
     """
 
@@ -411,7 +411,7 @@ def combine_dfs(
         A name for df2 (shows in name of new column)
 
     Returns
-    ----------
+    -------
     data: pd.DataFrame
         The new dataframe
     """

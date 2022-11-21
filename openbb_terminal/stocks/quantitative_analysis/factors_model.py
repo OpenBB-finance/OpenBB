@@ -21,7 +21,7 @@ def get_fama_raw() -> pd.DataFrame:
     """Gets base Fama French data to calculate risk
 
     Returns
-    ----------
+    -------
     fama : pd.DataFrame
         A data with fama french model information
     """
@@ -64,7 +64,7 @@ def get_historical_5(symbol: str) -> pd.DataFrame:
         A ticker symbol in string form
 
     Returns
-    ----------
+    -------
     data : pd.DataFrame
         A dataframe with historical information
     """
@@ -87,10 +87,8 @@ def capm_information(symbol: str) -> Tuple[float, float]:
 
     Returns
     -------
-    beta : float
-        The beta for a stock
-    sys : float
-        The systematic risk for a stock
+    Tuple[float, float]
+        The beta for a stock, The systematic risk for a stock
     """
     df_f = get_fama_raw()
     df_h = get_historical_5(symbol)

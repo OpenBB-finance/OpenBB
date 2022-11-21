@@ -29,38 +29,15 @@ class OSSController(BaseController):
 
     CHOICES_COMMANDS = ["sh", "tr", "rs", "rossidx"]
     PATH = "/alternative/oss/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["rossidx"] = {
-                "--sortby": {c: {} for c in runa_model.SORT_COLUMNS},
-                "-s": "--sortby",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--chart": {},
-                "-c": "--chart",
-                "--growth": {},
-                "-g": "--growth",
-                "--chart-type": {c: {} for c in ["stars", "forks"]},
-                "-t": "--chart-type",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["tr"] = {
-                "--sortby": {c: {} for c in ["stars", "forks"]},
-                "-s": "--sortby",
-                "--categories": None,
-                "-c": "--categories",
-                "--raw": {},
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["rs"] = {"--raw": {}, "--repo": None, "-r": "--repo"}
-            choices["sh"] = {"--raw": {}, "--repo": None, "-r": "--repo"}
+            choices: dict = self.choices_default
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def parse_input(self, an_input: str) -> List:
@@ -167,6 +144,8 @@ class OSSController(BaseController):
             nargs="+",
             help="Sort startups by column",
             default="Stars AGR [%]",
+            choices=runa_model.SORT_COLUMNS,
+            metavar="SORTBY",
         )
         parser.add_argument(
             "-r",

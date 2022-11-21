@@ -137,7 +137,12 @@ def test_menu_without_queue_completion(mocker):
         return_value=["BITCOIN"],
     )
 
-    result_menu = dd_controller.DueDiligenceController(queue=None).menu()
+    controller = dd_controller.DueDiligenceController(
+        symbol="BTC",
+        queue=None,
+    )
+
+    result_menu = controller.menu()
 
     assert result_menu == ["help"]
 
@@ -542,11 +547,6 @@ def test_call_func(
     mocker.patch(
         target=f"{path_controller}.ccxt_model.get_binance_currencies",
         return_value=["BITCOIN"],
-    )
-    # MOCK GET_COINPAPRIKA_ID
-    mocker.patch(
-        target=f"{path_controller}.cryptocurrency_helpers.get_coinpaprika_id",
-        return_value=True,
     )
 
     # MOCK SHOW_AVAILABLE_PAIRS_FOR_GIVEN_SYMBOL

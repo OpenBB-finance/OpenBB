@@ -3,10 +3,10 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Union, Optional, List, Tuple
+from typing import Union, Optional, List, Tuple
 
 import warnings
-import numpy as np
+from darts import TimeSeries
 import pandas as pd
 from statsforecast.core import StatsForecast
 
@@ -19,7 +19,7 @@ warnings.simplefilter("ignore")
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=E1123
+# pylint: disable=E1123,E1137
 
 
 def precision_format(best_model: str, index: str, val: float) -> str:
@@ -37,7 +37,12 @@ def get_autoselect_data(
     start_window: float = 0.85,
     forecast_horizon: int = 5,
 ) -> Tuple[
-    list[np.ndarray], List[np.ndarray], List[np.ndarray], Optional[float], Any, Any
+    Optional[List[type[TimeSeries]]],
+    Optional[List[type[TimeSeries]]],
+    Optional[List[type[TimeSeries]]],
+    Optional[float],
+    Optional[StatsForecast],
+    Optional[Union[int, str]],
 ]:
 
     """Performs Automatic Statistical forecasting
@@ -51,7 +56,7 @@ def get_autoselect_data(
     ----------
     data : Union[pd.Series, np.ndarray]
         Input data.
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     seasonal_periods: int
         Number of seasonal periods in a year (7 for daily data)
@@ -65,16 +70,13 @@ def get_autoselect_data(
 
     Returns
     -------
-    list[float]
-        Adjusted Data series
-    list[float]
-        List of historical fcast values
-    list[float]
-        List of predicted fcast values
-    Optional[float]
-        precision
-    Any
-        Fit ETS model object.
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], StatsForecast, Union[int, str]]
+        list[np.ndarray] - Adjusted Data series
+        list[np.ndarray] - List of historical fcast values
+        list[np.ndarray] - List of predicted fcast values
+        Optional[float] - precision
+        StatsForecast - Fit ETS model object.
+        Union[int, str] - Best model
     """
 
     use_scalers = False
@@ -167,14 +169,16 @@ def get_autoselect_data(
         helpers.mean_absolute_percentage_error(y_true, historical_fcast[model].values)
         for model in model_names
     ]
-    precision = pd.DataFrame({"precision": precision_per_model}, index=model_names)
+    precision: pd.DataFrame = pd.DataFrame(
+        {"precision": precision_per_model}, index=model_names
+    )
     precision = precision.sort_values(by="precision")
     # select best model
-    best_precision = precision["precision"].min()
+    best_precision: float = precision["precision"].min()
     best_model = precision["precision"].idxmin()
 
     # print results
-    precision["precision"] = [
+    precision["precision"] = [  # pylint: disable=unsupported-assignment-operation
         precision_format(best_model, index, val)
         for index, val in precision["precision"].iteritems()
     ]

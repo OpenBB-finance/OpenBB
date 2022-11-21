@@ -34,7 +34,7 @@ def display_fundamental_metric_from_project_over_time(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display fundamental metric from a project over time [Source: Token Terminal]
+    """Plots fundamental metric from a project over time [Source: Token Terminal]
 
     Parameters
     ----------
@@ -107,7 +107,7 @@ def display_fundamental_metric_from_project_over_time(
 @log_start_end(log=logger)
 @check_api_key(["API_TOKEN_TERMINAL_KEY"])
 def display_description(project: str, export: str = ""):
-    """Display description from a project [Source: Token Terminal]
+    """Prints description from a project [Source: Token Terminal]
 
     Parameters
     ----------

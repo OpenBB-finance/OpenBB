@@ -154,7 +154,6 @@ def open_openbb_documentation(
     full_url = f"{url}{path}".replace("//", "/")
 
     webbrowser.open(full_url)
-    console.print("")
 
 
 def hide_splashscreen():
@@ -243,7 +242,7 @@ def check_for_updates() -> None:
             "[yellow]Unable to check for updates... "
             + "Check your internet connection and try again...[/yellow]"
         )
-    console.print("")
+    console.print("\n")
 
 
 def welcome_message():
@@ -254,13 +253,12 @@ def welcome_message():
     console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}")
 
     if obbff.ENABLE_THOUGHTS_DAY:
-        console.print("-------------------")
+        console.print("---------------------------------")
         try:
             thought.get_thought_of_the_day()
         except Exception as e:
             logger.exception("Exception: %s", str(e))
             console.print(e)
-    console.print("")
 
 
 def reset(queue: List[str] = None):
@@ -308,7 +306,7 @@ def is_reset(command: str) -> bool:
         The command to test
 
     Returns
-    ----------
+    -------
     answer : bool
         Whether the command is a reset command
     """

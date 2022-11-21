@@ -26,7 +26,7 @@ def display_defi_vaults(
     link: bool = False,
     export: str = "",
 ) -> None:
-    """Display Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to
+    """Prints table showing Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to
     maximize returns of its crypto assets. [Source: https://coindix.com/]
 
     Parameters

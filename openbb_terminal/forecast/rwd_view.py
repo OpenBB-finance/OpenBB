@@ -41,7 +41,7 @@ def display_rwd_forecast(
         Data to forecast
     dataset_name str
         The name of the ticker to be predicted
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     n_predict: int
         Number of days to forecast

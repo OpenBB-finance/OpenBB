@@ -12,7 +12,8 @@
 
 {{< highlight python >}}
 portfolio.alloc.sectors(
-    portfolio_engine=None, limit: int = 10,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
+    limit: int = 10,
     tables: bool = False,
     recalculate: bool = False,
     chart: bool = False,
@@ -46,6 +47,6 @@ portfolio.alloc.sectors(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.alloc.sectors(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.alloc.sectors(p)
     {{< /highlight >}}

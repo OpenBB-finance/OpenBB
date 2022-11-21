@@ -102,16 +102,16 @@ def get_uni_tokens(
 
     limit = min(limit, 1000)
     query = f"""
-           {{
-            tokens(first: {limit}, skip:{skip}) {{
-                symbol
-                name
-                tradeVolumeUSD
-                totalLiquidity
-                txCount
-                }}
-            }}
-        """
+    {{
+    tokens(first: {limit}, skip:{skip}) {{
+        symbol
+        name
+        tradeVolumeUSD
+        totalLiquidity
+        txCount
+        }}
+    }}
+    """
 
     data = query_graph(UNI_URL, query)
     if not data:
@@ -140,17 +140,17 @@ def get_uniswap_stats() -> pd.DataFrame:
     """
 
     query = """
-       {
-        uniswapFactory(id: "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"){
-         totalVolumeUSD
-         totalLiquidityUSD
-         pairCount
-         txCount
-         totalLiquidityUSD
-         totalLiquidityETH
-        }
-       }
-       """
+    {
+    uniswapFactory(id: "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"){
+        totalVolumeUSD
+        totalLiquidityUSD
+        pairCount
+        txCount
+        totalLiquidityUSD
+        totalLiquidityETH
+    }
+    }
+    """
     data = query_graph(UNI_URL, query)
     if not data:
         return pd.DataFrame()
@@ -196,26 +196,26 @@ def get_uniswap_pool_recently_added(
         (datetime.datetime.now() - datetime.timedelta(days=last_days)).timestamp()
     )
     query = f"""
-        {{
-          pairs(first: 1000,
-          where: {{createdAtTimestamp_gt: "{days}", volumeUSD_gt: "{min_volume}", reserveUSD_gt: "{min_liquidity}",
-           txCount_gt: "{min_tx}" }},
-          orderBy: createdAtTimestamp, orderDirection: desc) {{
-            token0 {{
-              symbol
-              name
-            }}
-            token1 {{
-              symbol
-              name
-            }}
-            reserveUSD
-            volumeUSD
-            createdAtTimestamp
-            totalSupply
-            txCount
-          }}
+    {{
+        pairs(first: 1000,
+        where: {{createdAtTimestamp_gt: "{days}", volumeUSD_gt: "{min_volume}", reserveUSD_gt: "{min_liquidity}",
+        txCount_gt: "{min_tx}" }},
+        orderBy: createdAtTimestamp, orderDirection: desc) {{
+        token0 {{
+            symbol
+            name
         }}
+        token1 {{
+            symbol
+            name
+        }}
+        reserveUSD
+        volumeUSD
+        createdAtTimestamp
+        totalSupply
+        txCount
+        }}
+    }}
     """
 
     data = query_graph(UNI_URL, query)
@@ -260,21 +260,21 @@ def get_uni_pools_by_volume() -> pd.DataFrame:
     """
 
     query = """
-        {
-          pairs(first: 1000, where: {reserveUSD_gt: "1000", volumeUSD_gt: "10000"},
-          orderBy: volumeUSD, orderDirection: desc) {
-            token0 {
-              symbol
-              name
-            }
-            token1 {
-              symbol
-              name
-            }
-            volumeUSD
-            txCount
-          }
+    {
+        pairs(first: 1000, where: {reserveUSD_gt: "1000", volumeUSD_gt: "10000"},
+        orderBy: volumeUSD, orderDirection: desc) {
+        token0 {
+            symbol
+            name
         }
+        token1 {
+            symbol
+            name
+        }
+        volumeUSD
+        txCount
+        }
+    }
     """
     data = query_graph(UNI_URL, query)
     if not data:
@@ -299,7 +299,7 @@ def get_last_uni_swaps(
     """Get the last 100 swaps done on Uniswap [Source: https://thegraph.com/en/]
 
     Parameters
-    -------
+    ----------
     limit: int
         Number of swaps to return. Maximum possible number: 1000.
     sortby: str
@@ -307,6 +307,7 @@ def get_last_uni_swaps(
         (see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2).
     ascend: bool
         Flag to sort data descending
+
     Returns
     -------
     pd.DataFrame
@@ -318,16 +319,16 @@ def get_last_uni_swaps(
     query = f"""
     {{
         swaps(first: {limit}, orderBy: timestamp, orderDirection: desc) {{
-          timestamp
-          pair {{
-            token0 {{
-              symbol
+            timestamp
+            pair {{
+                token0 {{
+                    symbol
+                }}
+                token1 {{
+                    symbol
+                }}
             }}
-            token1 {{
-              symbol
-            }}
-          }}
-          amountUSD
+            amountUSD
         }}
     }}
     """

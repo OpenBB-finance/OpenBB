@@ -214,4 +214,3 @@ class PortfolioAnalysisController(BaseController):
             console.print("\nAvailable Portfolios:\n")
             for port in available_ports:
                 console.print(port)
-            console.print("")

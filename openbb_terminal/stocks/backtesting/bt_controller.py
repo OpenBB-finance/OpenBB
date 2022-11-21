@@ -40,6 +40,7 @@ class BacktestingController(BaseController):
 
     CHOICES_COMMANDS = ["ema", "emacross", "rsi", "whatif"]
     PATH = "/stocks/bt/"
+    CHOICES_GENERATION = True
 
     def __init__(self, ticker: str, stock: pd.DataFrame, queue: List[str] = None):
         """Constructor"""
@@ -49,40 +50,7 @@ class BacktestingController(BaseController):
         self.stock = stock
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["whatif"] = {
-                "--date": None,
-                "-d": "--date",
-                "--number": one_to_hundred,
-                "-n": "--number",
-            }
-            choices["ema"] = {
-                "-l": one_to_hundred,
-                "--spy": {},
-                "--no_bench": {},
-            }
-            choices["emacross"] = {
-                "--long": one_to_hundred,
-                "-l": "--long",
-                "--short": one_to_hundred,
-                "-s": "--short",
-                "--spy": {},
-                "--no_bench": {},
-                "--no_short": {},
-            }
-            choices["rsi"] = {
-                "--periods": one_to_hundred,
-                "-p": "--periods",
-                "--high": one_to_hundred,
-                "-u": "--high",
-                "--low": one_to_hundred,
-                "-l": "--low",
-                "--spy": {},
-                "--no_bench": {},
-                "--no_short": {},
-            }
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -234,7 +202,6 @@ class BacktestingController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-
             if ns_parser.long < ns_parser.short:
                 console.print("Short EMA period is longer than Long EMA period\n")
 

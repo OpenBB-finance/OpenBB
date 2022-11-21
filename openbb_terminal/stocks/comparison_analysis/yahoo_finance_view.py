@@ -22,7 +22,6 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
     print_rich_table,
 )
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.comparison_analysis import yahoo_finance_model
 
 logger = logging.getLogger(__name__)
@@ -67,7 +66,6 @@ def display_historical(
         Format to export historical prices, by default ""
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-
     """
     df_similar = yahoo_finance_model.get_historical(similar, start_date, candle_type)
 
@@ -103,7 +101,6 @@ def display_historical(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "historical", df_similar
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -156,7 +153,6 @@ def display_volume(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "volume", df_similar
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -238,7 +234,6 @@ def display_correlation(
         theme.visualize_output()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "hcorr", df_similar)
-    console.print("")
 
 
 @log_start_end(log=logger)
