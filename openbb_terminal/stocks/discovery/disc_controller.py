@@ -30,6 +30,7 @@ from openbb_terminal.stocks.discovery import (
     finviz_view,
 )
 from openbb_terminal.stocks import stocks_helper
+from openbb_terminal.rich_config import console, MenuText
 
 # pylint:disable=C0302
 

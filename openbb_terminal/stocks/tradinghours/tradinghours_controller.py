@@ -37,6 +37,7 @@ class TradingHoursController(BaseController):
     CHOICES_COMMANDS = ["symbol", "open", "closed", "all", "exchange"]
     PATH = "/stocks/th/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+    CHOICES_GENERATION = True
 
     def __init__(self, ticker: str = "", queue: List[str] = None):
         """Construct Data."""
@@ -73,15 +74,7 @@ class TradingHoursController(BaseController):
         self.timezone = get_user_timezone_or_invalid()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            choices["exchange"] = {c: None for c in self.all_exchange_short_names}
-            choices["exchange"]["--name"] = {
-                c: {} for c in self.all_exchange_short_names
-            }
-            choices["exchange"]["-n"] = "--name"
-            choices["symbol"]["--name"] = None
-            choices["symbol"]["-n"] = "--name"
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -167,6 +160,7 @@ class TradingHoursController(BaseController):
             "--name",
             help="Exchange short name",
             type=str.upper,
+            choices=self.all_exchange_short_names,
             dest="exchange",
         )
 

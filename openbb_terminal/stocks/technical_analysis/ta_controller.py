@@ -8,7 +8,6 @@ import webbrowser
 from datetime import datetime
 from typing import List
 
-import numpy as np
 import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
@@ -34,7 +33,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.technical_analysis import (
     finbrain_view,
     finviz_view,
@@ -82,6 +81,7 @@ class TechnicalAnalysisController(StockBaseController):
         "atr",
     ]
     PATH = "/stocks/ta/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self,
@@ -100,140 +100,8 @@ class TechnicalAnalysisController(StockBaseController):
         self.stock = stock
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            zero_to_hundred: dict = {str(c): {} for c in range(0, 100)}
-            choices["load"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
-                "-i": "--interval",
-                "--prepost": {},
-                "-p": "--prepost",
-                "--file": None,
-                "-f": "--file",
-                "--monthly": {},
-                "-m": "--monthly",
-                "--weekly": {},
-                "-w": "--weekly",
-                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
-                "-r": "--iexrange",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
-                },
-            }
-            ma = {
-                "--length": None,
-                "-l": "--length",
-                "--offset": zero_to_hundred,
-                "-o": "--offset",
-            }
-            choices["ema"] = ma
-            choices["sma"] = ma
-            choices["wma"] = ma
-            choices["hma"] = ma
-            choices["zlma"] = ma
-            choices["vwap"] = {
-                "--offset": zero_to_hundred,
-                "-o": "--offset",
-                "--start": None,
-                "--end": None,
-            }
-            choices["cci"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--scalar": None,
-                "-s": "--scalar",
-            }
-            choices["macd"] = {
-                "--fast": one_to_hundred,
-                "--slow": "--fast",
-                "--signal": "--fast",
-            }
-            choices["cci"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--scalar": None,
-                "-s": "--scalar",
-                "--drift": "--length",
-                "-d": "--drift",
-            }
-            choices["stoch"] = {
-                "--fastkperiod": one_to_hundred,
-                "-k": "--fastkperiod",
-                "--slowdperiod": "--fastkperiod",
-                "-d": "--slowdperiod",
-                "--slowkperiod": "--fastkperiod",
-            }
-            choices["fisher"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-            }
-            choices["cg"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-            }
-            choices["adx"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--scalar": None,
-                "-s": "--scalar",
-                "--drift": "--length",
-                "-d": "--drift",
-            }
-            choices["aroon"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--scalar": None,
-                "-s": "--scalar",
-            }
-            choices["bbands"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--std": {str(c): {} for c in np.arange(0.0, 10, 0.25)},
-                "-s": "--std",
-                "--mamode": {c: {} for c in volatility_model.MAMODES},
-                "-m": "--mamode",
-            }
-            choices["donchian"] = {
-                "--length_upper": one_to_hundred,
-                "-u": "--length_upper",
-                "--length_lower": "--length_upper",
-                "-l": "--length_lower",
-            }
-            choices["kc"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--scalar": None,
-                "-s": "--scalar",
-                "--mamode": {c: {} for c in volatility_model.MAMODES},
-                "-m": "--mamode",
-                "--offset": zero_to_hundred,
-                "-o": "--offset",
-            }
-            choices["ad"]["--open"] = {}
-            choices["adosc"] = {
-                "--open": {},
-                "--fast": one_to_hundred,
-                "--slow": "--fast",
-            }
-            choices["fib"] = {
-                "--period": {str(c): {} for c in range(1, 960)},
-                "--start": None,
-                "--end": None,
-            }
-            choices["recom"] = {
-                "--screener": {c: {} for c in tradingview_model.SCREENERS},
-                "-s": "--screener",
-                "--interval": {c: {} for c in tradingview_model.INTERVALS.keys()},
-                "-i": "--interval",
-                "--exchange": None,
-                "-e": "--exchange",
-            }
+            choices: dict = self.choices_default
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -1212,6 +1080,8 @@ class TechnicalAnalysisController(StockBaseController):
             "--mamode",
             action="store",
             dest="s_mamode",
+            choices=volatility_model.MAMODES,
+            type=str.lower,
             default="sma",
             help="mamode",
         )
@@ -1319,6 +1189,7 @@ class TechnicalAnalysisController(StockBaseController):
             dest="s_mamode",
             default="ema",
             choices=volatility_model.MAMODES,
+            type=str.lower,
             help="mamode",
         )
         parser.add_argument(

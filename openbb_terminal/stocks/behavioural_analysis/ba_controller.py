@@ -29,6 +29,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
+from openbb_terminal.rich_config import console, MenuText
 
 # pylint:disable=R0904,C0302
 

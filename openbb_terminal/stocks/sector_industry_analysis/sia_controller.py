@@ -158,6 +158,7 @@ class SectorIndustryAnalysisController(BaseController):
         "trailing",
     ]
     PATH = "/stocks/sia/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self,
@@ -181,41 +182,7 @@ class SectorIndustryAnalysisController(BaseController):
         self.currency: str = ""
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["select"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-            }
-            choices["mktcap"] = {c: {} for c in self.mktcap_choices}
-            choices["period"] = {c: {} for c in self.period_choices}
-            choices["clear"] = {c: {} for c in self.clear_choices}
-            choices["clear"]["--param"] = {c: {} for c in self.clear_choices}
-            choices["clear"]["-p"] = "--param"
-            standard_cp = {
-                "--raw": {},
-                "-r": "--raw",
-            }
-            choices["cps"] = standard_cp
-            choices["cpic"] = standard_cp
-            choices["cpis"] = standard_cp
-            choices["cpcs"] = standard_cp
-            choices["cpci"] = standard_cp
-            choices["metric"] = {
-                "--metric": {c: {} for c in self.metric_choices},
-                "-m": "--metric",
-                "--raw": {},
-                "-r": "--raw",
-            }
-            choices["vis"] = {
-                "--metric": {c: {} for c in self.vis_choices},
-                "-m": "--metric",
-                "--currency": None,
-                "-c": "--currency",
-                "--raw": {},
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices: dict = self.choices_default
 
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
