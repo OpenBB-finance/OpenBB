@@ -680,8 +680,7 @@ class SectorIndustryAnalysisController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="metric",
-            description=
-            " Visualize a particular metric with the filters selected"
+            description=" Visualize a particular metric with the filters selected"
             " Available Metrics:"
             "    roa           return on assets"
             "    roe           return on equity"
