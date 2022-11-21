@@ -6,7 +6,7 @@ from importlib.util import module_from_spec, spec_from_file_location
 from inspect import FullArgSpec, getmembers, isclass
 from pathlib import Path
 from types import FunctionType, ModuleType
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from unittest.mock import patch
 
 import pandas as pd
@@ -243,7 +243,7 @@ class ControllerDoc:
 
         return commands
 
-    def get_command_parser(self, command: str) -> argparse.ArgumentParser | None:
+    def get_command_parser(self, command: str) -> Optional[argparse.ArgumentParser]:
         """Get command parser"""
         if command not in self.cmd_parsers:
             self._get_parser(command)
