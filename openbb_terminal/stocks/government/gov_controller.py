@@ -42,6 +42,7 @@ class GovController(StockBaseController):
     gov_type_choices = ["congress", "senate", "house"]
     analysis_choices = ["total", "upmom", "downmom"]
     PATH = "/stocks/gov/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self,
@@ -54,58 +55,7 @@ class GovController(StockBaseController):
         self.ticker = ticker
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["lasttrades"] = {c: {} for c in self.gov_type_choices}
-            choices["lasttrades"]["--past_transactions_days"] = one_to_hundred
-            choices["lasttrades"]["-p"] = "--past_transactions_days"
-            choices["lasttrades"]["--representative"] = {}
-            choices["lasttrades"]["-r"] = "--representative"
-            choices["topbuys"] = {c: {} for c in self.gov_type_choices}
-            choices["topbuys"]["--past_transactions_months"] = one_to_hundred
-            choices["topbuys"]["-p"] = "--past_transactions_months"
-            choices["topbuys"]["--limit"] = None
-            choices["topbuys"]["-l"] = "--limit"
-            choices["topbuys"]["--raw"] = {}
-            choices["topsells"] = {c: {} for c in self.gov_type_choices}
-            choices["topsells"]["--past_transactions_months"] = one_to_hundred
-            choices["topsells"]["-p"] = "--past_transactions_months"
-            choices["topsells"]["--limit"] = None
-            choices["topsells"]["-l"] = "--limit"
-            choices["topsells"]["--raw"] = {}
-            choices["lastcontracts"]["--past_transactions_days"] = one_to_hundred
-            choices["lastcontracts"]["-p"] = "--past_transactions_days"
-            choices["lastcontracts"]["--limit"] = None
-            choices["lastcontracts"]["-l"] = "--limit"
-            choices["lastcontracts"]["--sum"] = {}
-            choices["lastcontracts"]["-s"] = "--sum"
-            choices["qtrcontracts"] = {
-                "--analysis": {c: {} for c in self.analysis_choices},
-                "-a": "--analysis",
-                "--limit": None,
-                "-l": "--limit",
-                "--raw": {},
-            }
-            choices["toplobbying"] = {
-                "--limit": None,
-                "-l": "--limit",
-                "--raw": {},
-            }
-            choices["gtrades"] = {c: {} for c in self.gov_type_choices}
-            choices["gtrades"]["--past_transactions_months"] = one_to_hundred
-            choices["gtrades"]["-p"] = "--past_transactions_months"
-            choices["gtrades"]["--raw"] = {}
-            choices["contracts"] = {
-                "--past_transactions_days": one_to_hundred,
-                "-p": "--past_transactions_days",
-                "--raw": {},
-            }
-            choices["histcont"]["--raw"] = {}
-            choices["lobbying"] = {
-                "--limit": None,
-                "-l": "--limit",
-            }
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
