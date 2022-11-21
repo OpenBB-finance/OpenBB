@@ -23,7 +23,7 @@ from openbb_terminal.rich_config import console
 MAP_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map.csv"
 MAP_FORECASTING_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map_forecasting.csv"
 
-UnionType = type(int | str)
+UnionType = type(Union[int, str])
 
 
 def clean_attr_desc(attr: Optional[FunctionType] = None) -> Optional[str]:
