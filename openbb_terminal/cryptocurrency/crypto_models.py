@@ -34,6 +34,11 @@ def find(
     -------
     pd.DataFrame
         DataFrame with 'limit' similar coins
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.crypto.find("polka", "CoinGecko", "name", 25)
     """
 
     df = pd.DataFrame()
