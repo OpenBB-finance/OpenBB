@@ -31,6 +31,7 @@ class CovidController(BaseController):
 
     CHOICES_COMMANDS = ["country", "ov", "deaths", "cases", "rates", "slopes"]
     PATH = "/alternative/covid/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -42,41 +43,8 @@ class CovidController(BaseController):
         self.COUNTRY_LIST = [x.lower().replace(" ", "_") for x in countries_list]
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["slopes"] = {
-                "--days": {},
-                "-d": "--days",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--threshold": {},
-                "-t": "--threshold",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["country"] = {
-                "--country": {c: None for c in self.COUNTRY_LIST},
-                "-c": "--country",
-            }
-            choices["ov"] = {
-                "--raw": {},
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["rates"] = {
-                "--raw": {},
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["cases"] = {
-                "--raw": {},
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["deaths"] = {
-                "--raw": {},
-                "--limit": None,
-                "-l": "--limit",
-            }
+            choices: dict = self.choices_default
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

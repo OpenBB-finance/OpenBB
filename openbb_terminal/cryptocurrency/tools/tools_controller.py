@@ -13,8 +13,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_non_negative_float,
-    check_percentage_range,
+    check_non_negative,
     check_positive,
     check_positive_float,
 )
@@ -32,37 +31,14 @@ class ToolsController(BaseController):
     CHOICES_COMMANDS = ["aprtoapy", "il"]
 
     PATH = "/crypto/tools/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred_one: dict = {str(c): {} for c in range(1, 101)}
-            choices["aprtoapy"] = {
-                "--apr": one_to_hundred_one,
-                "--compounding": "--apr",
-                "-c": "--compounding",
-                "--narrative": {},
-                "-n": "--narrative",
-            }
-            choices["il"] = {
-                "--priceChangeA": one_to_hundred_one,
-                "-a": "--priceChangeA",
-                "--priceChangeB": "--priceChangeA",
-                "-b": "--priceChangeB",
-                "--proportion": "--priceChangeA",
-                "-p": "--proportion",
-                "--value": None,
-                "-v": "--value",
-                "--narrative": {},
-                "-n": "--narrative",
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -88,26 +64,32 @@ class ToolsController(BaseController):
             "-a",
             "--priceChangeA",
             dest="priceChangeA",
-            type=check_non_negative_float,
+            type=check_non_negative,
             help="Token A price change in percentage",
             default=0,
+            choices=range(1, 101),
+            metavar="PRICECHANGEA",
         )
         parser.add_argument(
             "-b",
             "--priceChangeB",
             dest="priceChangeB",
-            type=check_non_negative_float,
+            type=check_non_negative,
             help="Token B price change in percentage",
             default=100,
+            choices=range(1, 101),
+            metavar="PRICECHANGEB",
         )
         parser.add_argument(
             "-p",
             "--proportion",
             dest="proportion",
-            type=check_percentage_range,
+            type=check_positive,
             help="""Pool proportion. E.g., 50 means that pool contains 50%% of token A and 50%% of token B,
             30 means that pool contains 30%% of token A and 70%% of token B""",
             default=50,
+            choices=range(1, 101),
+            metavar="PROPORTION",
         )
 
         parser.add_argument(
@@ -159,9 +141,11 @@ class ToolsController(BaseController):
         parser.add_argument(
             "--apr",
             dest="apr",
-            type=check_positive_float,
+            type=check_positive,
             help="APR value in percentage to convert",
             default=100,
+            choices=range(1, 101),
+            metavar="APR",
         )
         parser.add_argument(
             "-c",
@@ -170,6 +154,8 @@ class ToolsController(BaseController):
             type=check_positive,
             help="Number of compounded periods in a year. 12 means compounding monthly",
             default=12,
+            choices=range(1, 101),
+            metavar="COMPOUNDING",
         )
         parser.add_argument(
             "-n",
