@@ -103,6 +103,25 @@ def get_expiration_date():
     return expiration
 
 
+param_name_to_value = {
+    "expiration": get_expiration_date(),
+    "start_date": "2022-01-01",
+    "start": "2022-01-01",
+    "end_date": "2022-08-01",
+    "end": "2022-08-01",
+    "vs": "USDT",
+}
+param_type_to_value = {
+    pd.DataFrame: DF_STOCK,
+    (dict, Dict): {"AAPL": DF_STOCK},
+    list: [],
+    str: "",
+    int: 0,
+    float: 0.0,
+    bool: False,
+}
+
+
 def get_parameters(
     controller_cls: BaseController,
 ) -> Dict[str, Any]:
@@ -132,28 +151,19 @@ def get_parameters(
             param.default is inspect.Parameter.empty
             and param.kind is not inspect.Parameter.VAR_KEYWORD
         ):
-            if param.name == "expiration":
-                kwargs[param.name] = get_expiration_date()
-            elif param.name in ("start_date", "start"):
-                kwargs[param.name] = "2022-01-01"
-            elif param.name in ("end_date", "end"):
-                kwargs[param.name] = "2022-08-01"
-            elif param.name == "vs":
-                kwargs[param.name] = "USDT"
-            elif param.annotation == pd.DataFrame:
-                kwargs[param.name] = DF_STOCK
-            elif param.annotation in (dict, Dict):
-                kwargs[param.name] = {"AAPL": DF_STOCK}
-            elif param.annotation == list:
-                kwargs[param.name] = []
-            elif param.annotation == str:
-                kwargs[param.name] = ""
-            elif param.annotation == int:
-                kwargs[param.name] = 0
-            elif param.annotation == float:
-                kwargs[param.name] = 0.0
-            elif param.annotation == bool:
-                kwargs[param.name] = False
+            for param_name, value in param_name_to_value.items():
+                if param.name == param_name:
+                    kwargs[param.name] = value
+                    break
+            if param.name not in kwargs:
+                for param_type, value in param_type_to_value.items():
+                    if isinstance(param_type, tuple):
+                        if param.annotation in param_type:
+                            kwargs[param.name] = value
+                            break
+                    elif param.annotation is param_type:
+                        kwargs[param.name] = value
+                        break
 
     return kwargs
 
