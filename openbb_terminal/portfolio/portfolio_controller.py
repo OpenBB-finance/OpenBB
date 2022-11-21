@@ -57,8 +57,6 @@ class PortfolioController(BaseController):
         "maxdd",
         "var",
         "es",
-        "sh",
-        "so",
         "om",
         "rvol",
         "rsharpe",
@@ -95,6 +93,7 @@ class PortfolioController(BaseController):
     ]
     PERIODS = ["3y", "5y", "10y", "all"]
     PATH = "/portfolio/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -145,6 +144,9 @@ class PortfolioController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.update_choices()
+            choices: dict = self.choices_default
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_choices(self):
 
@@ -157,126 +159,6 @@ class PortfolioController(BaseController):
                 for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
             }
         )
-
-        choices: dict = {c: {} for c in self.controller_choices}
-
-        choices["load"] = {
-            "--file": {c: {} for c in self.DATA_HOLDINGS_FILES},
-            "-f": "--file",
-            "--name": None,
-            "-n": "--name",
-            "--rfr": None,
-            "-r": "--rfr",
-        }
-        choices["show"] = {
-            "--limit": None,
-            "-l": "--limit",
-        }
-        choices["bench"] = {c: {} for c in statics.BENCHMARK_LIST}
-        choices["bench"] = {
-            "--benchmark": {c: {} for c in statics.BENCHMARK_LIST},
-            "-b": "--benchmark",
-        }
-
-        choices["bench"]["--full_shares"] = {}
-        choices["bench"]["-s"] = "--full_shares"
-        hold = {
-            "--unstack": {},
-            "-u": "--unstack",
-            "--raw": {},
-            "--limit": None,
-            "-l": "--limit",
-        }
-        choices["holdv"] = hold
-        choices["holdp"] = hold
-        choices["yret"] = {
-            "--period": {c: {} for c in self.PERIODS},
-            "-p": "--period",
-            "--raw": {},
-        }
-        choices["mret"] = {
-            "--period": {c: {} for c in self.PERIODS},
-            "-p": "--period",
-            "--show": {},
-            "-s": "--show",
-            "--raw": {},
-        }
-        choices["dret"] = {
-            "--period": {c: {} for c in self.PERIODS},
-            "-p": "--period",
-            "--limit": None,
-            "-l": "--limit",
-            "--raw": {},
-        }
-        choices["distr"] = {
-            "--period": {c: {} for c in statics.PERIODS},
-            "-p": "--period",
-            "--raw": {},
-        }
-        choices["rvol"] = {
-            "--period": {c: {} for c in statics.PERIODS},
-            "-p": "--period",
-        }
-        r_auto_complete = {
-            "--period": {c: {} for c in statics.PERIODS},
-            "-p": "--period",
-            "--rfr": None,
-            "-r": "--rfr",
-        }
-        choices["rsharpe"] = r_auto_complete
-        choices["rsort"] = r_auto_complete
-        choices["rbeta"] = {
-            "--period": {c: {} for c in statics.PERIODS},
-            "-p": "--period",
-        }
-        choices["alloc"] = {c: {} for c in self.AGGREGATION_METRICS}
-        choices["alloc"]["--agg"] = {c: {} for c in self.AGGREGATION_METRICS}
-        choices["alloc"]["-a"] = "--agg"
-        choices["alloc"]["--tables"] = {}
-        choices["alloc"]["-t"] = "--tables"
-        choices["alloc"]["--limit"] = None
-        choices["alloc"]["-l"] = "--limit"
-        choices["summary"] = r_auto_complete
-        choices["metric"] = {c: {} for c in self.VALID_METRICS}
-        choices["metric"]["--metric"] = {c: {} for c in self.VALID_METRICS}
-        choices["metric"]["-m"] = "--metric"
-        choices["metric"]["--rfr"] = None
-        choices["metric"]["-r"] = "--rfr"
-        choices["perf"] = {
-            "--show_trades": {},
-            "-t": "--show_trades",
-        }
-        choices["var"] = {
-            "--mean": {},
-            "-m": "--mean",
-            "--adjusted": {},
-            "-a": "--adjusted",
-            "--student": {},
-            "-s": "--student",
-            "--percentile": None,
-            "-p": "--percentile",
-        }
-        choices["es"] = {
-            "--mean": {},
-            "-m": "--mean",
-            "--dist": {c: {} for c in self.VALID_DISTRIBUTIONS},
-            "-d": "--dist",
-            "--percentile": None,
-            "-p": "--percentile",
-        }
-        choices["om"] = {
-            "--start": None,
-            "-s": "--start",
-            "--end": None,
-            "-e": "--end",
-        }
-
-        self.choices = choices
-
-        choices["support"] = self.SUPPORT_CHOICES
-        choices["about"] = self.ABOUT_CHOICES
-
-        self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -417,6 +299,8 @@ class PortfolioController(BaseController):
             dest="file",
             required="-h" not in other_args,
             help="The file to be loaded",
+            choices={c: {} for c in self.DATA_HOLDINGS_FILES},
+            metavar="FILE",
         )
         parser.add_argument(
             "-n",
@@ -507,6 +391,8 @@ class PortfolioController(BaseController):
             dest="benchmark",
             required="-h" not in other_args,
             help="Set the benchmark for the portfolio. By default, this is SPDR S&P 500 ETF Trust (SPY).",
+            choices={c: {} for c in statics.BENCHMARK_LIST},
+            metavar="BENCHMARK",
         )
         parser.add_argument(
             "-s",
@@ -559,6 +445,7 @@ class PortfolioController(BaseController):
             choices=self.AGGREGATION_METRICS,
             dest="agg",
             help="The type of allocation aggregation you wish to do",
+            metavar="AGG",
         )
         parser.add_argument(
             "-t",
@@ -911,12 +798,12 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-d",
             "--dist",
-            "--distributions",
             dest="distribution",
             type=str,
             choices=self.VALID_DISTRIBUTIONS,
             default="normal",
             help="Distribution used for the calculations",
+            metavar="DIST",
         )
         parser.add_argument(
             "-p",
@@ -932,8 +819,8 @@ class PortfolioController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser and self.portfolio is not None:
-            if self.portfolio_name:
+        if ns_parser:
+            if self.portfolio and self.portfolio_name:
                 portfolio_view.display_es(
                     portfolio_engine=self.portfolio,
                     use_mean=ns_parser.use_mean,
@@ -1009,6 +896,7 @@ class PortfolioController(BaseController):
             default="all",
             choices=self.PERIODS,
             help="Period to select start end of the year returns",
+            metavar="PERIOD",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -1047,6 +935,7 @@ class PortfolioController(BaseController):
             default="all",
             choices=self.PERIODS,
             help="Period to select start end of the year returns",
+            metavar="PERIOD",
         )
         parser.add_argument(
             "-s",
@@ -1094,6 +983,7 @@ class PortfolioController(BaseController):
             default="all",
             choices=self.PERIODS,
             help="Period to select start end of the year returns",
+            metavar="PERIOD",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -1150,8 +1040,9 @@ class PortfolioController(BaseController):
             type=str,
             dest="period",
             default="1y",
-            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            choices=statics.PERIODS,
             help="Period to apply rolling window",
+            metavar="PERIOD",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -1183,8 +1074,9 @@ class PortfolioController(BaseController):
             type=str,
             dest="period",
             default="1y",
-            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            choices=statics.PERIODS,
             help="Period to apply rolling window",
+            metavar="PERIOD",
         )
         parser.add_argument(
             "-r",
@@ -1225,8 +1117,9 @@ class PortfolioController(BaseController):
             type=str,
             dest="period",
             default="1y",
-            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            choices=statics.PERIODS,
             help="Period to apply rolling window",
+            metavar="PERIOD",
         )
         parser.add_argument(
             "-r",
@@ -1267,8 +1160,9 @@ class PortfolioController(BaseController):
             type=str,
             dest="period",
             default="1y",
-            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            choices=statics.PERIODS,
             help="Period to apply rolling window",
+            metavar="PERIOD",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -1302,6 +1196,7 @@ class PortfolioController(BaseController):
             default="-h" not in other_args,
             choices=self.VALID_METRICS,
             help="Set metric of choice",
+            metavar="METRIC",
         )
         parser.add_argument(
             "-r",
@@ -1396,6 +1291,7 @@ class PortfolioController(BaseController):
             dest="period",
             default="all",
             help="The file to be loaded",
+            metavar="PERIOD",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -1434,6 +1330,7 @@ class PortfolioController(BaseController):
             dest="period",
             default="all",
             help="The file to be loaded",
+            metavar="PERIOD",
         )
         parser.add_argument(
             "-r",

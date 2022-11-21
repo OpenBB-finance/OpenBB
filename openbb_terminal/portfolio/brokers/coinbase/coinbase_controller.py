@@ -42,44 +42,15 @@ class CoinbaseController(BaseController):
     ]
     deposit_type = ["internal_deposit", "deposit"]
     PATH = "/portfolio/bro/cb/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            choices["account"] = {
-                "--all": {},
-                "--currency": None,
-                "-c": "--currency",
-            }
-            choices["history"] = {
-                "--acc": None,
-                "-a": "--acc",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["orders"] = {
-                "--sortby": {c: {} for c in self.order_sortby},
-                "-s": "--sortby",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["deposits"] = {
-                "--type": {c: {} for c in self.deposit_type},
-                "-t": "--type",
-                "--sortby": {c: {} for c in self.deposit_sort},
-                "-s": "--sortby",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-
+            choices: dict = self.choices_default
+            self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

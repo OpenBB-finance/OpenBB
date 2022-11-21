@@ -241,7 +241,7 @@ def test_call_func_expect_queue(expected_queue, func, queue, mocker):
         ),
         (
             "call_fp",
-            ["bored-ape-yacht-club"],
+            ["MOCK_SLUG"],
             "nftpricefloor_view.display_floor_price",
             [],
             dict(),
@@ -255,6 +255,7 @@ def test_call_func(
 
     mocker.patch(
         target=f"{path_controller}.nftpricefloor_model.get_collection_slugs",
+        return_value=["MOCK_SLUG"],
     )
 
     if mocked_func:
