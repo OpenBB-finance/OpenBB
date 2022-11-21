@@ -21,7 +21,7 @@ def display_cmc_top_coins(
     ascend: bool = True,
     export: str = "",
 ) -> None:
-    """Shows top n coins. [Source: CoinMarketCap]
+    """Prints table showing top n coins. [Source: CoinMarketCap]
 
     Parameters
     ----------

@@ -8,7 +8,7 @@ from openbb_terminal.rich_config import console
 
 
 def display_top_of_book(symbol: str, exchange: str = "BZX"):
-    """Display top of book data [CBOE]
+    """Prints Table showing top of book data [CBOE]
 
     Parameters
     ----------

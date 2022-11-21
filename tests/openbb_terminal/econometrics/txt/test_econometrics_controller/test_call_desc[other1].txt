@@ -1,4 +1,3 @@
-
            cancer    population
 count  301.000000    301.000000
 mean    39.857143  11288.056478

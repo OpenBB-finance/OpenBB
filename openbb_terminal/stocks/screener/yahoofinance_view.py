@@ -64,6 +64,9 @@ def historical(
         preset_loaded, limit, start_date, type_candle, normalize
     )
 
+    if df_screener.empty:
+        return []
+
     if l_stocks:
         # This plot has 1 axis
         if not external_axes:

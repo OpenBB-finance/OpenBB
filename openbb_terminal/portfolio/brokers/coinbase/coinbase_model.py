@@ -39,7 +39,7 @@ def get_accounts(add_current_price: bool = True, currency: str = "USD") -> pd.Da
     .
 
     Parameters
-    -------
+    ----------
     add_current_price: bool
         Boolean to query coinbase for current price
     currency: str
@@ -221,7 +221,7 @@ def get_orders(
     Parameters
     ----------
     limit: int
-        Last <limit> of trades. Maximum is 1000.
+        Last `limit` of trades. Maximum is 1000.
     sortby: str
         Key to sort by
     descend: bool

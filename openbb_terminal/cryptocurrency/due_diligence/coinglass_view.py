@@ -21,7 +21,6 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     is_valid_axes_count,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +28,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
 def display_funding_rate(symbol: str, export: str = "") -> None:
-    """Displays funding rate by exchange for a certain cryptocurrency
+    """Plots funding rate by exchange for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/]
 
     Parameters
@@ -43,7 +42,6 @@ def display_funding_rate(symbol: str, export: str = "") -> None:
         return
 
     plot_data(df, symbol, f"Exchange {symbol} Funding Rate", "Funding Rate [%]")
-    console.print("")
 
     export_data(
         export,
@@ -56,7 +54,7 @@ def display_funding_rate(symbol: str, export: str = "") -> None:
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
 def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> None:
-    """Displays open interest by exchange for a certain cryptocurrency
+    """Plots open interest by exchange for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/]
 
     Parameters
@@ -77,7 +75,6 @@ def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> N
         f"Exchange {symbol} Futures Open Interest",
         "Open futures value [$B]",
     )
-    console.print("")
 
     export_data(
         export,
@@ -90,7 +87,7 @@ def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> N
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
 def display_liquidations(symbol: str, export: str = "") -> None:
-    """Displays liquidation per day data for a certain cryptocurrency
+    """Plots liquidation per day data for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/#liquidation-chart]
 
     Parameters
@@ -109,7 +106,6 @@ def display_liquidations(symbol: str, export: str = "") -> None:
         f"Total liquidations for {symbol}",
         "Liquidations value [$M]",
     )
-    console.print("")
 
     export_data(
         export,

@@ -200,8 +200,6 @@ main:
                 ref: /terminal/crypto/defi/gacc
               - name: gdapps
                 ref: /terminal/crypto/defi/gdapps
-              - name: govp
-                ref: /terminal/crypto/defi/govp
               - name: lcsc
                 ref: /terminal/crypto/defi/lcsc
               - name: ldapps
@@ -745,10 +743,14 @@ main:
         sub:
           - name: atr
             ref: terminal/forecast/atr
+          - name: autoarima
+            ref: terminal/forecast/autoarima
           - name: autoces
             ref: terminal/forecast/autoces
           - name: autoets
             ref: terminal/forecast/autoets
+          - name: autoselect
+            ref: terminal/forecast/autoselect
           - name: brnn
             ref: terminal/forecast/brnn
           - name: clean
@@ -775,6 +777,8 @@ main:
             ref: terminal/forecast/load
           - name: mom
             ref: terminal/forecast/mom
+          - name: mstl
+            ref: terminal/forecast/mstl
           - name: nbeats
             ref: terminal/forecast/nbeats
           - name: nhits
@@ -791,6 +795,8 @@ main:
             ref: terminal/forecast/roc
           - name: rsi
             ref: terminal/forecast/rsi
+          - name: rwd
+            ref: terminal/forecast/rwd
           - name: season
             ref: terminal/forecast/season
           - name: seasonalnaive
@@ -1963,8 +1969,6 @@ main:
             sub:
               - name: categories_keys
                 ref: /SDK/crypto/disc/categories_keys
-              - name: cmctop
-                ref: /SDK/crypto/disc/cmctop
               - name: coin_list
                 ref: /SDK/crypto/disc/coin_list
               - name: coins
@@ -2483,42 +2487,74 @@ main:
       - name: portfolio
         ref: /SDK/portfolio
         sub:
-          - name: calmar
-            ref: /SDK/portfolio/calmar
-          - name: commonsense
-            ref: /SDK/portfolio/commonsense
+          - name: alloc
+            ref: /SDK/portfolio/alloc
+            sub:
+              - name: assets
+                ref: /SDK/portfolio/alloc/assets
+              - name: countries
+                ref: /SDK/portfolio/alloc/countries
+              - name: regions
+                ref: /SDK/portfolio/alloc/regions
+              - name: sectors
+                ref: /SDK/portfolio/alloc/sectors
+          - name: bench
+            ref: /SDK/portfolio/bench
           - name: distr
             ref: /SDK/portfolio/distr
           - name: dret
             ref: /SDK/portfolio/dret
           - name: es
             ref: /SDK/portfolio/es
-          - name: gaintopain
-            ref: /SDK/portfolio/gaintopain
           - name: holdp
             ref: /SDK/portfolio/holdp
           - name: holdv
             ref: /SDK/portfolio/holdv
-          - name: information
-            ref: /SDK/portfolio/information
-          - name: jensens
-            ref: /SDK/portfolio/jensens
-          - name: kelly
-            ref: /SDK/portfolio/kelly
-          - name: kurtosis
-            ref: /SDK/portfolio/kurtosis
-          - name: max_drawdown_ratio
-            ref: /SDK/portfolio/max_drawdown_ratio
+          - name: load
+            ref: /SDK/portfolio/load
           - name: maxdd
             ref: /SDK/portfolio/maxdd
-          - name: maxdrawdown
-            ref: /SDK/portfolio/maxdrawdown
+          - name: metric
+            ref: /SDK/portfolio/metric
+            sub:
+              - name: calmar
+                ref: /SDK/portfolio/metric/calmar
+              - name: commonsense
+                ref: /SDK/portfolio/metric/commonsense
+              - name: gaintopain
+                ref: /SDK/portfolio/metric/gaintopain
+              - name: information
+                ref: /SDK/portfolio/metric/information
+              - name: jensens
+                ref: /SDK/portfolio/metric/jensens
+              - name: kelly
+                ref: /SDK/portfolio/metric/kelly
+              - name: kurtosis
+                ref: /SDK/portfolio/metric/kurtosis
+              - name: maxdrawdown
+                ref: /SDK/portfolio/metric/maxdrawdown
+              - name: payoff
+                ref: /SDK/portfolio/metric/payoff
+              - name: profitfactor
+                ref: /SDK/portfolio/metric/profitfactor
+              - name: rsquare
+                ref: /SDK/portfolio/metric/rsquare
+              - name: sharpe
+                ref: /SDK/portfolio/metric/sharpe
+              - name: skew
+                ref: /SDK/portfolio/metric/skew
+              - name: sortino
+                ref: /SDK/portfolio/metric/sortino
+              - name: tail
+                ref: /SDK/portfolio/metric/tail
+              - name: trackerr
+                ref: /SDK/portfolio/metric/trackerr
+              - name: volatility
+                ref: /SDK/portfolio/metric/volatility
           - name: mret
             ref: /SDK/portfolio/mret
           - name: om
             ref: /SDK/portfolio/om
-          - name: payoff
-            ref: /SDK/portfolio/payoff
           - name: perf
             ref: /SDK/portfolio/perf
           - name: po
@@ -2566,34 +2602,24 @@ main:
                 ref: /SDK/portfolio/po/relriskparity
               - name: riskparity
                 ref: /SDK/portfolio/po/riskparity
-          - name: profitfactor
-            ref: /SDK/portfolio/profitfactor
           - name: rbeta
             ref: /SDK/portfolio/rbeta
           - name: rsharpe
             ref: /SDK/portfolio/rsharpe
+          - name: rsort
+            ref: /SDK/portfolio/rsort
           - name: rsortino
             ref: /SDK/portfolio/rsortino
           - name: rsquare
             ref: /SDK/portfolio/rsquare
           - name: rvol
             ref: /SDK/portfolio/rvol
-          - name: sharpe
-            ref: /SDK/portfolio/sharpe
-          - name: skew
-            ref: /SDK/portfolio/skew
-          - name: sortino
-            ref: /SDK/portfolio/sortino
+          - name: show
+            ref: /SDK/portfolio/show
           - name: summary
             ref: /SDK/portfolio/summary
-          - name: tail
-            ref: /SDK/portfolio/tail
-          - name: trackerr
-            ref: /SDK/portfolio/trackerr
           - name: var
             ref: /SDK/portfolio/var
-          - name: volatility
-            ref: /SDK/portfolio/volatility
           - name: yret
             ref: /SDK/portfolio/yret
       - name: stocks

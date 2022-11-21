@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 crypto.dd.eb(
     symbol: str,
     exchange: str = 'binance',
-    start_date: int = 1262304000,
-    end_date: int = 1668077823,
+    start_date: str = '2010-01-01',
+    end_date: str = None,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -35,10 +35,10 @@ crypto.dd.eb(
         Asset to search active addresses (e.g., BTC)
     exchange : str
         Exchange to check net position change (e.g., binance)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     chart: bool
        Flag to display chart
 
@@ -60,8 +60,8 @@ crypto.dd.eb(
 crypto.dd.eb(
     symbol: str,
     exchange: str = 'binance',
-    start_date: int = 1577836800,
-    end_date: int = 1609459200,
+    start_date: str = '2010-01-01',
+    end_date: str = None,
     percentage: bool = False,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
@@ -84,10 +84,10 @@ crypto.dd.eb(
         Exchange to check net position change (possible values are: aggregated, binance, bittrex,
         coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex, hitbtc, kraken,
         okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     percentage : bool
         Show percentage instead of stacked value.
     export : str

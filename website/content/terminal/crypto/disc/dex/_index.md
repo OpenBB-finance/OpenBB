@@ -1,5 +1,5 @@
 ```
-usage: dex [-l N] [-s {Name,Daily Users,Daily Volume [$]}] [--descend] [-l] [--export {csv,json,xlsx}] [-h]
+usage: dex [-l LIMIT] [-s SORTBY [SORTBY ...]] [-h] [--export EXPORT]
 ```
 
 Shows top decentralized exchanges [Source: https://dappradar.com/]

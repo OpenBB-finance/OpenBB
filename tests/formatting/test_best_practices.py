@@ -58,7 +58,7 @@ def create_overlaps(
         The path for the function
 
     Returns
-    ----------
+    -------
     overlaps: Optional[Tuple[List[str], str, str, str]]
         Tuple[overlaps, func_name, func_path, overlaps_str]
     """

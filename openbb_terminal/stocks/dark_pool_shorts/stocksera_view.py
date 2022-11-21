@@ -32,7 +32,8 @@ def plot_cost_to_borrow(
     data: pd.DataFrame,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plots the cost to borrow of a stock. [Source: Stocksera]
+    """Plot the cost to borrow of a stock. [Source: Stocksera]
+
     Parameters
     ----------
     symbol : str
@@ -88,7 +89,7 @@ def cost_to_borrow(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plots the short interest of a stock. This corresponds to the
+    """Plot the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been
     covered or closed out. Either NASDAQ or NYSE [Source: Quandl]
     Parameters

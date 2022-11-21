@@ -50,13 +50,12 @@ class QaController(CryptoBaseController):
         "normality",
         "qqplot",
         "unitroot",
-        "goodness",
-        "unitroot",
     ]
     FULLER_REG = ["c", "ct", "ctt", "nc"]
     KPS_REG = ["c", "ct"]
 
     PATH = "/crypto/qa/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self,
@@ -76,8 +75,9 @@ class QaController(CryptoBaseController):
         self.target = "Close"
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["pick"] = {c: {} for c in list(data.columns)}
+            choices: dict = self.choices_default
+
+            choices["pick"].update({c: {} for c in self.data.columns.tolist()})
             choices["load"] = {
                 "--interval": {
                     c: {}
@@ -102,75 +102,6 @@ class QaController(CryptoBaseController):
                 "--end": None,
                 "-e": "--end",
             }
-            choices["unitroot"] = {
-                "--fuller_reg": {c: {} for c in self.FULLER_REG},
-                "-r": "--fuller_reg",
-                "--kps_reg": {c: {} for c in self.KPS_REG},
-                "-k": "--kps_reg",
-            }
-            choices["line"] = {
-                "--log": {},
-                "--ml": None,
-                "--ms": None,
-            }
-            choices["hist"] = {
-                "--bins": {str(c): {} for c in range(10, 100)},
-                "-b": "--bins",
-            }
-            choices["bw"] = {
-                "--yearly": {},
-                "-y": {},
-            }
-            choices["acf"] = {
-                "--lags": {str(c): {} for c in range(5, 100)},
-                "-l": "--lags",
-            }
-            choices["rolling"] = {
-                "--window": {str(c): {} for c in range(5, 100)},
-                "-w": "--window",
-            }
-            choices["spread"] = {
-                "--window": {str(c): {} for c in range(5, 100)},
-                "-w": "--window",
-            }
-            choices["quantile"] = {
-                "--window": {str(c): {} for c in range(5, 100)},
-                "-w": "--window",
-                "--quantile": {str(c): {} for c in np.arange(0.0, 1.0, 0.01)},
-                "-q": "--quantile",
-            }
-            choices["skew"] = {
-                "--window": {str(c): {} for c in range(5, 100)},
-                "-w": "--window",
-            }
-            choices["kurtosis"] = {
-                "--window": {str(c): {} for c in range(5, 100)},
-                "-w": "--window",
-            }
-            choices["raw"] = {
-                "--limit": None,
-                "-l": "--limit",
-                "--sortby": {
-                    c: {}
-                    for c in [x.lower().replace(" ", "") for x in self.data.columns]
-                },
-                "-s": "--sortby",
-                "--descend": {},
-                "--export": {c: {} for c in ["csv", "json", "xlsx"]},
-            }
-            choices["decompose"] = {
-                "--multiplicative": None,
-                "-m": "--multiplicative",
-            }
-            choices["cusum"] = {
-                "--threshold": None,
-                "-t": "--threshold",
-                "--drift": None,
-                "-d": "--drift",
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -227,7 +158,7 @@ class QaController(CryptoBaseController):
             "-t",
             "--target",
             dest="target",
-            choices=list(self.data.columns),
+            choices=self.data.columns.tolist(),
             help="Select variable to analyze",
         )
         if other_args and "-t" not in other_args and "-h" not in other_args:
@@ -236,7 +167,6 @@ class QaController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.target = ns_parser.target
-            console.print("")
 
     @log_start_end(log=logger)
     def call_raw(self, other_args: List[str]):
@@ -257,12 +187,16 @@ class QaController(CryptoBaseController):
             dest="limit",
         )
         parser.add_argument(
-            "-d",
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
             default=False,
-            dest="descend",
-            help="Sort in descending order",
+            dest="reverse",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-s",
@@ -281,7 +215,7 @@ class QaController(CryptoBaseController):
                 data=self.data,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -357,7 +291,13 @@ class QaController(CryptoBaseController):
             """,
         )
         parser.add_argument(
-            "-b", "--bins", type=check_positive, default=15, dest="n_bins"
+            "-b",
+            "--bins",
+            type=check_positive,
+            default=15,
+            dest="n_bins",
+            choices=range(10, 100),
+            metavar="N_BINS",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -511,6 +451,8 @@ class QaController(CryptoBaseController):
             type=check_positive,
             default=15,
             help="maximum lags to display in plots",
+            choices=range(5, 100),
+            metavar="LAGS",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -545,6 +487,8 @@ class QaController(CryptoBaseController):
             type=check_positive,
             default=14,
             help="Window length",
+            choices=range(5, 100),
+            metavar="N_WINDOW",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -576,6 +520,8 @@ class QaController(CryptoBaseController):
             type=check_positive,
             default=14,
             help="Window length",
+            choices=range(5, 100),
+            metavar="N_WINDOW",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -615,6 +561,8 @@ class QaController(CryptoBaseController):
             type=check_positive,
             default=14,
             help="window length",
+            choices=range(5, 100),
+            metavar="N_WINDOW",
         )
         parser.add_argument(
             "-q",
@@ -624,6 +572,8 @@ class QaController(CryptoBaseController):
             type=check_proportion_range,
             default=0.5,
             help="quantile",
+            choices=np.arange(0.0, 1.0, 0.01).tolist(),
+            metavar="F_QUANTILE",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -662,6 +612,8 @@ class QaController(CryptoBaseController):
             type=check_positive,
             default=14,
             help="window length",
+            choices=range(5, 100),
+            metavar="N_WINDOW",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -699,6 +651,8 @@ class QaController(CryptoBaseController):
             type=check_positive,
             default=14,
             help="window length",
+            choices=range(5, 100),
+            metavar="N_WINDOW",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 import logging
 import json
 
@@ -8,6 +8,7 @@ import requests
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import str_date_to_timestamp
 
 # pylint: disable=unsupported-assignment-operation
 
@@ -180,7 +181,7 @@ INTERVALS_ACTIVE_ADDRESSES = ["24h", "1w", "1month"]
 def get_close_price(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: str = None,
     print_errors: bool = True,
 ) -> pd.DataFrame:
     """Returns the price of a cryptocurrency
@@ -203,16 +204,11 @@ def get_close_price(
         price over time
     """
 
-    dt_start_date = int(
-        datetime.strptime(
-            start_date + " 00:00:00+0000", "%Y-%m-%d %H:%M:%S%z"
-        ).timestamp()
-    )
-    dt_end_date = int(
-        datetime.strptime(
-            end_date + " 00:00:00+0000", "%Y-%m-%d %H:%M:%S%z"
-        ).timestamp()
-    )
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
 
     url = api_url + "market/price_usd_close"
 
@@ -220,8 +216,8 @@ def get_close_price(
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
-        "s": str(dt_start_date),
-        "u": str(dt_end_date),
+        "s": str(ts_start_date),
+        "u": str(ts_end_date),
     }
 
     r = requests.get(url, params=parameters)
@@ -252,8 +248,8 @@ def get_close_price(
 @check_api_key(["API_GLASSNODE_KEY"])
 def get_non_zero_addresses(
     symbol: str,
-    start_date: int = int(datetime(2010, 1, 1).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: str = None,
 ) -> pd.DataFrame:
     """Returns addresses with non-zero balance of a certain symbol
     [Source: https://glassnode.com]
@@ -262,10 +258,10 @@ def get_non_zero_addresses(
     ----------
     symbol : str
         Asset to search (e.g., BTC)
-    start_date : int
-        Initial date timestamp (e.g., 1_577_836_800)
-    end_date : int
-        End date timestamp (e.g., 1_609_459_200)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
 
     Returns
     -------
@@ -273,14 +269,20 @@ def get_non_zero_addresses(
         addresses with non-zero balances
     """
 
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
+
     url = api_url + "addresses/non_zero_count"
 
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
-        "s": str(start_date),
-        "u": str(end_date),
+        "s": str(ts_start_date),
+        "u": str(ts_end_date),
     }
 
     r = requests.get(url, params=parameters)
@@ -309,8 +311,8 @@ def get_non_zero_addresses(
 def get_active_addresses(
     symbol: str,
     interval: str = "24h",
-    start_date: int = int(datetime(2010, 1, 1).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: str = None,
 ) -> pd.DataFrame:
     """Returns active addresses of a certain symbol
     [Source: https://glassnode.com]
@@ -319,12 +321,12 @@ def get_active_addresses(
     ----------
     symbol : str
         Asset to search active addresses (e.g., BTC)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
     interval : str
         Interval frequency (e.g., 24h)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
 
     Returns
     -------
@@ -332,14 +334,20 @@ def get_active_addresses(
         active addresses over time
     """
 
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
+
     url = api_url + "addresses/active_count"
 
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": symbol,
         "i": interval,
-        "s": str(start_date),
-        "u": str(end_date),
+        "s": str(ts_start_date),
+        "u": str(ts_end_date),
     }
 
     r = requests.get(url, params=parameters)
@@ -367,8 +375,8 @@ def get_active_addresses(
 def get_hashrate(
     symbol: str,
     interval: str = "24h",
-    start_date: int = int((datetime.now() - timedelta(days=365 * 12)).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: str = None,
 ) -> pd.DataFrame:
     """Returns dataframe with mean hashrate of btc or eth blockchain and symbol price
     [Source: https://glassnode.com]
@@ -377,10 +385,10 @@ def get_hashrate(
     ----------
     symbol : str
         Blockchain to check hashrate (BTC or ETH)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     interval : str
         Interval frequency (e.g., 24h)
 
@@ -390,6 +398,12 @@ def get_hashrate(
         mean hashrate and symbol price over time
     """
 
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
+
     url = api_url + "mining/hash_rate_mean"
     url2 = api_url + "market/price_usd_close"
 
@@ -397,8 +411,8 @@ def get_hashrate(
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": symbol,
         "i": interval,
-        "s": str(start_date),
-        "u": str(end_date),
+        "s": str(ts_start_date),
+        "u": str(ts_end_date),
     }
 
     df = pd.DataFrame()
@@ -439,8 +453,8 @@ def get_hashrate(
 def get_exchange_balances(
     symbol: str,
     exchange: str = "binance",
-    start_date: int = int(datetime(2010, 1, 1).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: str = None,
 ) -> pd.DataFrame:
     """Returns the total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.com]
@@ -451,16 +465,22 @@ def get_exchange_balances(
         Asset to search active addresses (e.g., BTC)
     exchange : str
         Exchange to check net position change (e.g., binance)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
 
     Returns
     -------
     pd.DataFrame
         total amount of coins in units/percentage and symbol price over time
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
 
     url = api_url + "distribution/balance_exchanges"
     url2 = api_url + "distribution/balance_exchanges_relative"
@@ -471,8 +491,8 @@ def get_exchange_balances(
         "a": symbol,
         "i": "24h",
         "e": exchange,
-        "s": str(start_date),
-        "u": str(end_date),
+        "s": str(ts_start_date),
+        "u": str(ts_end_date),
     }
     df = pd.DataFrame()
 
@@ -519,8 +539,8 @@ def get_exchange_balances(
 def get_exchange_net_position_change(
     symbol: str,
     exchange: str = "binance",
-    start_date: int = int(datetime(2010, 1, 1).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: str = None,
 ) -> pd.DataFrame:
     """Returns 30d change of the supply held in exchange wallets of a certain symbol.
     [Source: https://glassnode.com]
@@ -531,16 +551,22 @@ def get_exchange_net_position_change(
         Asset symbol to search supply (e.g., BTC)
     exchange : str
         Exchange to check net position change (e.g., binance)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
 
     Returns
     -------
     pd.DataFrame
         supply change in exchange wallets of a certain symbol over time
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
 
     url = api_url + "distribution/exchange_net_position_change"
 
@@ -549,8 +575,8 @@ def get_exchange_net_position_change(
         "a": symbol,
         "i": "24h",
         "e": exchange,
-        "s": str(start_date),
-        "u": str(end_date),
+        "s": str(ts_start_date),
+        "u": str(ts_end_date),
     }
 
     r = requests.get(url, params=parameters)

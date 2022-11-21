@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.rbeta(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     window: str = '1y',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -28,8 +28,8 @@ portfolio.rbeta(
 
 * **Parameters**
 
-    portfolio : PortfolioModel
-        Portfolio object
+    portfolio : PortfolioEngine
+        PortfolioEngine object
     window: string
         Interval used for rolling values.
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
@@ -42,6 +42,14 @@ portfolio.rbeta(
     pd.DataFrame
         DataFrame of the portfolio's rolling beta
 
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.rbeta(p)
+    {{< /highlight >}}
+
 |
 
 .. raw:: html
@@ -52,7 +60,7 @@ portfolio.rbeta(
 
 {{< highlight python >}}
 portfolio.rbeta(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     window: str = '1y',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
@@ -68,8 +76,8 @@ portfolio.rbeta(
 
 * **Parameters**
 
-    portfolio : PortfolioModel
-        Portfolio object
+    portfolio : PortfolioEngine
+        PortfolioEngine object
     window: str
         interval for window to consider
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.

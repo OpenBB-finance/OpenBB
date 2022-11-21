@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Any, Tuple, Union, List, Optional
+from typing import Tuple, Union, List, Optional
 
 import pandas as pd
 
@@ -37,7 +37,13 @@ def get_NBEATS_data(
     model_save_name: str = "nbeats_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
+) -> Tuple[
+    Optional[List[TimeSeries]],
+    Optional[List[TimeSeries]],
+    Optional[List[TimeSeries]],
+    Optional[float],
+    Optional[type[NBEATSModel]],
+]:
     """Perform NBEATS Forecasting
 
     Parameters
@@ -85,16 +91,12 @@ def get_NBEATS_data(
 
     Returns
     -------
-    List[TimeSeries]
-        Adjusted Data series
-    List[TimeSeries]
-        Historical forecast by best RNN model
-    List[TimeSeries]
-        list of Predictions
-    Optional[float]
-        Mean average precision error
-    Any
-        Best NBEATS Model
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], type[NBEATSModel]]
+        Adjusted Data series,
+        Historical forecast by best RNN model,
+        list of Predictions,
+        Mean average precision error,
+        Best NBEATS Model.
     """
 
     use_scalers = True

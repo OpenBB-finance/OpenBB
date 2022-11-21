@@ -22,12 +22,14 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio import portfolio_model
+from openbb_terminal.portfolio.portfolio_model import generate_portfolio
 from openbb_terminal.portfolio import statics
 from openbb_terminal.portfolio import portfolio_view
 from openbb_terminal.portfolio import portfolio_helper
 from openbb_terminal.portfolio import attribution_model
-from openbb_terminal.portfolio.portfolio_optimization import po_controller
+from openbb_terminal.portfolio.portfolio_optimization.po_controller import (
+    PortfolioOptimizationController,
+)
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.common.quantitative_analysis import qa_view
 
@@ -55,8 +57,6 @@ class PortfolioController(BaseController):
         "maxdd",
         "var",
         "es",
-        "sh",
-        "so",
         "om",
         "rvol",
         "rsharpe",
@@ -93,6 +93,7 @@ class PortfolioController(BaseController):
     ]
     PERIODS = ["3y", "5y", "10y", "all"]
     PATH = "/portfolio/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -139,12 +140,13 @@ class PortfolioController(BaseController):
         self.original_benchmark_name = ""
         self.risk_free_rate = 0
         self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
-        self.portfolio: portfolio_model.PortfolioModel = (
-            portfolio_model.PortfolioModel()
-        )
+        self.portfolio = None
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.update_choices()
+            choices: dict = self.choices_default
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_choices(self):
 
@@ -157,126 +159,6 @@ class PortfolioController(BaseController):
                 for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
             }
         )
-
-        choices: dict = {c: {} for c in self.controller_choices}
-
-        choices["load"] = {
-            "--file": {c: {} for c in self.DATA_HOLDINGS_FILES},
-            "-f": "--file",
-            "--name": None,
-            "-n": "--name",
-            "--rfr": None,
-            "-r": "--rfr",
-        }
-        choices["show"] = {
-            "--limit": None,
-            "-l": "--limit",
-        }
-        choices["bench"] = {c: {} for c in statics.BENCHMARK_LIST}
-        choices["bench"] = {
-            "--benchmark": {c: {} for c in statics.BENCHMARK_LIST},
-            "-b": "--benchmark",
-        }
-
-        choices["bench"]["--full_shares"] = {}
-        choices["bench"]["-s"] = "--full_shares"
-        hold = {
-            "--unstack": {},
-            "-u": "--unstack",
-            "--raw": {},
-            "--limit": None,
-            "-l": "--limit",
-        }
-        choices["holdv"] = hold
-        choices["holdp"] = hold
-        choices["yret"] = {
-            "--period": {c: {} for c in self.PERIODS},
-            "-p": "--period",
-            "--raw": {},
-        }
-        choices["mret"] = {
-            "--period": {c: {} for c in self.PERIODS},
-            "-p": "--period",
-            "--show": {},
-            "-s": "--show",
-            "--raw": {},
-        }
-        choices["dret"] = {
-            "--period": {c: {} for c in self.PERIODS},
-            "-p": "--period",
-            "--limit": None,
-            "-l": "--limit",
-            "--raw": {},
-        }
-        choices["distr"] = {
-            "--period": {c: {} for c in portfolio_helper.PERIODS},
-            "-p": "--period",
-            "--raw": {},
-        }
-        choices["rvol"] = {
-            "--period": {c: {} for c in portfolio_helper.PERIODS},
-            "-p": "--period",
-        }
-        r_auto_complete = {
-            "--period": {c: {} for c in portfolio_helper.PERIODS},
-            "-p": "--period",
-            "--rfr": None,
-            "-r": "--rfr",
-        }
-        choices["rsharpe"] = r_auto_complete
-        choices["rsort"] = r_auto_complete
-        choices["rbeta"] = {
-            "--period": {c: {} for c in portfolio_helper.PERIODS},
-            "-p": "--period",
-        }
-        choices["alloc"] = {c: {} for c in self.AGGREGATION_METRICS}
-        choices["alloc"]["--agg"] = {c: {} for c in self.AGGREGATION_METRICS}
-        choices["alloc"]["-a"] = "--agg"
-        choices["alloc"]["--tables"] = {}
-        choices["alloc"]["-t"] = "--tables"
-        choices["alloc"]["--limit"] = None
-        choices["alloc"]["-l"] = "--limit"
-        choices["summary"] = r_auto_complete
-        choices["metric"] = {c: {} for c in self.VALID_METRICS}
-        choices["metric"]["--metric"] = {c: {} for c in self.VALID_METRICS}
-        choices["metric"]["-m"] = "--metric"
-        choices["metric"]["--rfr"] = None
-        choices["metric"]["-r"] = "--rfr"
-        choices["perf"] = {
-            "--show_trades": {},
-            "-t": "--show_trades",
-        }
-        choices["var"] = {
-            "--mean": {},
-            "-m": "--mean",
-            "--adjusted": {},
-            "-a": "--adjusted",
-            "--student": {},
-            "-s": "--student",
-            "--percentile": None,
-            "-p": "--percentile",
-        }
-        choices["es"] = {
-            "--mean": {},
-            "-m": "--mean",
-            "--dist": {c: {} for c in self.VALID_DISTRIBUTIONS},
-            "-d": "--dist",
-            "--percentile": None,
-            "-p": "--percentile",
-        }
-        choices["om"] = {
-            "--start": None,
-            "-s": "--start",
-            "--end": None,
-            "-e": "--end",
-        }
-
-        self.choices = choices
-
-        choices["support"] = self.SUPPORT_CHOICES
-        choices["about"] = self.ABOUT_CHOICES
-
-        self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -394,7 +276,7 @@ class PortfolioController(BaseController):
         else:
             tickers = self.portfolio.tickers_list
         self.queue = self.load_class(
-            po_controller.PortfolioOptimizationController,
+            PortfolioOptimizationController,
             tickers,
             None,
             None,
@@ -417,6 +299,8 @@ class PortfolioController(BaseController):
             dest="file",
             required="-h" not in other_args,
             help="The file to be loaded",
+            choices={c: {} for c in self.DATA_HOLDINGS_FILES},
+            metavar="FILE",
         )
         parser.add_argument(
             "-n",
@@ -442,33 +326,26 @@ class PortfolioController(BaseController):
             else:
                 file_location = ns_parser.file  # type: ignore
 
-            transactions = portfolio_model.PortfolioModel.read_transactions(
-                str(file_location)
+            self.portfolio = generate_portfolio(
+                transactions_file_path=str(file_location),
+                benchmark_symbol="SPY",
+                risk_free_rate=ns_parser.risk_free_rate / 100,
             )
-            self.portfolio = portfolio_model.PortfolioModel(transactions)
-            self.benchmark_name = ""
 
             if ns_parser.name:
                 self.portfolio_name = ns_parser.name
             else:
                 self.portfolio_name = ns_parser.file
-
-            # Generate holdings from trades
-            self.portfolio.generate_portfolio_data()
-
-            # Add in the Risk-free rate
-            self.portfolio.set_risk_free_rate(ns_parser.risk_free_rate / 100)
-            self.risk_free_rate = ns_parser.risk_free_rate / 100
-
-            # Load benchmark
-            self.call_bench(["-b", "SPDR S&P 500 ETF Trust (SPY)"])
-
             console.print(
                 f"\n[bold][param]Portfolio:[/param][/bold] {self.portfolio_name}"
             )
+
+            self.risk_free_rate = ns_parser.risk_free_rate / 100
             console.print(
                 f"[bold][param]Risk Free Rate:[/param][/bold] {self.risk_free_rate:.2%}"
             )
+
+            self.benchmark_name = "SPDR S&P 500 ETF Trust (SPY)"
             console.print(
                 f"[bold][param]Benchmark:[/param][/bold] {self.benchmark_name}\n"
             )
@@ -514,6 +391,8 @@ class PortfolioController(BaseController):
             dest="benchmark",
             required="-h" not in other_args,
             help="Set the benchmark for the portfolio. By default, this is SPDR S&P 500 ETF Trust (SPY).",
+            choices={c: {} for c in statics.BENCHMARK_LIST},
+            metavar="BENCHMARK",
         )
         parser.add_argument(
             "-s",
@@ -538,18 +417,9 @@ class PortfolioController(BaseController):
                 else:
                     benchmark_ticker = chosen_benchmark
 
-                self.portfolio.load_benchmark(benchmark_ticker, ns_parser.full_shares)
+                self.portfolio.set_benchmark(benchmark_ticker, ns_parser.full_shares)
 
                 self.benchmark_name = chosen_benchmark
-
-                # Make it so that there is no chance of there being a difference in length between
-                # the portfolio and benchmark return DataFrames
-                (
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
-                ) = portfolio_helper.make_equal_length(
-                    self.portfolio.returns, self.portfolio.benchmark_returns
-                )
 
             else:
                 console.print(
@@ -575,6 +445,7 @@ class PortfolioController(BaseController):
             choices=self.AGGREGATION_METRICS,
             dest="agg",
             help="The type of allocation aggregation you wish to do",
+            metavar="AGG",
         )
         parser.add_argument(
             "-t",
@@ -596,41 +467,26 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 if ns_parser.agg == "assets":
-                    if self.portfolio.portfolio_assets_allocation.empty:
-                        self.portfolio.calculate_allocations("asset")
                     portfolio_view.display_assets_allocation(
-                        self.portfolio.portfolio_assets_allocation,
-                        self.portfolio.benchmark_assets_allocation,
+                        self.portfolio,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
                 elif ns_parser.agg == "sectors":
-                    if self.portfolio.portfolio_sectors_allocation.empty:
-                        self.portfolio.calculate_allocations("sector")
-                    portfolio_view.display_category_allocation(
-                        self.portfolio.portfolio_sectors_allocation,
-                        self.portfolio.benchmark_sectors_allocation,
-                        ns_parser.agg,
+                    portfolio_view.display_sectors_allocation(
+                        self.portfolio,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
                 elif ns_parser.agg == "countries":
-                    if self.portfolio.portfolio_country_allocation.empty:
-                        self.portfolio.calculate_allocations("country")
-                    portfolio_view.display_category_allocation(
-                        self.portfolio.portfolio_country_allocation,
-                        self.portfolio.benchmark_country_allocation,
-                        ns_parser.agg,
+                    portfolio_view.display_countries_allocation(
+                        self.portfolio,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
                 elif ns_parser.agg == "regions":
-                    if self.portfolio.portfolio_region_allocation.empty:
-                        self.portfolio.calculate_allocations("region")
-                    portfolio_view.display_category_allocation(
-                        self.portfolio.portfolio_region_allocation,
-                        self.portfolio.benchmark_region_allocation,
-                        ns_parser.agg,
+                    portfolio_view.display_regions_allocation(
+                        self.portfolio,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
@@ -655,7 +511,7 @@ class PortfolioController(BaseController):
             "-p",
             "--period",
             type=str,
-            choices=portfolio_helper.PERIODS,
+            choices=statics.PERIODS,
             dest="period",
             default="all",
             help="Period in which to calculate attribution",
@@ -909,7 +765,7 @@ class PortfolioController(BaseController):
                     )
                 else:
                     portfolio_view.display_var(
-                        portfolio=self.portfolio,
+                        portfolio_engine=self.portfolio,
                         use_mean=ns_parser.use_mean,
                         adjusted_var=ns_parser.adjusted,
                         student_t=ns_parser.student_t,
@@ -942,12 +798,12 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-d",
             "--dist",
-            "--distributions",
             dest="distribution",
             type=str,
             choices=self.VALID_DISTRIBUTIONS,
             default="normal",
             help="Distribution used for the calculations",
+            metavar="DIST",
         )
         parser.add_argument(
             "-p",
@@ -963,10 +819,10 @@ class PortfolioController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser and self.portfolio is not None:
-            if self.portfolio_name:
+        if ns_parser:
+            if self.portfolio and self.portfolio_name:
                 portfolio_view.display_es(
-                    portfolio=self.portfolio,
+                    portfolio_engine=self.portfolio,
                     use_mean=ns_parser.use_mean,
                     distribution=ns_parser.distribution,
                     percentile=ns_parser.percentile,
@@ -1040,6 +896,7 @@ class PortfolioController(BaseController):
             default="all",
             choices=self.PERIODS,
             help="Period to select start end of the year returns",
+            metavar="PERIOD",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -1078,6 +935,7 @@ class PortfolioController(BaseController):
             default="all",
             choices=self.PERIODS,
             help="Period to select start end of the year returns",
+            metavar="PERIOD",
         )
         parser.add_argument(
             "-s",
@@ -1125,6 +983,7 @@ class PortfolioController(BaseController):
             default="all",
             choices=self.PERIODS,
             help="Period to select start end of the year returns",
+            metavar="PERIOD",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -1181,8 +1040,9 @@ class PortfolioController(BaseController):
             type=str,
             dest="period",
             default="1y",
-            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            choices=statics.PERIODS,
             help="Period to apply rolling window",
+            metavar="PERIOD",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -1214,8 +1074,9 @@ class PortfolioController(BaseController):
             type=str,
             dest="period",
             default="1y",
-            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            choices=statics.PERIODS,
             help="Period to apply rolling window",
+            metavar="PERIOD",
         )
         parser.add_argument(
             "-r",
@@ -1256,8 +1117,9 @@ class PortfolioController(BaseController):
             type=str,
             dest="period",
             default="1y",
-            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            choices=statics.PERIODS,
             help="Period to apply rolling window",
+            metavar="PERIOD",
         )
         parser.add_argument(
             "-r",
@@ -1277,7 +1139,7 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_sortino(
-                    portfolio=self.portfolio,
+                    portfolio_engine=self.portfolio,
                     risk_free_rate=ns_parser.risk_free_rate / 100,
                     window=ns_parser.period,
                     export=ns_parser.export,
@@ -1298,8 +1160,9 @@ class PortfolioController(BaseController):
             type=str,
             dest="period",
             default="1y",
-            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            choices=statics.PERIODS,
             help="Period to apply rolling window",
+            metavar="PERIOD",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -1333,6 +1196,7 @@ class PortfolioController(BaseController):
             default="-h" not in other_args,
             choices=self.VALID_METRICS,
             help="Set metric of choice",
+            metavar="METRIC",
         )
         parser.add_argument(
             "-r",
@@ -1359,11 +1223,11 @@ class PortfolioController(BaseController):
                     portfolio_view.display_volatility(self.portfolio, ns_parser.export)
                 elif ns_parser.metric == "sharpe":
                     portfolio_view.display_sharpe_ratio(
-                        self.portfolio, ns_parser.risk_free_rate, ns_parser.export
+                        self.portfolio, ns_parser.risk_free_rate / 100, ns_parser.export
                     )
                 elif ns_parser.metric == "sortino":
                     portfolio_view.display_sortino_ratio(
-                        self.portfolio, ns_parser.risk_free_rate, ns_parser.export
+                        self.portfolio, ns_parser.risk_free_rate / 100, ns_parser.export
                     )
                 elif ns_parser.metric == "maxdrawdown":
                     portfolio_view.display_maximum_drawdown_ratio(
@@ -1391,7 +1255,7 @@ class PortfolioController(BaseController):
                     )
                 elif ns_parser.metric == "jensens":
                     portfolio_view.display_jensens_alpha(
-                        self.portfolio, ns_parser.risk_free_rate, ns_parser.export
+                        self.portfolio, ns_parser.risk_free_rate / 100, ns_parser.export
                     )
                 elif ns_parser.metric == "calmar":
                     portfolio_view.display_calmar_ratio(
@@ -1423,10 +1287,11 @@ class PortfolioController(BaseController):
             "-p",
             "--period",
             type=str,
-            choices=portfolio_helper.PERIODS,
+            choices=statics.PERIODS,
             dest="period",
             default="all",
             help="The file to be loaded",
+            metavar="PERIOD",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -1461,10 +1326,11 @@ class PortfolioController(BaseController):
             "-p",
             "--period",
             type=str,
-            choices=portfolio_helper.PERIODS,
+            choices=statics.PERIODS,
             dest="period",
             default="all",
             help="The file to be loaded",
+            metavar="PERIOD",
         )
         parser.add_argument(
             "-r",
@@ -1489,7 +1355,7 @@ class PortfolioController(BaseController):
                 portfolio_view.display_summary(
                     self.portfolio,
                     ns_parser.period,
-                    ns_parser.risk_free_rate,
+                    ns_parser.risk_free_rate / 100,
                     ns_parser.export,
                 )
 

@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.om(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     threshold_start: float = 0,
     threshold_end: float = 1.5,
     chart: bool = False,
@@ -29,8 +29,9 @@ portfolio.om(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     threshold_start: float
         annualized target return threshold start of plotted threshold range
     threshold_end: float
@@ -42,6 +43,15 @@ portfolio.om(
 * **Returns**
 
     pd.DataFrame
+        DataFrame with portfolio omega ratio
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.om(p)
+    {{< /highlight >}}
 
 |
 
@@ -53,7 +63,7 @@ portfolio.om(
 
 {{< highlight python >}}
 portfolio.om(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     threshold_start: float = 0,
     threshold_end: float = 1.5,
     chart: bool = False,
@@ -68,8 +78,9 @@ portfolio.om(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     threshold_start: float
         annualized target return threshold start of plotted threshold range
     threshold_end: float

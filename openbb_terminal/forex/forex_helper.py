@@ -90,8 +90,6 @@ INTERVAL_MAPS: Dict = {
 
 logger = logging.getLogger(__name__)
 
-last_year = datetime.now() - timedelta(days=365)
-
 
 @log_start_end(log=logger)
 def load(
@@ -99,7 +97,7 @@ def load(
     from_symbol: str,
     resolution: str = "d",
     interval: str = "1day",
-    start_date: str = last_year.strftime("%Y-%m-%d"),
+    start_date: str = None,
     source: str = "YahooFinance",
     verbose: bool = False,
 ) -> pd.DataFrame:
@@ -127,6 +125,10 @@ def load(
     pd.DataFrame
         The loaded data
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+
     if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
 
@@ -151,21 +153,25 @@ def load(
         if source == "AlphaVantage":
             if "min" in interval:
                 resolution = "i"
-            return av_model.get_historical(
+            df = av_model.get_historical(
                 to_symbol=to_symbol,
                 from_symbol=from_symbol,
                 resolution=resolution,
                 interval=clean_interval,
                 start_date=start_date,
             )
+            df.index.name = "date"
+            return df
 
         if source == "YahooFinance":
-            return yf.download(
+            df = yf.download(
                 f"{from_symbol}{to_symbol}=X",
                 start=datetime.strptime(start_date, "%Y-%m-%d"),
                 interval=clean_interval,
                 progress=verbose,
             )
+            df.index.name = "date"
+            return df
 
     if source == "Polygon":
         # Interval for polygon gets broken into multiplier and timeframe
@@ -174,12 +180,14 @@ def load(
         timeframe = temp[2]
         if timeframe == "min":
             timeframe = "minute"
-        return polygon_model.get_historical(
+        df = polygon_model.get_historical(
             f"{from_symbol}{to_symbol}",
             multiplier=multiplier,
             timespan=timeframe,
-            from_date=start_date,
+            start_date=start_date,
         )
+        df.index.name = "date"
+        return df
 
     console.print(f"Source {source} not supported")
     return pd.DataFrame()

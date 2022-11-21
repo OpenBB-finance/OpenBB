@@ -17,5 +17,5 @@ forex.get_currency_list() -> List
 .. raw:: html
 
     <p>
-    Load AV currency codes from a local file
+    Load AV currency codes from a local file.
     </p>

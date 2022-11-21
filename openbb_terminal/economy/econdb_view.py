@@ -1,7 +1,6 @@
 """ EconDB View """
 __docformat__ = "numpy"
 # pylint:disable=too-many-arguments
-from datetime import datetime
 import logging
 import os
 from textwrap import fill
@@ -28,7 +27,7 @@ def show_macro_data(
     countries: list = None,
     transform: str = "",
     start_date: str = "1900-01-01",
-    end_date: str = str(datetime.today().date()),
+    end_date: str = None,
     symbol: str = "",
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
@@ -64,7 +63,7 @@ def show_macro_data(
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
 
     Returns
-    ----------
+    -------
     Plots the Series.
     """
 
@@ -148,7 +147,7 @@ def show_treasuries(
     maturities: list = None,
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
-    end_date: str = str(datetime.today().date()),
+    end_date: str = None,
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
@@ -176,7 +175,7 @@ def show_treasuries(
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
 
     Returns
-    ----------
+    -------
     Plots the Treasury Series.
     """
 
@@ -237,7 +236,7 @@ def show_treasury_maturities():
     """Get treasury maturity options [Source: EconDB]
 
     Returns
-    ----------
+    -------
     A table containing the instruments and maturities.
     """
 
