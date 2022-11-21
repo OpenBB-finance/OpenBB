@@ -17,10 +17,8 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks import cboe_view
 
-from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    choice_check_after_action,
     export_data,
     valid_date,
 )
@@ -29,7 +27,6 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import (
     MenuText,
     console,
-    get_ordered_list_sources,
     translate,
 )
 from openbb_terminal.stocks import stocks_helper
@@ -89,53 +86,6 @@ class StocksController(StockBaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
 
             choices: dict = self.choices_default
-
-            choices["search"] = {
-                "--query": None,
-                "-q": "--query",
-                "--country": {c.lower().replace(" ", "_"): {} for c in self.country},
-                "-c": "--country",
-                "--sector": {c: {} for c in self.sector},
-                "-s": "--sector",
-                "--industry": {c: {} for c in self.industry},
-                "-i": "--industry",
-                "--exchange": {
-                    c.lower(): {} for c in stocks_helper.market_coverage_suffix
-                },
-                "-e": "--exchange",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["candle"] = {
-                "--sort": {c: {} for c in stocks_helper.CANDLE_SORT},
-                "--plotly": {},
-                "-p": "--plotly",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--raw": {},
-                "--trend": {},
-                "-t": "--trend",
-                "--ma": None,
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["news"] = {
-                "--date": None,
-                "-d": "--date",
-                "--oldest": {},
-                "-o": "--oldest",
-                "--sources": None,
-                "-s": "--sources",
-                "--limit": None,
-                "-l": "--limit",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}news")
-                },
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
-
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -218,7 +168,7 @@ class StocksController(StockBaseController):
             default="",
             choices=clean_countries,
             dest="country",
-            metavar="country_name",
+            metavar="country",
             type=str.lower,
             help="Search by country to find stocks matching the criteria",
         )
@@ -226,8 +176,9 @@ class StocksController(StockBaseController):
             "-s",
             "--sector",
             default="",
-            nargs=argparse.ONE_OR_MORE,
-            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.sector),
+            choices=stocks_helper.format_parse_choices(self.sector),
+            type=str.lower,
+            metavar="sector",
             dest="sector",
             help="Search by sector to find stocks matching the criteria",
         )
@@ -235,19 +186,21 @@ class StocksController(StockBaseController):
             "-i",
             "--industry",
             default="",
-            nargs=argparse.ONE_OR_MORE,
-            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.industry),
+            choices=stocks_helper.format_parse_choices(self.industry),
+            type=str.lower,
+            metavar="industry",
             dest="industry",
             help="Search by industry to find stocks matching the criteria",
         )
-        country_opts = [x.lower() for x in stocks_helper.market_coverage_suffix]
         parser.add_argument(
             "-e",
             "--exchange",
             default="",
-            choices=country_opts,
+            choices=stocks_helper.format_parse_choices(
+                list(stocks_helper.market_coverage_suffix.keys())
+            ),
             type=str.lower,
-            metavar="country_name",
+            metavar="exchange",
             dest="exchange_country",
             help="Search by a specific exchange country to find stocks matching the criteria",
         )
@@ -260,12 +213,21 @@ class StocksController(StockBaseController):
             limit=10,
         )
         if ns_parser:
+            # Mapping
+            sector = stocks_helper.map_parse_choices(self.sector)[ns_parser.sector]
+            industry = stocks_helper.map_parse_choices(self.industry)[
+                ns_parser.industry
+            ]
+            exchange = stocks_helper.map_parse_choices(
+                list(stocks_helper.market_coverage_suffix.keys())
+            )[ns_parser.exchange_country]
+
             stocks_helper.search(
                 query=" ".join(ns_parser.query),
                 country=ns_parser.country,
-                sector=ns_parser.sector,
-                industry=ns_parser.industry,
-                exchange_country=ns_parser.exchange_country,
+                sector=sector,
+                industry=industry,
+                exchange_country=exchange,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
