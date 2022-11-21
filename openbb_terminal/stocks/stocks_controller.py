@@ -313,10 +313,10 @@ class StocksController(StockBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, _)
         if ns_parser:
-            if not self.ticker:
+            if self.ticker:
+                stocks_helper.show_codes_polygon(self.ticker)
+            else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
-                return
-            stocks_helper.show_codes_polygon(self.ticker)
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
@@ -394,53 +394,52 @@ class StocksController(StockBaseController):
             limit=20,
         )
         if ns_parser:
-            if not self.ticker:
-                console.print("No ticker loaded. First use 'load <ticker>'")
-                return
-            if ns_parser.raw:
-                qa_view.display_raw(
-                    data=self.stock,
-                    sortby=ns_parser.sort,
-                    ascend=ns_parser.reverse,
-                    limit=ns_parser.limit,
-                )
+            if self.ticker:
+                if ns_parser.raw:
+                    qa_view.display_raw(
+                        data=self.stock,
+                        sortby=ns_parser.sort,
+                        ascend=ns_parser.reverse,
+                        limit=ns_parser.limit,
+                    )
+                else:
+                    data = stocks_helper.process_candle(self.stock)
+                    mov_avgs = []
 
+                    if ns_parser.mov_avg:
+                        mov_list = (num for num in ns_parser.mov_avg.split(","))
+
+                        for num in mov_list:
+                            try:
+                                num = int(num)
+
+                                if num <= 1:
+                                    raise ValueError
+
+                                mov_avgs.append(num)
+                            except ValueError:
+                                console.print(
+                                    f"[red]{num} is not a valid moving average, must be an integer greater than 1."
+                                )
+
+                    stocks_helper.display_candle(
+                        symbol=self.ticker,
+                        data=data,
+                        use_matplotlib=ns_parser.plotly,
+                        intraday=self.interval != "1440min",
+                        add_trend=ns_parser.trendlines,
+                        ma=mov_avgs,
+                        yscale="log" if ns_parser.logy else "linear",
+                    )
+
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{self.ticker}",
+                    self.stock,
+                )
             else:
-                data = stocks_helper.process_candle(self.stock)
-                mov_avgs = []
-
-                if ns_parser.mov_avg:
-                    mov_list = (num for num in ns_parser.mov_avg.split(","))
-
-                    for num in mov_list:
-                        try:
-                            num = int(num)
-
-                            if num <= 1:
-                                raise ValueError
-
-                            mov_avgs.append(num)
-                        except ValueError:
-                            console.print(
-                                f"[red]{num} is not a valid moving average, must be an integer greater than 1."
-                            )
-
-                stocks_helper.display_candle(
-                    symbol=self.ticker,
-                    data=data,
-                    use_matplotlib=ns_parser.plotly,
-                    intraday=self.interval != "1440min",
-                    add_trend=ns_parser.trendlines,
-                    ma=mov_avgs,
-                    yscale="log" if ns_parser.logy else "linear",
-                )
-
-            export_data(
-                ns_parser.export,
-                os.path.dirname(os.path.abspath(__file__)),
-                f"{self.ticker}",
-                self.stock,
-            )
+                console.print("No ticker loaded. First use 'load <ticker>'")
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
@@ -481,35 +480,32 @@ class StocksController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=3
         )
         if ns_parser:
-            if not self.ticker:
+            if self.ticker:
+                if ns_parser.source == "NewsApi":
+                    d_stock = yf.Ticker(self.ticker).info
+
+                    newsapi_view.display_news(
+                        query=d_stock["shortName"].replace(" ", "+")
+                        if "shortName" in d_stock
+                        else self.ticker,
+                        limit=ns_parser.limit,
+                        start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                        show_newest=ns_parser.n_oldest,
+                        sources=ns_parser.sources,
+                    )
+                elif ns_parser.source == "Feedparser":
+                    d_stock = yf.Ticker(self.ticker).info
+
+                    feedparser_view.display_news(
+                        term=d_stock["shortName"].replace(" ", "+")
+                        if "shortName" in d_stock
+                        else self.ticker,
+                        sources=ns_parser.sources,
+                        limit=ns_parser.limit,
+                        export=ns_parser.export,
+                    )
+            else:
                 console.print("Use 'load <ticker>' prior to this command!")
-                return
-
-            if ns_parser.source == "NewsApi":
-                d_stock = yf.Ticker(self.ticker).info
-
-                newsapi_view.display_news(
-                    query=d_stock["shortName"].replace(" ", "+")
-                    if "shortName" in d_stock
-                    else self.ticker,
-                    limit=ns_parser.limit,
-                    start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
-                    show_newest=ns_parser.n_oldest,
-                    sources=ns_parser.sources,
-                )
-
-            elif ns_parser.source == "Feedparser":
-
-                d_stock = yf.Ticker(self.ticker).info
-
-                feedparser_view.display_news(
-                    term=d_stock["shortName"].replace(" ", "+")
-                    if "shortName" in d_stock
-                    else self.ticker,
-                    sources=ns_parser.sources,
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                )
 
     @log_start_end(log=logger)
     def call_disc(self, _):

@@ -173,11 +173,12 @@ class TradingHoursController(BaseController):
             other_args.insert(0, "-n")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser and ns_parser.exchange:
-            bursa_view.display_exchange(ns_parser.exchange)
-        else:
-            logger.error("Select the exchange you want to know about.")
-            console.print("[red]Select the exchange you want to know about.[/red]\n")
+        if ns_parser:
+            if ns_parser.exchange:
+                bursa_view.display_exchange(ns_parser.exchange)
+            else:
+                logger.error("Select the exchange you want to know about.")
+                console.print("[red]Select the exchange you want to know about.[/red]\n")
 
     @log_start_end(log=logger)
     def call_open(self, other_args: List[str]):
