@@ -15,6 +15,7 @@ from typing import List
 
 import dotenv
 from rich import panel
+import certifi
 
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
@@ -65,6 +66,13 @@ from openbb_terminal.reports.reports_model import ipykernel_launcher
 logger = logging.getLogger(__name__)
 
 env_file = str(USER_ENV_FILE)
+
+# Necessary for installer so that it can locate the correct certificates for
+# API calls and https
+# https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
+if is_packaged_application():
+    os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+    os.environ["SSL_CERT_FILE"] = certifi.where()
 
 
 class TerminalController(BaseController):
