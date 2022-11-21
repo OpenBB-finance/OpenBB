@@ -1,3 +1,11 @@
+from openbb_terminal.sdk import openbb
+
+
+def test_openbb():
+    """Test the openbb function"""
+    assert "stocks" in dir(openbb)
+
+
 # from importlib import import_module
 # from typing import Callable
 # from openbb_terminal.sdk import trail_map
