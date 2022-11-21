@@ -910,7 +910,7 @@ class ForecastController(BaseController):
             "--dataset",
             help="Dataset that will get a column renamed",
             dest="dataset",
-            choices=self.choices["rename"],
+            choices=self.choices.get("rename", []),
             type=str,
         )
         parser.add_argument(
@@ -969,11 +969,11 @@ class ForecastController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
+        parser = self.add_standard_args(parser, target_dataset=True)
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_ONLY_RAW_DATA_ALLOWED,
-            target_dataset=True,
         )
 
         if ns_parser:
@@ -1374,7 +1374,7 @@ class ForecastController(BaseController):
             help="The columns you want to delete from a dataset. Use format: <dataset.column> or"
             " multiple with <dataset.column>,<datasetb.column2>",
             dest="delete",
-            type=check_list_values(self.choices["delete"]),
+            type=check_list_values(self.choices.get("delete", [])),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--delete")
