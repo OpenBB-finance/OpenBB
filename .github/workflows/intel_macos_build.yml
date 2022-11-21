@@ -44,26 +44,23 @@ jobs:
           environment-file: build/conda/conda-3-9-env-full.yaml
           activate-environment: build_env
           use-only-tar-bz2: true # Needed for caching some reason
-      - name: Initialize Conda and Reset Terminal
-        run: |
-          conda init
-          exec zsh -l
-          source ~/.zshrc
       - name: Run Poetry
+        shell: bash -l {0}
         run: poetry install
       - name: Install Pyinstaller
+        shell: bash -l {0}
         run: poetry install -E installer
       - name: Install Portfolio Optimization and Forecasting Toolkits
+        shell: bash -l {0}
         run: poetry install -E all
       - name: Install Specific Papermill
+        shell: bash -l {0}
         run: |
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
-      # Double Checking Version Number
-      - name: Check OpenBB Version
-        run: pip list | grep openbb
       # This is basically the same as build4mac.sh
       - name: Build Bundle
+        shell: bash -l {0}
         run: |
           pyinstaller build/pyinstaller/terminal.spec --clean
           osascript build/pyinstaller/setup_icons.applescript
