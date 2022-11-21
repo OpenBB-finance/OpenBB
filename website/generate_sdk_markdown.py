@@ -305,7 +305,6 @@ def generate_markdown_section(meta):
 
     markdown += "---\n\n## Examples\n" if meta["examples"] else ""
     for example in meta["examples"]:
-        markdown += "## Examples\n\n"
         markdown += f"{example['description']}\n"
         if isinstance(example["snippet"], str):
             snippet = example["snippet"].replace(">>> ", "")
@@ -327,10 +326,7 @@ def add_todict(d: dict, location_path: list, tmap: Trailmap) -> dict:
         add_todict(d[location_path[0]], location_path[1:], tmap)
     else:
         d[location_path[0]][tmap.class_attr] = (
-            "https://docs.openbb.co/sdk/functions/"
-            + "/".join(tmap.location_path)
-            + "/"
-            + tmap.class_attr
+            "/sdk/functions/" + "/".join(tmap.location_path) + "/" + tmap.class_attr
         )  # noqa: E501
 
     return d
