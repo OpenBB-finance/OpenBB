@@ -962,6 +962,12 @@ def display_line(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.line(data=df["Adj Close"])
     """
     # This plot has 1 axis
     if external_axes is None:

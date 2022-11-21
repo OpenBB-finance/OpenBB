@@ -51,6 +51,7 @@ qa.acf,openbb_terminal.common.quantitative_analysis.qa_view.display_acf,
 qa.qqplot,openbb_terminal.common.quantitative_analysis.qa_view.display_qqplot,
 qa.cdf,openbb_terminal.common.quantitative_analysis.qa_view.display_cdf,
 qa.hist,openbb_terminal.common.quantitative_analysis.qa_view.display_hist,
+qa.line,openbb_terminal.common.quantitative_analysis.qa_view.display_line,
 qa.kurtosis,openbb_terminal.common.quantitative_analysis.rolling_model.get_kurtosis,openbb_terminal.common.quantitative_analysis.rolling_view.display_kurtosis
 qa.quantile,openbb_terminal.common.quantitative_analysis.rolling_model.get_quantile,openbb_terminal.common.quantitative_analysis.rolling_view.display_quantile
 qa.rolling,openbb_terminal.common.quantitative_analysis.rolling_model.get_rolling_avg,openbb_terminal.common.quantitative_analysis.rolling_view.display_mean_std
