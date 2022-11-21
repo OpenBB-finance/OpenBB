@@ -454,14 +454,23 @@ class BaseController(metaclass=ABCMeta):
                 self.queue.insert(0, "quit")
 
     @log_start_end(log=logger)
-    def call_resources(self, _) -> None:
+    def call_resources(self, other_args: List[str]) -> None:
         """Process resources command."""
-        if os.path.isfile(self.FILE_PATH):
-            with open(self.FILE_PATH) as f:
-                console.print(Markdown(f.read()))
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="resources",
+            description="Display available markdown resources.",
+        )
+        ns_parser = parse_simple_args(parser, other_args)
 
-        else:
-            console.print("No resources available.\n")
+        if ns_parser:
+            if os.path.isfile(self.FILE_PATH):
+                with open(self.FILE_PATH) as f:
+                    console.print(Markdown(f.read()))
+
+            else:
+                console.print("No resources available.\n")
 
     @log_start_end(log=logger)
     def call_support(self, other_args: List[str]) -> None:

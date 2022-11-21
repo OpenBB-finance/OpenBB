@@ -32,6 +32,7 @@ class ScreenerController(BaseController):
     preset_choices = syncretism_model.get_preset_choices()
 
     PATH = "/stocks/options/screen/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -41,13 +42,7 @@ class ScreenerController(BaseController):
         self.screen_tickers: List = list()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            presets: dict = {c: {} for c in self.preset_choices}
-            choices["view"] = presets
-            choices["set"] = presets
-            choices["scr"] = presets
-            choices["scr"]["--limit"] = None
-            choices["scr"]["-l"] = "--limit"
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
