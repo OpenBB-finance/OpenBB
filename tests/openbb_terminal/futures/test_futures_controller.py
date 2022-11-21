@@ -224,14 +224,14 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_historical",
             [
                 "--ticker",
-                "OJ,BLK",
+                "YI,BLK",
                 "--start",
                 "2022-10-01",
             ],
             "yfinance_view.display_historical",
             [],
             dict(
-                symbols=["OJ", "BLK"],
+                symbols=["YI", "BLK"],
                 expiry="",
                 start_date="2022-10-01",
                 raw=False,

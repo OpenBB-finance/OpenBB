@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 04:14 (✨) /etf/ $ overview
+2022 Feb 15, 04:14 (🦋) /etf/ $ overview
    ETF Overview Information
 ┌────────────────┬────────────┐
 │                │ VOO        │

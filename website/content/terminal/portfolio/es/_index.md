@@ -16,8 +16,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 25, 03:09 (✨) /portfolio/ $ es
+2022 Feb 25, 03:09 (🦋) /portfolio/ $ es
     Portfolio Expected Shortfall
 ┏━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃       ┃ ES:     ┃ Historical ES: ┃

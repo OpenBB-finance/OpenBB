@@ -51,7 +51,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -88,221 +88,18 @@ class OverviewController(BaseController):
     ]
 
     PATH = "/crypto/ov/"
-
-    ORDERED_LIST_SOURCES_EXCHANGES = get_ordered_list_sources(f"{PATH}exchanges")
-    CATEGORIES_CHOICES = [
-        "Name",
-        "Market_Cap",
-        "Market_Cap_Change_24H",
-        "Top_3_Coins",
-        "Volume_24H",
-    ]
-
-    STABLES_CHOICES = [
-        "Symbol",
-        "Name",
-        "Price_[$]",
-        "Market_Cap_[$]",
-        "Market_Cap_Rank",
-        "Change_7d_[%]",
-        "Change_24h_[%]",
-        "Volume_[$]",
-    ]
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
-        self.combined_filters = (
-            pycoingecko_model.EXCHANGES_FILTERS + coinpaprika_model.EXCHANGES_FILTERS
-        )
-
         if session and obbff.USE_PROMPT_TOOLKIT:
-            crypto_hack_slugs = rekt_model.get_crypto_hack_slugs()
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["global"] = {
-                "--pie": {},
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}global")
-                },
-            }
-            choices["cr"] = {
-                "--cryptocurrrencies": {c: {} for c in loanscan_model.CRYPTOS},
-                "-c": "--cryptocurrrencies",
-                "--platforms": {c: {} for c in loanscan_model.PLATFORMS},
-                "-p": "--platforms",
-                "--limit": {},
-                "-l": "--limit",
-                "--type": {c: {} for c in ["borrow", "supply"]},
-                "-t": "--type",
-            }
-            choices["ch"] = {
-                "--sortby": {c: {} for c in rekt_model.HACKS_COLUMNS},
-                "--slug": {c: {} for c in crypto_hack_slugs},
-                "-s": "--slug",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["hold"] = {
-                "--coin": {c: {} for c in pycoingecko_model.HOLD_COINS},
-                "-c": "--coin",
-                "--limit": None,
-                "-l": "--limit",
-                "--bar": {},
-            }
-            choices["categories"] = {
-                "--sortby": {c: {} for c in self.CATEGORIES_CHOICES},
-                "-s": "--sortby",
-                "--limit": None,
-                "-l": "--limit",
-                "--pie": {},
-            }
+            choices: dict = self.choices_default
 
-            choices["stables"] = {
-                "--sortby": {c: {} for c in self.STABLES_CHOICES},
-                "-s": "--sortby",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--pie": {},
-            }
-            choices["exchanges"] = {
-                "--sortby": {c: {} for c in self.combined_filters},
-                "-s": "--sortby",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--urls": {},
-                "-u": "--urls",
-                "--vs": {c: {} for c in CURRENCIES},
-                "--source": {c: {} for c in self.ORDERED_LIST_SOURCES_EXCHANGES},
-            }
-            choices["exrates"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.EXRATES_FILTERS},
-                "-s": "--sortby",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["indexes"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.INDEXES_FILTERS},
-                "-s": "--sortby",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["derivatives"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.DERIVATIVES_FILTERS},
-                "-s": "--sortby",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["markets"] = {
-                "--vs": {c: {} for c in CURRENCIES},
-                "--sortby": {c: {} for c in coinpaprika_model.MARKETS_FILTERS},
-                "-s": "--sortby",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["exmarkets"] = {
-                "--exchange": None,
-                "-e": "--exchange",
-                "--sortby": {c: {} for c in coinpaprika_model.EXMARKETS_FILTERS},
-                "-s": "--sortby",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--urls": {},
-                "-u": "--urls",
-            }
-            choices["contracts"] = {
-                "--platform": {
-                    c: {} for c in get_all_contract_platforms()["platform_id"].tolist()
-                },
-                "-p": "--platform",
-                "--sortby": {c: {} for c in coinpaprika_model.CONTRACTS_FILTERS},
-                "-s": "--sortby",
-                "--limit": {},
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["hm"] = {
-                "--category": {c: {} for c in get_categories_keys()},
-                "-c": "--category",
-                "--limit": {},
-                "-l": "--limit",
-            }
-            choices["info"] = {
-                "--vs": {c: {} for c in CURRENCIES},
-                "--sortby": {c: {} for c in coinpaprika_model.INFO_FILTERS},
-                "-s": "--sortby",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["pairs"] = {
-                "--sortby": {c: {} for c in coinbase_model.PAIRS_FILTERS},
-                "-s": "--sortby",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["news"] = {
-                "--kind": {c: {} for c in cryptopanic_model.CATEGORIES},
-                "-k": "--kind",
-                "--filter": {c: {} for c in cryptopanic_model.FILTERS},
-                "--region": {c: {} for c in cryptopanic_model.REGIONS},
-                "-r": "--region",
-                "--sortby": {c: {} for c in cryptopanic_model.SORT_FILTERS},
-                "-s": "--sortby",
-                "--reverse": {},
-                "--urls": {},
-                "-u": "--urls",
-            }
-            choices["wf"] = {
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["wfpe"] = {c: {} for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
-            choices["altindex"] = {
-                "--period": {str(c): {} for c in DAYS},
-                "-p": "--period",
-                "--since": None,
-                "-s": "--since",
-                "--until": None,
-                "-u": "--until",
-            }
-            choices["btcrb"] = {
-                "--since": None,
-                "-s": "--since",
-                "--until": None,
-                "-u": "--until",
-            }
-            choices["fun"] = {
-                "--metric": {c: {} for c in tokenterminal_model.METRICS},
-                "-m": "--metric",
-                "--category": {c: {} for c in tokenterminal_model.CATEGORIES},
-                "-c": "--category",
-                "--timeline": {c: {} for c in tokenterminal_model.TIMELINES},
-                "-t": "--timeline",
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices["wfpe"].update(
+                {c: {} for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
+            )
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -363,6 +160,8 @@ class OverviewController(BaseController):
             default="",
             dest="category",
             help="Category (e.g., stablecoins). Empty for no category",
+            choices=get_categories_keys(),
+            metavar="CATEGORY",
         )
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
@@ -475,6 +274,7 @@ class OverviewController(BaseController):
             help="Sort by given column. Default: Amount [$]",
             default="Amount [$]",
             nargs="+",
+            choices=rekt_model.HACKS_COLUMNS,
         )
         parser.add_argument(
             "-r",
@@ -495,6 +295,8 @@ class OverviewController(BaseController):
             type=str,
             help="Slug to check crypto hack (e.g., polynetwork-rekt)",
             default="",
+            choices=rekt_model.get_crypto_hack_slugs(),
+            metavar="SORTBY",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
@@ -806,7 +608,13 @@ class OverviewController(BaseController):
             type=str,
             help="Sort by given column. Default: market_cap_desc",
             default="Market_Cap",
-            choices=self.CATEGORIES_CHOICES,
+            choices=[
+                "Name",
+                "Market_Cap",
+                "Market_Cap_Change_24H",
+                "Top_3_Coins",
+                "Volume_24H",
+            ],
         )
 
         parser.add_argument(
@@ -857,6 +665,16 @@ class OverviewController(BaseController):
             type=str,
             help="Sort by given column. Default: market_cap",
             default="Market_Cap_[$]",
+            choices=[
+                "Symbol",
+                "Name",
+                "Price_[$]",
+                "Market_Cap_[$]",
+                "Market_Cap_Rank",
+                "Change_7d_[%]",
+                "Change_24h_[%]",
+                "Volume_[$]",
+            ],
         )
         parser.add_argument(
             "-r",
@@ -918,6 +736,8 @@ class OverviewController(BaseController):
             help=f"""Cryptocurrencies to search interest rates for separated by comma.
             Default: BTC,ETH,USDT,USDC. Options: {",".join(loanscan_model.CRYPTOS)}""",
             default="BTC,ETH,USDT,USDC",
+            choices=loanscan_model.CRYPTOS,
+            metavar="CRYPTOS",
         )
 
         parser.add_argument(
@@ -928,6 +748,8 @@ class OverviewController(BaseController):
             help=f"""Platforms to search interest rates in separated by comma.
             Default: BlockFi,Ledn,SwissBorg,Youhodler. Options: {",".join(loanscan_model.PLATFORMS)}""",
             default="BlockFi,Ledn,SwissBorg,Youhodler",
+            choices=loanscan_model.PLATFORMS,
+            metavar="PLATFORMS",
         )
 
         if other_args and "-" not in other_args[0][0]:

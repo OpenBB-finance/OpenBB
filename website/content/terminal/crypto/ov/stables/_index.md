@@ -18,8 +18,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:16 (✨) /crypto/ov/ $ stables
+2022 Feb 15, 08:16 (🦋) /crypto/ov/ $ stables
 
 First 15 stablecoins have a total 182.582 B dollars of market cap.
 

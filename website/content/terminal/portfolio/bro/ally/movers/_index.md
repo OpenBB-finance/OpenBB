@@ -2,7 +2,9 @@
 usage: ally_movers [-l {toplosers,toppctlosers,topvolume,topactive,topgainers,toppctgainers}]
                    [-e {A,N,Q,U,V}] [-n NUM] [--export {csv,json,xlsx}] [-h]
 ```
+
 Get stock movers
+
 ```
 optional arguments:
   -l {toplosers,toppctlosers,topvolume,topactive,topgainers,toppctgainers}, --list {toplosers,toppctlosers,topvolume,topactive,topgainers,toppctgainers}
@@ -15,9 +17,11 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+
 Sample Output:
+
 ```
-(✨) (bro)>(ally)> movers -n 5 -l toplosers
+(🦋) (bro)>(ally)> movers -n 5 -l toplosers
 ╒══════╤════════╤════════════╤═════════╤═══════════════════════╤════════╤═════════╤════════╤═════════╕
 │      │    chg │ chg_sign   │    last │ name                  │   pchg │    pcls │   rank │      vl │
 ╞══════╪════════╪════════════╪═════════╪═══════════════════════╪════════╪═════════╪════════╪═════════╡

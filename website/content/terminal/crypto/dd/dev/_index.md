@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 07:13 (✨) /crypto/dd/ $ dev
+2022 Feb 15, 07:13 (🦋) /crypto/dd/ $ dev
    Developers Data for Loaded Coin
 ┌───────────────────────────┬───────┐
 │ Metric                    │ Value │

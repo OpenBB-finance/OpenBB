@@ -80,9 +80,9 @@ def display_summary(data: pd.DataFrame, export: str = "") -> None:
 
 @log_start_end(log=logger)
 def display_hist(
-    symbol: str,
     data: pd.DataFrame,
     target: str,
+    symbol: str = "",
     bins: int = 15,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -90,16 +90,22 @@ def display_hist(
 
     Parameters
     ----------
-    symbol : str
-        Name of dataset
     data : pd.DataFrame
         Dataframe to look at
     target : str
         Data column to get histogram of the dataframe
+    symbol : str
+        Name of dataset
     bins : int
         Number of bins in histogram
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.hist(data=df, target="Adj Close")
     """
     data = data[target]
 
@@ -171,6 +177,12 @@ def display_cdf(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.cdf(data=df, target="Adj Close")
     """
     data = data[target]
     start = data.index[0]
@@ -276,6 +288,12 @@ def display_bw(
         Flag to indicate yearly accumulation
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.bw(data=df, target="Adj Close")
     """
     data = data[target]
     start = data.index[0]
@@ -372,6 +390,12 @@ def display_acf(
         Max number of lags to look at
     external_axes : Optional[List[plt.Axes]], optional
         External axes (4 axes are expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.acf(data=df, target="Adj Close")
     """
     data = data[target]
     start = data.index[0]
@@ -453,6 +477,12 @@ def display_qqplot(
         Stock ticker
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.qqplot(data=df, target="Adj Close")
     """
     # Statsmodels has a UserWarning for marker kwarg-- which we don't use
     warnings.filterwarnings(category=UserWarning, action="ignore")
@@ -511,6 +541,12 @@ def display_cusum(
         Drift parameter
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.cusum(data=df, target="Adj Close")
     """
     target_series = data[target].values
 
@@ -926,6 +962,12 @@ def display_line(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.line(data=df["Adj Close"])
     """
     # This plot has 1 axis
     if external_axes is None:

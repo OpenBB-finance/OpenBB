@@ -2,9 +2,9 @@
 usage: sidtc [-n NUM] [-s {float,dtc,si}] [--export {csv,json,xlsx}] [-h]
 ```
 
-Request a list of shorted stocks, sorted by the optional arguments described below. Source: https://www.stockgrid.io/shortinterest
+Request a list of shorted stocks, sorted by the optional arguments described below. Source: <https://www.stockgrid.io/shortinterest>
 
-Note: This data is delayed as per the short interest reporting schedule dictated by FINRA. https://www.nasdaqtrader.com/trader.aspx?id=shortintpubsch
+Note: This data is delayed as per the short interest reporting schedule dictated by FINRA. <https://www.nasdaqtrader.com/trader.aspx?id=shortintpubsch>
 
 ```
 optional arguments:
@@ -19,7 +19,7 @@ optional arguments:
 Example:
 
 ```
-2022 Feb 15, 11:07 (✨) /stocks/dps/ $ sidtc
+2022 Feb 15, 11:07 (🦋) /stocks/dps/ $ sidtc
                       Data for: 2022-01-31
 ┌────────┬───────────────┬───────────────┬─────────────────────┐
 │ Ticker │ Float Short % │ Days to Cover │ Short Interest [1M] │

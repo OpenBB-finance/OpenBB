@@ -16,8 +16,9 @@ optional arguments:
 ```
 
 Example
+
 ```
-2022 Feb 15, 08:13 (✨) /crypto/ov/ $ hold
+2022 Feb 15, 08:13 (🦋) /crypto/ov/ $ hold
 
 27 companies hold a total of 217.240 K bitcoin (1.15% of market cap dominance) with the current value of 9.618 B USD dollars
 

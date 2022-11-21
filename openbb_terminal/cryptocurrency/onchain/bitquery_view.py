@@ -285,7 +285,7 @@ def display_ethereum_unique_senders(
 @log_start_end(log=logger)
 @check_api_key(["API_BITQUERY_KEY"])
 def display_most_traded_pairs(
-    exchange="Uniswap",
+    exchange: str = "Uniswap",
     days: int = 10,
     limit: int = 10,
     sortby: str = "tradeAmount",
@@ -297,9 +297,9 @@ def display_most_traded_pairs(
 
     Parameters
     ----------
-    exchange:
+    exchange: str
         Decentralized exchange name
-    days:
+    days: int
         Number of days taken into calculation account.
     sortby: str
         Key by which to sort data
@@ -307,6 +307,7 @@ def display_most_traded_pairs(
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
+
     Returns
     -------
     pd.DataFrame
@@ -344,8 +345,8 @@ def display_most_traded_pairs(
 @log_start_end(log=logger)
 @check_api_key(["API_BITQUERY_KEY"])
 def display_spread_for_crypto_pair(
-    symbol="WETH",
-    to_symbol="USDT",
+    symbol: str = "WETH",
+    to_symbol: str = "USDT",
     limit: int = 10,
     sortby: str = "date",
     ascend: bool = True,

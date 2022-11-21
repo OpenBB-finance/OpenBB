@@ -1,7 +1,9 @@
 ```
 usage: cramer [-i] [-h] [--export {csv,json,xlsx}]
 ```
+
 Show daily Cramer recommendations
+
 ```
 optional arguments:
   -i, --inverse         Show inverse recommendation (default: False)
@@ -10,10 +12,11 @@ optional arguments:
                         Export raw data into csv, json, xlsx (default: )
 
 ```
-```
-2022 Mar 01, 21:41 (✨) /stocks/disc/ $ cramer --inverse
 
-                                          Cramer Recs for 03/01                                           
+```
+2022 Mar 01, 21:41 (🦋) /stocks/disc/ $ cramer --inverse
+
+                                          Cramer Recs for 03/01
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
 ┃ Company                    ┃ Symbol ┃ Price  ┃ LastPrice ┃ Change (%) ┃ Recommendation ┃ InverseCramer ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩

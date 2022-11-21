@@ -303,7 +303,7 @@ def get_top_tokens(sortby: str = "rank", ascend: bool = False) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_top_token_holders(
-    address, sortby: str = "balance", ascend: bool = True
+    address: str, sortby: str = "balance", ascend: bool = True
 ) -> pd.DataFrame:
     """Get info about top token holders. [Source: Ethplorer]
 
@@ -334,7 +334,7 @@ def get_top_token_holders(
 
 @log_start_end(log=logger)
 def get_address_history(
-    address, sortby: str = "timestamp", ascend: bool = True
+    address: str, sortby: str = "timestamp", ascend: bool = True
 ) -> pd.DataFrame:
     """Get information about balance historical transactions. [Source: Ethplorer]
 
@@ -441,7 +441,7 @@ def get_token_info(address) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_tx_info(tx_hash) -> pd.DataFrame:
+def get_tx_info(tx_hash: str) -> pd.DataFrame:
     """Get info about transaction. [Source: Ethplorer]
 
     Parameters
@@ -487,7 +487,7 @@ def get_tx_info(tx_hash) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_token_history(
-    address, sortby: str = "timestamp", ascend: bool = False
+    address: str, sortby: str = "timestamp", ascend: bool = False
 ) -> pd.DataFrame:
     """Get info about token historical transactions. [Source: Ethplorer]
 
@@ -543,7 +543,7 @@ def get_token_history(
 
 @log_start_end(log=logger)
 def get_token_historical_price(
-    address,
+    address: str,
     sortby: str = "date",
     ascend: bool = False,
 ) -> pd.DataFrame:

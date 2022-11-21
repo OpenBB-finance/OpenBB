@@ -48,84 +48,14 @@ class DiscoveryController(BaseController):
     ]
 
     PATH = "/crypto/disc/"
-
-    ORDERED_LIST_SOURCES_TOP = get_ordered_list_sources(f"{PATH}top")
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["gainers"] = {
-                "--interval": {c: {} for c in pycoingecko_model.API_PERIODS},
-                "-i": "--interval",
-                "--sort": {c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["losers"] = {
-                "--interval": {c: {} for c in pycoingecko_model.API_PERIODS},
-                "-i": "--interval",
-                "--sort": {c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["top"] = {
-                "--sort": {c: {} for c in pycoingecko_view.COINS_COLUMNS}
-                if self.ORDERED_LIST_SOURCES_TOP
-                and self.ORDERED_LIST_SOURCES_TOP[0] == "CoinGecko"
-                else {c: {} for c in coinmarketcap_model.FILTERS},
-                "-s": "--sort",
-                "--category": {c: {} for c in pycoingecko_model.get_categories_keys()},
-                "-c": "--category",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--source": {c: {} for c in self.ORDERED_LIST_SOURCES_TOP},
-            }
-            choices["search"] = {
-                "--query": None,
-                "-q": "--query",
-                "--sort": {c: {} for c in coinpaprika_model.FILTERS},
-                "-s": "--sort",
-                "--cat": {c: {} for c in coinpaprika_model.CATEGORIES},
-                "-c": "--cat",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["nft"] = {
-                "--sort": {c: {} for c in dappradar_model.NFT_COLUMNS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["games"] = {
-                "--sort": {c: {} for c in dappradar_model.DEX_COLUMNS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["dex"] = {
-                "--sort": {c: {} for c in dappradar_model.DEX_COLUMNS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["dapps"] = {
-                "--sort": {c: {} for c in dappradar_model.DAPPS_COLUMNS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -146,6 +76,18 @@ class DiscoveryController(BaseController):
     @log_start_end(log=logger)
     def call_top(self, other_args):
         """Process top command"""
+        ordered_list_sources_top = get_ordered_list_sources(f"{self.PATH}top")
+
+        if ordered_list_sources_top and ordered_list_sources_top[0] == "CoinGecko":
+            argument_sort_default = "Market Cap Rank"
+        else:
+            argument_sort_default = "CMC_Rank"
+
+        if ordered_list_sources_top and ordered_list_sources_top[0] == "CoinGecko":
+            argument_sort_choices = pycoingecko_view.COINS_COLUMNS
+        else:
+            argument_sort_choices = coinmarketcap_model.FILTERS
+
         parser = argparse.ArgumentParser(
             prog="top",
             add_help=False,
@@ -165,6 +107,8 @@ class DiscoveryController(BaseController):
             default="",
             dest="category",
             help="Category (e.g., stablecoins). Empty for no category. Only works for 'CoinGecko' source.",
+            choices=pycoingecko_model.get_categories_keys(),
+            metavar="CATEGORY",
         )
 
         parser.add_argument(
@@ -181,10 +125,9 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default="Market Cap Rank"
-            if self.ORDERED_LIST_SOURCES_TOP
-            and self.ORDERED_LIST_SOURCES_TOP[0] == "CoinGecko"
-            else "CMC_Rank",
+            default=argument_sort_default,
+            choices=argument_sort_choices,
+            metavar="SORTBY",
         )
         parser.add_argument(
             "-r",
@@ -250,6 +193,8 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
+            choices=dappradar_model.DAPPS_COLUMNS,
+            metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -290,6 +235,8 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
+            choices=dappradar_model.DEX_COLUMNS,
+            metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -330,6 +277,8 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
+            choices=dappradar_model.DEX_COLUMNS,
+            metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -370,6 +319,8 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Market Cap",
             default="Market Cap",
+            choices=dappradar_model.NFT_COLUMNS,
+            metavar="SORTBY",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -423,6 +374,8 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
             default=["market_cap"],
+            choices=pycoingecko_model.GAINERS_LOSERS_COLUMNS,
+            metavar="SORTBY",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -477,6 +430,8 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
             default=["Market Cap"],
+            choices=pycoingecko_model.GAINERS_LOSERS_COLUMNS,
+            metavar="SORTBY",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -538,7 +493,7 @@ class DiscoveryController(BaseController):
         )
         parser.add_argument(
             "-c",
-            "--cat",
+            "--category",
             help="Categories to search: currencies|exchanges|icos|people|tags|all. Default: all",
             dest="category",
             default="all",

@@ -2,7 +2,7 @@
 usage: games [-l LIMIT] [-s SORTBY [SORTBY ...]] [-h] [--export EXPORT]
 ```
 
-Shows top blockchain games [Source: https://dappradar.com/]
+Shows top blockchain games [Source: <https://dappradar.com/>]
 
 Accepts --sort {Name,Daily Users,Daily Volume [$]} to sort by column
 
@@ -17,8 +17,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 06:53 (✨) /crypto/disc/ $ games
+2022 Feb 15, 06:53 (🦋) /crypto/disc/ $ games
                Top Blockchain Games
 ┌───────────────┬─────────────┬──────────────────┐
 │ Name          │ Daily Users │ Daily Volume [$] │

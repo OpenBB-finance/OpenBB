@@ -15,11 +15,12 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:39 (✨) /stocks/ca/ $ historical
+2022 Feb 15, 08:39 (🦋) /stocks/ca/ $ historical
 
 
-2022 Feb 15, 08:39 (✨) /stocks/ca/ $ income
+2022 Feb 15, 08:39 (🦋) /stocks/ca/ $ income
 Other available yearly timeframes are: 2017, 2018, 2019, 2020, 2021
 
                                      Income Data
