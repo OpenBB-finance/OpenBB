@@ -133,7 +133,7 @@ def set_keys(
 
     Returns
     -------
-    dict
+    Dict
         Status of each key set.
 
     Examples
