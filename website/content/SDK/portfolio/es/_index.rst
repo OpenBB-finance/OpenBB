@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.es(
-    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_engine.PortfolioEngine,
     use_mean: bool = False,
     distribution: str = 'normal',
     percentile: float = 99.9,
@@ -47,6 +47,6 @@ portfolio.es(
 
     {{< highlight python >}}
     >>> from openbb_terminal.sdk import openbb
-    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
-    >>> openbb.portfolio.es(P)
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> output = openbb.portfolio.es(p)
     {{< /highlight >}}

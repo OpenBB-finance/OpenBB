@@ -11,11 +11,10 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers, pyth_model, pyth_view
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
-    FIND_KEYS,
     display_all_coins,
-    find,
     plot_chart,
 )
+from openbb_terminal.cryptocurrency.crypto_views import find
 from openbb_terminal.cryptocurrency.due_diligence import (
     binance_view,
     coinpaprika_view,
@@ -37,6 +36,8 @@ from openbb_terminal.rich_config import console, MenuText
 
 
 logger = logging.getLogger(__name__)
+
+FIND_KEYS = ["id", "symbol", "name"]
 
 CRYPTO_SOURCES = {
     "Binance": "Binance",
@@ -124,9 +125,10 @@ class CryptoController(CryptoBaseController):
                         "CoinPaprika",
                         "Binance",
                         "Coinbase",
-                        "YahooFinance",
                     ]
                 },
+                "--coin": None,
+                "-c": "--coin",
             }
             choices["price"] = {
                 "--symbol": {c: {} for c in pyth_model.ASSETS.keys()},

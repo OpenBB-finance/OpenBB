@@ -94,7 +94,6 @@ class ScreenerController(BaseController):
             else:
                 for preset in self.preset_choices:
                     console.print(preset)
-                console.print("")
 
     @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
@@ -119,7 +118,6 @@ class ScreenerController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
-        console.print("")
 
     @log_start_end(log=logger)
     def call_scr(self, other_args: List[str]):
