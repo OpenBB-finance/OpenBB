@@ -8,11 +8,9 @@ from typing import (
     Callable,
     Dict,
     ForwardRef,
-    Iterable,
     List,
     Literal,
     Optional,
-    Union,
 )
 
 from docstring_parser import parse
@@ -22,8 +20,6 @@ from openbb_terminal.rich_config import console
 
 MAP_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map.csv"
 MAP_FORECASTING_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map_forecasting.csv"
-
-UnionType = type(Union[int, str])
 
 
 def clean_attr_desc(attr: Optional[FunctionType] = None) -> Optional[str]:
@@ -39,83 +35,12 @@ def clean_attr_desc(attr: Optional[FunctionType] = None) -> Optional[str]:
     )
 
 
-def normalise_optional_params(parameters: Iterable[Any]) -> tuple[Any, ...]:
-    none_cls = type(None)
-    return tuple(p for p in parameters if p is not none_cls) + (none_cls,)
-
-
-def evaluate_annotation(
-    tp: Any,
-    _globals: dict[str, Any],
-    _locals: dict[str, Any],
-    cache: dict[str, Any],
-    *,
-    implicit_str: bool = True,
-):
-    if isinstance(tp, ForwardRef):
-        tp = tp.__forward_arg__
-        # ForwardRefs always evaluate their internals
-        implicit_str = True
-
-    if implicit_str and isinstance(tp, str):
-        if tp in cache:
-            return cache[tp]
-        evaluated = eval(tp, _globals, _locals)  # pylint: disable=W0123
-        cache[tp] = evaluated
-        return evaluate_annotation(evaluated, _globals, _locals, cache)
-
-    if hasattr(tp, "__args__"):
-        implicit_str = True
-        is_literal = False
-        args = tp.__args__
-        if not hasattr(tp, "__origin__"):
-            if tp.__class__ is UnionType:
-                converted = Union[args]  # type: ignore
-                return evaluate_annotation(converted, _globals, _locals, cache)
-
-            return tp
-        if tp.__origin__ is Union:
-            try:
-                if args.index(type(None)) != len(args) - 1:
-                    args = normalise_optional_params(tp.__args__)
-            except ValueError:
-                pass
-        if tp.__origin__ is Literal:
-            implicit_str = False
-            is_literal = True
-
-        evaluated_args = tuple(
-            evaluate_annotation(
-                arg, _globals, _locals, cache, implicit_str=implicit_str
-            )
-            for arg in args
-        )
-
-        if is_literal and not all(
-            isinstance(x, (str, int, bool, type(None))) for x in evaluated_args
-        ):
-            raise TypeError(
-                "Literal arguments must be of type str, int, bool, or NoneType."
-            )
-
-        if evaluated_args == args:
-            return tp
-
-        try:
-            return tp.copy_with(evaluated_args)
-        except AttributeError:
-            return tp.__origin__[evaluated_args]
-
-    return tp
-
-
 def get_signature_parameters(
     function: Callable[..., Any], globalns: dict[str, Any]
 ) -> dict[str, inspect.Parameter]:
     signature = inspect.signature(function)
     params = {}
     cache: dict[str, Any] = {}
-    eval_annotation = evaluate_annotation
     for name, parameter in signature.parameters.items():
         annotation = parameter.annotation
         if annotation is parameter.empty:
@@ -125,7 +50,11 @@ def get_signature_parameters(
             params[name] = parameter.replace(annotation=type(None))
             continue
 
-        annotation = eval_annotation(annotation, globalns, globalns, cache)
+        if isinstance(annotation, ForwardRef):
+            annotation = annotation.__forward_arg__
+
+        if isinstance(annotation, str):
+            annotation = eval(annotation, globalns, cache)  # pylint: disable=W0123
 
         params[name] = parameter.replace(annotation=annotation)
 
