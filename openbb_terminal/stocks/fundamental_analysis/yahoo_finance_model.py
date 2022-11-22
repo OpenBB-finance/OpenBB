@@ -265,6 +265,11 @@ def get_dividends(symbol: str) -> pd.DataFrame:
     -------
     pd.DataFrame
         Dataframe of dividends and dates
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.fa.divs("AAPL")
     """
     df = pd.DataFrame(yf.Ticker(symbol).dividends)
 

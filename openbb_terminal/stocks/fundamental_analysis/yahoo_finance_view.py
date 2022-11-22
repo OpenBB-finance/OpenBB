@@ -203,6 +203,11 @@ def display_dividends(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.fa.divs_chart("AAPL")
     """
     div_history = yahoo_finance_model.get_dividends(symbol)
     if div_history.empty:
