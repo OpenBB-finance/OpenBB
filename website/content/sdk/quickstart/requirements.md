@@ -118,3 +118,5 @@ openbb.economy.ycrv_chart()
 ```
 
 ![Screenshot 2022-11-21 at 4 29 17 PM](https://user-images.githubusercontent.com/85772166/203185342-f019414d-24e2-4d8a-a718-10eeedb59e8c.png)
+
+d
