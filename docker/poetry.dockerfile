@@ -53,6 +53,7 @@ RUN touch openbb_terminal/__init__.py
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN poetry install
+RUN poetry install -E optimization
 
 ###############################################
 # Production Image openbb poetry build
