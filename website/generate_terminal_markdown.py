@@ -1,6 +1,7 @@
 from datetime import datetime
 import os
 import json
+from pathlib import Path
 import traceback
 from typing import Dict, List, Optional, Union
 
@@ -10,6 +11,8 @@ from website.controller_doc_classes import (
     ControllerDoc,
     sub_names_full,
 )
+
+website_path = Path(__file__).parent.absolute()
 
 
 def existing_markdown_file_examples(
@@ -197,26 +200,23 @@ def main():
                         sub = sub_names_full[sub].lower()
                     trail.append(sub)
 
-                filepath = (
-                    f"content/terminal/reference/{'/'.join(trail)}/{cat['cmd_name']}.md"
-                )
+                filepath = f"{str(website_path)}/content/terminal/reference/{'/'.join(trail)}/{cat['cmd_name']}.md"
 
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
-                with open(filepath, "w", encoding="utf-8") as f:
+                with open(website_path / filepath, "w", encoding="utf-8") as f:
                     f.write(markdown)
 
         except Exception as e:
             traceback.print_exc()
             console.print(f"[red]Failed to generate markdown for {ctrlstr}: {e}[/red]")
 
-    obj = {"label": "Terminal Reference", "position": 4}
-    os.makedirs(os.path.dirname("website/content/terminal/reference/"), exist_ok=True)
+    os.makedirs(website_path / "content/terminal/reference/", exist_ok=True)
     with open(
-        "website/content/terminal/reference/_category_.json",
+        website_path / "content/terminal/reference/_category_.json",
         "w",
         encoding="utf-8",
     ) as f:
-        f.write(json.dumps(obj, indent=2))
+        f.write(json.dumps({"label": "Terminal Reference", "position": 4}, indent=2))
 
     console.print(
         "[green]Markdown files generated, check the website/content/terminal/reference/ folder[/green]"
