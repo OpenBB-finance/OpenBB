@@ -2,7 +2,7 @@
 usage: upcoming [-l LIMIT] [-p N_PAGES] [-h] [--export {csv,json,xlsx}]
 ```
 
-Upcoming earnings release dates [Source: https://seekingalpha.com/earnings/earnings-calendar]
+Upcoming earnings release dates [Source: <https://seekingalpha.com/earnings/earnings-calendar>]
 
 ```
 optional arguments:
@@ -16,8 +16,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 04:17 (✨) /stocks/disc/ $ upcoming
+2022 Feb 16, 04:17 (🦋) /stocks/disc/ $ upcoming
 
             Upcoming Earnings Releases
 ┏━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓

@@ -15,8 +15,9 @@ optional arguments:
 ```
 
 Example (from ticker MSFT):
+
 ```
-2022 Feb 16, 05:11 (✨) /stocks/fa/ $ divs
+2022 Feb 16, 05:11 (🦋) /stocks/fa/ $ divs
        Ticker Historical Dividends
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
 ┃            ┃ Amount Paid ($) ┃ Change ┃

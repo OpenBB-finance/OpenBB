@@ -2,7 +2,7 @@
 usage: technical [--export {csv,json,xlsx}] [-h]
 ```
 
-Compares technical stock price data for the added companies. Source: https://finviz.com
+Compares technical stock price data for the added companies. Source: <https://finviz.com>
 
 ```
 optional arguments:
@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:44 (✨) /stocks/ca/ $ technical
+2022 Feb 15, 08:44 (🦋) /stocks/ca/ $ technical
                                                            Stock Screener
 ┌────────┬──────┬───────┬───────┬───────┬────────┬──────────┬─────────┬───────┬─────────┬────────┬───────────┬───────┬─────────────┐
 │ Ticker │ Beta │ ATR   │ SMA20 │ SMA50 │ SMA200 │ 52W High │ 52W Low │ RSI   │ Price   │ Change │ from Open │ Gap   │ Volume      │

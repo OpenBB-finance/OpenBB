@@ -2,7 +2,7 @@
 usage: arkord [-l LIMIT] [-s {date,volume,open,high,close,low,total,weight,shares} [{date,volume,open,high,close,low,total,weight,shares} ...]] [-a] [-b] [-c] [--fund {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}] [-h] [--export {csv,json,xlsx}]
 ```
 
-Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]
+Orders by ARK Investment Management LLC - <https://ark-funds.com/>. [Source: <https://cathiesark.com>]
 
 ```
 optional arguments:
@@ -23,8 +23,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 03:49 (✨) /stocks/disc/ $ arkord
+2022 Feb 16, 03:49 (🦋) /stocks/disc/ $ arkord
 
                                       Orders by ARK Investment Management LLC
 ┏━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━┓
@@ -51,7 +52,7 @@ Example:
 │ 2022-02-15 │ MKFG   │ Buy       │ 1057800 │ 4.55  │ 4.67  │ 4.73  │ 4.54  │ 22131.13   │ ARKX │ 0.0057 │ 4739   │
 └────────────┴────────┴───────────┴─────────┴───────┴───────┴───────┴───────┴────────────┴──────┴────────┴────────┘
 
-2022 Feb 16, 03:50 (✨) /stocks/disc/ $ arkord -b --fund ARKK
+2022 Feb 16, 03:50 (🦋) /stocks/disc/ $ arkord -b --fund ARKK
 
                                          Orders by ARK Investment Management LLC
 ┏━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━┓

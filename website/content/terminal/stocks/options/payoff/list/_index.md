@@ -10,8 +10,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 09:31 (✨) /stocks/options/payoff/ $ list
+2022 Feb 16, 09:31 (🦋) /stocks/options/payoff/ $ list
 #       call    put
 0       600.0   200.0
 1       700.0   250.0

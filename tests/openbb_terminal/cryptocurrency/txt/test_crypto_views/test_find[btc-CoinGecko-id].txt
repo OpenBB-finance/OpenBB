@@ -1,0 +1,11 @@
+   index      id  symbol           name
+0      0    tbtc    tbtc           tBTC
+1      1    sbtc    sbtc           sBTC
+2      2   gobtc   gobtc          goBTC
+3      3  wanbtc  wanbtc         wanBTC
+4      4  renbtc  renbtc         renBTC
+5      5  onebtc  onebtc  Legacy oneBTC
+6      6     itc     itc            ITC
+7      7  iowbtc  iowbtc         ioWBTC
+8      8     btf     btf  Bitcoin Faith
+9      9  bitmic    bmic         Bitmic

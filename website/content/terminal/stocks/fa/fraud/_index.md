@@ -5,15 +5,16 @@ usage: fraud [-h] [-d] [-e] [--export {csv,json,xlsx}]
 ```
 optional arguments:
   -e, --explanation     whether to show the description for the metrics (default: false)
-  -d, --detail		show details on the calculation of mscore
+  -d, --detail  show details on the calculation of mscore
   -h, --help            show this help message
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx
 ```
 
 Example (ticker is MSFT):
+
 ```
-2022 Feb 16, 05:42 (✨) /stocks/fa/ $ fraud
+2022 Feb 16, 05:42 (🦋) /stocks/fa/ $ fraud
 AMscore Sub Stats:
    DSRI : 1.03
    GMI : 0.98
@@ -30,8 +31,9 @@ ZSCORE:  -1.89 (high chance of bankruptcy)
 McKee:  0.86 (high chance of bankruptcy)
 ```
 
-Mscore:
+Mscore
 ------------------------------------------------
+
 The Beneish model is a statistical model that uses financial ratios calculated with accounting data of a specific company in order to check if it is likely (high probability) that the reported earnings of the company have been manipulated. A score of -5 to -2.22 indicated a low chance of fraud, a score of -2.22 to -1.78 indicates a moderate change of fraud, and a score above -1.78 indicated a high chance of fraud.[Source: Wikipedia]
 
 DSRI:
@@ -58,11 +60,13 @@ Leverage Index represents change in leverage. A LVGI greater than one indicates 
 TATA:
 Total Accruals to Total Assets is a proxy for the extent that cash underlies earnigns. A higher number is associated with a higher likelihood of manipulation.
 
-Zscore:
+Zscore
 ------------------------------------------------
+
 The Zmijewski Score is a bankruptcy model used to predict a firm's bankruptcy in two years. The ratio uses in the Zmijewski score were determined by probit analysis (think of probit as probability unit). In this case, scores less than .5 represent a higher probability of default. One of the criticisms that Zmijewski made was that other bankruptcy scoring models oversampled distressed firms and favored situations with more complete data.[Source: YCharts]
 
-McKee Score:
+McKee Score
 ------------------------------------------------
+
 The McKee Score is a bankruptcy model used to predict a firm's bankruptcy in one year. It looks at a companie's size, profitability, and liquidity to determine the probability. This model is 80% accurate in predicting bankruptcy.
 [Source: McKee and Lensberg](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.619.594&rep=rep1&type=pdf)

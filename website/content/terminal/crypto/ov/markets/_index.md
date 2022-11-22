@@ -26,8 +26,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:19 (✨) /crypto/ov/ $ markets
+2022 Feb 15, 08:19 (🦋) /crypto/ov/ $ markets
 
 Displaying data vs USD
                                                           Basic Market Information

@@ -426,6 +426,10 @@ def test_call_func(
         target=f"{path_controller}.get_all_contract_platforms",
         return_value=GET_ALL_CONTRACT_PLATFORMS_DF,
     )
+    mocker.patch(
+        target=f"{path_controller}.rekt_model.get_crypto_hack_slugs",
+        return_value=["MOCK_SLUG"],
+    )
 
     if mocked_func:
         mock = mocker.Mock()

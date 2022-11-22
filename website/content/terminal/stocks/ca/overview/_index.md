@@ -2,7 +2,7 @@
 usage: overview [--export {csv,json,xlsx}] [-h]
 ```
 
-Displays the broad overview for each company added. Source: https://finviz.com
+Displays the broad overview for each company added. Source: <https://finviz.com>
 
 ```
 optional arguments:
@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:41 (✨) /stocks/ca/ $ overview
+2022 Feb 15, 08:41 (🦋) /stocks/ca/ $ overview
                                                                           Stock Screener
 ┌────────┬───────────────────────┬────────────────────────┬────────────────────────────────┬─────────┬──────────────────┬────────┬─────────┬────────┬─────────────┐
 │ Ticker │ Company               │ Sector                 │ Industry                       │ Country │ Market Cap       │ P/E    │ Price   │ Change │ Volume      │

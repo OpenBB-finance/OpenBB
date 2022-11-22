@@ -2,7 +2,7 @@
 usage: blcs [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Print big latest CEO/CFO sales ($100k+) Source: http://openinsider.com
+Print big latest CEO/CFO sales ($100k+) Source: <http://openinsider.com>
 
 ```
 optional arguments:
@@ -14,8 +14,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 07:47 (✨) /stocks/ins/ $ blcs
+2022 Feb 16, 07:47 (🦋) /stocks/ins/ $ blcs
                                                                                 Insider Data
 ┏━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┓
 ┃ X  ┃ Filing Date ┃ Trade Date ┃ Ticker ┃ Company Name         ┃ Insider Name         ┃ Title      ┃ Trade Type  ┃ Price   ┃ Qty     ┃ Owned      ┃ Diff Own ┃ Value       ┃
