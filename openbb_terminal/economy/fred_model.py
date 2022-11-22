@@ -278,8 +278,8 @@ def get_yield_curve(
     # Necessary for installer so that it can locate the correct certificates for
     # API calls and https
     # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
-    os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
-    os.environ["SSL_CERT_FILE"] = certifi.where()
+    # os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+    # os.environ["SSL_CERT_FILE"] = certifi.where()
 
     fredapi_client = Fred(cfg.API_FRED_KEY)
     fred_series = {
