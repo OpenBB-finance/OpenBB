@@ -4,7 +4,7 @@ import inspect
 from datetime import datetime, timedelta
 from importlib.util import module_from_spec, spec_from_file_location
 from inspect import FullArgSpec, getmembers, isclass
-from pathlib import Path, WindowsPath
+from pathlib import Path
 from types import FunctionType, ModuleType
 from typing import Any, Dict, List, Optional
 from unittest.mock import patch
@@ -337,8 +337,9 @@ class LoadControllersDoc:
     def _get_modules(self) -> Dict[str, ModuleType]:
         """Gets all controllers modules"""
         modules = {}
+        terminal_path = Path(openbb_terminal.__file__).parent
 
-        for file in Path(openbb_terminal.__file__).parent.glob("**/*controller.py"):
+        for file in terminal_path.glob("**/*controller.py"):
             spec = spec_from_file_location(file.stem, file)
             if spec is not None and spec.loader is not None:
                 module = module_from_spec(spec)
@@ -346,11 +347,8 @@ class LoadControllersDoc:
 
                 ctrl_path = (
                     str(file)
-                    .replace(str(Path(openbb_terminal.__file__).parent), "")
-                    .split("\\")[1:]
-                    if isinstance(file, WindowsPath)
-                    else str(file)
-                    .replace(str(Path(openbb_terminal.__file__).parent), "")
+                    .replace(str(terminal_path), "")
+                    .replace("\\", "/")
                     .split("/")[1:]
                 )
                 for sub_name, abbr in sub_folders_abbr.items():
