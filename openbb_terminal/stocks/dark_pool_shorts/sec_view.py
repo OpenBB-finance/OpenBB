@@ -28,8 +28,8 @@ logger = logging.getLogger(__name__)
 def fails_to_deliver(
     symbol: str,
     data: pd.DataFrame = None,
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     limit: int = 0,
     raw: bool = False,
     export: str = "",
@@ -43,9 +43,9 @@ def fails_to_deliver(
         Stock ticker
     data: pd.DataFrame
         Stock data
-    start_date: str
+    start_date: Optional[str]
         Start of data, in YYYY-MM-DD format
-    end_date: str
+    end_date: Optional[str]
         End of data, in YYYY-MM-DD format
     limit : int
         Number of latest fails-to-deliver being printed

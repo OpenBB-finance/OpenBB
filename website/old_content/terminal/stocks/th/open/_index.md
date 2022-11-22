@@ -1,0 +1,3 @@
+usage: `open`
+
+Open markets
