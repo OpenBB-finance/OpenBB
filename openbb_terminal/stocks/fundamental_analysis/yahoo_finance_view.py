@@ -334,7 +334,7 @@ def display_splits(
 @log_start_end(log=logger)
 def display_mktcap(
     symbol: str,
-    start_date: str = None,
+    start_date: Optional[str] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -344,7 +344,7 @@ def display_mktcap(
     ----------
     symbol: str
         Stock ticker symbol
-    start_date: str
+    start_date: Optional[str]
         Initial date (e.g., 2021-10-01). Defaults to 3 years back
     export: str
         Format to export data
