@@ -1,3 +1,4 @@
+from collections import deque
 import json
 from importlib import import_module
 from logging import getLogger, Logger
@@ -9,7 +10,6 @@ import openbb_terminal.config_terminal as cfg
 
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
-from openbb_terminal.core.log.generation.duplicates_filter import DuplicatesFilter
 
 # pylint: disable=import-outside-toplevel
 
@@ -72,7 +72,6 @@ class Operation:
         trail: str,
         trail_map: Optional[TrailMap] = None,
         metadata: Optional[Metadata] = None,
-        trail_stack: Optional[List[str]] = None,
     ) -> None:
         trail_map = trail_map or TrailMap()
 
@@ -88,7 +87,6 @@ class Operation:
         self._method = method
         self.__doc__ = metadata.docstring
         self.__signature__ = signature(method)
-        self.__trail_stack = trail_stack or []
 
     def __call__(self, *args: Any, **kwargs: Any) -> Any:
         method = self._method
@@ -98,7 +96,6 @@ class Operation:
             method_chosen=method,
             args=args,
             kwargs=kwargs,
-            trail_stack=self.__trail_stack,
         )
 
         operation_logger.log_before_call()
@@ -119,6 +116,9 @@ class Operation:
 
 
 class OperationLogger:
+
+    method_stack = deque(maxlen=2)
+
     def __init__(
         self,
         trail: str,
@@ -126,16 +126,22 @@ class OperationLogger:
         args: Any,
         kwargs: Any,
         logger: Optional[Logger] = None,
-        trail_stack: Optional[List[str]] = None,
     ) -> None:
         self.__trail = trail
         self.__method_chosen = method_chosen
         self.__logger = logger or getLogger(self.__method_chosen.__module__)
         self.__args = args
         self.__kwargs = kwargs
-        self.__trail_stack = trail_stack or []
 
-        # self.__logger.addFilter(DuplicatesFilter())
+        self.__append_method_stack(
+            method=f"{self.__method_chosen.__module__}.{self.__method_chosen.__name__}",
+            args=self.__args,
+            kwargs=self.__kwargs,
+        )
+
+    @classmethod
+    def __append_method_stack(cls, method: str, args: Any = None, kwargs: Any = None):
+        cls.method_stack.append({method: {"args": args, "kwargs": kwargs}})
 
     def log_before_call(
         self,
@@ -158,17 +164,16 @@ class OperationLogger:
             extra={"func_name_override": method_chosen.__name__},
         )
 
-    @classmethod
     def __log_method_info(
-        cls,
+        self,
         logger: Logger,
         trail: str,
         method_chosen: Callable,
         args: Any,
         kwargs: Any,
     ):
-        merged_args = cls.__merge_function_args(method_chosen, args, kwargs)
-        merged_args = cls.__remove_key_and_log_state(
+        merged_args = self.__merge_function_args(method_chosen, args, kwargs)
+        merged_args = self.__remove_key_and_log_state(
             method_chosen.__module__, merged_args
         )
 
@@ -282,11 +287,12 @@ class OperationLogger:
             extra={"func_name_override": method_chosen.__name__},
         )
 
-    def __check_logging_conditions(self):
-        return not cfg.LOGGING_SUPPRESS and not self.__check_trail_stack()
+    @classmethod
+    def __check_logging_conditions(cls) -> bool:
+        return not cfg.LOGGING_SUPPRESS and not cls.__check_method_stack()
 
-    def __check_trail_stack(self) -> bool:
-        if len(self.__trail_stack) > 1:
-            trail_len = len(self.__trail.split("."))
-            return self.__trail_stack[-trail_len] == self.__trail
-        return False
+    @classmethod
+    def __check_method_stack(cls) -> bool:
+        if len(cls.method_stack) < 2:
+            return False
+        return cls.method_stack[0] == cls.method_stack[1]
