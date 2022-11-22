@@ -14,5 +14,5 @@ optional arguments:
 Example:
 
 ```text
-2022 Feb 15, 08:33 (✨) /stocks/ca/ $ ticker AAPL
+2022 Feb 15, 08:33 (🦋) /stocks/ca/ $ ticker AAPL
 ```

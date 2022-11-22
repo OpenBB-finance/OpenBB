@@ -17,8 +17,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 07:33 (✨) /stocks/gov/ $ qtrcontracts -l 20
+2022 Feb 16, 07:33 (🦋) /stocks/gov/ $ qtrcontracts -l 20
    Quarterly Contracts
 ┏━━━━━━┳━━━━━━━━━━━━━━━━━┓
 ┃      ┃ Total           ┃

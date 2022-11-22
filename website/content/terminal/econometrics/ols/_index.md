@@ -18,9 +18,9 @@ optional arguments:
 Example (based on [Longley's Dataset](https://www.statsmodels.org/dev/datasets/generated/longley.html)):
 
 ```
-(✨) /econometrics/ $ load longley -a ll
+(🦋) /econometrics/ $ load longley -a ll
 
-(✨) /econometrics/ $ desc ll
+(🦋) /econometrics/ $ desc ll
                                          ll
 ┏━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
 ┃       ┃ totemp   ┃ gnpdefl ┃ gnp       ┃ unemp   ┃ armed   ┃ pop       ┃ year    ┃
@@ -42,7 +42,7 @@ Example (based on [Longley's Dataset](https://www.statsmodels.org/dev/datasets/g
 │ max   │ 70551.00 │ 116.90  │ 554894.00 │ 4806.00 │ 3594.00 │ 130081.00 │ 1962.00 │
 └───────┴──────────┴─────────┴───────────┴─────────┴─────────┴───────────┴─────────┘
 
-(✨) /econometrics/ $ ols -d ll.totemp -i ll.gnpdefl,ll.gnp,ll.unemp,ll.armed,ll.pop,ll.year
+(🦋) /econometrics/ $ ols -d ll.totemp -i ll.gnpdefl,ll.gnp,ll.unemp,ll.armed,ll.pop,ll.year
 
                                  OLS Regression Results
 =======================================================================================

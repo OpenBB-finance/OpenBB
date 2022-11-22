@@ -15,8 +15,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 08:50 (✨) /stocks/options/ $ exp
+2022 Feb 16, 08:50 (🦋) /stocks/options/ $ exp
 
 Available expiry dates:
     0.  2022-02-18
@@ -41,6 +42,6 @@ Available expiry dates:
    19.  2023-09-15
    20.  2024-01-19
 
-2022 Feb 16, 08:50 (✨) /stocks/options/ $ exp 7
+2022 Feb 16, 08:50 (🦋) /stocks/options/ $ exp 7
 Expiration set to 2022-04-14
 ```

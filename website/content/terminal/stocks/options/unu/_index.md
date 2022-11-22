@@ -2,7 +2,7 @@
 usage: unu [-l LIMIT] [-s {Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} [{Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} ...]] [-a] [-p] [-c] [-h] [--export {csv,json,xlsx}]
 ```
 
-See unusual options activity and sort by the available columns. Source: https://fdsscanner.com
+See unusual options activity and sort by the available columns. Source: <https://fdsscanner.com>
 
 Note that sorting by multiple columns can be done by using multiple arguments, i.e `-s Ticker Strike`
 
@@ -23,8 +23,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 09:51 (✨) /stocks/options/ $ unu
+2022 Feb 16, 09:51 (🦋) /stocks/options/ $ unu
                       Last Updated: 2022-02-15 16:37:03 (EST)
 ┏━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
 ┃ Ticker ┃ Exp        ┃ Strike ┃ Type ┃ Vol/OI ┃ Vol      ┃ OI     ┃ Bid   ┃ Ask   ┃

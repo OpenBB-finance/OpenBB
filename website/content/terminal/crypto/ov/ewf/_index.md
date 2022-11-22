@@ -4,7 +4,7 @@ usage: ewf  [-l N]
 ```
 
 Display exchange withdrawal fees
-[Source: https://withdrawalfees.com/]
+[Source: <https://withdrawalfees.com/>]
 
 ```
 optional arguments:
@@ -13,8 +13,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:20 (✨) /crypto/ov/ $ ewf
+2022 Feb 15, 08:20 (🦋) /crypto/ov/ $ ewf
 
 Withdrawal fees per exchange:
                                          Withdrawal Fees

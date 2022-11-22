@@ -4,7 +4,7 @@ usage: wfpe [-c COIN]
 ```
 
 Display coin withdrawal fees per exchange
-[Source: https://withdrawalfees.com/]
+[Source: <https://withdrawalfees.com/>]
 
 ```
 optional arguments:
@@ -14,8 +14,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:21 (✨) /crypto/ov/ $ wfpe
+2022 Feb 15, 08:21 (🦋) /crypto/ov/ $ wfpe
 
 
 Withdrawal fees for bitcoin:
