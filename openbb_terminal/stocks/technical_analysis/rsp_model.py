@@ -30,6 +30,7 @@ def get_rsp(
         Dataframe of stock percentile, Dataframe of industry percentile,
         Raw stock dataframe for export, Raw industry dataframe for export
     """
+
     df_stock_p = pd.read_csv(
         "https://raw.githubusercontent.com/soggyomelette/rs-log/main/output/rs_stocks.csv"
     )
