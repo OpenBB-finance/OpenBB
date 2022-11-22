@@ -1,7 +1,8 @@
 ```
 usage: tokens [--skip SKIP] [--limit LIMIT] [-s {index,symbol,name,tradeVolumeUSD,totalLiquidity,txCount}] [--reverse] [-h] [--export {csv,json,xlsx}]
 ```
-Display tokens trade-able on Uniswap DEX [Source: https://thegraph.com/en/]
+
+Display tokens trade-able on Uniswap DEX [Source: <https://thegraph.com/en/>]
 
 ```
 optional arguments:
@@ -17,8 +18,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 06:36 (✨) /crypto/defi/ $ tokens
+2022 Feb 15, 06:36 (🦋) /crypto/defi/ $ tokens
                                  UniSwarp DEX Trade-able Tokens
 ┌───────┬──────────────┬────────────────────────────┬────────────────┬────────────────┬─────────┐
 │ index │ symbol       │ name                       │ tradeVolumeUSD │ totalLiquidity │ txCount │

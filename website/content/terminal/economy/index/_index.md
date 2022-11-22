@@ -32,19 +32,22 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Mar 15, 07:29 (✨) /economy/ $ index nasdaq,dowjones
+2022 Mar 15, 07:29 (🦋) /economy/ $ index nasdaq,dowjones
 ```
+
 ![index nasdaq dowjones](https://user-images.githubusercontent.com/46355364/158573612-f2e4b04c-b833-4899-9817-62e40b9fe1d2.png)
 
 ```
-2022 Mar 15, 07:29 (✨) /economy/ $ index vix
+2022 Mar 15, 07:29 (🦋) /economy/ $ index vix
 ```
+
 ![index vix](https://user-images.githubusercontent.com/46355364/158573676-9871c58e-3ffd-44d5-888a-c1d76ec98251.png)
 
 ```
-2022 Mar 15, 07:30 (✨) /economy/ $ index --show
-                     Major Indices                     
+2022 Mar 15, 07:30 (🦋) /economy/ $ index --show
+                     Major Indices
 ┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┓
 ┃ Argument ┃ Name                         ┃ Ticker    ┃
 ┡━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━┩

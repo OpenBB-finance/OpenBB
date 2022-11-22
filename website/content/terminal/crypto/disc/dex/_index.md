@@ -2,7 +2,7 @@
 usage: dex [-l LIMIT] [-s SORTBY [SORTBY ...]] [-h] [--export EXPORT]
 ```
 
-Shows top decentralized exchanges [Source: https://dappradar.com/]
+Shows top decentralized exchanges [Source: <https://dappradar.com/>]
 
 Accepts --sort {Name,Daily Users,Daily Volume [$]} to sort by column
 
@@ -17,8 +17,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 06:52 (✨) /crypto/disc/ $ dex
+2022 Feb 15, 06:52 (🦋) /crypto/disc/ $ dex
            Top Decentralized Exchanges
 ┌───────────────┬─────────────┬──────────────────┐
 │ Name          │ Daily Users │ Daily Volume [$] │

@@ -1,7 +1,9 @@
 ```
 usage: account [--all] [-c CURRENCY] [--export {csv,json,xlsx}] [-h]
 ```
+
 Display info about your trading accounts on Coinbase
+
 ```
 optional arguments:
   --all                 Flag to display all your account (default: False)
@@ -13,8 +15,9 @@ optional arguments:
 ```
 
 Sample Usage:
+
 ```
-(✨) (bro)>(cb)> account
+(🦋) (bro)>(cb)> account
 ╒════════════╤═════════════╤═════════════╤════════════╤═════════════════════╕
 │ currency   │     balance │   available │       hold │   BalanceValue(USD) │
 ╞════════════╪═════════════╪═════════════╪════════════╪═════════════════════╡
@@ -23,5 +26,5 @@ Sample Usage:
 │ ATOM       │  0.00085600 │  0.00085600 │ 0.00000000 │                0.03 │
 ├────────────┼─────────────┼─────────────┼────────────┼─────────────────────┤
 │ BTC        │  0.00043358 │  0.00043358 │ 0.00000000 │               18.16 │
-╘════════════╧═════════════╧═════════════╧════════════╧═════════════════════╛ 
+╘════════════╧═════════════╧═════════════╧════════════╧═════════════════════╛
 ```

@@ -2,7 +2,7 @@
 usage: cashflow [-q] [-t S_TIMEFRAME] [-h] [--export EXPORT]
 ```
 
-Prints either yearly or quarterly cashflow statement the company, and compares it against similar companies. 
+Prints either yearly or quarterly cashflow statement the company, and compares it against similar companies.
 
 ```
 optional arguments:
@@ -15,8 +15,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:35 (✨) /stocks/ca/ $ cashflow
+2022 Feb 15, 08:35 (🦋) /stocks/ca/ $ cashflow
 Other available yearly timeframes are: 2017, 2018, 2019, 2020, 2021
 
                            Cashflow Comparison

@@ -2,7 +2,7 @@
 usage: gtech [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Print up to 25 top tech stocks with revenue and earnings growth in excess of 25%. [Source: https://finance.yahoo.com/screener/predefined/growth_technology_stocks/]
+Print up to 25 top tech stocks with revenue and earnings growth in excess of 25%. [Source: <https://finance.yahoo.com/screener/predefined/growth_technology_stocks/>]
 
 ```
 optional arguments:
@@ -14,8 +14,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 04:03 (✨) /stocks/disc/ $ gtech -l 25
+2022 Feb 16, 04:03 (🦋) /stocks/disc/ $ gtech -l 25
                                                                 Growth Tech Stocks
 ┏━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃ Symbol ┃ Name                                ┃ Price (Intraday) ┃ Change ┃ % Change ┃ Volume  ┃ Avg Vol (3 month) ┃ Market Cap ┃ PE Ratio (TTM) ┃

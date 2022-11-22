@@ -2,7 +2,7 @@
 usage: gainers [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Top Stock Gainers from Yfinance. Source: https://finance.yahoo.com/gainers/?offset=0&count=100
+Top Stock Gainers from Yfinance. Source: <https://finance.yahoo.com/gainers/?offset=0&count=100>
 
 ```
 optional arguments:
@@ -15,8 +15,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 04:02 (✨) /stocks/disc/ $ gainers -l 25
+2022 Feb 16, 04:02 (🦋) /stocks/disc/ $ gainers -l 25
                                                                               Gainers
 ┏━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃ Symbol ┃ Name                                                 ┃ Price (Intraday) ┃ Change ┃ % Change ┃ Volume  ┃ Avg Vol (3 month) ┃ Market Cap ┃ PE Ratio (TTM) ┃

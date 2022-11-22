@@ -2,10 +2,10 @@
 usage: load [-f FILE [FILE ...]] [-ex] [-h]
 ```
 
-Load custom data set into a DataFrame. If a column exists titled "date", "time", "timestamp", "quarter" is 
+Load custom data set into a DataFrame. If a column exists titled "date", "time", "timestamp", "quarter" is
 automatically converted to a date format and is set as index of the DataFrame.
 
-The load function also has the ability to load in custom datasets from Statsmodels. These datasets tend to be quite 
+The load function also has the ability to load in custom datasets from Statsmodels. These datasets tend to be quite
 illustrative for different regression techniques and statistical tests. See the example below for the available options.
 
 ```
@@ -18,10 +18,11 @@ optional arguments:
 ```
 
 Example:
-```
-2022 Feb 28, 04:19 (✨) /econometrics/ $ load MSFT_20220221_140503.xlsx -a msft
 
-2022 Feb 28, 04:20 (✨) /econometrics/ $ show msft
+```
+2022 Feb 28, 04:19 (🦋) /econometrics/ $ load MSFT_20220221_140503.xlsx -a msft
+
+2022 Feb 28, 04:20 (🦋) /econometrics/ $ show msft
                                          msft
 ┏━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃   ┃ date                ┃ open   ┃ high   ┃ low    ┃ close  ┃ adj_close ┃ volume   ┃
@@ -47,8 +48,9 @@ Example:
 │ 9 │ 2019-03-04 00:00:00 │ 113.02 │ 113.25 │ 110.80 │ 112.26 │ 108.79    │ 26608000 │
 └───┴─────────────────────┴────────┴────────┴────────┴────────┴───────────┴──────────┘
 ```
+
 ```
-2022 Feb 28, 04:16 (✨) /econometrics/ $ load -e
+2022 Feb 28, 04:16 (🦋) /econometrics/ $ load -e
                             Examples from Statsmodels
 ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ file name          ┃ description                                               ┃
@@ -112,9 +114,9 @@ Example:
 │ wage_panel         │ Veila and M. Verbeek (1998): Whose Wages Do Unions Raise? │
 └────────────────────┴───────────────────────────────────────────────────────────┘
 
-2022 Feb 28, 04:17 (✨) /econometrics/ $ load grunfeld -a gf
+2022 Feb 28, 04:17 (🦋) /econometrics/ $ load grunfeld -a gf
 
-2022 Feb 28, 04:20 (✨) /econometrics/ $ desc -a gf
+2022 Feb 28, 04:20 (🦋) /econometrics/ $ desc -a gf
                        gf
 ┏━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┓
 ┃       ┃ invest  ┃ value   ┃ capital ┃ year    ┃

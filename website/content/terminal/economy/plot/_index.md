@@ -18,24 +18,28 @@ optional arguments:
 ```
 
 Comparing Unemployment Rates and Consumer Confidence of France and Italy
+
 ```
-2022 Mar 15, 07:43 (✨) /economy/ $ macro -p URATE CONF -c france,italy -s 2005-01-01 -st
-2022 Mar 15, 07:45 (✨) /economy/ $ options
-                   Options available to plot                    
+2022 Mar 15, 07:43 (🦋) /economy/ $ macro -p URATE CONF -c france,italy -s 2005-01-01 -st
+2022 Mar 15, 07:45 (🦋) /economy/ $ options
+                   Options available to plot
 ┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Command ┃ Options                                            ┃
 ┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
 │ macro   │ France_URATE, France_CONF, Italy_URATE, Italy_CONF │
 └─────────┴────────────────────────────────────────────────────┘
 
-2022 Mar 15, 07:43 (✨) /economy/ $ plot -y1 France_URATE,Italy_URATE -y2 France_CONF,Italy_CONF
+2022 Mar 15, 07:43 (🦋) /economy/ $ plot -y1 France_URATE,Italy_URATE -y2 France_CONF,Italy_CONF
 ```
+
 ![Figure_1](https://user-images.githubusercontent.com/46355364/158633367-783d54eb-79ab-443f-af99-8a9ecadf5949.png)
 
 Comparing U.S. treasury rate movements to the S&P 500
+
 ```
-2022 Mar 15, 07:39 (✨) /economy/ $ treasury -m 1y 10y -s 2005-01-01 -st
-2022 Mar 15, 07:40 (✨) /economy/ $ index sp500 -s 2005-01-01 -st
-2022 Mar 15, 07:40 (✨) /economy/ $ plot -y1 sp500 -y2 Nominal_1-year,Nominal_10-year
+2022 Mar 15, 07:39 (🦋) /economy/ $ treasury -m 1y 10y -s 2005-01-01 -st
+2022 Mar 15, 07:40 (🦋) /economy/ $ index sp500 -s 2005-01-01 -st
+2022 Mar 15, 07:40 (🦋) /economy/ $ plot -y1 sp500 -y2 Nominal_1-year,Nominal_10-year
 ```
+
 ![Figure_2](https://user-images.githubusercontent.com/46355364/158633394-d948d909-d39b-4b05-9c5b-2e30b202cc32.png)

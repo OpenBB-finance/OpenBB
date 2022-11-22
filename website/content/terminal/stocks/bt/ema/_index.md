@@ -15,8 +15,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 09:59 (✨) /stocks/bt/ $ ema
+2022 Feb 16, 09:59 (🦋) /stocks/bt/ $ ema
 
 Stat                 AboveEMA    MSFT Hold
 -------------------  ----------  -----------

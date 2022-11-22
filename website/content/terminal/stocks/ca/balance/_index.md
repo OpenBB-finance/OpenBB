@@ -15,8 +15,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:35 (✨) /stocks/ca/ $ balance
+2022 Feb 15, 08:35 (🦋) /stocks/ca/ $ balance
 
 Other available yearly timeframes are: 2017, 2018, 2019, 2020, 2021
 

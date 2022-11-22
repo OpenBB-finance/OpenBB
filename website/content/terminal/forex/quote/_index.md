@@ -10,7 +10,7 @@ optional arguments:
 ```
 
 ```
-2022 Feb 15, 04:06 (✨) /forex/ $ quote
+2022 Feb 15, 04:06 (🦋) /forex/ $ quote
 
 Quote for AUD/CHF
 

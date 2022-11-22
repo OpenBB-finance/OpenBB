@@ -18,7 +18,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 10:01 (✨) /stocks/bt/ $ emacross --spy
+2022 Feb 16, 10:01 (🦋) /stocks/bt/ $ emacross --spy
 ```
+
 ![emacross](https://user-images.githubusercontent.com/46355364/154292377-dbeae301-5d8c-4793-8f04-eb5d367ca288.png)
