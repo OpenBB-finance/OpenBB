@@ -279,9 +279,7 @@ en:
   stocks/ca/ticker: set ticker to get similar companies from
   stocks/ca/_ticker: Ticker to get similar companies from
   stocks/ca/tsne: run TSNE on all SP500 stocks and returns closest tickers
-  stocks/ca/getpoly: get similar stocks
-  stocks/ca/getfinnhub: get similar stocks
-  stocks/ca/getfinviz: get similar stocks
+  stocks/ca/get: get similar stocks
   stocks/ca/set: reset and set similar companies
   stocks/ca/add: add more similar companies
   stocks/ca/rmv: remove similar companies individually or all
