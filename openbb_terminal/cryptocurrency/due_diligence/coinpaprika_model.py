@@ -72,7 +72,7 @@ def get_coin_twitter_timeline(
 
 @log_start_end(log=logger)
 def get_coin_events_by_id(
-    symbol: str = "BTC", sortby="date", ascend: bool = False
+    symbol: str = "BTC", sortby: str = "date", ascend: bool = False
 ) -> pd.DataFrame:
     """Get all events related to given coin like conferences, start date of futures trading etc.
     [Source: CoinPaprika]
