@@ -146,7 +146,7 @@ class ReportController(BaseController):
     @log_start_end(log=logger)
     def call_forecast(self, other_args: List[str]):
         if is_packaged_application():
-            console.print("This features is disabled in installed version")
+            console.print("This report is disabled for the installed version")
             return
 
         try:
