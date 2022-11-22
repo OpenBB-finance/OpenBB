@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import os
 import logging
 import textwrap
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 from datetime import datetime, timedelta
 from requests import HTTPError
 
@@ -169,7 +169,7 @@ def get_series_ids(search_query: str, limit: int = -1) -> pd.DataFrame:
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def get_series_data(
-    series_id: str, start_date: str = None, end_date: str = None
+    series_id: str, start_date: Optional[str] = None, end_date: Optional[str] = None
 ) -> pd.DataFrame:
     """Get Series data. [Source: FRED]
 
@@ -177,9 +177,9 @@ def get_series_data(
     ----------
     series_id : str
         Series ID to get data from
-    start_date : str
+    start_date : Optional[str]
         Start date to get data from, format yyyy-mm-dd
-    end_date : str
+    end_date : Optional[str]
         End data to get from, format yyyy-mm-dd
 
     Returns
@@ -207,7 +207,9 @@ def get_series_data(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def get_aggregated_series_data(
-    series_ids: List[str], start_date: str = None, end_date: str = None
+    series_ids: List[str],
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> Tuple[pd.DataFrame, dict]:
     """Get Series data. [Source: FRED]
 

@@ -42,7 +42,7 @@ d_candle_types = {
 @log_start_end(log=logger)
 def display_historical(
     similar: List[str],
-    start_date: str = None,
+    start_date: Optional[str] = None,
     candle_type: str = "a",
     normalize: bool = True,
     export: str = "",
@@ -56,7 +56,7 @@ def display_historical(
         List of similar tickers.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
-    start_date: str, optional
+    start_date: Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type: str, optional
         OHLCA column to use or R to use daily returns calculated from Adjusted Close, by default "a" for Adjusted Close
@@ -106,7 +106,7 @@ def display_historical(
 @log_start_end(log=logger)
 def display_volume(
     similar: List[str],
-    start_date: str = None,
+    start_date: Optional[str] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -118,7 +118,7 @@ def display_volume(
         List of similar tickers.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
-    start_date : str, optional
+    start_date : Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
     export : str, optional
         Format to export historical prices, by default ""
@@ -158,7 +158,7 @@ def display_volume(
 @log_start_end(log=logger)
 def display_correlation(
     similar: List[str],
-    start_date: str = None,
+    start_date: Optional[str] = None,
     candle_type: str = "a",
     display_full_matrix: bool = False,
     raw: bool = False,
@@ -175,7 +175,7 @@ def display_correlation(
         List of similar tickers.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
-    start_date : str, optional
+    start_date : Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close

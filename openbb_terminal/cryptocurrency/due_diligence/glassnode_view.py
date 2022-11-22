@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 def display_active_addresses(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -47,7 +47,7 @@ def display_active_addresses(
         Asset to search active addresses (e.g., BTC)
     start_date : str
         Initial date, format YYYY-MM-DD
-    end_date : str
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
     interval : str
         Interval frequency (possible values are: 24h, 1w, 1month)
@@ -97,7 +97,7 @@ def display_active_addresses(
 def display_non_zero_addresses(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -110,7 +110,7 @@ def display_non_zero_addresses(
         Asset to search (e.g., BTC)
     start_date : str
         Initial date, format YYYY-MM-DD
-    end_date : str
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -159,7 +159,7 @@ def display_exchange_net_position_change(
     symbol: str,
     exchange: str = "binance",
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -176,7 +176,7 @@ def display_exchange_net_position_change(
         hitbtc, kraken, okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
     start_date : str
         Initial date, format YYYY-MM-DD
-    end_date : str
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -240,7 +240,7 @@ def display_exchange_balances(
     symbol: str,
     exchange: str = "binance",
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
     percentage: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -319,7 +319,7 @@ def display_exchange_balances(
 def display_hashrate(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -333,7 +333,7 @@ def display_hashrate(
         Blockchain to check mean hashrate (BTC or ETH)
     start_date : str
         Initial date, format YYYY-MM-DD
-    end_date : str
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
     interval : str
         Interval frequency (possible values are: 24, 1w, 1month)

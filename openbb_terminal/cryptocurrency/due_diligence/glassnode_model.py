@@ -1,6 +1,7 @@
 from datetime import datetime
 import logging
 import json
+from typing import Optional
 
 import pandas as pd
 import requests
@@ -181,7 +182,7 @@ INTERVALS_ACTIVE_ADDRESSES = ["24h", "1w", "1month"]
 def get_close_price(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
     print_errors: bool = True,
 ) -> pd.DataFrame:
     """Returns the price of a cryptocurrency
@@ -249,7 +250,7 @@ def get_close_price(
 def get_non_zero_addresses(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Returns addresses with non-zero balance of a certain symbol
     [Source: https://glassnode.com]
@@ -312,7 +313,7 @@ def get_active_addresses(
     symbol: str,
     interval: str = "24h",
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Returns active addresses of a certain symbol
     [Source: https://glassnode.com]
@@ -376,7 +377,7 @@ def get_hashrate(
     symbol: str,
     interval: str = "24h",
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Returns dataframe with mean hashrate of btc or eth blockchain and symbol price
     [Source: https://glassnode.com]
@@ -454,7 +455,7 @@ def get_exchange_balances(
     symbol: str,
     exchange: str = "binance",
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Returns the total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.com]
@@ -465,9 +466,9 @@ def get_exchange_balances(
         Asset to search active addresses (e.g., BTC)
     exchange : str
         Exchange to check net position change (e.g., binance)
-    start_date : str
+    start_date : Optional[str]
         Initial date, format YYYY-MM-DD
-    end_date : str
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
 
     Returns
@@ -540,7 +541,7 @@ def get_exchange_net_position_change(
     symbol: str,
     exchange: str = "binance",
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Returns 30d change of the supply held in exchange wallets of a certain symbol.
     [Source: https://glassnode.com]
@@ -551,9 +552,9 @@ def get_exchange_net_position_change(
         Asset symbol to search supply (e.g., BTC)
     exchange : str
         Exchange to check net position change (e.g., binance)
-    start_date : str
+    start_date : Optional[str]
         Initial date, format YYYY-MM-DD
-    end_date : str
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
 
     Returns

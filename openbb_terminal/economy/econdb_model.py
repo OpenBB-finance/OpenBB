@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=no-member
 
 import logging
-from typing import Dict, Any, Tuple, Union
+from typing import Dict, Any, Optional, Tuple, Union
 from urllib.error import HTTPError
 from datetime import datetime
 
@@ -483,8 +483,8 @@ def get_macro_data(
     parameter: str,
     country: str,
     transform: str = "",
-    start_date=None,
-    end_date=None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     symbol: str = "",
 ) -> Tuple[pd.Series, Union[str, Any]]:
     """Query the EconDB database to find specific macro data about a company [Source: EconDB]
@@ -503,9 +503,9 @@ def get_macro_data(
             'TUSD' - level USD,
             'TPGP' - Percentage of GDP,
             'TNOR' - Start = 100
-    start_date : str
+    start_date : Optional[str]
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
-    end_date : str
+    end_date : Optional[str]
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     symbol : str
         In what currency you wish to convert all values.
@@ -658,7 +658,7 @@ def get_aggregated_macro_data(
     countries: list = None,
     transform: str = "",
     start_date: str = "1900-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
     symbol: str = "",
 ) -> Tuple[pd.DataFrame, Dict[Any, Dict[Any, Any]], str]:
     """This functions groups the data queried from the EconDB database [Source: EconDB]
@@ -673,7 +673,7 @@ def get_aggregated_macro_data(
         The selected transform. Available transforms can be accessed through get_macro_transform().
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
-    end_date : str
+    end_date : Optional[str]
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     symbol : str
         In what currency you wish to convert all values.
@@ -739,7 +739,7 @@ def get_treasuries(
     maturities: list = None,
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Get U.S. Treasury rates [Source: EconDB]
 
@@ -754,7 +754,7 @@ def get_treasuries(
         Frequency of the data, this can be annually, monthly, weekly or daily.
     start_date : str
         Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
-    end_date : str
+    end_date : Optional[str]
         End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
 
     Returns
