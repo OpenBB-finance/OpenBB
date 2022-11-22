@@ -21,7 +21,9 @@ def existing_markdown_file_examples(
         if sub in ["ba", "ta", "qa"]:
             trail.remove(ctrl.trailmap.split(".")[0])
 
-    examples_path = f"content/terminal/{'/'.join(trail)}/{cat['cmd_name']}/_index.md"
+    examples_path = (
+        f"old_content/terminal/{'/'.join(trail)}/{cat['cmd_name']}/_index.md"
+    )
     examples_dict: Dict[str, Optional[Union[str, List[str]]]] = {}
 
     if os.path.exists(examples_path):
@@ -195,8 +197,9 @@ def main():
                         sub = sub_names_full[sub].lower()
                     trail.append(sub)
 
-                filepath = f"website/content/terminal/reference/{'/'.join(trail)}/{cat['cmd_name']}.md"
-                print(filepath)
+                filepath = (
+                    f"content/terminal/reference/{'/'.join(trail)}/{cat['cmd_name']}.md"
+                )
 
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
                 with open(filepath, "w", encoding="utf-8") as f:
@@ -207,6 +210,7 @@ def main():
             console.print(f"[red]Failed to generate markdown for {ctrlstr}: {e}[/red]")
 
     obj = {"label": "Terminal Reference", "position": 4}
+    os.makedirs(os.path.dirname("website/content/terminal/reference/"), exist_ok=True)
     with open(
         "website/content/terminal/reference/_category_.json",
         "w",
