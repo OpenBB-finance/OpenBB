@@ -5,11 +5,9 @@ import logging
 from datetime import datetime, timedelta
 from typing import List, Tuple
 import warnings
-import os
 
 import numpy as np
 import pandas as pd
-import certifi
 import yfinance as yf
 from sklearn.manifold import TSNE
 from sklearn.preprocessing import normalize
@@ -205,12 +203,6 @@ def get_sp500_comps_tsne(
     pd.DataFrame
         Dataframe of tickers closest to selected ticker
     """
-
-    # Necessary for installer so that it can locate the correct certificates for
-    # API calls and https
-    # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
-    # os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
-    # os.environ["SSL_CERT_FILE"] = certifi.where()
 
     # Adding the type makes pylint stop yelling
     close_vals: pd.DataFrame = get_1y_sp500()
