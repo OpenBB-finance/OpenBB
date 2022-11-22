@@ -220,35 +220,23 @@ def check_for_updates() -> None:
         r = None
 
     if r is not None and r.status_code == 200:
-        release: str = r.json()["tag_name"]
-
-        if release.startswith("v"):
-            release = release[1:]
-
-        if release.endswith("rc"):
-            release = release[:-2]
-
-        if release.startswith("v") or release.split(".") != 3:
-            console.print("[green]You using an unreocognized version.[/green]")
-
-        major_last, minor_last, patch_last = release.split(".")
-        major_current, minor_current, patch_current = obbff.VERSION.split(".")
-
-        # "You are not using the latest stable version"
-        # for i in range(3):
-        #     if int(lastest_split[i]) > int(current[i]):
-        #         console.print(
-        #             "[bold red]You are not using the latest version[/bold red]"
-        #         )
-        #         console.print(
-        #             "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
-        #         )
-        #         break
-        #     if int(lastest_split[i]) < int(current[i]):
-        #         console.print("[yellow]You are using an unreleased version[/yellow]")
-        #     if release == obbff.VERSION.replace("m", ""):
-        #         console.print("[green]You are using the latest version[/green]")
-        #         break
+        release: str = r.json()["html_url"].split("/")[-1].replace("v", "")
+        lastest_split = release.split(".")
+        current = obbff.VERSION.replace("m", "").split(".")
+        for i in range(3):
+            if int(lastest_split[i]) > int(current[i]):
+                console.print(
+                    "[bold red]You are not using the latest version[/bold red]"
+                )
+                console.print(
+                    "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
+                )
+                break
+            if int(lastest_split[i]) < int(current[i]):
+                console.print("[yellow]You are using an unreleased version[/yellow]")
+            if release == obbff.VERSION.replace("m", ""):
+                console.print("[green]You are using the latest version[/green]")
+                break
     else:
         console.print(
             "[yellow]Unable to check for updates... "
