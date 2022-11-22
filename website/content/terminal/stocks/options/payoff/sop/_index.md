@@ -10,8 +10,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 09:30 (✨) /stocks/options/payoff/ $ sop
+2022 Feb 16, 09:30 (🦋) /stocks/options/payoff/ $ sop
 #       Type    Hold    Strike  Cost
 0       call    Long    780.0   141.96
 1       call    Long    850.0   102.0

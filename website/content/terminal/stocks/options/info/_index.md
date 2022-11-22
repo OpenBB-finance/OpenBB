@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 09:09 (✨) /stocks/options/ $ info
+2022 Feb 16, 09:09 (🦋) /stocks/options/ $ info
                 Options Information
 ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                       ┃                         ┃

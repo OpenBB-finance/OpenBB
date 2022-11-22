@@ -9,6 +9,7 @@ investments, Net debt, Net receivables, Other assets, Other current assets, Othe
 liabilities, Othertotal stockholders equity, Period, Property plant equipment net, Retained earnings, Short term debt, Short term investments, Tax assets, Tax payables,
 Total assets, Total current assets, Total current liabilities, Total debt, Total investments, Total liabilities, Total liabilities and stockholders equity, Total non
 current assets, Total non current liabilities, and Total stockholders equity. [Source: Alpha Vantage]
+
 ```
 optional arguments:
   -q, --quarter         Quarter fundamental data flag. (default: False)
@@ -23,8 +24,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 04:44 (✨) /stocks/fa/ $ balance -l 4
+2022 Feb 16, 04:44 (🦋) /stocks/fa/ $ balance -l 4
                                        MU Balance Sheet
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃                                        ┃ 2018-08-30 ┃ 2019-08-29 ┃ 2020-09-03 ┃ 2021-09-02 ┃
@@ -104,7 +106,7 @@ Example:
 │ commonStockSharesOutstanding           │ 1.161 B    │ 1.106 B    │ 1.113 B    │ 1.119 B    │
 └────────────────────────────────────────┴────────────┴────────────┴────────────┴────────────┘
 
-2022 Feb 16, 04:44 (✨) /stocks/fa/ $ balance -l 4 -q
+2022 Feb 16, 04:44 (🦋) /stocks/fa/ $ balance -l 4 -q
                                        MU Balance Sheet
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃                                        ┃ 2021-03-04 ┃ 2021-06-03 ┃ 2021-09-02 ┃ 2021-12-02 ┃

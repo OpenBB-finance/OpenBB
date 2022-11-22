@@ -4,7 +4,6 @@ usage: filter [-l LIMIT] [-u] [-h] [--export {csv,json,xlsx}]
 
 Print open insider filtered data using loaded preset. [Source: OpenInsider]
 
-
 ```
 optional arguments:
   -l LIMIT, --limit LIMIT
@@ -16,8 +15,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 07:51 (✨) /stocks/ins/ $ filter
+2022 Feb 16, 07:51 (🦋) /stocks/ins/ $ filter
                                                                                   Insider filtered
 ┏━━━┳━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ X ┃ Trading Date ┃ Ticker ┃ Insider               ┃ Title                        ┃ Price   ┃ Quantity    ┃ Owned       ┃ Delta Own ┃ Value           ┃ Company                    ┃

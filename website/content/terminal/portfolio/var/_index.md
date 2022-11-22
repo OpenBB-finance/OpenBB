@@ -3,6 +3,7 @@ usage: var [-m] [-a] [-s] [-p PERCENTILE] [-h]
 ```
 
 Provides value at risk (short: VaR) of the selected portfolio.
+
 ```
 optional arguments:
   -m, --mean            If one should use the mean of the portfolio return (default: False)
@@ -14,9 +15,11 @@ optional arguments:
                         (default: 99.9)
   -h, --help            show this help message (default: False)
 ```
+
 Example:
+
 ```
-2022 Feb 25, 03:09 (✨) /portfolio/ $ var
+2022 Feb 25, 03:09 (🦋) /portfolio/ $ var
        Portfolio Value at Risk
 ┏━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
 ┃       ┃ VaR:    ┃ Historical VaR: ┃

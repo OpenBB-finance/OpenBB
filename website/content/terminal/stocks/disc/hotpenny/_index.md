@@ -15,8 +15,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 04:04 (✨) /stocks/disc/ $ hotpenny
+2022 Feb 16, 04:04 (🦋) /stocks/disc/ $ hotpenny
                         Top Penny Stocks
 ┏━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃       ┃ Price  ┃ Change ┃ $ Volume     ┃ Volume    ┃ # Trades ┃

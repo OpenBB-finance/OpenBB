@@ -13,8 +13,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 09:28 (✨) /stocks/options/payoff/ $ rmv 0
+2022 Feb 16, 09:28 (🦋) /stocks/options/payoff/ $ rmv 0
 #       Type    Hold    Strike  Cost
 0       call    Long    780.0   141.96
 1       call    Long    850.0   102.0
@@ -22,14 +23,14 @@ Example:
 3       call    Long    600.0   320.73
 4       call    Long    700.0   226.06
 
-2022 Feb 16, 09:28 (✨) /stocks/options/payoff/ $ rmv 3
+2022 Feb 16, 09:28 (🦋) /stocks/options/payoff/ $ rmv 3
 #       Type    Hold    Strike  Cost
 0       call    Long    780.0   141.96
 1       call    Long    850.0   102.0
 2       call    Long    875.0   89.4
 3       call    Long    700.0   226.06
 
-2022 Feb 16, 09:28 (✨) /stocks/options/payoff/ $ rmv 2
+2022 Feb 16, 09:28 (🦋) /stocks/options/payoff/ $ rmv 2
 #       Type    Hold    Strike  Cost
 0       call    Long    780.0   141.96
 1       call    Long    850.0   102.0

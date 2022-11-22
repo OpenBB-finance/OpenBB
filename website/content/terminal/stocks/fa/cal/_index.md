@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example shown for the loaded ticker MSFT:
+
 ```
-2022 Feb 16, 04:47 (✨) /stocks/fa/ $ cal
+2022 Feb 16, 04:47 (🦋) /stocks/fa/ $ cal
                                              Ticker Calendar Earnings
 ┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┓
 ┃ Earnings Date ┃ Earnings Average ┃ Earnings Low ┃ Earnings High ┃ Revenue Average ┃ Revenue Low ┃ Revenue High ┃

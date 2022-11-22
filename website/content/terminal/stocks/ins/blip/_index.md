@@ -2,7 +2,7 @@
 usage: blip [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Print latest insider purchases ($25k+) Source: http://openinsider.com
+Print latest insider purchases ($25k+) Source: <http://openinsider.com>
 
 ```
 optional arguments:
@@ -14,8 +14,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 07:47 (✨) /stocks/ins/ $ blip
+2022 Feb 16, 07:47 (🦋) /stocks/ins/ $ blip
                                                                                 Insider Data
 ┏━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━┓
 ┃ X  ┃ Filing Date ┃ Trade Date ┃ Ticker ┃ Company Name      ┃ Insider Name         ┃ Title     ┃ Trade Type   ┃ Price  ┃ Qty        ┃ Owned      ┃ Diff Own ┃ Value        ┃

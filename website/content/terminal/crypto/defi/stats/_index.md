@@ -1,7 +1,8 @@
 ```
 usage: stats [-h] [--export {csv,json,xlsx}]
 ```
-Display base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
+
+Display base statistics about Uniswap DEX. [Source: <https://thegraph.com/en/>]
 
 ```
 optional arguments:
@@ -11,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 06:33 (✨) /crypto/defi/ $ stats
+2022 Feb 15, 06:33 (🦋) /crypto/defi/ $ stats
  Uniswap DEX Base Statistics
 ┌───────────────────┬────────┐
 │ Metric            │ Value  │

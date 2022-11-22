@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example (ticker is TSLA):
+
 ```
-2022 Feb 16, 07:08 (✨) /stocks/fa/ $ shrs
+2022 Feb 16, 07:08 (🦋) /stocks/fa/ $ shrs
 
 Major Holders:
 

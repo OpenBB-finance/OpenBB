@@ -12,7 +12,8 @@ optional arguments:
 ```
 
 Example (ticker is TSLA):
+
 ```
-2022 Feb 16, 07:05 (✨) /stocks/fa/ $ score
+2022 Feb 16, 07:05 (🦋) /stocks/fa/ $ score
 Score: 32.22 %
 ```

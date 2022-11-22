@@ -15,9 +15,10 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 24, 05:59 (✨) /econometrics/ $ ols -d adj_close-msft -i adj_close-aapl -i adj_close-googl -i adj_close-tsla
-                            OLS Regression Results                            
+2022 Feb 24, 05:59 (🦋) /econometrics/ $ ols -d adj_close-msft -i adj_close-aapl -i adj_close-googl -i adj_close-tsla
+                            OLS Regression Results
 ==============================================================================
 Dep. Variable:         adj_close_msft   R-squared:                       0.977
 Model:                            OLS   Adj. R-squared:                  0.977
@@ -26,8 +27,8 @@ Date:                Thu, 24 Feb 2022   Prob (F-statistic):               0.00
 Time:                        12:00:01   Log-Likelihood:                -2830.6
 No. Observations:                 759   AIC:                             5669.
 Df Residuals:                     755   BIC:                             5688.
-Df Model:                           3                                         
-Covariance Type:            nonrobust                                         
+Df Model:                           3
+Covariance Type:            nonrobust
 ===================================================================================
                       coef    std err          t      P>|t|      [0.025      0.975]
 -----------------------------------------------------------------------------------
@@ -47,10 +48,9 @@ Notes:
 [2] The condition number is large, 1.16e+04. This might indicate that there are
 strong multicollinearity or other numerical problems.
 
-2022 Feb 24, 06:00 (✨) /statistics/ $ dwat -p
+2022 Feb 24, 06:00 (🦋) /statistics/ $ dwat -p
 The result 0.04 is outside the range 1.5 and 2.5 and therefore autocorrelation can be problematic.
 Please consider lags of the dependent or independent variable.
 ```
 
 ![durbin_watson example](https://user-images.githubusercontent.com/46355364/155514788-caaa65a2-1f5f-41d0-8db2-06e682d5a53e.png)
-

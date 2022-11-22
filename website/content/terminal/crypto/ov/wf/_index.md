@@ -4,7 +4,7 @@ usage: wf   [-l LIMIT]
 ```
 
 Display withdrawal fees of cryptocurrencies ordered by market cap
-[Source: https://withdrawalfees.com/]
+[Source: <https://withdrawalfees.com/>]
 
 ```
 optional arguments:
@@ -14,8 +14,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:21 (✨) /crypto/ov/ $ wf
+2022 Feb 15, 08:21 (🦋) /crypto/ov/ $ wf
 
 Withdrawal fees on exchanges:
                                      Top Withdrawal Fees

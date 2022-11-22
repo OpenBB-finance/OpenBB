@@ -2,7 +2,7 @@
 usage: financial [--export {csv,json,xlsx}] [-h]
 ```
 
-Shows stock data comparing the returns, margins, and prices of the added companies. Source: https://finviz.com
+Shows stock data comparing the returns, margins, and prices of the added companies. Source: <https://finviz.com>
 
 ```
 optional arguments:
@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:36 (✨) /stocks/ca/ $ financial
+2022 Feb 15, 08:36 (🦋) /stocks/ca/ $ financial
                                                                                 Stock Screener
 ┌────────┬──────────────────┬──────────┬──────┬──────┬──────┬────────┬─────────┬───────────┬─────────┬─────────┬────────┬──────────┬──────────┬────────┬────────┬─────────────┐
 │ Ticker │ Market Cap       │ Dividend │ ROA  │ ROE  │ ROI  │ Curr R │ Quick R │ LTDebt/Eq │ Debt/Eq │ Gross M │ Oper M │ Profit M │ Earnings │ Price  │ Change │ Volume      │

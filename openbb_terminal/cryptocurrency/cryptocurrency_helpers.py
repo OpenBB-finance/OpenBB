@@ -490,7 +490,7 @@ def load_from_yahoofinance(
 def load(
     symbol: str,
     start_date: Union[datetime, str, None] = None,
-    interval: str = "1440",
+    interval: Union[str, int] = "1440",
     exchange: str = "binance",
     vs_currency: str = "usdt",
     end_date: Union[datetime, str, None] = None,
@@ -502,16 +502,16 @@ def load(
     ----------
     symbol: str
         Coin to get
-    start_date: str or datetime, optional
+    start_date: Union[datetime, str, None]
         Start date to get data from with. - datetime or string format (YYYY-MM-DD)
-    interval: str
+    interval: Union[str, int]
         The interval between data points in minutes.
         Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
     exchange: str:
         The exchange to get data from.
     vs_currency: str
         Quote Currency (Defaults to usdt)
-    end_date: str or datetime, optional
+    end_date: Union[datetime, str, None]
         End date to get data from with. - datetime or string format (YYYY-MM-DD)
     source: str
         The source of the data
@@ -522,7 +522,8 @@ def load(
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
-
+    if isinstance(interval, int):
+        interval = str(interval)
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
 

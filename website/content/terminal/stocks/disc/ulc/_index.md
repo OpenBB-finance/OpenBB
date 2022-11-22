@@ -2,7 +2,7 @@
 usage: ulc [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Print up to 25 potentially undervalued large cap stocks [Source: https://finance.yahoo.com/screener/predefined/undervalued_large_caps/]
+Print up to 25 potentially undervalued large cap stocks [Source: <https://finance.yahoo.com/screener/predefined/undervalued_large_caps/>]
 
 ```
 optional arguments:
@@ -14,8 +14,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 04:15 (✨) /stocks/disc/ $ ulc -l 25
+2022 Feb 16, 04:15 (🦋) /stocks/disc/ $ ulc -l 25
                                                             Undervalued Large Cap Stocks
 ┏━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃ Symbol ┃ Name                                 ┃ Price (Intraday) ┃ Change ┃ % Change ┃ Volume  ┃ Avg Vol (3 month) ┃ Market Cap ┃ PE Ratio (TTM) ┃
