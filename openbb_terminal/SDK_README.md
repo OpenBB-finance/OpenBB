@@ -45,9 +45,7 @@ While it's technically possible to use a subset of the functionality in off-line
 
 ### Platform Specific Requirements
 
-**Portfolio Optimization Toolkit on Apple Silicon:** To install the Portfolio Optimization toolkit on M1/M2 macs you need to have CMake installed. Follow the [instructions in this section](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md#2-install-cmake)
-
-**Forecasting Toolkit on Apple Silicon:** To install the Forecasting toolkit on M1/M2 macs you need to use the x86_64 version of conda  and install certain dependencies from conda-forge. Follow the [instructions in this section](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md#1-install-miniconda)
+**Portfolio Optimization Toolkit and Forecasting Toolkit on Apple Silicon:** To install the Forecasting toolkit on M1/M2 macs you need to use the x86_64 version of conda  and install certain dependencies from conda-forge. Follow the [instructions in this section](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md#1-install-miniconda)
 
 **Base Linux Docker containers:** To have the package work in base linux containers like python's `slim-buster` you need to install a C anc C++ compiler that's not bundled with the distribution.
 Run `sudo apt update && sudo apt install gcc cmake`
