@@ -2,7 +2,7 @@
 usage: cnews [-t {top-news,on-the-move,market-pulse,notable-calls,buybacks,commodities,crypto,issuance,global,guidance,ipos,spacs,politics,m-a,consumer,energy,financials,healthcare,mlps,reits,technology}] [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Customized news based on the string arguments below. [Source: https://seekingalpha.com]
+Customized news based on the string arguments below. [Source: <https://seekingalpha.com>]
 
 ```
 optional arguments:
@@ -16,8 +16,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 03:52 (✨) /stocks/disc/ $ cnews
+2022 Feb 16, 03:52 (🦋) /stocks/disc/ $ cnews
 2022-02-15 19:04:21 - 3800509 - ViacomCBS earnings call: A flood of content feeding transformation to Paramount
 https://seekingalpha.com/news/3800509-viacomcbs-earnings-call-a-flood-of-content-feeding-transformation-to-paramount
 
@@ -36,7 +37,7 @@ https://seekingalpha.com/news/3800380-viacomcbs-dips-as-profits-dip-despite-reve
 2022-02-15 16:14:20 - 3800378 - Wynn Resorts trades lower after earnings, Encore Boston sale
 https://seekingalpha.com/news/3800378-wynn-resorts-trades-lower-after-earnings-encore-boston-sale
 
-2022 Feb 16, 03:52 (✨) /stocks/disc/ $ cnews -t buybacks
+2022 Feb 16, 03:52 (🦋) /stocks/disc/ $ cnews -t buybacks
 2022-02-15 16:24:36 - 3800409 - DHI launches new $15M in stock repurchase program
 https://seekingalpha.com/news/3800409-dhi-launches-new-15m-in-stock-repurchase-program
 

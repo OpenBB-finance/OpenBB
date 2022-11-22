@@ -2,7 +2,7 @@
 usage: ch [-l N] [-s {Platform,Date,Amount [$],Audit,Slug,URL}] [--reverse] [-h] [--export {csv,json,xlsx}]
 ```
 
-Display list of major crypto-related hacks [Source: https://rekt.news]
+Display list of major crypto-related hacks [Source: <https://rekt.news>]
 Can be sorted by {Platform,Date,Amount [$],Audit,Slug,URL} with --sort and reverse the display order with --reverse
 Show only N elements with --limit N
 Accepts --slug or -s to check individual crypto hack (e.g., -s polynetwork-rekt)
@@ -22,8 +22,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:16 (✨) /crypto/ov/ $ ch
+2022 Feb 15, 08:16 (🦋) /crypto/ov/ $ ch
                                                             Major Crypto Hacks
 ┌────────────────────────┬────────────┬────────────┬────────────────────────┬────────────────────┬───────────────────────────────────────┐
 │ Platform               │ Date       │ Amount [$] │ Audit                  │ Slug               │ URL                                   │
