@@ -2,7 +2,6 @@ stocks
 scr
 view
 view rosenwald
-set top_losers
 historical
 historical -l 3 -n
 overview -p golden_cross.ini -l 5
@@ -12,4 +11,5 @@ ownership
 performance
 technical
 ca
+exit
 exit
