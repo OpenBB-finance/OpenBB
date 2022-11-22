@@ -27,11 +27,25 @@ from openbb_terminal.portfolio import statics
 from openbb_terminal.portfolio import portfolio_view
 from openbb_terminal.portfolio import portfolio_helper
 from openbb_terminal.portfolio import attribution_model
-from openbb_terminal.portfolio.portfolio_optimization.po_controller import (
-    PortfolioOptimizationController,
-)
+
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.common.quantitative_analysis import qa_view
+
+try:
+    from openbb_terminal.portfolio.portfolio_optimization import po_controller
+
+    OPTIMIZATION_TOOLKIT_ENABLED = True
+except ModuleNotFoundError:
+    OPTIMIZATION_TOOLKIT_ENABLED = False
+    console.print(
+        "[yellow]"
+        "Portfolio Optimization Toolkit is disabled. "
+        "To use the Optimization features please install the toolkit following the "
+        "instructions here: https://github.com/OpenBB-finance/OpenBBTerminal/"
+        "blob/main/openbb_terminal/README.md#anaconda--python"
+        "\n"
+        "[/yellow]"
+    )
 
 # pylint: disable=R1710,E1101,C0415,W0212,too-many-function-args,C0302,too-many-instance-attributes
 
@@ -271,17 +285,20 @@ class PortfolioController(BaseController):
     @log_start_end(log=logger)
     def call_po(self, _):
         """Process po command"""
-        if self.portfolio is None:
-            tickers = []
+        if OPTIMIZATION_TOOLKIT_ENABLED:
+            if self.portfolio is None:
+                tickers = []
+            else:
+                tickers = self.portfolio.tickers_list
+            self.queue = self.load_class(
+                po_controller.PortfolioOptimizationController,
+                tickers,
+                None,
+                None,
+                self.queue,
+            )
         else:
-            tickers = self.portfolio.tickers_list
-        self.queue = self.load_class(
-            PortfolioOptimizationController,
-            tickers,
-            None,
-            None,
-            self.queue,
-        )
+            console.print("[yellow]Portfolio Optimization Toolkit is disabled[/yellow]")
 
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
@@ -570,14 +587,14 @@ class PortfolioController(BaseController):
 
                 # relative results - the proportions of return attribution
                 if ns_parser.type == "relative":
-                    categorisation_result = (
+                    categorization_result = (
                         attribution_model.percentage_attrib_categorizer(
                             bench_result, portfolio_result
                         )
                     )
 
-                    portfolio_view.display_attribution_categorisation(
-                        display=categorisation_result,
+                    portfolio_view.display_attribution_categorization(
+                        display=categorization_result,
                         time_period=ns_parser.period,
                         attrib_type="Contributions as % of PF",
                         plot_fields=["S&P500 [%]", "Portfolio [%]"],
@@ -586,12 +603,12 @@ class PortfolioController(BaseController):
 
                 # absolute - the raw values of return attribution
                 if ns_parser.type == "absolute":
-                    categorisation_result = attribution_model.raw_attrib_categorizer(
+                    categorization_result = attribution_model.raw_attrib_categorizer(
                         bench_result, portfolio_result
                     )
 
-                    portfolio_view.display_attribution_categorisation(
-                        display=categorisation_result,
+                    portfolio_view.display_attribution_categorization(
+                        display=categorization_result,
                         time_period=ns_parser.period,
                         attrib_type="Raw contributions (Return x PF Weight)",
                         plot_fields=["S&P500", "Portfolio"],
