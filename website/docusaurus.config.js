@@ -46,15 +46,8 @@ const config = {
         id: "sdk",
         path: "content/sdk",
         routeBasePath: "sdk",
-        sidebarPath: require.resolve("./sidebars.js"),
-      },
-    ],
-    [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "z-guides-markdown",
-        path: "z-guides-markdown",
-        routeBasePath: "z-guides-markdown",
+        editUrl:
+          "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
         sidebarPath: require.resolve("./sidebars.js"),
       },
     ],
@@ -67,8 +60,8 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
+          editUrl:
+            "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
           routeBasePath: "terminal",
           path: "content/terminal",
         },
