@@ -6,18 +6,15 @@ with a brief overview of the features."
 geekdocCollapseSection: true
 ---
 
-The Cryptocurrency Overview menu provides, among other things, the option to obtain a complete overview of the Cryptocurrency market
-(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/global/" target="_blank">global</a>), find cryptocurrency indices and derivatives (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/indices/" target="_blank">indices</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/derivatives/" target="_blank">derivatives</a>), news feeds (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/news/" target="_blank">news</a>) and fees (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/wf/" target="_blank">wf</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/ewf/" target="_blank">ewf</a>)
+The Cryptocurrency Overview menu provides, among other things, the option to obtain a complete overview of the Cryptocurrency market (<a href="/terminal/reference/crypto/ov/global" target="_blank">global</a>), find cryptocurrency indices and derivatives (<a href="/terminal/reference/crypto/ov/indices" target="_blank">indices</a> and <a href="/terminal/reference/crypto/ov/derivatives" target="_blank">derivatives</a>), news feeds (<a href="/terminal/reference/crypto/ov/news" target="_blank">news</a>) and fees (<a href="/terminal/reference/crypto/ov/wf" target="_blank">wf</a> and <a href="/terminal/reference/crypto/ov/ewf" target="_blank">ewf</a>)
 
-## How to use
+### How to use
 
 The Cryptocurrency Overview menu is called upon by typing `ov`, while inside the `crypto` menu, which opens the following menu:
 
 ![Cryptocurrency Overview menu](https://user-images.githubusercontent.com/46355364/178532373-d03c32f5-df7b-487e-a4ae-b60f7297c48e.png)
 
-Alternatively, you can also type `/crypto/ov`. Within the Cryptocurrency Overview menu you have a variety of options
-to get an understanding of the global market, derivatives, heatmaps, a full list of exchanges, news, fees and borrow rates.
-Taking one of these as an example, `derivatives` returns a Futures table:
+Alternatively, you can also type `/crypto/ov`. Within the Cryptocurrency Overview menu you have a variety of options to get an understanding of the global market, derivatives, heatmaps, a full list of exchanges, news, fees and borrow rates. Taking one of these as an example, `derivatives` returns a Futures table:
 
 ```
 2022 Jul 12, 05:36 (🦋) /crypto/ov/ $ derivatives
@@ -58,7 +55,7 @@ Taking one of these as an example, `derivatives` returns a Futures table:
 └──────┴───────────────────────┴───────────────┴──────────┴────────────────┴───────────────┴───────┴────────┴──────────────┴────────────────┘
 ```
 
-## Examples
+### Examples
 
 We can start by looking at some general information about the Cryptocurrency market by using `global`:
 
@@ -89,8 +86,7 @@ We can start by looking at some general information about the Cryptocurrency mar
 └──────────────────────────────────────┴──────────┘
 ```
 
-To find an overview of all coins without segregating between different types of coins, we can use `info` which returns
-the following table:
+To find an overview of all coins without segregating between different types of coins, we can use `info` which returns the following table:
 
 ```
 2022 Jul 12, 05:40 (🦋) /crypto/ov/ $ info
@@ -143,8 +139,7 @@ Displaying data vs USD
 └──────┴───────────────────┴────────┴──────────┴────────────┴────────────────────┴──────────────┴────────────┴────────────┴────────────┴───────────┘
 ```
 
-And lastly, it is also possible to look at the stable coins in the market instead of the entire Cryptocurrency investment
-universe. This can be done with `stables` which returns the following:
+And lastly, it is also possible to look at the stable coins in the market instead of the entire Cryptocurrency investment universe. This can be done with `stables` which returns the following:
 
 ```
 2022 Jul 12, 05:40 (🦋) /crypto/ov/ $ stables

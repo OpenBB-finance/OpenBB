@@ -6,26 +6,16 @@ with a brief overview of the features."
 geekdocCollapseSection: true
 ---
 
-The Cryptocurrency Due Diligence menu gives the user the ability to delve deeper into the coin of choice. To be able to
-do this, the menu offers basic information about the loaded coin (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/info/" target="_blank">info</a>
-and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/basic/" target="_blank">basic</a>), information about the project, technology details, audits etcetera
-(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/pi/" target="_blank">pi</a>), insights into the coin balance and order book
-(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/balance/" target="_blank">balance</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/cbbook/" target="_blank">cbbook</a>),
-the tokenomics and fundraising details
-(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/tk/" target="_blank">tk</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/fr/" target="_blank">fr</a>)
-and lastly, social media activity
-(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/mt/" target="_blank">mt</a>, <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/twitter/" target="_blank">twitter</a>
-and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/dev/" target="_blank">dev</a>).
+The Cryptocurrency Due Diligence menu gives the user the ability to delve deeper into the coin of choice. To be able to do this, the menu offers basic information about the loaded coin (<a href="/terminal/reference/crypto/dd/info" target="_blank">info</a> and <a href="/terminal/reference/crypto/dd/basic" target="_blank">basic</a>), information about the project, technology details, audits etcetera (<a href="/terminal/reference/crypto/dd/pi" target="_blank">pi</a>), insights into the coin balance and order book (<a href="/terminal/reference/crypto/dd/balance" target="_blank">balance</a> and <a href="/terminal/reference/crypto/dd/cbbook" target="_blank">cbbook</a>), the tokenomics and fundraising details
+(<a href="/terminal/reference/crypto/dd/tk" target="_blank">tk</a> and <a href="/terminal/reference/crypto/dd/fr" target="_blank">fr</a>) and lastly, social media activity (<a href="/terminal/reference/crypto/dd/mt" target="_blank">mt</a>, <a href="/terminal/reference/crypto/dd/twitter" target="_blank">twitter</a> and <a href="/terminal/reference/crypto/dd/dev" target="_blank">dev</a>).
 
-## How to use
+### How to use
 
 The Cryptocurrency Due Diligence menu is called upon by typing `dd` (after loading a coin), while inside the `crypto` menu, which opens the following menu:
 
 ![Cryptocurrency Due Diligence menu](https://user-images.githubusercontent.com/46355364/178734389-dcee7a96-bb57-42fb-ad8e-13f27662e03b.png)
 
-This menu requires you to load a coin with the `load` command. Thus, alternatively, you can also type `/crypto/load BTC/dd`.
-Within the Cryptocurrency Due Diligence menu you can find features examining an extensive amount of metrics about the
-loaded coin. As an example, you can see the latest trades done on the loaded coin with `trades`:
+This menu requires you to load a coin with the `load` command. Thus, alternatively, you can also type `/crypto/load BTC/dd`. Within the Cryptocurrency Due Diligence menu you can find features examining an extensive amount of metrics about the loaded coin. As an example, you can see the latest trades done on the loaded coin with `trades`:
 
 ```
 2022 Jul 13, 07:42 (🦋) /crypto/dd/ $ trades
@@ -65,7 +55,7 @@ loaded coin. As an example, you can see the latest trades done on the loaded coi
 └─────────────────────────────┴────────────────┴────────────┴──────┘
 ```
 
-## Examples
+### Examples
 
 To get an understanding of the coin we are looking at, it is possible to look into some basic information with `basic`:
 
@@ -97,9 +87,7 @@ To get an understanding of the coin we are looking at, it is possible to look in
 └─────────────┴───────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Then, we have the option to look into the project information with `pi`. Note that this requires an API Key from Messari which you
-can find more information about <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank">here</a>.
-This command returns the following:
+Then, we have the option to look into the project information with `pi`. Note that this requires an API Key from Messari which you can find more information about <a href="/terminal/quickstart/keys" target="_blank">here</a>. This command returns the following:
 
 ```
 2022 Jul 13, 07:51 (🦋) /crypto/dd/ $ pi
@@ -162,8 +150,7 @@ This command returns the following:
 └─────────────────────────────────┴───────────────────────────┴───────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Looking ahead, we can use the command (coming from the same source) `rm` which discusses plans for the future. E.g.
-if we load in `ETH` with `load ETH` and use `rm` we receive the following:
+Looking ahead, we can use the command (coming from the same source) `rm` which discusses plans for the future. E.g. if we load in `ETH` with `load ETH` and use `rm` we receive the following:
 
 ```
 2022 Jul 13, 07:57 (🦋) /crypto/dd/ $ rm
@@ -232,8 +219,7 @@ As well as a graph that depicts price movements after these announcements.
 
 ![price movements ETH](https://user-images.githubusercontent.com/46355364/178734435-175181e3-a0fe-403c-b59c-c80ee70f6078.png)
 
-Lastly, keeping the ETH coin loaded, we can also look at some sentiment analysis by acquiring the different sentiment
-scores with `score` as follows:
+Lastly, keeping the ETH coin loaded, we can also look at some sentiment analysis by acquiring the different sentiment scores with `score` as follows:
 
 ```
 2022 Jul 13, 08:00 (🦋) /crypto/dd/ $ score

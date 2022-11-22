@@ -1,24 +1,52 @@
 ---
-title: Introduction to the Technical Analysis Menu
-keywords: ["technical", "analysis", "ta", "t/a", "intraday", "daily", "indicators", "signals", "average", "moving", "exponential", "rsi", "fibonacci", "retracement", "bollinger", "heltner", "accumulation", "distribution", "obv", "on-balance", "volume", "volatility", "trend", "momentum", "overlap", "crypto", "stocks", "funds", "etf", "etfs"]
+title: Technical Analysis
+keywords:
+  [
+    "technical",
+    "analysis",
+    "ta",
+    "t/a",
+    "intraday",
+    "daily",
+    "indicators",
+    "signals",
+    "average",
+    "moving",
+    "exponential",
+    "rsi",
+    "fibonacci",
+    "retracement",
+    "bollinger",
+    "heltner",
+    "accumulation",
+    "distribution",
+    "obv",
+    "on-balance",
+    "volume",
+    "volatility",
+    "trend",
+    "momentum",
+    "overlap",
+    "crypto",
+    "stocks",
+    "funds",
+    "etf",
+    "etfs",
+  ]
 date: "2022-06-17"
 type: guides
 status: publish
 excerpt: "This guide introduces the Technical Analysis menu, which is common across many sections of the OpenBB Terminal."
-
 ---
 
-The Technical Analysis menu offers the user a suite of tools for analyzing the
-technical components of an asset's trading history. The menu can be found in
-most wings of the Terminal:
+The Technical Analysis menu offers the user a suite of tools for analyzing the technical components of an asset's trading history. The menu can be found in most wings of the Terminal:
 
-- <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/" target="_blank">Crypto</a>
-- <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">Stocks</a>
-- <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/" target="_blank">ETF</a>
-- <a href ="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/" target="blank">ForEx</a>
+- <a href="/terminal/guides/intros/cryptocurrency/" target="_blank">Crypto</a>
+- <a href="/terminal/guides/intros/stocks/" target="_blank">Stocks</a>
+- <a href="/terminal/guides/intros/etf/" target="_blank">ETF</a>
+- <a href ="terminal/guides/intros/forex/" target="blank">ForEx</a>
 
-The commands are divided by categories that define their purpose for
-general-use:
+The commands are divided by categories that define their purpose for general-use:
 
 - Overlap - Moving averages
 - Momentum - Oscillating signals
@@ -27,43 +55,31 @@ general-use:
 - Volume - Singling out volume
 - Custom - Fibonacci retracements
 
-All commands in this menu will rely on the interval and window chosen when
-<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/load/" target="_blank">loading
-an asset for analysis</a>. Refer to the directory tree on the left side of the
-page for information on individual commands. To get a better understanding of
-what these features are, and the formulas behind them, a number of sources
-should be consulted; but, a good starting point is
-<a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank">Investopedia</a>.
+All commands in this menu will rely on the interval and window chosen when <a href="/terminal/reference/stocks/load" target="_blank">loading an asset for analysis</a>. Refer to the directory tree on the left side of the page for information on individual commands. To get a better understanding of what these features are, and the formulas behind them, a number of sources should be consulted; but, a good starting point is <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank">Investopedia</a>.
 
-<h2>How to use the Technical Analysis Menu</h2>
+### How to use
 
 To begin, enter the menu from one of the menus listed above by entering `ta`.
 
 ![The Technical Analysis menu, with BTC loaded](https://user-images.githubusercontent.com/85772166/174499113-02648936-f8d1-40ca-8ba3-036fb4324666.png)
 
-Choose a beginning and end date to see a volume-weighted average price chart of
-the loaded ticker. `vwap --start 2022-01-01 --end 2022-06-17`
+Choose a beginning and end date to see a volume-weighted average price chart of the loaded ticker. `vwap --start 2022-01-01 --end 2022-06-17`
 
 ![BTC VWAP YTD](https://user-images.githubusercontent.com/85772166/174499127-cc20f16c-dd68-4ce3-9d10-cd6ce762a346.png)
 
-The Fibonacci retracements are drawn with
-<a href="https://en.wikipedia.org/wiki/Fibonacci_number" target="_blank">
-`fib`</a>
+The Fibonacci retracements are drawn with <a href="https://en.wikipedia.org/wiki/Fibonacci_number" target="_blank">`fib`</a>
 
 ![SPY Fibonacci retracement from the recent lower high](https://user-images.githubusercontent.com/85772166/174499173-5d3dbdb7-8147-459b-88d3-7caae9102aa5.png)
 
-See the
-<a href="https://www.investopedia.com/terms/o/onbalancevolume.asp" target="_blank">on-balance
-volume</a> for the time-period loaded.
+See the <a href="https://www.investopedia.com/terms/o/onbalancevolume.asp" target="_blank">on-balance volume</a> for the time-period loaded.
 
 ![OBV for ARKK YTD](https://user-images.githubusercontent.com/85772166/174499183-42d246d9-0a0f-4c76-8c4e-de22ad2e396d.png)
 
 The help dialogue for any feature is printed by attaching `-h` to the command.
 
-<h2>Examples</h2>
+### Examples
 
-`recom` & `summary` are commands available only with a stock loaded as the
-asset. `summary` is a text description of the technical conditions.
+`recom` & `summary` are commands available only with a stock loaded as the asset. `summary` is a text description of the technical conditions.
 
 ```
 (🦋) /stocks/ta/ $ summary
@@ -90,7 +106,3 @@ The Accumulation/Distribution line of AMZN - `ad`
 
 To play a demonstration of this menu in the OpenBB Terminal run,
 `exe ta_demo.openbb`, from the main menu.
-
-Back to the
-<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">Introduction
-to Stocks</a>.

@@ -6,20 +6,17 @@ with a brief overview of the features."
 geekdocCollapseSection: true
 ---
 
-The Cryptocurrency Decentralized Finance (DeFi) menu gives the user the ability to delve deeper into Uniswap statistics (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/tokens/" target="_blank">tokens</a>, <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/stats/" target="_blank">stats</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/pairs/" target="_blank">pairs</a>),
-information about dApps (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/gdapps/" target="_blank">gdapps</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/stvl/" target="_blank">stvl</a>)
-as well as information about terra blockchain (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/sreturn/" target="_blank">sreturn</a>) and luna (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/lcsc/" target="_blank">lcsc</a>).
+The Cryptocurrency Decentralized Finance (DeFi) menu gives the user the ability to delve deeper into Uniswap statistics (<a href="/terminal/reference/crypto/defi/tokens" target="_blank">tokens</a>, <a href="/terminal/reference/crypto/defi/stats" target="_blank">stats</a> and <a href="/terminal/reference/crypto/defi/pairs" target="_blank">pairs</a>), information about dApps (<a href="/terminal/reference/crypto/defi/gdapps" target="_blank">gdapps</a> and <a href="/terminal/reference/crypto/defi/stvl" target="_blank">stvl</a>) as well as information about terra blockchain (<a href="/terminal/reference/crypto/defi/sreturn" target="_blank">sreturn</a>) and luna (<a href="/terminal/reference/crypto/defi/lcsc" target="_blank">lcsc</a>).
 
-## How to use
+### How to use
 
 The Cryptocurrency Decentralized Finance (DeFi) menu is called upon by typing `defi`, while inside the `crypto` menu, which opens the following menu:
 
 ![Cryptocurrency Decentralized Finance (DeFi) menu](https://user-images.githubusercontent.com/46355364/178734540-716f2232-20a4-4f31-b8a8-10c0badfd5dd.png)
 
-Alternatively, you can also type `/crypto/defi`. Within the Cryptocurrency Decentralized Finance (DeFi) menu you can
-find features that delve deeper in the world of decentralized finance.
+Alternatively, you can also type `/crypto/defi`. Within the Cryptocurrency Decentralized Finance (DeFi) menu you can find features that delve deeper in the world of decentralized finance.
 
-## Examples
+### Examples
 
 Delving deeper in Uniswap, we can start bij looking at the tokens trade-able with `tokens`:
 
