@@ -106,6 +106,7 @@ papermill = "^2.4.0"
 stocksera = "^0.1.21"
 ipython = "8.5.0"
 protobuf = "3.20.1"
+docstring-parser = {version = "^0.15", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
@@ -132,12 +133,12 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-docstring-parser = "^0.15"
 
 [tool.poetry.extras]
 prediction = ["torch"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]
+doc = ["docstring-parser"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
