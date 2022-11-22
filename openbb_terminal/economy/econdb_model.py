@@ -483,7 +483,7 @@ def get_macro_data(
     parameter: str,
     country: str,
     transform: str = "",
-    start_date: Optional[str] = None,
+    start_date: str = "1900-01-01",
     end_date: Optional[str] = None,
     symbol: str = "",
 ) -> Tuple[pd.Series, Union[str, Any]]:
@@ -503,7 +503,7 @@ def get_macro_data(
             'TUSD' - level USD,
             'TPGP' - Percentage of GDP,
             'TNOR' - Start = 100
-    start_date : Optional[str]
+    start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : Optional[str]
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
@@ -517,11 +517,8 @@ def get_macro_data(
         The units of the macro data, e.g. 'Bbl/day" for oil.
     """
 
-    if start_date is None:
-        start_date = pd.to_datetime("1900-01-01")
-
     if end_date is None:
-        end_date = datetime.today().date()
+        end_date = datetime.today().strftime("%Y-%m-%d")
 
     df, units = pd.DataFrame(), ""
     country = country.replace("_", " ")
