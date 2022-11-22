@@ -71,12 +71,6 @@ Download the `x86_64` Miniconda for your respective system and follow along with
 conda create -n obb python=3.9.6 -y
 ```
 
-(Optional) If you would like machine learning forecast features:
-
-```bash
-conda create -n obb -c conda-forge python=3.9.6 lightgbm=3.3.3 -y
-```
-
 #### 3. **Activate the virtual environment**
 
 ```bash
@@ -91,19 +85,43 @@ pip install openbbterminal
 
 #### 5. **(Optional) Install the Toolkits**
 
-If you would like to use the Portfolio Optimization features:
+##### 5.1 **If you would like to use the Portfolio Optimization features**
+
+On Apple Silicon Macs (M1/M2) install dependency from conda-forge
+
+```bash
+conda install -c conda-forge cvxpy=1.2.2 -y
+```
+
+And install the Portfolio Optimization Toolkit
 
 ```bash
 pip install "openbbterminal[optimization]"
 ```
 
-If you would like ML forecast features:
+##### 5.2 **If you would like ML Forecasting features**
+
+On Apple Silicon Macs (M1/M2) install dependency from conda-forge
+
+```bash
+conda install -c conda-forge lightgbm=3.3.3 -y
+```
+
+And install the Forecasting Toolkit
 
 ```bash
 pip install "openbbterminal[prediction]"
 ```
 
-If you would like to use both Portfolio Optimization and ML forecast features:
+##### 5.2 **If you would like to use both Portfolio Optimization and ML forecast features**
+
+On Apple Silicon Macs (M1/M2) install dependencies from conda-forge
+
+```bash
+conda install -c conda-forge lightgbm=3.3.3 cvxpy=1.2.2 -y
+```
+
+And install the Both Toolkits
 
 ```bash
 pip install "openbbterminal[all]"
