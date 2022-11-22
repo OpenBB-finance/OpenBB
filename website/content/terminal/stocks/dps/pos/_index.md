@@ -2,11 +2,11 @@
 usage: pos [-n NUM] [-s {sv,sv_pct,nsv,nsv_dollar,dpp,dpp_dollar}] [-a] [--export {csv,json,xlsx}] [-h]
 ```
 
-Request a list of up to 200 (either positive or negative using the -a argument) Dark Pool Positions using the optional arguments to the feature command as described below. Source: https://www.stockgrid.io/darkpools
+Request a list of up to 200 (either positive or negative using the -a argument) Dark Pool Positions using the optional arguments to the feature command as described below. Source: <https://www.stockgrid.io/darkpools>
 
 Volume and short sale data for tickers trading on US-regulated public markets is updated daily on the [FINRA website](https://www.finra.org/finra-data/browse-catalog/short-sale-volume-data/daily-short-sale-volume-files) at approximately 6PM EST.
 
-A 'position' is the result of the net aggregagte short sale volume over a rolling twenty day period. The available daily data sets currently go back as far as 2020. For an explanation on reading this data, consult the white paper from SqueezeMetrics: https://squeezemetrics.com/monitor/download/pdf/short_is_long.pdf?
+A 'position' is the result of the net aggregagte short sale volume over a rolling twenty day period. The available daily data sets currently go back as far as 2020. For an explanation on reading this data, consult the white paper from SqueezeMetrics: <https://squeezemetrics.com/monitor/download/pdf/short_is_long.pdf>?
 
 ```
 optional arguments:
@@ -25,7 +25,7 @@ optional arguments:
 Example:
 
 ```
-2022 Feb 15, 08:51 (✨) /stocks/dps/ $ pos
+2022 Feb 15, 08:51 (🦋) /stocks/dps/ $ pos
                                                       Data for: 2022-02-14
 ┌────────┬─────────────────┬──────────────┬─────────────────────┬────────────────────────┬──────────────────┬───────────────────┐
 │ Ticker │ Short Vol. [1M] │ Short Vol. % │ Net Short Vol. [1M] │ Net Short Vol. ($100M) │ DP Position [1M] │ DP Position ($1B) │

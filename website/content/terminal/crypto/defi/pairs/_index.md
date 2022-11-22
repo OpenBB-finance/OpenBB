@@ -2,7 +2,7 @@
 usage: pairs [-l LIMIT] [-v VOL] [-tx TX] [--days DAYS] [-s {created,pair,token0,token1,volumeUSD,txCount,totalSupply}] [--reverse] [-h] [--export {csv,json,xlsx}]
 ```
 
-Display Lastly added pairs on Uniswap DEX. [Source: https://thegraph.com/en/]
+Display Lastly added pairs on Uniswap DEX. [Source: <https://thegraph.com/en/>]
 
 ```
 optional arguments:
@@ -22,8 +22,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 06:27 (✨) /crypto/defi/ $ pairs
+2022 Feb 15, 06:27 (🦋) /crypto/defi/ $ pairs
                                                    Latest Added Pairs on Uniswap DEX
 ┌─────────────────────┬────────────────┬──────────────────────────────────────┬────────────────────┬───────────┬─────────┬─────────────┐
 │ created             │ pair           │ token0                               │ token1             │ volumeUSD │ txCount │ totalSupply │

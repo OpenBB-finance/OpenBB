@@ -2,7 +2,7 @@
 usage: swaps [-l LIMIT] [-s {timestamp,token0,token1,amountUSD}] [--reverse] [-h] [--export {csv,json,xlsx}]
 ```
 
-Display last swaps done on Uniswap DEX. [Source: https://thegraph.com/en/]
+Display last swaps done on Uniswap DEX. [Source: <https://thegraph.com/en/>]
 
 ```
 optional arguments:
@@ -19,8 +19,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 06:34 (✨) /crypto/defi/ $ swaps
+2022 Feb 15, 06:34 (🦋) /crypto/defi/ $ swaps
                                Last Uniswap Swaps
 ┌─────────────────────────────────────┬─────────┬────────┬─────────────────────┐
 │ timestamp                           │ token0  │ token1 │ amountUSD           │

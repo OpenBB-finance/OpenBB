@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 16, 09:01 (✨) /stocks/fa/ $ sust
+2022 Feb 16, 09:01 (🦋) /stocks/fa/ $ sust
          Ticker Sustainability
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┓
 ┃                        ┃ Value       ┃

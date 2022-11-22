@@ -16,13 +16,14 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Mar 16, 13:20 (✨) /economy/ $ treasury -m 3y 5y -st
-2022 Mar 16, 13:20 (✨) /economy/ $ index vix sp500 dowjones -st
-2022 Mar 16, 13:20 (✨) /economy/ $ macro -p RGDP GDP -c Netherlands Germany -st
-2022 Mar 16, 13:21 (✨) /economy/ $ fred T10Y2y T10Y2YM -st
-2022 Mar 16, 13:20 (✨) /economy/ $ options
-                         Options available to plot                         
+2022 Mar 16, 13:20 (🦋) /economy/ $ treasury -m 3y 5y -st
+2022 Mar 16, 13:20 (🦋) /economy/ $ index vix sp500 dowjones -st
+2022 Mar 16, 13:20 (🦋) /economy/ $ macro -p RGDP GDP -c Netherlands Germany -st
+2022 Mar 16, 13:21 (🦋) /economy/ $ fred T10Y2y T10Y2YM -st
+2022 Mar 16, 13:20 (🦋) /economy/ $ options
+                         Options available to plot
 ┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Command  ┃ Options                                                      ┃
 ┡━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩

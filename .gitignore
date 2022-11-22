@@ -33,6 +33,7 @@ openbb_terminal/portfolio/portfolios/*
 integration_test_output/*
 openbb_terminal/reports/templates/*.html
 *_sdk_audit.csv
+website/terminaltest
 
 # pyinstaller artifacts
 *.pyo

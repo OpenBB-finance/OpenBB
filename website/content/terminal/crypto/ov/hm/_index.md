@@ -2,7 +2,7 @@
 usage: hm [-c CATEGORY] [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Displays cryptocurrencies heatmap. [Source: https://coingecko.com]
+Displays cryptocurrencies heatmap. [Source: <https://coingecko.com>]
 Accepts --category or -c to display only coins of a certain category
 (default no category to display all coins ranked by market cap).
 You can look on only top N number of records with --limit.
@@ -21,7 +21,7 @@ optional arguments:
 Example:
 
 ```
-2022 Feb 15, 06:44 (✨) /crypto/disc/ $ cgtop
+2022 Feb 15, 06:44 (🦋) /crypto/disc/ $ cgtop
 ┌────────┬──────────────┬────────────┬────────────────┬─────────────────┬───────────────┬────────────────┐
 │ Symbol │ Name         │ Volume [$] │ Market Cap [$] │ Market Cap Rank │ 7D Change [%] │ 24H Change [%] │
 ├────────┼──────────────┼────────────┼────────────────┼─────────────────┼───────────────┼────────────────┤

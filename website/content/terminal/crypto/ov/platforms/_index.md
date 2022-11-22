@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:19 (✨) /crypto/ov/ $ platforms
+2022 Feb 15, 08:19 (🦋) /crypto/ov/ $ platforms
       Smart Contract Platforms
 ┌───────┬───────────────────────────┐
 │ index │ platform_id               │

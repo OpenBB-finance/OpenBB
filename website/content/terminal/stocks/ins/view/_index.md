@@ -14,8 +14,9 @@ optional arguments:
 ```
 
 See available options:
+
 ```
-2022 Feb 16, 08:27 (✨) /stocks/ins/ $ view
+2022 Feb 16, 08:27 (🦋) /stocks/ins/ $ view
 
 PRESET: Gold-Silver
 Gold and Silver Producers - Last 3 Months - All Transactions

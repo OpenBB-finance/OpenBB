@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 06:45 (✨) /crypto/disc/ $ trending
+2022 Feb 15, 06:45 (🦋) /crypto/disc/ $ trending
                  Trending coins on CoinGecko
 ┌────────────────────┬────────────────────┬─────────────────┐
 │ Symbol             │ Name               │ Market Cap Rank │

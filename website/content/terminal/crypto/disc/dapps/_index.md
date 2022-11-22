@@ -2,7 +2,7 @@
 usage: dapps [-l LIMIT] [-s SORTBY [SORTBY ...]] [-h] [--export EXPORT]
 ```
 
-Shows top decentralized applications [Source: https://dappradar.com/]
+Shows top decentralized applications [Source: <https://dappradar.com/>]
 
 Accepts --sort {Name,Category,Protocols,Daily Users,Daily Volume [$]} to sort by column
 
@@ -17,8 +17,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 06:52 (✨) /crypto/disc/ $ dapps
+2022 Feb 15, 06:52 (🦋) /crypto/disc/ $ dapps
                               Top Decentralized Applications
 ┌───────────────┬──────────────┬─────────────────────────┬─────────────┬──────────────────┐
 │ Name          │ Category     │ Protocols               │ Daily Users │ Daily Volume [$] │

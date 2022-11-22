@@ -1,5 +1,6 @@
 """Chartexchange model"""
-__docformat__ = "numpy"
+
+from __future__ import annotations
 
 import logging
 
@@ -17,7 +18,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_option_history(
-    symbol: str = "GME", date: str = "2021-02-05", call: bool = True, price: str = "90"
+    symbol: str = "GME",
+    date: str = "2021-02-05",
+    call: bool = True,
+    price: str | int | float = "90",
 ) -> pd.DataFrame:
     """Historic prices for a specific option [chartexchange]
 
@@ -25,7 +29,7 @@ def get_option_history(
     ----------
     symbol : str
         Ticker symbol to get historical data from
-    date : str
+    date : str|int|float
         Date as a string YYYYMMDD
     call : bool
         Whether to show a call or a put

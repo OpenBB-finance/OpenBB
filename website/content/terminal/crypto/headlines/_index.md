@@ -13,8 +13,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 07:52 (✨) /crypto/ $ headlines
+2022 Feb 15, 07:52 (🦋) /crypto/ $ headlines
 
 date
 2022-02-06    0.137
@@ -28,4 +29,5 @@ date
 2022-02-14    0.103
 2022-02-15    0.158
 ```
+
 ![headlines](https://user-images.githubusercontent.com/46355364/154066006-d281a8c8-bd25-4355-9cd5-3affd4477bd6.png)

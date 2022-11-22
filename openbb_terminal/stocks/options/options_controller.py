@@ -743,7 +743,9 @@ class OptionsController(BaseController):
                     ns_parser.export,
                 )
 
-            elif API_TRADIER_TOKEN != "REPLACE_ME":  # nosec
+            elif (
+                ns_parser.source == "Tradier" and API_TRADIER_TOKEN != "REPLACE_ME"
+            ):  # nosec
                 tradier_view.display_historical(
                     symbol=self.ticker,
                     expiry=self.selected_date,

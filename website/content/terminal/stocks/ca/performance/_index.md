@@ -2,7 +2,7 @@
 usage: performance [--export {csv,json,xlsx}] [-h]
 ```
 
-Compares the performance breakdown over time. Source: https://finviz.com
+Compares the performance breakdown over time. Source: <https://finviz.com>
 
 ```
 optional arguments:
@@ -12,8 +12,9 @@ optional arguments:
 ```
 
 Example:
+
 ```
-2022 Feb 15, 08:42 (✨) /stocks/ca/ $ performance
+2022 Feb 15, 08:42 (🦋) /stocks/ca/ $ performance
                                                                                     Stock Screener
 ┌────────┬───────────┬────────────┬────────────┬───────────┬───────────┬──────────┬──────────────┬──────────────┬───────┬──────────────┬────────────┬─────────┬────────┬─────────────┐
 │ Ticker │ Perf Week │ Perf Month │ Perf Quart │ Perf Half │ Perf Year │ Perf YTD │ Volatility W │ Volatility M │ Recom │ Avg Volume   │ Rel Volume │ Price   │ Change │ Volume      │
