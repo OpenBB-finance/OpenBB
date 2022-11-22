@@ -32,7 +32,7 @@ register_matplotlib_converters()
 def insider_activity(
     data: pd.DataFrame,
     symbol: str,
-    start_date: str = None,
+    start_date: Optional[str] = None,
     interval: str = "1440min",
     limit: int = 10,
     raw: bool = False,
@@ -47,7 +47,7 @@ def insider_activity(
         Stock dataframe
     symbol: str
         Due diligence ticker symbol
-    start_date: str
+    start_date: Optional[str]
         Initial date (e.g., 2021-10-01). Defaults to 3 years back
     interval: str
         Stock data interval

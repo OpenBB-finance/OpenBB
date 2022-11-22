@@ -30,8 +30,8 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def display_historical(
     symbol: str,
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     number: int = 100,
     raw: bool = False,
     limit: int = 10,
@@ -45,9 +45,9 @@ def display_historical(
     ----------
     symbol: str
         Ticker symbol to view sentiment data
-    start_date: str
+    start_date: Optional[str]
         Initial date like string or unix timestamp (e.g. 2021-12-21)
-    end_date: str
+    end_date: Optional[str]
         End date like string or unix timestamp (e.g. 2022-01-15)
     number: int
         Number of results returned by API call
@@ -150,7 +150,7 @@ def display_historical(
 @log_start_end(log=logger)
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def display_trending(
-    start_date: str = None,
+    start_date: Optional[str] = None,
     hour: int = 0,
     number: int = 10,
     limit: int = 10,
@@ -161,7 +161,7 @@ def display_trending(
 
     Parameters
     ----------
-    start_date : str
+    start_date : Optional[str]
         Initial date, format YYYY-MM-DD
     hour: int
         Hour of the day in 24-hour notation (e.g. 14)

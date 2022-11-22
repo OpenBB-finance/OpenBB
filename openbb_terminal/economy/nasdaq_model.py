@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from typing import List, Union
+from typing import List, Optional, Union
 
 from datetime import datetime as dt
 import pandas as pd
@@ -20,8 +20,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_economic_calendar(
     countries: Union[List[str], str] = "",
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Get economic calendar for countries between specified dates
 
@@ -29,9 +29,9 @@ def get_economic_calendar(
     ----------
     countries : [List[str],str]
         List of countries to include in calendar.  Empty returns all
-    start_date : str
+    start_date : Optional[str]
         Start date for calendar
-    end_date : str
+    end_date : Optional[str]
         End date for calendar
 
     Returns
