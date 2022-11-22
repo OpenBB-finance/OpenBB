@@ -239,8 +239,8 @@ def display_exchange_net_position_change(
 def display_exchange_balances(
     symbol: str,
     exchange: str = "aggregated",
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     percentage: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -256,9 +256,9 @@ def display_exchange_balances(
         Exchange to check net position change (possible values are: aggregated, binance, bittrex,
         coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex, hitbtc, kraken,
         okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno), by default "aggregated"
-    start_date : str
+    start_date : Optional[str], optional
         Initial date (format YYYY-MM-DD) by default 2 years ago
-    end_date : str
+    end_date : Optional[str], optional
         Final date (format YYYY-MM-DD) by default 1 year ago
     percentage : bool
         Show percentage instead of stacked value.
