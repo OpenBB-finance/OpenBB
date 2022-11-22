@@ -146,10 +146,7 @@ class ReportController(BaseController):
     @log_start_end(log=logger)
     def call_forecast(self, other_args: List[str]):
         if is_packaged_application():
-            console.print(
-                "Find the most recent release of the OpenBB Terminal here: "
-                "https://openbb.co/products/terminal#get-started\n"
-            )
+            console.print("This features is disabled in installed version")
             return
 
         try:
