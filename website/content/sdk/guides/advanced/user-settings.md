@@ -22,13 +22,13 @@ results = results.sort_values(ascending = False, by = ['Volume'])
 results.head(5)
 ```
 
-|    | Ticker   |   Beta |   ATR |   SMA20 |   SMA50 |   SMA200 |   52W High |   52W Low |   RSI |   Price |   Change |   from Open |     Gap |      Volume |
-|---:|:---------|-------:|------:|--------:|--------:|---------:|-----------:|----------:|------:|--------:|---------:|------------:|--------:|------------:|
-| 48 | CUEN     |   0.61 |  0.04 | -0.0367 | -0.2802 |  -0.5626 |    -0.8793 |    0.1505 | 39.65 |    0.35 |   0.0494 |     -0.2249 |  0.3539 | 1.15487e+07 |
-| 16 | PDSB     |   2.54 |  0.55 |  0.6788 |  1.0466 |   0.7899 |    -0.248  |    2.0104 | 83.52 |    8.7  |   0.2323 |      0.1951 |  0.0312 | 6.32774e+06 |
-| 32 | IBTE     | nan    |  0.05 |  0.0025 | -0.0015 |  -0.0214 |    -0.0661 |    0.0076 | 53.72 |   23.89 |   0.0008 |      0.0004 |  0.0004 | 5.85758e+06 |
-| 11 | PTLO     | nan    |  1.28 |  0.033  |  0.038  |   0.0368 |    -0.6097 |    0.5187 | 52.02 |   22.53 |  -0.0941 |     -0.004  | -0.0905 | 3.96768e+06 |
-| 65 | ABMD     |   1.32 | 10.78 |  0.1822 |  0.3316 |   0.3296 |    -0.0201 |    0.7027 | 78.79 |  374.32 |   0.0006 |     -0.0006 |  0.0011 | 3.50787e+06 |
+|     | Ticker | Beta |   ATR |   SMA20 |   SMA50 |  SMA200 | 52W High | 52W Low |   RSI |  Price |  Change | from Open |     Gap |      Volume |
+| --: | :----- | ---: | ----: | ------: | ------: | ------: | -------: | ------: | ----: | -----: | ------: | --------: | ------: | ----------: |
+|  48 | CUEN   | 0.61 |  0.04 | -0.0367 | -0.2802 | -0.5626 |  -0.8793 |  0.1505 | 39.65 |   0.35 |  0.0494 |   -0.2249 |  0.3539 | 1.15487e+07 |
+|  16 | PDSB   | 2.54 |  0.55 |  0.6788 |  1.0466 |  0.7899 |   -0.248 |  2.0104 | 83.52 |    8.7 |  0.2323 |    0.1951 |  0.0312 | 6.32774e+06 |
+|  32 | IBTE   |  nan |  0.05 |  0.0025 | -0.0015 | -0.0214 |  -0.0661 |  0.0076 | 53.72 |  23.89 |  0.0008 |    0.0004 |  0.0004 | 5.85758e+06 |
+|  11 | PTLO   |  nan |  1.28 |   0.033 |   0.038 |  0.0368 |  -0.6097 |  0.5187 | 52.02 |  22.53 | -0.0941 |    -0.004 | -0.0905 | 3.96768e+06 |
+|  65 | ABMD   | 1.32 | 10.78 |  0.1822 |  0.3316 |  0.3296 |  -0.0201 |  0.7027 | 78.79 | 374.32 |  0.0006 |   -0.0006 |  0.0011 | 3.50787e+06 |
 
 This will fetch results from the options screener with the preset, `Highest_OI`:
 
@@ -40,13 +40,13 @@ results, title = openbb.stocks.options.screen.screener_output(preset='Highest_OI
 pd.DataFrame(results.head(5))
 ```
 
-|    | Contract Symbol    | Expiration   | Ticker   | Type   |   Strike |   Vol |     OI |        IV |       Delta |       Gamma |         Rho |        Theta |        Vega | Last Traded   |   Bid |   Ask |   Last |   % Change |   Underlying |      P/B |
-|---:|:-------------------|:-------------|:---------|:-------|---------:|------:|-------:|----------:|------------:|------------:|------------:|-------------:|------------:|:--------------|------:|------:|-------:|-----------:|-------------:|---------:|
-|  0 | SLV230120C00035000 | 2023-01-20   | SLV      | C      |       35 |   338 | 389212 | 0.250008  | 2.65844e-09 | 8.21107e-09 | 8.20159e-11 | -2.63722e-10 | 1.23914e-09 | 2022-11-18    |     0 |     0 |   0.02 |          0 |        19.25 | 0.901724 |
-|  1 | EEM221216C00045000 | 2022-12-16   | EEM      | C      |       45 | 14086 | 341301 | 0.125009  | 1.13015e-07 | 4.91845e-07 | 2.86473e-09 | -1.52641e-08 | 5.96183e-08 | 2022-11-18    |     0 |     0 |   0.02 |          0 |        38.03 | 0.723568 |
-|  2 | SLV230120C00040000 | 2023-01-20   | SLV      | C      |       40 |   200 | 316800 | 0.500005  | 0.000228694 | 0.000221098 | 6.8245e-06  | -2.83253e-05 | 6.67309e-05 | 2022-11-18    |     0 |     0 |   0.01 |          0 |        19.25 | 0.901724 |
-|  3 | NOK230120C00007000 | 2023-01-20   | NOK      | C      |        7 |   557 | 257115 | 0.250008  | 0.00010857  | 0.000884296 | 8.27629e-07 | -1.74568e-06 | 8.2688e-06  | 2022-11-18    |     0 |     0 |   0.01 |          0 |         4.79 | 1.36273  |
-|  4 | EEM221216C00040000 | 2022-12-16   | EEM      | C      |       40 | 13302 | 247105 | 0.0625094 | 0.000969793 | 0.00531776  | 2.46164e-05 | -4.14814e-05 | 0.000322318 | 2022-11-18    |     0 |     0 |   0.23 |          0 |        38.03 | 0.723568 |
+|     | Contract Symbol    | Expiration | Ticker | Type | Strike |   Vol |     OI |        IV |       Delta |       Gamma |         Rho |        Theta |        Vega | Last Traded | Bid | Ask | Last | % Change | Underlying |      P/B |
+| --: | :----------------- | :--------- | :----- | :--- | -----: | ----: | -----: | --------: | ----------: | ----------: | ----------: | -----------: | ----------: | :---------- | --: | --: | ---: | -------: | ---------: | -------: |
+|   0 | SLV230120C00035000 | 2023-01-20 | SLV    | C    |     35 |   338 | 389212 |  0.250008 | 2.65844e-09 | 8.21107e-09 | 8.20159e-11 | -2.63722e-10 | 1.23914e-09 | 2022-11-18  |   0 |   0 | 0.02 |        0 |      19.25 | 0.901724 |
+|   1 | EEM221216C00045000 | 2022-12-16 | EEM    | C    |     45 | 14086 | 341301 |  0.125009 | 1.13015e-07 | 4.91845e-07 | 2.86473e-09 | -1.52641e-08 | 5.96183e-08 | 2022-11-18  |   0 |   0 | 0.02 |        0 |      38.03 | 0.723568 |
+|   2 | SLV230120C00040000 | 2023-01-20 | SLV    | C    |     40 |   200 | 316800 |  0.500005 | 0.000228694 | 0.000221098 |  6.8245e-06 | -2.83253e-05 | 6.67309e-05 | 2022-11-18  |   0 |   0 | 0.01 |        0 |      19.25 | 0.901724 |
+|   3 | NOK230120C00007000 | 2023-01-20 | NOK    | C    |      7 |   557 | 257115 |  0.250008 |  0.00010857 | 0.000884296 | 8.27629e-07 | -1.74568e-06 |  8.2688e-06 | 2022-11-18  |   0 |   0 | 0.01 |        0 |       4.79 |  1.36273 |
+|   4 | EEM221216C00040000 | 2022-12-16 | EEM    | C    |     40 | 13302 | 247105 | 0.0625094 | 0.000969793 |  0.00531776 | 2.46164e-05 | -4.14814e-05 | 0.000322318 | 2022-11-18  |   0 |   0 | 0.23 |        0 |      38.03 | 0.723568 |
 
 ### Portfolio Files
 
@@ -55,24 +55,26 @@ User files are located in, `~/OpenBBUserData/portfolio/holdings/`, and can be lo
 ```python
 port = openbb.portfolio.load(transactions_file_path='/users/username/OpenBBUserData/portfolio/holdings/test_port.csv')
 ```
+
 ```console
 Preprocessing transactions: 100%|██████████| 14/14 [00:01<00:00,  7.20it/s]
         Loading price data: 100%|██████████| 1/1 [00:00<00:00,  2.09it/s]
        Calculating returns: 100%|██████████| 1/1 [00:00<00:00, 30.04it/s]
          Loading benchmark: 100%|██████████| 4/4 [00:04<00:00,  1.15s/it]
 ```
+
 ```python
 openbb.portfolio.show(port)
 ```
 
-|    | Date       | Type   | Ticker   | Side   |   Price |   Quantity |   Fees |   Investment | Currency   | Sector             | Industry         | Country        | Region        |
-|---:|:-----------|:-------|:---------|:-------|--------:|-----------:|-------:|-------------:|:-----------|:-------------------|:-----------------|:---------------|:--------------|
-|  5 | 2021-11-04 | STOCK  | ABX.TO   | Buy    |   23.46 |       1000 |    200 |      23660   | CAD        | Basic Materials    | Gold             | Canada         | North America |
-|  4 | 2021-11-04 | STOCK  | PHYS.TO  | Buy    |   17.57 |       1400 |    200 |      24798   | CAD        | Financial Services | Asset Management | Canada         | North America |
-|  1 | 2021-10-29 | STOCK  | WPM.TO   | Buy    |   51.23 |        300 |    200 |      15569   | CAD        | Basic Materials    | Gold             | Canada         | North America |
-|  3 | 2021-10-29 | STOCK  | K.TO     | Buy    |    7.93 |       1900 |    200 |      15267   | CAD        | Basic Materials    | Gold             | Canada         | North America |
-|  2 | 2021-10-29 | STOCK  | NGT.TO   | Buy    |   71.05 |        200 |    200 |      14410   | CAD        | Basic Materials    | Gold             | United States  | North America |
-|  0 | 2021-10-27 | STOCK  | PHYS.TO  | Buy    |   17.65 |       3000 |    200 |      53150   | CAD        | Financial Services | Asset Management | Canada         | North America |
+|     | Date       | Type  | Ticker  | Side | Price | Quantity | Fees | Investment | Currency | Sector             | Industry         | Country       | Region        |
+| --: | :--------- | :---- | :------ | :--- | ----: | -------: | ---: | ---------: | :------- | :----------------- | :--------------- | :------------ | :------------ |
+|   5 | 2021-11-04 | STOCK | ABX.TO  | Buy  | 23.46 |     1000 |  200 |      23660 | CAD      | Basic Materials    | Gold             | Canada        | North America |
+|   4 | 2021-11-04 | STOCK | PHYS.TO | Buy  | 17.57 |     1400 |  200 |      24798 | CAD      | Financial Services | Asset Management | Canada        | North America |
+|   1 | 2021-10-29 | STOCK | WPM.TO  | Buy  | 51.23 |      300 |  200 |      15569 | CAD      | Basic Materials    | Gold             | Canada        | North America |
+|   3 | 2021-10-29 | STOCK | K.TO    | Buy  |  7.93 |     1900 |  200 |      15267 | CAD      | Basic Materials    | Gold             | Canada        | North America |
+|   2 | 2021-10-29 | STOCK | NGT.TO  | Buy  | 71.05 |      200 |  200 |      14410 | CAD      | Basic Materials    | Gold             | United States | North America |
+|   0 | 2021-10-27 | STOCK | PHYS.TO | Buy  | 17.65 |     3000 |  200 |      53150 | CAD      | Financial Services | Asset Management | Canada        | North America |
 
 ### Importing Previously Exported Files
 
@@ -570,7 +572,7 @@ Pasted below is the default Matplotlib, `mplrc`, style sheet. Use this as a refe
 #xtick.color:         black   # color of the ticks
 #xtick.labelcolor:    inherit # color of the tick labels or inherit from xtick.color
 #xtick.labelsize:     medium  # font size of the tick labels
-#xtick.direction:     out     # direction: {in, out, inout}
+#xtick.direction:     out     # direction: {in, out, input}
 #xtick.minor.visible: False   # visibility of minor ticks on x-axis
 #xtick.major.top:     True    # draw x axis top major ticks
 #xtick.major.bottom:  True    # draw x axis bottom major ticks
@@ -591,7 +593,7 @@ Pasted below is the default Matplotlib, `mplrc`, style sheet. Use this as a refe
 #ytick.color:         black   # color of the ticks
 #ytick.labelcolor:    inherit # color of the tick labels or inherit from ytick.color
 #ytick.labelsize:     medium  # font size of the tick labels
-#ytick.direction:     out     # direction: {in, out, inout}
+#ytick.direction:     out     # direction: {in, out, input}
 #ytick.minor.visible: False   # visibility of minor ticks on y-axis
 #ytick.major.left:    True    # draw y axis left major ticks
 #ytick.major.right:   True    # draw y axis right major ticks
