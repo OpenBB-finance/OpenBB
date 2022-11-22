@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { useThemeConfig } from '@docusaurus/theme-common';
-import FooterLinks from '@theme/Footer/Links';
-import FooterLogo from '@theme/Footer/Logo';
-import FooterCopyright from '@theme/Footer/Copyright';
-import FooterLayout from '@theme/Footer/Layout';
-import Link from '@docusaurus/Link';
-import LetteringLogo from '@site/src/components/Icons/LetteringLogo';
-import StarIcon from '@site/src/components/Icons/Star';
-import GithubIcon from '@site/src/components/Icons/Github';
-import LinkedinIcon from '@site/src/components/Icons/Linkedin';
-import TwitterIcon from '@site/src/components/Icons/Twitter';
-import InstagramIcon from '@site/src/components/Icons/Instagram';
-import TiktokIcon from '@site/src/components/Icons/Tiktok';
-import RedditIcon from '@site/src/components/Icons/Reddit';
-import DiscordIcon from '@site/src/components/Icons/Discord';
-import YoutubeIcon from '@site/src/components/Icons/Youtube';
-import ChevronRightIcon from '@site/src/components/Icons/ChevronRight';
-import clsx from 'clsx';
+import React, { useEffect, useState } from "react";
+import { useThemeConfig } from "@docusaurus/theme-common";
+import FooterLinks from "@theme/Footer/Links";
+import FooterLogo from "@theme/Footer/Logo";
+import FooterCopyright from "@theme/Footer/Copyright";
+import FooterLayout from "@theme/Footer/Layout";
+import Link from "@docusaurus/Link";
+import LetteringLogo from "@site/src/components/Icons/LetteringLogo";
+import StarIcon from "@site/src/components/Icons/Star";
+import GithubIcon from "@site/src/components/Icons/Github";
+import LinkedinIcon from "@site/src/components/Icons/Linkedin";
+import TwitterIcon from "@site/src/components/Icons/Twitter";
+import InstagramIcon from "@site/src/components/Icons/Instagram";
+import TiktokIcon from "@site/src/components/Icons/Tiktok";
+import RedditIcon from "@site/src/components/Icons/Reddit";
+import DiscordIcon from "@site/src/components/Icons/Discord";
+import YoutubeIcon from "@site/src/components/Icons/Youtube";
+import ChevronRightIcon from "@site/src/components/Icons/ChevronRight";
+import clsx from "clsx";
 const nFormatter = (num, digits) => {
   const si = [
-    { value: 1, symbol: '' },
-    { value: 1E3, symbol: 'k' },
-    { value: 1E6, symbol: 'M' },
-    { value: 1E9, symbol: 'G' },
-    { value: 1E12, symbol: 'T' },
-    { value: 1E15, symbol: 'P' },
-    { value: 1E18, symbol: 'E' }
+    { value: 1, symbol: "" },
+    { value: 1e3, symbol: "k" },
+    { value: 1e6, symbol: "M" },
+    { value: 1e9, symbol: "G" },
+    { value: 1e12, symbol: "T" },
+    { value: 1e15, symbol: "P" },
+    { value: 1e18, symbol: "E" },
   ];
   const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
   let i;
@@ -34,16 +34,16 @@ const nFormatter = (num, digits) => {
       break;
     }
   }
-  return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol;
+  return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
 };
 
 function Footer() {
-  const [stars, setStars] = useState(0)
+  const [stars, setStars] = useState(0);
   useEffect(() => {
     fetch("https://api.github.com/repos/openbb-finance/openbbterminal")
       .then((res) => res.json())
-      .then((data) => setStars(data.stargazers_count))
-  }, [])
+      .then((data) => setStars(data.stargazers_count));
+  }, []);
   return (
     <footer className="px-4 border-t dark:border-grey-600/50 lg:px-12 py-14 bg-white dark:bg-grey-900 z-10 overflow-hidden">
       <div className="flex w-full flex-col justify-between gap-10 md:flex-row md:items-start">
@@ -104,21 +104,25 @@ function Footer() {
                             </Link>
                           )}
                         </li>
-                      )
+                      );
                     })}
                   </ul>
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       </div>
+      <span>lorem ipsum</span>
       <hr />
       <div className="flex w-full flex-col items-center justify-between gap-4 md:flex-row md:gap-0">
         <div className="flex flex-col items-start justify-end gap-4 self-start font-light text-grey-500 md:flex-row md:items-center">
           <p className="text-sm">{`© ${new Date().getFullYear()} OpenBB`}</p>
           <div className="_divider-x hidden h-[20px] border-[0.5px] md:block" />
-          <Link to="/legal/privacy-policy" className="text-sm dark:hover:text-white">
+          <Link
+            to="/legal/privacy-policy"
+            className="text-sm dark:hover:text-white"
+          >
             Privacy Policy
           </Link>
           <div className="_divider-x hidden h-[20px] border-[0.5px] md:block" />
@@ -200,11 +204,10 @@ function Footer() {
 }
 export default React.memo(Footer);
 
-
 function Submenu({ label, submenu }) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   function toggle() {
-    setIsOpen(!isOpen)
+    setIsOpen(!isOpen);
   }
   return (
     <div className="w-full md:hidden">
@@ -246,110 +249,110 @@ function Submenu({ label, submenu }) {
             >
               {menu.label}
             </Link>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }
 
 const FOOTER_CONTENT = {
-  "social": {
-    "twitter": "/"
+  social: {
+    twitter: "/",
   },
-  "items": [
+  items: [
     {
-      "href": "https://openbb.co/company",
-      "label": "Company",
-      "submenus": [
+      href: "https://openbb.co/company",
+      label: "Company",
+      submenus: [
         {
-          "href": "https://openbb.co/why-openbb",
-          "label": "Why OpenBB?"
+          href: "https://openbb.co/why-openbb",
+          label: "Why OpenBB?",
         },
         {
-          "href": "https://openbb.co/community",
-          "label": "Community"
+          href: "https://openbb.co/community",
+          label: "Community",
         },
         {
-          "href": "https://openbb.co/company",
-          "label": "About us"
+          href: "https://openbb.co/company",
+          label: "About us",
         },
         {
-          "href": "https://openbb.co/company/careers",
-          "label": "Careers"
+          href: "https://openbb.co/company/careers",
+          label: "Careers",
         },
         {
-          "href": "https://openbb.co/company/partners",
-          "label": "Partners"
-        }
-      ]
+          href: "https://openbb.co/company/partners",
+          label: "Partners",
+        },
+      ],
     },
     {
-      "href": "https://openbb.co/products/terminal",
-      "label": "Products",
-      "submenus": [
+      href: "https://openbb.co/products/terminal",
+      label: "Products",
+      submenus: [
         {
-          "href": "https://openbb.co/products/terminal",
-          "label": "OpenBB Terminal"
+          href: "https://openbb.co/products/terminal",
+          label: "OpenBB Terminal",
         },
         {
-          "href": "https://openbb-finance.github.io/OpenBBTerminal/",
-          "label": "Terminal Docs"
+          href: "https://openbb-finance.github.io/OpenBBTerminal/",
+          label: "Terminal Docs",
         },
         {
-          "href": "https://openbb.co/products/bot",
-          "label": "OpenBB Bot"
+          href: "https://openbb.co/products/bot",
+          label: "OpenBB Bot",
         },
         {
-          "href": "https://my.openbb.co/app/docs",
-          "label": "Bot Docs"
-        }
-      ]
+          href: "https://my.openbb.co/app/docs",
+          label: "Bot Docs",
+        },
+      ],
     },
     {
-      "href": "",
-      "label": "Community",
-      "submenus": [
+      href: "",
+      label: "Community",
+      submenus: [
         {
-          "href": "https://openbb.co/community",
-          "label": "Contributors"
+          href: "https://openbb.co/community",
+          label: "Contributors",
         },
         {
-          "href": "https://openbb.co/blog",
-          "label": "Blog & Stories"
+          href: "https://openbb.co/blog",
+          label: "Blog & Stories",
         },
         {
-          "href": "https://openbb.co/newsletter",
-          "label": "Newsletter"
+          href: "https://openbb.co/newsletter",
+          label: "Newsletter",
         },
 
         {
-          "href": "https://www.openbb.design",
-          "label": "Brand Book"
-        }
-      ]
+          href: "https://www.openbb.design",
+          label: "Brand Book",
+        },
+      ],
     },
     {
-      "href": "",
-      "label": "Others",
-      "submenus": [
+      href: "",
+      label: "Others",
+      submenus: [
         {
-          "href": "https://openbb.co/request-a-feature",
-          "label": "Request feature"
+          href: "https://openbb.co/request-a-feature",
+          label: "Request feature",
         },
         {
-          "href": "https://openbb.co/support",
-          "label": "Support"
+          href: "https://openbb.co/support",
+          label: "Support",
         },
         {
-          "href": "https://openbb.co/contact",
-          "label": "Contact"
+          href: "https://openbb.co/contact",
+          label: "Contact",
         },
         {
-          "href": "https://openbb.co/sitemap",
-          "label": "Sitemap"
-        }
-      ]
-    }
-  ]
-}
+          href: "https://openbb.co/sitemap",
+          label: "Sitemap",
+        },
+      ],
+    },
+  ],
+};
