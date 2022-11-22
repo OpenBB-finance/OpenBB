@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import json
 import traceback
 from typing import Dict, List, Optional, Union
 
@@ -194,7 +195,8 @@ def main():
                         sub = sub_names_full[sub].lower()
                     trail.append(sub)
 
-                filepath = f"terminaltest/{'/'.join(trail)}/{cat['cmd_name']}.md"
+                filepath = f"website/content/terminal/reference/{'/'.join(trail)}/{cat['cmd_name']}.md"
+                print(filepath)
 
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
                 with open(filepath, "w", encoding="utf-8") as f:
@@ -204,8 +206,16 @@ def main():
             traceback.print_exc()
             console.print(f"[red]Failed to generate markdown for {ctrlstr}: {e}[/red]")
 
+    obj = {"label": "Terminal Reference", "position": 4}
+    with open(
+        "website/content/terminal/reference/_category_.json",
+        "w",
+        encoding="utf-8",
+    ) as f:
+        f.write(json.dumps(obj, indent=2))
+
     console.print(
-        "[green]Markdown files generated, check the terminaltest folder[/green]"
+        "[green]Markdown files generated, check the website/content/terminal/reference/ folder[/green]"
     )
 
 

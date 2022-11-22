@@ -1,4 +1,5 @@
 import csv
+import json
 import importlib
 import inspect
 import os
@@ -36,8 +37,8 @@ def clean_attr_desc(attr: Optional[FunctionType] = None) -> Optional[str]:
 
 
 def get_signature_parameters(
-    function: Callable[..., Any], globalns: dict[str, Any]
-) -> dict[str, inspect.Parameter]:
+    function: Callable[..., Any], globalns: Dict[str, Any]
+) -> Dict[str, inspect.Parameter]:
     signature = inspect.signature(function)
     params = {}
     cache: dict[str, Any] = {}
@@ -347,7 +348,7 @@ def main():
             trailmap.class_attr = "index_cmd"
 
         filepath = (
-            "functions/"
+            "website/content/sdk/reference/"
             + "/".join(trailmap.location_path)
             + "/"
             + trailmap.class_attr
@@ -358,8 +359,13 @@ def main():
             f.write(markdown)
     index_markdown = "# OpenBB SDK Reference\n\n"
     index_markdown += generate_index_markdown("", functions_dict, 2)
-    with open("functions/index.md", "w", encoding="utf-8") as f:
+    with open("website/content/sdk/reference/index.md", "w", encoding="utf-8") as f:
         f.write(index_markdown)
+    obj = {"label": "SDK Reference", "position": 4}
+    with open(
+        "website/content/sdk/reference/_category_.json", "w", encoding="utf-8"
+    ) as f:
+        f.write(json.dumps(obj, indent=2))
     print("Markdown files generated, check the functions folder")
 
 
