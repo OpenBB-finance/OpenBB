@@ -89,9 +89,9 @@ class Trailmap:
 
                 func_attr = getattr(module, function_name)
                 add_juan = 0
-                if "__wrapped__" in dir(func_attr):
+                if hasattr(func_attr, "__wrapped__"):
                     func_attr = func_attr.__wrapped__
-                    if "__wrapped__" in dir(func_attr):
+                    if hasattr(func_attr, "__wrapped__"):
                         func_attr = func_attr.__wrapped__
                     add_juan = 1
 
