@@ -3,6 +3,7 @@ import json
 import importlib
 import inspect
 import os
+from pathlib import Path
 from types import FunctionType
 from typing import (
     Any,
@@ -21,6 +22,7 @@ from openbb_terminal.rich_config import console
 
 MAP_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map.csv"
 MAP_FORECASTING_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map_forecasting.csv"
+website_path = Path(__file__).parent.absolute()
 
 
 def clean_attr_desc(attr: Optional[FunctionType] = None) -> Optional[str]:
@@ -142,7 +144,7 @@ class Trailmap:
                 arg_default = (
                     funcspec[arg].default
                     if funcspec[arg].default is not inspect.Parameter.empty
-                    else None
+                    else "None"
                 )
                 default = (
                     f" = {arg_default}"
@@ -285,7 +287,7 @@ def generate_markdown_section(meta):
         markdown += "| Name | Type | Description | Default | Optional |\n"
         markdown += "| ---- | ---- | ----------- | ------- | -------- |\n"
         for param in meta["params"]:
-            description = param["doc"].replace("\n", "<br/>")
+            description = param["doc"].replace("\n", "<br/>") if param["doc"] else ""
             markdown += f"| {param['name']} | {param['type']} | {description} | {param['default']} | {param['optional']} |\n"  # noqa: E501
         markdown += "\n\n"
     else:
@@ -337,6 +339,7 @@ def main():
     print("Loading trailmaps...")
     trailmaps = get_trailmaps()
     print("Generating markdown files...")
+    content_path = website_path / "content/sdk/reference"
     functions_dict = {}
     for trailmap in trailmaps:
         functions_dict = add_todict(functions_dict, trailmap.location_path, trailmap)
@@ -347,32 +350,26 @@ def main():
         if trailmap.class_attr == "index":
             trailmap.class_attr = "index_cmd"
 
-        filepath = (
-            "website/content/sdk/reference/"
-            + "/".join(trailmap.location_path)
-            + "/"
-            + trailmap.class_attr
-            + ".md"
-        )
+        filepath = f"{str(content_path)}/{'/'.join(trailmap.location_path)}/{trailmap.class_attr}.md"
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(markdown)
-    index_markdown = "# OpenBB SDK Reference\n\n"
-    index_markdown += generate_index_markdown("", functions_dict, 2)
-    with open("website/content/sdk/reference/index.md", "w", encoding="utf-8") as f:
+
+    index_markdown = (
+        f"# OpenBB SDK Reference\n\n{generate_index_markdown('', functions_dict, 2)}"
+    )
+    with open(content_path / "index.md", "w", encoding="utf-8") as f:
         f.write(index_markdown)
-    obj = {"label": "SDK Reference", "position": 4}
-    with open(
-        "website/content/sdk/reference/_category_.json", "w", encoding="utf-8"
-    ) as f:
-        f.write(json.dumps(obj, indent=2))
+
+    with open(content_path / "_category_.json", "w", encoding="utf-8") as f:
+        f.write(json.dumps({"label": "SDK Reference", "position": 4}, indent=2))
     print("Markdown files generated, check the functions folder")
 
 
 def generate_index_markdown(markdown, d, level):
     for key in d:
         if isinstance(d[key], dict):
-            markdown += f"{'#' * level} {key}\n"
+            markdown += f"\n{'#' * level} {key}\n"
             markdown = generate_index_markdown(markdown, d[key], level + 1)
         else:
             markdown += f"- [{key}]({d[key]})\n"
