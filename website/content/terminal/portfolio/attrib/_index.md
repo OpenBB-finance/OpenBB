@@ -4,7 +4,7 @@ usage: attrib [-p TIME PERIOD [TIME PERIOD ...]] [-t] [-r] [-h]
 
 Display attributions of sector performance in terms of the S&P 500 benchmark (SPY), and the user's portfolio. Graph visualisation and tabular values available.
 
-Default output is the graph visualisation of relative sector attribution, which gives attribution as a percentage. 
+Default output is the graph visualisation of relative sector attribution, which gives attribution as a percentage.
 
 ```
 optional arguments:
@@ -46,7 +46,7 @@ If I would call `attrib --raw` I would get the graph of the relative performance
 ```
 2022 Nov 07, 04:58 (🦋) /portfolio/ $ attrib --raw
 
-                                              Contributions as % of PF: Portfolio vs. Benchmark Attribution Categorisation all                                               
+                                              Contributions as % of PF: Portfolio vs. Benchmark Attribution categorization all
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                             ┃ S&P500 [%] ┃ Portfolio [%] ┃ Excess Attribution ┃ Attribution Ratio ┃ Attribution Direction [+/-] ┃ Attribution Sensitivity ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
@@ -79,7 +79,7 @@ If I would call `attrib --type absolute --raw` I would get the graph of the abso
 ```
 2022 Nov 07, 04:59 (🦋) /portfolio/ $ attrib --type absolute  --raw
 
-                                   Raw contributions (Return x PF Weight): Portfolio vs. Benchmark Attribution Categorisation all                                    
+                                   Raw contributions (Return x PF Weight): Portfolio vs. Benchmark Attribution categorization all
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                             ┃ S&P500 ┃ Portfolio ┃ Excess Attribution ┃ Attribution Ratio ┃ Attribution Direction [+/-] ┃ Attribution Sensitivity ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩

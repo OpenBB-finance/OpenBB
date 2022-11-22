@@ -203,6 +203,7 @@ def get_sp500_comps_tsne(
     pd.DataFrame
         Dataframe of tickers closest to selected ticker
     """
+
     # Adding the type makes pylint stop yelling
     close_vals: pd.DataFrame = get_1y_sp500()
     if symbol not in close_vals.columns:

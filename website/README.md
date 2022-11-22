@@ -1,3 +1,6 @@
+<details><summary>DEPRECATED - OLD README</summary>
+<p>
+
 # Hugo Server
 
 The current features can be found in [OpenBB Terminal Features](https://openbb-finance.github.io/OpenBBTerminal).
@@ -144,3 +147,6 @@ main:
           - name: map
             ref: "/stocks/discovery/map"
 ```
+
+</p>
+</details>

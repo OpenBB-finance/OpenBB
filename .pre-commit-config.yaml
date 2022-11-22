@@ -1,17 +1,4 @@
 repos:
-  - repo: local
-    hooks:
-      - id: check-docs
-        name: Check Command Documentation
-        description: Ensures that all of the commands in the terminal are included in Hugo.
-        language: python
-        pass_filenames: false
-        args:
-          [
-            "--ignore-files=settings_controller.py,featflags_controller.py,keys_controller.py,degiro_controller.py,",
-            "--ignore-commands=login,alswe,infoswe,goodness,resources,yf,yolo,from,to,featflags,guess,settings,survey,intro"
-          ]
-        entry: python custom_pre_commit/check_doc.py
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.3.0
     hooks:
@@ -38,20 +25,20 @@ repos:
         entry: codespell
         args:
           [
-            "--ignore-words-list=commun,ro,zar,vie,hel,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,statics",
+            "--ignore-words-list=commun,ro,zar,vie,hel,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,statics,ket,toke,certi,buidl",
             "--quiet-level=2",
             "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*,./website/config.toml",
           ]
   - repo: local
     hooks:
-      -   id: mypy
-          name: mypy
-          description: ''
-          entry: mypy
-          language: python
-          'types_or': [python, pyi]
-          args: ["--ignore-missing-imports", "--scripts-are-modules"]
-          require_serial: true
+      - id: mypy
+        name: mypy
+        description: ""
+        entry: mypy
+        language: python
+        "types_or": [python, pyi]
+        args: ["--ignore-missing-imports", "--scripts-are-modules"]
+        require_serial: true
   - repo: https://github.com/kynan/nbstripout
     rev: 0.6.1
     hooks:
@@ -69,7 +56,14 @@ repos:
     hooks:
       - id: detect-secrets
         args:
-          ["--baseline", ".secrets.baseline", "--exclude-files", "cassettes/*", "--exclude-files", "website/content/api/*"]
+          [
+            "--baseline",
+            ".secrets.baseline",
+            "--exclude-files",
+            "cassettes/*",
+            "--exclude-files",
+            "website/content/api/*",
+          ]
         exclude: package.lock.json
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.2.2
