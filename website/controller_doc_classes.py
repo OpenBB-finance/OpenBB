@@ -270,9 +270,6 @@ class ControllerDoc:
             self.cmd_parsers[command] = fparser
             return
 
-        def mock_print(*args, **kwargs):
-            return
-
         with patch.object(
             self.controller, "parse_known_args_and_warn", new=mock_func
         ) as _:
@@ -284,9 +281,11 @@ class ControllerDoc:
 
             if len(fullspec.args) > 2:
                 args.update({arg: ["1234"] for arg in fullspec.args[2:]})
-            with patch("openbb_terminal.rich_config.console.print", mock_print):
+            with patch("openbb_terminal.rich_config.console.print"):
                 try:
                     _ = getattr(self.controller, command)(["--help"], **args)
+                except AttributeError:
+                    pass
                 except SystemExit:
                     pass
 
