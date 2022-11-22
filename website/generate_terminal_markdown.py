@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import json
 from pathlib import Path
 import traceback
 from typing import Dict, List, Optional, Union
@@ -11,7 +12,8 @@ from website.controller_doc_classes import (
     sub_names_full,
 )
 
-website_path = Path(__file__).parent
+
+website_path = Path(__file__).parent.absolute()
 
 
 def existing_markdown_file_examples(
@@ -200,6 +202,7 @@ def main():
     ctrls = load_ctrls.available_controllers()
 
     console.print("Generating markdown files... Don't ignore any errors now")
+    content_path = website_path / "content/terminal/reference"
     terminal_ref = {}
     for ctrlstr in ctrls:
         try:
@@ -220,26 +223,30 @@ def main():
                     trail.append(sub)
 
                 terminal_ref = add_todict(terminal_ref, trail, cat["cmd_name"], trail)
-                filepath = f"{str(website_path)}/content/terminal/reference/{'/'.join(trail)}/{cat['cmd_name']}.md"
+                filepath = f"{str(content_path)}/{'/'.join(trail)}/{cat['cmd_name']}.md"
 
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
-                with open(website_path / filepath, "w", encoding="utf-8") as f:
+                with open(filepath, "w", encoding="utf-8") as f:
                     f.write(markdown)
 
         except Exception as e:
             traceback.print_exc()
             console.print(f"[red]Failed to generate markdown for {ctrlstr}: {e}[/red]")
 
-    index_markdown = (
-        f"# OpenBB Terminal Features\n\n{generate_index_markdown('', terminal_ref, 2)}"
-    )
     with open(
-        website_path / "content/terminal/reference/index.md", "w", encoding="utf-8"
+        content_path / "reference/_category_.json",
+        "w",
+        encoding="utf-8",
     ) as f:
-        f.write(index_markdown)
+        f.write(json.dumps({"label": "Terminal Reference", "position": 4}, indent=2))
+
+    with open(content_path / "index.md", "w", encoding="utf-8") as f:
+        f.write(
+            f"# OpenBB Terminal Features\n\n{generate_index_markdown('', terminal_ref, 2)}"
+        )
 
     console.print(
-        "[green]Markdown files generated, check the content/terminal/reference folder[/green]"
+        "[green]Markdown files generated, check the website/content/terminal/reference/ folder[/green]"
     )
 
 
