@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 The OpenBB SDK is a set of tools for financial and data analysis. We recommend starting out with some experience in finance, markets, and Python. The purpose of this page is to outline some of the background information required to get the most out of the software.
 
-### Minumum System Requirements
+### Minimum System Requirements
 
 - 4GB RAM or more
 - 5GB free storage
@@ -65,7 +65,7 @@ Virtual Python environments are containers for Python applications, and allows t
 
 - Miniconda3 is installed and the version is specifically x86/x64 architecture, regardless of the CPU-type.
 - CMake must be installed within the environment created for the OpenBB installation.
-     - `conda install -c conda-forge cmake`
+  - `conda install -c conda-forge cmake`
 
 It is not recommended to install in a Global environment, such as Homebrew or `usr/local/bin/python3`. Create and activate a new environment before installing the OpenBB SDK.
 
@@ -85,9 +85,10 @@ A good way to learn about the Python language is to recognize the libraries whic
 - URLlib3
 
 The best way to learn is to get involved. Tinkering with the code from an open-source project is an excellent way to dabble.
+
 ### GitHub
 
-[GitHub](https://github.com/OpenBB-finance/OpenBBTerminal) is where the OpenBB source code is maintained. Cloning the [repository](https://github.com/OpenBB-finance/OpenBBTerminal.git) is recommended for those wishing to develop functions, inspect the source code, or be on the bleeding-edge of development. Syncing the local folder - `git pull` - to the main branch of the repository will keep the installation up-to-date, and `git checkout` provides a way to test development or contributor branchs. GitHub can also be used as a personal storage vault and take advantage of automated actions. It's a great place to build, store, and maintain small databases for free.
+[GitHub](https://github.com/OpenBB-finance/OpenBBTerminal) is where the OpenBB source code is maintained. Cloning the [repository](https://github.com/OpenBB-finance/OpenBBTerminal.git) is recommended for those wishing to develop functions, inspect the source code, or be on the bleeding-edge of development. Syncing the local folder - `git pull` - to the main branch of the repository will keep the installation up-to-date, and `git checkout` provides a way to test development or contributor branches. GitHub can also be used as a personal storage vault and take advantage of automated actions. It's a great place to build, store, and maintain small databases for free.
 
 Users encountering bugs are encouraged to report them [here](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose) by creating a new issue, if no open issue for the bug already exists.
 
@@ -100,16 +101,16 @@ For example:
 ```
 openbb.economy.ycrv()
 ```
-|    |   Maturity |   Rate |
-|---:|-----------:|-------:|
-|  0 |  0.0833333 |   3.93 |
-|  1 |  0.25      |   4.34 |
-|  2 |  0.5       |   4.61 |
-| ...|  ...       |  ...   |
-|  8 | 10         |   3.82 |
-|  9 | 20         |   4.13 |
-| 10 | 30         |   3.92 |
 
+|     |  Maturity | Rate |
+| --: | --------: | ---: |
+|   0 | 0.0833333 | 3.93 |
+|   1 |      0.25 | 4.34 |
+|   2 |       0.5 | 4.61 |
+| ... |       ... |  ... |
+|   8 |        10 | 3.82 |
+|   9 |        20 | 4.13 |
+|  10 |        30 | 3.92 |
 
 Then the view:
 
