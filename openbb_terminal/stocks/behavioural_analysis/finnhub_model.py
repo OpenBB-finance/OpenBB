@@ -103,8 +103,17 @@ def get_headlines_sentiment(
     ----------
     symbol : str
         Ticker of company
+
+    Returns
+    ----------
+    pd.DataFrame
+        The news article information
     """
     start = datetime.now() - timedelta(days=30)
+    if not symbol:
+        console.print("[red]Do not run this command without setting a ticker.[/red]\n")
+        return pd.DataFrame()
+
     articles = get_company_news(
         symbol.upper(),
         start_date=start.strftime("%Y-%m-%d"),
