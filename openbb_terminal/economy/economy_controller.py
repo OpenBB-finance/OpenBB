@@ -437,7 +437,7 @@ class EconomyController(BaseController):
             "--countries",
             help="Country codes to get data for.",
             dest="countries",
-            choices=nasdaq_model.get_country_codes()["Code"].values,
+            choices=list(nasdaq_model.get_country_codes()["Code"].values),
             default="USA",
             type=str,
         )
