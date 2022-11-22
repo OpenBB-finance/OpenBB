@@ -1,0 +1,12 @@
+@media (min-width: 997px) {
+  /* Prevent hydration FOUC, as the mobile TOC needs to be server-rendered */
+  .tocMobile {
+    display: none;
+  }
+}
+
+@media print {
+  .tocMobile {
+    display: none;
+  }
+}
