@@ -97,7 +97,7 @@ watchdog = "^2.1.9"
 pythclient = "^0.1.2"
 ipyflex = "^0.2.4"
 "ruamel.yaml" = "^0.17.21"
-setuptools = "<65.6.0"
+setuptools = "<65.5.0"
 investiny = "^0.5.0"
 numpy = "1.23.4"
 papermill = "^2.4.0"
@@ -107,6 +107,7 @@ protobuf = "3.20.1"
 pytorch-lightning = {version = "1.6.5", optional = true}
 u8darts = {extras = ["torch"], version = "0.22.0", optional = true}
 docstring-parser = {version = "^0.15", optional = true}
+grpcio = "<1.51.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
@@ -143,7 +144,7 @@ installer = ["pyinstaller"]
 doc = ["docstring-parser"]
 
 [build-system]
-requires = ["setuptools<65.6.0", "poetry-core>=1.0.0"]
+requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pydocstyle]
