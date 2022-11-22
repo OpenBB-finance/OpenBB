@@ -76,8 +76,8 @@ def notes(search_query: str, limit: int = 10):
 @check_api_key(["API_FRED_KEY"])
 def display_fred_series(
     series_ids: List[str],
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     limit: int = 10,
     get_data: bool = False,
     raw: bool = False,
@@ -90,9 +90,9 @@ def display_fred_series(
     ----------
     series_ids : List[str]
         FRED Series ID from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3
-    start_date : str
+    start_date : Optional[str]
         Starting date (YYYY-MM-DD) of data
-    end_date : str
+    end_date : Optional[str]
         Ending date (YYYY-MM-DD) of data
     limit : int
         Number of data points to display.
