@@ -8,6 +8,7 @@ import json
 from datetime import datetime, timedelta
 import difflib
 import logging
+from typing import Optional, Union
 
 import pandas as pd
 import numpy as np
@@ -115,7 +116,7 @@ YF_CURRENCY = [
 
 
 def check_datetime(
-    ck_date: datetime | str | None = None, start: bool = True
+    ck_date: Union[datetime, str, None] = None, start: bool = True
 ) -> datetime:
     """Checks if given argument is string and attempts to convert to datetime.
 
@@ -488,11 +489,11 @@ def load_from_yahoofinance(
 
 def load(
     symbol: str,
-    start_date: datetime | str | None = None,
+    start_date: Union[datetime, str, None] = None,
     interval: str = "1440",
     exchange: str = "binance",
     vs_currency: str = "usdt",
-    end_date: datetime | str | None = None,
+    end_date: Union[datetime, str, None] = None,
     source: str = "CCXT",
 ) -> pd.DataFrame:
     """Load crypto currency to get data for
@@ -751,7 +752,7 @@ def plot_chart(
     source: str = "",
     exchange: str = "",
     interval: str = "",
-    external_axes: list[plt.Axes] | None = None,
+    external_axes: Optional[list[plt.Axes]] = None,
     yscale: str = "linear",
 ) -> None:
     """Load data for Technical Analysis
@@ -801,7 +802,7 @@ def plot_candles(
     volume: bool = True,
     ylabel: str = "",
     title: str = "",
-    external_axes: list[plt.Axes] | None = None,
+    external_axes: Optional[list[plt.Axes]] = None,
     yscale: str = "linear",
 ) -> None:
     """Plot candle chart from dataframe. [Source: Binance]
@@ -881,7 +882,7 @@ def plot_order_book(
     bids: np.ndarray,
     asks: np.ndarray,
     coin: str,
-    external_axes: list[plt.Axes] | None = None,
+    external_axes: Optional[list[plt.Axes]] = None,
 ) -> None:
     """
     Plots Bid/Ask. Can be used for Coinbase and Binance
