@@ -3,7 +3,7 @@
 Ticker to get similar companies from: 
 
 [unvl]    tsne               run TSNE on all SP500 stocks and returns closest tickers[/unvl] [YahooFinance]
-[unvl]    get                stocks/ca/get[/unvl]                               [Finviz, Polygon, Finnhub]
+[unvl]    get                get similar stocks[/unvl]                          [Finviz, Polygon, Finnhub]
 
     set                reset and set similar companies
     add                add more similar companies
