@@ -3,8 +3,10 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Tuple
+import os
 
 import pandas as pd
+import certifi
 
 from openbb_terminal.decorators import log_start_end
 
@@ -30,6 +32,13 @@ def get_rsp(
         Dataframe of stock percentile, Dataframe of industry percentile,
         Raw stock dataframe for export, Raw industry dataframe for export
     """
+
+    # Necessary for installer so that it can locate the correct certificates for
+    # API calls and https
+    # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
+    os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+    os.environ["SSL_CERT_FILE"] = certifi.where()
+
     df_stock_p = pd.read_csv(
         "https://raw.githubusercontent.com/soggyomelette/rs-log/main/output/rs_stocks.csv"
     )
