@@ -102,7 +102,6 @@ class Trailmap:
                 self.short_doc[key] = clean_attr_desc(func_attr)
 
                 self.params[key] = {}
-
                 for k, p in get_signature_parameters(
                     func_attr, func_attr.__globals__
                 ).items():
@@ -316,11 +315,30 @@ def generate_markdown_section(meta):
     return markdown
 
 
+def add_todict(d: dict, location_path: list, tmap: Trailmap) -> dict:
+    """Adds the trailmap to the dictionary. A trailmap is a path to a function
+    in the sdk. This function creates the dictionary paths to the function."""
+
+    if location_path[0] not in d:
+        d[location_path[0]] = {}
+
+    if len(location_path) > 1:
+        add_todict(d[location_path[0]], location_path[1:], tmap)
+    else:
+        d[location_path[0]][tmap.class_attr] = (
+            "/sdk/functions/" + "/".join(tmap.location_path) + "/" + tmap.class_attr
+        )  # noqa: E501
+
+    return d
+
+
 def main():
     print("Loading trailmaps...")
     trailmaps = get_trailmaps()
     print("Generating markdown files...")
+    functions_dict = {}
     for trailmap in trailmaps:
+        functions_dict = add_todict(functions_dict, trailmap.location_path, trailmap)
         model_meta = get_function_meta(trailmap, "model") if trailmap.model else None
         view_meta = get_function_meta(trailmap, "view") if trailmap.view else None
         markdown = generate_markdown(model_meta, view_meta)
@@ -338,7 +356,21 @@ def main():
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(markdown)
+    index_markdown = "# OpenBB SDK Reference\n\n"
+    index_markdown += generate_index_markdown("", functions_dict, 2)
+    with open("functions/index.md", "w", encoding="utf-8") as f:
+        f.write(index_markdown)
     print("Markdown files generated, check the functions folder")
+
+
+def generate_index_markdown(markdown, d, level):
+    for key in d:
+        if isinstance(d[key], dict):
+            markdown += f"{'#' * level} {key}\n"
+            markdown = generate_index_markdown(markdown, d[key], level + 1)
+        else:
+            markdown += f"- [{key}]({d[key]})\n"
+    return markdown
 
 
 if __name__ == "__main__":
