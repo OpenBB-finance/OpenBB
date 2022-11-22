@@ -117,7 +117,7 @@ class Operation:
 
 class OperationLogger:
 
-    method_stack = deque(maxlen=2)
+    last_method = {}
 
     def __init__(
         self,
@@ -132,16 +132,6 @@ class OperationLogger:
         self.__logger = logger or getLogger(self.__method_chosen.__module__)
         self.__args = args
         self.__kwargs = kwargs
-
-        self.__append_method_stack(
-            method=f"{self.__method_chosen.__module__}.{self.__method_chosen.__name__}",
-            args=self.__args,
-            kwargs=self.__kwargs,
-        )
-
-    @classmethod
-    def __append_method_stack(cls, method: str, args: Any = None, kwargs: Any = None):
-        cls.method_stack.append({method: {"args": args, "kwargs": kwargs}})
 
     def log_before_call(
         self,
@@ -267,6 +257,14 @@ class OperationLogger:
                 logger=logger,
                 method_chosen=self.__method_chosen,
             )
+            self.update_last_method(
+                last_method={
+                    f"{self.__method_chosen.__module__}.{self.__method_chosen.__name__}": {
+                        "args": self.__args,
+                        "kwargs": self.__kwargs,
+                    }
+                }
+            )
 
     @staticmethod
     def __log_exception_if_any(
@@ -288,11 +286,17 @@ class OperationLogger:
         )
 
     @classmethod
-    def __check_logging_conditions(cls) -> bool:
-        return not cfg.LOGGING_SUPPRESS and not cls.__check_method_stack()
+    def update_last_method(cls, last_method: Optional[dict] = None):
+        cls.last_method = last_method
 
-    @classmethod
-    def __check_method_stack(cls) -> bool:
-        if len(cls.method_stack) < 2:
-            return False
-        return cls.method_stack[0] == cls.method_stack[1]
+    def __check_logging_conditions(self) -> bool:
+        return not cfg.LOGGING_SUPPRESS and not self.__check_last_method()
+
+    def __check_last_method(self) -> bool:
+        current_method = {
+            f"{self.__method_chosen.__module__}.{self.__method_chosen.__name__}": {
+                "args": self.__args,
+                "kwargs": self.__kwargs,
+            }
+        }
+        return OperationLogger.last_method == current_method
