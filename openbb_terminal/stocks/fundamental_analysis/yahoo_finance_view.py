@@ -185,11 +185,12 @@ def display_calendar_earnings(symbol: str, export: str = ""):
 def display_dividends(
     symbol: str,
     limit: int = 12,
-    plot: bool = False,
+    plot: bool = True,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical dividends
+
     Parameters
     ----------
     symbol: str
@@ -205,10 +206,8 @@ def display_dividends(
     """
     div_history = yahoo_finance_model.get_dividends(symbol)
     if div_history.empty:
-        console.print("No dividends found.\n")
         return
-    div_history["Dif"] = div_history.diff()
-    div_history = div_history[::-1]
+
     if plot:
 
         # This plot has 1 axis
@@ -231,7 +230,7 @@ def display_dividends(
             alpha=1,
             label="Dividends Payout",
         )
-        ax.set_ylabel("Amount ($)")
+        ax.set_ylabel("Amount Paid ($)")
         ax.set_title(f"Dividend History for {symbol}")
         ax.set_xlim(div_history.index[-1], div_history.index[0])
         ax.legend()
