@@ -30,12 +30,12 @@ def _make_request(endpoint: str) -> dict:
         url,
         headers={
             "Accept": "application/json",
-            "User-Agent": "GST",
+            "User-Agent": "OBB",
             "Accept-Encoding": "gzip",
         },
     )
     if not 200 <= response.status_code < 300:
-        raise Exception(f"fcd terra api exception: {response.text}")
+        raise Exception(f"blockchain.info api exception: {response.text}")
     try:
         return response.json()
     except Exception as e:
@@ -62,12 +62,12 @@ def _blockchain_data_api_make_request(endpoint: str) -> dict:
         url,
         headers={
             "Accept": "application/json",
-            "User-Agent": "GST",
+            "User-Agent": "OBB",
             "Accept-Encoding": "gzip",
         },
     )
     if not 200 <= response.status_code < 300:
-        raise Exception(f"fcd terra api exception: {response.text}")
+        raise Exception(f"blockchain.info api exception: {response.text}")
     try:
         return response.json()
     except Exception as e:

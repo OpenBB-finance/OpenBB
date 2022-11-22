@@ -3,7 +3,7 @@ usage: btcblockdata     [--blockhash BLOCKHASH]
                         [--export {csv,json,xlsx}] [-h]
 ```
 
-Displays json data for a single block. [Source: https://api.blockchain.info/]
+Displays json data for a single block. [Source: https://blockchain.info/]
 
 ```
 arguments:
@@ -12,4 +12,4 @@ arguments:
   -h, --help                    Show this help message (default: False)
 ```
 
-![](../../../../../../../../../Dropbox/Screenshot 2022-10-26 000048.jpg)
+![](https://user-images.githubusercontent.com/57280701/201509706-a7c94df8-e15e-4b99-97bd-4cefa52edb02.jpg)
