@@ -177,11 +177,10 @@ class EconomyController(BaseController):
         self.DATASETS["index"] = pd.DataFrame()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            pass
-        choices: dict = self.choices_default
+            choices: dict = self.choices_default
 
-        self.choices = choices
-        self.completer = NestedCompleter.from_nested_dict(choices)
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def parse_input(self, an_input: str) -> List:
         """Parse controller input
@@ -621,7 +620,7 @@ class EconomyController(BaseController):
             "--parameter",
             type=str,
             dest="parameter",
-            choices=self.fred_query,
+            choices=self.fred_query.tolist(),
             default="",
             help="Series ID of the Macro Economic data from FRED",
         )

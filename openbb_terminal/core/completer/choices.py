@@ -204,6 +204,6 @@ def build_controller_choice_map(controller) -> dict:
             )
     except Exception as exception:
         if environ.get("DEBUG_MODE", "false") == "true":
-            raise Exception(f"On command : `{command}`\n{str(exception)}") from exception
+            raise Exception(f"On command : `{command}`.\n{str(exception)}") from exception
 
     return controller_choice_map
