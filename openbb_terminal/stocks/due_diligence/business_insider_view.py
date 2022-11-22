@@ -56,6 +56,11 @@ def price_target_from_analysts(
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.dd.pt_chart(symbol="AAPL")
     """
 
     if start_date is None:
