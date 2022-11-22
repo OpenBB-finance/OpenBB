@@ -117,10 +117,11 @@ def update_terminal():
 
 
 def open_openbb_documentation(
-    path, url="https://openbb-finance.github.io/OpenBBTerminal/", command=None
+    path, url="https://docs.openbb.co/terminal", command=None
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
+    print(url, path, command)
     if "ta" in path:
         path = "terminal/common/ta/"
     elif "ba" in path:
@@ -128,19 +129,19 @@ def open_openbb_documentation(
     elif "qa" in path:
         path = "terminal/common/qa/"
     elif "keys" in path:
-        path = "#accessing-other-sources-of-data-via-api-keys"
+        path = "/quickstart/keys"
         command = ""
     elif "settings" in path or "featflags" in path or "sources" in path:
         path = "#customizing-the-terminal"
         command = ""
     else:
-        path = f"terminal/{path}"
+        path = f"{path}"
 
     if command:
         if command in ["ta", "ba", "qa"]:
             path = "terminal/common/"
         elif "keys" == command:
-            path = "#accessing-other-sources-of-data-via-api-keys"
+            path = "/quickstart/keys"
             command = ""
         elif "exe" == command:
             path = "/terminal/scripts/"
@@ -152,6 +153,9 @@ def open_openbb_documentation(
         path += command
 
     full_url = f"{url}{path}".replace("//", "/")
+
+    if full_url[-1] == "/":
+        full_url = full_url[:-1]
 
     webbrowser.open(full_url)
 
