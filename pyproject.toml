@@ -106,6 +106,7 @@ ipython = "8.5.0"
 protobuf = "3.20.1"
 pytorch-lightning = {version = "1.6.5", optional = true}
 u8darts = {extras = ["torch"], version = "0.22.0", optional = true}
+docstring-parser = {version = "^0.15", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
@@ -139,6 +140,7 @@ optimization = ["Riskfolio-Lib"]
 all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]
+doc = ["docstring-parser"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

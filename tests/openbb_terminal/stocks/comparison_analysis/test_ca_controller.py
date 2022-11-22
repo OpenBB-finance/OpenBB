@@ -285,6 +285,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 symbols=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
+                export="",
             ),
         ),
         (
@@ -299,6 +300,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 symbols=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
+                export="csv",
             ),
         ),
         (
@@ -313,6 +315,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 symbols=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
+                export="csv",
             ),
         ),
         (
