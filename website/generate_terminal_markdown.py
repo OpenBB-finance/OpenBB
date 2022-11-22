@@ -195,13 +195,15 @@ def add_todict(d: dict, location_path: list, cmd_name: str, full_path: str) -> d
 def main():
     """Main function to generate markdown files"""
     console.print(
-        "Loading Controllers... Please wait and ignore any errors, this is normal."
+        "[bright_yellow]Loading Controllers... Please wait and ignore any errors, this is normal.[/bright_yellow]"
     )
 
     load_ctrls = LoadControllersDoc()
     ctrls = load_ctrls.available_controllers()
 
-    console.print("Generating markdown files... Don't ignore any errors now")
+    console.print(
+        "[bright_yellow]Generating markdown files... Don't ignore any errors now[/bright_yellow]"
+    )
     content_path = website_path / "content/terminal/reference"
     terminal_ref = {}
     for ctrlstr in ctrls:
@@ -233,11 +235,7 @@ def main():
             traceback.print_exc()
             console.print(f"[red]Failed to generate markdown for {ctrlstr}: {e}[/red]")
 
-    with open(
-        content_path / "reference/_category_.json",
-        "w",
-        encoding="utf-8",
-    ) as f:
+    with open(content_path / "_category_.json", "w", encoding="utf-8") as f:
         f.write(json.dumps({"label": "Terminal Reference", "position": 4}, indent=2))
 
     with open(content_path / "index.md", "w", encoding="utf-8") as f:
