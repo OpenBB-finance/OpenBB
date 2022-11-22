@@ -128,13 +128,13 @@ def get_parameters(
     """Gets the parameters of a controller's `__init__` signature. If required parameters are missing,
         we get the type and create a dummy value for it.
 
-    Parameters:
+    Parameters
     ----------
     controller_class: Type[BaseController]
         The controller class
 
-    Returns:
-    ----------
+    Returns
+    -------
     dict[str, Any]
         The dummy parameters for the controller init
     """
@@ -172,12 +172,12 @@ class ControllerDoc:
     """Class that retrieves the ArgumentParser for each command of the Controller and stores it in a dictionary
         for use in auto-generating the documentation.
 
-    Parameters:
+    Parameters
     ----------
     controller: BaseController
         The controller to get the commands from
 
-    Attributes:
+    Attributes
     ----------
     controller: BaseController
         The controller to get the commands from
@@ -192,8 +192,8 @@ class ControllerDoc:
     commands: List[str]
         A list of commands to document
 
-    Methods:
-    ----------
+    Methods
+    -------
     get_commands()
         Get commands
     get_command_parser(command: str)
@@ -284,8 +284,6 @@ class ControllerDoc:
             with patch("openbb_terminal.rich_config.console.print"):
                 try:
                     _ = getattr(self.controller, command)(["--help"], **args)
-                except AttributeError:
-                    pass
                 except SystemExit:
                     pass
 
@@ -303,13 +301,13 @@ class LoadControllersDoc:
     """Class that loads all controllers and creates a ControllerDoc class instance for each one
 
 
-    Attributes:
+    Attributes
     ----------
     controller_docs: Dict[str, ControllerDoc]
         A dictionary of the controller name and the ControllerDoc class instance for that controller
 
-    Methods:
-    ----------
+    Methods
+    -------
     get_controllers()
         Gets all controllers to create a ControllerDoc class instance for
     get_controller_doc(controller: str)
