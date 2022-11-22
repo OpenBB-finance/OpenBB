@@ -10,7 +10,8 @@ Perform Transformer Forecast: https://unit8co.github.io/darts/generated_api/dart
 ### Usage
 
 ```python
-usage: trans [--d-model D_MODEL] [--nhead NHEAD] [--num_encoder_layers NUM_ENCODER_LAYERS] [--num_decoder_layers NUM_DECODER_LAYERS] [--dim_feedforward DIM_FEEDFORWARD] [--activation {relu,gelu}]
+usage: trans [--d-model D_MODEL] [--nhead NHEAD] [--num_encoder_layers NUM_ENCODER_LAYERS] [--num_decoder_layers NUM_DECODER_LAYERS]
+             [--dim_feedforward DIM_FEEDFORWARD] [--activation {relu,gelu}]
 ```
 
 ---

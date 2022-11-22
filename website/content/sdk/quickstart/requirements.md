@@ -15,22 +15,21 @@ The OpenBB SDK is a set of tools for financial and data analysis. We recommend s
 - 5GB free storage
 - A code editor, such as VS Code, with some extensions:
 
-    - Jupyter
-    - Jupyter Power Toys
-    - Python Environment Manager
-    - Python Extension Pack
-    - mplstyle
+  - Jupyter
+  - Jupyter Power Toys
+  - Python Environment Manager
+  - Python Extension Pack
+  - mplstyle
 
 - Chrome or Firefox
 - Open Office
 
-### Minumum System Requirements
+### Minimum System Requirements
 
 - 8GB RAM or more
 - 5GB free storage
 - A code editor, such as VS Code
 - Chrome or Firefox
-
 
 :::info OS Specific Requirements
 
@@ -47,9 +46,10 @@ The OpenBB SDK is a set of tools for financial and data analysis. We recommend s
   <TabItem value="Windows" label="Windows">
   <div class="gdoc-page">
 
-</div><p>Windows 10 or higher is required, and the user account should be have administrator priviliges.
+</div><p>Windows 10 or higher is required, and the user account should be have administrator privileges.
 
-Additionaly, its reccomended Windows users also install [Git for Windows](https://git-scm.com/download/win) and use `Git Bash` as the terminal application instead of CMD or PowerShell.
+Additionally, its recommended Windows users also install [Git for Windows](https://git-scm.com/download/win) and use `Git Bash` as the terminal application instead of CMD or PowerShell.
+
 </p>
 <div class="gdoc-columns">
 
@@ -78,7 +78,7 @@ Virtual Python environments are containers for Python applications, and allows t
 
 - Miniconda3 is installed and the version is specifically x86/x64 architecture, regardless of the CPU-type.
 - CMake must be installed within the environment created for the OpenBB installation.
-     - `conda install -c conda-forge cmake`
+  - `conda install -c conda-forge cmake`
 
 It is not recommended to install in a Global environment, such as Homebrew or `usr/local/bin/python3`. Create and activate a new environment before installing the OpenBB SDK.
 
@@ -98,9 +98,10 @@ A good way to learn about the Python language is to recognize the libraries whic
 - URLlib3
 
 The best way to learn is to get involved. Tinkering with the code from an open-source project is an excellent way to dabble.
+
 ### GitHub
 
-[GitHub](https://github.com/OpenBB-finance/OpenBBTerminal) is where the OpenBB source code is maintained. Cloning the [repository](https://github.com/OpenBB-finance/OpenBBTerminal.git) is recommended for those wishing to develop functions, inspect the source code, or be on the bleeding-edge of development. Syncing the local folder - `git pull` - to the main branch of the repository will keep the installation up-to-date, and `git checkout` provides a way to test development or contributor branchs. GitHub can also be used as a personal storage vault and take advantage of automated actions. It's a great place to build, store, and maintain small databases for free.
+[GitHub](https://github.com/OpenBB-finance/OpenBBTerminal) is where the OpenBB source code is maintained. Cloning the [repository](https://github.com/OpenBB-finance/OpenBBTerminal.git) is recommended for those wishing to develop functions, inspect the source code, or be on the bleeding-edge of development. Syncing the local folder - `git pull` - to the main branch of the repository will keep the installation up-to-date, and `git checkout` provides a way to test development or contributor branches. GitHub can also be used as a personal storage vault and take advantage of automated actions. It's a great place to build, store, and maintain small databases for free.
 
 Users encountering bugs are encouraged to report them [here](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose) by creating a new issue, if no open issue for the bug already exists.
 
@@ -113,16 +114,16 @@ For example:
 ```
 openbb.economy.ycrv()
 ```
-|    |   Maturity |   Rate |
-|---:|-----------:|-------:|
-|  0 |  0.0833333 |   3.93 |
-|  1 |  0.25      |   4.34 |
-|  2 |  0.5       |   4.61 |
-| ...|  ...       |  ...   |
-|  8 | 10         |   3.82 |
-|  9 | 20         |   4.13 |
-| 10 | 30         |   3.92 |
 
+|     |  Maturity | Rate |
+| --: | --------: | ---: |
+|   0 | 0.0833333 | 3.93 |
+|   1 |      0.25 | 4.34 |
+|   2 |       0.5 | 4.61 |
+| ... |       ... |  ... |
+|   8 |        10 | 3.82 |
+|   9 |        20 | 4.13 |
+|  10 |        30 | 3.92 |
 
 Then the view:
 
@@ -137,6 +138,7 @@ Users should have some experience working with Python and be comfortable working
 - [Python.org](https://www.python.org/about/gettingstarted/)
 - [W3 Schools](https://www.w3schools.com/python/)
 - [Python Wiki](https://wiki.python.org/moin/BeginnersGuide)
+
 ## Resources for Finance
 
 Below is a collection of useful websites:

@@ -10,7 +10,7 @@ Display balance
 ### Usage
 
 ```python
-usage: balance [--vs VS]
+usage: balance [--vs {USDT,BUSD,RUB,TRY,EUR,ZAR,GBP,UAH,BIDR,AUD,DAI,BRL,PLN}]
 ```
 
 ---
@@ -19,6 +19,6 @@ usage: balance [--vs VS]
 
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
-| vs | Quote currency (what to view coin vs) | USDT | True | None |
+| vs | Quote currency (what to view coin vs) | USDT | True | USDT, BUSD, RUB, TRY, EUR, ZAR, GBP, UAH, BIDR, AUD, DAI, BRL, PLN |
 ---
 

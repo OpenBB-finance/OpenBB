@@ -10,7 +10,7 @@ Change target variable
 ### Usage
 
 ```python
-usage: pick [-t {Open,High,Low,Close,Adj Close,Volume,date_id,OC_High,OC_Low,Returns,LogRet}]
+usage: pick [-t {Open,High,Low,Close,Adj Close,Volume,date_id,OC_High,OC_Low,Returns,LogRet,LogPrice}]
 ```
 
 ---
@@ -19,6 +19,6 @@ usage: pick [-t {Open,High,Low,Close,Adj Close,Volume,date_id,OC_High,OC_Low,Ret
 
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
-| target | Select variable to analyze | None | True | Open, High, Low, Close, Adj Close, Volume, date_id, OC_High, OC_Low, Returns, LogRet |
+| target | Select variable to analyze | None | True | Open, High, Low, Close, Adj Close, Volume, date_id, OC_High, OC_Low, Returns, LogRet, LogPrice |
 ---
 
