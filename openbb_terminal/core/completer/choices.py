@@ -174,7 +174,7 @@ def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
         else:
             raise AttributeError(f"Invalid argument_parser: {argument_parser}")
 
-        if action.choices:
+        if hasattr(action, "choices") and action.choices:
             choice_map[long_name] = {str(c): {} for c in action.choices}
         else:
             choice_map[long_name] = {}
@@ -186,6 +186,8 @@ def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
 
 
 def build_controller_choice_map(controller) -> dict:
+    environ["DEBUG_MODE"] = "true"
+
     command_list = controller.CHOICES_COMMANDS
     controller_choice_map: dict = {c: {} for c in controller.controller_choices}
     controller_choice_map["support"] = controller.SUPPORT_CHOICES
@@ -202,6 +204,6 @@ def build_controller_choice_map(controller) -> dict:
             )
     except Exception as exception:
         if environ.get("DEBUG_MODE", "false") == "true":
-            raise exception
+            raise Exception(f"For command : `{command}`\n{str(exception)}") from exception
 
     return controller_choice_map
