@@ -13,7 +13,7 @@ jobs:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout Code
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b  # actions/checkout v3.0.2
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # actions/checkout v3.0.2
 
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
@@ -27,8 +27,6 @@ jobs:
           key: ${{ runner.os }}-v1-linting
           restore-keys: ${{ runner.os }}-v1-linting
 
-
-      - run: python custom_pre_commit/check_doc.py --ignore-files=settings_controller.py,keys_controller.py,featflags_controller.py,degiro_controller.py,oanda_controller.py --ignore-commands=login,alswe,infoswe,goodness,resources,yf,yolo,featflags,guess,settings,survey,intro
       - run: pip install bandit black codespell flake8 mypy==0.982 pyupgrade safety pylint==2.15.2
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
@@ -255,7 +253,7 @@ jobs:
 
       - name: Run tests (Bash)
         env:
-            MPLBACKEND: Agg
+          MPLBACKEND: Agg
         shell: bash -l {0}
         run: pytest tests/ -m "not linux"
 
