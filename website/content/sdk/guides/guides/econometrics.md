@@ -15,7 +15,7 @@ Start a Python script or Notebook file and import the SDK module:
 from openbb_terminal.sdk import openbb
 ```
 
-Below is a brief description of each function within the Econometrics module:
+Below is a brief description of each function within the Portfolio module:
 
 | Path                                       |    Type    |                                                            Description |
 | :----------------------------------------- | :--------: | ---------------------------------------------------------------------: |
@@ -57,7 +57,8 @@ help(openbb.econometrics)
 
 ### Loading a dataset
 
-The first step in using this menu is loading a dataset. This can be either an example dataset, see the list below, or any locally stored Excel file. This can be done with the following: 
+The first step in using this menu is loading a dataset. This can be either an example dataset, see the list below, or any locally stored Excel file. To demonstrate the usage of the menu, the <a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank">longley</a>
+dataset is loaded in. This can be done with the following 
 
 ```python
 example_load = openbb.econometrics.load("anes96")
@@ -99,7 +100,8 @@ file_load = openbb.econometric.load("PATH_TO_FILE/FILE.xlsx")
 
 ### Working with Time Series data
 
-To demonstrate the usage of the Econometrics SDK for time series data, the <a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank">longley</a>
+To demonstrate the usage of the Econometrics SDK for time series data, the
+<a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank">longley</a>
 dataset is loaded in.
 
 ```python
@@ -149,7 +151,7 @@ longley.describe()
 | max   | 70551    |  116.9    | 554894   | 4806     | 3594    | 130081   | 1962       |
 
 It is possible to check for a variety of assumptions, e.g. normality, unit root,
-granger and co-integration. The functions `openbb.econometric.norm` is shown below that tests for normality.  Note
+granger and co-integration. The functions `openbb.econometric.norm` and `openb.econometrics.root` are shown below. Note
 that due to the small size of the dataset, many of these tests are not
 statistically significant.
 
@@ -162,8 +164,6 @@ openbb.econometrics.norm(longley['GNP'])
 | Statistic |   -1.1944  |  0.0525317 |      0.835092 |       0.962593 |                    1 |
 | p-value   |    0.23232 |  0.95811   |      0.65866  |       0.709    |                    0 |
 
-
-Testing for unit root is done with `openb.econometrics.root` as shown below:
 
 ```python
 openbb.econometrics.root(longley['POP'])
@@ -224,13 +224,12 @@ strong multicollinearity or other numerical problems.
 
 After running the regression estimation, it is possible to perform tests on the residuals of the model. E.g. for autocorrelation and heteroscedasity as shown below with the `openbb.econometrics.bgod` and `openbb.econometrics.bpag` functions.
 
-
 ```python
 # Perform Breusch Goodfrey auto-correlation test
 openbb.econometrics.bgod(ols_regression)
 ```
 
-|          |       BGOD |
+|          |          0 |
 |:---------|-----------:|
 | lm-stat  | 10.3471    |
 | p-value  |  0.0158347 |
@@ -242,7 +241,7 @@ openbb.econometrics.bgod(ols_regression)
 openbb.econometrics.bpag(ols_regression)
 ```
 
-|          |     BPAG |
+|          |        0 |
 |:---------|---------:|
 | lm-stat  | 7.90331  |
 | p-value  | 0.161645 |
@@ -269,12 +268,12 @@ wage_panel
 |  3 |   13 |   1983 |       0 |       4 |      0 |    2960 |         0 |     14 |       0 | 1.43321 |        16 |            9 |
 |  4 |   13 |   1984 |       0 |       5 |      0 |    3071 |         0 |     14 |       0 | 1.56812 |        25 |            5 |
 
-<font size="1">4360 rows × 12 columns</font>
+4360 rows × 12 columns
 
 To run panel regressions, it is important to define both _entity_ (e.g. company) and _time_ (e.g. year).
 Trying to run the `openbb.econometrics.re` function would right now result in the following:
 
-```python
+```
 openbb.econometrics.re(wage_panel['black'], wage_panel.drop('black', axis=1))
 
 Error: Series can only be used with a 2-level MultiIndex
@@ -293,7 +292,7 @@ The columns `nr` and `year` still exists within the dataset and could have been 
 wage_panel.dtypes
 ```
 
-|            | Type    |
+|            | 0       |
 |:-----------|:--------|
 | nr         | int64   |
 | year       | int64   |
@@ -316,7 +315,7 @@ wage_panel['year'] = wage_panel['year'].astype('category')
 wage_panel.dtypes
 ```
 
-|            | Type     |
+|            | 0        |
 |:-----------|:---------|
 | nr         | int64    |
 | year       | category |

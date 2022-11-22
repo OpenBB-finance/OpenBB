@@ -33,7 +33,7 @@ From the Windows Security menu, click on the Firewall & Network Protection tab, 
 <p>
 
 OpenBB SDK is compatible with Windows, Linux, and Mac OS. Check the
-[installation guide](/sdk/quickstart/installation) and [requirements outline](/sdk/quickstart/requirements) for more details.
+[installation guide](/sdk/getstarted/installation) and [requirements outline](/sdk/getstarted/requirements) for more details.
 
 </p>
 </details>
