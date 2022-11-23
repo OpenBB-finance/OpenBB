@@ -116,7 +116,7 @@ class Operation:
 
 class OperationLogger:
 
-    last_method = {}
+    last_method: Dict[Any, Any] = {}
 
     def __init__(
         self,
@@ -256,14 +256,12 @@ class OperationLogger:
                 logger=logger,
                 method_chosen=self.__method_chosen,
             )
-            self.update_last_method(
-                last_method={
-                    f"{self.__method_chosen.__module__}.{self.__method_chosen.__name__}": {
-                        "args": self.__args,
-                        "kwargs": self.__kwargs,
-                    }
+            OperationLogger.last_method = {
+                f"{self.__method_chosen.__module__}.{self.__method_chosen.__name__}": {
+                    "args": self.__args,
+                    "kwargs": self.__kwargs,
                 }
-            )
+            }
 
     @staticmethod
     def __log_exception_if_any(
@@ -283,10 +281,6 @@ class OperationLogger:
             "END",
             extra={"func_name_override": method_chosen.__name__},
         )
-
-    @classmethod
-    def update_last_method(cls, last_method: Optional[dict] = None):
-        cls.last_method = last_method
 
     def __check_logging_conditions(self) -> bool:
         return not cfg.LOGGING_SUPPRESS and not self.__check_last_method()
