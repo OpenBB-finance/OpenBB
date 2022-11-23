@@ -224,7 +224,7 @@ class HedgeController(BaseController):
                         "cost": cost,
                     }
 
-                    print(cost)
+                    console.print("Cost: ", cost)
 
                     if opt_type == "Call":
                         side = 1
@@ -291,6 +291,8 @@ class HedgeController(BaseController):
                             )
 
                     positions.columns = ["Type", "Hold", "Strike", "Implied Volatility"]
+
+                    console.print("")
 
                     print_rich_table(
                         positions,
@@ -532,10 +534,13 @@ class HedgeController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            plot_payoff(
-                self.current_price,
-                [self.options["Option A"], self.options["Option B"]],
-                self.underlying,
-                self.ticker,
-                self.expiration,
-            )
+            if not self.options["Option A"] and not self.options["Option B"]:
+                console.print("Please add Options by using the 'add' command.\n")
+            else:
+                plot_payoff(
+                    self.current_price,
+                    [self.options["Option A"], self.options["Option B"]],
+                    self.underlying,
+                    self.ticker,
+                    self.expiration,
+                )
