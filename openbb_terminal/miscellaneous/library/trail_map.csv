@@ -433,7 +433,7 @@ stocks.fa.quote,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_quote,
 stocks.fa.score,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_score,
 stocks.fa.data,openbb_terminal.stocks.fundamental_analysis.finviz_model.get_data,
 stocks.fa.cal,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_calendar_earnings,
-stocks.fa.divs,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_dividends,
+stocks.fa.divs,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_dividends,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_dividends
 stocks.fa.hq,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_hq,
 stocks.fa.info,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_info,
 stocks.fa.mktcap,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_mktcap,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_mktcap

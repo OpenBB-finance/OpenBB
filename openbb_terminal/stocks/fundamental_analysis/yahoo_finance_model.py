@@ -265,8 +265,22 @@ def get_dividends(symbol: str) -> pd.DataFrame:
     -------
     pd.DataFrame
         Dataframe of dividends and dates
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.fa.divs("AAPL")
     """
-    return pd.DataFrame(yf.Ticker(symbol).dividends)
+    df = pd.DataFrame(yf.Ticker(symbol).dividends)
+
+    if df.empty:
+        console.print("No dividends found.\n")
+        return pd.DataFrame()
+
+    df["Change"] = df.diff()
+    df = df[::-1]
+
+    return df
 
 
 @log_start_end(log=logger)
