@@ -10,11 +10,17 @@ Builds a nested clustered optimization portfolio
 ### Usage
 
 ```python
-usage: nco [-cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,tail}]
-           [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-o {MinRisk,Utility,Sharpe,ERC}] [-ra RISK_AVERSION]
-           [-lk LINKAGE] [-k AMOUNT_CLUSTERS] [-mk MAX_CLUSTERS] [-bi {KN,FD,SC,HGR}] [-at ALPHA_TAIL] [-lo] [-de SMOOTHING_FACTOR_EWMA]
-           [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD]
-           [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME]
+usage: nco
+           [-cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,tail}]
+           [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}]
+           [-o {MinRisk,Utility,Sharpe,ERC}] [-ra RISK_AVERSION] [-lk LINKAGE]
+           [-k AMOUNT_CLUSTERS] [-mk MAX_CLUSTERS] [-bi {KN,FD,SC,HGR}]
+           [-at ALPHA_TAIL] [-lo] [-de SMOOTHING_FACTOR_EWMA]
+           [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
+           [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD]
+           [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN]
+           [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL]
+           [-v LONG_ALLOCATION] [--name NAME]
 ```
 
 ---
@@ -48,5 +54,39 @@ usage: nco [-cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,
 | significance_level | Significance level of CVaR, EVaR, CDaR and EDaR | 0.05 | True | None |
 | long_allocation | Amount to allocate to portfolio | 1 | True | None |
 | name | Save portfolio with personalized or default name | NCO_0 | True | None |
+---
+
+## Examples
+
+```python
+2022 Apr 05, 14:34 (🦋) /portfolio/po/ $ nco
+
+ [3 Years] Nested clustered optimization using pearson codependence,
+single linkage and volatility as risk measure
+
+     Weights
+┏━━━━━━┳━━━━━━━━━┓
+┃      ┃ Value   ┃
+┡━━━━━━╇━━━━━━━━━┩
+│ AAPL │  7.17 % │
+├──────┼─────────┤
+│ AMZN │ 19.33 % │
+├──────┼─────────┤
+│ BA   │  0.0 %  │
+├──────┼─────────┤
+│ FB   │  0.53 % │
+├──────┼─────────┤
+│ MSFT │ 16.81 % │
+├──────┼─────────┤
+│ T    │ 56.14 % │
+├──────┼─────────┤
+│ TSLA │  0.0 %  │
+└──────┴─────────┘
+
+Annual (by 252) expected return: 15.58%
+Annual (by √252) volatility: 22.42%
+Sharpe ratio: 0.6868
+```
+
 ---
 

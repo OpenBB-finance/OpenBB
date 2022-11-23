@@ -10,8 +10,12 @@ Returns a portfolio that is weighted based dividend yield.
 ### Usage
 
 ```python
-usage: dividend [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-mt METHOD] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-                [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME]
+usage: dividend
+                [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
+                [-mt METHOD] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD]
+                [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+                [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION]
+                [--name NAME]
 ```
 
 ---
@@ -33,5 +37,38 @@ usage: dividend [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] 
 | significance_level | Significance level of CVaR, EVaR, CDaR and EDaR | 0.05 | True | None |
 | long_allocation | Amount to allocate to portfolio | 1 | True | None |
 | name | Save portfolio with personalized or default name | DIVIDEND_0 | True | None |
+---
+
+## Examples
+
+```python
+2022 Apr 05, 14:55 (🦋) /portfolio/po/ $ dividend
+
+ [3 Years] Weighted Portfolio based on dividendYield
+
+     Weights
+┏━━━━━━┳━━━━━━━━━┓
+┃      ┃ Value   ┃
+┡━━━━━━╇━━━━━━━━━┩
+│ AAPL │  8.48 % │
+├──────┼─────────┤
+│ AMZN │  0.0 %  │
+├──────┼─────────┤
+│ BA   │  0.0 %  │
+├──────┼─────────┤
+│ FB   │  0.0 %  │
+├──────┼─────────┤
+│ MSFT │ 13.58 % │
+├──────┼─────────┤
+│ T    │ 77.92 % │
+├──────┼─────────┤
+│ TSLA │  0.0 %  │
+└──────┴─────────┘
+
+Annual (by 252) expected return: 10.30%
+Annual (by √252) volatility: 24.10%
+Sharpe ratio: 0.4198
+```
+
 ---
 

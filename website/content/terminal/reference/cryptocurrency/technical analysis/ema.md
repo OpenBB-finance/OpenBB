@@ -21,5 +21,7 @@ usage: ema [-l N_LENGTH] [-o N_OFFSET]
 | ---- | ----------- | ------- | -------- | ------- |
 | n_length | Window lengths. Multiple values indicated as comma separated values. | 20, 50 | True | None |
 | n_offset | offset | 0 | True | range(0, 100) |
+![ema](https://user-images.githubusercontent.com/46355364/154310578-6f4a51a8-3667-497c-9c50-7ff16e256fb6.png)
+
 ---
 

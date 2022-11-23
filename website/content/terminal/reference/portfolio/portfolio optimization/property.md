@@ -10,8 +10,12 @@ Returns a portfolio that is weighted based on selected property.
 ### Usage
 
 ```python
-usage: property -pr PROPERTY [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-mt METHOD] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD]
-                [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME]
+usage: property -pr PROPERTY
+                [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
+                [-mt METHOD] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD]
+                [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+                [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION]
+                [--name NAME]
 ```
 
 ---
@@ -34,5 +38,38 @@ usage: property -pr PROPERTY [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDa
 | significance_level | Significance level of CVaR, EVaR, CDaR and EDaR | 0.05 | True | None |
 | long_allocation | Amount to allocate to portfolio | 1 | True | None |
 | name | Save portfolio with personalized or default name | PROPERTY_0 | True | None |
+---
+
+## Examples
+
+```python
+2022 Apr 05, 15:02 (🦋) /portfolio/po/ $ property -pr trailingEps
+
+ [3 Years] Weighted Portfolio based on trailingEps
+
+     Weights
+┏━━━━━━┳━━━━━━━━━┓
+┃      ┃ Value   ┃
+┡━━━━━━╇━━━━━━━━━┩
+│ AAPL │  6.36 % │
+├──────┼─────────┤
+│ AMZN │ 68.58 % │
+├──────┼─────────┤
+│ BA   │ -7.56 % │
+├──────┼─────────┤
+│ FB   │ 14.57 % │
+├──────┼─────────┤
+│ MSFT │  9.93 % │
+├──────┼─────────┤
+│ T    │  2.92 % │
+├──────┼─────────┤
+│ TSLA │  5.18 % │
+└──────┴─────────┘
+
+Annual (by 252) expected return: 33.74%
+Annual (by √252) volatility: 30.25%
+Sharpe ratio: 1.1094
+```
+
 ---
 

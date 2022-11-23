@@ -27,3 +27,19 @@ usage: calc [--put] [--sell] [-s STRIKE] [-p PREMIUM] [-m MIN] [-M MAX]
 | max | Max price to look at | -1 | True | None |
 ---
 
+## Examples
+
+```python
+2022 Feb 16, 08:45 (🦋) /stocks/options/ $ calc -s 30 -p 6 -m 1 -M 50
+
+Strike: $30.0
+Premium: $6.0
+Breakeven price: $36.0
+Max profit: Unlimited
+Max loss: $-600.0
+```
+
+![calc](https://user-images.githubusercontent.com/46355364/154277755-a6640bee-8621-4a7d-9fc6-9c197daca0e1.png)
+
+---
+

@@ -10,8 +10,11 @@ Build a risk parity portfolio based on risk budgeting approach
 ### Usage
 
 ```python
-usage: riskparity [-rm RISK-MEASURE] [-rc RISK_CONTRIBUTION] [-tr TARGET_RETURN] [-de SMOOTHING_FACTOR_EWMA] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD]
-                  [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL]
+usage: riskparity [-rm RISK-MEASURE] [-rc RISK_CONTRIBUTION]
+                  [-tr TARGET_RETURN] [-de SMOOTHING_FACTOR_EWMA] [-mt METHOD]
+                  [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD]
+                  [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN]
+                  [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL]
                   [-v LONG_ALLOCATION] [--name NAME]
 ```
 
@@ -38,5 +41,39 @@ usage: riskparity [-rm RISK-MEASURE] [-rc RISK_CONTRIBUTION] [-tr TARGET_RETURN]
 | significance_level | Significance level of CVaR, EVaR, CDaR and EDaR | 0.05 | True | None |
 | long_allocation | Amount to allocate to portfolio | 1 | True | None |
 | name | Save portfolio with personalized or default name | RP_0 | True | None |
+---
+
+## Examples
+
+```python
+2022 Apr 05, 14:45 (🦋) /portfolio/po/ $ riskparity
+
+ [3 Years] Risk parity portfolio based on risk budgeting approach
+using volatility as risk measure
+
+     Weights
+┏━━━━━━┳━━━━━━━━━┓
+┃      ┃ Value   ┃
+┡━━━━━━╇━━━━━━━━━┩
+│ AAPL │ 13.42 % │
+├──────┼─────────┤
+│ AMZN │ 16.51 % │
+├──────┼─────────┤
+│ BA   │ 10.18 % │
+├──────┼─────────┤
+│ FB   │ 12.83 % │
+├──────┼─────────┤
+│ MSFT │ 14.36 % │
+├──────┼─────────┤
+│ T    │ 24.00 % │
+├──────┼─────────┤
+│ TSLA │  8.68 % │
+└──────┴─────────┘
+
+Annual (by 252) expected return: 28.99%
+Annual (by √252) volatility: 26.60%
+Sharpe ratio: 1.0829
+```
+
 ---
 

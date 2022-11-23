@@ -1,6 +1,81 @@
 # OpenBB Terminal Features
 
 
+## reports
+
+- [run](/terminal/features/reports/run)
+
+## etfs
+
+- [candle](/terminal/features/etfs/candle)
+- [compare](/terminal/features/etfs/compare)
+- [load](/terminal/features/etfs/load)
+- [news](/terminal/features/etfs/news)
+- [overview](/terminal/features/etfs/overview)
+- [pir](/terminal/features/etfs/pir)
+- [search](/terminal/features/etfs/search)
+- [summary](/terminal/features/etfs/summary)
+- [weights](/terminal/features/etfs/weights)
+
+### technical analysis
+
+- [ad](/terminal/features/etfs/technical%20analysis/ad)
+- [adosc](/terminal/features/etfs/technical%20analysis/adosc)
+- [adx](/terminal/features/etfs/technical%20analysis/adx)
+- [aroon](/terminal/features/etfs/technical%20analysis/aroon)
+- [atr](/terminal/features/etfs/technical%20analysis/atr)
+- [bbands](/terminal/features/etfs/technical%20analysis/bbands)
+- [cci](/terminal/features/etfs/technical%20analysis/cci)
+- [cg](/terminal/features/etfs/technical%20analysis/cg)
+- [clenow](/terminal/features/etfs/technical%20analysis/clenow)
+- [demark](/terminal/features/etfs/technical%20analysis/demark)
+- [donchian](/terminal/features/etfs/technical%20analysis/donchian)
+- [ema](/terminal/features/etfs/technical%20analysis/ema)
+- [fib](/terminal/features/etfs/technical%20analysis/fib)
+- [fisher](/terminal/features/etfs/technical%20analysis/fisher)
+- [hma](/terminal/features/etfs/technical%20analysis/hma)
+- [kc](/terminal/features/etfs/technical%20analysis/kc)
+- [macd](/terminal/features/etfs/technical%20analysis/macd)
+- [obv](/terminal/features/etfs/technical%20analysis/obv)
+- [rsi](/terminal/features/etfs/technical%20analysis/rsi)
+- [sma](/terminal/features/etfs/technical%20analysis/sma)
+- [stoch](/terminal/features/etfs/technical%20analysis/stoch)
+- [vwap](/terminal/features/etfs/technical%20analysis/vwap)
+- [wma](/terminal/features/etfs/technical%20analysis/wma)
+- [zlma](/terminal/features/etfs/technical%20analysis/zlma)
+
+### discovery
+
+- [active](/terminal/features/etfs/discovery/active)
+- [decliners](/terminal/features/etfs/discovery/decliners)
+- [gainers](/terminal/features/etfs/discovery/gainers)
+
+### screener
+
+- [sbc](/terminal/features/etfs/screener/sbc)
+- [screen](/terminal/features/etfs/screener/screen)
+- [set](/terminal/features/etfs/screener/set)
+- [view](/terminal/features/etfs/screener/view)
+
+## alternative
+
+
+### covid
+
+- [cases](/terminal/features/alternative/covid/cases)
+- [country](/terminal/features/alternative/covid/country)
+- [deaths](/terminal/features/alternative/covid/deaths)
+- [ov](/terminal/features/alternative/covid/ov)
+- [rates](/terminal/features/alternative/covid/rates)
+- [slopes](/terminal/features/alternative/covid/slopes)
+
+### oss
+
+- [rossidx](/terminal/features/alternative/oss/rossidx)
+- [rs](/terminal/features/alternative/oss/rs)
+- [sh](/terminal/features/alternative/oss/sh)
+- [tr](/terminal/features/alternative/oss/tr)
+
 ## forecasting
 
 - [atr](/terminal/features/forecasting/atr)
@@ -42,67 +117,6 @@
 - [trans](/terminal/features/forecasting/trans)
 - [which](/terminal/features/forecasting/which)
 
-## alternative
-
-
-### oss
-
-- [rossidx](/terminal/features/alternative/oss/rossidx)
-- [rs](/terminal/features/alternative/oss/rs)
-- [sh](/terminal/features/alternative/oss/sh)
-- [tr](/terminal/features/alternative/oss/tr)
-
-### covid
-
-- [cases](/terminal/features/alternative/covid/cases)
-- [country](/terminal/features/alternative/covid/country)
-- [deaths](/terminal/features/alternative/covid/deaths)
-- [ov](/terminal/features/alternative/covid/ov)
-- [rates](/terminal/features/alternative/covid/rates)
-- [slopes](/terminal/features/alternative/covid/slopes)
-
-## economy
-
-- [bigmac](/terminal/features/economy/bigmac)
-- [edebt](/terminal/features/economy/edebt)
-- [eval](/terminal/features/economy/eval)
-- [events](/terminal/features/economy/events)
-- [futures](/terminal/features/economy/futures)
-- [index_cmd](/terminal/features/economy/index_cmd)
-- [macro](/terminal/features/economy/macro)
-- [map](/terminal/features/economy/map)
-- [overview](/terminal/features/economy/overview)
-- [performance](/terminal/features/economy/performance)
-- [plot](/terminal/features/economy/plot)
-- [rtps](/terminal/features/economy/rtps)
-- [spectrum](/terminal/features/economy/spectrum)
-- [spread](/terminal/features/economy/spread)
-- [treasury](/terminal/features/economy/treasury)
-- [valuation](/terminal/features/economy/valuation)
-- [ycrv](/terminal/features/economy/ycrv)
-
-### quantitative analysis
-
-- [acf](/terminal/features/economy/quantitative%20analysis/acf)
-- [bw](/terminal/features/economy/quantitative%20analysis/bw)
-- [cdf](/terminal/features/economy/quantitative%20analysis/cdf)
-- [cusum](/terminal/features/economy/quantitative%20analysis/cusum)
-- [decompose](/terminal/features/economy/quantitative%20analysis/decompose)
-- [hist](/terminal/features/economy/quantitative%20analysis/hist)
-- [kurtosis](/terminal/features/economy/quantitative%20analysis/kurtosis)
-- [line](/terminal/features/economy/quantitative%20analysis/line)
-- [load](/terminal/features/economy/quantitative%20analysis/load)
-- [normality](/terminal/features/economy/quantitative%20analysis/normality)
-- [pick](/terminal/features/economy/quantitative%20analysis/pick)
-- [qqplot](/terminal/features/economy/quantitative%20analysis/qqplot)
-- [quantile](/terminal/features/economy/quantitative%20analysis/quantile)
-- [raw](/terminal/features/economy/quantitative%20analysis/raw)
-- [rolling](/terminal/features/economy/quantitative%20analysis/rolling)
-- [skew](/terminal/features/economy/quantitative%20analysis/skew)
-- [spread](/terminal/features/economy/quantitative%20analysis/spread)
-- [summary](/terminal/features/economy/quantitative%20analysis/summary)
-- [unitroot](/terminal/features/economy/quantitative%20analysis/unitroot)
-
 ## futures
 
 - [curve](/terminal/features/futures/curve)
@@ -115,6 +129,24 @@
 - [fwd](/terminal/features/forex/fwd)
 - [load](/terminal/features/forex/load)
 - [quote](/terminal/features/forex/quote)
+
+### oanda
+
+- [calendar](/terminal/features/forex/oanda/calendar)
+- [cancel](/terminal/features/forex/oanda/cancel)
+- [candles](/terminal/features/forex/oanda/candles)
+- [closetrade](/terminal/features/forex/oanda/closetrade)
+- [from](/terminal/features/forex/oanda/from)
+- [list](/terminal/features/forex/oanda/list)
+- [order](/terminal/features/forex/oanda/order)
+- [orderbook](/terminal/features/forex/oanda/orderbook)
+- [pending](/terminal/features/forex/oanda/pending)
+- [positionbook](/terminal/features/forex/oanda/positionbook)
+- [positions](/terminal/features/forex/oanda/positions)
+- [price](/terminal/features/forex/oanda/price)
+- [summary](/terminal/features/forex/oanda/summary)
+- [to](/terminal/features/forex/oanda/to)
+- [trades](/terminal/features/forex/oanda/trades)
 
 ### quantitative analysis
 
@@ -137,24 +169,6 @@
 - [spread](/terminal/features/forex/quantitative%20analysis/spread)
 - [summary](/terminal/features/forex/quantitative%20analysis/summary)
 - [unitroot](/terminal/features/forex/quantitative%20analysis/unitroot)
-
-### oanda
-
-- [calendar](/terminal/features/forex/oanda/calendar)
-- [cancel](/terminal/features/forex/oanda/cancel)
-- [candles](/terminal/features/forex/oanda/candles)
-- [closetrade](/terminal/features/forex/oanda/closetrade)
-- [from](/terminal/features/forex/oanda/from)
-- [list](/terminal/features/forex/oanda/list)
-- [order](/terminal/features/forex/oanda/order)
-- [orderbook](/terminal/features/forex/oanda/orderbook)
-- [pending](/terminal/features/forex/oanda/pending)
-- [positionbook](/terminal/features/forex/oanda/positionbook)
-- [positions](/terminal/features/forex/oanda/positions)
-- [price](/terminal/features/forex/oanda/price)
-- [summary](/terminal/features/forex/oanda/summary)
-- [to](/terminal/features/forex/oanda/to)
-- [trades](/terminal/features/forex/oanda/trades)
 
 ### technical analysis
 
@@ -202,6 +216,149 @@
 - [show](/terminal/features/econometrics/show)
 - [type](/terminal/features/econometrics/type)
 
+## portfolio
+
+- [alloc](/terminal/features/portfolio/alloc)
+- [attrib](/terminal/features/portfolio/attrib)
+- [bench](/terminal/features/portfolio/bench)
+- [distr](/terminal/features/portfolio/distr)
+- [dret](/terminal/features/portfolio/dret)
+- [es](/terminal/features/portfolio/es)
+- [holdp](/terminal/features/portfolio/holdp)
+- [holdv](/terminal/features/portfolio/holdv)
+- [load](/terminal/features/portfolio/load)
+- [maxdd](/terminal/features/portfolio/maxdd)
+- [metric](/terminal/features/portfolio/metric)
+- [mret](/terminal/features/portfolio/mret)
+- [om](/terminal/features/portfolio/om)
+- [perf](/terminal/features/portfolio/perf)
+- [rbeta](/terminal/features/portfolio/rbeta)
+- [rsharpe](/terminal/features/portfolio/rsharpe)
+- [rsort](/terminal/features/portfolio/rsort)
+- [rvol](/terminal/features/portfolio/rvol)
+- [show](/terminal/features/portfolio/show)
+- [summary](/terminal/features/portfolio/summary)
+- [var](/terminal/features/portfolio/var)
+- [yret](/terminal/features/portfolio/yret)
+
+### brokers
+
+
+#### robinhood
+
+- [history](/terminal/features/portfolio/brokers/robinhood/history)
+- [holdings](/terminal/features/portfolio/brokers/robinhood/holdings)
+
+#### degiro
+
+- [cancel](/terminal/features/portfolio/brokers/degiro/cancel)
+- [companynews](/terminal/features/portfolio/brokers/degiro/companynews)
+- [create](/terminal/features/portfolio/brokers/degiro/create)
+- [hold](/terminal/features/portfolio/brokers/degiro/hold)
+- [lastnews](/terminal/features/portfolio/brokers/degiro/lastnews)
+- [login](/terminal/features/portfolio/brokers/degiro/login)
+- [logout](/terminal/features/portfolio/brokers/degiro/logout)
+- [lookup](/terminal/features/portfolio/brokers/degiro/lookup)
+- [paexport](/terminal/features/portfolio/brokers/degiro/paexport)
+- [pending](/terminal/features/portfolio/brokers/degiro/pending)
+- [topnews](/terminal/features/portfolio/brokers/degiro/topnews)
+- [update](/terminal/features/portfolio/brokers/degiro/update)
+
+#### coinbase
+
+- [account](/terminal/features/portfolio/brokers/coinbase/account)
+- [deposits](/terminal/features/portfolio/brokers/coinbase/deposits)
+- [history](/terminal/features/portfolio/brokers/coinbase/history)
+- [orders](/terminal/features/portfolio/brokers/coinbase/orders)
+
+#### ally
+
+- [balances](/terminal/features/portfolio/brokers/ally/balances)
+- [history](/terminal/features/portfolio/brokers/ally/history)
+- [holdings](/terminal/features/portfolio/brokers/ally/holdings)
+- [movers](/terminal/features/portfolio/brokers/ally/movers)
+- [quote](/terminal/features/portfolio/brokers/ally/quote)
+
+### portfolio optimization
+
+- [blacklitterman](/terminal/features/portfolio/portfolio%20optimization/blacklitterman)
+- [dividend](/terminal/features/portfolio/portfolio%20optimization/dividend)
+- [ef](/terminal/features/portfolio/portfolio%20optimization/ef)
+- [equal](/terminal/features/portfolio/portfolio%20optimization/equal)
+- [file](/terminal/features/portfolio/portfolio%20optimization/file)
+- [herc](/terminal/features/portfolio/portfolio%20optimization/herc)
+- [hrp](/terminal/features/portfolio/portfolio%20optimization/hrp)
+- [load](/terminal/features/portfolio/portfolio%20optimization/load)
+- [maxdecorr](/terminal/features/portfolio/portfolio%20optimization/maxdecorr)
+- [maxdiv](/terminal/features/portfolio/portfolio%20optimization/maxdiv)
+- [maxret](/terminal/features/portfolio/portfolio%20optimization/maxret)
+- [maxsharpe](/terminal/features/portfolio/portfolio%20optimization/maxsharpe)
+- [maxutil](/terminal/features/portfolio/portfolio%20optimization/maxutil)
+- [minrisk](/terminal/features/portfolio/portfolio%20optimization/minrisk)
+- [mktcap](/terminal/features/portfolio/portfolio%20optimization/mktcap)
+- [nco](/terminal/features/portfolio/portfolio%20optimization/nco)
+- [plot](/terminal/features/portfolio/portfolio%20optimization/plot)
+- [property](/terminal/features/portfolio/portfolio%20optimization/property)
+- [relriskparity](/terminal/features/portfolio/portfolio%20optimization/relriskparity)
+- [riskparity](/terminal/features/portfolio/portfolio%20optimization/riskparity)
+- [rpf](/terminal/features/portfolio/portfolio%20optimization/rpf)
+- [show](/terminal/features/portfolio/portfolio%20optimization/show)
+
+#### parameters
+
+- [arg](/terminal/features/portfolio/portfolio%20optimization/parameters/arg)
+- [load](/terminal/features/portfolio/portfolio%20optimization/parameters/load)
+- [save](/terminal/features/portfolio/portfolio%20optimization/parameters/save)
+- [set](/terminal/features/portfolio/portfolio%20optimization/parameters/set)
+
+### portfolio_analysis
+
+- [group](/terminal/features/portfolio/portfolio_analysis/group)
+- [load](/terminal/features/portfolio/portfolio_analysis/load)
+- [view](/terminal/features/portfolio/portfolio_analysis/view)
+
+## economy
+
+- [bigmac](/terminal/features/economy/bigmac)
+- [edebt](/terminal/features/economy/edebt)
+- [eval](/terminal/features/economy/eval)
+- [events](/terminal/features/economy/events)
+- [futures](/terminal/features/economy/futures)
+- [index_cmd](/terminal/features/economy/index_cmd)
+- [macro](/terminal/features/economy/macro)
+- [map](/terminal/features/economy/map)
+- [overview](/terminal/features/economy/overview)
+- [performance](/terminal/features/economy/performance)
+- [plot](/terminal/features/economy/plot)
+- [rtps](/terminal/features/economy/rtps)
+- [spectrum](/terminal/features/economy/spectrum)
+- [spread](/terminal/features/economy/spread)
+- [treasury](/terminal/features/economy/treasury)
+- [valuation](/terminal/features/economy/valuation)
+- [ycrv](/terminal/features/economy/ycrv)
+
+### quantitative analysis
+
+- [acf](/terminal/features/economy/quantitative%20analysis/acf)
+- [bw](/terminal/features/economy/quantitative%20analysis/bw)
+- [cdf](/terminal/features/economy/quantitative%20analysis/cdf)
+- [cusum](/terminal/features/economy/quantitative%20analysis/cusum)
+- [decompose](/terminal/features/economy/quantitative%20analysis/decompose)
+- [hist](/terminal/features/economy/quantitative%20analysis/hist)
+- [kurtosis](/terminal/features/economy/quantitative%20analysis/kurtosis)
+- [line](/terminal/features/economy/quantitative%20analysis/line)
+- [load](/terminal/features/economy/quantitative%20analysis/load)
+- [normality](/terminal/features/economy/quantitative%20analysis/normality)
+- [pick](/terminal/features/economy/quantitative%20analysis/pick)
+- [qqplot](/terminal/features/economy/quantitative%20analysis/qqplot)
+- [quantile](/terminal/features/economy/quantitative%20analysis/quantile)
+- [raw](/terminal/features/economy/quantitative%20analysis/raw)
+- [rolling](/terminal/features/economy/quantitative%20analysis/rolling)
+- [skew](/terminal/features/economy/quantitative%20analysis/skew)
+- [spread](/terminal/features/economy/quantitative%20analysis/spread)
+- [summary](/terminal/features/economy/quantitative%20analysis/summary)
+- [unitroot](/terminal/features/economy/quantitative%20analysis/unitroot)
+
 ## stocks
 
 - [candle](/terminal/features/stocks/candle)
@@ -210,6 +367,261 @@
 - [quote](/terminal/features/stocks/quote)
 - [search](/terminal/features/stocks/search)
 - [tob](/terminal/features/stocks/tob)
+
+### comparison analysis
+
+- [add](/terminal/features/stocks/comparison%20analysis/add)
+- [balance](/terminal/features/stocks/comparison%20analysis/balance)
+- [cashflow](/terminal/features/stocks/comparison%20analysis/cashflow)
+- [financial](/terminal/features/stocks/comparison%20analysis/financial)
+- [get](/terminal/features/stocks/comparison%20analysis/get)
+- [hcorr](/terminal/features/stocks/comparison%20analysis/hcorr)
+- [historical](/terminal/features/stocks/comparison%20analysis/historical)
+- [income](/terminal/features/stocks/comparison%20analysis/income)
+- [overview](/terminal/features/stocks/comparison%20analysis/overview)
+- [ownership](/terminal/features/stocks/comparison%20analysis/ownership)
+- [performance](/terminal/features/stocks/comparison%20analysis/performance)
+- [rmv](/terminal/features/stocks/comparison%20analysis/rmv)
+- [scorr](/terminal/features/stocks/comparison%20analysis/scorr)
+- [sentiment](/terminal/features/stocks/comparison%20analysis/sentiment)
+- [set](/terminal/features/stocks/comparison%20analysis/set)
+- [technical](/terminal/features/stocks/comparison%20analysis/technical)
+- [ticker](/terminal/features/stocks/comparison%20analysis/ticker)
+- [tsne](/terminal/features/stocks/comparison%20analysis/tsne)
+- [valuation](/terminal/features/stocks/comparison%20analysis/valuation)
+- [volume](/terminal/features/stocks/comparison%20analysis/volume)
+
+### quantitative analysis
+
+- [acf](/terminal/features/stocks/quantitative%20analysis/acf)
+- [beta](/terminal/features/stocks/quantitative%20analysis/beta)
+- [bw](/terminal/features/stocks/quantitative%20analysis/bw)
+- [capm](/terminal/features/stocks/quantitative%20analysis/capm)
+- [cdf](/terminal/features/stocks/quantitative%20analysis/cdf)
+- [cusum](/terminal/features/stocks/quantitative%20analysis/cusum)
+- [decompose](/terminal/features/stocks/quantitative%20analysis/decompose)
+- [es](/terminal/features/stocks/quantitative%20analysis/es)
+- [hist](/terminal/features/stocks/quantitative%20analysis/hist)
+- [kurtosis](/terminal/features/stocks/quantitative%20analysis/kurtosis)
+- [line](/terminal/features/stocks/quantitative%20analysis/line)
+- [load](/terminal/features/stocks/quantitative%20analysis/load)
+- [normality](/terminal/features/stocks/quantitative%20analysis/normality)
+- [om](/terminal/features/stocks/quantitative%20analysis/om)
+- [pick](/terminal/features/stocks/quantitative%20analysis/pick)
+- [qqplot](/terminal/features/stocks/quantitative%20analysis/qqplot)
+- [quantile](/terminal/features/stocks/quantitative%20analysis/quantile)
+- [raw](/terminal/features/stocks/quantitative%20analysis/raw)
+- [rolling](/terminal/features/stocks/quantitative%20analysis/rolling)
+- [sh](/terminal/features/stocks/quantitative%20analysis/sh)
+- [skew](/terminal/features/stocks/quantitative%20analysis/skew)
+- [so](/terminal/features/stocks/quantitative%20analysis/so)
+- [spread](/terminal/features/stocks/quantitative%20analysis/spread)
+- [summary](/terminal/features/stocks/quantitative%20analysis/summary)
+- [unitroot](/terminal/features/stocks/quantitative%20analysis/unitroot)
+- [var](/terminal/features/stocks/quantitative%20analysis/var)
+
+### darkpool shorts
+
+- [ctb](/terminal/features/stocks/darkpool%20shorts/ctb)
+- [dpotc](/terminal/features/stocks/darkpool%20shorts/dpotc)
+- [ftd](/terminal/features/stocks/darkpool%20shorts/ftd)
+- [hsi](/terminal/features/stocks/darkpool%20shorts/hsi)
+- [load](/terminal/features/stocks/darkpool%20shorts/load)
+- [pos](/terminal/features/stocks/darkpool%20shorts/pos)
+- [prom](/terminal/features/stocks/darkpool%20shorts/prom)
+- [psi](/terminal/features/stocks/darkpool%20shorts/psi)
+- [shorted](/terminal/features/stocks/darkpool%20shorts/shorted)
+- [sidtc](/terminal/features/stocks/darkpool%20shorts/sidtc)
+- [spos](/terminal/features/stocks/darkpool%20shorts/spos)
+
+### trading hours
+
+- [all](/terminal/features/stocks/trading%20hours/all)
+- [closed](/terminal/features/stocks/trading%20hours/closed)
+- [exchange](/terminal/features/stocks/trading%20hours/exchange)
+- [open](/terminal/features/stocks/trading%20hours/open)
+- [symbol](/terminal/features/stocks/trading%20hours/symbol)
+
+### technical analysis
+
+- [ad](/terminal/features/stocks/technical%20analysis/ad)
+- [adosc](/terminal/features/stocks/technical%20analysis/adosc)
+- [adx](/terminal/features/stocks/technical%20analysis/adx)
+- [aroon](/terminal/features/stocks/technical%20analysis/aroon)
+- [atr](/terminal/features/stocks/technical%20analysis/atr)
+- [bbands](/terminal/features/stocks/technical%20analysis/bbands)
+- [cci](/terminal/features/stocks/technical%20analysis/cci)
+- [cg](/terminal/features/stocks/technical%20analysis/cg)
+- [clenow](/terminal/features/stocks/technical%20analysis/clenow)
+- [demark](/terminal/features/stocks/technical%20analysis/demark)
+- [donchian](/terminal/features/stocks/technical%20analysis/donchian)
+- [ema](/terminal/features/stocks/technical%20analysis/ema)
+- [fib](/terminal/features/stocks/technical%20analysis/fib)
+- [fisher](/terminal/features/stocks/technical%20analysis/fisher)
+- [hma](/terminal/features/stocks/technical%20analysis/hma)
+- [kc](/terminal/features/stocks/technical%20analysis/kc)
+- [load](/terminal/features/stocks/technical%20analysis/load)
+- [macd](/terminal/features/stocks/technical%20analysis/macd)
+- [obv](/terminal/features/stocks/technical%20analysis/obv)
+- [recom](/terminal/features/stocks/technical%20analysis/recom)
+- [rsi](/terminal/features/stocks/technical%20analysis/rsi)
+- [rsp](/terminal/features/stocks/technical%20analysis/rsp)
+- [sma](/terminal/features/stocks/technical%20analysis/sma)
+- [stoch](/terminal/features/stocks/technical%20analysis/stoch)
+- [summary](/terminal/features/stocks/technical%20analysis/summary)
+- [tv](/terminal/features/stocks/technical%20analysis/tv)
+- [view](/terminal/features/stocks/technical%20analysis/view)
+- [vwap](/terminal/features/stocks/technical%20analysis/vwap)
+- [wma](/terminal/features/stocks/technical%20analysis/wma)
+- [zlma](/terminal/features/stocks/technical%20analysis/zlma)
+
+### fundamental analysis
+
+- [analysis](/terminal/features/stocks/fundamental%20analysis/analysis)
+- [balance](/terminal/features/stocks/fundamental%20analysis/balance)
+- [cal](/terminal/features/stocks/fundamental%20analysis/cal)
+- [cash](/terminal/features/stocks/fundamental%20analysis/cash)
+- [data](/terminal/features/stocks/fundamental%20analysis/data)
+- [dcf](/terminal/features/stocks/fundamental%20analysis/dcf)
+- [dcfc](/terminal/features/stocks/fundamental%20analysis/dcfc)
+- [divs](/terminal/features/stocks/fundamental%20analysis/divs)
+- [dupont](/terminal/features/stocks/fundamental%20analysis/dupont)
+- [earnings](/terminal/features/stocks/fundamental%20analysis/earnings)
+- [enterprise](/terminal/features/stocks/fundamental%20analysis/enterprise)
+- [fraud](/terminal/features/stocks/fundamental%20analysis/fraud)
+- [growth](/terminal/features/stocks/fundamental%20analysis/growth)
+- [hq](/terminal/features/stocks/fundamental%20analysis/hq)
+- [income](/terminal/features/stocks/fundamental%20analysis/income)
+- [info](/terminal/features/stocks/fundamental%20analysis/info)
+- [key](/terminal/features/stocks/fundamental%20analysis/key)
+- [load](/terminal/features/stocks/fundamental%20analysis/load)
+- [metrics](/terminal/features/stocks/fundamental%20analysis/metrics)
+- [mgmt](/terminal/features/stocks/fundamental%20analysis/mgmt)
+- [mktcap](/terminal/features/stocks/fundamental%20analysis/mktcap)
+- [overview](/terminal/features/stocks/fundamental%20analysis/overview)
+- [profile](/terminal/features/stocks/fundamental%20analysis/profile)
+- [quote](/terminal/features/stocks/fundamental%20analysis/quote)
+- [ratios](/terminal/features/stocks/fundamental%20analysis/ratios)
+- [score](/terminal/features/stocks/fundamental%20analysis/score)
+- [shrs](/terminal/features/stocks/fundamental%20analysis/shrs)
+- [splits](/terminal/features/stocks/fundamental%20analysis/splits)
+- [sust](/terminal/features/stocks/fundamental%20analysis/sust)
+- [warnings](/terminal/features/stocks/fundamental%20analysis/warnings)
+- [web](/terminal/features/stocks/fundamental%20analysis/web)
+
+### backtesting
+
+- [ema](/terminal/features/stocks/backtesting/ema)
+- [emacross](/terminal/features/stocks/backtesting/emacross)
+- [rsi](/terminal/features/stocks/backtesting/rsi)
+- [whatif](/terminal/features/stocks/backtesting/whatif)
+
+### discovery
+
+- [active](/terminal/features/stocks/discovery/active)
+- [arkord](/terminal/features/stocks/discovery/arkord)
+- [asc](/terminal/features/stocks/discovery/asc)
+- [cnews](/terminal/features/stocks/discovery/cnews)
+- [divcal](/terminal/features/stocks/discovery/divcal)
+- [fipo](/terminal/features/stocks/discovery/fipo)
+- [gainers](/terminal/features/stocks/discovery/gainers)
+- [gtech](/terminal/features/stocks/discovery/gtech)
+- [heatmap](/terminal/features/stocks/discovery/heatmap)
+- [hotpenny](/terminal/features/stocks/discovery/hotpenny)
+- [losers](/terminal/features/stocks/discovery/losers)
+- [lowfloat](/terminal/features/stocks/discovery/lowfloat)
+- [pipo](/terminal/features/stocks/discovery/pipo)
+- [rtat](/terminal/features/stocks/discovery/rtat)
+- [trending](/terminal/features/stocks/discovery/trending)
+- [ugs](/terminal/features/stocks/discovery/ugs)
+- [ulc](/terminal/features/stocks/discovery/ulc)
+- [upcoming](/terminal/features/stocks/discovery/upcoming)
+
+### government
+
+- [contracts](/terminal/features/stocks/government/contracts)
+- [gtrades](/terminal/features/stocks/government/gtrades)
+- [histcont](/terminal/features/stocks/government/histcont)
+- [lastcontracts](/terminal/features/stocks/government/lastcontracts)
+- [lasttrades](/terminal/features/stocks/government/lasttrades)
+- [load](/terminal/features/stocks/government/load)
+- [lobbying](/terminal/features/stocks/government/lobbying)
+- [qtrcontracts](/terminal/features/stocks/government/qtrcontracts)
+- [topbuys](/terminal/features/stocks/government/topbuys)
+- [toplobbying](/terminal/features/stocks/government/toplobbying)
+- [topsells](/terminal/features/stocks/government/topsells)
+
+### screener
+
+- [financial](/terminal/features/stocks/screener/financial)
+- [historical](/terminal/features/stocks/screener/historical)
+- [overview](/terminal/features/stocks/screener/overview)
+- [ownership](/terminal/features/stocks/screener/ownership)
+- [performance](/terminal/features/stocks/screener/performance)
+- [set](/terminal/features/stocks/screener/set)
+- [technical](/terminal/features/stocks/screener/technical)
+- [valuation](/terminal/features/stocks/screener/valuation)
+- [view](/terminal/features/stocks/screener/view)
+
+### due diligence
+
+- [analyst](/terminal/features/stocks/due%20diligence/analyst)
+- [arktrades](/terminal/features/stocks/due%20diligence/arktrades)
+- [customer](/terminal/features/stocks/due%20diligence/customer)
+- [est](/terminal/features/stocks/due%20diligence/est)
+- [load](/terminal/features/stocks/due%20diligence/load)
+- [pt](/terminal/features/stocks/due%20diligence/pt)
+- [rating](/terminal/features/stocks/due%20diligence/rating)
+- [rot](/terminal/features/stocks/due%20diligence/rot)
+- [sec](/terminal/features/stocks/due%20diligence/sec)
+- [supplier](/terminal/features/stocks/due%20diligence/supplier)
+
+### insiders
+
+- [act](/terminal/features/stocks/insiders/act)
+- [blcp](/terminal/features/stocks/insiders/blcp)
+- [blcs](/terminal/features/stocks/insiders/blcs)
+- [blip](/terminal/features/stocks/insiders/blip)
+- [blis](/terminal/features/stocks/insiders/blis)
+- [blop](/terminal/features/stocks/insiders/blop)
+- [blos](/terminal/features/stocks/insiders/blos)
+- [filter](/terminal/features/stocks/insiders/filter)
+- [lcb](/terminal/features/stocks/insiders/lcb)
+- [lins](/terminal/features/stocks/insiders/lins)
+- [lip](/terminal/features/stocks/insiders/lip)
+- [lis](/terminal/features/stocks/insiders/lis)
+- [lit](/terminal/features/stocks/insiders/lit)
+- [load](/terminal/features/stocks/insiders/load)
+- [lpsb](/terminal/features/stocks/insiders/lpsb)
+- [set](/terminal/features/stocks/insiders/set)
+- [stats](/terminal/features/stocks/insiders/stats)
+- [tippm](/terminal/features/stocks/insiders/tippm)
+- [tippw](/terminal/features/stocks/insiders/tippw)
+- [tipt](/terminal/features/stocks/insiders/tipt)
+- [tispm](/terminal/features/stocks/insiders/tispm)
+- [tispw](/terminal/features/stocks/insiders/tispw)
+- [tist](/terminal/features/stocks/insiders/tist)
+- [toppm](/terminal/features/stocks/insiders/toppm)
+- [toppw](/terminal/features/stocks/insiders/toppw)
+- [topt](/terminal/features/stocks/insiders/topt)
+- [view](/terminal/features/stocks/insiders/view)
+
+### sector industry analysis
+
+- [country](/terminal/features/stocks/sector%20industry%20analysis/country)
+- [cpci](/terminal/features/stocks/sector%20industry%20analysis/cpci)
+- [cpcs](/terminal/features/stocks/sector%20industry%20analysis/cpcs)
+- [cpic](/terminal/features/stocks/sector%20industry%20analysis/cpic)
+- [cpis](/terminal/features/stocks/sector%20industry%20analysis/cpis)
+- [cps](/terminal/features/stocks/sector%20industry%20analysis/cps)
+- [exchange](/terminal/features/stocks/sector%20industry%20analysis/exchange)
+- [industry](/terminal/features/stocks/sector%20industry%20analysis/industry)
+- [metric](/terminal/features/stocks/sector%20industry%20analysis/metric)
+- [mktcap](/terminal/features/stocks/sector%20industry%20analysis/mktcap)
+- [period](/terminal/features/stocks/sector%20industry%20analysis/period)
+- [sector](/terminal/features/stocks/sector%20industry%20analysis/sector)
+- [select](/terminal/features/stocks/sector%20industry%20analysis/select)
+- [vis](/terminal/features/stocks/sector%20industry%20analysis/vis)
 
 ### options
 
@@ -253,76 +665,6 @@
 - [rnval](/terminal/features/stocks/options/pricing/rnval)
 - [show](/terminal/features/stocks/options/pricing/show)
 
-### government
-
-- [contracts](/terminal/features/stocks/government/contracts)
-- [gtrades](/terminal/features/stocks/government/gtrades)
-- [histcont](/terminal/features/stocks/government/histcont)
-- [lastcontracts](/terminal/features/stocks/government/lastcontracts)
-- [lasttrades](/terminal/features/stocks/government/lasttrades)
-- [load](/terminal/features/stocks/government/load)
-- [lobbying](/terminal/features/stocks/government/lobbying)
-- [qtrcontracts](/terminal/features/stocks/government/qtrcontracts)
-- [topbuys](/terminal/features/stocks/government/topbuys)
-- [toplobbying](/terminal/features/stocks/government/toplobbying)
-- [topsells](/terminal/features/stocks/government/topsells)
-
-### trading hours
-
-- [all](/terminal/features/stocks/trading%20hours/all)
-- [closed](/terminal/features/stocks/trading%20hours/closed)
-- [exchange](/terminal/features/stocks/trading%20hours/exchange)
-- [open](/terminal/features/stocks/trading%20hours/open)
-- [symbol](/terminal/features/stocks/trading%20hours/symbol)
-
-### backtesting
-
-- [ema](/terminal/features/stocks/backtesting/ema)
-- [emacross](/terminal/features/stocks/backtesting/emacross)
-- [rsi](/terminal/features/stocks/backtesting/rsi)
-- [whatif](/terminal/features/stocks/backtesting/whatif)
-
-### screener
-
-- [financial](/terminal/features/stocks/screener/financial)
-- [historical](/terminal/features/stocks/screener/historical)
-- [overview](/terminal/features/stocks/screener/overview)
-- [ownership](/terminal/features/stocks/screener/ownership)
-- [performance](/terminal/features/stocks/screener/performance)
-- [set](/terminal/features/stocks/screener/set)
-- [technical](/terminal/features/stocks/screener/technical)
-- [valuation](/terminal/features/stocks/screener/valuation)
-- [view](/terminal/features/stocks/screener/view)
-
-### quantitative analysis
-
-- [acf](/terminal/features/stocks/quantitative%20analysis/acf)
-- [beta](/terminal/features/stocks/quantitative%20analysis/beta)
-- [bw](/terminal/features/stocks/quantitative%20analysis/bw)
-- [capm](/terminal/features/stocks/quantitative%20analysis/capm)
-- [cdf](/terminal/features/stocks/quantitative%20analysis/cdf)
-- [cusum](/terminal/features/stocks/quantitative%20analysis/cusum)
-- [decompose](/terminal/features/stocks/quantitative%20analysis/decompose)
-- [es](/terminal/features/stocks/quantitative%20analysis/es)
-- [hist](/terminal/features/stocks/quantitative%20analysis/hist)
-- [kurtosis](/terminal/features/stocks/quantitative%20analysis/kurtosis)
-- [line](/terminal/features/stocks/quantitative%20analysis/line)
-- [load](/terminal/features/stocks/quantitative%20analysis/load)
-- [normality](/terminal/features/stocks/quantitative%20analysis/normality)
-- [om](/terminal/features/stocks/quantitative%20analysis/om)
-- [pick](/terminal/features/stocks/quantitative%20analysis/pick)
-- [qqplot](/terminal/features/stocks/quantitative%20analysis/qqplot)
-- [quantile](/terminal/features/stocks/quantitative%20analysis/quantile)
-- [raw](/terminal/features/stocks/quantitative%20analysis/raw)
-- [rolling](/terminal/features/stocks/quantitative%20analysis/rolling)
-- [sh](/terminal/features/stocks/quantitative%20analysis/sh)
-- [skew](/terminal/features/stocks/quantitative%20analysis/skew)
-- [so](/terminal/features/stocks/quantitative%20analysis/so)
-- [spread](/terminal/features/stocks/quantitative%20analysis/spread)
-- [summary](/terminal/features/stocks/quantitative%20analysis/summary)
-- [unitroot](/terminal/features/stocks/quantitative%20analysis/unitroot)
-- [var](/terminal/features/stocks/quantitative%20analysis/var)
-
 ### behavioural analysis
 
 - [bullbear](/terminal/features/stocks/behavioural%20analysis/bullbear)
@@ -349,305 +691,6 @@
 - [watchlist](/terminal/features/stocks/behavioural%20analysis/watchlist)
 - [wsb](/terminal/features/stocks/behavioural%20analysis/wsb)
 
-### insiders
-
-- [act](/terminal/features/stocks/insiders/act)
-- [blcp](/terminal/features/stocks/insiders/blcp)
-- [blcs](/terminal/features/stocks/insiders/blcs)
-- [blip](/terminal/features/stocks/insiders/blip)
-- [blis](/terminal/features/stocks/insiders/blis)
-- [blop](/terminal/features/stocks/insiders/blop)
-- [blos](/terminal/features/stocks/insiders/blos)
-- [filter](/terminal/features/stocks/insiders/filter)
-- [lcb](/terminal/features/stocks/insiders/lcb)
-- [lins](/terminal/features/stocks/insiders/lins)
-- [lip](/terminal/features/stocks/insiders/lip)
-- [lis](/terminal/features/stocks/insiders/lis)
-- [lit](/terminal/features/stocks/insiders/lit)
-- [load](/terminal/features/stocks/insiders/load)
-- [lpsb](/terminal/features/stocks/insiders/lpsb)
-- [set](/terminal/features/stocks/insiders/set)
-- [stats](/terminal/features/stocks/insiders/stats)
-- [tippm](/terminal/features/stocks/insiders/tippm)
-- [tippw](/terminal/features/stocks/insiders/tippw)
-- [tipt](/terminal/features/stocks/insiders/tipt)
-- [tispm](/terminal/features/stocks/insiders/tispm)
-- [tispw](/terminal/features/stocks/insiders/tispw)
-- [tist](/terminal/features/stocks/insiders/tist)
-- [toppm](/terminal/features/stocks/insiders/toppm)
-- [toppw](/terminal/features/stocks/insiders/toppw)
-- [topt](/terminal/features/stocks/insiders/topt)
-- [view](/terminal/features/stocks/insiders/view)
-
-### discovery
-
-- [active](/terminal/features/stocks/discovery/active)
-- [arkord](/terminal/features/stocks/discovery/arkord)
-- [asc](/terminal/features/stocks/discovery/asc)
-- [cnews](/terminal/features/stocks/discovery/cnews)
-- [divcal](/terminal/features/stocks/discovery/divcal)
-- [fipo](/terminal/features/stocks/discovery/fipo)
-- [gainers](/terminal/features/stocks/discovery/gainers)
-- [gtech](/terminal/features/stocks/discovery/gtech)
-- [heatmap](/terminal/features/stocks/discovery/heatmap)
-- [hotpenny](/terminal/features/stocks/discovery/hotpenny)
-- [losers](/terminal/features/stocks/discovery/losers)
-- [lowfloat](/terminal/features/stocks/discovery/lowfloat)
-- [pipo](/terminal/features/stocks/discovery/pipo)
-- [rtat](/terminal/features/stocks/discovery/rtat)
-- [trending](/terminal/features/stocks/discovery/trending)
-- [ugs](/terminal/features/stocks/discovery/ugs)
-- [ulc](/terminal/features/stocks/discovery/ulc)
-- [upcoming](/terminal/features/stocks/discovery/upcoming)
-
-### fundamental analysis
-
-- [analysis](/terminal/features/stocks/fundamental%20analysis/analysis)
-- [balance](/terminal/features/stocks/fundamental%20analysis/balance)
-- [cal](/terminal/features/stocks/fundamental%20analysis/cal)
-- [cash](/terminal/features/stocks/fundamental%20analysis/cash)
-- [data](/terminal/features/stocks/fundamental%20analysis/data)
-- [dcf](/terminal/features/stocks/fundamental%20analysis/dcf)
-- [dcfc](/terminal/features/stocks/fundamental%20analysis/dcfc)
-- [divs](/terminal/features/stocks/fundamental%20analysis/divs)
-- [dupont](/terminal/features/stocks/fundamental%20analysis/dupont)
-- [earnings](/terminal/features/stocks/fundamental%20analysis/earnings)
-- [enterprise](/terminal/features/stocks/fundamental%20analysis/enterprise)
-- [fraud](/terminal/features/stocks/fundamental%20analysis/fraud)
-- [growth](/terminal/features/stocks/fundamental%20analysis/growth)
-- [hq](/terminal/features/stocks/fundamental%20analysis/hq)
-- [income](/terminal/features/stocks/fundamental%20analysis/income)
-- [info](/terminal/features/stocks/fundamental%20analysis/info)
-- [key](/terminal/features/stocks/fundamental%20analysis/key)
-- [load](/terminal/features/stocks/fundamental%20analysis/load)
-- [metrics](/terminal/features/stocks/fundamental%20analysis/metrics)
-- [mgmt](/terminal/features/stocks/fundamental%20analysis/mgmt)
-- [mktcap](/terminal/features/stocks/fundamental%20analysis/mktcap)
-- [overview](/terminal/features/stocks/fundamental%20analysis/overview)
-- [profile](/terminal/features/stocks/fundamental%20analysis/profile)
-- [quote](/terminal/features/stocks/fundamental%20analysis/quote)
-- [ratios](/terminal/features/stocks/fundamental%20analysis/ratios)
-- [score](/terminal/features/stocks/fundamental%20analysis/score)
-- [shrs](/terminal/features/stocks/fundamental%20analysis/shrs)
-- [splits](/terminal/features/stocks/fundamental%20analysis/splits)
-- [sust](/terminal/features/stocks/fundamental%20analysis/sust)
-- [warnings](/terminal/features/stocks/fundamental%20analysis/warnings)
-- [web](/terminal/features/stocks/fundamental%20analysis/web)
-
-### technical analysis
-
-- [ad](/terminal/features/stocks/technical%20analysis/ad)
-- [adosc](/terminal/features/stocks/technical%20analysis/adosc)
-- [adx](/terminal/features/stocks/technical%20analysis/adx)
-- [aroon](/terminal/features/stocks/technical%20analysis/aroon)
-- [atr](/terminal/features/stocks/technical%20analysis/atr)
-- [bbands](/terminal/features/stocks/technical%20analysis/bbands)
-- [cci](/terminal/features/stocks/technical%20analysis/cci)
-- [cg](/terminal/features/stocks/technical%20analysis/cg)
-- [clenow](/terminal/features/stocks/technical%20analysis/clenow)
-- [demark](/terminal/features/stocks/technical%20analysis/demark)
-- [donchian](/terminal/features/stocks/technical%20analysis/donchian)
-- [ema](/terminal/features/stocks/technical%20analysis/ema)
-- [fib](/terminal/features/stocks/technical%20analysis/fib)
-- [fisher](/terminal/features/stocks/technical%20analysis/fisher)
-- [hma](/terminal/features/stocks/technical%20analysis/hma)
-- [kc](/terminal/features/stocks/technical%20analysis/kc)
-- [load](/terminal/features/stocks/technical%20analysis/load)
-- [macd](/terminal/features/stocks/technical%20analysis/macd)
-- [obv](/terminal/features/stocks/technical%20analysis/obv)
-- [recom](/terminal/features/stocks/technical%20analysis/recom)
-- [rsi](/terminal/features/stocks/technical%20analysis/rsi)
-- [rsp](/terminal/features/stocks/technical%20analysis/rsp)
-- [sma](/terminal/features/stocks/technical%20analysis/sma)
-- [stoch](/terminal/features/stocks/technical%20analysis/stoch)
-- [summary](/terminal/features/stocks/technical%20analysis/summary)
-- [tv](/terminal/features/stocks/technical%20analysis/tv)
-- [view](/terminal/features/stocks/technical%20analysis/view)
-- [vwap](/terminal/features/stocks/technical%20analysis/vwap)
-- [wma](/terminal/features/stocks/technical%20analysis/wma)
-- [zlma](/terminal/features/stocks/technical%20analysis/zlma)
-
-### due diligence
-
-- [analyst](/terminal/features/stocks/due%20diligence/analyst)
-- [arktrades](/terminal/features/stocks/due%20diligence/arktrades)
-- [customer](/terminal/features/stocks/due%20diligence/customer)
-- [est](/terminal/features/stocks/due%20diligence/est)
-- [load](/terminal/features/stocks/due%20diligence/load)
-- [pt](/terminal/features/stocks/due%20diligence/pt)
-- [rating](/terminal/features/stocks/due%20diligence/rating)
-- [rot](/terminal/features/stocks/due%20diligence/rot)
-- [sec](/terminal/features/stocks/due%20diligence/sec)
-- [supplier](/terminal/features/stocks/due%20diligence/supplier)
-
-### darkpool shorts
-
-- [ctb](/terminal/features/stocks/darkpool%20shorts/ctb)
-- [dpotc](/terminal/features/stocks/darkpool%20shorts/dpotc)
-- [ftd](/terminal/features/stocks/darkpool%20shorts/ftd)
-- [hsi](/terminal/features/stocks/darkpool%20shorts/hsi)
-- [load](/terminal/features/stocks/darkpool%20shorts/load)
-- [pos](/terminal/features/stocks/darkpool%20shorts/pos)
-- [prom](/terminal/features/stocks/darkpool%20shorts/prom)
-- [psi](/terminal/features/stocks/darkpool%20shorts/psi)
-- [shorted](/terminal/features/stocks/darkpool%20shorts/shorted)
-- [sidtc](/terminal/features/stocks/darkpool%20shorts/sidtc)
-- [spos](/terminal/features/stocks/darkpool%20shorts/spos)
-
-### comparison analysis
-
-- [add](/terminal/features/stocks/comparison%20analysis/add)
-- [balance](/terminal/features/stocks/comparison%20analysis/balance)
-- [cashflow](/terminal/features/stocks/comparison%20analysis/cashflow)
-- [financial](/terminal/features/stocks/comparison%20analysis/financial)
-- [get](/terminal/features/stocks/comparison%20analysis/get)
-- [hcorr](/terminal/features/stocks/comparison%20analysis/hcorr)
-- [historical](/terminal/features/stocks/comparison%20analysis/historical)
-- [income](/terminal/features/stocks/comparison%20analysis/income)
-- [overview](/terminal/features/stocks/comparison%20analysis/overview)
-- [ownership](/terminal/features/stocks/comparison%20analysis/ownership)
-- [performance](/terminal/features/stocks/comparison%20analysis/performance)
-- [rmv](/terminal/features/stocks/comparison%20analysis/rmv)
-- [scorr](/terminal/features/stocks/comparison%20analysis/scorr)
-- [sentiment](/terminal/features/stocks/comparison%20analysis/sentiment)
-- [set](/terminal/features/stocks/comparison%20analysis/set)
-- [technical](/terminal/features/stocks/comparison%20analysis/technical)
-- [ticker](/terminal/features/stocks/comparison%20analysis/ticker)
-- [tsne](/terminal/features/stocks/comparison%20analysis/tsne)
-- [valuation](/terminal/features/stocks/comparison%20analysis/valuation)
-- [volume](/terminal/features/stocks/comparison%20analysis/volume)
-
-### sector industry analysis
-
-- [country](/terminal/features/stocks/sector%20industry%20analysis/country)
-- [cpci](/terminal/features/stocks/sector%20industry%20analysis/cpci)
-- [cpcs](/terminal/features/stocks/sector%20industry%20analysis/cpcs)
-- [cpic](/terminal/features/stocks/sector%20industry%20analysis/cpic)
-- [cpis](/terminal/features/stocks/sector%20industry%20analysis/cpis)
-- [cps](/terminal/features/stocks/sector%20industry%20analysis/cps)
-- [exchange](/terminal/features/stocks/sector%20industry%20analysis/exchange)
-- [industry](/terminal/features/stocks/sector%20industry%20analysis/industry)
-- [metric](/terminal/features/stocks/sector%20industry%20analysis/metric)
-- [mktcap](/terminal/features/stocks/sector%20industry%20analysis/mktcap)
-- [period](/terminal/features/stocks/sector%20industry%20analysis/period)
-- [sector](/terminal/features/stocks/sector%20industry%20analysis/sector)
-- [select](/terminal/features/stocks/sector%20industry%20analysis/select)
-- [vis](/terminal/features/stocks/sector%20industry%20analysis/vis)
-
-## mutual funds
-
-- [alswe](/terminal/features/mutual%20funds/alswe)
-- [country](/terminal/features/mutual%20funds/country)
-- [equity](/terminal/features/mutual%20funds/equity)
-- [info](/terminal/features/mutual%20funds/info)
-- [infoswe](/terminal/features/mutual%20funds/infoswe)
-- [load](/terminal/features/mutual%20funds/load)
-- [overview](/terminal/features/mutual%20funds/overview)
-- [plot](/terminal/features/mutual%20funds/plot)
-- [search](/terminal/features/mutual%20funds/search)
-- [sector](/terminal/features/mutual%20funds/sector)
-
-## portfolio
-
-- [alloc](/terminal/features/portfolio/alloc)
-- [attrib](/terminal/features/portfolio/attrib)
-- [bench](/terminal/features/portfolio/bench)
-- [distr](/terminal/features/portfolio/distr)
-- [dret](/terminal/features/portfolio/dret)
-- [es](/terminal/features/portfolio/es)
-- [holdp](/terminal/features/portfolio/holdp)
-- [holdv](/terminal/features/portfolio/holdv)
-- [load](/terminal/features/portfolio/load)
-- [maxdd](/terminal/features/portfolio/maxdd)
-- [metric](/terminal/features/portfolio/metric)
-- [mret](/terminal/features/portfolio/mret)
-- [om](/terminal/features/portfolio/om)
-- [perf](/terminal/features/portfolio/perf)
-- [rbeta](/terminal/features/portfolio/rbeta)
-- [rsharpe](/terminal/features/portfolio/rsharpe)
-- [rsort](/terminal/features/portfolio/rsort)
-- [rvol](/terminal/features/portfolio/rvol)
-- [show](/terminal/features/portfolio/show)
-- [summary](/terminal/features/portfolio/summary)
-- [var](/terminal/features/portfolio/var)
-- [yret](/terminal/features/portfolio/yret)
-
-### brokers
-
-
-#### ally
-
-- [balances](/terminal/features/portfolio/brokers/ally/balances)
-- [history](/terminal/features/portfolio/brokers/ally/history)
-- [holdings](/terminal/features/portfolio/brokers/ally/holdings)
-- [movers](/terminal/features/portfolio/brokers/ally/movers)
-- [quote](/terminal/features/portfolio/brokers/ally/quote)
-
-#### coinbase
-
-- [account](/terminal/features/portfolio/brokers/coinbase/account)
-- [deposits](/terminal/features/portfolio/brokers/coinbase/deposits)
-- [history](/terminal/features/portfolio/brokers/coinbase/history)
-- [orders](/terminal/features/portfolio/brokers/coinbase/orders)
-
-#### robinhood
-
-- [history](/terminal/features/portfolio/brokers/robinhood/history)
-- [holdings](/terminal/features/portfolio/brokers/robinhood/holdings)
-
-#### degiro
-
-- [cancel](/terminal/features/portfolio/brokers/degiro/cancel)
-- [companynews](/terminal/features/portfolio/brokers/degiro/companynews)
-- [create](/terminal/features/portfolio/brokers/degiro/create)
-- [hold](/terminal/features/portfolio/brokers/degiro/hold)
-- [lastnews](/terminal/features/portfolio/brokers/degiro/lastnews)
-- [login](/terminal/features/portfolio/brokers/degiro/login)
-- [logout](/terminal/features/portfolio/brokers/degiro/logout)
-- [lookup](/terminal/features/portfolio/brokers/degiro/lookup)
-- [paexport](/terminal/features/portfolio/brokers/degiro/paexport)
-- [pending](/terminal/features/portfolio/brokers/degiro/pending)
-- [topnews](/terminal/features/portfolio/brokers/degiro/topnews)
-- [update](/terminal/features/portfolio/brokers/degiro/update)
-
-### portfolio_analysis
-
-- [group](/terminal/features/portfolio/portfolio_analysis/group)
-- [load](/terminal/features/portfolio/portfolio_analysis/load)
-- [view](/terminal/features/portfolio/portfolio_analysis/view)
-
-### portfolio optimization
-
-- [blacklitterman](/terminal/features/portfolio/portfolio%20optimization/blacklitterman)
-- [dividend](/terminal/features/portfolio/portfolio%20optimization/dividend)
-- [ef](/terminal/features/portfolio/portfolio%20optimization/ef)
-- [equal](/terminal/features/portfolio/portfolio%20optimization/equal)
-- [file](/terminal/features/portfolio/portfolio%20optimization/file)
-- [herc](/terminal/features/portfolio/portfolio%20optimization/herc)
-- [hrp](/terminal/features/portfolio/portfolio%20optimization/hrp)
-- [load](/terminal/features/portfolio/portfolio%20optimization/load)
-- [maxdecorr](/terminal/features/portfolio/portfolio%20optimization/maxdecorr)
-- [maxdiv](/terminal/features/portfolio/portfolio%20optimization/maxdiv)
-- [maxret](/terminal/features/portfolio/portfolio%20optimization/maxret)
-- [maxsharpe](/terminal/features/portfolio/portfolio%20optimization/maxsharpe)
-- [maxutil](/terminal/features/portfolio/portfolio%20optimization/maxutil)
-- [minrisk](/terminal/features/portfolio/portfolio%20optimization/minrisk)
-- [mktcap](/terminal/features/portfolio/portfolio%20optimization/mktcap)
-- [nco](/terminal/features/portfolio/portfolio%20optimization/nco)
-- [plot](/terminal/features/portfolio/portfolio%20optimization/plot)
-- [property](/terminal/features/portfolio/portfolio%20optimization/property)
-- [relriskparity](/terminal/features/portfolio/portfolio%20optimization/relriskparity)
-- [riskparity](/terminal/features/portfolio/portfolio%20optimization/riskparity)
-- [rpf](/terminal/features/portfolio/portfolio%20optimization/rpf)
-- [show](/terminal/features/portfolio/portfolio%20optimization/show)
-
-#### parameters
-
-- [arg](/terminal/features/portfolio/portfolio%20optimization/parameters/arg)
-- [load](/terminal/features/portfolio/portfolio%20optimization/parameters/load)
-- [save](/terminal/features/portfolio/portfolio%20optimization/parameters/save)
-- [set](/terminal/features/portfolio/portfolio%20optimization/parameters/set)
-
 ## cryptocurrency
 
 - [candle](/terminal/features/cryptocurrency/candle)
@@ -661,6 +704,87 @@
 
 - [aprtoapy](/terminal/features/cryptocurrency/tools/aprtoapy)
 - [il](/terminal/features/cryptocurrency/tools/il)
+
+### quantitative analysis
+
+- [acf](/terminal/features/cryptocurrency/quantitative%20analysis/acf)
+- [bw](/terminal/features/cryptocurrency/quantitative%20analysis/bw)
+- [cdf](/terminal/features/cryptocurrency/quantitative%20analysis/cdf)
+- [cusum](/terminal/features/cryptocurrency/quantitative%20analysis/cusum)
+- [decompose](/terminal/features/cryptocurrency/quantitative%20analysis/decompose)
+- [hist](/terminal/features/cryptocurrency/quantitative%20analysis/hist)
+- [kurtosis](/terminal/features/cryptocurrency/quantitative%20analysis/kurtosis)
+- [line](/terminal/features/cryptocurrency/quantitative%20analysis/line)
+- [load](/terminal/features/cryptocurrency/quantitative%20analysis/load)
+- [normality](/terminal/features/cryptocurrency/quantitative%20analysis/normality)
+- [pick](/terminal/features/cryptocurrency/quantitative%20analysis/pick)
+- [qqplot](/terminal/features/cryptocurrency/quantitative%20analysis/qqplot)
+- [quantile](/terminal/features/cryptocurrency/quantitative%20analysis/quantile)
+- [raw](/terminal/features/cryptocurrency/quantitative%20analysis/raw)
+- [rolling](/terminal/features/cryptocurrency/quantitative%20analysis/rolling)
+- [skew](/terminal/features/cryptocurrency/quantitative%20analysis/skew)
+- [spread](/terminal/features/cryptocurrency/quantitative%20analysis/spread)
+- [summary](/terminal/features/cryptocurrency/quantitative%20analysis/summary)
+- [unitroot](/terminal/features/cryptocurrency/quantitative%20analysis/unitroot)
+
+### technical analysis
+
+- [ad](/terminal/features/cryptocurrency/technical%20analysis/ad)
+- [adosc](/terminal/features/cryptocurrency/technical%20analysis/adosc)
+- [adx](/terminal/features/cryptocurrency/technical%20analysis/adx)
+- [aroon](/terminal/features/cryptocurrency/technical%20analysis/aroon)
+- [bbands](/terminal/features/cryptocurrency/technical%20analysis/bbands)
+- [cci](/terminal/features/cryptocurrency/technical%20analysis/cci)
+- [cg](/terminal/features/cryptocurrency/technical%20analysis/cg)
+- [donchian](/terminal/features/cryptocurrency/technical%20analysis/donchian)
+- [ema](/terminal/features/cryptocurrency/technical%20analysis/ema)
+- [fib](/terminal/features/cryptocurrency/technical%20analysis/fib)
+- [fisher](/terminal/features/cryptocurrency/technical%20analysis/fisher)
+- [hma](/terminal/features/cryptocurrency/technical%20analysis/hma)
+- [kc](/terminal/features/cryptocurrency/technical%20analysis/kc)
+- [load](/terminal/features/cryptocurrency/technical%20analysis/load)
+- [macd](/terminal/features/cryptocurrency/technical%20analysis/macd)
+- [obv](/terminal/features/cryptocurrency/technical%20analysis/obv)
+- [rsi](/terminal/features/cryptocurrency/technical%20analysis/rsi)
+- [sma](/terminal/features/cryptocurrency/technical%20analysis/sma)
+- [stoch](/terminal/features/cryptocurrency/technical%20analysis/stoch)
+- [tv](/terminal/features/cryptocurrency/technical%20analysis/tv)
+- [vwap](/terminal/features/cryptocurrency/technical%20analysis/vwap)
+- [wma](/terminal/features/cryptocurrency/technical%20analysis/wma)
+- [zlma](/terminal/features/cryptocurrency/technical%20analysis/zlma)
+
+### discovery
+
+- [dapps](/terminal/features/cryptocurrency/discovery/dapps)
+- [dex](/terminal/features/cryptocurrency/discovery/dex)
+- [gainers](/terminal/features/cryptocurrency/discovery/gainers)
+- [games](/terminal/features/cryptocurrency/discovery/games)
+- [losers](/terminal/features/cryptocurrency/discovery/losers)
+- [nft](/terminal/features/cryptocurrency/discovery/nft)
+- [search](/terminal/features/cryptocurrency/discovery/search)
+- [top](/terminal/features/cryptocurrency/discovery/top)
+- [trending](/terminal/features/cryptocurrency/discovery/trending)
+
+### defi
+
+- [anchor](/terminal/features/cryptocurrency/defi/anchor)
+- [dtvl](/terminal/features/cryptocurrency/defi/dtvl)
+- [gacc](/terminal/features/cryptocurrency/defi/gacc)
+- [gdapps](/terminal/features/cryptocurrency/defi/gdapps)
+- [lcsc](/terminal/features/cryptocurrency/defi/lcsc)
+- [ldapps](/terminal/features/cryptocurrency/defi/ldapps)
+- [newsletter](/terminal/features/cryptocurrency/defi/newsletter)
+- [pairs](/terminal/features/cryptocurrency/defi/pairs)
+- [pools](/terminal/features/cryptocurrency/defi/pools)
+- [sinfo](/terminal/features/cryptocurrency/defi/sinfo)
+- [sratio](/terminal/features/cryptocurrency/defi/sratio)
+- [sreturn](/terminal/features/cryptocurrency/defi/sreturn)
+- [stats](/terminal/features/cryptocurrency/defi/stats)
+- [stvl](/terminal/features/cryptocurrency/defi/stvl)
+- [swaps](/terminal/features/cryptocurrency/defi/swaps)
+- [tokens](/terminal/features/cryptocurrency/defi/tokens)
+- [validators](/terminal/features/cryptocurrency/defi/validators)
+- [vaults](/terminal/features/cryptocurrency/defi/vaults)
 
 ### onchain
 
@@ -688,71 +812,39 @@
 - [ueat](/terminal/features/cryptocurrency/onchain/ueat)
 - [whales](/terminal/features/cryptocurrency/onchain/whales)
 
-### quantitative analysis
-
-- [acf](/terminal/features/cryptocurrency/quantitative%20analysis/acf)
-- [bw](/terminal/features/cryptocurrency/quantitative%20analysis/bw)
-- [cdf](/terminal/features/cryptocurrency/quantitative%20analysis/cdf)
-- [cusum](/terminal/features/cryptocurrency/quantitative%20analysis/cusum)
-- [decompose](/terminal/features/cryptocurrency/quantitative%20analysis/decompose)
-- [hist](/terminal/features/cryptocurrency/quantitative%20analysis/hist)
-- [kurtosis](/terminal/features/cryptocurrency/quantitative%20analysis/kurtosis)
-- [line](/terminal/features/cryptocurrency/quantitative%20analysis/line)
-- [load](/terminal/features/cryptocurrency/quantitative%20analysis/load)
-- [normality](/terminal/features/cryptocurrency/quantitative%20analysis/normality)
-- [pick](/terminal/features/cryptocurrency/quantitative%20analysis/pick)
-- [qqplot](/terminal/features/cryptocurrency/quantitative%20analysis/qqplot)
-- [quantile](/terminal/features/cryptocurrency/quantitative%20analysis/quantile)
-- [raw](/terminal/features/cryptocurrency/quantitative%20analysis/raw)
-- [rolling](/terminal/features/cryptocurrency/quantitative%20analysis/rolling)
-- [skew](/terminal/features/cryptocurrency/quantitative%20analysis/skew)
-- [spread](/terminal/features/cryptocurrency/quantitative%20analysis/spread)
-- [summary](/terminal/features/cryptocurrency/quantitative%20analysis/summary)
-- [unitroot](/terminal/features/cryptocurrency/quantitative%20analysis/unitroot)
-
 ### nfts
 
 - [collections](/terminal/features/cryptocurrency/nfts/collections)
 - [fp](/terminal/features/cryptocurrency/nfts/fp)
 - [stats](/terminal/features/cryptocurrency/nfts/stats)
 
-### discovery
+### overview
 
-- [dapps](/terminal/features/cryptocurrency/discovery/dapps)
-- [dex](/terminal/features/cryptocurrency/discovery/dex)
-- [gainers](/terminal/features/cryptocurrency/discovery/gainers)
-- [games](/terminal/features/cryptocurrency/discovery/games)
-- [losers](/terminal/features/cryptocurrency/discovery/losers)
-- [nft](/terminal/features/cryptocurrency/discovery/nft)
-- [search](/terminal/features/cryptocurrency/discovery/search)
-- [top](/terminal/features/cryptocurrency/discovery/top)
-- [trending](/terminal/features/cryptocurrency/discovery/trending)
-
-### technical analysis
-
-- [ad](/terminal/features/cryptocurrency/technical%20analysis/ad)
-- [adosc](/terminal/features/cryptocurrency/technical%20analysis/adosc)
-- [adx](/terminal/features/cryptocurrency/technical%20analysis/adx)
-- [aroon](/terminal/features/cryptocurrency/technical%20analysis/aroon)
-- [bbands](/terminal/features/cryptocurrency/technical%20analysis/bbands)
-- [cci](/terminal/features/cryptocurrency/technical%20analysis/cci)
-- [cg](/terminal/features/cryptocurrency/technical%20analysis/cg)
-- [donchian](/terminal/features/cryptocurrency/technical%20analysis/donchian)
-- [ema](/terminal/features/cryptocurrency/technical%20analysis/ema)
-- [fib](/terminal/features/cryptocurrency/technical%20analysis/fib)
-- [fisher](/terminal/features/cryptocurrency/technical%20analysis/fisher)
-- [hma](/terminal/features/cryptocurrency/technical%20analysis/hma)
-- [kc](/terminal/features/cryptocurrency/technical%20analysis/kc)
-- [load](/terminal/features/cryptocurrency/technical%20analysis/load)
-- [macd](/terminal/features/cryptocurrency/technical%20analysis/macd)
-- [obv](/terminal/features/cryptocurrency/technical%20analysis/obv)
-- [rsi](/terminal/features/cryptocurrency/technical%20analysis/rsi)
-- [sma](/terminal/features/cryptocurrency/technical%20analysis/sma)
-- [stoch](/terminal/features/cryptocurrency/technical%20analysis/stoch)
-- [tv](/terminal/features/cryptocurrency/technical%20analysis/tv)
-- [vwap](/terminal/features/cryptocurrency/technical%20analysis/vwap)
-- [wma](/terminal/features/cryptocurrency/technical%20analysis/wma)
-- [zlma](/terminal/features/cryptocurrency/technical%20analysis/zlma)
+- [altindex](/terminal/features/cryptocurrency/overview/altindex)
+- [btcrb](/terminal/features/cryptocurrency/overview/btcrb)
+- [categories](/terminal/features/cryptocurrency/overview/categories)
+- [ch](/terminal/features/cryptocurrency/overview/ch)
+- [contracts](/terminal/features/cryptocurrency/overview/contracts)
+- [cr](/terminal/features/cryptocurrency/overview/cr)
+- [defi](/terminal/features/cryptocurrency/overview/defi)
+- [derivatives](/terminal/features/cryptocurrency/overview/derivatives)
+- [ewf](/terminal/features/cryptocurrency/overview/ewf)
+- [exchanges](/terminal/features/cryptocurrency/overview/exchanges)
+- [exmarkets](/terminal/features/cryptocurrency/overview/exmarkets)
+- [exrates](/terminal/features/cryptocurrency/overview/exrates)
+- [fun](/terminal/features/cryptocurrency/overview/fun)
+- [global](/terminal/features/cryptocurrency/overview/global)
+- [hm](/terminal/features/cryptocurrency/overview/hm)
+- [hold](/terminal/features/cryptocurrency/overview/hold)
+- [indexes](/terminal/features/cryptocurrency/overview/indexes)
+- [info](/terminal/features/cryptocurrency/overview/info)
+- [markets](/terminal/features/cryptocurrency/overview/markets)
+- [news](/terminal/features/cryptocurrency/overview/news)
+- [pairs](/terminal/features/cryptocurrency/overview/pairs)
+- [platforms](/terminal/features/cryptocurrency/overview/platforms)
+- [stables](/terminal/features/cryptocurrency/overview/stables)
+- [wf](/terminal/features/cryptocurrency/overview/wf)
+- [wfpe](/terminal/features/cryptocurrency/overview/wfpe)
 
 ### due diligence
 
@@ -798,107 +890,15 @@
 - [twitter](/terminal/features/cryptocurrency/due%20diligence/twitter)
 - [web](/terminal/features/cryptocurrency/due%20diligence/web)
 
-### overview
+## mutual funds
 
-- [altindex](/terminal/features/cryptocurrency/overview/altindex)
-- [btcrb](/terminal/features/cryptocurrency/overview/btcrb)
-- [categories](/terminal/features/cryptocurrency/overview/categories)
-- [ch](/terminal/features/cryptocurrency/overview/ch)
-- [contracts](/terminal/features/cryptocurrency/overview/contracts)
-- [cr](/terminal/features/cryptocurrency/overview/cr)
-- [defi](/terminal/features/cryptocurrency/overview/defi)
-- [derivatives](/terminal/features/cryptocurrency/overview/derivatives)
-- [ewf](/terminal/features/cryptocurrency/overview/ewf)
-- [exchanges](/terminal/features/cryptocurrency/overview/exchanges)
-- [exmarkets](/terminal/features/cryptocurrency/overview/exmarkets)
-- [exrates](/terminal/features/cryptocurrency/overview/exrates)
-- [fun](/terminal/features/cryptocurrency/overview/fun)
-- [global](/terminal/features/cryptocurrency/overview/global)
-- [hm](/terminal/features/cryptocurrency/overview/hm)
-- [hold](/terminal/features/cryptocurrency/overview/hold)
-- [indexes](/terminal/features/cryptocurrency/overview/indexes)
-- [info](/terminal/features/cryptocurrency/overview/info)
-- [markets](/terminal/features/cryptocurrency/overview/markets)
-- [news](/terminal/features/cryptocurrency/overview/news)
-- [pairs](/terminal/features/cryptocurrency/overview/pairs)
-- [platforms](/terminal/features/cryptocurrency/overview/platforms)
-- [stables](/terminal/features/cryptocurrency/overview/stables)
-- [wf](/terminal/features/cryptocurrency/overview/wf)
-- [wfpe](/terminal/features/cryptocurrency/overview/wfpe)
-
-### defi
-
-- [anchor](/terminal/features/cryptocurrency/defi/anchor)
-- [dtvl](/terminal/features/cryptocurrency/defi/dtvl)
-- [gacc](/terminal/features/cryptocurrency/defi/gacc)
-- [gdapps](/terminal/features/cryptocurrency/defi/gdapps)
-- [lcsc](/terminal/features/cryptocurrency/defi/lcsc)
-- [ldapps](/terminal/features/cryptocurrency/defi/ldapps)
-- [newsletter](/terminal/features/cryptocurrency/defi/newsletter)
-- [pairs](/terminal/features/cryptocurrency/defi/pairs)
-- [pools](/terminal/features/cryptocurrency/defi/pools)
-- [sinfo](/terminal/features/cryptocurrency/defi/sinfo)
-- [sratio](/terminal/features/cryptocurrency/defi/sratio)
-- [sreturn](/terminal/features/cryptocurrency/defi/sreturn)
-- [stats](/terminal/features/cryptocurrency/defi/stats)
-- [stvl](/terminal/features/cryptocurrency/defi/stvl)
-- [swaps](/terminal/features/cryptocurrency/defi/swaps)
-- [tokens](/terminal/features/cryptocurrency/defi/tokens)
-- [validators](/terminal/features/cryptocurrency/defi/validators)
-- [vaults](/terminal/features/cryptocurrency/defi/vaults)
-
-## etfs
-
-- [candle](/terminal/features/etfs/candle)
-- [compare](/terminal/features/etfs/compare)
-- [load](/terminal/features/etfs/load)
-- [news](/terminal/features/etfs/news)
-- [overview](/terminal/features/etfs/overview)
-- [pir](/terminal/features/etfs/pir)
-- [search](/terminal/features/etfs/search)
-- [summary](/terminal/features/etfs/summary)
-- [weights](/terminal/features/etfs/weights)
-
-### screener
-
-- [sbc](/terminal/features/etfs/screener/sbc)
-- [screen](/terminal/features/etfs/screener/screen)
-- [set](/terminal/features/etfs/screener/set)
-- [view](/terminal/features/etfs/screener/view)
-
-### discovery
-
-- [active](/terminal/features/etfs/discovery/active)
-- [decliners](/terminal/features/etfs/discovery/decliners)
-- [gainers](/terminal/features/etfs/discovery/gainers)
-
-### technical analysis
-
-- [ad](/terminal/features/etfs/technical%20analysis/ad)
-- [adosc](/terminal/features/etfs/technical%20analysis/adosc)
-- [adx](/terminal/features/etfs/technical%20analysis/adx)
-- [aroon](/terminal/features/etfs/technical%20analysis/aroon)
-- [atr](/terminal/features/etfs/technical%20analysis/atr)
-- [bbands](/terminal/features/etfs/technical%20analysis/bbands)
-- [cci](/terminal/features/etfs/technical%20analysis/cci)
-- [cg](/terminal/features/etfs/technical%20analysis/cg)
-- [clenow](/terminal/features/etfs/technical%20analysis/clenow)
-- [demark](/terminal/features/etfs/technical%20analysis/demark)
-- [donchian](/terminal/features/etfs/technical%20analysis/donchian)
-- [ema](/terminal/features/etfs/technical%20analysis/ema)
-- [fib](/terminal/features/etfs/technical%20analysis/fib)
-- [fisher](/terminal/features/etfs/technical%20analysis/fisher)
-- [hma](/terminal/features/etfs/technical%20analysis/hma)
-- [kc](/terminal/features/etfs/technical%20analysis/kc)
-- [macd](/terminal/features/etfs/technical%20analysis/macd)
-- [obv](/terminal/features/etfs/technical%20analysis/obv)
-- [rsi](/terminal/features/etfs/technical%20analysis/rsi)
-- [sma](/terminal/features/etfs/technical%20analysis/sma)
-- [stoch](/terminal/features/etfs/technical%20analysis/stoch)
-- [vwap](/terminal/features/etfs/technical%20analysis/vwap)
-- [wma](/terminal/features/etfs/technical%20analysis/wma)
-- [zlma](/terminal/features/etfs/technical%20analysis/zlma)
-
-## reports
-
-- [run](/terminal/features/reports/run)
+- [alswe](/terminal/features/mutual%20funds/alswe)
+- [country](/terminal/features/mutual%20funds/country)
+- [equity](/terminal/features/mutual%20funds/equity)
+- [info](/terminal/features/mutual%20funds/info)
+- [infoswe](/terminal/features/mutual%20funds/infoswe)
+- [load](/terminal/features/mutual%20funds/load)
+- [overview](/terminal/features/mutual%20funds/overview)
+- [plot](/terminal/features/mutual%20funds/plot)
+- [search](/terminal/features/mutual%20funds/search)
+- [sector](/terminal/features/mutual%20funds/sector)

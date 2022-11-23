@@ -10,7 +10,9 @@ Screens ETFS from a personal scraping github repository. Data scraped from stock
 ### Usage
 
 ```python
-usage: screen [-l LIMIT] [-s {Assets,NAV,Expense,PE,SharesOut,Div,DivYield,Volume,Open,PrevClose,YrLow,YrHigh,Beta,N_Hold}] [-r]
+usage: screen [-l LIMIT]
+              [-s {Assets,NAV,Expense,PE,SharesOut,Div,DivYield,Volume,Open,PrevClose,YrLow,YrHigh,Beta,N_Hold}]
+              [-r]
 ```
 
 ---

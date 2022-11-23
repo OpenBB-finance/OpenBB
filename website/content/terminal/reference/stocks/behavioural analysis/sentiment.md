@@ -24,3 +24,18 @@ usage: sentiment [-l LIMIT] [-d N_DAYS_PAST] [-c]
 | compare | show corresponding change in stock price | False | True | None |
 ---
 
+## Examples
+
+```python
+2022 Feb 19, 13:16 (🦋) /stocks/ba/ $ sentiment
+From 2022-02-19 retrieving 360 tweets (15 tweets/hour)
+From 2022-02-18 retrieving 360 tweets (15 tweets/hour)
+From 2022-02-17 retrieving 360 tweets (15 tweets/hour)
+From 2022-02-16 retrieving 360 tweets (15 tweets/hour)
+From 2022-02-15 retrieving 360 tweets (15 tweets/hour)
+From 2022-02-14 retrieving 360 tweets (15 tweets/hour)
+From 2022-02-13 retrieving 360 tweets (15 tweets/hour)
+```
+
+---
+

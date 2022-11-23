@@ -20,5 +20,7 @@ usage: gdapps [-l LIMIT]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | limit | Number of top dApps to display | 40 | True | None |
+![gdapps](https://user-images.githubusercontent.com/46355364/154051959-ca11b04f-8f53-4299-8c20-13ea75869082.png)
+
 ---
 

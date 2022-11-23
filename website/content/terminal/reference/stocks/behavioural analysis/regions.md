@@ -20,5 +20,7 @@ usage: regions [-l LIMIT]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | limit | limit of regions to plot that show highest interest. | 10 | True | None |
+![regions](https://user-images.githubusercontent.com/46355364/154300386-f6b1924c-8f73-44c5-bbae-52ef33d88061.png)
+
 ---
 

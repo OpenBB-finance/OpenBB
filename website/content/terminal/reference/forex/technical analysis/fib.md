@@ -22,5 +22,7 @@ usage: fib [-p PERIOD] [--start START] [--end END]
 | period | Days to look back for retracement | 120 | True | range(1, 960) |
 | start | Starting date to select | None | True | None |
 | end | Ending date to select | None | True | None |
+![fib](https://user-images.githubusercontent.com/46355364/154310727-81a1eab3-5565-42c7-8b47-4f80288dd700.png)
+
 ---
 

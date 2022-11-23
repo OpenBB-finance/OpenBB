@@ -5,7 +5,7 @@ description: OpenBB Terminal Function
 
 # run
 
-Run a notebook from this folder: '/Users/josedonato/OpenBBUserData/reports/custom reports'.
+Run a notebook from this folder: '/home/runner/OpenBBUserData/reports/custom reports'.
 
 ### Usage
 

@@ -22,3 +22,13 @@ usage: plot [-v VALUES]
 | values | Dataset.column values to be displayed in a plot. Use comma to separate multiple | None | True | None |
 ---
 
+## Examples
+
+```python
+(🦋) /forecast/ $ load aapl.csv
+
+(🦋) /forecast/ $ plot appl.close
+```
+
+---
+

@@ -22,5 +22,7 @@ usage: adosc [--open] [--fast N_LENGTH_FAST] [--slow N_LENGTH_SLOW]
 | b_use_open | uses open value of stock | False | True | None |
 | n_length_fast | fast length | 3 | True | range(1, 100) |
 | n_length_slow | slow length | 10 | True | None |
+![adosc](https://user-images.githubusercontent.com/46355364/154309482-31c027ab-e80f-4145-9c63-392a74cf69c7.png)
+
 ---
 

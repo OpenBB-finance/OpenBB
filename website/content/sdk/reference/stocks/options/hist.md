@@ -10,7 +10,7 @@ Get historical option pricing.
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/options_sdk_helper.py#L101)]
 
 ```python
-openbb.stocks.options.hist(symbol: str, exp: str, strike: int | float | str, call: bool = True, source: Any = "ChartExchange")
+openbb.stocks.options.hist(symbol: str, exp: str, strike: Union[int, float, str], call: bool = True, source: Any = "ChartExchange")
 ```
 
 ---
@@ -21,7 +21,7 @@ openbb.stocks.options.hist(symbol: str, exp: str, strike: int | float | str, cal
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Symbol to get data for | None | False |
 | exp | str | Expiration date | None | False |
-| strike | int | float | str | Strike price | None | False |
+| strike | Union[int ,Union[float,str]] | Strike price | None | False |
 | call | bool | Flag to indicate a call, by default True | True | True |
 | source | str | Source to get data from.  Can be ChartExchange or Tradier, by default "ChartExchange" | ChartExchange | True |
 

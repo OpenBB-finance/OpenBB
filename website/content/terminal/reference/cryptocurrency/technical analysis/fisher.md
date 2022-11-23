@@ -20,5 +20,7 @@ usage: fisher [-l N_LENGTH]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | n_length | length | 14 | True | range(1, 100) |
+![fisher](https://user-images.githubusercontent.com/46355364/154310853-0abf6cea-71ca-4f07-b009-282c58ab9cfc.png)
+
 ---
 

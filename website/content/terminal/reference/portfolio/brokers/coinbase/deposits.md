@@ -10,7 +10,8 @@ Display a list of deposits for your account.
 ### Usage
 
 ```python
-usage: deposits [-t {internal_deposit,deposit}] [-l LIMIT] [-s {created_at,amount}] [-r]
+usage: deposits [-t {internal_deposit,deposit}] [-l LIMIT]
+                [-s {created_at,amount}] [-r]
 ```
 
 ---

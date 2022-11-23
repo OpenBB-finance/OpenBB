@@ -10,9 +10,12 @@ This function plots random portfolios based on their risk and returns and shows 
 ### Usage
 
 ```python
-usage: ef [-vs SHORT_ALLOCATION] [-n AMOUNT_PORTFOLIOS] [-se RANDOM_SEED] [-t] [--no_plot]
-          [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-mt METHOD] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-          [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION]
+usage: ef [-vs SHORT_ALLOCATION] [-n AMOUNT_PORTFOLIOS] [-se RANDOM_SEED] [-t]
+          [--no_plot]
+          [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
+          [-mt METHOD] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
+          [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE]
+          [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION]
 ```
 
 ---
@@ -38,5 +41,15 @@ usage: ef [-vs SHORT_ALLOCATION] [-n AMOUNT_PORTFOLIOS] [-se RANDOM_SEED] [-t] [
 | risk_free | Risk-free rate of borrowing/lending. The period of the risk-free rate must be annual | 0.02924 | True | None |
 | significance_level | Significance level of CVaR, EVaR, CDaR and EDaR | 0.05 | True | None |
 | long_allocation | Amount to allocate to portfolio | 1 | True | None |
+---
+
+## Examples
+
+```python
+2022 Apr 05, 15:03 (🦋) /portfolio/po/ $ ef
+```
+
+![Frontier](https://user-images.githubusercontent.com/61527316/161860003-e8b8ae93-ce8c-4e06-bad2-59c100f09325.png)
+
 ---
 

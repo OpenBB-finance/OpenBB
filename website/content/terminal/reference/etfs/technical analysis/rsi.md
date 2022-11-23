@@ -22,5 +22,7 @@ usage: rsi [-l N_LENGTH] [-s N_SCALAR] [-d N_DRIFT]
 | n_length | length | 14 | True | None |
 | n_scalar | scalar | 100 | True | None |
 | n_drift | drift | 1 | True | None |
+![rsi](https://user-images.githubusercontent.com/46355364/154311651-99e67e12-1677-43a9-92d9-5998d99fd0db.png)
+
 ---
 

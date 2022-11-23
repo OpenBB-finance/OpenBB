@@ -21,3 +21,16 @@ This command has no parameters
 
 ---
 
+## Examples
+
+```python
+2022 Feb 16, 11:33 (🦋) /stocks/ta/ $ summary
+GOOGL price has changed -1.45% in the last 3 days and 0.80% yesterday.
+RSI is currently neutral but close to the overbought area and the indicator is pointing downwards.
+MACD is in the Bullish area and the histogram is moving downwards.
+GOOGL price is trading below the 200-day SMA line and the SMA is trending up.
+The asset price is between the Upper and the Middle Bollinger Bands.
+```
+
+---
+

@@ -10,7 +10,7 @@ Get economic calendar for countries between specified dates
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/nasdaq_model.py#L21)]
 
 ```python
-openbb.economy.events(countries: Union[List[str], str] = "", start_date: str = None, end_date: str = None)
+openbb.economy.events(countries: Union[List[str], str] = "", start_date: Optional[str] = None, end_date: Optional[str] = None)
 ```
 
 ---
@@ -20,8 +20,8 @@ openbb.economy.events(countries: Union[List[str], str] = "", start_date: str = N
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | countries | [List[str],str] | List of countries to include in calendar.  Empty returns all |  | True |
-| start_date | str | Start date for calendar | None | True |
-| end_date | str | End date for calendar | None | True |
+| start_date | Optional[str] | Start date for calendar | None | True |
+| end_date | Optional[str] | End date for calendar | None | True |
 
 
 ---

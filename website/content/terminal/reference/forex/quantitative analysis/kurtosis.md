@@ -20,5 +20,7 @@ usage: kurtosis [-w N_WINDOW]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | n_window | window length | 14 | True | range(5, 100) |
+![kurtosis](https://user-images.githubusercontent.com/46355364/154307174-68671146-9551-4c2f-a179-db1d4b20b992.png)
+
 ---
 

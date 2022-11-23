@@ -10,11 +10,17 @@ Builds a hierarchical equal risk contribution portfolio
 ### Usage
 
 ```python
-usage: herc [-cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,tail}]
-            [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-rm RISK-MEASURE] [-as CVAR_SIMULATIONS_LOSSES]
-            [-b CVAR_SIGNIFICANCE] [-bs CVAR_SIMULATIONS_GAINS] [-lk LINKAGE] [-k AMOUNT_CLUSTERS] [-mk MAX_CLUSTERS] [-bi {KN,FD,SC,HGR}]
-            [-at ALPHA_TAIL] [-lo LEAF_ORDER] [-de SMOOTHING_FACTOR_EWMA] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD]
-            [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME]
+usage: herc
+            [-cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,tail}]
+            [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}]
+            [-rm RISK-MEASURE] [-as CVAR_SIMULATIONS_LOSSES]
+            [-b CVAR_SIGNIFICANCE] [-bs CVAR_SIMULATIONS_GAINS] [-lk LINKAGE]
+            [-k AMOUNT_CLUSTERS] [-mk MAX_CLUSTERS] [-bi {KN,FD,SC,HGR}]
+            [-at ALPHA_TAIL] [-lo LEAF_ORDER] [-de SMOOTHING_FACTOR_EWMA]
+            [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD]
+            [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN]
+            [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL]
+            [-v LONG_ALLOCATION] [--name NAME]
 ```
 
 ---
@@ -49,5 +55,39 @@ usage: herc [-cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info
 | significance_level | Significance level of CVaR, EVaR, CDaR and EDaR | 0.05 | True | None |
 | long_allocation | Amount to allocate to portfolio | 1 | True | None |
 | name | Save portfolio with personalized or default name | HERC_0 | True | None |
+---
+
+## Examples
+
+```python
+2022 Apr 05, 14:40 (🦋) /portfolio/po/ $ herc
+
+ [3 Years] Hierarchical equal risk contribution portfolio using pearson
+codependence,single linkage and volatility as risk measure
+
+     Weights
+┏━━━━━━┳━━━━━━━━━┓
+┃      ┃ Value   ┃
+┡━━━━━━╇━━━━━━━━━┩
+│ AAPL │ 10.78 % │
+├──────┼─────────┤
+│ AMZN │ 12.64 % │
+├──────┼─────────┤
+│ BA   │  9.12 % │
+├──────┼─────────┤
+│ FB   │  8.08 % │
+├──────┼─────────┤
+│ MSFT │ 12.86 % │
+├──────┼─────────┤
+│ T    │ 43.83 % │
+├──────┼─────────┤
+│ TSLA │  2.66 % │
+└──────┴─────────┘
+
+Annual (by 252) expected return: 18.09%
+Annual (by √252) volatility: 24.19%
+Sharpe ratio: 0.7401
+```
+
 ---
 

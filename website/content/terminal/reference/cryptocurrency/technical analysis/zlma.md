@@ -21,5 +21,7 @@ usage: zlma [-l N_LENGTH] [-o N_OFFSET]
 | ---- | ----------- | ------- | -------- | ------- |
 | n_length | Window lengths. Multiple values indicated as comma separated values. | 20 | True | None |
 | n_offset | offset | 0 | True | range(0, 100) |
+![zlma](https://user-images.githubusercontent.com/46355364/154312786-bc60268b-9da9-4fd9-bed6-fc95f5560075.png)
+
 ---
 

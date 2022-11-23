@@ -7,7 +7,7 @@ description: OpenBB SDK Function
 
 Get analysts' estimates for a given ticker. [Source: Business Insider]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/due_diligence/business_insider_model.py#L71)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/due_diligence/business_insider_model.py#L76)]
 
 ```python
 openbb.stocks.dd.est(symbol: str)

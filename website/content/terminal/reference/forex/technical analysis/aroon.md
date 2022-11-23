@@ -22,5 +22,7 @@ usage: aroon [-l N_LENGTH] [-s N_SCALAR] [-o N_OFFSET]
 | n_length | length | 25 | True | None |
 | n_scalar | scalar | 100 | True | None |
 | n_offset | offset | 0 | True | None |
+![aroon](https://user-images.githubusercontent.com/46355364/154309825-f8ccc98b-31ac-43fc-a251-66f6f41545a5.png)
+
 ---
 

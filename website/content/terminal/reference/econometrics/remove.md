@@ -22,3 +22,11 @@ usage: remove [-n {}]
 | name | The name of the dataset you want to remove | None | True | None |
 ---
 
+## Examples
+
+```python
+2022 Feb 24, 04:37 (🦋) /econometrics/ $ remove thesis
+```
+
+---
+

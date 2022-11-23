@@ -21,3 +21,16 @@ This command has no parameters
 
 ---
 
+## Examples
+
+```python
+2022 Feb 16, 10:07 (🦋) /stocks/ba/ $ bullbear
+Watchlist count: 381324
+
+Last 16 sentiment messages:
+Bullish 87.5%
+Bearish 12.5%
+```
+
+---
+

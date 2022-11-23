@@ -10,7 +10,8 @@ The Stochastic Oscillator measures where the close is in relation to the recent 
 ### Usage
 
 ```python
-usage: stoch [-k N_FASTKPERIOD] [-d N_SLOWDPERIOD] [--slowkperiod N_SLOWKPERIOD]
+usage: stoch [-k N_FASTKPERIOD] [-d N_SLOWDPERIOD]
+             [--slowkperiod N_SLOWKPERIOD]
 ```
 
 ---
@@ -22,5 +23,7 @@ usage: stoch [-k N_FASTKPERIOD] [-d N_SLOWDPERIOD] [--slowkperiod N_SLOWKPERIOD]
 | n_fastkperiod | The time period of the fastk moving average | 14 | True | None |
 | n_slowdperiod | The time period of the slowd moving average | 3 | True | None |
 | n_slowkperiod | The time period of the slowk moving average | 3 | True | None |
+![stoch](https://user-images.githubusercontent.com/46355364/154311913-d58e58bb-d116-44dd-ae4b-44e59c25f22a.png)
+
 ---
 

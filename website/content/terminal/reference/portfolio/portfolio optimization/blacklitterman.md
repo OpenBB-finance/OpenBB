@@ -10,9 +10,14 @@ Optimize portfolio using Black Litterman estimates
 ### Usage
 
 ```python
-usage: blacklitterman [-bm BENCHMARK] [-o {MinRisk,Utility,Sharpe,MaxRet}] [-pv P_VIEWS] [-qv Q_VIEWS] [-ra RISK_AVERSION] [-d DELTA] [-eq] [-op]
-                      [-vs SHORT_ALLOCATION] [--file FILE] [--download DOWNLOAD] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD]
-                      [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-v LONG_ALLOCATION] [--name NAME]
+usage: blacklitterman [-bm BENCHMARK] [-o {MinRisk,Utility,Sharpe,MaxRet}]
+                      [-pv P_VIEWS] [-qv Q_VIEWS] [-ra RISK_AVERSION]
+                      [-d DELTA] [-eq] [-op] [-vs SHORT_ALLOCATION]
+                      [--file FILE] [--download DOWNLOAD] [-mt METHOD]
+                      [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD]
+                      [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN]
+                      [-th THRESHOLD_VALUE] [-r RISK_FREE]
+                      [-v LONG_ALLOCATION] [--name NAME]
 ```
 
 ---
@@ -44,5 +49,32 @@ usage: blacklitterman [-bm BENCHMARK] [-o {MinRisk,Utility,Sharpe,MaxRet}] [-pv 
 | risk_free | Risk-free rate of borrowing/lending. The period of the risk-free rate must be annual | 0.02924 | True | None |
 | long_allocation | Amount to allocate to portfolio | 1 | True | None |
 | name | Save portfolio with personalized or default name | BL_0 | True | None |
+---
+
+## Examples
+
+```python
+2022 Apr 26, 01:25 (🦋) /portfolio/po/ $ add AAPL,MSFT,JP,BA
+2022 Apr 26, 01:26 (🦋) /portfolio/po/ $ maxsharpe
+
+ [3 Years] Maximal return/risk ratio portfolio using volatility as risk measure
+
+      Weights
+┏━━━━━━┳━━━━━━━━━━┓
+┃      ┃ Value    ┃
+┡━━━━━━╇━━━━━━━━━━┩
+│ AAPL │ 100.00 % │
+├──────┼──────────┤
+│ BA   │   0.00 % │
+├──────┼──────────┤
+│ JP   │   0.00 % │
+├──────┼──────────┤
+│ MSFT │   0.00 % │
+└──────┴──────────┘
+Annual (by 252) expected return: 45.46%
+Annual (by √252) volatility: 34.16%
+Sharpe ratio: 1.3209
+```
+
 ---
 

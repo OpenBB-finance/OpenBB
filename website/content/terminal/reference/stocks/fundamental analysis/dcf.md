@@ -25,5 +25,13 @@ usage: dcf [-a] [--no-ratios] [--no-filter] [-p PREDICTION] [-s SIMILAR] [-g]
 | prediction | Number of years to predict before using terminal value. | 10 | True | None |
 | similar | Number of similar companies to generate ratios for. | 6 | True | None |
 | growth | Whether to replace a linear regression estimate with a growth estimate. | False | True | None |
+![dcf financials](https://user-images.githubusercontent.com/46355364/154241001-42be82e5-f001-4fd1-bcf4-cd55c7cef358.png)
+
+![dcf free cash flows](https://user-images.githubusercontent.com/46355364/154241130-f52c580e-710d-4cac-a8f3-f9bfece7865a.png)
+
+![dcf explanations](https://user-images.githubusercontent.com/46355364/154241408-5476f0ea-4789-4691-a063-6b43c382fce6.png)
+
+![dcf ratios](https://user-images.githubusercontent.com/46355364/154241575-f931c05a-c765-4abd-9cc1-0a0795aeaec3.png)
+
 ---
 

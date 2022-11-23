@@ -22,3 +22,12 @@ usage: ticker -t TICKER
 | ticker | Ticker get similar tickers from | None | False | None |
 ---
 
+## Examples
+
+```python
+text
+2022 Feb 15, 08:33 (🦋) /stocks/ca/ $ ticker AAPL
+```
+
+---
+

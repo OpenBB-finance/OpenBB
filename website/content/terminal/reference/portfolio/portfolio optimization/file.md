@@ -19,6 +19,6 @@ usage: file -f FILE [FILE ...]
 
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
-| file | Parameter file to be used | None | False | OpenBB_Parameters_Template_v1.0.0.xlsx, example.ini, defaults.ini, dany.ini, dd.ini, james.ini |
+| file | Parameter file to be used | None | False | OpenBB_Parameters_Template_v1.0.0.xlsx, defaults.ini, dd.ini, example.ini, dany.ini, james.ini |
 ---
 

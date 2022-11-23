@@ -10,8 +10,9 @@ Determine general Reddit sentiment about a ticker. [Source: Reddit]
 ### Usage
 
 ```python
-usage: redditsent [-s {relevance,hot,top,new,comments}] [-c COMPANY] [--subreddits SUBREDDITS] [-l LIMIT] [-t {hour,day,week,month,year,all}] [--full]
-                  [-g] [-d]
+usage: redditsent [-s {relevance,hot,top,new,comments}] [-c COMPANY]
+                  [--subreddits SUBREDDITS] [-l LIMIT]
+                  [-t {hour,day,week,month,year,all}] [--full] [-g] [-d]
 ```
 
 ---
@@ -28,5 +29,19 @@ usage: redditsent [-s {relevance,hot,top,new,comments}] [-c COMPANY] [--subreddi
 | full_search | enable comprehensive search | False | True | None |
 | graphic | display graphic | True | True | None |
 | display | Print table of sentiment values | False | True | None |
+---
+
+## Examples
+
+```python
+txt
+redditsent -c Google --subreddits tech,stocks --full
+Searching through subreddits for posts.
+100%|█████████████████████████████████████████████████████████████████████████| 2/2 [00:0100:00,  1.84it/s]
+Analyzing each post...
+100%|███████████████████████████████████████████████████████████████████████| 10/10 [00:0400:00,  2.07it/s]
+Sentiment Analysis for Google is 0.7552
+```
+
 ---
 

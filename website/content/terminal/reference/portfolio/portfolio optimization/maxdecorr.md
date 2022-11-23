@@ -10,9 +10,12 @@ Maximizes the portfolio's decorrelation
 ### Usage
 
 ```python
-usage: maxdecorr [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-de SMOOTHING_FACTOR_EWMA] [-vs SHORT_ALLOCATION]
-                 [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
-                 [-v LONG_ALLOCATION] [--name NAME]
+usage: maxdecorr
+                 [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}]
+                 [-de SMOOTHING_FACTOR_EWMA] [-vs SHORT_ALLOCATION]
+                 [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD]
+                 [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN]
+                 [-th THRESHOLD_VALUE] [-v LONG_ALLOCATION] [--name NAME]
 ```
 
 ---
@@ -35,5 +38,37 @@ usage: maxdecorr [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectra
 | threshold_value | Value used to replace outliers that are higher to threshold in absolute value | 0.3 | True | None |
 | long_allocation | Amount to allocate to portfolio | 1 | True | None |
 | name | Save portfolio with personalized or default name | MAXDECORR_0 | True | None |
+---
+
+## Examples
+
+```python
+2022 Apr 05, 14:15 (🦋) /portfolio/po/ $ maxdecorr
+
+ [3 Years] Display a maximal decorrelation portfolio
+     Weights
+┏━━━━━━┳━━━━━━━━━┓
+┃      ┃ Value   ┃
+┡━━━━━━╇━━━━━━━━━┩
+│ AAPL │  0.0 %  │
+├──────┼─────────┤
+│ AMZN │ 18.49 % │
+├──────┼─────────┤
+│ BA   │ 17.29 % │
+├──────┼─────────┤
+│ FB   │ 12.33 % │
+├──────┼─────────┤
+│ MSFT │  0.0 %  │
+├──────┼─────────┤
+│ T    │ 27.37 % │
+├──────┼─────────┤
+│ TSLA │ 24.50 % │
+└──────┴─────────┘
+
+Annual (by 252) expected return: 36.58%
+Annual (by √252) volatility: 31.17%
+Sharpe ratio: 1.1735
+```
+
 ---
 

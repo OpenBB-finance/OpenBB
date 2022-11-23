@@ -26,6 +26,9 @@ openbb.stocks.ba.snews(symbol: str)
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Ticker of company | None | False |
+| Returns | None |  | None | True |
+| ---------- | None |  | None | True |
+| pd.DataFrame | None | The news article information | None | True |
 
 
 ---

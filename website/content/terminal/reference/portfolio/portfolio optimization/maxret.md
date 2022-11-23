@@ -10,10 +10,14 @@ Maximizes the portfolio's return
 ### Usage
 
 ```python
-usage: maxret [-tr TARGET_RETURN] [-tk TARGET_RISK] [-m {hist,ewma1,ewma2}] [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}]
-              [-de SMOOTHING_FACTOR_EWMA] [-vs SHORT_ALLOCATION] [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-mt METHOD]
-              [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE]
-              [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME]
+usage: maxret [-tr TARGET_RETURN] [-tk TARGET_RISK] [-m {hist,ewma1,ewma2}]
+              [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}]
+              [-de SMOOTHING_FACTOR_EWMA] [-vs SHORT_ALLOCATION]
+              [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
+              [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD]
+              [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN]
+              [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL]
+              [-v LONG_ALLOCATION] [--name NAME]
 ```
 
 ---
@@ -42,5 +46,37 @@ usage: maxret [-tr TARGET_RETURN] [-tk TARGET_RISK] [-m {hist,ewma1,ewma2}] [-cv
 | significance_level | Significance level of CVaR, EVaR, CDaR and EDaR | 0.05 | True | None |
 | long_allocation | Amount to allocate to portfolio | 1 | True | None |
 | name | Save portfolio with personalized or default name | MAXRET_0 | True | None |
+---
+
+## Examples
+
+```python
+[3 Years] Maximal return portfolio using
+volatility as risk measure
+
+     Weights
+┏━━━━━━┳━━━━━━━━━┓
+┃      ┃ Value   ┃
+┡━━━━━━╇━━━━━━━━━┩
+│ AAPL │  0.0 %  │
+├──────┼─────────┤
+│ AMZN │  0.0 %  │
+├──────┼─────────┤
+│ BA   │  0.0 %  │
+├──────┼─────────┤
+│ FB   │  0.0 %  │
+├──────┼─────────┤
+│ MSFT │  0.0 %  │
+├──────┼─────────┤
+│ T    │  0.0 %  │
+├──────┼─────────┤
+│ TSLA │ 100.0 % │
+└──────┴─────────┘
+
+Annual (by 252) expected return: 124.85%
+Annual (by √252) volatility: 68.44%
+Sharpe ratio: 1.8215
+```
+
 ---
 

@@ -10,7 +10,9 @@ Shows historic data for a stock
 ### Usage
 
 ```python
-usage: candle [-p] [--sort {adjclose,open,close,high,low,volume,returns,logret}] [-r] [--raw] [-t] [--ma MOV_AVG] [--log]
+usage: candle [-p]
+              [--sort {adjclose,open,close,high,low,volume,returns,logret}]
+              [-r] [--raw] [-t] [--ma MOV_AVG] [--log]
 ```
 
 ---
@@ -26,5 +28,7 @@ usage: candle [-p] [--sort {adjclose,open,close,high,low,volume,returns,logret}]
 | trendlines | Flag to add high and low trends to candle | False | True | None |
 | mov_avg | Add moving average in number of days to plot and separate by a comma. Value for ma (moving average) keyword needs to be greater than 1. | None | True | None |
 | logy | Plot with y axis on log scale | False | True | None |
+![candle](https://user-images.githubusercontent.com/46355364/154072214-f4b49833-157f-44a7-be2d-d558ffc6f945.png)
+
 ---
 

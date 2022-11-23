@@ -20,5 +20,7 @@ usage: skew [-w N_WINDOW]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | n_window | window length | 14 | True | None |
+![skew](https://user-images.githubusercontent.com/46355364/154308298-7528be2a-05f5-44b8-a479-d4716b2a6c6e.png)
+
 ---
 

@@ -22,5 +22,7 @@ usage: adx [-l N_LENGTH] [-s N_SCALAR] [-d N_DRIFT]
 | n_length | length | 14 | True | range(1, 100) |
 | n_scalar | scalar | 100 | True | None |
 | n_drift | drift | 1 | True | range(1, 100) |
+![adx](https://user-images.githubusercontent.com/46355364/154309667-c67f6078-822f-452d-9853-ffffa9172670.png)
+
 ---
 

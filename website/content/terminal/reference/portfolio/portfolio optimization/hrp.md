@@ -10,11 +10,17 @@ Builds a hierarchical risk parity portfolio
 ### Usage
 
 ```python
-usage: hrp [-cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,tail}]
-           [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-rm RISK-MEASURE] [-as CVAR_SIMULATIONS_LOSSES]
-           [-b CVAR_SIGNIFICANCE] [-bs CVAR_SIMULATIONS_GAINS] [-lk LINKAGE] [-k AMOUNT_CLUSTERS] [-mk MAX_CLUSTERS] [-bi {KN,FD,SC,HGR}]
-           [-at ALPHA_TAIL] [-lo LEAF_ORDER] [-de SMOOTHING_FACTOR_EWMA] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD]
-           [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME]
+usage: hrp
+           [-cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,tail}]
+           [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}]
+           [-rm RISK-MEASURE] [-as CVAR_SIMULATIONS_LOSSES]
+           [-b CVAR_SIGNIFICANCE] [-bs CVAR_SIMULATIONS_GAINS] [-lk LINKAGE]
+           [-k AMOUNT_CLUSTERS] [-mk MAX_CLUSTERS] [-bi {KN,FD,SC,HGR}]
+           [-at ALPHA_TAIL] [-lo LEAF_ORDER] [-de SMOOTHING_FACTOR_EWMA]
+           [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD]
+           [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN]
+           [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL]
+           [-v LONG_ALLOCATION] [--name NAME]
 ```
 
 ---
@@ -49,5 +55,39 @@ usage: hrp [-cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,
 | significance_level | Significance level of CVaR, EVaR, CDaR and EDaR | 0.05 | True | None |
 | long_allocation | Amount to allocate to portfolio | 1 | True | None |
 | name | Save portfolio with personalized or default name | _HRP0 | True | None |
+---
+
+## Examples
+
+```python
+2022 Apr 05, 14:20 (🦋) /portfolio/po/ $ hrp
+
+ [3 Years] Hierarchical risk parity portfolio using pearson codependence,
+single linkage and volatility as risk measure
+
+     Weights
+┏━━━━━━┳━━━━━━━━━┓
+┃      ┃ Value   ┃
+┡━━━━━━╇━━━━━━━━━┩
+│ AAPL │ 13.74 % │
+├──────┼─────────┤
+│ AMZN │ 17.97 % │
+├──────┼─────────┤
+│ BA   │  5.74 % │
+├──────┼─────────┤
+│ FB   │ 10.29 % │
+├──────┼─────────┤
+│ MSFT │ 18.28 % │
+├──────┼─────────┤
+│ T    │ 27.57 % │
+├──────┼─────────┤
+│ TSLA │  6.37 % │
+└──────┴─────────┘
+
+Annual (by 252) expected return: 28.03%
+Annual (by √252) volatility: 25.35%
+Sharpe ratio: 1.0982
+```
+
 ---
 

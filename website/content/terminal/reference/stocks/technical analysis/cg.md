@@ -20,5 +20,7 @@ usage: cg [-l N_LENGTH]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | n_length | length | 14 | True | None |
+![cg](https://user-images.githubusercontent.com/46355364/154310202-cd0d703e-21ba-41a2-b58a-5b8547efa887.png)
+
 ---
 

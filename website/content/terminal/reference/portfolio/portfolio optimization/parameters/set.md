@@ -10,7 +10,8 @@ Select one of the portfolio optimization models
 ### Usage
 
 ```python
-usage: set -m {maxsharpe,minrisk,maxutil,maxret,maxdiv,maxdecorr,ef,riskparity,relriskparity,hrp,herc,nco}
+usage: set -m
+           {maxsharpe,minrisk,maxutil,maxret,maxdiv,maxdecorr,ef,riskparity,relriskparity,hrp,herc,nco}
 ```
 
 ---

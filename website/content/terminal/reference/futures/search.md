@@ -10,7 +10,9 @@ Search futures. [Source: YahooFinance]
 ### Usage
 
 ```python
-usage: search [-e {NYB,CMX,CME,CBT,NYM}] [-c {metals,agriculture,index,hydrocarbon,bonds,currency}] [-d DESCRIPTION [DESCRIPTION ...]]
+usage: search [-e {NYB,CMX,CME,CBT,NYM}]
+              [-c {metals,agriculture,index,hydrocarbon,bonds,currency}]
+              [-d DESCRIPTION [DESCRIPTION ...]]
 ```
 
 ---
