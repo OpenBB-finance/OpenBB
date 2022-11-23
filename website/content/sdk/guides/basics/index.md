@@ -27,7 +27,7 @@ help(openbb.stocks.dd)
 
 ### **Docstrings**
 
-In addition to Python's built-in help, docstrings are also displayed in the Contextual Help window, within a Jupyter environment or by running `help(openbb.economy.events)` in your code editor.
+In addition to Python's built-in help, docstrings are also displayed in the Contextual Help window, within a Jupyter environment; type hints included.
 
 ```python
 help(openbb.economy.events)
@@ -126,13 +126,25 @@ dia_valuation.head(5)
 
 The OpenBB SDK has built-in charting libraries for Matplotlib, for any chart available from the Terminal. User style sheets can be added to the folder (more on this in [User Settings](/sdk/guides/advanced/user-settings)), `~/OpenBBUserData/styles/user`. Styles are shared properties between the OpenBB Terminal and the SDK.
 
-Functions, such as `candle`, exist to display charts. Others, like those within the Technical Analysis module, have the option to return either, a chart or raw data. The next examples will outline a few different scenarios. Lets first get some data :
+Functions, such as `candle`, exist to display charts. Others, like those within the Technical Analysis module, have the option to return either, a chart or raw data. The next examples will outline a few different scenarios. First, let's get some data:
 
 ```python
 spy_daily = openbb.stocks.load(
         symbol = 'SPY',
         start_date = '1993-11-01',
         monthly = True)
+```
+
+To display charts inline, we will first need to expand the import statement block:
+
+```console
+%matplotlib inline
+```
+
+The above will render a static image and the widget statement below adds pan/zoom functionality.
+
+```console
+%matplotlib widget
 ```
 
 Data from the previous example, `spy_daily`, can feed the inputs to the `openbb.stocks.candle` function, for example:
@@ -146,6 +158,16 @@ openbb.stocks.candle(
 ```
 
 ![openbb.stocks.candle](https://user-images.githubusercontent.com/85772166/202801049-083ec045-7038-440b-8a54-7a02269e4a40.png "openbb.stocks.candle")
+
+The function will also respond to:
+
+```python
+openbb.stocks.candle('SPY')
+```
+
+A lazy syntax, in place of `load` and its arguments, returns a daily chart spanning the previous three-years.
+
+![openbb.stocks.candle](https://user-images.githubusercontent.com/85772166/203477909-6a97175b-b3e3-4236-9753-609895c6aa69.png "openbb.stocks.candle")
 
 Where functions in the Terminal display either a chart or raw data, the command will have an additional `_chart` component. For example, Donchian Channels:
 
