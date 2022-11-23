@@ -209,13 +209,11 @@ class ForecastController(BaseController):
         self.torch_version = torch.__version__
         self.darts_version = darts.__version__
 
-        print(f"{bool(session)}-{bool(obbff.USE_PROMPT_TOOLKIT)}")
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
-            self.update_runtime_choices()
 
     def call_exit(self, _) -> None:
         """Process exit terminal command from forecast menu."""
@@ -223,72 +221,21 @@ class ForecastController(BaseController):
         for _ in range(self.PATH.count("/") + 1):
             self.queue.insert(0, "quit")
 
+    def get_dataset_columns(self):
+        return {
+            f"{dataset}.{column}": {column: None, dataset: None}
+            for dataset, dataframe in self.datasets.items()
+            for column in dataframe.columns
+        }
+
     def update_runtime_choices(self):
         # Load in any newly exported files
         self.DATA_FILES = forecast_model.get_default_files()
         if session and obbff.USE_PROMPT_TOOLKIT:
-            dataset_columns = {
-                f"{dataset}.{column}": {column: None, dataset: None}
-                for dataset, dataframe in self.datasets.items()
-                for column in dataframe.columns
-            }
+            choices: dict = self.choices_default
 
-            for feature in [
-                "plot",
-                "delete",
-                "season",
-            ]:
-                self.choices[feature] = dataset_columns
-
-            for feature in [
-                "export",
-                "show",
-                "clean",
-                "desc",
-                "corr",
-                "ema",
-                "sto",
-                "rsi",
-                "roc",
-                "mom",
-                "delta",
-                "atr",
-                "signal",
-                "combine",
-                "rename",
-                "autoselect",
-                "autoarima",
-                "autoces",
-                "autoets",
-                "mstl",
-                "rwd",
-                "seasonalnaive",
-                "expo",
-                "theta",
-                "rnn",
-                "brnn",
-                "nbeats",
-                "tcn",
-                "regr",
-                "linregr",
-                "trans",
-                "tft",
-                "nhits",
-            ]:
-                self.choices[feature] = {c: None for c in self.files}
-
-            self.choices["combine"]["--columns"] = dataset_columns
-            self.choices["combine"]["-c"] = "--columns"
-
-            pairs_timeseries = list()
-            for dataset_col in list(dataset_columns.keys()):
-                pairs_timeseries += [
-                    f"{dataset_col},{dataset_col2}"
-                    for dataset_col2 in list(dataset_columns.keys())
-                    if dataset_col != dataset_col2
-                ]
-
-            self.completer = NestedCompleter.from_nested_dict(self.choices)
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def refresh_datasets_on_menu(self):
         """Refresh datasets on menu with new columns when adding new features"""
@@ -998,6 +945,7 @@ class ForecastController(BaseController):
             "-v",
             "--values",
             help="Dataset.column values to be displayed in a plot. Use comma to separate multiple",
+            choices=self.get_dataset_columns(),
             dest="values",
             type=str,
         )
@@ -1045,6 +993,7 @@ class ForecastController(BaseController):
             "--values",
             help="Dataset.column values to be displayed in a plot",
             dest="values",
+            choices=self.get_dataset_columns(),
             type=str,
         )
         parser.add_argument(
@@ -1298,7 +1247,7 @@ class ForecastController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_sto(self, other_args: List[str]):
@@ -1374,7 +1323,7 @@ class ForecastController(BaseController):
             help="The columns you want to delete from a dataset. Use format: <dataset.column> or"
             " multiple with <dataset.column>,<datasetb.column2>",
             dest="delete",
-            type=check_list_values(self.choices.get("delete", [])),
+            choices=self.get_dataset_columns(),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--delete")
@@ -1439,7 +1388,7 @@ class ForecastController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_roc(self, other_args: List[str]):
@@ -1479,7 +1428,7 @@ class ForecastController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_mom(self, other_args: List[str]):
@@ -1519,7 +1468,7 @@ class ForecastController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_delta(self, other_args: List[str]):
@@ -1556,7 +1505,7 @@ class ForecastController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_atr(self, other_args: List[str]):
@@ -1623,7 +1572,7 @@ class ForecastController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_signal(self, other_args: List[str]):
@@ -1663,7 +1612,7 @@ class ForecastController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_export(self, other_args: List[str]):
