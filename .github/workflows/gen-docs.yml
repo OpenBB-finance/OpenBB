@@ -32,14 +32,14 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
+        run: poetry install --no-interaction --no-root -E doc
 
       - name: Install packages
         run: poetry install --no-interaction -E prediction -E doc -E optimization
 
       - run: |
           source $VENV
-          pip install "u8darts[torch]" docstring_parser
+          pip install "u8darts[torch]"
           pytest tests/website
           python website/generate_sdk_markdown.py && python website/generate_terminal_markdown.py
 
