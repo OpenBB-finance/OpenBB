@@ -137,7 +137,7 @@ GUESS_EASTER_EGG_FILE = str(
 try:
     version = pkg_resources.get_distribution("OpenBBTerminal").version
 except Exception:
-    version = "1.9.0m"
+    version = "2.0.0rc1"
 VERSION = str(os.getenv("OPENBB_VERSION", version))
 
 # Select the terminal translation language

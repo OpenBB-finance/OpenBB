@@ -10,6 +10,21 @@ paths-ignore:
   - "website/**"
 
 jobs:
+  linting:
+    name: General Linting
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # actions/checkout v3.0.2
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+          architecture: x64
+
+jobs:
   test:
     name: Base Tests - Ubuntu-latest - Python 3.9
     runs-on: ubuntu-latest
