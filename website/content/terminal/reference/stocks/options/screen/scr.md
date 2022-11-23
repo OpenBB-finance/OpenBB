@@ -11,7 +11,7 @@ Screener filter output from https://ops.syncretism.io/index.html. Where: CS: Con
 
 ```python
 usage: scr
-           [-p {template.ini,high_IV.ini,3DTE_Degenerate.ini,TSLA_Poots.ini,Long_FAANGM.ini,SPY_ATM_Calls.ini,SPY_ATM_Poots.ini,Highest_IV.ini,Highest_OI.ini,Highest_Volume.ini,TSLA_Calls_90Days.ini}]
+           [-p {template.ini,TSLA_Calls_90Days.ini,high_IV.ini,TSLA_Poots.ini,SPY_ATM_Poots.ini,Highest_OI.ini,SPY_ATM_Calls.ini,Long_FAANGM.ini,Highest_Volume.ini,3DTE_Degenerate.ini,Highest_IV.ini}]
            [-l LIMIT]
 ```
 
@@ -21,7 +21,7 @@ usage: scr
 
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
-| preset | Filter presets | high_IV | True | template.ini, high_IV.ini, 3DTE_Degenerate.ini, TSLA_Poots.ini, Long_FAANGM.ini, SPY_ATM_Calls.ini, SPY_ATM_Poots.ini, Highest_IV.ini, Highest_OI.ini, Highest_Volume.ini, TSLA_Calls_90Days.ini |
+| preset | Filter presets | high_IV | True | template.ini, TSLA_Calls_90Days.ini, high_IV.ini, TSLA_Poots.ini, SPY_ATM_Poots.ini, Highest_OI.ini, SPY_ATM_Calls.ini, Long_FAANGM.ini, Highest_Volume.ini, 3DTE_Degenerate.ini, Highest_IV.ini |
 | limit | Limit of random entries to display. Default shows all | 10 | True | None |
 
 ---
