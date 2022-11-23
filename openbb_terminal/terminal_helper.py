@@ -10,7 +10,7 @@ import os
 from packaging import version
 import subprocess  # nosec
 import sys
-from typing import List, Optional
+from typing import List
 
 # IMPORTATION THIRDPARTY
 import requests
