@@ -10,13 +10,19 @@ The functions of the `qa` module are grouped into categories, listed below along
 
 |Path |Type |Description |
 |:----------|:----------:|--------------------:|
+|openbb.qa.acf |Plot |Plots Auto and Partial Correlation of Returns and Change in Returns|
 |openbb.qa.bw |Plot |Box and Whisker Plot |
+|openbb.qa.calculate_adjusted_var |Risk |Calculates VaR, adjusted for skew and kurtosis (Cornish-Fisher-Expansion) |
+|openbb.qa.cdf |Plot |Plots the Cumulative Distribution Function |
+|openbb.qa.cusum |Plot |Plots the Cumulative Sum Algorithm |
 |openbb.qa.decompose |Plot |Decomposition in Cyclic-Trend, Season & Residuals of Prices |
 |openbb.qa.es |Statistics |Expected Shortfall per percentile |
 |openbb.qa.kurtosis |Rolling Metrics |Rolling Kurtosis of Distribution of Prices |
+|openbb.qa.line |Plot |Customizable Line Plot, With Annotations |
 |openbb.qa.normality |Statistics |Normality Statistics and Tests |
 |openbb.qa.omega |Risk |Omega Ratio (Risk/Return Performance Measure) |
 |openbb.qa.quantile |Rolling Metrics |Rolling Median and Quantile of Prices |
+|openbb.qa.qqplot |Plot |QQ Plot for Data Against Normal Quantiles |
 |openbb.qa.rolling |Rolling Metrics |Rolling Mean and Standard Deviation of Prices |
 |openbb.qa.sharpe |Risk |Sharpe Ratio (Measure of Risk-Adjusted Return) |
 |openbb.qa.skew |Rolling Metrics |Rolling Skewness of Distribution of Prices |
