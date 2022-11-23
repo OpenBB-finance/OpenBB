@@ -667,8 +667,6 @@ class ForecastController(BaseController):
             self.files.append(ticker)
             self.datasets[ticker] = data
 
-            self.update_runtime_choices()
-
             # Process new datasets to be updated
             self.list_dataset_cols = list()
             maxfile = max(len(file) for file in self.files)
@@ -732,6 +730,7 @@ class ForecastController(BaseController):
                 if not data.empty:
                     self.files_full.append([ns_parser.file, ns_parser.alias])
                     self.load(alias, data)
+            self.update_runtime_choices()
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
