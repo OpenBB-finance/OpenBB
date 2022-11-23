@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
-from typing import Tuple
+from typing import Optional, Tuple
 from urllib.request import Request, urlopen
 import re
 
@@ -286,7 +286,7 @@ def get_dividends(symbol: str) -> pd.DataFrame:
 @log_start_end(log=logger)
 def get_mktcap(
     symbol: str,
-    start_date: str = None,
+    start_date: Optional[str] = None,
 ) -> Tuple[pd.DataFrame, str]:
     """Get market cap over time for ticker. [Source: Yahoo Finance]
 
@@ -294,7 +294,7 @@ def get_mktcap(
     ----------
     symbol: str
         Ticker to get market cap over time
-    start_date: str
+    start_date: Optional[str]
         Initial date (e.g., 2021-10-01). Defaults to 3 years back
 
     Returns

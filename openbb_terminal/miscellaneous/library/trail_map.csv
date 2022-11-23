@@ -64,6 +64,8 @@ ta.fisher,openbb_terminal.common.technical_analysis.momentum_model.fisher,openbb
 ta.macd,openbb_terminal.common.technical_analysis.momentum_model.macd,openbb_terminal.common.technical_analysis.momentum_view.display_macd
 ta.rsi,openbb_terminal.common.technical_analysis.momentum_model.rsi,openbb_terminal.common.technical_analysis.momentum_view.display_rsi
 ta.stoch,openbb_terminal.common.technical_analysis.momentum_model.stoch,openbb_terminal.common.technical_analysis.momentum_view.display_stoch
+ta.demark,openbb_terminal.common.technical_analysis.momentum_model.demark_seq,openbb_terminal.common.technical_analysis.momentum_view.display_demark
+ta.clenow,openbb_terminal.common.technical_analysis.momentum_model.clenow_momentum,openbb_terminal.common.technical_analysis.momentum_view.display_clenow_momentum
 ta.ma,openbb_terminal.common.technical_analysis.overlap_view.view_ma,openbb_terminal.common.technical_analysis.overlap_view.view_ma
 ta.ema,openbb_terminal.common.technical_analysis.overlap_model.ema,
 ta.hma,openbb_terminal.common.technical_analysis.overlap_model.hma,

@@ -104,8 +104,8 @@ def display_messari_timeseries_list(
 def display_messari_timeseries(
     symbol: str,
     timeseries_id: str,
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -119,9 +119,9 @@ def display_messari_timeseries(
         Crypto symbol to check market cap dominance
     timeseries_id: str
         Obtained by api.crypto.dd.get_mt command
-    start_date : int
+    start_date : Optional[str]
         Initial date like string (e.g., 2021-10-01)
-    end_date : int
+    end_date : Optional[str]
         End date like string (e.g., 2021-10-01)
     interval : str
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
@@ -181,8 +181,8 @@ def display_messari_timeseries(
 @check_api_key(["API_MESSARI_KEY"])
 def display_marketcap_dominance(
     symbol: str,
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -194,9 +194,9 @@ def display_marketcap_dominance(
     ----------
     symbol : str
         Crypto symbol to check market cap dominance
-    start_date : int
+    start_date : Optional[str]
         Initial date like string (e.g., 2021-10-01)
-    end_date : int
+    end_date : Optional[str]
         End date like string (e.g., 2021-10-01)
     interval : str
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
