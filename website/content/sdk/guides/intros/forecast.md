@@ -93,7 +93,7 @@ Predicts the future value of time series data using exponential smoothing
 ​
 ```python
 df = pd.read_csv(ANDREW_REPLACE)
-openbb.forecast.expo(df, "Close")
+openbb.forecast.expo_chart(df, "close")
 ```
 ​
 Here was can now see a chart and table with the expected values, and historic data. The chart also tells us how our backtesing performed, so that we can know the accuracy of our prediction.
