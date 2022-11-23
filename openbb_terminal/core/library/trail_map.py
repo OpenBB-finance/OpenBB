@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Dict, Optional
 
 import pandas as pd
+from openbb_terminal.sdk_config import DISABLE_EXTRAS_WARNING
 
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.rich_config import console
@@ -13,14 +14,15 @@ try:
     FORECASTING_TOOLKIT_ENABLED = True
 except ModuleNotFoundError:
     FORECASTING_TOOLKIT_ENABLED = False
-    console.print(
-        "[yellow]"
-        "Forecasting Toolkit is disabled. "
-        "To use the Forecasting features please install the toolkit following the "
-        "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
-        "\n"
-        "[/yellow]"
-    )
+    if not DISABLE_EXTRAS_WARNING:
+        console.print(
+            "[yellow]"
+            "Forecasting Toolkit is disabled. "
+            "To use the Forecasting features please install the toolkit following the "
+            "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+            "\n"
+            "[/yellow]"
+        )
 
 try:
     import riskfolio  # pylint: disable=W0611 # noqa: F401
@@ -28,14 +30,15 @@ try:
     OPTIMIZATION_TOOLKIT_ENABLED = True
 except ModuleNotFoundError:
     OPTIMIZATION_TOOLKIT_ENABLED = False
-    console.print(
-        "[yellow]"
-        "Portfolio Optimization Toolkit is disabled. "
-        "To use the Optimization features please install the toolkit following the "
-        "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
-        "\n"
-        "[/yellow]"
-    )
+    if not DISABLE_EXTRAS_WARNING:
+        console.print(
+            "[yellow]"
+            "Portfolio Optimization Toolkit is disabled. "
+            "To use the Optimization features please install the toolkit following the "
+            "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+            "\n"
+            "[/yellow]"
+        )
 
 
 class TrailMap:
