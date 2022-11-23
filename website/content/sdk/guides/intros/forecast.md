@@ -70,7 +70,7 @@ Shows a correlation matrix between columns in dataset
 ​
 ```python
 df = pd.read_csv(ANDREW_REPLACE)
-openbb.forecast.corr_view(df)
+openbb.forecast.corr_chart(df)
 ```
 ![Corr View](https://user-images.githubusercontent.com/72827203/202424217-b549b6e7-b121-4273-a7d9-b478e89cd65a.png)
 
