@@ -19,11 +19,11 @@ class AltController:
             `global_cases`: Get historical cases for given country.\n
             `global_deaths`: Get historical deaths for given country.\n
             `ov`: Get historical cases and deaths by country.\n
-            `ov_print`: Prints table showing historical cases and deaths by country.\n
+            `ov_chart`: Prints table showing historical cases and deaths by country.\n
             `slopes`: Load cases and find slope over period.\n
-            `slopes_print`: Prints table showing countries with the highest case slopes.\n
+            `slopes_chart`: Prints table showing countries with the highest case slopes.\n
             `stat`: Show historical cases and deaths by country.\n
-            `stat_print`: Prints table showing historical cases and deaths by country.\n
+            `stat_chart`: Prints table showing historical cases and deaths by country.\n
         """
 
         return model.AltCovid()
@@ -33,6 +33,8 @@ class AltController:
         """OpenBB SDK Alt Oss Submodule
 
         Attributes:
+            `_make_request`: Helper method to scrap.\n
+            `_retry_session`: Helper methods that retries to make request.\n
             `github_data`: Get repository stats.\n
             `history`: Get repository star history.\n
             `history_chart`: Plots repo summary [Source: https://api.github.com].\n
@@ -40,7 +42,7 @@ class AltController:
             `ross_chart`: Plots list of startups from ross index [Source: https://runacap.com/]\n
             `search`: Get repos sorted by stars or forks. Can be filtered by categories.\n
             `summary`: Get repository summary.\n
-            `summary_print`: Prints table showing repo summary [Source: https://api.github.com].\n
+            `summary_chart`: Prints table showing repo summary [Source: https://api.github.com].\n
             `top`: Get repos sorted by stars or forks. Can be filtered by categories.\n
             `top_chart`: Plots repo summary [Source: https://api.github.com].\n
         """

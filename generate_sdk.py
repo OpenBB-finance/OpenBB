@@ -71,11 +71,10 @@ class Trailmap:
         if len(tmap) == 1:
             tmap = ["root", tmap[0]]
         self.class_attr: str = tmap.pop(-1)
-        self.category = tmap[0]
         self.location_path = tmap
         self.model = model
         self.view = view if view else None
-        self.view_name = ""
+        self.view_name = "_chart"
         self.model_func: Optional[str] = f"lib.{model}" if model else None
         self.view_func: Optional[str] = f"lib.{view}" if view else None
         self.short_doc: Dict[str, Optional[str]] = {}
@@ -84,7 +83,6 @@ class Trailmap:
         self.full_path: Dict[str, str] = {}
         self.func_def: Dict[str, str] = {}
         self.func_attr: Dict[str, FunctionType] = {}
-        self.params: Dict[str, Dict[str, inspect.Parameter]] = {}
         self.get_docstrings()
 
     def get_docstrings(self) -> None:
@@ -96,32 +94,24 @@ class Trailmap:
                     importlib.import_module("openbb_terminal.sdk_core.sdk_init"),
                     func.split(".")[0],
                 )
-                self.func_attr[key] = getattr(attr, func.split(".")[1])
+                func_attr = getattr(attr, func.split(".")[1])
 
                 add_juan = 0
-                if "__wrapped__" in dir(self.func_attr[key]):
-                    self.func_attr[key] = self.func_attr[key].__wrapped__
+                if hasattr(func_attr, "__wrapped__"):
+                    func_attr = func_attr.__wrapped__
+                    if hasattr(func_attr, "__wrapped__"):
+                        func_attr = func_attr.__wrapped__
                     add_juan = 1
-                self.lineon[key] = (
-                    inspect.getsourcelines(self.func_attr[key])[1] + add_juan
-                )
+
+                self.func_attr[key] = func_attr
+                self.lineon[key] = inspect.getsourcelines(func_attr)[1] + add_juan
 
                 self.func_def[key] = self.get_definition(key)
-                self.long_doc[key] = self.func_attr[key].__doc__
-                self.short_doc[key] = clean_attr_desc(self.func_attr[key])
-                self.view_name = (
-                    (
-                        "_chart"
-                        if "Plot" in self.short_doc[key]
-                        else "_print"
-                        if "Print" in self.short_doc[key]
-                        else "_view"
-                    )
-                    if key == "view"
-                    else ""
-                )
+                self.long_doc[key] = func_attr.__doc__
+                self.short_doc[key] = clean_attr_desc(func_attr)
+
                 full_path = (
-                    inspect.getfile(self.func_attr[key])
+                    inspect.getfile(func_attr)
                     .replace("\\", "/")
                     .split("openbb_terminal/")[1]
                 )
@@ -229,22 +219,14 @@ class BuildCategoryModelClasses:
     def write_init_imports(self, importstr: str, filestr: str) -> None:
         """Checks if a category has submodules and adds the imports to the init file."""
         regex = re.compile(importstr)
-        with open(
-            REPO_ROOT / filestr,
-        ) as init_file:
+        with open(REPO_ROOT / filestr) as init_file:
             check_init = bool(regex.search(init_file.read()))
             if not check_init:
-                with open(
-                    REPO_ROOT / filestr,
-                    "a",
-                ) as init_file:
+                with open(REPO_ROOT / filestr, "a") as init_file:
                     init_file.write(f"{importstr}\r")
 
     def write_sdk_class(
-        self,
-        category: str,
-        f: TextIO,
-        cls_type: Optional[str] = "",
+        self, category: str, f: TextIO, cls_type: Optional[str] = ""
     ) -> None:
         """Writes the sdk class to the file.
 
@@ -266,10 +248,7 @@ class BuildCategoryModelClasses:
         )
 
     def write_class_property(
-        self,
-        category: str,
-        f: TextIO,
-        subcat: Optional[str] = "",
+        self, category: str, f: TextIO, subcat: Optional[str] = ""
     ) -> None:
         """Writes the class property to the file.
 
@@ -436,10 +415,7 @@ class BuildCategoryModelClasses:
         f.write(f"{add_indent}        `{k}`: {subcat_name} Module\r")
 
     def write_nested_submodule_docs(
-        self,
-        nested_dict: dict,
-        f: TextIO,
-        indent: bool = False,
+        self, nested_dict: dict, f: TextIO, indent: bool = False
     ) -> None:
         """Writes the nested submodule docs to the class docstring.
 
@@ -473,10 +449,7 @@ class BuildCategoryModelClasses:
         d : dict
             The category dictionary
         """
-        with open(
-            REPO_ROOT / f"sdk_core/models/{category}_sdk_model.py",
-            "w",
-        ) as f:
+        with open(REPO_ROOT / f"sdk_core/models/{category}_sdk_model.py", "w") as f:
             import_cat_class = self.import_cat_class
             if category in self.root_modules:
                 import_cat_class = ""
@@ -512,8 +485,7 @@ class BuildCategoryModelClasses:
         """
         added_init_imports = []
         with open(
-            REPO_ROOT / f"sdk_core/controllers/{category}_sdk_controller.py",
-            "w",
+            REPO_ROOT / f"sdk_core/controllers/{category}_sdk_controller.py", "w"
         ) as f:
             f.write(
                 f"{disable_lines}from openbb_terminal.sdk_core.models "
@@ -630,9 +602,10 @@ def generate_sdk():
 
 
 def sort_csv():
-    df = pd.read_csv(REPO_ROOT / "sdk_core/trail_map.csv")
-    df.sort_values(by=["trail"], inplace=True)
-    df.to_csv(REPO_ROOT / "sdk_core/trail_map.csv", index=False)
-
-
-generate_sdk()
+    columns = ["trail", "model", "view"]
+    df = pd.read_csv(
+        REPO_ROOT / "sdk_core/trail_map.csv", usecols=columns, keep_default_na=False
+    )
+    df.set_index("trail", inplace=True)
+    df.sort_index(inplace=True)
+    df.to_csv(REPO_ROOT / "sdk_core/trail_map.csv", index=True)

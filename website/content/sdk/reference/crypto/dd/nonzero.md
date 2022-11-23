@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 Returns addresses with non-zero balance of a certain symbol
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L248)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L249)]
 
 ```python
 openbb.crypto.dd.nonzero(symbol: str, start_date: str = "2010-01-01", end_date: str = None)

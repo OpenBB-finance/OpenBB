@@ -27,5 +27,5 @@ usage: create [-a {buy,sell}] (-prod PRODUCT | -sym SYMBOL) -p PRICE (-s SIZE | 
 | up_to | Up to price. | None | True | None |
 | duration | Duration of the Order. | gtd | True | gtd, gtc |
 | type | Type of the Order. | limit | True | limit, market, stop-limit, stop-loss |
----
 
+---

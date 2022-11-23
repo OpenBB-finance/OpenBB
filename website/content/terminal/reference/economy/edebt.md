@@ -19,5 +19,5 @@ usage: edebt
 
 This command has no parameters
 
----
 
+---

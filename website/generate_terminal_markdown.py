@@ -1,17 +1,12 @@
-from datetime import datetime
-import os
 import json
-from pathlib import Path
+import os
 import traceback
+from datetime import datetime
+from pathlib import Path
 from typing import Dict, List, Optional, Union
 
 from openbb_terminal.rich_config import console
-from website.controller_doc_classes import (
-    LoadControllersDoc,
-    ControllerDoc,
-    sub_names_full,
-)
-
+from website.controller_doc_classes import ControllerDoc, LoadControllersDoc
 
 website_path = Path(__file__).parent.absolute()
 
@@ -119,10 +114,7 @@ def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
         }
         commands.append(param)
 
-    return {
-        "category_name": ctrl.name,
-        "cmds": commands,
-    }
+    return {"category_name": ctrl.name, "cmds": commands}
 
 
 def generate_markdown(cmd_meta: Dict[str, str], examples: Dict[str, str]):
@@ -162,14 +154,16 @@ def generate_markdown_section(meta: Dict[str, str], examples: Dict[str, str]) ->
         markdown += "This command has no parameters\n\n"
 
     if examples.get("example", None):
-        markdown += "---\n\n## Examples\n\n"
-        markdown += f"```python\n{examples['example']}\n```\n\n"
+        markdown += "\n\n---\n\n## Examples\n\n"
+        markdown += f"```python\n{examples['example']}\n```"
+
+    markdown += "\n"
 
     if examples.get("images", []):
         for image in examples["images"]:
             markdown += f"{image}\n\n"
 
-    markdown += "---\n\n"
+    markdown += "---\n"
     return markdown.replace("<", "").replace(">", "")
 
 
@@ -218,11 +212,7 @@ def main():
                 if cat["cmd_name"] == "index":
                     cat["cmd_name"] = "index_cmd"
 
-                trail = []
-                for sub in ctrl.trailmap.split("."):
-                    if sub_names_full.get(sub, None):
-                        sub = sub_names_full[sub].lower()
-                    trail.append(sub)
+                trail = ctrl.trailmap.split(".")
 
                 terminal_ref = add_todict(terminal_ref, trail, cat["cmd_name"], trail)
                 filepath = f"{str(content_path)}/{'/'.join(trail)}/{cat['cmd_name']}.md"
@@ -242,6 +232,12 @@ def main():
         f.write(
             f"# OpenBB Terminal Features\n\n{generate_index_markdown('', terminal_ref, 2)}"
         )
+
+    for file in content_path.glob("**/*.md"):
+        with open(file, "rb") as f:
+            content = f.read()
+        with open(file, "wb") as f:
+            f.write(content.replace(b"\n", b"").replace(b"\r", b"\n"))
 
     console.print(
         "[green]Markdown files generated, check the website/content/terminal/reference/ folder[/green]"

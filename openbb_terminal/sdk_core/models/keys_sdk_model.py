@@ -38,6 +38,7 @@ class KeysRoot(Category):
         `shroom`: Set Shroom key\n
         `si`: Set Sentimentinvestor key.\n
         `smartstake`: Set Smartstake key.\n
+        `stocksera`: Set Stocksera key.\n
         `tokenterminal`: Set Token Terminal key.\n
         `tradier`: Set Tradier key\n
         `twitter`: Set Twitter key\n
@@ -76,6 +77,7 @@ class KeysRoot(Category):
         self.shroom = lib.keys_model.set_shroom_key
         self.si = lib.keys_model.set_si_key
         self.smartstake = lib.keys_model.set_smartstake_key
+        self.stocksera = lib.keys_model.set_stocksera_key
         self.tokenterminal = lib.keys_model.set_tokenterminal_key
         self.tradier = lib.keys_model.set_tradier_key
         self.twitter = lib.keys_model.set_twitter_key

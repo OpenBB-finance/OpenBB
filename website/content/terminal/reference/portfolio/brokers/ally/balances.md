@@ -19,5 +19,5 @@ usage: balances
 
 This command has no parameters
 
----
 
+---

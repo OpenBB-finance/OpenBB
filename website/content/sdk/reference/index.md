@@ -1,12 +1,15 @@
 # OpenBB SDK Reference
 
+
 ## alt
+
 ### covid
 - [slopes](/sdk/functions/alt/covid/slopes)
 - [global_cases](/sdk/functions/alt/covid/global_cases)
 - [global_deaths](/sdk/functions/alt/covid/global_deaths)
 - [ov](/sdk/functions/alt/covid/ov)
 - [stat](/sdk/functions/alt/covid/stat)
+
 ### oss
 - [github_data](/sdk/functions/alt/oss/github_data)
 - [summary](/sdk/functions/alt/oss/summary)
@@ -16,7 +19,9 @@
 - [_make_request](/sdk/functions/alt/oss/_make_request)
 - [_retry_session](/sdk/functions/alt/oss/_retry_session)
 - [ross](/sdk/functions/alt/oss/ross)
+
 ## stocks
+
 ### ba
 - [headlines](/sdk/functions/stocks/ba/headlines)
 - [mentions](/sdk/functions/stocks/ba/mentions)
@@ -41,6 +46,7 @@
 - [sentiment](/sdk/functions/stocks/ba/sentiment)
 - [cnews](/sdk/functions/stocks/ba/cnews)
 - [snews](/sdk/functions/stocks/ba/snews)
+
 ### ca
 - [similar](/sdk/functions/stocks/ca/similar)
 - [sentiment](/sdk/functions/stocks/ca/sentiment)
@@ -52,6 +58,7 @@
 - [hist](/sdk/functions/stocks/ca/hist)
 - [hcorr](/sdk/functions/stocks/ca/hcorr)
 - [volume](/sdk/functions/stocks/ca/volume)
+
 ### dps
 - [prom](/sdk/functions/stocks/dps/prom)
 - [dpotc](/sdk/functions/stocks/dps/dpotc)
@@ -65,6 +72,7 @@
 - [sidtc](/sdk/functions/stocks/dps/sidtc)
 - [psi_sg](/sdk/functions/stocks/dps/psi_sg)
 - [shorted](/sdk/functions/stocks/dps/shorted)
+
 ### disc
 - [arkord](/sdk/functions/stocks/disc/arkord)
 - [ipo](/sdk/functions/stocks/disc/ipo)
@@ -84,6 +92,7 @@
 - [losers](/sdk/functions/stocks/disc/losers)
 - [ugs](/sdk/functions/stocks/disc/ugs)
 - [ulc](/sdk/functions/stocks/disc/ulc)
+
 ### dd
 - [arktrades](/sdk/functions/stocks/dd/arktrades)
 - [est](/sdk/functions/stocks/dd/est)
@@ -95,6 +104,7 @@
 - [news](/sdk/functions/stocks/dd/news)
 - [rating](/sdk/functions/stocks/dd/rating)
 - [sec](/sdk/functions/stocks/dd/sec)
+
 ### fa
 - [dupont](/sdk/functions/stocks/fa/dupont)
 - [fraud](/sdk/functions/stocks/fa/fraud)
@@ -128,6 +138,7 @@
 - [splits](/sdk/functions/stocks/fa/splits)
 - [sust](/sdk/functions/stocks/fa/sust)
 - [website](/sdk/functions/stocks/fa/website)
+
 ### gov
 - [qtrcontracts](/sdk/functions/stocks/gov/qtrcontracts)
 - [government_trading](/sdk/functions/stocks/gov/government_trading)
@@ -140,15 +151,18 @@
 - [lasttrades](/sdk/functions/stocks/gov/lasttrades)
 - [lobbying](/sdk/functions/stocks/gov/lobbying)
 - [toplobbying](/sdk/functions/stocks/gov/toplobbying)
+
 ### ins
 - [act](/sdk/functions/stocks/ins/act)
 - [lins](/sdk/functions/stocks/ins/lins)
 - [print_insider_data](/sdk/functions/stocks/ins/print_insider_data)
+
 ### options
 - [pcr](/sdk/functions/stocks/options/pcr)
 - [info](/sdk/functions/stocks/options/info)
 - [hist_ce](/sdk/functions/stocks/options/hist_ce)
 - [unu](/sdk/functions/stocks/options/unu)
+
 #### screen
 - [check_presets](/sdk/functions/stocks/options/screen/check_presets)
 - [screener_output](/sdk/functions/stocks/options/screen/screener_output)
@@ -161,14 +175,17 @@
 - [generate_data](/sdk/functions/stocks/options/generate_data)
 - [dte](/sdk/functions/stocks/options/dte)
 - [vsurf](/sdk/functions/stocks/options/vsurf)
+
 ### qa
 - [capm](/sdk/functions/stocks/qa/capm)
 - [fama_raw](/sdk/functions/stocks/qa/fama_raw)
 - [historical_5](/sdk/functions/stocks/qa/historical_5)
 - [beta](/sdk/functions/stocks/qa/beta)
+
 ### screener
 - [screener_data](/sdk/functions/stocks/screener/screener_data)
 - [historical](/sdk/functions/stocks/screener/historical)
+
 ### sia
 - [filter_stocks](/sdk/functions/stocks/sia/filter_stocks)
 - [cpci](/sdk/functions/stocks/sia/cpci)
@@ -181,11 +198,13 @@
 - [maketcap](/sdk/functions/stocks/sia/maketcap)
 - [sectors](/sdk/functions/stocks/sia/sectors)
 - [stocks_data](/sdk/functions/stocks/sia/stocks_data)
+
 ### ta
 - [summary](/sdk/functions/stocks/ta/summary)
 - [view](/sdk/functions/stocks/ta/view)
 - [recom](/sdk/functions/stocks/ta/recom)
 - [rsp](/sdk/functions/stocks/ta/rsp)
+
 ### th
 - [check_if_open](/sdk/functions/stocks/th/check_if_open)
 - [all](/sdk/functions/stocks/th/all)
@@ -198,13 +217,16 @@
 - [quote](/sdk/functions/stocks/quote)
 - [tob](/sdk/functions/stocks/tob)
 - [candle](/sdk/functions/stocks/candle)
+
 ## etf
 - [news](/sdk/functions/etf/news)
+
 ### disc
 - [mover](/sdk/functions/etf/disc/mover)
 - [etf_by_category](/sdk/functions/etf/etf_by_category)
 - [ld](/sdk/functions/etf/ld)
 - [ln](/sdk/functions/etf/ln)
+
 ### scr
 - [screen](/sdk/functions/etf/scr/screen)
 - [holdings](/sdk/functions/etf/holdings)
@@ -215,8 +237,10 @@
 - [summary](/sdk/functions/etf/summary)
 - [load](/sdk/functions/etf/load)
 - [candle](/sdk/functions/etf/candle)
+
 ## 
 - [news](/sdk/functions//news)
+
 ## qa
 - [bw](/sdk/functions/qa/bw)
 - [calculate_adjusted_var](/sdk/functions/qa/calculate_adjusted_var)
@@ -240,6 +264,7 @@
 - [rolling](/sdk/functions/qa/rolling)
 - [skew](/sdk/functions/qa/skew)
 - [spread](/sdk/functions/qa/spread)
+
 ## ta
 - [fib](/sdk/functions/ta/fib)
 - [cci](/sdk/functions/ta/cci)
@@ -264,7 +289,9 @@
 - [adosc](/sdk/functions/ta/adosc)
 - [obv](/sdk/functions/ta/obv)
 - [atr](/sdk/functions/ta/atr)
+
 ## crypto
+
 ### defi
 - [vaults](/sdk/functions/crypto/defi/vaults)
 - [anchor_data](/sdk/functions/crypto/defi/anchor_data)
@@ -287,6 +314,7 @@
 - [sratio](/sdk/functions/crypto/defi/sratio)
 - [sreturn](/sdk/functions/crypto/defi/sreturn)
 - [validators](/sdk/functions/crypto/defi/validators)
+
 ### disc
 - [top_coins](/sdk/functions/crypto/disc/top_coins)
 - [cpsearch](/sdk/functions/crypto/disc/cpsearch)
@@ -301,6 +329,7 @@
 - [gainers](/sdk/functions/crypto/disc/gainers)
 - [losers](/sdk/functions/crypto/disc/losers)
 - [trending](/sdk/functions/crypto/disc/trending)
+
 ### dd
 - [trading_pairs](/sdk/functions/crypto/dd/trading_pairs)
 - [check_valid_binance_str](/sdk/functions/crypto/dd/check_valid_binance_str)
@@ -344,6 +373,7 @@
 - [pr](/sdk/functions/crypto/dd/pr)
 - [tokenomics](/sdk/functions/crypto/dd/tokenomics)
 - [gh](/sdk/functions/crypto/dd/gh)
+
 ### ov
 - [coin_list](/sdk/functions/crypto/ov/coin_list)
 - [altindex](/sdk/functions/crypto/ov/altindex)
@@ -373,6 +403,7 @@
 - [wfpe](/sdk/functions/crypto/ov/wfpe)
 - [ewf](/sdk/functions/crypto/ov/ewf)
 - [wf](/sdk/functions/crypto/ov/wf)
+
 ### onchain
 - [hr](/sdk/functions/crypto/onchain/hr)
 - [dvcp](/sdk/functions/crypto/onchain/dvcp)
@@ -397,10 +428,12 @@
 - [top](/sdk/functions/crypto/onchain/top)
 - [tx](/sdk/functions/crypto/onchain/tx)
 - [whales](/sdk/functions/crypto/onchain/whales)
+
 ### nft
 - [stats](/sdk/functions/crypto/nft/stats)
 - [fp](/sdk/functions/crypto/nft/fp)
 - [collections](/sdk/functions/crypto/nft/collections)
+
 ### tools
 - [apy](/sdk/functions/crypto/tools/apy)
 - [il](/sdk/functions/crypto/tools/il)
@@ -409,6 +442,7 @@
 - [find](/sdk/functions/crypto/find)
 - [chart](/sdk/functions/crypto/chart)
 - [candles](/sdk/functions/crypto/candles)
+
 ## econometrics
 - [clean](/sdk/functions/econometrics/clean)
 - [coint](/sdk/functions/econometrics/coint)
@@ -429,6 +463,7 @@
 - [re](/sdk/functions/econometrics/re)
 - [get_regression_data](/sdk/functions/econometrics/get_regression_data)
 - [panel](/sdk/functions/econometrics/panel)
+
 ## economy
 - [cpi](/sdk/functions/economy/cpi)
 - [gdpc](/sdk/functions/economy/gdpc)
@@ -464,10 +499,12 @@
 - [available_indices](/sdk/functions/economy/available_indices)
 - [search_index](/sdk/functions/economy/search_index)
 - [get_groups](/sdk/functions/economy/get_groups)
+
 ## forex
 - [get_currency_list](/sdk/functions/forex/get_currency_list)
 - [quote](/sdk/functions/forex/quote)
 - [fwd](/sdk/functions/forex/fwd)
+
 ### oanda
 - [summary](/sdk/functions/forex/oanda/summary)
 - [cancel](/sdk/functions/forex/oanda/cancel)
@@ -484,6 +521,7 @@
 - [positionbook](/sdk/functions/forex/oanda/positionbook)
 - [candle](/sdk/functions/forex/candle)
 - [load](/sdk/functions/forex/load)
+
 ## portfolio
 - [load](/sdk/functions/portfolio/load)
 - [show](/sdk/functions/portfolio/show)
@@ -500,11 +538,13 @@
 - [rsort](/sdk/functions/portfolio/rsort)
 - [rbeta](/sdk/functions/portfolio/rbeta)
 - [summary](/sdk/functions/portfolio/summary)
+
 ### alloc
 - [assets](/sdk/functions/portfolio/alloc/assets)
 - [sectors](/sdk/functions/portfolio/alloc/sectors)
 - [countries](/sdk/functions/portfolio/alloc/countries)
 - [regions](/sdk/functions/portfolio/alloc/regions)
+
 ### metric
 - [volatility](/sdk/functions/portfolio/metric/volatility)
 - [sharpe](/sdk/functions/portfolio/metric/sharpe)
@@ -527,6 +567,7 @@
 - [var](/sdk/functions/portfolio/var)
 - [es](/sdk/functions/portfolio/es)
 - [om](/sdk/functions/portfolio/om)
+
 ### po
 - [load](/sdk/functions/portfolio/po/load)
 - [file](/sdk/functions/portfolio/po/file)
@@ -552,6 +593,7 @@
 - [property](/sdk/functions/portfolio/po/property)
 - [get_properties](/sdk/functions/portfolio/po/get_properties)
 - [plot](/sdk/functions/portfolio/po/plot)
+
 ## keys
 - [mykeys](/sdk/functions/keys/mykeys)
 - [set_keys](/sdk/functions/keys/set_keys)
@@ -588,10 +630,12 @@
 - [tokenterminal](/sdk/functions/keys/tokenterminal)
 - [shroom](/sdk/functions/keys/shroom)
 - [stocksera](/sdk/functions/keys/stocksera)
+
 ## futures
 - [search](/sdk/functions/futures/search)
 - [historical](/sdk/functions/futures/historical)
 - [curve](/sdk/functions/futures/curve)
+
 ## forecast
 - [load](/sdk/functions/forecast/load)
 - [show](/sdk/functions/forecast/show)

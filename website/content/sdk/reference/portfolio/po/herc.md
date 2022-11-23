@@ -7,7 +7,7 @@ description: OpenBB SDK Function
 
 Optimize with Hierarchical Equal Risk Contribution (HERC) method.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L1679)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L1667)]
 
 ```python
 openbb.portfolio.po.herc(portfolio_engine: portfolio_optimization.po_engine.PoEngine = None, symbols: List[str] = None, kwargs: Any)

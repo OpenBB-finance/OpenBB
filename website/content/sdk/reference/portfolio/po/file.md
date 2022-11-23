@@ -7,7 +7,7 @@ description: OpenBB SDK Function
 
 Load portfolio optimization engine from file
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L108)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L103)]
 
 ```python
 openbb.portfolio.po.file(portfolio_engine: portfolio_optimization.po_engine.PoEngine, parameters_file_path: str)

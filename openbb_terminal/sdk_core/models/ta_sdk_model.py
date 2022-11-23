@@ -20,16 +20,22 @@ class TaRoot(Category):
         `atr_chart`: Plots ATR\n
         `bbands`: Calculate Bollinger Bands\n
         `bbands_chart`: Plots bollinger bands\n
+        `cci`: Commodity channel index\n
+        `cci_chart`: Plots CCI Indicator\n
+        `cg`: Center of gravity\n
+        `cg_chart`: Plots center of gravity Indicator\n
         `donchian`: Calculate Donchian Channels\n
         `donchian_chart`: Plots donchian channels\n
         `ema`: Gets exponential moving average (EMA) for stock\n
         `fib`: Calculate Fibonacci levels\n
         `fib_chart`: Plots Calculated fibonacci retracement levels\n
         `fisher`: Fisher Transform\n
+        `fisher_chart`: Plots Fisher Indicator\n
         `hma`: Gets hull moving average (HMA) for stock\n
         `kc`: Keltner Channels\n
         `kc_chart`: Plots Keltner Channels Indicator\n
         `ma`: Plots MA technical indicator\n
+        `ma_chart`: Plots MA technical indicator\n
         `macd`: Moving average convergence divergence\n
         `macd_chart`: Plots MACD signal\n
         `obv`: On Balance Volume\n
@@ -59,16 +65,22 @@ class TaRoot(Category):
         self.atr_chart = lib.common_ta_volatility_view.display_atr
         self.bbands = lib.common_ta_volatility_model.bbands
         self.bbands_chart = lib.common_ta_volatility_view.display_bbands
+        self.cci = lib.common_ta_momentum_model.cci
+        self.cci_chart = lib.common_ta_momentum_view.display_cci
+        self.cg = lib.common_ta_momentum_model.cg
+        self.cg_chart = lib.common_ta_momentum_view.display_cg
         self.donchian = lib.common_ta_volatility_model.donchian
         self.donchian_chart = lib.common_ta_volatility_view.display_donchian
         self.ema = lib.common_ta_overlap_model.ema
         self.fib = lib.common_ta_custom_indicators_model.calculate_fib_levels
         self.fib_chart = lib.common_ta_custom_indicators_view.fibonacci_retracement
         self.fisher = lib.common_ta_momentum_model.fisher
+        self.fisher_chart = lib.common_ta_momentum_view.display_fisher
         self.hma = lib.common_ta_overlap_model.hma
         self.kc = lib.common_ta_volatility_model.kc
         self.kc_chart = lib.common_ta_volatility_view.view_kc
         self.ma = lib.common_ta_overlap_view.view_ma
+        self.ma_chart = lib.common_ta_overlap_view.view_ma
         self.macd = lib.common_ta_momentum_model.macd
         self.macd_chart = lib.common_ta_momentum_view.display_macd
         self.obv = lib.common_ta_volume_model.obv

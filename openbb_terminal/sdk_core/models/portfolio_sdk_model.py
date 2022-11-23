@@ -8,72 +8,90 @@ class PortfolioRoot(Category):
     """OpenBB SDK Portfolio Module
 
     Attributes:
-        `load`: Get PortfolioEngine object\n
-        `show`: Get portfolio transactions\n
         `bench`: Load benchmark into portfolio\n
         `distr`: Display daily returns\n
-        `distr_view`: Display daily returns\n
+        `distr_chart`: Display daily returns\n
         `dret`: Get daily returns\n
-        `dret_view`: Display daily returns\n
+        `dret_chart`: Display daily returns\n
         `es`: Get portfolio expected shortfall\n
         `holdp`: Get holdings of assets (in percentage)\n
-        `holdp_view`: Display holdings of assets (in percentage)\n
+        `holdp_chart`: Display holdings of assets (in percentage)\n
         `holdv`: Get holdings of assets (absolute value)\n
-        `holdv_view`: Display holdings of assets (absolute value)\n
+        `holdv_chart`: Display holdings of assets (absolute value)\n
+        `load`: Get PortfolioEngine object\n
         `maxdd`: Calculate the drawdown (MDD) of historical series.  Note that the calculation is done\n
-        `maxdd_view`: Display maximum drawdown curve\n
+        `maxdd_chart`: Display maximum drawdown curve\n
         `mret`: Get monthly returns\n
-        `mret_view`: Display monthly returns\n
+        `mret_chart`: Display monthly returns\n
         `om`: Get omega ratio\n
-        `om_view`: Display omega ratio\n
+        `om_chart`: Display omega ratio\n
         `perf`: Get portfolio performance vs the benchmark\n
         `rbeta`: Get rolling beta using portfolio and benchmark returns\n
-        `rbeta_view`: Display rolling beta\n
+        `rbeta_chart`: Display rolling beta\n
         `rsharpe`: Get rolling sharpe ratio\n
-        `rsharpe_view`: Display rolling sharpe\n
+        `rsharpe_chart`: Display rolling sharpe\n
         `rsort`: Get rolling sortino\n
-        `rsort_view`: Display rolling sortino\n
+        `rsort_chart`: Display rolling sortino\n
         `rvol`: Get rolling volatility\n
-        `rvol_view`: Display rolling volatility\n
+        `rvol_chart`: Display rolling volatility\n
+        `show`: Get portfolio transactions\n
         `summary`: Get portfolio and benchmark returns summary\n
         `var`: Get portfolio VaR\n
         `yret`: Get yearly returns\n
-        `yret_view`: Display yearly returns\n
+        `yret_chart`: Display yearly returns\n
     """
 
     def __init__(self):
         super().__init__()
-        self.load = lib.portfolio_model.generate_portfolio
-        self.show = lib.portfolio_model.get_transactions
         self.bench = lib.portfolio_model.set_benchmark
         self.distr = lib.portfolio_model.get_distribution_returns
-        self.distr_view = lib.portfolio_view.display_distribution_returns
+        self.distr_chart = lib.portfolio_view.display_distribution_returns
         self.dret = lib.portfolio_model.get_daily_returns
-        self.dret_view = lib.portfolio_view.display_daily_returns
+        self.dret_chart = lib.portfolio_view.display_daily_returns
         self.es = lib.portfolio_model.get_es
         self.holdp = lib.portfolio_model.get_holdings_percentage
-        self.holdp_view = lib.portfolio_view.display_holdings_percentage
+        self.holdp_chart = lib.portfolio_view.display_holdings_percentage
         self.holdv = lib.portfolio_model.get_holdings_value
-        self.holdv_view = lib.portfolio_view.display_holdings_value
+        self.holdv_chart = lib.portfolio_view.display_holdings_value
+        self.load = lib.portfolio_model.generate_portfolio
         self.maxdd = lib.portfolio_model.get_maximum_drawdown
-        self.maxdd_view = lib.portfolio_view.display_maximum_drawdown
+        self.maxdd_chart = lib.portfolio_view.display_maximum_drawdown
         self.mret = lib.portfolio_model.get_monthly_returns
-        self.mret_view = lib.portfolio_view.display_monthly_returns
+        self.mret_chart = lib.portfolio_view.display_monthly_returns
         self.om = lib.portfolio_model.get_omega
-        self.om_view = lib.portfolio_view.display_omega
+        self.om_chart = lib.portfolio_view.display_omega
         self.perf = lib.portfolio_model.get_performance_vs_benchmark
         self.rbeta = lib.portfolio_model.get_rolling_beta
-        self.rbeta_view = lib.portfolio_view.display_rolling_beta
+        self.rbeta_chart = lib.portfolio_view.display_rolling_beta
         self.rsharpe = lib.portfolio_model.get_rolling_sharpe
-        self.rsharpe_view = lib.portfolio_view.display_rolling_sharpe
+        self.rsharpe_chart = lib.portfolio_view.display_rolling_sharpe
         self.rsort = lib.portfolio_model.get_rolling_sortino
-        self.rsort_view = lib.portfolio_view.display_rolling_sortino
+        self.rsort_chart = lib.portfolio_view.display_rolling_sortino
         self.rvol = lib.portfolio_model.get_rolling_volatility
-        self.rvol_view = lib.portfolio_view.display_rolling_volatility
+        self.rvol_chart = lib.portfolio_view.display_rolling_volatility
+        self.show = lib.portfolio_model.get_transactions
         self.summary = lib.portfolio_model.get_summary
         self.var = lib.portfolio_model.get_var
         self.yret = lib.portfolio_model.get_yearly_returns
-        self.yret_view = lib.portfolio_view.display_yearly_returns
+        self.yret_chart = lib.portfolio_view.display_yearly_returns
+
+
+class PortfolioAlloc(Category):
+    """OpenBB SDK Alloc Module.
+
+    Attributes:
+        `assets`: Display portfolio asset allocation compared to the benchmark\n
+        `countries`: Display portfolio country allocation compared to the benchmark\n
+        `regions`: Display portfolio region allocation compared to the benchmark\n
+        `sectors`: Display portfolio sector allocation compared to the benchmark\n
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.assets = lib.portfolio_model.get_assets_allocation
+        self.countries = lib.portfolio_model.get_countries_allocation
+        self.regions = lib.portfolio_model.get_regions_allocation
+        self.sectors = lib.portfolio_model.get_sectors_allocation
 
 
 class PortfolioMetric(Category):
@@ -85,18 +103,18 @@ class PortfolioMetric(Category):
         `gaintopain`: Get Pain-to-Gain ratio based on historical data\n
         `information`: Get information ratio\n
         `jensens`: Get jensen's alpha\n
-        `kelly`: Gets kelly criterion\n
-        `kurtosis`: Method that retrieves kurtosis for portfolio and benchmark selected\n
-        `maxdrawdown`: Method that retrieves maximum drawdown ratio for portfolio and benchmark selected\n
-        `payoff`: Gets payoff ratio\n
-        `profitfactor`: Gets profit factor\n
-        `rsquare`: Method that retrieves R2 Score for portfolio and benchmark selected\n
-        `sharpe`: Method that retrieves sharpe ratio for portfolio and benchmark selected\n
-        `skew`: Method that retrieves skewness for portfolio and benchmark selected\n
-        `sortino`: Method that retrieves sortino ratio for portfolio and benchmark selected\n
+        `kelly`: Get kelly criterion\n
+        `kurtosis`: Get kurtosis for portfolio and benchmark selected\n
+        `maxdrawdown`: Get maximum drawdown ratio for portfolio and benchmark selected\n
+        `payoff`: Get payoff ratio\n
+        `profitfactor`: Get profit factor\n
+        `rsquare`: Get R2 Score for portfolio and benchmark selected\n
+        `sharpe`: Get sharpe ratio for portfolio and benchmark selected\n
+        `skew`: Get skewness for portfolio and benchmark selected\n
+        `sortino`: Get sortino ratio for portfolio and benchmark selected\n
         `tail`: Get tail ratio\n
         `trackerr`: Get tracking error\n
-        `volatility`: Method that retrieves volatility for portfolio and benchmark selected\n
+        `volatility`: Get volatility for portfolio and benchmark selected\n
     """
 
     def __init__(self):
@@ -124,105 +142,59 @@ class PortfolioPortfolioOptimization(Category):
     """OpenBB SDK Portfolio Optimization Module.
 
     Attributes:
-        `blacklitterman`: Builds a maximal diversification portfolio\n
-        `blacklitterman_view`: Builds a black litterman portfolio\n
-        `ef`: Get efficient frontier\n
-        `ef_view`: Display efficient frontier\n
+        `blacklitterman`: Optimize decorrelation weights\n
+        `dividend`: Optimize weighted according to dividend yield\n
+        `ef`: Get Efficient Frontier\n
+        `ef_chart`: Display efficient frontier\n
         `equal`: Equally weighted portfolio, where weight = 1/# of symbols\n
+        `file`: Load portfolio optimization engine from file\n
         `get_properties`: Get properties to use on property optimization.\n
         `hcp`: Builds hierarchical clustering based portfolios\n
-        `hcp_view`: Builds a hierarchical clustering portfolio\n
-        `herc`: Builds a hierarchical risk parity portfolio\n
-        `herc_view`: Builds a hierarchical equal risk contribution portfolio\n
-        `hrp`: Builds a hierarchical risk parity portfolio\n
-        `hrp_view`: Builds a hierarchical risk parity portfolio\n
-        `load`: Load in the Excel file to determine the allocation that needs to be set.\n
-        `load_bls_view`: Load a Excel file with views for Black Litterman model.\n
-        `maxdecorr`: Builds a maximal decorrelation portfolio\n
-        `maxdecorr_view`: Builds a maximal decorrelation portfolio\n
-        `maxdiv`: Builds a maximal diversification portfolio\n
-        `maxdiv_view`: Builds a maximal diversification portfolio\n
-        `maxret`: Builds a maximal return/risk ratio portfolio\n
-        `maxret_view`: Builds a maximal return portfolio\n
-        `maxsharpe`: Builds a maximal return/risk ratio portfolio\n
-        `maxsharpe_view`: Builds a maximal return/risk ratio portfolio\n
-        `maxutil`: Builds a maximal return/risk ratio portfolio\n
-        `maxutil_view`: Builds a maximal risk averse utility portfolio\n
-        `meanrisk`: Builds a mean risk optimal portfolio\n
-        `meanrisk_view`: Builds a mean risk optimal portfolio\n
-        `minrisk`: Builds a maximal return/risk ratio portfolio\n
-        `minrisk_view`: Builds a minimum risk portfolio\n
-        `nco`: Builds a hierarchical risk parity portfolio\n
-        `nco_view`: Builds a hierarchical equal risk contribution portfolio\n
-        `plot`: Plot additional charts\n
-        `property`: Calculate portfolio weights based on selected property\n
-        `property_view`: Builds a portfolio weighted by selected property\n
-        `relriskparity`: Builds a relaxed risk parity portfolio using the least squares approach\n
-        `relriskparity_view`: Builds a relaxed risk parity portfolio using the least squares approach\n
-        `riskparity`: Builds a risk parity portfolio using the risk budgeting approach\n
-        `riskparity_view`: Builds a risk parity portfolio using the risk budgeting approach\n
+        `herc`: Optimize with Hierarchical Equal Risk Contribution (HERC) method.\n
+        `hrp`: Optimize with Hierarchical Risk Parity\n
+        `load`: Load portfolio optimization engine\n
+        `load_bl_views`: Load a Excel file with views for Black Litterman model.\n
+        `maxdecorr`: Optimize decorrelation weights\n
+        `maxdiv`: Optimize diversification weights\n
+        `maxret`: Optimize maximum return weights\n
+        `maxsharpe`: Optimize Sharpe ratio weights\n
+        `maxutil`: Optimize maximum utility weights\n
+        `minrisk`: Optimize minimum risk weights\n
+        `mktcap`: Optimize weighted according to market capitalization\n
+        `nco`: Optimize with Non-Convex Optimization (NCO) model.\n
+        `plot`: Display efficient frontier\n
+        `plot_chart`: Display efficient frontier\n
+        `property`: Optimize weighted according to property\n
+        `relriskparity`: Optimize with Relaxed Risk Parity using the least squares approach\n
+        `riskparity`: Optimize with Risk Parity using the risk budgeting approach\n
+        `show`: Show portfolio optimization results\n
     """
 
     def __init__(self):
         super().__init__()
-        self.blacklitterman = (
-            lib.portfolio_optimization_optimizer_model.get_black_litterman_portfolio
-        )
-        self.blacklitterman_view = (
-            lib.portfolio_optimization_optimizer_view.display_black_litterman
-        )
-        self.ef = lib.portfolio_optimization_optimizer_model.get_ef
-        self.ef_view = lib.portfolio_optimization_optimizer_view.display_ef
-        self.equal = lib.portfolio_optimization_optimizer_model.get_equal_weights
+        self.blacklitterman = lib.portfolio_optimization_po_model.get_blacklitterman
+        self.dividend = lib.portfolio_optimization_po_model.get_dividend
+        self.ef = lib.portfolio_optimization_po_model.get_ef
+        self.ef_chart = lib.portfolio_optimization_po_view.display_ef
+        self.equal = lib.portfolio_optimization_po_model.get_equal
+        self.file = lib.portfolio_optimization_po_model.load_parameters_file
         self.get_properties = lib.portfolio_optimization_optimizer_model.get_properties
         self.hcp = lib.portfolio_optimization_optimizer_model.get_hcp_portfolio
-        self.hcp_view = lib.portfolio_optimization_optimizer_view.display_hcp
-        self.herc = lib.portfolio_optimization_optimizer_model.get_herc
-        self.herc_view = lib.portfolio_optimization_optimizer_view.display_herc
-        self.hrp = lib.portfolio_optimization_optimizer_model.get_hrp
-        self.hrp_view = lib.portfolio_optimization_optimizer_view.display_hrp
-        self.load = lib.portfolio_optimization_excel_model.load_allocation
-        self.load_bls_view = lib.portfolio_optimization_excel_model.load_bl_views
-        self.maxdecorr = (
-            lib.portfolio_optimization_optimizer_model.get_max_decorrelation_portfolio
-        )
-        self.maxdecorr_view = (
-            lib.portfolio_optimization_optimizer_view.display_max_decorr
-        )
-        self.maxdiv = (
-            lib.portfolio_optimization_optimizer_model.get_max_diversification_portfolio
-        )
-        self.maxdiv_view = lib.portfolio_optimization_optimizer_view.display_max_div
-        self.maxret = lib.portfolio_optimization_optimizer_model.get_max_ret
-        self.maxret_view = lib.portfolio_optimization_optimizer_view.display_max_ret
-        self.maxsharpe = lib.portfolio_optimization_optimizer_model.get_max_sharpe
-        self.maxsharpe_view = (
-            lib.portfolio_optimization_optimizer_view.display_max_sharpe
-        )
-        self.maxutil = lib.portfolio_optimization_optimizer_model.get_max_util
-        self.maxutil_view = lib.portfolio_optimization_optimizer_view.display_max_util
-        self.meanrisk = (
-            lib.portfolio_optimization_optimizer_model.get_mean_risk_portfolio
-        )
-        self.meanrisk_view = lib.portfolio_optimization_optimizer_view.display_mean_risk
-        self.minrisk = lib.portfolio_optimization_optimizer_model.get_min_risk
-        self.minrisk_view = lib.portfolio_optimization_optimizer_view.display_min_risk
-        self.nco = lib.portfolio_optimization_optimizer_model.get_nco
-        self.nco_view = lib.portfolio_optimization_optimizer_view.display_nco
-        self.plot = lib.portfolio_optimization_optimizer_view.additional_plots
-        self.property = lib.portfolio_optimization_optimizer_model.get_property_weights
-        self.property_view = (
-            lib.portfolio_optimization_optimizer_view.display_property_weighting
-        )
-        self.relriskparity = (
-            lib.portfolio_optimization_optimizer_model.get_rel_risk_parity_portfolio
-        )
-        self.relriskparity_view = (
-            lib.portfolio_optimization_optimizer_view.display_rel_risk_parity
-        )
-        self.riskparity = (
-            lib.portfolio_optimization_optimizer_model.get_risk_parity_portfolio
-        )
-        self.riskparity_view = (
-            lib.portfolio_optimization_optimizer_view.display_risk_parity
-        )
+        self.herc = lib.portfolio_optimization_po_model.get_herc
+        self.hrp = lib.portfolio_optimization_po_model.get_hrp
+        self.load = lib.portfolio_optimization_po_model.generate_portfolio
+        self.load_bl_views = lib.portfolio_optimization_excel_model.load_bl_views
+        self.maxdecorr = lib.portfolio_optimization_po_model.get_maxdecorr
+        self.maxdiv = lib.portfolio_optimization_po_model.get_maxdiv
+        self.maxret = lib.portfolio_optimization_po_model.get_maxret
+        self.maxsharpe = lib.portfolio_optimization_po_model.get_maxsharpe
+        self.maxutil = lib.portfolio_optimization_po_model.get_maxutil
+        self.minrisk = lib.portfolio_optimization_po_model.get_minrisk
+        self.mktcap = lib.portfolio_optimization_po_model.get_mktcap
+        self.nco = lib.portfolio_optimization_po_model.get_nco
+        self.plot = lib.portfolio_optimization_po_view.display_plot
+        self.plot_chart = lib.portfolio_optimization_po_view.display_plot
+        self.property = lib.portfolio_optimization_po_model.get_property
+        self.relriskparity = lib.portfolio_optimization_po_model.get_relriskparity
+        self.riskparity = lib.portfolio_optimization_po_model.get_riskparity
+        self.show = lib.portfolio_optimization_po_model.show

@@ -7,7 +7,7 @@ description: OpenBB SDK Function
 
 Optimize weighted according to property
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L2279)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L2267)]
 
 ```python
 openbb.portfolio.po.property(symbols: List[str] = None, portfolio_engine: portfolio_optimization.po_engine.PoEngine = None, prop: str = "marketCap", kwargs: Any)

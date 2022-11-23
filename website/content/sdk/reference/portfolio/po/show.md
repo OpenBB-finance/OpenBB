@@ -7,7 +7,7 @@ description: OpenBB SDK Function
 
 Show portfolio optimization results
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L2361)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L2349)]
 
 ```python
 openbb.portfolio.po.show(portfolio_engine: portfolio_optimization.po_engine.PoEngine, category: str = None)

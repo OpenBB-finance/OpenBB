@@ -1,19 +1,11 @@
 import csv
-import json
 import importlib
 import inspect
+import json
 import os
 from pathlib import Path
 from types import FunctionType
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    ForwardRef,
-    List,
-    Literal,
-    Optional,
-)
+from typing import Any, Callable, Dict, ForwardRef, List, Literal, Optional
 
 from docstring_parser import parse
 
@@ -363,6 +355,13 @@ def main():
 
     with open(content_path / "_category_.json", "w", encoding="utf-8") as f:
         f.write(json.dumps({"label": "SDK Reference", "position": 4}, indent=2))
+
+    for file in content_path.glob("**/*.md"):
+        with open(file, "rb") as f:
+            content = f.read()
+        with open(file, "wb") as f:
+            f.write(content.replace(b"\n", b"").replace(b"\r", b"\n"))
+
     print("Markdown files generated, check the functions folder")
 
 

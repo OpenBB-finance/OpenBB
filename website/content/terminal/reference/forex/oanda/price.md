@@ -19,5 +19,5 @@ usage: price
 
 This command has no parameters
 
----
 
+---

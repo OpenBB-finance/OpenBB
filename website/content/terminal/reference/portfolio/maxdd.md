@@ -19,5 +19,5 @@ usage: maxdd
 
 This command has no parameters
 
----
 
+---
