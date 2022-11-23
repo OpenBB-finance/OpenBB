@@ -228,7 +228,6 @@ def check_for_updates() -> None:
 
             if current_version_number == latest_version_number:
                 console.print("[green]You are using the latest stable version[/green]")
-                return
             else:
                 console.print(
                     "[yellow]You are not using the latest stable version[/yellow]"
@@ -237,10 +236,12 @@ def check_for_updates() -> None:
                     console.print(
                         "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
                     )
+
                 else:
                     console.print(
                         "[yellow]You are using an unreleased version[/yellow]"
                     )
+
         else:
             console.print("[red]You are using an unrecognized version.[/red]")
     else:
