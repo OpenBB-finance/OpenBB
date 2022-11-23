@@ -9,7 +9,6 @@ from pythclient.solana import (
     SOLANA_DEVNET_WS_ENDPOINT,
 )
 
-from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +73,6 @@ ASSETS = {
 }
 
 
-@log_start_end(log=logger)
 async def get_price(symbol: str) -> Tuple[float, float, float]:
     """Returns price and confidence interval from pyth live feed. [Source: Pyth]
 
