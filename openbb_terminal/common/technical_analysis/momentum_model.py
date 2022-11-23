@@ -225,6 +225,12 @@ def clenow_momentum(
         Coefficient of linear regression
     pd.Series:
         Values for best fit line
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.ta.clenow(df["Close"])
     """
     if len(values) < window:
         console.print(
@@ -260,5 +266,11 @@ def demark_seq(values: pd.Series) -> pd.DataFrame:
     -------
     pd.DataFrame
         Dataframe of UP and DOWN sequential indicators
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.ta.demark(df["Close"])
     """
     return ta.td_seq(values, asint=True)

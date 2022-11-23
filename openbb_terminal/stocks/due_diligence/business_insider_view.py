@@ -31,7 +31,7 @@ register_matplotlib_converters()
 def price_target_from_analysts(
     symbol: str,
     data: DataFrame,
-    start_date: str = None,
+    start_date: Optional[str] = None,
     limit: int = 10,
     raw: bool = False,
     export: str = "",
@@ -45,7 +45,7 @@ def price_target_from_analysts(
         Due diligence ticker symbol
     data: DataFrame
         Due diligence stock dataframe
-    start_date : str
+    start_date : Optional[str]
         Start date of the stock data, format YYYY-MM-DD
     limit : int
         Number of latest price targets from analysts to print

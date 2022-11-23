@@ -62,13 +62,13 @@ To get started using the OpenBB SDK you can try the below code for your first fu
 openbb.economy.events()
 ```
 
-|    | Time (GMT)   | Country        | Event                         | actual   | consensus   | previous   | Date       |
-|---:|:-------------|:---------------|:------------------------------|:---------|:------------|:-----------|:-----------|
-|  0 | 01:30        | France         | French Unemployment Rate      | 7.3%     | 7.3%        | 7.4%       | 2022-11-15 |
-|  1 | 02:00        | United Kingdom | Average Earnings ex Bonus     | 5.7%     | 5.5%        | 5.5%       | 2022-11-15 |
-|  2 | 02:00        | United Kingdom | Average Earnings Index +Bonus | 6.0%     | 5.9%        | 6.1%       | 2022-11-15 |
-|  3 | 02:00        | United Kingdom | Claimant Count Change         | 3.3K     | 17.3K       | 3.9K       | 2022-11-15 |
-|  4 | 02:00        | United Kingdom | Employment Change 3M/3M       | -52K     | -25K        | -109K      | 2022-11-15 |
+|     | Time (GMT) | Country        | Event                         | actual | consensus | previous | Date       |
+| --: | :--------- | :------------- | :---------------------------- | :----- | :-------- | :------- | :--------- |
+|   0 | 01:30      | France         | French Unemployment Rate      | 7.3%   | 7.3%      | 7.4%     | 2022-11-15 |
+|   1 | 02:00      | United Kingdom | Average Earnings ex Bonus     | 5.7%   | 5.5%      | 5.5%     | 2022-11-15 |
+|   2 | 02:00      | United Kingdom | Average Earnings Index +Bonus | 6.0%   | 5.9%      | 6.1%     | 2022-11-15 |
+|   3 | 02:00      | United Kingdom | Claimant Count Change         | 3.3K   | 17.3K     | 3.9K     | 2022-11-15 |
+|   4 | 02:00      | United Kingdom | Employment Change 3M/3M       | -52K   | -25K      | -109K    | 2022-11-15 |
 
 :::note - The results from data functions are not stored to memory unless explicitly instructed to. Most functions returning data are presented as a Pandas DataFrame.
 :::
@@ -89,15 +89,15 @@ events = economic_calendar.filter(like = '9:00', axis = 0)
 events
 ```
 
-|       | Country       | Event                                  | actual   | consensus   | previous   | Date       |
-|:------|:--------------|:---------------------------------------|:---------|:------------|:-----------|:-----------|
-| 09:00 | United States | Fed Governor Cook Speaks               | -        | -           | -          | 2022-11-15 |
-| 09:00 | Germany       | German Buba Balz Speaks                | -        | -           | -          | 2022-11-15 |
-| 09:00 | Germany       | German Buba Vice President Buch Speaks | -        | -           | -          | 2022-11-15 |
+|       | Country       | Event                                  | actual | consensus | previous | Date       |
+| :---- | :------------ | :------------------------------------- | :----- | :-------- | :------- | :--------- |
+| 09:00 | United States | Fed Governor Cook Speaks               | -      | -         | -        | 2022-11-15 |
+| 09:00 | Germany       | German Buba Balz Speaks                | -      | -         | -        | 2022-11-15 |
+| 09:00 | Germany       | German Buba Vice President Buch Speaks | -      | -         | -        | 2022-11-15 |
 
 ### Passing Results to Another Function
 
-Let's take a look at another example where the input to a function is a list. It may be desireable to derive that list from a different function. This can be useful for screening tickers, or analyzing particular industries or sectors. The Comparison Analysis sub-module, within Stocks, is one set of functions that can benefit from this kind of workflow. Instead of something like:
+Let's take a look at another example where the input to a function is a list. It may be desirable to derive that list from a different function. This can be useful for screening tickers, or analyzing particular industries or sectors. The Comparison Analysis sub-module, within Stocks, is one set of functions that can benefit from this kind of workflow. Instead of something like:
 
 ```python
 openbb.stocks.ca.screener(similar = ['AAPL', 'NFLX', 'META', 'AMZN', 'MSFT', 'GOOGL', 'DIS', 'TSLA'], data_type = 'valuation')
@@ -114,14 +114,13 @@ dia_valuation = dia_valuation.sort_values(by = ['Price'], ascending = False).con
 dia_valuation.head(5)
 ```
 
-|    | Ticker   |   Market Cap |   P/E |   Fwd P/E | PEG   |   P/S | P/B     |    P/C |   P/FCF |   EPS this Y |   EPS next Y |   EPS past 5Y |   EPS next 5Y |   Sales past 5Y |   Price |   Change |   Volume |
-|---:|:---------|-------------:|------:|----------:|:------|------:|:--------|-------:|--------:|-------------:|-------------:|--------------:|--------------:|----------------:|--------:|---------:|---------:|
-| 25 | UNH      |   5.0033e+11 | 25.17 |     20.61 | 1.77  |  1.59 | 6.43    |  12.88 |   19.61 |        0.128 |       0.1315 |         0.201 |        0.1422 |           0.092 |  503.01 |  -0.0209 |  5007787 |
-| 10 | GS       |   1.282e+11  | 10.18 |     10.17 | N/A  |  2.08 | 1.24    |   0.45 |    2.98 |        1.403 |       0.0976 |         0.296 |       -0.0912 |           0.113 |  382.88 |   0.0014 |  3184768 |
-| 11 | HD       |   3.1097e+11 | 18.86 |     17.86 | 1.2   |  2    | 1334.43 | 247    |   89.72 |        0.301 |       0.0361 |         0.192 |        0.157  |           0.098 |  311.93 |   0.0163 |  9239159 |
-|  1 | AMGN     |   1.5543e+11 | 22.86 |     15.4  | 3.38  |  5.9  | 41.77   |  13.54 |   32.04 |       -0.165 |       0.0486 |         0.001 |        0.0677 |           0.025 |  283.6  |  -0.006  |  2761083 |
-| 18 | MCD      |   2.0272e+11 | 34.3  |     26.01 | 5.14  |  8.71 | N/A    |  71.67 |  118.65 |        0.591 |       0.0522 |         0.13  |        0.0667 |          -0.012 |  267.84 |  -0.0163 |  5421817 |
-
+|     | Ticker | Market Cap |   P/E | Fwd P/E | PEG  |  P/S | P/B     |   P/C |  P/FCF | EPS this Y | EPS next Y | EPS past 5Y | EPS next 5Y | Sales past 5Y |  Price |  Change |  Volume |
+| --: | :----- | ---------: | ----: | ------: | :--- | ---: | :------ | ----: | -----: | ---------: | ---------: | ----------: | ----------: | ------------: | -----: | ------: | ------: |
+|  25 | UNH    | 5.0033e+11 | 25.17 |   20.61 | 1.77 | 1.59 | 6.43    | 12.88 |  19.61 |      0.128 |     0.1315 |       0.201 |      0.1422 |         0.092 | 503.01 | -0.0209 | 5007787 |
+|  10 | GS     |  1.282e+11 | 10.18 |   10.17 | N/A  | 2.08 | 1.24    |  0.45 |   2.98 |      1.403 |     0.0976 |       0.296 |     -0.0912 |         0.113 | 382.88 |  0.0014 | 3184768 |
+|  11 | HD     | 3.1097e+11 | 18.86 |   17.86 | 1.2  |    2 | 1334.43 |   247 |  89.72 |      0.301 |     0.0361 |       0.192 |       0.157 |         0.098 | 311.93 |  0.0163 | 9239159 |
+|   1 | AMGN   | 1.5543e+11 | 22.86 |    15.4 | 3.38 |  5.9 | 41.77   | 13.54 |  32.04 |     -0.165 |     0.0486 |       0.001 |      0.0677 |         0.025 |  283.6 |  -0.006 | 2761083 |
+|  18 | MCD    | 2.0272e+11 |  34.3 |   26.01 | 5.14 | 8.71 | N/A     | 71.67 | 118.65 |      0.591 |     0.0522 |        0.13 |      0.0667 |        -0.012 | 267.84 | -0.0163 | 5421817 |
 
 ### Displaying Charts
 
@@ -154,14 +153,13 @@ Where functions in the Terminal display either a chart or raw data, the command 
 openbb.ta.donchian(openbb.stocks.load('SPY', interval = 15))
 ```
 
-| date                |   DCL_20_20 |   DCM_20_20 |   DCU_20_20 |
-|:--------------------|------------:|------------:|------------:|
-| 2022-11-15 14:45:00 |      394.49 |     398.33  |     402.17  |
-| 2022-11-15 15:00:00 |      394.49 |     398.195 |     401.9   |
-| 2022-11-15 15:15:00 |      394.49 |     398.195 |     401.9   |
-| 2022-11-15 15:30:00 |      394.49 |     398.105 |     401.72  |
-| 2022-11-15 15:45:00 |      394.49 |     398.027 |     401.565 |
-
+| date                | DCL_20_20 | DCM_20_20 | DCU_20_20 |
+| :------------------ | --------: | --------: | --------: |
+| 2022-11-15 14:45:00 |    394.49 |    398.33 |    402.17 |
+| 2022-11-15 15:00:00 |    394.49 |   398.195 |     401.9 |
+| 2022-11-15 15:15:00 |    394.49 |   398.195 |     401.9 |
+| 2022-11-15 15:30:00 |    394.49 |   398.105 |    401.72 |
+| 2022-11-15 15:45:00 |    394.49 |   398.027 |   401.565 |
 
 ```python
 openbb.ta.donchian_chart(

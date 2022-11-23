@@ -2,6 +2,7 @@
 sidebar_position: 3
 title: Menus
 ---
+
 ### Explanation of Menus
 
 Menus, depicted in <b><span style={{color:"#005CA9"}}>Dark Blue</span></b>, take you to a new section of the terminal referred
@@ -13,7 +14,7 @@ This opens a new menu as depicted below.
 Depending on the menu you are in, you are presented with a new set of commands (see <a href="#explanation-of-commands">Explanation of Commands</a>)
 and menus you can select. There are interactions in place between each menu. For example, when selecting a company within
 the `stocks` menu, the terminal will remember your selection when you visit the `fa` or `options` menu.
-See <a href="terminal/stocks" target="_blank">Introduction to Stocks</a> for more information.
+See <a href="/terminal/stocks" target="_blank">Introduction to Stocks</a> for more information.
 
 ---
 
