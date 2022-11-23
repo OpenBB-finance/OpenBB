@@ -25,5 +25,5 @@ usage: rsi [-p PERIODS] [-u HIGH] [-l LOW] [--spy] [--no_bench] [--no_short]
 | spy | Flag to add spy hold comparison | False | True | None |
 | no_bench | Flag to not show buy and hold comparison | False | True | None |
 | shortable | Flag that disables the short sell | True | True | None |
----
 
+---

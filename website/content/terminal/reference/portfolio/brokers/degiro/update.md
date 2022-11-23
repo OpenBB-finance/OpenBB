@@ -21,5 +21,5 @@ usage: update -p PRICE id
 | ---- | ----------- | ------- | -------- | ------- |
 | id | Order's id. | None | False | None |
 | price | Price wanted. | None | False | None |
----
 
+---

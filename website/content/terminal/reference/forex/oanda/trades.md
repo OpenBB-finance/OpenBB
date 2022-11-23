@@ -19,5 +19,5 @@ usage: trades
 
 This command has no parameters
 
----
 
+---

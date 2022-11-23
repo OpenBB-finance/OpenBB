@@ -19,5 +19,5 @@ usage: compare
 
 This command has no parameters
 
----
 
+---

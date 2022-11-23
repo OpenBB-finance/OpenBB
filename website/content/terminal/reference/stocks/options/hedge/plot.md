@@ -19,5 +19,5 @@ usage: plot
 
 This command has no parameters
 
----
 
+---

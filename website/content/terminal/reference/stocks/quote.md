@@ -20,5 +20,5 @@ usage: quote -t S_TICKER
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | s_ticker | stocks/QUOTE_ticker | None | False | None |
----
 
+---

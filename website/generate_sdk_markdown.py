@@ -1,19 +1,11 @@
 import csv
-import json
 import importlib
 import inspect
+import json
 import os
 from pathlib import Path
 from types import FunctionType
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    ForwardRef,
-    List,
-    Literal,
-    Optional,
-)
+from typing import Any, Callable, Dict, ForwardRef, List, Literal, Optional
 
 from docstring_parser import parse
 
@@ -338,6 +330,8 @@ def add_todict(d: dict, location_path: list, tmap: Trailmap) -> dict:
 def main():
     print("Loading trailmaps...")
     trailmaps = get_trailmaps()
+    kwargs = {"encoding": "utf-8", "newline": "\n"}
+
     print("Generating markdown files...")
     content_path = website_path / "content/sdk/reference"
     functions_dict = {}
@@ -352,16 +346,16 @@ def main():
 
         filepath = f"{str(content_path)}/{'/'.join(trailmap.location_path)}/{trailmap.class_attr}.md"
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
-        with open(filepath, "w", encoding="utf-8") as f:
+        with open(filepath, "w", **kwargs) as f:
             f.write(markdown)
 
     index_markdown = (
         f"# OpenBB SDK Reference\n\n{generate_index_markdown('', functions_dict, 2)}"
     )
-    with open(content_path / "index.md", "w", encoding="utf-8") as f:
+    with open(content_path / "index.md", "w", **kwargs) as f:
         f.write(index_markdown)
 
-    with open(content_path / "_category_.json", "w", encoding="utf-8") as f:
+    with open(content_path / "_category_.json", "w", **kwargs) as f:
         f.write(json.dumps({"label": "SDK Reference", "position": 4}, indent=2))
     print("Markdown files generated, check the functions folder")
 

@@ -20,5 +20,5 @@ usage: login [-otp ONE_TIME_PASSWORD]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | one_time_password | One-time-password for 2FA. | None | True | None |
----
 
+---

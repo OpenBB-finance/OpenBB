@@ -19,5 +19,5 @@ usage: logout
 
 This command has no parameters
 
----
 
+---

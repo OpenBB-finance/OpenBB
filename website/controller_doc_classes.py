@@ -122,9 +122,7 @@ param_type_to_value = {
 }
 
 
-def get_parameters(
-    controller_cls: BaseController,
-) -> Dict[str, Any]:
+def get_parameters(controller_cls: BaseController) -> Dict[str, Any]:
     """Gets the parameters of a controller's `__init__` signature. If required parameters are missing,
         we get the type and create a dummy value for it.
 

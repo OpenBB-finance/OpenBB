@@ -21,5 +21,5 @@ usage: group [-g {}] [-a]
 | ---- | ----------- | ------- | -------- | ------- |
 | group | Column to group by | Ticker | True | Index([], dtype='object') |
 | allocation | Add allocation column in % to dataframe | False | True | None |
----
 
+---

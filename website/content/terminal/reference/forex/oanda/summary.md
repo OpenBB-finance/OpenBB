@@ -19,5 +19,5 @@ usage: summary
 
 This command has no parameters
 
----
 
+---

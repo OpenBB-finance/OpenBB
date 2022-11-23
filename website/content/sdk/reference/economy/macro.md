@@ -13,10 +13,10 @@ import TabItem from '@theme/TabItem';
 
 This functions groups the data queried from the EconDB database [Source: EconDB]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_model.py#L656)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_model.py#L655)]
 
 ```python
-openbb.economy.macro(parameters: list = None, countries: list = None, transform: str = "", start_date: str = "1900-01-01", end_date: str = None, symbol: str = "")
+openbb.economy.macro(parameters: list = None, countries: list = None, transform: str = "", start_date: str = "1900-01-01", end_date: Optional[str] = None, symbol: str = "")
 ```
 
 ---
@@ -29,7 +29,7 @@ openbb.economy.macro(parameters: list = None, countries: list = None, transform:
 | countries | list | The selected country or countries. Available countries can be accessed through economy.macro_countries(). | None | True |
 | transform | str | The selected transform. Available transforms can be accessed through get_macro_transform(). |  | True |
 | start_date | str | The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31. | 1900-01-01 | True |
-| end_date | str | The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05. | None | True |
+| end_date | Optional[str] | The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05. | None | True |
 | symbol | str | In what currency you wish to convert all values. |  | True |
 
 
@@ -52,7 +52,7 @@ Show the received macro data about a company [Source: EconDB]
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_view.py#L25)]
 
 ```python
-openbb.economy.macro_chart(parameters: list = None, countries: list = None, transform: str = "", start_date: str = "1900-01-01", end_date: str = None, symbol: str = "", raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = "")
+openbb.economy.macro_chart(parameters: list = None, countries: list = None, transform: str = "", start_date: str = "1900-01-01", end_date: Optional[str] = None, symbol: str = "", raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = "")
 ```
 
 ---
@@ -65,7 +65,7 @@ openbb.economy.macro_chart(parameters: list = None, countries: list = None, tran
 | countries | list | The selected country or countries. Available countries can be accessed through get_macro_countries(). | None | True |
 | transform | str | select data transformation from:<br/>    '' - no transformation<br/>    'TPOP' - total percentage change on period,<br/>    'TOYA' - total percentage since 1 year ago,<br/>    'TUSD' - level USD,<br/>    'TPGP' - Percentage of GDP,<br/>    'TNOR' - Start = 100 |  | True |
 | start_date | str | The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31. | 1900-01-01 | True |
-| end_date | str | The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05. | None | True |
+| end_date | Optional[str] | The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05. | None | True |
 | symbol | str | In what currency you wish to convert all values. |  | True |
 | raw | bool | Whether to display the raw output. | False | True |
 | external_axes | Optional[List[plt.axes]] | External axes to plot on | None | True |

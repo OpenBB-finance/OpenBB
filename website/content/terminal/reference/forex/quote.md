@@ -19,5 +19,5 @@ usage: quote
 
 This command has no parameters
 
----
 
+---

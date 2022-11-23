@@ -1,9 +1,6 @@
 name: Deploy to GitHub Pages
 
-on:
-  push:
-    branches:
-      - main
+on: push
 
 jobs:
   generate:
@@ -11,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # actions/checkout v3.0.2
+        uses: actions/checkout@v3 # actions/checkout v3.0.2
 
       - name: Setup Python 3.10
         uses: actions/setup-python@v4
