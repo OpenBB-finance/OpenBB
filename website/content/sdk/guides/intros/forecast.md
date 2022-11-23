@@ -81,7 +81,7 @@ This command allows you to see seasonality patterns in your data
 
 ```python
 df = pd.read_csv(ANDREW_REPLACE)
-openbb.forecast.season(df, "Close")
+openbb.forecast.season_chart(df)
 ```
 ​
 
@@ -93,7 +93,7 @@ Predicts the future value of time series data using exponential smoothing
 ​
 ```python
 df = pd.read_csv(ANDREW_REPLACE)
-openbb.forecast.expo_chart(df, "close")
+openbb.forecast.expo_chart(df)
 ```
 ​
 Here was can now see a chart and table with the expected values, and historic data. The chart also tells us how our backtesing performed, so that we can know the accuracy of our prediction.
