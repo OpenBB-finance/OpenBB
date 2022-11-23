@@ -1,11 +1,17 @@
 from pathlib import Path
 from typing import Dict, Optional
 
+import dotenv
 import pandas as pd
-from openbb_terminal.sdk_config import DISABLE_EXTRAS_WARNING
 
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.base_helpers import load_env_vars, strtobool
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY, USER_ENV_FILE
 from openbb_terminal.rich_config import console
+
+
+DISABLE_EXTRAS_WARNING = load_env_vars(
+    "OPENBB_DISABLE_EXTRAS_WARNING", strtobool, False
+)
 
 try:
     import darts  # pylint: disable=W0611 # noqa: F401
@@ -39,6 +45,8 @@ except ModuleNotFoundError:
             "\n"
             "[/yellow]"
         )
+
+dotenv.set_key(str(USER_ENV_FILE), "OPENBB_DISABLE_EXTRAS_WARNING", "True")
 
 
 class TrailMap:
