@@ -185,11 +185,12 @@ def display_calendar_earnings(symbol: str, export: str = ""):
 def display_dividends(
     symbol: str,
     limit: int = 12,
-    plot: bool = False,
+    plot: bool = True,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical dividends
+
     Parameters
     ----------
     symbol: str
@@ -202,15 +203,17 @@ def display_dividends(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.fa.divs_chart("AAPL")
     """
     div_history = yahoo_finance_model.get_dividends(symbol)
     if div_history.empty:
-        console.print("No dividends found.\n")
         return
-    div_history["Dif"] = div_history.diff()
-    div_history = div_history[::-1]
-    if plot:
 
+    if plot:
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -231,7 +234,7 @@ def display_dividends(
             alpha=1,
             label="Dividends Payout",
         )
-        ax.set_ylabel("Amount ($)")
+        ax.set_ylabel("Amount Paid ($)")
         ax.set_title(f"Dividend History for {symbol}")
         ax.set_xlim(div_history.index[-1], div_history.index[0])
         ax.legend()
