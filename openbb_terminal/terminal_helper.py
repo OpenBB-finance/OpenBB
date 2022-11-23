@@ -10,7 +10,7 @@ import os
 from packaging import version
 import subprocess  # nosec
 import sys
-from typing import List
+from typing import List, Union
 
 # IMPORTATION THIRDPARTY
 import requests
@@ -254,7 +254,8 @@ def check_for_updates() -> None:
 
 
 def check_valid_versions(
-    latest_version: version.Version, current_version: version.Version
+    latest_version: Union[version.LegacyVersion, version.Version],
+    current_version: Union[version.LegacyVersion, version.Version],
 ) -> bool:
     if (
         not latest_version
