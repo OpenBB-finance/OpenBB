@@ -21,26 +21,25 @@ from openbb_terminal.sdk import openbb
 ```
 
 ​
-A brief description below highlights the main Functions and Modules available in the ETF SDK
+A brief description below highlights the functions available within the module:
 
-| Path                       |    Type    |                                  Description |
-| :------------------------- | :--------: | -------------------------------------------: |
-| openbb.ca.balance          |  Function  |                Balance Financials Comparison |
-| openbb.ca.hcorr            |  Function  |                 Historical Price Correlation |
-| openbb.ca.volume           |  Function  |            Historical Volume Data Comparison |
-| openbb.ca.scorr            |  Function  |                        Sentiment Correlation | 
-| openbb.ca.hist             |  Function  |             Historical Price Data Comparison |
-| openbb.ca.sentiment        |  Function  |                Sentiment Analysis Comparison |
-| openbb.ca.polygon_peers    |  Function  |                 Similar Tickers from Polygon |
-| openbb.ca.finviz_peers     |  Function  |                  Similar Tickers from Finvix |
-| openbb.ca.income           |  Function  |                 Income Financials Comparison |
-| openbb.ca.cashflow         |  Function  |               Cashflow Financials Comparison |
-| openbb.ca.screener         |  Function  |                            Screener Overview |
+| Path                              |    Type    |                                  Description |
+| :-------------------------------- | :--------: | -------------------------------------------: |
+| openbb.stocks.ca.balance          |  Function  |                Balance Financials Comparison |
+| openbb.stocks.ca.cashflow         |  Function  |               Cashflow Financials Comparison |
+| openbb.stocks.ca.hcorr            |  Function  |                 Historical Price Correlation |
+| openbb.stocks.ca.hist             |  Function  |             Historical Price Data Comparison |
+| openbb.stocks.ca.income           |  Function  |                 Income Financials Comparison |
+| openbb.stocks.ca.scorr            |  Function  |                        Sentiment Correlation | 
+| openbb.stocks.ca.screener         |  Function  |                            Screener Overview |
+| openbb.stocks.ca.sentiment        |  Function  |                Sentiment Analysis Comparison |
+| openbb.stocks.ca.similar          |  Function  |              Get a List of Similar Companies |
+| openbb.stocks.ca.volume           |  Function  |            Historical Volume Data Comparison |
 
-Alteratively you can print the contents of the ETF SDK with:
+Alteratively, the contents of the menu is printed with:
 
 ```python
-help(openbb.ca)
+help(openbb.stocks.ca)
 ```
 
 ## Examples
@@ -97,7 +96,7 @@ openbb.stocks.ca.balance(["TSLA","F", "GE"])
 Produces a table with sentiment over time for a given list of tickers
 
 ```python
-openbb.stocks.ca.sentiment(["tsla", "aapl"])
+openbb.stocks.ca.sentiment(["tsla", "f", "ge"])
 ```
 
 |            |   TSLA |     F |    GE |
@@ -112,7 +111,6 @@ openbb.stocks.ca.sentiment(["tsla", "aapl"])
 | 2022-11-17 |  0.156 | 0.387 | 0.025 |
 | 2022-11-18 |  0.216 | 0.093 | 0.019 |
 | 2022-11-21 | -0.071 | 0.069 | 0.01  |
-
 ​
 
 ### scr
@@ -120,7 +118,7 @@ openbb.stocks.ca.sentiment(["tsla", "aapl"])
 Show a high-level overview of company information for tickers in a given list
 
 ```python
-openbb.stocks.ca.screener(["tsla", "aapl"])
+openbb.stocks.ca.screener(["f", "ge", "tsla"])
 ```
 
 |    | Ticker   | Company                  | Sector            | Industry                       | Country   |   Market Cap |    P/E |   Price |   Change |      Volume |
@@ -128,3 +126,21 @@ openbb.stocks.ca.screener(["tsla", "aapl"])
 |  0 | F        | Ford Motor Company       | Consumer Cyclical | Auto Manufacturers             | USA       |   5.577e+10  |   6.31 |   13.95 |  -0.0029 | 3.40871e+07 |
 |  1 | GE       | General Electric Company | Industrials       | Specialty Industrial Machinery | USA       |   9.375e+10  | nan    |   85.89 |   0.0048 | 3.26976e+06 |
 |  2 | TSLA     | Tesla, Inc.              | Consumer Cyclical | Auto Manufacturers             | USA       |   5.3886e+11 |  51.72 |  167.87 |  -0.0684 | 9.28827e+07 |
+
+
+### hcorr
+
+Calculates the historical price (or returns) correlation for a list of tickers, over a specified window.
+
+```python
+correlation,historical = openbb.stocks.ca.hcorr(similar = openbb.stocks.ca.similar('TSLA', source = 'Polygon'), candle_type = 'R', start_date = '2018-11-01')
+
+correlation
+```
+
+|     |      HMC |       TM |        F |       GM |
+|:----|---------:|---------:|---------:|---------:|
+| HMC | 1        | 0.74425  | 0.596182 | 0.62178  |
+| TM  | 0.74425  | 1        | 0.532589 | 0.539333 |
+| F   | 0.596182 | 0.532589 | 1        | 0.787406 |
+| GM  | 0.62178  | 0.539333 | 0.787406 | 1        |
