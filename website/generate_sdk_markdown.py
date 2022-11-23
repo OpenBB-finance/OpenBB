@@ -327,7 +327,7 @@ def add_todict(d: dict, location_path: list, tmap: Trailmap) -> dict:
     return d
 
 
-def main():
+def main() -> bool:
     print("Loading trailmaps...")
     trailmaps = get_trailmaps()
     kwargs = {"encoding": "utf-8", "newline": "\n"}
@@ -336,18 +336,26 @@ def main():
     content_path = website_path / "content/sdk/reference"
     functions_dict = {}
     for trailmap in trailmaps:
-        functions_dict = add_todict(functions_dict, trailmap.location_path, trailmap)
-        model_meta = get_function_meta(trailmap, "model") if trailmap.model else None
-        view_meta = get_function_meta(trailmap, "view") if trailmap.view else None
-        markdown = generate_markdown(model_meta, view_meta)
+        try:
+            functions_dict = add_todict(
+                functions_dict, trailmap.location_path, trailmap
+            )
+            model_meta = (
+                get_function_meta(trailmap, "model") if trailmap.model else None
+            )
+            view_meta = get_function_meta(trailmap, "view") if trailmap.view else None
+            markdown = generate_markdown(model_meta, view_meta)
 
-        if trailmap.class_attr == "index":
-            trailmap.class_attr = "index_cmd"
+            if trailmap.class_attr == "index":
+                trailmap.class_attr = "index_cmd"
 
-        filepath = f"{str(content_path)}/{'/'.join(trailmap.location_path)}/{trailmap.class_attr}.md"
-        os.makedirs(os.path.dirname(filepath), exist_ok=True)
-        with open(filepath, "w", **kwargs) as f:
-            f.write(markdown)
+            filepath = f"{str(content_path)}/{'/'.join(trailmap.location_path)}/{trailmap.class_attr}.md"
+            os.makedirs(os.path.dirname(filepath), exist_ok=True)
+            with open(filepath, "w", **kwargs) as f:
+                f.write(markdown)
+        except Exception as e:
+            print(f"Error generating {trailmap.class_attr} - {e}")
+            return False
 
     index_markdown = (
         f"# OpenBB SDK Reference\n\n{generate_index_markdown('', functions_dict, 2)}"
@@ -358,6 +366,8 @@ def main():
     with open(content_path / "_category_.json", "w", **kwargs) as f:
         f.write(json.dumps({"label": "SDK Reference", "position": 4}, indent=2))
     print("Markdown files generated, check the functions folder")
+
+    return True
 
 
 def generate_index_markdown(markdown, d, level):

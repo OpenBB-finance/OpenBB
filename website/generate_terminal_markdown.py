@@ -187,7 +187,7 @@ def add_todict(d: dict, location_path: list, cmd_name: str, full_path: str) -> d
     return d
 
 
-def main():
+def main() -> bool:
     """Main function to generate markdown files"""
     console.print(
         "[bright_yellow]Loading Controllers... Please wait and ignore any errors, this is normal.[/bright_yellow]"
@@ -226,6 +226,7 @@ def main():
         except Exception as e:
             traceback.print_exc()
             console.print(f"[red]Failed to generate markdown for {ctrlstr}: {e}[/red]")
+            return False
 
     with open(content_path / "_category_.json", "w", **kwargs) as f:
         f.write(json.dumps({"label": "Terminal Reference", "position": 4}, indent=2))
@@ -256,6 +257,8 @@ def main():
     console.print(
         "[green]Markdown files generated, check the website/content/terminal/reference/ folder[/green]"
     )
+
+    return True
 
 
 def generate_index_markdown(markdown, d, level):
