@@ -121,8 +121,8 @@ def view_ma(
 def view_vwap(
     data: pd.DataFrame,
     symbol: str = "",
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     offset: int = 0,
     interval: str = "",
     export: str = "",
@@ -138,10 +138,10 @@ def view_vwap(
         Ticker
     offset : int
         Offset variable
-    start_date: datetime
-        Start date to get data from with
-    end_date: datetime
-        End date to get data from with
+    start_date: Optional[str]
+        Initial date, format YYYY-MM-DD
+    end_date: Optional[str]
+        Final date, format YYYY-MM-DD
     interval : str
         Interval of data
     export : str

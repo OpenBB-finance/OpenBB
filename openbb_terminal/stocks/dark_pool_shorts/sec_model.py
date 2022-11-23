@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
+from typing import Optional
 
 import pandas as pd
 import requests
@@ -58,8 +59,8 @@ def catching_diff_url_formats(ftd_urls: list) -> list:
 @log_start_end(log=logger)
 def get_fails_to_deliver(
     symbol: str,
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     limit: int = 0,
 ) -> pd.DataFrame:
     """Display fails-to-deliver data for a given ticker. [Source: SEC]
@@ -68,9 +69,9 @@ def get_fails_to_deliver(
     ----------
     symbol : str
         Stock ticker
-    start_date : str
+    start_date : Optional[str]
         Start of data, in YYYY-MM-DD format
-    end_date : str
+    end_date : Optional[str]
         End of data, in YYYY-MM-DD format
     limit : int
         Number of latest fails-to-deliver being printed
