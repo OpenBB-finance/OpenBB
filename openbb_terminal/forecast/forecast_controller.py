@@ -233,6 +233,7 @@ class ForecastController(BaseController):
         self.DATA_FILES = forecast_model.get_default_files()
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
+            print(choices["theta"])
 
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -857,7 +858,7 @@ class ForecastController(BaseController):
             "--dataset",
             help="Dataset that will get a column renamed",
             dest="dataset",
-            choices=self.choices.get("rename", []),
+            choices=self.get_dataset_columns(),
             type=str,
         )
         parser.add_argument(
@@ -1309,6 +1310,15 @@ class ForecastController(BaseController):
                 self.refresh_datasets_on_menu()
                 self.update_runtime_choices()
 
+    def handle_delete(self, dataset, column):
+        if dataset not in self.datasets:
+            console.print(
+                f"Not able to find the dataset {dataset}. Please choose one of "
+                f"the following: {', '.join(self.datasets)}"
+            )
+        else:
+            forecast_model.delete_column(self.datasets[dataset], column)
+
     @log_start_end(log=logger)
     def call_delete(self, other_args: List[str]):
         """Process delete"""
@@ -1330,23 +1340,19 @@ class ForecastController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
-            for option in ns_parser.delete:
-                dataset, column = option.split(".", 1)
-
-                if dataset not in self.datasets:
-                    console.print(
-                        f"Not able to find the dataset {dataset}. Please choose one of "
-                        f"the following: {', '.join(self.datasets)}"
-                    )
-                else:
-                    forecast_model.delete_column(self.datasets[dataset], column)
+            if "," in ns_parser.delete:
+                for option in ns_parser.delete:
+                    print(option)
+                    dataset, column = option.split(".")
+                    self.handle_delete(dataset, column)
+            else:
+                dataset, column = ns_parser.delete.split(".")
+                self.handle_delete(dataset, column)
 
             self.update_runtime_choices()
             self.refresh_datasets_on_menu()
 
-            console.print(
-                f"[green]Successfully deleted {', '.join(ns_parser.delete)}[/green]"
-            )
+            console.print(f"[green]Successfully deleted {ns_parser.delete}[/green]")
 
     @log_start_end(log=logger)
     def call_rsi(self, other_args: List[str]):
