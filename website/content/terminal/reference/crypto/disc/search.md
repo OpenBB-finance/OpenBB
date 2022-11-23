@@ -10,7 +10,9 @@ Search over CoinPaprika API You can display only N number of results with --limi
 ### Usage
 
 ```python
-usage: search -q QUERY [QUERY ...] [-c {currencies,exchanges,icos,people,tags,all}] [-l LIMIT] [-s {category,id,name}] [-r]
+usage: search -q QUERY [QUERY ...]
+              [-c {currencies,exchanges,icos,people,tags,all}] [-l LIMIT]
+              [-s {category,id,name}] [-r]
 ```
 
 ---

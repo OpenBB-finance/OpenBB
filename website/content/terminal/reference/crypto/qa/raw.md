@@ -10,7 +10,8 @@ Print raw data to console
 ### Usage
 
 ```python
-usage: raw [-l LIMIT] [-r] [-s {open,high,low,close,adjclose,volume,date_id,oc_high,oc_low,returns,logret}]
+usage: raw [-l LIMIT] [-r]
+           [-s {open,high,low,close,adjclose,volume,date_id,oc_high,oc_low,returns,logret}]
 ```
 
 ---

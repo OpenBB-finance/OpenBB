@@ -10,7 +10,9 @@ Display top ERC20 tokens. [Source: Ethplorer]
 ### Usage
 
 ```python
-usage: top [-l LIMIT] [-s {rank,name,symbol,price,txsCount,transfersCount,holdersCount}] [-r]
+usage: top [-l LIMIT]
+           [-s {rank,name,symbol,price,txsCount,transfersCount,holdersCount}]
+           [-r]
 ```
 
 ---

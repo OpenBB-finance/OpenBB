@@ -10,7 +10,8 @@ Show information about most important coins events. Most of coins doesn't have a
 ### Usage
 
 ```python
-usage: events [-l LIMIT] [-s {date,date_to,name,description,is_conference}] [-r] [-u]
+usage: events [-l LIMIT] [-s {date,date_to,name,description,is_conference}]
+              [-r] [-u]
 ```
 
 ---
