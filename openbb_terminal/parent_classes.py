@@ -419,7 +419,15 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            open_openbb_documentation(self.PATH, command=ns_parser.command)
+            arg_type = ""
+            if ns_parser.command in self.CHOICES_COMMANDS:
+                arg_type = "command"
+            elif ns_parser.command in self.CHOICES_MENUS:
+                arg_type = "menu"
+
+            open_openbb_documentation(
+                self.PATH, command=ns_parser.command, arg_type=arg_type
+            )
 
     @log_start_end(log=logger)
     def call_quit(self, _) -> None:

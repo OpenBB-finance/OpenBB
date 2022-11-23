@@ -117,37 +117,62 @@ def update_terminal():
 
 
 def open_openbb_documentation(
-    path, url="https://docs.openbb.co/terminal", command=None
+    path, url="https://docs.openbb.co/terminal", command=None, arg_type=""
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
-    print(url, path, command)
-    if "ta" in path:
-        path = "terminal/common/ta/"
-    elif "ba" in path:
-        path = "terminal/common/ba/"
-    elif "qa" in path:
-        path = "terminal/common/qa/"
-    elif "keys" in path:
-        path = "/quickstart/keys"
+    if "keys" in path:
+        path = "/guides/basics/keys"
         command = ""
-    elif "settings" in path or "featflags" in path or "sources" in path:
-        path = "#customizing-the-terminal"
+    elif "settings" in path:
+        path = "/guides/basics/customizing_the_terminal"
+        command = ""
+    elif "featflags" in path:
+        path = "/guides/basics/customizing_the_terminal"
+        command = ""
+    elif "sources" in path:
+        path = "/guides/advanced/changing_sources"
         command = ""
     else:
-        path = f"{path}"
+        if arg_type == "command":  # user passed a command name
+            path = f"/reference/{path}"
+        elif arg_type == "menu":  # user passed a menu name
+            if command in ["ta", "ba", "qa"]:
+                menu = path.split("/")[-2]
+                path = f"/guides/intros/common/{menu}"
+            elif command == "forecast":
+                command = ""
+                path = "/guides/intros/forecast"
+            else:
+                path = f"/guides/intros/{path}"
+        else:  # user didn't pass argument and is in a menu
+            menu = path.split("/")[-2]
+            if menu in ["ta", "ba", "qa"]:
+                path = f"/guides/intros/common/{menu}"
+            else:
+                path = f"/guides/intros/{path}"
 
     if command:
-        if command in ["ta", "ba", "qa"]:
-            path = "terminal/common/"
-        elif "keys" == command:
-            path = "/quickstart/keys"
+        if "keys" == command:
+            path = "/guides/basics/keys"
+            command = ""
+        elif "settings" in path:
+            path = "/guides/basics/customizing_the_terminal"
+            command = ""
+        elif "featflags" in path:
+            path = "/guides/basics/customizing_the_terminal"
+            command = ""
+        elif "sources" in path:
+            path = "/guides/advanced/changing_sources"
             command = ""
         elif "exe" == command:
-            path = "/terminal/scripts/"
+            path = "/quickstart/scripts"
             command = ""
         elif command in ["settings", "featflags", "sources"]:
-            path = "#customizing-the-terminal"
+            path = ""
+            command = ""
+        elif command in ["ta", "ba", "qa"]:
+            path = f"/guides/intros/common/{command}"
             command = ""
 
         path += command
