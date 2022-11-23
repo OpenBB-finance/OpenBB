@@ -12,7 +12,8 @@ View group (sectors, industry or country) performance data. [Source: Finviz]
 ```python
 usage: performance
                    [-g {sector,industry,basic_materials,communication_services,consumer_cyclical,consumer_defensive,energy,financial,healthcare,industrials,real_Estate,technology,utilities,country,capitalization}]
-                   [-s {Name,Week,Month,3Month,6Month,1Year,YTD,Recom,AvgVolume,RelVolume,Change,Volume}] [-r]
+                   [-s {Name,Week,Month,3Month,6Month,1Year,YTD,Recom,AvgVolume,RelVolume,Change,Volume}]
+                   [-r]
 ```
 
 ---

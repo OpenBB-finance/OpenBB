@@ -10,7 +10,9 @@ Get a broad selection of macro data from one or multiple countries. This include
 ### Usage
 
 ```python
-usage: macro [-p PARAMETERS] [-c COUNTRIES] [-t {,TPOP,TOYA,TUSD,TPGP,TNOR}] [--show {parameters,countries,transform}] [-s START_DATE] [-e END_DATE] [--convert CURRENCY]
+usage: macro [-p PARAMETERS] [-c COUNTRIES] [-t {,TPOP,TOYA,TUSD,TPGP,TNOR}]
+             [--show {parameters,countries,transform}] [-s START_DATE]
+             [-e END_DATE] [--convert CURRENCY]
 ```
 
 ---

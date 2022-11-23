@@ -12,7 +12,8 @@ View group (sectors, industry or country) valuation data. [Source: Finviz]
 ```python
 usage: valuation
                  [-g {sector,industry,basic_materials,communication_services,consumer_cyclical,consumer_defensive,energy,financial,healthcare,industrials,real_Estate,technology,utilities,country,capitalization}]
-                 [-s {Name,MarketCap,P/E,FwdP/E,PEG,P/S,P/B,P/C,P/FCF,EPSpast5Y,EPSnext5Y,Salespast5Y,Change,Volume}] [-r]
+                 [-s {Name,MarketCap,P/E,FwdP/E,PEG,P/S,P/B,P/C,P/FCF,EPSpast5Y,EPSnext5Y,Salespast5Y,Change,Volume}]
+                 [-r]
 ```
 
 ---
