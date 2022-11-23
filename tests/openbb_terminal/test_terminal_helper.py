@@ -5,7 +5,6 @@ import pytest
 from unittest.mock import patch
 
 from openbb_terminal import terminal_helper
-from openbb_terminal import feature_flags as obbff
 from tests.helpers.helpers import check_print
 
 
