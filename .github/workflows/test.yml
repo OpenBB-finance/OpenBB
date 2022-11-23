@@ -59,17 +59,6 @@ jobs:
         run: |
           source $VENV
           python terminal.py
-  markdown-link-check:
-    name: Markdown Linting
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    steps:
-      - uses: actions/checkout@v3
-        name: Check out the code
-      - name: Lint Code Base
-        uses: docker://avtodev/markdown-lint:v1
-        with:
-          args: "./*.md ./changelogs/*.md ./openbb_terminal/**/*.md ./discordbot/**/*.md"
   tests-python:
     name: Vanilla Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
