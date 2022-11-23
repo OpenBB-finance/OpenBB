@@ -80,7 +80,7 @@ conda activate obb
 #### 4. **Install OpenBB SDK Core package**
 
 ```bash
-pip install openbbterminal
+pip install openbb
 ```
 
 #### 5. **(Optional) Install the Toolkits**
