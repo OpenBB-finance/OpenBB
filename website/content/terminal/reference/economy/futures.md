@@ -10,8 +10,7 @@ Futures/Commodities from Wall St. Journal and FinViz.
 ### Usage
 
 ```python
-usage: futures [-c {energy,metals,meats,grains,softs}]
-               [-s {ticker,last,change,prevClose}] [-r]
+usage: futures [-c {energy,metals,meats,grains,softs}] [-s {ticker,last,change,prevClose}] [-r]
 ```
 
 ---

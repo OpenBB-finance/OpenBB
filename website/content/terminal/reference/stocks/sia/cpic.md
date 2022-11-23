@@ -10,8 +10,7 @@ Companies per Industry based on Country and Market Cap
 ### Usage
 
 ```python
-usage: cpic [-M MAX_INDUSTRIES_TO_DISPLAY] [-m MIN_PCT_TO_DISPLAY_INDUSTRY]
-            [-r]
+usage: cpic [-M MAX_INDUSTRIES_TO_DISPLAY] [-m MIN_PCT_TO_DISPLAY_INDUSTRY] [-r]
 ```
 
 ---

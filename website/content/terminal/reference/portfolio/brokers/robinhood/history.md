@@ -10,8 +10,7 @@ Historical Portfolio Info
 ### Usage
 
 ```python
-usage: history [-s {day,week,month,3month,year,5year,all}]
-               [-i {5minute,10minute,hour,day,week}]
+usage: history [-s {day,week,month,3month,year,5year,all}] [-i {5minute,10minute,hour,day,week}]
 ```
 
 ---

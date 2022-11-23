@@ -10,9 +10,7 @@ Visualize a particular metric with the filters selected Available Metrics: roa r
 ### Usage
 
 ```python
-usage: metric -m
-              {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}
-              [-l LIMIT] [-r]
+usage: metric -m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe} [-l LIMIT] [-r]
 ```
 
 ---

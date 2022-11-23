@@ -10,8 +10,7 @@ Clean a dataset by filling and dropping NaN values.
 ### Usage
 
 ```python
-usage: clean [-n {}] [--fill {rfill,cfill,rbfill,cbfill,rffill,bffill}]
-             [-d {rdrop,cdrop}]
+usage: clean [-n {}] [--fill {rfill,cfill,rbfill,cbfill,rffill,bffill}] [-d {rdrop,cdrop}]
 ```
 
 ---

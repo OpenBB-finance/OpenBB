@@ -10,12 +10,8 @@ This function plots random portfolios based on their risk and returns and shows 
 ### Usage
 
 ```python
-usage: ef [-vs SHORT_ALLOCATION] [-n AMOUNT_PORTFOLIOS] [-se RANDOM_SEED] [-t]
-          [--no_plot]
-          [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
-          [-mt METHOD] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-          [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE]
-          [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION]
+usage: ef [-vs SHORT_ALLOCATION] [-n AMOUNT_PORTFOLIOS] [-se RANDOM_SEED] [-t] [--no_plot] [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-mt METHOD] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
+          [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION]
 ```
 
 ---

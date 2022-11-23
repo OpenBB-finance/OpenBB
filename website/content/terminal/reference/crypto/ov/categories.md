@@ -10,9 +10,7 @@ Shows top cryptocurrency categories by market capitalization. It includes catego
 ### Usage
 
 ```python
-usage: categories [-l LIMIT]
-                  [-s {Name,Market_Cap,Market_Cap_Change_24H,Top_3_Coins,Volume_24H}]
-                  [--pie]
+usage: categories [-l LIMIT] [-s {Name,Market_Cap,Market_Cap_Change_24H,Top_3_Coins,Volume_24H}] [--pie]
 ```
 
 ---

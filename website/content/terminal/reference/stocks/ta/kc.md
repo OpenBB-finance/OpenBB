@@ -10,8 +10,7 @@ Keltner Channels are volatility-based bands that are placed on either side of an
 ### Usage
 
 ```python
-usage: kc [-l N_LENGTH] [-s N_SCALAR] [-m {ema,sma,wma,hma,zlma}]
-          [-o N_OFFSET]
+usage: kc [-l N_LENGTH] [-s N_SCALAR] [-m {ema,sma,wma,hma,zlma}] [-o N_OFFSET]
 ```
 
 ---

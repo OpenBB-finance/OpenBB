@@ -242,17 +242,14 @@ def main() -> bool:
         with open(path / "_category_.json", "w", **kwargs) as f:
             f.write(json.dumps({"label": fname}, indent=2))
 
-    for folder in content_path.iterdir():
-        if folder.is_dir():
-            gen_category_json(folder.name, folder)
-            for nested_folder in folder.iterdir():
-                if nested_folder.is_dir():
-                    gen_category_json(nested_folder.name, nested_folder)
-                    for nested_nested_folder in nested_folder.iterdir():
-                        if nested_nested_folder.is_dir():
-                            gen_category_json(
-                                nested_nested_folder.name, nested_nested_folder
-                            )
+    def gen_category_recursive(nested_path: Path):
+        """Generate category json recursively"""
+        for folder in nested_path.iterdir():
+            if folder.is_dir():
+                gen_category_json(folder.name, folder)
+                gen_category_recursive(folder)  # pylint: disable=cell-var-from-loop
+
+    gen_category_recursive(content_path)
 
     console.print(
         "[green]Markdown files generated, check the website/content/terminal/reference/ folder[/green]"
