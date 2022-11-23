@@ -39,7 +39,8 @@ jobs:
 
       - run: |
           source $VENV
-          pip install "u8darts[torch]"
+          pip install "u8darts[torch]" docstring_parser
+          pytest tests/website
           python website/generate_sdk_markdown.py && python website/generate_terminal_markdown.py
 
       - name: Commit Documentation
