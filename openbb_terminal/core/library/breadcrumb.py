@@ -140,7 +140,7 @@ class Breadcrumb:
         import webbrowser
 
         trail = self._trail
-        url = "https://openbb-finance.github.io/OpenBBTerminal/SDK/"
+        url = "https://docs.openbb.co/sdk/reference/"
         url += "/".join(trail.split("."))
         webbrowser.open(url)
 
