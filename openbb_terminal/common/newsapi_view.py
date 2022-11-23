@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import os
 import logging
+from typing import Optional
 
 import pandas as pd
 
@@ -20,7 +21,7 @@ logger = logging.getLogger(__name__)
 def display_news(
     query: str,
     limit: int = 3,
-    start_date: str = None,
+    start_date: Optional[str] = None,
     show_newest: bool = True,
     sources: str = "",
     export: str = "",
@@ -31,7 +32,7 @@ def display_news(
     ----------
     query : str
         term to search on the news articles
-    start_date: str
+    start_date: Optional[str]
         date to start searching articles from formatted YYYY-MM-DD
     limit : int
         number of articles to display

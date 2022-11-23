@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 def display_altcoin_index(
     period: int = 365,
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -38,7 +38,7 @@ def display_altcoin_index(
     ----------
     start_date : str
         Initial date, format YYYY-MM-DD
-    end_date : str
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
     period: int
         Number of days to check the performance of coins and calculate the altcoin index.
