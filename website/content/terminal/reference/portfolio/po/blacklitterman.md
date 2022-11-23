@@ -10,8 +10,14 @@ Optimize portfolio using Black Litterman estimates
 ### Usage
 
 ```python
-usage: blacklitterman [-bm BENCHMARK] [-o {MinRisk,Utility,Sharpe,MaxRet}] [-pv P_VIEWS] [-qv Q_VIEWS] [-ra RISK_AVERSION] [-d DELTA] [-eq] [-op] [-vs SHORT_ALLOCATION] [--file FILE] [--download DOWNLOAD] [-mt METHOD]
-                      [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-v LONG_ALLOCATION] [--name NAME]
+usage: blacklitterman [-bm BENCHMARK] [-o {MinRisk,Utility,Sharpe,MaxRet}]
+                      [-pv P_VIEWS] [-qv Q_VIEWS] [-ra RISK_AVERSION]
+                      [-d DELTA] [-eq] [-op] [-vs SHORT_ALLOCATION]
+                      [--file FILE] [--download DOWNLOAD] [-mt METHOD]
+                      [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD]
+                      [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN]
+                      [-th THRESHOLD_VALUE] [-r RISK_FREE]
+                      [-v LONG_ALLOCATION] [--name NAME]
 ```
 
 ---

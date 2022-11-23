@@ -10,7 +10,9 @@ Displays Lastly added pairs on Uniswap DEX. [Source: https://thegraph.com/en/]
 ### Usage
 
 ```python
-usage: pairs [-l LIMIT] [-v VOL] [-tx TX] [--days DAY] [-s {created,pair,token0,token1,volumeUSD,txCount,totalSupply}] [-r]
+usage: pairs [-l LIMIT] [-v VOL] [-tx TX] [--days DAY]
+             [-s {created,pair,token0,token1,volumeUSD,txCount,totalSupply}]
+             [-r]
 ```
 
 ---

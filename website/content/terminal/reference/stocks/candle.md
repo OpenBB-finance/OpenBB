@@ -10,7 +10,9 @@ Shows historic data for a stock
 ### Usage
 
 ```python
-usage: candle [-p] [--sort {adjclose,open,close,high,low,volume,returns,logret}] [-r] [--raw] [-t] [--ma MOV_AVG] [--log]
+usage: candle [-p]
+              [--sort {adjclose,open,close,high,low,volume,returns,logret}]
+              [-r] [--raw] [-t] [--ma MOV_AVG] [--log]
 ```
 
 ---
