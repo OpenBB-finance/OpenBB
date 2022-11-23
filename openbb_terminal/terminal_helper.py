@@ -121,7 +121,10 @@ def open_openbb_documentation(
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
-    if "keys" in path:
+    if path == "/":
+        path = "/"
+        command = ""
+    elif "keys" in path:
         path = "/guides/basics/keys"
         command = ""
     elif "settings" in path:
