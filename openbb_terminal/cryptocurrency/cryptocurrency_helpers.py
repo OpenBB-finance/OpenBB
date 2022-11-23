@@ -1,41 +1,39 @@
 """Cryptocurrency helpers"""
 # pylint: disable=too-many-lines,too-many-return-statements
 
-from __future__ import annotations
-
-import os
-import json
-from datetime import datetime, timedelta
 import difflib
+import json
 import logging
-from typing import Optional, Union
+from typing import Union
+import os
+from datetime import datetime, timedelta
 
-import pandas as pd
-import numpy as np
 import ccxt
 import matplotlib.pyplot as plt
-from matplotlib.ticker import LogLocator, ScalarFormatter
-import yfinance as yf
 import mplfinance as mpf
+import numpy as np
+import pandas as pd
+import yfinance as yf
+from matplotlib.ticker import LogLocator, ScalarFormatter
 from pycoingecko import CoinGeckoAPI
 
-from openbb_terminal.helper_funcs import (
-    lambda_long_number_format,
-    plot_autoscale,
-    export_data,
-    print_rich_table,
-    lambda_long_number_format_y_axis,
-    is_valid_axes_count,
-)
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.rich_config import console
-from openbb_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from openbb_terminal.cryptocurrency.discovery import pycoingecko_model
+from openbb_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import (
-    get_ohlc,
     get_coin_tokenomics,
+    get_ohlc,
 )
+from openbb_terminal.helper_funcs import (
+    export_data,
+    is_valid_axes_count,
+    lambda_long_number_format,
+    lambda_long_number_format_y_axis,
+    plot_autoscale,
+    print_rich_table,
+)
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -116,13 +114,13 @@ YF_CURRENCY = [
 
 
 def check_datetime(
-    ck_date: Union[datetime, str, None] = None, start: bool = True
+    ck_date: Union[datetime, Union[str, None]] = None, start: bool = True
 ) -> datetime:
     """Checks if given argument is string and attempts to convert to datetime.
 
     Parameters
     ----------
-    ck_date : Optional[Union[datetime, str]], optional
+    ck_date : Union[datetime, Union[str, None]], optional
         Date to check, by default None
     start : bool, optional
         If True and string is invalid, will return 1100 days ago
@@ -489,11 +487,11 @@ def load_from_yahoofinance(
 
 def load(
     symbol: str,
-    start_date: Union[datetime, str, None] = None,
+    start_date: Union[datetime, Union[str, None]] = None,
     interval: Union[str, int] = "1440",
     exchange: str = "binance",
     vs_currency: str = "usdt",
-    end_date: Union[datetime, str, None] = None,
+    end_date: Union[datetime, Union[str, None]] = None,
     source: str = "CCXT",
 ) -> pd.DataFrame:
     """Load crypto currency to get data for
@@ -502,7 +500,7 @@ def load(
     ----------
     symbol: str
         Coin to get
-    start_date: Union[datetime, str, None]
+    start_date: Union[datetime, Union[str, None]], optional
         Start date to get data from with. - datetime or string format (YYYY-MM-DD)
     interval: Union[str, int]
         The interval between data points in minutes.
@@ -511,7 +509,7 @@ def load(
         The exchange to get data from.
     vs_currency: str
         Quote Currency (Defaults to usdt)
-    end_date: Union[datetime, str, None]
+    end_date: Union[datetime, Union[str, None]], optional
         End date to get data from with. - datetime or string format (YYYY-MM-DD)
     source: str
         The source of the data
@@ -753,7 +751,7 @@ def plot_chart(
     source: str = "",
     exchange: str = "",
     interval: str = "",
-    external_axes: Optional[list[plt.Axes]] = None,
+    external_axes: Union[list[plt.Axes], None] = None,
     yscale: str = "linear",
 ) -> None:
     """Load data for Technical Analysis
@@ -803,7 +801,7 @@ def plot_candles(
     volume: bool = True,
     ylabel: str = "",
     title: str = "",
-    external_axes: Optional[list[plt.Axes]] = None,
+    external_axes: Union[list[plt.Axes], None] = None,
     yscale: str = "linear",
 ) -> None:
     """Plot candle chart from dataframe. [Source: Binance]
@@ -883,7 +881,7 @@ def plot_order_book(
     bids: np.ndarray,
     asks: np.ndarray,
     coin: str,
-    external_axes: Optional[list[plt.Axes]] = None,
+    external_axes: Union[list[plt.Axes], None] = None,
 ) -> None:
     """
     Plots Bid/Ask. Can be used for Coinbase and Binance

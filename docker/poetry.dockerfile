@@ -46,13 +46,15 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 WORKDIR $PYSETUP_PATH
 
 # Copy poetry files and install git
-COPY pyproject.toml README.md poetry.lock ./
+COPY pyproject.toml openbb_terminal/SDK_README.md poetry.lock ./
 
 RUN mkdir $PYSETUP_PATH/openbb_terminal
+RUN mv SDK_README.md ./openbb_terminal
 RUN touch openbb_terminal/__init__.py
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN poetry install
+RUN poetry install -E optimization
 
 ###############################################
 # Production Image openbb poetry build

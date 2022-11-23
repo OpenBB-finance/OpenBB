@@ -593,7 +593,7 @@ class ForecastController(BaseController):
                 dest="dropout",
                 default=dropout,
                 type=check_positive_float,
-                help="Fraction of neurons afected by Dropout, from 0 to 1.",
+                help="Fraction of neurons affected by Dropout, from 0 to 1.",
             )
         if batch_size is not None:
             parser.add_argument(
@@ -661,7 +661,7 @@ class ForecastController(BaseController):
         if forecast_only:
             parser.add_argument(
                 "--forecast-only",
-                help="Do not plot the hisotorical data without forecasts.",
+                help="Do not plot the historical data without forecasts.",
                 action="store_true",
                 default=False,
                 dest="forecast_only",
@@ -693,10 +693,10 @@ class ForecastController(BaseController):
         # check if data has minimum number of rows
         if len(data) < self.MINIMUM_DATA_LENGTH:
             console.print(
-                f"[red]Dataset is smaller than recommended minimum {self.MINIMUM_DATA_LENGTH} datapoints. [/red]"
+                f"[red]Dataset is smaller than recommended minimum {self.MINIMUM_DATA_LENGTH} data points. [/red]"
             )
             console.print(
-                f"[red]Please increase the number of datapoints for [ {ticker} ] and try again.[/red]"
+                f"[red]Please increase the number of data points for [ {ticker} ] and try again.[/red]"
             )
             return
 
@@ -1302,7 +1302,7 @@ class ForecastController(BaseController):
 
     @log_start_end(log=logger)
     def call_sto(self, other_args: List[str]):
-        """Process Stoch Oscill"""
+        """Process Stochastic Oscillator"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1354,7 +1354,7 @@ class ForecastController(BaseController):
             if not df.empty:
                 self.datasets[ns_parser.target_dataset] = df
                 console.print(
-                    f"Successfully added 'STOK&D_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+                    f"Successfully added 'STOCH&D_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
                 )
                 # update forecast menu with new column on modified dataset
                 self.refresh_datasets_on_menu()
@@ -2828,7 +2828,7 @@ class ForecastController(BaseController):
             dest="num_encoder_layers",
             default=3,
             type=check_positive,
-            help="The number of encoder leayers in the encoder.",
+            help="The number of encoder layers in the encoder.",
         )
         parser.add_argument(
             "--num_decoder_layers",
@@ -2836,7 +2836,7 @@ class ForecastController(BaseController):
             dest="num_decoder_layers",
             default=3,
             type=check_positive,
-            help="The number of decoder leayers in the encoder.",
+            help="The number of decoder layers in the encoder.",
         )
         parser.add_argument(
             "--dim_feedforward",
