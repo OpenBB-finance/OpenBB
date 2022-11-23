@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime, timedelta
+from typing import Optional
 
 import requests
 
@@ -30,8 +31,8 @@ def get_github_activity(
     symbol: str,
     dev_activity: bool = False,
     interval: str = "1d",
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Returns  a list of developer activity for a given coin and time interval.
 
@@ -45,9 +46,9 @@ def get_github_activity(
         Whether to filter only for development activity
     interval : str
         Interval frequency (e.g., 1d)
-    start_date : int
+    start_date : Optional[str]
         Initial date like string (e.g., 2021-10-01)
-    end_date : int
+    end_date : Optional[str]
         End date like string (e.g., 2021-10-01)
 
     Returns

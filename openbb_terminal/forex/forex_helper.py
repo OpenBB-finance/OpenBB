@@ -97,7 +97,7 @@ def load(
     from_symbol: str,
     resolution: str = "d",
     interval: str = "1day",
-    start_date: str = None,
+    start_date: Optional[str] = None,
     source: str = "YahooFinance",
     verbose: bool = False,
 ) -> pd.DataFrame:
@@ -113,7 +113,7 @@ def load(
         The resolution for the data, by default "d"
     interval : str, optional
         What interval to get data for, by default "1day"
-    start_date : str, optional
+    start_date : Optional[str], optional
         When to begin loading in data, by default last_year.strftime("%Y-%m-%d")
     source : str, optional
         Where to get data from, by default "YahooFinance"

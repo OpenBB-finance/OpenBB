@@ -9,7 +9,7 @@ import logging
 import os
 import subprocess  # nosec
 import sys
-from typing import List
+from typing import List, Optional
 
 # IMPORTATION THIRDPARTY
 import requests
@@ -224,29 +224,53 @@ def check_for_updates() -> None:
         r = None
 
     if r is not None and r.status_code == 200:
-        release: str = r.json()["html_url"].split("/")[-1].replace("v", "")
-        lastest_split = release.split(".")
-        current = obbff.VERSION.replace("m", "").split(".")
-        for i in range(3):
-            if int(lastest_split[i]) > int(current[i]):
+        latest_version = r.json()["tag_name"]
+        latest_version_number = get_version_number(tag=latest_version)
+        current_version_number = get_version_number(tag=obbff.VERSION)
+
+        if latest_version_number and current_version_number:
+
+            if current_version_number == latest_version_number:
+                console.print("[green]You are using the latest stable version[/green]")
+            else:
                 console.print(
-                    "[bold red]You are not using the latest version[/bold red]"
+                    "[yellow]You are not using the latest stable version[/yellow]"
                 )
-                console.print(
-                    "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
-                )
-                break
-            if int(lastest_split[i]) < int(current[i]):
-                console.print("[yellow]You are using an unreleased version[/yellow]")
-            if release == obbff.VERSION.replace("m", ""):
-                console.print("[green]You are using the latest version[/green]")
-                break
+                if current_version_number < latest_version_number:
+                    console.print(
+                        "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
+                    )
+
+                else:
+                    console.print(
+                        "[yellow]You are using an unreleased version[/yellow]"
+                    )
+
+        else:
+            console.print("[red]You are using an unrecognized version.[/red]")
     else:
         console.print(
             "[yellow]Unable to check for updates... "
             + "Check your internet connection and try again...[/yellow]"
         )
     console.print("\n")
+
+
+def get_version_number(tag: str) -> Optional[str]:
+    """Get the release number from a tag."""
+
+    if not tag.startswith("v") and len(tag.split(".")) != 3:
+        return None
+
+    if tag.startswith("v"):
+        tag = tag[1:]
+
+    if "rc" in tag.split(".")[-1]:
+        tag_split = tag.split(".")
+        tag_split[-1] = tag_split[-1].split("rc")[0]
+        tag = ".".join(tag_split)
+
+    return tag
 
 
 def welcome_message():

@@ -588,6 +588,12 @@ def display_clenow_momentum(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.ta.clenow_chart(df["Close"])
     """
     r2, coef, fit_data = momentum_model.clenow_momentum(data, window)
 
@@ -642,7 +648,7 @@ def display_demark(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plots demark squential indicator
+    """Plot demark sequential indicator
 
     Parameters
     ----------
@@ -656,6 +662,12 @@ def display_demark(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axes are expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.ta.demark_chart(df)
     """
     close_col = ta_helpers.check_columns(data, high=False, low=False)
     if close_col is None:

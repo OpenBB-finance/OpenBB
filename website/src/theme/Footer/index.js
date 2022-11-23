@@ -113,7 +113,6 @@ function Footer() {
           })}
         </div>
       </div>
-      <span>lorem ipsum</span>
       <hr />
       <div className="flex w-full flex-col items-center justify-between gap-4 md:flex-row md:gap-0">
         <div className="flex flex-col items-start justify-end gap-4 self-start font-light text-grey-500 md:flex-row md:items-center">

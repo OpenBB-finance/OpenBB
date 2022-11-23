@@ -65,7 +65,7 @@ def display_search(
 def display_historical(
     symbols: List[str],
     expiry: str = "",
-    start_date: str = None,
+    start_date: Optional[str] = None,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -78,7 +78,7 @@ def display_historical(
         List of future timeseries symbols to display
     expiry: str
         Future expiry date with format YYYY-MM
-    start_date : str
+    start_date : Optional[str]
         Initial date like string (e.g., 2021-10-01)
     raw: bool
         Display futures timeseries in raw format
