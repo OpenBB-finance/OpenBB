@@ -35,6 +35,7 @@ openbb_terminal/reports/templates/*.html
 website/functions
 *_sdk_audit.csv
 website/terminaltest
+!build/docker/compose.env
 
 # pyinstaller artifacts
 *.pyo
