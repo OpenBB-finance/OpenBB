@@ -9,10 +9,9 @@ from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY, USER_ENV_
 from openbb_terminal.rich_config import console
 
 
-DISABLE_EXTRAS_WARNING = load_env_vars(
-    "OPENBB_DISABLE_EXTRAS_WARNING", strtobool, False
+DISABLE_FORECASTING_WARNING = load_env_vars(
+    "OPENBB_DISABLE_FORECASTING_WARNING", strtobool, False
 )
-
 try:
     import darts  # pylint: disable=W0611 # noqa: F401
     from darts import utils  # pylint: disable=W0611 # noqa: F401
@@ -20,7 +19,8 @@ try:
     FORECASTING_TOOLKIT_ENABLED = True
 except ModuleNotFoundError:
     FORECASTING_TOOLKIT_ENABLED = False
-    if not DISABLE_EXTRAS_WARNING:
+    if not DISABLE_FORECASTING_WARNING:
+        dotenv.set_key(str(USER_ENV_FILE), "OPENBB_DISABLE_FORECASTING_WARNING", "True")
         console.print(
             "[yellow]"
             "Forecasting Toolkit is disabled. "
@@ -30,13 +30,19 @@ except ModuleNotFoundError:
             "[/yellow]"
         )
 
+DISABLE_OPTIMIZATION_WARNING = load_env_vars(
+    "OPENBB_DISABLE_OPTIMIZATION_WARNING", strtobool, False
+)
 try:
     import riskfolio  # pylint: disable=W0611 # noqa: F401
 
     OPTIMIZATION_TOOLKIT_ENABLED = True
 except ModuleNotFoundError:
     OPTIMIZATION_TOOLKIT_ENABLED = False
-    if not DISABLE_EXTRAS_WARNING:
+    if not DISABLE_OPTIMIZATION_WARNING:
+        dotenv.set_key(
+            str(USER_ENV_FILE), "OPENBB_DISABLE_OPTIMIZATION_WARNING", "True"
+        )
         console.print(
             "[yellow]"
             "Portfolio Optimization Toolkit is disabled. "
@@ -45,8 +51,6 @@ except ModuleNotFoundError:
             "\n"
             "[/yellow]"
         )
-
-dotenv.set_key(str(USER_ENV_FILE), "OPENBB_DISABLE_EXTRAS_WARNING", "True")
 
 
 class TrailMap:
