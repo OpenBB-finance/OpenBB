@@ -214,7 +214,6 @@ def display_dividends(
         return
 
     if plot:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
