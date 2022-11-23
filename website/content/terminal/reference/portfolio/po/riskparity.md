@@ -10,8 +10,12 @@ Build a risk parity portfolio based on risk budgeting approach
 ### Usage
 
 ```python
-usage: riskparity [-rm RISK-MEASURE] [-rc RISK_CONTRIBUTION] [-tr TARGET_RETURN] [-de SMOOTHING_FACTOR_EWMA] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN]
-                  [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME]
+usage: riskparity [-rm RISK-MEASURE] [-rc RISK_CONTRIBUTION]
+                  [-tr TARGET_RETURN] [-de SMOOTHING_FACTOR_EWMA] [-mt METHOD]
+                  [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD]
+                  [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN]
+                  [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL]
+                  [-v LONG_ALLOCATION] [--name NAME]
 ```
 
 ---

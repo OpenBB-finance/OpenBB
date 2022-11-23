@@ -10,9 +10,14 @@ Minimizes portfolio's risk
 ### Usage
 
 ```python
-usage: minrisk [-tr TARGET_RETURN] [-tk TARGET_RISK] [-m {hist,ewma1,ewma2}] [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-de SMOOTHING_FACTOR_EWMA] [-vs SHORT_ALLOCATION]
-               [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE]
-               [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME]
+usage: minrisk [-tr TARGET_RETURN] [-tk TARGET_RISK] [-m {hist,ewma1,ewma2}]
+               [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}]
+               [-de SMOOTHING_FACTOR_EWMA] [-vs SHORT_ALLOCATION]
+               [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
+               [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD]
+               [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN]
+               [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL]
+               [-v LONG_ALLOCATION] [--name NAME]
 ```
 
 ---

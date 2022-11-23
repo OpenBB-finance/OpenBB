@@ -10,7 +10,8 @@ View group (sectors, industry or country) spectrum data. [Source: Finviz]
 ### Usage
 
 ```python
-usage: spectrum [-g {sector,industry,basic_materials,communication_services,consumer_cyclical,consumer_defensive,energy,financial,healthcare,industrials,real_Estate,technology,utilities,country,capitalization}]
+usage: spectrum
+                [-g {sector,industry,basic_materials,communication_services,consumer_cyclical,consumer_defensive,energy,financial,healthcare,industrials,real_Estate,technology,utilities,country,capitalization}]
 ```
 
 ---
