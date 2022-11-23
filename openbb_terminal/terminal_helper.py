@@ -7,6 +7,7 @@ from contextlib import contextmanager
 import hashlib
 import logging
 import os
+from packaging import version
 import subprocess  # nosec
 import sys
 from typing import List, Optional
@@ -220,19 +221,19 @@ def check_for_updates() -> None:
         r = None
 
     if r is not None and r.status_code == 200:
-        latest_version = r.json()["tag_name"]
-        latest_version_number = get_version_number(tag=latest_version)
-        current_version_number = get_version_number(tag=obbff.VERSION)
+        latest_tag_name = r.json()["tag_name"]
+        latest_version = version.parse(latest_tag_name)
+        current_version = version.parse(obbff.VERSION)
 
-        if latest_version_number and current_version_number:
+        if check_valid_versions(latest_version, current_version):
 
-            if current_version_number == latest_version_number:
+            if current_version == latest_version:
                 console.print("[green]You are using the latest stable version[/green]")
             else:
                 console.print(
                     "[yellow]You are not using the latest stable version[/yellow]"
                 )
-                if current_version_number < latest_version_number:
+                if current_version < latest_version:
                     console.print(
                         "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
                     )
@@ -252,21 +253,17 @@ def check_for_updates() -> None:
     console.print("\n")
 
 
-def get_version_number(tag: str) -> Optional[str]:
-    """Get the release number from a tag."""
-
-    if not tag.startswith("v") and len(tag.split(".")) != 3:
-        return None
-
-    if tag.startswith("v"):
-        tag = tag[1:]
-
-    if "rc" in tag.split(".")[-1]:
-        tag_split = tag.split(".")
-        tag_split[-1] = tag_split[-1].split("rc")[0]
-        tag = ".".join(tag_split)
-
-    return tag
+def check_valid_versions(
+    latest_version: version.Version, current_version: version.Version
+) -> bool:
+    if (
+        not latest_version
+        or not current_version
+        or not isinstance(latest_version, version.Version)
+        or not isinstance(current_version, version.Version)
+    ):
+        return False
+    return True
 
 
 def welcome_message():
