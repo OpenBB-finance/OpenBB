@@ -1,0 +1,4 @@
+[yellow]You are not using the latest stable version[/yellow]
+[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]
+
+
