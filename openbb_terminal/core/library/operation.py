@@ -116,7 +116,7 @@ class Operation:
 
 class OperationLogger:
 
-    last_method = {}
+    last_method: Dict[Any, Any] = {}
 
     def __init__(
         self,
