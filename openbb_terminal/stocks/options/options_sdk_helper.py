@@ -1,24 +1,24 @@
 """Options Functions For OpenBB SDK"""
 
-from __future__ import annotations
-
 import logging
+from typing import Union
+
 import pandas as pd
 
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks.options import (
+    chartexchange_model,
     nasdaq_model,
     tradier_model,
     yfinance_model,
-    chartexchange_model,
 )
-from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
 def get_full_option_chain(
-    symbol: str, source: str = "Nasdaq", expiration: str | None = None
+    symbol: str, source: str = "Nasdaq", expiration: Union[str, None] = None
 ) -> pd.DataFrame:
     """Get Option Chain For A Stock.  No greek data is returned
 
@@ -28,7 +28,7 @@ def get_full_option_chain(
         Symbol to get chain for
     source : str, optional
         Source to get data from, by default "Nasdaq"
-    expiration : str, optional
+    expiration : Union[str, None], optional
         Date to get chain for.  By default returns all dates
 
     Returns
@@ -101,7 +101,7 @@ def get_option_expirations(symbol: str, source: str = "Nasdaq") -> list:
 def hist(
     symbol: str,
     exp: str,
-    strike: int | float | str,
+    strike: Union[int, Union[float, str]],
     call: bool = True,
     source="ChartExchange",
 ) -> pd.DataFrame:
@@ -113,7 +113,7 @@ def hist(
         Symbol to get data for
     exp : str
         Expiration date
-    strike : int | float | str
+    strike : Union[int ,Union[float,str]]
         Strike price
     call : bool, optional
         Flag to indicate a call, by default True
