@@ -1,4 +1,3 @@
-from collections import deque
 import json
 from importlib import import_module
 from logging import getLogger, Logger
