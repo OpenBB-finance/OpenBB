@@ -1,8 +1,8 @@
 import sys
 import unittest
 from contextlib import contextmanager
-import pytest
 from unittest.mock import patch
+import pytest
 
 from openbb_terminal import terminal_helper
 from tests.helpers.helpers import check_print

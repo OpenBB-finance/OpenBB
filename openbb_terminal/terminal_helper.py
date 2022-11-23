@@ -7,10 +7,10 @@ from contextlib import contextmanager
 import hashlib
 import logging
 import os
-from packaging import version
 import subprocess  # nosec
 import sys
 from typing import List, Union
+from packaging import version
 
 # IMPORTATION THIRDPARTY
 import requests
