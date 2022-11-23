@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 
 from datetime import datetime, timedelta
-from typing import Any, List, Tuple
+from typing import Any, List, Optional, Tuple
 import requests
 import pandas as pd
 from openbb_terminal import config_terminal as cfg
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 def get_news(
     query: str,
     limit: int = 10,
-    start_date: str = None,
+    start_date: Optional[str] = None,
     show_newest: bool = True,
     sources: str = "",
 ) -> List[Tuple[pd.DataFrame, Any]]:
@@ -29,7 +29,7 @@ def get_news(
     ----------
     query : str
         term to search on the news articles
-    start_date: str
+    start_date: Optional[str]
         date to start searching articles from formatted YYYY-MM-DD
     show_newest: bool
         flag to show newest articles first
