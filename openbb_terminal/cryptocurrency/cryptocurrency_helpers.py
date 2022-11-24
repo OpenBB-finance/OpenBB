@@ -803,7 +803,7 @@ def plot_chart(
     console.print()
 
 
-def plot_candles(
+def plot_candles(  # pylint: disable=too-many-arguments
     symbol: str,
     data: pd.DataFrame = pd.DataFrame(),
     start_date: Union[datetime, Union[str, None]] = None,
