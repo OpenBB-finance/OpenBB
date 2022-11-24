@@ -44,7 +44,7 @@ def display_theta_forecast(
         Data to forecast
     target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
-    dataset_name str
+    dataset_name: str
         The name of the ticker to be predicted
     seasonal: str
         Seasonal component.  One of [N, A, M]

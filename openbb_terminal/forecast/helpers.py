@@ -569,9 +569,21 @@ def plot_explainability(
     explainability_raw=False,
     external_axes: Optional[List[plt.axes]] = None,
 ):
-    """Use SHAP to explain the model's predictions.
-    Args:
-        model (Linregr or Regr): Trained model
+    """
+    Plot explainability of the model
+
+    Parameters
+    ----------
+    model: type[GlobalForecastingModel]
+        The model to plot explainability for
+    explainability_raw: bool
+        Whether to plot raw explainability or not
+        external_axes: Optional[List[plt.axes]]
+        Optional list of axes to plot on
+
+    Returns
+    -------
+    None
     """
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

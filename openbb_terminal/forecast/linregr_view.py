@@ -49,7 +49,7 @@ def display_linear_regression(
         Days to predict. Defaults to 5.
     target_col: str
         Target column to forecast. Defaults to "close".
-    train_split (float, optional):
+    train_split: (float, optional)
         Train/val split. Defaults to 0.85.
     past_covariates: str
         Multiple secondary columns to factor in when forecasting. Defaults to None.
