@@ -639,6 +639,8 @@ def get_series(
         # check if date is in the index, if true, reset the index
         if time_col in data.index.names:
             data.reset_index(inplace=True)
+            # remove 00:00:00 from 2019-11-19 00:00:00
+            data[time_col] = data[time_col].apply(lambda x: dt_format(x))
 
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
     except ValueError:

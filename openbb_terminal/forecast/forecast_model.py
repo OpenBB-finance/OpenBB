@@ -18,6 +18,7 @@ from openbb_terminal.core.config.paths import (
     USER_CUSTOM_IMPORTS_DIRECTORY,
 )
 from openbb_terminal.common import common_model
+from openbb_terminal.forecast.helpers import dt_format
 
 logger = logging.getLogger(__name__)
 
@@ -420,8 +421,12 @@ def combine_dfs(
     # check if date is index, if true, reset index
     if df1.index.name == "date":
         df1 = df1.reset_index()
+        # remove 00:00:00 from 2019-11-19 00:00:00
+        df1["date"] = df1["date"].apply(lambda x: dt_format(x))
     if df2.index.name == "date":
         df2 = df2.reset_index()
+        # remove 00:00:00 from 2019-11-19 00:00:00
+        df2["date"] = df2["date"].apply(lambda x: dt_format(x))
 
     if column not in df2:
         console.print(
