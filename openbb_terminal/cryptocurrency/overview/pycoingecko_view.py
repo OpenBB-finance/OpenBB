@@ -331,9 +331,9 @@ def display_global_defi_info(export: str = "") -> None:
 def display_stablecoins(
     limit: int = 15,
     export: str = "",
-    sortby: str = "rank",
+    sortby: str = "Market_Cap_[$]",
     ascend: bool = False,
-    pie: bool = False,
+    pie: bool = True,
 ) -> None:
     """Shows stablecoins data [Source: CoinGecko]
 
@@ -342,57 +342,37 @@ def display_stablecoins(
     limit: int
         Number of records to display
     sortby: str
-        Key by which to sort data
+        Key by which to sort data, default is Market_Cap_[$]
     ascend: bool
         Flag to sort data ascending
+    pie: bool
+        Whether to show a pie chart, default is True
     export : str
         Export dataframe data to csv,json,xlsx file
     pie : bool
         Whether to show a pie chart
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.crypto.ov.stables_chart(sortby="Volume_[$]", ascend=True, limit=10)
     """
-    sort_mapping = {
-        "Symbol": "symbol",
-        "Name": "name",
-        "Price_[$]": "current_price",
-        "Market_Cap_[$]": "market_cap",
-        "Market_Cap_Rank": "market_cap_rank",
-        "Change_7d_[%]": "price_change_percentage_7d_in_currency",
-        "Change_24h_[%]": "price_change_percentage_24h_in_currency",
-        "Volume_[$]": "total_volume",
-    }
-    sortby = sort_mapping[sortby]
+
     df = gecko.get_stable_coins(limit, sortby=sortby, ascend=ascend)
 
     if not df.empty:
-        total_market_cap = int(df["market_cap"].sum())
-        df[f"Percentage [%] of top {limit}"] = (
-            df["market_cap"] / total_market_cap
-        ) * 100
-        df_data = df
-        df = df.set_axis(
-            [
-                "Symbol",
-                "Name",
-                "Price [$]",
-                "Market Cap [$]",
-                "Market Cap Rank",
-                "Change 7d [%]",
-                "Change 24h [%]",
-                "Volume [$]",
-                f"Percentage [%] of top {limit}",
-            ],
-            axis=1,
-            copy=False,
-        )
-        df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
+
+        total_market_cap = int(df["Market_Cap_[$]"].sum())
+        df.columns = df.columns.str.replace("_", " ")
+
         if pie:
-            stables_to_display = df_data[df_data[f"Percentage [%] of top {limit}"] >= 1]
-            other_stables = df_data[df_data[f"Percentage [%] of top {limit}"] < 1]
+            stables_to_display = df[df[f"Percentage [%] of top {limit}"] >= 1]
+            other_stables = df[df[f"Percentage [%] of top {limit}"] < 1]
             values_list = list(
                 stables_to_display[f"Percentage [%] of top {limit}"].values
             )
             values_list.append(other_stables[f"Percentage [%] of top {limit}"].sum())
-            labels_list = list(stables_to_display["name"].values)
+            labels_list = list(stables_to_display["Name"].values)
             labels_list.append("Others")
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             ax.pie(
@@ -407,11 +387,14 @@ def display_stablecoins(
             if obbff.USE_ION:
                 plt.ion()
             plt.show()
+
         console.print(
             f"First {limit} stablecoins have a total "
             f"{lambda_long_number_format_with_type_check(total_market_cap)}"
-            "dollars of market cap."
+            "dollars of market cap.\n"
         )
+
+        df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         print_rich_table(
             df.head(limit),
             headers=list(df.columns),
