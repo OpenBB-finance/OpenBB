@@ -5,7 +5,7 @@ sidebar_position: 1
 
 ## Importing the SDK
 
-Now that you have the SDK installed, the first step is to import the OpenBB SDK in your preferred code editor. Nearly everything required to interact with any function from the OpenBB Terminal gets imported in one line. Begin a Python script or Notebook file with:
+Once you have the OpenBB SDK installed, the first step is to import the OpenBB SDK in your preferred code editor. Nearly everything required to interact with any function from the OpenBB Terminal gets imported in one line. Begin a Python script or Notebook file with:
 
 ```python
 from openbb_terminal.sdk import openbb
@@ -27,7 +27,7 @@ help(openbb.stocks.dd)
 
 ### Docstrings
 
-In addition to Python's built-in help, docstrings are also displayed in the Contextual Help window, within a Jupyter environment or by running `help(openbb.economy.events)` in your code editor.
+In addition to Python's built-in help, docstrings are also displayed in the Contextual Help window, within a Jupyter environment; type hints included.
 
 ```python
 help(openbb.economy.events)
