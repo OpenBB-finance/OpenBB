@@ -635,6 +635,11 @@ def get_series(
         fill_missing_dates=True,
     )
     try:
+        # for the sdk, we must check if date is a column not an index
+        # check if date is in the index, if true, reset the index
+        if time_col in data.index.names:
+            data.reset_index(inplace=True)
+
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
     except ValueError:
         # remove business days to allow base lib to assume freq
