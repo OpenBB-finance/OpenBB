@@ -81,68 +81,80 @@ Right-Click the app and select <code>Open</code>. You will see a message saying 
   <TabItem value="docker" label="Docker">Install with Docker
   Here are the steps to get OpenBBTerminal using the Docker containers that we provide:
 
-Installing Docker and Docker Compose Pulling and running OpenBBTerminal Docker
-Container Configuring your X-server to show plots Each of this steps need to be
-followed to have a working version of OpenBBTerminal.
+1. Installing `Docker` and `Docker Compose`
+2. Pulling and running `OpenBBTerminal Docker Container`
+3. Configuring your X-server to show plots
+
+Each of this steps need to be followed to have a working version of OpenBBTerminal.
 
 We will detail these steps in the rest of this document.
 
-### 1. Installing Docker and Docker Compose
+## 1. Installing `Docker` and `Docker Compose`
 
-INSTALL DOCKER
+**INSTALL DOCKER**
 
-Installing Docker Desktop is the easiest way for most people:
+Installing Docker Desktop is an alternative way and has a `Graphical User Interface` built in with `Docker Compose`.
 
-It has a Graphical User Interface and comes with Docke Compose in it.
+You can find `Docker Desktop` installation file for your `OS` here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
 
-You can find Docker Desktop installation file for your OS here:
+**START DOCKER**
 
-Download Docker Desktop
+Once you have `Docker` installed and running, you can use the following command to check the state:
 
-START DOCKER
+```bash
+docker info
+```
 
-Once you have Docker installed and running, you can use the following command to
-check the state:
+It should output a text like this one:
 
-docker info It should output a text like this one:
+```text
+Client:
+ Context:    default
+ Debug Mode: false
 
-Client: Context: default Debug Mode: false
+Server:
+ Containers: 14
+  Running: 2
+  Paused: 1
+  Stopped: 10
+```
 
-Server: Containers: 14 Running: 2 Paused: 1 Stopped: 10 ... If you see a message
-like the following, it most likely means you need to start Docker.
+If you see a message like the following, it most likely means you need to start `Docker`.
 
 Open the docker desktop app in this case.
 
-Server: ERROR: Cannot connect to the Docker daemon at
-unix:///var/run/docker.sock. Is the docker daemon running?
+```text
+Server:
+ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock.
+Is the docker daemon running?
+```
 
-### 2. Pulling and running OpenBBTerminal Docker Container
+## 2. Pulling and running `OpenBBTerminal Docker Container`
 
-DOCKER COMPOSE
+**DOCKER COMPOSE**
 
-Here are the commands to use Docker Compose to pull and run the OpenBBTerminal
-Docker Container:
+Here are the commands to use `Docker Compose` to pull and run the `OpenBBTerminal Docker Container`:
 
 ```bash
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml
+
 docker compose run poetry
 ```
 
-The command line with curl is downloading this file : docker-compose.yaml.
+The command line with `curl` is downloading this file : [`docker-compose.yaml`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml).
 
-The docker-compose.yaml file is a configuration file telling Docker Compose:
+The `docker-compose.yaml` file is a configuration file telling `Docker Compose`:
 
-where to find OpenBBTerminal Docker Container how to run this container. The
-second command runs Docker Compose on the service poetry defined in this
-docker-compose.yaml file.
+- where to find `OpenBBTerminal Docker Container`
+- how to run this container.
 
-This second command must be run in the same folder in which docker-compose.yaml
-file is.
+The second command runs `Docker Compose` on the service `poetry` defined in this `docker-compose.yaml` file.
 
-DOCKER
+This second command must be run in the same folder in which `docker-compose.yaml` file is.
 
-If you don't have Docker Compose you can also use Docker directly to run the
-OpenBBTerminal Docker Container.
+**DOCKER**
+
+If you don't have `Docker Compose` you can also use `Docker` directly to run the `OpenBBTerminal Docker Container`.
 
 Here is the commands to run:
 
@@ -152,51 +164,57 @@ docker pull ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
 docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
 ```
 
-Be sure to replace X.Y.Z with the version you want to pull and run.
+Be sure to replace `X.Y.Z` with the version you want to pull and run.
 
 Note for windows:
 
-    Ignore this message if you are using Powershell or a more evolved interpreters.
+```text
+    Ignore this message if you are using Powershell or a more evolved interpreters. 
     If you are using the builtin Windows interpreter.
     Replace `~` by `%USERPROFILE%` in the command above.
+```
 
-### 3. Configuring your X-server to show plots
+## 3. Configuring your X-server to show plots
 
-In order to display plots in the docker container, we need to configure the
-XServer on the host machine. Without this configuration the interactive charts
-will not be displayed.
+In order to display plots in the docker container, we need to configure the XServer on the host machine. Without this configuration the interactive charts will not be displayed.
 
-On Windows Download and install : VcXsrv
+### On Windows
+
+Download and install : [VcXsrv](https://sourceforge.net/projects/vcxsrv/)
 
 When running the program is important to check "Disable access control"
 
-Run Docker Compose like this:
+Run `Docker Compose` like this:
 
 ```bash
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml
+
 docker compose run poetry
 ```
 
-Or run Docker directly:
+Or run `Docker` directly:
 
 ```bash
 docker run -v ~/.openbb_terminal:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env DISPLAY=host.docker.internal:0.0 ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
 ```
 
-X-Server on macOS Users familiar with Docker and X-Server can set the DISPLAY
-variable in the file setenv described above. If you use this approach remember
-to add :0 at the end of your inet address. E.g. DISPLAY=192.168.1.155:0.
+### X-Server on macOS
+
+Users familiar with Docker and X-Server can set the `DISPLAY` variable in the file [setenv](/docker/setenv) described above. If you use this approach remember to add `:0` at the end of your inet address. E.g. `DISPLAY=192.168.1.155:0`.
 
 For help setting up the X-Server continue reading:
 
-Setting up X Quartz/X11 On macOS the X11 client of choice is XQuartz. On Windows
-it's Xming. XQuartz will be used as an example further on.
+#### Setting up X Quartz/X11
 
-Install X Quartz from https://www.xquartz.org/ With X Quartz open: go to
-Preferences -> Security and make sure both options are enabled.
-<img width="60%" alt="image" src="https://user-images.githubusercontent.com/18151143/132548605-235d774b-9aa6-4a45-afcf-58fb775d376a.png"></img>
-Adding the display for Docker From the command prompt or terminal, run the
-following to add your local configuration to the list of allowed access control:
+On macOS the X11 client of choice is [XQuartz](https://www.xquartz.org/). On Windows it's [Xming](http://www.straightrunning.com/XmingNotes/). XQuartz will be used as an example further on.
+
+0. Install X Quartz from <https://www.xquartz.org/>
+1. With X Quartz open: go to Preferences -> Security and make sure both options are enabled.
+   ![Screen Shot 2021-09-08 at 12 21 48 PM](https://user-images.githubusercontent.com/18151143/132548605-235d774b-9aa6-4a45-afcf-58fb775d376a.png)
+
+#### Adding the display for Docker
+
+From the command prompt or terminal, run the following to add your local configuration to the list of allowed access control:
 
 ```bash
 IP=$(ifconfig | grep inet | grep -v -e "127.0.0.1" | awk '$1=="inet" {print $2}')
@@ -209,15 +227,17 @@ Now we can run the docker container, adding the display to the environment:
 docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env-file=path/to/setenv --env DISPLAY=$IP:0 ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
 ```
 
-This container will be able to display all the same plots as the terminal
-interface.
+This container will be able to display all the same plots as the terminal interface.
 
-X-Server on Linux Desktop X-Server is default in Linux distribution. There is no
-need to install any clients.
+### X-Server on Linux Desktop
 
-Local docker container We can use IPC socket to connect Desktop.
+X-Server is default in Linux distribution. There is no need to install any clients.
 
-Add this setting to your .env file.
+#### Local docker container
+
+We can use IPC socket to connect Desktop.
+
+Add this setting to your `.env` file.
 
 ```bash
 OPENBB_BACKEND=Qt5Agg
@@ -231,7 +251,7 @@ docker run -it --rm --name openbb --env-file=./.env -e DISPLAY=$DISPLAY -v /tmp/
 xhost -local:
 ```
 
-If you're using remote docker host, you can connect with `ssh -X <FQDN/IP>`.
+If you're using remote docker host, you can connect with "ssh -X <FQDN/IP>".
 
 Then run the previous docker command.
 
@@ -239,11 +259,7 @@ Then run the previous docker command.
   <TabItem value="Source" label="Source">
 This installation type supports both Windows and Unix systems (Linux + MacOS).
 
-**NOTE for Windows users:** Some _not all_ Windows users would prefer to use an environment
-similar to what Linux and macOS users use. In this case it is easier to use Windows Subsystem
-for Linux (WSL). WSL emulates a Linux machine inside your Windows system. If this is the case -
-jump to the <a href="#installing-wsl-only-for-windows-users">Installing WSL (Only for Windows users)</a>
-section before proceeding.
+**NOTE for Windows users:** Some _not all_ Windows users would prefer to use an environment similar to what Linux and macOS users use. In this case it is easier to use Windows Subsystem for Linux (WSL). WSL emulates a Linux machine inside your Windows system. If this is the case - jump to the <a href="#installing-wsl-only-for-windows-users">Installing WSL (Only for Windows users)</a> section before proceeding.
 
 ### Installing the terminal
 
@@ -251,11 +267,7 @@ These steps are common in all operating systems (Windows with or without WSL, Ma
 
 This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.9.13
 
-Our current recommendation is to use this project with Anaconda's Python distribution - either full
-[**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or
-[**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html) (recommended).
-Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, the "Miniconda3 MacOSX 64-bit" version that works on both Intel and M1
-macs is recommended.
+Our current recommendation is to use this project with Anaconda's Python distribution - either full [**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or [**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html) (recommended). Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, the "Miniconda3 MacOSX 64-bit" version that works on both Intel and M1 macs is recommended.
 
 **NOTE:** We recommend using `conda` and `poetry` because it just works. You can use other python
 distributions and use raw `pip` instead of `poetry` but you will very likely bump into installation
@@ -274,10 +286,7 @@ have the dependencies working straight away.
 
       **ONLY REQUIRED ON WINDOWS IF NOT USING WSL**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
-   **NOTE for macOS users:** The link above gets you the Intel version of miniconda meaning if you're on an
-   Apple Silicon powered machine you will be using the terminal through Apple's rosetta2 layer. We recommend
-   sticking to this distribution for better compatibility until the dependency developers fully catch up with
-   Apple's transition to Apple Silicon.
+   **NOTE for macOS users:** The link above gets you the Intel version of miniconda meaning if you're on an Apple Silicon powered machine you will be using the terminal through Apple's rosetta2 layer. We recommend sticking to this distribution for better compatibility until the dependency developers fully catch up with Apple's transition to Apple Silicon.
 
 - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output should be something along the lines of: `conda 22.9.0`
 
@@ -311,8 +320,7 @@ brew install cmake
 
 **On Windows:**
 
-If you have followed the instructions in step 1 of this guide CMake was installed as a
-part of you Microsoft C++ Build Tools
+If you have followed the instructions in step 1 of this guide CMake was installed as a part of you Microsoft C++ Build Tools
 
 #### 3. Install git
 
@@ -333,13 +341,9 @@ cd OpenBBTerminal/
 
 #### 6. Create Environment
 
-You can name the environment whatever you want. Although you could use names such as:
-`welikethestock`, `thisistheway` or `diamondhands`, we recommend something simple and
-intuitive like `obb`. This is because this name will be used from now onwards.
+You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway` or `diamondhands`, we recommend something simple and intuitive like `obb`. This is because this name will be used from now onwards.
 
-Please note, the following setup has been confirmed to work for all OS (including M1)
-with the standard miniconda distribution. If you are using a different distribution,
-you will need to install it manually before proceeding.
+Please note, the following setup has been confirmed to work for all OS (including M1) with the standard miniconda distribution. If you are using a different distribution, you will need to install it manually before proceeding.
 
 ```bash
 conda env create -n obb --file build/conda/conda-3-9-env.yaml
@@ -369,8 +373,7 @@ Install the main dependencies with
 poetry install
 ```
 
-You are good to go with the core of the OpenBB Terminal. To install additional toolkits
-proceed with the following commands:
+You are good to go with the core of the OpenBB Terminal. To install additional toolkits proceed with the following commands:
 
 To install the Portfolio Optimization Toolkit run:
 
@@ -402,26 +405,17 @@ Or if you are old-fashioned run:
 python terminal.py
 ```
 
-**NOTE:** When you close the terminal and re-open it, the only command you need to re-call
-is `conda activate obb` before you call `openbb` again.
+**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate obb` before you call `openbb` again.
 
-**TROUBLESHOOT:** If you are having troubles to install, check out the
-[troubleshoot page](https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md).
-
-You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
+**TROUBLESHOOT:** If you are having troubles to install, check out the [troubleshoot page](/terminal/quickstart/troubleshooting). You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
 ## Advanced User Install - Custom installation procedures
 
-By default we advice using `conda` and `poetry` for environment setup and dependency management.
-Conda ships binaries for packages like `numpy` so these dependencies are not built from source locally by `pip`.
-Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies
-use versions that are compatible with each other.
+By default we advice using `conda` and `poetry` for environment setup and dependency management. Conda ships binaries for packages like `numpy` so these dependencies are not built from source locally by `pip`. Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies use versions that are compatible with each other.
 
-If you are using a conda environment the `build/conda` folder contains multiple `.yaml` configuration
-files that you can choose from.
+If you are using a conda environment the `build/conda` folder contains multiple `.yaml` configuration files that you can choose from.
 
-If you are using other python distributions we highly recommend that you use some virtual
-environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
+If you are using other python distributions we highly recommend that you use some virtual environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
 
 Requirements files that you can find in the project root:
 
@@ -436,19 +430,13 @@ You can install them with with pip
 
 The dependency tree is solved by poetry.
 
-Note: The libraries specified in the requirements files have been tested and work for
-the purpose of this project, however, these may be older versions. Hence, it is recommended
-for the user to set up a virtual python environment prior to installing these. This allows
-to keep dependencies required by different projects in separate places.
+Note: The libraries specified in the requirements files have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
 
 ### Installing WSL (Only for Windows users)
 
-If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/).
-Once you reach the section **Update Linux** on that tutorial, you should have a linux machine installed and can proceed
-to the next steps.
+If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/). Once you reach the section **Update Linux** on that tutorial, you should have a linux machine installed and can proceed to the next steps.
 
-Since WSL installation is headless by default (i.e., you have only access to a terminal running a linux distribution)
-you need some extra steps to be able to visualize the charts produced by the terminal (more detailed tutorial [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a)):
+Since WSL installation is headless by default (i.e., you have only access to a terminal running a linux distribution) you need some extra steps to be able to visualize the charts produced by the terminal (more detailed tutorial [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a)):
 
 1. Dynamically export the DISPLAY environment variable in WSL2:
 
@@ -466,14 +454,11 @@ After this, `VcXsrv` should be running successfully and we can proceed to termin
 
 ## Update Terminal
 
-The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be update,
-you can run:
+The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be update, you can use `git pull` to get the latest changes:
 
 ```bash
 git pull
 ```
-
-to get the latest changes.
 
 If this fails due to the fact that you had modified some python files, and there's a conflict with the updates, you can use:
 
@@ -481,17 +466,13 @@ If this fails due to the fact that you had modified some python files, and there
 git stash
 ```
 
-Then, re-run `poetry install` to get any new dependencies.
-
-Once installation is finished, you're ready to openbb.
-
-If you `stashed` your changes previously, you can un-stash them with:
+Then, re-run `poetry install` to get any new dependencies. Once installation is finished, you're ready to use the OpenBB Terminal again. If you `stashed` your changes previously, you can un-stash them with:
 
 ```bash
 git stash pop
 ```
 
-**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst`
+**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate obb`
 before you call `openbb` again.
 </TabItem>
 </Tabs>
