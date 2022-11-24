@@ -233,51 +233,8 @@ class ForecastController(BaseController):
         self.DATA_FILES = forecast_model.get_default_files()
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
-            for feature in [
-                "export",
-                "show",
-                "clean",
-                "desc",
-                "corr",
-                "ema",
-                "sto",
-                "rsi",
-                "roc",
-                "mom",
-                "delta",
-                "atr",
-                "signal",
-                "combine",
-                "rename",
-                "autoselect",
-                "autoarima",
-                "autoces",
-                "autoets",
-                "mstl",
-                "rwd",
-                "seasonalnaive",
-                "expo",
-                "theta",
-                "rnn",
-                "brnn",
-                "nbeats",
-                "tcn",
-                "regr",
-                "linregr",
-                "trans",
-                "tft",
-                "nhits",
-            ]:
-                choices[feature]["--target-dataset"] = {c: None for c in self.datasets.keys()}
-                # choices[feature] = {c: None for c in self.files}
-                # choices[feature]["-d"] = "--target-dataset"
-                pass
-
-            choices["combine"]["--columns"] = {c: {} for c in self.get_dataset_columns()}
-            choices["combine"]["-c"] = "--columns"
 
             self.choices = choices
-            print(choices["brnn"])
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def refresh_datasets_on_menu(self):
@@ -437,7 +394,7 @@ class ForecastController(BaseController):
         if target_dataset:
             parser.add_argument(
                 "-d",
-                "--target-dataset",
+                "--dataset",
                 help="The name of the dataset you want to select",
                 dest="target_dataset",
                 type=str,
