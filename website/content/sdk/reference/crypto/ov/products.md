@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 Get list of financial products from CoinGecko API
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L292)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L317)]
 
 ```python
 openbb.crypto.ov.products(sortby: str = "Name", ascend: bool = True)
@@ -45,7 +45,7 @@ openbb.crypto.ov.products(sortby: str = "Name", ascend: bool = True)
 
 Shows list of financial products. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L587)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L570)]
 
 ```python
 openbb.crypto.ov.products_chart(sortby: str = "Platform", ascend: bool = False, limit: int = 15, export: str = "")

@@ -16,7 +16,7 @@ Returns top stable coins [Source: CoinGecko]
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L191)]
 
 ```python
-openbb.crypto.ov.stables(limit: int = 20, sortby: str = "rank", ascend: bool = False)
+openbb.crypto.ov.stables(limit: int = 15, sortby: str = "Market_Cap_[$]", ascend: bool = False)
 ```
 
 ---
@@ -25,8 +25,8 @@ openbb.crypto.ov.stables(limit: int = 20, sortby: str = "rank", ascend: bool = F
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| limit | int | How many rows to show | 20 | True |
-| sortby | str | Key by which to sort data | rank | True |
+| limit | int | How many rows to show | 15 | True |
+| sortby | str | Key by which to sort data, default is Market_Cap_[$] | Market_Cap_[$] | True |
 | ascend | bool | Flag to sort data ascending | False | True |
 
 
@@ -36,7 +36,7 @@ openbb.crypto.ov.stables(limit: int = 20, sortby: str = "rank", ascend: bool = F
 
 | Type | Description |
 | ---- | ----------- |
-| pd.DataFrame | Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d, Url |
+| pd.DataFrame | Dataframe with stable coins data |
 ---
 
 
@@ -49,7 +49,7 @@ Shows stablecoins data [Source: CoinGecko]
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L331)]
 
 ```python
-openbb.crypto.ov.stables_chart(limit: int = 15, export: str = "", sortby: str = "rank", ascend: bool = False, pie: bool = False)
+openbb.crypto.ov.stables_chart(limit: int = 15, export: str = "", sortby: str = "Market_Cap_[$]", ascend: bool = False, pie: bool = True)
 ```
 
 ---
@@ -59,10 +59,11 @@ openbb.crypto.ov.stables_chart(limit: int = 15, export: str = "", sortby: str = 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | limit | int | Number of records to display | 15 | True |
-| sortby | str | Key by which to sort data | rank | True |
+| sortby | str | Key by which to sort data, default is Market_Cap_[$] | Market_Cap_[$] | True |
 | ascend | bool | Flag to sort data ascending | False | True |
+| pie | bool | Whether to show a pie chart, default is True | True | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| pie | bool | Whether to show a pie chart | False | True |
+| pie | bool | Whether to show a pie chart | True | True |
 
 
 ---
