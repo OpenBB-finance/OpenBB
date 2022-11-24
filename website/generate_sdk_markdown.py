@@ -242,10 +242,9 @@ def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
     examples = []
 
     for example in doc_parsed.examples:
-        if example.snippet:
-            examples.append(
-                {"snippet": example.snippet, "description": example.description}
-            )
+        examples.append(
+            {"snippet": example.snippet, "description": example.description}
+        )
 
     return {
         "name": trailmap.class_attr,
