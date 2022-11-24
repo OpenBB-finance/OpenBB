@@ -26,7 +26,7 @@ usage: treasury [-m MATURITY] [--show]
 | frequency | The frequency, this can be annually, monthly, weekly or daily | monthly | True | annually, monthly, weekly, daily |
 | type | Choose from: nominal, inflation, average, secondary | nominal | True | None |
 | start_date | The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) | 1934-01-31 | True | None |
-| end_date | The end date of the data (format: YEAR-DAY-MONTH, i.e. 2021-06-02) | 2022-11-23 | True | None |
+| end_date | The end date of the data (format: YEAR-DAY-MONTH, i.e. 2021-06-02) | 2022-11-24 | True | None |
 
 
 ---
