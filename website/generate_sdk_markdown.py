@@ -9,7 +9,10 @@ from typing import Any, Callable, Dict, ForwardRef, List, Literal, Optional
 
 from docstring_parser import parse
 
-from openbb_terminal.core.library.trail_map import FORECASTING, MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.library.trail_map import (
+    FORECASTING_TOOLKIT_ENABLED,
+    MISCELLANEOUS_DIRECTORY,
+)
 from openbb_terminal.rich_config import console
 
 MAP_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map.csv"
@@ -159,7 +162,7 @@ class Trailmap:
 def get_trailmaps() -> List[Trailmap]:
     trailmaps = []
     for tmap_csv in [MAP_PATH, MAP_FORECASTING_PATH]:
-        if tmap_csv == MAP_FORECASTING_PATH and not FORECASTING:
+        if tmap_csv == MAP_FORECASTING_PATH and not FORECASTING_TOOLKIT_ENABLED:
             console.print(
                 "[bold red]Forecasting is disabled. Forecasting will not be included in the Generation of Docs[/bold red]"
             )
