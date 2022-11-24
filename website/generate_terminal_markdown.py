@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import traceback
 from datetime import datetime
 from pathlib import Path
@@ -202,6 +203,13 @@ def main() -> bool:
     )
     content_path = website_path / "content/terminal/reference"
     terminal_ref = {}
+
+    for file in content_path.glob("*"):
+        if file.is_file():
+            file.unlink()
+        else:
+            shutil.rmtree(file)
+
     for ctrlstr in ctrls:
         try:
             ctrl = load_ctrls.get_controller_doc(ctrlstr)
