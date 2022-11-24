@@ -178,6 +178,25 @@ class EconomyController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
+            # This is still needed because we can't use choices and nargs separated by comma
+            choices["treasury"]["--type"] = {
+                c: {} for c in econdb_model.TREASURIES["instruments"]
+            }
+            choices["treasury"]["-t"] = "--type"
+            choices["macro"]["--parameters"] = {c: {} for c in econdb_model.PARAMETERS}
+            choices["macro"]["-p"] = "--parameters"
+            choices["macro"]["--countries"] = {
+                c: {} for c in econdb_model.COUNTRY_CODES
+            }
+            choices["macro"]["-c"] = "--countries"
+            choices["fred"]["--parameter"] = {c: {} for c in self.fred_query.tolist()}
+            choices["fred"]["-p"] = "--parameter"
+            choices["index"]["--indices"] = {c: {} for c in yfinance_model.INDICES}
+            choices["index"]["-i"] = "--indices"
+            choices["bigmac"]["--countries"] = {
+                c: {} for c in nasdaq_model.get_country_codes()["Code"].values
+            }
+            choices["bigmac"]["-c"] = "--countries"
 
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -437,7 +456,6 @@ class EconomyController(BaseController):
             "--countries",
             help="Country codes to get data for.",
             dest="countries",
-            choices=list(nasdaq_model.get_country_codes()["Code"].values),
             default="USA",
             type=str,
         )
@@ -449,6 +467,7 @@ class EconomyController(BaseController):
             raw=True,
         )
         if ns_parser:
+            ns_parser.countries = list_from_str(ns_parser.countries)
             if ns_parser.codes:
                 console.print(
                     nasdaq_model.get_country_codes().to_string(index=False), "\n"
@@ -476,7 +495,6 @@ class EconomyController(BaseController):
             "-p",
             "--parameters",
             type=str,
-            choices=econdb_model.PARAMETERS,
             dest="parameters",
             help="Abbreviation(s) of the Macro Economic data",
             default="CPI",
@@ -486,7 +504,6 @@ class EconomyController(BaseController):
             "--countries",
             type=str,
             dest="countries",
-            choices=econdb_model.COUNTRY_CODES,
             help="The country or countries you wish to show data for",
             default="united_states",
         )
@@ -620,7 +637,6 @@ class EconomyController(BaseController):
             "--parameter",
             type=str,
             dest="parameter",
-            choices=self.fred_query.tolist(),
             default="",
             help="Series ID of the Macro Economic data from FRED",
         )
@@ -744,7 +760,6 @@ class EconomyController(BaseController):
             "-i",
             "--indices",
             type=str,
-            choices=yfinance_model.INDICES,
             dest="indices",
             help="One or multiple indices",
         )
@@ -900,7 +915,6 @@ class EconomyController(BaseController):
             "--type",
             type=str,
             dest="type",
-            choices=econdb_model.TREASURIES["instruments"],
             help="Choose from: nominal, inflation, average, secondary",
             default="nominal",
         )
@@ -1127,7 +1141,9 @@ class EconomyController(BaseController):
             "--country",
             action="store",
             dest="country",
-            choices=investingcom_model.CALENDAR_COUNTRIES,
+            choices=[
+                x.replace(" ", "_") for x in investingcom_model.CALENDAR_COUNTRIES
+            ],
             type=str,
             default="",
             help="Display calendar for specific country.",
