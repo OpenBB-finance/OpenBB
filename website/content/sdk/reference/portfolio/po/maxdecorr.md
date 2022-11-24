@@ -45,6 +45,7 @@ openbb.portfolio.po.maxdecorr(portfolio_engine: portfolio_optimization.po_engine
 ---
 
 ## Examples
+
 (        value
  AAPL  0.33444
  MSFT  0.24963

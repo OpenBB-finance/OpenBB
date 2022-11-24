@@ -34,6 +34,7 @@ openbb.keys.set_keys(keys_dict: Dict[str, Dict[str, Union[str, bool]]], persist:
 ---
 
 ## Examples
+
         "fred": {"key": "XXXXX"},
         "binance": {"key": "YYYYY", "secret": "ZZZZZ"},
     }

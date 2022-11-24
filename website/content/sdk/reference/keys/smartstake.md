@@ -35,6 +35,7 @@ openbb.keys.smartstake(key: str, access_token: str, persist: bool = False, show_
 ---
 
 ## Examples
+
         key="example_key",
         access_token="example_access_token",
         )

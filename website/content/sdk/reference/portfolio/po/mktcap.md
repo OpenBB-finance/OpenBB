@@ -42,6 +42,7 @@ openbb.portfolio.po.mktcap(symbols: List[str] = None, portfolio_engine: portfoli
 ---
 
 ## Examples
+
 (         value
  AAPL  0.465338
  MSFT  0.345488

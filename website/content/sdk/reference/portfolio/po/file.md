@@ -33,6 +33,7 @@ openbb.portfolio.po.file(portfolio_engine: portfolio_optimization.po_engine.PoEn
 ---
 
 ## Examples
+
 {}
 ```python
 from openbb_terminal.sdk import openbb

@@ -53,6 +53,7 @@ openbb.portfolio.po.minrisk(portfolio_engine: portfolio_optimization.po_engine.P
 ---
 
 ## Examples
+
     (        value
      AAPL  0.25044
      MSFT  0.49509

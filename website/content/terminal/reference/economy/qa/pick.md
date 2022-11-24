@@ -10,8 +10,7 @@ Load a FRED series to current selection
 ### Usage
 
 ```python
-usage: load
-            [-c {Open,High,Low,Close,Adj Close,Volume,date_id,OC_High,OC_Low,Returns,LogRet}]
+usage: load [-c {Open,High,Low,Close,Adj Close,Volume,date_id,OC_High,OC_Low,Returns,LogRet}]
 ```
 
 ---

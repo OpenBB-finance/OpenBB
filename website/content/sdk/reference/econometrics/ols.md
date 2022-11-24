@@ -33,6 +33,7 @@ openbb.econometrics.ols(Y: pd.DataFrame, X: pd.DataFrame)
 ---
 
 ## Examples
+
 SDK Snippet:
 ```python
 import openbb_terminal.sdk as openbb

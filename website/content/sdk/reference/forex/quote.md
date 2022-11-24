@@ -34,6 +34,7 @@ openbb.forex.quote(symbol: str, source: str = "YahooFinance")
 
 ## Examples
 
+
 This also supports AlphaVantage and will handle different conventions
 ```python
 from openbb_terminal.sdk import openbb

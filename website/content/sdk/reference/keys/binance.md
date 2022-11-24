@@ -35,6 +35,7 @@ openbb.keys.binance(key: str, secret: str, persist: bool = False, show_output: b
 ---
 
 ## Examples
+
         key="example_key",
         secret="example_secret"
     )

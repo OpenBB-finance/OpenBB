@@ -10,9 +10,7 @@ Shows available trading pairs on Coinbase
 ### Usage
 
 ```python
-usage: pairs [-l LIMIT]
-             [-s {id,display_name,base_currency,quote_currency,base_min_size,base_max_size,min_market_funds,max_market_funds}]
-             [-r]
+usage: pairs [-l LIMIT] [-s {id,display_name,base_currency,quote_currency,base_min_size,base_max_size,min_market_funds,max_market_funds}] [-r]
 ```
 
 ---

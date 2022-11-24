@@ -10,8 +10,7 @@ Perform TCN forecast: https://unit8co.github.io/darts/generated_api/darts.models
 ### Usage
 
 ```python
-usage: tcn [--num-filters NUM_FILTERS] [--weight-norm WEIGHT_NORM]
-           [--dilation-base DILATION_BASE]
+usage: tcn [--num-filters NUM_FILTERS] [--weight-norm WEIGHT_NORM] [--dilation-base DILATION_BASE]
 ```
 
 ---

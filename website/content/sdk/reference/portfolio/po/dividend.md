@@ -42,6 +42,7 @@ openbb.portfolio.po.dividend(symbols: List[str] = None, portfolio_engine: portfo
 ---
 
 ## Examples
+
 (         value
  AAPL  0.350575
  MSFT  0.649425

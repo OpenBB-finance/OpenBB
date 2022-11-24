@@ -34,6 +34,7 @@ openbb.economy.futures(source: Any = "WSJ", future_type: str = "Indices")
 
 ## Examples
 
+
 To sort by the largest percent change:
 ```python
 from openbb_terminal.sdk import openbb

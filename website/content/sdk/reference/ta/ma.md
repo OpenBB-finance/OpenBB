@@ -45,6 +45,7 @@ This function does not return anything
 ## Examples
 
 
+
 ```python
 from openbb_terminal.sdk import openbb
 df = openbb.stocks.load("AAPL")
@@ -90,6 +91,7 @@ This function does not return anything
 ---
 
 ## Examples
+
 
 
 ```python

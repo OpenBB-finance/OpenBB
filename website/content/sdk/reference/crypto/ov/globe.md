@@ -33,6 +33,7 @@ openbb.crypto.ov.globe(source: str = "CoinGecko")
 
 ## Examples
 
+
 To get data from CoinPaprika, use the source parameter:
 ```python
 from openbb_terminal.sdk import openbb

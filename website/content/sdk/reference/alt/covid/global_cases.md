@@ -32,6 +32,7 @@ openbb.alt.covid.global_cases(country: str)
 ---
 
 ## Examples
+
 Dataframe of historical cases for United States
 
 

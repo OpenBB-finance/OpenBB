@@ -34,6 +34,7 @@ openbb.crypto.disc.top_coins(source: str = "CoinGecko", limit: int = 10)
 
 ## Examples
 
+
 To get 30 results from coinmarketcap, use the source parameter and the limit parameter:
 ```python
 from openbb_terminal.sdk import openbb

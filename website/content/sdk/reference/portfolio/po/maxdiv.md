@@ -48,6 +48,7 @@ openbb.portfolio.po.maxdiv(portfolio_engine: portfolio_optimization.po_engine.Po
 ---
 
 ## Examples
+
 (        value
  AAPL  0.33696
  MSFT  0.26766

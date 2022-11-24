@@ -52,6 +52,7 @@ openbb.portfolio.po.blacklitterman(portfolio_engine: portfolio_optimization.po_e
 ---
 
 ## Examples
+
 (        value
  AAPL  0.48920
  MSFT  0.28391

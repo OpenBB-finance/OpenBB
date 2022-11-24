@@ -43,6 +43,7 @@ openbb.portfolio.po.property(symbols: List[str] = None, portfolio_engine: portfo
 ---
 
 ## Examples
+
 (         value
  AAPL  0.223192
  MSFT  0.215707

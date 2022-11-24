@@ -42,6 +42,7 @@ openbb.portfolio.po.equal(portfolio_engine: portfolio_optimization.po_engine.PoE
 ---
 
 ## Examples
+
 (        value
  AAPL  0.33333
  MSFT  0.33333

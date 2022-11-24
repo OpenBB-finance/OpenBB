@@ -10,9 +10,7 @@ Search mutual funds in selected country based on selected field.
 ### Usage
 
 ```python
-usage: search [-b {name,issuer,isin,symbol}] --fund FUND [FUND ...]
-              [-s {country,name,symbol,issuer,isin,asset_class,currency,underlying}]
-              [-l LIMIT] [-r]
+usage: search [-b {name,issuer,isin,symbol}] --fund FUND [FUND ...] [-s {country,name,symbol,issuer,isin,asset_class,currency,underlying}] [-l LIMIT] [-r]
 ```
 
 ---

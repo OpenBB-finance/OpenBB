@@ -10,8 +10,7 @@ Perform NBEATS forecast (Neural Bayesian Estimation of Time Series): https://uni
 ### Usage
 
 ```python
-usage: nbeats [--num_stacks NUM_STACKS] [--num_blocks NUM_BLOCKS]
-              [--num_layers NUM_LAYERS] [--layer_widths LAYER_WIDTHS]
+usage: nbeats [--num_stacks NUM_STACKS] [--num_blocks NUM_BLOCKS] [--num_layers NUM_LAYERS] [--layer_widths LAYER_WIDTHS]
 ```
 
 ---

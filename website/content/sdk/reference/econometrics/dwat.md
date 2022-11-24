@@ -38,6 +38,7 @@ openbb.econometrics.dwat(model: statsmodels.regression.linear_model.RegressionRe
 ---
 
 ## Examples
+
 SDK Snippet:
 ```python
 from openbb_terminal.sdk import openbb

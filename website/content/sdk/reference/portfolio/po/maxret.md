@@ -53,6 +53,7 @@ openbb.portfolio.po.maxret(portfolio_engine: portfolio_optimization.po_engine.Po
 ---
 
 ## Examples
+
 (      value
  AAPL    1.0
  MSFT    0.0

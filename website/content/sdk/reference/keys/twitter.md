@@ -36,6 +36,7 @@ openbb.keys.twitter(key: str, secret: str, access_token: str, persist: bool = Fa
 ---
 
 ## Examples
+
         key="example_key",
         secret="example_secret",
         access_token="example_access_token"

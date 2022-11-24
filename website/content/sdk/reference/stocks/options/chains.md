@@ -35,6 +35,7 @@ openbb.stocks.options.chains(symbol: str, source: str = "Nasdaq", expiration: Op
 
 ## Examples
 
+
 To get a specific expiration date, use the expiration parameter
 
 ```python

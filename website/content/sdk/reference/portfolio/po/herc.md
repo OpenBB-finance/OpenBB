@@ -59,6 +59,7 @@ openbb.portfolio.po.herc(portfolio_engine: portfolio_optimization.po_engine.PoEn
 ---
 
 ## Examples
+
 (        value
  AAPL  0.17521
  MSFT  0.19846

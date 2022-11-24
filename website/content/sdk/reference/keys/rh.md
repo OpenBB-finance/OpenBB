@@ -35,6 +35,7 @@ openbb.keys.rh(username: str, password: str, persist: bool = False, show_output:
 ---
 
 ## Examples
+
         username="example_username",
         password="example_password"
     )

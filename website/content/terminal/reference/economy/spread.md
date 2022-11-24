@@ -10,8 +10,7 @@ Generate bond spread matrix.
 ### Usage
 
 ```python
-usage: spread [-g {G7,PIIGS,EZ,AMERICAS,EUROPE,ME,APAC,AFRICA}] [-c COUNTRIES]
-              [-m MATURITY] [--change CHANGE] [--color {rgb,binary,openbb}]
+usage: spread [-g {G7,PIIGS,EZ,AMERICAS,EUROPE,ME,APAC,AFRICA}] [-c COUNTRIES] [-m MATURITY] [--change CHANGE] [--color {rgb,binary,openbb}]
 ```
 
 ---

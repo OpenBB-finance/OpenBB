@@ -42,6 +42,7 @@ openbb.econometrics.panel(Y: pd.DataFrame, X: pd.DataFrame, regression_type: str
 ---
 
 ## Examples
+
 SDK Snippet:
 ```python
 from openbb_terminal.sdk import openbb

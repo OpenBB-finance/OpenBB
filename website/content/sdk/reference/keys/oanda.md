@@ -36,6 +36,7 @@ openbb.keys.oanda(account: str, access_token: str, account_type: str = "", persi
 ---
 
 ## Examples
+
         account="example_account",
         access_token="example_access_token",
         account_type="example_account_type"

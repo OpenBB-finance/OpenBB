@@ -38,6 +38,7 @@ This function does not return anything
 ---
 
 ## Examples
+
         "SECTOR": {
             "AAPL": "INFORMATION TECHNOLOGY",
             "MSFT": "INFORMATION TECHNOLOGY",
@@ -114,6 +115,7 @@ This function does not return anything
 ---
 
 ## Examples
+
         "SECTOR": {
             "AAPL": "INFORMATION TECHNOLOGY",
             "MSFT": "INFORMATION TECHNOLOGY",

@@ -33,6 +33,7 @@ openbb.portfolio.po.show(portfolio_engine: portfolio_optimization.po_engine.PoEn
 ---
 
 ## Examples
+
         "SECTOR": {
             "AAPL": "INFORMATION TECHNOLOGY",
             "MSFT": "INFORMATION TECHNOLOGY",

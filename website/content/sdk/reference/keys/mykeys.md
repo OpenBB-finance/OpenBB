@@ -32,6 +32,7 @@ openbb.keys.mykeys(show: bool = False)
 ---
 
 ## Examples
+
                    Key
           API
  BITQUERY_KEY  *******
