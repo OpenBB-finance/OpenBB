@@ -6,7 +6,7 @@ import json
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import Union
+from typing import Union, Optional
 
 import ccxt
 import matplotlib.pyplot as plt
@@ -766,6 +766,12 @@ def plot_chart(
         Currency (only used for chart title), by default ""
     yscale: str
         Scale for y axis of plot Either linear or log
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> eth_df = openbb.crypto.load("ETH")
+    >>> openbb.crypto.chart(prices_df=eth_df, to_symbol="usdt", from_symbol="eth", source="binance")
     """
     del interval
 
@@ -811,7 +817,8 @@ def plot_candles(
     title: str = "",
     external_axes: Union[list[plt.Axes], None] = None,
     yscale: str = "linear",
-) -> None:
+    raw: bool = False,
+) -> Optional[pd.DataFrame]:
     """Plot candle chart from dataframe. [Source: Binance]
 
     Parameters
@@ -830,6 +837,12 @@ def plot_candles(
         External axes (1 axis is expected in the list), by default None
     yscale : str
         Scaling for y axis.  Either linear or log
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.crypto.candle(symbol="eth")
+    >>> openbb.crypto.candle(symbol="btc", raw=True)
     """
 
     if data.empty:
@@ -842,6 +855,9 @@ def plot_candles(
             vs_currency=vs_currency,
             source=source,
         )
+
+    if raw:
+        return data
 
     candle_chart_kwargs = {
         "type": "candle",
