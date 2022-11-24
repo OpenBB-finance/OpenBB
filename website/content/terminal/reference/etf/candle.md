@@ -10,7 +10,9 @@ Shows historic data for an ETF
 ### Usage
 
 ```python
-usage: candle [-p] [--sort {adjclose,open,close,high,low,volume,returns,logret}] [-r] [--raw] [-n NUM] [-t] [--ma MOV_AVG]
+usage: candle [-p]
+              [--sort {adjclose,open,close,high,low,volume,returns,logret}]
+              [-r] [--raw] [-n NUM] [-t] [--ma MOV_AVG]
 ```
 
 ---

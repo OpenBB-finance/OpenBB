@@ -10,7 +10,8 @@ Shows a plot for the given x and y variables
 ### Usage
 
 ```python
-usage: plot [-p] [-x {ltd,s,lp,b,a,c,pc,v,oi,iv}] [-y {ltd,s,lp,b,a,c,pc,v,oi,iv}] [-c {smile}]
+usage: plot [-p] [-x {ltd,s,lp,b,a,c,pc,v,oi,iv}]
+            [-y {ltd,s,lp,b,a,c,pc,v,oi,iv}] [-c {smile}]
 ```
 
 ---

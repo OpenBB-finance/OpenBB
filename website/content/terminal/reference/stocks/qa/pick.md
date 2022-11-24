@@ -10,7 +10,8 @@ Change target variable
 ### Usage
 
 ```python
-usage: pick [-t {open,high,low,close,adjclose,volume,date_id,oc_high,oc_low,returns,logret,logprice}]
+usage: pick
+            [-t {open,high,low,close,adjclose,volume,date_id,oc_high,oc_low,returns,logret,logprice}]
 ```
 
 ---

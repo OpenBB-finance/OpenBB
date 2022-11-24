@@ -10,7 +10,9 @@ Shows Top Crypto Exchanges You can display only N number exchanges with --limit 
 ### Usage
 
 ```python
-usage: exchanges [-l LIMIT] [-s {Rank,Trust_Score,Id,Name,Country,Year Established,Trade_Volume_24h_BTC,rank,name,currencies,markets,fiats,confidence,volume_24h,volume_7d,volume_30d,sessions_per_month}] [-r] [-u]
+usage: exchanges [-l LIMIT]
+                 [-s {Rank,Trust_Score,Id,Name,Country,Year Established,Trade_Volume_24h_BTC,rank,name,currencies,markets,fiats,confidence,volume_24h,volume_7d,volume_30d,sessions_per_month}]
+                 [-r] [-u]
                  [--vs {BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK}]
 ```
 
