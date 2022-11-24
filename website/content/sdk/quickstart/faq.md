@@ -5,19 +5,19 @@ sidebar_position: 3
 
 # FAQ
 
-<details><summary>Where does the data comes from?</summary>
+<details><summary>Where does the data from the OpenBB SDK come from?</summary>
 <p>
 
-OpenBB does not provide any data. OpenBB is a data aggregator that connects to
-multiple data providers and provides a unified API to access the data.
+The OpenBB platform does not provide any data itself as the platform is a data aggregator that connects to
+almost a hundred different data providers and APIs to access the data.
 
 </p>
 </details>
 
-<details><summary>What programs do I need to allow for Windows Firewall?</summary>
+<details><summary>What programs need to be allowed for Windows Firewall?</summary>
 <p>
 
-Windows Firewall will need to allow the following applications through (if not already):
+When issues arise regarding Windows Firewall, please allow the following applications through (if not already):
 
 - BranchCache
 - Hyper-V
@@ -29,11 +29,11 @@ From the Windows Security menu, click on the Firewall & Network Protection tab, 
 </p>
 </details>
 
-<details><summary>In what Operating Systems can I run OpenBB SDK?</summary>
+<details><summary>On what Operating Systems can I run OpenBB SDK?</summary>
 <p>
 
-OpenBB SDK is compatible with Windows, Linux, and Mac OS. Check the
-[installation guide](/sdk/getstarted/installation) and [requirements outline](/sdk/getstarted/requirements) for more details.
+The OpenBB Terminal is compatible with Windows, Mac Os and Linux. Check the
+[installation guide](/sdk/quickstart/installation) and [requirements outline](/sdk/quickstart/requirements) for more details.
 
 </p>
 </details>
