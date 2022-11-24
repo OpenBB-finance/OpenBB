@@ -348,7 +348,6 @@ stocks.ca.volume,openbb_terminal.stocks.comparison_analysis.yahoo_finance_model.
 stocks.dps.prom,openbb_terminal.stocks.dark_pool_shorts.finra_model.getATSdata,openbb_terminal.stocks.dark_pool_shorts.finra_view.darkpool_otc
 stocks.dps.dpotc,openbb_terminal.stocks.dark_pool_shorts.finra_model.getTickerFINRAdata,openbb_terminal.stocks.dark_pool_shorts.finra_view.darkpool_ats_otc
 stocks.dps.ctb,openbb_terminal.stocks.dark_pool_shorts.ibkr_model.get_cost_to_borrow,
-stocks.dps.volexch,openbb_terminal.stocks.dark_pool_shorts.nyse_model.get_short_data_by_exchange,openbb_terminal.stocks.dark_pool_shorts.nyse_view.display_short_by_exchange
 stocks.dps.psi_q,openbb_terminal.stocks.dark_pool_shorts.quandl_model.get_short_interest,openbb_terminal.stocks.dark_pool_shorts.quandl_view.short_interest
 stocks.dps.ftd,openbb_terminal.stocks.dark_pool_shorts.sec_model.get_fails_to_deliver,openbb_terminal.stocks.dark_pool_shorts.sec_view.fails_to_deliver
 stocks.dps.hsi,openbb_terminal.stocks.dark_pool_shorts.shortinterest_model.get_high_short_interest,
