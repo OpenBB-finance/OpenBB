@@ -56,9 +56,16 @@ def view_ma(
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> spuk_index = openbb.economy.index(indices = ['^SPUK'])
+    >>> openbb.ta.ma_chart(data = spuk_index['^SPUK'], symbol = 'S&P UK Index', ma_type = 'EMA', window = [20, 50, 100])
     """
     # Define a dataframe for adding EMA series to it
     price_df = pd.DataFrame(data)
+    price_df.index.name = "date"
 
     l_legend = [symbol]
     if not window:
