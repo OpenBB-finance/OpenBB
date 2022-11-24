@@ -391,7 +391,7 @@ def display_stablecoins(
         console.print(
             f"First {limit} stablecoins have a total "
             f"{lambda_long_number_format_with_type_check(total_market_cap)}"
-            "dollars of market cap."
+            "dollars of market cap.\n"
         )
 
         df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))

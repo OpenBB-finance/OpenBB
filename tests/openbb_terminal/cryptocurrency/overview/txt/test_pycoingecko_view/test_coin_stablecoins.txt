@@ -1,17 +1,18 @@
-First 15 stablecoins have a total 142.930 Bdollars of market cap.
+First 15 stablecoins have a total 142.810 Bdollars of market cap.
+
    Symbol             Name Price [$] Market Cap [$] Market Cap Rank Change 7d [%] Change 24h [%] Volume [$] Percentage [%] of top 15
-0    usdt           Tether     1.002       65.509 B               3         0.115          0.117   35.587 B                   45.833
-1    usdc         USD Coin     1.002       43.783 B               5        -0.157         -0.045    3.162 B                   30.632
-2    busd      Binance USD     1.003       22.896 B               6         0.182          0.151    8.821 B                   16.019
-3     dai              Dai     1.002        5.256 B              16        -0.119          0.003  381.939 M                    3.677
-4    frax             Frax     1.003        1.181 B              39         0.028          0.105    6.464 M                    0.826
-5    usdp       Pax Dollar         1      908.606 M              46        -0.335         -0.284    3.781 M                    0.636
-6    tusd          TrueUSD     1.003      745.673 M              55         0.117          0.197   43.865 M                    0.522
-7    usdd             USDD     0.995      720.898 M              56         0.934          0.374   46.936 M                    0.504
-8    gusd    Gemini Dollar     1.004      606.091 M              62         0.353          0.383    4.187 M                    0.424
-9    xaut      Tether Gold   1.717 K      422.755 M              84         0.158          0.803  660.180 K                    0.296
-10   eurt      Euro Tether     1.040      214.264 M             138         0.359          0.685    1.324 M                    0.150
-11   ustc  TerraClassicUSD     0.021      204.435 M             142        -5.093          1.270   17.765 M                    0.143
-12   lusd      Liquity USD     1.044      184.920 M             157         0.052          0.165    4.569 M                    0.129
-13  alusd     Alchemix USD     0.996      174.092 M             165         0.117          0.112  186.102 K                    0.122
-14   eurs      STASIS EURO     1.007      124.520 M             198         1.144          1.488  540.758 K                    0.087
+0    usdt           Tether         1       65.385 B               3        -0.075         -0.049   35.504 B                   45.785
+1    usdc         USD Coin     1.001       43.800 B               5        -0.287         -0.064    3.142 B                   30.670
+2    busd      Binance USD     1.002       22.888 B               6         0.025          0.049    8.769 B                   16.027
+3     dai              Dai     1.001        5.250 B              16        -0.251         -0.062  380.626 M                    3.676
+4    frax             Frax     1.000        1.178 B              39        -0.281         -0.027    6.424 M                    0.825
+5    usdp       Pax Dollar     0.998      907.655 M              46        -0.551         -0.244    3.965 M                    0.636
+6    tusd          TrueUSD     1.001      746.543 M              55        -0.127          0.110   43.635 M                    0.523
+7    usdd             USDD     0.994      720.700 M              56         0.750          0.068   46.836 M                    0.505
+8    gusd    Gemini Dollar     1.001      607.845 M              62         0.007          0.091    4.173 M                    0.426
+9    xaut      Tether Gold   1.714 K      422.540 M              84        -0.013          0.684  657.825 K                    0.296
+10   eurt      Euro Tether     1.039      214.294 M             138         0.277          0.914    1.282 M                    0.150
+11   ustc  TerraClassicUSD     0.021      204.076 M             142        -5.280          1.723   17.618 M                    0.143
+12   lusd      Liquity USD     1.037      185.708 M             156        -0.610         -0.192    4.368 M                    0.130
+13  alusd     Alchemix USD     0.994      173.836 M             165        -0.063          0.000  185.773 K                    0.122
+14   eurs      STASIS EURO     1.005      124.997 M             198         0.931          1.514  539.630 K                    0.088
