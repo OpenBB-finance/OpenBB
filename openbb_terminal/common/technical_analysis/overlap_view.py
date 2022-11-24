@@ -60,8 +60,13 @@ def view_ma(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> spuk_index = openbb.economy.index(indices = ['^SPUK'])
-    >>> openbb.ta.ma_chart(data = spuk_index['^SPUK'], symbol = 'S&P UK Index', ma_type = 'EMA', window = [20, 50, 100])
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.ta.ma_chart(data=df["Adj Close"], symbol="AAPL", ma_type="EMA", window=[20, 50, 100])
+
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> spuk_index = openbb.economy.index(indices = ["^SPUK"])
+    >>> openbb.ta.ma_chart(data = spuk_index["^SPUK"], symbol = "S&P UK Index", ma_type = "EMA", window = [20, 50, 100])
     """
     # Define a dataframe for adding EMA series to it
     price_df = pd.DataFrame(data)
