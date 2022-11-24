@@ -72,7 +72,7 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Install Package
-        run: poetry install --no-interaction -E doc && pip install "u8darts[torch]"
+        run: poetry install --no-interaction -E doc
 
       - name: Install Optimization Toolkit
         run: poetry install -E optimization --no-interaction
@@ -82,6 +82,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
+          pip install "u8darts[torch]"
           pytest tests/
 
       - name: Start Terminal and exit
@@ -141,10 +142,10 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Install Package
-        run: poetry install --no-interaction && pip install "u8darts[torch]"
+        run: poetry install --no-interaction
 
       - name: Install Optimization Toolkit
-        run: poetry install -E optimization --no-interaction
+        run: poetry install -E optimization --no-interaction -E doc
 
       - name: List installed packages
         shell: bash -l {0}
@@ -157,6 +158,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
+          pip install "u8darts[torch]"
           pytest tests/
 
       - name: Start Terminal and exit
