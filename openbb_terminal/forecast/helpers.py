@@ -650,7 +650,10 @@ def get_series(
         # for the sdk, we must check if date is a column not an index
         # check if date is in the index, if true, reset the index
         if time_col in data.index.names:
-            data.reset_index(inplace=True)
+            # # make a new column with the index
+            data[time_col] = data.index
+            # reset the index
+            data.reset_index(drop=True, inplace=True)
             # remove 00:00:00 from 2019-11-19 00:00:00
             data[time_col] = data[time_col].apply(lambda x: dt_format(x))
 
