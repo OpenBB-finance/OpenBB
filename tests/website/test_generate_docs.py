@@ -1,16 +1,20 @@
 from typing import Optional
 
+import pytest
+
 from website import (
     generate_sdk_markdown as gen_sdk,
     generate_terminal_markdown as gen_term,
 )
 
 
+@pytest.mark.autodoc
 def test_generate_terminal_markdown():
     """Test the terminal markdown generator"""
     assert gen_term.main() is True
 
 
+@pytest.mark.autodoc
 def test_generate_sdk_markdown():
     """Test the sdk markdown generator"""
     assert gen_sdk.main() is True
@@ -87,6 +91,7 @@ openbb.mock(arg1: Optional[str] = "Test", arg2: Optional[bool] = True)
 """
 
 
+@pytest.mark.autodoc
 def test_sdk_docstring_to_markdown():
     """Test the docstring to markdown converter"""
     mock = MockTrailMap()
