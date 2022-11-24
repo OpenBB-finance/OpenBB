@@ -631,7 +631,7 @@ class ForecastController(BaseController):
                 help="Export predictions to a csv file.",
             )
 
-            # if user does not put in --target-dataset
+            # if user does not put in --dataset
         return parser
 
     def load(self, ticker: str, data: pd.DataFrame):
@@ -911,9 +911,9 @@ class ForecastController(BaseController):
             description="Show descriptive statistics of a dataset",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(parser, target_dataset=True)
         ns_parser = self.parse_known_args_and_warn(
@@ -1056,9 +1056,9 @@ class ForecastController(BaseController):
             description="Plot correlation coefficients.",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(parser, target_dataset=True)
         ns_parser = self.parse_known_args_and_warn(
@@ -1174,9 +1174,9 @@ class ForecastController(BaseController):
             choices=["rdrop", "cdrop"],
             default="",
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(parser, target_dataset=True)
         ns_parser = self.parse_known_args_and_warn(
@@ -1217,9 +1217,9 @@ class ForecastController(BaseController):
             description="Add exponential moving average to dataset based on specific column.",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser, target_dataset=True, period=10, target_column=True
@@ -1278,9 +1278,9 @@ class ForecastController(BaseController):
             type=str,
             default="low",
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(parser, target_dataset=True, period=10)
         ns_parser = self.parse_known_args_and_warn(
@@ -1361,9 +1361,9 @@ class ForecastController(BaseController):
             prog="rsi",
             description="Add rsi to dataset based on specific column.",
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser, target_dataset=True, target_column=True, period=10
@@ -1403,9 +1403,9 @@ class ForecastController(BaseController):
             prog="roc",
             description="Add rate of change to dataset based on specific column.",
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser, target_dataset=True, target_column=True, period=10
@@ -1443,9 +1443,9 @@ class ForecastController(BaseController):
             prog="mom",
             description="Add momentum to dataset based on specific column.",
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser, target_dataset=True, target_column=True, period=10
@@ -1484,9 +1484,9 @@ class ForecastController(BaseController):
             description="Add %Change (Delta) to dataset based on specific column.",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(parser, target_dataset=True, target_column=True)
         ns_parser = self.parse_known_args_and_warn(
@@ -1542,9 +1542,9 @@ class ForecastController(BaseController):
             default="low",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(parser, target_dataset=True, target_column=True)
         ns_parser = self.parse_known_args_and_warn(
@@ -1590,9 +1590,9 @@ class ForecastController(BaseController):
             0 if the signal is that short term price will go down as compared to the long term.
             """,
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(parser, target_dataset=True, target_column=True)
         ns_parser = self.parse_known_args_and_warn(
@@ -1638,7 +1638,7 @@ class ForecastController(BaseController):
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(parser, target_dataset=True)
         ns_parser = self.parse_known_args_and_warn(
@@ -1670,7 +1670,7 @@ class ForecastController(BaseController):
             """,
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -1727,7 +1727,7 @@ class ForecastController(BaseController):
             """,
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -1785,7 +1785,7 @@ class ForecastController(BaseController):
             """,
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -1843,7 +1843,7 @@ class ForecastController(BaseController):
             """,
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -1901,7 +1901,7 @@ class ForecastController(BaseController):
             """,
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -1959,7 +1959,7 @@ class ForecastController(BaseController):
             """,
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -2016,7 +2016,7 @@ class ForecastController(BaseController):
             """,
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -2089,7 +2089,7 @@ class ForecastController(BaseController):
             help="Dampening",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -2148,9 +2148,9 @@ class ForecastController(BaseController):
                 https://unit8co.github.io/darts/generated_api/darts.models.forecasting.theta.html
             """,
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -2227,9 +2227,9 @@ class ForecastController(BaseController):
             during training the RNN is never run for as many iterations as it will during training.""",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -2338,9 +2338,9 @@ class ForecastController(BaseController):
                 in each block of every stack""",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -2446,9 +2446,9 @@ class ForecastController(BaseController):
             help="The base of the exponent that will determine the dilation on every level.",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -2531,9 +2531,9 @@ class ForecastController(BaseController):
             """,
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -2600,9 +2600,9 @@ class ForecastController(BaseController):
                 https://unit8co.github.io/darts/generated_api/darts.models.forecasting.linear_regression_model.html
             """,
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -2677,9 +2677,9 @@ class ForecastController(BaseController):
             type=check_positive,
             help="Number of layers in the RNN module.",
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -2809,7 +2809,7 @@ class ForecastController(BaseController):
             help="Number of LSTM layers.",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -2922,9 +2922,9 @@ class ForecastController(BaseController):
             help="Default hidden size for processing continuous variables.",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
@@ -3059,7 +3059,7 @@ class ForecastController(BaseController):
             help="Whether to use max_pool_1d or AvgPool1d",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
         parser = self.add_standard_args(
             parser,
