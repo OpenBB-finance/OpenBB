@@ -49,7 +49,7 @@ conda install -c conda-forge cvxpy=1.2.2 -y
 And install the Portfolio Optimization Toolkit
 
 ```bash
-pip install "openbbterminal[optimization]"
+pip install "openbb[optimization]"
 ```
 
 #### 5.2 **If you would like ML Forecasting features**
@@ -63,7 +63,7 @@ conda install -c conda-forge lightgbm=3.3.3 -y
 And install the Forecasting Toolkit
 
 ```bash
-pip install "openbbterminal[prediction]"
+pip install "openbb[prediction]"
 ```
 
 #### 5.3 **If you would like to use both Portfolio Optimization and ML forecast features**
@@ -77,9 +77,9 @@ conda install -c conda-forge lightgbm=3.3.3 cvxpy=1.2.2 -y
 And install the Both Toolkits
 
 ```bash
-pip install "openbbterminal[all]"
+pip install "openbb[all]"
 ```
 
-Congratulations! You have successfully installed `openbbterminal` on an environment and are now able to begin using it. However, it is important to note that if you close out of your CLI you must re-activate your environment in order begin using it again.
+Congratulations! You have successfully installed `openbb` on an environment and are now able to begin using it. However, it is important to note that if you close out of your CLI you must re-activate your environment in order begin using it again.
 
 The Terminal can now be launched by entering, `openbb`, and the SDK can be imported to a Jupyter Notebook file or code editor with, `from openbb_terminal.sdk import openbb`

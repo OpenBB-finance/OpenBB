@@ -64,13 +64,29 @@ help(openbb.forecast)
 
 ## Examples
 
+### combine
+​
+Combine columns from different datasets
+​
+```python
+spy = openbb.stocks.load("spy")
+aapl = openbb.stocks.load("aapl")
+
+# merge the data
+combined_df = openbb.forecast.combine(spy,aapl, dataset="aapl", column= "Close")
+openbb.forecast.show(combined_df)
+```
+<img width="507" alt="image" src="https://user-images.githubusercontent.com/105685594/203791078-181431cb-99bf-4d26-bfff-b4cf34b5dee2.png">
+![Combine View](https://user-images.githubusercontent.com/105685594/203791078-181431cb-99bf-4d26-bfff-b4cf34b5dee2.png)
+
+
 ### corr
 ​
 Shows a correlation matrix between columns in dataset
 ​
 ```python
-df = pd.read_csv(ANDREW_REPLACE)
-openbb.forecast.corr_view(df)
+df = openbb.stocks.load("aapl")
+openbb.forecast.corr_chart(df)
 ```
 ![Corr View](https://user-images.githubusercontent.com/72827203/202424217-b549b6e7-b121-4273-a7d9-b478e89cd65a.png)
 
@@ -80,8 +96,8 @@ openbb.forecast.corr_view(df)
 This command allows you to see seasonality patterns in your data
 
 ```python
-df = pd.read_csv(ANDREW_REPLACE)
-openbb.forecast.season(df, "Close")
+df = openbb.stocks.load("aapl")
+openbb.forecast.season_chart(df)
 ```
 ​
 
@@ -92,8 +108,8 @@ openbb.forecast.season(df, "Close")
 Predicts the future value of time series data using exponential smoothing
 ​
 ```python
-df = pd.read_csv(ANDREW_REPLACE)
-openbb.forecast.expo(df, "Close")
+df = openbb.stocks.load("aapl")
+openbb.forecast.expo_chart(df)
 ```
 ​
 Here was can now see a chart and table with the expected values, and historic data. The chart also tells us how our backtesing performed, so that we can know the accuracy of our prediction.

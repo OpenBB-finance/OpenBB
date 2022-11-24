@@ -295,7 +295,7 @@ const FOOTER_CONTENT = {
           label: "OpenBB Terminal",
         },
         {
-          href: "https://openbb-finance.github.io/OpenBBTerminal/",
+          href: "https://docs.openbb.co/terminal",
           label: "Terminal Docs",
         },
         {
