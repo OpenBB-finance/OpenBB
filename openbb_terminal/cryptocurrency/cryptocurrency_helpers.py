@@ -785,7 +785,8 @@ def plot_chart(
         prices_df["Volume"] = prices_df["Volume"] / 1_000_000
 
     plot_candles(
-        candles_df=prices_df,
+        symbol=to_symbol,
+        data=prices_df,
         title=title,
         volume=True,
         ylabel="Volume [1M]" if volume_mean > 1_000_000 else "Volume",
@@ -797,7 +798,14 @@ def plot_chart(
 
 
 def plot_candles(
-    candles_df: pd.DataFrame,
+    symbol: str,
+    data: pd.DataFrame = pd.DataFrame(),
+    start_date: Union[datetime, Union[str, None]] = None,
+    end_date: Union[datetime, Union[str, None]] = None,
+    interval: Union[str, int] = "1440",
+    exchange: str = "binance",
+    vs_currency: str = "usdt",
+    source: str = "CCXT",
     volume: bool = True,
     ylabel: str = "",
     title: str = "",
@@ -808,7 +816,9 @@ def plot_candles(
 
     Parameters
     ----------
-    candles_df: pd.DataFrame
+    symbol: str
+        Ticker name
+    data: pd.DataFrame
         Dataframe containing time and OHLCV
     volume: bool
         If volume data shall be plotted, by default True
@@ -821,6 +831,18 @@ def plot_candles(
     yscale : str
         Scaling for y axis.  Either linear or log
     """
+
+    if data.empty:
+        data = load(
+            symbol=symbol,
+            start_date=start_date,
+            end_date=end_date,
+            interval=interval,
+            exchange=exchange,
+            vs_currency=vs_currency,
+            source=source,
+        )
+
     candle_chart_kwargs = {
         "type": "candle",
         "style": theme.mpf_style,
@@ -844,16 +866,16 @@ def plot_candles(
         candle_chart_kwargs["figratio"] = (10, 7)
         candle_chart_kwargs["figscale"] = 1.10
         candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, ax = mpf.plot(candles_df, **candle_chart_kwargs)
+        fig, ax = mpf.plot(data, **candle_chart_kwargs)
 
         fig.suptitle(
-            f"\n{title}",
+            f"\n{symbol if title == '' else title}",
             horizontalalignment="left",
             verticalalignment="top",
             x=0.05,
             y=1,
         )
-        lambda_long_number_format_y_axis(candles_df, "Volume", ax)
+        lambda_long_number_format_y_axis(data, "Volume", ax)
         if yscale == "log":
             ax[0].yaxis.set_major_formatter(ScalarFormatter())
             ax[0].yaxis.set_major_locator(
@@ -874,7 +896,7 @@ def plot_candles(
 
         candle_chart_kwargs["ax"] = ax
 
-        mpf.plot(candles_df, **candle_chart_kwargs)
+        mpf.plot(data, **candle_chart_kwargs)
 
 
 def plot_order_book(
