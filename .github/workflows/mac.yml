@@ -84,7 +84,7 @@ jobs:
 
       - name: Run tests (Bash)
         shell: bash -l {0}
-        run: pytest tests/ -m "not autodoc"
+        run: pytest tests/
 
       - name: Start Terminal and exit
         shell: bash -l {0}

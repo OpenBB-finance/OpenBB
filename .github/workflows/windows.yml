@@ -98,7 +98,7 @@ jobs:
         env:
             MPLBACKEND: Agg
         shell: bash -l {0}
-        run: pytest tests/ -m "not linux" -m "not autodoc"
+        run: pytest tests/ -m "not linux"
 
       - name: Start Terminal and exit
         shell: bash -l {0}

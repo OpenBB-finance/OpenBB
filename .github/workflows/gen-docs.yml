@@ -40,7 +40,7 @@ jobs:
       - run: |
           source $VENV
           pip install "u8darts[torch]"
-          pytest tests/website
+          pytest tests/website --autodoc
           python website/generate_sdk_markdown.py && python website/generate_terminal_markdown.py
 
       - name: Commit Documentation
