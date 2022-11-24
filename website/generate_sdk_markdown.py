@@ -321,7 +321,7 @@ def add_todict(d: dict, location_path: list, tmap: Trailmap) -> dict:
         add_todict(d[location_path[0]], location_path[1:], tmap)
     else:
         d[location_path[0]][tmap.class_attr] = (
-            "/sdk/functions/" + "/".join(tmap.location_path) + "/" + tmap.class_attr
+            "/sdk/reference/" + "/".join(tmap.location_path) + "/" + tmap.class_attr
         )  # noqa: E501
 
     return d
