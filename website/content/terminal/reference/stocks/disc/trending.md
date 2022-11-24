@@ -21,7 +21,7 @@ usage: trending [-i N_ID] [-l LIMIT] [-d S_DATE]
 | ---- | ----------- | ------- | -------- | ------- |
 | n_id | article ID | -1 | True | None |
 | limit | limit of articles being printed | 5 | True | None |
-| s_date | starting date of articles | 2022-11-23 | True | None |
+| s_date | starting date of articles | 2022-11-24 | True | None |
 
 
 ---

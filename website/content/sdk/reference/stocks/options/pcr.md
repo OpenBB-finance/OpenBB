@@ -49,7 +49,7 @@ Display put call ratio [Source: AlphaQuery.com]
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/alphaquery_view.py#L26)]
 
 ```python
-openbb.stocks.options.pcr_chart(symbol: str, window: int = 30, start_date: str = "2021-11-22", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+openbb.stocks.options.pcr_chart(symbol: str, window: int = 30, start_date: str = "2021-11-23", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -60,7 +60,7 @@ openbb.stocks.options.pcr_chart(symbol: str, window: int = 30, start_date: str =
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Stock ticker symbol | None | False |
 | window | int | Window length to look at, by default 30 | 30 | True |
-| start_date | str | Starting date for data, by default (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d") | 2021-11-22 | True |
+| start_date | str | Starting date for data, by default (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d") | 2021-11-23 | True |
 | export | str | Format to export data, by default "" |  | True |
 | external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
