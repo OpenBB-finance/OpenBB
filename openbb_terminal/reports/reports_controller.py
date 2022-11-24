@@ -155,16 +155,18 @@ class ReportController(BaseController):
                 utils,
             )
 
-            forecast = True
+            FORECASTING_TOOLKIT_ENABLED = True
         except ImportError:
-            forecast = False
+            FORECASTING_TOOLKIT_ENABLED = False
             console.print(
-                "\n'forecast' menu dependencies are not installed."
-                " This part of the SDK will not be usable.\n\n"
-                "For more information see the official documentation at: "
-                "[blue]https://openbb-finance.github.io/OpenBBTerminal/SDK/[/blue]\n"
+                "[yellow]"
+                "Forecasting Toolkit is disabled. "
+                "To use the Forecasting features please install the toolkit following the "
+                "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+                "\n"
+                "[/yellow]"
             )
-        if forecast:
+        if FORECASTING_TOOLKIT_ENABLED:
             self.run_report("forecast", other_args)
 
     @log_start_end(log=logger)
