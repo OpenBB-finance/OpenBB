@@ -72,7 +72,7 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Install Package
-        run: poetry install --no-interaction
+        run: poetry install --no-interaction -E doc
 
       - name: Install Optimization Toolkit
         run: poetry install -E optimization --no-interaction
