@@ -902,7 +902,7 @@ def plot_candles(
     else:
         nr_external_axes = 2 if volume else 1
         if not is_valid_axes_count(external_axes, nr_external_axes):
-            return
+            return None
 
         if volume:
             (ax, volume) = external_axes
@@ -913,6 +913,8 @@ def plot_candles(
         candle_chart_kwargs["ax"] = ax
 
         mpf.plot(data, **candle_chart_kwargs)
+
+    return None
 
 
 def plot_order_book(
