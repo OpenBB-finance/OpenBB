@@ -6,7 +6,7 @@ sidebar_position: 1
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The OpenBB SDK is a set of tools for financial and data analysis. We recommend starting out with some experience in finance, markets, and Python. The purpose of this page is to outline some of the background information required to get the most out of the software.
+The OpenBB SDK is a set of tools for financial and data analysis. The purpose of this page is to outline some of the background information required to get the most out of the software.
 
 ### Minimum System Requirements
 
@@ -68,23 +68,6 @@ Virtual Python environments are containers for Python applications, and allows t
   - `conda install -c conda-forge cmake`
 
 It is not recommended to install in a Global environment, such as Homebrew or `usr/local/bin/python3`. Create and activate a new environment before installing the OpenBB SDK.
-
-### Common Python Libraries
-
-A good way to learn about the Python language is to recognize the libraries which are frequently used and attempt to understand how they form the foundations for workflows. A working knowledge of the libraries listed below is recommended:
-
-- Datetime
-- JSON
-- Math
-- Matplotlib
-- Numpy
-- Pandas
-- Plotly
-- Quandl
-- Requests
-- URLlib3
-
-The best way to learn is to get involved. Tinkering with the code from an open-source project is an excellent way to dabble.
 
 ### GitHub
 
