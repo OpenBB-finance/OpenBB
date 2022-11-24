@@ -351,6 +351,11 @@ def display_stablecoins(
         Export dataframe data to csv,json,xlsx file
     pie : bool
         Whether to show a pie chart
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.crypto.ov.stables_chart(sortby="Volume_[$]", ascend=True, limit=10)
     """
 
     df = gecko.get_stable_coins(limit, sortby=sortby, ascend=ascend)
