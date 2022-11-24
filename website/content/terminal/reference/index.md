@@ -1,10 +1,6 @@
 # OpenBB Terminal Features
 
 
-## reports
-
-- [run](/terminal/features/reports/run)
-
 ## etf
 
 - [candle](/terminal/features/etf/candle)
@@ -16,6 +12,13 @@
 - [search](/terminal/features/etf/search)
 - [summary](/terminal/features/etf/summary)
 - [weights](/terminal/features/etf/weights)
+
+### screener
+
+- [sbc](/terminal/features/etf/screener/sbc)
+- [screen](/terminal/features/etf/screener/screen)
+- [set](/terminal/features/etf/screener/set)
+- [view](/terminal/features/etf/screener/view)
 
 ### ta
 
@@ -44,24 +47,11 @@
 - [wma](/terminal/features/etf/ta/wma)
 - [zlma](/terminal/features/etf/ta/zlma)
 
-### screener
-
-- [sbc](/terminal/features/etf/screener/sbc)
-- [screen](/terminal/features/etf/screener/screen)
-- [set](/terminal/features/etf/screener/set)
-- [view](/terminal/features/etf/screener/view)
-
 ### disc
 
 - [active](/terminal/features/etf/disc/active)
 - [decliners](/terminal/features/etf/disc/decliners)
 - [gainers](/terminal/features/etf/disc/gainers)
-
-## futures
-
-- [curve](/terminal/features/futures/curve)
-- [historical](/terminal/features/futures/historical)
-- [search](/terminal/features/futures/search)
 
 ## crypto
 
@@ -71,76 +61,6 @@
 - [load](/terminal/features/crypto/load)
 - [price](/terminal/features/crypto/price)
 - [prt](/terminal/features/crypto/prt)
-
-### ta
-
-- [ad](/terminal/features/crypto/ta/ad)
-- [adosc](/terminal/features/crypto/ta/adosc)
-- [adx](/terminal/features/crypto/ta/adx)
-- [aroon](/terminal/features/crypto/ta/aroon)
-- [bbands](/terminal/features/crypto/ta/bbands)
-- [cci](/terminal/features/crypto/ta/cci)
-- [cg](/terminal/features/crypto/ta/cg)
-- [donchian](/terminal/features/crypto/ta/donchian)
-- [ema](/terminal/features/crypto/ta/ema)
-- [fib](/terminal/features/crypto/ta/fib)
-- [fisher](/terminal/features/crypto/ta/fisher)
-- [hma](/terminal/features/crypto/ta/hma)
-- [kc](/terminal/features/crypto/ta/kc)
-- [load](/terminal/features/crypto/ta/load)
-- [macd](/terminal/features/crypto/ta/macd)
-- [obv](/terminal/features/crypto/ta/obv)
-- [rsi](/terminal/features/crypto/ta/rsi)
-- [sma](/terminal/features/crypto/ta/sma)
-- [stoch](/terminal/features/crypto/ta/stoch)
-- [tv](/terminal/features/crypto/ta/tv)
-- [vwap](/terminal/features/crypto/ta/vwap)
-- [wma](/terminal/features/crypto/ta/wma)
-- [zlma](/terminal/features/crypto/ta/zlma)
-
-### dd
-
-- [active](/terminal/features/crypto/dd/active)
-- [ath](/terminal/features/crypto/dd/ath)
-- [atl](/terminal/features/crypto/dd/atl)
-- [balance](/terminal/features/crypto/dd/balance)
-- [basic](/terminal/features/crypto/dd/basic)
-- [bc](/terminal/features/crypto/dd/bc)
-- [change](/terminal/features/crypto/dd/change)
-- [desc](/terminal/features/crypto/dd/desc)
-- [dev](/terminal/features/crypto/dd/dev)
-- [eb](/terminal/features/crypto/dd/eb)
-- [events](/terminal/features/crypto/dd/events)
-- [ex](/terminal/features/crypto/dd/ex)
-- [fr](/terminal/features/crypto/dd/fr)
-- [fundrate](/terminal/features/crypto/dd/fundrate)
-- [funot](/terminal/features/crypto/dd/funot)
-- [gh](/terminal/features/crypto/dd/gh)
-- [gov](/terminal/features/crypto/dd/gov)
-- [info](/terminal/features/crypto/dd/info)
-- [inv](/terminal/features/crypto/dd/inv)
-- [links](/terminal/features/crypto/dd/links)
-- [liquidations](/terminal/features/crypto/dd/liquidations)
-- [load](/terminal/features/crypto/dd/load)
-- [market](/terminal/features/crypto/dd/market)
-- [mcapdom](/terminal/features/crypto/dd/mcapdom)
-- [mkt](/terminal/features/crypto/dd/mkt)
-- [mt](/terminal/features/crypto/dd/mt)
-- [news](/terminal/features/crypto/dd/news)
-- [nonzero](/terminal/features/crypto/dd/nonzero)
-- [ob](/terminal/features/crypto/dd/ob)
-- [oi](/terminal/features/crypto/dd/oi)
-- [pi](/terminal/features/crypto/dd/pi)
-- [ps](/terminal/features/crypto/dd/ps)
-- [rm](/terminal/features/crypto/dd/rm)
-- [score](/terminal/features/crypto/dd/score)
-- [social](/terminal/features/crypto/dd/social)
-- [stats](/terminal/features/crypto/dd/stats)
-- [team](/terminal/features/crypto/dd/team)
-- [tk](/terminal/features/crypto/dd/tk)
-- [trades](/terminal/features/crypto/dd/trades)
-- [twitter](/terminal/features/crypto/dd/twitter)
-- [web](/terminal/features/crypto/dd/web)
 
 ### ov
 
@@ -191,51 +111,6 @@
 - [validators](/terminal/features/crypto/defi/validators)
 - [vaults](/terminal/features/crypto/defi/vaults)
 
-### tools
-
-- [aprtoapy](/terminal/features/crypto/tools/aprtoapy)
-- [il](/terminal/features/crypto/tools/il)
-
-### qa
-
-- [acf](/terminal/features/crypto/qa/acf)
-- [bw](/terminal/features/crypto/qa/bw)
-- [cdf](/terminal/features/crypto/qa/cdf)
-- [cusum](/terminal/features/crypto/qa/cusum)
-- [decompose](/terminal/features/crypto/qa/decompose)
-- [hist](/terminal/features/crypto/qa/hist)
-- [kurtosis](/terminal/features/crypto/qa/kurtosis)
-- [line](/terminal/features/crypto/qa/line)
-- [load](/terminal/features/crypto/qa/load)
-- [normality](/terminal/features/crypto/qa/normality)
-- [pick](/terminal/features/crypto/qa/pick)
-- [qqplot](/terminal/features/crypto/qa/qqplot)
-- [quantile](/terminal/features/crypto/qa/quantile)
-- [raw](/terminal/features/crypto/qa/raw)
-- [rolling](/terminal/features/crypto/qa/rolling)
-- [skew](/terminal/features/crypto/qa/skew)
-- [spread](/terminal/features/crypto/qa/spread)
-- [summary](/terminal/features/crypto/qa/summary)
-- [unitroot](/terminal/features/crypto/qa/unitroot)
-
-### disc
-
-- [dapps](/terminal/features/crypto/disc/dapps)
-- [dex](/terminal/features/crypto/disc/dex)
-- [gainers](/terminal/features/crypto/disc/gainers)
-- [games](/terminal/features/crypto/disc/games)
-- [losers](/terminal/features/crypto/disc/losers)
-- [nft](/terminal/features/crypto/disc/nft)
-- [search](/terminal/features/crypto/disc/search)
-- [top](/terminal/features/crypto/disc/top)
-- [trending](/terminal/features/crypto/disc/trending)
-
-### nft
-
-- [collections](/terminal/features/crypto/nft/collections)
-- [fp](/terminal/features/crypto/nft/fp)
-- [stats](/terminal/features/crypto/nft/stats)
-
 ### onchain
 
 - [address](/terminal/features/crypto/onchain/address)
@@ -262,31 +137,225 @@
 - [ueat](/terminal/features/crypto/onchain/ueat)
 - [whales](/terminal/features/crypto/onchain/whales)
 
-## econometrics
+### ta
 
-- [add](/terminal/features/econometrics/add)
-- [bgod](/terminal/features/econometrics/bgod)
-- [bpag](/terminal/features/econometrics/bpag)
-- [clean](/terminal/features/econometrics/clean)
-- [coint](/terminal/features/econometrics/coint)
-- [combine](/terminal/features/econometrics/combine)
-- [compare](/terminal/features/econometrics/compare)
-- [delete](/terminal/features/econometrics/delete)
-- [desc](/terminal/features/econometrics/desc)
-- [dwat](/terminal/features/econometrics/dwat)
-- [export](/terminal/features/econometrics/export)
-- [granger](/terminal/features/econometrics/granger)
-- [index_cmd](/terminal/features/econometrics/index_cmd)
-- [load](/terminal/features/econometrics/load)
-- [norm](/terminal/features/econometrics/norm)
-- [ols](/terminal/features/econometrics/ols)
-- [panel](/terminal/features/econometrics/panel)
-- [plot](/terminal/features/econometrics/plot)
-- [remove](/terminal/features/econometrics/remove)
-- [rename](/terminal/features/econometrics/rename)
-- [root](/terminal/features/econometrics/root)
-- [show](/terminal/features/econometrics/show)
-- [type](/terminal/features/econometrics/type)
+- [ad](/terminal/features/crypto/ta/ad)
+- [adosc](/terminal/features/crypto/ta/adosc)
+- [adx](/terminal/features/crypto/ta/adx)
+- [aroon](/terminal/features/crypto/ta/aroon)
+- [bbands](/terminal/features/crypto/ta/bbands)
+- [cci](/terminal/features/crypto/ta/cci)
+- [cg](/terminal/features/crypto/ta/cg)
+- [donchian](/terminal/features/crypto/ta/donchian)
+- [ema](/terminal/features/crypto/ta/ema)
+- [fib](/terminal/features/crypto/ta/fib)
+- [fisher](/terminal/features/crypto/ta/fisher)
+- [hma](/terminal/features/crypto/ta/hma)
+- [kc](/terminal/features/crypto/ta/kc)
+- [load](/terminal/features/crypto/ta/load)
+- [macd](/terminal/features/crypto/ta/macd)
+- [obv](/terminal/features/crypto/ta/obv)
+- [rsi](/terminal/features/crypto/ta/rsi)
+- [sma](/terminal/features/crypto/ta/sma)
+- [stoch](/terminal/features/crypto/ta/stoch)
+- [tv](/terminal/features/crypto/ta/tv)
+- [vwap](/terminal/features/crypto/ta/vwap)
+- [wma](/terminal/features/crypto/ta/wma)
+- [zlma](/terminal/features/crypto/ta/zlma)
+
+### nft
+
+- [collections](/terminal/features/crypto/nft/collections)
+- [fp](/terminal/features/crypto/nft/fp)
+- [stats](/terminal/features/crypto/nft/stats)
+
+### disc
+
+- [dapps](/terminal/features/crypto/disc/dapps)
+- [dex](/terminal/features/crypto/disc/dex)
+- [gainers](/terminal/features/crypto/disc/gainers)
+- [games](/terminal/features/crypto/disc/games)
+- [losers](/terminal/features/crypto/disc/losers)
+- [nft](/terminal/features/crypto/disc/nft)
+- [search](/terminal/features/crypto/disc/search)
+- [top](/terminal/features/crypto/disc/top)
+- [trending](/terminal/features/crypto/disc/trending)
+
+### qa
+
+- [acf](/terminal/features/crypto/qa/acf)
+- [bw](/terminal/features/crypto/qa/bw)
+- [cdf](/terminal/features/crypto/qa/cdf)
+- [cusum](/terminal/features/crypto/qa/cusum)
+- [decompose](/terminal/features/crypto/qa/decompose)
+- [hist](/terminal/features/crypto/qa/hist)
+- [kurtosis](/terminal/features/crypto/qa/kurtosis)
+- [line](/terminal/features/crypto/qa/line)
+- [load](/terminal/features/crypto/qa/load)
+- [normality](/terminal/features/crypto/qa/normality)
+- [pick](/terminal/features/crypto/qa/pick)
+- [qqplot](/terminal/features/crypto/qa/qqplot)
+- [quantile](/terminal/features/crypto/qa/quantile)
+- [raw](/terminal/features/crypto/qa/raw)
+- [rolling](/terminal/features/crypto/qa/rolling)
+- [skew](/terminal/features/crypto/qa/skew)
+- [spread](/terminal/features/crypto/qa/spread)
+- [summary](/terminal/features/crypto/qa/summary)
+- [unitroot](/terminal/features/crypto/qa/unitroot)
+
+### dd
+
+- [active](/terminal/features/crypto/dd/active)
+- [ath](/terminal/features/crypto/dd/ath)
+- [atl](/terminal/features/crypto/dd/atl)
+- [balance](/terminal/features/crypto/dd/balance)
+- [basic](/terminal/features/crypto/dd/basic)
+- [bc](/terminal/features/crypto/dd/bc)
+- [change](/terminal/features/crypto/dd/change)
+- [desc](/terminal/features/crypto/dd/desc)
+- [dev](/terminal/features/crypto/dd/dev)
+- [eb](/terminal/features/crypto/dd/eb)
+- [events](/terminal/features/crypto/dd/events)
+- [ex](/terminal/features/crypto/dd/ex)
+- [fr](/terminal/features/crypto/dd/fr)
+- [fundrate](/terminal/features/crypto/dd/fundrate)
+- [funot](/terminal/features/crypto/dd/funot)
+- [gh](/terminal/features/crypto/dd/gh)
+- [gov](/terminal/features/crypto/dd/gov)
+- [info](/terminal/features/crypto/dd/info)
+- [inv](/terminal/features/crypto/dd/inv)
+- [links](/terminal/features/crypto/dd/links)
+- [liquidations](/terminal/features/crypto/dd/liquidations)
+- [load](/terminal/features/crypto/dd/load)
+- [market](/terminal/features/crypto/dd/market)
+- [mcapdom](/terminal/features/crypto/dd/mcapdom)
+- [mkt](/terminal/features/crypto/dd/mkt)
+- [mt](/terminal/features/crypto/dd/mt)
+- [news](/terminal/features/crypto/dd/news)
+- [nonzero](/terminal/features/crypto/dd/nonzero)
+- [ob](/terminal/features/crypto/dd/ob)
+- [oi](/terminal/features/crypto/dd/oi)
+- [pi](/terminal/features/crypto/dd/pi)
+- [ps](/terminal/features/crypto/dd/ps)
+- [rm](/terminal/features/crypto/dd/rm)
+- [score](/terminal/features/crypto/dd/score)
+- [social](/terminal/features/crypto/dd/social)
+- [stats](/terminal/features/crypto/dd/stats)
+- [team](/terminal/features/crypto/dd/team)
+- [tk](/terminal/features/crypto/dd/tk)
+- [trades](/terminal/features/crypto/dd/trades)
+- [twitter](/terminal/features/crypto/dd/twitter)
+- [web](/terminal/features/crypto/dd/web)
+
+### tools
+
+- [aprtoapy](/terminal/features/crypto/tools/aprtoapy)
+- [il](/terminal/features/crypto/tools/il)
+
+## portfolio
+
+- [alloc](/terminal/features/portfolio/alloc)
+- [attrib](/terminal/features/portfolio/attrib)
+- [bench](/terminal/features/portfolio/bench)
+- [distr](/terminal/features/portfolio/distr)
+- [dret](/terminal/features/portfolio/dret)
+- [es](/terminal/features/portfolio/es)
+- [holdp](/terminal/features/portfolio/holdp)
+- [holdv](/terminal/features/portfolio/holdv)
+- [load](/terminal/features/portfolio/load)
+- [maxdd](/terminal/features/portfolio/maxdd)
+- [metric](/terminal/features/portfolio/metric)
+- [mret](/terminal/features/portfolio/mret)
+- [om](/terminal/features/portfolio/om)
+- [perf](/terminal/features/portfolio/perf)
+- [rbeta](/terminal/features/portfolio/rbeta)
+- [rsharpe](/terminal/features/portfolio/rsharpe)
+- [rsort](/terminal/features/portfolio/rsort)
+- [rvol](/terminal/features/portfolio/rvol)
+- [show](/terminal/features/portfolio/show)
+- [summary](/terminal/features/portfolio/summary)
+- [var](/terminal/features/portfolio/var)
+- [yret](/terminal/features/portfolio/yret)
+
+### po
+
+- [blacklitterman](/terminal/features/portfolio/po/blacklitterman)
+- [dividend](/terminal/features/portfolio/po/dividend)
+- [ef](/terminal/features/portfolio/po/ef)
+- [equal](/terminal/features/portfolio/po/equal)
+- [file](/terminal/features/portfolio/po/file)
+- [herc](/terminal/features/portfolio/po/herc)
+- [hrp](/terminal/features/portfolio/po/hrp)
+- [load](/terminal/features/portfolio/po/load)
+- [maxdecorr](/terminal/features/portfolio/po/maxdecorr)
+- [maxdiv](/terminal/features/portfolio/po/maxdiv)
+- [maxret](/terminal/features/portfolio/po/maxret)
+- [maxsharpe](/terminal/features/portfolio/po/maxsharpe)
+- [maxutil](/terminal/features/portfolio/po/maxutil)
+- [minrisk](/terminal/features/portfolio/po/minrisk)
+- [mktcap](/terminal/features/portfolio/po/mktcap)
+- [nco](/terminal/features/portfolio/po/nco)
+- [plot](/terminal/features/portfolio/po/plot)
+- [property](/terminal/features/portfolio/po/property)
+- [relriskparity](/terminal/features/portfolio/po/relriskparity)
+- [riskparity](/terminal/features/portfolio/po/riskparity)
+- [rpf](/terminal/features/portfolio/po/rpf)
+- [show](/terminal/features/portfolio/po/show)
+
+#### parameters
+
+- [arg](/terminal/features/portfolio/po/parameters/arg)
+- [load](/terminal/features/portfolio/po/parameters/load)
+- [save](/terminal/features/portfolio/po/parameters/save)
+- [set](/terminal/features/portfolio/po/parameters/set)
+
+### portfolio_analysis
+
+- [group](/terminal/features/portfolio/portfolio_analysis/group)
+- [load](/terminal/features/portfolio/portfolio_analysis/load)
+- [view](/terminal/features/portfolio/portfolio_analysis/view)
+
+### brokers
+
+
+#### degiro
+
+- [cancel](/terminal/features/portfolio/brokers/degiro/cancel)
+- [companynews](/terminal/features/portfolio/brokers/degiro/companynews)
+- [create](/terminal/features/portfolio/brokers/degiro/create)
+- [hold](/terminal/features/portfolio/brokers/degiro/hold)
+- [lastnews](/terminal/features/portfolio/brokers/degiro/lastnews)
+- [login](/terminal/features/portfolio/brokers/degiro/login)
+- [logout](/terminal/features/portfolio/brokers/degiro/logout)
+- [lookup](/terminal/features/portfolio/brokers/degiro/lookup)
+- [paexport](/terminal/features/portfolio/brokers/degiro/paexport)
+- [pending](/terminal/features/portfolio/brokers/degiro/pending)
+- [topnews](/terminal/features/portfolio/brokers/degiro/topnews)
+- [update](/terminal/features/portfolio/brokers/degiro/update)
+
+#### coinbase
+
+- [account](/terminal/features/portfolio/brokers/coinbase/account)
+- [deposits](/terminal/features/portfolio/brokers/coinbase/deposits)
+- [history](/terminal/features/portfolio/brokers/coinbase/history)
+- [orders](/terminal/features/portfolio/brokers/coinbase/orders)
+
+#### robinhood
+
+- [history](/terminal/features/portfolio/brokers/robinhood/history)
+- [holdings](/terminal/features/portfolio/brokers/robinhood/holdings)
+
+#### ally
+
+- [balances](/terminal/features/portfolio/brokers/ally/balances)
+- [history](/terminal/features/portfolio/brokers/ally/history)
+- [holdings](/terminal/features/portfolio/brokers/ally/holdings)
+- [movers](/terminal/features/portfolio/brokers/ally/movers)
+- [quote](/terminal/features/portfolio/brokers/ally/quote)
+
+## reports
+
+- [run](/terminal/features/reports/run)
 
 ## economy
 
@@ -333,6 +402,13 @@
 ## alt
 
 
+### oss
+
+- [rossidx](/terminal/features/alt/oss/rossidx)
+- [rs](/terminal/features/alt/oss/rs)
+- [sh](/terminal/features/alt/oss/sh)
+- [tr](/terminal/features/alt/oss/tr)
+
 ### covid
 
 - [cases](/terminal/features/alt/covid/cases)
@@ -342,193 +418,31 @@
 - [rates](/terminal/features/alt/covid/rates)
 - [slopes](/terminal/features/alt/covid/slopes)
 
-### oss
+## econometrics
 
-- [rossidx](/terminal/features/alt/oss/rossidx)
-- [rs](/terminal/features/alt/oss/rs)
-- [sh](/terminal/features/alt/oss/sh)
-- [tr](/terminal/features/alt/oss/tr)
-
-## funds
-
-- [alswe](/terminal/features/funds/alswe)
-- [country](/terminal/features/funds/country)
-- [equity](/terminal/features/funds/equity)
-- [info](/terminal/features/funds/info)
-- [infoswe](/terminal/features/funds/infoswe)
-- [load](/terminal/features/funds/load)
-- [overview](/terminal/features/funds/overview)
-- [plot](/terminal/features/funds/plot)
-- [search](/terminal/features/funds/search)
-- [sector](/terminal/features/funds/sector)
-
-## portfolio
-
-- [alloc](/terminal/features/portfolio/alloc)
-- [attrib](/terminal/features/portfolio/attrib)
-- [bench](/terminal/features/portfolio/bench)
-- [distr](/terminal/features/portfolio/distr)
-- [dret](/terminal/features/portfolio/dret)
-- [es](/terminal/features/portfolio/es)
-- [holdp](/terminal/features/portfolio/holdp)
-- [holdv](/terminal/features/portfolio/holdv)
-- [load](/terminal/features/portfolio/load)
-- [maxdd](/terminal/features/portfolio/maxdd)
-- [metric](/terminal/features/portfolio/metric)
-- [mret](/terminal/features/portfolio/mret)
-- [om](/terminal/features/portfolio/om)
-- [perf](/terminal/features/portfolio/perf)
-- [rbeta](/terminal/features/portfolio/rbeta)
-- [rsharpe](/terminal/features/portfolio/rsharpe)
-- [rsort](/terminal/features/portfolio/rsort)
-- [rvol](/terminal/features/portfolio/rvol)
-- [show](/terminal/features/portfolio/show)
-- [summary](/terminal/features/portfolio/summary)
-- [var](/terminal/features/portfolio/var)
-- [yret](/terminal/features/portfolio/yret)
-
-### portfolio_analysis
-
-- [group](/terminal/features/portfolio/portfolio_analysis/group)
-- [load](/terminal/features/portfolio/portfolio_analysis/load)
-- [view](/terminal/features/portfolio/portfolio_analysis/view)
-
-### brokers
-
-
-#### robinhood
-
-- [history](/terminal/features/portfolio/brokers/robinhood/history)
-- [holdings](/terminal/features/portfolio/brokers/robinhood/holdings)
-
-#### ally
-
-- [balances](/terminal/features/portfolio/brokers/ally/balances)
-- [history](/terminal/features/portfolio/brokers/ally/history)
-- [holdings](/terminal/features/portfolio/brokers/ally/holdings)
-- [movers](/terminal/features/portfolio/brokers/ally/movers)
-- [quote](/terminal/features/portfolio/brokers/ally/quote)
-
-#### coinbase
-
-- [account](/terminal/features/portfolio/brokers/coinbase/account)
-- [deposits](/terminal/features/portfolio/brokers/coinbase/deposits)
-- [history](/terminal/features/portfolio/brokers/coinbase/history)
-- [orders](/terminal/features/portfolio/brokers/coinbase/orders)
-
-#### degiro
-
-- [cancel](/terminal/features/portfolio/brokers/degiro/cancel)
-- [companynews](/terminal/features/portfolio/brokers/degiro/companynews)
-- [create](/terminal/features/portfolio/brokers/degiro/create)
-- [hold](/terminal/features/portfolio/brokers/degiro/hold)
-- [lastnews](/terminal/features/portfolio/brokers/degiro/lastnews)
-- [login](/terminal/features/portfolio/brokers/degiro/login)
-- [logout](/terminal/features/portfolio/brokers/degiro/logout)
-- [lookup](/terminal/features/portfolio/brokers/degiro/lookup)
-- [paexport](/terminal/features/portfolio/brokers/degiro/paexport)
-- [pending](/terminal/features/portfolio/brokers/degiro/pending)
-- [topnews](/terminal/features/portfolio/brokers/degiro/topnews)
-- [update](/terminal/features/portfolio/brokers/degiro/update)
-
-### po
-
-- [blacklitterman](/terminal/features/portfolio/po/blacklitterman)
-- [dividend](/terminal/features/portfolio/po/dividend)
-- [ef](/terminal/features/portfolio/po/ef)
-- [equal](/terminal/features/portfolio/po/equal)
-- [file](/terminal/features/portfolio/po/file)
-- [herc](/terminal/features/portfolio/po/herc)
-- [hrp](/terminal/features/portfolio/po/hrp)
-- [load](/terminal/features/portfolio/po/load)
-- [maxdecorr](/terminal/features/portfolio/po/maxdecorr)
-- [maxdiv](/terminal/features/portfolio/po/maxdiv)
-- [maxret](/terminal/features/portfolio/po/maxret)
-- [maxsharpe](/terminal/features/portfolio/po/maxsharpe)
-- [maxutil](/terminal/features/portfolio/po/maxutil)
-- [minrisk](/terminal/features/portfolio/po/minrisk)
-- [mktcap](/terminal/features/portfolio/po/mktcap)
-- [nco](/terminal/features/portfolio/po/nco)
-- [plot](/terminal/features/portfolio/po/plot)
-- [property](/terminal/features/portfolio/po/property)
-- [relriskparity](/terminal/features/portfolio/po/relriskparity)
-- [riskparity](/terminal/features/portfolio/po/riskparity)
-- [rpf](/terminal/features/portfolio/po/rpf)
-- [show](/terminal/features/portfolio/po/show)
-
-#### parameters
-
-- [arg](/terminal/features/portfolio/po/parameters/arg)
-- [load](/terminal/features/portfolio/po/parameters/load)
-- [save](/terminal/features/portfolio/po/parameters/save)
-- [set](/terminal/features/portfolio/po/parameters/set)
-
-## forex
-
-- [candle](/terminal/features/forex/candle)
-- [fwd](/terminal/features/forex/fwd)
-- [load](/terminal/features/forex/load)
-- [quote](/terminal/features/forex/quote)
-
-### ta
-
-- [ad](/terminal/features/forex/ta/ad)
-- [adx](/terminal/features/forex/ta/adx)
-- [aroon](/terminal/features/forex/ta/aroon)
-- [bbands](/terminal/features/forex/ta/bbands)
-- [cci](/terminal/features/forex/ta/cci)
-- [cg](/terminal/features/forex/ta/cg)
-- [donchian](/terminal/features/forex/ta/donchian)
-- [ema](/terminal/features/forex/ta/ema)
-- [fib](/terminal/features/forex/ta/fib)
-- [fisher](/terminal/features/forex/ta/fisher)
-- [load](/terminal/features/forex/ta/load)
-- [macd](/terminal/features/forex/ta/macd)
-- [obv](/terminal/features/forex/ta/obv)
-- [rsi](/terminal/features/forex/ta/rsi)
-- [sma](/terminal/features/forex/ta/sma)
-- [stoch](/terminal/features/forex/ta/stoch)
-- [zlma](/terminal/features/forex/ta/zlma)
-
-### oanda
-
-- [calendar](/terminal/features/forex/oanda/calendar)
-- [cancel](/terminal/features/forex/oanda/cancel)
-- [candles](/terminal/features/forex/oanda/candles)
-- [closetrade](/terminal/features/forex/oanda/closetrade)
-- [from](/terminal/features/forex/oanda/from)
-- [list](/terminal/features/forex/oanda/list)
-- [order](/terminal/features/forex/oanda/order)
-- [orderbook](/terminal/features/forex/oanda/orderbook)
-- [pending](/terminal/features/forex/oanda/pending)
-- [positionbook](/terminal/features/forex/oanda/positionbook)
-- [positions](/terminal/features/forex/oanda/positions)
-- [price](/terminal/features/forex/oanda/price)
-- [summary](/terminal/features/forex/oanda/summary)
-- [to](/terminal/features/forex/oanda/to)
-- [trades](/terminal/features/forex/oanda/trades)
-
-### qa
-
-- [acf](/terminal/features/forex/qa/acf)
-- [bw](/terminal/features/forex/qa/bw)
-- [cdf](/terminal/features/forex/qa/cdf)
-- [cusum](/terminal/features/forex/qa/cusum)
-- [decompose](/terminal/features/forex/qa/decompose)
-- [hist](/terminal/features/forex/qa/hist)
-- [kurtosis](/terminal/features/forex/qa/kurtosis)
-- [line](/terminal/features/forex/qa/line)
-- [load](/terminal/features/forex/qa/load)
-- [normality](/terminal/features/forex/qa/normality)
-- [pick](/terminal/features/forex/qa/pick)
-- [qqplot](/terminal/features/forex/qa/qqplot)
-- [quantile](/terminal/features/forex/qa/quantile)
-- [raw](/terminal/features/forex/qa/raw)
-- [rolling](/terminal/features/forex/qa/rolling)
-- [skew](/terminal/features/forex/qa/skew)
-- [spread](/terminal/features/forex/qa/spread)
-- [summary](/terminal/features/forex/qa/summary)
-- [unitroot](/terminal/features/forex/qa/unitroot)
+- [add](/terminal/features/econometrics/add)
+- [bgod](/terminal/features/econometrics/bgod)
+- [bpag](/terminal/features/econometrics/bpag)
+- [clean](/terminal/features/econometrics/clean)
+- [coint](/terminal/features/econometrics/coint)
+- [combine](/terminal/features/econometrics/combine)
+- [compare](/terminal/features/econometrics/compare)
+- [delete](/terminal/features/econometrics/delete)
+- [desc](/terminal/features/econometrics/desc)
+- [dwat](/terminal/features/econometrics/dwat)
+- [export](/terminal/features/econometrics/export)
+- [granger](/terminal/features/econometrics/granger)
+- [index_cmd](/terminal/features/econometrics/index_cmd)
+- [load](/terminal/features/econometrics/load)
+- [norm](/terminal/features/econometrics/norm)
+- [ols](/terminal/features/econometrics/ols)
+- [panel](/terminal/features/econometrics/panel)
+- [plot](/terminal/features/econometrics/plot)
+- [remove](/terminal/features/econometrics/remove)
+- [rename](/terminal/features/econometrics/rename)
+- [root](/terminal/features/econometrics/root)
+- [show](/terminal/features/econometrics/show)
+- [type](/terminal/features/econometrics/type)
 
 ## forecast
 
@@ -571,6 +485,86 @@
 - [trans](/terminal/features/forecast/trans)
 - [which](/terminal/features/forecast/which)
 
+## funds
+
+- [alswe](/terminal/features/funds/alswe)
+- [country](/terminal/features/funds/country)
+- [equity](/terminal/features/funds/equity)
+- [info](/terminal/features/funds/info)
+- [infoswe](/terminal/features/funds/infoswe)
+- [load](/terminal/features/funds/load)
+- [overview](/terminal/features/funds/overview)
+- [plot](/terminal/features/funds/plot)
+- [search](/terminal/features/funds/search)
+- [sector](/terminal/features/funds/sector)
+
+## forex
+
+- [candle](/terminal/features/forex/candle)
+- [fwd](/terminal/features/forex/fwd)
+- [load](/terminal/features/forex/load)
+- [quote](/terminal/features/forex/quote)
+
+### oanda
+
+- [calendar](/terminal/features/forex/oanda/calendar)
+- [cancel](/terminal/features/forex/oanda/cancel)
+- [candles](/terminal/features/forex/oanda/candles)
+- [closetrade](/terminal/features/forex/oanda/closetrade)
+- [from](/terminal/features/forex/oanda/from)
+- [list](/terminal/features/forex/oanda/list)
+- [order](/terminal/features/forex/oanda/order)
+- [orderbook](/terminal/features/forex/oanda/orderbook)
+- [pending](/terminal/features/forex/oanda/pending)
+- [positionbook](/terminal/features/forex/oanda/positionbook)
+- [positions](/terminal/features/forex/oanda/positions)
+- [price](/terminal/features/forex/oanda/price)
+- [summary](/terminal/features/forex/oanda/summary)
+- [to](/terminal/features/forex/oanda/to)
+- [trades](/terminal/features/forex/oanda/trades)
+
+### ta
+
+- [ad](/terminal/features/forex/ta/ad)
+- [adx](/terminal/features/forex/ta/adx)
+- [aroon](/terminal/features/forex/ta/aroon)
+- [bbands](/terminal/features/forex/ta/bbands)
+- [cci](/terminal/features/forex/ta/cci)
+- [cg](/terminal/features/forex/ta/cg)
+- [donchian](/terminal/features/forex/ta/donchian)
+- [ema](/terminal/features/forex/ta/ema)
+- [fib](/terminal/features/forex/ta/fib)
+- [fisher](/terminal/features/forex/ta/fisher)
+- [load](/terminal/features/forex/ta/load)
+- [macd](/terminal/features/forex/ta/macd)
+- [obv](/terminal/features/forex/ta/obv)
+- [rsi](/terminal/features/forex/ta/rsi)
+- [sma](/terminal/features/forex/ta/sma)
+- [stoch](/terminal/features/forex/ta/stoch)
+- [zlma](/terminal/features/forex/ta/zlma)
+
+### qa
+
+- [acf](/terminal/features/forex/qa/acf)
+- [bw](/terminal/features/forex/qa/bw)
+- [cdf](/terminal/features/forex/qa/cdf)
+- [cusum](/terminal/features/forex/qa/cusum)
+- [decompose](/terminal/features/forex/qa/decompose)
+- [hist](/terminal/features/forex/qa/hist)
+- [kurtosis](/terminal/features/forex/qa/kurtosis)
+- [line](/terminal/features/forex/qa/line)
+- [load](/terminal/features/forex/qa/load)
+- [normality](/terminal/features/forex/qa/normality)
+- [pick](/terminal/features/forex/qa/pick)
+- [qqplot](/terminal/features/forex/qa/qqplot)
+- [quantile](/terminal/features/forex/qa/quantile)
+- [raw](/terminal/features/forex/qa/raw)
+- [rolling](/terminal/features/forex/qa/rolling)
+- [skew](/terminal/features/forex/qa/skew)
+- [spread](/terminal/features/forex/qa/spread)
+- [summary](/terminal/features/forex/qa/summary)
+- [unitroot](/terminal/features/forex/qa/unitroot)
+
 ## stocks
 
 - [candle](/terminal/features/stocks/candle)
@@ -579,6 +573,25 @@
 - [quote](/terminal/features/stocks/quote)
 - [search](/terminal/features/stocks/search)
 - [tob](/terminal/features/stocks/tob)
+
+### screener
+
+- [financial](/terminal/features/stocks/screener/financial)
+- [historical](/terminal/features/stocks/screener/historical)
+- [overview](/terminal/features/stocks/screener/overview)
+- [ownership](/terminal/features/stocks/screener/ownership)
+- [performance](/terminal/features/stocks/screener/performance)
+- [set](/terminal/features/stocks/screener/set)
+- [technical](/terminal/features/stocks/screener/technical)
+- [valuation](/terminal/features/stocks/screener/valuation)
+- [view](/terminal/features/stocks/screener/view)
+
+### backtesting
+
+- [ema](/terminal/features/stocks/backtesting/ema)
+- [emacross](/terminal/features/stocks/backtesting/emacross)
+- [rsi](/terminal/features/stocks/backtesting/rsi)
+- [whatif](/terminal/features/stocks/backtesting/whatif)
 
 ### ta
 
@@ -613,113 +626,6 @@
 - [wma](/terminal/features/stocks/ta/wma)
 - [zlma](/terminal/features/stocks/ta/zlma)
 
-### ins
-
-- [act](/terminal/features/stocks/ins/act)
-- [blcp](/terminal/features/stocks/ins/blcp)
-- [blcs](/terminal/features/stocks/ins/blcs)
-- [blip](/terminal/features/stocks/ins/blip)
-- [blis](/terminal/features/stocks/ins/blis)
-- [blop](/terminal/features/stocks/ins/blop)
-- [blos](/terminal/features/stocks/ins/blos)
-- [filter](/terminal/features/stocks/ins/filter)
-- [lcb](/terminal/features/stocks/ins/lcb)
-- [lins](/terminal/features/stocks/ins/lins)
-- [lip](/terminal/features/stocks/ins/lip)
-- [lis](/terminal/features/stocks/ins/lis)
-- [lit](/terminal/features/stocks/ins/lit)
-- [load](/terminal/features/stocks/ins/load)
-- [lpsb](/terminal/features/stocks/ins/lpsb)
-- [set](/terminal/features/stocks/ins/set)
-- [stats](/terminal/features/stocks/ins/stats)
-- [tippm](/terminal/features/stocks/ins/tippm)
-- [tippw](/terminal/features/stocks/ins/tippw)
-- [tipt](/terminal/features/stocks/ins/tipt)
-- [tispm](/terminal/features/stocks/ins/tispm)
-- [tispw](/terminal/features/stocks/ins/tispw)
-- [tist](/terminal/features/stocks/ins/tist)
-- [toppm](/terminal/features/stocks/ins/toppm)
-- [toppw](/terminal/features/stocks/ins/toppw)
-- [topt](/terminal/features/stocks/ins/topt)
-- [view](/terminal/features/stocks/ins/view)
-
-### dps
-
-- [ctb](/terminal/features/stocks/dps/ctb)
-- [dpotc](/terminal/features/stocks/dps/dpotc)
-- [ftd](/terminal/features/stocks/dps/ftd)
-- [hsi](/terminal/features/stocks/dps/hsi)
-- [load](/terminal/features/stocks/dps/load)
-- [pos](/terminal/features/stocks/dps/pos)
-- [prom](/terminal/features/stocks/dps/prom)
-- [psi](/terminal/features/stocks/dps/psi)
-- [shorted](/terminal/features/stocks/dps/shorted)
-- [sidtc](/terminal/features/stocks/dps/sidtc)
-- [spos](/terminal/features/stocks/dps/spos)
-
-### dd
-
-- [analyst](/terminal/features/stocks/dd/analyst)
-- [arktrades](/terminal/features/stocks/dd/arktrades)
-- [customer](/terminal/features/stocks/dd/customer)
-- [est](/terminal/features/stocks/dd/est)
-- [load](/terminal/features/stocks/dd/load)
-- [pt](/terminal/features/stocks/dd/pt)
-- [rating](/terminal/features/stocks/dd/rating)
-- [rot](/terminal/features/stocks/dd/rot)
-- [sec](/terminal/features/stocks/dd/sec)
-- [supplier](/terminal/features/stocks/dd/supplier)
-
-### options
-
-- [binom](/terminal/features/stocks/options/binom)
-- [calc](/terminal/features/stocks/options/calc)
-- [chains](/terminal/features/stocks/options/chains)
-- [exp](/terminal/features/stocks/options/exp)
-- [greeks](/terminal/features/stocks/options/greeks)
-- [grhist](/terminal/features/stocks/options/grhist)
-- [hist](/terminal/features/stocks/options/hist)
-- [info](/terminal/features/stocks/options/info)
-- [load](/terminal/features/stocks/options/load)
-- [oi](/terminal/features/stocks/options/oi)
-- [parity](/terminal/features/stocks/options/parity)
-- [pcr](/terminal/features/stocks/options/pcr)
-- [plot](/terminal/features/stocks/options/plot)
-- [unu](/terminal/features/stocks/options/unu)
-- [voi](/terminal/features/stocks/options/voi)
-- [vol](/terminal/features/stocks/options/vol)
-- [vsurf](/terminal/features/stocks/options/vsurf)
-
-#### screen
-
-- [scr](/terminal/features/stocks/options/screen/scr)
-- [set](/terminal/features/stocks/options/screen/set)
-- [view](/terminal/features/stocks/options/screen/view)
-
-#### hedge
-
-- [add](/terminal/features/stocks/options/hedge/add)
-- [list](/terminal/features/stocks/options/hedge/list)
-- [pick](/terminal/features/stocks/options/hedge/pick)
-- [plot](/terminal/features/stocks/options/hedge/plot)
-- [rmv](/terminal/features/stocks/options/hedge/rmv)
-- [sop](/terminal/features/stocks/options/hedge/sop)
-
-#### pricing
-
-- [add](/terminal/features/stocks/options/pricing/add)
-- [rmv](/terminal/features/stocks/options/pricing/rmv)
-- [rnval](/terminal/features/stocks/options/pricing/rnval)
-- [show](/terminal/features/stocks/options/pricing/show)
-
-### th
-
-- [all](/terminal/features/stocks/th/all)
-- [closed](/terminal/features/stocks/th/closed)
-- [exchange](/terminal/features/stocks/th/exchange)
-- [open](/terminal/features/stocks/th/open)
-- [symbol](/terminal/features/stocks/th/symbol)
-
 ### ba
 
 - [bullbear](/terminal/features/stocks/ba/bullbear)
@@ -745,6 +651,41 @@
 - [trending](/terminal/features/stocks/ba/trending)
 - [watchlist](/terminal/features/stocks/ba/watchlist)
 - [wsb](/terminal/features/stocks/ba/wsb)
+
+### disc
+
+- [active](/terminal/features/stocks/disc/active)
+- [arkord](/terminal/features/stocks/disc/arkord)
+- [asc](/terminal/features/stocks/disc/asc)
+- [cnews](/terminal/features/stocks/disc/cnews)
+- [divcal](/terminal/features/stocks/disc/divcal)
+- [fipo](/terminal/features/stocks/disc/fipo)
+- [gainers](/terminal/features/stocks/disc/gainers)
+- [gtech](/terminal/features/stocks/disc/gtech)
+- [heatmap](/terminal/features/stocks/disc/heatmap)
+- [hotpenny](/terminal/features/stocks/disc/hotpenny)
+- [losers](/terminal/features/stocks/disc/losers)
+- [lowfloat](/terminal/features/stocks/disc/lowfloat)
+- [pipo](/terminal/features/stocks/disc/pipo)
+- [rtat](/terminal/features/stocks/disc/rtat)
+- [trending](/terminal/features/stocks/disc/trending)
+- [ugs](/terminal/features/stocks/disc/ugs)
+- [ulc](/terminal/features/stocks/disc/ulc)
+- [upcoming](/terminal/features/stocks/disc/upcoming)
+
+### gov
+
+- [contracts](/terminal/features/stocks/gov/contracts)
+- [gtrades](/terminal/features/stocks/gov/gtrades)
+- [histcont](/terminal/features/stocks/gov/histcont)
+- [lastcontracts](/terminal/features/stocks/gov/lastcontracts)
+- [lasttrades](/terminal/features/stocks/gov/lasttrades)
+- [load](/terminal/features/stocks/gov/load)
+- [lobbying](/terminal/features/stocks/gov/lobbying)
+- [qtrcontracts](/terminal/features/stocks/gov/qtrcontracts)
+- [topbuys](/terminal/features/stocks/gov/topbuys)
+- [toplobbying](/terminal/features/stocks/gov/toplobbying)
+- [topsells](/terminal/features/stocks/gov/topsells)
 
 ### qa
 
@@ -775,68 +716,56 @@
 - [unitroot](/terminal/features/stocks/qa/unitroot)
 - [var](/terminal/features/stocks/qa/var)
 
-### screener
+### ins
 
-- [financial](/terminal/features/stocks/screener/financial)
-- [historical](/terminal/features/stocks/screener/historical)
-- [overview](/terminal/features/stocks/screener/overview)
-- [ownership](/terminal/features/stocks/screener/ownership)
-- [performance](/terminal/features/stocks/screener/performance)
-- [set](/terminal/features/stocks/screener/set)
-- [technical](/terminal/features/stocks/screener/technical)
-- [valuation](/terminal/features/stocks/screener/valuation)
-- [view](/terminal/features/stocks/screener/view)
+- [act](/terminal/features/stocks/ins/act)
+- [blcp](/terminal/features/stocks/ins/blcp)
+- [blcs](/terminal/features/stocks/ins/blcs)
+- [blip](/terminal/features/stocks/ins/blip)
+- [blis](/terminal/features/stocks/ins/blis)
+- [blop](/terminal/features/stocks/ins/blop)
+- [blos](/terminal/features/stocks/ins/blos)
+- [filter](/terminal/features/stocks/ins/filter)
+- [lcb](/terminal/features/stocks/ins/lcb)
+- [lins](/terminal/features/stocks/ins/lins)
+- [lip](/terminal/features/stocks/ins/lip)
+- [lis](/terminal/features/stocks/ins/lis)
+- [lit](/terminal/features/stocks/ins/lit)
+- [load](/terminal/features/stocks/ins/load)
+- [lpsb](/terminal/features/stocks/ins/lpsb)
+- [set](/terminal/features/stocks/ins/set)
+- [stats](/terminal/features/stocks/ins/stats)
+- [tippm](/terminal/features/stocks/ins/tippm)
+- [tippw](/terminal/features/stocks/ins/tippw)
+- [tipt](/terminal/features/stocks/ins/tipt)
+- [tispm](/terminal/features/stocks/ins/tispm)
+- [tispw](/terminal/features/stocks/ins/tispw)
+- [tist](/terminal/features/stocks/ins/tist)
+- [toppm](/terminal/features/stocks/ins/toppm)
+- [toppw](/terminal/features/stocks/ins/toppw)
+- [topt](/terminal/features/stocks/ins/topt)
+- [view](/terminal/features/stocks/ins/view)
 
-### disc
+### th
 
-- [active](/terminal/features/stocks/disc/active)
-- [arkord](/terminal/features/stocks/disc/arkord)
-- [asc](/terminal/features/stocks/disc/asc)
-- [cnews](/terminal/features/stocks/disc/cnews)
-- [divcal](/terminal/features/stocks/disc/divcal)
-- [fipo](/terminal/features/stocks/disc/fipo)
-- [gainers](/terminal/features/stocks/disc/gainers)
-- [gtech](/terminal/features/stocks/disc/gtech)
-- [heatmap](/terminal/features/stocks/disc/heatmap)
-- [hotpenny](/terminal/features/stocks/disc/hotpenny)
-- [losers](/terminal/features/stocks/disc/losers)
-- [lowfloat](/terminal/features/stocks/disc/lowfloat)
-- [pipo](/terminal/features/stocks/disc/pipo)
-- [rtat](/terminal/features/stocks/disc/rtat)
-- [trending](/terminal/features/stocks/disc/trending)
-- [ugs](/terminal/features/stocks/disc/ugs)
-- [ulc](/terminal/features/stocks/disc/ulc)
-- [upcoming](/terminal/features/stocks/disc/upcoming)
+- [all](/terminal/features/stocks/th/all)
+- [closed](/terminal/features/stocks/th/closed)
+- [exchange](/terminal/features/stocks/th/exchange)
+- [open](/terminal/features/stocks/th/open)
+- [symbol](/terminal/features/stocks/th/symbol)
 
-### ca
+### dd
 
-- [add](/terminal/features/stocks/ca/add)
-- [balance](/terminal/features/stocks/ca/balance)
-- [cashflow](/terminal/features/stocks/ca/cashflow)
-- [financial](/terminal/features/stocks/ca/financial)
-- [get](/terminal/features/stocks/ca/get)
-- [hcorr](/terminal/features/stocks/ca/hcorr)
-- [historical](/terminal/features/stocks/ca/historical)
-- [income](/terminal/features/stocks/ca/income)
-- [overview](/terminal/features/stocks/ca/overview)
-- [ownership](/terminal/features/stocks/ca/ownership)
-- [performance](/terminal/features/stocks/ca/performance)
-- [rmv](/terminal/features/stocks/ca/rmv)
-- [scorr](/terminal/features/stocks/ca/scorr)
-- [sentiment](/terminal/features/stocks/ca/sentiment)
-- [set](/terminal/features/stocks/ca/set)
-- [technical](/terminal/features/stocks/ca/technical)
-- [ticker](/terminal/features/stocks/ca/ticker)
-- [tsne](/terminal/features/stocks/ca/tsne)
-- [valuation](/terminal/features/stocks/ca/valuation)
-- [volume](/terminal/features/stocks/ca/volume)
-
-### backtesting
-
-- [ema](/terminal/features/stocks/backtesting/ema)
-- [emacross](/terminal/features/stocks/backtesting/emacross)
-- [rsi](/terminal/features/stocks/backtesting/rsi)
-- [whatif](/terminal/features/stocks/backtesting/whatif)
+- [analyst](/terminal/features/stocks/dd/analyst)
+- [arktrades](/terminal/features/stocks/dd/arktrades)
+- [customer](/terminal/features/stocks/dd/customer)
+- [est](/terminal/features/stocks/dd/est)
+- [load](/terminal/features/stocks/dd/load)
+- [pt](/terminal/features/stocks/dd/pt)
+- [rating](/terminal/features/stocks/dd/rating)
+- [rot](/terminal/features/stocks/dd/rot)
+- [sec](/terminal/features/stocks/dd/sec)
+- [supplier](/terminal/features/stocks/dd/supplier)
 
 ### fa
 
@@ -872,19 +801,61 @@
 - [warnings](/terminal/features/stocks/fa/warnings)
 - [web](/terminal/features/stocks/fa/web)
 
-### gov
+### options
 
-- [contracts](/terminal/features/stocks/gov/contracts)
-- [gtrades](/terminal/features/stocks/gov/gtrades)
-- [histcont](/terminal/features/stocks/gov/histcont)
-- [lastcontracts](/terminal/features/stocks/gov/lastcontracts)
-- [lasttrades](/terminal/features/stocks/gov/lasttrades)
-- [load](/terminal/features/stocks/gov/load)
-- [lobbying](/terminal/features/stocks/gov/lobbying)
-- [qtrcontracts](/terminal/features/stocks/gov/qtrcontracts)
-- [topbuys](/terminal/features/stocks/gov/topbuys)
-- [toplobbying](/terminal/features/stocks/gov/toplobbying)
-- [topsells](/terminal/features/stocks/gov/topsells)
+- [binom](/terminal/features/stocks/options/binom)
+- [calc](/terminal/features/stocks/options/calc)
+- [chains](/terminal/features/stocks/options/chains)
+- [exp](/terminal/features/stocks/options/exp)
+- [greeks](/terminal/features/stocks/options/greeks)
+- [grhist](/terminal/features/stocks/options/grhist)
+- [hist](/terminal/features/stocks/options/hist)
+- [info](/terminal/features/stocks/options/info)
+- [load](/terminal/features/stocks/options/load)
+- [oi](/terminal/features/stocks/options/oi)
+- [parity](/terminal/features/stocks/options/parity)
+- [pcr](/terminal/features/stocks/options/pcr)
+- [plot](/terminal/features/stocks/options/plot)
+- [unu](/terminal/features/stocks/options/unu)
+- [voi](/terminal/features/stocks/options/voi)
+- [vol](/terminal/features/stocks/options/vol)
+- [vsurf](/terminal/features/stocks/options/vsurf)
+
+#### pricing
+
+- [add](/terminal/features/stocks/options/pricing/add)
+- [rmv](/terminal/features/stocks/options/pricing/rmv)
+- [rnval](/terminal/features/stocks/options/pricing/rnval)
+- [show](/terminal/features/stocks/options/pricing/show)
+
+#### screen
+
+- [scr](/terminal/features/stocks/options/screen/scr)
+- [set](/terminal/features/stocks/options/screen/set)
+- [view](/terminal/features/stocks/options/screen/view)
+
+#### hedge
+
+- [add](/terminal/features/stocks/options/hedge/add)
+- [list](/terminal/features/stocks/options/hedge/list)
+- [pick](/terminal/features/stocks/options/hedge/pick)
+- [plot](/terminal/features/stocks/options/hedge/plot)
+- [rmv](/terminal/features/stocks/options/hedge/rmv)
+- [sop](/terminal/features/stocks/options/hedge/sop)
+
+### dps
+
+- [ctb](/terminal/features/stocks/dps/ctb)
+- [dpotc](/terminal/features/stocks/dps/dpotc)
+- [ftd](/terminal/features/stocks/dps/ftd)
+- [hsi](/terminal/features/stocks/dps/hsi)
+- [load](/terminal/features/stocks/dps/load)
+- [pos](/terminal/features/stocks/dps/pos)
+- [prom](/terminal/features/stocks/dps/prom)
+- [psi](/terminal/features/stocks/dps/psi)
+- [shorted](/terminal/features/stocks/dps/shorted)
+- [sidtc](/terminal/features/stocks/dps/sidtc)
+- [spos](/terminal/features/stocks/dps/spos)
 
 ### sia
 
@@ -902,3 +873,32 @@
 - [sector](/terminal/features/stocks/sia/sector)
 - [select](/terminal/features/stocks/sia/select)
 - [vis](/terminal/features/stocks/sia/vis)
+
+### ca
+
+- [add](/terminal/features/stocks/ca/add)
+- [balance](/terminal/features/stocks/ca/balance)
+- [cashflow](/terminal/features/stocks/ca/cashflow)
+- [financial](/terminal/features/stocks/ca/financial)
+- [get](/terminal/features/stocks/ca/get)
+- [hcorr](/terminal/features/stocks/ca/hcorr)
+- [historical](/terminal/features/stocks/ca/historical)
+- [income](/terminal/features/stocks/ca/income)
+- [overview](/terminal/features/stocks/ca/overview)
+- [ownership](/terminal/features/stocks/ca/ownership)
+- [performance](/terminal/features/stocks/ca/performance)
+- [rmv](/terminal/features/stocks/ca/rmv)
+- [scorr](/terminal/features/stocks/ca/scorr)
+- [sentiment](/terminal/features/stocks/ca/sentiment)
+- [set](/terminal/features/stocks/ca/set)
+- [technical](/terminal/features/stocks/ca/technical)
+- [ticker](/terminal/features/stocks/ca/ticker)
+- [tsne](/terminal/features/stocks/ca/tsne)
+- [valuation](/terminal/features/stocks/ca/valuation)
+- [volume](/terminal/features/stocks/ca/volume)
+
+## futures
+
+- [curve](/terminal/features/futures/curve)
+- [historical](/terminal/features/futures/historical)
+- [search](/terminal/features/futures/search)

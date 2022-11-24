@@ -19,6 +19,6 @@ usage: load -f FILE [FILE ...]
 
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
-| file | Allocation file to be used | None | False | OpenBB_Parameters_Template_v1.0.0.xlsx, dd.ini, dany.ini, example.ini, james.ini, defaults.ini |
+| file | Allocation file to be used | None | False | OpenBB_Parameters_Template_v1.0.0.xlsx, defaults.ini, dany.ini, james.ini, example.ini, dd.ini |
 
 ---
