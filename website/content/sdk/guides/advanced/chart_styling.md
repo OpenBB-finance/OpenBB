@@ -3,7 +3,7 @@ title: Adjusting Chart Style
 sidebar_position: 2
 ---
 
-With OpenBB SDK, you can customize your chart style. You can switch between `dark` and `light` easily using this block of code:
+Within the OpenBB SDK, you can customize your chart style. You can switch between `dark` and `light` easily using this block of code:
 
 ```python
 from openbb_terminal.sdk import TerminalStyle
