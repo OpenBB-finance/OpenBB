@@ -42,6 +42,15 @@ openbb.economy.macro(parameters: list = None, countries: list = None, transform:
 | Tuple[pd.DataFrame, Dict[Any, Dict[Any, Any]], str] | A DataFrame with the requested macro data of all chosen countries,<br/>A dictionary containing the units of each country's parameter (e.g. EUR),<br/>A string denomination which can be Trillions, Billions, Millions, Thousands |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+macro_df = openbb.economy.macro()
+```
+
+---
+
 
 
 </TabItem>

@@ -7,15 +7,19 @@ excerpt: "This guide introduces the Forecast SDK in the context of the OpenBB SD
 
 The Forecast module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.forecast`
 ​
+
 ## How to Use
+
 ​
 The examples provided below will assume that the following import block is included at the beginning of the Python script or Notebook file:
 ​
+
 ```python
 from openbb_terminal.sdk import openbb
 import pandas as pd
 %matplotlib inline
 ```
+
 ​
 A brief description below highlights the main Functions and Modules available in the ETF SDK
 
@@ -58,6 +62,7 @@ A brief description below highlights the main Functions and Modules available in
 
 Alteratively you can print the contents of the Forecast SDK with:
 ​
+
 ```python
 help(openbb.forecast)
 ```
@@ -65,9 +70,11 @@ help(openbb.forecast)
 ## Examples
 
 ### combine
+
 ​
 Combine columns from different datasets
 ​
+
 ```python
 spy = openbb.stocks.load("spy")
 aapl = openbb.stocks.load("aapl")
@@ -76,22 +83,26 @@ aapl = openbb.stocks.load("aapl")
 combined_df = openbb.forecast.combine(spy,aapl, dataset="aapl", column= "Close")
 openbb.forecast.show(combined_df)
 ```
-<img width="507" alt="image" src="https://user-images.githubusercontent.com/105685594/203791078-181431cb-99bf-4d26-bfff-b4cf34b5dee2.png">
+
 ![Combine View](https://user-images.githubusercontent.com/105685594/203791078-181431cb-99bf-4d26-bfff-b4cf34b5dee2.png)
 
-
 ### corr
+
 ​
 Shows a correlation matrix between columns in dataset
 ​
+
 ```python
 df = openbb.stocks.load("aapl")
 openbb.forecast.corr_chart(df)
 ```
+
 ![Corr View](https://user-images.githubusercontent.com/72827203/202424217-b549b6e7-b121-4273-a7d9-b478e89cd65a.png)
 
 ​
+
 ### season
+
 ​
 This command allows you to see seasonality patterns in your data
 
@@ -99,18 +110,22 @@ This command allows you to see seasonality patterns in your data
 df = openbb.stocks.load("aapl")
 openbb.forecast.season_chart(df)
 ```
+
 ​
 
 ![Season View](https://user-images.githubusercontent.com/72827203/202426763-ae0b5e49-a570-47d8-9558-3b3530e72b0d.png)
 ​
+
 ### expo
 
 Predicts the future value of time series data using exponential smoothing
 ​
+
 ```python
 df = openbb.stocks.load("aapl")
 openbb.forecast.expo_chart(df)
 ```
+
 ​
 Here was can now see a chart and table with the expected values, and historic data. The chart also tells us how our backtesing performed, so that we can know the accuracy of our prediction.
 ​

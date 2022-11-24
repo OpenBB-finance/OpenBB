@@ -43,6 +43,12 @@ openbb.portfolio.po.dividend(symbols: List[str] = None, portfolio_engine: portfo
 
 ## Examples
 
+```python
+from openbb_terminal.sdk import openbb
+openbb.portfolio.po.dividend(symbols=["AAPL", "MSFT", "AMZN"])
+```
+
+```
 (         value
  AAPL  0.350575
  MSFT  0.649425
@@ -51,9 +57,11 @@ openbb.portfolio.po.dividend(symbols: List[str] = None, portfolio_engine: portfo
   'Volatility': 0.3348681656035649,
   'Sharpe ratio': 0.8026805111526232})
 
+```
 ```python
 from openbb_terminal.sdk import openbb
-openbb.portfolio.po.dividend(symbols=["AAPL", "MSFT", "AMZN"])
+p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+weights, performance = openbb.portfolio.po.dividend(portfolio_engine=p)
 ```
 
 ---

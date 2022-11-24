@@ -40,6 +40,15 @@ openbb.crypto.dd.eb(symbol: str, exchange: str = "aggregated", start_date: Optio
 | pd.DataFrame | total amount of coins in units/percentage and symbol price over time |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+df = openbb.crypto.dd.eb(symbol="BTC")
+```
+
+---
+
 
 
 </TabItem>
@@ -73,6 +82,15 @@ openbb.crypto.dd.eb_chart(symbol: str, exchange: str = "aggregated", start_date:
 ## Returns
 
 This function does not return anything
+
+---
+
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.crypto.dd.eb_chart(symbol="BTC")
+```
 
 ---
 

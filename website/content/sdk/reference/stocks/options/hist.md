@@ -37,12 +37,18 @@ openbb.stocks.options.hist(symbol: str, exp: str, strike: Union[int, float, str]
 
 ## Examples
 
-
-Because this generates a dataframe, we can easily plot the close price for a SPY put:
-(Note that Tradier requires an API key)
 ```python
 from openbb_terminal.sdk import openbb
 aapl_150_call = openbb.stocks.options.hist("AAPL", "2022-11-18", 150, call=True, source="ChartExchange")
+```
+
+```
+
+Because this generates a dataframe, we can easily plot the close price for a SPY put:
+(Note that Tradier requires an API key)
+```
+```python
+openbb.stocks.options.hist("SPY", "2022-11-18", 400, call=False, source="Tradier").plot(y="close)
 ```
 
 ---

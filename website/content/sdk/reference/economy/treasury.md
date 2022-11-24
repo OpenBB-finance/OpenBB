@@ -41,6 +41,15 @@ openbb.economy.treasury(instruments: list = None, maturities: list = None, frequ
 | pd.Dataframe | Holds data of the selected types and maturities |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.economy.treasury()
+```
+
+---
+
 
 
 </TabItem>

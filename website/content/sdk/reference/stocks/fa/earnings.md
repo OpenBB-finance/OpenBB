@@ -35,11 +35,17 @@ openbb.stocks.fa.earnings(symbol: str, source: str = "YahooFinance", quarterly: 
 
 ## Examples
 
-
-To obtain quarterly earnings, use the quarterly flag with AlphaVantage
 ```python
 from openbb_terminal.sdk import openbb
 aapl_earnings = openbb.stocks.fa.earnings("AAPL", source ="YahooFinance)
+```
+
+```
+
+To obtain quarterly earnings, use the quarterly flag with AlphaVantage
+```
+```python
+aapl_earnings = openbb.stocks.fa.metrics("earnings", source ="AlphaVantage, quarterly=True)
 ```
 
 ---

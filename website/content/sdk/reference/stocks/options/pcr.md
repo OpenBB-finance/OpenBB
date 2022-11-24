@@ -39,6 +39,15 @@ openbb.stocks.options.pcr(symbol: str, window: int = 30, start_date: Optional[st
 | pd.DataFrame | Put call ratio |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+pcr_df = openbb.stocks.options.pcr("B")
+```
+
+---
+
 
 
 </TabItem>

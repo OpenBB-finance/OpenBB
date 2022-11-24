@@ -28,3 +28,13 @@ This function does not take any parameters.
 | pd.DataFrame | DataFrame with skewness for portfolio and benchmark for different periods |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.metric.skew(p)
+```
+
+---
+

@@ -37,6 +37,15 @@ openbb.economy.ycrv(date: datetime.datetime = None)
 | Tuple[pd.DataFrame, datetime] | Dataframe of yields and maturities,<br/>Date for which the yield curve is obtained |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+ycrv_df = openbb.economy.ycrv()
+```
+
+---
+
 
 
 </TabItem>

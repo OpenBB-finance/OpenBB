@@ -39,6 +39,15 @@ openbb.crypto.ov.stables(limit: int = 15, sortby: str = "Market_Cap_[$]", ascend
 | pd.DataFrame | Dataframe with stable coins data |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.crypto.ov.stables(sortby="Volume_[$]", ascend=True, limit=10)
+```
+
+---
+
 
 
 </TabItem>
@@ -71,6 +80,15 @@ openbb.crypto.ov.stables_chart(limit: int = 15, export: str = "", sortby: str = 
 ## Returns
 
 This function does not return anything
+
+---
+
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.crypto.ov.stables_chart(sortby="Volume_[$]", ascend=True, limit=10)
+```
 
 ---
 

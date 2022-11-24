@@ -44,6 +44,12 @@ openbb.portfolio.po.property(symbols: List[str] = None, portfolio_engine: portfo
 
 ## Examples
 
+```python
+from openbb_terminal.sdk import openbb
+openbb.portfolio.po.property(symbols=["AAPL", "MSFT", "AMZN"], prop="forwardPE")
+```
+
+```
 (         value
  AAPL  0.223192
  MSFT  0.215707
@@ -52,9 +58,11 @@ openbb.portfolio.po.property(symbols: List[str] = None, portfolio_engine: portfo
   'Volatility': 0.3386418179319469,
   'Sharpe ratio': 0.5400179679578959})
 
+```
 ```python
 from openbb_terminal.sdk import openbb
-openbb.portfolio.po.property(symbols=["AAPL", "MSFT", "AMZN"], prop="forwardPE")
+p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+weights, performance = openbb.portfolio.po.property(portfolio_engine=p, prop="forwardPE")
 ```
 
 ---

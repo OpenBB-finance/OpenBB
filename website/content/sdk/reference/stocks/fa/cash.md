@@ -37,11 +37,17 @@ openbb.stocks.fa.cash(symbol: str, quarterly: bool = False, ratios: bool = False
 
 ## Examples
 
-
-If you have a premium AlphaVantage key, you can use the quarterly flag to get quarterly statements
 ```python
 from openbb_terminal.sdk import openbb
 cash_flow = openbb.stocks.fa.cash("AAPL", source="YahooFinance)
+```
+
+```
+
+If you have a premium AlphaVantage key, you can use the quarterly flag to get quarterly statements
+```
+```python
+quarterly_income_statement = openbb.stocks.fa.cash("AAPL", source="AlphaVantage", quarterly=True)
 ```
 
 ---

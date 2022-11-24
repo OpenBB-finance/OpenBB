@@ -7,7 +7,7 @@ description: OpenBB SDK Function
 
 Performs an OLS regression on timeseries data. [Source: Statsmodels]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L178)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L176)]
 
 ```python
 openbb.econometrics.ols(Y: pd.DataFrame, X: pd.DataFrame)
@@ -34,7 +34,6 @@ openbb.econometrics.ols(Y: pd.DataFrame, X: pd.DataFrame)
 
 ## Examples
 
-SDK Snippet:
 ```python
 import openbb_terminal.sdk as openbb
 df = openbb.econometrics.load("wage_panel")
@@ -42,9 +41,8 @@ OLS_model = openbb.econometrics.OLS(df["lwage"], df[["educ", "exper", "expersq"]
 print(OLS_model.summary())`
 ```
 
-Results:
-```python
-                             OLS Regression Results
+```
+                            OLS Regression Results
 =======================================================================================
 Dep. Variable:                  lwage   R-squared (uncentered):                   0.920
 Model:                            OLS   Adj. R-squared (uncentered):              0.919
@@ -71,6 +69,5 @@ Notes:
 [1] R² is computed without centering (uncentered) since the model does not contain a constant.
 [2] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 ```
-
 ---
 

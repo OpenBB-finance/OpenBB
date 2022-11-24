@@ -53,6 +53,12 @@ openbb.portfolio.po.relriskparity(portfolio_engine: portfolio_optimization.po_en
 
 ## Examples
 
+```python
+from openbb_terminal.sdk import openbb
+openbb.portfolio.po.relriskparity(symbols=["AAPL", "MSFT", "AMZN"])
+```
+
+```
 (        value
  AAPL  0.33204
  MSFT  0.34949
@@ -61,9 +67,11 @@ openbb.portfolio.po.relriskparity(portfolio_engine: portfolio_optimization.po_en
   'Volatility': 0.290746544981364,
   'Sharpe ratio': 0.6860561008129521})
 
+```
 ```python
 from openbb_terminal.sdk import openbb
-openbb.portfolio.po.relriskparity(symbols=["AAPL", "MSFT", "AMZN"])
+p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+weights, performance = openbb.portfolio.po.relriskparity(portfolio_engine=p)
 ```
 
 ---

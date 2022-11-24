@@ -34,6 +34,13 @@ openbb.portfolio.po.show(portfolio_engine: portfolio_optimization.po_engine.PoEn
 
 ## Examples
 
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
+d = {
+```
+
+```
         "SECTOR": {
             "AAPL": "INFORMATION TECHNOLOGY",
             "MSFT": "INFORMATION TECHNOLOGY",
@@ -50,30 +57,37 @@ openbb.portfolio.po.show(portfolio_engine: portfolio_optimization.po_engine.PoEn
             "AMZN": "USD",
         },
     }
-```python
-from openbb_terminal.sdk import openbb
-p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
-d = {
 ```
-
-['SECTOR']
 ```python
 p.set_categories_dict(categories=d)
 weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
 p.get_available_categories()
 ```
 
+```
+['SECTOR']
+```
+```python
+weights_df, category_df = openbb.portfolio.po.show(portfolio_engine=p, category="SECTOR")
+```
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
+p.get_available_categories()
+```
+
+```
 ['ASSET_CLASS',
  'SECTOR',
  'INDUSTRY',
  'COUNTRY',
  'CURRENT_INVESTED_AMOUNT',
  'CURRENCY']
+```
 ```python
-from openbb_terminal.sdk import openbb
-p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
-p.get_available_categories()
+weights_df, category_df = openbb.portfolio.po.show(portfolio_engine=p, category="ASSET_CLASS")
 ```
 
 ---

@@ -37,6 +37,15 @@ openbb.stocks.options.unu(limit: int = 100)
 | Tuple[pd.DataFrame, pd.Timestamp] | Dataframe containing options information, Timestamp indicated when data was updated from website |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+unu_df = openbb.stocks.options.unu()
+```
+
+---
+
 
 
 </TabItem>

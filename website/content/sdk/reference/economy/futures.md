@@ -34,17 +34,25 @@ openbb.economy.futures(source: Any = "WSJ", future_type: str = "Indices")
 
 ## Examples
 
-
-To sort by the largest percent change:
 ```python
 from openbb_terminal.sdk import openbb
 wsj_futures = openbb.economy.futures()
 ```
 
+```
 
-FinViz provides different options for future types.  We can get Meats with the following command:
+To sort by the largest percent change:
+```
 ```python
 futures_sorted = openbb.economy.futures().sort_values(by="%Chg", ascending=False)
+```
+
+```
+
+FinViz provides different options for future types.  We can get Meats with the following command:
+```
+```python
+meat_futures = openbb.economy.futures(source="Finviz", future_type="Meats")
 ```
 
 ---

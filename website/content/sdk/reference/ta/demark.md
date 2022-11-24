@@ -37,6 +37,16 @@ openbb.ta.demark(values: pd.Series)
 | pd.DataFrame | Dataframe of UP and DOWN sequential indicators |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+df = openbb.stocks.load("AAPL")
+openbb.ta.demark(df["Close"])
+```
+
+---
+
 
 
 </TabItem>
@@ -68,6 +78,16 @@ openbb.ta.demark_chart(data: pd.DataFrame, symbol: str = "", min_to_show: int = 
 ## Returns
 
 This function does not return anything
+
+---
+
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+df = openbb.stocks.load("AAPL")
+openbb.ta.demark_chart(df)
+```
 
 ---
 

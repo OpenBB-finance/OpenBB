@@ -53,6 +53,12 @@ openbb.portfolio.po.blacklitterman(portfolio_engine: portfolio_optimization.po_e
 
 ## Examples
 
+```python
+from openbb_terminal.sdk import openbb
+openbb.portfolio.po.blacklitterman(symbols=["AAPL", "MSFT", "AMZN"])
+```
+
+```
 (        value
  AAPL  0.48920
  MSFT  0.28391
@@ -61,9 +67,11 @@ openbb.portfolio.po.blacklitterman(portfolio_engine: portfolio_optimization.po_e
   'Volatility': 0.33132073874339424,
   'Sharpe ratio': 0.7736615325784322})
 
+```
 ```python
 from openbb_terminal.sdk import openbb
-openbb.portfolio.po.blacklitterman(symbols=["AAPL", "MSFT", "AMZN"])
+p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+weights, performance = openbb.portfolio.po.blacklitterman(portfolio_engine=p)
 ```
 
 ---

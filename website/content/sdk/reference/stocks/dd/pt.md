@@ -37,6 +37,15 @@ openbb.stocks.dd.pt(symbol: str)
 | pd.DataFrame | Analysts data |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+df = openbb.stocks.dd.pt(symbol="AAPL")
+```
+
+---
+
 
 
 </TabItem>
@@ -70,6 +79,15 @@ openbb.stocks.dd.pt_chart(symbol: str, data: Optional[pd.DataFrame] = None, star
 ## Returns
 
 This function does not return anything
+
+---
+
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.stocks.dd.pt_chart(symbol="AAPL")
+```
 
 ---
 

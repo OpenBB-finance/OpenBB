@@ -37,6 +37,15 @@ openbb.stocks.fa.divs(symbol: str)
 | pd.DataFrame | Dataframe of dividends and dates |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.fa.divs("AAPL")
+```
+
+---
+
 
 
 </TabItem>
@@ -68,6 +77,15 @@ openbb.stocks.fa.divs_chart(symbol: str, limit: int = 12, plot: bool = True, exp
 ## Returns
 
 This function does not return anything
+
+---
+
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.fa.divs_chart("AAPL")
+```
 
 ---
 

@@ -49,6 +49,12 @@ openbb.portfolio.po.maxdiv(portfolio_engine: portfolio_optimization.po_engine.Po
 
 ## Examples
 
+```python
+from openbb_terminal.sdk import openbb
+openbb.portfolio.po.maxdiv(symbols=["AAPL", "MSFT", "AMZN"])
+```
+
+```
 (        value
  AAPL  0.33696
  MSFT  0.26766
@@ -57,9 +63,11 @@ openbb.portfolio.po.maxdiv(portfolio_engine: portfolio_optimization.po_engine.Po
   'Volatility': 0.3310292858117002,
   'Sharpe ratio': 0.6560509034866852})
 
+```
 ```python
 from openbb_terminal.sdk import openbb
-openbb.portfolio.po.maxdiv(symbols=["AAPL", "MSFT", "AMZN"])
+p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+weights, performance = openbb.portfolio.po.maxdiv(portfolio_engine=p)
 ```
 
 ---

@@ -60,6 +60,12 @@ openbb.portfolio.po.herc(portfolio_engine: portfolio_optimization.po_engine.PoEn
 
 ## Examples
 
+```python
+from openbb_terminal.sdk import openbb
+openbb.portfolio.po.herc(symbols=["AAPL", "MSFT", "AMZN"])
+```
+
+```
 (        value
  AAPL  0.17521
  MSFT  0.19846
@@ -68,9 +74,11 @@ openbb.portfolio.po.herc(portfolio_engine: portfolio_optimization.po_engine.PoEn
   'Volatility': 0.34337400112782096,
   'Sharpe ratio': 0.49216586638525933})
 
+```
 ```python
 from openbb_terminal.sdk import openbb
-openbb.portfolio.po.herc(symbols=["AAPL", "MSFT", "AMZN"])
+p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+weights, performance = openbb.portfolio.po.herc(portfolio_engine=p)
 ```
 
 ---

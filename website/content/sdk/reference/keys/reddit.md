@@ -39,16 +39,18 @@ openbb.keys.reddit(client_id: str, client_secret: str, password: str, username: 
 
 ## Examples
 
+```python
+from openbb_terminal.sdk import openbb
+openbb.keys.reddit(
+```
+
+```
         client_id="example_id",
         client_secret="example_secret",
         password="example_password",
         username="example_username",
         useragent="example_useragent"
     )
-```python
-from openbb_terminal.sdk import openbb
-openbb.keys.reddit(
 ```
-
 ---
 

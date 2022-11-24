@@ -39,6 +39,16 @@ openbb.portfolio.rsharpe(portfolio_engine: pd.DataFrame, risk_free_rate: float =
 | pd.DataFrame | Rolling sharpe ratio DataFrame |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.rsharpe(p)
+```
+
+---
+
 
 
 </TabItem>

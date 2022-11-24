@@ -38,6 +38,16 @@ openbb.ta.clenow(values: pd.Series, window: int = 90)
 |  | R2 of fit to log data |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+df = openbb.stocks.load("AAPL")
+openbb.ta.clenow(df["Close"])
+```
+
+---
+
 
 
 </TabItem>
@@ -69,6 +79,16 @@ openbb.ta.clenow_chart(data: pd.Series, symbol: str = "", window: int = 90, expo
 ## Returns
 
 This function does not return anything
+
+---
+
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+df = openbb.stocks.load("AAPL")
+openbb.ta.clenow_chart(df["Close"])
+```
 
 ---
 

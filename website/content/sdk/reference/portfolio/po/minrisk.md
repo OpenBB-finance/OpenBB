@@ -54,6 +54,12 @@ openbb.portfolio.po.minrisk(portfolio_engine: portfolio_optimization.po_engine.P
 
 ## Examples
 
+```python
+from openbb_terminal.sdk import openbb
+openbb.portfolio.po.minrisk(symbols=["AAPL", "MSFT", "AMZN"])
+```
+
+```
     (        value
      AAPL  0.25044
      MSFT  0.49509
@@ -62,9 +68,11 @@ openbb.portfolio.po.minrisk(portfolio_engine: portfolio_optimization.po_engine.P
       'Volatility': 0.32736590080425004,
       'Sharpe ratio': 0.6868815468880802})
 
+```
 ```python
 from openbb_terminal.sdk import openbb
-openbb.portfolio.po.minrisk(symbols=["AAPL", "MSFT", "AMZN"])
+p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+weights, performance = openbb.portfolio.po.minrisk(portfolio_engine=p)
 ```
 
 ---
