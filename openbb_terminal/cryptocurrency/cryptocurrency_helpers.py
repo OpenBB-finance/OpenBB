@@ -891,7 +891,8 @@ def plot_candles(  # pylint: disable=too-many-arguments
             x=0.05,
             y=1,
         )
-        lambda_long_number_format_y_axis(data, "Volume", ax)
+        if volume:
+            lambda_long_number_format_y_axis(data, "Volume", ax)
         if yscale == "log":
             ax[0].yaxis.set_major_formatter(ScalarFormatter())
             ax[0].yaxis.set_major_locator(
