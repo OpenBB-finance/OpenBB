@@ -16,7 +16,7 @@ View historical price of stocks that meet preset
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/screener/yahoofinance_model.py#L53)]
 
 ```python
-openbb.stocks.screener.historical(preset_loaded: str = "top_gainers", limit: int = 10, start_date: str = "2022-05-27", type_candle: str = "a", normalize: bool = True)
+openbb.stocks.screener.historical(preset_loaded: str = "top_gainers", limit: int = 10, start_date: str = "2022-05-28", type_candle: str = "a", normalize: bool = True)
 ```
 
 ---
@@ -27,7 +27,7 @@ openbb.stocks.screener.historical(preset_loaded: str = "top_gainers", limit: int
 | ---- | ---- | ----------- | ------- | -------- |
 | preset_loaded | str | Preset loaded to filter for tickers | top_gainers | True |
 | limit | int | Number of stocks to display | 10 | True |
-| start_date | str | Start date to display historical data, in YYYY-MM-DD format | 2022-05-27 | True |
+| start_date | str | Start date to display historical data, in YYYY-MM-DD format | 2022-05-28 | True |
 | type_candle | str | Type of candle to display | a | True |
 | normalize | bool | Boolean to normalize all stock prices using MinMax | True | True |
 
@@ -51,7 +51,7 @@ View historical price of stocks that meet preset
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/screener/yahoofinance_view.py#L28)]
 
 ```python
-openbb.stocks.screener.historical_chart(preset_loaded: str = "top_gainers", limit: int = 10, start_date: str = "2022-05-27", type_candle: str = "a", normalize: bool = True, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+openbb.stocks.screener.historical_chart(preset_loaded: str = "top_gainers", limit: int = 10, start_date: str = "2022-05-28", type_candle: str = "a", normalize: bool = True, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -62,7 +62,7 @@ openbb.stocks.screener.historical_chart(preset_loaded: str = "top_gainers", limi
 | ---- | ---- | ----------- | ------- | -------- |
 | preset_loaded | str | Preset loaded to filter for tickers | top_gainers | True |
 | limit | int | Number of stocks to display | 10 | True |
-| start_date | str | Start date to display historical data, in YYYY-MM-DD format | 2022-05-27 | True |
+| start_date | str | Start date to display historical data, in YYYY-MM-DD format | 2022-05-28 | True |
 | type_candle | str | Type of candle to display | a | True |
 | normalize | bool | Boolean to normalize all stock prices using MinMax | True | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |

@@ -21,10 +21,10 @@ usage: mt [--list] [-t TIMESERIES] [-i {5m,15m,30m,1h,1d,1w}] [-s START]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | list | Flag to show available timeseries | False | True | None |
-| timeseries | Messari timeseries id |  | True | txn.tsfr.val.adj, blk.size.byte, mcap.dom, txn.vol, reddit.active.users, exch.flow.in.ntv.incl, sply.total.iss.ntv, nvt.adj, act.addr.cnt, diff.avg, sply.liquid, exch.sply.ntv, txn.fee.avg.ntv, reddit.subscribers, fees.ntv, exch.flow.out.usd.incl, price, daily.shp, txn.tsfr.val.avg, blk.size.bytes.avg, exch.flow.in.usd, txn.tfr.erc20.cnt, daily.vol, exch.sply.usd, exch.flow.out.ntv, new.iss.usd, blk.cnt, nvt.adj.90d.ma, mcap.realized, cg.sply.circ, exch.flow.out.usd, txn.fee.med.ntv, min.rev.usd, fees, exch.flow.in.usd.incl, min.rev.ntv, telegram.users, txn.tfr.val.med, mcap.out, new.iss.ntv, txn.cnt, real.vol, iss.rate, sply.total.iss, txn.tfr.erc721.cnt, txn.tfr.val.ntv, txn.tsfr.cnt, txn.fee.med, txn.fee.avg, mcap.circ, sply.out, txn.tfr.avg.ntv, exch.flow.in.ntv, sply.circ, hashrate, exch.flow.out.ntv.incl, txn.tfr.val.med.ntv, txn.tfr.val.adj.ntv, twitter.followers |
+| timeseries | Messari timeseries id |  | True | fees.ntv, exch.flow.out.usd.incl, txn.tfr.val.adj.ntv, txn.tfr.val.ntv, exch.sply.usd, hashrate, exch.flow.in.ntv.incl, sply.liquid, txn.tfr.val.med.ntv, blk.cnt, sply.total.iss.ntv, diff.avg, txn.fee.med, blk.size.bytes.avg, blk.size.byte, nvt.adj.90d.ma, real.vol, exch.flow.out.ntv, sply.out, twitter.followers, exch.flow.out.usd, txn.tfr.erc721.cnt, iss.rate, min.rev.ntv, txn.vol, telegram.users, sply.total.iss, mcap.out, exch.flow.in.usd, txn.cnt, price, reddit.active.users, txn.tsfr.val.adj, new.iss.usd, nvt.adj, txn.tsfr.cnt, exch.flow.in.ntv, txn.tfr.avg.ntv, sply.circ, mcap.realized, mcap.dom, txn.tfr.erc20.cnt, exch.flow.out.ntv.incl, txn.tfr.val.med, fees, txn.fee.avg, txn.tsfr.val.avg, exch.sply.ntv, min.rev.usd, new.iss.ntv, daily.vol, reddit.subscribers, txn.fee.avg.ntv, mcap.circ, daily.shp, txn.fee.med.ntv, cg.sply.circ, act.addr.cnt, exch.flow.in.usd.incl |
 | interval | Frequency interval | 1d | True | 5m, 15m, 30m, 1h, 1d, 1w |
-| start | Initial date. Default: A year ago | 2021-11-23 | True | None |
-| end | End date. Default: Today | 2022-11-23 | True | None |
+| start | Initial date. Default: A year ago | 2021-11-24 | True | None |
+| end | End date. Default: Today | 2022-11-24 | True | None |
 | include_paid | Flag to show both paid and free sources | False | True | None |
 | query | Query to search across all messari timeseries |  | True | None |
 ---

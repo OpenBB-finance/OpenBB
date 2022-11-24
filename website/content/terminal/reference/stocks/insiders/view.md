@@ -19,6 +19,6 @@ usage: view [-p Desired preset]
 
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
-| preset | View specific preset |  | True | Restaurants, Building-Materials, whales, Utility-Communications, Utility-Gas, Investment-Offices, Constructio, Banks, Insurance-Agents, Hotels, Ground-Freight, Durable-Goods, Air-Transportatio, Brokers, Mining, Gold-Silver, Tobacco, Wholesale-Trade, Business-Services, Nondurable-Goods, Personal-Credit, Manufacturing, Furniture, Railroads, Apparel, Legal, Electronics, template, Agro-Chemicals, Retail-Stores, Real-Estate, Closed-End-Funds, Health, Retail-Trade, Agriculture, Grocery, Lumber, Insurance-Carriers, Guided-Missiles, Professional-Services, Credit-Industry, Pharmaceuticals, Mortgages |
+| preset | View specific preset |  | True | Constructio, Health, Utility-Communications, Grocery, Restaurants, Legal, Hotels, Agriculture, Tobacco, Ground-Freight, Closed-End-Funds, Gold-Silver, Pharmaceuticals, Apparel, Mining, Railroads, Credit-Industry, Nondurable-Goods, Wholesale-Trade, template, Lumber, Guided-Missiles, Banks, Retail-Stores, whales, Investment-Offices, Brokers, Electronics, Air-Transportatio, Business-Services, Personal-Credit, Retail-Trade, Insurance-Carriers, Furniture, Utility-Gas, Building-Materials, Professional-Services, Real-Estate, Agro-Chemicals, Durable-Goods, Manufacturing, Insurance-Agents, Mortgages |
 ---
 

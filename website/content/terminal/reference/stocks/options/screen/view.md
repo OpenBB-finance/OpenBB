@@ -11,7 +11,7 @@ View available presets under presets folder.
 
 ```python
 usage: view
-            [-p {3DTE_Degenerate.ini,TSLA_Calls_90Days.ini,Highest_IV.ini,TSLA_Poots.ini,SPY_ATM_Calls.ini,SPY_ATM_Poots.ini,template.ini,high_IV.ini,Highest_OI.ini,Highest_Volume.ini,Long_FAANGM.ini}]
+            [-p {TSLA_Calls_90Days.ini,SPY_ATM_Calls.ini,high_IV.ini,template.ini,SPY_ATM_Poots.ini,3DTE_Degenerate.ini,TSLA_Poots.ini,Long_FAANGM.ini,Highest_Volume.ini,Highest_OI.ini,Highest_IV.ini}]
 ```
 
 ---
@@ -20,6 +20,6 @@ usage: view
 
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
-| preset | View specific custom preset |  | True | 3DTE_Degenerate.ini, TSLA_Calls_90Days.ini, Highest_IV.ini, TSLA_Poots.ini, SPY_ATM_Calls.ini, SPY_ATM_Poots.ini, template.ini, high_IV.ini, Highest_OI.ini, Highest_Volume.ini, Long_FAANGM.ini |
+| preset | View specific custom preset |  | True | TSLA_Calls_90Days.ini, SPY_ATM_Calls.ini, high_IV.ini, template.ini, SPY_ATM_Poots.ini, 3DTE_Degenerate.ini, TSLA_Poots.ini, Long_FAANGM.ini, Highest_Volume.ini, Highest_OI.ini, Highest_IV.ini |
 ---
 

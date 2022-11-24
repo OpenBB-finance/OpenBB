@@ -20,7 +20,7 @@ usage: pir [-e NAMES] [--filename FILENAME] [--folder FOLDER]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | names | Symbols to create a report for (e.g. pir ARKW ARKQ QQQ VOO) |  | True | None |
-| filename | Filename of the excel ETF report | ETF_report_20221123_145008 | True | None |
+| filename | Filename of the excel ETF report | ETF_report_20221124_094226 | True | None |
 | folder | Folder where the excel ETF report will be saved | /home/runner/OpenBBUserData/exports | True | None |
 ![pir](https://raw.githubusercontent.com/JerBouma/ThePassiveInvestor/master/Images/outputExample.gif)
 
