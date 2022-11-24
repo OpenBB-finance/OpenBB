@@ -82,6 +82,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
+          pip install "u8darts[torch]"
           pytest tests/
 
       - name: Start Terminal and exit
