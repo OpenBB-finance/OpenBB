@@ -10,7 +10,8 @@ Load stock ticker to perform analysis on. When the data source is syf', an India
 ### Usage
 
 ```python
-usage: load -t TICKER [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [-w] [-r {ytd,1y,2y,5y,6m}]
+usage: load -t TICKER [-s START] [-e END] [-i {1,5,15,30,60}] [-p]
+            [-f FILEPATH] [-m] [-w] [-r {ytd,1y,2y,5y,6m}]
 ```
 
 ---

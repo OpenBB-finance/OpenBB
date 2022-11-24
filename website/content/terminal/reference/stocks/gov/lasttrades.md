@@ -10,7 +10,8 @@ Last government trades. [Source: www.quiverquant.com]
 ### Usage
 
 ```python
-usage: lasttrades [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_DAYS] [-r REPRESENTATIVE]
+usage: lasttrades [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_DAYS]
+                  [-r REPRESENTATIVE]
 ```
 
 ---

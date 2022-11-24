@@ -10,7 +10,8 @@ Show last 10 tweets for given coin. You can display only N number of tweets with
 ### Usage
 
 ```python
-usage: twitter [-l LIMIT] [-s {date,user_name,status,retweet_count,like_count}] [-r]
+usage: twitter [-l LIMIT]
+               [-s {date,user_name,status,retweet_count,like_count}] [-r]
 ```
 
 ---

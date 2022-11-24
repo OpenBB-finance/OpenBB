@@ -10,7 +10,8 @@ Show companies matching the search query
 ### Usage
 
 ```python
-usage: search [-q QUERY [QUERY ...]] [-c country] [-s sector] [-i industry] [-e exchange]
+usage: search [-q QUERY [QUERY ...]] [-c country] [-s sector] [-i industry]
+              [-e exchange]
 ```
 
 ---

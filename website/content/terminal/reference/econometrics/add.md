@@ -10,7 +10,8 @@ Add columns to your dataframe with the option to use formulas. E.g. newdatasetco
 ### Usage
 
 ```python
-usage: add -n NEWDATASETCOL -b BASEDATASETCOL -s {div,mul,add,sub,mod,pow,,,=,=,==} -c CRITERIAORDATASETCOL
+usage: add -n NEWDATASETCOL -b BASEDATASETCOL -s
+           {div,mul,add,sub,mod,pow,,,=,=,==} -c CRITERIAORDATASETCOL
 ```
 
 ---

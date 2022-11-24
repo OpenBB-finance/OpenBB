@@ -10,7 +10,8 @@ Show candle for loaded fx data
 ### Usage
 
 ```python
-usage: candle [-p] [--sort {adjclose,open,close,high,low,volume,logret}] [-r] [--raw] [-t] [--ma MOV_AVG] [--log]
+usage: candle [-p] [--sort {adjclose,open,close,high,low,volume,logret}] [-r]
+              [--raw] [-t] [--ma MOV_AVG] [--log]
 ```
 
 ---
