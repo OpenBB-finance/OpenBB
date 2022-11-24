@@ -10,7 +10,7 @@ Historical price comparison between similar companies [Source: Yahoo Finance]
 ### Usage
 
 ```python
-usage: historical [-l LIMIT] [-n] [-s START] [-t {o,h,l,c,a}]
+historical [-l LIMIT] [-n] [-s START] [-t {o,h,l,c,a}]
 ```
 
 ---

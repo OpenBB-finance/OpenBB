@@ -10,7 +10,7 @@ Cumulative distribution function
 ### Usage
 
 ```python
-usage: cdf
+cdf
 ```
 
 ---

@@ -10,7 +10,7 @@ Display last swaps done on Uniswap DEX. [Source: https://thegraph.com/en/]
 ### Usage
 
 ```python
-usage: pairs [-l LIMIT] [-s {Datetime,USD,From,To}] [-r]
+pairs [-l LIMIT] [-s {Datetime,USD,From,To}] [-r]
 ```
 
 ---

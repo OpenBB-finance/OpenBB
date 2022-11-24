@@ -10,7 +10,7 @@ Show fund equity holdings.
 ### Usage
 
 ```python
-usage: equity
+equity
 ```
 
 ---

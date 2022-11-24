@@ -10,7 +10,7 @@ Show other users SPACs announcement. [Source: Reddit]
 ### Usage
 
 ```python
-usage: spac [-l N_LIMIT]
+spac [-l N_LIMIT]
 ```
 
 ---

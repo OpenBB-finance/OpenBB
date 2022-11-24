@@ -10,7 +10,7 @@ Open insider filtered data using selected ticker. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: stats [-l LIMIT] [-u]
+stats [-l LIMIT] [-u]
 ```
 
 ---

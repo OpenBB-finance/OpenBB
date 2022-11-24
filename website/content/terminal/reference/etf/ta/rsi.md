@@ -10,7 +10,7 @@ The Relative Strength Index (RSI) calculates a ratio of the recent upward price 
 ### Usage
 
 ```python
-usage: rsi [-l N_LENGTH] [-s N_SCALAR] [-d N_DRIFT]
+rsi [-l N_LENGTH] [-s N_SCALAR] [-d N_DRIFT]
 ```
 
 ---

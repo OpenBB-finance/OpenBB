@@ -10,7 +10,7 @@ Show selected saved portfolios
 ### Usage
 
 ```python
-usage: show [-pf PORTFOLIOS] [-ct CATEGORIES] [-v LONG_ALLOCATION]
+show [-pf PORTFOLIOS] [-ct CATEGORIES] [-v LONG_ALLOCATION]
 ```
 
 ---

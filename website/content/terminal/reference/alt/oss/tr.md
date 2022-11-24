@@ -10,7 +10,7 @@ Display top repositories [Source: https://api.github.com]
 ### Usage
 
 ```python
-usage: tr [-s {stars,forks}] [-c CATEGORIES]
+tr [-s {stars,forks}] [-c CATEGORIES]
 ```
 
 ---

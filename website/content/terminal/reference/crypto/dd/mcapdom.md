@@ -10,7 +10,7 @@ Display asset's percentage share of total crypto circulating market cap [Source:
 ### Usage
 
 ```python
-usage: mcapdom [-i {5m,15m,30m,1h,1d,1w}] [-s START] [-end END]
+mcapdom [-i {5m,15m,30m,1h,1d,1w}] [-s START] [-end END]
 ```
 
 ---

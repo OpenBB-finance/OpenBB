@@ -10,7 +10,7 @@ Display DeFi related substack newsletters. [Source: substack.com]
 ### Usage
 
 ```python
-usage: newsletter [-l LIMIT]
+newsletter [-l LIMIT]
 ```
 
 ---

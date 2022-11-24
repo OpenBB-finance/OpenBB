@@ -10,7 +10,7 @@ description: OpenBB Terminal Function
 ### Usage
 
 ```python
-usage: paexport -s START [-e END] [-c CURRENCY]
+paexport -s START [-e END] [-c CURRENCY]
 ```
 
 ---

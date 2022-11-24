@@ -10,7 +10,7 @@ Provides the sortino ratio of the selected stock.
 ### Usage
 
 ```python
-usage: so [-t TARGET_RETURN] [-a] [-w WINDOW]
+so [-t TARGET_RETURN] [-a] [-w WINDOW]
 ```
 
 ---

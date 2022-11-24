@@ -10,7 +10,7 @@ Print up to 25 undervalued stocks with revenue and earnings growth in excess of 
 ### Usage
 
 ```python
-usage: ugs [-l LIMIT]
+ugs [-l LIMIT]
 ```
 
 ---

@@ -10,8 +10,7 @@ Plot historical option greeks.
 ### Usage
 
 ```python
-usage: grhist -s STRIKE [-p] [-g {iv,gamma,theta,vega,delta,rho,premium}]
-              [-c CHAIN_ID] [-r] [-l LIMIT]
+grhist -s STRIKE [-p] [-g {iv,gamma,theta,vega,delta,rho,premium}] [-c CHAIN_ID] [-r] [-l LIMIT]
 ```
 
 ---

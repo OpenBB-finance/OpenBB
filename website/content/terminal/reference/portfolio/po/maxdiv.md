@@ -10,12 +10,7 @@ Maximizes the portfolio's diversification ratio
 ### Usage
 
 ```python
-usage: maxdiv
-              [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}]
-              [-de SMOOTHING_FACTOR_EWMA] [-vs SHORT_ALLOCATION] [-mt METHOD]
-              [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD]
-              [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
-              [-v LONG_ALLOCATION] [--name NAME]
+maxdiv [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-de SMOOTHING_FACTOR_EWMA] [-vs SHORT_ALLOCATION] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-v LONG_ALLOCATION] [--name NAME]
 ```
 
 ---

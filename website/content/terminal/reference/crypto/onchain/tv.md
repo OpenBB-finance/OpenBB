@@ -10,8 +10,7 @@ Display token volume on different Decentralized Exchanges. [Source: https://grap
 ### Usage
 
 ```python
-usage: tv -c COIN [-vs {ETH,USD,BTC,USDT}] [-l LIMIT]
-          [-s {exchange,trades,tradeAmount}] [-r]
+tv -c COIN [-vs {ETH,USD,BTC,USDT}] [-l LIMIT] [-s {exchange,trades,tradeAmount}] [-r]
 ```
 
 ---

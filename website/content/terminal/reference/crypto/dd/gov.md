@@ -10,7 +10,7 @@ Display asset's governance [Source: https://messari.io]
 ### Usage
 
 ```python
-usage: gov
+gov
 ```
 
 ---

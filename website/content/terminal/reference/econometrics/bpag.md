@@ -10,7 +10,7 @@ Show Breusch-Pagan heteroscedasticity test results. Needs OLS to be run in advan
 ### Usage
 
 ```python
-usage: bpag
+bpag
 ```
 
 ---

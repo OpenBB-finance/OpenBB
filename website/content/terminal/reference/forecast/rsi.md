@@ -10,7 +10,7 @@ Add rsi to dataset based on specific column.
 ### Usage
 
 ```python
-usage: rsi
+rsi
 ```
 
 ---

@@ -10,7 +10,7 @@ Developers data for loaded coin. If the development data is available you can se
 ### Usage
 
 ```python
-usage: dev
+dev
 ```
 
 ---

@@ -10,7 +10,7 @@ Provides value at risk (short: VaR) of the selected stock.
 ### Usage
 
 ```python
-usage: var [-m] [-a] [-s] [-p PERCENTILE] [-d DATA_RANGE]
+var [-m] [-a] [-s] [-p PERCENTILE] [-d DATA_RANGE]
 ```
 
 ---

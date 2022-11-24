@@ -10,7 +10,7 @@ Compare results between all activated Panel regression models
 ### Usage
 
 ```python
-usage: compare
+compare
 ```
 
 ---

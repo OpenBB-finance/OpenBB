@@ -10,7 +10,7 @@ Display github activity over time for a given coin. Github activity includes the
 ### Usage
 
 ```python
-usage: gh [-i INTERVAL] [-d DEV] [-s START] [-end END]
+gh [-i INTERVAL] [-d DEV] [-s START] [-end END]
 ```
 
 ---

@@ -10,7 +10,7 @@ FinBrain collects the news headlines from 15+ major financial news sources on a 
 ### Usage
 
 ```python
-usage: headlines
+headlines
 ```
 
 ---

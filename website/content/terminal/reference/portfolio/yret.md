@@ -10,7 +10,7 @@ End of the year returns
 ### Usage
 
 ```python
-usage: yret [-p PERIOD]
+yret [-p PERIOD]
 ```
 
 ---

@@ -10,7 +10,7 @@ Add similar tickers to compare with.
 ### Usage
 
 ```python
-usage: add [-s L_SIMILAR]
+add [-s L_SIMILAR]
 ```
 
 ---

@@ -10,7 +10,7 @@ Get dark pool short positions. [Source: Stockgrid]
 ### Usage
 
 ```python
-usage: pos [-l LIMIT] [-s {sv,sv_pct,nsv,nsv_dollar,dpp,dpp_dollar}] [-r]
+pos [-l LIMIT] [-s {sv,sv_pct,nsv,nsv_dollar,dpp,dpp_dollar}] [-r]
 ```
 
 ---

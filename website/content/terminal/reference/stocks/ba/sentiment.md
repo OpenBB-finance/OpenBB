@@ -10,7 +10,7 @@ Plot in-depth sentiment predicted from tweets from last days that contain pre-de
 ### Usage
 
 ```python
-usage: sentiment [-l LIMIT] [-d N_DAYS_PAST] [-c]
+sentiment [-l LIMIT] [-d N_DAYS_PAST] [-c]
 ```
 
 ---

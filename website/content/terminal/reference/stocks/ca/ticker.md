@@ -10,7 +10,7 @@ Set ticker to extract similar from
 ### Usage
 
 ```python
-usage: ticker -t TICKER
+ticker -t TICKER
 ```
 
 ---

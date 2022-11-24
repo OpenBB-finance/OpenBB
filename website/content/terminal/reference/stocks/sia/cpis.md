@@ -10,8 +10,7 @@ Companies per Industry based on Sector and Market Cap
 ### Usage
 
 ```python
-usage: cpis [-M MAX_INDUSTRIES_TO_DISPLAY] [-m MIN_PCT_TO_DISPLAY_INDUSTRY]
-            [-r]
+cpis [-M MAX_INDUSTRIES_TO_DISPLAY] [-m MIN_PCT_TO_DISPLAY_INDUSTRY] [-r]
 ```
 
 ---

@@ -10,7 +10,7 @@ Display chart for loaded coin. You can specify currency vs which you want to sho
 ### Usage
 
 ```python
-usage: candle [--log]
+candle [--log]
 ```
 
 ---

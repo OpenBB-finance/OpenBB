@@ -10,7 +10,7 @@ The On Balance Volume (OBV) is a cumulative total of the up and down volume. Whe
 ### Usage
 
 ```python
-usage: obv
+obv
 ```
 
 ---

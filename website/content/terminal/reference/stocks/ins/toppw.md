@@ -10,7 +10,7 @@ Print top officer purchases of the week. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: toppw [-l LIMIT]
+toppw [-l LIMIT]
 ```
 
 ---

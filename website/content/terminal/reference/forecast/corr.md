@@ -10,7 +10,7 @@ Plot correlation coefficients.
 ### Usage
 
 ```python
-usage: corr
+corr
 ```
 
 ---

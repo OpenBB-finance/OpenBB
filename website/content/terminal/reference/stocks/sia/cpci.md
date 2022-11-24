@@ -10,7 +10,7 @@ Companies per Country based on Industry and Market Cap
 ### Usage
 
 ```python
-usage: cpci [-M MAX_COUNTRIES_TO_DISPLAY] [-m MIN_PCT_TO_DISPLAY_COUNTRY] [-r]
+cpci [-M MAX_COUNTRIES_TO_DISPLAY] [-m MIN_PCT_TO_DISPLAY_COUNTRY] [-r]
 ```
 
 ---

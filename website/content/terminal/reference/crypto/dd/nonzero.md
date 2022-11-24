@@ -10,7 +10,7 @@ Display addresses with nonzero assets in a certain blockchain [Source: https://g
 ### Usage
 
 ```python
-usage: nonzero [-s SINCE] [-u UNTIL]
+nonzero [-s SINCE] [-u UNTIL]
 ```
 
 ---

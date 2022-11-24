@@ -10,7 +10,7 @@ Display info about your trading accounts on Ally
 ### Usage
 
 ```python
-usage: holdings
+holdings
 ```
 
 ---

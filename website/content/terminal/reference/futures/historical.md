@@ -10,7 +10,7 @@ Display futures historical. [Source: YahooFinance]
 ### Usage
 
 ```python
-usage: historical -t TICKER [-s START] [-e EXPIRY]
+historical -t TICKER [-s START] [-e EXPIRY]
 ```
 
 ---

@@ -10,9 +10,7 @@ Obtain any set of U.S. treasuries and plot them together. These can be a range o
 ### Usage
 
 ```python
-usage: treasury [-m MATURITY] [--show]
-                [--freq {annually,monthly,weekly,daily}] [-t TYPE]
-                [-s START_DATE] [-e END_DATE]
+treasury [-m MATURITY] [--show] [--freq {annually,monthly,weekly,daily}] [-t TYPE] [-s START_DATE] [-e END_DATE]
 ```
 
 ---

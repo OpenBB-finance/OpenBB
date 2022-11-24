@@ -10,7 +10,7 @@ Print latest popular tickers. [Source: Reddit]
 ### Usage
 
 ```python
-usage: popular [-l LIMIT] [-n NUM] [-s S_SUBREDDIT]
+popular [-l LIMIT] [-n NUM] [-s S_SUBREDDIT]
 ```
 
 ---

@@ -10,7 +10,7 @@ Load file of stocks tickers with optional categories
 ### Usage
 
 ```python
-usage: load -f FILE [FILE ...]
+load -f FILE [FILE ...]
 ```
 
 ---
@@ -19,6 +19,6 @@ usage: load -f FILE [FILE ...]
 
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
-| file | Allocation file to be used | None | False | OpenBB_Parameters_Template_v1.0.0.xlsx, defaults.ini, dany.ini, james.ini, example.ini, dd.ini |
+| file | Allocation file to be used | None | False | OpenBB_Parameters_Template_v1.0.0.xlsx, dany.ini, dd.ini, defaults.ini, example.ini, james.ini |
 
 ---

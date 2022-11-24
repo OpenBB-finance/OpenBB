@@ -10,7 +10,7 @@ Show fund info of a swedish fund.
 ### Usage
 
 ```python
-usage: infoswe
+infoswe
 ```
 
 ---

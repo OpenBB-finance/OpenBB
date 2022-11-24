@@ -10,7 +10,7 @@ Add in Stochastic Oscillator %K and %D
 ### Usage
 
 ```python
-usage: sto [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL]
+sto [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL]
 ```
 
 ---

@@ -10,7 +10,7 @@ Compare selected ETFs [Source: StockAnalysis]
 ### Usage
 
 ```python
-usage: compare -e NAMES
+compare -e NAMES
 ```
 
 ---

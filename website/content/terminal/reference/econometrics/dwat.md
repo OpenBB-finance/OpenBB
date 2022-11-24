@@ -10,7 +10,7 @@ Show autocorrelation tests from Durbin-Watson. Needs OLS to be run in advance wi
 ### Usage
 
 ```python
-usage: dwat [-p]
+dwat [-p]
 ```
 
 ---

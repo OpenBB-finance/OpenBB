@@ -10,7 +10,7 @@ Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff s
 ### Usage
 
 ```python
-usage: acf [-l LAGS]
+acf [-l LAGS]
 ```
 
 ---

@@ -10,7 +10,7 @@ A discounted cash flow statement looks to analyze the value of a company. To do 
 ### Usage
 
 ```python
-usage: dcf [-a] [--no-ratios] [--no-filter] [-p PREDICTION] [-s SIMILAR] [-g]
+dcf [-a] [--no-ratios] [--no-filter] [-p PREDICTION] [-s SIMILAR] [-g]
 ```
 
 ---

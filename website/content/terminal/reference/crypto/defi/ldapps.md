@@ -10,9 +10,7 @@ Display information about listed dApps on DeFi Llama. [Source: https://docs.llam
 ### Usage
 
 ```python
-usage: ldapps [-l LIMIT]
-              [-s {tvl,symbol,category,chains,change_1h,change_1d,change_7d,name}]
-              [-r] [--desc]
+ldapps [-l LIMIT] [-s {tvl,symbol,category,chains,change_1h,change_1d,change_7d,name}] [-r] [--desc]
 ```
 
 ---

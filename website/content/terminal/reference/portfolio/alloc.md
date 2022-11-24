@@ -10,7 +10,7 @@ Show your allocation to each asset or sector compared to the benchmark.
 ### Usage
 
 ```python
-usage: alloc [-a AGG] [-t]
+alloc [-a AGG] [-t]
 ```
 
 ---

@@ -10,7 +10,7 @@ Prints a complete cash flow statement over time. This can be either quarterly or
 ### Usage
 
 ```python
-usage: cash [-l LIMIT] [-q] [-r] [-p column]
+cash [-l LIMIT] [-q] [-r] [-p column]
 ```
 
 ---

@@ -10,7 +10,7 @@ This function plots option payoff diagrams
 ### Usage
 
 ```python
-usage: plot
+plot
 ```
 
 ---

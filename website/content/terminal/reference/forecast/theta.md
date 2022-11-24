@@ -10,7 +10,7 @@ Perform Theta forecast: https://unit8co.github.io/darts/generated_api/darts.mode
 ### Usage
 
 ```python
-usage: theta
+theta
 ```
 
 ---

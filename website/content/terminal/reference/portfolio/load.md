@@ -10,7 +10,7 @@ Load your portfolio transactions.
 ### Usage
 
 ```python
-usage: load -f FILE [-n NAME] [-r RISK_FREE_RATE]
+load -f FILE [-n NAME] [-r RISK_FREE_RATE]
 ```
 
 ---

@@ -10,7 +10,7 @@ Shows list of crypto, fiats, commodity exchange rates from CoinGecko You can loo
 ### Usage
 
 ```python
-usage: exrates [-l LIMIT] [-s {Index,Name,Unit,Value,Type}] [-r]
+exrates [-l LIMIT] [-s {Index,Name,Unit,Value,Type}] [-r]
 ```
 
 ---

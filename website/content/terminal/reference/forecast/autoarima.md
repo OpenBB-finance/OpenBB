@@ -10,7 +10,7 @@ Perform Automatic ARIMA forecast: https://nixtla.github.io/statsforecast/example
 ### Usage
 
 ```python
-usage: autoarima
+autoarima
 ```
 
 ---

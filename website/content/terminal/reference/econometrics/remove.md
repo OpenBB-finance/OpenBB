@@ -10,7 +10,7 @@ Remove a dataset from the loaded dataset list
 ### Usage
 
 ```python
-usage: remove [-n {}]
+remove [-n {}]
 ```
 
 ---

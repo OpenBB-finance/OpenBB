@@ -10,7 +10,7 @@ Get fund information.
 ### Usage
 
 ```python
-usage: info
+info
 ```
 
 ---

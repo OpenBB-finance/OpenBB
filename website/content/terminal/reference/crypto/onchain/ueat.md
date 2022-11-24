@@ -10,9 +10,7 @@ Display number of unique ethereum addresses which made a transaction in given ti
 ### Usage
 
 ```python
-usage: ueat [-l LIMIT]
-            [-s {date,uniqueSenders,transactions,averageGasPrice,mediumGasPrice,maximumGasPrice}]
-            [-i {day,month,week}] [-r]
+ueat [-l LIMIT] [-s {date,uniqueSenders,transactions,averageGasPrice,mediumGasPrice,maximumGasPrice}] [-i {day,month,week}] [-r]
 ```
 
 ---

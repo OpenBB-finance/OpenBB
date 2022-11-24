@@ -10,7 +10,7 @@ Show rolling sharpe portfolio vs benchmark
 ### Usage
 
 ```python
-usage: rsharpe [-p PERIOD] [-r RISK_FREE_RATE]
+rsharpe [-p PERIOD] [-r RISK_FREE_RATE]
 ```
 
 ---

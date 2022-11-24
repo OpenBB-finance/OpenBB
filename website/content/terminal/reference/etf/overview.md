@@ -10,7 +10,7 @@ Get overview data for selected etf
 ### Usage
 
 ```python
-usage: overview
+overview
 ```
 
 ---

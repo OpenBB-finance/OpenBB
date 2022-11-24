@@ -10,7 +10,7 @@ Print top insider sales of the day. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: tist [-l LIMIT]
+tist [-l LIMIT]
 ```
 
 ---

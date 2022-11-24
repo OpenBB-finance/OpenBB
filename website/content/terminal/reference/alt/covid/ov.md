@@ -10,7 +10,7 @@ Show historical cases and deaths by country.
 ### Usage
 
 ```python
-usage: ov
+ov
 ```
 
 ---

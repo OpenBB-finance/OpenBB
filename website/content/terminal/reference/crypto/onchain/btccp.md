@@ -10,7 +10,7 @@ Display BTC circulating supply [Source: https://api.blockchain.info/]
 ### Usage
 
 ```python
-usage: btccp [-s SINCE] [-u UNTIL]
+btccp [-s SINCE] [-u UNTIL]
 ```
 
 ---

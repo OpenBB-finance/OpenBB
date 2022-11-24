@@ -10,7 +10,7 @@ Plot interest over time of words/sentences versus stock price. [Source: Google]
 ### Usage
 
 ```python
-usage: interest [-s START] [-w WORDS]
+interest [-s START] [-w WORDS]
 ```
 
 ---

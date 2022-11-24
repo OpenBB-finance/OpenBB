@@ -10,7 +10,7 @@ Prints a list of the key metrics of a company over time. This can be either quar
 ### Usage
 
 ```python
-usage: metrics [-l LIMIT] [-q]
+metrics [-l LIMIT] [-q]
 ```
 
 ---

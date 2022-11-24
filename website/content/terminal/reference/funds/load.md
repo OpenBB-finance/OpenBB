@@ -10,7 +10,7 @@ Get historical data.
 ### Usage
 
 ```python
-usage: load --fund FUND [FUND ...] [-n] [-s START] [-e END]
+load --fund FUND [FUND ...] [-n] [-s START] [-e END]
 ```
 
 ---

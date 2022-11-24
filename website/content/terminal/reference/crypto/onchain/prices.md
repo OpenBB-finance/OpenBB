@@ -10,8 +10,7 @@ description: OpenBB Terminal Function
 ### Usage
 
 ```python
-usage: prices [-l LIMIT] [-s {date,cap,volumeConverted,open,high,close,low}]
-              [-r]
+prices [-l LIMIT] [-s {date,cap,volumeConverted,open,high,close,low}] [-r]
 ```
 
 ---

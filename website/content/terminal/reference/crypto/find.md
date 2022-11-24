@@ -10,7 +10,7 @@ Find similar coin by name, symbol, or id. If you don't remember exact name or id
 ### Usage
 
 ```python
-usage: find -c COIN [-k {id,symbol,name}] [-l LIMIT] [-s SKIP]
+find -c COIN [-k {id,symbol,name}] [-l LIMIT] [-s SKIP]
 ```
 
 ---

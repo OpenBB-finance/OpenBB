@@ -10,7 +10,7 @@ description: OpenBB Terminal Function
 ### Usage
 
 ```python
-usage: lastnews [-l LIMIT]
+lastnews [-l LIMIT]
 ```
 
 ---

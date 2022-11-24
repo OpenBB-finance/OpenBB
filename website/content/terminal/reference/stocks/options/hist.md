@@ -10,7 +10,7 @@ Gets historical quotes for given option chain
 ### Usage
 
 ```python
-usage: hist -s STRIKE [-p] [-c CHAIN_ID]
+hist -s STRIKE [-p] [-c CHAIN_ID]
 ```
 
 ---

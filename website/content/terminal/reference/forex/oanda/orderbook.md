@@ -10,7 +10,7 @@ Plot an orderbook for an instrument if Oanda provides one.
 ### Usage
 
 ```python
-usage: orderbook
+orderbook
 ```
 
 ---

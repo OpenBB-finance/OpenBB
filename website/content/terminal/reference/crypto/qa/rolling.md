@@ -10,7 +10,7 @@ Rolling mean and std deviation
 ### Usage
 
 ```python
-usage: rolling [-w N_WINDOW]
+rolling [-w N_WINDOW]
 ```
 
 ---

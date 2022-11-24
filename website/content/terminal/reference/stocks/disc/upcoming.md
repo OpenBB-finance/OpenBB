@@ -10,7 +10,7 @@ Upcoming earnings release dates. [Source: Seeking Alpha]
 ### Usage
 
 ```python
-usage: upcoming [-l LIMIT] [-p N_PAGES]
+upcoming [-l LIMIT] [-p N_PAGES]
 ```
 
 ---

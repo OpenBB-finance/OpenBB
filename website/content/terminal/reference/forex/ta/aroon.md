@@ -10,7 +10,7 @@ The word aroon is Sanskrit for "dawn's early light." The Aroon indicator attempt
 ### Usage
 
 ```python
-usage: aroon [-l N_LENGTH] [-s N_SCALAR] [-o N_OFFSET]
+aroon [-l N_LENGTH] [-s N_SCALAR] [-o N_OFFSET]
 ```
 
 ---

@@ -10,7 +10,7 @@ Perform a linear regression forecast: https://unit8co.github.io/darts/generated_
 ### Usage
 
 ```python
-usage: linregr
+linregr
 ```
 
 ---

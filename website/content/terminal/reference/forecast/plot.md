@@ -10,7 +10,7 @@ Plot data based on the index
 ### Usage
 
 ```python
-usage: plot [-v VALUES]
+plot [-v VALUES]
 ```
 
 ---

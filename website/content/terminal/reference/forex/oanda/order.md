@@ -10,7 +10,7 @@ Create order
 ### Usage
 
 ```python
-usage: order -u UNITS -p PRICE
+order -u UNITS -p PRICE
 ```
 
 ---

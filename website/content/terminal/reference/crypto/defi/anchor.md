@@ -10,7 +10,7 @@ Displays anchor protocol earnings data of a certain terra address --transactions
 ### Usage
 
 ```python
-usage: anchor --address ADDRESS [--transactions]
+anchor --address ADDRESS [--transactions]
 ```
 
 ---

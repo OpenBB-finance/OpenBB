@@ -10,7 +10,7 @@ Plot historical data.
 ### Usage
 
 ```python
-usage: plot
+plot
 ```
 
 ---

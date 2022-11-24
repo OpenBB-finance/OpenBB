@@ -10,7 +10,7 @@ Prints either yearly or quarterly cashflow statement the company, and compares i
 ### Usage
 
 ```python
-usage: cashflow [-q] [-t S_TIMEFRAME]
+cashflow [-q] [-t S_TIMEFRAME]
 ```
 
 ---

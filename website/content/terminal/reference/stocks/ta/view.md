@@ -10,7 +10,7 @@ View historical price with trendlines. [Source: Finviz]
 ### Usage
 
 ```python
-usage: view
+view
 ```
 
 ---

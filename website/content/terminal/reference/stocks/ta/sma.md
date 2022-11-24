@@ -10,7 +10,7 @@ Moving Averages are used to smooth the data in an array to help eliminate noise 
 ### Usage
 
 ```python
-usage: sma [-l N_LENGTH] [-o N_OFFSET]
+sma [-l N_LENGTH] [-o N_OFFSET]
 ```
 
 ---

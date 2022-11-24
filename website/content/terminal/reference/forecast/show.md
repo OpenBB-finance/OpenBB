@@ -10,7 +10,7 @@ Show a portion of the DataFrame
 ### Usage
 
 ```python
-usage: show [-n {}] [-s SORTBY [SORTBY ...]] [-r] [--limit-col LIMIT_COL]
+show [-n {}] [-s SORTBY [SORTBY ...]] [-r] [--limit-col LIMIT_COL]
 ```
 
 ---

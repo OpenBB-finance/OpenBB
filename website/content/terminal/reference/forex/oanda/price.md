@@ -10,7 +10,7 @@ Get price for selected instrument.
 ### Usage
 
 ```python
-usage: price
+price
 ```
 
 ---

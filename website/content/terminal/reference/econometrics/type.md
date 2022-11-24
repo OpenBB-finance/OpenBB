@@ -10,7 +10,7 @@ Show the type of the columns of the dataset and/or change the type of the column
 ### Usage
 
 ```python
-usage: type [-n {}] [--format {int,float,str,bool,category,date}]
+type [-n {}] [--format {int,float,str,bool,category,date}]
 ```
 
 ---

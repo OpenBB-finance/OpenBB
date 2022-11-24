@@ -10,9 +10,7 @@ Display average bid, ask prices, spread for given crypto pair for chosen time pe
 ### Usage
 
 ```python
-usage: baas [-c COIN] [-vs {ETH,USD,BTC,USDT}] [-l LIMIT]
-            [-s {date,baseCurrency,quoteCurrency,dailySpread,averageBidPrice,averageAskPrice}]
-            [-r]
+baas [-c COIN] [-vs {ETH,USD,BTC,USDT}] [-l LIMIT] [-s {date,baseCurrency,quoteCurrency,dailySpread,averageBidPrice,averageAskPrice}] [-r]
 ```
 
 ---

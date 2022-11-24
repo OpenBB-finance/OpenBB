@@ -10,7 +10,7 @@ Display active blockchain addresses over time [Source: https://glassnode.org]
 ### Usage
 
 ```python
-usage: active [-i {24h,1w,1month}] [-s SINCE] [-u UNTIL]
+active [-i {24h,1w,1month}] [-s SINCE] [-u UNTIL]
 ```
 
 ---

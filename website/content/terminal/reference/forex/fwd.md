@@ -10,7 +10,7 @@ Get forward rates for loaded pair.
 ### Usage
 
 ```python
-usage: fwd
+fwd
 ```
 
 ---

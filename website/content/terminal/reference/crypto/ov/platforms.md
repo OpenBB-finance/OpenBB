@@ -10,7 +10,7 @@ List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusam
 ### Usage
 
 ```python
-usage: platforms
+platforms
 ```
 
 ---

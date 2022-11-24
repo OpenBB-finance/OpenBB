@@ -10,7 +10,7 @@ Unit root test / stationarity (ADF, KPSS)
 ### Usage
 
 ```python
-usage: unitroot [-r {c,ct,ctt,nc}] [-k {c,ct}]
+unitroot [-r {c,ct,ctt,nc}] [-k {c,ct}]
 ```
 
 ---

@@ -10,7 +10,7 @@ Combine two entire datasets, or add specific columns. Add specificcolumns with t
 ### Usage
 
 ```python
-usage: combine [--dataset {--columns,-c}] [-c COLUMNS]
+combine [--dataset {--columns,-c}] [-c COLUMNS]
 ```
 
 ---

@@ -10,7 +10,7 @@ Display altcoin index overtime. If 75% of the Top 50 coins performed better than
 ### Usage
 
 ```python
-usage: altindex [-p {30,90,365}] [-s SINCE] [-u UNTIL]
+altindex [-p {30,90,365}] [-s SINCE] [-u UNTIL]
 ```
 
 ---

@@ -10,7 +10,7 @@ Display asset's investors [Source: https://messari.io]
 ### Usage
 
 ```python
-usage: inv
+inv
 ```
 
 ---

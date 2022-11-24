@@ -10,7 +10,7 @@ Print latest officer purchases 25k. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: blop [-l LIMIT]
+blop [-l LIMIT]
 ```
 
 ---

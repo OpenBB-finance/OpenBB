@@ -10,7 +10,7 @@ Displays terra blockchain staking ratio history. [Source: https://fcd.terra.dev/
 ### Usage
 
 ```python
-usage: sratio [-l LIMIT]
+sratio [-l LIMIT]
 ```
 
 ---

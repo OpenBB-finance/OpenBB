@@ -10,7 +10,7 @@ Set a country for funds
 ### Usage
 
 ```python
-usage: country [-n NAME [NAME ...]]
+country [-n NAME [NAME ...]]
 ```
 
 ---

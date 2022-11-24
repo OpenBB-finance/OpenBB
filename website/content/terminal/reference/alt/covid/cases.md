@@ -10,7 +10,7 @@ Show historical cases for country.
 ### Usage
 
 ```python
-usage: cases
+cases
 ```
 
 ---

@@ -10,7 +10,7 @@ Displays funding rate by exchange for a certain asset [Source: https://coinglass
 ### Usage
 
 ```python
-usage: fundrate
+fundrate
 ```
 
 ---

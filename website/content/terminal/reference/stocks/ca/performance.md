@@ -10,7 +10,7 @@ Prints screener data of similar companies. [Source: Finviz]
 ### Usage
 
 ```python
-usage: performance
+performance
 ```
 
 ---

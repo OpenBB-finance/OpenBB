@@ -10,7 +10,7 @@ Add Average True Range to dataset of specific stock ticker.
 ### Usage
 
 ```python
-usage: atr [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL]
+atr [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL]
 ```
 
 ---

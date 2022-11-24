@@ -10,7 +10,7 @@ Display mean hashrate for a certain blockchain (ETH or BTC) [Source: https://gla
 ### Usage
 
 ```python
-usage: hr [-c {BTC,ETH}] [-i {24h,1w,1month}] [-s SINCE] [-u UNTIL]
+hr [-c {BTC,ETH}] [-i {24h,1w,1month}] [-s SINCE] [-u UNTIL]
 ```
 
 ---

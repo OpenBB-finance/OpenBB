@@ -10,7 +10,7 @@ Perform Automatic ETS (Error, Trend, Seasonality) forecast: https://nixtla.githu
 ### Usage
 
 ```python
-usage: autoets
+autoets
 ```
 
 ---

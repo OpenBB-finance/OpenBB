@@ -10,7 +10,7 @@ Box and Whisker plot
 ### Usage
 
 ```python
-usage: bw [-y]
+bw [-y]
 ```
 
 ---

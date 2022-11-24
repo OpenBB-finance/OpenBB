@@ -10,7 +10,7 @@ Load ETF ticker to perform analysis on.
 ### Usage
 
 ```python
-usage: load -t TICKER [-s START] [-e END] [-l LIMIT]
+load -t TICKER [-s START] [-e END] [-l LIMIT]
 ```
 
 ---

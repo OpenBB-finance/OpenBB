@@ -10,7 +10,7 @@ Display holdings of assets (absolute value)
 ### Usage
 
 ```python
-usage: holdv [-u]
+holdv [-u]
 ```
 
 ---

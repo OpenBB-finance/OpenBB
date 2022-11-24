@@ -10,7 +10,7 @@ Show historical death/cases rates for a country.
 ### Usage
 
 ```python
-usage: rates
+rates
 ```
 
 ---

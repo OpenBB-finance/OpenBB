@@ -10,7 +10,7 @@ Shows top decentralized exchanges [Source: https://dappradar.com/] Accepts --sor
 ### Usage
 
 ```python
-usage: dex [-l LIMIT] [-s SORTBY [SORTBY ...]]
+dex [-l LIMIT] [-s SORTBY [SORTBY ...]]
 ```
 
 ---

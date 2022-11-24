@@ -10,7 +10,7 @@ Historical dividends for a company
 ### Usage
 
 ```python
-usage: divs [-l LIMIT] [-p]
+divs [-l LIMIT] [-p]
 ```
 
 ---

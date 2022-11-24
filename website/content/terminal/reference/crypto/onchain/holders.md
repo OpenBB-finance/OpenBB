@@ -10,7 +10,7 @@ Display top ERC20 token holders: e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
 ### Usage
 
 ```python
-usage: holders [-l LIMIT] [-s {balance,share}] [-r]
+holders [-l LIMIT] [-s {balance,share}] [-r]
 ```
 
 ---

@@ -10,7 +10,7 @@ Display Luna circulating supply changes stats. [Source: Smartstake.io] Follow th
 ### Usage
 
 ```python
-usage: lcsc [-d DAYS]
+lcsc [-d DAYS]
 ```
 
 ---

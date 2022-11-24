@@ -10,7 +10,7 @@ Display asset's roadmap [Source: https://messari.io]
 ### Usage
 
 ```python
-usage: rm [-r]
+rm [-r]
 ```
 
 ---

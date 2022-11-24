@@ -10,7 +10,7 @@ The Center of Gravity indicator, in short, is used to anticipate future price mo
 ### Usage
 
 ```python
-usage: cg [-l N_LENGTH]
+cg [-l N_LENGTH]
 ```
 
 ---

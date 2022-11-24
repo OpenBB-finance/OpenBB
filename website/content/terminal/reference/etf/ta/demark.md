@@ -10,7 +10,7 @@ Calculates the Demark sequential indicator.
 ### Usage
 
 ```python
-usage: demark [-m MIN_TO_SHOW]
+demark [-m MIN_TO_SHOW]
 ```
 
 ---

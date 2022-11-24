@@ -10,7 +10,7 @@ This command can plot any data on two y-axes obtained from the macro, fred, inde
 ### Usage
 
 ```python
-usage: plot [--y1 YAXIS1] [--y2 YAXIS2]
+plot [--y1 YAXIS1] [--y2 YAXIS2]
 ```
 
 ---

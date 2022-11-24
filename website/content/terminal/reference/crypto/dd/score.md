@@ -10,7 +10,7 @@ In this view you can find different kind of scores for loaded coin. Those scores
 ### Usage
 
 ```python
-usage: score
+score
 ```
 
 ---

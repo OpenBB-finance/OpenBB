@@ -10,7 +10,7 @@ Get all exchanges found for given coin. You can display only top N number of exc
 ### Usage
 
 ```python
-usage: ex [-l LIMIT] [-s {id,name,adjusted_volume_24h_share,fiats}] [-r]
+ex [-l LIMIT] [-s {id,name,adjusted_volume_24h_share,fiats}] [-r]
 ```
 
 ---

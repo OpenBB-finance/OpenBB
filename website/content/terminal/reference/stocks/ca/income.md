@@ -10,7 +10,7 @@ Prints either yearly or quarterly income statement the company, and compares it 
 ### Usage
 
 ```python
-usage: income [-q] [-t S_TIMEFRAME]
+income [-q] [-t S_TIMEFRAME]
 ```
 
 ---

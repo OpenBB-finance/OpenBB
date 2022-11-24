@@ -10,7 +10,7 @@ Perform Automatic Statistical Forecast (select best statistical model from AutoA
 ### Usage
 
 ```python
-usage: autoselect
+autoselect
 ```
 
 ---

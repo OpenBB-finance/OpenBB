@@ -10,7 +10,7 @@ Displays terra blockchain account growth history. [Source: https://fcd.terra.dev
 ### Usage
 
 ```python
-usage: gacc [-l LIMIT] [--cumulative] [-k {active,total}]
+gacc [-l LIMIT] [--cumulative] [-k {active,total}]
 ```
 
 ---

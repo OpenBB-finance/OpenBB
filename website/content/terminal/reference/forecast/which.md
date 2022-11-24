@@ -10,7 +10,7 @@ Show library versions of required packages.
 ### Usage
 
 ```python
-usage: which
+which
 ```
 
 ---

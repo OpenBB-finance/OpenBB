@@ -10,7 +10,7 @@ Yearly estimates and quarter earnings/revenues. [Source: Business Insider]
 ### Usage
 
 ```python
-usage: est [-e {annualrevenue,annualearnings,quarterearnings}]
+est [-e {annualrevenue,annualearnings,quarterearnings}]
 ```
 
 ---

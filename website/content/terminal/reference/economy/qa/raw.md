@@ -10,7 +10,7 @@ Print raw data to console
 ### Usage
 
 ```python
-usage: raw [-l LIMIT] [-r] [-s SORTBY]
+raw [-l LIMIT] [-r] [-s SORTBY]
 ```
 
 ---

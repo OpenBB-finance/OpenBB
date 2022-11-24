@@ -10,7 +10,7 @@ Show rolling volatility portfolio vs benchmark
 ### Usage
 
 ```python
-usage: rvol [-p PERIOD]
+rvol [-p PERIOD]
 ```
 
 ---

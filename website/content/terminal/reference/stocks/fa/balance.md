@@ -10,7 +10,7 @@ Prints a complete balance sheet statement over time. This can be either quarterl
 ### Usage
 
 ```python
-usage: balance [-q] [-r] [-p column]
+balance [-q] [-r] [-p column]
 ```
 
 ---

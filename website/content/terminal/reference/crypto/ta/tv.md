@@ -10,7 +10,7 @@ View TradingView for technical analysis. [Source: TradingView]
 ### Usage
 
 ```python
-usage: tv
+tv
 ```
 
 ---

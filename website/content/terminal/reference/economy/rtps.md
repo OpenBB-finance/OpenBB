@@ -10,7 +10,7 @@ Real-time and historical sector performances calculated from S&P500 incumbents. 
 ### Usage
 
 ```python
-usage: rtps
+rtps
 ```
 
 ---

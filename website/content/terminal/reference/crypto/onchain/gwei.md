@@ -10,7 +10,7 @@ Display ETH gas fees [Source: https://ethgasstation.info]
 ### Usage
 
 ```python
-usage: onchain
+onchain
 ```
 
 ---

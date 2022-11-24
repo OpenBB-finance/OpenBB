@@ -10,7 +10,7 @@ Add %Change (Delta) to dataset based on specific column.
 ### Usage
 
 ```python
-usage: delta
+delta
 ```
 
 ---

@@ -10,7 +10,7 @@ Lists available calls and puts.
 ### Usage
 
 ```python
-usage: list
+list
 ```
 
 ---

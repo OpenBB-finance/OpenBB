@@ -10,7 +10,7 @@ Show line plot of selected data or highlight specific datetimes.
 ### Usage
 
 ```python
-usage: line [--log] [--ml ML] [--ms MS]
+line [--log] [--ml ML] [--ms MS]
 ```
 
 ---

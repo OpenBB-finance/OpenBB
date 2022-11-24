@@ -10,7 +10,7 @@ Display metric of choice for different periods
 ### Usage
 
 ```python
-usage: metric [-m METRIC] [-r RISK_FREE_RATE]
+metric [-m METRIC] [-r RISK_FREE_RATE]
 ```
 
 ---

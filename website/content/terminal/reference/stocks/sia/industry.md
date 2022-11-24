@@ -10,7 +10,7 @@ See existing industries, or set industry if arg specified
 ### Usage
 
 ```python
-usage: industry [-n NAME [NAME ...]]
+industry [-n NAME [NAME ...]]
 ```
 
 ---

@@ -10,7 +10,7 @@ Total value locked (TVL) metric - Ethereum ERC20 [Source:https://docs.flipsidecr
 ### Usage
 
 ```python
-usage: tvl [-u USERADDRESS] [-a ADDRESSNAME] [-s SYMBOL] [-i INTERVAL]
+tvl [-u USERADDRESS] [-a ADDRESSNAME] [-s SYMBOL] [-i INTERVAL]
 ```
 
 ---

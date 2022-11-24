@@ -10,7 +10,7 @@ Display bitcoin rainbow chart overtime including halvings. [Price data from sour
 ### Usage
 
 ```python
-usage: btcrb [-s SINCE] [-u UNTIL]
+btcrb [-s SINCE] [-u UNTIL]
 ```
 
 ---

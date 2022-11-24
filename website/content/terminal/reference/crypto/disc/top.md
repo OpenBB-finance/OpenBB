@@ -10,7 +10,7 @@ Display N coins from the data source, if the data source is CoinGecko it can rec
 ### Usage
 
 ```python
-usage: top [-c CATEGORY] [-l LIMIT] [-s SORTBY [SORTBY ...]] [-r]
+top [-c CATEGORY] [-l LIMIT] [-s SORTBY [SORTBY ...]] [-r]
 ```
 
 ---

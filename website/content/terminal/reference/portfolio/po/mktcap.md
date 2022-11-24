@@ -10,11 +10,7 @@ Returns a portfolio that is weighted based on Market Cap.
 ### Usage
 
 ```python
-usage: mktcap [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
-              [-mt METHOD] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-              [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
-              [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION]
-              [--name NAME]
+mktcap [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-mt METHOD] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME]
 ```
 
 ---

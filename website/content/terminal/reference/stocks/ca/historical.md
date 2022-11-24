@@ -10,7 +10,7 @@ Historical price comparison between similar companies.
 ### Usage
 
 ```python
-usage: historical [-t {o,h,l,c,a}] [-n] [-s START]
+historical [-t {o,h,l,c,a}] [-n] [-s START]
 ```
 
 ---

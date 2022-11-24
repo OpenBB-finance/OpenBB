@@ -10,7 +10,7 @@ Display a repo star history [Source: https://api.github.com]
 ### Usage
 
 ```python
-usage: sh -r REPO
+sh -r REPO
 ```
 
 ---

@@ -10,7 +10,7 @@ Select the "to" currency symbol in a forex pair
 ### Usage
 
 ```python
-usage: to -n TO_SYMBOL
+to -n TO_SYMBOL
 ```
 
 ---

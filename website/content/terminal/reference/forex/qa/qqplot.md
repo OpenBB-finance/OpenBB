@@ -10,7 +10,7 @@ Display QQ plot vs normal quantiles
 ### Usage
 
 ```python
-usage: qqplot
+qqplot
 ```
 
 ---

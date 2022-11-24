@@ -10,7 +10,7 @@ Perform RNN forecast (Vanilla RNN, LSTM, GRU): https://unit8co.github.io/darts/g
 ### Usage
 
 ```python
-usage: rnn [--hidden-dim HIDDEN_DIM] [--training_length TRAINING_LENGTH]
+rnn [--hidden-dim HIDDEN_DIM] [--training_length TRAINING_LENGTH]
 ```
 
 ---

@@ -10,7 +10,7 @@ M-score: ------------------------------------------------ The Beneish model is a
 ### Usage
 
 ```python
-usage: fraud [-e] [-d]
+fraud [-e] [-d]
 ```
 
 ---

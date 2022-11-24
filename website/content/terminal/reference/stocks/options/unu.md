@@ -10,9 +10,7 @@ This command gets unusual options from fdscanner.com
 ### Usage
 
 ```python
-usage: unu [-l LIMIT]
-           [-s {Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} [{Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} ...]]
-           [-r] [-p] [-c]
+unu [-l LIMIT] [-s {Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} [{Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} ...]] [-r] [-p] [-c]
 ```
 
 ---

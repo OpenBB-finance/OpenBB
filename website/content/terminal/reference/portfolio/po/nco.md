@@ -10,17 +10,7 @@ Builds a nested clustered optimization portfolio
 ### Usage
 
 ```python
-usage: nco
-           [-cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,tail}]
-           [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}]
-           [-o {MinRisk,Utility,Sharpe,ERC}] [-ra RISK_AVERSION] [-lk LINKAGE]
-           [-k AMOUNT_CLUSTERS] [-mk MAX_CLUSTERS] [-bi {KN,FD,SC,HGR}]
-           [-at ALPHA_TAIL] [-lo] [-de SMOOTHING_FACTOR_EWMA]
-           [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
-           [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD]
-           [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN]
-           [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL]
-           [-v LONG_ALLOCATION] [--name NAME]
+nco [-cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,tail}] [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-o {MinRisk,Utility,Sharpe,ERC}] [-ra RISK_AVERSION] [-lk LINKAGE] [-k AMOUNT_CLUSTERS] [-mk MAX_CLUSTERS] [-bi {KN,FD,SC,HGR}] [-at ALPHA_TAIL] [-lo] [-de SMOOTHING_FACTOR_EWMA] [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME]
 ```
 
 ---

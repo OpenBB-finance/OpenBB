@@ -10,7 +10,7 @@ Print some information about your account.
 ### Usage
 
 ```python
-usage: summary
+summary
 ```
 
 ---

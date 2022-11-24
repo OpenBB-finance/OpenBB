@@ -10,7 +10,7 @@ Print top insider purchases of the month. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: tippm [-l LIMIT]
+tippm [-l LIMIT]
 ```
 
 ---

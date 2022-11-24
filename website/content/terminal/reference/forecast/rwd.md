@@ -10,7 +10,7 @@ Perform Random Walk with Drift forecast: https://nixtla.github.io/statsforecast/
 ### Usage
 
 ```python
-usage: rwd
+rwd
 ```
 
 ---

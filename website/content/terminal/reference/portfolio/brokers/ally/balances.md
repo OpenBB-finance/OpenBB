@@ -10,7 +10,7 @@ Account balance details
 ### Usage
 
 ```python
-usage: balances
+balances
 ```
 
 ---

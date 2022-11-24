@@ -10,7 +10,7 @@ Displays selected option
 ### Usage
 
 ```python
-usage: sop
+sop
 ```
 
 ---

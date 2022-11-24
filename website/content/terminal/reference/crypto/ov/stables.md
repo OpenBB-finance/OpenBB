@@ -10,9 +10,7 @@ Shows stablecoins by market capitalization. Stablecoins are cryptocurrencies tha
 ### Usage
 
 ```python
-usage: stables [-l LIMIT]
-               [-s {Symbol,Name,Price_[$],Market_Cap_[$],Market_Cap_Rank,Change_7d_[%],Change_24h_[%],Volume_[$]}]
-               [-r] [--pie]
+stables [-l LIMIT] [-s {Symbol,Name,Price_[$],Market_Cap_[$],Market_Cap_Rank,Change_7d_[%],Change_24h_[%],Volume_[$]}] [-r] [--pie]
 ```
 
 ---

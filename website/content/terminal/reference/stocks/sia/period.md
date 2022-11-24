@@ -10,7 +10,7 @@ Set period between annual, quarterly and trailing
 ### Usage
 
 ```python
-usage: period [-n {Annual,Quarterly,Trailing,annual,quarterly,trailing}]
+period [-n {Annual,Quarterly,Trailing,annual,quarterly,trailing}]
 ```
 
 ---

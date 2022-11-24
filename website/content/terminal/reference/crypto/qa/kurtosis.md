@@ -10,7 +10,7 @@ Kurtosis is a measure of the "tailedness" of the probability distribution of a r
 ### Usage
 
 ```python
-usage: kurtosis [-w N_WINDOW]
+kurtosis [-w N_WINDOW]
 ```
 
 ---

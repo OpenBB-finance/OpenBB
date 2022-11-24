@@ -10,7 +10,7 @@ Potential Returns ToolTool to check returns if loaded coin reaches provided pric
 ### Usage
 
 ```python
-usage: prt [--vs VS] [-p PRICE] [-t TOP]
+prt [--vs VS] [-p PRICE] [-t TOP]
 ```
 
 ---

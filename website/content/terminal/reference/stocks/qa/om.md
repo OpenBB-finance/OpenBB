@@ -10,7 +10,7 @@ Provides omega ratio of the selected stock.
 ### Usage
 
 ```python
-usage: om [-s START] [-e END]
+om [-s START] [-e END]
 ```
 
 ---

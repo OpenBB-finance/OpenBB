@@ -10,7 +10,7 @@ description: OpenBB Terminal Function
 ### Usage
 
 ```python
-usage: cancel id
+cancel id
 ```
 
 ---

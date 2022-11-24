@@ -10,7 +10,7 @@ Add momentum to dataset based on specific column.
 ### Usage
 
 ```python
-usage: mom
+mom
 ```
 
 ---

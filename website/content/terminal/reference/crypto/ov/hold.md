@@ -10,7 +10,7 @@ Shows overview of public companies that holds ethereum or bitcoin. You can find 
 ### Usage
 
 ```python
-usage: hold [-c {ethereum,bitcoin}] [-l LIMIT] [--bar]
+hold [-c {ethereum,bitcoin}] [-l LIMIT] [--bar]
 ```
 
 ---

@@ -10,7 +10,7 @@ Prints latest fails-to-deliver data. [Source: SEC]
 ### Usage
 
 ```python
-usage: ftd [-s START] [-e END] [-n N_NUM] [--raw]
+ftd [-s START] [-e END] [-n N_NUM] [--raw]
 ```
 
 ---

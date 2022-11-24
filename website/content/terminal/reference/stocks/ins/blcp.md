@@ -10,7 +10,7 @@ Print latest CEO/CFO purchases 25k. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: blcp [-l LIMIT]
+blcp [-l LIMIT]
 ```
 
 ---

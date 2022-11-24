@@ -10,7 +10,7 @@ Display asset's tokenomics [Source: https://messari.io]
 ### Usage
 
 ```python
-usage: tk
+tk
 ```
 
 ---

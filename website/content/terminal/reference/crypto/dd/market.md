@@ -10,7 +10,7 @@ Market data for loaded coin. There you find metrics like: Market Cap, Supply, Ci
 ### Usage
 
 ```python
-usage: market
+market
 ```
 
 ---

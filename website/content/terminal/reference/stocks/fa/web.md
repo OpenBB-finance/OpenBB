@@ -10,7 +10,7 @@ Opens company's website. [Source: Yahoo Finance]
 ### Usage
 
 ```python
-usage: web
+web
 ```
 
 ---

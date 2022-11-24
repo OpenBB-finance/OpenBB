@@ -10,7 +10,7 @@ Shows price vs short interest volume. [Source: Quandl/Stockgrid]
 ### Usage
 
 ```python
-usage: psi [--nyse]
+psi [--nyse]
 ```
 
 ---

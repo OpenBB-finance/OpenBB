@@ -10,7 +10,7 @@ Test whether the used data is normally distributed.
 ### Usage
 
 ```python
-usage: norm -v {} [-p]
+norm -v {} [-p]
 ```
 
 ---

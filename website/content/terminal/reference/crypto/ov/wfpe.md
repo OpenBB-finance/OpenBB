@@ -10,7 +10,7 @@ Coin withdrawal fees per exchange [Source: https://withdrawalfees.com/]
 ### Usage
 
 ```python
-usage: wfpe [-c COIN]
+wfpe [-c COIN]
 ```
 
 ---

@@ -10,9 +10,7 @@ Get dividend calendar for selected date
 ### Usage
 
 ```python
-usage: divcal [-d DATE]
-              [-s {name,symbol,ex-dividend_date,payment_date,record_date,dividend,annual_dividend,announcement_date}]
-              [-r]
+divcal [-d DATE] [-s {name,symbol,ex-dividend_date,payment_date,record_date,dividend,annual_dividend,announcement_date}] [-r]
 ```
 
 ---

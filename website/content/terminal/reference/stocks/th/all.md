@@ -10,7 +10,7 @@ Show all exchanges
 ### Usage
 
 ```python
-usage: exchange
+exchange
 ```
 
 ---

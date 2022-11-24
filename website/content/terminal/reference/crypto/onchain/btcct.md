@@ -10,7 +10,7 @@ Display BTC confirmed transactions [Source: https://api.blockchain.info/]
 ### Usage
 
 ```python
-usage: btcct [-s SINCE] [-u UNTIL]
+btcct [-s SINCE] [-u UNTIL]
 ```
 
 ---

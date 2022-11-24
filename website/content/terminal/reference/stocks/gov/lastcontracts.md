@@ -10,7 +10,7 @@ Last government contracts. [Source: www.quiverquant.com]
 ### Usage
 
 ```python
-usage: lastcontracts [-p PAST_TRANSACTION_DAYS] [-l LIMIT] [-s]
+lastcontracts [-p PAST_TRANSACTION_DAYS] [-l LIMIT] [-s]
 ```
 
 ---

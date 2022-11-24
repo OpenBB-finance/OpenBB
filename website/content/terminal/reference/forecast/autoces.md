@@ -10,7 +10,7 @@ Perform Automatic Complex Exponential Smoothing forecast: https://nixtla.github.
 ### Usage
 
 ```python
-usage: autoces
+autoces
 ```
 
 ---

@@ -10,7 +10,7 @@ Lobbying details [Source: www.quiverquant.com]
 ### Usage
 
 ```python
-usage: lobbying [-l LIMIT]
+lobbying [-l LIMIT]
 ```
 
 ---

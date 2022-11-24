@@ -10,7 +10,7 @@ Print analyst prices and ratings of the company. The following fields are expect
 ### Usage
 
 ```python
-usage: analyst
+analyst
 ```
 
 ---

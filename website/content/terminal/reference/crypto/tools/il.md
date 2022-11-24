@@ -10,7 +10,7 @@ Tool to calculate Impermanent Loss in a custom liquidity pool. Users can provide
 ### Usage
 
 ```python
-usage: il [-a PRICECHANGEA] [-b PRICECHANGEB] [-p PROPORTION] [-v VALUE] [-n]
+il [-a PRICECHANGEA] [-b PRICECHANGEB] [-p PROPORTION] [-v VALUE] [-n]
 ```
 
 ---

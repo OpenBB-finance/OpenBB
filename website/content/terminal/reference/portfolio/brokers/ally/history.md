@@ -10,7 +10,7 @@ Account transaction history
 ### Usage
 
 ```python
-usage: history [-l LIMIT]
+history [-l LIMIT]
 ```
 
 ---

@@ -10,7 +10,7 @@ Remove one of the options to be shown in the hedge.
 ### Usage
 
 ```python
-usage: rmv [-o OPTION [OPTION ...]] [-a]
+rmv [-o OPTION [OPTION ...]] [-a]
 ```
 
 ---

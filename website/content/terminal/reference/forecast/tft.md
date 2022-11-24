@@ -10,9 +10,7 @@ Perform TFT forecast (Temporal Fusion Transformer): https://unit8co.github.io/da
 ### Usage
 
 ```python
-usage: tft [--lstm-layers LSTM_LAYERS]
-           [--num-attention-heads NUM_ATTENTION_HEADS] [--full-attention]
-           [--hidden-continuous-size HIDDEN_CONTINUOUS_SIZE]
+tft [--lstm-layers LSTM_LAYERS] [--num-attention-heads NUM_ATTENTION_HEADS] [--full-attention] [--hidden-continuous-size HIDDEN_CONTINUOUS_SIZE]
 ```
 
 ---

@@ -10,7 +10,7 @@ Get similar companies to compare with using sklearn TSNE.
 ### Usage
 
 ```python
-usage: tsne [-r LR] [-l LIMIT] [-p]
+tsne [-r LR] [-l LIMIT] [-p]
 ```
 
 ---

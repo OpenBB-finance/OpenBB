@@ -10,7 +10,7 @@ Get similar companies from selected data source (default: Finviz) to compare wit
 ### Usage
 
 ```python
-usage: get [-u] [-n] [-l LIMIT]
+get [-u] [-n] [-l LIMIT]
 ```
 
 ---

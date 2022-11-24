@@ -10,7 +10,7 @@ Add price signal to dataset based on closing price. 1 if the signal is that shor
 ### Usage
 
 ```python
-usage: signal
+signal
 ```
 
 ---

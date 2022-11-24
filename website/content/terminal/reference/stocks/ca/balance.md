@@ -10,7 +10,7 @@ Prints either yearly or quarterly balance statement the company, and compares it
 ### Usage
 
 ```python
-usage: balance [-q] [-t S_TIMEFRAME]
+balance [-q] [-t S_TIMEFRAME]
 ```
 
 ---

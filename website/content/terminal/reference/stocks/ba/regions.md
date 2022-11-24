@@ -10,7 +10,7 @@ Plot bars of regions based on stock's interest. [Source: Google]
 ### Usage
 
 ```python
-usage: regions [-l LIMIT]
+regions [-l LIMIT]
 ```
 
 ---

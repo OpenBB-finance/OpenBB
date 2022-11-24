@@ -10,7 +10,7 @@ Displays a scatter plot demonstrating the beta of two stocks or ETFs.
 ### Usage
 
 ```python
-usage: beta [-r REF]
+beta [-r REF]
 ```
 
 ---

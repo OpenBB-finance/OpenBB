@@ -10,7 +10,7 @@ Market Cap estimate over time. [Source: Yahoo Finance]
 ### Usage
 
 ```python
-usage: mktcap [-s START]
+mktcap [-s START]
 ```
 
 ---

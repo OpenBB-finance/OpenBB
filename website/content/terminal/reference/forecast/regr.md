@@ -10,7 +10,7 @@ Perform a regression forecast: https://unit8co.github.io/darts/generated_api/dar
 ### Usage
 
 ```python
-usage: regr
+regr
 ```
 
 ---

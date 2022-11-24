@@ -10,7 +10,7 @@ Set a (multi) index for the dataset
 ### Usage
 
 ```python
-usage: index -n {} [-i INDEX] [-a] [-d]
+index -n {} [-i INDEX] [-a] [-d]
 ```
 
 ---

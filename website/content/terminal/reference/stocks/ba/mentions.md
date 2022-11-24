@@ -10,7 +10,7 @@ Plot weekly bars of stock's interest over time. other users watchlist. [Source: 
 ### Usage
 
 ```python
-usage: mentions [-s START]
+mentions [-s START]
 ```
 
 ---

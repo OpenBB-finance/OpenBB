@@ -10,7 +10,7 @@ Display history for given ethereum blockchain balance. e.g. 0x3cD751E6b0078Be393
 ### Usage
 
 ```python
-usage: hist [-l LIMIT] [-s {timestamp,transactionHash,token,value}] [-r]
+hist [-l LIMIT] [-s {timestamp,transactionHash,token,value}] [-r]
 ```
 
 ---

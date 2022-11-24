@@ -10,7 +10,7 @@ See existing sectors, or set sector if arg specified
 ### Usage
 
 ```python
-usage: sector [-n NAME [NAME ...]]
+sector [-n NAME [NAME ...]]
 ```
 
 ---

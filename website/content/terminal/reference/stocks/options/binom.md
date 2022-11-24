@@ -10,7 +10,7 @@ Gives the option value using binomial option valuation
 ### Usage
 
 ```python
-usage: binom [-s STRIKE] [-p] [-e] [-x] [--plot] [-v VOLATILITY]
+binom [-s STRIKE] [-p] [-e] [-x] [--plot] [-v VOLATILITY]
 ```
 
 ---

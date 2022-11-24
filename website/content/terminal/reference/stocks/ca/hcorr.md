@@ -10,7 +10,7 @@ Correlation heatmap based on historical price comparison between similar compani
 ### Usage
 
 ```python
-usage: hcorr [-t {o,h,l,c,a}] [-s START] [--display-full-matrix]
+hcorr [-t {o,h,l,c,a}] [-s START] [--display-full-matrix]
 ```
 
 ---

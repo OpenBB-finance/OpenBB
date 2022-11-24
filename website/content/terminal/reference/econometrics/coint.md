@@ -10,7 +10,7 @@ Show co-integration between two timeseries
 ### Usage
 
 ```python
-usage: coint -t TS [-p] [-s SIGNIFICANT]
+coint -t TS [-p] [-s SIGNIFICANT]
 ```
 
 ---

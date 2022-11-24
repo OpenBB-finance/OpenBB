@@ -10,7 +10,7 @@ Websites found for given Coin. You can find there urls to homepage, forum, annou
 ### Usage
 
 ```python
-usage: web
+web
 ```
 
 ---

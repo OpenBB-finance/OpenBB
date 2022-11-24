@@ -10,7 +10,7 @@ Show descriptive statistics of a dataset
 ### Usage
 
 ```python
-usage: desc
+desc
 ```
 
 ---

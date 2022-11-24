@@ -10,7 +10,7 @@ Display futures curve. [Source: YahooFinance]
 ### Usage
 
 ```python
-usage: curve -t TICKER
+curve -t TICKER
 ```
 
 ---

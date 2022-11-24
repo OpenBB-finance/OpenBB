@@ -10,7 +10,7 @@ Accumulation/Distribution Oscillator, also known as the Chaikin Oscillator is es
 ### Usage
 
 ```python
-usage: adosc [--open] [--fast N_LENGTH_FAST] [--slow N_LENGTH_SLOW]
+adosc [--open] [--fast N_LENGTH_FAST] [--slow N_LENGTH_SLOW]
 ```
 
 ---

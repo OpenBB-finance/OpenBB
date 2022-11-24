@@ -10,7 +10,7 @@ Print quick sentiment inference from last tweets that contain the ticker. This m
 ### Usage
 
 ```python
-usage: infer [-l LIMIT]
+infer [-l LIMIT]
 ```
 
 ---

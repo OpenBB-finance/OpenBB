@@ -361,7 +361,7 @@ def get_nested_dict(d: dict, path: Path) -> dict:
         return d[sub]
     if root in d and sub in d[root]:
         return d[root][sub]
-    for _, v in d.items():
+    for v in d.values():
         if isinstance(v, dict):
             item = get_nested_dict(v, path)
             if item is not None:

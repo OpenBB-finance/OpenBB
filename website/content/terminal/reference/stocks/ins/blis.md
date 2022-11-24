@@ -10,7 +10,7 @@ Print latest insider sales 100k. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: blis [-l LIMIT]
+blis [-l LIMIT]
 ```
 
 ---

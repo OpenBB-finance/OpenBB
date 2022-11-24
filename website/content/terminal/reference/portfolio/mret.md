@@ -10,7 +10,7 @@ Monthly returns
 ### Usage
 
 ```python
-usage: mret [-p PERIOD] [-s]
+mret [-p PERIOD] [-s]
 ```
 
 ---

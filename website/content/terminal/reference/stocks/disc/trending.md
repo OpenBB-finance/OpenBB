@@ -10,7 +10,7 @@ Trending news articles. [Source: Seeking Alpha]
 ### Usage
 
 ```python
-usage: trending [-i N_ID] [-l LIMIT] [-d S_DATE]
+trending [-i N_ID] [-l LIMIT] [-d S_DATE]
 ```
 
 ---

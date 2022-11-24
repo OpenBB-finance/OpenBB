@@ -10,7 +10,7 @@ Display a repo summary [Source: https://api.github.com]
 ### Usage
 
 ```python
-usage: rs -r REPO
+rs -r REPO
 ```
 
 ---

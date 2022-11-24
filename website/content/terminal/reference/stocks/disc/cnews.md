@@ -10,9 +10,7 @@ Customized news. [Source: Seeking Alpha]
 ### Usage
 
 ```python
-usage: cnews
-             [-t {top-news,on-the-move,market-pulse,notable-calls,buybacks,commodities,crypto,issuance,global,guidance,ipos,spacs,politics,m-a,consumer,energy,financials,healthcare,mlps,reits,technology}]
-             [-l LIMIT]
+cnews [-t {top-news,on-the-move,market-pulse,notable-calls,buybacks,commodities,crypto,issuance,global,guidance,ipos,spacs,politics,m-a,consumer,energy,financials,healthcare,mlps,reits,technology}] [-l LIMIT]
 ```
 
 ---

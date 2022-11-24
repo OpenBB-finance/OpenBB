@@ -10,7 +10,7 @@ Historical volume comparison between similar companies.
 ### Usage
 
 ```python
-usage: volume [-s START]
+volume [-s START]
 ```
 
 ---

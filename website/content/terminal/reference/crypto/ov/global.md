@@ -10,7 +10,7 @@ Shows global statistics about Crypto Market
 ### Usage
 
 ```python
-usage: global [--pie]
+global [--pie]
 ```
 
 ---

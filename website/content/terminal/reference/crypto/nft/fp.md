@@ -10,7 +10,7 @@ Display floor price of a certain NFT collection. [Source: https://nftpricefloor.
 ### Usage
 
 ```python
-usage: fp -s SLUG
+fp -s SLUG
 ```
 
 ---

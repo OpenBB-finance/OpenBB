@@ -10,7 +10,7 @@ Print latest insider trading. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: lit [-l LIMIT]
+lit [-l LIMIT]
 ```
 
 ---

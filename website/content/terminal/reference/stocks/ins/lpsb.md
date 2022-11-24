@@ -10,7 +10,7 @@ Print latest penny stock buys. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: lpsb [-l LIMIT]
+lpsb [-l LIMIT]
 ```
 
 ---

@@ -10,8 +10,7 @@ Shows Largest Gainers - coins which gain the most in given period. You can use p
 ### Usage
 
 ```python
-usage: gainers [-i {14d,1h,1y,200d,24h,30d,7d}] [-l LIMIT]
-               [-s SORTBY [SORTBY ...]]
+gainers [-i {14d,1h,1y,200d,24h,30d,7d}] [-l LIMIT] [-s SORTBY [SORTBY ...]]
 ```
 
 ---

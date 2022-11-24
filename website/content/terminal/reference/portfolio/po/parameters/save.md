@@ -10,7 +10,7 @@ Save portfolio risk parameters (ini or xlsx)
 ### Usage
 
 ```python
-usage: save -f FILE
+save -f FILE
 ```
 
 ---

@@ -10,7 +10,7 @@ Calculates the Clenow Volatility Adjusted Momentum.
 ### Usage
 
 ```python
-usage: clenow [-p PERIOD]
+clenow [-p PERIOD]
 ```
 
 ---

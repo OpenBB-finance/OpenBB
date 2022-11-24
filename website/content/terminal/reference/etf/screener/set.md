@@ -10,7 +10,7 @@ Set preset.
 ### Usage
 
 ```python
-usage: set [-p {etf_config.ini}]
+set [-p {etf_config.ini}]
 ```
 
 ---

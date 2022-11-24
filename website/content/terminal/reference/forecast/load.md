@@ -10,7 +10,7 @@ Load custom dataset (from previous export, custom imports).
 ### Usage
 
 ```python
-usage: load [-f FILE] [-a ALIAS]
+load [-f FILE] [-a ALIAS]
 ```
 
 ---

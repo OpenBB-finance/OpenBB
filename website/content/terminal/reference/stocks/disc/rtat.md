@@ -10,7 +10,7 @@ Tracking over $30B USD/day of individual investors trades, RTAT gives a daily vi
 ### Usage
 
 ```python
-usage: rtat [-l LIMIT]
+rtat [-l LIMIT]
 ```
 
 ---

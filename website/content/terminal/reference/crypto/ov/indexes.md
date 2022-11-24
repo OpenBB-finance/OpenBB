@@ -10,7 +10,7 @@ Shows list of crypto indexes from CoinGecko. Each crypto index is made up of a s
 ### Usage
 
 ```python
-usage: indexes [-l LIMIT] [-s {Rank,Name,Id,Market,Last,MultiAsset}] [-r]
+indexes [-l LIMIT] [-s {Rank,Name,Id,Market,Last,MultiAsset}] [-r]
 ```
 
 ---

@@ -10,7 +10,7 @@ Perform Multiple Seasonalities and Trend using Loess (MSTL) forecast: https://ni
 ### Usage
 
 ```python
-usage: mstl
+mstl
 ```
 
 ---

@@ -114,7 +114,7 @@ def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
         param = {
             "cmd_name": cmd.replace("call_", ""),
             "actions": actions,
-            "usage": parser.format_usage(),
+            "usage": " ".join(parser.format_usage().split()).replace("usage: ", ""),
             "description": desc if desc else "",
         }
         commands.append(param)
@@ -142,7 +142,7 @@ def generate_markdown_section(meta: Dict[str, str], examples: Dict[str, str]) ->
 
     # head meta https://docusaurus.io/docs/markdown-features/head-metadata
     markdown = f"# {meta['cmd_name']}\n\n{meta['description']}\n\n"
-    markdown += f"### Usage\n\n```python\n{meta['usage']}```\n\n"
+    markdown += f"### Usage\n\n```python\n{meta['usage']}\n```\n\n"
 
     markdown += "---\n\n## Parameters\n\n"
     if meta["actions"]:

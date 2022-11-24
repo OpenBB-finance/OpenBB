@@ -10,7 +10,7 @@ The Volume Weighted Average Price that measures the average typical price by vol
 ### Usage
 
 ```python
-usage: vwap [-o N_OFFSET] [--start START] [--end END]
+vwap [-o N_OFFSET] [--start START] [--end END]
 ```
 
 ---

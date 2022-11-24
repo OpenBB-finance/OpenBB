@@ -10,7 +10,7 @@ Print what WSB gang are up to in subreddit wallstreetbets. [Source: Reddit]
 ### Usage
 
 ```python
-usage: wsb [-l N_LIMIT] [--new]
+wsb [-l N_LIMIT] [--new]
 ```
 
 ---

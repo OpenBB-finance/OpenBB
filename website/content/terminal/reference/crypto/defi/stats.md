@@ -10,7 +10,7 @@ Display base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
 ### Usage
 
 ```python
-usage: stats
+stats
 ```
 
 ---

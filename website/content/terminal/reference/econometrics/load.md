@@ -10,7 +10,7 @@ Load dataset (from previous export, custom imports or StatsModels).
 ### Usage
 
 ```python
-usage: load [-f FILE] [-a ALIAS] [-e]
+load [-f FILE] [-a ALIAS] [-e]
 ```
 
 ---

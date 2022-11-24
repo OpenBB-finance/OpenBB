@@ -10,7 +10,7 @@ Get historical Big Mac Index [Nasdaq Data Link]
 ### Usage
 
 ```python
-usage: bigmac [--codes] [-c COUNTRIES]
+bigmac [--codes] [-c COUNTRIES]
 ```
 
 ---

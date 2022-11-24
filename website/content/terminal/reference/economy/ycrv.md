@@ -10,7 +10,7 @@ Generate country yield curve. The yield curve shows the bond rates at different 
 ### Usage
 
 ```python
-usage: ycrv [-c COUNTRY] [-d DATE]
+ycrv [-c COUNTRY] [-d DATE]
 ```
 
 ---

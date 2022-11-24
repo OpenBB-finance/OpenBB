@@ -10,7 +10,7 @@ Print top stock's due diligence from other users. [Source: Reddit]
 ### Usage
 
 ```python
-usage: getdd [-l LIMIT] [-d DAYS] [-a]
+getdd [-l LIMIT] [-d DAYS] [-a]
 ```
 
 ---

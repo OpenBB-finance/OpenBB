@@ -10,7 +10,7 @@ Skewness is a measure of asymmetry or distortion of symmetric distribution. It m
 ### Usage
 
 ```python
-usage: skew [-w N_WINDOW]
+skew [-w N_WINDOW]
 ```
 
 ---

@@ -10,7 +10,7 @@ Prints an overview about the company. The following fields are expected: Symbol,
 ### Usage
 
 ```python
-usage: overview
+overview
 ```
 
 ---

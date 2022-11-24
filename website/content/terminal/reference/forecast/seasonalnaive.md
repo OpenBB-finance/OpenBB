@@ -10,7 +10,7 @@ Perform SeasonalNaive forecasting: https://nixtla.github.io/statsforecast/models
 ### Usage
 
 ```python
-usage: seasonalnaive
+seasonalnaive
 ```
 
 ---

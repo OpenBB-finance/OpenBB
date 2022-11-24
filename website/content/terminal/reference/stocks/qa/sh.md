@@ -10,7 +10,7 @@ Provides the sharpe ratio of the selected stock.
 ### Usage
 
 ```python
-usage: sh [-r RFR] [-w WINDOW]
+sh [-r RFR] [-w WINDOW]
 ```
 
 ---

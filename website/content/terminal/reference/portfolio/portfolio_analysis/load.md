@@ -10,7 +10,7 @@ Function to get portfolio from predefined csv/json/xlsx file inside portfolios f
 ### Usage
 
 ```python
-usage: load [-s] [-c] [--no_last_price] [--nan] [-p {}]
+load [-s] [-c] [--no_last_price] [--nan] [-p {}]
 ```
 
 ---

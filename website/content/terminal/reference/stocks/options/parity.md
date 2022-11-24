@@ -10,7 +10,7 @@ Shows whether options are over or under valued
 ### Usage
 
 ```python
-usage: parity [-p] [-a] [-m MINI] [-M MAXI]
+parity [-p] [-a] [-m MINI] [-M MAXI]
 ```
 
 ---

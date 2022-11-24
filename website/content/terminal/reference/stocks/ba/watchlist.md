@@ -10,7 +10,7 @@ Print other users watchlist. [Source: Reddit]
 ### Usage
 
 ```python
-usage: watchlist [-l LIMIT]
+watchlist [-l LIMIT]
 ```
 
 ---

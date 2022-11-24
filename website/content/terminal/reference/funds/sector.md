@@ -10,7 +10,7 @@ Show fund sector weighting.
 ### Usage
 
 ```python
-usage: sector [-m MIN]
+sector [-m MIN]
 ```
 
 ---

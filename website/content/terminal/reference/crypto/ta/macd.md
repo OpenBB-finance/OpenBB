@@ -10,7 +10,7 @@ The Moving Average Convergence Divergence (MACD) is the difference between two E
 ### Usage
 
 ```python
-usage: macd [--fast N_FAST] [--slow N_SLOW] [--signal N_SIGNAL]
+macd [--fast N_FAST] [--slow N_SLOW] [--signal N_SIGNAL]
 ```
 
 ---

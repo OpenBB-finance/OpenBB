@@ -10,7 +10,7 @@ Print sustainability values of the company. The following fields are expected: P
 ### Usage
 
 ```python
-usage: sust
+sust
 ```
 
 ---

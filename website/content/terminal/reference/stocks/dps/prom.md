@@ -10,7 +10,7 @@ Display dark pool (ATS) data of tickers with growing trades activity using linea
 ### Usage
 
 ```python
-usage: prom [-n N_NUM] [-l LIMIT] [-t {T1,T2,OTCE}]
+prom [-n N_NUM] [-l LIMIT] [-t {T1,T2,OTCE}]
 ```
 
 ---

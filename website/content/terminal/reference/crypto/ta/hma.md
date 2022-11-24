@@ -10,7 +10,7 @@ The Hull Moving Average solves the age old dilemma of making a moving average mo
 ### Usage
 
 ```python
-usage: hma [-l N_LENGTH] [-o N_OFFSET]
+hma [-l N_LENGTH] [-o N_OFFSET]
 ```
 
 ---

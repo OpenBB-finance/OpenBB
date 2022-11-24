@@ -10,7 +10,7 @@ Set a different value for one of the available arguments.
 ### Usage
 
 ```python
-usage: arg [-a ARGUMENT ARGUMENT] [-s]
+arg [-a ARGUMENT ARGUMENT] [-s]
 ```
 
 ---

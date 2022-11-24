@@ -10,7 +10,7 @@ Get information about open positions.
 ### Usage
 
 ```python
-usage: positions
+positions
 ```
 
 ---

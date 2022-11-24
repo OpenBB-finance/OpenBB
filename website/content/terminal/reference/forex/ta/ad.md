@@ -10,7 +10,7 @@ The Accumulation/Distribution Line is similar to the On Balance Volume (OBV), wh
 ### Usage
 
 ```python
-usage: ad [--open]
+ad [--open]
 ```
 
 ---

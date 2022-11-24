@@ -10,7 +10,7 @@ Select a country to look at data for.
 ### Usage
 
 ```python
-usage: country [-c country_name]
+country [-c country_name]
 ```
 
 ---

@@ -10,12 +10,7 @@ Build a relaxed risk parity portfolio based on least squares approach
 ### Usage
 
 ```python
-usage: relriskparity [-ve VERSION] [-rc RISK_CONTRIBUTION] [-pf PENAL_FACTOR]
-                     [-tr TARGET_RETURN] [-de SMOOTHING_FACTOR_EWMA]
-                     [-mt METHOD] [-ct CATEGORIES] [-p PERIOD]
-                     [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}]
-                     [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-v LONG_ALLOCATION]
-                     [--name NAME]
+relriskparity [-ve VERSION] [-rc RISK_CONTRIBUTION] [-pf PENAL_FACTOR] [-tr TARGET_RETURN] [-de SMOOTHING_FACTOR_EWMA] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-v LONG_ALLOCATION] [--name NAME]
 ```
 
 ---

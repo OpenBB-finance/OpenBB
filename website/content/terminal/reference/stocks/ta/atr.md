@@ -10,7 +10,7 @@ Averge True Range is used to measure volatility, especially volatility caused by
 ### Usage
 
 ```python
-usage: atr [-l N_LENGTH] [-m {ema,sma,wma,hma,zlma}] [-o N_OFFSET]
+atr [-l N_LENGTH] [-m {ema,sma,wma,hma,zlma}] [-o N_OFFSET]
 ```
 
 ---

@@ -10,7 +10,7 @@ Get daily transactions for certain symbols in ethereum blockchain [Source: https
 ### Usage
 
 ```python
-usage: ds [-p {uniswap-v3,uniswap-v2,sushiswap,curve}]
+ds [-p {uniswap-v3,uniswap-v2,sushiswap,curve}]
 ```
 
 ---

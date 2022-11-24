@@ -10,7 +10,7 @@ Perform BRNN forecast (Vanilla RNN, LSTM, GRU): https://unit8co.github.io/darts/
 ### Usage
 
 ```python
-usage: brnn [--n-rnn-layers N_RNN_LAYERS]
+brnn [--n-rnn-layers N_RNN_LAYERS]
 ```
 
 ---

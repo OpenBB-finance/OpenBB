@@ -10,7 +10,7 @@ Prints the growth of several financial statement items and ratios over time. Thi
 ### Usage
 
 ```python
-usage: growth [-l LIMIT] [-q]
+growth [-l LIMIT] [-q]
 ```
 
 ---

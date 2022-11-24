@@ -10,7 +10,7 @@ Show Breusch-Godfrey autocorrelation test results.Needs OLS to be run in advance
 ### Usage
 
 ```python
-usage: bgod [-l LAGS]
+bgod [-l LAGS]
 ```
 
 ---

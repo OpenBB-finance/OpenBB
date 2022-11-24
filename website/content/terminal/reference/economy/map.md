@@ -10,7 +10,7 @@ Performance index stocks map categorized by sectors and industries. Size represe
 ### Usage
 
 ```python
-usage: map [-p {1d,1w,1m,3m,6m,1y}] [-t {sp500,world,full,etf}]
+map [-p {1d,1w,1m,3m,6m,1y}] [-t {sp500,world,full,etf}]
 ```
 
 ---
