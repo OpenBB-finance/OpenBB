@@ -1,6 +1,6 @@
 ---
 title: Importing and Exporting Data
-sidebar_position: 2
+sidebar_position: 4
 ---
 
 The OpenBB SDK shares the `OpenBBUserData` folder with the Terminal, even with multiple versions installed on the same machine. Portfolio files, screener presets, and Matplotlib style sheets are all shared resources. This folder will be created after the first installation and it is read by subsequent installations. The default location for it is in the root of the operating system user account folder.

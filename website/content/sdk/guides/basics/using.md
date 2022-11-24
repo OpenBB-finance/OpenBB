@@ -1,6 +1,6 @@
 ---
 title: Using the SDK 
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 After you have imported the OpenBB SDK you are able to run many of the commands presents within the extensive list found [here]](/sdk/reference).
