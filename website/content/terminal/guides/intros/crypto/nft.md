@@ -6,7 +6,7 @@ with a brief overview of the features."
 geekdocCollapseSection: true
 ---
 
-The Non Fungible Token (NFT) menu gives the user the ability to dive into certain NFTs (<a href="/terminal/reference/crypto/nft/stats/" target="_blank">stats</a>).
+The Non Fungible Token (NFT) menu gives the user the ability to dive into certain NFTs (<a href="/terminal/reference/cryptocurrency/nft/stats/" target="_blank">stats</a>).
 
 ### How to use
 

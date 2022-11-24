@@ -288,6 +288,10 @@ def generate_data(
     current_price: float, options: List[Dict[str, int]], underlying: int
 ) -> Tuple[List[float], List[float], List[float]]:
     """Gets x values, and y values before and after premiums"""
+
+    # Remove empty elements from options
+    options = [o for o in options if o]
+
     x_vals = get_x_values(current_price, options)
     base = current_price
     total_cost = sum(x["cost"] for x in options)
