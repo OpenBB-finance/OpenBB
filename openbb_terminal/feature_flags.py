@@ -135,17 +135,7 @@ GUESS_EASTER_EGG_FILE = str(
 )
 
 try:
-    import git
-except ImportError:
-    WITH_GIT = False
-else:
-    WITH_GIT = True
-
-try:
-    if not WITH_GIT:
-        version = pkg_resources.get_distribution("OpenBB").version
-    else:
-        raise
+    version = pkg_resources.get_distribution("OpenBB").version
 except Exception:
     version = "2.0.0rc1"
 VERSION = str(os.getenv("OPENBB_VERSION", version))
