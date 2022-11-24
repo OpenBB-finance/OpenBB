@@ -856,7 +856,7 @@ class ForecastController(BaseController):
             "--dataset",
             help="Dataset that will get a column renamed",
             dest="dataset",
-            choices=self.get_dataset_columns(),
+            choices=self.datasets.keys(),
             type=str,
         )
         parser.add_argument(
