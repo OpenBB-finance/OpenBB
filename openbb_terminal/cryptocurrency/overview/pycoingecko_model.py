@@ -189,7 +189,7 @@ def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame
 # TODO: add string with overview
 @log_start_end(log=logger)
 def get_stable_coins(
-    limit: int = 20, sortby: str = "rank", ascend: bool = False
+    limit: int = 20, sortby: str = "Market_Cap_[$]", ascend: bool = False
 ) -> pd.DataFrame:
     """Returns top stable coins [Source: CoinGecko]
 
@@ -198,7 +198,7 @@ def get_stable_coins(
     limit: int
         How many rows to show
     sortby: str
-        Key by which to sort data
+        Key by which to sort data, default is Market_Cap_[$]
     ascend: bool
         Flag to sort data ascending
 
@@ -210,7 +210,26 @@ def get_stable_coins(
 
     df = get_coins(limit=limit, category="stablecoins")
     df = df[COINS_COLUMNS]
+    df = df.set_axis(
+        [
+            "Symbol",
+            "Name",
+            "Price_[$]",
+            "Market_Cap_[$]",
+            "Market_Cap_Rank",
+            "Change_7d_[%]",
+            "Change_24h_[%]",
+            "Volume_[$]",
+        ],
+        axis=1,
+        copy=False,
+    )
+    total_market_cap = int(df["Market_Cap_[$]"].sum())
+    df[f"Percentage_[%]_of_top_{limit}"] = (
+        df["Market_Cap_[$]"] / total_market_cap
+    ) * 100
     df = df.sort_values(by=sortby, ascending=ascend)
+
     return df
 
 
