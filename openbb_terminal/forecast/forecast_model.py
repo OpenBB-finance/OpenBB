@@ -415,6 +415,14 @@ def combine_dfs(
     data: pd.DataFrame
         The new dataframe
     """
+
+    # for use with SDK
+    # check if date is index, if true, reset index
+    if df1.index.name == "date":
+        df1 = df1.reset_index()
+    if df2.index.name == "date":
+        df2 = df2.reset_index()
+
     if column not in df2:
         console.print(
             f"Not able to find the column {column}. Please choose one of "
