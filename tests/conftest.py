@@ -353,24 +353,12 @@ def enable_debug():
 
 def pytest_configure(config: Config) -> None:
     config.addinivalue_line("markers", "record_stdout: Mark the test as text record.")
-    config.addinivalue_line(
-        "markers", "autodoc: Mark the test as auto documentation test."
-    )
 
     brotli_check()
     enable_debug()
     disable_rich()
     disable_check_api()
     disable_matplotlib()
-
-
-def pytest_collection_modifyitems(config: Config, items: List[pytest.Item]) -> None:
-    if config.getoption("--autodoc"):
-        return
-    skip_autodoc = pytest.mark.skip(reason="need --autodoc option to run")
-    for item in items:
-        if "autodoc" in item.keywords:
-            item.add_marker(skip_autodoc)
 
 
 @pytest.fixture(scope="session")  # type: ignore
