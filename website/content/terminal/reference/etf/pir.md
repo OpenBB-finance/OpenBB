@@ -20,8 +20,8 @@ pir [-e NAMES] [--filename FILENAME] [--folder FOLDER]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | names | Symbols to create a report for (e.g. pir ARKW ARKQ QQQ VOO) |  | True | None |
-| filename | Filename of the excel ETF report | ETF_report_20221124_135729 | True | None |
-| folder | Folder where the excel ETF report will be saved | C:\Users\teh_coderer\OpenBBUserData\exports | True | None |
+| filename | Filename of the excel ETF report | ETF_report_20221124_190220 | True | None |
+| folder | Folder where the excel ETF report will be saved | /home/runner/OpenBBUserData/exports | True | None |
 
 ![pir](https://raw.githubusercontent.com/JerBouma/ThePassiveInvestor/master/Images/outputExample.gif)
 
