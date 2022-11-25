@@ -6,7 +6,7 @@ menu and provides a brief description of its sub-menus"
 
 ---
 
-The ETF menu enables you to lookup any ETF (<a href="/terminal/reference/etf/ln" target="_blank">ln</a> and <a href="/terminal/reference/etf/ld" target="_blank">ld</a>) and obtain an <a href="/terminal/reference/etf/overview" target="_blank">overview</a>, <a href="/terminal/reference/etf/holdings" target="_blank">holdings</a>, <a href="/terminal/reference/etf/weights" target="_blank">weights</a> and <a href="/terminal/reference/etf/news" target="_blank">news</a> about the chosen ETF. Furthermore, sub-menus reside in this menu that can be used to <a href="/terminal/guides/intros/stocks/ca" target="_blank">compare companies</a> within the ETF, discover gainers and losers within <a href="/terminal/reference/etf/disc" target="_blank">discovery</a> and apply advanced <a href="/terminal/guides/intros/common/ta" target="_blank">technical indicators</a> and <a href="/terminal/guides/intros/forecast" target="_blank">Forecasting menu</a>. Lastly, it also has the option to export multiple ETFs to Excel with <a href="/terminal/reference/etf/pir" target="_blank">pir</a>.
+The ETF menu enables you to lookup any ETF (<a href="/terminal/reference/etf/ln" target="_blank" rel="noreferrer noopener">ln</a> and <a href="/terminal/reference/etf/ld" target="_blank" rel="noreferrer noopener">ld</a>) and obtain an <a href="/terminal/reference/etf/overview" target="_blank" rel="noreferrer noopener">overview</a>, <a href="/terminal/reference/etf/holdings" target="_blank" rel="noreferrer noopener">holdings</a>, <a href="/terminal/reference/etf/weights" target="_blank" rel="noreferrer noopener">weights</a> and <a href="/terminal/reference/etf/news" target="_blank" rel="noreferrer noopener">news</a> about the chosen ETF. Furthermore, sub-menus reside in this menu that can be used to <a href="/terminal/guides/intros/stocks/ca" target="_blank" rel="noreferrer noopener">compare companies</a> within the ETF, discover gainers and losers within <a href="/terminal/reference/etf/disc" target="_blank" rel="noreferrer noopener">discovery</a> and apply advanced <a href="/terminal/guides/intros/common/ta" target="_blank" rel="noreferrer noopener">technical indicators</a> and <a href="/terminal/guides/intros/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a>. Lastly, it also has the option to export multiple ETFs to Excel with <a href="/terminal/reference/etf/pir" target="_blank" rel="noreferrer noopener">pir</a>.
 
 ### How to use
 
@@ -14,7 +14,7 @@ The ETF menu is called upon by typing `etf` which opens the following menu:
 
 ![ETF Menu](https://user-images.githubusercontent.com/46355364/174823477-48d3c21f-eb88-4942-b513-dbb4269cc9ee.png)
 
-You have the ability to look up any ETF (<a href="/terminal/reference/etf/ln" target="_blank">ln</a> and <a href="/terminal/reference/etf/ld" target="_blank">ld</a>). With the example below, the `ld` command is used that searches the description of the ETFs. Then the search query is entered with is `500`. Lastly, the `-l` argument is included which refers to `limit` and is maxed to `15` ETFs.
+You have the ability to look up any ETF (<a href="/terminal/reference/etf/ln" target="_blank" rel="noreferrer noopener">ln</a> and <a href="/terminal/reference/etf/ld" target="_blank" rel="noreferrer noopener">ld</a>). With the example below, the `ld` command is used that searches the description of the ETFs. Then the search query is entered with is `500`. Lastly, the `-l` argument is included which refers to `limit` and is maxed to `15` ETFs.
 
 ```
 2022 Jun 21, 09:14 (🦋) /etf/ $ ld 500 -l 15
@@ -55,14 +55,14 @@ You have the ability to look up any ETF (<a href="/terminal/reference/etf/ln" ta
 └──────┴──────────────────────────────────────────────┴───────────────────────────────────┴──────────────────────────┴──────────────────┘
 ```
 
-This results in a selection of <a href="https://www.investopedia.com/ask/answers/12/what-is-a-stock-ticker.asp" target="_blank">tickers</a>, name, family, category and total assets (estimation). With this information, you can load in one of the tickers into the menu. This can be done with <a href="/terminal/reference/etf/load" target="_blank">load</a>. See the following example:
+This results in a selection of <a href="https://www.investopedia.com/ask/answers/12/what-is-a-stock-ticker.asp" target="_blank" rel="noreferrer noopener">tickers</a>, name, family, category and total assets (estimation). With this information, you can load in one of the tickers into the menu. This can be done with <a href="/terminal/reference/etf/load" target="_blank" rel="noreferrer noopener">load</a>. See the following example:
 
 ```
 2022 Jun 21, 09:22 (🦋) /etf/ $ load VOO
 Top company holdings found: AAPL, MSFT, AMZN, GOOGL, TSLA
 ```
 
-To then view the stock chart, you can call <a href="/terminal/reference/etf/candle" target="_blank">candle</a> which shows a candle chart for the defined period (by default set to a year by `load`):
+To then view the stock chart, you can call <a href="/terminal/reference/etf/candle" target="_blank" rel="noreferrer noopener">candle</a> which shows a candle chart for the defined period (by default set to a year by `load`):
 
 ![Candle Chart of VOO](https://user-images.githubusercontent.com/46355364/174823545-6695f9b0-864c-4b94-a612-baa8087d1858.png)
 
@@ -84,11 +84,11 @@ Which shows the following graph:
 
 The ETF menu has a few sub-menus available to delve further into a specific ETF or screen multiple ETFs at the same time. To find more information about each menu, click on one of the following:
 
-- <a href="/terminal/guides/intros/stocks/ca/" target="_blank">Introduction to Comparison Analysis</a>: have the ability to compare companies within the ETF based on, among other things, correlation, financial statements, sentiment, valuations and performance.
-- <a href="disc" target="_blank">Introduction to ETF Discovery</a>: discover trending ETF based on their returns (gainers and decliners) as well as activity.
-- <a href="scr" target="_blank">Introduction to ETF Screener</a>: provides the ability to screen companies within the ETF based on a preset as well as the ability to screen by category.
-- <a href="/terminal/guides/intros/common/ta" target="_blank">Introduction to Technical Analysis</a>: analysis the chosen ETF's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
-- <a href="/terminal/guides/intros/forecast/" target="_blank">Introduction to Forecasting menu</a>: apply advanced AI and Machine Learning models to form prediction of future ETF prices including Recurrent Neural Network (RNN), Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
+- <a href="/terminal/guides/intros/stocks/ca/" target="_blank" rel="noreferrer noopener">Introduction to Comparison Analysis</a>: have the ability to compare companies within the ETF based on, among other things, correlation, financial statements, sentiment, valuations and performance.
+- <a href="disc" target="_blank" rel="noreferrer noopener">Introduction to ETF Discovery</a>: discover trending ETF based on their returns (gainers and decliners) as well as activity.
+- <a href="scr" target="_blank" rel="noreferrer noopener">Introduction to ETF Screener</a>: provides the ability to screen companies within the ETF based on a preset as well as the ability to screen by category.
+- <a href="/terminal/guides/intros/common/ta" target="_blank" rel="noreferrer noopener">Introduction to Technical Analysis</a>: analysis the chosen ETF's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
+- <a href="/terminal/guides/intros/forecast/" target="_blank" rel="noreferrer noopener">Introduction to Forecasting menu</a>: apply advanced AI and Machine Learning models to form prediction of future ETF prices including Recurrent Neural Network (RNN), Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
 
 ### Examples
 
@@ -133,14 +133,14 @@ If we want to learn more about a total market ETF, we can do the following, star
 └──────┴────────────────────────────────────────────────────┴───────────────────────────────────┴───────────────────────────┴──────────────────┘
 ```
 
-It seems Vanguard Total Stock Market Index Fund ETF Shares (VTI) is by far the largest ETF in this list so let's <a href="/terminal/reference/etf/load" target="_blank">load</a> it in. Also, a larger period is chosen by using `-s` as shown in the documentation:
+It seems Vanguard Total Stock Market Index Fund ETF Shares (VTI) is by far the largest ETF in this list so let's <a href="/terminal/reference/etf/load" target="_blank" rel="noreferrer noopener">load</a> it in. Also, a larger period is chosen by using `-s` as shown in the documentation:
 
 ```
 2022 Jun 21, 10:08 (🦋) /etf/ $ load VTI -s 2010-01-01
 Top company holdings found: AAPL, MSFT, AMZN, GOOGL, TSLA
 ```
 
-We can now plot the corresponding ETF chart with <a href="/terminal/reference/etf/candle" target="_blank">candle</a> which shows the company's historical data from `2010-01-01` until the current date. We are also adding in trendlines with `-t`.
+We can now plot the corresponding ETF chart with <a href="/terminal/reference/etf/candle" target="_blank" rel="noreferrer noopener">candle</a> which shows the company's historical data from `2010-01-01` until the current date. We are also adding in trendlines with `-t`.
 
 ```
 2022 Jun 21, 10:13 (🦋) /etf/ $ candle -t
@@ -148,8 +148,8 @@ We can now plot the corresponding ETF chart with <a href="/terminal/reference/et
 
 ![Candle Chart with Trendlines](https://user-images.githubusercontent.com/46355364/174823785-ec11cb1a-dbf0-45a7-b086-31542ece39a3.png)
 
-Now we can go ahead and explore more about the ETF by running <a href="/terminal/reference/etf/holdings" target="_blank">holdings</a>
-and <a href="/terminal/reference/etf/weights" target="_blank">weights</a> using the `--raw` argument for weights to display a table instead of a graph.
+Now we can go ahead and explore more about the ETF by running <a href="/terminal/reference/etf/holdings" target="_blank" rel="noreferrer noopener">holdings</a>
+and <a href="/terminal/reference/etf/weights" target="_blank" rel="noreferrer noopener">weights</a> using the `--raw` argument for weights to display a table instead of a graph.
 
 ```
 2022 Jun 21, 10:16 (🦋) /etf/ $ holdings

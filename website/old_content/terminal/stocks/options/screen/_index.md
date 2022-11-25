@@ -249,4 +249,4 @@ The video below shows the process for building an options screener preset. Any s
 
 ![Options Template Screener Demo](https://user-images.githubusercontent.com/85772166/172468268-fc839bf1-54f1-4e91-b1e2-82c8e711dea4.gif)
 
-Back to: <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/" target="_blank">Introduction To Options Guide</a>
+Back to: <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/" target="_blank" rel="noreferrer noopener">Introduction To Options Guide</a>

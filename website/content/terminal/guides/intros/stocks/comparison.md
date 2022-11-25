@@ -7,7 +7,7 @@ status: publish
 excerpt: "An Introduction to Comparison Analysis, within the Stocks Menu, with a brief overview of the features."
 geekdocCollapseSection: true
 ---
-The Comparison Analysis menu provides the user with tools for comparison (similar) stocks. It is not necessary to load a ticker from the <a href="/terminal/guides/intros/stocks" target="_blank">Stocks menu</a> to use these features. Enter the Comparison Analysis submenu by typing `ca` and pressing `ENTER` (⏎).
+The Comparison Analysis menu provides the user with tools for comparison (similar) stocks. It is not necessary to load a ticker from the <a href="/terminal/guides/intros/stocks" target="_blank" rel="noreferrer noopener">Stocks menu</a> to use these features. Enter the Comparison Analysis submenu by typing `ca` and pressing `ENTER` (⏎).
 
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/171148283-2cbb5942-dc56-4276-a30c-7cbc045627a1.png"><img alt="Comparison Analysis Menu" src="https://user-images.githubusercontent.com/46355364/171148283-2cbb5942-dc56-4276-a30c-7cbc045627a1.png"></img></a>
 
@@ -98,7 +98,7 @@ The list of similar companies can be compared by a number of fundamental metrics
 └────────┴───────────┴────────────┴────────────┴───────────┴───────────┴──────────┴──────────────┴──────────────┴───────┴─────────────┴────────────┴────────┴────────┴─────────────┘
 ```
 
-`sentiment` is a chart from  <a href="https://finbrain.tech" target="_blank">Finbrain</a> that shows sentiment over the last ten days.
+`sentiment` is a chart from  <a href="https://finbrain.tech" target="_blank" rel="noreferrer noopener">Finbrain</a> that shows sentiment over the last ten days.
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/171150795-cdff5c5e-c0c8-4ca3-ba60-3f148ba80a22.png"><img alt="Performance" src="https://user-images.githubusercontent.com/46355364/171150795-cdff5c5e-c0c8-4ca3-ba60-3f148ba80a22.png"></img></a>
 
 ### Examples

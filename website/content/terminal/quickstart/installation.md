@@ -18,7 +18,7 @@ OpenBB Terminal is available in all major platforms. With MacOS/Windows you can 
 
 </div><p>The process starts off by downloading the installer, see below for how to download the most recent release:</p>
 <ol>
-<li>Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.</li>
+<li>Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank" rel="noreferrer noopener">OpenBB website</a>.</li>
 <li>Click on the <code>Download</code> button in the Windows Installer section.</li>
 </ol>
 <p>When the file is downloaded, use the following steps to run the OpenBB Terminal:</p>
@@ -54,7 +54,7 @@ still in beta phase, and the team has not yet requested verification from Window
 <div class="gdoc-page">
 </div><p>The process starts off by downloading the installer, see below for how to download the most recent release:</p>
 <ol>
-<li>Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.</li>
+<li>Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank" rel="noreferrer noopener">OpenBB website</a>.</li>
 <li>Click on the <code>Download</code> button in the macOS Installer section.</li>
 </ol>
 <p>When the DMG file is downloaded, use the following steps to run the OpenBB Terminal:</p>

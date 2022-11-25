@@ -6,7 +6,7 @@ excerpt: "This guide introduces the user to the Options Pricing submenu, within 
 
 This set of features is for composing hypothetical outcomes through user-defined inputs. There are two columns of inputs: the price for the underlying at the close on expiration and the statistical probability of the outcome.
 
-The Pricing submenu is accessible after selecting an<a href="/terminal/reference/stocks/options/exp" target="_blank">expiration</a> date for the options chain. Type, `pricing`, and press enter for access.
+The Pricing submenu is accessible after selecting an<a href="/terminal/reference/stocks/options/exp" target="_blank" rel="noreferrer noopener">expiration</a> date for the options chain. Type, `pricing`, and press enter for access.
 
 ![The Options Pricing Submenu](https://user-images.githubusercontent.com/85772166/172729310-dd341d26-c55e-4e29-a190-3e1eea1a6950.png)
 

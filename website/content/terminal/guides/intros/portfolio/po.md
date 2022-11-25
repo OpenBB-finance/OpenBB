@@ -7,7 +7,7 @@ optimization techniques and provides a brief description of its sub-menus"
 geekdocCollapseSection: true
 ---
 
-The Portfolio Optimization menu allows the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from <a href="https://www.investopedia.com/terms/m/meanvariance-analysis.asp" target="_blank">mean-variance optimization</a> to <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank">risk parity models</a> and <a href="https://www.investopedia.com/terms/c/cluster_analysis.asp" target="_blank">hierarchical clustering models</a>. By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used? These are questions the templates make easier to answer.
+The Portfolio Optimization menu allows the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from <a href="https://www.investopedia.com/terms/m/meanvariance-analysis.asp" target="_blank" rel="noreferrer noopener">mean-variance optimization</a> to <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank" rel="noreferrer noopener">risk parity models</a> and <a href="https://www.investopedia.com/terms/c/cluster_analysis.asp" target="_blank" rel="noreferrer noopener">hierarchical clustering models</a>. By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used? These are questions the templates make easier to answer.
 
 ### How to use
 
@@ -32,7 +32,7 @@ The OpenBB Terminal does, however, allow the user to run any model despite the `
 
 <img src="https://user-images.githubusercontent.com/46355364/171144692-dd812efd-1e95-4a71-a93f-7ae8a480fe5d.png"></img>
 
-Once you have defined the parameters, save the template and load it inside the terminal by using the <a href="/terminal/reference/portfolio/po/file/" target="_blank">file</a> command. If done correctly, the parameters file should show automatically after typing `file` and pressing SPACE. Then, by using the DOWN KEY (⌄) you can select the file by pressing ENTER (⏎) which will then be loaded into the terminal:
+Once you have defined the parameters, save the template and load it inside the terminal by using the <a href="/terminal/reference/portfolio/po/file/" target="_blank" rel="noreferrer noopener">file</a> command. If done correctly, the parameters file should show automatically after typing `file` and pressing SPACE. Then, by using the DOWN KEY (⌄) you can select the file by pressing ENTER (⏎) which will then be loaded into the terminal:
 
 ```
 2022 May 02, 06:51 (🦋) /portfolio/po/ $ file OpenBB_Parameters_Template v1.0.0.xlsx
@@ -61,7 +61,7 @@ This template hands the user a format to work with it to define the portfolio. H
 
 <img src="https://user-images.githubusercontent.com/46355364/171145061-cd618153-801c-4771-ba57-7ee0ab8c57e8.png"></img>
 
-You can load in the portfolio template by using the <a href="/terminal/reference/portfolio/po/load" target="_blank">load</a> command:
+You can load in the portfolio template by using the <a href="/terminal/reference/portfolio/po/load" target="_blank" rel="noreferrer noopener">load</a> command:
 
 ```
 2022 Apr 26, 01:35 (🦋) /portfolio/po/ $ load OpenBB_Portfolio_Template_v1.0.0.xlsx
@@ -74,7 +74,7 @@ Current Categories: ASSET_CLASS, SECTOR, INDUSTRY, COUNTRY, CURRENT_INVESTED_AMO
 
 #### Performing optimization
 
-Based on the parameters and allocation the user has set, the optimization process begins. What optimization technique is ideal depends entirely on the user's risk profile and objectives. As an illustration, <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank">Risk Parity</a> is presented below via the <a href="/terminal/reference/portfolio/po/riskparity" target="_blank">riskparity</a> command:
+Based on the parameters and allocation the user has set, the optimization process begins. What optimization technique is ideal depends entirely on the user's risk profile and objectives. As an illustration, <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank" rel="noreferrer noopener">Risk Parity</a> is presented below via the <a href="/terminal/reference/portfolio/po/riskparity" target="_blank" rel="noreferrer noopener">riskparity</a> command:
 
 ```
 2022 May 30, 05:47 (🦋) /portfolio/po/ $ riskparity
@@ -124,7 +124,7 @@ Annual (by √252) volatility: 11.62%
 Sharpe ratio: 0.8373
 ```
 
-To understand how this portfolio differs from the original portfolio, the <a href="/terminal/reference/portfolio/po/show" target="_blank">show</a> command can be used. This also shows the allocations to each asset class, sector, industry and currency. Using the optimized portfolio, this generates the following results:
+To understand how this portfolio differs from the original portfolio, the <a href="/terminal/reference/portfolio/po/show" target="_blank" rel="noreferrer noopener">show</a> command can be used. This also shows the allocations to each asset class, sector, industry and currency. Using the optimized portfolio, this generates the following results:
 
 ```
 2022 May 30, 05:47 (🦋) /portfolio/po/ $ show RP_0
@@ -220,7 +220,7 @@ Portfolio - RP_0
 └─────┴────────────────────────────────────────────┴─────────────────────────┴─────────────────┴──────────┘
 ```
 
-It is possible to use the commands without loading in the parameters template or by using the parameters template but changing some arguments directly into the terminal. For example, using the same method as described above, the risk measure is changed to <a href="https://www.investopedia.com/terms/c/conditional_value_at_risk.asp" target="_blank">Conditional Value at Risk (CVaR)</a> and the used historic period is increased to 10 years (keeping all other parameters unchanged):
+It is possible to use the commands without loading in the parameters template or by using the parameters template but changing some arguments directly into the terminal. For example, using the same method as described above, the risk measure is changed to <a href="https://www.investopedia.com/terms/c/conditional_value_at_risk.asp" target="_blank" rel="noreferrer noopener">Conditional Value at Risk (CVaR)</a> and the used historic period is increased to 10 years (keeping all other parameters unchanged):
 
 ```
 2022 May 30, 05:47 (🦋) /portfolio/po/ $ riskparity -rm CVaR -p 10y
@@ -270,7 +270,7 @@ Return / conditional value at risk (CVaR) ratio: 0.4738
 
 ## Examples
 
-To demonstrate the capabilities of the Portfolio Optimization menu, the entire <a href="https://www.investopedia.com/terms/s/sp500.asp" target="_blank">S&P 500 index</a> (as of 30th of May 2022) is used and optimized and analysed in a variety of ways. Starting by loading in the dataset, which is visible when you type `load` as it resides in the same directory as the earlier mentioned template:
+To demonstrate the capabilities of the Portfolio Optimization menu, the entire <a href="https://www.investopedia.com/terms/s/sp500.asp" target="_blank" rel="noreferrer noopener">S&P 500 index</a> (as of 30th of May 2022) is used and optimized and analysed in a variety of ways. Starting by loading in the dataset, which is visible when you type `load` as it resides in the same directory as the earlier mentioned template:
 
 <img src="https://user-images.githubusercontent.com/46355364/171145309-8419bc2e-12bd-49d5-8c19-e0f80097d898.png"></img>
 
@@ -297,7 +297,7 @@ Parameters:
     short_allocation        : 0
 ```
 
-Then, the <a href="https://jpm.pm-research.com/content/42/4/59.short" target="_blank">Hierarchical Risk Parity</a> technique is applied by running the <a href="/terminal/reference/portfolio/po/hrp/" target="_blank">hrp</a> command. This results in the following (the result is edited, as it would show 500 tickers, to prevent flooding this page):
+Then, the <a href="https://jpm.pm-research.com/content/42/4/59.short" target="_blank" rel="noreferrer noopener">Hierarchical Risk Parity</a> technique is applied by running the <a href="/terminal/reference/portfolio/po/hrp/" target="_blank" rel="noreferrer noopener">hrp</a> command. This results in the following (the result is edited, as it would show 500 tickers, to prevent flooding this page):
 
 ```
 2022 May 30, 06:22 (🦋) /portfolio/po/ $ hrp
@@ -330,7 +330,7 @@ Annual (by √252) volatility: 21.64%
 Sharpe ratio: 0.8943
 ```
 
-This optimization process is then compared with the current holdings. To keep things manageable, only the sector allocations are compared between the unoptimized and optimized portfolio which is done with the <a href="/terminal/reference/portfolio/po/show/" target="_blank">show</a> command:
+This optimization process is then compared with the current holdings. To keep things manageable, only the sector allocations are compared between the unoptimized and optimized portfolio which is done with the <a href="/terminal/reference/portfolio/po/show/" target="_blank" rel="noreferrer noopener">show</a> command:
 
 ```
 2022 May 31, 03:31 (🦋) /portfolio/po/ $ show HRP_0 -ct SECTOR
@@ -365,7 +365,7 @@ This optimization process is then compared with the current holdings. To keep th
 └─────┴────────────────────────┴─────────────────────────┴─────────────────┴──────────┘
 ```
 
-This table shows how the portfolio changed and how much is allocated to each sector. It is possible to delve further into these findings with the <a href="/terminal/reference/portfolio/po/plot/" target="_blank">plot</a> command. This gives the ability to visually depict allocations, e.g. below the sector allocation is visually depicted.
+This table shows how the portfolio changed and how much is allocated to each sector. It is possible to delve further into these findings with the <a href="/terminal/reference/portfolio/po/plot/" target="_blank" rel="noreferrer noopener">plot</a> command. This gives the ability to visually depict allocations, e.g. below the sector allocation is visually depicted.
 
 ```
 2022 May 31, 03:39 (🦋) /portfolio/po/ $ plot HRP_0 -ct SECTOR -pi
@@ -373,7 +373,7 @@ This table shows how the portfolio changed and how much is allocated to each sec
 
 <img alt="Sectors Pie Chart" src="https://user-images.githubusercontent.com/46355364/171145554-327ab405-dfb1-449e-a837-44ee03d2564f.png"></img>
 
-Further analysis can be done by looking at the portfolio's returns <a href="https://www.investopedia.com/terms/h/histogram.asp" target="_blank">histogram</a> which also includes a variety of risk measures as well as the portfolio's drawdowns.
+Further analysis can be done by looking at the portfolio's returns <a href="https://www.investopedia.com/terms/h/histogram.asp" target="_blank" rel="noreferrer noopener">histogram</a> which also includes a variety of risk measures as well as the portfolio's drawdowns.
 
 ````
 2022 May 31, 03:39 (🦋) /portfolio/po/ $ plot HRP_0 -ct SECTOR -hi -dd
