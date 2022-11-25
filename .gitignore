@@ -4,6 +4,7 @@ logs/
 .DS_Store
 *.env
 .venv
+venv
 .vscode
 *.ipynb
 env/
