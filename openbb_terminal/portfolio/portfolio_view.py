@@ -74,7 +74,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def load_info():
-    """Prints instructions to load a CSV
+    """Print instructions to load a CSV
 
     Returns
     -------
@@ -100,7 +100,7 @@ In order to load a CSV do the following:
 
 @log_start_end(log=logger)
 def display_transactions(
-    portfolio_engine=None,
+    portfolio_engine: PortfolioEngine,
     show_index=False,
     limit: int = 10,
     export: str = "",
@@ -141,7 +141,7 @@ def display_transactions(
 
 @log_start_end(log=logger)
 def display_assets_allocation(
-    portfolio_engine=None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
 ):
@@ -175,7 +175,7 @@ def display_assets_allocation(
 
 @log_start_end(log=logger)
 def display_sectors_allocation(
-    portfolio_engine=None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
 ):
@@ -209,7 +209,7 @@ def display_sectors_allocation(
 
 @log_start_end(log=logger)
 def display_countries_allocation(
-    portfolio_engine=None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
 ):
@@ -243,7 +243,7 @@ def display_countries_allocation(
 
 @log_start_end(log=logger)
 def display_regions_allocation(
-    portfolio_engine=None,
+    portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
 ):
@@ -1207,7 +1207,7 @@ def display_skewness(
         df,
         title="Skewness for Portfolio and Benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1238,7 +1238,7 @@ def display_kurtosis(
         df,
         title="Kurtosis for Portfolio and Benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1333,7 +1333,7 @@ def display_sharpe_ratio(
         df,
         title="Sharpe ratio for Portfolio and Benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1367,7 +1367,7 @@ def display_sortino_ratio(
         df,
         title="Sortino ratio for Portfolio and Benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1398,7 +1398,7 @@ def display_maximum_drawdown_ratio(
         df,
         title="Maximum drawdown for Portfolio and Benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metric_maxdrawdown", df
@@ -1425,7 +1425,7 @@ def display_gaintopain_ratio(
         df,
         title="Gain-to-pain ratio for portfolio and benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1483,7 +1483,7 @@ def display_information_ratio(
         df,
         title="Information ratio for portfolio",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1516,7 +1516,7 @@ def display_tail_ratio(
         df,
         title="Tail ratio for portfolio and benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metric_tail_ratio", df
@@ -1543,7 +1543,7 @@ def display_common_sense_ratio(
         df,
         title="Common sense ratio for portfolio and benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export,
@@ -1605,7 +1605,7 @@ def display_calmar_ratio(
         df,
         title="Calmar ratio for portfolio and benchmark",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metric_calmar_ratio", df
@@ -1659,7 +1659,7 @@ def display_payoff_ratio(
         df,
         title="Portfolio's payoff ratio",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metric_payoff_ratio", df
@@ -1686,7 +1686,7 @@ def display_profit_factor(
         df,
         title="Portfolio's profit factor",
         show_index=True,
-        floatfmt=".2%",
+        floatfmt=".2f",
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metric_profit_factor", df
@@ -1773,7 +1773,7 @@ def display_es(
     distribution: str = "normal",
     percentile: float = 99.9,
 ):
-    """Displays expected shortfall
+    """Display expected shortfall
 
     Parameters
     ----------
@@ -1825,7 +1825,7 @@ def display_omega(
 
 
 @log_start_end(log=logger)
-def display_attribution_categorisation(
+def display_attribution_categorization(
     display: pd.DataFrame,
     time_period: str,
     attrib_type: str,
@@ -1841,7 +1841,7 @@ def display_attribution_categorisation(
     if show_table:
         print_rich_table(
             display,
-            title=f"{attrib_type}: Portfolio vs. Benchmark Attribution Categorisation {time_period}",
+            title=f"{attrib_type}: Portfolio vs. Benchmark Attribution categorization {time_period}",
             show_index=True,
             floatfmt=".2f",
         )

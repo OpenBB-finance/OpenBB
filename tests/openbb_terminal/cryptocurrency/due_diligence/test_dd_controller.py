@@ -137,7 +137,12 @@ def test_menu_without_queue_completion(mocker):
         return_value=["BITCOIN"],
     )
 
-    result_menu = dd_controller.DueDiligenceController(queue=None).menu()
+    controller = dd_controller.DueDiligenceController(
+        symbol="BTC",
+        queue=None,
+    )
+
+    result_menu = controller.menu()
 
     assert result_menu == ["help"]
 

@@ -20,7 +20,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks.discovery import (
     ark_view,
     finnhub_view,
@@ -30,6 +29,8 @@ from openbb_terminal.stocks.discovery import (
     yahoofinance_view,
     finviz_view,
 )
+from openbb_terminal.stocks import stocks_helper
+from openbb_terminal.rich_config import console, MenuText
 
 # pylint:disable=C0302
 
@@ -111,98 +112,14 @@ class DiscoveryController(BaseController):
         "Announcement Date",
     ]
     heatmap_timeframes = ["day", "week", "month", "3month", "6month", "year", "ytd"]
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["pipo"] = {
-                "--days": one_to_hundred,
-                "-d": "--days",
-                "--start": None,
-                "-s": "--start",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["fipo"] = {
-                "--days": one_to_hundred,
-                "-d": "--days",
-                "--end": None,
-                "-e": "--end",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            limit = {
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["gainers"] = limit
-            choices["losers"] = limit
-            choices["ugs"] = limit
-            choices["gtech"] = limit
-            choices["active"] = limit
-            choices["ulc"] = limit
-            choices["asc"] = limit
-            choices["arkord"] = {
-                "--sortby": {c: {} for c in self.arkord_sortby_choices},
-                "-s": "--sortby",
-                "reverse": {},
-                "-r": "reverse",
-                "--buy_only": {},
-                "-b": "--buy_only",
-                "--sell_only": {},
-                "-c": "--sell_only",
-                "--fund": {c: {} for c in self.arkord_fund_choices},
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["upcoming"] = {
-                "--limit": None,
-                "-l": "--limit",
-                "--pages": one_to_hundred,
-                "-p": "--pages",
-            }
-            choices["trending"] = {
-                "--id": None,
-                "-i": "--id",
-                "--limit": None,
-                "-l": "--limit",
-                "--date": None,
-                "-d": "--date",
-            }
-            choices["cnews"] = {
-                "--type": {c: {} for c in self.cnews_type_choices},
-                "-t": "--type",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["lowfloat"] = limit
-            choices["hotpenny"] = {
-                "--limit": None,
-                "-l": "--limit",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}hotpenny")
-                },
-            }
-            choices["rtat"] = limit
-            choices["divcal"] = {
-                "--date": None,
-                "-d": "--date",
-                "--sort": {c: {} for c in self.dividend_columns},
-                "-s": "--sort",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["heatmap"]["--timeframe"] = {
-                c: None for c in self.heatmap_timeframes
-            }
-            choices["heatmap"]["-t"] = "--timeframe"
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -250,9 +167,9 @@ class DiscoveryController(BaseController):
         parser.add_argument(
             "-s",
             "--sort",
-            default=["Dividend"],
-            nargs="+",
-            type=str,
+            default="dividend",
+            type=str.lower,
+            choices=stocks_helper.format_parse_choices(self.dividend_columns),
             help="Column to sort by",
             dest="sort",
         )
@@ -274,10 +191,11 @@ class DiscoveryController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
-            sort_col = " ".join(ns_parser.sort)
-            if sort_col not in self.dividend_columns:
-                console.print(f"{sort_col} not a valid selection for sorting.\n")
-                return
+            # Map fixes
+
+            sort_col = stocks_helper.map_parse_choices(self.dividend_columns)[
+                ns_parser.sort
+            ]
             nasdaq_view.display_dividend_calendar(
                 date=ns_parser.date.strftime("%Y-%m-%d"),
                 sortby=sort_col,

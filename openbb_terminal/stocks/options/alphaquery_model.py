@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
+from typing import Optional
 
 import pandas as pd
 import requests
@@ -16,7 +17,7 @@ logger = logging.getLogger(__name__)
 def get_put_call_ratio(
     symbol: str,
     window: int = 30,
-    start_date: str = None,
+    start_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Gets put call ratio over last time window [Source: AlphaQuery.com]
 
@@ -26,7 +27,7 @@ def get_put_call_ratio(
         Ticker symbol to look for
     window: int, optional
         Window to consider, by default 30
-    start_date: str, optional
+    start_date: Optional[str], optional
         Start date to plot  (e.g., 2021-10-01), by default last 366 days
 
     Returns

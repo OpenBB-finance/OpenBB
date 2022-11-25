@@ -72,7 +72,7 @@ class LogSender(Thread):
             file = item.path
             last = item.last
 
-            if self.check_sending_conditions():
+            if self.check_sending_conditions(file=file):
                 archives_file = file.parent / ARCHIVES_FOLDER_NAME / f"{file.stem}.log"
                 object_key = (
                     f"{app_name}{S3_FOLDER_SUFFIX}/logs/{identifier}/{file.stem}.log"
@@ -110,10 +110,14 @@ class LogSender(Thread):
         self.__fails: int = 0  # type: ignore
         self.__queue: SimpleQueue = SimpleQueue()
 
-    def check_sending_conditions(self):
+    def check_sending_conditions(self, file: Path) -> bool:
         """Check if the condition are met to send data."""
 
-        return self.start_required() and not self.max_fails_reached()
+        return (
+            self.start_required()
+            and not self.max_fails_reached()
+            and not self.max_size_exceeded(file=file)
+        )
 
     def fails_increment(self):
         self.__fails += 1
@@ -123,6 +127,11 @@ class LogSender(Thread):
 
     def max_fails_reached(self) -> bool:
         return self.__fails > self.MAX_FAILS
+
+    def max_size_exceeded(self, file: Path) -> bool:
+        """Check if the log file is bigger than 2MB."""
+
+        return file.stat().st_size > 2 * 1024 * 1024
 
     def send_path(self, path: Path, last: bool = False):
         """Only closed files should be sent."""

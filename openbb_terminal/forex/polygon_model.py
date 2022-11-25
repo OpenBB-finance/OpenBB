@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 from datetime import datetime
+from typing import Optional
 import requests
 import pandas as pd
 from openbb_terminal.config_terminal import API_POLYGON_KEY as api_key
@@ -18,7 +19,7 @@ def get_historical(
     multiplier: int = 1,
     timespan: str = "day",
     start_date: str = "2000-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Load historical fx data from polygon
 
@@ -32,7 +33,7 @@ def get_historical(
         Window to aggregate data.
     start_date : str
         Initial date, format YYYY-MM-DD
-    end_date : str
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
 
     Returns

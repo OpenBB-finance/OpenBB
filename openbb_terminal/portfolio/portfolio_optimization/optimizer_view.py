@@ -8,7 +8,7 @@ import logging
 import math
 import warnings
 from datetime import date
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -23,7 +23,10 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale, print_rich_table
-from openbb_terminal.portfolio.portfolio_optimization import optimizer_model
+from openbb_terminal.portfolio.portfolio_optimization import (
+    optimizer_helper,
+    optimizer_model,
+)
 from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")
@@ -299,35 +302,33 @@ def display_weights(weights: dict, market_neutral: bool = False):
     market_neutral : bool
         Flag indicating shorting allowed (negative weights)
     """
-    if not weights:
+
+    df = optimizer_helper.dict_to_df(weights)
+
+    if df.empty:
         return
-    weight_df = pd.DataFrame.from_dict(data=weights, orient="index", columns=["value"])
-    if not market_neutral:
-        if math.isclose(weight_df.sum()["value"], 1, rel_tol=0.1):
-            weight_df["value"] = (weight_df["value"] * 100).apply(
-                lambda s: f"{s:.2f}"
-            ) + " %"
-            weight_df["value"] = (
-                weight_df["value"]
-                .astype(str)
-                .apply(lambda s: " " * (8 - len(s)) + s if len(s) < 8 else "" + s)
-            )
-        else:
-            weight_df["value"] = (weight_df["value"] * 100).apply(
-                lambda s: f"{s:.0f}"
-            ) + " $"
-            weight_df["value"] = (
-                weight_df["value"]
-                .astype(str)
-                .apply(lambda s: " " * (16 - len(s)) + s if len(s) < 16 else "" + s)
-            )
 
-        print_rich_table(weight_df, headers=["Value"], show_index=True, title="Weights")
-
+    if math.isclose(df.sum()["value"], 1, rel_tol=0.1):
+        df["value"] = (df["value"] * 100).apply(lambda s: f"{s:.2f}") + " %"
+        df["value"] = (
+            df["value"]
+            .astype(str)
+            .apply(lambda s: " " * (8 - len(s)) + s if len(s) < 8 else "" + s)
+        )
     else:
-        tot_value = weight_df["value"].abs().mean()
+        df["value"] = (df["value"] * 100).apply(lambda s: f"{s:.0f}") + " $"
+        df["value"] = (
+            df["value"]
+            .astype(str)
+            .apply(lambda s: " " * (16 - len(s)) + s if len(s) < 16 else "" + s)
+        )
+
+    if market_neutral:
+        tot_value = df["value"].abs().mean()
         header = "Value ($)" if tot_value > 1.01 else "Value (%)"
-        print_rich_table(weight_df, headers=[header], show_index=True, title="Weights")
+        print_rich_table(df, headers=[header], show_index=True, title="Weights")
+    else:
+        print_rich_table(df, headers=["Value"], show_index=True, title="Weights")
 
 
 @log_start_end(log=logger)
@@ -405,7 +406,7 @@ def display_categories(
         weights to display.  Keys are stocks.  Values are either weights or values
     categories: dict
         categories to display. Keys are stocks.  Values are either weights or values
-    column: str.
+    column: str
         column selected to show table
         - ASSET_CLASS
         - SECTOR
@@ -414,51 +415,23 @@ def display_categories(
     title: str
         title to display
     """
-    if not weights:
+
+    df = optimizer_model.get_categories(weights, categories, column)
+
+    if df.empty:
         return
-    weight_df = pd.DataFrame.from_dict(
-        data=weights, orient="index", columns=["value"], dtype=float
-    )
-    categories_df = pd.DataFrame.from_dict(data=categories, dtype=float)
 
-    col = list(categories_df.columns).index(column)
-    categories_df = weight_df.join(categories_df.iloc[:, [col, 4, 5]], how="inner")
-    categories_df.set_index(column, inplace=True)
-    categories_df.groupby(level=0).sum()
-
-    table_df = pd.pivot_table(
-        categories_df,
-        values=["value", "CURRENT_INVESTED_AMOUNT"],
-        index=["CURRENCY", column],
-        aggfunc=np.sum,
-    )
-    table_df["CURRENT_WEIGHTS"] = (
-        table_df["CURRENT_INVESTED_AMOUNT"]
-        .groupby(level=0)
-        .transform(lambda x: x / sum(x))
-    )
-    table_df["value"] = (
-        table_df["value"].groupby(level=0).transform(lambda x: x / sum(x))
-    )
-    table_df = pd.concat(
-        [
-            d.append(d.sum().rename((k, "TOTAL " + k)))
-            for k, d in table_df.groupby(level=0)
-        ]
-    )
-    table_df = table_df.iloc[:, [0, 2, 1]]
-
-    table_df["value"] = (table_df["value"] * 100).apply(lambda s: f"{s:.2f}") + " %"
-    table_df["value"] = (
-        table_df["value"]
+    df["value"] = (df["value"] * 100).apply(lambda s: f"{s:.2f}") + " %"
+    df["value"] = (
+        df["value"]
         .astype(str)
         .apply(lambda s: " " * (8 - len(s)) + s if len(s) < 8 else "" + s)
     )
-    table_df["CURRENT_WEIGHTS"] = (table_df["CURRENT_WEIGHTS"] * 100).apply(
+    df["CURRENT_WEIGHTS"] = (df["CURRENT_WEIGHTS"] * 100).apply(
         lambda s: f"{s:.2f}"
     ) + " %"
-    table_df["CURRENT_WEIGHTS"] = (
-        table_df["CURRENT_WEIGHTS"]
+    df["CURRENT_WEIGHTS"] = (
+        df["CURRENT_WEIGHTS"]
         .astype(str)
         .apply(
             lambda s: " " * (len("CURRENT_WEIGHTS") - len(s)) + s
@@ -466,11 +439,11 @@ def display_categories(
             else "" + s
         )
     )
-    table_df["CURRENT_INVESTED_AMOUNT"] = (
-        table_df["CURRENT_INVESTED_AMOUNT"].apply(lambda s: f"{s:,.0f}") + " $"
+    df["CURRENT_INVESTED_AMOUNT"] = (
+        df["CURRENT_INVESTED_AMOUNT"].apply(lambda s: f"{s:,.0f}") + " $"
     )
-    table_df["CURRENT_INVESTED_AMOUNT"] = (
-        table_df["CURRENT_INVESTED_AMOUNT"]
+    df["CURRENT_INVESTED_AMOUNT"] = (
+        df["CURRENT_INVESTED_AMOUNT"]
         .astype(str)
         .apply(
             lambda s: " " * (len("CURRENT_INVESTED_AMOUNT") - len(s)) + s
@@ -479,12 +452,12 @@ def display_categories(
         )
     )
 
-    table_df.reset_index(inplace=True)
-    table_df.set_index("CURRENCY", inplace=True)
+    df.reset_index(inplace=True)
+    df.set_index("CURRENCY", inplace=True)
 
-    headers = list(table_df.columns)
+    headers = list(df.columns)
     headers = [s.title() for s in headers]
-    print_rich_table(table_df, headers=headers, show_index=True, title=title)
+    print_rich_table(df, headers=headers, show_index=True, title=title)
 
 
 @log_start_end(log=logger)
@@ -737,9 +710,9 @@ def display_property_weighting(
     threshold: float = 0,
     method: str = "time",
     s_property: str = "marketCap",
-    risk_measure="mv",
+    risk_measure: str = "mv",
     risk_free_rate: float = 0,
-    alpha=0.05,
+    alpha: float = 0.05,
     value: float = 1,
     table: bool = False,
 ) -> Dict[str, float]:
@@ -1933,8 +1906,9 @@ def display_max_decorr(
 @log_start_end(log=logger)
 def display_black_litterman(
     symbols: List[str],
-    p_views: List,
-    q_views: List,
+    p_views: List = None,
+    q_views: List = None,
+    benchmark: Dict = None,
     interval: str = "3y",
     start_date: str = "",
     end_date: str = "",
@@ -1943,7 +1917,6 @@ def display_black_litterman(
     maxnan: float = 0.05,
     threshold: float = 0,
     method: str = "time",
-    benchmark: Dict = None,
     objective: str = "Sharpe",
     risk_free_rate: float = 0,
     risk_aversion: float = 1,
@@ -2163,26 +2136,26 @@ def display_ef(
         Whether to plot the tickers for the assets
     """
 
-    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
-
     frontier, mu, cov, stock_returns, weights, X1, Y1, port = optimizer_model.get_ef(
-        symbols,
-        interval,
-        start_date,
-        end_date,
-        log_returns,
-        freq,
-        maxnan,
-        threshold,
-        method,
-        risk_measure,
-        risk_free_rate,
-        alpha,
-        value,
-        value_short,
-        n_portfolios,
-        seed,
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
+        log_returns=log_returns,
+        freq=freq,
+        maxnan=maxnan,
+        threshold=threshold,
+        method=method,
+        risk_measure=risk_measure,
+        risk_free_rate=risk_free_rate,
+        alpha=alpha,
+        value=value,
+        value_short=value_short,
+        n_portfolios=n_portfolios,
+        seed=seed,
     )
+
+    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -3723,7 +3696,7 @@ def pie_chart_weights(
 
 @log_start_end(log=logger)
 def additional_plots(
-    weights,
+    weights: Dict,
     data: pd.DataFrame,
     category: Dict = None,
     title_opt: str = "",
@@ -3818,20 +3791,20 @@ def additional_plots(
         Optional axes to plot data on
     """
     if category is not None:
-        weights = pd.DataFrame.from_dict(
+        weights_df = pd.DataFrame.from_dict(
             data=weights, orient="index", columns=["value"], dtype=float
         )
         category_df = pd.DataFrame.from_dict(
             data=category, orient="index", columns=["category"]
         )
-        weights = weights.join(category_df, how="inner")
-        weights.sort_index(inplace=True)
+        weights_df = weights_df.join(category_df, how="inner")
+        weights_df.sort_index(inplace=True)
 
         # Calculating classes returns
-        classes = list(set(weights["category"]))
-        weights_classes = weights.groupby(["category"]).sum()
-        matrix_classes = np.zeros((len(weights), len(classes)))
-        labels = weights["category"].tolist()
+        classes = list(set(weights_df["category"]))
+        weights_classes = weights_df.groupby(["category"]).sum()
+        matrix_classes = np.zeros((len(weights_df), len(classes)))
+        labels = weights_df["category"].tolist()
 
         j_value = 0
         for i in classes:
@@ -3840,23 +3813,23 @@ def additional_plots(
             )
             matrix_classes[:, j_value] = (
                 matrix_classes[:, j_value]
-                * weights["value"]
+                * weights_df["value"]
                 / weights_classes.loc[i, "value"]
             )
             j_value += 1
 
         matrix_classes = pd.DataFrame(
-            matrix_classes, columns=classes, index=weights.index
+            matrix_classes, columns=classes, index=weights_df.index
         )
         data = data @ matrix_classes
-        weights = weights_classes["value"].copy()
-        weights.replace(0, np.nan, inplace=True)
-        weights.dropna(inplace=True)
-        weights.sort_values(ascending=True, inplace=True)
-        data = data[weights.index.tolist()]
+        weights_df = weights_classes["value"].copy()
+        weights_df.replace(0, np.nan, inplace=True)
+        weights_df.dropna(inplace=True)
+        weights_df.sort_values(ascending=True, inplace=True)
+        data = data[weights_df.index.tolist()]
         data.columns = [i.title() for i in data.columns]
-        weights.index = [i.title() for i in weights.index]
-        weights = weights.to_dict()
+        weights_df.index = [i.title() for i in weights_df.index]
+        weights = weights_df.to_dict()
 
     colors = theme.get_colors()
     if pie:
@@ -4029,3 +4002,28 @@ def additional_plots(
 
         if external_axes is None:
             theme.visualize_output(force_tight_layout=True)
+
+
+def display_show(weights: Dict, tables: List[str], categories: Dict[Any, Any]):
+    """Display the results of the optimization.
+
+    Parameters
+    ----------
+    weights : Dict
+        Dictionary of weights.
+    tables : List[str]
+        List of tables to display.
+    categories : Dict[Any, Any]
+        Dictionary of categories.
+    """
+
+    display_weights(weights)
+
+    for t in tables:
+        console.print("")
+        display_categories(
+            weights=weights,
+            categories=categories,
+            column=t,
+            title="Category - " + t.title(),
+        )

@@ -15,6 +15,7 @@ from typing import List, Dict, Optional
 import contextlib
 
 import dotenv
+import certifi
 from rich import panel
 
 from prompt_toolkit import PromptSession
@@ -68,6 +69,13 @@ logger = logging.getLogger(__name__)
 
 env_file = str(USER_ENV_FILE)
 
+if is_packaged_application():
+    # Necessary for installer so that it can locate the correct certificates for
+    # API calls and https
+    # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
+    os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+    os.environ["SSL_CERT_FILE"] = certifi.where()
+
 
 class TerminalController(BaseController):
     """Terminal Controller class."""
@@ -105,6 +113,7 @@ class TerminalController(BaseController):
     GUESS_NUMBER_TRIES_LEFT = 0
     GUESS_SUM_SCORE = 0.0
     GUESS_CORRECTLY = 0
+    CHOICES_GENERATION = False
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Construct terminal controller."""

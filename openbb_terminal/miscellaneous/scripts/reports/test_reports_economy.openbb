@@ -1,7 +1,9 @@
 reports
 
-economy
+# economy
 
-economy ${ticker=AAPL}
+# Test with random tickers, that should be ignored by the report.
+# economy ${ticker=AAPL}
+# economy --symbol ${ticker=MSFT}
 
 exit

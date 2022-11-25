@@ -32,7 +32,11 @@ openbb_terminal/portfolio/portfolios/*
 *_tests.csv
 integration_test_output/
 integration_test_summary/
+openbb_terminal/reports/templates/*.html
+website/functions
 *_sdk_audit.csv
+website/terminaltest
+!build/docker/compose.env
 
 # pyinstaller artifacts
 *.pyo

@@ -69,7 +69,7 @@ CONTRACTS_FILTERS = ["id", "type", "active"]
 
 
 @log_start_end(log=logger)
-def get_global_market() -> pd.DataFrame:
+def get_global_info() -> pd.DataFrame:
     """Return data frame with most important global crypto statistics like:
     market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,
     market_cap_ath_value, market_cap_ath_date, volume_24h_ath_value, volume_24h_ath_date,
@@ -308,18 +308,17 @@ def get_list_of_exchanges(
         "reported_volume_30d",
         "sessions_per_month",
     ]
-    df.loc[:, "fiats"] = df["fiats"].apply(lambda x: len([i["symbol"] for i in x if x]))
+    df["fiats"] = df["fiats"].apply(lambda x: len([i["symbol"] for i in x if x]))
     df = df[cols]
     df = df.applymap(
         lambda x: "\n".join(textwrap.wrap(x, width=28)) if isinstance(x, str) else x
     )
-    df.rename(
+    df = df.rename(
         columns={"adjusted_rank": "Rank", "confidence_score": "confidence"},
-        inplace=True,
     )
     df.columns = [x.replace("reported_", "") for x in df.columns]
-    if sortby == "Rank":
-        df = df.sort_values(by=sortby, ascending=not ascend)
+    if sortby.lower() == "rank":
+        df = df.sort_values(by="Rank", ascending=not ascend)
     else:
         df = df.sort_values(by=sortby, ascending=ascend)
     return df

@@ -6,5 +6,4 @@ OPENBB_LOGGING_APP_NAME="gst_packaged_pypi"
 echo "OPENBB_LOGGING_APP_NAME='${OPENBB_LOGGING_APP_NAME}'" > openbb_terminal/.env
 echo "OPENBB_LOGGING_COMMIT_HASH=${OPENBB_LOGGING_COMMIT_HASH}" >> openbb_terminal/.env
 
-poetry build
-poetry publish
+poetry publish --build

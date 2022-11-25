@@ -9,7 +9,8 @@ import logging
 import os
 import subprocess  # nosec
 import sys
-from typing import List
+from typing import List, Union
+from packaging import version
 
 # IMPORTATION THIRDPARTY
 import requests
@@ -220,29 +221,50 @@ def check_for_updates() -> None:
         r = None
 
     if r is not None and r.status_code == 200:
-        release: str = r.json()["html_url"].split("/")[-1].replace("v", "")
-        lastest_split = release.split(".")
-        current = obbff.VERSION.replace("m", "").split(".")
-        for i in range(3):
-            if int(lastest_split[i]) > int(current[i]):
+        latest_tag_name = r.json()["tag_name"]
+        latest_version = version.parse(latest_tag_name)
+        current_version = version.parse(obbff.VERSION)
+
+        if check_valid_versions(latest_version, current_version):
+
+            if current_version == latest_version:
+                console.print("[green]You are using the latest stable version[/green]")
+            else:
                 console.print(
-                    "[bold red]You are not using the latest version[/bold red]"
+                    "[yellow]You are not using the latest stable version[/yellow]"
                 )
-                console.print(
-                    "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
-                )
-                break
-            if int(lastest_split[i]) < int(current[i]):
-                console.print("[yellow]You are using an unreleased version[/yellow]")
-            if release == obbff.VERSION.replace("m", ""):
-                console.print("[green]You are using the latest version[/green]")
-                break
+                if current_version < latest_version:
+                    console.print(
+                        "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
+                    )
+
+                else:
+                    console.print(
+                        "[yellow]You are using an unreleased version[/yellow]"
+                    )
+
+        else:
+            console.print("[red]You are using an unrecognized version.[/red]")
     else:
         console.print(
             "[yellow]Unable to check for updates... "
             + "Check your internet connection and try again...[/yellow]"
         )
     console.print("\n")
+
+
+def check_valid_versions(
+    latest_version: Union[version.LegacyVersion, version.Version],
+    current_version: Union[version.LegacyVersion, version.Version],
+) -> bool:
+    if (
+        not latest_version
+        or not current_version
+        or not isinstance(latest_version, version.Version)
+        or not isinstance(current_version, version.Version)
+    ):
+        return False
+    return True
 
 
 def welcome_message():

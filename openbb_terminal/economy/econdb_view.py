@@ -27,7 +27,7 @@ def show_macro_data(
     countries: list = None,
     transform: str = "",
     start_date: str = "1900-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
     symbol: str = "",
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
@@ -51,7 +51,7 @@ def show_macro_data(
             'TNOR' - Start = 100
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
-    end_date : str
+    end_date : Optional[str]
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     symbol : str
         In what currency you wish to convert all values.
@@ -147,7 +147,7 @@ def show_treasuries(
     maturities: list = None,
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
@@ -165,7 +165,7 @@ def show_treasuries(
         Frequency of the data, this can be daily, weekly, monthly or annually
     start_date : str
         Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
-    end_date : str
+    end_date : Optional[str]
         End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     raw : bool
         Whether to display the raw output.

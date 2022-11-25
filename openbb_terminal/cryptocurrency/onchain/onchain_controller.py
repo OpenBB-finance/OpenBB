@@ -90,6 +90,7 @@ class OnchainController(BaseController):
     ]
 
     PATH = "/crypto/onchain/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -99,175 +100,12 @@ class OnchainController(BaseController):
         self.address_type = ""
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["whales"] = {
-                "--sort": {c: {} for c in whale_alert_model.FILTERS},
-                "-s": "--sort",
-                "--min": None,
-                "-m": "--min",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--address": {},
-                "-a": {},
-            }
-            choices["hr"] = {c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
-            choices["ds"] = {c: None for c in shroom_model.DAPP_STATS_PLATFORM_CHOICES}
-            choices["hr"]["--coin"] = {
-                c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS
-            }
-            choices["hr"]["-c"] = "--coin"
-            choices["hr"]["--interval"] = {c: {} for c in INTERVALS_HASHRATE}
-            choices["hr"]["-i"] = "--interval"
-            choices["hr"]["--until"] = None
-            choices["hr"]["-u"] = "--until"
-            choices["hr"]["--since"] = None
-            choices["hr"]["-s"] = "--since"
-            choices["btccp"] = {
-                "--until": None,
-                "-u": "--until",
-                "--since": None,
-                "-s": "--since",
-            }
-            choices["btcct"] = {
-                "--until": None,
-                "-u": "--until",
-                "--since": None,
-                "-s": "--since",
-            }
-            choices["balance"] = {
-                "--sort": {c: None for c in ethplorer_model.BALANCE_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["holders"] = {
-                "--sort": {c: None for c in ethplorer_model.HOLDERS_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["hist"] = {
-                "--sort": {c: None for c in ethplorer_model.HIST_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["top"] = {
-                "--sort": {c: None for c in ethplorer_model.TOP_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["th"]["-s"] = {c: None for c in ethplorer_model.TH_FILTERS}
-            choices["th"] = {
-                "--sort": {c: None for c in ethplorer_model.TH_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--hash": {},
-            }
-            choices["prices"] = {
-                "--sort": {c: None for c in ethplorer_model.PRICES_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["lt"] = {
-                "--kind": {c: {} for c in bitquery_model.LT_KIND},
-                "-k": "--kind",
-                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
-                "-vs": "--vs",
-                "--sort": {c: {} for c in bitquery_model.LT_FILTERS},
-                "-s": "--sort",
-                "--days": {str(c): {} for c in range(1, 360)},
-                "-d": "--days",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["tv"] = {
-                "--coin": None,
-                "-c": "--coin",
-                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
-                "-vs": "--vs",
-                "--sort": {c: {} for c in bitquery_model.LT_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["ueat"] = {
-                "--sort": {c: None for c in bitquery_model.UEAT_FILTERS},
-                "-s": "--sort",
-                "--interval": {c: {} for c in bitquery_model.INTERVALS},
-                "-i": "--interval",
-                "--limit": {str(c): {} for c in range(1, 90)},
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["dvcp"] = {
-                "--coin": None,
-                "-c": "--coin",
-                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
-                "-vs": "--vs",
-                "--days": {str(c): {} for c in range(1, 100)},
-                "-d": "--days",
-                "--sort": {c: {} for c in bitquery_model.DVCP_FILTERS},
-                "-s": "--sort",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["ttcp"] = {
-                "--exchanges": {},
-                "-e": "--exchanges",
-                "--sort": {c: {} for c in bitquery_model.TTCP_FILTERS},
-                "-s": "--sort",
-                "--days": {str(c): {} for c in range(1, 100)},
-                "-d": "--days",
-                "--limit": {},
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["baas"] = {
-                "--coin": {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS},
-                "-c": "--coin",
-                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
-                "-vs": "--vs",
-                "--limit": None,
-                "-l": "--limit",
-                "--sort": {c: {} for c in bitquery_model.BAAS_FILTERS},
-                "-s": "--sort",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["address"] = {
-                "-a": {},
-                "-t": {},
-                "-tx": {},
-                "--address": None,
-            }
-            choices["info"]["--social"] = {}
+            choices: dict = self.choices_default
 
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices["hr"].update({c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS})
+            choices["ds"].update(
+                {c: None for c in shroom_model.DAPP_STATS_PLATFORM_CHOICES}
+            )
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -788,16 +626,17 @@ class OnchainController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser and self.address:
-            ethplorer_view.display_address_info(
-                limit=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                ascend=ns_parser.reverse,
-                address=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_address_info(
+                    limit=ns_parser.limit,
+                    sortby=ns_parser.sortby,
+                    ascend=ns_parser.reverse,
+                    address=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_hist(self, other_args: List[str]):
@@ -844,16 +683,17 @@ class OnchainController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser and self.address:
-            ethplorer_view.display_address_history(
-                limit=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                ascend=ns_parser.reverse,
-                address=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_address_history(
+                    limit=ns_parser.limit,
+                    sortby=ns_parser.sortby,
+                    ascend=ns_parser.reverse,
+                    address=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_holders(self, other_args: List[str]):
@@ -899,16 +739,17 @@ class OnchainController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser and self.address:
-            ethplorer_view.display_top_token_holders(
-                limit=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                ascend=ns_parser.reverse,
-                address=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_top_token_holders(
+                    limit=ns_parser.limit,
+                    sortby=ns_parser.sortby,
+                    ascend=ns_parser.reverse,
+                    address=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_top(self, other_args: List[str]):
@@ -988,14 +829,15 @@ class OnchainController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser and self.address:
-            ethplorer_view.display_token_info(
-                social=ns_parser.social,
-                address=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_token_info(
+                    social=ns_parser.social,
+                    address=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_th(self, other_args: List[str]):
@@ -1050,17 +892,18 @@ class OnchainController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser and self.address:
-            ethplorer_view.display_token_history(
-                limit=ns_parser.limit,
-                hash_=ns_parser.hash,
-                sortby=ns_parser.sortby,
-                ascend=ns_parser.reverse,
-                address=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_token_history(
+                    limit=ns_parser.limit,
+                    hash_=ns_parser.hash,
+                    sortby=ns_parser.sortby,
+                    ascend=ns_parser.reverse,
+                    address=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_tx(self, other_args: List[str]):
@@ -1080,13 +923,14 @@ class OnchainController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser and self.address:
-            ethplorer_view.display_tx_info(
-                tx_hash=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_tx_info(
+                    tx_hash=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_prices(self, other_args: List[str]):
@@ -1132,16 +976,17 @@ class OnchainController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser and self.address:
-            ethplorer_view.display_token_historical_prices(
-                limit=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                ascend=ns_parser.reverse,
-                address=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_token_historical_prices(
+                    limit=ns_parser.limit,
+                    sortby=ns_parser.sortby,
+                    ascend=ns_parser.reverse,
+                    address=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_lt(self, other_args: List[str]):
@@ -1188,6 +1033,8 @@ class OnchainController(BaseController):
             type=check_positive,
             help="Number of days to display data for.",
             default=90,
+            choices=range(1, 360),
+            metavar="DAYS",
         )
         parser.add_argument(
             "-s",
@@ -1245,7 +1092,13 @@ class OnchainController(BaseController):
             required="-h" not in other_args,
         )
         parser.add_argument(
-            "-vs", "--vs", dest="vs", type=str, help="Quote currency", default="USDT"
+            "-vs",
+            "--vs",
+            dest="vs",
+            type=str,
+            help="Quote currency",
+            default="USDT",
+            choices=bitquery_model.CURRENCIES,
         )
         parser.add_argument(
             "-d",
@@ -1254,6 +1107,8 @@ class OnchainController(BaseController):
             type=check_positive,
             help="Number of days to display data for.",
             default=10,
+            choices=range(1, 100),
+            metavar="DAYS",
         )
         parser.add_argument(
             "-s",
@@ -1390,6 +1245,8 @@ class OnchainController(BaseController):
             "For interval: month, and number: 10, period of calculation equals to 300, "
             "but because of max days limit: 90, it will only return last 3 months (3 records). ",
             default=10,
+            choices=range(1, 90),
+            metavar="LIMIT",
         )
         parser.add_argument(
             "-s",
@@ -1423,7 +1280,9 @@ class OnchainController(BaseController):
             ),
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
 
         if ns_parser:
@@ -1470,6 +1329,8 @@ class OnchainController(BaseController):
             type=check_positive,
             help="Number of days to display data for.",
             default=30,
+            choices=range(1, 100),
+            metavar="DAYS",
         )
         parser.add_argument(
             "-s",
@@ -1561,9 +1422,17 @@ class OnchainController(BaseController):
             dest="coin",
             type=str,
             help="ERC20 token symbol or address.",
+            choices=bitquery_model.POSSIBLE_CRYPTOS,
+            metavar="COIN",
         )
         parser.add_argument(
-            "-vs", "--vs", dest="vs", type=str, help="Quote currency", default="USDT"
+            "-vs",
+            "--vs",
+            dest="vs",
+            type=str,
+            help="Quote currency",
+            default="USDT",
+            choices=bitquery_model.CURRENCIES,
         )
         parser.add_argument(
             "-l",
