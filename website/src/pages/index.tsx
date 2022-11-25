@@ -25,12 +25,10 @@ export default function Home(): JSX.Element {
           <div className="flex flex-col md:flex-row w-full container items-center justify-center gap-6 px-6 sm:mx-0 mt-8 md:!mt-14 lg:!mt-15 md:mb-0">
             <Link
               style={{
-                backgroundImage: "url('/img/terminal_bg.png')",
-                backgroundRepeat: "no-repeat",
                 backgroundSize: "100% 110%",
               }}
               to="/terminal"
-              className="shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-900 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-400 bg-white dark:bg-grey-900"
+              className="bg-[url('/img/terminal_bg_light.png')] dark:bg-[url('/img/terminal_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-900 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-400 bg-white dark:bg-grey-900"
             >
               <h3 className="uppercase tracking-widest font-bold text-2xl mb-3">
                 OpenBB Terminal
@@ -50,12 +48,10 @@ export default function Home(): JSX.Element {
             </Link>
             <Link
               style={{
-                backgroundImage: "url('/img/sdk_bg.png')",
-                backgroundRepeat: "no-repeat",
                 backgroundSize: "100% 130%",
               }}
               to="/sdk"
-              className="shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-900 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-400 bg-white dark:bg-grey-900"
+              className="bg-[url('/img/sdk_bg_light.png')] dark:bg-[url('/img/sdk_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-900 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-400 bg-white dark:bg-grey-900"
             >
               <h3 className="uppercase tracking-widest font-bold text-2xl mb-3">
                 OpenBB SDK
