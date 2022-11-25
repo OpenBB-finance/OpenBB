@@ -43,7 +43,7 @@ class PoEngine:
             if isinstance(symbols, list):
                 self._symbols: List[str] = symbols
             else:
-                raise TypeError("Symbols must be a list of strings.")
+                raise TypeError("'symbols' must be a list of strings.")
         elif symbols_file_path is not None:
             self._symbols, self._categories = excel_model.load_allocation(
                 symbols_file_path
