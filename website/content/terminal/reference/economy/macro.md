@@ -10,7 +10,7 @@ Get a broad selection of macro data from one or multiple countries. This include
 ### Usage
 
 ```python
-macro [-p PARAMETERS] [-c COUNTRIES] [-t {,TPOP,TOYA,TUSD,TPGP,TNOR}] [--show {parameters,countries,transform}] [-s START_DATE] [-e END_DATE] [--convert CURRENCY]
+macro [-p PARAMETERS] [-c COUNTRIES] [-t {,TPOP,TOYA,TUSD,TPGP,TNOR}] [--show {parameters,countries,transform}] [-s START_DATE] [-e END_DATE] [--convert {Albania,Argentina,Australia,Austria,Azerbaijan,Bangladesh,Belarus,Belgium,Bhutan,Bosnia_and_Herzegovina,Botswana,Brazil,Bulgaria,Cambodia,Cameroon,Canada,Chile,China,Colombia,Croatia,Cyprus,Czechia,Denmark,Dominican_Republic,Egypt,Estonia,European_Union,Finland,France,Germany,Greece,Honduras,Hong Kong,Hungary,India,Indonesia,Iran,Ireland,Israel,Italy,Japan,Kazakhstan,Laos,Latvia,Lebanon,Lithuania,Luxembourg,Macedonia,Malaysia,Malta,Mexico,Mongolia,Netherlands,New_Zealand,Nigeria,Norway,Oman,Pakistan,Panama,Paraguay,Peru,Philippines,Poland,Portugal,Qatar,Romania,Russia,Saudi_Arabia,Serbia,Singapore,Slovakia,Slovenia,South_Africa,South_Korea,Spain,Sweden,Switzerland,Taiwan,Thailand,Tunisia,Turkey,Ukraine,United_Arab_Emirates,United_Kingdom,United_States,Uzbekistan,Venezuela,Vietnam}]
 ```
 
 ---
@@ -25,7 +25,7 @@ macro [-p PARAMETERS] [-c COUNTRIES] [-t {,TPOP,TOYA,TUSD,TPGP,TNOR}] [--show {p
 | show | Show parameters and what they represent using 'parameters' or countries and their currencies using 'countries' | None | True | parameters, countries, transform |
 | start_date | The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) | None | True | None |
 | end_date | The end date of the data (format: YEAR-MONTH-DAY, i.e. 2021-06-20) | None | True | None |
-| currency | Convert the currency of the chosen country to a specified currency. To find the currency symbols use '--show countries' | False | True | None |
+| currency | Convert the currency of the chosen country to a specified currency. To find the currency symbols use '--show countries' | False | True | Albania, Argentina, Australia, Austria, Azerbaijan, Bangladesh, Belarus, Belgium, Bhutan, Bosnia_and_Herzegovina, Botswana, Brazil, Bulgaria, Cambodia, Cameroon, Canada, Chile, China, Colombia, Croatia, Cyprus, Czechia, Denmark, Dominican_Republic, Egypt, Estonia, European_Union, Finland, France, Germany, Greece, Honduras, Hong Kong, Hungary, India, Indonesia, Iran, Ireland, Israel, Italy, Japan, Kazakhstan, Laos, Latvia, Lebanon, Lithuania, Luxembourg, Macedonia, Malaysia, Malta, Mexico, Mongolia, Netherlands, New_Zealand, Nigeria, Norway, Oman, Pakistan, Panama, Paraguay, Peru, Philippines, Poland, Portugal, Qatar, Romania, Russia, Saudi_Arabia, Serbia, Singapore, Slovakia, Slovenia, South_Africa, South_Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Tunisia, Turkey, Ukraine, United_Arab_Emirates, United_Kingdom, United_States, Uzbekistan, Venezuela, Vietnam |
 
 
 ---

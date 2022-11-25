@@ -10,7 +10,7 @@ Economic calendar. If no start or end dates, default is the current day high imp
 ### Usage
 
 ```python
-events [-c COUNTRY] [-s START_DATE] [-e END_DATE] [-d SPEC_DATE] [-i {high,medium,low,all}] [--categories {employment,credit,balance,economic_activity,central_banks,bonds,inflation,confidence_index}]
+events [-c {argentina,australia,austria,bahrain,bangladesh,belgium,bosnia,botswana,brazil,bulgaria,canada,cayman_islands,chile,china,colombia,costa_rica,croatia,cyprus,czech_republic,denmark,dubai,ecuador,egypt,estonia,euro_zone,finland,france,germany,greece,hong_kong,hungary,iceland,india,indonesia,iraq,ireland,israel,italy,ivory_coast,jamaica,japan,jordan,kazakhstan,kenya,kuwait,latvia,lebanon,lithuania,luxembourg,malawi,malaysia,malta,mauritius,mexico,mongolia,montenegro,morocco,namibia,netherlands,new_zealand,nigeria,norway,oman,pakistan,palestine,peru,philippines,poland,portugal,qatar,romania,russia,rwanda,saudi_arabia,serbia,singapore,slovakia,slovenia,south_africa,south_korea,spain,sri_lanka,sweden,switzerland,taiwan,tanzania,thailand,tunisia,turkey,uganda,ukraine,united_kingdom,united_states,venezuela,vietnam,zambia,zimbabwe,all}] [-s START_DATE] [-e END_DATE] [-d SPEC_DATE] [-i {high,medium,low,all}] [--categories {employment,credit,balance,economic_activity,central_banks,bonds,inflation,confidence_index}]
 ```
 
 ---
@@ -19,7 +19,7 @@ events [-c COUNTRY] [-s START_DATE] [-e END_DATE] [-d SPEC_DATE] [-i {high,mediu
 
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
-| country | Display calendar for specific country. |  | True | None |
+| country | Display calendar for specific country. |  | True | argentina, australia, austria, bahrain, bangladesh, belgium, bosnia, botswana, brazil, bulgaria, canada, cayman_islands, chile, china, colombia, costa_rica, croatia, cyprus, czech_republic, denmark, dubai, ecuador, egypt, estonia, euro_zone, finland, france, germany, greece, hong_kong, hungary, iceland, india, indonesia, iraq, ireland, israel, italy, ivory_coast, jamaica, japan, jordan, kazakhstan, kenya, kuwait, latvia, lebanon, lithuania, luxembourg, malawi, malaysia, malta, mauritius, mexico, mongolia, montenegro, morocco, namibia, netherlands, new_zealand, nigeria, norway, oman, pakistan, palestine, peru, philippines, poland, portugal, qatar, romania, russia, rwanda, saudi_arabia, serbia, singapore, slovakia, slovenia, south_africa, south_korea, spain, sri_lanka, sweden, switzerland, taiwan, tanzania, thailand, tunisia, turkey, uganda, ukraine, united_kingdom, united_states, venezuela, vietnam, zambia, zimbabwe, all |
 | start_date | The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) | 2022-11-25 | True | None |
 | end_date | The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) | 2022-11-25 | True | None |
 | spec_date | Get a specific date for events. Overrides start and end dates. | None | True | None |

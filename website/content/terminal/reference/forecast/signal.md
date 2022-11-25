@@ -10,15 +10,17 @@ Add price signal to dataset based on closing price. 1 if the signal is that shor
 ### Usage
 
 ```python
-signal
+signal [-d {}] [-c TARGET_COLUMN]
 ```
 
 ---
 
 ## Parameters
 
-This command has no parameters
-
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| target_dataset | The name of the dataset you want to select | None | True | None |
+| target_column | The name of the specific column you want to use | close | True | None |
 
 
 ---

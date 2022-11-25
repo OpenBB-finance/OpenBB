@@ -10,7 +10,7 @@ Export dataset to Excel
 ### Usage
 
 ```python
-export [-t {xlsx,csv}]
+export [-t {xlsx,csv}] [-d {}]
 ```
 
 ---
@@ -20,6 +20,7 @@ export [-t {xlsx,csv}]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | type | The file type you wish to export to | xlsx | True | xlsx, csv |
+| target_dataset | The name of the dataset you want to select | None | True | None |
 
 
 ---

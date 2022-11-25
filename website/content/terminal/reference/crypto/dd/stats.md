@@ -10,7 +10,7 @@ Display coin stats
 ### Usage
 
 ```python
-stats [--vs {GBP,USDT,USDC,USD,USD,EUR}]
+stats [--vs {USDC,EUR,USD,USD,USDT,GBP}]
 ```
 
 ---
@@ -19,7 +19,7 @@ stats [--vs {GBP,USDT,USDC,USD,USD,EUR}]
 
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
-| vs | Quote currency (what to view coin vs) | USDT | True | GBP, USDT, USDC, USD, USD, EUR |
+| vs | Quote currency (what to view coin vs) | USDT | True | USDC, EUR, USD, USD, USDT, GBP |
 
 
 ---

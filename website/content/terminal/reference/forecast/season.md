@@ -10,7 +10,7 @@ The seasonality for a given column
 ### Usage
 
 ```python
-season [-v VALUES] [-m M] [--max_lag MAX_LAG] [-a ALPHA]
+season [-v {}] [-m M] [--max_lag MAX_LAG] [-a ALPHA]
 ```
 
 ---
