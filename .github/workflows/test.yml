@@ -85,7 +85,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --autodoc --prediction
+          pytest tests/ --autodoc
 
       - name: Start Terminal and exit
         run: |
