@@ -24,12 +24,11 @@ def test_coin_categories():
     )
 
 
-@pytest.mark.skip
 @pytest.mark.record_stdout
 @pytest.mark.vcr()
 def test_coin_stablecoins():
     ov_pycoingecko_view.display_stablecoins(
-        limit=15, export="", sortby="market_cap", pie=False, ascend=False
+        limit=15, export="", sortby="Market_Cap_[$]", pie=False, ascend=False
     )
 
 

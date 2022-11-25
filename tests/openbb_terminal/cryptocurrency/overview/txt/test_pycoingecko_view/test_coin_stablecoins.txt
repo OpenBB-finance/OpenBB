@@ -1,17 +1,18 @@
-    Rank                  Name Symbol        Price       Change_24h Exchanges       Market_Cap Change_30d
-0      1                Tether   USDT     1.010000  $72,573,017,929       454  $78,762,285,339       0.6%
-1      2              USD Coin   USDC     1.010000   $5,727,464,077       319  $48,261,066,527      12.7%
-2      3           Binance USD   BUSD     1.010000   $5,909,743,819       112  $14,074,700,174      -5.4%
-3      4              TerraUSD    UST     1.010000     $541,597,450        26  $11,250,224,896      14.1%
-4      5                   Dai    DAI     0.993995     $559,291,606       234   $9,079,540,249       1.7%
-5      6  Magic Internet Money    MIM     1.010000     $201,578,378        27   $4,697,646,640       2.6%
-6      7                  Frax   FRAX     1.000000      $32,843,475        17   $2,632,174,924      61.7%
-7      8               TrueUSD   TUSD     1.000000      $94,450,544       158   $1,394,260,933       6.0%
-8      9            Pax Dollar   USDP     1.010000      $16,047,057        92   $1,022,951,067      -7.6%
-9     10               Fei USD    FEI     1.000000      $69,625,073        13     $574,445,038     -28.2%
-10    11           Liquity USD   LUSD     1.020000      $59,411,707         8     $511,659,764     -41.0%
-11    12          Neutrino USD   USDN     0.964376      $24,039,289        14     $509,182,589      -6.3%
-12    13           Tether Gold   XAUT  1843.960000       $2,416,809         9     $414,690,722      38.5%
-13    14                  HUSD   HUSD     0.997736      $67,632,247        21     $313,086,266       0.4%
-14    15          Alchemix USD  ALUSD     0.997691       $8,424,046         4     $271,234,229     -15.8%
+First 15 stablecoins have a total 142.810 Bdollars of market cap.
 
+   Symbol             Name Price [$] Market Cap [$] Market Cap Rank Change 7d [%] Change 24h [%] Volume [$] Percentage [%] of top 15
+0    usdt           Tether         1       65.385 B               3        -0.075         -0.049   35.504 B                   45.785
+1    usdc         USD Coin     1.001       43.800 B               5        -0.287         -0.064    3.142 B                   30.670
+2    busd      Binance USD     1.002       22.888 B               6         0.025          0.049    8.769 B                   16.027
+3     dai              Dai     1.001        5.250 B              16        -0.251         -0.062  380.626 M                    3.676
+4    frax             Frax     1.000        1.178 B              39        -0.281         -0.027    6.424 M                    0.825
+5    usdp       Pax Dollar     0.998      907.655 M              46        -0.551         -0.244    3.965 M                    0.636
+6    tusd          TrueUSD     1.001      746.543 M              55        -0.127          0.110   43.635 M                    0.523
+7    usdd             USDD     0.994      720.700 M              56         0.750          0.068   46.836 M                    0.505
+8    gusd    Gemini Dollar     1.001      607.845 M              62         0.007          0.091    4.173 M                    0.426
+9    xaut      Tether Gold   1.714 K      422.540 M              84        -0.013          0.684  657.825 K                    0.296
+10   eurt      Euro Tether     1.039      214.294 M             138         0.277          0.914    1.282 M                    0.150
+11   ustc  TerraClassicUSD     0.021      204.076 M             142        -5.280          1.723   17.618 M                    0.143
+12   lusd      Liquity USD     1.037      185.708 M             156        -0.610         -0.192    4.368 M                    0.130
+13  alusd     Alchemix USD     0.994      173.836 M             165        -0.063          0.000  185.773 K                    0.122
+14   eurs      STASIS EURO     1.005      124.997 M             198         0.931          1.514  539.630 K                    0.088
