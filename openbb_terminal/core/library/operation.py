@@ -258,8 +258,8 @@ class OperationLogger:
             )
             OperationLogger.last_method = {
                 f"{self.__method_chosen.__module__}.{self.__method_chosen.__name__}": {
-                    "args": self.__args,
-                    "kwargs": self.__kwargs,
+                    "args": str(self.__args)[:100],
+                    "kwargs": str(self.__kwargs)[:100],
                 }
             }
 
@@ -288,8 +288,8 @@ class OperationLogger:
     def __check_last_method(self) -> bool:
         current_method = {
             f"{self.__method_chosen.__module__}.{self.__method_chosen.__name__}": {
-                "args": self.__args,
-                "kwargs": self.__kwargs,
+                "args": str(self.__args)[:100],
+                "kwargs": str(self.__kwargs)[:100],
             }
         }
         return OperationLogger.last_method == current_method
