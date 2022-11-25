@@ -6,7 +6,7 @@ The Forecast module provides programmatic access to the same commands found in t
 
 ## How to Use
 
-The Forecast menu was designed specifically for the CLI application, and consequently operation of these commands do not mirror the workflow of the OpenBB Terminal. This will be improved in the future to more closely resemble it, and the intention for this guide is to highlight the notable differences.
+The Forecast menu was designed specifically for the CLI application, and consequently, the operation of these commands do not mirror the workflow of the OpenBB Terminal. This will be improved in the future to more closely resemble it, and the intention for this guide is to highlight the notable differences.
 
 Commands within the `forecast` module are representatives from three broad categories:
 
