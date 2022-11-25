@@ -48,7 +48,6 @@ from openbb_terminal.helper_funcs import (
     log_and_raise,
     valid_date,
 )
-from openbb_terminal.helper_funcs import check_list_values
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
@@ -1088,23 +1087,24 @@ class ForecastController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="combine",
             description="Combine two entire datasets, or add specific columns. Add specific"
-            "columns with the syntax: <datasetX.column2>,<datasetY.column3>",
+            "columns with the syntax: <datasetX.column2>",
         )
         parser.add_argument(
             "--dataset",
             help="Dataset to add columns to",
             dest="dataset",
-            choices=self.choices.get("combine", []),
+            choices=list(self.datasets.keys()),
         )
+        column_choices = [
+            f"{x}.{y}" for x in self.datasets for y in self.datasets[x].columns
+        ]
+        column_choices.extend(list(self.datasets))
         parser.add_argument(
             "-c",
             "--columns",
-            help="The columns we want to add <dataset.column>,<datasetb.column2>",
+            help="The columns we want to add <dataset.column>",
             dest="columns",
-            type=check_list_values(
-                list(self.choices.get("delete", {}).keys())
-                + list(self.choices.get("combine", {}).keys())
-            ),
+            choices=column_choices,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--dataset")
@@ -1120,7 +1120,7 @@ class ForecastController(BaseController):
 
             data = self.datasets[ns_parser.dataset]
 
-            for option in ns_parser.columns:
+            for option in ns_parser.columns.split(","):
                 if "." in option:
                     dataset, col = option.split(".")
                     columns = [col]
@@ -1144,7 +1144,7 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
             console.print(
-                f"[green]Successfully added {','.join(ns_parser.columns)} into {ns_parser.dataset}[/green]"
+                f"[green]Successfully added {ns_parser.columns} into {ns_parser.dataset}[/green]"
             )
 
     @log_start_end(log=logger)
