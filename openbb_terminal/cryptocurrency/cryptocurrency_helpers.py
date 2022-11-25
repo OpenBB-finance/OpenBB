@@ -4,9 +4,9 @@
 import difflib
 import json
 import logging
+from typing import Union
 import os
 from datetime import datetime, timedelta
-from typing import Union
 
 import ccxt
 import matplotlib.pyplot as plt
