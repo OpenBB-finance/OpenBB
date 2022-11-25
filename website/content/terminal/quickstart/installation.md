@@ -16,11 +16,8 @@ OpenBB Terminal is available in all major platforms. With MacOS/Windows you can 
   <TabItem value="Windows" label="Windows">Install on Windows
   <div class="gdoc-page">
 
-</div><p>The process starts off by downloading the installer, see below for how to download the most recent release:</p>
-<ol>
-<li>Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank" rel="noreferrer noopener">OpenBB website</a>.</li>
-<li>Click on the <code>Download</code> button in the Windows Installer section.</li>
-</ol>
+</div><p>Download the installer from the <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/Windows10.OpenBB.Terminal.v1.9.0.exe">here</a>.</p>
+
 <p>When the file is downloaded, use the following steps to run the OpenBB Terminal:</p>
 <div class="gdoc-columns">
 
@@ -51,12 +48,12 @@ still in beta phase, and the team has not yet requested verification from Window
 
 <TabItem value="macOS" label="MacOS">Install on macOS 🍎
 
-<div class="gdoc-page">
-</div><p>The process starts off by downloading the installer, see below for how to download the most recent release:</p>
-<ol>
-<li>Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank" rel="noreferrer noopener">OpenBB website</a>.</li>
-<li>Click on the <code>Download</code> button in the macOS Installer section.</li>
-</ol>
+For mac there are two installers available, one for Intel and one for Apple Silicon (M1). Please download the correct one for your machine.
+<ul>
+<li>If you are using Mac Intel click <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/x86_64.MacOS.OpenBB.Terminal.v1.9.0.dmg">here</a> to download the installer.</li>
+<li>If you are using Mac Apple Silicon (M1) click <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/ARM64.MacOS.OpenBB.Terminal.v1.9.0.dmg">here</a> to download the installer.</li>
+</ul>
+
 <p>When the DMG file is downloaded, use the following steps to run the OpenBB Terminal:</p>
 <div class="gdoc-columns">
 

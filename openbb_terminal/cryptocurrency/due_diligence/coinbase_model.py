@@ -140,7 +140,7 @@ def get_trades(
 
 
 @log_start_end(log=logger)
-def get_candles(symbol: str, interval: str = "24h") -> pd.DataFrame:
+def get_candles(symbol: str, interval: str = "24hour") -> pd.DataFrame:
     """Get candles for chosen trading pair and time interval. [Source: Coinbase]
 
     Parameters
@@ -148,12 +148,17 @@ def get_candles(symbol: str, interval: str = "24h") -> pd.DataFrame:
     symbol: str
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
     interval: str
-        Time interval. One from 1min, 5min ,15min, 1hour, 6hour, 24hour
+        Time interval. One from 1min, 5min ,15min, 1hour, 6hour, 24hour, 1day
 
     Returns
     -------
     pd.DataFrame
         Candles for chosen trading pair.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.crypto.dd.candle(symbol="eth-usdt", interval="24hour")
     """
 
     interval_map = {
