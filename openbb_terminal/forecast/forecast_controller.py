@@ -1095,6 +1095,7 @@ class ForecastController(BaseController):
             dest="dataset",
             choices=list(self.datasets.keys()),
         )
+        # pylint: disable=consider-using-dict-items
         column_choices = [
             f"{x}.{y}" for x in self.datasets for y in self.datasets[x].columns
         ]
