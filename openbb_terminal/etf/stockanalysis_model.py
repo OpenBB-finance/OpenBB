@@ -54,7 +54,7 @@ def get_etf_overview(symbol: str) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.etf.holdings("SPY")
+    >>> openbb.etf.overview("SPY")
     """
     r = requests.get(
         f"https://stockanalysis.com/etf/{symbol}",
