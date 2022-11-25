@@ -1,14 +1,13 @@
 name: Deploy to GitHub Pages
 
 on:
-  pull_request:
   push:
     branches:
       - main
 
 jobs:
   generate:
-    name: Generate documentation
+    name: Generate and Deploy documentation
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
@@ -43,11 +42,10 @@ jobs:
 
       - run: |
           source $VENV
-          pip install "u8darts[torch]"
           pytest tests/website --autodoc
           python website/generate_sdk_markdown.py && python website/generate_terminal_markdown.py
 
-      - name: Deploy to GitHub Pages
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
