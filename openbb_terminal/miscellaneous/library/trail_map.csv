@@ -124,7 +124,7 @@ crypto.dd.balance,openbb_terminal.cryptocurrency.due_diligence.binance_view.get_
 crypto.dd.ob,openbb_terminal.cryptocurrency.due_diligence.ccxt_model.get_orderbook,openbb_terminal.cryptocurrency.due_diligence.ccxt_view.display_order_book
 crypto.dd.show_available_pairs_for_given_symbol,openbb_terminal.cryptocurrency.due_diligence.coinbase_model.show_available_pairs_for_given_symbol,
 crypto.dd.exchanges,openbb_terminal.cryptocurrency.due_diligence.ccxt_model.get_exchanges,
-crypto.dd.candles,openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_candles,openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_candles
+crypto.dd.candle,openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_candles,
 crypto.dd.stats,openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_product_stats,openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_stats
 crypto.dd.trades,openbb_terminal.cryptocurrency.due_diligence.ccxt_model.get_trades,openbb_terminal.cryptocurrency.due_diligence.ccxt_view.display_trades
 crypto.dd.trading_pair_info,openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_trading_pair_info,
@@ -482,7 +482,7 @@ crypto.load,openbb_terminal.cryptocurrency.cryptocurrency_helpers.load,
 crypto.price,openbb_terminal.cryptocurrency.pyth_model.get_price,
 crypto.find,openbb_terminal.cryptocurrency.crypto_models.find,
 crypto.chart,openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_chart,
-crypto.candles,openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_candles,
+crypto.candle,openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_candles,
 etf.candle,openbb_terminal.stocks.stocks_helper.display_candle,
 forex.candle,openbb_terminal.forex.forex_helper.display_candle,
 forex.load,openbb_terminal.forex.forex_helper.load,
