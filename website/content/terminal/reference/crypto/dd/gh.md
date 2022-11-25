@@ -21,7 +21,7 @@ gh [-i INTERVAL] [-d DEV] [-s START] [-end END]
 | ---- | ----------- | ------- | -------- | ------- |
 | interval | Frequency interval. Default: 1d | 1d | True | None |
 | dev | Filter only for development activity. Default: False | False | True | None |
-| start | Initial date. Default: A year ago | 2021-11-24 | True | None |
-| end | End date. Default: Today | 2022-11-24 | True | None |
+| start | Initial date. Default: A year ago | 2021-11-25 | True | None |
+| end | End date. Default: Today | 2022-11-25 | True | None |
 
 ---

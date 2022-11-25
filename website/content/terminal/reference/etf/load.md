@@ -20,8 +20,8 @@ load -t TICKER [-s START] [-e END] [-l LIMIT]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | ticker | ETF ticker | None | False | None |
-| start | The starting date (format YYYY-MM-DD) of the ETF | 2021-11-23 | True | None |
-| end | The ending date (format YYYY-MM-DD) of the ETF | 2022-11-24 | True | None |
+| start | The starting date (format YYYY-MM-DD) of the ETF | 2021-11-24 | True | None |
+| end | The ending date (format YYYY-MM-DD) of the ETF | 2022-11-25 | True | None |
 | limit | Limit of holdings to display | 5 | True | None |
 
 
