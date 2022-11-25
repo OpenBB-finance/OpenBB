@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import pandas as pd
 from openbb_terminal.portfolio.portfolio_optimization import (
     excel_model,
@@ -30,16 +30,18 @@ class PoEngine:
             Parameters file path, by default None
         """
 
-        self._categories: Dict[str, Dict[str, str]] = symbols_categories or {}
+        self._categories: Dict[str, Dict[str, str]] = {}
+        self._symbols: List[str] = []
         self._weights: Dict[str, float] = {}
         self._returns: pd.DataFrame = None
         self._params: Dict[str, float] = {}
         self._current_model: str
 
         if symbols_categories is not None:
-            self._symbols: List[str] = PoEngine.get_symbols_from_categories(
+            self._symbols, self._categories = PoEngine.__parse_dictionary(
                 symbols_categories
             )
+
         elif symbols_file_path is not None:
             self._symbols, self._categories = excel_model.load_allocation(
                 symbols_file_path
@@ -53,7 +55,34 @@ class PoEngine:
             )
 
     @staticmethod
-    def get_symbols_from_categories(
+    def __parse_dictionary(
+        symbols_categories: Dict[str, Dict[str, str]]
+    ) -> Tuple[List[str], Dict[str, Dict[str, str]]]:
+        """Parse the categories dictionary
+
+        Parameters
+        ----------
+        symbols_categories : Dict[str, Dict[str, str]]
+            Categories
+
+        Returns
+        -------
+        Tuple[List[str], Dict[str, Dict[str, str]]]
+            Symbols and categories
+        """
+        if isinstance(symbols_categories, dict):
+            symbols = PoEngine.__get_symbols_from_categories(symbols_categories)
+        else:
+            raise TypeError("'symbols_categories' must be a dictionary.")
+
+        for symbol in symbols:
+            symbols_categories["CURRENCY"].setdefault(symbol, "USD")
+            symbols_categories["CURRENT_INVESTED_AMOUNT"].setdefault(symbol, "0")
+
+        return symbols, symbols_categories
+
+    @staticmethod
+    def __get_symbols_from_categories(
         symbols_categories: Dict[str, Dict[str, str]]
     ) -> List[str]:
         """Get the symbols from the categories dictionary
@@ -68,23 +97,21 @@ class PoEngine:
         List[str]
             List of symbols
         """
-        if isinstance(symbols_categories, dict):
-            try:
-                symbols = []
-                for item in symbols_categories.items():
-                    _, values = item
-                    for v in values.keys():
-                        symbols.append(v)
 
-                return list(set(symbols))
+        try:
+            symbols = []
+            for item in symbols_categories.items():
+                _, values = item
+                for v in values.keys():
+                    symbols.append(v)
 
-            except Exception:
-                console.print(
-                    "Unsupported dictionary format. See `portfolio.po.load` examples for correct format."
-                )
-                return []
-        else:
-            raise TypeError("'symbols_categories' must be a dictionary.")
+            return list(set(symbols))
+
+        except Exception:
+            console.print(
+                "Unsupported dictionary format. See `portfolio.po.load` examples for correct format."
+            )
+            return []
 
     def get_symbols(self):
         return self._symbols

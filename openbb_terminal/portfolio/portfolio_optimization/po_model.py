@@ -2591,18 +2591,25 @@ def show(
     if weights.empty:
         return pd.DataFrame()
 
-    if category is not None:
-        available_categories = portfolio_engine.get_available_categories()
-        if not available_categories:
-            console.print("No categories found.")
-            return weights, pd.DataFrame()
+    available_categories = portfolio_engine.get_available_categories()
 
+    if category is None:
+        print_categories_msg(available_categories)
+        return weights, pd.DataFrame()
+
+    if category not in available_categories:
+        print_categories_msg(available_categories)
+        return weights, pd.DataFrame()
+
+    category_df = portfolio_engine.get_category_df(category=category)
+    return weights, category_df
+
+
+def print_categories_msg(available_categories: List[str]) -> None:
+    """Print categories message"""
+
+    if not available_categories:
+        console.print("No categories found.")
+    else:
         msg = ", ".join(available_categories)
-        if category not in available_categories:
-            console.print(f"Please specify a category from the following: {msg}.")
-            return weights, pd.DataFrame()
-
-        category_df = portfolio_engine.get_category_df(category=category)
-        return weights, category_df
-
-    return weights, pd.DataFrame()
+        console.print(f"Please specify a category from the following: {msg}.")
