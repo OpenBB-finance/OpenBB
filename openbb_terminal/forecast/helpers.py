@@ -519,7 +519,7 @@ def plot_forecast(
         pred_label += " w/ past covs"
     predicted_values.plot(label=pred_label, **quant_kwargs, color="#00AAFF")
     ax.set_title(
-        f"{name} for ${ticker_name} for next [{n_predict}] days (MAPE={precision:.2f}%)"
+        f"{name} for <{ticker_name}> for next [{n_predict}] days (MAPE={precision:.2f}%)"
     )
     ax.set_ylabel(target_col)
     ax.set_xlabel("Date")
