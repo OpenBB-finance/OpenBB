@@ -25,8 +25,8 @@ def display_linear_regression(
     past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
-    output_chunk_length: int = 1,
-    lags: Union[int, List[int]] = 72,
+    output_chunk_length: int = 5,
+    lags: Union[int, List[int]] = 14,
     export: str = "",
     residuals: bool = False,
     forecast_only: bool = False,
@@ -49,7 +49,7 @@ def display_linear_regression(
         Days to predict. Defaults to 5.
     target_col: str
         Target column to forecast. Defaults to "close".
-    train_split (float, optional):
+    train_split: (float, optional)
         Train/val split. Defaults to 0.85.
     past_covariates: str
         Multiple secondary columns to factor in when forecasting. Defaults to None.

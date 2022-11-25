@@ -43,7 +43,7 @@ def display_expo_forecast(
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
-    dataset_name str
+    dataset_name: str
         The name of the ticker to be predicted
     target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
@@ -77,7 +77,7 @@ def display_expo_forecast(
     naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the same
         as the previous day's closing price. Defaults to False.
-    external_axes:Optional[List[plt.axes]]
+    external_axes: Optional[List[plt.axes]]
         External axes to plot on
     """
     data = helpers.clean_data(data, start_date, end_date, target_column, None)
