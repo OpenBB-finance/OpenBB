@@ -33,3 +33,19 @@ openbb.portfolio.po.load(symbols: List[str] = None, symbols_file_path: str = Non
 | PoEngine | Portfolio optimization engine |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
+```
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
+weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
+```
+
+---
+

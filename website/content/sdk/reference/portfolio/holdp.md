@@ -37,6 +37,16 @@ openbb.portfolio.holdp(portfolio_engine: portfolio_engine.PortfolioEngine)
 | pd.DataFrame | DataFrame of holdings percentage |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.holdp(p)
+```
+
+---
+
 
 
 </TabItem>

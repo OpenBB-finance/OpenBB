@@ -33,3 +33,12 @@ openbb.keys.tokenterminal(key: str, persist: bool = False, show_output: bool = F
 | str | Status of key set |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.keys.tokenterminal(key="example_key")
+```
+
+---
+

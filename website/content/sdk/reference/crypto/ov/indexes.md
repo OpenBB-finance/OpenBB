@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 Get list of crypto indexes from CoinGecko API [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L325)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L350)]
 
 ```python
 openbb.crypto.ov.indexes(sortby: str = "Name", ascend: bool = True)
@@ -45,7 +45,7 @@ openbb.crypto.ov.indexes(sortby: str = "Name", ascend: bool = True)
 
 Shows list of crypto indexes. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L625)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L608)]
 
 ```python
 openbb.crypto.ov.indexes_chart(sortby: str = "Name", ascend: bool = True, limit: int = 15, export: str = "")

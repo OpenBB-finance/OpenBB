@@ -10,7 +10,7 @@ Account balance details
 ### Usage
 
 ```python
-usage: balances
+balances
 ```
 
 ---
@@ -19,5 +19,5 @@ usage: balances
 
 This command has no parameters
 
----
 
+---

@@ -34,3 +34,13 @@ openbb.portfolio.alloc.sectors(portfolio_engine: portfolio_engine.PortfolioEngin
 | Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]] | DataFrame with combined allocation plus individual allocation if tables is `True`. |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.alloc.sectors(p)
+```
+
+---
+

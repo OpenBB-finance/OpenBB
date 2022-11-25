@@ -34,3 +34,13 @@ openbb.portfolio.es(portfolio_engine: portfolio_engine.PortfolioEngine, use_mean
 | pd.DataFrame | DataFrame with portfolio expected shortfall |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.es(p)
+```
+
+---
+
