@@ -108,7 +108,7 @@ spy.head(5)
 
 ### Plot
 
-The can also be inspected visually, `openbb.forecast.plot`:
+The data can also be inspected visually, `openbb.forecast.plot`:
 
 ```python
 openbb.forecast.plot(data=spy, columns = ['Adj Close'])
