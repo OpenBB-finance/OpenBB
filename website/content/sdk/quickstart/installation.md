@@ -75,6 +75,10 @@ And install the Both Toolkits
 pip install "openbb[all]"
 ```
 
-Congratulations! You have successfully installed `openbb` on an environment and are now able to begin using it. However, it is important to note that if you close out of your CLI you must re-activate your environment in order begin using it again.
+Congratulations! You have successfully installed `openbb` on an environment and are now able to begin using it. However, it is important to note that if you close out of your CLI you must re-activate your environment in order begin using it again. This can be done with the following:
 
-The Terminal can now be launched by entering, `openbb`, and the SDK can be imported to a Jupyter Notebook file or code editor with, `from openbb_terminal.sdk import openbb`
+```bash
+conda activate obb
+```
+
+The OpenBB SDK can be imported to a Jupyter Notebook or any code editor with, `from openbb_terminal.sdk import openbb` as explained in the [Structure of the SDK](/sdk/guides/basics/structure) and [Using the SDK](/sdk/guides/basics/using) guides. By following the above process, the [OpenBB Terminal](/terminal) is automatically included as well which can be ran by typing `openbb`.

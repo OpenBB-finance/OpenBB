@@ -53,10 +53,10 @@ An installation will use approximately 4GB of space.
 </p>
 </details>
 
-<details><summary>How do I launch Jupyter Lab for use with the OpenBB SDK?</summary>
+<details><summary>How do I launch Jupyter Lab or Jupyter Notebook for use with the OpenBB SDK?</summary>
 <p>
 
-From the command line, with the environment active, and from the root of the local installation folder, enter: `jupyter lab`. A browser window will launch.
+Once the installation is finished via `pip` and you have activated the conda environment, as explained in the [installation guide](/sdk/quickstart/installation) you are able to activate a Jupyter Notebook by running `jupyter notebook` or Jupyter Lab with `jupyter lab`. Then, you should be able to use the OpenBB SDK by following along with the [Structure of the SDK](/sdk/guides/basics/structure) and [Using the SDK](/sdk/guides/basics/using) guides.
 
 </p>
 </details>
