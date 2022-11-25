@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useThemeConfig } from "@docusaurus/theme-common";
-import FooterLinks from "@theme/Footer/Links";
-import FooterLogo from "@theme/Footer/Logo";
-import FooterCopyright from "@theme/Footer/Copyright";
-import FooterLayout from "@theme/Footer/Layout";
 import Link from "@docusaurus/Link";
 import LetteringLogo from "@site/src/components/Icons/LetteringLogo";
 import StarIcon from "@site/src/components/Icons/Star";
 import GithubIcon from "@site/src/components/Icons/Github";
 import LinkedinIcon from "@site/src/components/Icons/Linkedin";
 import TwitterIcon from "@site/src/components/Icons/Twitter";
-import InstagramIcon from "@site/src/components/Icons/Instagram";
 import TiktokIcon from "@site/src/components/Icons/Tiktok";
 import RedditIcon from "@site/src/components/Icons/Reddit";
 import DiscordIcon from "@site/src/components/Icons/Discord";
@@ -135,7 +129,7 @@ function Footer() {
         <div className="mt-4 mb-10 grid grid-cols-4 gap-4 self-start md:my-0 md:grid-cols-8 md:self-end">
           <a
             aria-label="GitHub Link"
-            className="_btn !h-8 !w-8 p-0"
+            className="h-8 w-8 dark:hover:!text-white hover:text-grey-700"
             target="_blank"
             rel="noreferrer"
             href="https://github.com/OpenBB-finance/OpenBBTerminal"
@@ -144,7 +138,7 @@ function Footer() {
           </a>
           <a
             aria-label="LinkedIn Link"
-            className="_btn !h-8 !w-8 p-0"
+            className="h-8 w-8 dark:hover:!text-white hover:text-grey-700"
             target="_blank"
             rel="noreferrer"
             href="https://www.linkedin.com/company/openbb-finance/"
@@ -153,7 +147,7 @@ function Footer() {
           </a>
           <a
             aria-label="Twitter Link"
-            className="_btn !h-8 !w-8 p-0"
+            className="h-8 w-8 dark:hover:!text-white hover:text-grey-700"
             target="_blank"
             rel="noreferrer"
             href="https://twitter.com/openbb_finance"
@@ -162,7 +156,7 @@ function Footer() {
           </a>
           <a
             aria-label="Tiktok Link"
-            className="_btn !h-8 !w-8 p-0"
+            className="h-8 w-8 dark:hover:!text-white hover:text-grey-700"
             target="_blank"
             rel="noreferrer"
             href="https://www.tiktok.com/@openbb"
@@ -171,7 +165,7 @@ function Footer() {
           </a>
           <a
             aria-label="Reddit Link"
-            className="_btn !h-8 !w-8 p-0"
+            className="h-8 w-8 dark:hover:!text-white hover:text-grey-700"
             target="_blank"
             rel="noreferrer"
             href="https://www.reddit.com/r/openbb/"
@@ -180,7 +174,7 @@ function Footer() {
           </a>
           <a
             aria-label="Discord Link"
-            className="_btn !h-8 !w-8 p-0"
+            className="h-8 w-8 dark:hover:!text-white hover:text-grey-700"
             target="_blank"
             rel="noreferrer"
             href="https://discord.gg/xPHTuHCmuV"
@@ -189,7 +183,7 @@ function Footer() {
           </a>
           <a
             aria-label="Youtube Link"
-            className="_btn !h-8 !w-8 p-0"
+            className="h-8 w-8 dark:hover:!text-white hover:text-grey-700"
             target="_blank"
             rel="noreferrer noopener"
             href="https://www.youtube.com/channel/UCaeFEx-W16IuxRsHlM1ywBQ"
