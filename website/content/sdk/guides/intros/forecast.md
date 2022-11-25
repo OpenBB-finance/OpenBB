@@ -70,7 +70,7 @@ The examples provided below will assume that the following import block is inclu
 ```python
 from openbb_terminal.sdk import openbb
 import pandas as pd
-%matplotlib inline
+# %matplotlib inline (uncomment if using a Jupyter Interactive Terminal or Notebook)
 ```
 
 ### Loading Data
@@ -500,7 +500,7 @@ To include pan/zoom functionality for charts, substitute `%matplotlib widget` in
 ```python
 from openbb_terminal.sdk import openbb
 import pandas as pd
-%matplotlib widget
+# %matplotlib widget (uncomment if using a Jupyter Interactive Terminal or Notebook)
 
 spy:pd.DataFrame = []
 
