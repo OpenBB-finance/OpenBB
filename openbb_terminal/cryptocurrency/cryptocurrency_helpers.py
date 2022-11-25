@@ -4,7 +4,7 @@
 import difflib
 import json
 import logging
-from typing import Union
+from typing import Union, List
 import os
 from datetime import datetime, timedelta
 
@@ -751,7 +751,7 @@ def plot_chart(
     source: str = "",
     exchange: str = "",
     interval: str = "",
-    external_axes: Union[list[plt.Axes], None] = None,
+    external_axes: Union[List[plt.Axes], None] = None,
     yscale: str = "linear",
 ) -> None:
     """Load data for Technical Analysis
@@ -801,7 +801,7 @@ def plot_candles(
     volume: bool = True,
     ylabel: str = "",
     title: str = "",
-    external_axes: Union[list[plt.Axes], None] = None,
+    external_axes: Union[List[plt.Axes], None] = None,
     yscale: str = "linear",
 ) -> None:
     """Plot candle chart from dataframe. [Source: Binance]
@@ -881,7 +881,7 @@ def plot_order_book(
     bids: np.ndarray,
     asks: np.ndarray,
     coin: str,
-    external_axes: Union[list[plt.Axes], None] = None,
+    external_axes: Union[List[plt.Axes], None] = None,
 ) -> None:
     """
     Plots Bid/Ask. Can be used for Coinbase and Binance
