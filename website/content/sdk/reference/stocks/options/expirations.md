@@ -32,3 +32,12 @@ openbb.stocks.options.expirations(symbol: str, source: str = "Nasdaq")
 | pd.DataFrame | Dataframe of full option chain. |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+SPX_expirations = openbb.stocks.options.expirations("SPX", source = "Tradier")
+```
+
+---
+

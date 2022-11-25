@@ -59,7 +59,7 @@ def validate_parameters_type(parameters):
 
 @log_start_end(log=logger)
 def generate_portfolio(
-    symbols: List[str] = None,
+    symbols_categories: Dict[str, Dict[str, str]] = None,
     symbols_file_path: str = None,
     parameters_file_path: str = None,
 ) -> Union[PoEngine, None]:
@@ -67,8 +67,8 @@ def generate_portfolio(
 
     Parameters
     ----------
-    symbols : List[str], optional
-        List of symbols, by default None
+    symbols_categories: Dict[str, Dict[str, str]] = None
+        Categories, by default None
     symbols_file_path : str, optional
         Symbols file full path, by default None
     parameters_file_path : str, optional
@@ -82,25 +82,44 @@ def generate_portfolio(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
     >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
+    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
     >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
     """
 
-    if symbols:
-        return PoEngine(
-            symbols=symbols,
-            parameters_file_path=parameters_file_path,
-        )
     if symbols_file_path:
         return PoEngine(
             symbols_file_path=symbols_file_path,
             parameters_file_path=parameters_file_path,
         )
-    console.print("No file or symbols provided")
+
+    if symbols_categories:
+        return PoEngine(
+            symbols_categories=symbols_categories,
+            parameters_file_path=parameters_file_path,
+        )
+
+    console.print("No 'symbols_file_path' or 'symbols_categories' provided.")
     return None
 
 
@@ -163,14 +182,12 @@ def load_parameters_file(
 
 @log_start_end(log=logger)
 def validate_inputs(
-    symbols=None, portfolio_engine=None, kwargs=None
+    portfolio_engine=None, kwargs=None
 ) -> Tuple[List[str], PoEngine, dict]:
     """Check valid inputs
 
     Parameters
     ----------
-    symbols : List[str], optional
-        List of symbols, by default None
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
@@ -183,15 +200,12 @@ def validate_inputs(
         List of symbols, Portfolio optimization engine, Keyword arguments
     """
 
-    if symbols:
-        portfolio_engine = PoEngine(symbols=symbols)
-        parameters = kwargs
-    elif portfolio_engine:
+    if portfolio_engine:
         symbols = portfolio_engine.get_symbols()
         parameters = portfolio_engine.get_params().copy()
         parameters.update(kwargs)
     else:
-        console.print("No 'symbols' or 'portfolio_engine' provided.")
+        console.print("No 'portfolio_engine' provided.")
 
     validate_parameters_type(parameters)
 
@@ -263,7 +277,7 @@ def get_portfolio_performance(weights: Dict, data: pd.DataFrame, **kwargs) -> Di
 
 @log_start_end(log=logger)
 def get_maxsharpe(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
+    portfolio_engine: PoEngine = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize Sharpe ratio weights
 
@@ -272,8 +286,6 @@ def get_maxsharpe(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -367,14 +379,25 @@ def get_maxsharpe(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.maxsharpe(symbols=["AAPL", "MSFT", "AMZN"])
-    (      value
-     AAPL    1.0
-     MSFT    0.0
-     AMZN    0.0,
-     {'Return': 0.3448948339574538,
-      'Volatility': 0.36513261935342495,
-      'Sharpe ratio': 0.9445741510802071})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.maxsharpe(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -382,7 +405,7 @@ def get_maxsharpe(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -400,7 +423,7 @@ def get_maxsharpe(
 
 @log_start_end(log=logger)
 def get_minrisk(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
+    portfolio_engine: PoEngine = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize minimum risk weights
 
@@ -409,8 +432,6 @@ def get_minrisk(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -504,14 +525,25 @@ def get_minrisk(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.minrisk(symbols=["AAPL", "MSFT", "AMZN"])
-        (        value
-         AAPL  0.25044
-         MSFT  0.49509
-         AMZN  0.25447,
-         {'Return': 0.2248615963428331,
-          'Volatility': 0.32736590080425004,
-          'Sharpe ratio': 0.6868815468880802})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.minrisk(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -519,7 +551,7 @@ def get_minrisk(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -537,7 +569,7 @@ def get_minrisk(
 
 @log_start_end(log=logger)
 def get_maxutil(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
+    portfolio_engine: PoEngine = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize maximum utility weights
 
@@ -546,8 +578,6 @@ def get_maxutil(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -641,14 +671,25 @@ def get_maxutil(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.maxutil(symbols=["AAPL", "MSFT", "AMZN"])
-        (      value
-         AAPL    1.0
-         MSFT    0.0
-         AMZN    0.0,
-         {'Return': 0.3448948339574538,
-          'Volatility': 0.36513261935342495,
-          'Sharpe ratio': 0.9445741510802071})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.maxutil(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -656,7 +697,7 @@ def get_maxutil(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -674,7 +715,7 @@ def get_maxutil(
 
 @log_start_end(log=logger)
 def get_maxret(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
+    portfolio_engine: PoEngine = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize maximum return weights
 
@@ -683,8 +724,6 @@ def get_maxret(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -778,14 +817,25 @@ def get_maxret(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.maxret(symbols=["AAPL", "MSFT", "AMZN"])
-    (      value
-     AAPL    1.0
-     MSFT    0.0
-     AMZN    0.0,
-     {'Return': 0.3448948339574538,
-      'Volatility': 0.36513261935342495,
-      'Sharpe ratio': 0.9445741510802071})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.maxret(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -793,7 +843,7 @@ def get_maxret(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -811,7 +861,7 @@ def get_maxret(
 
 @log_start_end(log=logger)
 def get_maxdiv(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
+    portfolio_engine: PoEngine = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize diversification weights
 
@@ -820,8 +870,6 @@ def get_maxdiv(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -892,14 +940,25 @@ def get_maxdiv(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.maxdiv(symbols=["AAPL", "MSFT", "AMZN"])
-    (        value
-     AAPL  0.33696
-     MSFT  0.26766
-     AMZN  0.39538,
-     {'Return': 0.21717206203731806,
-      'Volatility': 0.3310292858117002,
-      'Sharpe ratio': 0.6560509034866852})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.maxdiv(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -907,7 +966,7 @@ def get_maxdiv(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -925,7 +984,7 @@ def get_maxdiv(
 
 @log_start_end(log=logger)
 def get_maxdecorr(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
+    portfolio_engine: PoEngine = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize decorrelation weights
 
@@ -934,8 +993,6 @@ def get_maxdecorr(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -984,14 +1041,25 @@ def get_maxdecorr(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.maxdecorr(symbols=["AAPL", "MSFT", "AMZN"])
-    (        value
-     AAPL  0.33444
-     MSFT  0.24963
-     AMZN  0.41593,
-     {'Return': 0.2142767096699773,
-      'Volatility': 0.33184082287769623,
-      'Sharpe ratio': 0.6457213666835423})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.maxdecorr(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -999,7 +1067,7 @@ def get_maxdecorr(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -1017,7 +1085,7 @@ def get_maxdecorr(
 
 @log_start_end(log=logger)
 def get_blacklitterman(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
+    portfolio_engine: PoEngine = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize decorrelation weights
 
@@ -1026,8 +1094,6 @@ def get_blacklitterman(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -1085,14 +1151,25 @@ def get_blacklitterman(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.blacklitterman(symbols=["AAPL", "MSFT", "AMZN"])
-    (        value
-     AAPL  0.48920
-     MSFT  0.28391
-     AMZN  0.22689,
-     {'Return': 0.2563301105112327,
-      'Volatility': 0.33132073874339424,
-      'Sharpe ratio': 0.7736615325784322})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.blacklitterman(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -1100,7 +1177,7 @@ def get_blacklitterman(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -1118,7 +1195,7 @@ def get_blacklitterman(
 
 @log_start_end(log=logger)
 def get_ef(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
+    portfolio_engine: PoEngine = None, **kwargs
 ) -> Tuple[
     pd.DataFrame,
     pd.DataFrame,
@@ -1136,8 +1213,6 @@ def get_ef(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -1202,7 +1277,25 @@ def get_ef(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> frontier = openbb.portfolio.po.ef(symbols=["AAPL", "MSFT", "AMZN"])
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.ef(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -1210,7 +1303,7 @@ def get_ef(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -1218,7 +1311,7 @@ def get_ef(
     frontier, mu, cov, returns, weights, X1, Y1, port = optimizer_model.get_ef(
         symbols=valid_symbols, **valid_kwargs
     )
-    valid_portfolio_engine.set_weights(weights=weights)
+    valid_portfolio_engine.set_weights(weights=weights.to_dict()["weights"])
     valid_portfolio_engine.set_returns(returns=returns)
 
     return frontier, mu, cov, returns, weights, X1, Y1, port
@@ -1226,7 +1319,7 @@ def get_ef(
 
 @log_start_end(log=logger)
 def get_riskparity(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
+    portfolio_engine: PoEngine = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Risk Parity using the risk budgeting approach
 
@@ -1235,8 +1328,6 @@ def get_riskparity(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -1317,14 +1408,25 @@ def get_riskparity(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.riskparity(symbols=["AAPL", "MSFT", "AMZN"])
-    (        value
-     AAPL  0.33201
-     MSFT  0.34953
-     AMZN  0.31846,
-     {'Return': 0.19946644069106015,
-      'Volatility': 0.29074583524705444,
-      'Sharpe ratio': 0.6860508956957826})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.riskparity(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -1332,7 +1434,7 @@ def get_riskparity(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -1350,7 +1452,7 @@ def get_riskparity(
 
 @log_start_end(log=logger)
 def get_relriskparity(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
+    portfolio_engine: PoEngine = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Relaxed Risk Parity using the least squares approach
 
@@ -1359,8 +1461,6 @@ def get_relriskparity(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -1452,14 +1552,25 @@ def get_relriskparity(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.relriskparity(symbols=["AAPL", "MSFT", "AMZN"])
-    (        value
-     AAPL  0.33204
-     MSFT  0.34949
-     AMZN  0.31847,
-     {'Return': 0.19946844097475216,
-      'Volatility': 0.290746544981364,
-      'Sharpe ratio': 0.6860561008129521})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.relriskparity(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -1467,7 +1578,7 @@ def get_relriskparity(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -1484,9 +1595,7 @@ def get_relriskparity(
 
 
 @log_start_end(log=logger)
-def get_hrp(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
-) -> Tuple[pd.DataFrame, Dict]:
+def get_hrp(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Hierarchical Risk Parity
 
     Parameters
@@ -1494,8 +1603,6 @@ def get_hrp(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -1646,14 +1753,25 @@ def get_hrp(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.hrp(symbols=["AAPL", "MSFT", "AMZN"])
-    (        value
-     AAPL  0.26729
-     MSFT  0.30277
-     AMZN  0.42994,
-     {'Return': 0.20463517260107467,
-      'Volatility': 0.3313935169747041,
-      'Sharpe ratio': 0.6174990219156727})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.hrp(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -1661,7 +1779,7 @@ def get_hrp(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -1676,9 +1794,7 @@ def get_hrp(
 
 
 @log_start_end(log=logger)
-def get_herc(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
-) -> Tuple[pd.DataFrame, Dict]:
+def get_herc(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Hierarchical Equal Risk Contribution (HERC) method.
 
     Parameters
@@ -1686,8 +1802,6 @@ def get_herc(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -1838,14 +1952,25 @@ def get_herc(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.herc(symbols=["AAPL", "MSFT", "AMZN"])
-    (        value
-     AAPL  0.17521
-     MSFT  0.19846
-     AMZN  0.62633,
-     {'Return': 0.16899696275924703,
-      'Volatility': 0.34337400112782096,
-      'Sharpe ratio': 0.49216586638525933})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.herc(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -1853,7 +1978,7 @@ def get_herc(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -1868,9 +1993,7 @@ def get_herc(
 
 
 @log_start_end(log=logger)
-def get_nco(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
-) -> Tuple[pd.DataFrame, Dict]:
+def get_nco(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Non-Convex Optimization (NCO) model.
 
     Parameters
@@ -1878,8 +2001,6 @@ def get_nco(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -2030,14 +2151,25 @@ def get_nco(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.nco(symbols=["AAPL", "MSFT", "AMZN"])
-    (        value
-     AAPL  0.25044
-     MSFT  0.49509
-     AMZN  0.25447,
-     {'Return': 0.2248615963428331,
-      'Volatility': 0.32736590080425004,
-      'Sharpe ratio': 0.6868815468880802})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.nco(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -2045,7 +2177,7 @@ def get_nco(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -2060,9 +2192,7 @@ def get_nco(
 
 
 @log_start_end(log=logger)
-def get_equal(
-    portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs
-) -> Tuple[pd.DataFrame, Dict]:
+def get_equal(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
     """Equally weighted portfolio, where weight = 1/# of symbols
 
     Parameters
@@ -2070,8 +2200,6 @@ def get_equal(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -2100,14 +2228,25 @@ def get_equal(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.equal(symbols=["AAPL", "MSFT", "AMZN"])
-    (        value
-     AAPL  0.33333
-     MSFT  0.33333
-     AMZN  0.33333,
-     {'Return': 0.22459515482054027,
-      'Volatility': 0.32898777497511816,
-      'Sharpe ratio': 0.6826854123607685})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -2115,7 +2254,7 @@ def get_equal(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -2133,7 +2272,7 @@ def get_equal(
 
 @log_start_end(log=logger)
 def get_mktcap(
-    symbols: List[str] = None, portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: PoEngine = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize weighted according to market capitalization
 
@@ -2142,8 +2281,6 @@ def get_mktcap(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -2172,14 +2309,25 @@ def get_mktcap(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.mktcap(symbols=["AAPL", "MSFT", "AMZN"])
-    (         value
-     AAPL  0.465338
-     MSFT  0.345488
-     AMZN  0.189175,
-     {'Return': 0.25830567048487474,
-      'Volatility': 0.33058479906988086,
-      'Sharpe ratio': 0.7813597939519071})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.mktcap(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -2187,7 +2335,7 @@ def get_mktcap(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -2205,7 +2353,7 @@ def get_mktcap(
 
 @log_start_end(log=logger)
 def get_dividend(
-    symbols: List[str] = None, portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: PoEngine = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize weighted according to dividend yield
 
@@ -2214,8 +2362,6 @@ def get_dividend(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -2244,14 +2390,25 @@ def get_dividend(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.dividend(symbols=["AAPL", "MSFT", "AMZN"])
-    (         value
-     AAPL  0.350575
-     MSFT  0.649425
-     AMZN  0.000000,
-     {'Return': 0.26879215033541076,
-      'Volatility': 0.3348681656035649,
-      'Sharpe ratio': 0.8026805111526232})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.dividend(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -2259,7 +2416,7 @@ def get_dividend(
     """
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -2277,7 +2434,6 @@ def get_dividend(
 
 @log_start_end(log=logger)
 def get_property(
-    symbols: List[str] = None,
     portfolio_engine: PoEngine = None,
     prop: str = "marketCap",
     **kwargs,
@@ -2289,8 +2445,6 @@ def get_property(
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     prop : str, optional
         Property to use for optimization, by default 'marketCap'
         Use `portfolio.po.get_properties() to get a list of available properties
@@ -2322,14 +2476,25 @@ def get_property(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.portfolio.po.property(symbols=["AAPL", "MSFT", "AMZN"], prop="forwardPE")
-    (         value
-     AAPL  0.223192
-     MSFT  0.215707
-     AMZN  0.561101,
-     {'Return': 0.18287266638517774,
-      'Volatility': 0.3386418179319469,
-      'Sharpe ratio': 0.5400179679578959})
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> weights, performance = openbb.portfolio.po.property(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -2341,7 +2506,7 @@ def get_property(
         return pd.DataFrame()
 
     valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
+        portfolio_engine, kwargs
     )
     if not valid_symbols:
         return pd.DataFrame()
@@ -2385,25 +2550,24 @@ def show(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
     >>> d = {
-            "SECTOR": {
-                "AAPL": "INFORMATION TECHNOLOGY",
-                "MSFT": "INFORMATION TECHNOLOGY",
-                "AMZN": "CONSUMER DISCRETIONARY",
-            },
-            "CURRENT_INVESTED_AMOUNT": {
-                "AAPL": "100000.0",
-                "MSFT": "200000.0",
-                "AMZN": "300000.0",
-            },
-            "CURRENCY": {
-                "AAPL": "USD",
-                "MSFT": "USD",
-                "AMZN": "USD",
-            },
-        }
-    >>> p.set_categories_dict(categories=d)
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
     >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
     >>> p.get_available_categories()
     ['SECTOR']
@@ -2427,18 +2591,25 @@ def show(
     if weights.empty:
         return pd.DataFrame()
 
-    if category is not None:
-        available_categories = portfolio_engine.get_available_categories()
-        if not available_categories:
-            console.print("No categories found.")
-            return weights, pd.DataFrame()
+    available_categories = portfolio_engine.get_available_categories()
 
+    if category is None:
+        print_categories_msg(available_categories)
+        return weights, pd.DataFrame()
+
+    if category not in available_categories:
+        print_categories_msg(available_categories)
+        return weights, pd.DataFrame()
+
+    category_df = portfolio_engine.get_category_df(category=category)
+    return weights, category_df
+
+
+def print_categories_msg(available_categories: List[str]) -> None:
+    """Print categories message"""
+
+    if not available_categories:
+        console.print("No categories found.")
+    else:
         msg = ", ".join(available_categories)
-        if category not in available_categories:
-            console.print(f"Please specify a category from the following: {msg}.")
-            return weights, pd.DataFrame()
-
-        category_df = portfolio_engine.get_category_df(category=category)
-        return weights, category_df
-
-    return weights, pd.DataFrame()
+        console.print(f"Please specify a category from the following: {msg}.")

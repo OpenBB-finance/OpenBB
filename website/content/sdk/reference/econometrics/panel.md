@@ -42,7 +42,7 @@ openbb.econometrics.panel(Y: pd.DataFrame, X: pd.DataFrame, regression_type: str
 ---
 
 ## Examples
-SDK Snippet:
+
 ```python
 from openbb_terminal.sdk import openbb
 df = openbb.econometrics.load("wage_panel")
@@ -53,9 +53,8 @@ pooled_ols_model = openbb.econometrics.panel(Y,X,"POLS")
 print(pooled_ols_model.summary)
 ```
 
-Results:
-```python
-                    PooledOLS Estimation Summary
+```
+PooledOLS Estimation Summary
 ================================================================================
 Dep. Variable:                  lwage   R-squared:                        0.1634
 Estimator:                  PooledOLS   R-squared (Between):              0.1686
@@ -83,7 +82,6 @@ educ           0.1080     0.0045     24.034     0.0000      0.0992      0.1168
 union          0.1777     0.0172     10.344     0.0000      0.1441      0.2114
 ==============================================================================
 ```
-
 ---
 
 

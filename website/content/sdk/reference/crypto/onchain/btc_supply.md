@@ -44,7 +44,7 @@ Returns BTC circulating supply [Source: https://api.blockchain.info/]
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/blockchain_view.py#L28)]
 
 ```python
-openbb.crypto.onchain.btc_supply_chart(start_date: str = "2010-01-01", end_date: str = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+openbb.crypto.onchain.btc_supply_chart(start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -54,7 +54,7 @@ openbb.crypto.onchain.btc_supply_chart(start_date: str = "2010-01-01", end_date:
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | start_date | str | Initial date, format YYYY-MM-DD | 2010-01-01 | True |
-| end_date | str | Final date, format YYYY-MM-DD | None | True |
+| end_date | Optional[str] | Final date, format YYYY-MM-DD | None | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
 | external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 

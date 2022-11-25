@@ -8,9 +8,9 @@ excerpt: "This guide introduces the Hedge submenu, within the Options menu, prov
 geekdocCollapseSection: true
 ---
 
-The Hedge menu is designed to help the user calculate positions within the selected expiration chain to be directionally neutral. It is worth reviewing reference material, such as <a href="https://en.wikipedia.org/wiki/Hedge_(finance)#Delta_hedging" target="_blank">Wikipedia</a> or <a href="https://www.investopedia.com/terms/d/deltahedging.asp" target="_blank">Investopedia</a>, before using this feature set.
+The Hedge menu is designed to help the user calculate positions within the selected expiration chain to be directionally neutral. It is worth reviewing reference material, such as <a href="https://en.wikipedia.org/wiki/Hedge_(finance)#Delta_hedging" target="_blank" rel="noreferrer noopener">Wikipedia</a> or <a href="https://www.investopedia.com/terms/d/deltahedging.asp" target="_blank" rel="noreferrer noopener">Investopedia</a>, before using this feature set.
 
-Enter the submenu after choosing the desired <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/exp/" target="_blank">expiration</a> date by using the command, `hedge`, from the Options menu.
+Enter the submenu after choosing the desired <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/exp/" target="_blank" rel="noreferrer noopener">expiration</a> date by using the command, `hedge`, from the Options menu.
 
 ![The Options Hedge Submenu](https://user-images.githubusercontent.com/85772166/172286199-ec6e202d-4955-4557-9ba6-7d4db6fbdd55.png)
 
@@ -50,5 +50,5 @@ Moving Option B down one strike.
 
 ![Hedge Example](https://user-images.githubusercontent.com/85772166/172286669-82a98127-fe74-43fd-bcc9-ed874f746bdc.png)
 
-Back to: <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/" target="_blank">Introduction To Options</a>
+Back to: <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/" target="_blank" rel="noreferrer noopener">Introduction To Options</a>
 

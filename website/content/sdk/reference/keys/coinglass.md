@@ -33,3 +33,12 @@ openbb.keys.coinglass(key: str, persist: bool = False, show_output: bool = False
 | str | Status of key set |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.keys.coinglass(key="example_key")
+```
+
+---
+

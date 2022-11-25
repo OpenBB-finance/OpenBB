@@ -10,7 +10,7 @@ Account transaction history
 ### Usage
 
 ```python
-usage: history [-l LIMIT]
+history [-l LIMIT]
 ```
 
 ---
@@ -20,5 +20,5 @@ usage: history [-l LIMIT]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | limit | Number of recent transactions to show | 15 | True | None |
----
 
+---

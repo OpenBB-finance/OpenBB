@@ -10,7 +10,7 @@ description: OpenBB Terminal Function
 ### Usage
 
 ```python
-usage: pending
+pending
 ```
 
 ---
@@ -19,5 +19,5 @@ usage: pending
 
 This command has no parameters
 
----
 
+---

@@ -7,7 +7,7 @@ description: OpenBB SDK Function
 
 Get treasury maturity options [Source: EconDB]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_model.py#L850)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_model.py#L849)]
 
 ```python
 openbb.economy.treasury_maturities()

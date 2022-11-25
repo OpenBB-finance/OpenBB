@@ -68,9 +68,9 @@ You are able to directly send us information about a bug or question/suggestion 
 
 Alternatively, you can contact us via the following routes:
 
-- If you notice that a feature is missing inside the terminal, please fill in the <a href="https://openbb.co/request-a-feature" target="_blank">Request a Feature form</a>.
-- If you wish to report a bug, have a question/suggestion or anything else, please fill in the <a href="https://openbb.co/support" target="_blank">Support form</a>.
-- If you wish to speak to us directly, please contact us via <a href="https://openbb.co/discord" target="_blank">Discord</a>.
+- If you notice that a feature is missing inside the terminal, please fill in the <a href="https://openbb.co/request-a-feature" target="_blank" rel="noreferrer noopener">Request a Feature form</a>.
+- If you wish to report a bug, have a question/suggestion or anything else, please fill in the <a href="https://openbb.co/support" target="_blank" rel="noreferrer noopener">Support form</a>.
+- If you wish to speak to us directly, please contact us via <a href="https://openbb.co/discord" target="_blank" rel="noreferrer noopener">Discord</a>.
 
 Want to learn how to install the OpenBB Terminal? Check out our [Installation](/quickstart/installation) guide.
 

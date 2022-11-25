@@ -38,6 +38,16 @@ openbb.portfolio.yret(portfolio_engine: portfolio_engine.PortfolioEngine, window
 | pd.DataFrame | DataFrame with yearly returns |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.yret(p)
+```
+
+---
+
 
 
 </TabItem>

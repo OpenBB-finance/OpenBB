@@ -42,6 +42,22 @@ This function does not return anything
 
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+df = openbb.stocks.load("AAPL")
+openbb.ta.ma_chart(data=df["Adj Close"], symbol="AAPL", ma_type="EMA", window=[20, 50, 100])
+```
+
+```python
+from openbb_terminal.sdk import openbb
+spuk_index = openbb.economy.index(indices = ["^SPUK"])
+openbb.ta.ma_chart(data = spuk_index["^SPUK"], symbol = "S&P UK Index", ma_type = "EMA", window = [20, 50, 100])
+```
+
+---
+
 
 
 </TabItem>
@@ -75,6 +91,22 @@ openbb.ta.ma_chart(data: pd.Series, window: List[int] = None, offset: int = 0, m
 ## Returns
 
 This function does not return anything
+
+---
+
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+df = openbb.stocks.load("AAPL")
+openbb.ta.ma_chart(data=df["Adj Close"], symbol="AAPL", ma_type="EMA", window=[20, 50, 100])
+```
+
+```python
+from openbb_terminal.sdk import openbb
+spuk_index = openbb.economy.index(indices = ["^SPUK"])
+openbb.ta.ma_chart(data = spuk_index["^SPUK"], symbol = "S&P UK Index", ma_type = "EMA", window = [20, 50, 100])
+```
 
 ---
 
