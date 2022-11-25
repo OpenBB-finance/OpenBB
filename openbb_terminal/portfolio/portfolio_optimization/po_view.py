@@ -260,25 +260,24 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
     >>> d = {
-            "SECTOR": {
-                "AAPL": "INFORMATION TECHNOLOGY",
-                "MSFT": "INFORMATION TECHNOLOGY",
-                "AMZN": "CONSUMER DISCRETIONARY",
-            },
-            "CURRENT_INVESTED_AMOUNT": {
-                "AAPL": "100000.0",
-                "MSFT": "200000.0",
-                "AMZN": "300000.0",
-            },
-            "CURRENCY": {
-                "AAPL": "USD",
-                "MSFT": "USD",
-                "AMZN": "USD",
-            },
-        }
-    >>> p.set_categories_dict(categories=d)
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
     >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
     >>> p.get_available_categories()
     ['SECTOR']
@@ -385,7 +384,7 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
             display_hist(**valid_kwargs)
         elif chart_type == "dd":
             display_dd(**valid_kwargs)
-        elif chart_type == "rc_chart":
+        elif chart_type == "rc":
             display_rc(**valid_kwargs)
         elif chart_type == "heat":
             display_heat(**valid_kwargs)
