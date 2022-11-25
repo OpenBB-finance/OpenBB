@@ -1,6 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import json
+from typing import Optional
 
 import pandas as pd
 import requests
@@ -181,7 +182,7 @@ INTERVALS_ACTIVE_ADDRESSES = ["24h", "1w", "1month"]
 def get_close_price(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
     print_errors: bool = True,
 ) -> pd.DataFrame:
     """Returns the price of a cryptocurrency
@@ -249,7 +250,7 @@ def get_close_price(
 def get_non_zero_addresses(
     symbol: str,
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Returns addresses with non-zero balance of a certain symbol
     [Source: https://glassnode.com]
@@ -312,7 +313,7 @@ def get_active_addresses(
     symbol: str,
     interval: str = "24h",
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Returns active addresses of a certain symbol
     [Source: https://glassnode.com]
@@ -376,7 +377,7 @@ def get_hashrate(
     symbol: str,
     interval: str = "24h",
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Returns dataframe with mean hashrate of btc or eth blockchain and symbol price
     [Source: https://glassnode.com]
@@ -452,9 +453,9 @@ def get_hashrate(
 @check_api_key(["API_GLASSNODE_KEY"])
 def get_exchange_balances(
     symbol: str,
-    exchange: str = "binance",
-    start_date: str = "2010-01-01",
-    end_date: str = None,
+    exchange: str = "aggregated",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Returns the total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.com]
@@ -464,20 +465,30 @@ def get_exchange_balances(
     symbol : str
         Asset to search active addresses (e.g., BTC)
     exchange : str
-        Exchange to check net position change (e.g., binance)
-    start_date : str
-        Initial date, format YYYY-MM-DD
-    end_date : str
-        Final date, format YYYY-MM-DD
+        Exchange to check net position change (possible values are: aggregated, binance, bittrex,
+        coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex, hitbtc, kraken,
+        okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno), by default "aggregated"
+    start_date : Optional[str], optional
+        Initial date (format YYYY-MM-DD) by default 2 years ago
+    end_date : Optional[str], optional
+        Final date (format YYYY-MM-DD) by default 1 year ago
 
     Returns
     -------
     pd.DataFrame
         total amount of coins in units/percentage and symbol price over time
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.crypto.dd.eb(symbol="BTC")
     """
 
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d")
+
     if end_date is None:
-        end_date = datetime.now().strftime("%Y-%m-%d")
+        end_date = (datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d")
 
     ts_start_date = str_date_to_timestamp(start_date)
     ts_end_date = str_date_to_timestamp(end_date)
@@ -496,32 +507,38 @@ def get_exchange_balances(
     }
     df = pd.DataFrame()
 
-    r = requests.get(url, params=parameters)  # get balances
+    r1 = requests.get(url, params=parameters)  # get balances
     r2 = requests.get(url2, params=parameters)  # get relative (percentage) balances
     r3 = requests.get(
         url3, params=parameters
     )  # get price TODO: grab data from loaded symbol
 
-    if r.status_code == 200 and r2.status_code == 200 and r3.status_code == 200:
-        df3 = pd.DataFrame(json.loads(r3.text))
+    if r1.status_code == 200 and r2.status_code == 200 and r3.status_code == 200:
+
+        df1 = pd.DataFrame(json.loads(r1.text))
+        df1.set_index("t", inplace=True)
+        df1.rename(columns={"v": "stacked"}, inplace=True)
+
         df2 = pd.DataFrame(json.loads(r2.text))
-        df = pd.DataFrame(json.loads(r.text))
+        df2.set_index("t", inplace=True)
+        df2.rename(columns={"v": "percentage"}, inplace=True)
 
-        df = df.set_index("t")
+        df3 = pd.DataFrame(json.loads(r3.text))
+        df3.set_index("t", inplace=True)
+        df3.rename(columns={"v": "price"}, inplace=True)
+
+        df = pd.merge(df1, df2, left_index=True, right_index=True)
+        df = pd.merge(df, df3, left_index=True, right_index=True)
         df.index = pd.to_datetime(df.index, unit="s")
-        df["percentage"] = df2["v"].values
-        df["price"] = df3["v"].values
 
-        df.rename(columns={"v": "stacked"}, inplace=True)
-
-        if df.empty or df2.empty or df3.empty:
+        if df.empty or df1.empty or df2.empty or df3.empty:
             console.print(f"No data found for {symbol}'s exchange balance or price.\n")
 
-    elif r.status_code == 401 or r2.status_code == 401 or r3.status_code == 401:
+    elif r1.status_code == 401 or r2.status_code == 401 or r3.status_code == 401:
         console.print("[red]Invalid API Key[/red]\n")
     else:
-        if r.status_code != 200:
-            console.print(f"Error getting {symbol}'s exchange balance: {r.text}")
+        if r1.status_code != 200:
+            console.print(f"Error getting {symbol}'s exchange balance: {r1.text}")
 
         if r2.status_code != 200:
             console.print(
@@ -540,7 +557,7 @@ def get_exchange_net_position_change(
     symbol: str,
     exchange: str = "binance",
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Returns 30d change of the supply held in exchange wallets of a certain symbol.
     [Source: https://glassnode.com]
@@ -551,9 +568,9 @@ def get_exchange_net_position_change(
         Asset symbol to search supply (e.g., BTC)
     exchange : str
         Exchange to check net position change (e.g., binance)
-    start_date : str
+    start_date : Optional[str]
         Initial date, format YYYY-MM-DD
-    end_date : str
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
 
     Returns

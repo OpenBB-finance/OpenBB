@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_data(symbol: str, start_date: str = "2019-01-01") -> pd.DataFrame:
-    """Function to replace bt.get, gets Adjusted close of symbol using yfinance
+    """Function to replace bt.get, gets Adjusted close of symbol using yfinance.
 
     Parameters
     ----------
@@ -43,7 +43,7 @@ def get_data(symbol: str, start_date: str = "2019-01-01") -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def buy_and_hold(symbol: str, start_date: str, name: str = "") -> bt.Backtest:
-    """Generates a buy and hold backtest object for the given ticker
+    """Generates a buy and hold backtest object for the given ticker.
 
     Parameters
     ----------
@@ -80,7 +80,7 @@ def ema_strategy(
     spy_bt: bool = True,
     no_bench: bool = False,
 ) -> bt.backtest.Result:
-    """Perform backtest for simple EMA strategy.  Buys when price>EMA(l)
+    """Perform backtest for simple EMA strategy.  Buys when price>EMA(l).
 
     Parameters
     ----------
@@ -147,7 +147,7 @@ def emacross_strategy(
     no_bench: bool = False,
     shortable: bool = True,
 ) -> bt.backtest.Result:
-    """Perform backtest for simple EMA strategy. Buys when price>EMA(l)
+    """Perform backtest for simple EMA strategy. Buys when price>EMA(l).
 
     Parameters
     ----------
@@ -224,7 +224,7 @@ def rsi_strategy(
     no_bench: bool = False,
     shortable: bool = True,
 ) -> bt.backtest.Result:
-    """Perform backtest for simple EMA strategy. Buys when price>EMA(l)
+    """Perform backtest for simple EMA strategy. Buys when price>EMA(l).
 
     Parameters
     ----------

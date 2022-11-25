@@ -82,7 +82,7 @@ class DegiroModel:
             Positions from which we want extra fields.
 
         Returns
-        -------
+        ----------
         pd.DataFrame
             Positions with additional data.
         """
@@ -163,7 +163,7 @@ class DegiroModel:
             Portfolio returned from the API.
 
         Returns
-        -------
+        ----------
         pd.DataFrame
             Filtered portfolio.
         """

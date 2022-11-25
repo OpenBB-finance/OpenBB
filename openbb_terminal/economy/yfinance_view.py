@@ -62,7 +62,7 @@ def show_indices(
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     Returns
-    ----------
+    -------
     Plots the Series.
     """
 
@@ -142,7 +142,7 @@ def search_indices(query: list, limit: int = 10):
     limit: int
         The amount of views you want to show, by default this is set to 10.
     Returns
-    ----------
+    -------
     Shows a rich table with the available options.
     """
 

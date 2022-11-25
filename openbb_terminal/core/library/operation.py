@@ -10,48 +10,49 @@ import openbb_terminal.config_terminal as cfg
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
 
+# pylint: disable=import-outside-toplevel
+
 
 class MetadataBuilder:
-    def __init__(self, model: Optional[Callable], view: Optional[Callable]) -> None:
-        self.__model = model
-        self.__view = view
+    def __init__(
+        self,
+        method: Callable,
+        trail: str,
+        trail_map: TrailMap,
+    ) -> None:
+        self.__method = method
+        self.__trail = trail
+        self.__trail_map = trail_map
 
     @staticmethod
-    def build_doc_string(
-        model: Optional[Callable],
-        view: Optional[Callable],
+    def build_docstring(
+        method: Callable,
+        trail: str,
+        trail_map: TrailMap,
     ) -> str:
-        if view is not None:
-            view_doc = view.__doc__ or ""
-            model_doc = model.__doc__ or ""
-            index = view_doc.find("Parameters")
+        doc = ""
 
-            all_parameters = (
-                "\nSDK function, use the chart kwarg for getting the view model and it's plot. "
-                "See every parameter below:\n\n    "
-                + view_doc[index:]
-                + """chart: bool
-        If the view and its chart shall be used"""
-            )
-            doc_string = (
-                all_parameters
-                + "\n\nModel doc:\n"
-                + model_doc
-                + "\n\nView doc:\n"
-                + view_doc
-            )
-        else:
-            doc_string = model.__doc__ or ""
+        view_trail = f"{trail}_chart"
+        if trail_map.get_view_function(view_trail):
+            doc += f"Use '{view_trail}' to access the view.\n"
 
-        return doc_string
+        if method.__doc__:
+            doc += method.__doc__
+
+        return doc
 
     def build(self) -> Metadata:
-        model = self.__model
-        view = self.__view
+        method = self.__method
+        trail = self.__trail
+        trail_map = self.__trail_map
 
         dir_list: List[str] = []
-        docstring = self.build_doc_string(model=model, view=view)
-        metadata = Metadata(dir_list=dir_list, doc_string=docstring)
+        docstring = self.build_docstring(
+            method=method,
+            trail=trail,
+            trail_map=trail_map,
+        )
+        metadata = Metadata(dir_list=dir_list, docstring=docstring)
 
         return metadata
 
@@ -61,53 +62,9 @@ class Operation:
     def __get_method(method_path: str) -> Callable:
         module_path, function_name = method_path.rsplit(".", 1)
         module = import_module(module_path)
-        method = getattr(module, function_name)
+        func = getattr(module, function_name)
 
-        return method
-
-    @classmethod
-    def __get_model(cls, trail: str, trail_map: TrailMap) -> Optional[Callable]:
-        map_dict = trail_map.map_dict
-        model = None
-
-        if trail in map_dict:
-            if "model" in map_dict[trail] and map_dict[trail]["model"]:
-                model_path = map_dict[trail]["model"]
-                model = cls.__get_method(method_path=model_path)
-
-        return model
-
-    @classmethod
-    def __get_view(cls, trail: str, trail_map: TrailMap) -> Optional[Callable]:
-        map_dict = trail_map.map_dict
-        view = None
-
-        if trail in map_dict:
-            if "view" in map_dict[trail] and map_dict[trail]["view"]:
-                view_path = map_dict[trail]["view"]
-                view = cls.__get_method(method_path=view_path)
-
-        return view
-
-    @staticmethod
-    def is_valid(trail: str, trail_map: TrailMap) -> bool:
-        return trail in trail_map.map_dict
-
-    @property
-    def trail(self) -> str:
-        return self.__trail
-
-    @property
-    def trail_map(self) -> TrailMap:
-        return self.__trail_map
-
-    @property
-    def model(self) -> Optional[Callable]:
-        return self.__model
-
-    @property
-    def view(self) -> Optional[Callable]:
-        return self.__view
+        return func
 
     def __init__(
         self,
@@ -116,50 +73,51 @@ class Operation:
         metadata: Optional[Metadata] = None,
     ) -> None:
         trail_map = trail_map or TrailMap()
-        model = self.__get_model(trail=trail, trail_map=trail_map)
-        view = self.__get_view(trail=trail, trail_map=trail_map)
-        metadata = metadata or MetadataBuilder(model=model, view=view).build()
 
-        self.__trail = trail
-        self.__trail_map = trail_map
-        self.__model = model
-        self.__view = view
+        method_path = trail_map.get_model_or_view(trail=trail)
+        method = self.__get_method(method_path=method_path)
+        metadata = (
+            metadata
+            or MetadataBuilder(method=method, trail=trail, trail_map=trail_map).build()
+        )
 
-        self.__doc__ = metadata.doc_string
-
-        if model:
-            self.__signature__ = signature(model)
+        self._trail = trail
+        self._trail_map = trail_map
+        self._method = method
+        self.__doc__ = metadata.docstring
+        self.__signature__ = signature(method)
 
     def __call__(self, *args: Any, **kwargs: Any) -> Any:
-        model = self.__model
-        view = self.__view
-
-        if view and "chart" in kwargs and kwargs["chart"] is True:
-            method_chosen = view
-        elif model:
-            method_chosen = model
-        else:
-            raise Exception("Unknown method")
+        method = self._method
 
         operation_logger = OperationLogger(
-            trail=self.__trail,
-            method_chosen=method_chosen,
+            trail=self._trail,
+            method_chosen=method,
             args=args,
             kwargs=kwargs,
         )
 
         operation_logger.log_before_call()
 
-        if "chart" in kwargs:
-            kwargs.pop("chart")
-        method_result = method_chosen(*args, **kwargs)
+        method_result = method(*args, **kwargs)
 
         operation_logger.log_after_call(method_result=method_result)
 
         return method_result
 
+    def about(self):
+        import webbrowser
+
+        trail = self._trail
+        url = "https://openbb-finance.github.io/OpenBBTerminal/SDK/"
+        url += "/".join(trail.split("."))
+        webbrowser.open(url)
+
 
 class OperationLogger:
+
+    last_method: Dict[Any, Any] = {}
+
     def __init__(
         self,
         trail: str,
@@ -177,7 +135,7 @@ class OperationLogger:
     def log_before_call(
         self,
     ):
-        if not cfg.LOGGING_SUPPRESS:
+        if self.__check_logging_conditions():
             logger = self.__logger
             self.__log_start(logger=logger, method_chosen=self.__method_chosen)
             self.__log_method_info(
@@ -195,17 +153,16 @@ class OperationLogger:
             extra={"func_name_override": method_chosen.__name__},
         )
 
-    @classmethod
     def __log_method_info(
-        cls,
+        self,
         logger: Logger,
         trail: str,
         method_chosen: Callable,
         args: Any,
         kwargs: Any,
     ):
-        merged_args = cls.__merge_function_args(method_chosen, args, kwargs)
-        merged_args = cls.__remove_key_and_log_state(
+        merged_args = self.__merge_function_args(method_chosen, args, kwargs)
+        merged_args = self.__remove_key_and_log_state(
             method_chosen.__module__, merged_args
         )
 
@@ -237,7 +194,7 @@ class OperationLogger:
             Keyword args
 
         Returns
-        -------
+        ----------
         dict
             Merged user args and signature defaults
         """
@@ -268,7 +225,7 @@ class OperationLogger:
             Function args
 
         Returns
-        -------
+        ----------
         dict
             Function args with API key removed
         """
@@ -288,7 +245,7 @@ class OperationLogger:
         self,
         method_result: Any,
     ):
-        if not cfg.LOGGING_SUPPRESS:
+        if self.__check_logging_conditions():
             logger = self.__logger
             self.__log_exception_if_any(
                 logger=logger,
@@ -299,6 +256,12 @@ class OperationLogger:
                 logger=logger,
                 method_chosen=self.__method_chosen,
             )
+            OperationLogger.last_method = {
+                f"{self.__method_chosen.__module__}.{self.__method_chosen.__name__}": {
+                    "args": self.__args,
+                    "kwargs": self.__kwargs,
+                }
+            }
 
     @staticmethod
     def __log_exception_if_any(
@@ -318,3 +281,15 @@ class OperationLogger:
             "END",
             extra={"func_name_override": method_chosen.__name__},
         )
+
+    def __check_logging_conditions(self) -> bool:
+        return not cfg.LOGGING_SUPPRESS and not self.__check_last_method()
+
+    def __check_last_method(self) -> bool:
+        current_method = {
+            f"{self.__method_chosen.__module__}.{self.__method_chosen.__name__}": {
+                "args": self.__args,
+                "kwargs": self.__kwargs,
+            }
+        }
+        return OperationLogger.last_method == current_method

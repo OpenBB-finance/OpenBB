@@ -42,6 +42,18 @@ def get_default_files() -> Dict[str, Path]:
     return default_files
 
 
+def sdk_dt_format(x) -> str:
+    """Convert any Timestamp to YYYY-MM-DD when using SDK
+    Args:
+        x: Pandas Timestamp of any length
+    Returns:
+        x: formatted string
+    """
+    x = pd.to_datetime(x)
+    x = x.strftime("%Y-%m-%d")
+    return x
+
+
 @log_start_end(log=logger)
 def get_options(
     datasets: Dict[str, pd.DataFrame], dataset_name: str = None
@@ -57,7 +69,7 @@ def get_options(
 
     Returns
     -------
-    option_tables: dict
+    option_tables: Dict[Union[str, Any], pd.DataFrame]
         A dictionary with a DataFrame for each option. With dataset_name set, only shows one
         options table.
     """
@@ -106,7 +118,7 @@ def clean(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with cleaned up data
     """
     kwargs = {}
@@ -161,7 +173,7 @@ def add_ema(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added EMA column
     """
     dataset[f"EMA_{period}"] = (
@@ -194,7 +206,7 @@ def add_sto(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added STO K & D columns
     """
 
@@ -239,7 +251,7 @@ def add_rsi(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added RSI column
     """
 
@@ -281,7 +293,7 @@ def add_roc(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added ROC column
     """
     M = dataset[target_column].diff(period - 1)
@@ -310,7 +322,7 @@ def add_momentum(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added MOM column
     """
 
@@ -375,7 +387,7 @@ def add_signal(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added signal column
     """
 
@@ -411,10 +423,22 @@ def combine_dfs(
         A name for df2 (shows in name of new column)
 
     Returns
-    ----------
+    -------
     data: pd.DataFrame
         The new dataframe
     """
+
+    # for use with SDK
+    # check if date is index, if true, reset index
+    if df1.index.name == "date":
+        df1 = df1.reset_index()
+        # remove 00:00:00 from 2019-11-19 00:00:00
+        df1["date"] = df1["date"].apply(lambda x: sdk_dt_format(x))
+    if df2.index.name == "date":
+        df2 = df2.reset_index()
+        # remove 00:00:00 from 2019-11-19 00:00:00
+        df2["date"] = df2["date"].apply(lambda x: sdk_dt_format(x))
+
     if column not in df2:
         console.print(
             f"Not able to find the column {column}. Please choose one of "

@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
-from typing import Tuple
+from typing import Optional, Tuple
 from urllib.request import Request, urlopen
 import re
 
@@ -263,16 +263,30 @@ def get_dividends(symbol: str) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of dividends and dates
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.fa.divs("AAPL")
     """
-    return pd.DataFrame(yf.Ticker(symbol).dividends)
+    df = pd.DataFrame(yf.Ticker(symbol).dividends)
+
+    if df.empty:
+        console.print("No dividends found.\n")
+        return pd.DataFrame()
+
+    df["Change"] = df.diff()
+    df = df[::-1]
+
+    return df
 
 
 @log_start_end(log=logger)
 def get_mktcap(
     symbol: str,
-    start_date: str = None,
+    start_date: Optional[str] = None,
 ) -> Tuple[pd.DataFrame, str]:
     """Get market cap over time for ticker. [Source: Yahoo Finance]
 
@@ -280,12 +294,12 @@ def get_mktcap(
     ----------
     symbol: str
         Ticker to get market cap over time
-    start_date: str
+    start_date: Optional[str]
         Initial date (e.g., 2021-10-01). Defaults to 3 years back
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of estimated market cap over time
     str:
         Currency of ticker
@@ -319,7 +333,7 @@ def get_splits(symbol: str) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of forward and reverse splits
     """
     data = yf.Ticker(symbol).splits

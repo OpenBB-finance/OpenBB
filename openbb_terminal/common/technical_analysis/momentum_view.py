@@ -39,7 +39,7 @@ def display_cci(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display CCI Indicator
+    """Plots CCI Indicator
 
     Parameters
     ----------
@@ -132,7 +132,7 @@ def display_macd(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot MACD signal
+    """Plots MACD signal
 
     Parameters
     ----------
@@ -225,7 +225,7 @@ def display_rsi(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display RSI Indicator
+    """Plots RSI Indicator
 
     Parameters
     ----------
@@ -313,7 +313,7 @@ def display_stoch(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Plot stochastic oscillator signal
+    """Plots stochastic oscillator signal
 
     Parameters
     ----------
@@ -410,7 +410,7 @@ def display_fisher(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display Fisher Indicator
+    """Plots Fisher Indicator
 
     Parameters
     ----------
@@ -503,7 +503,7 @@ def display_cg(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display center of gravity Indicator
+    """Plots center of gravity Indicator
 
     Parameters
     ----------
@@ -574,7 +574,7 @@ def display_clenow_momentum(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display clenow momentum
+    """Prints table and plots clenow momentum
 
     Parameters
     ----------
@@ -589,9 +589,11 @@ def display_clenow_momentum(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
 
-    Returns
-    -------
-
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.ta.clenow_chart(df["Close"])
     """
     r2, coef, fit_data = momentum_model.clenow_momentum(data, window)
 
@@ -646,7 +648,7 @@ def display_demark(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display demark squential indicator
+    """Plot demark sequential indicator
 
     Parameters
     ----------
@@ -661,9 +663,11 @@ def display_demark(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axes are expected in the list), by default None
 
-    Returns
-    -------
-
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.ta.demark_chart(df)
     """
     close_col = ta_helpers.check_columns(data, high=False, low=False)
     if close_col is None:

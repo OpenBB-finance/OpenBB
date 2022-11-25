@@ -51,8 +51,8 @@ def hot_penny_stocks(limit: int = 10, export: str = "", source: str = "YahooFina
         Number of stocks to display
     export : str
         Export dataframe data to csv,json,xlsx file
-    source : where to get the data from. Choose from:
-    YahooFinance or Shortinterest
+    source : str
+        Where to get the data from. Choose from - YahooFinance or Shortinterest
     """
     if source == "YahooFinance":
         df_penny_stocks = yahoofinance_model.get_hotpenny()
@@ -61,6 +61,10 @@ def hot_penny_stocks(limit: int = 10, export: str = "", source: str = "YahooFina
         df_penny_stocks = shortinterest_model.get_today_hot_penny_stocks()
     else:
         console.print("[red]Invalid source provided[/red]\n")
+        return
+
+    if df_penny_stocks.empty:
+        console.print("[red]No data found.[/red]")
         return
 
     print_rich_table(

@@ -2,6 +2,7 @@
 import json
 import logging
 from datetime import datetime
+from typing import Optional
 
 import pandas as pd
 import requests
@@ -19,7 +20,7 @@ DAYS = [30, 90, 365]
 def get_altcoin_index(
     period: int = 30,
     start_date: str = "2010-01-01",
-    end_date: str = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Get altcoin index overtime
     [Source: https://blockchaincenter.net]
@@ -27,17 +28,17 @@ def get_altcoin_index(
     Parameters
     ----------
     period: int
-       Number of days {30,90,365} to check performance of coins and calculate the altcoin index.
-       E.g., 365 checks yearly performance, 90 will check seasonal performance (90 days),
-       30 will check monthly performance (30 days).
+        Number of days {30,90,365} to check performance of coins and calculate the altcoin index.
+        E.g., 365 checks yearly performance, 90 will check seasonal performance (90 days),
+        30 will check monthly performance (30 days).
     start_date : str
         Initial date, format YYYY-MM-DD
-    end_date : str
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
 
     Returns
     -------
-    pandas.DataFrame:
+    pd.DataFrame
         Date, Value (Altcoin Index)
     """
 

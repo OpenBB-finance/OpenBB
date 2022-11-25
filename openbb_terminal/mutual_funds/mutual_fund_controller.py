@@ -182,7 +182,6 @@ class FundController(BaseController):
                 console.print(
                     f"{country_candidate.lower()} not a valid country to select."
                 )
-        console.print("")
         return self.queue
 
     @log_start_end(log=logger)
@@ -365,7 +364,6 @@ Potential errors
     -- ISIN supplied instead of symbol
     -- Name used, but --name flag not passed"""
                 )
-        console.print("")
         return self.queue
 
     @log_start_end(log=logger)

@@ -94,8 +94,6 @@ def display_etf_weightings(
         if external_axes is None:
             theme.visualize_output()
 
-        console.print("")
-
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "weights", holdings)
 
 

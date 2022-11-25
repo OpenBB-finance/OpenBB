@@ -48,7 +48,6 @@ def display_overview(symbol: str):
     )
 
     console.print(f"Company Description:\n\n{df_fa.loc['Description'][0]}")
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -382,7 +381,6 @@ def display_fraud(
     df = av_model.get_fraud_ratios(symbol, detail=detail)
 
     if df.empty:
-        console.print("")
         return
 
     df_color = df.copy()
@@ -438,7 +436,6 @@ def display_dupont(
     """
     df = av_model.get_dupont(symbol)
     if df.empty:
-        console.print("[red]Invalid response from AlphaVantage[/red]\n")
         return
     if raw:
         print_rich_table(

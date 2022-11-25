@@ -15,16 +15,16 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
 def get_ipo_calendar(
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Get IPO calendar
 
     Parameters
     ----------
-    start_date : str
+    start_date : Optional[str]
         Initial date, format YYYY-MM-DD
-    end_date : str
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
 
     Returns
@@ -75,7 +75,7 @@ def get_ipo_calendar(
 def get_past_ipo(
     num_days_behind: int = 5,
     start_date: Optional[str] = None,
-):
+) -> pd.DataFrame:
     """Past IPOs dates. [Source: Finnhub]
 
     Parameters
@@ -84,6 +84,11 @@ def get_past_ipo(
         Number of days to look behind for IPOs dates
     start_date: str
         The starting date (format YYYY-MM-DD) to look for IPOs
+
+    Returns
+    -------
+    pd.DataFrame
+        Get dataframe with past IPOs
     """
     today = datetime.now()
 
@@ -110,7 +115,7 @@ def get_past_ipo(
 def get_future_ipo(
     num_days_ahead: int = 5,
     end_date: Optional[str] = None,
-):
+) -> pd.DataFrame:
     """Future IPOs dates. [Source: Finnhub]
 
     Parameters
@@ -119,6 +124,11 @@ def get_future_ipo(
         Number of days to look ahead for IPOs dates
     end_date: datetime
         The end date (format YYYY-MM-DD) to look for IPOs from today onwards
+
+    Returns
+    -------
+    pd.DataFrame
+        Get dataframe with future IPOs
     """
     today = datetime.now()
 

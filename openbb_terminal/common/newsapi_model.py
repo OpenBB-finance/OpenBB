@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 
 from datetime import datetime, timedelta
-from typing import Any, List, Tuple
+from typing import Any, List, Optional, Tuple
 import requests
 import pandas as pd
 from openbb_terminal import config_terminal as cfg
@@ -19,17 +19,17 @@ logger = logging.getLogger(__name__)
 def get_news(
     query: str,
     limit: int = 10,
-    start_date: str = None,
+    start_date: Optional[str] = None,
     show_newest: bool = True,
     sources: str = "",
-) -> List[Tuple[Any, Any]]:
+) -> List[Tuple[pd.DataFrame, Any]]:
     """Get news for a given term. [Source: NewsAPI]
 
     Parameters
     ----------
     query : str
         term to search on the news articles
-    start_date: str
+    start_date: Optional[str]
         date to start searching articles from formatted YYYY-MM-DD
     show_newest: bool
         flag to show newest articles first
@@ -37,9 +37,10 @@ def get_news(
         sources to exclusively show news from (comma separated)
 
     Returns
-    ----------
-    tables : List[Tuple]
-        List of tuples containing news df in first index and dict containing title of news df
+    -------
+    tables : List[Tuple[pd.DataFrame, dict]]
+        List of tuples containing news df in first index,
+        dict containing title of news df.
     """
 
     if start_date is None:
@@ -87,7 +88,7 @@ def get_news(
     else:
         console.print(f"Error in request: {response.json()['message']}", "\n")
 
-    tables = []
+    tables: List[Tuple[pd.DataFrame, dict]] = []
     if articles:
         for idx, article in enumerate(articles):
             # Unnecessary to use source name because contained in link article["source"]["name"]
