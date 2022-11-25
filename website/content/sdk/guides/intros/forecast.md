@@ -84,7 +84,9 @@ combined_df = openbb.forecast.combine(spy,aapl, dataset="aapl", column= "Close")
 openbb.forecast.show(combined_df)
 ```
 
+<img width="507" alt="image" src="https://user-images.githubusercontent.com/105685594/203791078-181431cb-99bf-4d26-bfff-b4cf34b5dee2.png" />
 ![Combine View](https://user-images.githubusercontent.com/105685594/203791078-181431cb-99bf-4d26-bfff-b4cf34b5dee2.png)
+
 
 ### corr
 
@@ -128,7 +130,6 @@ openbb.forecast.expo_chart(df)
 
 ​
 Here was can now see a chart and table with the expected values, and historic data. The chart also tells us how our backtesing performed, so that we can know the accuracy of our prediction.
-​
+
 
 ![Expo View](https://user-images.githubusercontent.com/72827203/202429347-b3ab488d-d4f6-42bb-80d1-c66b3c5a92df.png)
-​

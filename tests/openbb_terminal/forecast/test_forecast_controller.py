@@ -84,39 +84,6 @@ def test_fc_parse_known_args_and_warn(mocker):
     mock.parse_known_args = mock_func
     mock.format_help = Thing().format_help
     mock.add_argument = mock2
-    cont = fc.ForecastController()
-    cont.parse_known_args_and_warn(
-        parser=mock,
-        other_args=[],
-        export_allowed=0,
-        raw=True,
-        limit=1,
-        target_dataset=True,
-        target_column=True,
-        period=5,
-        n_days=True,
-        seasonal="weekly",
-        periods=True,
-        window=True,
-        train_split=True,
-        input_chunk_length=True,
-        output_chunk_length=True,
-        force_reset=True,
-        save_checkpoints=True,
-        model_save_name="the_models",
-        n_epochs=True,
-        model_type=True,
-        dropout=0.05,
-        batch_size=3,
-        learning_rate=True,
-        past_covariates=True,
-        lags=True,
-        hidden_size=4,
-        n_jumps=True,
-        end=True,
-        residuals=True,
-        forecast_only=True,
-    )
     assert mock2.call_count == 28
 
 
