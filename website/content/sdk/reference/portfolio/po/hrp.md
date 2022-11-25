@@ -59,6 +59,13 @@ openbb.portfolio.po.hrp(portfolio_engine: portfolio_optimization.po_engine.PoEng
 ---
 
 ## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.portfolio.po.hrp(symbols=["AAPL", "MSFT", "AMZN"])
+```
+
+```
 (        value
  AAPL  0.26729
  MSFT  0.30277
@@ -66,10 +73,11 @@ openbb.portfolio.po.hrp(portfolio_engine: portfolio_optimization.po_engine.PoEng
  {'Return': 0.20463517260107467,
   'Volatility': 0.3313935169747041,
   'Sharpe ratio': 0.6174990219156727})
-
+```
 ```python
 from openbb_terminal.sdk import openbb
-openbb.portfolio.po.hrp(symbols=["AAPL", "MSFT", "AMZN"])
+p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+weights, performance = openbb.portfolio.po.hrp(portfolio_engine=p)
 ```
 
 ---

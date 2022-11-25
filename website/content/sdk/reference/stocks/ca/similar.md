@@ -33,12 +33,20 @@ openbb.stocks.ca.similar(symbol: str, source: Any = "Finviz")
 ---
 
 ## Examples
+
+
 To get similar tickers to AAPL from Finviz:
 
-To use our custom TSNE model for similar tickers in the SP500:
 ```python
 from openbb_terminal.sdk import openbb
 similar_tickers = openbb.stocks.ca.similar("AAPL)
+```
+
+
+To use our custom TSNE model for similar tickers in the SP500:
+
+```python
+similar_tickers = openbb.stocks.ca.similar("AAPL", source="TSNE")
 ```
 
 ---

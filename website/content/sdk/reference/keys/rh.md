@@ -35,13 +35,16 @@ openbb.keys.rh(username: str, password: str, persist: bool = False, show_output:
 ---
 
 ## Examples
-        username="example_username",
-        password="example_password"
-    )
+
 ```python
 from openbb_terminal.sdk import openbb
 openbb.keys.rh(
 ```
 
+```
+username="example_username",
+        password="example_password"
+    )
+```
 ---
 

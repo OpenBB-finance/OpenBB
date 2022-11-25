@@ -16,7 +16,7 @@ Get news for a given term. [Source: NewsAPI]
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/newsapi_model.py#L18)]
 
 ```python
-openbb.etf.news(query: str, limit: int = 10, start_date: str = None, show_newest: bool = True, sources: str = "")
+openbb.etf.news(query: str, limit: int = 10, start_date: Optional[str] = None, show_newest: bool = True, sources: str = "")
 ```
 
 ---
@@ -26,7 +26,7 @@ openbb.etf.news(query: str, limit: int = 10, start_date: str = None, show_newest
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | query | str | term to search on the news articles | None | False |
-| start_date | str | date to start searching articles from formatted YYYY-MM-DD | None | True |
+| start_date | Optional[str] | date to start searching articles from formatted YYYY-MM-DD | None | True |
 | show_newest | bool | flag to show newest articles first | True | True |
 | sources | str | sources to exclusively show news from (comma separated) |  | True |
 
@@ -47,10 +47,10 @@ openbb.etf.news(query: str, limit: int = 10, start_date: str = None, show_newest
 
 Prints table showing news for a given term. [Source: NewsAPI]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/newsapi_view.py#L19)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/newsapi_view.py#L20)]
 
 ```python
-openbb.etf.news_chart(query: str, limit: int = 3, start_date: str = None, show_newest: bool = True, sources: str = "", export: str = "")
+openbb.etf.news_chart(query: str, limit: int = 3, start_date: Optional[str] = None, show_newest: bool = True, sources: str = "", export: str = "")
 ```
 
 ---
@@ -60,7 +60,7 @@ openbb.etf.news_chart(query: str, limit: int = 3, start_date: str = None, show_n
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | query | str | term to search on the news articles | None | False |
-| start_date | str | date to start searching articles from formatted YYYY-MM-DD | None | True |
+| start_date | Optional[str] | date to start searching articles from formatted YYYY-MM-DD | None | True |
 | limit | int | number of articles to display | 3 | True |
 | show_newest | bool | flag to show newest articles first | True | True |
 | sources | str | sources to exclusively show news from |  | True |

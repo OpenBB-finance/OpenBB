@@ -38,6 +38,16 @@ openbb.portfolio.distr(portfolio_engine: portfolio_engine.PortfolioEngine, windo
 | pd.DataFrame | DataFrame of returns distribution |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.distr(p)
+```
+
+---
+
 
 
 </TabItem>

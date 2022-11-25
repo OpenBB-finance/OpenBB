@@ -6,8 +6,8 @@ menu and provides a brief description of its sub-menus"
 
 ---
 
-The Portfolio menu, and its sub-menus, are dedicated to properly explaining and optimizing your own portfolio. With features to load your own orderbook (transactions) it is possible to compare your results to that of a <a href="https://www.investopedia.com/terms/b/benchmark.asp" target="_blank">benchmark</a>. For example, you are able to load both your portfolio and a benchmark (<a href="/terminal/reference/portfolio/load" target="_blank">load</a> and <a href="/terminal/reference/portfolio/bench" target="_blank">bench</a>), then have the option to look into the performance compared to the benchmark asking the question "_What if I invested all my money in the benchmark instead?_" (<a href="/terminal/reference/portfolio/perf" target="_blank">perf</a>) as well as see a wide variety of statistics and metrics (<a href="/terminal/reference/portfolio/rsharpe/" target="_blank">rsharpe</a>, <a href="/terminal/reference/portfolio/distr" target="_blank">distr</a>, <a href="/terminal/reference/portfolio/var" target="_blank">var</a>
-and <a href="/terminal/reference/portfolio/metric" target="_blank">metric</a>). Next to that, with these findings you can apply optimization techniques to your portfolio through the <a href="/terminal/guides/intros/portfolio/po/" target="_blank">Portfolio Optimization menu</a>.
+The Portfolio menu, and its sub-menus, are dedicated to properly explaining and optimizing your own portfolio. With features to load your own orderbook (transactions) it is possible to compare your results to that of a <a href="https://www.investopedia.com/terms/b/benchmark.asp" target="_blank" rel="noreferrer noopener">benchmark</a>. For example, you are able to load both your portfolio and a benchmark (<a href="/terminal/reference/portfolio/load" target="_blank" rel="noreferrer noopener">load</a> and <a href="/terminal/reference/portfolio/bench" target="_blank" rel="noreferrer noopener">bench</a>), then have the option to look into the performance compared to the benchmark asking the question "_What if I invested all my money in the benchmark instead?_" (<a href="/terminal/reference/portfolio/perf" target="_blank" rel="noreferrer noopener">perf</a>) as well as see a wide variety of statistics and metrics (<a href="/terminal/reference/portfolio/rsharpe/" target="_blank" rel="noreferrer noopener">rsharpe</a>, <a href="/terminal/reference/portfolio/distr" target="_blank" rel="noreferrer noopener">distr</a>, <a href="/terminal/reference/portfolio/var" target="_blank" rel="noreferrer noopener">var</a>
+and <a href="/terminal/reference/portfolio/metric" target="_blank" rel="noreferrer noopener">metric</a>). Next to that, with these findings you can apply optimization techniques to your portfolio through the <a href="/terminal/guides/intros/portfolio/po/" target="_blank" rel="noreferrer noopener">Portfolio Optimization menu</a>.
 
 ### How to use
 
@@ -15,7 +15,7 @@ The Portfolio menu is called upon by typing `portfolio` which opens the followin
 
 ![Portfolio Menu](https://user-images.githubusercontent.com/46355364/180178234-0cb80009-74d8-41fb-9f4c-fa393361903a.png)
 
-The first step in using this menu is loading a portfolio with <a href="/terminal/reference/portfolio/load" target="_blank">load</a>. Here, we provide an example titled "Public_Equity_Orderbook.xlsx" which can be loaded in. This file also serves as a template when you wish to fill in your own orders. This results in the following:
+The first step in using this menu is loading a portfolio with <a href="/terminal/reference/portfolio/load" target="_blank" rel="noreferrer noopener">load</a>. Here, we provide an example titled "Public_Equity_Orderbook.xlsx" which can be loaded in. This file also serves as a template when you wish to fill in your own orders. This results in the following:
 
 ```
 2022 Jul 19, 10:03 (🦋) /portfolio/ $ load Public_Equity_Orderbook.xlsx
@@ -42,7 +42,7 @@ Note that the Excel sheet requires the following columns:
 
 Furthermore, the chosen Excel sheet above also has additional columns but these are _optional_. The OpenBB Terminal can figure out by itself what industry, sector, country and region belongs to the loaded in equity. You can see this in action by loading in the "Public_Equity_Orderbook_No_Categorization.xlsx" Excel sheet.
 
-With the <a href="/terminal/reference/portfolio/show" target="_blank">show</a> command we can show how the data has been loaded in:
+With the <a href="/terminal/reference/portfolio/show" target="_blank" rel="noreferrer noopener">show</a> command we can show how the data has been loaded in:
 
 ```
 2022 Jul 19, 10:03 (🦋) /portfolio/ $ show
@@ -69,7 +69,7 @@ With the <a href="/terminal/reference/portfolio/show" target="_blank">show</a> c
 <continues>
 ```
 
-After loading in the portfolio, it is time to select a benchmark. This is important to be able to properly compare if your decision to trade actively or deviate from an index have actually been fruitful. For example, let's load in the <a href="https://www.ssga.com/us/en/individual/etfs/funds/spdr-sp-500-etf-trust-spy" target="_blank">SPDR S&P 500 ETF Trust (SPY)</a> with the <a href="/terminal/reference/portfolio/bench" target="_blank">bench</a> command as follows:
+After loading in the portfolio, it is time to select a benchmark. This is important to be able to properly compare if your decision to trade actively or deviate from an index have actually been fruitful. For example, let's load in the <a href="https://www.ssga.com/us/en/individual/etfs/funds/spdr-sp-500-etf-trust-spy" target="_blank" rel="noreferrer noopener">SPDR S&P 500 ETF Trust (SPY)</a> with the <a href="/terminal/reference/portfolio/bench" target="_blank" rel="noreferrer noopener">bench</a> command as follows:
 
 ```
 2022 Jul 19, 10:14 (🦋) /portfolio/ $ bench SPDR S&P 500 ETF Trust (SPY)
@@ -153,7 +153,7 @@ Portfolio: Public_Equity_Orderbook_No_Categorization.xlsx
 Risk Free Rate: 0
 ```
 
-Then we load in a benchmark again with `bench` where we select the <a href="https://investor.vanguard.com/investment-products/etfs/profile/vti" target="_blank">Vanguard Total Stock Market ETF (VTI)</a>.
+Then we load in a benchmark again with `bench` where we select the <a href="https://investor.vanguard.com/investment-products/etfs/profile/vti" target="_blank" rel="noreferrer noopener">Vanguard Total Stock Market ETF (VTI)</a>.
 
 ```
 2022 Jul 21, 04:44 (🦋) /portfolio/ $ bench Vanguard Total Stock Market ETF (VTI)

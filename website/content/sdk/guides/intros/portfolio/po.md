@@ -5,9 +5,9 @@ keywords: ["portfolio", "optimization", "mean variance", "risk parity", "black l
 excerpt: "The Introduction to Portfolio Optimization within the Portfolio menu explains how to use various portfolio
 optimization techniques and provides a brief description of its sub-menus"
 ---
-The Portfolio Optimization menu allows the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from <a href="https://www.investopedia.com/terms/m/meanvariance-analysis.asp" target="_blank">mean-variance optimization</a> to <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank">risk parity models</a> and <a href="https://www.investopedia.com/terms/c/cluster_analysis.asp" target="_blank">hierarchical clustering models</a>. By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used? These are questions the templates make easier to answer.
+The Portfolio Optimization menu allows the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from <a href="https://www.investopedia.com/terms/m/meanvariance-analysis.asp" target="_blank" rel="noreferrer noopener">mean-variance optimization</a> to <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank" rel="noreferrer noopener">risk parity models</a> and <a href="https://www.investopedia.com/terms/c/cluster_analysis.asp" target="_blank" rel="noreferrer noopener">hierarchical clustering models</a>. By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used? These are questions the templates make easier to answer.
 
-The capabilities of the [Portfolio Optiminzation menu](/terminal/guides/portfolio/po) from the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. These functionalities allow the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from <a href="https://www.investopedia.com/terms/m/meanvariance-analysis.asp" target="_blank">mean-variance optimization</a> to <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank">risk parity models</a> and <a href="https://www.investopedia.com terms/c/cluster_analysis.asp" target="_blank">hierarchical clustering models</a>. By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used? These are questions the templates make easier to answer.
+The capabilities of the [Portfolio Optiminzation menu](/terminal/guides/portfolio/po) from the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. These functionalities allow the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from <a href="https://www.investopedia.com/terms/m/meanvariance-analysis.asp" target="_blank" rel="noreferrer noopener">mean-variance optimization</a> to <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank" rel="noreferrer noopener">risk parity models</a> and <a href="https://www.investopedia.com terms/c/cluster_analysis.asp" target="_blank" rel="noreferrer noopener">hierarchical clustering models</a>. By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used? These are questions the templates make easier to answer.
 
 ## How to use
 Start a Python script or Notebook file by importing the module:
@@ -71,7 +71,7 @@ tickers, categories = openbb.portfolio.po.load(order_book_path)
 ```
 
 ### Performing optimization
-Based on the parameters and allocation the user has set, the optimization process begins. What optimization technique is ideal depends entirely on the user's risk profile and objectives. As an illustration, <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank">Risk Parity</a> is presented below:
+Based on the parameters and allocation the user has set, the optimization process begins. What optimization technique is ideal depends entirely on the user's risk profile and objectives. As an illustration, <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank" rel="noreferrer noopener">Risk Parity</a> is presented below:
 
 ```python
 # Perform calculations
@@ -97,7 +97,7 @@ Which returns:
 | TLT   |       0.21927 |
 | TSM   |       0.04626 |
 
-It is possible to use the commands without loading in the parameters template or by using the parameters template but changing some arguments directly into the terminal. For example, using the same method as described above, the risk measure is changed to <a href="https://www.investopedia.com/terms/c/conditional_value_at_risk.asp" target="_blank">Conditional Value at Risk (CVaR)</a> and the used historic period is increased to 10 years (keeping all other parameters unchanged):
+It is possible to use the commands without loading in the parameters template or by using the parameters template but changing some arguments directly into the terminal. For example, using the same method as described above, the risk measure is changed to <a href="https://www.investopedia.com/terms/c/conditional_value_at_risk.asp" target="_blank" rel="noreferrer noopener">Conditional Value at Risk (CVaR)</a> and the used historic period is increased to 10 years (keeping all other parameters unchanged):
 
 ```python
 weights_riskparity, data_returns_riskparity = openbb.portfolio.po.riskparity(tickers, interval="10y", risk_measure="CVaR")
@@ -121,7 +121,7 @@ Which returns:
 
 
 ## Examples
-To demonstrate the capabilities of the Portfolio Optimization menu, the entire <a href="https://www.investopedia.com/terms/s/sp500.asp" target="_blank">S&P 500 index</a> (as of 30th of May 2022) is used and optimized and analysed in a variety of ways. Starting by loading in the dataset with the following:
+To demonstrate the capabilities of the Portfolio Optimization menu, the entire <a href="https://www.investopedia.com/terms/s/sp500.asp" target="_blank" rel="noreferrer noopener">S&P 500 index</a> (as of 30th of May 2022) is used and optimized and analysed in a variety of ways. Starting by loading in the dataset with the following:
 
 ```python
 import pandas as pd
@@ -142,7 +142,7 @@ order_book = order_book[order_book_cols]
 tickers, categories = openbb.portfolio.po.load(order_book_path)
 ```
 
-Then, the <a href="https://jpm.pm-research.com/content/42/4/59.short" target="_blank">Hierarchical Risk Parity</a> technique is applied by using the following:
+Then, the <a href="https://jpm.pm-research.com/content/42/4/59.short" target="_blank" rel="noreferrer noopener">Hierarchical Risk Parity</a> technique is applied by using the following:
 
 ```python
 weights_hrp, data_returns_hrp = openbb.portfolio.po.hrp(
@@ -171,7 +171,7 @@ This results in the following (the result is edited, as it would show 500 ticker
 | ZION  |                    0.0014  |
 | ZTS   |                    0.00225 |
 
-It is possible to delve further into these findings with the `plot` functionality for example done by looking at the portfolio's returns <a href="https://www.investopedia.com/terms/h/histogram.asp" target="_blank">histogram</a> which also includes a variety of risk measures as well as the portfolio's drawdowns.
+It is possible to delve further into these findings with the `plot` functionality for example done by looking at the portfolio's returns <a href="https://www.investopedia.com/terms/h/histogram.asp" target="_blank" rel="noreferrer noopener">histogram</a> which also includes a variety of risk measures as well as the portfolio's drawdowns.
 
 ````
 openbb.portfolio.po.plot(data=data_returns_hrp, weights=weights_hrp, risk_measure='cVaR', hist=True)

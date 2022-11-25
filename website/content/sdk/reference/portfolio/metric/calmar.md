@@ -32,3 +32,13 @@ openbb.portfolio.metric.calmar(portfolio_engine: portfolio_engine.PortfolioEngin
 | pd.DataFrame | DataFrame of calmar ratio of the benchmark and portfolio during different time periods |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.metric.calmar(p)
+```
+
+---
+

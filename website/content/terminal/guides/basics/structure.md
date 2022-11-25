@@ -2,7 +2,7 @@
 sidebar_position: 1
 title: Structure of the Terminal
 ---
-The OpenBB Terminal is based off the <a href="https://en.wikipedia.org/wiki/Command-line_interface" target="_blank">Command Line Interface (CLI)</a>
+The OpenBB Terminal is based off the <a href="https://en.wikipedia.org/wiki/Command-line_interface" target="_blank" rel="noreferrer noopener">Command Line Interface (CLI)</a>
 which is installed by default on every computer. By opening the application you have installed via "Accessing the OpenBB Terminal",
 you are greeted with the following interface:
 

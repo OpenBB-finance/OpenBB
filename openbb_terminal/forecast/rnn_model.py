@@ -27,7 +27,7 @@ def get_rnn_data(
     model_type: str = "LSTM",
     hidden_dim: int = 20,
     dropout: float = 0.0,
-    batch_size: int = 16,
+    batch_size: int = 32,
     n_epochs: int = 100,
     learning_rate: float = 1e-3,
     model_save_name: str = "rnn_model",

@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 Returns correlation for a given df
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L497)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L521)]
 
 ```python
 openbb.forecast.corr(data: pd.DataFrame)

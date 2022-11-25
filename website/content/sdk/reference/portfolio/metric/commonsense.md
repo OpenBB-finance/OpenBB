@@ -31,3 +31,13 @@ openbb.portfolio.metric.commonsense(portfolio_engine: portfolio_engine.Portfolio
 | pd.DataFrame | DataFrame of the portfolios and the benchmarks common sense ratio during different time periods |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.metric.commonsense(p)
+```
+
+---
+

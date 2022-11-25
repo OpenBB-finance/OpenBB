@@ -10,7 +10,7 @@ Plot a position book for an instrument if Oanda provides one.
 ### Usage
 
 ```python
-usage: positionbook
+positionbook
 ```
 
 ---
@@ -19,5 +19,5 @@ usage: positionbook
 
 This command has no parameters
 
----
 
+---
