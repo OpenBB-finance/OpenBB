@@ -36,6 +36,43 @@ logger = logging.getLogger(__name__)
 logging.getLogger("pytorch_lightning").setLevel(logging.CRITICAL)  # No needed for now
 
 
+class ForecastObject:
+    "Stores the results of running a forecasting model."
+
+    def __init__(
+        self,
+        ticker_series: TimeSeries,
+        historical_fcast: TimeSeries,
+        prediction: TimeSeries,
+        precision: float,
+        best_model: type[GlobalForecastingModel],
+        probabilistic: bool,
+    ):
+        """Creates the forecast object
+
+        Parameters
+        ----------
+        ticker_series: TimeSeries
+            The timeseries values used to create a prediction
+        historical_fcast: TimeSeries
+            The model's prediction of past results, used to understand accuracy
+        prediction: TimeSeries
+            The object containing future predictions
+        precision: float
+            The mean absolute precision error
+        best_model: type[GlobalForecastingModel]
+            The model used to predict
+        probabilistic: bool
+            Whether or not the model is probabilistic
+        """
+        self.ticker_series = ticker_series
+        self.historical_fcast = historical_fcast
+        self.prediction = prediction
+        self.precision = precision
+        self.best_model = best_model
+        self.probabilistic = probabilistic
+
+
 def mean_absolute_percentage_error(y_true: np.ndarray, y_pred: np.ndarray) -> np.number:
     """Calculate mean absolute percent error"""
     y_true, y_pred = np.array(y_true), np.array(y_pred)
@@ -699,7 +736,7 @@ def get_prediction(
     train_split: float,
     forecast_horizon: int,
     n_predict: int,
-):
+) -> ForecastObject:
     print(f"Predicting {model_name} for {n_predict} days")
     if model_name not in ["Regression", "Logistic Regression"]:
         # need to create a new pytorch trainer for historical backtesting to remove progress bar
@@ -760,7 +797,14 @@ def get_prediction(
         historical_fcast = scaler.inverse_transform(historical_fcast)
         prediction = scaler.inverse_transform(prediction)
 
-    return ticker_series, historical_fcast, prediction, precision, best_model
+    return ForecastObject(
+        ticker_series=ticker_series,
+        historical_fcast=historical_fcast,
+        prediction=prediction,
+        precision=precision,
+        best_model=best_model,
+        probabilistic=probabilistic,
+    )
 
 
 def check_parser_input(parser: argparse.ArgumentParser, datasets, *args) -> bool:

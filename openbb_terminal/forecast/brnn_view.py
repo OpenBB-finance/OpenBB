@@ -111,13 +111,7 @@ def display_brnn_forecast(
     output_chunk_length = helpers.check_output(
         output_chunk_length, n_predict, bool(past_covariates)
     )
-    (
-        ticker_series,
-        historical_fcast,
-        predicted_values,
-        precision,
-        _model,
-    ) = brnn_model.get_brnn_data(
+    result = brnn_model.get_brnn_data(
         data=data,
         n_predict=n_predict,
         target_column=target_column,
@@ -136,22 +130,22 @@ def display_brnn_forecast(
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
     )
-    if ticker_series == []:
+    if result.ticker_series == []:
         return
 
     probabilistic = False
     helpers.plot_forecast(
         name="BRNN",
         target_col=target_column,
-        historical_fcast=historical_fcast,
-        predicted_values=predicted_values,
-        ticker_series=ticker_series,
+        historical_fcast=result.historical_fcast,
+        predicted_values=result.prediction,
+        ticker_series=result.ticker_series,
         ticker_name=dataset_name,
         data=data,
         n_predict=n_predict,
         forecast_horizon=forecast_horizon,
         past_covariates=past_covariates,
-        precision=precision,
+        precision=result.precision,
         probabilistic=probabilistic,
         export=export,
         forecast_only=forecast_only,
@@ -161,5 +155,8 @@ def display_brnn_forecast(
     )
     if residuals:
         helpers.plot_residuals(
-            _model, past_covariates, ticker_series, forecast_horizon=forecast_horizon
+            result.best_model,
+            past_covariates,
+            result.ticker_series,
+            forecast_horizon=forecast_horizon,
         )
