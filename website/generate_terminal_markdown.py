@@ -236,6 +236,11 @@ def main() -> bool:
             console.print(f"[red]Failed to generate markdown for {ctrlstr}: {e}[/red]")
             return False
 
+    terminal_ref = {
+        k: dict(sorted(v.items(), key=lambda item: item[0]))
+        for k, v in sorted(terminal_ref.items(), key=lambda item: item[0])
+    }
+
     with open(content_path / "_category_.json", "w", **kwargs) as f:
         f.write(json.dumps({"label": "Terminal Reference", "position": 4}, indent=2))
 
