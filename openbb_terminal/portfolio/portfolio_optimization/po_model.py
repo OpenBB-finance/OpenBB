@@ -1311,7 +1311,7 @@ def get_ef(
     frontier, mu, cov, returns, weights, X1, Y1, port = optimizer_model.get_ef(
         symbols=valid_symbols, **valid_kwargs
     )
-    valid_portfolio_engine.set_weights(weights=weights)
+    valid_portfolio_engine.set_weights(weights=weights.to_dict()["weights"])
     valid_portfolio_engine.set_returns(returns=returns)
 
     return frontier, mu, cov, returns, weights, X1, Y1, port
