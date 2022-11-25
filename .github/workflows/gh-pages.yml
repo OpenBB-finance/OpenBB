@@ -13,9 +13,6 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v3 # actions/checkout v3.0.2
-        with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Python 3.10
         uses: actions/setup-python@v4
