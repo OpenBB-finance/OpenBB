@@ -183,7 +183,7 @@ def add_todict(d: dict, location_path: list, cmd_name: str, full_path: str) -> d
     else:
         d[location_path[0]][
             cmd_name
-        ] = f"/terminal/features/{'/'.join(full_path)}/{cmd_name}"
+        ] = f"/terminal/reference/{'/'.join(full_path)}/{cmd_name}"
 
     return d
 
