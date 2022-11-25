@@ -158,7 +158,7 @@ def parse_args_and_run():
         "--file",
         help=(
             "The path or .openbb file to run. Starts at "
-            "OpenBBTermina/openbb_terminal/miscellaneous/scripts"
+            "OpenBBTerminal/openbb_terminal/miscellaneous/scripts"
         ),
         dest="path",
         nargs="+",
