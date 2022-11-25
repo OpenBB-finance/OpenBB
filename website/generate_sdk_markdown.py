@@ -289,7 +289,7 @@ import TabItem from '@theme/TabItem';\n\n"""
     return markdown
 
 
-def generate_markdown_section(meta: dict):
+def generate_markdown_section(meta: Dict[str, Any]):
     # head meta https://docusaurus.io/docs/markdown-features/head-metadata
     # use real description but need to parse it
     markdown = (
@@ -322,12 +322,24 @@ def generate_markdown_section(meta: dict):
         markdown += "This function does not return anything\n\n"
 
     markdown += "---\n\n## Examples\n\n" if meta["examples"] else ""
+    prev_snippet = "  "
     for example in meta["examples"]:
-        if isinstance(example["snippet"], str):
+
+        if isinstance(example["snippet"], str) and ">>>" in example["snippet"]:
             snippet = example["snippet"].replace(">>> ", "")
             markdown += f"```python\n{snippet}\n```\n\n"
-        if example["description"]:
-            markdown += f"```\n{example['description']}\n```\n"
+            if example["description"] and prev_snippet != "":
+                markdown += f"```\n{example['description'].strip()}\n```\n"
+                prev_snippet = snippet.strip()
+            else:
+                if example["description"]:
+                    markdown += f"\n{example['description'].strip()}\n\n"
+        else:
+            if example["description"]:
+                markdown += f"\n{example['description'].strip()}\n\n"
+            else:
+                prev_snippet = ""
+
     markdown += "---\n\n"
 
     return markdown
