@@ -53,6 +53,7 @@ For mac there are two installers available, one for Intel and one for Apple Sili
 <li>If you are using Mac Intel click <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/x86_64.MacOS.OpenBB.Terminal.v1.9.0.dmg">here</a> to download the installer.</li>
 <li>If you are using Mac Apple Silicon (M1) click <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/ARM64.MacOS.OpenBB.Terminal.v1.9.0.dmg">here</a> to download the installer.</li>
 </ul>
+
 <p>When the DMG file is downloaded, use the following steps to run the OpenBB Terminal:</p>
 <div class="gdoc-columns">
 

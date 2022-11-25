@@ -6,7 +6,7 @@ with a brief overview of the features."
 geekdocCollapseSection: true
 ---
 
-The Non Fungible Token (NFT) menu gives the user the ability to dive into certain NFTs (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/nft/stats/" target="_blank">stats</a>).
+The Non Fungible Token (NFT) menu gives the user the ability to dive into certain NFTs (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/nft/stats/" target="_blank" rel="noreferrer noopener">stats</a>).
 
 ## How to use
 
@@ -16,7 +16,7 @@ The Non Fungible Token (NFT) menu is called upon by typing `nft`, while inside t
 
 Alternatively, you can also type `/crypto/nft`. Within the Non Fungible Token (NFT) menu you can explore the statistics of specific NFTs you are interested in.
 
-We can look into the statistics of a specific NFT once you know the slug (e.g. <a href="https://opensea.io/collection/mutant-ape-yacht-club" target="_blank">mutant-ape-yacht-club</a>)
+We can look into the statistics of a specific NFT once you know the slug (e.g. <a href="https://opensea.io/collection/mutant-ape-yacht-club" target="_blank" rel="noreferrer noopener">mutant-ape-yacht-club</a>)
 with `stats` as follows:
 
 ```

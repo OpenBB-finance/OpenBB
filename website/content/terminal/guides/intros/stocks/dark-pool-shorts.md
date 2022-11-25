@@ -9,11 +9,11 @@ provides a brief explanation of the features."
 geekdocCollapseSection: true
 ---
 
-The purpose of this menu is to provide the user with tools for gauging the level of short interest, FTD rate, and off-exchange volume in a <a href="https://www.law.cornell.edu/cfr/text/17/242.600" target="_blank">NMS security</a>. There are also commands for looking at market as a whole. Enter the submenu from the <a href="/terminal/guides/intros/stocks" target="_blank">Stocks menu</a> by typing, `dps`, and hitting `ENTER` (⏎).
+The purpose of this menu is to provide the user with tools for gauging the level of short interest, FTD rate, and off-exchange volume in a <a href="https://www.law.cornell.edu/cfr/text/17/242.600" target="_blank" rel="noreferrer noopener">NMS security</a>. There are also commands for looking at market as a whole. Enter the submenu from the <a href="/terminal/guides/intros/stocks" target="_blank" rel="noreferrer noopener">Stocks menu</a> by typing, `dps`, and hitting `ENTER` (⏎).
 
 <img alt="The Dark Pools Menu" src="https://user-images.githubusercontent.com/46355364/171151760-9f65424e-b4d6-41a7-b31f-e9bc1c723bd9.png"></img>
 
-To use every feature in the Dark Pools menu, an API key for <a href="https://www.quandl.com/" target="_blank">Quandl</a> must be obtained (for free) and authorized on the local installation. See the <a href="/terminal/quickstart/keys" target="_blank">Getting Started Guide</a> for help setting up the API keys in the OpenBB Terminal. The four commands at the bottom of the menu rely on a loaded ticker while the six above do not.
+To use every feature in the Dark Pools menu, an API key for <a href="https://www.quandl.com/" target="_blank" rel="noreferrer noopener">Quandl</a> must be obtained (for free) and authorized on the local installation. See the <a href="/terminal/quickstart/keys" target="_blank" rel="noreferrer noopener">Getting Started Guide</a> for help setting up the API keys in the OpenBB Terminal. The four commands at the bottom of the menu rely on a loaded ticker while the six above do not.
 
 ### How to use
 
@@ -48,7 +48,7 @@ The commands which are not ticker-specific provide screener-like utility. A list
 └────────┴──────────────────────────────────┴──────────────────┴────────┴──────────┴────────┴───────────────────┴────────────┴────────────────┘
 ```
 
-`hsi` is another <a href="https://highshortinterest.com" target="_blank">source</a> for the same list. There will be slight variations between the two.
+`hsi` is another <a href="https://highshortinterest.com" target="_blank" rel="noreferrer noopener">source</a> for the same list. There will be slight variations between the two.
 
 ```
 (🦋) /stocks/dps/ $ hsi
@@ -79,7 +79,7 @@ The commands which are not ticker-specific provide screener-like utility. A list
 └────────┴────────────────────────────────┴──────────┴──────────┴─────────┴─────────┴────────────────────────────────┘
 ```
 
-`prom` performs a linear regression to scan for tickers with growing trade activity on ATS tapes, reported to <a href="https://otctransparency.finra.org/otctransparency/AtsIssueData" target="_blank">FINRA</a>.
+`prom` performs a linear regression to scan for tickers with growing trade activity on ATS tapes, reported to <a href="https://otctransparency.finra.org/otctransparency/AtsIssueData" target="_blank" rel="noreferrer noopener">FINRA</a>.
 
 ````
 (🦋) /stocks/dps/ $ prom -n 50 -l 5 -t T1
@@ -107,7 +107,7 @@ Processing regression on 50 promising tickers ...
 
 <img alt="Growing ATS OTCE NMS Trading Activity" src="https://user-images.githubusercontent.com/46355364/171168812-2e8dce0c-c81a-4de8-9442-7f1e2ae76da8.png"></img>
 
-`pos` provides a summary for the last reported trading day (information is updated in the early evening). Position represents a rolling twenty-day total and directional trends can be identified by watching the changes over time. Adding the `-a` flag will sort the list from the bottom up - the most negative - and creates a fuller picture when watching in tandom with the positive side of the ledger. Monitor the rate of change in position sizes, or a reversal in directional flow. This <a href="https://squeezemetrics.com/monitor/download/pdf/short_is_long.pdf?" target="_blank">white paper</a>, written by SqueezeMetrics, sheds some light on the trading activity reported here.
+`pos` provides a summary for the last reported trading day (information is updated in the early evening). Position represents a rolling twenty-day total and directional trends can be identified by watching the changes over time. Adding the `-a` flag will sort the list from the bottom up - the most negative - and creates a fuller picture when watching in tandom with the positive side of the ledger. Monitor the rate of change in position sizes, or a reversal in directional flow. This <a href="https://squeezemetrics.com/monitor/download/pdf/short_is_long.pdf?" target="_blank" rel="noreferrer noopener">white paper</a>, written by SqueezeMetrics, sheds some light on the trading activity reported here.
 
 ````
 (🦋) /stocks/dps/ $ pos -l 5

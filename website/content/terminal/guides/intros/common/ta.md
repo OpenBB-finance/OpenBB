@@ -41,9 +41,9 @@ excerpt: "This guide introduces the Technical Analysis menu, which is common acr
 
 The Technical Analysis menu offers the user a suite of tools for analyzing the technical components of an asset's trading history. The menu can be found in most wings of the Terminal:
 
-- <a href="/terminal/guides/intros/cryptocurrency/" target="_blank">Crypto</a>
-- <a href="/terminal/guides/intros/stocks/" target="_blank">Stocks</a>
-- <a href="/terminal/guides/intros/etf/" target="_blank">ETF</a>
+- <a href="/terminal/guides/intros/cryptocurrency/" target="_blank" rel="noreferrer noopener">Crypto</a>
+- <a href="/terminal/guides/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks</a>
+- <a href="/terminal/guides/intros/etf/" target="_blank" rel="noreferrer noopener">ETF</a>
 - <a href ="terminal/guides/intros/forex/" target="blank">ForEx</a>
 
 The commands are divided by categories that define their purpose for general-use:
@@ -55,7 +55,7 @@ The commands are divided by categories that define their purpose for general-use
 - Volume - Singling out volume
 - Custom - Fibonacci retracements
 
-All commands in this menu will rely on the interval and window chosen when <a href="/terminal/reference/stocks/load" target="_blank">loading an asset for analysis</a>. Refer to the directory tree on the left side of the page for information on individual commands. To get a better understanding of what these features are, and the formulas behind them, a number of sources should be consulted; but, a good starting point is <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank">Investopedia</a>.
+All commands in this menu will rely on the interval and window chosen when <a href="/terminal/reference/stocks/load" target="_blank" rel="noreferrer noopener">loading an asset for analysis</a>. Refer to the directory tree on the left side of the page for information on individual commands. To get a better understanding of what these features are, and the formulas behind them, a number of sources should be consulted; but, a good starting point is <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank" rel="noreferrer noopener">Investopedia</a>.
 
 ### How to use
 
@@ -67,11 +67,11 @@ Choose a beginning and end date to see a volume-weighted average price chart of 
 
 ![BTC VWAP YTD](https://user-images.githubusercontent.com/85772166/174499127-cc20f16c-dd68-4ce3-9d10-cd6ce762a346.png)
 
-The Fibonacci retracements are drawn with <a href="https://en.wikipedia.org/wiki/Fibonacci_number" target="_blank">`fib`</a>
+The Fibonacci retracements are drawn with <a href="https://en.wikipedia.org/wiki/Fibonacci_number" target="_blank" rel="noreferrer noopener">`fib`</a>
 
 ![SPY Fibonacci retracement from the recent lower high](https://user-images.githubusercontent.com/85772166/174499173-5d3dbdb7-8147-459b-88d3-7caae9102aa5.png)
 
-See the <a href="https://www.investopedia.com/terms/o/onbalancevolume.asp" target="_blank">on-balance volume</a> for the time-period loaded.
+See the <a href="https://www.investopedia.com/terms/o/onbalancevolume.asp" target="_blank" rel="noreferrer noopener">on-balance volume</a> for the time-period loaded.
 
 ![OBV for ARKK YTD](https://user-images.githubusercontent.com/85772166/174499183-42d246d9-0a0f-4c76-8c4e-de22ad2e396d.png)
 
