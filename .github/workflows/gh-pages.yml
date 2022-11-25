@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
-        uses: actions/checkout@3 # actions/checkout v3.0.2
+        uses: actions/checkout@v3 # actions/checkout v3.0.2
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -50,17 +50,8 @@ jobs:
           pytest tests/website --autodoc
           python website/generate_sdk_markdown.py && python website/generate_terminal_markdown.py
 
-      - name: Commit Documentation
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Update documentation
-
-  deploy:
-    name: Deploy to GitHub Pages
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
+      - name: Deploy to GitHub Pages
+        uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: yarn
