@@ -7,7 +7,6 @@ __docformat__ = "numpy"
 import logging
 import math
 import warnings
-from typing import List
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -38,7 +37,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_ef(portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs):
+def display_ef(portfolio_engine: PoEngine = None, **kwargs):
     """Display efficient frontier
 
     Parameters
@@ -46,8 +45,6 @@ def display_ef(portfolio_engine: PoEngine = None, symbols: List[str] = None, **k
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -99,32 +96,45 @@ def display_ef(portfolio_engine: PoEngine = None, symbols: List[str] = None, **k
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> frontier = openbb.portfolio.po.ef_chart(symbols=["AAPL", "MSFT", "AMZN"])
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> openbb.portfolio.po.ef_chart(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> frontier = openbb.portfolio.po.ef_chart(portfolio_engine=p)
+    >>> openbb.portfolio.po.ef_chart(portfolio_engine=p)
     """
 
-    valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
-    )
-
-    n_portfolios = valid_kwargs.get("n_portfolios", 100)
-    freq = valid_kwargs.get("freq", "D")
-    risk_measure = valid_kwargs.get("risk_measure", "MV")
-    risk_free_rate = valid_kwargs.get("risk_free_rate", 0.0)
-    alpha = valid_kwargs.get("alpha", 0.05)
+    n_portfolios = kwargs.get("n_portfolios", 100)
+    freq = kwargs.get("freq", "D")
+    risk_measure = kwargs.get("risk_measure", "MV")
+    risk_free_rate = kwargs.get("risk_free_rate", 0.0)
+    alpha = kwargs.get("alpha", 0.05)
 
     # Pop chart args
-    tangency = valid_kwargs.pop("tangency", False)
-    plot_tickers = valid_kwargs.pop("plot_tickers", False)
-    external_axes = valid_kwargs.pop("external_axes", None)
+    tangency = kwargs.pop("tangency", False)
+    plot_tickers = kwargs.pop("plot_tickers", False)
+    external_axes = kwargs.pop("external_axes", None)
 
     frontier, mu, cov, stock_returns, weights, X1, Y1, port = get_ef(
-        valid_portfolio_engine,
-        valid_symbols,
-        **valid_kwargs,
+        portfolio_engine,
+        **kwargs,
     )
 
     risk_free_rate = risk_free_rate / TIME_FACTOR[freq.upper()]

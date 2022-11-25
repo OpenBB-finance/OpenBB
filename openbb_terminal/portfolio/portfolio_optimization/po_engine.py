@@ -14,8 +14,7 @@ class PoEngine:
 
     def __init__(
         self,
-        symbols: List[str] = None,
-        categories: Dict[str, Dict[str, str]] = None,
+        symbols_categories: Dict[str, Dict[str, str]] = None,
         symbols_file_path: str = None,
         parameters_file_path: str = None,
     ):
@@ -23,9 +22,7 @@ class PoEngine:
 
         Parameters
         ----------
-        symbols : List[str]
-            List of symbols
-        categories : Dict[str, float], optional
+        symbols_categories : Dict[str, float], optional
             Categories, by default None
         symbols_file_path : str, optional
             Symbols file path, by default None
@@ -33,17 +30,16 @@ class PoEngine:
             Parameters file path, by default None
         """
 
-        self._categories: Dict[str, Dict[str, str]] = categories or {}
+        self._categories: Dict[str, Dict[str, str]] = symbols_categories or {}
         self._weights: Dict[str, float] = {}
         self._returns: pd.DataFrame = None
         self._params: Dict[str, float] = {}
         self._current_model: str
 
-        if symbols is not None:
-            if isinstance(symbols, list):
-                self._symbols: List[str] = symbols
-            else:
-                raise TypeError("'symbols' must be a list of strings.")
+        if symbols_categories is not None:
+            self._symbols: List[str] = PoEngine.get_symbols_from_categories(
+                symbols_categories
+            )
         elif symbols_file_path is not None:
             self._symbols, self._categories = excel_model.load_allocation(
                 symbols_file_path
@@ -55,6 +51,40 @@ class PoEngine:
             self._params, self._current_model = params_view.load_file(
                 parameters_file_path
             )
+
+    @staticmethod
+    def get_symbols_from_categories(
+        symbols_categories: Dict[str, Dict[str, str]]
+    ) -> List[str]:
+        """Get the symbols from the categories dictionary
+
+        Parameters
+        ----------
+        symbols_categories : Dict[str, Dict[str, str]], optional
+            Categories
+
+        Returns
+        -------
+        List[str]
+            List of symbols
+        """
+        if isinstance(symbols_categories, dict):
+            try:
+                symbols = []
+                for item in symbols_categories.items():
+                    _, values = item
+                    for v in values.keys():
+                        symbols.append(v)
+
+                return list(set(symbols))
+
+            except Exception:
+                console.print(
+                    "Unsupported dictionary format. See `portfolio.po.load` examples for correct format."
+                )
+                return []
+        else:
+            raise TypeError("'symbols_categories' must be a dictionary.")
 
     def get_symbols(self):
         return self._symbols
@@ -68,16 +98,6 @@ class PoEngine:
             Available categories
         """
         return list(self._categories.keys())
-
-    def set_categories_dict(self, categories: Dict[str, Dict[str, str]]):
-        """Set the categories
-
-        Parameters
-        ----------
-        categories : Dict[str, Dict[str, str]]
-            Categories
-        """
-        self._categories = categories
 
     def get_category(self, category: str = None) -> Dict[str, str]:
         """Get the category
