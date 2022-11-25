@@ -34,6 +34,9 @@ openbb.stocks.ca.similar(symbol: str, source: Any = "Finviz")
 
 ## Examples
 
+```
+To get similar tickers to AAPL from Finviz:
+```
 ```python
 from openbb_terminal.sdk import openbb
 similar_tickers = openbb.stocks.ca.similar("AAPL)
