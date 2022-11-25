@@ -128,7 +128,7 @@ To use a forecast model with default parameters, all that is required in the syn
 A basic, default, syntax will look like:
 
 ```python
-openbb.forecast.theta_chart(data = spy, target_column = ['Adj Close'])
+openbb.forecast.theta_chart(data = spy, target_column = 'Adj Close')
 ```
 
 The default number of days to predict for all models is five. If the interval of the time-series is not daily, days equates to the interval of the index.
