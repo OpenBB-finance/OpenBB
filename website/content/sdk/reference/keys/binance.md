@@ -42,7 +42,7 @@ openbb.keys.binance(
 ```
 
 ```
-        key="example_key",
+key="example_key",
         secret="example_secret"
     )
 ```

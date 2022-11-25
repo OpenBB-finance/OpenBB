@@ -43,7 +43,7 @@ openbb.keys.coinbase(
 ```
 
 ```
-        key="example_key",
+key="example_key",
         secret="example_secret",
         passphrase="example_passphrase"
     )

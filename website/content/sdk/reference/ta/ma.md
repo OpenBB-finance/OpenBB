@@ -52,7 +52,6 @@ openbb.ta.ma_chart(data=df["Adj Close"], symbol="AAPL", ma_type="EMA", window=[2
 
 ```
 
-
 ```
 ```python
 from openbb_terminal.sdk import openbb
@@ -107,7 +106,6 @@ openbb.ta.ma_chart(data=df["Adj Close"], symbol="AAPL", ma_type="EMA", window=[2
 ```
 
 ```
-
 
 ```
 ```python

@@ -40,7 +40,6 @@ wsj_futures = openbb.economy.futures()
 ```
 
 ```
-
 To sort by the largest percent change:
 ```
 ```python
@@ -48,7 +47,6 @@ futures_sorted = openbb.economy.futures().sort_values(by="%Chg", ascending=False
 ```
 
 ```
-
 FinViz provides different options for future types.  We can get Meats with the following command:
 ```
 ```python

@@ -40,7 +40,6 @@ EUR_USD_quote = openbb.forex.quote("EURUSD")
 ```
 
 ```
-
 This also supports AlphaVantage and will handle different conventions
 ```
 ```python

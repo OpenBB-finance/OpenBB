@@ -42,7 +42,7 @@ openbb.keys.smartstake(
 ```
 
 ```
-        key="example_key",
+key="example_key",
         access_token="example_access_token",
         )
 ```

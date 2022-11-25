@@ -66,7 +66,6 @@ openbb.portfolio.po.relriskparity(symbols=["AAPL", "MSFT", "AMZN"])
  {'Return': 0.19946844097475216,
   'Volatility': 0.290746544981364,
   'Sharpe ratio': 0.6860561008129521})
-
 ```
 ```python
 from openbb_terminal.sdk import openbb

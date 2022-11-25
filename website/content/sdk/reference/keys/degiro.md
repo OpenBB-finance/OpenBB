@@ -43,7 +43,7 @@ openbb.keys.degiro(
 ```
 
 ```
-        username="example_username",
+username="example_username",
         password="example_password"
     )
 ```

@@ -41,9 +41,7 @@ aapl_option_chain = openbb.stocks.options.chains("AAPL", source = "Nasdaq")
 ```
 
 ```
-
 To get a specific expiration date, use the expiration parameter
-
 ```
 ```python
 aapl_chain_date = openbb.stocks.options.chains("AAPL", expiration="2023-07-21", source="Nasdaq")

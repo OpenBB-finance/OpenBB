@@ -56,7 +56,6 @@ openbb.portfolio.po.equal(symbols=["AAPL", "MSFT", "AMZN"])
  {'Return': 0.22459515482054027,
   'Volatility': 0.32898777497511816,
   'Sharpe ratio': 0.6826854123607685})
-
 ```
 ```python
 from openbb_terminal.sdk import openbb

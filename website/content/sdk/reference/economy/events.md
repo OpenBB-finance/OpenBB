@@ -35,16 +35,15 @@ openbb.economy.events(countries: Union[List[str], str] = "", start_date: Optiona
 
 ## Examples
 
-```
+
 Get todays economic calendar for the United States
-```
+
 ```python
 from openbb_terminal.sdk import openbb
 calendar = openbb.economy.events("United States")
 ```
 
 ```
-
 To get multiple countries for a given date, pass the same start and end date as well as
 a list of countries
 ```

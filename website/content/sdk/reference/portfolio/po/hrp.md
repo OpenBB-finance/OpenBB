@@ -73,7 +73,6 @@ openbb.portfolio.po.hrp(symbols=["AAPL", "MSFT", "AMZN"])
  {'Return': 0.20463517260107467,
   'Volatility': 0.3313935169747041,
   'Sharpe ratio': 0.6174990219156727})
-
 ```
 ```python
 from openbb_terminal.sdk import openbb

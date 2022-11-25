@@ -66,7 +66,6 @@ openbb.portfolio.po.blacklitterman(symbols=["AAPL", "MSFT", "AMZN"])
  {'Return': 0.2563301105112327,
   'Volatility': 0.33132073874339424,
   'Sharpe ratio': 0.7736615325784322})
-
 ```
 ```python
 from openbb_terminal.sdk import openbb

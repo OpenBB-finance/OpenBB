@@ -39,7 +39,6 @@ global_market_data = openbb.crypto.ov.globals()
 ```
 
 ```
-
 To get data from CoinPaprika, use the source parameter:
 ```
 ```python

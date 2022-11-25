@@ -45,7 +45,7 @@ openbb.keys.reddit(
 ```
 
 ```
-        client_id="example_id",
+client_id="example_id",
         client_secret="example_secret",
         password="example_password",
         username="example_username",

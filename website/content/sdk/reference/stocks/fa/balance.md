@@ -43,7 +43,6 @@ balance_sheet = openbb.stocks.fa.balance("AAPL", source="YahooFinance)
 ```
 
 ```
-
 If you have a premium AlphaVantage key, you can use the quarterly flag to get quarterly statements
 ```
 ```python

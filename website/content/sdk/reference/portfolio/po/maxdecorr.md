@@ -59,7 +59,6 @@ openbb.portfolio.po.maxdecorr(symbols=["AAPL", "MSFT", "AMZN"])
  {'Return': 0.2142767096699773,
   'Volatility': 0.33184082287769623,
   'Sharpe ratio': 0.6457213666835423})
-
 ```
 ```python
 from openbb_terminal.sdk import openbb

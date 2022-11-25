@@ -56,7 +56,6 @@ openbb.portfolio.po.mktcap(symbols=["AAPL", "MSFT", "AMZN"])
  {'Return': 0.25830567048487474,
   'Volatility': 0.33058479906988086,
   'Sharpe ratio': 0.7813597939519071})
-
 ```
 ```python
 from openbb_terminal.sdk import openbb

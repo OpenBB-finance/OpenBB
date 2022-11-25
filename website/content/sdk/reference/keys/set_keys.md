@@ -41,7 +41,7 @@ d = {
 ```
 
 ```
-        "fred": {"key": "XXXXX"},
+"fred": {"key": "XXXXX"},
         "binance": {"key": "YYYYY", "secret": "ZZZZZ"},
     }
 ```

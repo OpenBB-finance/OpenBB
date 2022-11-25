@@ -57,7 +57,6 @@ openbb.portfolio.po.property(symbols=["AAPL", "MSFT", "AMZN"], prop="forwardPE")
  {'Return': 0.18287266638517774,
   'Volatility': 0.3386418179319469,
   'Sharpe ratio': 0.5400179679578959})
-
 ```
 ```python
 from openbb_terminal.sdk import openbb

@@ -73,7 +73,6 @@ openbb.portfolio.po.nco(symbols=["AAPL", "MSFT", "AMZN"])
  {'Return': 0.2248615963428331,
   'Volatility': 0.32736590080425004,
   'Sharpe ratio': 0.6868815468880802})
-
 ```
 ```python
 from openbb_terminal.sdk import openbb

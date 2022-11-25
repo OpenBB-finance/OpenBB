@@ -39,8 +39,6 @@ df = get_global_cases("United States")
 
 ```
 Dataframe of historical cases for United States
-
-
 ```
 ```python
 df = get_global_cases("Portugal")
@@ -48,8 +46,6 @@ df = get_global_cases("Portugal")
 
 ```
 Dataframe of historical cases for Portugal
-
-
 ```
 ```python
 df = get_global_cases("Spain")

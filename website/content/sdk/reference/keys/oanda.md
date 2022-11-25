@@ -43,7 +43,7 @@ openbb.keys.oanda(
 ```
 
 ```
-        account="example_account",
+account="example_account",
         access_token="example_access_token",
         account_type="example_account_type"
     )

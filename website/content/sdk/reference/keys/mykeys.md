@@ -39,7 +39,7 @@ openbb.keys.mykeys()
 ```
 
 ```
-                   Key
+Key
           API
  BITQUERY_KEY  *******
       CMC_KEY  *******

@@ -43,7 +43,7 @@ openbb.keys.twitter(
 ```
 
 ```
-        key="example_key",
+key="example_key",
         secret="example_secret",
         access_token="example_access_token"
     )

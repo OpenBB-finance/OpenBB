@@ -67,7 +67,6 @@ openbb.portfolio.po.maxsharpe(symbols=["AAPL", "MSFT", "AMZN"])
  {'Return': 0.3448948339574538,
   'Volatility': 0.36513261935342495,
   'Sharpe ratio': 0.9445741510802071})
-
 ```
 ```python
 from openbb_terminal.sdk import openbb

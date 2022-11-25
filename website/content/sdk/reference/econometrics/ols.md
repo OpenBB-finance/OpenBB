@@ -42,7 +42,7 @@ print(OLS_model.summary())`
 ```
 
 ```
-                            OLS Regression Results
+OLS Regression Results
 =======================================================================================
 Dep. Variable:                  lwage   R-squared (uncentered):                   0.920
 Model:                            OLS   Adj. R-squared (uncentered):              0.919

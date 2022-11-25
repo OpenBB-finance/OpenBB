@@ -54,7 +54,7 @@ print(pooled_ols_model.summary)
 ```
 
 ```
-                    PooledOLS Estimation Summary
+PooledOLS Estimation Summary
 ================================================================================
 Dep. Variable:                  lwage   R-squared:                        0.1634
 Estimator:                  PooledOLS   R-squared (Between):              0.1686

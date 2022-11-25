@@ -73,7 +73,6 @@ openbb.portfolio.po.herc(symbols=["AAPL", "MSFT", "AMZN"])
  {'Return': 0.16899696275924703,
   'Volatility': 0.34337400112782096,
   'Sharpe ratio': 0.49216586638525933})
-
 ```
 ```python
 from openbb_terminal.sdk import openbb

@@ -46,7 +46,7 @@ d = {
 ```
 
 ```
-        "SECTOR": {
+"SECTOR": {
             "AAPL": "INFORMATION TECHNOLOGY",
             "MSFT": "INFORMATION TECHNOLOGY",
             "AMZN": "CONSUMER DISCRETIONARY",
@@ -145,7 +145,7 @@ d = {
 ```
 
 ```
-        "SECTOR": {
+"SECTOR": {
             "AAPL": "INFORMATION TECHNOLOGY",
             "MSFT": "INFORMATION TECHNOLOGY",
             "AMZN": "CONSUMER DISCRETIONARY",

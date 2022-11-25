@@ -56,7 +56,6 @@ openbb.portfolio.po.dividend(symbols=["AAPL", "MSFT", "AMZN"])
  {'Return': 0.26879215033541076,
   'Volatility': 0.3348681656035649,
   'Sharpe ratio': 0.8026805111526232})
-
 ```
 ```python
 from openbb_terminal.sdk import openbb

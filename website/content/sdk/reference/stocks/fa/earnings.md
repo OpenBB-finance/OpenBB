@@ -41,7 +41,6 @@ aapl_earnings = openbb.stocks.fa.earnings("AAPL", source ="YahooFinance)
 ```
 
 ```
-
 To obtain quarterly earnings, use the quarterly flag with AlphaVantage
 ```
 ```python

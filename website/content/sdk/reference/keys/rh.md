@@ -42,7 +42,7 @@ openbb.keys.rh(
 ```
 
 ```
-        username="example_username",
+username="example_username",
         password="example_password"
     )
 ```

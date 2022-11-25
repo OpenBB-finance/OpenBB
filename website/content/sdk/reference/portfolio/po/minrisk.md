@@ -60,14 +60,13 @@ openbb.portfolio.po.minrisk(symbols=["AAPL", "MSFT", "AMZN"])
 ```
 
 ```
-    (        value
+(        value
      AAPL  0.25044
      MSFT  0.49509
      AMZN  0.25447,
      {'Return': 0.2248615963428331,
       'Volatility': 0.32736590080425004,
       'Sharpe ratio': 0.6868815468880802})
-
 ```
 ```python
 from openbb_terminal.sdk import openbb
