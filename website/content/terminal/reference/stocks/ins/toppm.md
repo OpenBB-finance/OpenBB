@@ -10,7 +10,7 @@ Print top officer purchases of the month. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: toppm [-l LIMIT]
+toppm [-l LIMIT]
 ```
 
 ---

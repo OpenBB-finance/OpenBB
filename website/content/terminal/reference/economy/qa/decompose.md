@@ -10,7 +10,7 @@ Decompose time series as: - Additive Time Series = Level + CyclicTrend + Residua
 ### Usage
 
 ```python
-usage: decompose [-m]
+decompose [-m]
 ```
 
 ---

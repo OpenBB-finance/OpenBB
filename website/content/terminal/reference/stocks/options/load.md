@@ -10,7 +10,7 @@ Load a ticker into option menu
 ### Usage
 
 ```python
-usage: load -t TICKER
+load -t TICKER
 ```
 
 ---

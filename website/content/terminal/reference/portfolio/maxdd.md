@@ -10,7 +10,7 @@ Show portfolio maximum drawdown
 ### Usage
 
 ```python
-usage: maxdd
+maxdd
 ```
 
 ---

@@ -10,7 +10,7 @@ Provides top penny stocks from various websites. [Source: Yfinance]
 ### Usage
 
 ```python
-usage: hotpenny [-l LIMIT]
+hotpenny [-l LIMIT]
 ```
 
 ---

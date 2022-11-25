@@ -10,7 +10,7 @@ Print up to 30 of the last messages on the board. [Source: Stocktwits]
 ### Usage
 
 ```python
-usage: messages [-l LIMIT]
+messages [-l LIMIT]
 ```
 
 ---

@@ -10,7 +10,7 @@ Get top of book for loaded ticker from selected exchange
 ### Usage
 
 ```python
-usage: quote -t S_TICKER [-e {BZX,EDGX,BYX,EDGA}]
+quote -t S_TICKER [-e {BZX,EDGX,BYX,EDGA}]
 ```
 
 ---

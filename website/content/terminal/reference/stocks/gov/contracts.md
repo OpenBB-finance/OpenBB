@@ -10,7 +10,7 @@ Contracts associated with ticker. [Source: www.quiverquant.com]
 ### Usage
 
 ```python
-usage: contracts [-p PAST_TRANSACTION_DAYS] [--raw]
+contracts [-p PAST_TRANSACTION_DAYS] [--raw]
 ```
 
 ---

@@ -10,7 +10,7 @@ Display asset's links [Source: https://messari.io]
 ### Usage
 
 ```python
-usage: links
+links
 ```
 
 ---

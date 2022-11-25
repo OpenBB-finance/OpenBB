@@ -10,7 +10,7 @@ Stocks trending. [Source: Stocktwits]
 ### Usage
 
 ```python
-usage: trending
+trending
 ```
 
 ---

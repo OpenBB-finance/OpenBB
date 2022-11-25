@@ -10,7 +10,7 @@ The Stochastic Oscillator measures where the close is in relation to the recent 
 ### Usage
 
 ```python
-usage: stoch [-k N_FASTKPERIOD] [-d N_SLOWDPERIOD] [--slowkperiod N_SLOWKPERIOD]
+stoch [-k N_FASTKPERIOD] [-d N_SLOWDPERIOD] [--slowkperiod N_SLOWKPERIOD]
 ```
 
 ---

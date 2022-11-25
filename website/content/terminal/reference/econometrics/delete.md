@@ -10,7 +10,7 @@ The column you want to delete from a dataset.
 ### Usage
 
 ```python
-usage: delete [-d DELETE]
+delete [-d DELETE]
 ```
 
 ---

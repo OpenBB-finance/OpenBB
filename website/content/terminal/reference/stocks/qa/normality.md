@@ -10,7 +10,7 @@ Normality tests
 ### Usage
 
 ```python
-usage: normality
+normality
 ```
 
 ---

@@ -10,7 +10,7 @@ Shows top blockchain games [Source: https://dappradar.com/] Accepts --sort {Name
 ### Usage
 
 ```python
-usage: games [-l LIMIT] [-s SORTBY [SORTBY ...]]
+games [-l LIMIT] [-s SORTBY [SORTBY ...]]
 ```
 
 ---

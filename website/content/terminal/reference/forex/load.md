@@ -10,7 +10,7 @@ Load historical exchange rate data.Available data sources are Alpha Advantage an
 ### Usage
 
 ```python
-usage: load [-t TICKER] [-r {i,d,w,m}] [-i {1min,5min,15min,30min,60min,90min,1hour,1day,5day,1week,1month,3month}] [-s START_DATE]
+load [-t TICKER] [-r {i,d,w,m}] [-i {1min,5min,15min,30min,60min,90min,1hour,1day,5day,1week,1month,3month}] [-s START_DATE]
 ```
 
 ---

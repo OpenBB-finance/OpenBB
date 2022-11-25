@@ -10,7 +10,7 @@ Displays sector attribution of the portfolio compared to the S&P 500
 ### Usage
 
 ```python
-usage: attrib [-p {mtd,qtd,ytd,3m,6m,1y,3y,5y,10y,all}] [-t {relative,absolute}] [--raw [RAW]]
+attrib [-p {mtd,qtd,ytd,3m,6m,1y,3y,5y,10y,all}] [-t {relative,absolute}] [--raw [RAW]]
 ```
 
 ---

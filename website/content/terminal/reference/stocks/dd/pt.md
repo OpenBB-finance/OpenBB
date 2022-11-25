@@ -10,7 +10,7 @@ Prints price target from analysts. [Source: Business Insider]
 ### Usage
 
 ```python
-usage: pt [--raw] [-l LIMIT]
+pt [--raw] [-l LIMIT]
 ```
 
 ---

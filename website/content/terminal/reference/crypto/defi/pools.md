@@ -10,7 +10,7 @@ Display uniswap pools by volume. [Source: https://thegraph.com/en/]
 ### Usage
 
 ```python
-usage: pairs [-l LIMIT] [-s {volumeUSD,token0.name,token0.symbol,token1.name,token1.symbol,volumeUSD,txCount}] [-r]
+pairs [-l LIMIT] [-s {volumeUSD,token0.name,token0.symbol,token1.name,token1.symbol,volumeUSD,txCount}] [-r]
 ```
 
 ---

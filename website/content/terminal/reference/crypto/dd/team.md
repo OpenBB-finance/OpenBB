@@ -10,7 +10,7 @@ Display asset's team [Source: https://messari.io]
 ### Usage
 
 ```python
-usage: team
+team
 ```
 
 ---

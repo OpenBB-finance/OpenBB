@@ -10,7 +10,7 @@ Shows Net Short Vol. vs Position. [Source: Stockgrid]
 ### Usage
 
 ```python
-usage: spos [-n NUM] [-r]
+spos [-n NUM] [-r]
 ```
 
 ---

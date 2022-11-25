@@ -10,7 +10,7 @@ Future IPOs dates. [Source: https://finnhub.io]
 ### Usage
 
 ```python
-usage: fipo [-d DAYS] [-s END] [-l LIMIT]
+fipo [-d DAYS] [-s END] [-l LIMIT]
 ```
 
 ---

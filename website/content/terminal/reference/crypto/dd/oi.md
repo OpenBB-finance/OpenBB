@@ -10,7 +10,7 @@ Displays open interest by exchange for a certain asset [Source: https://coinglas
 ### Usage
 
 ```python
-usage: oi [-i {0,1,2,4}]
+oi [-i {0,1,2,4}]
 ```
 
 ---

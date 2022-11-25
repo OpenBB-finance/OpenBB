@@ -10,7 +10,7 @@ The greeks for a given option.
 ### Usage
 
 ```python
-usage: greeks [-d DIVIDEND] [-r RISK_FREE] [-p] [-m MIN] [-M MAX] [-a]
+greeks [-d DIVIDEND] [-r RISK_FREE] [-p] [-m MIN] [-M MAX] [-a]
 ```
 
 ---

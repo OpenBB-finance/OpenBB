@@ -10,7 +10,7 @@ Technical summary report provided by FinBrain's API. FinBrain Technologies devel
 ### Usage
 
 ```python
-usage: summary
+summary
 ```
 
 ---

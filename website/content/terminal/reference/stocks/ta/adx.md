@@ -10,7 +10,7 @@ The ADX is a Welles Wilder style moving average of the Directional Movement Inde
 ### Usage
 
 ```python
-usage: adx [-l N_LENGTH] [-s N_SCALAR] [-d N_DRIFT]
+adx [-l N_LENGTH] [-s N_SCALAR] [-d N_DRIFT]
 ```
 
 ---

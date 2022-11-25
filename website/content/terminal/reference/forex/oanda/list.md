@@ -10,7 +10,7 @@ List order history
 ### Usage
 
 ```python
-usage: list [-s STATE] [-l LIMIT]
+list [-s STATE] [-l LIMIT]
 ```
 
 ---

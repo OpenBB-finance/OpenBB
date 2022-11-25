@@ -10,7 +10,7 @@ Print top stocks being more heavily shorted. HighShortInterest.com provides a co
 ### Usage
 
 ```python
-usage: hsi [-l LIMIT]
+hsi [-l LIMIT]
 ```
 
 ---

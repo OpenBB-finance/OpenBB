@@ -10,7 +10,7 @@ Show transactions table
 ### Usage
 
 ```python
-usage: show
+show
 ```
 
 ---

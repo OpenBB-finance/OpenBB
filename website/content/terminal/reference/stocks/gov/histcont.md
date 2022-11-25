@@ -10,7 +10,7 @@ Quarterly-contracts historical [Source: www.quiverquant.com]
 ### Usage
 
 ```python
-usage: histcont [--raw]
+histcont [--raw]
 ```
 
 ---

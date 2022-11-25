@@ -10,7 +10,7 @@ Show cramer recommendation for loaded ticker
 ### Usage
 
 ```python
-usage: jctr
+jctr
 ```
 
 ---

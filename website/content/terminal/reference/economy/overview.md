@@ -10,7 +10,7 @@ Provide a market overview of a variety of options. This can be a general overvie
 ### Usage
 
 ```python
-usage: overview [-t {indices,usbonds,glbonds,currencies}]
+overview [-t {indices,usbonds,glbonds,currencies}]
 ```
 
 ---

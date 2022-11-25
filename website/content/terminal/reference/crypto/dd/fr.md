@@ -10,7 +10,7 @@ Display asset's fundraising details [Source: https://messari.io]
 ### Usage
 
 ```python
-usage: fr
+fr
 ```
 
 ---

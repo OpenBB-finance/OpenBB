@@ -10,7 +10,7 @@ See existing countries, or set country if arg specified
 ### Usage
 
 ```python
-usage: country [-n NAME [NAME ...]]
+country [-n NAME [NAME ...]]
 ```
 
 ---

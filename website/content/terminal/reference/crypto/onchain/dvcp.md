@@ -10,7 +10,7 @@ Display daily volume for given crypto pair [Source: https://graphql.bitquery.io/
 ### Usage
 
 ```python
-usage: dvcp -c COIN [-vs {ETH,USD,BTC,USDT}] [-d DAYS] [-s {date,exchange,base,quote,open,high,low,close,tradeAmount,trades}] [-r]
+dvcp -c COIN [-vs {ETH,USD,BTC,USDT}] [-d DAYS] [-s {date,exchange,base,quote,open,high,low,close,tradeAmount,trades}] [-r]
 ```
 
 ---

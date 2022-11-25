@@ -10,7 +10,7 @@ Print short interest and days to cover. [Source: Stockgrid]
 ### Usage
 
 ```python
-usage: sidtc [-l LIMIT] [-s {float,dtc,si}]
+sidtc [-l LIMIT] [-s {float,dtc,si}]
 ```
 
 ---

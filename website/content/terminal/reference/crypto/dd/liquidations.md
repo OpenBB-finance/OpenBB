@@ -10,7 +10,7 @@ Displays liquidations data for the loaded crypto asset [Source: https://coinglas
 ### Usage
 
 ```python
-usage: liquidations
+liquidations
 ```
 
 ---

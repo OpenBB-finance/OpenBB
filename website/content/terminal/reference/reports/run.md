@@ -10,7 +10,7 @@ Run a notebook from this folder: 'C:\Users\teh_coderer\OpenBBUserData\reports\cu
 ### Usage
 
 ```python
-usage: run -f {} [-p PARAMETERS [PARAMETERS ...]]
+run -f {} [-p PARAMETERS [PARAMETERS ...]]
 ```
 
 ---

@@ -10,7 +10,7 @@ Print latest cluster buys. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: lcb [-l LIMIT]
+lcb [-l LIMIT]
 ```
 
 ---

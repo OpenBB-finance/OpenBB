@@ -10,7 +10,7 @@ Shows social media corresponding to loaded coin. You can find there name of tele
 ### Usage
 
 ```python
-usage: social
+social
 ```
 
 ---

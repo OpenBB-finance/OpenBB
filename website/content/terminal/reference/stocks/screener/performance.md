@@ -10,7 +10,7 @@ Prints performance data of the companies that meet the pre-set filtering.
 ### Usage
 
 ```python
-usage: performance [-p Desired preset.] [-l LIMIT] [-r] [-s SORTBY]
+performance [-p Desired preset.] [-l LIMIT] [-r] [-s SORTBY]
 ```
 
 ---

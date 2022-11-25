@@ -10,7 +10,7 @@ Print several metrics about the company. The following fields are expected: Comp
 ### Usage
 
 ```python
-usage: data
+data
 ```
 
 ---

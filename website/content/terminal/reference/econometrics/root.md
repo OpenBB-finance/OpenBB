@@ -10,7 +10,7 @@ Show unit root tests of a column of a dataset
 ### Usage
 
 ```python
-usage: root -v {} [-r {c,ct,ctt,n}] [-k {c,ct}]
+root -v {} [-r {c,ct,ctt,n}] [-k {c,ct}]
 ```
 
 ---

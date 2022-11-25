@@ -10,7 +10,7 @@ Compute distribution of daily returns
 ### Usage
 
 ```python
-usage: distr [-p PERIOD]
+distr [-p PERIOD]
 ```
 
 ---

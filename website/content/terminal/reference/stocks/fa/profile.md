@@ -10,7 +10,7 @@ Prints information about, among other things, the industry, sector exchange and 
 ### Usage
 
 ```python
-usage: profile
+profile
 ```
 
 ---

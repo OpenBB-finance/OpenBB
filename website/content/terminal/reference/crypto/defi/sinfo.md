@@ -10,7 +10,7 @@ Displays staking info of a certain terra address. [Source: https://fcd.terra.dev
 ### Usage
 
 ```python
-usage: sinfo -a ADDRESS [-l LIMIT]
+sinfo -a ADDRESS [-l LIMIT]
 ```
 
 ---

@@ -10,7 +10,7 @@ Create custom data column from loaded datasets. Can be mathematical expressions 
 ### Usage
 
 ```python
-usage: eval [-q QUERY [QUERY ...]]
+eval [-q QUERY [QUERY ...]]
 ```
 
 ---

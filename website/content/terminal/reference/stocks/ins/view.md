@@ -10,7 +10,7 @@ View available presets under presets folder.
 ### Usage
 
 ```python
-usage: view [-p Desired preset]
+view [-p Desired preset]
 ```
 
 ---

@@ -10,7 +10,7 @@ Print latest insider purchases. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: lip [-l LIMIT]
+lip [-l LIMIT]
 ```
 
 ---

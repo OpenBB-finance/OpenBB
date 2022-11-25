@@ -10,7 +10,7 @@ Set preset from under presets folder.
 ### Usage
 
 ```python
-usage: set [-p Desired preset]
+set [-p Desired preset]
 ```
 
 ---

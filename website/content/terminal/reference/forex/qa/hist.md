@@ -10,7 +10,7 @@ Histogram with density and rug
 ### Usage
 
 ```python
-usage: hist [-b BINS]
+hist [-b BINS]
 ```
 
 ---

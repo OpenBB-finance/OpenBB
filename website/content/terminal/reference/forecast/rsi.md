@@ -10,15 +10,18 @@ Add rsi to dataset based on specific column.
 ### Usage
 
 ```python
-usage: rsi
+rsi [-d {}] [-c TARGET_COLUMN] [--period PERIOD]
 ```
 
 ---
 
 ## Parameters
 
-This command has no parameters
-
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| target_dataset | The name of the dataset you want to select | None | True | None |
+| target_column | The name of the specific column you want to use | close | True | None |
+| period | The period to use | 10 | True | None |
 
 
 ---

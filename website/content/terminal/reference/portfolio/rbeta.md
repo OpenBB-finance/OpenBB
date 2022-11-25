@@ -10,7 +10,7 @@ Show rolling beta portfolio vs benchmark
 ### Usage
 
 ```python
-usage: rbeta [-p PERIOD]
+rbeta [-p PERIOD]
 ```
 
 ---

@@ -10,7 +10,7 @@ Display info about your trading accounts on Coinbase
 ### Usage
 
 ```python
-usage: account [--all] [-c CURRENCY]
+account [--all] [-c CURRENCY]
 ```
 
 ---

@@ -10,7 +10,7 @@ Look at ETF sector holdings
 ### Usage
 
 ```python
-usage: weights [-m MIN] [--raw]
+weights [-m MIN] [--raw]
 ```
 
 ---

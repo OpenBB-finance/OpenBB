@@ -10,7 +10,7 @@ Tool to calculate APY from APR value. Compouding periods, i.e., the number of ti
 ### Usage
 
 ```python
-usage: aprtoapy [--apr APR] [-c COMPOUNDING] [-n]
+aprtoapy [--apr APR] [-c COMPOUNDING] [-n]
 ```
 
 ---

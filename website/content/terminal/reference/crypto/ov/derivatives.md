@@ -10,7 +10,7 @@ Shows list of crypto derivatives from CoinGecko Crypto derivatives are secondary
 ### Usage
 
 ```python
-usage: derivatives [-l LIMIT] [-s {Rank,Market,Symbol,Price,Pct_Change_24h,Contract_Type,Basis,Spread,Funding_Rate,Volume_24h}] [-r]
+derivatives [-l LIMIT] [-s {Rank,Market,Symbol,Price,Pct_Change_24h,Contract_Type,Basis,Spread,Funding_Rate,Volume_24h}] [-r]
 ```
 
 ---

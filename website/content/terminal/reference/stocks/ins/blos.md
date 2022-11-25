@@ -10,7 +10,7 @@ Print latest officer sales 100k. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: blos [-l LIMIT]
+blos [-l LIMIT]
 ```
 
 ---

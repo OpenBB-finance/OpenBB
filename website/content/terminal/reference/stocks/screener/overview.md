@@ -10,7 +10,7 @@ Prints overview data of the companies that meet the pre-set filtering.
 ### Usage
 
 ```python
-usage: overview [-p Desired preset.] [-l LIMIT] [-r] [-s SORT]
+overview [-p Desired preset.] [-l LIMIT] [-r] [-s SORT]
 ```
 
 ---

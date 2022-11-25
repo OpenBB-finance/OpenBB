@@ -10,7 +10,7 @@ Prints valuation data of the companies that meet the pre-set filtering.
 ### Usage
 
 ```python
-usage: valuation [-p Desired preset.] [-l LIMIT] [-r] [-s SORT]
+valuation [-p Desired preset.] [-l LIMIT] [-r] [-s SORT]
 ```
 
 ---

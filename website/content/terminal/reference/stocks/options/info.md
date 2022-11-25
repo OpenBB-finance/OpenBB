@@ -10,7 +10,7 @@ Display option data [Source: Barchart.com]
 ### Usage
 
 ```python
-usage: info
+info
 ```
 
 ---

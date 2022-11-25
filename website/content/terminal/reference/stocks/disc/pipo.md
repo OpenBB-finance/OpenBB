@@ -10,7 +10,7 @@ Past IPOs dates. [Source: https://finnhub.io]
 ### Usage
 
 ```python
-usage: pipo [-d DAYS] [-s START] [-l LIMIT]
+pipo [-d DAYS] [-s START] [-l LIMIT]
 ```
 
 ---

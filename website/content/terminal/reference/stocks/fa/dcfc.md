@@ -10,7 +10,7 @@ Prints the discounted cash flow of a company over time including the DCF of toda
 ### Usage
 
 ```python
-usage: dcfc [-l LIMIT] [-q]
+dcfc [-l LIMIT] [-q]
 ```
 
 ---

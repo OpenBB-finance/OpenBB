@@ -10,7 +10,7 @@ Displays info about token history. e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F9
 ### Usage
 
 ```python
-usage: th [-l LIMIT] [-s {value}] [-r] [--hash]
+th [-l LIMIT] [-s {value}] [-r] [--hash]
 ```
 
 ---

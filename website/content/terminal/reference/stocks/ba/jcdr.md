@@ -10,7 +10,7 @@ Show daily cramer recommendation
 ### Usage
 
 ```python
-usage: jcdr [-i]
+jcdr [-i]
 ```
 
 ---

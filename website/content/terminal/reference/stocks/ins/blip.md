@@ -10,7 +10,7 @@ Print latest insider purchases 25k. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: blip [-l LIMIT]
+blip [-l LIMIT]
 ```
 
 ---

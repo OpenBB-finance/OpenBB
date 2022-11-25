@@ -10,7 +10,7 @@ Discover trending coins (Top-7) on CoinGecko in the last 24 hours
 ### Usage
 
 ```python
-usage: trending
+trending
 ```
 
 ---

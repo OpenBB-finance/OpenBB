@@ -10,7 +10,7 @@ Get information about open trades.
 ### Usage
 
 ```python
-usage: trades
+trades
 ```
 
 ---

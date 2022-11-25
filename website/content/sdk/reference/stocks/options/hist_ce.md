@@ -13,10 +13,10 @@ import TabItem from '@theme/TabItem';
 
 Historic prices for a specific option [chartexchange]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/chartexchange_model.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/chartexchange_model.py#L19)]
 
 ```python
-openbb.stocks.options.hist_ce(symbol: str = "GME", date: str = "2021-02-05", call: bool = True, price: str | int | float = "90")
+openbb.stocks.options.hist_ce(symbol: str = "GME", date: str = "2021-02-05", call: bool = True, price: Union[str, int, float] = "90")
 ```
 
 ---
@@ -26,9 +26,9 @@ openbb.stocks.options.hist_ce(symbol: str = "GME", date: str = "2021-02-05", cal
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Ticker symbol to get historical data from | GME | True |
-| date | str|int|float | Date as a string YYYYMMDD | 2021-02-05 | True |
+| date | str | Date as a string YYYYMMDD | 2021-02-05 | True |
 | call | bool | Whether to show a call or a put | True | True |
-| price | str | Strike price for a specific option | 90 | True |
+| price | Union[str, Union[int, float]] | Strike price for a specific option | 90 | True |
 
 
 ---

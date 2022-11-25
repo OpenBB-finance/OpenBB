@@ -10,7 +10,7 @@ Displays most active ETF/Mutual funds from wsj.com/market-data
 ### Usage
 
 ```python
-usage: active
+active
 ```
 
 ---

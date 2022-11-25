@@ -10,7 +10,7 @@ Display summary of portfolio vs benchmark
 ### Usage
 
 ```python
-usage: summary [-p PERIOD] [-r RISK_FREE_RATE]
+summary [-p PERIOD] [-r RISK_FREE_RATE]
 ```
 
 ---

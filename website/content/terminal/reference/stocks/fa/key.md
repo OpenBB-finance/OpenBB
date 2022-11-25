@@ -10,7 +10,7 @@ Gives main key metrics about the company (it's a subset of the Overview data fro
 ### Usage
 
 ```python
-usage: key
+key
 ```
 
 ---

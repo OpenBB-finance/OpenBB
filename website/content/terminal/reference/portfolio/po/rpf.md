@@ -10,7 +10,7 @@ Remove one of the portfolios
 ### Usage
 
 ```python
-usage: rpf [-pf PORTFOLIOS]
+rpf [-pf PORTFOLIOS]
 ```
 
 ---

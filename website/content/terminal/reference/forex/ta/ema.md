@@ -10,7 +10,7 @@ The Exponential Moving Average is a staple of technical analysis and is used in 
 ### Usage
 
 ```python
-usage: ema [-l N_LENGTH] [-o N_OFFSET]
+ema [-l N_LENGTH] [-o N_OFFSET]
 ```
 
 ---

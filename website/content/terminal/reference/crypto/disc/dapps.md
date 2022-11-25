@@ -10,7 +10,7 @@ Shows top decentralized applications [Source: https://dappradar.com/] Accepts --
 ### Usage
 
 ```python
-usage: dapps [-l LIMIT] [-s SORTBY [SORTBY ...]]
+dapps [-l LIMIT] [-s SORTBY [SORTBY ...]]
 ```
 
 ---

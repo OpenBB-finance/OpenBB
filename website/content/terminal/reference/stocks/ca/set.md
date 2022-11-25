@@ -10,7 +10,7 @@ Select similar companies to compare with.
 ### Usage
 
 ```python
-usage: set [-s L_SIMILAR]
+set [-s L_SIMILAR]
 ```
 
 ---

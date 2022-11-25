@@ -10,7 +10,7 @@ Load file of stocks tickers with optional categories
 ### Usage
 
 ```python
-usage: load -f FILE [FILE ...]
+load -f FILE [FILE ...]
 ```
 
 ---

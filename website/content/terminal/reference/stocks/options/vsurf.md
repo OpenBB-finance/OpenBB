@@ -10,7 +10,7 @@ Plot 3D volatility surface.
 ### Usage
 
 ```python
-usage: vsurf [-z {IV,OI,LP}]
+vsurf [-z {IV,OI,LP}]
 ```
 
 ---

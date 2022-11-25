@@ -10,7 +10,7 @@ Shows performance of each trade and total performance of the portfolio versus th
 ### Usage
 
 ```python
-usage: performance [-t]
+performance [-t]
 ```
 
 ---

@@ -10,7 +10,7 @@ Display list of startups from ross index [Source: https://runacap.com/] Use --ch
 ### Usage
 
 ```python
-usage: rossidx [-s SORTBY [SORTBY ...]] [-r] [-c] [-g] [-t {stars,forks}]
+rossidx [-s SORTBY [SORTBY ...]] [-r] [-c] [-g] [-t {stars,forks}]
 ```
 
 ---

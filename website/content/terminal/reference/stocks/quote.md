@@ -10,7 +10,7 @@ Current quote for stock ticker
 ### Usage
 
 ```python
-usage: quote -t S_TICKER
+quote -t S_TICKER
 ```
 
 ---

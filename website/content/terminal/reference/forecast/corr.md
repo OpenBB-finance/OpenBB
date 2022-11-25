@@ -10,15 +10,16 @@ Plot correlation coefficients.
 ### Usage
 
 ```python
-usage: corr
+corr [-d {}]
 ```
 
 ---
 
 ## Parameters
 
-This command has no parameters
-
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| target_dataset | The name of the dataset you want to select | None | True | None |
 
 
 ---

@@ -10,7 +10,7 @@ The column you want to rename from a dataset.
 ### Usage
 
 ```python
-usage: rename [-d {}] -o OLDCOL -n NEWCOL
+rename [-d {}] -o OLDCOL -n NEWCOL
 ```
 
 ---

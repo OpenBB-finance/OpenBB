@@ -10,7 +10,7 @@ Select parameter file to use
 ### Usage
 
 ```python
-usage: file -f FILE [FILE ...]
+file -f FILE [FILE ...]
 ```
 
 ---

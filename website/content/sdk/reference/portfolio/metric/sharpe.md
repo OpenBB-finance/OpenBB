@@ -32,3 +32,13 @@ openbb.portfolio.metric.sharpe(portfolio_engine: portfolio_engine.PortfolioEngin
 | pd.DataFrame | DataFrame with sharpe ratio for portfolio and benchmark for different periods |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.metric.sharpe(p)
+```
+
+---
+

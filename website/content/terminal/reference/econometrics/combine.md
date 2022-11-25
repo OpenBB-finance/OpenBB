@@ -10,7 +10,7 @@ The columns you want to add to a dataset. The first argument is the dataset to a
 ### Usage
 
 ```python
-usage: combine [-d {}] [-c COLUMNS]
+combine [-d {}] [-c COLUMNS]
 ```
 
 ---

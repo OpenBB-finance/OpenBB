@@ -10,7 +10,7 @@ Show allocation of a swedish fund.
 ### Usage
 
 ```python
-usage: alswe [--focus {all,country,sector,holding}]
+alswe [--focus {all,country,sector,holding}]
 ```
 
 ---

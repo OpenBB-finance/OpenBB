@@ -10,7 +10,7 @@ Strategy where stock is bought when Price  EMA(l)
 ### Usage
 
 ```python
-usage: ema [-l LENGTH] [--spy] [--no_bench]
+ema [-l LENGTH] [--spy] [--no_bench]
 ```
 
 ---

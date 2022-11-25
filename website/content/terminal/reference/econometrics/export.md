@@ -10,7 +10,7 @@ Export dataset to Excel
 ### Usage
 
 ```python
-usage: export [-n NAME] [-t {xlsx,csv}]
+export [-n NAME] [-t {xlsx,csv}]
 ```
 
 ---

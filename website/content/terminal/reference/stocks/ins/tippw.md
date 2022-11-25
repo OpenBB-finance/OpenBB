@@ -10,7 +10,7 @@ Print top insider purchases of the week. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: tippw [-l LIMIT]
+tippw [-l LIMIT]
 ```
 
 ---

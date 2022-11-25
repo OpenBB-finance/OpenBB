@@ -10,7 +10,7 @@ Shows top NFT collections [Source: https://dappradar.com/] Accepts --sort {Name,
 ### Usage
 
 ```python
-usage: nft [-l LIMIT] [-s SORTBY [SORTBY ...]]
+nft [-l LIMIT] [-s SORTBY [SORTBY ...]]
 ```
 
 ---

@@ -10,7 +10,7 @@ Swap exclude international exchanges flag
 ### Usage
 
 ```python
-usage: exchange
+exchange
 ```
 
 ---

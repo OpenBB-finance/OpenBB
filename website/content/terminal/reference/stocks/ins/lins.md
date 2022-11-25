@@ -10,7 +10,7 @@ Prints information about inside traders. The following fields are expected: Date
 ### Usage
 
 ```python
-usage: lins [-l LIMIT]
+lins [-l LIMIT]
 ```
 
 ---

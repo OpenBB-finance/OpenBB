@@ -10,7 +10,7 @@ Shows basic information about loaded coin like: Name, Symbol, Description, Marke
 ### Usage
 
 ```python
-usage: info
+info
 ```
 
 ---

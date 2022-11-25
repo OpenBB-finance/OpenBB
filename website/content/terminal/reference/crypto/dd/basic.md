@@ -10,7 +10,7 @@ Get basic information for coin. Like: name, symbol, rank, type, description, pla
 ### Usage
 
 ```python
-usage: basic
+basic
 ```
 
 ---

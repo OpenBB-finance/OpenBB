@@ -10,7 +10,7 @@ Prints stock price, number of shares, market capitalization and enterprise value
 ### Usage
 
 ```python
-usage: enterprise [-l LIMIT] [-q]
+enterprise [-l LIMIT] [-q]
 ```
 
 ---

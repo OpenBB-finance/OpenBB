@@ -10,7 +10,7 @@ Print up to 25 top tech stocks with revenue and earnings growth in excess of 25%
 ### Usage
 
 ```python
-usage: gtech [-l LIMIT]
+gtech [-l LIMIT]
 ```
 
 ---

@@ -10,7 +10,7 @@ Print latest CEO/CFO sales 100k. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: blcs [-l LIMIT]
+blcs [-l LIMIT]
 ```
 
 ---

@@ -10,7 +10,7 @@ Display tokens trade-able on Uniswap DEX [Source: https://thegraph.com/en/]
 ### Usage
 
 ```python
-usage: tokens [--skip SKIP] [--limit LIMIT] [-s {index,symbol,name,tradeVolumeUSD,totalLiquidity,txCount}] [-r]
+tokens [--skip SKIP] [--limit LIMIT] [-s {index,symbol,name,tradeVolumeUSD,totalLiquidity,txCount}] [-r]
 ```
 
 ---

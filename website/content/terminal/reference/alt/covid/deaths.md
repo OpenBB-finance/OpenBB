@@ -10,7 +10,7 @@ Show historical deaths by country.
 ### Usage
 
 ```python
-usage: deaths
+deaths
 ```
 
 ---

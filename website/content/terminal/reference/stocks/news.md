@@ -10,7 +10,7 @@ latest news of the company
 ### Usage
 
 ```python
-usage: news [-d N_START_DATE] [-o] [-s SOURCES]
+news [-d N_START_DATE] [-o] [-s SOURCES]
 ```
 
 ---

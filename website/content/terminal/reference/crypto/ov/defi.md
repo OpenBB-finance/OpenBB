@@ -10,7 +10,7 @@ Shows global DeFi statistics DeFi or Decentralized Finance refers to financial s
 ### Usage
 
 ```python
-usage: defi
+defi
 ```
 
 ---

@@ -10,7 +10,7 @@ Show cost to borrow of stocks. [Source: Stocksera/Interactive Broker]
 ### Usage
 
 ```python
-usage: ctb [-n NUMBER] [--raw]
+ctb [-n NUMBER] [--raw]
 ```
 
 ---

@@ -10,7 +10,7 @@ Select stock ticker and alter the industry, sector, country and market cap accor
 ### Usage
 
 ```python
-usage: select -t TICKER
+select -t TICKER
 ```
 
 ---

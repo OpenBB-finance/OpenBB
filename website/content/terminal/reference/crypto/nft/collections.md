@@ -10,7 +10,7 @@ NFT Collections [Source: https://nftpricefloor.com/]
 ### Usage
 
 ```python
-usage: collections [--fp] [--sales]
+collections [--fp] [--sales]
 ```
 
 ---

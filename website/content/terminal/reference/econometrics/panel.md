@@ -10,7 +10,7 @@ Performs regression analysis on Panel Data. There are a multitude of options to 
 ### Usage
 
 ```python
-usage: panel -d DEPENDENT -i INDEPENDENT [-r {pols,re,bols,fe,fdols,POLS,RE,BOLS,FE,FDOLS}] [-e] [-t]
+panel -d DEPENDENT -i INDEPENDENT [-r {pols,re,bols,fe,fdols,POLS,RE,BOLS,FE,FDOLS}] [-e] [-t]
 ```
 
 ---

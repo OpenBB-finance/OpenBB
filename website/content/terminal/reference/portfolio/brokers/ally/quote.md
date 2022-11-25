@@ -10,7 +10,7 @@ Get stock quote
 ### Usage
 
 ```python
-usage: quote [-t TICKER]
+quote [-t TICKER]
 ```
 
 ---

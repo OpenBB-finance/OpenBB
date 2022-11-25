@@ -10,7 +10,7 @@ Rating over time (monthly). [Source: Finnhub]
 ### Usage
 
 ```python
-usage: rot [-l LIMIT] [--raw]
+rot [-l LIMIT] [--raw]
 ```
 
 ---

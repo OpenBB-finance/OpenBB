@@ -10,7 +10,7 @@ Prints in-depth ratios of a company over time. This can be either quarterly or a
 ### Usage
 
 ```python
-usage: ratios [-l LIMIT] [-q]
+ratios [-l LIMIT] [-q]
 ```
 
 ---

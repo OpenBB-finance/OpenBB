@@ -10,7 +10,7 @@ All time low data for loaded coin
 ### Usage
 
 ```python
-usage: atl [--vs {usd,btc}]
+atl [--vs {usd,btc}]
 ```
 
 ---

@@ -10,7 +10,7 @@ Top buys for government trading. [Source: www.quiverquant.com]
 ### Usage
 
 ```python
-usage: topbuys [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_MONTHS] [-l LIMIT] [--raw]
+topbuys [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_MONTHS] [-l LIMIT] [--raw]
 ```
 
 ---

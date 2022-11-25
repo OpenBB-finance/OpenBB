@@ -10,7 +10,7 @@ Plot volume. Volume refers to the number of contracts traded today.
 ### Usage
 
 ```python
-usage: vol [-m MIN] [-M MAX] [-c] [-p]
+vol [-m MIN] [-M MAX] [-c] [-p]
 ```
 
 ---

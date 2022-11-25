@@ -10,7 +10,7 @@ Print top insider purchases of the day. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: tipt [-l LIMIT]
+tipt [-l LIMIT]
 ```
 
 ---

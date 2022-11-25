@@ -10,7 +10,7 @@ Plots Volume + Open Interest of calls vs puts.
 ### Usage
 
 ```python
-usage: voi [-v MIN_VOL] [-m MIN_SP] [-M MAX_SP]
+voi [-v MIN_VOL] [-m MIN_SP] [-M MAX_SP]
 ```
 
 ---

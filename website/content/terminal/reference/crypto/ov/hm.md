@@ -10,7 +10,7 @@ Display cryptocurrencies heatmap with daily percentage change [Source: https://c
 ### Usage
 
 ```python
-usage: hm [-l LIMIT] [-c CATEGORY]
+hm [-l LIMIT] [-c CATEGORY]
 ```
 
 ---

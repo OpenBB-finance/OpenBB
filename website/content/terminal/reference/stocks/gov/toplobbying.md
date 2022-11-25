@@ -10,7 +10,7 @@ Top lobbying. [Source: www.quiverquant.com]
 ### Usage
 
 ```python
-usage: toplobbying [-l LIMIT] [--raw]
+toplobbying [-l LIMIT] [--raw]
 ```
 
 ---

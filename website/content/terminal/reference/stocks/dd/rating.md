@@ -10,7 +10,7 @@ Based on specific ratios, prints information whether the company is a (strong) b
 ### Usage
 
 ```python
-usage: rating [-l LIMIT]
+rating [-l LIMIT]
 ```
 
 ---

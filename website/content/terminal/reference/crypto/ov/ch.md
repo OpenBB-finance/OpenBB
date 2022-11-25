@@ -10,7 +10,7 @@ Display list of major crypto-related hacks [Source: https://rekt.news] Can be so
 ### Usage
 
 ```python
-usage: ch [-l LIMIT] [--sortby {Platform,Date,Amount [$],Audit,Slug,URL} [{Platform,Date,Amount [$],Audit,Slug,URL} ...]] [-r] [-s SORTBY]
+ch [-l LIMIT] [--sortby {Platform,Date,Amount [$],Audit,Slug,URL} [{Platform,Date,Amount [$],Audit,Slug,URL} ...]] [-r] [-s SORTBY]
 ```
 
 ---

@@ -10,7 +10,7 @@ Provides Expected Shortfall (short: ES) of the selected stock.
 ### Usage
 
 ```python
-usage: es [-m] [-d {laplace,student_t,logistic,normal}] [-p PERCENTILE]
+es [-m] [-d {laplace,student_t,logistic,normal}] [-p PERCENTILE]
 ```
 
 ---

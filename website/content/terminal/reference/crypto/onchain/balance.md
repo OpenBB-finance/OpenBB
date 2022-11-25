@@ -10,7 +10,7 @@ Display info about tokens on given ethereum blockchain balance. [Source: Ethplor
 ### Usage
 
 ```python
-usage: balance [-l LIMIT] [-s {index,balance,tokenName,tokenSymbol}] [-r]
+balance [-l LIMIT] [-s {index,balance,tokenName,tokenSymbol}] [-r]
 ```
 
 ---

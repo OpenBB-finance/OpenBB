@@ -10,7 +10,7 @@ Companies per Sectors based on Country and Market Cap
 ### Usage
 
 ```python
-usage: cps [-M MAX_SECTORS_TO_DISPLAY] [-m MIN_PCT_TO_DISPLAY_SECTOR] [-r]
+cps [-M MAX_SECTORS_TO_DISPLAY] [-m MIN_PCT_TO_DISPLAY_SECTOR] [-r]
 ```
 
 ---

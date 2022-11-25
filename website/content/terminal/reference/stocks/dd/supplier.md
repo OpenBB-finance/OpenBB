@@ -10,7 +10,7 @@ List of suppliers from ticker provided. [Source: CSIMarket]
 ### Usage
 
 ```python
-usage: supplier
+supplier
 ```
 
 ---

@@ -10,7 +10,7 @@ Load in a benchmark from a selected list or set your own based on the ticker.
 ### Usage
 
 ```python
-usage: bench -b BENCHMARK [BENCHMARK ...] [-s]
+bench -b BENCHMARK [BENCHMARK ...] [-s]
 ```
 
 ---

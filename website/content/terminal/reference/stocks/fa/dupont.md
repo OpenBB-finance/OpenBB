@@ -10,7 +10,7 @@ The extended dupont deconstructs return on equity to allow investors to understa
 ### Usage
 
 ```python
-usage: dupont [--raw]
+dupont [--raw]
 ```
 
 ---

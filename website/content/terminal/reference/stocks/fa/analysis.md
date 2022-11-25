@@ -10,7 +10,7 @@ Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]
 ### Usage
 
 ```python
-usage: analysis
+analysis
 ```
 
 ---

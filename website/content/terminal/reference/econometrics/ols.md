@@ -10,7 +10,7 @@ Performs an OLS regression on timeseries data.
 ### Usage
 
 ```python
-usage: ols -d DEPENDENT -i INDEPENDENT [--no-output]
+ols -d DEPENDENT -i INDEPENDENT [--no-output]
 ```
 
 ---

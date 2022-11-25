@@ -10,7 +10,7 @@ Sean Seah warnings. Check: Consistent historical earnings per share; Consistentl
 ### Usage
 
 ```python
-usage: warnings [-d]
+warnings [-d]
 ```
 
 ---

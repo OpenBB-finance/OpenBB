@@ -10,7 +10,7 @@ Load address for further analysis. You can analyze account address, token addres
 ### Usage
 
 ```python
-usage: address [-a] [-t] [-tx] --address ADDRESS
+address [-a] [-t] [-tx] --address ADDRESS
 ```
 
 ---

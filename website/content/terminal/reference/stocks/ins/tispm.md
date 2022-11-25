@@ -10,7 +10,7 @@ Print top insider sales of the month. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: tispm [-l LIMIT]
+tispm [-l LIMIT]
 ```
 
 ---

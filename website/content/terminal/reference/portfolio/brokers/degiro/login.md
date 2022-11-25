@@ -10,7 +10,7 @@ description: OpenBB Terminal Function
 ### Usage
 
 ```python
-usage: login [-otp ONE_TIME_PASSWORD]
+login [-otp ONE_TIME_PASSWORD]
 ```
 
 ---

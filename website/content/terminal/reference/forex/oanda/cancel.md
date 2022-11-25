@@ -10,7 +10,7 @@ Cancel a Pending Order.
 ### Usage
 
 ```python
-usage: cancel -i ORDERID
+cancel -i ORDERID
 ```
 
 ---

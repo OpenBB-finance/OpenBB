@@ -10,7 +10,7 @@ Calendar earnings of the company. Including revenue and earnings estimates. [Sou
 ### Usage
 
 ```python
-usage: cal
+cal
 ```
 
 ---

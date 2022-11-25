@@ -10,7 +10,7 @@ List your current open orders
 ### Usage
 
 ```python
-usage: orders [-l LIMIT] [-s {product_id,side,price,size,type,created_at,status}] [-r]
+orders [-l LIMIT] [-s {product_id,side,price,size,type,created_at,status}] [-r]
 ```
 
 ---

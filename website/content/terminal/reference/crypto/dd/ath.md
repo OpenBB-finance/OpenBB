@@ -10,7 +10,7 @@ All time high data for loaded coin
 ### Usage
 
 ```python
-usage: ath [--vs {usd,btc}]
+ath [--vs {usd,btc}]
 ```
 
 ---

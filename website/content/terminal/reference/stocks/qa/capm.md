@@ -10,7 +10,7 @@ Provides detailed information about a stock's risk compared to the market risk.
 ### Usage
 
 ```python
-usage: capm
+capm
 ```
 
 ---

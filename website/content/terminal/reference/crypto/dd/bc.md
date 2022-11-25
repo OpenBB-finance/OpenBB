@@ -10,7 +10,7 @@ Blockchain explorers URLs for loaded coin. Those are sites like etherescan.io or
 ### Usage
 
 ```python
-usage: bc
+bc
 ```
 
 ---

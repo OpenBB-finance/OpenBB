@@ -10,7 +10,7 @@ Print bullbear sentiment based on last 30 messages on the board. Also prints the
 ### Usage
 
 ```python
-usage: bullbear
+bullbear
 ```
 
 ---

@@ -10,7 +10,7 @@ Display top dApps (in terms of TVL) grouped by chain. [Source: https://docs.llam
 ### Usage
 
 ```python
-usage: gdapps [-l LIMIT]
+gdapps [-l LIMIT]
 ```
 
 ---

@@ -10,7 +10,7 @@ Set preset from custom and default ones.
 ### Usage
 
 ```python
-usage: set [-p Desired preset.]
+set [-p Desired preset.]
 ```
 
 ---

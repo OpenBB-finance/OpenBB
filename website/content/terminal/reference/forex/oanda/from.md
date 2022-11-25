@@ -10,7 +10,7 @@ Select the "from" currency symbol in a forex pair
 ### Usage
 
 ```python
-usage: from -n FROM_SYMBOL
+from -n FROM_SYMBOL
 ```
 
 ---

@@ -10,7 +10,7 @@ The CCI is designed to detect beginning and ending market trends. The range of 1
 ### Usage
 
 ```python
-usage: cci [-l N_LENGTH] [-s N_SCALAR]
+cci [-l N_LENGTH] [-s N_SCALAR]
 ```
 
 ---

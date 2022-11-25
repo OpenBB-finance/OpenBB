@@ -10,7 +10,7 @@ Print top insider sales of the week. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: tispw [-l LIMIT]
+tispw [-l LIMIT]
 ```
 
 ---

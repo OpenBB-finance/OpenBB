@@ -10,7 +10,7 @@ Display price and interval of confidence in real-time. [Source: Pyth]
 ### Usage
 
 ```python
-usage: price -s SYMBOL
+price -s SYMBOL
 ```
 
 ---

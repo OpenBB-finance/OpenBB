@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 Get list of crypto, fiats, commodity exchange rates from CoinGecko API [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L398)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L423)]
 
 ```python
 openbb.crypto.ov.exrates(sortby: str = "Name", ascend: bool = False)

@@ -10,7 +10,7 @@ Provides value at risk (short: VaR) of the selected portfolio.
 ### Usage
 
 ```python
-usage: var [-m] [-a] [-s] [-p PERCENTILE]
+var [-m] [-a] [-s] [-p PERCENTILE]
 ```
 
 ---

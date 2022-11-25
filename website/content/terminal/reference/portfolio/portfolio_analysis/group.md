@@ -10,7 +10,7 @@ Displays portfolio grouped by a given column
 ### Usage
 
 ```python
-usage: group [-g {}] [-a]
+group [-g {}] [-a]
 ```
 
 ---

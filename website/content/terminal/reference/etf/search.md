@@ -10,7 +10,7 @@ Search ETF by name [Source: FinanceDatabase/StockAnalysis.com]
 ### Usage
 
 ```python
-usage: search -n NAME [NAME ...] [-d DESCRIPTION [DESCRIPTION ...]]
+search -n NAME [NAME ...] [-d DESCRIPTION [DESCRIPTION ...]]
 ```
 
 ---

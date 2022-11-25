@@ -10,7 +10,7 @@ IBD Style Relative Strength Percentile Ranking of Stocks (i.e. 0-100 Score). Ran
 ### Usage
 
 ```python
-usage: rsp [-t]
+rsp [-t]
 ```
 
 ---

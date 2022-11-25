@@ -10,7 +10,7 @@ Adds a price to the list
 ### Usage
 
 ```python
-usage: add -p PRICE -c CHANCE
+add -p PRICE -c CHANCE
 ```
 
 ---

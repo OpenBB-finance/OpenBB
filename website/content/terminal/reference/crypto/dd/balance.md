@@ -10,7 +10,7 @@ Display balance
 ### Usage
 
 ```python
-usage: balance [--vs VS]
+balance [--vs VS]
 ```
 
 ---

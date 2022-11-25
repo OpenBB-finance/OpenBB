@@ -10,7 +10,7 @@ Display holdings of assets (in percentage)
 ### Usage
 
 ```python
-usage: holdp [-u]
+holdp [-u]
 ```
 
 ---

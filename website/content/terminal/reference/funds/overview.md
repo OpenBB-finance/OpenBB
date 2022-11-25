@@ -10,7 +10,7 @@ Show overview of funds from selected country.
 ### Usage
 
 ```python
-usage: overview [-l LIMIT]
+overview [-l LIMIT]
 ```
 
 ---

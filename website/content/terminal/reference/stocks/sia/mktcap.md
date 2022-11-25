@@ -10,7 +10,7 @@ Set mktcap to nano, micro, small, mid, large or mega
 ### Usage
 
 ```python
-usage: mktcap [-n {Nano,Micro,Small,Mid,Large,Mega,nano,micro,small,mid,large,mega}]
+mktcap [-n {Nano,Micro,Small,Mid,Large,Mega,nano,micro,small,mid,large,mega}]
 ```
 
 ---

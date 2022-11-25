@@ -10,7 +10,7 @@ Print top related queries with this stock's query. [Source: Google]
 ### Usage
 
 ```python
-usage: queries [-l LIMIT]
+queries [-l LIMIT]
 ```
 
 ---

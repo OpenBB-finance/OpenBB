@@ -10,7 +10,7 @@ Calculate profit or loss for given option settings.
 ### Usage
 
 ```python
-usage: calc [--put] [--sell] [-s STRIKE] [-p PREMIUM] [-m MIN] [-M MAX]
+calc [--put] [--sell] [-s STRIKE] [-p PREMIUM] [-m MIN] [-M MAX]
 ```
 
 ---

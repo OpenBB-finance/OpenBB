@@ -13,10 +13,10 @@ import TabItem from '@theme/TabItem';
 
 Get market cap over time for ticker. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L273)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L287)]
 
 ```python
-openbb.stocks.fa.mktcap(symbol: str, start_date: str = None)
+openbb.stocks.fa.mktcap(symbol: str, start_date: Optional[str] = None)
 ```
 
 ---
@@ -26,7 +26,7 @@ openbb.stocks.fa.mktcap(symbol: str, start_date: str = None)
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Ticker to get market cap over time | None | False |
-| start_date | str | Initial date (e.g., 2021-10-01). Defaults to 3 years back | None | True |
+| start_date | Optional[str] | Initial date (e.g., 2021-10-01). Defaults to 3 years back | None | True |
 
 
 ---
@@ -45,10 +45,10 @@ openbb.stocks.fa.mktcap(symbol: str, start_date: str = None)
 
 Display market cap over time. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_view.py#L335)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_view.py#L338)]
 
 ```python
-openbb.stocks.fa.mktcap_chart(symbol: str, start_date: str = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+openbb.stocks.fa.mktcap_chart(symbol: str, start_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -58,7 +58,7 @@ openbb.stocks.fa.mktcap_chart(symbol: str, start_date: str = None, export: str =
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Stock ticker symbol | None | False |
-| start_date | str | Initial date (e.g., 2021-10-01). Defaults to 3 years back | None | True |
+| start_date | Optional[str] | Initial date (e.g., 2021-10-01). Defaults to 3 years back | None | True |
 | export | str | Format to export data |  | True |
 | external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 

@@ -10,7 +10,7 @@ Prints a complete income statement over time. This can be either quarterly or an
 ### Usage
 
 ```python
-usage: income [-q] [-r] [-p column]
+income [-q] [-r] [-p column]
 ```
 
 ---

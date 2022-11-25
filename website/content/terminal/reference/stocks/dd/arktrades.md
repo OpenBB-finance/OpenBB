@@ -10,7 +10,7 @@ Get trades for ticker across all ARK funds.
 ### Usage
 
 ```python
-usage: arktrades [-l LIMIT] [-s]
+arktrades [-l LIMIT] [-s]
 ```
 
 ---

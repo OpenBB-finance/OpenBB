@@ -10,7 +10,7 @@ Close a trade by id.
 ### Usage
 
 ```python
-usage: closetrade [-i ORDERID] [-u UNITS]
+closetrade [-i ORDERID] [-u UNITS]
 ```
 
 ---

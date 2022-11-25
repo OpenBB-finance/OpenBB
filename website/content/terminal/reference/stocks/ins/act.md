@@ -10,7 +10,7 @@ Prints insider activity over time [Source: Business Insider]
 ### Usage
 
 ```python
-usage: act [--raw]
+act [--raw]
 ```
 
 ---

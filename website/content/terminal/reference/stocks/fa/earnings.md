@@ -10,7 +10,7 @@ Print earnings dates and reported EPS of the company. The following fields are e
 ### Usage
 
 ```python
-usage: earnings [-q] [-l LIMIT]
+earnings [-q] [-l LIMIT]
 ```
 
 ---

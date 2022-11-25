@@ -10,7 +10,7 @@ Show rolling sortino portfolio vs benchmark
 ### Usage
 
 ```python
-usage: rsort [-p PERIOD] [-r RISK_FREE_RATE]
+rsort [-p PERIOD] [-r RISK_FREE_RATE]
 ```
 
 ---

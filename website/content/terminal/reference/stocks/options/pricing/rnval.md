@@ -10,7 +10,7 @@ The risk neutral value of the options
 ### Usage
 
 ```python
-usage: rnval [-p] [-m MINI] [-M MAXI] [-r RISK]
+rnval [-p] [-m MINI] [-M MAXI] [-r RISK]
 ```
 
 ---

@@ -10,7 +10,7 @@ Displays historical TVL of different dApps. [Source: https://docs.llama.fi/api]
 ### Usage
 
 ```python
-usage: dtvl -d DAPPS
+dtvl -d DAPPS
 ```
 
 ---

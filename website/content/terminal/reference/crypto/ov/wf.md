@@ -10,7 +10,7 @@ Display top coins withdrawal fees [Source: https://withdrawalfees.com/]
 ### Usage
 
 ```python
-usage: wf [-l LIMIT]
+wf [-l LIMIT]
 ```
 
 ---

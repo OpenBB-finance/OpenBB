@@ -10,7 +10,7 @@ Show available portfolios to load.
 ### Usage
 
 ```python
-usage: view [-format {csv,json,xlsx,all}]
+view [-format {csv,json,xlsx,all}]
 ```
 
 ---

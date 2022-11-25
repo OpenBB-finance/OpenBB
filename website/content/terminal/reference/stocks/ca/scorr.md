@@ -10,7 +10,7 @@ FinBrain's sentiment correlation across similar tickers.
 ### Usage
 
 ```python
-usage: sentiment_compare [-r]
+sentiment_compare [-r]
 ```
 
 ---

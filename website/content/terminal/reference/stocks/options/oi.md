@@ -10,7 +10,7 @@ Plot open interest. Open interest represents the number of contracts that exist.
 ### Usage
 
 ```python
-usage: oi [-m MIN] [-M MAX] [-c] [-p]
+oi [-m MIN] [-M MAX] [-c] [-p]
 ```
 
 ---

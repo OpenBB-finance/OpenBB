@@ -32,13 +32,13 @@ excerpt: "This guide introduces the Due Diligence menu within the Stocks menu, e
 geekdocCollapseSection: true
 ---
 
-The Due Diligence submenu, located within the <a href="/terminal/guides/intros/stocks" target="_blank">`Stocks menu`</a>, is primarily for supplementing fundamental analysis with information such as analyst ratings and price targets over time, earnings estimates, SEC filings and business-to-business customers and suppliers. Entering the submenu requires having a ticker <a href="/terminal/reference/#explanation-of-commands" target="_blank">loaded</a> from the `Stocks` menu. With a stock selected, type `dd` into the command line and press `enter`.
+The Due Diligence submenu, located within the <a href="/terminal/guides/intros/stocks" target="_blank" rel="noreferrer noopener">`Stocks menu`</a>, is primarily for supplementing fundamental analysis with information such as analyst ratings and price targets over time, earnings estimates, SEC filings and business-to-business customers and suppliers. Entering the submenu requires having a ticker <a href="/terminal/reference/#explanation-of-commands" target="_blank" rel="noreferrer noopener">loaded</a> from the `Stocks` menu. With a stock selected, type `dd` into the command line and press `enter`.
 
 ![The Due Diligence submenu](https://user-images.githubusercontent.com/85772166/176110875-e23b0016-00a9-4fa0-b7e1-020a344c40ce.png)
 
 ### How to use
 
-With the same company, as loaded above, `sec -l 20` prints a table of the last twenty SEC filings from the company, and provides a link to a hosted document on <a href="https://marketwatch.com" target="_blank">MarketWatch</a>.
+With the same company, as loaded above, `sec -l 20` prints a table of the last twenty SEC filings from the company, and provides a link to a hosted document on <a href="https://marketwatch.com" target="_blank" rel="noreferrer noopener">MarketWatch</a>.
 
 ```
 (🦋) /stocks/dd/ $ sec -l 5

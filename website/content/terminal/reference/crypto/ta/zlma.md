@@ -10,7 +10,7 @@ The zero lag exponential moving average (ZLEMA) indicator was created by John Eh
 ### Usage
 
 ```python
-usage: zlma [-l N_LENGTH] [-o N_OFFSET]
+zlma [-l N_LENGTH] [-o N_OFFSET]
 ```
 
 ---

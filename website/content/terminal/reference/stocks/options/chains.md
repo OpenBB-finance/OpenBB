@@ -10,7 +10,7 @@ Display option chains
 ### Usage
 
 ```python
-usage: chains [-c] [-p] [-m MIN_SP] [-M MAX_SP] [-d TO_DISPLAY]
+chains [-c] [-p] [-m MIN_SP] [-M MAX_SP] [-d TO_DISPLAY]
 ```
 
 ---

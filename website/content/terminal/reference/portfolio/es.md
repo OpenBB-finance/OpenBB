@@ -10,7 +10,7 @@ Provides Expected Shortfall (short: ES) of the selected portfolio.
 ### Usage
 
 ```python
-usage: es [-m] [-d DIST] [-p PERCENTILE]
+es [-m] [-d DIST] [-p PERCENTILE]
 ```
 
 ---

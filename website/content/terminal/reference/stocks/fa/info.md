@@ -10,7 +10,7 @@ Print information about the company. The following fields are expected: Zip, Sec
 ### Usage
 
 ```python
-usage: info
+info
 ```
 
 ---

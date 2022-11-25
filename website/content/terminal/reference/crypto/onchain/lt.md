@@ -10,7 +10,7 @@ Display Trades on Decentralized Exchanges aggregated by DEX or Month [Source: ht
 ### Usage
 
 ```python
-usage: lt [-k {dex,time}] [-vs {ETH,USD,BTC,USDT}] [-l LIMIT] [-d DAYS] [-s {exchange,trades,tradeAmount}] [-r]
+lt [-k {dex,time}] [-vs {ETH,USD,BTC,USDT}] [-l LIMIT] [-d DAYS] [-s {exchange,trades,tradeAmount}] [-r]
 ```
 
 ---

@@ -1,12 +1,17 @@
 import json
 import os
+import shutil
 import traceback
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
 from openbb_terminal.rich_config import console
-from website.controller_doc_classes import ControllerDoc, LoadControllersDoc
+from website.controller_doc_classes import (
+    ControllerDoc,
+    LoadControllersDoc,
+    sub_names_full as subnames,
+)
 
 website_path = Path(__file__).parent.absolute()
 
@@ -109,7 +114,7 @@ def get_parser(ctrl: ControllerDoc) -> Dict[str, List[Dict[str, str]]]:
         param = {
             "cmd_name": cmd.replace("call_", ""),
             "actions": actions,
-            "usage": parser.format_usage(),
+            "usage": " ".join(parser.format_usage().split()).replace("usage: ", ""),
             "description": desc if desc else "",
         }
         commands.append(param)
@@ -137,7 +142,7 @@ def generate_markdown_section(meta: Dict[str, str], examples: Dict[str, str]) ->
 
     # head meta https://docusaurus.io/docs/markdown-features/head-metadata
     markdown = f"# {meta['cmd_name']}\n\n{meta['description']}\n\n"
-    markdown += f"### Usage\n\n```python\n{meta['usage']}```\n\n"
+    markdown += f"### Usage\n\n```python\n{meta['usage']}\n```\n\n"
 
     markdown += "---\n\n## Parameters\n\n"
     if meta["actions"]:
@@ -176,17 +181,14 @@ def add_todict(d: dict, location_path: list, cmd_name: str, full_path: str) -> d
     if len(location_path) > 1:
         add_todict(d[location_path[0]], location_path[1:], cmd_name, full_path)
     else:
-        d[location_path[0]][cmd_name] = (
-            "/terminal/features/"
-            + "/".join(full_path).replace(" ", "%20")
-            + "/"
-            + cmd_name
-        )
+        d[location_path[0]][
+            cmd_name
+        ] = f"/terminal/features/{'/'.join(full_path)}/{cmd_name}"
 
     return d
 
 
-def main():
+def main() -> bool:
     """Main function to generate markdown files"""
     console.print(
         "[bright_yellow]Loading Controllers... Please wait and ignore any errors, this is normal.[/bright_yellow]"
@@ -194,12 +196,20 @@ def main():
 
     load_ctrls = LoadControllersDoc()
     ctrls = load_ctrls.available_controllers()
+    kwargs = {"encoding": "utf-8", "newline": "\n"}
 
     console.print(
         "[bright_yellow]Generating markdown files... Don't ignore any errors now[/bright_yellow]"
     )
     content_path = website_path / "content/terminal/reference"
     terminal_ref = {}
+
+    for file in content_path.glob("*"):
+        if file.is_file():
+            file.unlink()
+        else:
+            shutil.rmtree(file)
+
     for ctrlstr in ctrls:
         try:
             ctrl = load_ctrls.get_controller_doc(ctrlstr)
@@ -218,30 +228,42 @@ def main():
                 filepath = f"{str(content_path)}/{'/'.join(trail)}/{cat['cmd_name']}.md"
 
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
-                with open(filepath, "w", encoding="utf-8") as f:
+                with open(filepath, "w", **kwargs) as f:
                     f.write(markdown)
 
         except Exception as e:
             traceback.print_exc()
             console.print(f"[red]Failed to generate markdown for {ctrlstr}: {e}[/red]")
+            return False
 
-    with open(content_path / "_category_.json", "w", encoding="utf-8") as f:
+    with open(content_path / "_category_.json", "w", **kwargs) as f:
         f.write(json.dumps({"label": "Terminal Reference", "position": 4}, indent=2))
 
-    with open(content_path / "index.md", "w", encoding="utf-8") as f:
+    with open(content_path / "index.md", "w", **kwargs) as f:
         f.write(
             f"# OpenBB Terminal Features\n\n{generate_index_markdown('', terminal_ref, 2)}"
         )
 
-    for file in content_path.glob("**/*.md"):
-        with open(file, "rb") as f:
-            content = f.read()
-        with open(file, "wb") as f:
-            f.write(content.replace(b"\n", b"").replace(b"\r", b"\n"))
+    def gen_category_json(fname: str, path: Path):
+        """Generate category json"""
+        fname = subnames[fname.lower()] if fname.lower() in subnames else fname.title()
+        with open(path / "_category_.json", "w", **kwargs) as f:
+            f.write(json.dumps({"label": fname}, indent=2))
+
+    def gen_category_recursive(nested_path: Path):
+        """Generate category json recursively"""
+        for folder in nested_path.iterdir():
+            if folder.is_dir():
+                gen_category_json(folder.name, folder)
+                gen_category_recursive(folder)  # pylint: disable=cell-var-from-loop
+
+    gen_category_recursive(content_path)
 
     console.print(
         "[green]Markdown files generated, check the website/content/terminal/reference/ folder[/green]"
     )
+
+    return True
 
 
 def generate_index_markdown(markdown, d, level):

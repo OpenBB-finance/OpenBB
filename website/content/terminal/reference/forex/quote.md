@@ -10,7 +10,7 @@ Get current exchange rate quote
 ### Usage
 
 ```python
-usage: quote
+quote
 ```
 
 ---

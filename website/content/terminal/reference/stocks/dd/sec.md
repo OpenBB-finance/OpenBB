@@ -10,7 +10,7 @@ Prints SEC filings of the company. The following fields are expected: Filing Dat
 ### Usage
 
 ```python
-usage: sec [-l LIMIT]
+sec [-l LIMIT]
 ```
 
 ---

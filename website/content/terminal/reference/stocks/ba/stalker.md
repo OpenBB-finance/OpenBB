@@ -10,7 +10,7 @@ Print up to the last 30 messages of a user. [Source: Stocktwits]
 ### Usage
 
 ```python
-usage: stalker [-u S_USER] [-l LIMIT]
+stalker [-u S_USER] [-l LIMIT]
 ```
 
 ---

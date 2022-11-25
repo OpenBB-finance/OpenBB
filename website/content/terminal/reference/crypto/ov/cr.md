@@ -10,7 +10,7 @@ Displays crypto {borrow,supply} interest rates for cryptocurrencies across sever
 ### Usage
 
 ```python
-usage: cr [-t {borrow,supply}] [-c CRYPTOS] [-p PLATFORMS]
+cr [-t {borrow,supply}] [-c CRYPTOS] [-p PLATFORMS]
 ```
 
 ---

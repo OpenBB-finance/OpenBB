@@ -10,7 +10,7 @@ Prints latest news about ETF, including date, title and web link. [Source: News 
 ### Usage
 
 ```python
-usage: news [-l LIMIT] [-d N_START_DATE] [-o] [-s SOURCES]
+news [-l LIMIT] [-d N_START_DATE] [-o] [-s SOURCES]
 ```
 
 ---

@@ -10,7 +10,7 @@ Show currently closed exchanges
 ### Usage
 
 ```python
-usage: exchange
+exchange
 ```
 
 ---

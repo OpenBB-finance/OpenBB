@@ -10,7 +10,7 @@ Daily returns
 ### Usage
 
 ```python
-usage: dret [-p PERIOD]
+dret [-p PERIOD]
 ```
 
 ---

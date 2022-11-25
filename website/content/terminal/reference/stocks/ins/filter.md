@@ -10,7 +10,7 @@ Print open insider filtered data using loaded preset. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: filter [-l LIMIT] [-u]
+filter [-l LIMIT] [-u]
 ```
 
 ---

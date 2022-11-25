@@ -10,7 +10,7 @@ Display stats about an opensea nft collection. e.g. alien-frens [Source: https:/
 ### Usage
 
 ```python
-usage: info -s SLUG
+info -s SLUG
 ```
 
 ---

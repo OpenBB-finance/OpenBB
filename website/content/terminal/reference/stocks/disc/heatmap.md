@@ -10,7 +10,7 @@ Get the SP 500 heatmap from finviz and display in interactive treemap
 ### Usage
 
 ```python
-usage: heatmap [-t {day,week,month,3month,6month,year,ytd}]
+heatmap [-t {day,week,month,3month,6month,year,ytd}]
 ```
 
 ---

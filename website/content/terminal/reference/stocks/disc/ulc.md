@@ -10,7 +10,7 @@ Print up to 25 potentially undervalued large cap stocks. [Source: Yahoo Finance]
 ### Usage
 
 ```python
-usage: ulc [-l LIMIT]
+ulc [-l LIMIT]
 ```
 
 ---

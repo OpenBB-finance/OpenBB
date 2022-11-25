@@ -10,15 +10,26 @@ Perform Random Walk with Drift forecast: https://nixtla.github.io/statsforecast/
 ### Usage
 
 ```python
-usage: rwd
+rwd [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw]
 ```
 
 ---
 
 ## Parameters
 
-This command has no parameters
-
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| naive | Show the naive baseline for a model. | False | True | None |
+| target_dataset | The name of the dataset you want to select | None | True | None |
+| target_column | The name of the specific column you want to use | close | True | None |
+| n_days | prediction days. | 5 | True | None |
+| seasonal | Seasonality: N: None, A: Additive, M: Multiplicative. | A | True | N, A, M |
+| start_window | Start point for rolling training and forecast window. 0.0-1.0 | 0.85 | True | None |
+| s_end_date | The end date (format YYYY-MM-DD) to select for testing | None | True | None |
+| s_start_date | The start date (format YYYY-MM-DD) to select for testing | None | True | None |
+| residuals | Show the residuals for the model. | False | True | None |
+| forecast_only | Do not plot the historical data without forecasts. | False | True | None |
+| export_pred_raw | Export predictions to a csv file. | False | True | None |
 
 
 ---

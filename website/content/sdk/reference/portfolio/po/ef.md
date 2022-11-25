@@ -53,6 +53,21 @@ openbb.portfolio.po.ef(portfolio_engine: portfolio_optimization.po_engine.PoEngi
 | Tuple[ | pd.DataFrame,<br/>pd.DataFrame,<br/>pd.DataFrame,<br/>pd.DataFrame,<br/>Optional[pd.DataFrame],<br/>NDArray[floating],<br/>NDArray[floating],<br/>rp.Portfolio, |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+frontier = openbb.portfolio.po.ef(symbols=["AAPL", "MSFT", "AMZN"])
+```
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+frontier = openbb.portfolio.po.ef(portfolio_engine=p)
+```
+
+---
+
 
 
 </TabItem>
@@ -96,6 +111,21 @@ openbb.portfolio.po.ef_chart(portfolio_engine: portfolio_optimization.po_engine.
 ## Returns
 
 This function does not return anything
+
+---
+
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+frontier = openbb.portfolio.po.ef_chart(symbols=["AAPL", "MSFT", "AMZN"])
+```
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+frontier = openbb.portfolio.po.ef_chart(portfolio_engine=p)
+```
 
 ---
 

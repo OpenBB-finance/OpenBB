@@ -10,7 +10,7 @@ Display crypto whales transactions. [Source: https://docs.whale-alert.io/]
 ### Usage
 
 ```python
-usage: whales [-m MIN] [-l LIMIT] [-s {date,symbol,blockchain,amount,amount_usd,from,to}] [-r] [-a]
+whales [-m MIN] [-l LIMIT] [-s {date,symbol,blockchain,amount,amount_usd,from,to}] [-r] [-a]
 ```
 
 ---

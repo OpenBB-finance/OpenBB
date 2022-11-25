@@ -10,7 +10,7 @@ Prints actual information about the company which is, among other things, the da
 ### Usage
 
 ```python
-usage: quote
+quote
 ```
 
 ---

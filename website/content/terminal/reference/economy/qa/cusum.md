@@ -10,7 +10,7 @@ Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 ### Usage
 
 ```python
-usage: cusum [-t THRESHOLD] [-d DRIFT]
+cusum [-t THRESHOLD] [-d DRIFT]
 ```
 
 ---

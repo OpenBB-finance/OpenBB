@@ -10,7 +10,7 @@ Select the symbol you wish to trade
 ### Usage
 
 ```python
-usage: symbol [-n SYMBOL]
+symbol [-n SYMBOL]
 ```
 
 ---

@@ -10,7 +10,7 @@ Look at government contracts [Source: www.quiverquant.com]
 ### Usage
 
 ```python
-usage: qtrcontracts [-l LIMIT] [-a {total,upmom,downmom}] [--raw]
+qtrcontracts [-l LIMIT] [-a {total,upmom,downmom}] [--raw]
 ```
 
 ---

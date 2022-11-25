@@ -10,7 +10,7 @@ Prints ownership data of the companies that meet the pre-set filtering.
 ### Usage
 
 ```python
-usage: ownership [-p Desired preset.] [-l LIMIT] [-r] [-s SORT]
+ownership [-p Desired preset.] [-l LIMIT] [-r] [-s SORT]
 ```
 
 ---

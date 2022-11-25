@@ -10,7 +10,7 @@ Summary statistics
 ### Usage
 
 ```python
-usage: summary
+summary
 ```
 
 ---

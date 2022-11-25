@@ -10,7 +10,7 @@ Print top stocks with lowest float. LowFloat.com provides a convenient sorted da
 ### Usage
 
 ```python
-usage: lowfloat [-l LIMIT]
+lowfloat [-l LIMIT]
 ```
 
 ---

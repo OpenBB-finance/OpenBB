@@ -10,7 +10,7 @@ description: OpenBB Terminal Function
 ### Usage
 
 ```python
-usage: update -p PRICE id
+update -p PRICE id
 ```
 
 ---

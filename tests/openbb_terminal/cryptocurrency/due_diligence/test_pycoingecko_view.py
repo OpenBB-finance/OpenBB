@@ -38,7 +38,7 @@ def get_bitcoin(mock_load):
     ) as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    df = load("btc", vs_currency="usd", source="YahooFinance")
+    df = load("btc", to_symbol="usd", source="YahooFinance")
     return df
 
 

@@ -10,7 +10,7 @@ Get historical data.
 ### Usage
 
 ```python
-usage: load --fund FUND [FUND ...] [-n] [-s START] [-e END]
+load --fund FUND [FUND ...] [-n] [-s START] [-e END]
 ```
 
 ---
@@ -21,7 +21,7 @@ usage: load --fund FUND [FUND ...] [-n] [-s START] [-e END]
 | ---- | ----------- | ------- | -------- | ------- |
 | fund | Fund string to search for | None | False | None |
 | name | Flag to indicate name provided instead of symbol. | False | True | None |
-| start | The starting date (format YYYY-MM-DD) of the fund | 2021-11-22 | True | None |
-| end | The ending date (format YYYY-MM-DD) of the fund | 2022-11-23 | True | None |
+| start | The starting date (format YYYY-MM-DD) of the fund | 2021-11-24 | True | None |
+| end | The ending date (format YYYY-MM-DD) of the fund | 2022-11-25 | True | None |
 
 ---

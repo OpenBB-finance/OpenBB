@@ -10,7 +10,7 @@ Displays historical values of the total sum of TVLs from all listed dApps. [Sour
 ### Usage
 
 ```python
-usage: stvl [-l LIMIT]
+stvl [-l LIMIT]
 ```
 
 ---

@@ -10,15 +10,16 @@ Show descriptive statistics of a dataset
 ### Usage
 
 ```python
-usage: desc
+desc [-d {}]
 ```
 
 ---
 
 ## Parameters
 
-This command has no parameters
-
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| target_dataset | The name of the dataset you want to select | None | True | None |
 
 
 ---

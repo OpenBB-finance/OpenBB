@@ -10,7 +10,7 @@ Bollinger Bands consist of three lines. The middle band is a simple moving avera
 ### Usage
 
 ```python
-usage: bbands [-l N_LENGTH] [-s N_STD] [-m {ema,sma,wma,hma,zlma}]
+bbands [-l N_LENGTH] [-s N_STD] [-m {ema,sma,wma,hma,zlma}]
 ```
 
 ---

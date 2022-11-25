@@ -10,7 +10,7 @@ Print ETF description summary
 ### Usage
 
 ```python
-usage: summary
+summary
 ```
 
 ---

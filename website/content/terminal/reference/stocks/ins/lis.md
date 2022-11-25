@@ -10,7 +10,7 @@ Print latest insider sales. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: lis [-l LIMIT]
+lis [-l LIMIT]
 ```
 
 ---

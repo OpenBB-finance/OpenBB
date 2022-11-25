@@ -10,7 +10,7 @@ Load portfolio risk parameters (ini or xlsx)
 ### Usage
 
 ```python
-usage: file -f FILE [FILE ...]
+file -f FILE [FILE ...]
 ```
 
 ---

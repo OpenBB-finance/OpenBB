@@ -10,7 +10,7 @@ Shows rolling spread measurement
 ### Usage
 
 ```python
-usage: spread [-w N_WINDOW]
+spread [-w N_WINDOW]
 ```
 
 ---

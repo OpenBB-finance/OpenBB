@@ -10,7 +10,7 @@ Print top officer purchases of the day. [Source: OpenInsider]
 ### Usage
 
 ```python
-usage: topt [-l LIMIT]
+topt [-l LIMIT]
 ```
 
 ---

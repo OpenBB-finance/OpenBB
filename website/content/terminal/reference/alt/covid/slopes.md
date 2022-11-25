@@ -10,7 +10,7 @@ Show countries with highest slopes.
 ### Usage
 
 ```python
-usage: slopes [-d DAYS] [-r] [-t THRESHOLD]
+slopes [-d DAYS] [-r] [-t THRESHOLD]
 ```
 
 ---

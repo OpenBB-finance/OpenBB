@@ -10,7 +10,7 @@ The quantiles are values which divide the distribution such that there is a give
 ### Usage
 
 ```python
-usage: quantile [-w N_WINDOW] [-q F_QUANTILE]
+quantile [-w N_WINDOW] [-q F_QUANTILE]
 ```
 
 ---

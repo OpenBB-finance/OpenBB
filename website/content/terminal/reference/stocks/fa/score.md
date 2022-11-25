@@ -10,7 +10,7 @@ Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Grah
 ### Usage
 
 ```python
-usage: score
+score
 ```
 
 ---

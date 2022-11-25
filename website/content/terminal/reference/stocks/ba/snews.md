@@ -10,7 +10,7 @@ Display stock price and headlines sentiment using VADER model over time. [Source
 ### Usage
 
 ```python
-usage: snews
+snews
 ```
 
 ---

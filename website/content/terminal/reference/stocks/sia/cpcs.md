@@ -10,7 +10,7 @@ Companies per Country based on Sector and Market Cap
 ### Usage
 
 ```python
-usage: cpcs [-M MAX_COUNTRIES_TO_DISPLAY] [-m MIN_PCT_TO_DISPLAY_COUNTRY] [-r]
+cpcs [-M MAX_COUNTRIES_TO_DISPLAY] [-m MIN_PCT_TO_DISPLAY_COUNTRY] [-r]
 ```
 
 ---

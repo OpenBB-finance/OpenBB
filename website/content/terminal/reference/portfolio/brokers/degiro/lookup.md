@@ -10,7 +10,7 @@ description: OpenBB Terminal Function
 ### Usage
 
 ```python
-usage: lookup [-l LIMIT] [-o OFFSET] search_text
+lookup [-l LIMIT] [-o OFFSET] search_text
 ```
 
 ---

@@ -10,7 +10,7 @@ Print top rising related queries with this stock's query. [Source: Google]
 ### Usage
 
 ```python
-usage: rise [-l LIMIT]
+rise [-l LIMIT]
 ```
 
 ---

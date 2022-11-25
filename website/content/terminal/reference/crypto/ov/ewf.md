@@ -10,7 +10,7 @@ Display exchange withdrawal fees [Source: https://withdrawalfees.com/]
 ### Usage
 
 ```python
-usage: ewf
+ewf
 ```
 
 ---

@@ -10,7 +10,7 @@ Remove similar tickers to compare with.
 ### Usage
 
 ```python
-usage: rmv [-s L_SIMILAR]
+rmv [-s L_SIMILAR]
 ```
 
 ---

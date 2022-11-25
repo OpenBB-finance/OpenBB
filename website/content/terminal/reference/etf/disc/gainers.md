@@ -10,7 +10,7 @@ Displays top ETF/Mutual fund gainers from wsj.com/market-data
 ### Usage
 
 ```python
-usage: gainers
+gainers
 ```
 
 ---

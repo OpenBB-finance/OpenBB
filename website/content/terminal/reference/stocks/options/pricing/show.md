@@ -10,7 +10,7 @@ Display prices
 ### Usage
 
 ```python
-usage: show
+show
 ```
 
 ---

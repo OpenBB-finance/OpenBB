@@ -10,7 +10,7 @@ Displays information about terra validators. [Source: https://fcd.terra.dev/swag
 ### Usage
 
 ```python
-usage: validators [-l LIMIT] [-s {validatorName,tokensAmount,votingPower,commissionRate,status,uptime}] [-r]
+validators [-l LIMIT] [-s {validatorName,tokensAmount,votingPower,commissionRate,status,uptime}] [-r]
 ```
 
 ---

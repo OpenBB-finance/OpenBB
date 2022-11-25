@@ -10,7 +10,7 @@ Print management team. Namely: Name, Title, Information from google and (potenti
 ### Usage
 
 ```python
-usage: mgmt
+mgmt
 ```
 
 ---

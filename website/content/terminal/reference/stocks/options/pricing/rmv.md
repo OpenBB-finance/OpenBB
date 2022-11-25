@@ -10,7 +10,7 @@ Removes a price from the list
 ### Usage
 
 ```python
-usage: rmv -p PRICE [-a]
+rmv -p PRICE [-a]
 ```
 
 ---

@@ -10,7 +10,7 @@ A Weighted Moving Average puts more weight on recent data and less on past data.
 ### Usage
 
 ```python
-usage: wma [-l N_LENGTH] [-o N_OFFSET]
+wma [-l N_LENGTH] [-o N_OFFSET]
 ```
 
 ---

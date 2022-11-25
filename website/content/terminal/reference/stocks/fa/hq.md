@@ -10,7 +10,7 @@ Opens in Google Maps HQ location of the company. [Source: Yahoo Finance]
 ### Usage
 
 ```python
-usage: hq
+hq
 ```
 
 ---

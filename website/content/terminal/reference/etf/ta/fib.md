@@ -10,7 +10,7 @@ Calculates the fibonacci retracement levels
 ### Usage
 
 ```python
-usage: fib [-p PERIOD] [--start START] [--end END]
+fib [-p PERIOD] [--start START] [--end END]
 ```
 
 ---

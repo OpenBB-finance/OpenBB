@@ -10,7 +10,7 @@ Search by category [Source: FinanceDatabase/StockAnalysis.com]
 ### Usage
 
 ```python
-usage: sbc -c CATEGORY [CATEGORY ...] [-l LIMIT]
+sbc -c CATEGORY [CATEGORY ...] [-l LIMIT]
 ```
 
 ---

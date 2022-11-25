@@ -10,7 +10,7 @@ Displays terra blockchain staking returns history. [Source: https://fcd.terra.de
 ### Usage
 
 ```python
-usage: sreturn [-l LIMIT]
+sreturn [-l LIMIT]
 ```
 
 ---

@@ -10,7 +10,7 @@ Display asset's project info [Source: https://messari.io]
 ### Usage
 
 ```python
-usage: pi
+pi
 ```
 
 ---

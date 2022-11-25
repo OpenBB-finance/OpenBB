@@ -10,7 +10,7 @@ Show Calendar Data
 ### Usage
 
 ```python
-usage: calendar [-d DAYS]
+calendar [-d DAYS]
 ```
 
 ---

@@ -10,7 +10,7 @@ The Fisher Transform is a technical indicator created by John F. Ehlers that con
 ### Usage
 
 ```python
-usage: fisher [-l N_LENGTH]
+fisher [-l N_LENGTH]
 ```
 
 ---

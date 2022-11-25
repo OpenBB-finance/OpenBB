@@ -10,7 +10,7 @@ Show Granger causality between two timeseries
 ### Usage
 
 ```python
-usage: granger [-t Available time series] [-l LAGS] [-c CONFIDENCE]
+granger [-t Available time series] [-l LAGS] [-c CONFIDENCE]
 ```
 
 ---

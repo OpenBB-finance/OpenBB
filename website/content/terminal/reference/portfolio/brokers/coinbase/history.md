@@ -10,7 +10,7 @@ Display account history
 ### Usage
 
 ```python
-usage: history [-a ACCOUNT] [-l LIMIT]
+history [-a ACCOUNT] [-l LIMIT]
 ```
 
 ---

@@ -10,7 +10,7 @@ Print Major, institutional and mutualfunds shareholders. [Source: Yahoo Finance]
 ### Usage
 
 ```python
-usage: shrs [--holder {major,institutional,mutualfund}]
+shrs [--holder {major,institutional,mutualfund}]
 ```
 
 ---

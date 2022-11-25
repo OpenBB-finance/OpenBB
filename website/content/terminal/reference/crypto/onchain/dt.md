@@ -10,7 +10,7 @@ Get daily transactions for certain symbols in ethereum blockchain [Source: https
 ### Usage
 
 ```python
-usage: dt
+dt
 ```
 
 ---
