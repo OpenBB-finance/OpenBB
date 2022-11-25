@@ -11,11 +11,11 @@ Once you have the OpenBB SDK installed, the first step is to import the OpenBB S
 from openbb_terminal.sdk import openbb
 ```
 
-Example snippets used in the remainder of this guide will assume the code block above is used, and that the `Python kernel` selected is the environment created during the installation process.
+Note that most snippets used in the guides will assume the code block above is used, and that the `Python kernel` selected is the environment created during the [installation process](/sdk/quickstart/installation).
 
 ## Navigation
 
-In the same way as operating the OpenBB Terminal, functions are divided into menus which are scrollable after code completion is activated. Entering a period, `.`, after `openbb`, will display the Sub-menus available.
+In the same way how the OpenBB Terminal is operated, functions are divided into menus which can be navigated after code completion is activated. Entering a period, `.`, after `openbb`, will display the Sub-menus available.
 
 ![Navigation](https://user-images.githubusercontent.com/85772166/202795900-5f1cb00a-a0ff-4899-b6e2-c5af54b653d1.png "Navigation")
 
@@ -27,7 +27,7 @@ help(openbb.stocks.dd)
 
 ### Docstrings
 
-In addition to Python's built-in help, docstrings are also displayed in the Contextual Help window, within a Jupyter environment; type hints included.
+In addition to Python's built-in help, docstrings are also displayed in the Contextual Help window, within a Jupyter environment; type hints are included.
 
 ```python
 help(openbb.economy.events)

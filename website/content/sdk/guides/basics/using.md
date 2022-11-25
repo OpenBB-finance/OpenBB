@@ -9,7 +9,7 @@ After you have imported the OpenBB SDK you are able to run many of the commands 
 from openbb_terminal.sdk import openbb
 ```
 
-For example, you are able to show Economic events by running the following command. Note that the results from data functions are not stored to memory unless explicitly instructed to. Most functions returning data are presented as a Pandas DataFrame.
+For example, you are able to show Economic events by running the following command. Note that the results from data functions are not stored to memory unless explicitly instructed to. Most functions that return data are presented as a Pandas DataFrame.
 
 ```python
 openbb.economy.events()
@@ -23,7 +23,7 @@ openbb.economy.events()
 |   3 | 02:00      | United Kingdom | Claimant Count Change         | 3.3K   | 17.3K     | 3.9K     | 2022-11-15 |
 |   4 | 02:00      | United Kingdom | Employment Change 3M/3M       | -52K   | -25K      | -109K    | 2022-11-15 |
 
-As most data is stored as a Pandas DataFrame, it becomes possible to adjust or filter the data. For example, the code block below will filter the results of the events function to display only events scheduled at a specific time.
+As most data is stored as a Pandas DataFrame, it is possible to adjust or filter the data directly through the use of the built-in functionalities of [Pandas](https://pandas.pydata.org/). For example, the code block below will filter the results of the events function to display only events scheduled at a specific time.
 
 ```python
 economic_calendar = openbb.economy.events()
@@ -41,7 +41,7 @@ events
 
 ### Passing Results to Another Function
 
-It may be desirable to derive that list from a different function. This can be useful for screening tickers, or analyzing particular industries or sectors. The Comparison Analysis sub-module, within Stocks, has one set of functions that can benefit from this kind of workflow. As an example, holdings with the highest allocation of the [Dow Jones Industrial Average ETF](https://www.ssga.com/us/en/intermediary/etfs/funds/spdr-dow-jones-industrial-average-etf-trust-dia) are used.
+It may be desirable to derive a list of tickers from a different function. This can be useful for screening tickers, or analyzing particular industries or sectors. The Comparison Analysis sub-module, within Stocks, has one set of functions that can benefit from this kind of workflow. As an example, holdings with the highest allocation of the [Dow Jones Industrial Average ETF](https://www.ssga.com/us/en/intermediary/etfs/funds/spdr-dow-jones-industrial-average-etf-trust-dia) are used.
 
 ```python
 symbols = openbb.etf.holdings('DIA')
@@ -64,7 +64,7 @@ dia_valuation.head(5)
 
 The OpenBB SDK has built-in charting libraries for Matplotlib, for any chart available from the Terminal. User style sheets can be added to the folder (more on this in [Importing and Exporting Data](/sdk/guides/basics/data)), `~/OpenBBUserData/styles/user`. Styles are shared properties between the OpenBB Terminal and the SDK.
 
-:::note Displaying charts in Jupyter Notebooks requires this additional line of code. You can either render a static image with `%matplotlib inline` or add in pan/zoom functionality with `%matplotlib widget`.
+:::note Displaying charts in Jupyter Notebooks requires an additional line of code. You can either render a static image with `%matplotlib inline` or add in pan/zoom functionality with `%matplotlib widget`.
 :::
 
 Functions, such as `candle`, exist to display charts. Others, like those within the Technical Analysis module, have the option to return either, a chart or raw data. The next examples will outline a few different scenarios. First, let's get some data:
@@ -76,7 +76,7 @@ spy_daily = openbb.stocks.load(
         monthly = True)
 ```
 
-Data from the previous example, `spy_daily`, can feed the inputs to the `openbb.stocks.candle` function, for example:
+Data from the previous example, `spy_daily`, can be used in the `openbb.stocks.candle` function, for example:
 
 ```python
 openbb.stocks.candle(
@@ -88,7 +88,7 @@ openbb.stocks.candle(
 
 ![openbb.stocks.candle](https://user-images.githubusercontent.com/85772166/202801049-083ec045-7038-440b-8a54-7a02269e4a40.png "openbb.stocks.candle")
 
-The function will also respond to individual tickers without saving the data as done with `load`:
+The function will also respond to individual tickers without saving the data first as done with `load`:
 
 ```python
 openbb.stocks.candle('SPY')
@@ -127,4 +127,4 @@ openbb.futures.curve_chart('GE')
 
 ![openbb.futures.curve](https://user-images.githubusercontent.com/85772166/201583945-18364efa-c305-4c1a-a032-f779e28894c8.png "openbb.futures.curve")
 
-The guides section for each module explore further functionality and provide sample code snippets.
+The intros section for each module explore further functionality and provide sample code snippets.

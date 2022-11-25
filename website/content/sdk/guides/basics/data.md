@@ -13,11 +13,4 @@ Within the folder you can find files that you have exported as well as files tha
 
 <img width="1231" alt="Screen Shot 2022-10-13 at 6 45 01 PM" src="https://user-images.githubusercontent.com/85772166/195742985-19f0e420-d8f7-4fea-a145-a0243b8f2ddc.png"></img>
 
-This folder contains all things user-created:
-
- - Screener presets
- - Portfolio files
- - Exported files
- - Files to be imported by various functions
- - Styles and themes
- - Preferred data sources
+This folder contains all things user-created which are, among other things screener presets, portfolio files, files exported directly from the code, styles and themes, preferred data sources and API keys.
