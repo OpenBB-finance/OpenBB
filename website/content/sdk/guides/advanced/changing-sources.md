@@ -34,7 +34,7 @@ The choices for `source` within this functionality are:
 - Polygon
 - EODHD
 
-Note that for each function, the variable can sources that are not described as above. As an example, using `openbb.stocks.fa.income` has the following sources:
+Note that for each function, the variable can have sources that are not described as above. As an example, `openbb.stocks.fa.income` has the following sources:
 
 - Polygon
 - YahooFinance
@@ -42,4 +42,4 @@ Note that for each function, the variable can sources that are not described as 
 - FinancialModelingPrep
 - EODHD
 
-Also note that some sources allow you to use certain variables while other won't allow you to do so. For example `YahooFinance` doesn't provide your with quarterly data whereas `AlphaVantage` does. Therefore, `quarterly=True` can not be used in combination with `source=YahooFinance`.
+Also note that some sources allow you to use certain variables while other do not. For example, `YahooFinance` doesn't provide you with quarterly data whereas `AlphaVantage` does. Therefore, `quarterly=True` can not be used in combination with `source=YahooFinance`.
