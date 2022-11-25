@@ -47,7 +47,7 @@ export default function NavbarLayout({ children }) {
         {
           header_docs_terminal: pathname.startsWith("/terminal"),
           header_docs_sdk: pathname.startsWith("/sdk"),
-          header_docs: pathname === "/",
+          header_docs: !pathname.startsWith("/terminal") && !pathname.startsWith("/sdk"),
         },
         "navbar",
         "navbar--fixed-top",
