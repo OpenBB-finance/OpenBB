@@ -71,19 +71,21 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
 
-      - name: Install Package
+      - name: Install Extra Doc
         run: poetry install --no-interaction -E doc
 
-      - name: Install Optimization Toolkit
-        run: poetry install -E optimization --no-interaction
+      - name: Install Extra Optimization
+        run: poetry install --no-interaction -E optimization
+
+      - name: Run Extra prediction
+        run: poetry install --no-interaction -E prediction
 
       - name: Run tests
         env:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pip install "u8darts[torch]"
-          pytest tests/ --autodoc
+          pytest tests/ --autodoc --prediction
 
       - name: Start Terminal and exit
         run: |
@@ -143,9 +145,6 @@ jobs:
 
       - name: Install Package
         run: poetry install --no-interaction
-
-      - name: Install Optimization Toolkit
-        run: poetry install -E optimization --no-interaction -E doc
 
       - name: List installed packages
         shell: bash -l {0}
