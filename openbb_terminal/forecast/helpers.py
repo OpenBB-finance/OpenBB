@@ -715,6 +715,8 @@ def get_prediction(
     forecast_horizon: int,
     n_predict: int,
 ):
+    _, val = ticker_series.split_before(train_split)
+
     print(f"Predicting {model_name} for {n_predict} days")
     if model_name not in ["Regression", "Logistic Regression"]:
         # need to create a new pytorch trainer for historical backtesting to remove progress bar
@@ -765,8 +767,8 @@ def get_prediction(
             prediction = best_model.predict(series=ticker_series, n=n_predict)
 
     precision = mape(
-        actual_series=ticker_series, pred_series=historical_fcast
-    )  # mape = mean average precision error
+        actual_series=val, pred_series=historical_fcast
+    )  # mape = mean average percentage error
     console.print(f"{model_name} model obtains MAPE: {precision:.2f}% \n")
 
     # scale back

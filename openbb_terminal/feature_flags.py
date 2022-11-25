@@ -26,6 +26,13 @@ load_dotenv(USER_ENV_FILE)
 load_dotenv(REPOSITORY_ENV_FILE, override=True)
 load_dotenv(PACKAGE_ENV_FILE, override=True)
 
+try:
+    __import__("git")
+except ImportError:
+    WITH_GIT = False
+else:
+    WITH_GIT = True
+
 
 # Retry unknown commands with `load`
 RETRY_WITH_LOAD = load_env_vars("OPENBB_RETRY_WITH_LOAD", strtobool, False, "featflags")
@@ -135,7 +142,10 @@ GUESS_EASTER_EGG_FILE = str(
 )
 
 try:
-    version = pkg_resources.get_distribution("OpenBBTerminal").version
+    if not WITH_GIT:
+        version = pkg_resources.get_distribution("OpenBB").version
+    else:
+        raise Exception("Using git")
 except Exception:
     version = "2.0.0rc1"
 VERSION = str(os.getenv("OPENBB_VERSION", version))
