@@ -118,7 +118,7 @@ openbb.forecast.plot(data=spy, columns = ['Adj Close'])
 
 ### Theta
 
-Data consisting of a numeric value and a datetime index is sufficient enough for feeding the inputs to a forecast model. One important distinction between the Terminal and SDK is that the `target_column` argument does not have a default target column; it must be explicitly declared when using the SDK.
+Data consisting of a numeric value and a datetime index is sufficient enough for feeding the inputs to a forecast model. One important distinction between the Terminal and SDK is that the `target_column` must be explicitly declared when using the SDK, if it is not labeled as "close". It is case-sensitive.
 
 To use a forecast model with default parameters, all that is required in the syntax is:
 
