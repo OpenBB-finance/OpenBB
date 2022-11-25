@@ -451,29 +451,6 @@ Since WSL installation is headless by default (i.e., you have only access to a t
 3. When running the program is important to check "Disable access control"
 
 After this, `VcXsrv` should be running successfully and we can proceed to terminal installation.
-
-## Update Terminal
-
-The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be update, you can use `git pull` to get the latest changes:
-
-```bash
-git pull
-```
-
-If this fails due to the fact that you had modified some python files, and there's a conflict with the updates, you can use:
-
-```bash
-git stash
-```
-
-Then, re-run `poetry install` to get any new dependencies. Once installation is finished, you're ready to use the OpenBB Terminal again. If you `stashed` your changes previously, you can un-stash them with:
-
-```bash
-git stash pop
-```
-
-**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate obb`
-before you call `openbb` again.
 </TabItem>
 </Tabs>
 

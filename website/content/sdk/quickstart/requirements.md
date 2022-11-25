@@ -15,9 +15,7 @@ The OpenBB SDK is a set of tools for financial and data analysis. The purpose of
 - A code editor or Jupyter Notebook
 - Internet connection
 
-:::note NOTES ON THE INTERNET CONNECTIVITY
-Installation of the SDK with all the toolkits would require downloading around 4GB of data. Querying data does not require a lot of bandwidth but you will certainly have a more pleasant experience if you will be on a fast internet line. 4G networks provide a good enough experience so if you're traveling your personal hot-spot will do. While it's technically possible to use a subset of the functionality in off-line mode, you will not be able to use any data that is queried from the APIs of data providers and services.
-:::info
+Note that installation of the SDK with all the toolkits would require downloading around 4GB of data. Querying data does not require a lot of bandwidth but you will certainly have a more pleasant experience if you will be on a fast internet line. 4G networks provide a good enough experience so if you're traveling your personal hot-spot will do. While it's technically possible to use a subset of the functionality in off-line mode, you will not be able to use any data that is queried from the APIs of data providers and services.
 
 :::info OS Specific Requirements
 
