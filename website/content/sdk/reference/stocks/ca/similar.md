@@ -42,9 +42,9 @@ from openbb_terminal.sdk import openbb
 similar_tickers = openbb.stocks.ca.similar("AAPL)
 ```
 
-```
+
 To use our custom TSNE model for similar tickers in the SP500:
-```
+
 ```python
 similar_tickers = openbb.stocks.ca.similar("AAPL", source="TSNE")
 ```

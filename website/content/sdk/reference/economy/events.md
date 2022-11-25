@@ -43,10 +43,10 @@ from openbb_terminal.sdk import openbb
 calendar = openbb.economy.events("United States")
 ```
 
-```
+
 To get multiple countries for a given date, pass the same start and end date as well as
 a list of countries
-```
+
 ```python
 calendars = openbb.economy.events(["United States","Canada"], start_date="2022-11-18", end_date="2022-11-18")
 ```

@@ -243,7 +243,7 @@ def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
 
     for example in doc_parsed.examples:
         examples.append(
-            {"snippet": example.snippet, "description": example.description}
+            {"snippet": example.snippet, "description": example.description.strip()}
         )
 
     return {
@@ -329,16 +329,15 @@ def generate_markdown_section(meta: Dict[str, Any]):
             snippet = example["snippet"].replace(">>> ", "")
             markdown += f"```python\n{snippet}\n```\n\n"
             if example["description"] and prev_snippet != "":
-                markdown += f"```\n{example['description'].strip()}\n```\n"
+                markdown += f"```\n{example['description']}\n```\n"
                 prev_snippet = snippet.strip()
             else:
                 if example["description"]:
-                    markdown += f"\n{example['description'].strip()}\n\n"
+                    markdown += f"\n{example['description']}\n\n"
         else:
             if example["description"]:
-                markdown += f"\n{example['description'].strip()}\n\n"
-            else:
-                prev_snippet = ""
+                markdown += f"\n{example['description']}\n\n"
+            prev_snippet = ""
 
     markdown += "---\n\n"
 
