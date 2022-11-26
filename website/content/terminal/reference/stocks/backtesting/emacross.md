@@ -10,7 +10,7 @@ Cross between a long and a short Exponential Moving Average.
 ### Usage
 
 ```python
-usage: emacross [-l LONG] [-s SHORT] [--spy] [--no_bench] [--no_short]
+emacross [-l LONG] [-s SHORT] [--spy] [--no_bench] [--no_short]
 ```
 
 ---
@@ -24,5 +24,5 @@ usage: emacross [-l LONG] [-s SHORT] [--spy] [--no_bench] [--no_short]
 | spy | Flag to add spy hold comparison | False | True | None |
 | no_bench | Flag to not show buy and hold comparison | False | True | None |
 | shortable | Flag that disables the short sell | True | True | None |
----
 
+---

@@ -10,7 +10,7 @@ description: OpenBB Terminal Function
 ### Usage
 
 ```python
-usage: topnews
+topnews
 ```
 
 ---
@@ -19,5 +19,5 @@ usage: topnews
 
 This command has no parameters
 
----
 
+---

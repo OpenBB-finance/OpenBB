@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 Get global statistics about Decentralized Finances [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L489)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L514)]
 
 ```python
 openbb.crypto.ov.defi()

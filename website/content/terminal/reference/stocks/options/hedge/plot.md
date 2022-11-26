@@ -10,7 +10,7 @@ This function plots option payoff diagrams
 ### Usage
 
 ```python
-usage: plot
+plot
 ```
 
 ---
@@ -19,5 +19,5 @@ usage: plot
 
 This command has no parameters
 
----
 
+---

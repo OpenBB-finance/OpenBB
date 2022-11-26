@@ -34,3 +34,12 @@ openbb.portfolio.load(transactions_file_path: str, benchmark_symbol: str = "SPY"
 | PortfolioEngine | PortfolioEngine class instance, this will hold transactions and perform calculations |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+```
+
+---
+

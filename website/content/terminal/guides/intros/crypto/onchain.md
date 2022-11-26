@@ -6,7 +6,7 @@ with a brief overview of the features."
 geekdocCollapseSection: true
 ---
 
-The Cryptocurrency Onchain menu provides access to features that determine market sentiment by leveraging data from a blockchain ledger. This can be, among other things, blockchain hashrates (<a href="/terminal/reference/cryptocurrency/onchain/hr/" target="_blank">hr</a>), confirmed transactions (<a href="/terminal/reference/cryptocurrency/onchain/btcct/" target="_blank">btcct</a>) and top traded crypto pairs (<a href="/terminal/reference/cryptocurrency/onchain/ttcp/" target="_blank">ttcp</a>).
+The Cryptocurrency Onchain menu provides access to features that determine market sentiment by leveraging data from a blockchain ledger. This can be, among other things, blockchain hashrates (<a href="/terminal/reference/cryptocurrency/onchain/hr/" target="_blank" rel="noreferrer noopener">hr</a>), confirmed transactions (<a href="/terminal/reference/cryptocurrency/onchain/btcct/" target="_blank" rel="noreferrer noopener">btcct</a>) and top traded crypto pairs (<a href="/terminal/reference/cryptocurrency/onchain/ttcp/" target="_blank" rel="noreferrer noopener">ttcp</a>).
 
 ### How to use
 
@@ -47,13 +47,13 @@ Alternatively, you can also type `/crypto/onchain`. Within the Cryptocurrency On
 
 ### Examples
 
-To access much of the Ethereum features, an ethereum address needs to be entered. As an example this can be `0x71C7656EC7ab88b098defB751B7401B5f6d8976F` which can be entered within the <a href="/terminal/reference/cryptocurrency/onchain/address/" target="_blank">address</a> command as follows:
+To access much of the Ethereum features, an ethereum address needs to be entered. As an example this can be `0x71C7656EC7ab88b098defB751B7401B5f6d8976F` which can be entered within the <a href="/terminal/reference/cryptocurrency/onchain/address/" target="_blank" rel="noreferrer noopener">address</a> command as follows:
 
 ```
 2022 Jul 12, 08:48 (🦋) /crypto/onchain/ $ address 0x71C7656EC7ab88b098defB751B7401B5f6d8976F
 ```
 
-Which allows you to see the <a href="/terminal/reference/cryptocurrency/onchain/balance/" target="_blank">balance</a> and <a href="/terminal/reference/cryptocurrency/onchain/hist/" target="_blank">hist</a> which returns the following for `balance`:
+Which allows you to see the <a href="/terminal/reference/cryptocurrency/onchain/balance/" target="_blank" rel="noreferrer noopener">balance</a> and <a href="/terminal/reference/cryptocurrency/onchain/hist/" target="_blank" rel="noreferrer noopener">hist</a> which returns the following for `balance`:
 
 ```
 2022 Jul 12, 08:53 (🦋) /crypto/onchain/ $ balance

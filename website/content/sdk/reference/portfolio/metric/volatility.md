@@ -31,3 +31,13 @@ openbb.portfolio.metric.volatility(portfolio_engine: portfolio_engine.PortfolioE
 | pd.DataFrame | DataFrame with volatility for portfolio and benchmark for different periods |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.metric.volatility(p)
+```
+
+---
+

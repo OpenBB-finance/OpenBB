@@ -29,7 +29,7 @@ excerpt: "This guide introduces the Government submenu, within the Stocks menu, 
 geekdocCollapseSection: true
 ---
 
-The features in this menu are intended to show the reported trades of elected officials, lobbyist activity, awarded contracts, and general spending of the United States Treasury Department. This menu only covers the USA, or companies that trade on US exchanges. The information in this menu is compiled by <a href="https://quiverquant.com" target="_blank">QuiverQuant</a>. A ticker is not required to enter the menu; navigate there from anywhere in the terminal with absolute path jumping: `/stocks/gov`
+The features in this menu are intended to show the reported trades of elected officials, lobbyist activity, awarded contracts, and general spending of the United States Treasury Department. This menu only covers the USA, or companies that trade on US exchanges. The information in this menu is compiled by <a href="https://quiverquant.com" target="_blank" rel="noreferrer noopener">QuiverQuant</a>. A ticker is not required to enter the menu; navigate there from anywhere in the terminal with absolute path jumping: `/stocks/gov`
 
 ![The Government Menu](https://user-images.githubusercontent.com/85772166/173205843-1d9d5679-df73-4ec3-8b98-937f38ccac35.png)
 

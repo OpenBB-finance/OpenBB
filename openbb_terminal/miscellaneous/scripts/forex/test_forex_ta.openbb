@@ -1,5 +1,5 @@
 forex
-load EURUSD --source YahooFinance
+load ${currency=EUR}${currency_vs=USD} --source YahooFinance
 load
 ta
 ema
@@ -29,7 +29,7 @@ bbands -l 1 -s 0.25 -m ema
 donchian
 donchian --length_upper 10 --length_lower 1
 fib
-load USDEUR --source Polygon
+load ${currency=USD}${currency_vs=EUR} --source Polygon
 ta
 ema
 sma

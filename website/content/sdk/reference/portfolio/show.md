@@ -31,3 +31,13 @@ openbb.portfolio.show(portfolio_engine: portfolio_engine.PortfolioEngine)
 | pd.DataFrame | Portfolio transactions |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.show(p)
+```
+
+---
+

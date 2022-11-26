@@ -1,11 +1,9 @@
 crypto
 tools
 
-# aprtoapy
 aprtoapy
 aprtoapy --narrative --apr 50 --compounding 6
 
-# il
 il
 il --narrative --priceChangeA 5 --priceChangeB 3 --proportion 2 --value 10
 

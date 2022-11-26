@@ -7,7 +7,7 @@ description: OpenBB SDK Function
 
 A momentum indicator that measures the magnitude of recent price changes to evaluate
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L225)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L237)]
 
 ```python
 openbb.forecast.rsi(dataset: pd.DataFrame, target_column: str = "close", period: int = 10)
