@@ -190,9 +190,9 @@ def get_ols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
     Examples
     --------
-    >>> import openbb_terminal.sdk as openbb
+    >>> from openbb_terminal.sdk import openbb
     >>> df = openbb.econometrics.load("wage_panel")
-    >>> OLS_model = openbb.econometrics.OLS(df["lwage"], df[["educ", "exper", "expersq"]])
+    >>> OLS_model = openbb.econometrics.ols(df["lwage"], df[["educ", "exper", "expersq"]])
     >>> print(OLS_model.summary())`
                                 OLS Regression Results
     =======================================================================================
