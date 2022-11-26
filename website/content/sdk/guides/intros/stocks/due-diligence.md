@@ -2,7 +2,7 @@
 title: Due Diligence
 ---
 
-## **How to Use**
+## How to Use
 
 The `DD` sub-module gives programmatic access to the same menu in the OpenBB Terminal. The functions, and a short description, are listed below.
 
