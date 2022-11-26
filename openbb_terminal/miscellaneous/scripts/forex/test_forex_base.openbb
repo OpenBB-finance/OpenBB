@@ -1,7 +1,7 @@
 forex
-load EURUSD
-load -t EURUSD -r d -i 1day -s 2000-01-01
-load -t EURUSD -r i -i 30min
+load ${currency=EUR}${currency_vs=USD}
+load -t ${currency=EUR}${currency_vs=USD} -r d -i 1day -s 2000-01-01
+load -t ${currency=EUR}${currency_vs=USD} -r i -i 30min
 fwd
 quote
 quote --source YahooFinance
