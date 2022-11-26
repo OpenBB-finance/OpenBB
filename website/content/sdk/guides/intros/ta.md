@@ -80,7 +80,7 @@ openbb.ta.rsi(data = openbb.stocks.load('QQQ'))
 Please send a series and not a DataFrame.
 ```
 
-### \_chart
+### _chart
 
 To display the chart, instead of raw data, add `_chart` to the syntax before the (`arguments`).
 
