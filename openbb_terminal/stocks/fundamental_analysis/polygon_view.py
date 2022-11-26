@@ -116,6 +116,7 @@ def display_fundamentals(
             title=f"{symbol} {title_str}"
             if not ratios
             else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} {title_str}",
+            automatic_coloring=True,
         )
 
     export_data(

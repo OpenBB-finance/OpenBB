@@ -12,6 +12,7 @@ from datetime import date as d
 import types
 from collections.abc import Iterable
 import os
+import math
 import random
 import re
 import sys
@@ -218,6 +219,86 @@ def similar(a: str, b: str) -> float:
     return SequenceMatcher(None, a, b).ratio()
 
 
+def is_a_number(value: str):
+    """Return whether a string is a number (int or float) or contains one
+
+    Parameters
+    ----------
+    value: str
+        string to be checked
+
+    Returns
+    -------
+    bool:
+        True if the string has a number (NaN not included), false otherwise.
+    """
+    if " " in value:
+        for v in value.split(" "):
+            try:
+                int(v)
+                return True
+            except ValueError:
+                try:
+                    my_n = float(v)
+                    if math.isnan(my_n):
+                        pass
+                    else:
+                        return True
+                except Exception:
+                    pass
+        # Did not find any digit
+        return False
+    else:
+        try:
+            int(value)
+            return True
+        except ValueError:
+            try:
+                my_n = float(value)
+                if math.isnan(my_n):
+                    return False
+                return True
+            except ValueError:
+                return False
+
+
+def is_a_zero(value: str):
+    """Return whether a string has the value 0 or not
+
+    Parameters
+    ----------
+    value: str
+        string to be checked
+
+    Returns
+    -------
+    bool:
+        True if the string has a number (NaN not included), false otherwise.
+    """
+    if " " in value:
+        for v in value.split(" "):
+            try:
+                my_num = float(v)
+                if math.isnan(my_num):
+                    pass
+                else:
+                    if my_num == 0:
+                        return True
+            except Exception:
+                pass
+        # Did not find any zero
+        return False
+    else:
+        try:
+            my_num = float(value)
+            if math.isnan(my_num):
+                return False
+            if my_num == 0:
+                return True
+        except ValueError:
+            return False
+
+
 def print_rich_table(
     df: pd.DataFrame,
     show_index: bool = False,
@@ -226,6 +307,7 @@ def print_rich_table(
     headers: Union[List[str], pd.Index] = None,
     floatfmt: Union[str, List[str]] = ".2f",
     show_header: bool = True,
+    automatic_coloring: bool = False,
 ):
     """Prepare a table from df in rich.
 
@@ -245,9 +327,22 @@ def print_rich_table(
         Float number formatting specs as string or list of strings. Defaults to ".2f"
     show_header: bool
         Whether to show the header row.
+    automatic_coloring: bool
+        Automatically color a table based on positive and negative values
     """
     if obbff.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
+
+        if obbff.USE_COLOR and automatic_coloring:
+            df = df.applymap(
+                lambda x: f"[red]{x}[/red]"
+                if "-" in str(x) and is_a_number(str(x))
+                else f"[green]{x}[/green]"
+                if is_a_number(str(x)) and not is_a_zero(str(x))
+                else f"[yellow]{x}[/yellow]"
+                if is_a_number(str(x))
+                else f"{x}"
+            )
 
         if show_index:
             table.add_column(index_name)

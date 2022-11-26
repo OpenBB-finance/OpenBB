@@ -481,6 +481,7 @@ def display_fundamentals(
             formatted_df.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
             title=f"{symbol} {title_str} Currency: {symbol_currency}",
+            automatic_coloring=True,
         )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), statement, fundamentals

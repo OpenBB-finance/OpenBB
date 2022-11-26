@@ -231,6 +231,7 @@ def display_income_statement(
                 if not ratios
                 else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol.upper()} Income Statement",
                 show_index=True,
+                automatic_coloring=True,
             )
 
             pd.set_option("display.max_colwidth", None)
@@ -481,6 +482,7 @@ def display_financial_ratios(
             headers=list(ratios.columns),
             title=f"{symbol.upper()} Ratios",
             show_index=True,
+            automatic_coloring=True,
         )
 
         export_data(
@@ -512,7 +514,6 @@ def display_financial_statement_growth(
     growth = fmp_model.get_financial_growth(symbol, limit, quarterly)
 
     if not growth.empty:
-        growth = growth[growth.columns[::-1]]
         print_rich_table(
             growth,
             headers=list(growth.columns),

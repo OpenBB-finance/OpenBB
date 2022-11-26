@@ -149,6 +149,7 @@ def display_income_statement(
             if not ratios
             else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Income Statement",
             show_index=True,
+            automatic_coloring=True,
         )
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", df_income)
