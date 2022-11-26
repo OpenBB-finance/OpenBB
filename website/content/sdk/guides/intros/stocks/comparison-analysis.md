@@ -4,7 +4,7 @@ title: Comparison Analysis
 
 The CA module provides programmatic access to the commands from within the OpenBB Terminal menu. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.ca`
 
-## **How to Use**
+## How to Use
 
 The examples provided below will assume that the following import block is included at the beginning of the Python script or Notebook file:
 
@@ -33,9 +33,9 @@ Alteratively, the contents of the menu is printed with:
 help(openbb.stocks.ca)
 ```
 
-## **Examples**
+## Examples
 
-### **balance**
+### Balance
 
 `openbb.stocks.ca.balance` compares the balance sheets for a list of companies.
 
@@ -82,7 +82,7 @@ openbb.stocks.ca.balance(["TSLA","F", "GE"])
 | Total Assets                         | 62.13B | 257.04B | 198.87B |
 | Total Assets Growth                  | 19.14% | -3.83%  | -22.38% |
 
-### **sentiment**
+### Sentiment
 
 Social sentiment over time, for a list of tickers:
 
@@ -103,7 +103,7 @@ openbb.stocks.ca.sentiment(["tsla", "f", "ge"])
 | 2022-11-18 |  0.216 | 0.093 | 0.019 |
 | 2022-11-21 | -0.071 | 0.069 | 0.01  |
 
-### **screener**
+### Screener
 
 Show a high-level overview of company information for tickers in a given list
 
@@ -118,7 +118,7 @@ openbb.stocks.ca.screener(["f", "ge", "tsla"])
 |  2 | TSLA     | Tesla, Inc.              | Consumer Cyclical | Auto Manufacturers             | USA       |   5.3886e+11 |  51.72 |  167.87 |  -0.0684 | 9.28827e+07 |
 
 
-### **hcorr**
+### HCorr
 
 Calculates the historical price (or returns) correlation for a list of tickers, over a specified window.
 
