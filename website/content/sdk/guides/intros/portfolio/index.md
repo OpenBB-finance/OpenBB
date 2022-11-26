@@ -4,7 +4,7 @@ title: Portfolio
 
 The [Portfolio menu](/terminal/guides/portfolio), from the OpenBB Terminal, is wrapped into a Python SDK layer, enabling users to programmatically work with the data in a flexible environment, fully customizable for the needs of any user. This guide will introduce the functions within the main Portfolio module, and walk through examples demonstrating how to work with a portfolio file and object.
 
-## **How to Use**
+## How to Use
 
 Below is a brief description of each function within the Portfolio module:
 
@@ -41,20 +41,20 @@ help(openbb.portfolio)
 
 Many of the functions in this module will also have a companion command, `_chart`.
 
-### **Portfolio Files**
+### Portfolio Files
 
-Portfolio files are spreadsheets (xlsx or csv files) containing positions and trades. Users should keep their collection of holdings files in the OpenBBUserData folder, `~/OpenBBUserData/portfolio/holdings`. They are shared resources with the CLI Terminal, and sample files are included within the installation folder. See the [source code](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/portfolio_examples/holdings) on GitHub to view and download them directly. We recommend using the example files as a template when creating a new portfolio because of specific formatting requirements. The table below illustrates the required column titles:
+Portfolio files are spreadsheets (xlsx or csv files) containing historical trades which add up to represent a net balance in the Portfolio Engine. Users should keep their collection of holdings files in the OpenBBUserData folder, `~/OpenBBUserData/portfolio/holdings`. They are shared resources with the CLI Terminal, and sample files are included within the installation folder. See the [source code](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/portfolio_examples/holdings) on GitHub to view and download them directly. We recommend using the example files as a template when creating a new portfolio because of specific formatting requirements. The table below illustrates the required column titles:
 
-|    | Date       | Type   | Ticker   | Side   |   Price |   Quantity |   Fees |   Investment | Currency   | Sector                 | Industry                       | Country       | Region        |
-|---:|:-----------|:-------|:---------|:-------|--------:|-----------:|-------:|-------------:|:-----------|:-----------------------|:-------------------------------|:--------------|:--------------|
-|  7 | 2021-10-29 | STOCK  | K.TO     | Buy    |    7.93 |      190   |     20 |     1526.7   | CAD        | Basic Materials        | Gold                           | Canada        | North America |
-|  6 | 2015-01-02 | ETF    | SPY      | Buy    |  178.28 |        5.6 |      0 |      998.368 | USD        | -                      | -                              | -             | -             |
-|  5 | 2015-01-01 | CRYPTO | BTC-USD  | Buy    | 1000    |          2 |      0 |         2000 | USD        | Crypto                 | Crypto                         | Crypto        | Crypto        |
-|  0 | 2011-01-03 | STOCK  | AMZN     | Buy    |    9.22 |        100 |      0 |          922 | USD        | Consumer Cyclical      | Internet Retail                | United States | North America |
-|  1 | 2011-01-03 | STOCK  | AAPL     | Buy    |   11.74 |        100 |      0 |         1174 | USD        | Technology             | Consumer Electronics           | United States | North America |
-|  2 | 2011-01-03 | STOCK  | MSFT     | Buy    |   28.04 |        100 |      0 |         2804 | USD        | Technology             | Software-Infrastructure        | United States | North America |
-|  3 | 2011-01-03 | STOCK  | TSLA     | Buy    |    1.76 |        100 |      0 |          176 | USD        | Consumer Cyclical      | Auto Manufacturers             | United States | North America |
-|  4 | 2011-01-03 | STOCK  | GOOG     | Buy    |   15.01 |        100 |      0 |         1501 | USD        | Communication Services | Internet Content & Information | United States | North America |
+| Date       | Type   | Ticker   | Side   |   Price |   Quantity |   Fees |   Investment | Currency   | Sector                 | Industry                       | Country       | Region        |
+|:-----------|:-------|:---------|:-------|--------:|-----------:|-------:|-------------:|:-----------|:-----------------------|:-------------------------------|:--------------|:--------------|
+| 2021-10-29 | STOCK  | K.TO     | Buy    |    7.93 |      190   |     20 |     1526.7   | CAD        | Basic Materials        | Gold                           | Canada        | North America |
+| 2015-01-02 | ETF    | SPY      | Buy    |  178.28 |        5.6 |      0 |      998.368 | USD        | -                      | -                              | -             | -             |
+| 2015-01-01 | CRYPTO | BTC-USD  | Buy    | 1000    |          2 |      0 |         2000 | USD        | Crypto                 | Crypto                         | Crypto        | Crypto        |
+| 2011-01-03 | STOCK  | AMZN     | Buy    |    9.22 |        100 |      0 |          922 | USD        | Consumer Cyclical      | Internet Retail                | United States | North America |
+| 2011-01-03 | STOCK  | AAPL     | Buy    |   11.74 |        100 |      0 |         1174 | USD        | Technology             | Consumer Electronics           | United States | North America |
+| 2011-01-03 | STOCK  | MSFT     | Buy    |   28.04 |        100 |      0 |         2804 | USD        | Technology             | Software-Infrastructure        | United States | North America |
+| 2011-01-03 | STOCK  | TSLA     | Buy    |    1.76 |        100 |      0 |          176 | USD        | Consumer Cyclical      | Auto Manufacturers             | United States | North America |
+| 2011-01-03 | STOCK  | GOOG     | Buy    |   15.01 |        100 |      0 |         1501 | USD        | Communication Services | Internet Content & Information | United States | North America |
 
 Not every column needs to contain a value, but they must exist despite being empty. The accepted values for `Type` are currently:
 
@@ -63,29 +63,15 @@ Not every column needs to contain a value, but they must exist despite being emp
 - Stock
 - More Coming Soon!
 
-Below is the contents of the `csv` file that was used in the table above.
+The table above is supplied here as a portfolio XLSX file - [example.xlsx](https://github.com/OpenBB-finance/OpenBBTerminal/files/10096861/example.xlsx) - save the file in the OpenBBUserData folder, `~/OpenBBUserData/portfolio/holdings/`
 
-```csv
-Date,Ticker,Type,Sector,Industry,Country,Price,Quantity,Fees,Premium,Investment,Side,Currency,Region
-2011-01-03,AMZN,Stock,,,,9.22,100,0,0,922,Buy,USD,
-2011-01-03,AAPL,Stock,,,,11.74,100,0,0,1174,Buy,USD,
-2011-01-03,MSFT,Stock,,,,28.04,100,0,0,2804,Buy,USD,
-2011-01-03,TSLA,Stock,,,,1.76,100,0,0,176,Buy,USD,
-2011-01-03,GOOG,Stock,,,,15.01,100,0,0,1501,Buy,USD,
-2015-01-01,BTC,CRYPTO,,,,1000.00,2,0,0,2000,Buy,USD,
-2015-01-02,SPY,ETF,,,,178.28,5.6,0,0,1000,Buy,USD,
-2021-10-29,K.TO,Stock,,,,7.93,190,20,0,1526.70,Buy,CAD,
-```
+Categorization will be done automatically where the information is not supplied. To manually set the asset categorization (region, sector, industry, country), use the template file, `Public_Equity_Orderbook.xlsx`.
 
-Create a new file with any text editor, copy and paste the above block, and save the file as `~/OpenBBUserData/portfolio/holdings/example.csv`. In Mac OS, the Numbers application has a habit of altering the format of CSV files, be careful to preserve the formatting when saving. A simple text editor works very well for this particular task. If trouble persists while attempting to load a portfolio file, check the file for abnormalities.
-
-To manually set the asset categorization (region, sector, industry, country), use the template file, `Public_Equity_Orderbook.xlsx`, instead.
-
-## **Examples**
+## Examples
 
 The examples in this guide will assume that the import statements below are included at the top of the Python script or Jupyter Notebook.
 
-### **Import Statements**
+### Import Statements
 
 ```python
 from openbb_terminal.sdk import openbb
@@ -93,9 +79,9 @@ import pandas as pd
 # %matplotlib inline (uncomment if using a Jupyter Notebook or an Interactive Window)
 ```
 
-### **Load**
+### Load
 
-Taking the newly created, `example.csv`, file from the previous section, let's load it into the Portfolio Engine. There are a few parameters available for this function, and an object is returned.
+Taking the downloaded `example.xlsx` file from the previous section, let's load it into the Portfolio Engine. There are a few parameters available for this function, and an object is returned.
 
 ```python
 help(openbb.portfolio.load)
@@ -126,7 +112,7 @@ The syntax should resemble something like the sample below; don't forget to modi
 
 ```python
 P = openbb.portfolio.load(
-  transactions_file_path = '/Users/path_to/OpenBBUserData/portfolio/holdings/example.csv',
+  transactions_file_path = '/Users/path_to/OpenBBUserData/portfolio/holdings/example.xlsx',
   benchmark_symbol = 'VTI',
   full_shares = False,
   risk_free_rate = 3.0
@@ -140,7 +126,7 @@ Preprocessing transactions: 100%|██████████| 14/14 [00:01<00
          Loading benchmark: 100%|██████████| 4/4 [00:04<00:00,  1.21s/it]
 ```
 
-### **The Portfolio Object**
+### The Portfolio Object
 
 A Portfolio Object is assigned to the variable, `P`. The created object, or parts of it, are used as inputs to the other functions in this module. It can also be interacted with directly, for example, to change the benchmark ticker. `SPY` is a holding in the example portfolio, so let's stick with `VTI` as the performance benchmark.
 
@@ -163,7 +149,7 @@ print(tickers)
 ['SPY', 'TSLA', 'K.TO', 'AAPL', 'AMZN', 'MSFT', 'BTC-USD', 'GOOG']
 ```
 
-### **Show**
+### Show
 
 `openbb.portfolio.show` is for displaying the transactions from the loaded portfolio file. Scroll back up to view the output of this function again.
 
@@ -171,7 +157,7 @@ print(tickers)
 openbb.portfolio.show(P)
 ```
 
-### **Perf**
+### Perf
 
 Performance against the benchmark is summarized in a table with, `openbb.portfolio.perf`.
 
@@ -186,7 +172,7 @@ print(openbb.portfolio.perf(P))
 | Total % Return   | 927.08%            | 226.10%            | 700.98%           |
 | Total Abs Return | 102925.31407511902 | 25101.887645993753 | 77823.42642912528 |
 
-### **Summary**
+### Summary
 
 `openbb.portfolio.summary` prints a table of risk metrics, comparing the portfolio against the benchmark.
 
@@ -204,7 +190,7 @@ print(openbb.portfolio.summary(P))
 | Sortino ratio    | 0.062308795370197276 | 0.04131937917727341 | 0.020989416192923868 |
 | R2 Score         | 41.36%               | 41.36%              | 0.00%                |
 
-### **MaxDD**
+### MaxDD
 
 `openbb.portfolio.maxdd` calculates the maximum drawdown as price and % value; it returns a Tuple.
 
@@ -235,7 +221,7 @@ openbb.portfolio.maxdd_chart(P)
 
 ![openbb.portfolio.maxdd_chart](https://user-images.githubusercontent.com/85772166/204072456-f6b8e038-08ef-4ac5-9920-14a9c1e4197f.png "openbb.portfolio.maxdd_chart")
 
-### **RSharpe**
+### RSharpe
 
 Calculate a rolling sharpe ratio over a specified window.
 
