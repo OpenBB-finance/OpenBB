@@ -49,11 +49,11 @@ status: publish
 excerpt: "This guide introduces the Quantitative Analysis menu, which is common across many sections of the OpenBB Terminal, briefly describes the features, and provides examples in context."
 ---
 
-<a href = "https://www.investopedia.com/terms/q/quantitativeanalysis.asp" target="_blank">Quantitative analysis (QA)</a> in finance is an approach that emphasizes mathematical and statistical analysis to help determine the value of a financial asset, such as a stock or option. The ultimate goal of financial quantitative analysis is to use quantifiable statistics and metrics to assist investors in making profitable investment decisions. Quantitative analysis is different from qualitative analysis, which looks at factors such as how companies are structured, the makeup of their management teams, and what their strengths and weaknesses are.
+<a href = "https://www.investopedia.com/terms/q/quantitativeanalysis.asp" target="_blank" rel="noreferrer noopener">Quantitative analysis (QA)</a> in finance is an approach that emphasizes mathematical and statistical analysis to help determine the value of a financial asset, such as a stock or option. The ultimate goal of financial quantitative analysis is to use quantifiable statistics and metrics to assist investors in making profitable investment decisions. Quantitative analysis is different from qualitative analysis, which looks at factors such as how companies are structured, the makeup of their management teams, and what their strengths and weaknesses are.
 
 The Quantitative Analysis menu is a common menu to three asset classes:
 
-- <a href = "terminal/guides/intros/crypto/" target="_blank">Crypto</a>
+- <a href = "terminal/guides/intros/crypto/" target="_blank" rel="noreferrer noopener">Crypto</a>
 - <a href = "terminal/guides/intros/forex/" target= "_blank">Forex</a>
 - <a href = "terminal/guides/intros/stocks/" target = "_blank">Stocks</a>
 
@@ -109,7 +109,7 @@ Loading Daily MSFT stock with starting period 2019-08-05 for analysis.
 
 <img width="762" alt="Beta of $AAPL relative to $MSFT" src="https://user-images.githubusercontent.com/85772166/183483898-dac417a8-0afe-46d2-b8e9-e855e8752fc8.png"></img>
 
-Most outputs are equipped with an `--export` flag, allowing the user to save the tables as a CSV, JSON, or XLSX file. The exports can then be imported into other menus like <a href="/terminal/guides/intros/econometrics/" target="_blank"> Econometrics</a>. Additional information on each specific command is displayed by attaching `-h` to it.
+Most outputs are equipped with an `--export` flag, allowing the user to save the tables as a CSV, JSON, or XLSX file. The exports can then be imported into other menus like <a href="/terminal/guides/intros/econometrics/" target="_blank" rel="noreferrer noopener"> Econometrics</a>. Additional information on each specific command is displayed by attaching `-h` to it.
 
 ### Examples
 

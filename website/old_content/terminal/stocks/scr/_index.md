@@ -46,4 +46,4 @@ Setting the preset to `short_squeeze_scan` and scanning with the `ownership` cat
 
 Enter `exe stock_screener_demo.openbb` from the main menu to play a demonstration of the Stock Screener in the Terminal.
 
-Back to the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">Introduction Guide to the Stocks Menu</a>
+Back to the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank" rel="noreferrer noopener">Introduction Guide to the Stocks Menu</a>

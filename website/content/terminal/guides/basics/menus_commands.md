@@ -9,7 +9,7 @@ Menus, depicted in <b><span style={{color:"#005CA9"}}>Dark Blue</span></b>, take
 
 <a target="_blank" href="https://user-images.githubusercontent.com/85772166/194683870-7888ad2f-5d38-4484-96a5-cbe95bf52d5b.png"><img src="https://user-images.githubusercontent.com/85772166/194683870-7888ad2f-5d38-4484-96a5-cbe95bf52d5b.png" alt="Stocks Menu" width="800"/></a>
 
-Depending on the menu you are in, you are presented with a new set of commands and menus you can select. There are interactions in place between each menu. For example, when selecting a company within the `stocks` menu, the terminal will remember your selection when you visit the `fa` or `options` menu. See <a href="terminal/stocks" target="_blank">Introduction to Stocks</a> for more information.
+Depending on the menu you are in, you are presented with a new set of commands and menus you can select. There are interactions in place between each menu. For example, when selecting a company within the `stocks` menu, the terminal will remember your selection when you visit the `fa` or `options` menu. See <a href="terminal/stocks" target="_blank" rel="noreferrer noopener">Introduction to Stocks</a> for more information.
 
 ---
 
@@ -30,10 +30,10 @@ the commands that you are able to use from any menu in the terminal (see <a href
   use `q` and press `ENTER` (⏎) you return to where you started. Validate this by typing `?` and pressing `ENTER` (⏎).
 - `support`: allows you to submit bugs, questions and suggestions.
 - `about`: this opens the related guide, linking to this website. It also has the ability to open a guide to a specific
-  command. For example, within the `stocks` menu, `about candle` opens <a href="terminal/reference/stocks/candle/" target="_blank">this guide</a>.
+  command. For example, within the `stocks` menu, `about candle` opens <a href="terminal/reference/stocks/candle/" target="_blank" rel="noreferrer noopener">this guide</a>.
 - `wiki`: search for a given expression on the Wikipedia without leaving the terminal.
 
-Continuing with the example mentioned at `quit`, revisit the `stocks` menu and look at the commands. At the top you will see a command named <a href="terminal/stocks/load" target="_blank">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
+Continuing with the example mentioned at `quit`, revisit the `stocks` menu and look at the commands. At the top you will see a command named <a href="terminal/stocks/load" target="_blank" rel="noreferrer noopener">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
 
 ```
 2022 May 19, 05:27 (🦋) /stocks/ $ load -h
@@ -64,7 +64,7 @@ optional arguments:
 For more information and examples, use 'about load' to access the related guide.
 ```
 
-This shows you all **arguments** the command has. These are additional options you can provide to the command. Each default value is also displayed which is used when you do not select this option. For example, if I would use the <a href="https://www.investopedia.com/ask/answers/12/what-is-a-stock-ticker.asp" target="_blank">stock ticker</a> of Amazon (AMZN, which can also be found with `search amazon`), I can use `load AMZN` which will return the following:
+This shows you all **arguments** the command has. These are additional options you can provide to the command. Each default value is also displayed which is used when you do not select this option. For example, if I would use the <a href="https://www.investopedia.com/ask/answers/12/what-is-a-stock-ticker.asp" target="_blank" rel="noreferrer noopener">stock ticker</a> of Amazon (AMZN, which can also be found with `search amazon`), I can use `load AMZN` which will return the following:
 
 ```
 2022 May 19, 05:27 (🦋) /stocks/ $ load AMZN
@@ -110,7 +110,7 @@ Company:  Amazon.com, Inc.
 └─────────┴─────────┴─────────┴──────────┴──────────┴─────────────────┴──────────────────┴────────────┘
 ```
 
-We can check that this period has changed by looking into the <a href="https://www.investopedia.com/trading/candlestick-charting-what-is-it/" target="_blank">candle chart</a> with `candle`. This, again shares the same `-h` argument. This results in the following which indeed depicts our selected period.
+We can check that this period has changed by looking into the <a href="https://www.investopedia.com/trading/candlestick-charting-what-is-it/" target="_blank" rel="noreferrer noopener">candle chart</a> with `candle`. This, again shares the same `-h` argument. This results in the following which indeed depicts our selected period.
 
 ```
 2022 May 19, 05:44 (🦋) /stocks/ $ candle
@@ -118,4 +118,4 @@ We can check that this period has changed by looking into the <a href="https://w
 
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png"><img src="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png" alt="Amazon Candle Chart" width="800"/></a>
 
-As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, some information also transfers over to other menus and this includes the loaded market data from <a href="terminal/stocks/load" target="_blank">load</a>. So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
+As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, some information also transfers over to other menus and this includes the loaded market data from <a href="terminal/stocks/load" target="_blank" rel="noreferrer noopener">load</a>. So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank" rel="noreferrer noopener">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.

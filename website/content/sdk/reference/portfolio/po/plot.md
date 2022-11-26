@@ -38,7 +38,15 @@ This function does not return anything
 ---
 
 ## Examples
-        "SECTOR": {
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
+d = {
+```
+
+```
+"SECTOR": {
             "AAPL": "INFORMATION TECHNOLOGY",
             "MSFT": "INFORMATION TECHNOLOGY",
             "AMZN": "CONSUMER DISCRETIONARY",
@@ -54,30 +62,45 @@ This function does not return anything
             "AMZN": "USD",
         },
     }
-```python
-from openbb_terminal.sdk import openbb
-p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
-d = {
 ```
-
-['SECTOR']
 ```python
 p.set_categories_dict(categories=d)
 weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
 p.get_available_categories()
 ```
 
+```
+['SECTOR']
+```
+```python
+openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="pie")
+openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
+openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="dd")
+openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="rc")
+openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="heat")
+```
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
+p.get_available_categories()
+```
+
+```
 ['ASSET_CLASS',
  'SECTOR',
  'INDUSTRY',
  'COUNTRY',
  'CURRENT_INVESTED_AMOUNT',
  'CURRENCY']
+```
 ```python
-from openbb_terminal.sdk import openbb
-p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
-p.get_available_categories()
+openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type="pie")
+openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
+openbb.portfolio.po.plot(portfolio_engine=p, category="INDUSTRY", chart_type="dd")
+openbb.portfolio.po.plot(portfolio_engine=p, category="COUNTRY", chart_type="rc")
+openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type="heat")
 ```
 
 ---
@@ -114,7 +137,15 @@ This function does not return anything
 ---
 
 ## Examples
-        "SECTOR": {
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
+d = {
+```
+
+```
+"SECTOR": {
             "AAPL": "INFORMATION TECHNOLOGY",
             "MSFT": "INFORMATION TECHNOLOGY",
             "AMZN": "CONSUMER DISCRETIONARY",
@@ -130,30 +161,45 @@ This function does not return anything
             "AMZN": "USD",
         },
     }
-```python
-from openbb_terminal.sdk import openbb
-p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
-d = {
 ```
-
-['SECTOR']
 ```python
 p.set_categories_dict(categories=d)
 weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
 p.get_available_categories()
 ```
 
+```
+['SECTOR']
+```
+```python
+openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="pie")
+openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
+openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="dd")
+openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="rc")
+openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="heat")
+```
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
+p.get_available_categories()
+```
+
+```
 ['ASSET_CLASS',
  'SECTOR',
  'INDUSTRY',
  'COUNTRY',
  'CURRENT_INVESTED_AMOUNT',
  'CURRENCY']
+```
 ```python
-from openbb_terminal.sdk import openbb
-p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
-p.get_available_categories()
+openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type="pie")
+openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
+openbb.portfolio.po.plot(portfolio_engine=p, category="INDUSTRY", chart_type="dd")
+openbb.portfolio.po.plot(portfolio_engine=p, category="COUNTRY", chart_type="rc")
+openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type="heat")
 ```
 
 ---

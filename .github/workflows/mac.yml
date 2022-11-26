@@ -75,6 +75,7 @@ jobs:
         run: |
           conda info
           pip install --requirement requirements-full.txt
+          pip install docstring_parser
 
       - name: List installed packages (Bash)
         shell: bash -l {0}

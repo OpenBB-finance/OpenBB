@@ -10,7 +10,7 @@ Print some information about your account.
 ### Usage
 
 ```python
-usage: summary
+summary
 ```
 
 ---
@@ -19,5 +19,5 @@ usage: summary
 
 This command has no parameters
 
----
 
+---

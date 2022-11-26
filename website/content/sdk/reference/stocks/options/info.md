@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 Get info for a given ticker
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/yfinance_model.py#L325)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/yfinance_model.py#L329)]
 
 ```python
 openbb.stocks.options.info(symbol: str)

@@ -5,12 +5,12 @@ description: OpenBB Terminal Function
 
 # run
 
-Run a notebook from this folder: '/Users/josedonato/OpenBBUserData/reports/custom reports'.
+Run a notebook from this folder: '/home/runner/OpenBBUserData/reports/custom reports'.
 
 ### Usage
 
 ```python
-usage: run -f {} [-p PARAMETERS [PARAMETERS ...]]
+run -f {} [-p PARAMETERS [PARAMETERS ...]]
 ```
 
 ---
@@ -21,5 +21,5 @@ usage: run -f {} [-p PARAMETERS [PARAMETERS ...]]
 | ---- | ----------- | ------- | -------- | ------- |
 | file | The file to be loaded | None | False | None |
 | parameters | Report parameters with format 'name:value'. | None | True | None |
----
 
+---

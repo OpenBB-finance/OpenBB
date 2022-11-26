@@ -10,7 +10,7 @@ Get stock quote
 ### Usage
 
 ```python
-usage: quote [-t TICKER]
+quote [-t TICKER]
 ```
 
 ---
@@ -20,5 +20,5 @@ usage: quote [-t TICKER]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | ticker | Ticker to get quote for. Can be in form of 'tick1,tick2...' | None | True | None |
----
 
+---

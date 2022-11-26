@@ -10,7 +10,7 @@ description: OpenBB Terminal Function
 ### Usage
 
 ```python
-usage: lastnews [-l LIMIT]
+lastnews [-l LIMIT]
 ```
 
 ---
@@ -20,5 +20,5 @@ usage: lastnews [-l LIMIT]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | limit | Number of news to display. | 10 | True | None |
----
 
+---

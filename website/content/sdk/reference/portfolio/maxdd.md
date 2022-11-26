@@ -38,6 +38,16 @@ openbb.portfolio.maxdd(portfolio_engine: portfolio_engine.PortfolioEngine, is_re
 | pd.Series | Holdings series |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.maxdd(p)
+```
+
+---
+
 
 
 </TabItem>

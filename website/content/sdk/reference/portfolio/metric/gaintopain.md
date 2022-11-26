@@ -31,3 +31,13 @@ openbb.portfolio.metric.gaintopain(portfolio_engine: portfolio_engine.PortfolioE
 | pd.DataFrame | DataFrame of the portfolio's gain-to-pain ratio |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.metric.gaintopain(p)
+```
+
+---
+

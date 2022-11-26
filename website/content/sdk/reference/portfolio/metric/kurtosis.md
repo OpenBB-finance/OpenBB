@@ -31,3 +31,13 @@ openbb.portfolio.metric.kurtosis(portfolio_engine: portfolio_engine.PortfolioEng
 | pd.DataFrame | DataFrame with kurtosis for portfolio and benchmark for different periods |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.metric.kurtosis(p)
+```
+
+---
+

@@ -32,15 +32,18 @@ openbb.keys.mykeys(show: bool = False)
 ---
 
 ## Examples
-                   Key
-          API
- BITQUERY_KEY  *******
-      CMC_KEY  *******
-COINGLASS_KEY  *******
+
 ```python
 from openbb_terminal.sdk import openbb
 openbb.keys.mykeys()
 ```
 
+```
+Key
+          API
+ BITQUERY_KEY  *******
+      CMC_KEY  *******
+COINGLASS_KEY  *******
+```
 ---
 

@@ -45,10 +45,10 @@ openbb.ta.vwap(data: pd.Series, offset: int = 0)
 
 Plots VWMA technical indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_view.py#L121)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_view.py#L133)]
 
 ```python
-openbb.ta.vwap_chart(data: pd.DataFrame, symbol: str = "", start_date: str = None, end_date: str = None, offset: int = 0, interval: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+openbb.ta.vwap_chart(data: pd.DataFrame, symbol: str = "", start_date: Optional[str] = None, end_date: Optional[str] = None, offset: int = 0, interval: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -60,8 +60,8 @@ openbb.ta.vwap_chart(data: pd.DataFrame, symbol: str = "", start_date: str = Non
 | data | pd.DataFrame | Dataframe of OHLC prices | None | False |
 | symbol | str | Ticker |  | True |
 | offset | int | Offset variable | 0 | True |
-| start_date | datetime | Start date to get data from with | None | True |
-| end_date | datetime | End date to get data from with | None | True |
+| start_date | Optional[str] | Initial date, format YYYY-MM-DD | None | True |
+| end_date | Optional[str] | Final date, format YYYY-MM-DD | None | True |
 | interval | str | Interval of data |  | True |
 | export | str | Format to export data |  | True |
 | external_axes | Optional[List[plt.Axes]] | External axes (3 axes are expected in the list), by default None | None | True |

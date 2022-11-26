@@ -42,7 +42,7 @@ def get_default_files() -> Dict[str, Path]:
     return default_files
 
 
-def sdk_dt_format(x) -> str:
+def __sdk_dt_format(x) -> str:
     """Convert any Timestamp to YYYY-MM-DD when using SDK
     Args:
         x: Pandas Timestamp of any length
@@ -202,7 +202,13 @@ def add_sto(
     dataset : pd.DataFrame
         The dataset you wish to calculate for
     period : int
-        Span
+        Span of time to calculate over
+    close_column : str
+        The column name for the close price
+    high_column : str
+        The column name for the high price
+    low_column : str
+        The column name for the low price
 
     Returns
     -------
@@ -433,11 +439,11 @@ def combine_dfs(
     if df1.index.name == "date":
         df1 = df1.reset_index()
         # remove 00:00:00 from 2019-11-19 00:00:00
-        df1["date"] = df1["date"].apply(lambda x: sdk_dt_format(x))
+        df1["date"] = df1["date"].apply(lambda x: __sdk_dt_format(x))
     if df2.index.name == "date":
         df2 = df2.reset_index()
         # remove 00:00:00 from 2019-11-19 00:00:00
-        df2["date"] = df2["date"].apply(lambda x: sdk_dt_format(x))
+        df2["date"] = df2["date"].apply(lambda x: __sdk_dt_format(x))
 
     if column not in df2:
         console.print(
@@ -464,6 +470,19 @@ def combine_dfs(
 
 @log_start_end(log=logger)
 def delete_column(data: pd.DataFrame, column: str) -> None:
+    """Delete a column from a dataframe
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        The dataframe to delete a column from
+    column : str
+        The column to delete
+
+    Returns
+    -------
+    None
+    """
     if column not in data:
         console.print(
             f"Not able to find the column {column}. Please choose one of "
