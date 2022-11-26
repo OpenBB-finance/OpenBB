@@ -46,15 +46,10 @@ def no_suppress():
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "debug, test, verbose, filtert, path",
-    [
-        (True, False, False, None, None),
-        (False, False, False, None, ["scripts/test_alt_covid.openbb"]),
-        #       (False, True, False, "alt_covid", ["scripts/"]),
-        #       (False, True, True, "alt_covid", ["scripts/"]),
-    ],
+    "debug, path",
+    [(True, None), (False, ["scripts/test_alt_covid.openbb"])],
 )
-def test_menu(mocker, debug, test, filtert, path, verbose):
+def test_menu(mocker, debug, path):
     mocker.patch(target="terminal_controller.terminal")
     mocker.patch(target="terminal_controller.suppress_stdout", side_effect=no_suppress)
-    terminal_controller.main(debug, test, filtert, path, verbose)
+    terminal_controller.main(debug, path)
