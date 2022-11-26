@@ -39,7 +39,7 @@ def display_nhits_forecast(
     batch_size: int = 32,
     n_epochs: int = 100,
     learning_rate: float = 1e-3,
-    model_save_name: str = "rnn_model",
+    model_save_name: str = "nhits_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
     export: str = "",
