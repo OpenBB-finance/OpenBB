@@ -1,6 +1,5 @@
 ---
 title: Technical Analysis
-sidebar_location:
 ---
 
 The Technical Analysis module is a toolkit for analyzing time-series data, at any resolution. The functions are a collection of formulas that fit into broad categories, and they are mostly derived from the pandas_ta library:
@@ -100,7 +99,7 @@ The examples here assume that this code block is at the top of the Python script
 ```python
 import pandas as pd
 from openbb_terminal.sdk import openbb
-%matplotlib inline
+# %matplotlib inline (uncomment for Jupyter environments)
 ```
 
 ### MA (Moving Averages)
