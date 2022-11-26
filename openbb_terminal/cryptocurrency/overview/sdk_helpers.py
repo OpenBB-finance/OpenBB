@@ -24,10 +24,10 @@ def globe(source: str = "CoinGecko") -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> global_market_data = openbb.crypto.ov.globals()
+    >>> global_market_data = openbb.crypto.ov.globe()
 
     To get data from CoinPaprika, use the source parameter:
-    >>> global_market_data = openbb.crypto.ov.globals(source="coinpaprika")
+    >>> global_market_data = openbb.crypto.ov.globe(source="coinpaprika")
 
     """
     if source.lower() == "coingecko":
