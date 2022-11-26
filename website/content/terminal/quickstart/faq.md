@@ -14,6 +14,27 @@ almost a hundred different data providers and APIs to access the data.
 </p>
 </details>
 
+<details><summary>How do I update my installation to the latest version?</summary>
+<p>
+
+The terminal is constantly being updated with new features and bug fixes. Updating will be different depending on the installation type:
+      
+- For installation packages, uninstall the previous version (uninstall.exe for Windows, delete the Application folder on MacOS); then, download the latest version and reinstall. User settings and data will remain.
+- For a `pip` installation, when a new version is published: `pip install openbb --upgrade`
+- Upgrade the `pip installation` to the source code installation with:
+  
+```bash
+conda install -c conda-forge git
+git clone https://github.com/OpenBB-finance/OpenBBTerminal.git
+cd OpenBBTerminal
+poetry install (for a complete installation - poetry install -E all)
+```
+
+The Terminal can now be launched with either, `openbb`, or, `python terminal.py`
+
+</p>
+</details>
+
 <details><summary>What programs need to be allowed for Windows Firewall?</summary>
 <p>
 
@@ -130,22 +151,7 @@ This will typically be the result of a formatting error.
 <details><summary>How do I update the OpenBB Terminal?</summary>
 <p>
 
-The terminal is constantly being updated with new features and bug fixes. Updating will be different depending on the installation type:
-      
-- For installation packages, uninstall the previous version (uninstall.exe for Windows, delete the Application folder on MacOS); then, download the latest version and reinstall. User settings and data will remain.
-- For a `pip` installation, when a new version is published: `pip install openbb --upgrade`
-- Upgrade the `pip installation` to the source code installation with:
-  
-```bash
-conda install -c conda-forge git
-git clone https://github.com/OpenBB-finance/OpenBBTerminal.git
-cd OpenBBTerminal
-poetry install (for a complete installation - poetry install -E all)
-```
-  
-The Terminal can now be launched with either, `openbb`, or, `python terminal.py`
-
-- For a `Git Clone` source code installation, use the `update` command from the main menu of the OpenBB Terminal, or, exit and enter:
+A source code installation can utilize the `update` command from the main menu of the OpenBB Terminal, or, exit and enter:
       
 ```bash
 git pull
