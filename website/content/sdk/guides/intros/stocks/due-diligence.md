@@ -210,7 +210,7 @@ year_estimates_df
 
 ### Snippet
 
-Below is a way to quickly collect the seven DataFrames created in the examples above, change the ticker variable to look at other US-listed companies.
+Below is a way to quickly collect the eight DataFrames created in the examples above, change the ticker variable to look at other US-listed companies.
 
 ```python
 from openbb_terminal.sdk import openbb
