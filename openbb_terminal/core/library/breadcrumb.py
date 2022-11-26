@@ -15,7 +15,7 @@ class MetadataBuilder:
         for key in trail_map.map_dict:
             if trail == "":
                 option = key.split(".")[0]
-            elif key.startswith(trail):
+            elif key.startswith(trail) and key[len(trail)] == ".":
                 option = key[len(trail) + 1 :].split(".")[0]
             else:
                 option = None
