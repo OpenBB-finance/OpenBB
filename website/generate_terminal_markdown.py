@@ -183,7 +183,7 @@ def add_todict(d: dict, location_path: list, cmd_name: str, full_path: str) -> d
     else:
         d[location_path[0]][
             cmd_name
-        ] = f"/terminal/features/{'/'.join(full_path)}/{cmd_name}"
+        ] = f"/terminal/reference/{'/'.join(full_path)}/{cmd_name}"
 
     return d
 
@@ -235,6 +235,11 @@ def main() -> bool:
             traceback.print_exc()
             console.print(f"[red]Failed to generate markdown for {ctrlstr}: {e}[/red]")
             return False
+
+    terminal_ref = {
+        k: dict(sorted(v.items(), key=lambda item: item[0]))
+        for k, v in sorted(terminal_ref.items(), key=lambda item: item[0])
+    }
 
     with open(content_path / "_category_.json", "w", **kwargs) as f:
         f.write(json.dumps({"label": "Terminal Reference", "position": 4}, indent=2))

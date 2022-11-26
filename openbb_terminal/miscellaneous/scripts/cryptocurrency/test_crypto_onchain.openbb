@@ -3,36 +3,28 @@ onchain
 
 # hr
 
-# btccp
 btccp
 btccp --since 2012-01-01 --until 2022-01-01
 
-# btcct
 btcct
 btcct --since 2012-01-01 --until 2022-01-01
 
-# gwei
 gwei
 
-# whales
 whales
 whales --address # this is bugged
 whales --min 5000000 --limit 3 --sort amount
 whales --sort amount_usd -r
 
-# lt
 lt
-lt --kind time --vs ETH --limit 3 --days 7 --sort tradeAmount
+lt --kind time --vs ${crypto=ETH} --limit 3 --days 7 --sort tradeAmount
 
-# dvcp
-dvcp --coin ETH
-dvcp --coin ETH --limit 3 --vs BTC --days 20 --sort high # limit is bugged
+dvcp --coin ${crypto=ETH}
+dvcp --coin ${crypto=ETH} --limit 3 --vs ${crypto=BTC} --days 20 --sort high # limit is bugged
 
-# dvcp
-tv --coin ETH
-tv --coin ETH --limit 3 --vs BTC --sort tradeAmount
+tv --coin ${crypto=ETH}
+tv --coin ${crypto=ETH} --limit 3 --vs ${crypto=BTC} --sort tradeAmount
 
-# ueat
 ueat
 ueat --limit 3 --sort transactions --interval month
 
