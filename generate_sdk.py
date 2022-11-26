@@ -305,9 +305,9 @@ class BuildCategoryModelClasses:
             f.write('    """\r\r    def __init__(self):\r        super().__init__()\r')
         elif sdk_root:
             f.write(
-                    '    """\r\r    def __init__(self, suppress_logging: bool = False):\r'
-                    "        self.__suppress_logging = suppress_logging\r"
-                    "        self.__check_initialize_logging()\r"
+                '    """\r\r    def __init__(self, suppress_logging: bool = False):\r'
+                "        self.__suppress_logging = suppress_logging\r"
+                "        self.__check_initialize_logging()\r"
             )
         else:
             f.write(f'{add_indent}    """\r\r')
