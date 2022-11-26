@@ -84,7 +84,6 @@ class StocksController(StockBaseController):
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-
             choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 

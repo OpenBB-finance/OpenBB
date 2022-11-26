@@ -4,12 +4,6 @@ reports
 equity
 
 ## simple ticker
-equity --symbol AAPL
-
-## Non-US ticker
-equity --symbol NXPI
-
-## Non-US ticker with suffix
-equity --symbol PETR3.SA
+equity --symbol ${ticker=AAPL}
 
 exit

@@ -5,7 +5,7 @@ view whales.ini
 set Electronics.ini
 filter -l 4
 filter -l 2 -u
-load aapl
+load ${ticker=aapl}
 stats
 stats -u
 act --raw
