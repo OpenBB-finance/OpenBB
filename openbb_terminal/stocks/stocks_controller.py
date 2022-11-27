@@ -19,6 +19,7 @@ from openbb_terminal.stocks import cboe_view
 
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     export_data,
     valid_date,
 )
@@ -389,7 +390,7 @@ class StocksController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
-            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=20,
         )
         if ns_parser:
