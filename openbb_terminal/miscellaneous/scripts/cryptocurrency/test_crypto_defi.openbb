@@ -9,8 +9,8 @@ newsletter --limit 3
 
 # vaults
 vaults
-vaults --chain ethereum --protocol aave --kind stable --top 3 --links
-vaults --chain ethereum -s apy -r
+vaults --chain ${crypto_full=ethereum} --protocol aave --kind stable --top 3 --links
+vaults --chain ${crypto_full=ethereum} -s apy -r
 
 # tokens
 tokens

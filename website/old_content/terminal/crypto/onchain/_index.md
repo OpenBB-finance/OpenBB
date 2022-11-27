@@ -7,9 +7,9 @@ geekdocCollapseSection: true
 ---
 
 The Cryptocurrency Onchain menu provides access to features that determine market sentiment by leveraging data from
-a blockchain ledger. This can be, among other things, blockchain hashrates (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/hr/" target="_blank">hr</a>),
-confirmed transactions (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/btcct/" target="_blank">btcct</a>) and
-top traded crypto pairs (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/ttcp/" target="_blank">ttcp</a>).
+a blockchain ledger. This can be, among other things, blockchain hashrates (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/hr/" target="_blank" rel="noreferrer noopener">hr</a>),
+confirmed transactions (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/btcct/" target="_blank" rel="noreferrer noopener">btcct</a>) and
+top traded crypto pairs (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/ttcp/" target="_blank" rel="noreferrer noopener">ttcp</a>).
 
 ## How to use
 
@@ -53,14 +53,14 @@ look into the top ERC20 token by typing `top` which returns the following table:
 ## Examples
 
 To access much of the Ethereum features, an ethereum address needs to be entered. As an example this can be
-`0x71C7656EC7ab88b098defB751B7401B5f6d8976F` which can be entered within the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/address/" target="_blank">address</a>
+`0x71C7656EC7ab88b098defB751B7401B5f6d8976F` which can be entered within the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/address/" target="_blank" rel="noreferrer noopener">address</a>
 command as follows:
 
 ```
 2022 Jul 12, 08:48 (🦋) /crypto/onchain/ $ address 0x71C7656EC7ab88b098defB751B7401B5f6d8976F
 ```
 
-Which allows you to see the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/balance/" target="_blank">balance</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/hist/" target="_blank">hist</a>
+Which allows you to see the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/balance/" target="_blank" rel="noreferrer noopener">balance</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/hist/" target="_blank" rel="noreferrer noopener">hist</a>
 which returns the following for `balance`:
 
 ```

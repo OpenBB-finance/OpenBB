@@ -6,7 +6,7 @@ sidebar_position: 1
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The OpenBB SDK is a set of tools for financial and data analysis. We recommend starting out with some experience in finance, markets, and Python. The purpose of this page is to outline some of the background information required to get the most out of the software.
+The OpenBB SDK is a set of tools for financial and data analysis. The purpose of this page is to outline some of the background information required to get the most out of the software.
 
 ### Minimum System Requirements
 
@@ -15,9 +15,7 @@ The OpenBB SDK is a set of tools for financial and data analysis. We recommend s
 - A code editor or Jupyter Notebook
 - Internet connection
 
-:::note NOTES ON THE INTERNET CONNECTIVITY
-Installation of the SDK with all the toolkits would require downloading around 4GB of data. Querying data does not require a lot of bandwidth but you will certainly have a more pleasant experience if you will be on a fast internet line. 4G networks provide a good enough experience so if you're traveling your personal hot-spot will do. While it's technically possible to use a subset of the functionality in off-line mode, you will not be able to use any data that is queried from the APIs of data providers and services.
-:::info
+Note that installation of the SDK with all the toolkits would require downloading around 4GB of data. Querying data does not require a lot of bandwidth but you will certainly have a more pleasant experience if you will be on a fast internet line. 4G networks provide a good enough experience so if you're traveling your personal hot-spot will do. While it's technically possible to use a subset of the functionality in off-line mode, you will not be able to use any data that is queried from the APIs of data providers and services.
 
 :::info OS Specific Requirements
 
@@ -68,23 +66,6 @@ Virtual Python environments are containers for Python applications, and allows t
   - `conda install -c conda-forge cmake`
 
 It is not recommended to install in a Global environment, such as Homebrew or `usr/local/bin/python3`. Create and activate a new environment before installing the OpenBB SDK.
-
-### Common Python Libraries
-
-A good way to learn about the Python language is to recognize the libraries which are frequently used and attempt to understand how they form the foundations for workflows. A working knowledge of the libraries listed below is recommended:
-
-- Datetime
-- JSON
-- Math
-- Matplotlib
-- Numpy
-- Pandas
-- Plotly
-- Quandl
-- Requests
-- URLlib3
-
-The best way to learn is to get involved. Tinkering with the code from an open-source project is an excellent way to dabble.
 
 ### GitHub
 

@@ -10,7 +10,7 @@ Display holdings of assets (in percentage)
 ### Usage
 
 ```python
-usage: holdp [-u]
+holdp [-u]
 ```
 
 ---
@@ -20,5 +20,5 @@ usage: holdp [-u]
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | unstack | Sum all assets percentage over time | False | True | None |
----
 
+---

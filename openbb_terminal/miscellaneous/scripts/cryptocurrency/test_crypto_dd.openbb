@@ -1,127 +1,70 @@
 crypto
-load eth
+load ${crypto=eth}
 dd
 
-# info
 info
 
-# ath
-ath --vs usd
+ath --vs ${currency_vs=usd}
+atl --vs ${currency_vs=usd}
 
-# atl
-atl --vs usd
-
-# web
 web
-
-# bc
 bc
-
-# pi
 pi
-
-# gov
 gov
-
-# basic
 basic
 
-# stats
 stats
-stats --vs GBP
+stats --vs ${currency_vs=GBP}
 
-# desc
 desc
-
-# market
 market
 
-# mkt
 mkt
 mkt --urls
-mkt --vs ETH --limit 3 --sort volume --urls
-mkt --vs BTC -s volume -r
+mkt --vs ${crypto_vs=ETH} --limit 3 --sort volume --urls
+mkt --vs {crypto_vs=ETH} --limit 3 --sort volume --urls
+mkt --vs {crypto_vs=BTC} -s volume -r
 
-# ex
 ex
 ex --limit 3 --sort adjusted_volume_24h_share
 
-# balance
 balance
 
-# oi
-
-# fundrate
-
-# liquidations
-
-# eb
-
-# trades
 trades
 trades -e aax
-trades --vs GBP
+trades --vs ${currency_vs=GBP}
 
-# ob
 ob
 ob -e aax
-ob --vs GBP
+ob --vs ${currency_vs=GBP}
 
-# ps
 ps
-ps --vs ETH
+ps --vs ${currency_vs=ETH}
 
-# mcapdom
 mcapdom
-
-# mt
 mt
-
-# funot
-
-# team
 team
-
-# inv
 inv
-
-# tk
 tk
-
-# fr
 fr
-
-# rm
 rm
 
-# events
 events
 events --limit 3 --sort name --urls
 events --sort date -r
 
-# news
 news
 news --limit 3 -k media -r en --filter bullish
 news --sort published_at --reverse
 
-# links
 links
 
-# twitter
 twitter
 twitter --limit 3 --sort retweet_count
 twitter --sort date -r
 
-# social
 social
-
-# score
 score
-
-# dev
 dev
-
-# gh
 gh
-
 exit

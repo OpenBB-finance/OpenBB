@@ -18,7 +18,7 @@ exchanges
 exchanges --source CoinGecko
 exchanges --source CoinPaprika
 exchanges --urls
-exchanges --vs ETH
+exchanges --vs ${crypto_vs=ETH}
 exchanges --source CoinGecko --limit 3 --sortby Trust_Score -r
 
 # exrates
@@ -49,11 +49,11 @@ hm --category stablecoins --limit 3
 
 # info
 info
-info --vs ETH --sortby price --limit 3
+info --vs ${crypto_vs=ETH} --sortby price --limit 3
 
 # markets
 markets
-markets --vs ETH --sortby price --limit 3
+markets --vs ${crypto_vs=ETH} --sortby price --limit 3
 
 # exmarkets
 exmarkets
@@ -84,7 +84,7 @@ ewf
 
 # wfpe
 wfpe
-wfpe -c ethereum
+wfpe -c ${crypto_full=ethereum}
 
 # altindex
 altindex

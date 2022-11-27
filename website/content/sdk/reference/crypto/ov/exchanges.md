@@ -31,3 +31,12 @@ openbb.crypto.ov.exchanges(source: str = "CoinGecko")
 | pd.DataFrame | DataFrame with top crypto exchanges |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+exchanges = openbb.crypto.ov.exchanges()
+```
+
+---
+

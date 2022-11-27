@@ -33,3 +33,12 @@ openbb..news(term: str = "", sources: str = "", sort: str = "published")
 | pd.DataFrame | term to search on the news articles |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.news()
+```
+
+---
+

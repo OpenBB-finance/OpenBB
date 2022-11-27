@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 Gets yield curve data from FRED
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_model.py#L255)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_model.py#L257)]
 
 ```python
 openbb.economy.ycrv(date: datetime.datetime = None)
@@ -35,6 +35,15 @@ openbb.economy.ycrv(date: datetime.datetime = None)
 | Type | Description |
 | ---- | ----------- |
 | Tuple[pd.DataFrame, datetime] | Dataframe of yields and maturities,<br/>Date for which the yield curve is obtained |
+---
+
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+ycrv_df = openbb.economy.ycrv()
+```
+
 ---
 
 

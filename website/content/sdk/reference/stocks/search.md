@@ -36,3 +36,12 @@ This function does not return anything
 
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.stocks.search(country="united states", exchange_country="Germany")
+```
+
+---
+

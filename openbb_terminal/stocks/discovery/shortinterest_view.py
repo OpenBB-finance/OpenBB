@@ -63,6 +63,10 @@ def hot_penny_stocks(limit: int = 10, export: str = "", source: str = "YahooFina
         console.print("[red]Invalid source provided[/red]\n")
         return
 
+    if df_penny_stocks.empty:
+        console.print("[red]No data found.[/red]")
+        return
+
     print_rich_table(
         df_penny_stocks.head(limit),
         headers=list(df_penny_stocks.columns) if source != "Shortinterest" else None,

@@ -8,11 +8,11 @@ excerpt: "This guide introduces the Fundamental Analysis menu within the Stocks 
 geekdocCollapseSection: true
 ---
 
-The Fundamental Analysis menu is a set of tools for measuring a company's intrinsic value, relative to the market price. Functions within this menu are generally microeconomic factors. The purpose is to harness data reported in financial statements and estimate the tangible value of a share. Revenue of companies with a long public history are easier to forecast, and the consensus of many analysts will indicate the level of confidence in future expectations. In addition to these features, there are <a href="/terminal/guides/intros/stocks/screener/" target="_blank">screeners</a> to compare fundamentals across groups of companies.
+The Fundamental Analysis menu is a set of tools for measuring a company's intrinsic value, relative to the market price. Functions within this menu are generally microeconomic factors. The purpose is to harness data reported in financial statements and estimate the tangible value of a share. Revenue of companies with a long public history are easier to forecast, and the consensus of many analysts will indicate the level of confidence in future expectations. In addition to these features, there are <a href="/terminal/guides/intros/stocks/screener/" target="_blank" rel="noreferrer noopener">screeners</a> to compare fundamentals across groups of companies.
 
 ### How to use
 
-Enter the submenu from the <a href="/terminal/guides/intros/stocks/" target="_blank">Stocks menu</a>, with a ticker loaded.
+Enter the submenu from the <a href="/terminal/guides/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a>, with a ticker loaded.
 
 <img width="1166" alt="Fundamental Analysis Menu" src="https://user-images.githubusercontent.com/85772166/175221782-87f0d0df-3a50-4268-8af8-a5f1f12f3d32.png"></img>
 
@@ -68,7 +68,7 @@ The revolving line provides for availability for general corporate purposes, wit
 
 In response to a Springing Lien Triggering Event (as defined in the credit agreement), we would be required to enter into certain documents that create in favor of TD Bank, N. A., as administrative agent, and the lenders party to such documents as legal, valid, and enforceable first priority lien on the collateral described therein.
 ````
-The `warnings` command uses <a href="https://www.drwealth.com/gone-fishing-with-buffett-by-sean-seah/comment-page-1/" target="_blank">Sean Seah's signals</a> to highlight certain of qualities a business.
+The `warnings` command uses <a href="https://www.drwealth.com/gone-fishing-with-buffett-by-sean-seah/comment-page-1/" target="_blank" rel="noreferrer noopener">Sean Seah's signals</a> to highlight certain of qualities a business.
 
 ````
 (🦋) /stocks/fa/ $ warnings

@@ -6,7 +6,7 @@ with a brief overview of the features."
 geekdocCollapseSection: true
 ---
 
-The Cryptocurrency Discovery menu provides the option to look into a wide selection of trending coins (<a href="/terminal/reference/crypto/disc/trending" target="_blank">trending</a>), gainers and losers (<a href="/terminal/reference/crypto/disc/gainers" target="_blank">gainers</a> and <a href="/terminal/reference/crypto/disc/losers" target="_blank">losers</a>) as well as NFTs (<a href="/terminal/reference/crypto/disc/nft" target="_blank">nft</a>) and decentralized apps (<a href="/terminal/reference/crypto/disc/dex" target="_blank">dex</a>).
+The Cryptocurrency Discovery menu provides the option to look into a wide selection of trending coins (<a href="/terminal/reference/cryptocurrency/disc/trending" target="_blank" rel="noreferrer noopener">trending</a>), gainers and losers (<a href="/terminal/reference/cryptocurrency/disc/gainers" target="_blank" rel="noreferrer noopener">gainers</a> and <a href="/terminal/reference/cryptocurrency/disc/losers" target="_blank" rel="noreferrer noopener">losers</a>) as well as NFTs (<a href="/terminal/reference/cryptocurrency/disc/nft" target="_blank" rel="noreferrer noopener">nft</a>) and decentralized apps (<a href="/terminal/reference/cryptocurrency/disc/dex" target="_blank" rel="noreferrer noopener">dex</a>).
 
 ### How to use
 
