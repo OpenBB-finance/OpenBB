@@ -143,7 +143,7 @@ spy_pos
 | 2022-02-11 00:00:00 |          14.1183  |          46.63 |                   55.511 |           30.2776 |               -898.962  |          17553.7  |
 | 2022-02-10 00:00:00 |          22.5696  |          62.98 |                   46.454 |           35.834  |               4181.07   |          21316.8  |
 
-The other version of this command is, `openbb.stocks.dps.psi_q`. It returns daily short volumne from Nasdaq and NYSE separately, with daily historic data going back to 2013, and is sourced by Quandl. The first table below is the short volume and from Nasdaq.
+The other version of this command is, `openbb.stocks.dps.psi_q`. It returns daily short volume from Nasdaq and NYSE separately, with daily historic data going back to 2013, and is sourced by Quandl. The first table below is the short volume and from Nasdaq.
 
 ```python
 nasdaq_psi = openbb.stocks.dps.psi_q(nyse=False, symbol = 'SPY')
