@@ -313,6 +313,7 @@ class ETFController(BaseController):
             if holdings.empty:
                 console.print("No company holdings found!")
             else:
+                self.etf_holdings.clear()
                 console.print("Top holdings found:")
                 for val in holdings["Name"].values[: ns_parser.limit].tolist():
                     console.print(f"   {val}")
