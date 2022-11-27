@@ -28,6 +28,8 @@ logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
+# pylint: disable=R0912
+
 
 @log_start_end(log=logger)
 def insider_activity(
