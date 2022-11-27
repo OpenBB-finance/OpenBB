@@ -239,15 +239,16 @@ def return_colored_value(value: str):
         if float(values[0]) > 0:
             return f"[green]{value}[/green]"
 
-        elif float(values[0]) < 0:
+        if float(values[0]) < 0:
             return f"[red]{value}[/red]"
 
-        elif float(values[0]) == 0:
+        if float(values[0]) == 0:
             return f"[yellow]{value}[/yellow]"
 
     return f"{value}"
 
 
+# pylint: disable=too-many-arguments
 def print_rich_table(
     df: pd.DataFrame,
     show_index: bool = False,
