@@ -231,7 +231,6 @@ def display_income_statement(
                 if not ratios
                 else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol.upper()} Income Statement",
                 show_index=True,
-                automatic_coloring=True,
             )
 
             pd.set_option("display.max_colwidth", None)
@@ -482,7 +481,6 @@ def display_financial_ratios(
             headers=list(ratios.columns),
             title=f"{symbol.upper()} Ratios",
             show_index=True,
-            automatic_coloring=True,
         )
 
         export_data(
