@@ -89,7 +89,10 @@ def check_input(
 
 
 def get_valid_portfolio_categories(
-    input_portfolios, available_portfolios, input_categories, available_categories
+    input_portfolios: List[str],
+    available_portfolios: Dict,
+    input_categories: List[str],
+    available_categories: Dict,
 ) -> Tuple[List[str], List[str]]:
     """Get valid portfolios and categories
 
@@ -97,40 +100,50 @@ def get_valid_portfolio_categories(
     ----------
     input_portfolios : List[str]
         List of input portfolios
-    available_portfolios : List[str]
-        List of available portfolios
+    available_portfolios : Dict
+        Dict of available portfolios
     input_categories : List[str]
         List of input categories
-    available_categories : List[str]
-        List of available categories
+    available_categories : Dict
+        Dict of available categories
 
     Returns
     -------
     Tuple[List[str], List[str]]
         Valid portfolios and categories
     """
+    portfolios_list = list(set(available_portfolios.keys()))
+    categories_list = list(set(available_categories.keys()))
 
     if not input_portfolios or not input_categories:
         console.print(
             "[yellow]Current Portfolios:[/yellow]",
-            f"{('None', ', '.join(available_portfolios))[bool(available_portfolios)]}",
+            f"{('None', ', '.join(portfolios_list))[bool(portfolios_list)]}\n",
         )
+        if not portfolios_list:
+            console.print(
+                "[yellow]Perform some optimization to build a portfolio.[/yellow]"
+            )
         console.print(
-            "\n[yellow]Current Categories:[/yellow]",
-            f"{('None', ', '.join(available_categories))[bool(available_categories)]}",
+            "[yellow]Current Categories:[/yellow]",
+            f"{('None', ', '.join(categories_list))[bool(categories_list)]}\n",
         )
+        if not categories_list:
+            console.print(
+                "[yellow]Attribute some categories in the loaded file.[/yellow]"
+            )
         return [], []
 
     valid_portfolios = check_input(
         input_type="Portfolio",
         input_list=input_portfolios,
-        available_list=available_portfolios,
+        available_list=portfolios_list,
     )
 
     valid_categories = check_input(
         input_type="Category",
         input_list=input_categories,
-        available_list=available_categories,
+        available_list=categories_list,
     )
 
     return valid_portfolios, valid_categories
@@ -601,15 +614,12 @@ class PortfolioOptimizationController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            available_portfolios = list(set(self.portfolios.keys()))
             portfolios, categories = get_valid_portfolio_categories(
                 input_portfolios=ns_parser.portfolios,
-                available_portfolios=available_portfolios,
+                available_portfolios=self.portfolios,
                 input_categories=ns_parser.categories,
                 available_categories=self.categories,
             )
-            if not portfolios or not categories:
-                return
 
             for p in portfolios:
                 console.print("[yellow]Portfolio[/yellow]: " + p + "\n")
@@ -770,14 +780,24 @@ class PortfolioOptimizationController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            available_portfolios = list(set(self.portfolios.keys()))
             portfolios, categories = get_valid_portfolio_categories(
                 input_portfolios=ns_parser.portfolios,
-                available_portfolios=available_portfolios,
+                available_portfolios=self.portfolios,
                 input_categories=ns_parser.categories,
                 available_categories=self.categories,
             )
-            if not portfolios or not categories:
+
+            if not (
+                ns_parser.pie
+                or ns_parser.hist
+                or ns_parser.dd
+                or ns_parser.rc_chart
+                or ns_parser.heat
+            ):
+                console.print(
+                    "[yellow]Please select at least one chart to plot[/yellow]",
+                    "[yellow]from the following: -pi, -hi, -dd, -rc, -he[/yellow]",
+                )
                 return
 
             stocks = []
@@ -799,14 +819,7 @@ class PortfolioOptimizationController(BaseController):
                 value=1,
             )
 
-            if (
-                ns_parser.hist
-                or ns_parser.dd
-                or ns_parser.pie
-                or ns_parser.rc_chart
-                or ns_parser.heat
-            ):
-
+            if ns_parser.hist or ns_parser.dd:
                 for i in portfolios:
                     weights = self.portfolios[i]
                     weights = dict(
@@ -829,6 +842,21 @@ class PortfolioOptimizationController(BaseController):
                         hist=ns_parser.hist,
                         dd=ns_parser.dd,
                     )
+
+            if ns_parser.pie or ns_parser.rc_chart or ns_parser.heat:
+
+                if not categories:
+                    console.print(
+                        "[yellow]Attribute some categories in the loaded file.[/yellow]"
+                    )
+                    return
+
+                for i in portfolios:
+                    weights = self.portfolios[i]
+                    weights = dict(
+                        sorted(weights.items(), key=lambda x: x[1], reverse=True)
+                    )
+                    stocks = list(weights.keys())
 
                     # pie, rc_chart and heat apply to each category
                     for category in categories:
@@ -854,12 +882,6 @@ class PortfolioOptimizationController(BaseController):
                             rc_chart=ns_parser.rc_chart,
                             heat=ns_parser.heat,
                         )
-
-            else:
-                console.print(
-                    "[yellow]Please select at least one chart to plot[/yellow]",
-                    "[yellow]from the following: -pi, -hi, -dd, -rc, -he\n[/yellow]",
-                )
 
     @log_start_end(log=logger)
     def call_equal(self, other_args: List[str]):
