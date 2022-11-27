@@ -785,6 +785,8 @@ class PortfolioOptimizationController(BaseController):
                 input_categories=ns_parser.categories,
                 available_categories=self.categories,
             )
+            if not portfolios:
+                return
 
             if not (
                 ns_parser.pie
@@ -845,9 +847,6 @@ class PortfolioOptimizationController(BaseController):
             if ns_parser.pie or ns_parser.rc_chart or ns_parser.heat:
 
                 if not categories:
-                    console.print(
-                        "[yellow]Attribute some categories in the loaded file.[/yellow]"
-                    )
                     return
 
                 for i in portfolios:
