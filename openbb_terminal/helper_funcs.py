@@ -1323,6 +1323,8 @@ def export_data(
                     r"\[/green\]": "",
                     r"\[red\]": "",
                     r"\[/red\]": "",
+                    r"\[magenta\]": "",
+                    r"\[/magenta\]": "",
                 },
                 regex=True,
             )
