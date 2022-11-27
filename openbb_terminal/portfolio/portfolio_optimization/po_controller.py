@@ -117,24 +117,25 @@ def get_valid_portfolio_categories(
     portfolios_list = list(set(available_portfolios.keys()))
     categories_list = list(set(available_categories.keys()))
 
-    if not input_portfolios or not input_categories:
-
-        if not input_portfolios and portfolios_list:
+    if not portfolios_list:
+        portfolio_msg = "None. Perform some optimization to build a portfolio."
+    else:
+        if not input_portfolios:
             console.print("[yellow]Please select at least one portfolio.[/yellow]\n")
+        portfolio_msg = ", ".join(portfolios_list)
 
-        msg = "None. Perform some optimization to build a portfolio."
-        console.print(
-            "[yellow]Current Portfolios:[/yellow]",
-            f"{(msg, ', '.join(portfolios_list))[bool(portfolios_list)]}\n",
-        )
+    if not categories_list:
+        categories_msg = "None. Attribute some categories in the loaded file."
+    else:
+        categories_msg = ", ".join(categories_list)
 
-        msg = "None. Attribute some categories in the loaded file."
-        console.print(
-            "[yellow]Current Categories:[/yellow]",
-            f"{(msg, ', '.join(categories_list))[bool(categories_list)]}",
-        )
+    console.print(
+        f"[yellow]Current Portfolios: [/yellow]{portfolio_msg}\n",
+    )
 
-        return [], []
+    console.print(
+        f"[yellow]Current Categories: [/yellow]{categories_msg}\n",
+    )
 
     valid_portfolios = check_input(
         input_type="Portfolio",
@@ -850,6 +851,9 @@ class PortfolioOptimizationController(BaseController):
             if ns_parser.pie or ns_parser.rc_chart or ns_parser.heat:
 
                 if not categories:
+                    console.print(
+                        "[yellow]Categories must be provided to use -pi, -rc or -he.[/yellow]"
+                    )
                     return
 
                 for i in portfolios:
