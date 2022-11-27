@@ -157,7 +157,7 @@ def get_volume(
         start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
     df_similar = get_historical(similar, start_date, "v")
-    df_similar = df_similar[similar]
+    df_similar = df_similar[df_similar.columns]
     return df_similar
 
 
