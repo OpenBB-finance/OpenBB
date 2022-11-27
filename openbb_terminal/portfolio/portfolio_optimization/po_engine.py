@@ -124,7 +124,12 @@ class PoEngine:
         List[str]
             Available categories
         """
-        return list(self._categories.keys())
+        available_categories = list(self._categories.keys())
+
+        if "CURRENT_INVESTED_AMOUNT" in available_categories:
+            available_categories.remove("CURRENT_INVESTED_AMOUNT")
+
+        return available_categories
 
     def get_category(self, category: str = None) -> Dict[str, str]:
         """Get the category
