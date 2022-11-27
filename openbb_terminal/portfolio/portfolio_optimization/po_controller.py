@@ -202,9 +202,9 @@ class PortfolioOptimizationController(BaseController):
             {
                 filepath.name: filepath
                 for file_type in cls.FILE_TYPE_LIST
-                for filepath in (
-                    USER_PORTFOLIO_DATA_DIRECTORY / "allocation"
-                ).rglob(f"*.{file_type}")
+                for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "allocation").rglob(
+                    f"*.{file_type}"
+                )
             }
         )
 
@@ -222,9 +222,9 @@ class PortfolioOptimizationController(BaseController):
             {
                 filepath.name: filepath
                 for file_type in cls.FILE_TYPE_LIST
-                for filepath in (
-                    USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
-                ).rglob(f"*.{file_type}")
+                for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "optimization").rglob(
+                    f"*.{file_type}"
+                )
             }
         )
 
