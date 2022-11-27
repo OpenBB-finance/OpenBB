@@ -116,22 +116,21 @@ def get_valid_portfolio_categories(
     categories_list = list(set(available_categories.keys()))
 
     if not input_portfolios or not input_categories:
+
         console.print(
             "[yellow]Current Portfolios:[/yellow]",
             f"{('None', ', '.join(portfolios_list))[bool(portfolios_list)]}\n",
         )
         if not portfolios_list:
-            console.print(
-                "[yellow]Perform some optimization to build a portfolio.[/yellow]"
-            )
+            console.print("Perform some optimization to build a portfolio.\n")
+
         console.print(
             "[yellow]Current Categories:[/yellow]",
             f"{('None', ', '.join(categories_list))[bool(categories_list)]}\n",
         )
         if not categories_list:
-            console.print(
-                "[yellow]Attribute some categories in the loaded file.[/yellow]"
-            )
+            console.print("Attribute some categories in the loaded file.\n")
+
         return [], []
 
     valid_portfolios = check_input(
