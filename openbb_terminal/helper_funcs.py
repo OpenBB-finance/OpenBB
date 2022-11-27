@@ -333,8 +333,8 @@ def print_rich_table(
 
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
             # remove hour/min/sec from timestamp index - Format: YYYY-MM-DD # make better
-            row = [str(idx)] if show_index else []
-            row += [
+            row_idx = [str(idx)] if show_index else []
+            row_idx += [
                 str(x)
                 if not isinstance(x, float) and not isinstance(x, np.float64)
                 else (
@@ -346,7 +346,7 @@ def print_rich_table(
                 )
                 for idx, x in enumerate(values)
             ]
-            table.add_row(*row)
+            table.add_row(*row_idx)
         console.print(table)
     else:
         console.print(df.to_string(col_space=0))
