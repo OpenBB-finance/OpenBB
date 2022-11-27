@@ -15,7 +15,7 @@ class MetadataBuilder:
         for key in trail_map.map_dict:
             if trail == "":
                 option = key.split(".")[0]
-            elif key.startswith(trail):
+            elif key.startswith(trail) and key[len(trail)] == ".":
                 option = key[len(trail) + 1 :].split(".")[0]
             else:
                 option = None
@@ -140,7 +140,7 @@ class Breadcrumb:
         import webbrowser
 
         trail = self._trail
-        url = "https://openbb-finance.github.io/OpenBBTerminal/SDK/"
+        url = "https://docs.openbb.co/sdk/reference/"
         url += "/".join(trail.split("."))
         webbrowser.open(url)
 

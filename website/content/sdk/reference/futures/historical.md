@@ -48,7 +48,7 @@ Display historical futures [Source: Yahoo Finance]
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/futures/yfinance_view.py#L65)]
 
 ```python
-openbb.futures.historical_chart(symbols: List[str], expiry: str = "", start_date: str = None, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+openbb.futures.historical_chart(symbols: List[str], expiry: str = "", start_date: Optional[str] = None, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -59,7 +59,7 @@ openbb.futures.historical_chart(symbols: List[str], expiry: str = "", start_date
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | List[str] | List of future timeseries symbols to display | None | False |
 | expiry | str | Future expiry date with format YYYY-MM |  | True |
-| start_date | str | Initial date like string (e.g., 2021-10-01) | None | True |
+| start_date | Optional[str] | Initial date like string (e.g., 2021-10-01) | None | True |
 | raw | bool | Display futures timeseries in raw format | False | True |
 | export | str | Type of format to export data |  | True |
 | external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |

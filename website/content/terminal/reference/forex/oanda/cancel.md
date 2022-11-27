@@ -10,7 +10,7 @@ Cancel a Pending Order.
 ### Usage
 
 ```python
-usage: cancel -i ORDERID
+cancel -i ORDERID
 ```
 
 ---
@@ -20,5 +20,5 @@ usage: cancel -i ORDERID
 | Name | Description | Default | Optional | Choices |
 | ---- | ----------- | ------- | -------- | ------- |
 | orderID | The pending order ID to cancel. | None | False | None |
----
 
+---

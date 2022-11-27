@@ -26,8 +26,8 @@ def get_regression_data(
     past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
-    output_chunk_length: int = 1,
-    lags: Union[int, List[int]] = 72,
+    output_chunk_length: int = 5,
+    lags: Union[int, List[int]] = 14,
 ) -> Tuple[
     List[TimeSeries], List[TimeSeries], List[TimeSeries], float, type[RegressionModel]
 ]:

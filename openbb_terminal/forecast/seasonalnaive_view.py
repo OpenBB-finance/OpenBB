@@ -40,7 +40,7 @@ def display_seasonalnaive_forecast(
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
-    dataset_name str
+    dataset_name: str
         The name of the ticker to be predicted
     target_column: Optional[str]:
         Target column to forecast. Defaults to "close".

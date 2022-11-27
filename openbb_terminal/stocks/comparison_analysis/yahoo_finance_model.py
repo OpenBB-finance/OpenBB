@@ -55,8 +55,9 @@ def get_historical(
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
+    candle_type = candle_type.lower()
     use_returns = False
-    if candle_type.lower() == "r":
+    if candle_type == "r":
         # Calculate returns based off of adjusted close
         use_returns = True
         candle_type = "a"
@@ -156,7 +157,7 @@ def get_volume(
         start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
     df_similar = get_historical(similar, start_date, "v")
-    df_similar = df_similar[similar]
+    df_similar = df_similar[df_similar.columns]
     return df_similar
 
 

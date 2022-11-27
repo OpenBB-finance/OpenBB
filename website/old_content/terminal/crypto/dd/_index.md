@@ -7,15 +7,15 @@ geekdocCollapseSection: true
 ---
 
 The Cryptocurrency Due Diligence menu gives the user the ability to delve deeper into the coin of choice. To be able to
-do this, the menu offers basic information about the loaded coin (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/info/" target="_blank">info</a>
-and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/basic/" target="_blank">basic</a>), information about the project, technology details, audits etcetera
-(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/pi/" target="_blank">pi</a>), insights into the coin balance and order book
-(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/balance/" target="_blank">balance</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/cbbook/" target="_blank">cbbook</a>),
+do this, the menu offers basic information about the loaded coin (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/info/" target="_blank" rel="noreferrer noopener">info</a>
+and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/basic/" target="_blank" rel="noreferrer noopener">basic</a>), information about the project, technology details, audits etcetera
+(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/pi/" target="_blank" rel="noreferrer noopener">pi</a>), insights into the coin balance and order book
+(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/balance/" target="_blank" rel="noreferrer noopener">balance</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/cbbook/" target="_blank" rel="noreferrer noopener">cbbook</a>),
 the tokenomics and fundraising details
-(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/tk/" target="_blank">tk</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/fr/" target="_blank">fr</a>)
+(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/tk/" target="_blank" rel="noreferrer noopener">tk</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/fr/" target="_blank" rel="noreferrer noopener">fr</a>)
 and lastly, social media activity
-(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/mt/" target="_blank">mt</a>, <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/twitter/" target="_blank">twitter</a>
-and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/dev/" target="_blank">dev</a>).
+(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/mt/" target="_blank" rel="noreferrer noopener">mt</a>, <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/twitter/" target="_blank" rel="noreferrer noopener">twitter</a>
+and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/dev/" target="_blank" rel="noreferrer noopener">dev</a>).
 
 ## How to use
 
@@ -98,7 +98,7 @@ To get an understanding of the coin we are looking at, it is possible to look in
 ```
 
 Then, we have the option to look into the project information with `pi`. Note that this requires an API Key from Messari which you
-can find more information about <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank">here</a>.
+can find more information about <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank" rel="noreferrer noopener">here</a>.
 This command returns the following:
 
 ```

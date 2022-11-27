@@ -32,3 +32,13 @@ openbb.portfolio.metric.tail(portfolio_engine: portfolio_engine.PortfolioEngine,
 | pd.DataFrame | DataFrame of the portfolios and the benchmarks tail ratio during different time windows |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.metric.tail(p)
+```
+
+---
+

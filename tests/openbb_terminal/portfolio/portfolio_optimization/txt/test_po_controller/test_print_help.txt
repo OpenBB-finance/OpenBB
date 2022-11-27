@@ -5,7 +5,7 @@ Portfolio loaded:
 Tickers: 
 Categories: 
 
-    file               portfolio/po/file
+    file               file that contains portfolio risk parameters
 >   params             specify and show portfolio risk parameters
 
 Parameter file: 

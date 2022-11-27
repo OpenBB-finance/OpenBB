@@ -10,7 +10,7 @@ description: OpenBB Terminal Function
 ### Usage
 
 ```python
-usage: logout
+logout
 ```
 
 ---
@@ -19,5 +19,5 @@ usage: logout
 
 This command has no parameters
 
----
 
+---

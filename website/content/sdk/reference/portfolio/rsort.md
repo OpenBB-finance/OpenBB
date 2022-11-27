@@ -39,6 +39,16 @@ openbb.portfolio.rsort(portfolio_engine: portfolio_engine.PortfolioEngine, risk_
 | pd.DataFrame | Rolling sortino ratio DataFrame |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.rsort(p)
+```
+
+---
+
 
 
 </TabItem>

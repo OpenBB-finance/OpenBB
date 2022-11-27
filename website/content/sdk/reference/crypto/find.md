@@ -34,3 +34,12 @@ openbb.crypto.find(query: str, source: str = "CoinGecko", key: str = "symbol", l
 | pd.DataFrame | DataFrame with 'limit' similar coins |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.crypto.find("polka", "CoinGecko", "name", 25)
+```
+
+---
+

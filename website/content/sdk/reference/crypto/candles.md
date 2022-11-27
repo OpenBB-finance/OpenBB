@@ -7,10 +7,10 @@ description: OpenBB SDK Function
 
 Plot candle chart from dataframe. [Source: Binance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/cryptocurrency_helpers.py#L800)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/cryptocurrency_helpers.py#L799)]
 
 ```python
-openbb.crypto.candles(candles_df: pd.DataFrame, volume: bool = True, ylabel: str = "", title: str = "", external_axes: list[matplotlib.axes._axes.Axes] | None = None, yscale: str = "linear")
+openbb.crypto.candles(candles_df: pd.DataFrame, volume: bool = True, ylabel: str = "", title: str = "", external_axes: Optional[list[matplotlib.axes._axes.Axes]] = None, yscale: str = "linear")
 ```
 
 ---

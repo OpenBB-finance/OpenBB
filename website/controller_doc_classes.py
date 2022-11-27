@@ -122,9 +122,7 @@ param_type_to_value = {
 }
 
 
-def get_parameters(
-    controller_cls: BaseController,
-) -> Dict[str, Any]:
+def get_parameters(controller_cls: BaseController) -> Dict[str, Any]:
     """Gets the parameters of a controller's `__init__` signature. If required parameters are missing,
         we get the type and create a dummy value for it.
 
@@ -270,22 +268,25 @@ class ControllerDoc:
             self.cmd_parsers[command] = fparser
             return
 
-        with patch.object(
-            self.controller, "parse_known_args_and_warn", new=mock_func
-        ) as _:
-            args = {}
+        try:
+            with patch.object(
+                self.controller, "parse_known_args_and_warn", new=mock_func
+            ) as _:
+                args = {}
 
-            fullspec = self.cmd_fullspec[command]
-            if "_" in fullspec.args:
-                return
+                fullspec = self.cmd_fullspec[command]
+                if "_" in fullspec.args:
+                    return
 
-            if len(fullspec.args) > 2:
-                args.update({arg: ["1234"] for arg in fullspec.args[2:]})
-            with patch("openbb_terminal.rich_config.console.print"):
-                try:
-                    _ = getattr(self.controller, command)(["--help"], **args)
-                except SystemExit:
-                    pass
+                if len(fullspec.args) > 2:
+                    args.update({arg: ["1234"] for arg in fullspec.args[2:]})
+                with patch("openbb_terminal.rich_config.console.print"):
+                    try:
+                        _ = getattr(self.controller, command)(["--help"], **args)
+                    except SystemExit:
+                        pass
+        except Exception as e:
+            print(e)
 
     def get_all_command_parsers(self) -> None:
         """Get all command parsers"""

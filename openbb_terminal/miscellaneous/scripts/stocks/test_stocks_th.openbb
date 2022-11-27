@@ -1,0 +1,9 @@
+stocks
+load ${ticker=aapl}
+th
+open
+closed
+all
+exchange
+symbol ${ticker=MSFT}
+exit

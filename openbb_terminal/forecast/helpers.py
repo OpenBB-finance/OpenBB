@@ -519,7 +519,7 @@ def plot_forecast(
         pred_label += " w/ past covs"
     predicted_values.plot(label=pred_label, **quant_kwargs, color="#00AAFF")
     ax.set_title(
-        f"{name} for ${ticker_name} for next [{n_predict}] days (MAPE={precision:.2f}%)"
+        f"{name} for <{ticker_name}> for next [{n_predict}] days (MAPE={precision:.2f}%)"
     )
     ax.set_ylabel(target_col)
     ax.set_xlabel("Date")
@@ -569,9 +569,21 @@ def plot_explainability(
     explainability_raw=False,
     external_axes: Optional[List[plt.axes]] = None,
 ):
-    """Use SHAP to explain the model's predictions.
-    Args:
-        model (Linregr or Regr): Trained model
+    """
+    Plot explainability of the model
+
+    Parameters
+    ----------
+    model: type[GlobalForecastingModel]
+        The model to plot explainability for
+    explainability_raw: bool
+        Whether to plot raw explainability or not
+        external_axes: Optional[List[plt.axes]]
+        Optional list of axes to plot on
+
+    Returns
+    -------
+    None
     """
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -635,6 +647,16 @@ def get_series(
         fill_missing_dates=True,
     )
     try:
+        # for the sdk, we must check if date is a column not an index
+        # check if date is in the index, if true, reset the index
+        if time_col in data.index.names:
+            # # make a new column with the index
+            data[time_col] = data.index
+            # reset the index
+            data.reset_index(drop=True, inplace=True)
+            # remove 00:00:00 from 2019-11-19 00:00:00
+            data[time_col] = data[time_col].apply(lambda x: dt_format(x))
+
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
     except ValueError:
         # remove business days to allow base lib to assume freq
@@ -693,6 +715,8 @@ def get_prediction(
     forecast_horizon: int,
     n_predict: int,
 ):
+    _, val = ticker_series.split_before(train_split)
+
     print(f"Predicting {model_name} for {n_predict} days")
     if model_name not in ["Regression", "Logistic Regression"]:
         # need to create a new pytorch trainer for historical backtesting to remove progress bar
@@ -743,8 +767,8 @@ def get_prediction(
             prediction = best_model.predict(series=ticker_series, n=n_predict)
 
     precision = mape(
-        actual_series=ticker_series, pred_series=historical_fcast
-    )  # mape = mean average precision error
+        actual_series=val, pred_series=historical_fcast
+    )  # mape = mean average percentage error
     console.print(f"{model_name} model obtains MAPE: {precision:.2f}% \n")
 
     # scale back
