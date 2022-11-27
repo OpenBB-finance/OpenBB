@@ -74,7 +74,7 @@ Alternatively, you can contact us via the following routes:
 
 Want to learn how to install the OpenBB Terminal? Check out our [Installation](/quickstart/installation) guide.
 
-Want to know how to import and export data? Check out our [Data Import/Export](/guides/basics/data)
+Want to know how to import and export data? Check out our [Data Import/Export](/guides/advanced/data)
 
 Looking for personalized routines? Check out our [User Routines](/guides/advanced/scripts)
 
