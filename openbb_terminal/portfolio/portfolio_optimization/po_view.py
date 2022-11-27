@@ -280,7 +280,7 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
     >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
     >>> p.get_available_categories()
-    ['SECTOR']
+    ['SECTOR', 'CURRENCY']
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="pie")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="dd")
@@ -295,7 +295,6 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
      'SECTOR',
      'INDUSTRY',
      'COUNTRY',
-     'CURRENT_INVESTED_AMOUNT',
      'CURRENCY']
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type="pie")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
@@ -402,6 +401,10 @@ def display_heat(**kwargs):
     category = kwargs.get("category", None)
     title = kwargs.get("title", "")
     external_axes = kwargs.get("external_axes", None)
+
+    if len(weights) == 1:
+        console.print(f"Heatmap needs at least two values for '{category}'.")
+        return
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
