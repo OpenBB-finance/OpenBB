@@ -452,12 +452,14 @@ def display_categories(
         )
     )
 
-    df.reset_index(inplace=True)
-    df.set_index("CURRENCY", inplace=True)
-
+    df.reset_index(level=1, inplace=True)
     headers = list(df.columns)
     headers = [s.title() for s in headers]
-    print_rich_table(df, headers=headers, show_index=True, title=title)
+    show_index = True
+    if column == "CURRENCY":
+        show_index = False
+
+    print_rich_table(df, headers=headers, show_index=show_index, title=title)
 
 
 @log_start_end(log=logger)
@@ -3934,6 +3936,11 @@ def additional_plots(
             theme.visualize_output()
 
     if heat:
+
+        if len(weights) == 1:
+            console.print(f"Heatmap needs at least two values for '{category}'.")
+            return
+
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
@@ -4004,7 +4011,7 @@ def additional_plots(
             theme.visualize_output(force_tight_layout=True)
 
 
-def display_show(weights: Dict, tables: List[str], categories: Dict[Any, Any]):
+def display_show(weights: Dict, tables: List[str], categories_dict: Dict[Any, Any]):
     """Display the results of the optimization.
 
     Parameters
@@ -4013,7 +4020,7 @@ def display_show(weights: Dict, tables: List[str], categories: Dict[Any, Any]):
         Dictionary of weights.
     tables : List[str]
         List of tables to display.
-    categories : Dict[Any, Any]
+    categories_dict : Dict[Any, Any]
         Dictionary of categories.
     """
 
@@ -4023,7 +4030,7 @@ def display_show(weights: Dict, tables: List[str], categories: Dict[Any, Any]):
         console.print("")
         display_categories(
             weights=weights,
-            categories=categories,
+            categories=categories_dict,
             column=t,
             title="Category - " + t.title(),
         )

@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
@@ -58,6 +58,82 @@ def add_arguments(parser_update, parser, not_in_list):
                     choices=data_dict["choices"],
                     help=data_dict["help"],
                 )
+
+
+def check_input(
+    input_type: str, input_list: List[str], available_list: List[str]
+) -> List[str]:
+    """Check if input is valid
+
+    Parameters
+    ----------
+    input_type : str
+        Type of input
+    input_list : List[str]
+        List of input
+    available_list : List[str]
+        List of available input
+
+    Returns
+    -------
+    List[str]
+        Valid categories
+    """
+    valid = []
+    for i in input_list:
+        if i in available_list:
+            valid.append(i)
+        else:
+            console.print(f"[red]{input_type} '{i}' not available.[/red]\n")
+    return valid
+
+
+def get_valid_portfolio_categories(
+    input_portfolios, available_portfolios, input_categories, available_categories
+) -> Tuple[List[str], List[str]]:
+    """Get valid portfolios and categories
+
+    Parameters
+    ----------
+    input_portfolios : List[str]
+        List of input portfolios
+    available_portfolios : List[str]
+        List of available portfolios
+    input_categories : List[str]
+        List of input categories
+    available_categories : List[str]
+        List of available categories
+
+    Returns
+    -------
+    Tuple[List[str], List[str]]
+        Valid portfolios and categories
+    """
+
+    if not input_portfolios or not input_categories:
+        console.print(
+            "[yellow]Current Portfolios:[/yellow]",
+            f"{('None', ', '.join(available_portfolios))[bool(available_portfolios)]}",
+        )
+        console.print(
+            "\n[yellow]Current Categories:[/yellow]",
+            f"{('None', ', '.join(available_categories))[bool(available_categories)]}",
+        )
+        return [], []
+
+    valid_portfolios = check_input(
+        input_type="Portfolio",
+        input_list=input_portfolios,
+        available_list=available_portfolios,
+    )
+
+    valid_categories = check_input(
+        input_type="Category",
+        input_list=input_categories,
+        available_list=available_categories,
+    )
+
+    return valid_portfolios, valid_categories
 
 
 class PortfolioOptimizationController(BaseController):
@@ -118,8 +194,10 @@ class PortfolioOptimizationController(BaseController):
 
         if categories:
             self.categories = dict(categories)
+            self.available_categories = list(self.categories.keys())
         else:
             self.categories = dict()
+            self.available_categories = list()
 
         self.count = 0
         self.current_portfolio = ""
@@ -185,7 +263,7 @@ class PortfolioOptimizationController(BaseController):
         mt.add_param("_loaded", self.current_portfolio or "")
         mt.add_raw("\n")
         mt.add_param("_tickers", ", ".join(self.tickers))
-        mt.add_param("_categories", ", ".join(self.categories.keys()))
+        mt.add_param("_categories", ", ".join(self.available_categories))
         mt.add_raw("\n")
         mt.add_cmd("file")
         mt.add_menu("params")
@@ -302,7 +380,7 @@ class PortfolioOptimizationController(BaseController):
                 "--categories",
                 dest="categories",
                 type=lambda s: [str(item).upper() for item in s.split(",")],
-                default=["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"],
+                default=self.available_categories,
                 help="Show selected categories",
             )
         if p:
@@ -521,26 +599,25 @@ class PortfolioOptimizationController(BaseController):
 
         parser = self.po_parser(parser, ct=True)
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
-            portfolios = set(self.portfolios.keys())
+            available_portfolios = list(set(self.portfolios.keys()))
+            portfolios, categories = get_valid_portfolio_categories(
+                input_portfolios=ns_parser.portfolios,
+                available_portfolios=available_portfolios,
+                input_categories=ns_parser.categories,
+                available_categories=self.categories,
+            )
+            if not portfolios or not categories:
+                return
 
-            if not ns_parser.portfolios:
-                console.print(
-                    f"[yellow]Current Portfolios:[/yellow] {('None', ', '.join(portfolios))[bool(portfolios)]}"
+            for p in portfolios:
+                console.print("[yellow]Portfolio[/yellow]: " + p + "\n")
+                optimizer_view.display_show(
+                    weights=self.portfolios[p],
+                    tables=categories,
+                    categories_dict=self.categories,
                 )
-                c = ("None", ", ".join(ns_parser.categories))[
-                    bool(ns_parser.categories)
-                ]
-                console.print(f"\n[yellow]Current Categories:[/yellow] {c}")
-
-            for portfolio in ns_parser.portfolios:
-                if portfolio in portfolios:
-                    console.print("[yellow]Portfolio[/yellow]: " + portfolio + "\n")
-                    optimizer_view.display_show(
-                        weights=self.portfolios[portfolio],
-                        tables=ns_parser.categories,
-                        categories=self.categories,
-                    )
 
     @log_start_end(log=logger)
     def call_rpf(self, other_args: List[str]):
@@ -592,7 +669,7 @@ class PortfolioOptimizationController(BaseController):
             nargs="+",
             dest="file",
             help="Allocation file to be used",
-            choices=self.DATA_OPTIMIZATION_FILES,
+            choices=self.DATA_ALLOCATION_FILES,
             metavar="FILE",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -608,6 +685,9 @@ class PortfolioOptimizationController(BaseController):
                 file_location = filename  # type: ignore
 
             self.tickers, self.categories = excel_model.load_allocation(file_location)
+            self.available_categories = list(self.categories.keys())
+            if "CURRENT_INVESTED_AMOUNT" in self.available_categories:
+                self.available_categories.remove("CURRENT_INVESTED_AMOUNT")
             self.portfolios = dict()
             self.update_runtime_choices()
             self.current_portfolio = filename
@@ -690,13 +770,16 @@ class PortfolioOptimizationController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if len(self.tickers) < 2:
-                console.print(
-                    "Please have at least 2 loaded tickers to calculate weights.\n"
-                )
+            available_portfolios = list(set(self.portfolios.keys()))
+            portfolios, categories = get_valid_portfolio_categories(
+                input_portfolios=ns_parser.portfolios,
+                available_portfolios=available_portfolios,
+                input_categories=ns_parser.categories,
+                available_categories=self.categories,
+            )
+            if not portfolios or not categories:
                 return
 
-            portfolios = ns_parser.portfolios
             stocks = []
             for i in portfolios:
                 stocks += list(self.portfolios[i].keys())
@@ -716,34 +799,38 @@ class PortfolioOptimizationController(BaseController):
                 value=1,
             )
 
-            categories = ns_parser.categories
+            if (
+                ns_parser.hist
+                or ns_parser.dd
+                or ns_parser.pie
+                or ns_parser.rc_chart
+                or ns_parser.heat
+            ):
 
-            for i in portfolios:
-                weights = self.portfolios[i]
-                weights = dict(
-                    sorted(weights.items(), key=lambda x: x[1], reverse=True)
-                )
-                stocks = list(weights.keys())
-                optimizer_view.additional_plots(
-                    weights=weights,
-                    data=stock_returns[stocks],
-                    category=None,
-                    title_opt=i,
-                    freq=ns_parser.return_frequency,
-                    risk_measure=ns_parser.risk_measure.lower(),
-                    risk_free_rate=ns_parser.risk_free,
-                    alpha=ns_parser.significance_level,
-                    a_sim=100,
-                    beta=ns_parser.significance_level,
-                    b_sim=100,
-                    pie=ns_parser.pie,
-                    hist=ns_parser.hist,
-                    dd=ns_parser.dd,
-                    rc_chart=ns_parser.rc_chart,
-                    heat=ns_parser.heat,
-                    external_axes=None,
-                )
-                if ns_parser.pie or ns_parser.heat or ns_parser.rc_chart:
+                for i in portfolios:
+                    weights = self.portfolios[i]
+                    weights = dict(
+                        sorted(weights.items(), key=lambda x: x[1], reverse=True)
+                    )
+                    stocks = list(weights.keys())
+
+                    # hist and dd are transversal to all categories
+                    optimizer_view.additional_plots(
+                        weights=weights,
+                        data=stock_returns[stocks],
+                        title_opt=i,
+                        freq=ns_parser.return_frequency,
+                        risk_measure=ns_parser.risk_measure.lower(),
+                        risk_free_rate=ns_parser.risk_free,
+                        alpha=ns_parser.significance_level,
+                        a_sim=100,
+                        beta=ns_parser.significance_level,
+                        b_sim=100,
+                        hist=ns_parser.hist,
+                        dd=ns_parser.dd,
+                    )
+
+                    # pie, rc_chart and heat apply to each category
                     for category in categories:
                         filtered_categories = dict(
                             filter(
@@ -764,12 +851,15 @@ class PortfolioOptimizationController(BaseController):
                             beta=ns_parser.significance_level,
                             b_sim=100,
                             pie=ns_parser.pie,
-                            hist=ns_parser.hist,
-                            dd=ns_parser.dd,
                             rc_chart=ns_parser.rc_chart,
                             heat=ns_parser.heat,
-                            external_axes=None,
                         )
+
+            else:
+                console.print(
+                    "[yellow]Please select at least one chart to plot[/yellow]",
+                    "[yellow]from the following: -pi, -hi, -dd, -rc, -he\n[/yellow]",
+                )
 
     @log_start_end(log=logger)
     def call_equal(self, other_args: List[str]):
