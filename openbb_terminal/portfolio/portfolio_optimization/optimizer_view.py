@@ -416,6 +416,10 @@ def display_categories(
         title to display
     """
 
+    if column == "CURRENT_INVESTED_AMOUNT":
+        console.print(f"[yellow]'{column}' cannot be displayed as a category.[/yellow]")
+        return
+
     df = optimizer_model.get_categories(weights, categories, column)
 
     if df.empty:
@@ -453,8 +457,7 @@ def display_categories(
     )
 
     df.reset_index(level=1, inplace=True)
-    headers = list(df.columns)
-    headers = [s.title() for s in headers]
+    headers = [s.title() for s in list(df.columns)]
     show_index = True
     if column == "CURRENCY":
         show_index = False

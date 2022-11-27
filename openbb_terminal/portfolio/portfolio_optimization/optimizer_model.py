@@ -2904,6 +2904,9 @@ def get_categories(
     if not weights:
         return pd.DataFrame()
 
+    if column == "CURRENT_INVESTED_AMOUNT":
+        return pd.DataFrame()
+
     df = pd.DataFrame.from_dict(
         data=weights, orient="index", columns=["value"], dtype=float
     )

@@ -659,10 +659,13 @@ class PortfolioOptimizationController(BaseController):
                 if portfolio in portfolios:
                     self.portfolios.pop(portfolio)
                     portfolios.remove(portfolio)
+                    console.print(f"[yellow]Removed '{portfolio}'.[/yellow]")
+                else:
+                    console.print(f"[red]Portfolio '{portfolio}' does not exist.[/red]")
 
             if self.portfolios:
                 console.print(
-                    f"\nCurrent Portfolios: {('None', ', '.join(portfolios))[bool(portfolios)]}"
+                    f"\n[yellow]Current Portfolios: [/yellow]{('None', ', '.join(portfolios))[bool(portfolios)]}"
                 )
 
             self.update_runtime_choices()
