@@ -62,15 +62,12 @@ class ScreenerController(BaseController):
         self.screen_tickers: List = list()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["view"] = {c: None for c in self.preset_choices}
-            choices["set"] = {c: None for c in self.preset_choices}
+            choices: dict = self.choices_default
+            choices["view"].update({c: None for c in self.preset_choices})
+            choices["set"].update({c: None for c in self.preset_choices})
             choices["sbc"] = {
                 c: None for c in financedatabase_model.get_etfs_categories()
             }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -236,6 +233,8 @@ class ScreenerController(BaseController):
 
     @log_start_end(log=logger)
     def call_sbc(self, other_args: List[str]):
+        etfs_categories = financedatabase_model.get_etfs_categories()
+
         """Process sbc command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -251,6 +250,7 @@ class ScreenerController(BaseController):
             nargs="+",
             help="Category to look for",
             required="-h" not in other_args,
+            choices=etfs_categories,
         )
         parser.add_argument(
             "-l",
@@ -269,7 +269,7 @@ class ScreenerController(BaseController):
         )
         if ns_parser:
             category = " ".join(ns_parser.category)
-            if category in financedatabase_model.get_etfs_categories():
+            if category in etfs_categories:
                 financedatabase_view.display_etf_by_category(
                     category=category,
                     limit=ns_parser.limit,
