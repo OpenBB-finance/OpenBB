@@ -155,6 +155,11 @@ def get_valid_portfolio_categories(
 class PortfolioOptimizationController(BaseController):
     """Portfolio Optimization Controller class"""
 
+    DEFAULT_PORTFOLIO_DIRECTORY = MISCELLANEOUS_DIRECTORY / "portfolio_examples"
+    DEFAULT_ALLOCATION_DIRECTORY = DEFAULT_PORTFOLIO_DIRECTORY / "allocation"
+    DEFAULT_OPTIMIZATION_DIRECTORY = DEFAULT_PORTFOLIO_DIRECTORY / "optimization"
+    FILE_TYPE_LIST = ["xlsx", "ini"]
+
     CHOICES_COMMANDS = [
         "show",
         "rpf",
@@ -185,6 +190,45 @@ class PortfolioOptimizationController(BaseController):
     CHOICES_GENERATION = True
 
     files_available: List = list()
+
+    @classmethod
+    def build_allocation_file_map(cls) -> dict:
+        allocation_file_map = {
+            filepath.name: filepath
+            for file_type in cls.FILE_TYPE_LIST
+            for filepath in cls.DEFAULT_ALLOCATION_DIRECTORY.rglob(f"*.{file_type}")
+        }
+        allocation_file_map.update(
+            {
+                filepath.name: filepath
+                for file_type in cls.FILE_TYPE_LIST
+                for filepath in (
+                    USER_PORTFOLIO_DATA_DIRECTORY / "allocation"
+                ).rglob(f"*.{file_type}")
+            }
+        )
+
+        return allocation_file_map
+
+    @classmethod
+    def build_optimization_file_map(cls) -> dict:
+        optimization_file_map = {
+            filepath.name: filepath
+            for file_type in cls.FILE_TYPE_LIST
+            for filepath in cls.DEFAULT_OPTIMIZATION_DIRECTORY.rglob(f"*.{file_type}")
+        }
+
+        optimization_file_map.update(
+            {
+                filepath.name: filepath
+                for file_type in cls.FILE_TYPE_LIST
+                for filepath in (
+                    USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
+                ).rglob(f"*.{file_type}")
+            }
+        )
+
+        return optimization_file_map
 
     def __init__(
         self,
@@ -218,43 +262,10 @@ class PortfolioOptimizationController(BaseController):
         self.count = 0
         self.current_portfolio = ""
 
-        self.file_types = ["xlsx", "ini"]
-        self.DEFAULT_ALLOCATION_PATH = USER_PORTFOLIO_DATA_DIRECTORY / "allocation"
-
-        self.DATA_ALLOCATION_FILES = {
-            filepath.name: filepath
-            for file_type in self.file_types
-            for filepath in self.DEFAULT_ALLOCATION_PATH.rglob(f"*.{file_type}")
-        }
-
-        self.DATA_ALLOCATION_FILES.update(
-            {
-                filepath.name: filepath
-                for file_type in self.file_types
-                for filepath in (
-                    MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "allocation"
-                ).rglob(f"*.{file_type}")
-            }
-        )
+        self.allocation_file_map = self.build_allocation_file_map()
+        self.optimization_file_map = self.build_optimization_file_map()
 
         self.current_file = ""
-        self.DEFAULT_OPTIMIZATION_PATH = USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
-
-        self.DATA_OPTIMIZATION_FILES = {
-            filepath.name: filepath
-            for file_type in self.file_types
-            for filepath in self.DEFAULT_OPTIMIZATION_PATH.rglob(f"*.{file_type}")
-        }
-
-        self.DATA_OPTIMIZATION_FILES.update(
-            {
-                filepath.name: filepath
-                for file_type in self.file_types
-                for filepath in (
-                    MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "optimization"
-                ).rglob(f"*.{file_type}")
-            }
-        )
 
         self.params: Dict = {}
 
@@ -557,7 +568,7 @@ class PortfolioOptimizationController(BaseController):
             nargs="+",
             dest="file",
             help="Parameter file to be used",
-            choices=self.DATA_OPTIMIZATION_FILES,
+            choices=self.optimization_file_map.keys(),
             metavar="FILE",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -568,8 +579,8 @@ class PortfolioOptimizationController(BaseController):
         if ns_parser:
             self.current_file = " ".join(ns_parser.file)
 
-            if self.current_file in self.DATA_OPTIMIZATION_FILES:
-                file_location = self.DATA_OPTIMIZATION_FILES[self.current_file]
+            if self.current_file in self.optimization_file_map:
+                file_location = self.optimization_file_map[self.current_file]
             else:
                 file_location = self.current_file  # type: ignore
 
@@ -685,7 +696,7 @@ class PortfolioOptimizationController(BaseController):
             nargs="+",
             dest="file",
             help="Allocation file to be used",
-            choices=self.DATA_ALLOCATION_FILES,
+            choices=self.allocation_file_map.keys(),
             metavar="FILE",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -695,8 +706,8 @@ class PortfolioOptimizationController(BaseController):
         if ns_parser:
             filename = " ".join(ns_parser.file)
 
-            if filename in self.DATA_ALLOCATION_FILES:
-                file_location = self.DATA_ALLOCATION_FILES[filename]
+            if filename in self.allocation_file_map:
+                file_location = self.allocation_file_map[filename]
             else:
                 file_location = filename  # type: ignore
 
