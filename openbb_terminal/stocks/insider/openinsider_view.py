@@ -226,14 +226,6 @@ def print_insider_filter(
         title="Insider filtered",
     )
 
-    if export:
-        if symbol:
-            cmd = "lis"
-        else:
-            cmd = "filter"
-
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), cmd, df_insider)
-
     if not links:
         l_chars = [list(chars) for chars in df_insider_orig["X"].values]
         l_uchars = np.unique(list(itertools.chain(*l_chars)))
@@ -246,3 +238,11 @@ def print_insider_filter(
 
         for tradetype in l_utradetype:
             console.print(d_trade_types[tradetype])
+
+    if export:
+        if symbol:
+            cmd = "stats"
+        else:
+            cmd = "filter"
+
+        export_data(export, os.path.dirname(os.path.abspath(__file__)), cmd, df_insider)
