@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 from datetime import datetime, timedelta
 import logging
 import os
+import math
 from typing import List, Optional
 
 import matplotlib.pyplot as plt
@@ -26,6 +27,8 @@ from openbb_terminal.stocks.insider import businessinsider_model
 logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
+
+# pylint: disable=R0912
 
 
 @log_start_end(log=logger)
@@ -113,18 +116,30 @@ def insider_activity(
             min_price, max_price = ax.get_ylim()
 
             price_range = max_price - min_price
-            shares_range = (
+
+            maxshares = (
                 df_insider[df_insider["Type"] == "Buy"]
                 .groupby(by=["Date"])
                 .sum(numeric_only=True)["Trade"]
                 .max()
-                - df_insider[df_insider["Type"] == "Sell"]
+            )
+            minshares = (
+                df_insider[df_insider["Type"] == "Sell"]
                 .groupby(by=["Date"])
                 .sum(numeric_only=True)["Trade"]
                 .min()
             )
+
+            if math.isnan(maxshares):
+                shares_range = minshares
+            elif math.isnan(minshares):
+                shares_range = maxshares
+            else:
+                shares_range = maxshares - minshares
+
             n_proportion = price_range / shares_range
 
+            bar_1 = None
             for ind in (
                 df_insider[df_insider["Type"] == "Sell"]
                 .groupby(by=["Date"])
@@ -157,6 +172,7 @@ def insider_activity(
                     lw=5,
                 )
 
+            bar_2 = None
             for ind in (
                 df_insider[df_insider["Type"] == "Buy"]
                 .groupby(by=["Date"])
@@ -189,11 +205,24 @@ def insider_activity(
                     lw=5,
                 )
 
-            ax.legend(
-                handles=[bar_1, bar_2],
-                labels=["Insider Selling", "Insider Buying"],
-                loc="best",
-            )
+            if bar_1 and bar_2:
+                ax.legend(
+                    handles=[bar_1, bar_2],
+                    labels=["Insider Selling", "Insider Buying"],
+                    loc="best",
+                )
+            elif bar_1:
+                ax.legend(
+                    handles=[bar_1],
+                    labels=["Insider Selling"],
+                    loc="best",
+                )
+            elif bar_2:
+                ax.legend(
+                    handles=[bar_2],
+                    labels=["Insider Buying"],
+                    loc="best",
+                )
             theme.style_primary_axis(ax)
 
             if not external_axes:
