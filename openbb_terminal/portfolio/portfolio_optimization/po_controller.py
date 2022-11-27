@@ -79,7 +79,9 @@ def check_input(
     List[str]
         Valid categories
     """
-    valid = []
+
+    valid: List[str] = []
+
     for i in input_list:
         if i in available_list:
             valid.append(i)
@@ -117,19 +119,20 @@ def get_valid_portfolio_categories(
 
     if not input_portfolios or not input_categories:
 
+        if not input_portfolios and portfolios_list:
+            console.print("[yellow]Please select at least one portfolio.[/yellow]\n")
+
+        msg = "None. Perform some optimization to build a portfolio."
         console.print(
             "[yellow]Current Portfolios:[/yellow]",
-            f"{('None', ', '.join(portfolios_list))[bool(portfolios_list)]}\n",
+            f"{(msg, ', '.join(portfolios_list))[bool(portfolios_list)]}\n",
         )
-        if not portfolios_list:
-            console.print("Perform some optimization to build a portfolio.\n")
 
+        msg = "None. Attribute some categories in the loaded file."
         console.print(
             "[yellow]Current Categories:[/yellow]",
-            f"{('None', ', '.join(categories_list))[bool(categories_list)]}\n",
+            f"{(msg, ', '.join(categories_list))[bool(categories_list)]}",
         )
-        if not categories_list:
-            console.print("Attribute some categories in the loaded file.\n")
 
         return [], []
 
@@ -797,7 +800,7 @@ class PortfolioOptimizationController(BaseController):
             ):
                 console.print(
                     "[yellow]Please select at least one chart to plot[/yellow]",
-                    "[yellow]from the following: -pi, -hi, -dd, -rc, -he[/yellow]",
+                    "[yellow]from the following: -pi, -hi, -dd, -rc, -he.[/yellow]",
                 )
                 return
 
