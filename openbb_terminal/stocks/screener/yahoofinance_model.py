@@ -115,7 +115,9 @@ def historical(
 
     if l_stocks:
         if len(l_stocks) < 2:
-            console.print("Please select two or more tickers.\n")
+            console.print(
+                "The preset selected did not return a sufficient number of tickers. Two or more tickers are needed."
+            )
             return pd.DataFrame(), [], False
         if len(l_stocks) > limit:
             random.shuffle(l_stocks)
@@ -150,5 +152,10 @@ def historical(
                 columns=final_screener.columns,
                 index=final_screener.index,
             )
+    else:
+        console.print(
+            "The preset selected did not return a sufficient number of tickers. Two or more tickers are needed."
+        )
+        return pd.DataFrame(), [], False
 
     return final_screener, l_stocks, limit_random_stocks
