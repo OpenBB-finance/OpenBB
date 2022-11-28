@@ -46,7 +46,7 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 WORKDIR $PYSETUP_PATH
 
 # Copy poetry files
-COPY pyproject.toml openbb_terminal/SDK_README.md poetry.lock ./
+COPY pyproject.toml website/content/sdk/quickstart/installation.md poetry.lock ./
 
 RUN mkdir $PYSETUP_PATH/openbb_terminal
 RUN mv SDK_README.md ./openbb_terminal
