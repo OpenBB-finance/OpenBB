@@ -371,9 +371,11 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 click = ">=8.0.0"
+ipython = {version = ">=7.8.0", optional = true, markers = "extra == \"jupyter\""}
 mypy-extensions = ">=0.4.3"
 pathspec = ">=0.9.0"
 platformdirs = ">=2"
+tokenize-rt = {version = ">=3.2.0", optional = true, markers = "extra == \"jupyter\""}
 tomli = {version = ">=1.1.0", markers = "python_full_version < \"3.11.0a7\""}
 typing-extensions = {version = ">=3.10.0.0", markers = "python_version < \"3.10\""}
 
@@ -4856,7 +4858,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "40e5392efc5f2ebfc4dbe69706185e1e2c1a8cfcda984f75d7125d890bd62f63"
+content-hash = "8ca9e9770f3a1000767ced3d201968914db06136cde19041d046b2ea8d2ca8c1"
 
 [metadata.files]
 absl-py = [

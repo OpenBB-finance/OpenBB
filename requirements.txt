@@ -23,7 +23,7 @@ bandit==1.7.4 ; python_version >= "3.8" and python_full_version != "3.9.7" and p
 base58==2.1.1 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 beartype==0.7.1 ; python_version >= "3.8" and python_version < "3.11" and python_full_version != "3.9.7"
 beautifulsoup4==4.11.1 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
-black==22.10.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
+black[jupyter]==22.10.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 bleach==5.0.1 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 blinker==1.5 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 bs4==0.0.1 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
