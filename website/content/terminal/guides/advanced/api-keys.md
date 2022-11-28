@@ -1,6 +1,6 @@
 ---
 title: Set API keys
-sidebar_position: 3
+sidebar_position: 1
 ---
 Within the `keys` menu you can define your, often free, API key from various platforms like Alpha Vantage, FRED, IEX, Twitter, DeGiro, Binance and Coinglass. API keys are in essence a set of random characters that is unique to you.
 

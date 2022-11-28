@@ -1,9 +1,13 @@
 from typing import Optional
+import pytest
 
-from website import (
-    generate_sdk_markdown as gen_sdk,
-    generate_terminal_markdown as gen_term,
-)
+try:
+    from website import (
+        generate_sdk_markdown as gen_sdk,
+        generate_terminal_markdown as gen_term,
+    )
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 def test_generate_terminal_markdown():
@@ -36,6 +40,7 @@ def mock_func(arg1: Optional[str] = "Test", arg2: Optional[bool] = True) -> bool
     return True
 
 
+# pylint:disable=too-few-public-methods
 class MockTrailMap:
     """Mock trail map"""
 

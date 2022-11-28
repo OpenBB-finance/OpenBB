@@ -41,10 +41,10 @@ excerpt: "This guide introduces the Technical Analysis menu, which is common acr
 
 The Technical Analysis menu offers the user a suite of tools for analyzing the technical components of an asset's trading history. The menu can be found in most wings of the Terminal:
 
-- <a href="/terminal/guides/intros/cryptocurrency/" target="_blank" rel="noreferrer noopener">Crypto</a>
+- <a href="/terminal/guides/intros/crypto/" target="_blank" rel="noreferrer noopener">Crypto</a>
 - <a href="/terminal/guides/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks</a>
 - <a href="/terminal/guides/intros/etf/" target="_blank" rel="noreferrer noopener">ETF</a>
-- <a href ="terminal/guides/intros/forex/" target="blank">ForEx</a>
+- <a href="/terminal/guides/intros/forex/" target="blank">Forex</a>
 
 The commands are divided by categories that define their purpose for general-use:
 
