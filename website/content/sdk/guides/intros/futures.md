@@ -34,7 +34,7 @@ import pandas as pd
 Futures can be searched by description, exchange, or category.
 
 ```python
-obb.futures.search(description = 'Eurodollar')
+openbb.futures.search(description = 'Eurodollar')
 ```
 
 |     | Ticker   | Description                          | Exchange   | Category   |
@@ -60,7 +60,6 @@ eurodollar = openbb.futures.curve('GE')
 | 2023-01-01 00:00:00 |   94.985  |
 | 2023-02-01 00:00:00 |   94.9    |
 | 2023-03-01 00:00:00 |   94.825  |
-...continued
 
 To display a chart of the data, use `curve_chart`:
 

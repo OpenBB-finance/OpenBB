@@ -25,31 +25,31 @@ A brief description below highlights the main Functions and Modules available in
 
 | Path                       |    Type    |                                  Description |
 | :------------------------- | :--------: | -------------------------------------------: |
-| openbb.ba.bullbear         |  Function  |                     Estimate Quick Sentiment |
-| openbb.ba.headlines        |  Function  |            Sentiment from 15+ News Headlines |
-| openbb.ba.spacc            |  Function  | Shows SPAC announcements from SPAC subreddit |
-| openbb.ba.watchlist        |  Function  |                 Show Other User's Watchlists | 
-| openbb.ba.messages         |  Function  |         Output last 30 messages on the board |
-| openbb.ba.mentions         |  Function  |         Interest Over Time Based on Mentions |
-| openbb.ba.hist             |  Function  |                  Plot Historical RHI and AHI |
-| openbb.ba.snews            |  Function  |           Stock Price Plotted Over Sentiment |
-| openbb.ba.redditsent       |  Function  |        Search for Tickers and Find Sentiment |
-| openbb.ba.popular          |  Function  |                         Show Popular Tickers |
-| openbb.ba.spac             |  Function  |        Shows Other User's SPAC Announcements |
-| openbb.ba.getdd            |  Function  |                            Get Due Diligence |
-| openbb.ba.regions          |  Function  |         Regions Showing the Highest Interest |
-| openbb.ba.trending         |  Function  |                              Trending Stocks |
-| openbb.ba.wsb              |  Function  |                Highlights from WSB Subreddit |
-| openbb.ba.queries          |  Function  |                          Top Related Queries |
-| openbb.ba.sentiment        |  Function  |  Stock Sentiment Prediction from Last Tweets |
-| openbb.ba.infer            |  Function  |             Stock Sentiment from Last Tweets |
-| openbb.ba.stalker          |  Function  |                    Stocktwit's last messages |
-| openbb.ba.rise             |  Function  |                   Top Rising Related Queries |
+| openbb.stocks.ba.bullbear         |  Function  |                     Estimate Quick Sentiment |
+| openbb.stocks.ba.headlines        |  Function  |            Sentiment from 15+ News Headlines |
+| openbb.stocks.ba.spacc            |  Function  | Shows SPAC announcements from SPAC subreddit |
+| openbb.stocks.ba.watchlist        |  Function  |                 Show Other User's Watchlists |
+| openbb.stocks.ba.messages         |  Function  |         Output last 30 messages on the board |
+| openbb.stocks.ba.mentions         |  Function  |         Interest Over Time Based on Mentions |
+| openbb.stocks.ba.hist             |  Function  |                  Plot Historical RHI and AHI |
+| openbb.stocks.ba.snews            |  Function  |           Stock Price Plotted Over Sentiment |
+| openbb.stocks.ba.redditsent       |  Function  |        Search for Tickers and Find Sentiment |
+| openbb.stocks.ba.popular          |  Function  |                         Show Popular Tickers |
+| openbb.stocks.ba.spac             |  Function  |        Shows Other User's SPAC Announcements |
+| openbb.stocks.ba.getdd            |  Function  |                            Get Due Diligence |
+| openbb.stocks.ba.regions          |  Function  |         Regions Showing the Highest Interest |
+| openbb.stocks.ba.trending         |  Function  |                              Trending Stocks |
+| openbb.stocks.ba.wsb              |  Function  |                Highlights from WSB Subreddit |
+| openbb.stocks.ba.queries          |  Function  |                          Top Related Queries |
+| openbb.stocks.ba.sentiment        |  Function  |  Stock Sentiment Prediction from Last Tweets |
+| openbb.stocks.ba.infer            |  Function  |             Stock Sentiment from Last Tweets |
+| openbb.stocks.ba.stalker          |  Function  |                    Stocktwit's last messages |
+| openbb.stocks.ba.rise             |  Function  |                   Top Rising Related Queries |
 
 Alteratively you can print the contents of the BA SDK with:
 
 ```python
-help(openbb.ba)
+help(openbb.stocks.ba)
 ```
 
 ## Examples

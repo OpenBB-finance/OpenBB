@@ -88,8 +88,8 @@ help(openbb.portfolio.load)
 ```
 
 ```console
-  Get PortfolioEngine object
-    
+    Get PortfolioEngine object
+
     Parameters
     ----------
     transactions_file_path : str
@@ -101,11 +101,16 @@ help(openbb.portfolio.load)
         quantity to the nearest number
     risk_free_rate : float
         Risk free rate in float format
-    
+
     Returns
     -------
     PortfolioEngine
         PortfolioEngine class instance, this will hold transactions and perform calculations
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
 ```
 
 The syntax should resemble something like the sample below; don't forget to modify the path to match the local path.
@@ -132,7 +137,7 @@ A Portfolio Object is assigned to the variable, `P`. The created object, or part
 
 ```python
 P.set_benchmark(symbol = 'SPY')
- 
+
  Loading benchmark:  50%|█████     | 2/4 [00:00<00:00,  5.69it/s]
 
 print(P.benchmark_ticker)
@@ -248,18 +253,17 @@ print(rs.tail(5))
 rv = openbb.portfolio.rvol(P, window = '3m')
 rv.rename(columns={'portfolio': 'Portfolio Volatility', 'benchmark': 'Benchmark Volatility'}, inplace = True)
 rv.index = rv.index.strftime(date_format='%Y-%m-%d')
-rolling_metrics = dd.join(rv,rs)
 
-print(rolling_metrics.tail(5))
+print(rv.tail(5))
 ```
 
-| Date       |   Portfolio % Drawdown |   Portfolio Value |   Portfolio Volatility |   Benchmark Volatility |   Portfolio Sharpe |   Benchmark Sharpe |
-|:-----------|-----------------------:|---------------------:|-----------------------:|-----------------------:|-------------------:|-------------------:|
-| 2022-11-21 |              -0.58 |               109442 |              0.02 |              0.01 |         -0.15 |          0.02 |
-| 2022-11-22 |              -0.57 |               111257 |              0.02 |              0.01 |         -0.13 |          0.05 |
-| 2022-11-23 |              -0.56 |               114017 |              0.02 |              0.01 |         -0.10 |          0.07 |
-| 2022-11-24 |              -0.56 |               114027 |              0.02 |              0.01 |         -0.10 |          0.08 |
-| 2022-11-25 |              -0.56 |               113302 |              0.02 |              0.01 |         -0.91 |          0.11 |
+| Date       |   Portfolio Volatility |   Benchmark Volatility |
+|:-----------|-----------------------:|---------------------:|
+|2022-11-23   |           0.021727     |         0.014490|
+|2022-11-24    |          0.021715     |         0.014439|
+|2022-11-25   |           0.021596    |          0.014256|
+|2022-11-26   |           0.021591    |          0.014256|
+|2022-11-27   |           0.021592    |          0.014256|
 
 ### DRet
 
