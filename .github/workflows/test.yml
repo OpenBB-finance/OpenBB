@@ -60,8 +60,6 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - run: pip install -U setuptools wheel
-
       - name: Load cached venv
         id: cached-poetry-dependencies
         uses: actions/cache@v3
