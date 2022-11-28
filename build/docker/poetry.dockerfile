@@ -48,7 +48,8 @@ WORKDIR $PYSETUP_PATH
 # Copy poetry files
 COPY pyproject.toml website/content/sdk/quickstart/installation.md poetry.lock ./
 
-RUN mkdir $PYSETUP_PATH/openbb_terminal
+RUN mkdir -p website/content/sdk/quickstart
+RUN mkdir openbb_terminal
 RUN mv installation.md ./website/content/sdk/quickstart
 RUN touch openbb_terminal/__init__.py
 
