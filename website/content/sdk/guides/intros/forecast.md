@@ -1,5 +1,5 @@
 ---
-title: Forecast SDK
+title: Forecast
 ---
 
 The Forecast module provides programmatic access to the same commands found in the OpenBB Terminal Forecast menu. The extensive library of models, built on top of the [u8darts](https://unit8co.github.io/darts/) library, are easily tuned with hyper-parameters.

@@ -1,6 +1,6 @@
 ---
 title: Adjusting Chart Style
-sidebar_position: 2
+sidebar_position: 4
 ---
 
 Within the OpenBB SDK, you can customize your chart style. You can switch between `dark` and `light` easily using this block of code:
