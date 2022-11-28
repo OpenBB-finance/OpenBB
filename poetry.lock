@@ -371,11 +371,9 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 click = ">=8.0.0"
-ipython = {version = ">=7.8.0", optional = true, markers = "extra == \"jupyter\""}
 mypy-extensions = ">=0.4.3"
 pathspec = ">=0.9.0"
 platformdirs = ">=2"
-tokenize-rt = {version = ">=3.2.0", optional = true, markers = "extra == \"jupyter\""}
 tomli = {version = ">=1.1.0", markers = "python_full_version < \"3.11.0a7\""}
 typing-extensions = {version = ">=3.10.0.0", markers = "python_version < \"3.10\""}
 
@@ -1634,22 +1632,6 @@ format = ["idna", "jsonpointer (>1.13)", "rfc3987", "strict-rfc3339", "webcolors
 format-nongpl = ["idna", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3986-validator (>0.1.0)", "webcolors"]
 
 [[package]]
-name = "jupyter"
-version = "1.0.0"
-description = "Jupyter metapackage. Install all the Jupyter components in one go."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-ipykernel = "*"
-ipywidgets = "*"
-jupyter-console = "*"
-nbconvert = "*"
-notebook = "*"
-qtconsole = "*"
-
-[[package]]
 name = "jupyter-client"
 version = "7.4.1"
 description = "Jupyter protocol implementation and client libraries"
@@ -1669,24 +1651,6 @@ traitlets = "*"
 [package.extras]
 doc = ["ipykernel", "myst-parser", "sphinx (>=1.3.6)", "sphinx-rtd-theme", "sphinxcontrib-github-alt"]
 test = ["codecov", "coverage", "ipykernel (>=6.5)", "ipython", "mypy", "pre-commit", "pytest", "pytest-asyncio (>=0.18)", "pytest-cov", "pytest-timeout"]
-
-[[package]]
-name = "jupyter-console"
-version = "6.4.4"
-description = "Jupyter terminal console"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-ipykernel = "*"
-ipython = "*"
-jupyter-client = ">=7.0.0"
-prompt-toolkit = ">=2.0.0,<3.0.0 || >3.0.0,<3.0.1 || >3.0.1,<3.1.0"
-pygments = "*"
-
-[package.extras]
-test = ["pexpect"]
 
 [[package]]
 name = "jupyter-core"
@@ -2568,7 +2532,7 @@ testing = ["docopt", "pytest (<6.0.0)"]
 
 [[package]]
 name = "pathspec"
-version = "0.10.1"
+version = "0.10.2"
 description = "Utility library for gitignore style pattern matching of file paths."
 category = "dev"
 optional = false
@@ -3493,42 +3457,6 @@ python-versions = "*"
 [package.dependencies]
 numpy = ">=1.7"
 scipy = ">=0.13.2"
-
-[[package]]
-name = "qtconsole"
-version = "5.3.2"
-description = "Jupyter Qt console"
-category = "main"
-optional = false
-python-versions = ">= 3.7"
-
-[package.dependencies]
-ipykernel = ">=4.1"
-ipython-genutils = "*"
-jupyter-client = ">=4.1"
-jupyter-core = "*"
-pygments = "*"
-pyzmq = ">=17.1"
-qtpy = ">=2.0.1"
-traitlets = "<5.2.1 || >5.2.1,<5.2.2 || >5.2.2"
-
-[package.extras]
-doc = ["Sphinx (>=1.3)"]
-test = ["flaky", "pytest", "pytest-qt"]
-
-[[package]]
-name = "qtpy"
-version = "2.2.1"
-description = "Provides an abstraction layer on top of the various Qt bindings (PyQt5/6 and PySide2/6)."
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-packaging = "*"
-
-[package.extras]
-test = ["pytest (>=6,!=7.0.0,!=7.0.1)", "pytest-cov (>=3.0.0)", "pytest-qt"]
 
 [[package]]
 name = "quandl"
@@ -4928,7 +4856,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "91db9903493de0c289234ca35036379c2647e64831416993933db60c01278565"
+content-hash = "40e5392efc5f2ebfc4dbe69706185e1e2c1a8cfcda984f75d7125d890bd62f63"
 
 [metadata.files]
 absl-py = [
@@ -6032,18 +5960,9 @@ jsonschema = [
     {file = "jsonschema-3.2.0-py2.py3-none-any.whl", hash = "sha256:4e5b3cf8216f577bee9ce139cbe72eca3ea4f292ec60928ff24758ce626cd163"},
     {file = "jsonschema-3.2.0.tar.gz", hash = "sha256:c8a85b28d377cc7737e46e2d9f2b4f44ee3c0e1deac6bf46ddefc7187d30797a"},
 ]
-jupyter = [
-    {file = "jupyter-1.0.0-py2.py3-none-any.whl", hash = "sha256:5b290f93b98ffbc21c0c7e749f054b3267782166d72fa5e3ed1ed4eaf34a2b78"},
-    {file = "jupyter-1.0.0.tar.gz", hash = "sha256:d9dc4b3318f310e34c82951ea5d6683f67bed7def4b259fafbfe4f1beb1d8e5f"},
-    {file = "jupyter-1.0.0.zip", hash = "sha256:3e1f86076bbb7c8c207829390305a2b1fe836d471ed54be66a3b8c41e7f46cc7"},
-]
 jupyter-client = [
     {file = "jupyter_client-7.4.1-py3-none-any.whl", hash = "sha256:bbf6404ef64afff3d4f583c90c6335545959657b7dec3a86c440d7b1368407ea"},
     {file = "jupyter_client-7.4.1.tar.gz", hash = "sha256:3f30b1f27dc61adf5d0f5d466ef7185f6a19140c54395600b6df9adbe7d5ebcf"},
-]
-jupyter-console = [
-    {file = "jupyter_console-6.4.4-py3-none-any.whl", hash = "sha256:756df7f4f60c986e7bc0172e4493d3830a7e6e75c08750bbe59c0a5403ad6dee"},
-    {file = "jupyter_console-6.4.4.tar.gz", hash = "sha256:172f5335e31d600df61613a97b7f0352f2c8250bbd1092ef2d658f77249f89fb"},
 ]
 jupyter-core = [
     {file = "jupyter_core-4.11.2-py3-none-any.whl", hash = "sha256:3815e80ec5272c0c19aad087a0d2775df2852cfca8f5a17069e99c9350cecff8"},
@@ -6735,8 +6654,8 @@ parso = [
     {file = "parso-0.8.3.tar.gz", hash = "sha256:8c07be290bb59f03588915921e29e8a50002acaf2cdc5fa0e0114f91709fafa0"},
 ]
 pathspec = [
-    {file = "pathspec-0.10.1-py3-none-any.whl", hash = "sha256:46846318467efc4556ccfd27816e004270a9eeeeb4d062ce5e6fc7a87c573f93"},
-    {file = "pathspec-0.10.1.tar.gz", hash = "sha256:7ace6161b621d31e7902eb6b5ae148d12cfd23f4a249b9ffb6b9fee12084323d"},
+    {file = "pathspec-0.10.2-py3-none-any.whl", hash = "sha256:88c2606f2c1e818b978540f73ecc908e13999c6c3a383daf3705652ae79807a5"},
+    {file = "pathspec-0.10.2.tar.gz", hash = "sha256:8f6bf73e5758fd365ef5d58ce09ac7c27d2833a8d7da51712eac6e27e35141b0"},
 ]
 patsy = [
     {file = "patsy-0.5.3-py2.py3-none-any.whl", hash = "sha256:7eb5349754ed6aa982af81f636479b1b8db9d5b1a6e957a6016ec0534b5c86b7"},
@@ -7578,14 +7497,6 @@ qdldl = [
     {file = "qdldl-0.1.5.post2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:15d0fbff31aa19195b135ca934cf75025d46a275d915eebb7c11a7d16e148096"},
     {file = "qdldl-0.1.5.post2-cp39-cp39-win_amd64.whl", hash = "sha256:5269f40521b12941f1334a162f8f06375df6a89f0f90d8a758ae3b83b8931b18"},
     {file = "qdldl-0.1.5.post2.tar.gz", hash = "sha256:7daf7ad1bfff1da71da06e82d5147bdb1ac866581617d8f06cc4eeda48e2a149"},
-]
-qtconsole = [
-    {file = "qtconsole-5.3.2-py3-none-any.whl", hash = "sha256:c29d24464f57cdbaa17d6f6060be6e6d5e29126e7feb57eebc1747433382b3d1"},
-    {file = "qtconsole-5.3.2.tar.gz", hash = "sha256:8eadf012e83ab018295803c247c6ab7eacd3d5ab1e1d88a0f37fdcfdab9295a3"},
-]
-qtpy = [
-    {file = "QtPy-2.2.1-py3-none-any.whl", hash = "sha256:268cf5328f41353be1b127e04a81bc74ec9a9b54c9ac75dd8fe0ff48d8ad6ead"},
-    {file = "QtPy-2.2.1.tar.gz", hash = "sha256:7d5231133b772e40b4ee514b6673aca558331e4b88ca038b26c9e16c5c95524f"},
 ]
 quandl = [
     {file = "Quandl-3.7.0-py2.py3-none-any.whl", hash = "sha256:0e3e5dc60fd057c73c67380b1b0f2e3dc0e4c500fb5e6e146ac3a3c0d992cd1d"},
