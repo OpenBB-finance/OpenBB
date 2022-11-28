@@ -18,7 +18,7 @@ from openbb_terminal.sdk import openbb
 
 This menu requires the usage of the Excel templates to work properly. As there is a lot of complexity involved around these techniques, these templates allow the user to understand what values for each parameter are actually used and allow for an easy way to define the allocation.
 
-:::note For this there are two templates that need to be set, the **OpenBB Parameters Template** and the **OpenBB Portfolio Template**. These files can be found in [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/portfolio_examples). Select a file and press "Download" on the right, then place it into the OpenBBUserData folder. You can find more about this folder [here](/sdk/basics/data).
+:::note For this there are two templates that need to be set, the **OpenBB Parameters Template** and the **OpenBB Portfolio Template v1.0.0**. These files can be found in [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/portfolio_examples). One is in the `allocation` folder and the other is in `optimization`. the Select a file and press "Download" on the right, then place it into the OpenBBUserData folder. You can find more about this folder [here](/sdk/advanced/data).
 :::
 
 ### OpenBB Parameters Template
@@ -27,22 +27,6 @@ This template provides the user with the ability to set define values for each p
 The OpenBB Terminal does, however, allow the user to run any model despite the `technique` you selected. Therefore, if you are interested in running multiple models, consider removing the value for `technique`. Do note that this makes it more difficult to understand which values are used for which model.
 
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/171144692-dd812efd-1e95-4a71-a93f-7ae8a480fe5d.png"><img alt="OpenBB Parameters Template" src="https://user-images.githubusercontent.com/46355364/171144692-dd812efd-1e95-4a71-a93f-7ae8a480fe5d.png"></img></a>
-
-Once you have defined the parameters, save the template and load it inside the terminal by using the the following:
-
-```python
-# Define your orderbook path here
-order_book_path = "PATH_TO_ORDERBOOK_FILE"
-
-# Read in the file
-order_book = pd.read_excel(order_book_path)
-
-# Adjust the columns accordingly
-order_book_cols = ['Ticker', 'Asset Class', 'Sector', 'Industry', 'Country',
-       'Current Invested Amount', 'Currency']
-
-order_book = order_book[order_book_cols]
-```
 
 ### OpenBB Portfolio Template
 This template hands the user a format to work with it to define the portfolio. Here, categorization is applied based on asset class, sector, industry, country and currency. By using the dropdown menus within this Excel, you are able to apply the proper categorization. This is based on the same methodology as found in other areas of the terminal.
@@ -67,7 +51,8 @@ order_book_cols = ['Ticker', 'Asset Class', 'Sector', 'Industry', 'Country',
 order_book = order_book[order_book_cols]
 
 # Load in the portfolio
-tickers, categories = openbb.portfolio.po.load(order_book_path)
+p = openbb.portfolio.po.load(symbols_file_path=order_book_path)
+tickers, categories = openbb.portfolio.po.equal(portfolio_engine=p)
 ```
 
 ### Performing optimization
@@ -75,10 +60,9 @@ Based on the parameters and allocation the user has set, the optimization proces
 
 ```python
 # Perform calculations
-weights_riskparity, data_returns_riskparity = openbb.portfolio.po.riskparity(tickers)
+weights_riskparity, data_returns_riskparity = openbb.portfolio.po.riskparity(p)
 
-# Convert to a DataFrame
-pd.DataFrame.from_dict(weights_riskparity, orient='index', columns=["Risk Parity"])
+weights_riskparity
 ```
 
 Which returns:
@@ -100,7 +84,10 @@ Which returns:
 It is possible to use the commands without loading in the parameters template or by using the parameters template but changing some arguments directly into the terminal. For example, using the same method as described above, the risk measure is changed to <a href="https://www.investopedia.com/terms/c/conditional_value_at_risk.asp" target="_blank" rel="noreferrer noopener">Conditional Value at Risk (CVaR)</a> and the used historic period is increased to 10 years (keeping all other parameters unchanged):
 
 ```python
-weights_riskparity, data_returns_riskparity = openbb.portfolio.po.riskparity(tickers, interval="10y", risk_measure="CVaR")
+# Perform calculations
+weights_riskparity, data_returns_riskparity = openbb.portfolio.po.riskparity(p, interval="10y", risk_measure="CVaR")
+
+weights_riskparity
 ```
 
 Which returns:

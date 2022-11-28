@@ -67,7 +67,7 @@ help(openbb.econometrics)
 ### Loading a dataset
 
 The first step in using this menu is loading a dataset. This can be either an example dataset, see the list below, or any locally stored Excel file. To demonstrate the usage of the menu, the <a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank" rel="noreferrer noopener">longley</a>
-dataset is loaded in. This can be done with the following
+ dataset is loaded in. This can be done with the following
 
 ```python
 example_load = openbb.econometrics.load("anes96")

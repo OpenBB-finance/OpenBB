@@ -134,7 +134,7 @@ openbb.forecast.theta_chart(data = spy, target_column = 'Adj Close')
 The default number of days to predict for all models is five. If the interval of the time-series is not daily, days equates to the interval of the index.
 
 ```console
-Theta Model obtains MAPE: 1.91% 
+Theta Model obtains MAPE: 1.91%
 ```
 
 ![openbb.forecast.theta_chart](https://user-images.githubusercontent.com/85772166/203897200-f2d3938c-f3a9-4ee4-bf67-0398d8d3bce6.png)
@@ -163,7 +163,7 @@ A moving average provides an indication of the trend of the price movement by cu
 
 ```console
 help(openbb.forecast.ema)
-    
+
     Parameters
     ----------
     dataset : pd.DataFrame
@@ -172,7 +172,7 @@ help(openbb.forecast.ema)
         The column you wish to add the EMA to
     period : int
         Time Span
-    
+
     Returns
     -------
     pd.DataFrame
@@ -252,7 +252,7 @@ Stochastic Oscillator %K and %D : A stochastic oscillator is a momentum indicato
 
 Requires Low/High/Close columns.
 Note: This will drop first rows equal to period due to how this metric is calculated.
-    
+
 Parameters
 ----------
 close_column: str
@@ -276,10 +276,10 @@ The results of these calculations appends the dataset with two additional column
 
 ```python
 spy = openbb.forecast.sto(
-    dataset = spy, 
-    high_column='High', 
-    low_column = 'Low', 
-    close_column = 'Adj Close', 
+    dataset = spy,
+    high_column='High',
+    low_column = 'Low',
+    close_column = 'Adj Close',
     period = 20
 )
 
@@ -338,7 +338,7 @@ openbb.forecast.delete(spy, 'Close')
 Then, let's rename, 'Adj Close', as, 'Close', and verify the results:
 
 ```python
-openbb.forecast.rename(spy, 'Adj Close', 'Close')
+spy = openbb.forecast.rename(spy, 'Adj Close', 'Close')
 
 spy.tail(1)
 ```
@@ -380,7 +380,7 @@ openbb.forecast.regr_chart(spy, target_column = 'Close')
 ```console
 Predicting Regression for 5 days
 
-Regression model obtains MAPE: 1.90% 
+Regression model obtains MAPE: 1.90%
 ```
 
 ![openbb.forecast.regr_chart](https://user-images.githubusercontent.com/85772166/203897290-330de1a6-056b-475b-9206-44658ebe5239.png "openbb.forecast.regr_chart")
@@ -440,7 +440,7 @@ Let's add another potential past-covariate to the dataset by taking the adjusted
 
 ```python
 xom = openbb.stocks.load("XOM", start_date = '1993-01-29')
-openbb.forecast.combine(df1 = spy, df2 = xom, column = 'Adj Close', dataset = 'XOM' )
+spy = openbb.forecast.combine(df1 = spy, df2 = xom, column = 'Adj Close', dataset = 'XOM' )
 spy.rename(columns = {'XOM_Adj Close': 'XOM'}, inplace = True)
 ```
 
@@ -482,7 +482,7 @@ Covariate #2: XOM
 
 Predicting Regression for 5 days
 
-Regression model obtains MAPE: 1.80% 
+Regression model obtains MAPE: 1.80%
 ```
 
 |Datetime |Prediction |
@@ -515,10 +515,10 @@ spy = openbb.forecast.rsi(spy, target_column = 'Adj Close', period = 10)
 spy = openbb.forecast.rsi(spy, target_column = 'Adj Close', period = 60)
 
 spy = openbb.forecast.sto(
-    dataset = spy, 
-    high_column='High', 
-    low_column = 'Low', 
-    close_column = 'Adj Close', 
+    dataset = spy,
+    high_column='High',
+    low_column = 'Low',
+    close_column = 'Adj Close',
     period = 20
 )
 
@@ -549,7 +549,7 @@ Help on Operation in module openbb_terminal.core.library.operation:
 
 <openbb_terminal.core.library.operation.Operation object>
     Display Regression Forecasting
-    
+
     Parameters
     ----------
     data: Union[pd.Series, pd.DataFrame]
