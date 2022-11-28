@@ -3032,7 +3032,7 @@ class ForecastController(BaseController):
             "--layer_widths",
             dest="layer_widths",
             type=check_positive,
-            default=3,
+            default=512,
             help="The number of neurons in each layer",
         )
         parser.add_argument(
@@ -3056,7 +3056,7 @@ class ForecastController(BaseController):
             "--max_pool_1d",
             action="store_true",
             dest="maxpool1d",
-            default=False,
+            default=True,
             help="Whether to use max_pool_1d or AvgPool1d",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -3068,7 +3068,7 @@ class ForecastController(BaseController):
             target_dataset=True,
             n_days=True,
             force_reset=True,
-            model_save_name="tft_model",
+            model_save_name="nhits_model",
             train_split=True,
             dropout=0.1,
             input_chunk_length=True,
