@@ -11,6 +11,8 @@ import Card from "@site/src/components/General/Card";
 
 OpenBB is a leading open source investment research software platform for accessing and analyzing financial market data. We represent millions of investors who want to leverage state-of-the-art data science and machine learning technologies to make sense of raw unrefined data. Our mission is to make investment research effective, powerful and accessible to everyone.
 
+Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).
+
 ---
 
 **The OpenBB Terminal is Free and Open-Source (FOSS)**
@@ -60,9 +62,9 @@ OpenBB is a leading open source investment research software platform for access
 
 ### Obtaining support and giving feedback
 
-Being an open source platform that wishes to tailor to the needs of any type of investor, we highly encourage anyone to share with us their experience and/or how we can further improve the OpenBB Terminal. This can be anything from a very small bug to a new feature to the implementation of a highly advanced Machine Learning model.
+Being an open source platform that wishes to tailor to the needs of any type of investor, we highly encourage anyone to share with us their experience and/or how we can further improve the OpenBB Terminal. This can be anything from a very small bug, a new feature, or the implementation of a highly advanced Machine Learning model.
 
-You are able to directly send us information about a bug or question/suggestion from inside the terminal by using the `support` command which is available everywhere in the terminal. Here you can select which command you want to report a bug, ask a question or make a suggestion on. When you press `ENTER` (⏎), you are taken to the Support form which is automatically filled with your input. You are only required to include the type (e.g. bug, suggestion or question) and message in the form although this can also be set directly from inside the terminal (see `support -h`).
+You are able to directly send us information about a bug or a question/suggestion from inside the terminal by using the `support` command which is available everywhere in the terminal. Here you can select which command you want to report a bug on, ask a question or make a suggestion. After entering `support`, when you press `ENTER` (⏎), you are taken to the Support form which is automatically filled with your input. You are only required to include the type (e.g. bug, suggestion or question) and message in the form, although this can also be set directly from inside the terminal (see `support -h`).
 
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503483-c93c83fa-e9e9-4345-b816-8fcfe02b6785.png"><img src="https://user-images.githubusercontent.com/46355364/169503483-c93c83fa-e9e9-4345-b816-8fcfe02b6785.png" alt="Support Command" width="800"/></a>
 
