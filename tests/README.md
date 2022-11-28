@@ -549,7 +549,7 @@ After updating the `pyproject.toml` you will have to export the `requirements` f
 
 ```bash
 poetry export -f requirements.txt  -o requirements.txt --without-hashes --dev
-poetry export -f requirements.txt  -o requirements-full.txt --extras prediction --without-hashes --dev
+poetry export -f requirements.txt  -o requirements-full.txt --extras prediction --extras optimization --without-hashes --dev
 ```
 
 # 4. Maintain `unit tests`

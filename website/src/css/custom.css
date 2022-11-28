@@ -327,7 +327,7 @@ pre[class*="language-"] {
   color: #2dba06 !important;
 }
 
-.theme-admonition-info [data-theme="dark"] {
+[data-theme="dark"] .theme-admonition-info {
   border-color: #004466 !important;
   background-color: #2a2a2a !important;
 }
