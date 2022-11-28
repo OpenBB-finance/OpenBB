@@ -53,8 +53,7 @@ RUN mv SDK_README.md ./openbb_terminal
 RUN touch openbb_terminal/__init__.py
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
-RUN poetry install --no-dev
-RUN poetry install --no-interaction -E optimization -E prediction
+RUN poetry install --no-dev --no-interaction -E optimization -E prediction
 
 ###############################################
 # Production Image openbb poetry build
