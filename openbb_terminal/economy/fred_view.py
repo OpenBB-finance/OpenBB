@@ -206,9 +206,7 @@ def display_yield_curve(
     """
     rates, date_of_yield = fred_model.get_yield_curve(date)
     if rates.empty:
-        console.print(
-            f"[red]Yield data not found for {date_of_yield}.[/red]\n"
-        )
+        console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
         return
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
