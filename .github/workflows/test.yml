@@ -69,14 +69,14 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction -E optimization -E doc -E prediction
+        run: poetry install --no-interaction -E optimization
 
       - name: Run tests
         env:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --autodoc --optimization --prediction
+          pytest tests/ --optimization
 
       - name: Start Terminal and exit
         run: |
