@@ -52,9 +52,7 @@ Note that installation of the SDK with all the toolkits would require downloadin
 </Tabs>
 :::
 
-## Python
-
-### Virtual Environments
+## Virtual Environments
 
 - [Miniconda3](https://docs.conda.io/en/latest/miniconda.html)
 - [Installing Python Packages](https://packaging.python.org/en/latest/tutorials/installing-packages/)
@@ -67,36 +65,8 @@ Virtual Python environments are containers for Python applications, and allows t
 
 It is not recommended to install in a Global environment, such as Homebrew or `usr/local/bin/python3`. Create and activate a new environment before installing the OpenBB SDK.
 
-### GitHub
+## GitHub
 
 [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal) is where the OpenBB source code is maintained. Cloning the [repository](https://github.com/OpenBB-finance/OpenBBTerminal.git) is recommended for those wishing to develop functions, inspect the source code, or be on the bleeding-edge of development. Syncing the local folder - `git pull` - to the main branch of the repository will keep the installation up-to-date, and `git checkout` provides a way to test development or contributor branches. GitHub can also be used as a personal storage vault and take advantage of automated actions. It's a great place to build, store, and maintain small databases for free.
 
 Users encountering bugs are encouraged to report them [here](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose) by creating a new issue, if no open issue for the bug already exists.
-
-### View-Model-Control
-
-OpenBB uses a [View-Model-Control](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) format for creating functionality in the terminal.
-
-For example:
-
-```
-openbb.economy.ycrv()
-```
-
-|     |  Maturity | Rate |
-| --: | --------: | ---: |
-|   0 | 0.0833333 | 3.93 |
-|   1 |      0.25 | 4.34 |
-|   2 |       0.5 | 4.61 |
-| ... |       ... |  ... |
-|   8 |        10 | 3.82 |
-|   9 |        20 | 4.13 |
-|  10 |        30 | 3.92 |
-
-Then the view:
-
-```
-openbb.economy.ycrv_chart()
-```
-
-![Screenshot 2022-11-21 at 4 29 17 PM](https://user-images.githubusercontent.com/85772166/203185342-f019414d-24e2-4d8a-a718-10eeedb59e8c.png)

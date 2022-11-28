@@ -1,12 +1,12 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 title: Changing Sources
 ---
 
-Many commands have multiple datasources attached to it. A great example is `/stocka/fa/income` that allows you to select `YahooFinance, Polygon, AlphaVantage, FinancialModelingPrep or EODHD`. Many have a default source, for example for `income` this is Yahoo Finance but you can change the default sources of each command via the `sources` menu. 
+Many commands have multiple datasources attached to it. A great example is `/stocka/fa/income` that allows you to select `YahooFinance, Polygon, AlphaVantage, FinancialModelingPrep or EODHD`. Many have a default source, for example for `income` this is Yahoo Finance but you can change the default sources of each command via the `sources` menu.
 
 ```
-2022 Nov 23, 06:09 (🦋) / $ sources 
+2022 Nov 23, 06:09 (🦋) / $ sources
 
 ╭─────────────────────────────────────────────────────────────────────────────────────────────────── Data Sources ───────────────────────────────────────────────────────────────────────────────────────────────────╮
 │                                                                                                                                                                                                                    │

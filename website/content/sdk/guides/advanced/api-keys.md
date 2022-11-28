@@ -1,6 +1,6 @@
 ---
 title: Set API Keys
-sidebar_position: 3
+sidebar_position: 1
 ---
 
 API keys can be managed directly from the SDK environment. If there is already a Terminal installation configured with API keys, they will be recognized by the SDK. Their status can be verified with the line of code below.
