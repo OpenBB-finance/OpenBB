@@ -116,7 +116,7 @@ def historical(
     if l_stocks:
         if len(l_stocks) < 2:
             console.print(
-                "The preset selected did not return a sufficient number of tickers. Two or more tickers are needed.\n"
+                "The preset selected did not return a sufficient number of tickers. Two or more tickers are needed."
             )
             return pd.DataFrame(), [], False
         if len(l_stocks) > limit:
