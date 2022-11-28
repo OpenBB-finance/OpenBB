@@ -47,7 +47,7 @@ The Behavioural Analysis menu offers the user tools for gauging the overall publ
 
 ### How to use
 
-The commands with text, representing <a href="https://docs.openbb.co/terminal/guides/basics/structure" target="_blank" rel="noreferrer noopener">commands</a>, do not require a ticker, faded commands will turn light blue when there is a ticker loaded.
+The commands with text, representing <a href="https://docs.openbb.co/terminal/guides/basics" target="_blank" rel="noreferrer noopener">commands</a>, do not require a ticker, faded commands will turn light blue when there is a ticker loaded.
 
 ```
 (🦋) /stocks/ba/ $ load gme
