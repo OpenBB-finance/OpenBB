@@ -28,7 +28,7 @@ jobs:
           key: ${{ runner.os }}-v1-linting
           restore-keys: ${{ runner.os }}-v1-linting
 
-      - run: pip install bandit black codespell flake8 mypy==0.982 pyupgrade safety pylint==2.15.2
+      - run: pip install setuptools wheel bandit black codespell flake8 mypy==0.982 pyupgrade safety pylint==2.15.2
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
@@ -71,21 +71,15 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
 
-      - name: Install Extra Doc
-        run: poetry install --no-interaction -E doc
-
-      - name: Install Extra Optimization
-        run: poetry install --no-interaction -E optimization
-
-      - name: Run Extra prediction
-        run: poetry install --no-interaction -E prediction
+      - name: Install Extra Doc, Optimization, Prediction
+        run: poetry install --no-interaction -E doc -E optimization -E prediction
 
       - name: Run tests
         env:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --autodoc
+          pytest tests/ --autodoc --optimization --prediction
 
       - name: Start Terminal and exit
         run: |
@@ -157,7 +151,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/
+          pytest tests/ --optimization
 
       - name: Start Terminal and exit
         run: |
@@ -262,7 +256,7 @@ jobs:
         env:
           MPLBACKEND: Agg
         shell: bash -l {0}
-        run: pytest tests/ -m "not linux"
+        run: pytest tests/ -m "not linux" --optimization
 
       - name: Start Terminal and exit
         shell: bash -l {0}
