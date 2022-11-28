@@ -56,7 +56,7 @@ An installation will use approximately 4GB of space.
 <details><summary>How do I launch Jupyter Lab or Jupyter Notebook for use with the OpenBB SDK?</summary>
 <p>
 
-Once the installation is finished via `pip` and you have activated the conda environment, as explained in the [installation guide](/sdk/quickstart/installation) you are able to activate a Jupyter Notebook by running `jupyter notebook` or Jupyter Lab with `jupyter lab`. Then, you should be able to use the OpenBB SDK by following along with the [Structure of the SDK](/sdk/guides/basics/structure) and [Using the SDK](/sdk/guides/basics/using) guides.
+Once the installation is finished via `pip` and you have activated the conda environment, as explained in the [installation guide](/sdk/quickstart/installation) you are able to activate a Jupyter Notebook by running `jupyter notebook` or Jupyter Lab with `jupyter lab`. Then, you should be able to use the OpenBB SDK by following along with the [How to use the SDK](/sdk/guides/basics#how-to-use-the-sdk) guide.
 
 </p>
 </details>
@@ -126,7 +126,7 @@ You can contact us via the following routes:
 
 Throughout the entire OpenBB Platform, the [Model-view-controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) architectural pattern is used for creating functionality in the terminal.
 
-This is visible in the OpenBB SDK with the addition of `_chart` within functions relating to the `view` portfion of the pattern. 
+This is visible in the OpenBB SDK with the addition of `_chart` within functions relating to the `view` portfion of the pattern.
 
 For example the model is displayed with:
 

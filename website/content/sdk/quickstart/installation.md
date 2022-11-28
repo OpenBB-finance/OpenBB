@@ -81,4 +81,5 @@ Congratulations! You have successfully installed `openbb` on an environment and 
 conda activate obb
 ```
 
-The OpenBB SDK can be imported to a Jupyter Notebook or any code editor with, `from openbb_terminal.sdk import openbb` as explained in the [Structure of the SDK](/sdk/guides/basics/structure) and [Using the SDK](/sdk/guides/basics/using) guides. By following the above process, the [OpenBB Terminal](/terminal) is automatically included as well which can be ran by typing `openbb`.
+The OpenBB SDK can be imported to a Jupyter Notebook or any code editor with, `from openbb_terminal.sdk import openbb` as explained in the [How to use the SDK](https://docs.openbb.co/sdk/guides/basics) guides. By following the above process, the [OpenBB Terminal](https://docs.openbb.co/terminal) is automatically included as well which can be ran by typing `openbb`.
+
