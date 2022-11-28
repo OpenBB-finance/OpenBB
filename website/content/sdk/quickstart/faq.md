@@ -104,6 +104,20 @@ You can get help with OpenBB SDK by joining our [Discord server](https://openbb.
 </p>
 </details>
 
+<details><summary>How can I give feedback about the OpenBB SDK?</summary>
+<p>
+
+Being an open source platform that wishes to tailor to the needs of any type of investor, we highly encourage anyone to share with us their experience and/or how we can further improve the OpenBB Terminal. This can be anything from a very small bug, a new feature, or the implementation of a highly advanced Machine Learning model.
+
+You can contact us via the following routes:
+
+- If you notice that a feature is missing inside the terminal, please fill in the <a href="https://openbb.co/request-a-feature" target="_blank" rel="noreferrer noopener">Request a Feature form</a>.
+- If you wish to report a bug, have a question/suggestion or anything else, please fill in the <a href="https://openbb.co/support" target="_blank" rel="noreferrer noopener">Support form</a>.
+- If you wish to speak to us directly, please contact us via <a href="https://openbb.co/discord" target="_blank" rel="noreferrer noopener">Discord</a>.
+
+</p>
+</details>
+
 
 ## Functionality
 

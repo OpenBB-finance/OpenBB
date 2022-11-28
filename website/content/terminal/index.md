@@ -78,7 +78,7 @@ Want to learn how to install the OpenBB Terminal? Check out our [Installation](/
 
 Want to know how to import and export data? Check out our [Data Import/Export](/guides/advanced/data)
 
-Looking for personalized routines? Check out our [User Routines](/guides/advanced/scripts)
+Looking for personalized routines? Check out our [User Routines](/guides/advanced/scripts-and-routines)
 
 [contributors-shield]: https://img.shields.io/github/contributors/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
 [contributors-url]: https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors
