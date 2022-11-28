@@ -330,7 +330,6 @@ def pytest_addoption(parser: Parser):
     )
 
 
-
 def brotli_check():
     for item in importlib_metadata.packages_distributions():
         if "brotli" in str(item).lower():
