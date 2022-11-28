@@ -38,7 +38,7 @@ To know more about OpenBB SDK, you can start by reading the [Installation Guide]
 
 To learn how to use OpenBB SDK, you can start by reading the [Structure of the SDK](/sdk/guides/basics/structure) and [Using the SDK](/sdk/guides/basics/using) guides.
 
-### SDK Functions
+### SDK Reference
 
 SDK Reference is a complete list of all functions available in OpenBB SDK. It is automatically generated and updated every time a new version of OpenBB SDK is released. It can be found [here](/sdk/reference).
 

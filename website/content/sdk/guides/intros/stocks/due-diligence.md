@@ -63,7 +63,7 @@ gtlb_customers
 
 ### Supplier
 
-`openbb.stocks.dd.supplier` is the supply side to the `customer` function. It returns revenue, net income, net margin, and cash flow, for the companies that the feed the ticker's supply chain.
+`openbb.stocks.dd.supplier` is the supply side to the `customer` function. It returns revenue, net income, net margin, and cash flow, for the companies feeding the ticker's supply chain.
 
 ```python
 gtlb_suppliers = openbb.stocks.dd.supplier('GTLB')
