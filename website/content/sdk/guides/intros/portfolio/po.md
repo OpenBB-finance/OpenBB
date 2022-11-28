@@ -18,7 +18,7 @@ from openbb_terminal.sdk import openbb
 
 This menu requires the usage of the Excel templates to work properly. As there is a lot of complexity involved around these techniques, these templates allow the user to understand what values for each parameter are actually used and allow for an easy way to define the allocation.
 
-:::note For this there are two templates that need to be set, the **OpenBB Parameters Template** and the **OpenBB Portfolio Template v1.0.0**. These files can be found in [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/portfolio_examples). One is in the `allocation` folder and the other is in `optimization`. the Select a file and press "Download" on the right, then place it into the OpenBBUserData folder. You can find more about this folder [here](/sdk/advanced/data).
+:::note For this there are two templates that need to be set, the **OpenBB Parameters Template** and the **60_40_Portfolio.xlsx**. These files can be found in [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/portfolio_examples). One is in the `allocation` folder and the other is in `optimization`. the Select a file and press "Download" on the right, then place it into the OpenBBUserData folder. You can find more about this folder [here](/sdk/advanced/data).
 :::
 
 ### OpenBB Parameters Template
