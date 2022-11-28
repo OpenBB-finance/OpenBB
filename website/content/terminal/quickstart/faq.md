@@ -14,6 +14,27 @@ almost a hundred different data providers and APIs to access the data.
 </p>
 </details>
 
+<details><summary>How do I update my installation to the latest version?</summary>
+<p>
+
+The terminal is constantly being updated with new features and bug fixes. Updating will be different depending on the installation type:
+      
+- For installation packages, uninstall the previous version (uninstall.exe for Windows, delete the Application folder on MacOS); then, download the latest version and reinstall. User settings and data will remain.
+- For a `pip` installation, when a new version is published: `pip install openbb --upgrade`
+- Upgrade the `pip installation` to the source code installation with:
+  
+```bash
+conda install -c conda-forge git
+git clone https://github.com/OpenBB-finance/OpenBBTerminal.git
+cd OpenBBTerminal
+poetry install (for a complete installation - poetry install -E all)
+```
+
+The Terminal can now be launched with either, `openbb`, or, `python terminal.py`
+
+</p>
+</details>
+
 <details><summary>What programs need to be allowed for Windows Firewall?</summary>
 <p>
 
@@ -109,13 +130,29 @@ Do note that it is also possible that the menu or command is removed. If this is
 </p>
 </details>
 
+<details><summary>Why does my Portfolio file fail to load?</summary>
+<p>
+
+This will typically be the result of a formatting error. 
+
+- Check that all the necessary column titles are present.
+- Inspect the file to see if cells left blank have been filled unintentionally with 0 or NaN values.
+- A particular asset may not be able to load data. Check for valid historical data from the Stocks menu.
+- Format ticker symbols according to yFinance naming convention.
+- All dates must be entered as YYYY-MM-DD.
+- Transactions dated for today will fail to load historical data.
+- MacOS users should attempt to avoid using the Numbers application as it has a habit of changing the formatting while saving.
+      
+</p>
+</details>
+
 ## Source
 
 <details><summary>How do I update the OpenBB Terminal?</summary>
 <p>
 
-The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be update, you can use `git pull` to get the latest changes:
-
+A source code installation can utilize the `update` command from the main menu of the OpenBB Terminal, or, exit and enter:
+      
 ```bash
 git pull
 ```
@@ -140,7 +177,6 @@ before you call `openbb` again.
 
 <details><summary>Why do I get too many red error lines on Windows?</summary>
 <p>
-
 
 If you are on Windows and your terminal has too many red error lines, it is likely that this is the issue. Go to this page and install the 2019 Build Tools (not the latest) found [here](https://answers.microsoft.com/en-us/windows/forum/windows_other-windows_install/microsoft-visual-c-140/6f0726e2-6c32-4719-9fe5-aa68b5ad8e6d)
 
@@ -187,6 +223,11 @@ If you run into trouble with Poetry, and the advice above did not help, your bes
    | Windows   | "%userprofile%/anaconda3/envs"               |
 
 4. Completely nuke your conda environment folder and make a new environment from scratch
+
+- `conda deactivate`
+- `conda env remove -n obb`
+- `conda clean -a`
+- Make a new environment and install dependencies again.
 
 5. Reboot your computer and try again
 
