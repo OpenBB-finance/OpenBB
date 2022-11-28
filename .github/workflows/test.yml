@@ -28,7 +28,7 @@ jobs:
           key: ${{ runner.os }}-v1-linting
           restore-keys: ${{ runner.os }}-v1-linting
 
-      - run: pip install setuptools wheel bandit black codespell flake8 mypy==0.982 pyupgrade safety pylint==2.15.2
+      - run: pip install bandit black codespell flake8 mypy==0.982 pyupgrade safety pylint==2.15.2
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
@@ -59,6 +59,8 @@ jobs:
           version: 1.1.13
           virtualenvs-create: true
           virtualenvs-in-project: true
+
+      - run: pip install -U setuptools wheel
 
       - name: Load cached venv
         id: cached-poetry-dependencies
