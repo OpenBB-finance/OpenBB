@@ -13,7 +13,7 @@ OpenBB Terminal is available in all major platforms. With MacOS/Windows you can 
 :::info Installation Instructions
 
 <Tabs>
-  <TabItem value="Windows" label="Windows">Install on Windows
+  <TabItem value="windows" label="Windows">Install on Windows
   <div class="gdoc-page">
 
 </div><p>Download the installer from the website <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/Windows10.OpenBB.Terminal.v1.9.0.exe">here</a>.</p>
@@ -45,7 +45,7 @@ OpenBB Terminal is available in all major platforms. With MacOS/Windows you can 
 </div>
 </TabItem>
 
-<TabItem value="macOS" label="MacOS">Install on macOS 🍎
+<TabItem value="mac" label="MacOS">Install on macOS 🍎
 
 For Mac there are two installers available, one for Intel and one for Apple Silicon (M1). Please download the correct one for your machine.
 <ul>
@@ -253,7 +253,7 @@ If you're using remote docker host, you can connect with "ssh -X <FQDN/IP>".
 Then run the previous docker command.
 
 </TabItem>
-  <TabItem value="Source" label="Source">
+  <TabItem value="source" label="Source">
 This installation type supports both Windows and Unix systems (Linux + MacOS).
 
 **NOTE for Windows users:** For Windows users who prefer to use an environment similar to what Linux and macOS users use, we recommend Windows Subsystem for Linux (WSL). WSL emulates a Linux machine inside your Windows system. If this is the case - jump to the <a href="#installing-wsl-only-for-windows-users">Installing WSL (Only for Windows users)</a> section before proceeding.
