@@ -69,10 +69,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
-
-      - name: Install Extra Doc, Optimization, Prediction
-        run: poetry install --no-interaction -E doc -E optimization -E prediction
+        run: poetry install --no-interaction -E optimization -E doc -E prediction -v
 
       - name: Run tests
         env:
@@ -135,9 +132,6 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
-
-      - name: Install Package
         run: poetry install --no-interaction -E optimization
 
       - name: List installed packages

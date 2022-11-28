@@ -313,10 +313,22 @@ def pytest_addoption(parser: Parser):
         help="To run tests with the marker : @pytest.mark.prediction",
     )
     parser.addoption(
+        "--optimization",
+        action="store_true",
+        help="To run tests with the marker : @pytest.mark.optimization",
+    )
+    parser.addoption(
         "--rewrite-expected",
         action="store_true",
         help="To force `record_stdout` and `recorder` to rewrite all files.",
     )
+    parser.addoption(
+        "--autodoc",
+        action="store_true",
+        default=False,
+        help="run auto documantation tests",
+    )
+
 
 
 def brotli_check():
