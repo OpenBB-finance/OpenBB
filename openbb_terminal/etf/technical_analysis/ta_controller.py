@@ -65,7 +65,6 @@ class TechnicalAnalysisController(BaseController):
         "adosc",
         "obv",
         "fib",
-        "tv",
         "clenow",
         "demark",
         "atr",
