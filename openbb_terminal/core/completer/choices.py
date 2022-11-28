@@ -3,14 +3,20 @@ from contextlib import contextmanager
 from inspect import isfunction, unwrap
 from os import environ
 from types import MethodType
-from typing import Callable, List
+from typing import TYPE_CHECKING, Callable, List, TypeVar
 from unittest.mock import patch
+
 from openbb_terminal.helper_funcs import check_file_type_saved, check_positive
 from openbb_terminal.rich_config import get_ordered_list_sources
 
+if TYPE_CHECKING:
+    from openbb_terminal.parent_classes import BaseController
+
+ControllerT = TypeVar("ControllerT", bound="BaseController")
+
 
 def __mock_parse_known_args_and_warn(
-    controller,
+    controller: ControllerT,
     parser: ArgumentParser,
     other_args: List[str],
     export_allowed: int = 0,
@@ -112,7 +118,7 @@ def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> N
     return None
 
 
-def __get_command_func(controller, command: str):
+def __get_command_func(controller: ControllerT, command: str):
     """Get the function with the name `f"call_{command}"` from controller object.
 
     Parameters
@@ -133,13 +139,14 @@ def __get_command_func(controller, command: str):
         )
 
     command = f"call_{command}"
-    command_func = getattr(controller, command)
-    command_func = unwrap(func=command_func)
+    if hasattr(controller, command):
+        command_func = getattr(controller, command)
+        command_func = unwrap(func=command_func)
 
-    if isfunction(command_func):
-        command_func = MethodType(command_func, controller)
+        if isfunction(command_func):
+            command_func = MethodType(command_func, controller)
 
-    return command_func
+        return command_func
 
 
 def contains_functions_to_patch(command_func: Callable) -> bool:
@@ -170,7 +177,7 @@ def contains_functions_to_patch(command_func: Callable) -> bool:
 
 
 @contextmanager
-def __patch_controller_functions(controller):
+def __patch_controller_functions(controller: ControllerT):
     """Patch the following function from a BaseController instance:
         - parse_simple_args
         - parse_known_args_and_warn
@@ -189,13 +196,11 @@ def __patch_controller_functions(controller):
     """
 
     bound_mock_parse_known_args_and_warn = MethodType(
-        __mock_parse_known_args_and_warn,
-        controller,
+        __mock_parse_known_args_and_warn, controller
     )
 
     rich = patch(
-        target="openbb_terminal.rich_config.ConsoleAndPanel.print",
-        return_value=None,
+        target="openbb_terminal.rich_config.ConsoleAndPanel.print", return_value=None
     )
 
     patcher_list = [
@@ -226,10 +231,7 @@ def __patch_controller_functions(controller):
         patcher.stop()
 
 
-def _get_argument_parser(
-    controller,
-    command: str,
-) -> ArgumentParser:
+def _get_argument_parser(controller: ControllerT, command: str) -> ArgumentParser:
     """Intercept the ArgumentParser instance from the command function.
 
     A command function being a function starting with `call_`, like:
@@ -301,7 +303,7 @@ def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
     return choice_map
 
 
-def build_controller_choice_map(controller) -> dict:
+def build_controller_choice_map(controller: ControllerT) -> dict:
     environ["DEBUG_MODE"] = "true"
 
     command_list = controller.CHOICES_COMMANDS
@@ -312,13 +314,14 @@ def build_controller_choice_map(controller) -> dict:
     for command in command_list:
         try:
             argument_parser = _get_argument_parser(
-                controller=controller,
-                command=command,
+                controller=controller, command=command
             )
             controller_choice_map[command] = _build_command_choice_map(
                 argument_parser=argument_parser
             )
         except Exception as exception:
+            if isinstance(exception, AttributeError):
+                continue
             if environ.get("DEBUG_MODE", "false") == "true":
                 raise Exception(
                     f"On command : `{command}`.\n{str(exception)}"
