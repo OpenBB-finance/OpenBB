@@ -49,7 +49,7 @@ WORKDIR $PYSETUP_PATH
 COPY pyproject.toml website/content/sdk/quickstart/installation.md poetry.lock ./
 
 RUN mkdir $PYSETUP_PATH/openbb_terminal
-RUN mv SDK_README.md ./openbb_terminal
+RUN mv installation.md ./openbb_terminal
 RUN touch openbb_terminal/__init__.py
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
