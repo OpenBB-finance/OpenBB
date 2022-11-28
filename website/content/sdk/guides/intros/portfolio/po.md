@@ -114,7 +114,7 @@ To demonstrate the capabilities of the Portfolio Optimization menu, the entire <
 import pandas as pd
 
 # Define your own orderbook path here, current value won't work
-order_book_path = "PATH_TO_ORDERBOOK_FILE"
+order_book_path = "pathto/SP_500_Portfolio.xlsx"
 
 # Read in the file
 order_book = pd.read_excel(order_book_path)
@@ -126,20 +126,34 @@ order_book_cols = ['Ticker', 'Asset Class', 'Sector', 'Industry', 'Country',
 order_book = order_book[order_book_cols]
 
 # Load in the portfolio
-tickers, categories = openbb.portfolio.po.load(order_book_path)
+tickers, categories = openbb.portfolio.po.load(symbols_file_path=order_book_path)
 ```
 
 Then, the <a href="https://jpm.pm-research.com/content/42/4/59.short" target="_blank" rel="noreferrer noopener">Hierarchical Risk Parity</a> technique is applied by using the following:
 
 ```python
-weights_hrp, data_returns_hrp = openbb.portfolio.po.hrp(
-    tickers,
-    interval="5y",
-    risk_measure="cVaR",
-    risk_aversion=0.8
-)
+order_book_path = "pathto/SP_500_Portfolio.xlsx"
 
-pd.DataFrame.from_dict(weights_hrp, orient='index', columns=["Hierarchical Risk Parity"])
+order_book = pd.read_excel(order_book_path)
+# Adjust the columns accordingly
+order_book_cols = [
+    'Ticker',
+    'Asset Class',
+    'Sector',
+    'Industry',
+    'Country',
+    'Current Invested Amount',
+    'Currency',
+]
+
+order_book = order_book[order_book_cols]
+
+weights, stock_returns = openbb.portfolio.po.hcp(order_book["Ticker"].tolist(), interval="5y",
+    risk_measure='SLPM',
+    risk_aversion=0.8)
+
+print(weights)
+print(stock_returns)
 ```
 
 This results in the following (the result is edited, as it would show 500 tickers, to prevent flooding this page):
