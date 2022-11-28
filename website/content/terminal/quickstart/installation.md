@@ -253,7 +253,7 @@ If you're using remote docker host, you can connect with "ssh -X <FQDN/IP>".
 Then run the previous docker command.
 
 </TabItem>
-  <TabItem value="Source" label="Source">
+  <TabItem value="Python" label="Python">
 This installation type supports both Windows and Unix systems (Linux + MacOS).
 
 **NOTE for Windows users:** For Windows users who prefer to use an environment similar to what Linux and macOS users use, we recommend Windows Subsystem for Linux (WSL). WSL emulates a Linux machine inside your Windows system. If this is the case - jump to the <a href="#installing-wsl-only-for-windows-users">Installing WSL (Only for Windows users)</a> section before proceeding.
