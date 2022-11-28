@@ -133,7 +133,7 @@ Is the docker daemon running?
 Here are the commands to use `Docker Compose` to pull and run the `OpenBBTerminal Docker Container`:
 
 ```bash
-curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml
+curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
 docker compose run poetry
 ```
@@ -184,7 +184,7 @@ When running the program is important to check "Disable access control"
 Run `Docker Compose` like this:
 
 ```bash
-curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml
+curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
 docker compose run poetry
 ```

@@ -41,10 +41,10 @@ the commands that you are able to use from any menu in the terminal (see <a href
   use `q` and press `ENTER` (⏎) you return to where you started. Validate this by typing `?` and pressing `ENTER` (⏎).
 - `support`: allows you to submit bugs, questions and suggestions.
 - `about`: this opens the related guide, linking to this website. It also has the ability to open a guide to a specific
-  command. For example, within the `stocks` menu, `about candle` opens <a href="terminal/reference/stocks/candle/" target="_blank" rel="noreferrer noopener">this guide</a>.
+  command. For example, within the `stocks` menu, `about candle` opens <a href="/terminal/reference/stocks/candle/" target="_blank" rel="noreferrer noopener">this guide</a>.
 - `wiki`: search for a given expression on the Wikipedia without leaving the terminal.
 
-Continuing with the example mentioned at `quit`, revisit the `stocks` menu and look at the commands. At the top you will see a command named <a href="terminal/stocks/load" target="_blank" rel="noreferrer noopener">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
+Continuing with the example mentioned at `quit`, revisit the `stocks` menu and look at the commands. At the top you will see a command named <a href="/terminal/stocks/load" target="_blank" rel="noreferrer noopener">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
 
 ```
 2022 May 19, 05:27 (🦋) /stocks/ $ load -h
@@ -129,13 +129,13 @@ We can check that this period has changed by looking into the <a href="https://w
 
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png"><img src="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png" alt="Amazon Candle Chart" width="800"/></a>
 
-As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, some information also transfers over to other menus and this includes the loaded market data from <a href="terminal/stocks/load" target="_blank" rel="noreferrer noopener">load</a>. So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank" rel="noreferrer noopener">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
+As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, some information also transfers over to other menus and this includes the loaded market data from <a href="/terminal/stocks/load" target="_blank" rel="noreferrer noopener">load</a>. So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank" rel="noreferrer noopener">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
 
 
 ### Defining your own source of data
 
-The OpenBB Terminal is built on a lot of different data sources. The example above for example collects data from Yahoo Finance. This could be undesirable and therefore we allow for a variety of different data sources. Think of Polygon, IEX Cloud, Alpha Vantage and Binance to name a few.
+The OpenBB Terminal is built on a lot of different data sources. The example above collects data from Yahoo Finance. This could be undesirable and therefore we allow for a variety of different data sources. Think of Polygon, IEX Cloud, Alpha Vantage and Binance to name a few.
 
-Some of these sources require you to set an API Key to connect with their data. You can find more information about setting these keys in the terminal [here](/terminal/guides/advanced/keys).
+Some of these sources require you to set an API Key to connect with their data. You can find more information about setting these keys in the OpenBB Terminal [here](/terminal/guides/advanced/api-keys).
 
 It is also possible to use your own datastreams. It could be that you have a dataset in Microsoft Excel or similar that you would like to import for usage within any of our functionalities. In that case, have a look [here](/terminal/guides/advanced/data).
