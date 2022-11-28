@@ -34,7 +34,7 @@ def get_trans_data(
     activation: str = "relu",
     dropout: float = 0.0,
     batch_size: int = 32,
-    n_epochs: int = 100,
+    n_epochs: int = 300,
     learning_rate: float = 1e-3,
     model_save_name: str = "trans_model",
     force_reset: bool = True,
@@ -103,7 +103,6 @@ def get_trans_data(
         Mean average precision error,
         Best transformer Model.
     """
-
     # TODO Check if torch GPU AVAILABLE
 
     use_scalers = True
