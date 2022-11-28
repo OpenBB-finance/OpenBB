@@ -306,9 +306,7 @@ def get_yield_curve(
         df = pd.concat(
             [
                 df,
-                pd.DataFrame(
-                    fredapi_client.get_series(s_id, date), columns=[key]
-                ),
+                pd.DataFrame(fredapi_client.get_series(s_id, date), columns=[key]),
             ],
             axis=1,
         )
