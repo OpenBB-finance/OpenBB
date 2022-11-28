@@ -44,7 +44,6 @@ class TechnicalAnalysisController(BaseController):
     """Technical Analysis Controller class"""
 
     CHOICES_COMMANDS = [
-        "load",
         "ema",
         "sma",
         "wma",
