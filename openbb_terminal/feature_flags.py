@@ -4,7 +4,6 @@ import os.path
 
 # IMPORTATION THIRDPARTY
 from dotenv import load_dotenv
-import pkg_resources
 import i18n
 
 # IMPORTATION INTERNAL
@@ -143,6 +142,7 @@ GUESS_EASTER_EGG_FILE = str(
 
 try:
     if not WITH_GIT:
+        import pkg_resources
         version = pkg_resources.get_distribution("OpenBB").version
     else:
         raise Exception("Using git")
