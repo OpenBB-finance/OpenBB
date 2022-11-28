@@ -39,7 +39,7 @@ You can load in the portfolio template with the following code:
 import pandas as pd
 
 # Define your own orderbook path here, current value won't work
-order_book_path = "PATH_TO_ORDERBOOK_FILE"
+order_book_path = "60_40_Portfolio.xlsx"
 
 # Read in the file
 order_book = pd.read_excel(order_book_path)
@@ -52,7 +52,7 @@ order_book = order_book[order_book_cols]
 
 # Load in the portfolio
 p = openbb.portfolio.po.load(symbols_file_path=order_book_path)
-tickers, categories = openbb.portfolio.po.equal(portfolio_engine=p)
+weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
 ```
 
 ### Performing optimization
@@ -148,12 +148,13 @@ order_book_cols = [
 
 order_book = order_book[order_book_cols]
 
-weights, stock_returns = openbb.portfolio.po.hcp(order_book["Ticker"].tolist(), interval="5y",
+p = openbb.portfolio.po.load(symbols_file_path=order_book_path)
+riskparity, data_returns_riskparity = openbb.portfolio.po.hrp(p, interval="5y",
     risk_measure='SLPM',
     risk_aversion=0.8)
 
-print(weights)
-print(stock_returns)
+print(riskparity)
+print(data_returns_riskparity)
 ```
 
 This results in the following (the result is edited, as it would show 500 tickers, to prevent flooding this page):
@@ -175,13 +176,13 @@ This results in the following (the result is edited, as it would show 500 ticker
 It is possible to delve further into these findings with the `plot` functionality for example done by looking at the portfolio's returns <a href="https://www.investopedia.com/terms/h/histogram.asp" target="_blank" rel="noreferrer noopener">histogram</a> which also includes a variety of risk measures as well as the portfolio's drawdowns.
 
 ````
-openbb.portfolio.po.plot(data=data_returns_hrp, weights=weights_hrp, risk_measure='cVaR', hist=True)
+openbb.portfolio.po.plot(p, category='SECTOR', chart_type="hist")
 ````
 
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/171145848-5a3f5333-6b7f-4d7a-a96e-0859adb1ce78.png"><img alt="Portfokio Returns Histogram" src="https://user-images.githubusercontent.com/46355364/171145848-5a3f5333-6b7f-4d7a-a96e-0859adb1ce78.png"></img></a>
 
 ````
-openbb.portfolio.po.plot(data=data_returns_hrp, weights=weights_hrp, risk_measure='cVaR', dd=True)
+openbb.portfolio.po.plot(p, category='SECTOR', chart_type="dd")
 ````
 
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/171145983-2d2c1c2e-67d2-4839-b43a-51bd22332de8.png"><img alt="Portfolio Drawdowns" src="https://user-images.githubusercontent.com/46355364/171145983-2d2c1c2e-67d2-4839-b43a-51bd22332de8.png"></img></a>
