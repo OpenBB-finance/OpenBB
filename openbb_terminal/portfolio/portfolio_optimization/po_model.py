@@ -15,7 +15,9 @@ from riskfolio import rp
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio.portfolio_optimization import (
+    optimizer_helper,
     optimizer_model,
+    statics,
 )
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
     RISK_NAMES,
@@ -249,6 +251,8 @@ def get_portfolio_performance(weights: Dict, data: pd.DataFrame, **kwargs) -> Di
         "Volatility": sigma,
         "Sharpe ratio": sharpe,
     }
+
+    risk_measure = optimizer_helper.validate_risk_measure(risk_measure, warning=False)
 
     if risk_measure != "MV":
         risk = rp.Sharpe_Risk(
