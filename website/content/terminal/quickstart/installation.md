@@ -133,12 +133,12 @@ Is the docker daemon running?
 Here are the commands to use `Docker Compose` to pull and run the `OpenBBTerminal Docker Container`:
 
 ```bash
-curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
+curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml
 
 docker compose run poetry
 ```
 
-The command line with `curl` is downloading this file : [`docker-compose.yaml`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml).
+The command line with `curl` is downloading this file : [`docker-compose.yaml`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml).
 
 The `docker-compose.yaml` file is a configuration file telling `Docker Compose`:
 
@@ -163,8 +163,13 @@ docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserD
 
 Be sure to replace `X.Y.Z` with the version you want to pull and run.
 
-:::note Windows: Ignore this message if you are using Powershell or a more evolved interpreters. If you are using the builtin Windows interpreter. Replace `~` by `%USERPROFILE%` in the command above.
-:::
+Note for windows:
+
+```text
+    Ignore this message if you are using Powershell or a more evolved interpreters.
+    If you are using the builtin Windows interpreter.
+    Replace `~` by `%USERPROFILE%` in the command above.
+```
 
 ## 3. Configuring your X-server to show plots
 
@@ -179,7 +184,7 @@ When running the program is important to check "Disable access control"
 Run `Docker Compose` like this:
 
 ```bash
-curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml
+curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
 docker compose run poetry
 ```
