@@ -40,6 +40,7 @@ def mock_func(arg1: Optional[str] = "Test", arg2: Optional[bool] = True) -> bool
     return True
 
 
+# pylint:disable=too-few-public-methods
 class MockTrailMap:
     """Mock trail map"""
 
