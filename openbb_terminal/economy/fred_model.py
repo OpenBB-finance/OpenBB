@@ -256,18 +256,18 @@ def get_aggregated_series_data(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def get_yield_curve(
-    date: datetime = None,
-) -> Tuple[pd.DataFrame, datetime]:
+    date: str = None,
+) -> Tuple[pd.DataFrame, str]:
     """Gets yield curve data from FRED
 
     Parameters
     ----------
-    date: datetime
-        Date to get curve for.  If None, gets most recent date
+    date: str
+        Date to get curve for. If None, gets most recent date (format yyyy-mm-dd)
 
     Returns
     -------
-    Tuple[pd.DataFrame, datetime]
+    Tuple[pd.DataFrame, str]
         Dataframe of yields and maturities,
         Date for which the yield curve is obtained
 
@@ -300,16 +300,14 @@ def get_yield_curve(
     df = pd.DataFrame()
 
     if date is None:
-        date_to_get = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
-    else:
-        date_to_get = date.strftime("%Y-%m-%d")
+        date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
 
     for key, s_id in fred_series.items():
         df = pd.concat(
             [
                 df,
                 pd.DataFrame(
-                    fredapi_client.get_series(s_id, date_to_get), columns=[key]
+                    fredapi_client.get_series(s_id, date), columns=[key]
                 ),
             ],
             axis=1,

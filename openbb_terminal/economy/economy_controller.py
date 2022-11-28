@@ -1018,7 +1018,6 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-d",
             "--date",
-            type=valid_date,
             help="Date to get data from FRED. If not supplied, the most recent entry will be used.",
             dest="date",
             default=None,
