@@ -193,6 +193,17 @@ before you call `openbb` again.
 </p>
 </details>
 
+<details><summary>What kind of architectural pattern does the OpenBB SDK use?</summary>
+<p>
+
+Throughout the entire OpenBB Platform, the [Model-view-controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) architectural pattern is used for creating functionality in the OpenBB Terminal.
+
+The `model` relates to any calculations or data collection done. The `view` is meant for showing tables or graphs and the `controller` makes it possible to execute a command with a set of arguments directly in the OpenBB Terminal. Learn more about this in our [CONTRIBUTING GUIDELINES](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).
+
+</p>
+</details>
+
+
 <details><summary>Why do I get too many red error lines on Windows?</summary>
 <p>
 

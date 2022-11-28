@@ -121,6 +121,41 @@ You can contact us via the following routes:
 
 ## Functionality
 
+<details><summary>What kind of architectural pattern does the OpenBB SDK use?</summary>
+<p>
+
+Throughout the entire OpenBB Platform, the [Model-view-controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) architectural pattern is used for creating functionality in the terminal.
+
+This is visible in the OpenBB SDK with the addition of `_chart` within functions relating to the `view` portfion of the pattern. 
+
+For example the model is displayed with:
+
+```
+openbb.economy.ycrv()
+```
+
+|     |  Maturity | Rate |
+| --: | --------: | ---: |
+|   0 | 0.0833333 | 3.93 |
+|   1 |      0.25 | 4.34 |
+|   2 |       0.5 | 4.61 |
+| ... |       ... |  ... |
+|   8 |        10 | 3.82 |
+|   9 |        20 | 4.13 |
+|  10 |        30 | 3.92 |
+
+And the view with:
+
+```
+openbb.economy.ycrv_chart()
+```
+
+![Screenshot 2022-11-21 at 4 29 17 PM](https://user-images.githubusercontent.com/85772166/203185342-f019414d-24e2-4d8a-a718-10eeedb59e8c.png)
+
+</p>
+</details>
+
+
 <details><summary>Why is data from today missing when I use the load function?</summary>
 <p>
 
