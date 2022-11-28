@@ -1,5 +1,5 @@
 ---
-title: Using the SDK
+title: Basics
 sidebar_position: 1
 ---
 ### Importing the SDK
@@ -189,4 +189,4 @@ openbb.futures.curve_chart('GE')
 
 ![openbb.futures.curve](https://user-images.githubusercontent.com/85772166/201583945-18364efa-c305-4c1a-a032-f779e28894c8.png "openbb.futures.curve")
 
-The intros section for each module explore further functionality and provide sample code snippets.
+The intros section for each module explore further functionality and provide sample code snippets. For example, an introduction to Stocks can be found [here](/sdk/guides/intros/stocks).
