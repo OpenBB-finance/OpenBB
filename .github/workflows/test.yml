@@ -69,7 +69,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction -E optimization -E doc -E prediction -v
+        run: poetry install --no-interaction -E optimization -E doc -E prediction
 
       - name: Run tests
         env:
