@@ -50,7 +50,7 @@ The Cryptocurrency menu has an extensive list of available sub-menus ranging fro
 - [Introduction to Non Fungible Tokens (NFTs)](/terminal/guides/intros/crypto/nft/): Discover latest NFT drops and OpenSea's NFT Collection statistics.
 - [Introduction to Cryptocurrency Due Diligence](/terminal/guides/intros/crypto/dd/): performs due diligence on a chosen coin based on, among other things, tokenomics, roadmaps, news, and community.
 - [Introduction to Technical Analysis](/terminal/guides/intros/common/ta/): analyzes the chosen coin's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
-- [Introduction to Forecasting Menu](/terminal/guides/intros/forecasting/): applies advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN), Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting
+- [Introduction to Forecasting Menu](/terminal/guides/intros/forecast/): applies advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN), Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting
 
 ### Examples
 

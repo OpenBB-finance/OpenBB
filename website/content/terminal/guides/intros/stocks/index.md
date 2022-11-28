@@ -99,7 +99,7 @@ The Stock menu has an extensive list of available sub-menus ranging from fundame
 - <a href="/terminal/guides/intros/stocks/bt" target="_blank" rel="noreferrer noopener">Introduction to Strategy Backtesting</a>: explore back testing strategies based on technical indicators.
 - <a href="/terminal/guides/intros/common/ta" target="_blank" rel="noreferrer noopener">Introduction to Technical Analysis</a>: analysis the chosen company's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
 - <a href="/terminal/guides/intros/common/qa" target="_blank" rel="noreferrer noopener">Introduction to Quantitative Analysis</a>: delve deeper in the historical data with quantitative methods including cumulative distribution function (CDF), (conditional) Value at Risk and rolling ratios.
-- <a href="/terminal/guides/intros/forecasting/" target="_blank" rel="noreferrer noopener">Introduction to Forecasting menu</a>: apply advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN), Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
+- <a href="/terminal/guides/intros/forecast/" target="_blank" rel="noreferrer noopener">Introduction to Forecasting menu</a>: apply advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN), Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
 
 ### Examples
 
