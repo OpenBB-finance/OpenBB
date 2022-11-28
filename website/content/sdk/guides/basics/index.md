@@ -51,7 +51,7 @@ Help on Operation in module openbb_terminal.core.library.operation:
         Economic calendar
 ```
 
-## Requesting and Handling Data
+## How to use the SDK
 
 ### Your First Function
 
