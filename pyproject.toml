@@ -7,10 +7,10 @@ authors = ["Didier Rodrigues Lopes"]
 packages = [
     { include = "openbb_terminal" },
 ]
-readme = "openbb_terminal/SDK_README.md"
-homepage = "https://openbb.co/"
+readme = "website/content/sdk/quickstart/installation.md"
+homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
-documentation = "https://openbb-finance.github.io/OpenBBTerminal/"
+documentation = "https://docs.openbb.co/sdk"
 
 [tool.poetry.scripts]
 openbb = 'openbb_terminal.terminal_controller:parse_args_and_run'
