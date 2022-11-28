@@ -5,7 +5,6 @@ import logging
 import os
 import textwrap
 from typing import Optional, List, Tuple
-from datetime import datetime
 
 import matplotlib.pyplot as plt
 import numpy as np
