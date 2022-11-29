@@ -8,6 +8,20 @@ import {
 } from '@docusaurus/theme-common/internal';
 import styles from './styles.module.css';
 import { useLocation } from '@docusaurus/router';
+
+function getQueryVariable(query, variable) {
+  // substring query 
+  const vars = query.substring(1).split('&');
+  for (let i = 0; i < vars.length; i++) {
+      let pair = vars[i].split('=');
+      console.log(decodeURIComponent(pair[0]), variable)
+      if (decodeURIComponent(pair[0]) == variable) {
+          return decodeURIComponent(pair[1]);
+      }
+  }
+  return null;
+}
+
 // A very rough duck type, but good enough to guard against mistakes while
 // allowing customization
 function isTabItem(comp) {
@@ -68,7 +82,10 @@ function TabsComponent(props) {
     );
   }
   const { tabGroupChoices, setTabGroupChoices } = useTabGroupChoice();
-  const [selectedValue, setSelectedValue] = useState(defaultValue);
+  
+  const { pathname, search } = useLocation()
+  const value = getQueryVariable(search, 'tab')
+  const [selectedValue, setSelectedValue] = useState(value ? value : defaultValue);
   const tabRefs = [];
   const { blockElementScrollPositionUntilNextRender } =
     useScrollPositionBlocker();
@@ -117,7 +134,6 @@ function TabsComponent(props) {
     focusElement?.focus();
   };
 
-  const { pathname } = useLocation()
   return (
     <div>
       <ul
@@ -137,22 +153,21 @@ function TabsComponent(props) {
             onClick={handleTabChange}
             {...attributes}
             className={clsx(
-              'font-bold tracking-widest w-fit px-3 inline-flex py-1 uppercase text-sm border-b',
+              'font-bold tracking-widest w-fit px-3 inline-flex py-1 uppercase border-b text-lg cursor-pointer',
               styles.tabItem,
               attributes?.className,
               {
                 'border-b-2 pointer-events-none': selectedValue === value,
-                'cursor-pointer': selectedValue !== value,
                 'border-b-2 text-[#669dcb] border-[#669dcb]': selectedValue === value && pathname.startsWith("/terminal"),
                 'border-b-2 text-[#FB923C] border-[#FB923C]': selectedValue === value && pathname.startsWith("/sdk"),
-                'border-grey-600 text-grey-600 hover:text-[#ffd4b1] hover:border-[#ffd4b1]': selectedValue !== value && pathname.startsWith("/sdk"),
-                'border-grey-600 text-grey-600 hover:text-[#abd2f1] hover:border-[#abd2f1]': selectedValue !== value && pathname.startsWith("/terminal"),
+                'border-grey-400 text-grey-400 hover:text-[#ffd4b1] hover:border-[#ffd4b1]': selectedValue !== value && pathname.startsWith("/sdk"),
+                'border-grey-400 text-grey-400 hover:text-[#abd2f1] hover:border-[#abd2f1]': selectedValue !== value && pathname.startsWith("/terminal"),
               },
             )}>
             {label ?? value}
           </li>
         ))}
-        <li className='w-full border-b border-grey-600 pointer-events-none py-1 mb-[9.5px]'></li>
+        <li className='w-full border-b border-grey-400 pointer-events-none py-1 mb-[12px]'></li>
       </ul>
 
       {lazy ? (
