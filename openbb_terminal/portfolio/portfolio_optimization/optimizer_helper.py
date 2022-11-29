@@ -148,7 +148,6 @@ def validate_risk_measure(risk_measure: str, warning: bool = True) -> str:
     """
     if risk_measure.lower() in statics.RISK_CHOICES:
         return statics.RISK_CHOICES[risk_measure.lower()]
-    else:
-        if warning:
-            console.print("[yellow]Risk measure not found. Using 'MV'.[/yellow]")
-        return "MV"
+    if warning:
+        console.print("[yellow]Risk measure not found. Using 'MV'.[/yellow]")
+    return "MV"

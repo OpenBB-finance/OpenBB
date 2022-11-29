@@ -17,7 +17,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_helper,
     optimizer_model,
-    statics,
 )
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
     RISK_NAMES,
