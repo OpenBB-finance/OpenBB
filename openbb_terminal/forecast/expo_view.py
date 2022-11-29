@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from openbb_terminal.forecast import expo_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -126,6 +127,7 @@ def display_expo_forecast(
         external_axes=external_axes,
     )
     if residuals:
-        helpers.plot_residuals(
-            _model, None, ticker_series, forecast_horizon=forecast_horizon
-        )
+        console.print("[red]Expo model does not support residuals at this time[/red]\n")
+        # helpers.plot_residuals(
+        #     _model, None, ticker_series, forecast_horizon=forecast_horizon
+        # )
