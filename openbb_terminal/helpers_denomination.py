@@ -27,6 +27,7 @@ def transform(
         axis (Axis, optional): Axis to apply to skip predicate. Defaults to 0.
         skipPredicate (Callable[[pd.Series], bool], optional): Predicate for skipping a transform.
     Returns:
+    pd.DataFrame
         Tuple[pd.DataFrame, DENOMINATION]: Pair of transformed data frame and applied denomination.
     """
 

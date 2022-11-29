@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 import matplotlib.pyplot as plt
@@ -21,6 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.due_diligence import business_insider_model
+from openbb_terminal.stocks.stocks_helper import load
 
 logger = logging.getLogger(__name__)
 
@@ -30,8 +31,8 @@ register_matplotlib_converters()
 @log_start_end(log=logger)
 def price_target_from_analysts(
     symbol: str,
-    data: DataFrame,
-    start_date: str = datetime.now().strftime("%Y-%m-%d"),
+    data: Optional[DataFrame] = None,
+    start_date: Optional[str] = None,
     limit: int = 10,
     raw: bool = False,
     export: str = "",
@@ -43,10 +44,10 @@ def price_target_from_analysts(
     ----------
     symbol: str
         Due diligence ticker symbol
-    data: DataFrame
-        Due diligence stock dataframe
-    start_date : str
-        Start date of the stock data
+    data: Optional[DataFrame]
+        Price target DataFrame
+    start_date : Optional[str]
+        Start date of the stock data, format YYYY-MM-DD
     limit : int
         Number of latest price targets from analysts to print
     raw: bool
@@ -55,7 +56,18 @@ def price_target_from_analysts(
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.dd.pt_chart(symbol="AAPL")
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+
+    if data is None:
+        data = load(symbol=symbol, start_date=start_date)
 
     df_analyst_data = business_insider_model.get_price_target_from_analysts(symbol)
     if df_analyst_data.empty:
@@ -85,12 +97,8 @@ def price_target_from_analysts(
         if start_date:
             df_analyst_data = df_analyst_data[start_date:]  # type: ignore
 
-        if "Adj Close" in data:
-            plot_column = "Adj Close"
-            legend_price_label = "Adjust Close"
-        else:
-            plot_column = "Close"
-            legend_price_label = "Close"
+        plot_column = "Close"
+        legend_price_label = "Close"
 
         ax.plot(data.index, data[plot_column].values)
 
@@ -117,8 +125,6 @@ def price_target_from_analysts(
 
         if not external_axes:
             theme.visualize_output()
-
-    console.print("")
 
     export_data(
         export,

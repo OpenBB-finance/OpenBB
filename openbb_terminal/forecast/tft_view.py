@@ -53,7 +53,7 @@ def display_tft_forecast(
     ----------
     data (Union[pd.Series, pd.DataFrame]):
         Input Data
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     dataset_name str
         The name of the ticker to be predicted

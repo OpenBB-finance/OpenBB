@@ -52,7 +52,7 @@ def get_search_results(
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Search Results
         Columns: Metric, Value
     """

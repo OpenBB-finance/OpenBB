@@ -36,7 +36,7 @@ from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
-from openbb_terminal.stocks.stocks_models import (
+from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
     load_stock_yf,
     load_stock_eodhd,
@@ -59,6 +59,40 @@ exch_file_path = os.path.join(
 )
 exchange_df = pd.read_csv(exch_file_path, index_col=0, header=None)
 exchange_mappings = exchange_df.squeeze("columns").to_dict()
+
+
+def check_datetime(
+    ck_date: Optional[Union[datetime, str]] = None, start: bool = True
+) -> datetime:
+    """Checks if given argument is string and attempts to convert to datetime.
+
+    Parameters
+    ----------
+    ck_date : Optional[Union[datetime, str]], optional
+        Date to check, by default None
+    start : bool, optional
+        If True and string is invalid, will return 1100 days ago
+        If False and string is invalid, will return today, by default True
+
+    Returns
+    -------
+    datetime
+        Datetime object
+    """
+    error_catch = (datetime.now() - timedelta(days=1100)) if start else datetime.now()
+    try:
+        if ck_date is None:
+            return error_catch
+        if isinstance(ck_date, datetime):
+            return ck_date
+        if isinstance(ck_date, str):
+            return datetime.strptime(ck_date, "%Y-%m-%d")
+    except Exception:
+        console.print(
+            f"Invalid date format (YYYY-MM-DD), "
+            f"Using {error_catch.strftime('%Y-%m-%d')} for {ck_date}"
+        )
+    return error_catch
 
 
 def search(
@@ -88,6 +122,11 @@ def search(
         The limit of companies shown.
     export : str
         Export data
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.search(country="united states", exchange_country="Germany")
     """
     kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
@@ -183,9 +222,9 @@ def search(
 
 def load(
     symbol: str,
-    start_date: datetime = None,
+    start_date: Optional[Union[datetime, str]] = None,
     interval: int = 1440,
-    end_date: datetime = None,
+    end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
     iexrange: str = "ytd",
@@ -227,12 +266,12 @@ def load(
     ----------
     symbol: str
         Ticker to get data
-    start_date: datetime
-        Start date to get data from with
+    start_date: str or datetime, optional
+        Start date to get data from with. - datetime or string format (YYYY-MM-DD)
     interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end_date: datetime
-        End date to get data from with
+    end_date: str or datetime, optional
+        End date to get data from with. - datetime or string format (YYYY-MM-DD)
     prepost: bool
         Pre and After hours data
     source: str
@@ -251,10 +290,15 @@ def load(
     df_stock_candidate: pd.DataFrame
         Dataframe of data
     """
+
     if start_date is None:
-        start_date = datetime.now() - timedelta(days=1100)
+        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+
     if end_date is None:
-        end_date = datetime.now()
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
+    start_date = check_datetime(start_date)
+    end_date = check_datetime(end_date, start=False)
 
     # Daily
     if int(interval) == 1440:
@@ -404,9 +448,9 @@ def display_candle(
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = "",
-    start_date: datetime = (datetime.now() - timedelta(days=1100)),
+    start_date: Optional[Union[datetime, str]] = None,
     interval: int = 1440,
-    end_date: datetime = datetime.now(),
+    end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
     iexrange: str = "ytd",
@@ -440,12 +484,12 @@ def display_candle(
         External axes (2 axes are expected in the list), by default None
     asset_type_: str
         String to include in title
-    start_date: datetime
-        Start date to get data from with
+    start_date: str or datetime, optional
+        Start date to get data from with. - datetime or string format (YYYY-MM-DD)
     interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end_date: datetime
-        End date to get data from with
+    end_date: str or datetime, optional
+        End date to get data from with. - datetime or string format (YYYY-MM-DD)
     prepost: bool
         Pre and After hours data
     source: str
@@ -460,7 +504,22 @@ def display_candle(
         Flag to display raw data, by default False
     yscale: str
         Linear or log for yscale
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.candle("AAPL")
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
+    start_date = check_datetime(start_date)
+    end_date = check_datetime(end_date, start=False)
+
     if data is None:
         data = load(
             symbol,
@@ -721,7 +780,9 @@ def display_candle(
 
 
 def load_ticker(
-    ticker: str, start_date: Union[str, datetime], end_date: Union[str, datetime] = ""
+    ticker: str,
+    start_date: Union[str, datetime],
+    end_date: Optional[Union[str, datetime]] = None,
 ) -> pd.DataFrame:
     """Load a ticker data from Yahoo Finance.
 
@@ -741,11 +802,13 @@ def load_ticker(
     DataFrame
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
         date_id, OC-High, OC-Low.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> msft_df = openbb.stocks.load("MSFT")
     """
-    if end_date:
-        df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
-    else:
-        df_data = yf.download(ticker, start=start_date, progress=False)
+    df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
 
     df_data.index = pd.to_datetime(df_data.index)
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
@@ -919,7 +982,7 @@ def load_custom(file_path: str) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of stock data
     """
     # Double check that the file exists
@@ -1042,3 +1105,39 @@ def show_codes_polygon(ticker: str):
     print_rich_table(
         polygon_df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
     )
+
+
+def format_parse_choices(choices: List[str]) -> List[str]:
+    """Formats a list of strings to be lowercase and replace spaces with underscores.
+
+    Parameters
+    ----------
+    choices: List[str]
+        The options to be formatted
+
+    Returns
+    -------
+    clean_choices: List[str]
+        The cleaned options
+
+    """
+    return [x.lower().replace(" ", "_") for x in choices]
+
+
+def map_parse_choices(choices: List[str]) -> Dict[str, str]:
+    """Creates a mapping of clean arguments (keys) to original arguments (values)
+
+    Parameters
+    ----------
+    choices: List[str]
+        The options to be formatted
+
+    Returns
+    -------
+    clean_choices: Dict[str, str]
+        The mappung
+
+    """
+    the_dict = {x.lower().replace(" ", "_"): x for x in choices}
+    the_dict[""] = ""
+    return the_dict

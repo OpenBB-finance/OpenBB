@@ -4,11 +4,5 @@ channels:
 dependencies:
   - python=3.8
   - pip
-  - poetry=1.1.12
-  - numpy=1.21.2
-  - cvxpy=1.2.0
-  - pytest
-  - black=22.6.0
-  - sphinx=4.1.1
-  - charset-normalizer=2.0.12
-  - rich=10.16.2
+  - poetry=1.1.13
+  - lightgbm=3.3.3

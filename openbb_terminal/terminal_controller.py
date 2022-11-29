@@ -2,15 +2,20 @@
 """Main Terminal Module."""
 __docformat__ = "numpy"
 
+from datetime import datetime
 import argparse
 import difflib
 import logging
 import os
+import re
 from pathlib import Path
 import sys
 import webbrowser
-from typing import List
+from typing import List, Dict, Optional
+import contextlib
+
 import dotenv
+import certifi
 from rich import panel
 
 from prompt_toolkit import PromptSession
@@ -25,6 +30,7 @@ from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_ENV_FILE,
+    REPOSITORY_DIRECTORY,
     USER_DATA_DIRECTORY,
     USER_ENV_FILE,
     USER_ROUTINES_DIRECTORY,
@@ -47,9 +53,9 @@ from openbb_terminal.terminal_helper import (
     is_reset,
     print_goodbye,
     reset,
-    suppress_stdout,
     update_terminal,
     welcome_message,
+    suppress_stdout,
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
 from openbb_terminal.keys_model import first_time_user
@@ -62,6 +68,13 @@ from openbb_terminal.reports.reports_model import ipykernel_launcher
 logger = logging.getLogger(__name__)
 
 env_file = str(USER_ENV_FILE)
+
+if is_packaged_application():
+    # Necessary for installer so that it can locate the correct certificates for
+    # API calls and https
+    # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
+    os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+    os.environ["SSL_CERT_FILE"] = certifi.where()
 
 
 class TerminalController(BaseController):
@@ -100,6 +113,7 @@ class TerminalController(BaseController):
     GUESS_NUMBER_TRIES_LEFT = 0
     GUESS_SUM_SCORE = 0.0
     GUESS_CORRECTLY = 0
+    CHOICES_GENERATION = False
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Construct terminal controller."""
@@ -907,7 +921,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 an_input,
             )
             console.print(
-                f"[red]The command '{an_input}' doesn't exist on the / menu.[/red]",
+                f"[red]The command '{an_input}' doesn't exist on the / menu.[/red]\n",
             )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
@@ -929,10 +943,8 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 else:
                     an_input = similar_cmd[0]
 
-                console.print(f"\n[green]Replacing by '{an_input}'.[/green]")
+                console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
-            else:
-                console.print("\n")
 
 
 def insert_start_slash(cmds: List[str]) -> List[str]:
@@ -949,6 +961,8 @@ def run_scripts(
     test_mode: bool = False,
     verbose: bool = False,
     routines_args: List[str] = None,
+    special_arguments: Optional[Dict[str, str]] = None,
+    output: bool = True,
 ):
     """Run given .openbb scripts.
 
@@ -963,114 +977,101 @@ def run_scripts(
     routines_args : List[str]
         One or multiple inputs to be replaced in the routine and separated by commas.
         E.g. GME,AMC,BTC-USD
+    special_arguments: Optional[Dict[str, str]]
+        Replace `${key=default}` with `value` for every key in the dictionary
+    output: bool
+        Whether to log tests to txt files
     """
-    if path.exists():
-        with path.open() as fp:
-            raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
-            raw_lines = [
-                raw_line.strip("\n") for raw_line in raw_lines if raw_line.strip("\n")
-            ]
-
-            if routines_args:
-                lines = list()
-                for rawline in raw_lines:
-                    templine = rawline
-                    for i, arg in enumerate(routines_args):
-                        templine = templine.replace(f"$ARGV[{i}]", arg)
-                    lines.append(templine)
-            else:
-                lines = raw_lines
-
-            if test_mode and "exit" not in lines[-1]:
-                lines.append("exit")
-
-            export_folder = ""
-            if "export" in lines[0]:
-                export_folder = lines[0].split("export ")[1].rstrip()
-                lines = lines[1:]
-
-            simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
-            file_cmds = simulate_argv.replace("//", "/home/").split()
-            file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-            if export_folder:
-                file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]
-            else:
-                file_cmds = [" ".join(file_cmds)]
-
-            if not test_mode:
-                terminal(file_cmds, test_mode=True)
-            else:
-                if verbose:
-                    terminal(file_cmds, test_mode=True)
-                else:
-                    with suppress_stdout():
-                        terminal(file_cmds, test_mode=True)
-    else:
+    if not path.exists():
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
         if not test_mode:
             terminal()
 
+    with path.open() as fp:
+        raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
+        raw_lines = [
+            raw_line.strip("\n") for raw_line in raw_lines if raw_line.strip("\n")
+        ]
 
-def build_test_path_list(path_list: List[str], filtert: str) -> List[Path]:
-    """Build the paths to use in test mode."""
-    if path_list == "":
-        console.print("Please send a path when using test mode")
-        return []
+        if routines_args:
+            lines = []
+            for rawline in raw_lines:
+                templine = rawline
+                for i, arg in enumerate(routines_args):
+                    templine = templine.replace(f"$ARGV[{i}]", arg)
+                lines.append(templine)
+        # Handle new testing arguments:
+        elif special_arguments:
+            lines = []
+            for line in raw_lines:
+                new_line = re.sub(
+                    r"\${[^{]+=[^{]+}",
+                    lambda x: replace_dynamic(x, special_arguments),  # type: ignore
+                    line,
+                )
+                lines.append(new_line)
 
-    test_files = []
-
-    for path in path_list:
-        user_script_path = USER_DATA_DIRECTORY / "scripts" / path
-        default_script_path = MISCELLANEOUS_DIRECTORY / path
-
-        if user_script_path.exists():
-            chosen_path = user_script_path
-        elif default_script_path.exists():
-            chosen_path = default_script_path
         else:
-            console.print(f"\n[red]Can't find the file:{path}[/red]\n")
-            continue
+            lines = raw_lines
 
-        if chosen_path.is_file() and str(chosen_path).endswith(".openbb"):
-            test_files.append(chosen_path)
-        elif chosen_path.is_dir():
-            script_directory = chosen_path
-            script_list = script_directory.glob("**/*.openbb")
-            script_list = [script for script in script_list if script.is_file()]
-            script_list = [script for script in script_list if filtert in str(script)]
-            test_files.extend(script_list)
+        if test_mode and "exit" not in lines[-1]:
+            lines.append("exit")
 
-    return test_files
+        export_folder = ""
+        if "export" in lines[0]:
+            export_folder = lines[0].split("export ")[1].rstrip()
+            lines = lines[1:]
+
+        simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
+        file_cmds = simulate_argv.replace("//", "/home/").split()
+        file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
+        if export_folder:
+            file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]
+        else:
+            file_cmds = [" ".join(file_cmds)]
+
+        if not test_mode or verbose:
+            terminal(file_cmds, test_mode=True)
+        else:
+            with suppress_stdout():
+                print(f"To ensure: {output}")
+                if output:
+                    timestamp = datetime.now().timestamp()
+                    stamp_str = str(timestamp).replace(".", "")
+                    whole_path = Path(REPOSITORY_DIRECTORY / "integration_test_output")
+                    whole_path.mkdir(parents=True, exist_ok=True)
+                    first_cmd = file_cmds[0].split("/")[1]
+                    with open(
+                        whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
+                    ) as output_file:
+                        with contextlib.redirect_stdout(output_file):
+                            terminal(file_cmds, test_mode=True)
+                else:
+                    terminal(file_cmds, test_mode=True)
 
 
-def run_test_list(path_list: List[str], filtert: str, verbose: bool):
-    """Run commands in test mode."""
-    os.environ["DEBUG_MODE"] = "true"
+def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
+    """Replaces ${key=default} with value in special_arguments if it exists, else with default.
 
-    test_files = build_test_path_list(path_list=path_list, filtert=filtert)
-    SUCCESSES = 0
-    FAILURES = 0
-    fails = {}
-    length = len(test_files)
-    i = 0
-    console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
-    for file in test_files:
-        console.print(f"{((i/length)*100):.1f}%  {file}")
-        try:
-            run_scripts(file, test_mode=True, verbose=verbose)
-            SUCCESSES += 1
-        except Exception as e:
-            fails[file] = e
-            FAILURES += 1
-        i += 1
-    if fails:
-        console.print("\n[red]Failures:[/red]\n")
-        for file, exception in fails.items():
-            logger.error("%s: %s failed", file, exception)
-            console.print(f"{file}: {exception}\n")
-    console.print(
-        f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
-    )
+    Parameters
+    ----------
+    match: re.Match[str]
+        The match object
+    special_arguments: Dict[str, str]
+        The key value pairs to replace in the scripts
+
+    Returns
+    ----------
+    str
+        The new string
+    """
+
+    cleaned = match[0].replace("{", "").replace("}", "").replace("$", "")
+    key, default = cleaned.split("=")
+    dict_value = special_arguments.get(key, default)
+    if dict_value:
+        return dict_value
+    return default
 
 
 def run_routine(file: str, routines_args=List[str]):
@@ -1090,10 +1091,7 @@ def run_routine(file: str, routines_args=List[str]):
 
 def main(
     debug: bool,
-    test: bool,
-    filtert: str,
     path_list: List[str],
-    verbose: bool,
     routines_args: List[str] = None,
     **kwargs,
 ):
@@ -1117,10 +1115,6 @@ def main(
     """
     if kwargs["module"] == "ipykernel_launcher":
         ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
-
-    if test:
-        run_test_list(path_list=path_list, filtert=filtert, verbose=verbose)
-        return
 
     if debug:
         os.environ["DEBUG_MODE"] = "true"
@@ -1159,29 +1153,6 @@ def parse_args_and_run():
         type=str,
     )
     parser.add_argument(
-        "-t",
-        "--test",
-        dest="test",
-        action="store_true",
-        default=False,
-        help="Whether to run in test mode.",
-    )
-    parser.add_argument(
-        "--filter",
-        help="Send a keyword to filter in file name",
-        dest="filtert",
-        default="",
-        type=str,
-    )
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        help="Enable verbose output for debugging",
-        dest="verbose",
-        action="store_true",
-        default=False,
-    )
-    parser.add_argument(
         "-i",
         "--input",
         help=(
@@ -1200,6 +1171,15 @@ def parse_args_and_run():
         dest="module",
         default="",
         type=str,
+    )
+    parser.add_argument(
+        "-t",
+        "--test",
+        action="store_true",
+        help=(
+            "Run the terminal in testing mode. Also run this option and '-h'"
+            " to see testing argument options."
+        ),
     )
     parser.add_argument(
         "-f",
@@ -1229,10 +1209,7 @@ def parse_args_and_run():
 
     main(
         ns_parser.debug,
-        ns_parser.test,
-        ns_parser.filtert,
         ns_parser.path,
-        ns_parser.verbose,
         ns_parser.routine_args,
         module=ns_parser.module,
         module_file=ns_parser.module_file,

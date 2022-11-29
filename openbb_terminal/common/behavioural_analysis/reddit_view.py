@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
 def print_and_record_reddit_post(
     submissions_dict: Dict, submission: praw.models.reddit.submission.Submission
 ):
-    """Prints reddit submission
+    """Prints reddit submission.
 
     Parameters
     ----------
@@ -75,8 +75,8 @@ def print_and_record_reddit_post(
         "awards": s_all_awards,
     }
     # Print post data collected so far
-    console.print(f"{s_datetime} - {submission.title}")
-    console.print(f"{s_link}")
+    console.print(f"[yellow]{s_datetime}[/yellow] - {submission.title}")
+    console.print(f"[blue]{s_link}[/blue]\n")
     columns = ["Subreddit", "Flair", "Score", "# Comments", "Upvote %", "Awards"]
     data = [
         submission.subreddit,
@@ -103,7 +103,7 @@ def print_and_record_reddit_post(
     ]
 )
 def print_reddit_post(sub: tuple):
-    """Prints reddit submission
+    """Prints reddit submission.
 
     Parameters
     ----------
@@ -115,8 +115,8 @@ def print_reddit_post(sub: tuple):
     date = sub_list[0]
     title = sub_list[3]
     link = sub_list[-1]
-    console.print(f"{date} - {title}")
-    console.print(f"{link}")
+    console.print(f"[yellow]{date}[/yellow] - {title}")
+    console.print(f"[blue]{link}[/blue]\n")
     columns = [
         "Subreddit",
         "Flair",
@@ -145,7 +145,7 @@ def print_reddit_post(sub: tuple):
     ]
 )
 def display_watchlist(limit: int = 5):
-    """Print other users watchlist. [Source: Reddit]
+    """Prints other users watchlist. [Source: Reddit].
 
     Parameters
     ----------
@@ -156,6 +156,8 @@ def display_watchlist(limit: int = 5):
     if subs:
         for sub in subs:
             print_and_record_reddit_post({}, sub)
+            console.print("")
+
         if n_flair_posts_found > 0:
             lt_watchlist_sorted = sorted(
                 d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
@@ -193,7 +195,7 @@ def display_watchlist(limit: int = 5):
 def display_popular_tickers(
     limit: int = 10, post_limit: int = 50, subreddits: str = "", export: str = ""
 ):
-    """Print latest popular tickers. [Source: Reddit]
+    """Prints table showing latest popular tickers. [Source: Reddit].
 
     Parameters
     ----------
@@ -236,7 +238,7 @@ def display_popular_tickers(
     ]
 )
 def display_spac_community(limit: int = 10, popular: bool = False):
-    """Look at tickers mentioned in r/SPACs [Source: Reddit]
+    """Prints tickers mentioned in r/SPACs [Source: Reddit].
 
     Parameters
     ----------
@@ -249,6 +251,7 @@ def display_spac_community(limit: int = 10, popular: bool = False):
     if not subs.empty:
         for sub in subs.iterrows():
             print_reddit_post(sub)
+            console.print("")
 
         if d_watchlist_tickers:
             lt_watchlist_sorted = sorted(
@@ -273,7 +276,6 @@ def display_spac_community(limit: int = 10, popular: bool = False):
                     "The following stock tickers have been mentioned more than once across the previous SPACs:"
                 )
                 console.print(s_watchlist_tickers[:-2])
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -287,7 +289,7 @@ def display_spac_community(limit: int = 10, popular: bool = False):
     ]
 )
 def display_spac(limit: int = 5):
-    """Look at posts containing 'spac' in top communities
+    """Prints posts containing 'spac' in top communities.
 
     Parameters
     ----------
@@ -299,6 +301,7 @@ def display_spac(limit: int = 5):
     if not subs.empty:
         for sub in subs.iterrows():
             print_reddit_post(sub)
+            console.print("")
 
         if n_flair_posts_found > 0:
             lt_watchlist_sorted = sorted(
@@ -321,7 +324,6 @@ def display_spac(limit: int = 5):
                     "The following stock tickers have been mentioned more than once across the previous SPACs:"
                 )
                 console.print(s_watchlist_tickers[:-2])
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -335,7 +337,7 @@ def display_spac(limit: int = 5):
     ]
 )
 def display_wsb_community(limit: int = 10, new: bool = False):
-    """Show WSB posts
+    """Prints WSB posts.
 
     Parameters
     ----------
@@ -348,6 +350,7 @@ def display_wsb_community(limit: int = 10, new: bool = False):
     if not subs.empty:
         for sub in subs.iterrows():
             print_reddit_post(sub)
+            console.print("")
 
 
 @log_start_end(log=logger)
@@ -363,7 +366,7 @@ def display_wsb_community(limit: int = 10, new: bool = False):
 def display_due_diligence(
     symbol: str, limit: int = 10, n_days: int = 3, show_all_flairs: bool = False
 ):
-    """Display Reddit due diligence data for a given ticker
+    """Prints Reddit due diligence data for a given ticker.
 
     Parameters
     ----------
@@ -380,6 +383,7 @@ def display_due_diligence(
     if not subs.empty:
         for sub in subs.iterrows():
             print_reddit_post(sub)
+            console.print("")
     else:
         console.print(f"No DD posts found for {symbol}\n")
 
@@ -406,7 +410,8 @@ def display_redditsent(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Determine Reddit sentiment about a search term
+    """Plots Reddit sentiment about a search term. Prints table showing if display is True.
+
     Parameters
     ----------
     symbol: str

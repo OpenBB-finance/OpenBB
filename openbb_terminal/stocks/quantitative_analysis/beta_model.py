@@ -32,12 +32,8 @@ def beta_model(
 
     Returns
     -------
-    sr: pd.Series
-        Stock ticker symbols close-to-close returns
-    rr: pd.Series
-        Reference ticker symbols close-to-close returns
-    beta: float
-    alpha: float
+    Tuple[pd.Series, pd.Series, float, float]
+        Stock ticker symbols close-to-close returns, Reference ticker symbols close-to-close returns, beta, alpha
     """
     if data is None:
         data = stocks_helper.load(symbol)
@@ -64,6 +60,8 @@ def beta_model(
     rr = df["Ref Pct Ret"].tolist()
 
     # compute lin reg
+    if not rr or not sr:
+        return pd.Series(dtype="object"), pd.Series(dtype="object"), 0.0, 0.0
     model = stats.linregress(rr, sr)
     beta = model.slope
     alpha = model.intercept

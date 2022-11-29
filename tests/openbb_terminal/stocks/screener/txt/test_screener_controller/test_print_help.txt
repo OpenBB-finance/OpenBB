@@ -1,7 +1,7 @@
     view               view available presets (defaults and customs)
     set                set one of the available presets
 
-Preset: top_gainers
+Preset: top_gainers.ini
 
     historical         view historical price                                           [YahooFinance]
     overview           overview (e.g. Sector, Industry, Market Cap, Volume)            [Finviz]

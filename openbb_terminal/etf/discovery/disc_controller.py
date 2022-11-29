@@ -29,30 +29,14 @@ class DiscoveryController(BaseController):
         "active",
     ]
     PATH = "/etf/disc/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["gainers"] = {
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["decliners"] = {
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["active"] = {
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

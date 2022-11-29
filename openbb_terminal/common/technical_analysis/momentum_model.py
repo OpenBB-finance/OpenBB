@@ -38,7 +38,7 @@ def cci(
         Scalar variable
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
@@ -77,7 +77,7 @@ def macd(
     n_signal : int
         Signal period
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
@@ -107,7 +107,7 @@ def rsi(
         Drift variable
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
@@ -142,7 +142,7 @@ def stoch(
     slowkperiod : int
         Slow k period
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
@@ -172,7 +172,7 @@ def fisher(data: pd.DataFrame, window: int = 14) -> pd.DataFrame:
     window: int
         Length for indicator window
     Returns
-    ----------
+    -------
     df_ta: pd.DataFrame
         Dataframe of technical indicator
     """
@@ -196,7 +196,7 @@ def cg(values: pd.Series, window: int) -> pd.DataFrame:
     window: int
         Length for indicator window
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
@@ -225,6 +225,12 @@ def clenow_momentum(
         Coefficient of linear regression
     pd.Series:
         Values for best fit line
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.ta.clenow(df["Close"])
     """
     if len(values) < window:
         console.print(
@@ -260,5 +266,11 @@ def demark_seq(values: pd.Series) -> pd.DataFrame:
     -------
     pd.DataFrame
         Dataframe of UP and DOWN sequential indicators
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.ta.demark(df["Close"])
     """
     return ta.td_seq(values, asint=True)

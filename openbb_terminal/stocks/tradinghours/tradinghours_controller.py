@@ -40,6 +40,7 @@ class TradingHoursController(BaseController):
     CHOICES_COMMANDS = ["symbol", "open", "closed", "all", "exchange", "holidays"]
     PATH = "/stocks/th/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+    CHOICES_GENERATION = True
 
     def __init__(self, ticker: str = "", queue: List[str] = None):
         """Construct Data."""
@@ -79,19 +80,7 @@ class TradingHoursController(BaseController):
         self.timezone = get_user_timezone_or_invalid()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            choices["exchange"] = {c: None for c in self.all_exchange_short_names}
-            choices["exchange"]["--name"] = {
-                c: {} for c in self.all_exchange_short_names
-            }
-            choices["exchange"]["-n"] = "--name"
-            choices["symbol"]["--name"] = None
-            choices["symbol"]["-n"] = "--name"
-            choices["holidays"] = {
-                c: None for c in self.all_holiday_exchange_short_names
-            }
-
+            choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -177,6 +166,7 @@ class TradingHoursController(BaseController):
             "--name",
             help="Exchange short name",
             type=str.upper,
+            choices=self.all_exchange_short_names,
             dest="exchange",
         )
 
@@ -189,11 +179,14 @@ class TradingHoursController(BaseController):
             other_args.insert(0, "-n")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser and ns_parser.exchange:
-            bursa_view.display_exchange(ns_parser.exchange)
-        else:
-            logger.error("Select the exchange you want to know about.")
-            console.print("[red]Select the exchange you want to know about.[/red]\n")
+        if ns_parser:
+            if ns_parser.exchange:
+                bursa_view.display_exchange(ns_parser.exchange)
+            else:
+                logger.error("Select the exchange you want to know about.")
+                console.print(
+                    "[red]Select the exchange you want to know about.[/red]\n"
+                )
 
     @log_start_end(log=logger)
     def call_open(self, other_args: List[str]):

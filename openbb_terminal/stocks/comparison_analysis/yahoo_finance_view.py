@@ -22,7 +22,6 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
     print_rich_table,
 )
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.comparison_analysis import yahoo_finance_model
 
 logger = logging.getLogger(__name__)
@@ -43,7 +42,7 @@ d_candle_types = {
 @log_start_end(log=logger)
 def display_historical(
     similar: List[str],
-    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    start_date: Optional[str] = None,
     candle_type: str = "a",
     normalize: bool = True,
     export: str = "",
@@ -57,8 +56,8 @@ def display_historical(
         List of similar tickers.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
-    start_date: str, optional
-        Start date of comparison, by default 1 year ago
+    start_date: Optional[str], optional
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type: str, optional
         OHLCA column to use or R to use daily returns calculated from Adjusted Close, by default "a" for Adjusted Close
     normalize: bool, optional
@@ -67,7 +66,6 @@ def display_historical(
         Format to export historical prices, by default ""
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-
     """
     df_similar = yahoo_finance_model.get_historical(similar, start_date, candle_type)
 
@@ -103,13 +101,12 @@ def display_historical(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "historical", df_similar
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
 def display_volume(
     similar: List[str],
-    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    start_date: Optional[str] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -121,8 +118,8 @@ def display_volume(
         List of similar tickers.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
-    start_date : str, optional
-        Start date of comparison, by default 1 year ago
+    start_date : Optional[str], optional
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     export : str, optional
         Format to export historical prices, by default ""
     external_axes : Optional[List[plt.Axes]], optional
@@ -156,13 +153,12 @@ def display_volume(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "volume", df_similar
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
 def display_correlation(
     similar: List[str],
-    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    start_date: Optional[str] = None,
     candle_type: str = "a",
     display_full_matrix: bool = False,
     raw: bool = False,
@@ -179,8 +175,8 @@ def display_correlation(
         List of similar tickers.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
-    start_date : str, optional
-        Start date of comparison, by default 1 year ago
+    start_date : Optional[str], optional
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
     display_full_matrix : bool, optional
@@ -192,6 +188,9 @@ def display_correlation(
     export : str, optional
         Format to export correlation prices, by default ""
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
     correlations, df_similar = yahoo_finance_model.get_correlation(
         similar, start_date, candle_type
@@ -235,7 +234,6 @@ def display_correlation(
         theme.visualize_output()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "hcorr", df_similar)
-    console.print("")
 
 
 @log_start_end(log=logger)

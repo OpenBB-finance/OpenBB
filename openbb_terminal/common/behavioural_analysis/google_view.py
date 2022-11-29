@@ -29,7 +29,7 @@ def display_mentions(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
+    """Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].
 
     Parameters
     ----------
@@ -92,7 +92,7 @@ def display_correlation_interest(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot interest over time of words/sentences versus stock price. [Source: Google]
+    """Plots interest over time of words/sentences versus stock price. [Source: Google].
 
     Parameters
     ----------
@@ -159,7 +159,7 @@ def display_regions(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot bars of regions based on stock's interest. [Source: Google]
+    """Plots bars of regions based on stock's interest. [Source: Google].
 
     Parameters
     ----------
@@ -204,7 +204,7 @@ def display_regions(
 
 @log_start_end(log=logger)
 def display_queries(symbol: str, limit: int = 5, export: str = ""):
-    """Print top related queries with this stock's query. [Source: Google]
+    """Prints table showing top related queries with this stock's query. [Source: Google].
 
     Parameters
     ----------
@@ -212,12 +212,9 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
         Ticker symbol
     limit: int
         Number of regions to show
-    export: str {"csv","json","xlsx","png","jpg","pdf","svg"}
+    export: str
         Format to export data
-
-    Returns
-    -------
-        None
+        {"csv","json","xlsx","png","jpg","pdf","svg"}
     """
     # Retrieve a dict with top and rising queries
     df = google_model.get_queries(symbol, limit)
@@ -241,7 +238,7 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
 
 @log_start_end(log=logger)
 def display_rise(symbol: str, limit: int = 10, export: str = ""):
-    """Print top rising related queries with this stock's query. [Source: Google]
+    """Prints top rising related queries with this stock's query. [Source: Google].
 
     Parameters
     ----------

@@ -1,0 +1,24 @@
+portfolio
+po
+load 60_40_Portfolio.xlsx
+maxsharpe -s 2022-10-20
+minrisk -r 0.05
+maxutil -a 0.1
+maxret -e 2022-11-20
+maxdiv -mn 0.1
+maxdecorr -lr
+ef -t
+equal -th 0.1
+riskparity -p 1y
+relriskparity -de 0.9
+hrp -cd spearman
+herc -at 0.1
+nco -rm MAD
+show RP_1
+plot -pf MAXSHARPE_0 -pi
+plot -pf MAXSHARPE_0 -hi
+plot -pf MAXSHARPE_0 -dd
+plot -pf MAXSHARPE_0 -rc
+plot -pf MAXSHARPE_0 -he
+rpf NAME_6
+exit

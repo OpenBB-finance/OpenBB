@@ -28,7 +28,7 @@ def display_anchor_data(
     show_transactions: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Displays anchor protocol earnings data of a certain terra address
+    """Plots anchor protocol earnings data of a certain terra address
     [Source: https://cryptosaurio.com/]
 
     Parameters

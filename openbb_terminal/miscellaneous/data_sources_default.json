@@ -288,6 +288,7 @@
     }
   },
   "crypto": {
+    "price": ["Pyth"],
     "load": ["YahooFinance", "CoinGecko", "CCXT"],
     "find": ["CoinGecko", "CoinPaprika", "Binance", "Coinbase", "YahooFinance"],
     "headlines": ["FinBrain"],

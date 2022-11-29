@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_collection_stats(slug: str, export: str):
-    """Display collection stats. [Source: opensea.io]
+    """Prints table showing collection stats. [Source: opensea.io]
 
     Parameters
     ----------

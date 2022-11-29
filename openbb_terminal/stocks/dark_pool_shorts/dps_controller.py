@@ -21,7 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.dark_pool_shorts import (
     finra_view,
     quandl_view,
@@ -55,6 +55,7 @@ class DarkPoolShortsController(StockBaseController):
     ]
     POS_CHOICES = ["sv", "sv_pct", "nsv", "nsv_dollar", "dpp", "dpp_dollar"]
     PATH = "/stocks/dps/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self, ticker: str, start: str, stock: pd.DataFrame, queue: List[str] = None
@@ -67,88 +68,7 @@ class DarkPoolShortsController(StockBaseController):
         self.stock = stock
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["load"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
-                "-i": "--interval",
-                "--prepost": {},
-                "-p": "--prepost",
-                "--file": None,
-                "-f": "--file",
-                "--monthly": {},
-                "-m": "--monthly",
-                "--weekly": {},
-                "-w": "--weekly",
-                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
-                "-r": "--iexrange",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
-                },
-            }
-            limit = {
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["shorted"] = limit
-            choices["hsi"] = limit
-            choices["ctb"] = {
-                "--number": one_to_hundred,
-                "-n": "--number",
-            }
-            choices["prom"] = {
-                "--num": None,
-                "-n": "--num",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-                "--tier": {c: {} for c in ["T1", "T2", "OTCE"]},
-                "-t": "--tier",
-            }
-            choices["pos"] = {
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-                "--sort": {c: {} for c in self.POS_CHOICES},
-                "-s": "--sort",
-                "--ascend": {},
-                "-a": "--ascend",
-            }
-            choices["sidtc"] = {
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-                "--sort": {c: {} for c in ["float", "dtc", "si"]},
-                "-s": "--sort",
-            }
-            choices["ftd"] = {
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--num": one_to_hundred,
-                "-n": "--num",
-                "--raw": {},
-            }
-            choices["spos"] = {
-                "--num": one_to_hundred,
-                "-n": "--num",
-                "--raw": {},
-                "-r": "--raw",
-            }
-            choices["psi"] = {
-                "--nyse": {},
-                "--raw": {},
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}psi")
-                },
-            }
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -359,12 +279,16 @@ class DarkPoolShortsController(StockBaseController):
             dest="sort_field",
         )
         parser.add_argument(
-            "-a",
-            "--ascending",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            dest="ascend",
-            help="Data in ascending order",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -373,7 +297,7 @@ class DarkPoolShortsController(StockBaseController):
             stockgrid_view.dark_pool_short_positions(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sort_field,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 

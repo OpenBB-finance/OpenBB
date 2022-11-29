@@ -54,7 +54,7 @@ class ResearchController(BaseController):
         self.interval = interval
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -93,37 +93,31 @@ class ResearchController(BaseController):
     def call_macroaxis(self, _):
         """Process macroaxis command"""
         webbrowser.open(f"https://www.macroaxis.com/invest/market/{self.ticker}")
-        console.print("")
 
     @log_start_end(log=logger)
     def call_yahoo(self, _):
         """Process yahoo command"""
         webbrowser.open(f"https://finance.yahoo.com/quote/{self.ticker}")
-        console.print("")
 
     @log_start_end(log=logger)
     def call_finviz(self, _):
         """Process finviz command"""
         webbrowser.open(f"https://finviz.com/quote.ashx?t={self.ticker}")
-        console.print("")
 
     @log_start_end(log=logger)
     def call_bullrun(self, _):
         """Process bullrun command"""
         webbrowser.open(f"https://bullrun.com.br/acoes/{self.ticker}")
-        console.print("")
 
     @log_start_end(log=logger)
     def call_marketwatch(self, _):
         """Process marketwatch command"""
         webbrowser.open(f"https://www.marketwatch.com/investing/stock/{self.ticker}")
-        console.print("")
 
     @log_start_end(log=logger)
     def call_fool(self, _):
         """Process fool command"""
         webbrowser.open(f"https://www.fool.com/quote/{self.ticker}")
-        console.print("")
 
     @log_start_end(log=logger)
     def call_businessinsider(self, _):
@@ -131,7 +125,6 @@ class ResearchController(BaseController):
         webbrowser.open(
             f"https://markets.businessinsider.com/stocks/{self.ticker}-stock/"
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_fmp(self, _):
@@ -139,7 +132,6 @@ class ResearchController(BaseController):
         webbrowser.open(
             f"https://financialmodelingprep.com/financial-summary/{self.ticker}"
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_fidelity(self, _):
@@ -147,25 +139,21 @@ class ResearchController(BaseController):
         webbrowser.open(
             f"https://eresearch.fidelity.com/eresearch/goto/evaluate/snapshot.jhtml?symbols={self.ticker}"
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_tradingview(self, _):
         """Process tradingview command"""
         webbrowser.open(f"https://www.tradingview.com/symbols/{self.ticker}")
-        console.print("")
 
     @log_start_end(log=logger)
     def call_marketchameleon(self, _):
         """Process marketchameleon command"""
         webbrowser.open(f"https://marketchameleon.com/Overview/{self.ticker}")
-        console.print("")
 
     @log_start_end(log=logger)
     def call_stockrow(self, _):
         """Process stockrow command"""
         webbrowser.open(f"https://stockrow.com/{self.ticker}")
-        console.print("")
 
     @log_start_end(log=logger)
     def call_barchart(self, _):
@@ -173,25 +161,21 @@ class ResearchController(BaseController):
         webbrowser.open(
             f"https://www.barchart.com/stocks/quotes/{self.ticker}/overview"
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_grufity(self, _):
         """Process grufity command"""
         webbrowser.open(f"https://grufity.com/stock/{self.ticker}")
-        console.print("")
 
     @log_start_end(log=logger)
     def call_fintel(self, _):
         """Process fintel command"""
         webbrowser.open(f"https://fintel.io/s/us/{self.ticker}")
-        console.print("")
 
     @log_start_end(log=logger)
     def call_zacks(self, _):
         """Process zacks command"""
         webbrowser.open(f"https://www.zacks.com/stock/quote/{self.ticker}")
-        console.print("")
 
     @log_start_end(log=logger)
     def call_macrotrends(self, _):
@@ -199,16 +183,13 @@ class ResearchController(BaseController):
         webbrowser.open(
             f"https://www.macrotrends.net/stocks/charts/{self.ticker}/{self.ticker}/market-cap"
         )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_newsfilter(self, _):
         """Process newsfilter command"""
         webbrowser.open(f"https://newsfilter.io/search?query={self.ticker}")
-        console.print("")
 
     @log_start_end(log=logger)
     def call_stockanalysis(self, _):
         """Process stockanalysis command"""
         webbrowser.open(f"https://stockanalysis.com/stocks/{self.ticker}/")
-        console.print("")

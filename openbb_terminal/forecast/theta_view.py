@@ -42,9 +42,9 @@ def display_theta_forecast(
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
-    dataset_name str
+    dataset_name: str
         The name of the ticker to be predicted
     seasonal: str
         Seasonal component.  One of [N, A, M]

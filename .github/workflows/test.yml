@@ -6,6 +6,7 @@ env:
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
 on: [pull_request, push]
+
 jobs:
   linting:
     name: General Linting
@@ -13,7 +14,7 @@ jobs:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout Code
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b  # actions/checkout v3.0.2
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # actions/checkout v3.0.2
 
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
@@ -27,15 +28,13 @@ jobs:
           key: ${{ runner.os }}-v1-linting
           restore-keys: ${{ runner.os }}-v1-linting
 
-
-      - run: python custom_pre_commit/check_doc.py --ignore-files=settings_controller.py,keys_controller.py,featflags_controller.py,degiro_controller.py,oanda_controller.py --ignore-commands=login,alswe,infoswe,goodness,resources,yf,yolo,featflags,guess,settings,survey,intro
-      - run: pip install bandit black codespell flake8 mypy pyupgrade safety pylint==2.15.2
+      - run: pip install bandit black codespell flake8 mypy==0.982 pyupgrade safety pylint==2.15.2
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
-      - run: codespell --ignore-words-list=commun,statics,ro,zar,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller
-      - run: flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics --exclude ./build/pyinstaller
-      - run: mypy --ignore-missing-imports --exclude="/setup\.py$" .
+      - run: codespell --ignore-words-list=commun,statics,ro,zar,zlot,jewl,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel,ket,toke,certi,buidl --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller,./website/config.toml
+      - run: flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics --exclude ./build/pyinstaller,./website/content
+      - run: mypy --ignore-missing-imports openbb_terminal
       - run: shopt -s globstar && pyupgrade --py38-plus **/*.py
       - run: safety check
       - run: |
@@ -70,17 +69,14 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
-
-      - name: Install Package
-        run: poetry install --no-interaction
+        run: poetry install --no-interaction -E optimization
 
       - name: Run tests
         env:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/
+          pytest tests/ --optimization
 
       - name: Start Terminal and exit
         run: |
@@ -136,10 +132,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
-
-      - name: Install Package
-        run: poetry install --no-interaction
+        run: poetry install --no-interaction -E optimization
 
       - name: List installed packages
         shell: bash -l {0}
@@ -152,7 +145,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/
+          pytest tests/ --optimization
 
       - name: Start Terminal and exit
         run: |
@@ -227,7 +220,7 @@ jobs:
         shell: bash -l {0}
         id: pip-cache
         run: |
-          echo "::set-output name=dir::$(pip cache dir)"
+          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
 
       - name: pip cache
         uses: actions/cache@v3
@@ -255,9 +248,9 @@ jobs:
 
       - name: Run tests (Bash)
         env:
-            MPLBACKEND: Agg
+          MPLBACKEND: Agg
         shell: bash -l {0}
-        run: pytest tests/ -m "not linux"
+        run: pytest tests/ -m "not linux" --optimization
 
       - name: Start Terminal and exit
         shell: bash -l {0}

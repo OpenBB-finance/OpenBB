@@ -61,119 +61,14 @@ class DefiController(BaseController):
     ]
 
     PATH = "/crypto/defi/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["newspaper"] = {
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-            }
-            choices["vaults"] = {
-                "--chain": {c: {} for c in coindix_model.CHAINS},
-                "-c": "--chain",
-                "--sort": {c: {} for c in coindix_model.VAULTS_FILTERS},
-                "-s": "--sort",
-                "--kind": {c: {} for c in coindix_model.VAULT_KINDS},
-                "-k": "--kind",
-                "--top": {str(c): {} for c in range(1, 1000)},
-                "-t": "--top",
-                "--protocol": {c: {} for c in coindix_model.PROTOCOLS},
-                "-p": "--protocol",
-                "--links": None,
-                "-l": "--links",
-                "--descend": {},
-            }
-            choices["tokens"] = {
-                "--sort": {c: {} for c in graph_model.TOKENS_FILTERS},
-                "-s": "--sort",
-                "--skip": {str(c): {} for c in range(1, 1000)},
-                "--limit": {str(c): {} for c in range(1, 1000)},
-                "--descend": {},
-            }
-            choices["pairs"] = {
-                "--sort": {c: {} for c in graph_model.PAIRS_FILTERS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 1000)},
-                "-l": "--limit",
-                "--vol": {str(c): {} for c in range(1, 1000)},
-                "-v": "--vol",
-                "--tx": {str(c): {} for c in range(1, 1000)},
-                "-tx": "--tx",
-                "--days": {str(c): {} for c in range(1, 1000)},
-                "--descend": {},
-            }
-            choices["pools"] = {
-                "--sort": {c: {} for c in graph_model.POOLS_FILTERS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 1000)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["swaps"] = {
-                "--sort": {c: {} for c in graph_model.SWAPS_FILTERS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 1000)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["ldapps"] = {
-                "--sort": {c: {} for c in llama_model.LLAMA_FILTERS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-                "--desc": {},
-            }
-            choices["gdapps"] = {
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-            }
-            choices["stvl"] = {
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-            }
-            choices["dtvl"] = {"--dapps": {}, "-d": "--dapps"}
-            choices["sinfo"] = {
-                "--address": None,
-                "-a": "--address",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-            }
-            choices["validators"] = {
-                "--sort": {c: {} for c in terramoney_fcd_model.VALIDATORS_COLUMNS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["gacc"] = {
-                "--kind": {c: {} for c in ["active", "total"]},
-                "-k": "--kind",
-                "--cumulative": {},
-                "--descend": {},
-                "--limit": {str(c): {} for c in range(1, 1000)},
-                "-l": "--limit",
-            }
-            choices["sreturn"] = {
-                "--limit": {str(c): {} for c in range(1, 1000)},
-                "-l": "--limit",
-            }
-            choices["lcsc"] = {
-                "--days": {str(c): {} for c in range(1, 1000)},
-                "-d": "--days",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-            }
-            choices["anchor"] = {
-                "--address": None,
-                "--transactions": {},
-            }
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -308,32 +203,28 @@ class DefiController(BaseController):
             type=str,
             help="Sort by given column. Default: votingPower",
             default="votingPower",
-            choices=[
-                "validatorName",
-                "tokensAmount",
-                "votingPower",
-                "commissionRate",
-                "status",
-                "uptime",
-            ],
+            choices=terramoney_fcd_model.VALIDATORS_COLUMNS,
         )
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
         if ns_parser:
             terramoney_fcd_view.display_validators(
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 limit=ns_parser.limit,
             )
 
@@ -513,7 +404,6 @@ class DefiController(BaseController):
                 [Source: https://docs.llama.fi/api]
             """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -522,7 +412,6 @@ class DefiController(BaseController):
             help="Number of records to display",
             default=10,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -532,15 +421,18 @@ class DefiController(BaseController):
             default="tvl",
             choices=llama_model.LLAMA_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         parser.add_argument(
             "--desc",
             action="store_true",
@@ -548,16 +440,14 @@ class DefiController(BaseController):
             dest="description",
             default=False,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
         if ns_parser:
             llama_view.display_defi_protocols(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 description=ns_parser.description,
                 export=ns_parser.export,
             )
@@ -641,8 +531,9 @@ class DefiController(BaseController):
             type=check_positive,
             help="Number of records to skip",
             default=0,
+            choices=range(1, 1000),
+            metavar="SKIP",
         )
-
         parser.add_argument(
             "--limit",
             dest="limit",
@@ -650,7 +541,6 @@ class DefiController(BaseController):
             help="Number of records to display",
             default=20,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -660,25 +550,27 @@ class DefiController(BaseController):
             default="index",
             choices=graph_model.TOKENS_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
         if ns_parser:
             graph_view.display_uni_tokens(
                 skip=ns_parser.skip,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -714,7 +606,6 @@ class DefiController(BaseController):
                 [Source: https://thegraph.com/en/]
             """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -723,7 +614,6 @@ class DefiController(BaseController):
             help="Number of records to display",
             default=10,
         )
-
         parser.add_argument(
             "-v",
             "--vol",
@@ -731,8 +621,9 @@ class DefiController(BaseController):
             type=check_positive,
             help="Minimum trading volume",
             default=100,
+            choices=range(1, 1000),
+            metavar="VOL",
         )
-
         parser.add_argument(
             "-tx",
             "--tx",
@@ -740,16 +631,18 @@ class DefiController(BaseController):
             type=check_positive,
             help="Minimum number of transactions",
             default=100,
+            choices=range(1, 1000),
+            metavar="TX",
         )
-
         parser.add_argument(
             "--days",
             dest="days",
             type=check_positive,
             help="Number of days the pair has been active,",
             default=10,
+            choices=range(1, 1000),
+            metavar="DAY",
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -759,15 +652,18 @@ class DefiController(BaseController):
             default="created",
             choices=graph_model.PAIRS_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -779,7 +675,7 @@ class DefiController(BaseController):
                 min_volume=ns_parser.vol,
                 min_tx=ns_parser.tx,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -795,7 +691,6 @@ class DefiController(BaseController):
                 [Source: https://thegraph.com/en/]
             """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -804,7 +699,6 @@ class DefiController(BaseController):
             help="Number of records to display",
             default=10,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -814,15 +708,18 @@ class DefiController(BaseController):
             default="volumeUSD",
             choices=graph_model.POOLS_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -831,7 +728,7 @@ class DefiController(BaseController):
             graph_view.display_uni_pools(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -847,7 +744,6 @@ class DefiController(BaseController):
                 [Source: https://thegraph.com/en/]
             """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -856,7 +752,6 @@ class DefiController(BaseController):
             help="Number of records to display",
             default=10,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -866,15 +761,18 @@ class DefiController(BaseController):
             default="Datetime",
             choices=graph_model.SWAPS_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -883,7 +781,7 @@ class DefiController(BaseController):
             graph_view.display_last_uni_swaps(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -899,7 +797,6 @@ class DefiController(BaseController):
                 [Source: https://coindix.com/]
             """,
         )
-
         parser.add_argument(
             "-c",
             "--chain",
@@ -910,7 +807,6 @@ class DefiController(BaseController):
             choices=coindix_model.CHAINS,
             required=False,
         )
-
         parser.add_argument(
             "-p",
             "--protocol",
@@ -921,7 +817,6 @@ class DefiController(BaseController):
             choices=coindix_model.PROTOCOLS,
             required=False,
         )
-
         parser.add_argument(
             "-k",
             "--kind",
@@ -932,7 +827,6 @@ class DefiController(BaseController):
             choices=coindix_model.VAULT_KINDS,
             required=False,
         )
-
         parser.add_argument(
             "-t",
             "--top",
@@ -940,8 +834,9 @@ class DefiController(BaseController):
             type=check_positive,
             help="Number of records to display",
             default=10,
+            choices=range(1, 1000),
+            metavar="TOP",
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -951,15 +846,18 @@ class DefiController(BaseController):
             default="apy",
             choices=coindix_model.VAULTS_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         parser.add_argument(
             "-l",
             "--links",
@@ -968,7 +866,6 @@ class DefiController(BaseController):
             dest="link",
             default=True,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -980,7 +877,7 @@ class DefiController(BaseController):
                 protocol=ns_parser.protocol,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 link=ns_parser.link,
                 export=ns_parser.export,
             )
@@ -1013,6 +910,8 @@ class DefiController(BaseController):
             type=check_positive,
             help="Number of days to display. Default: 30 days",
             default=30,
+            choices=range(1, 1000),
+            metavar="DAYS",
         )
 
         ns_parser = self.parse_known_args_and_warn(

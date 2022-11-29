@@ -51,7 +51,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -88,186 +88,18 @@ class OverviewController(BaseController):
     ]
 
     PATH = "/crypto/ov/"
-
-    ORDERED_LIST_SOURCES_EXCHANGES = get_ordered_list_sources(f"{PATH}exchanges")
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
-        self.combined_filters = (
-            pycoingecko_model.EXCHANGES_FILTERS + coinpaprika_model.EXCHANGES_FILTERS
-        )
-
         if session and obbff.USE_PROMPT_TOOLKIT:
-            crypto_hack_slugs = rekt_model.get_crypto_hack_slugs()
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["global"] = {
-                "--pie": {},
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}global")
-                },
-            }
-            choices["cr"] = {c: {} for c in ["borrow", "supply"]}
-            choices["cr"]["--cryptocurrrencies"] = {
-                c: None for c in loanscan_model.CRYPTOS
-            }
-            choices["cr"]["-c"] = "--cryptocurrrencies"
-            choices["cr"]["--platforms"] = {c: None for c in loanscan_model.PLATFORMS}
-            choices["cr"]["-p"] = "--platforms"
-            choices["cr"]["--limit"] = {str(c): {} for c in range(1, 100)}
-            choices["cr"]["-l"] = "--limit"
-            choices["cr"]["--type"] = {c: {} for c in ["borrow", "supply"]}
-            choices["cr"]["-t"] = "--type"
-            choices["ch"] = {
-                "--sortby": {c: {} for c in rekt_model.HACKS_COLUMNS},
-                "--slug": {c: {} for c in crypto_hack_slugs},
-                "-s": "--slug",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["hold"] = {
-                "--coin": {c: {} for c in pycoingecko_model.HOLD_COINS},
-                "-c": "--coin",
-                "--limit": {str(c): {} for c in range(1, 50)},
-                "-l": "--limit",
-                "--bar": {},
-            }
-            choices["categories"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.CATEGORIES_FILTERS},
-                "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--pie": {},
-            }
-            choices["stables"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.COINS_COLUMNS},
-                "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-                "--pie": {},
-            }
-            choices["exchanges"] = {
-                "--sortby": {c: {} for c in self.combined_filters},
-                "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-                "--urls": {},
-                "-u": "--urls",
-                "--vs": {c: {} for c in CURRENCIES},
-                "--source": {c: {} for c in self.ORDERED_LIST_SOURCES_EXCHANGES},
-            }
-            choices["exrates"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.EXRATES_FILTERS},
-                "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["indexes"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.INDEXES_FILTERS},
-                "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["derivatives"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.DERIVATIVES_FILTERS},
-                "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["markets"] = {
-                "--vs": {c: {} for c in CURRENCIES},
-                "--sortby": {c: {} for c in coinpaprika_model.MARKETS_FILTERS},
-                "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["exmarkets"] = {
-                "--exchange": None,
-                "-e": "--exchange",
-                "--sortby": {c: {} for c in coinpaprika_model.EXMARKETS_FILTERS},
-                "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-                "--urls": {},
-                "-u": "--urls",
-            }
-            choices["contracts"]["--platform"] = {
-                c: None for c in get_all_contract_platforms()["platform_id"].tolist()
-            }
-            choices["contracts"]["-p"] = "--platform"
-            choices["contracts"]["--sortby"] = {
-                c: None for c in coinpaprika_model.CONTRACTS_FILTERS
-            }
-            choices["contracts"]["-s"] = "--sortby"
-            choices["contracts"]["--limit"] = {str(c): {} for c in range(1, 100)}
-            choices["contracts"]["-l"] = "--limit"
-            choices["contracts"]["--descend"] = {}
-            choices["hm"]["--category"] = {c: {} for c in get_categories_keys()}
-            choices["hm"]["-c"] = "--category"
-            choices["hm"]["--limit"] = {str(c): {} for c in range(1, 100)}
-            choices["hm"]["-l"] = "--limit"
-            choices["info"] = {
-                "--vs": {c: {} for c in CURRENCIES},
-                "--sortby": {c: {} for c in coinpaprika_model.INFO_FILTERS},
-                "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["pairs"] = {
-                "--sortby": {c: {} for c in coinbase_model.PAIRS_FILTERS},
-                "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(10, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["news"] = {
-                "--kind": {c: {} for c in cryptopanic_model.CATEGORIES},
-                "-k": "--kind",
-                "--filter": {c: {} for c in cryptopanic_model.FILTERS},
-                "--region": {c: {} for c in cryptopanic_model.REGIONS},
-                "-r": "--region",
-                "--sortby": {c: {} for c in cryptopanic_model.SORT_FILTERS},
-                "-s": "--sortby",
-                "--descend": {},
-                "--urls": {},
-                "-u": "--urls",
-            }
-            choices["wf"] = {
-                "--limit": {str(c): {} for c in range(10, 100)},
-                "-l": "--limit",
-            }
-            choices["wfpe"] = {c: {} for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
-            choices["altindex"] = {
-                "--period": {str(c): {} for c in DAYS},
-                "-p": "--period",
-                "--since": None,
-                "-s": "--since",
-                "--until": None,
-                "-u": "--until",
-            }
-            choices["btcrb"] = {
-                "--since": None,
-                "-s": "--since",
-                "--until": None,
-                "-u": "--until",
-            }
-            choices["fun"] = {c: {} for c in tokenterminal_model.METRICS}
-            choices["fun"]["-m"] = {c: {} for c in tokenterminal_model.METRICS}
-            choices["fun"]["-c"] = {c: {} for c in tokenterminal_model.CATEGORIES}
-            choices["fun"]["-t"] = {c: {} for c in tokenterminal_model.TIMELINES}
+            choices: dict = self.choices_default
 
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices["wfpe"].update(
+                {c: {} for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
+            )
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -328,6 +160,8 @@ class OverviewController(BaseController):
             default="",
             dest="category",
             help="Category (e.g., stablecoins). Empty for no category",
+            choices=get_categories_keys(),
+            metavar="CATEGORY",
         )
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
@@ -376,12 +210,16 @@ class OverviewController(BaseController):
             help="Choose timeline of interest",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in ascending order",
-            dest="ascend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-l",
@@ -402,7 +240,7 @@ class OverviewController(BaseController):
                 metric=ns_parser.metric,
                 category=ns_parser.category,
                 timeline=ns_parser.timeline,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -416,12 +254,11 @@ class OverviewController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Display list of major crypto-related hacks [Source: https://rekt.news]
             Can be sorted by {Platform,Date,Amount [$],Audit,Slug,URL} with --sortby
-            and reverse the display order with --descend
+            and reverse the display order with --reverse
             Show only N elements with --limit
             Accepts --slug or -s to check individual crypto hack (e.g., -s polynetwork-rekt)
             """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -437,13 +274,19 @@ class OverviewController(BaseController):
             help="Sort by given column. Default: Amount [$]",
             default="Amount [$]",
             nargs="+",
+            choices=rekt_model.HACKS_COLUMNS,
         )
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-s",
@@ -452,8 +295,9 @@ class OverviewController(BaseController):
             type=str,
             help="Slug to check crypto hack (e.g., polynetwork-rekt)",
             default="",
+            choices=rekt_model.get_crypto_hack_slugs(),
+            metavar="SORTBY",
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
 
@@ -466,7 +310,7 @@ class OverviewController(BaseController):
                 limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=" ".join(ns_parser.sortby),
-                ascend=not ns_parser.descend,
+                ascend=not ns_parser.reverse,
             )
 
     @log_start_end(log=logger)
@@ -501,12 +345,10 @@ class OverviewController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            start_date = ns_parser.since.strftime("%Y-%m-%d")
-            end_date = ns_parser.until.strftime("%Y-%m-%d")
 
             display_btc_rainbow(
-                start_date=start_date,
-                end_date=end_date,
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
             )
 
@@ -562,8 +404,8 @@ class OverviewController(BaseController):
 
         if ns_parser:
             blockchaincenter_view.display_altcoin_index(
-                start_date=ns_parser.since.timestamp(),
-                end_date=ns_parser.until.timestamp(),
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 period=ns_parser.period,
                 export=ns_parser.export,
             )
@@ -765,8 +607,14 @@ class OverviewController(BaseController):
             dest="sortby",
             type=str,
             help="Sort by given column. Default: market_cap_desc",
-            default=pycoingecko_model.SORT_VALUES[0],
-            choices=pycoingecko_model.SORT_VALUES,
+            default="Market_Cap",
+            choices=[
+                "Name",
+                "Market_Cap",
+                "Market_Cap_Change_24H",
+                "Top_3_Coins",
+                "Volume_24H",
+            ],
         )
 
         parser.add_argument(
@@ -802,7 +650,6 @@ class OverviewController(BaseController):
                 You can display only N number of coins with --limit parameter.
                 You can sort data by {} with --sortby""",
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -811,25 +658,36 @@ class OverviewController(BaseController):
             help="display N number records",
             default=15,
         )
-
         parser.add_argument(
             "-s",
             "--sortby",
             dest="sortby",
             type=str,
             help="Sort by given column. Default: market_cap",
-            default="market_cap",
-            choices=pycoingecko_model.COINS_COLUMNS,
+            default="Market_Cap_[$]",
+            choices=[
+                "Symbol",
+                "Name",
+                "Price_[$]",
+                "Market_Cap_[$]",
+                "Market_Cap_Rank",
+                "Change_7d_[%]",
+                "Change_24h_[%]",
+                "Volume_[$]",
+            ],
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         parser.add_argument(
             "--pie",
             action="store_true",
@@ -837,7 +695,6 @@ class OverviewController(BaseController):
             dest="pie",
             default=False,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -846,7 +703,7 @@ class OverviewController(BaseController):
                 limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 pie=ns_parser.pie,
             )
 
@@ -879,6 +736,8 @@ class OverviewController(BaseController):
             help=f"""Cryptocurrencies to search interest rates for separated by comma.
             Default: BTC,ETH,USDT,USDC. Options: {",".join(loanscan_model.CRYPTOS)}""",
             default="BTC,ETH,USDT,USDC",
+            choices=loanscan_model.CRYPTOS,
+            metavar="CRYPTOS",
         )
 
         parser.add_argument(
@@ -889,6 +748,8 @@ class OverviewController(BaseController):
             help=f"""Platforms to search interest rates in separated by comma.
             Default: BlockFi,Ledn,SwissBorg,Youhodler. Options: {",".join(loanscan_model.PLATFORMS)}""",
             default="BlockFi,Ledn,SwissBorg,Youhodler",
+            choices=loanscan_model.PLATFORMS,
+            metavar="PLATFORMS",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -922,11 +783,10 @@ class OverviewController(BaseController):
                 Or you can sort data by 'name', 'currencies', 'markets', 'fiats', 'confidence',
                 'volume_24h', 'volume_7d', 'volume_30d', 'sessions_per_month'
                 if you are using the alternative source CoinPaprika
-                and also with --descend flag to sort descending.
+                and also with --reverse flag to sort ascending.
                 Flag --urls will display urls.
                 Displays: Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC""",
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -935,7 +795,6 @@ class OverviewController(BaseController):
             help="display N number records",
             default=15,
         )
-
         parser.add_argument(
             "-s",
             "--sortby",
@@ -946,13 +805,17 @@ class OverviewController(BaseController):
             choices=filters,
         )
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         parser.add_argument(
             "-u",
             "--urls",
@@ -961,7 +824,6 @@ class OverviewController(BaseController):
             help="Flag to add a url column. Works only with CoinGecko source",
             default=False,
         )
-
         parser.add_argument(
             "--vs",
             help="Quoted currency. Default: USD. Works only with CoinPaprika source",
@@ -970,7 +832,6 @@ class OverviewController(BaseController):
             type=str,
             choices=CURRENCIES,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -980,14 +841,14 @@ class OverviewController(BaseController):
                     limit=ns_parser.limit,
                     export=ns_parser.export,
                     sortby=ns_parser.sortby,
-                    ascend=not ns_parser.descend,
+                    ascend=ns_parser.reverse,
                     links=ns_parser.urls,
                 )
             elif ns_parser.source == "CoinPaprika":
                 coinpaprika_view.display_all_exchanges(
                     symbol=ns_parser.vs,
                     limit=ns_parser.limit,
-                    ascend=not ns_parser.descend,
+                    ascend=ns_parser.reverse,
                     sortby=ns_parser.sortby,
                     export=ns_parser.export,
                 )
@@ -1002,9 +863,8 @@ class OverviewController(BaseController):
             description="""
                 Shows list of crypto, fiats, commodity exchange rates from CoinGecko
                 You can look on only N number of records with --limit,
-                You can sort by Index, Name, Unit, Value, Type, and also use --descend flag to sort descending.""",
+                You can sort by Index, Name, Unit, Value, Type, and also use --reverse flag to sort descending.""",
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1013,7 +873,6 @@ class OverviewController(BaseController):
             help="display N number records",
             default=15,
         )
-
         parser.add_argument(
             "-s",
             "--sortby",
@@ -1023,15 +882,18 @@ class OverviewController(BaseController):
             default="Index",
             choices=pycoingecko_model.EXRATES_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in ascending order by default. "
+                "Reverse flag will sort it in an descending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1039,7 +901,7 @@ class OverviewController(BaseController):
             pycoingecko_view.display_exchange_rates(
                 sortby=ns_parser.sortby,
                 limit=ns_parser.limit,
-                ascend=not ns_parser.descend,
+                ascend=not ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -1055,11 +917,10 @@ class OverviewController(BaseController):
             grouped together and weighted by market cap.
             You can display only N number of indexes with --limit parameter.
             You can sort data by Rank, Name, Id, Market, Last, MultiAsset with --sortby
-            and also with --descend flag to sort descending.
+            and also with --reverse flag to sort descending.
             Displays: Rank, Name, Id, Market, Last, MultiAsset
                 """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1068,7 +929,6 @@ class OverviewController(BaseController):
             help="display N number records",
             default=15,
         )
-
         parser.add_argument(
             "-s",
             "--sortby",
@@ -1078,15 +938,18 @@ class OverviewController(BaseController):
             default="Rank",
             choices=pycoingecko_model.INDEXES_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in ascending order by default. "
+                "Reverse flag will sort it in an descending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1094,7 +957,7 @@ class OverviewController(BaseController):
             pycoingecko_view.display_indexes(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=not ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -1111,12 +974,11 @@ class OverviewController(BaseController):
                The most popular crypto derivatives are crypto futures, crypto options, and perpetual contracts.
                You can look on only N number of records with --limit,
                You can sort by Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate,
-               Volume_24h with by and also with --descend flag to set it to sort descending.
+               Volume_24h with by and also with --reverse flag to set it to sort descending.
                Displays:
                    Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h
                    """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1125,7 +987,6 @@ class OverviewController(BaseController):
             help="display N number records",
             default=15,
         )
-
         parser.add_argument(
             "-s",
             "--sortby",
@@ -1135,15 +996,18 @@ class OverviewController(BaseController):
             default="Rank",
             choices=pycoingecko_model.DERIVATIVES_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in ascending order by default. "
+                "Reverse flag will sort it in an descending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1151,7 +1015,7 @@ class OverviewController(BaseController):
             pycoingecko_view.display_derivatives(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=not ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -1214,13 +1078,12 @@ class OverviewController(BaseController):
             description="""Show market related (price, supply, volume) coin information for all coins on CoinPaprika.
             You can display only N number of coins with --limit parameter.
             You can sort data by rank, name, symbol, price, volume_24h, mcap_change_24h, pct_change_1h, pct_change_24h,
-            ath_price, pct_from_ath, --sortby parameter and also with --descend flag to sort descending.
+            ath_price, pct_from_ath, --sortby parameter and also with --reverse flag to sort ascending.
             Displays:
                rank, name, symbol, price, volume_24h, mcap_change_24h,
                pct_change_1h, pct_change_24h, ath_price, pct_from_ath,
                 """,
         )
-
         parser.add_argument(
             "--vs",
             help="Quoted currency. Default USD",
@@ -1229,7 +1092,6 @@ class OverviewController(BaseController):
             type=str,
             choices=CURRENCIES,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1238,7 +1100,6 @@ class OverviewController(BaseController):
             help="display N number records",
             default=15,
         )
-
         parser.add_argument(
             "-s",
             "--sortby",
@@ -1248,15 +1109,18 @@ class OverviewController(BaseController):
             default="rank",
             choices=coinpaprika_model.MARKETS_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1264,7 +1128,7 @@ class OverviewController(BaseController):
             coinpaprika_view.display_all_coins_market_info(
                 symbol=ns_parser.vs,
                 limit=ns_parser.limit,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
             )
@@ -1279,13 +1143,12 @@ class OverviewController(BaseController):
             description="""Get all exchange markets found for given exchange
                 You can display only N number of records with --limit parameter.
                 You can sort data by pair, base_currency_name, quote_currency_name, market_url, category,
-                reported_volume_24h_share, trust_score --sortby parameter and also with --descend flag to sort descending.
+                reported_volume_24h_share, trust_score --sortby parameter and also with --reverse flag to sort ascending.
                 You can use additional flag --urls to see urls for each market
                 Displays:
                     exchange_id, pair, base_currency_name, quote_currency_name, market_url,
                     category, reported_volume_24h_share, trust_score,""",
         )
-
         parser.add_argument(
             "-e",
             "--exchange",
@@ -1294,7 +1157,6 @@ class OverviewController(BaseController):
             default="binance",
             type=str,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1303,7 +1165,6 @@ class OverviewController(BaseController):
             help="display N number records",
             default=10,
         )
-
         parser.add_argument(
             "-s",
             "--sortby",
@@ -1313,15 +1174,18 @@ class OverviewController(BaseController):
             default="reported_volume_24h_share",
             choices=coinpaprika_model.EXMARKETS_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         parser.add_argument(
             "-u",
             "--urls",
@@ -1331,7 +1195,6 @@ class OverviewController(BaseController):
                 exchange, pair, trust_score, market_url columns""",
             default=False,
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
 
@@ -1344,7 +1207,7 @@ class OverviewController(BaseController):
                 limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 links=ns_parser.urls,
             )
 
@@ -1359,14 +1222,13 @@ class OverviewController(BaseController):
                 You can display only N number of coins with --limit parameter.
                 You can sort data by rank, name, symbol, price, volume_24h, circulating_supply,
                 total_supply, max_supply, market_cap, beta_value, ath_price --sortby parameter
-                and also with --descend flag to sort descending.
+                and also with --reverse flag to sort descending.
 
                 Displays:
                     rank, name, symbol, price, volume_24h, circulating_supply,
                     total_supply, max_supply, market_cap, beta_value, ath_price
                 """,
         )
-
         parser.add_argument(
             "--vs",
             help="Quoted currency. Default USD",
@@ -1375,7 +1237,6 @@ class OverviewController(BaseController):
             type=str,
             choices=CURRENCIES,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1384,7 +1245,6 @@ class OverviewController(BaseController):
             help="display N number records",
             default=20,
         )
-
         parser.add_argument(
             "-s",
             "--sortby",
@@ -1394,15 +1254,18 @@ class OverviewController(BaseController):
             default="rank",
             choices=coinpaprika_model.INFO_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in ascending order by default. "
+                "Reverse flag will sort it in an descending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1410,7 +1273,7 @@ class OverviewController(BaseController):
             coinpaprika_view.display_all_coins_info(
                 symbol=ns_parser.vs,
                 limit=ns_parser.limit,
-                ascend=not ns_parser.descend,
+                ascend=not ns_parser.reverse,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
             )
@@ -1444,13 +1307,12 @@ class OverviewController(BaseController):
                Provide platform id with -p/--platform parameter
                You can display only N number of smart contracts with --limit parameter.
                You can sort data by id, type, active, balance  --sortby parameter
-               and also with --descend flag to sort descending.
+               and also with --reverse flag to sort descending.
 
                Displays:
                    id, type, active, balance
                """,
         )
-
         parser.add_argument(
             "-p",
             "--platform",
@@ -1460,7 +1322,6 @@ class OverviewController(BaseController):
             type=str,
             choices=platforms,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1469,7 +1330,6 @@ class OverviewController(BaseController):
             help="display N number records",
             default=15,
         )
-
         parser.add_argument(
             "-s",
             "--sortby",
@@ -1479,15 +1339,18 @@ class OverviewController(BaseController):
             default="id",
             choices=coinpaprika_model.CONTRACTS_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in ascending order by default. "
+                "Reverse flag will sort it in an descending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
 
@@ -1498,7 +1361,7 @@ class OverviewController(BaseController):
             coinpaprika_view.display_contracts(
                 symbol=ns_parser.platform,
                 limit=ns_parser.limit,
-                ascend=not ns_parser.descend,
+                ascend=not ns_parser.reverse,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
             )
@@ -1512,7 +1375,6 @@ class OverviewController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Shows available trading pairs on Coinbase ",
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1521,7 +1383,6 @@ class OverviewController(BaseController):
             help="display N number of pairs >=10",
             default=15,
         )
-
         parser.add_argument(
             "-s",
             "--sortby",
@@ -1531,15 +1392,18 @@ class OverviewController(BaseController):
             default="id",
             choices=coinbase_model.PAIRS_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in ascending order by default. "
+                "Reverse flag will sort it in an descending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1548,7 +1412,7 @@ class OverviewController(BaseController):
                 limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=not ns_parser.reverse,
             )
 
     @log_start_end(log=logger)
@@ -1560,7 +1424,6 @@ class OverviewController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Display recent news from CryptoPanic aggregator platform. [Source: https://cryptopanic.com/]",
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1569,7 +1432,6 @@ class OverviewController(BaseController):
             help="display N number records",
             default=20,
         )
-
         parser.add_argument(
             "-k",
             "--kind",
@@ -1579,7 +1441,6 @@ class OverviewController(BaseController):
             default="news",
             choices=cryptopanic_model.CATEGORIES,
         )
-
         parser.add_argument(
             "--filter",
             dest="filter",
@@ -1589,7 +1450,6 @@ class OverviewController(BaseController):
             required=False,
             choices=cryptopanic_model.FILTERS,
         )
-
         parser.add_argument(
             "-r",
             "--region",
@@ -1600,7 +1460,6 @@ class OverviewController(BaseController):
             default="en",
             choices=cryptopanic_model.REGIONS,
         )
-
         parser.add_argument(
             "-s",
             "--sortby",
@@ -1610,15 +1469,17 @@ class OverviewController(BaseController):
             default="published_at",
             choices=cryptopanic_model.SORT_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         parser.add_argument(
             "-u",
             "--urls",
@@ -1627,7 +1488,6 @@ class OverviewController(BaseController):
             help="Flag to show urls column.",
             default=False,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1637,7 +1497,7 @@ class OverviewController(BaseController):
                 limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 links=ns_parser.urls,
                 post_kind=ns_parser.kind,
                 filter_=ns_parser.filter,

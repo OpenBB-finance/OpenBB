@@ -16,21 +16,20 @@ from openbb_terminal.helper_funcs import (
     get_user_agent,
     lambda_int_or_round_float,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
 def prepare_df_financials(
-    ticker: str, statement: str, quarter: bool = False
+    symbol: str, statement: str, quarter: bool = False
 ) -> pd.DataFrame:
     """Builds a DataFrame with financial statements for a given company
 
     Parameters
     ----------
-    ticker : str
-        Company's stock ticker
+    symbol : str
+        Company's stock symbol
     statement : str
         Either income, balance or cashflow
     quarter : bool, optional
@@ -71,7 +70,7 @@ def prepare_df_financials(
 
     text_soup_financials = BeautifulSoup(
         requests.get(
-            financial_urls[statement][period].format(ticker),
+            financial_urls[statement][period].format(symbol),
             headers={"User-Agent": get_user_agent()},
         ).text,
         "lxml",
@@ -135,13 +134,13 @@ def prepare_df_financials(
 
 @log_start_end(log=logger)
 def get_sean_seah_warnings(
-    ticker: str, debug: bool = False
+    symbol: str, debug: bool = False
 ) -> Tuple[pd.DataFrame, List[str], List[str]]:
     """Get financial statements and prepare Sean Seah warnings
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Ticker to look at
     debug : bool, optional
         [description], by default False
@@ -157,7 +156,7 @@ def get_sean_seah_warnings(
     """
     # From INCOME STATEMENT, get: 'EPS (Basic)', 'Net Income', 'Interest Expense', 'EBITDA'
     url_financials = (
-        f"https://www.marketwatch.com/investing/stock/{ticker}/financials/income"
+        f"https://www.marketwatch.com/investing/stock/{symbol}/financials/income"
     )
     text_soup_financials = BeautifulSoup(
         requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
@@ -205,7 +204,7 @@ def get_sean_seah_warnings(
 
     # From BALANCE SHEET, get: 'Liabilities & Shareholders\' Equity', 'Long-Term Debt'
     url_financials = (
-        f"https://www.marketwatch.com/investing/stock/{ticker}/financials/balance-sheet"
+        f"https://www.marketwatch.com/investing/stock/{symbol}/financials/balance-sheet"
     )
     text_soup_financials = BeautifulSoup(
         requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
@@ -247,36 +246,31 @@ def get_sean_seah_warnings(
     df_financials = df_financials.set_index("Item")
 
     # Create dataframe to compute meaningful metrics from sean seah book
-    df_sean_seah = df_sean_seah.append(
-        df_financials.loc[
-            [
-                "Total Shareholders' Equity",
-                "Liabilities & Shareholders' Equity",
-                "Long-Term Debt",
-            ]
-        ]
-    )
+    transfer_cols = [
+        "Total Shareholders' Equity",
+        "Liabilities & Shareholders' Equity",
+        "Long-Term Debt",
+    ]
+    df_sean_seah = pd.concat([df_sean_seah, df_financials.loc[transfer_cols]])
 
     # Clean these metrics by parsing their values to float
     df_sean_seah = df_sean_seah.applymap(lambda x: lambda_clean_data_values_to_float(x))
+    df_sean_seah = df_sean_seah.T
 
     # Add additional necessary metrics
-    series = (
-        df_sean_seah.loc["Net Income"] / df_sean_seah.loc["Total Shareholders' Equity"]
+    df_sean_seah["ROE"] = (
+        df_sean_seah["Net Income"] / df_sean_seah["Total Shareholders' Equity"]
     )
-    series.name = "ROE"
-    df_sean_seah = df_sean_seah.append(series)
 
-    series = df_sean_seah.loc["EBITDA"] / df_sean_seah.loc["Interest Expense"]
-    series.name = "Interest Coverage Ratio"
-    df_sean_seah = df_sean_seah.append(series)
-
-    series = (
-        df_sean_seah.loc["Net Income"]
-        / df_sean_seah.loc["Liabilities & Shareholders' Equity"]
+    df_sean_seah["Interest Coverage Ratio"] = (
+        df_sean_seah["EBITDA"] / df_sean_seah["Interest Expense"]
     )
-    series.name = "ROA"
-    df_sean_seah = df_sean_seah.append(series)
+
+    df_sean_seah["ROA"] = (
+        df_sean_seah["Net Income"] / df_sean_seah["Liabilities & Shareholders' Equity"]
+    )
+    df_sean_seah = df_sean_seah.sort_index()
+    df_sean_seah = df_sean_seah.T
 
     n_warnings = 0
     warnings = []
@@ -347,7 +341,6 @@ def get_sean_seah_warnings(
                 f"\tInterest Coverage Ratio: {sa_interest_coverage_ratio} < 3"
             )
 
-    console.print("")
     return (
         df_sean_seah.applymap(lambda x: lambda_int_or_round_float(x)),
         warnings,

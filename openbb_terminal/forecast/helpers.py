@@ -18,6 +18,7 @@ from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.utils.statistics import plot_residuals_analysis
 from darts import TimeSeries
 from darts.metrics import mape
+from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
 from darts.explainability.shap_explainer import ShapExplainer
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from openbb_terminal.rich_config import console
@@ -395,7 +396,12 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
     )
 
 
-def past_covs(past_covariates, data, train_split, is_scaler=True):
+def past_covs(
+    past_covariates: Optional[str],
+    data: Union[pd.DataFrame, pd.Series],
+    train_split: float,
+    is_scaler: bool = True,
+):
     if past_covariates is not None:
 
         target_covariates_names = past_covariates.split(",")
@@ -458,17 +464,17 @@ def get_pl_kwargs(
 def plot_forecast(
     name: str,
     target_col: str,
-    historical_fcast,
-    predicted_values,
-    ticker_series,
+    historical_fcast: type[TimeSeries],
+    predicted_values: type[TimeSeries],
+    ticker_series: type[TimeSeries],
     ticker_name: str,
-    data,
+    data: Union[pd.DataFrame, pd.Series],
     n_predict: int,
-    forecast_horizon,
-    past_covariates,
-    precision,
-    probabilistic,
-    export: str,
+    forecast_horizon: int,
+    past_covariates: Optional[str] = None,
+    precision: Optional[int] = None,
+    probabilistic: bool = False,
+    export: str = "",
     low_quantile: float = None,
     high_quantile: float = None,
     forecast_only: bool = False,
@@ -487,7 +493,7 @@ def plot_forecast(
         ax = external_axes[0]
 
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
-    naive_fcast = ticker_series.shift(1)
+    naive_fcast: type[TimeSeries] = ticker_series.shift(1)
     if forecast_only:
         ticker_series = ticker_series.drop_before(historical_fcast.start_time())
     ticker_series.plot(label=target_col, ax=ax)
@@ -513,7 +519,7 @@ def plot_forecast(
         pred_label += " w/ past covs"
     predicted_values.plot(label=pred_label, **quant_kwargs, color="#00AAFF")
     ax.set_title(
-        f"{name} for ${ticker_name} for next [{n_predict}] days (MAPE={precision:.2f}%)"
+        f"{name} for <{ticker_name}> for next [{n_predict}] days (MAPE={precision:.2f}%)"
     )
     ax.set_ylabel(target_col)
     ax.set_xlabel("Date")
@@ -559,11 +565,25 @@ def plot_forecast(
 
 
 def plot_explainability(
-    model, explainability_raw=False, external_axes: Optional[List[plt.axes]] = None
+    model: type[GlobalForecastingModel],
+    explainability_raw=False,
+    external_axes: Optional[List[plt.axes]] = None,
 ):
-    """Use SHAP to explain the model's predictions.
-    Args:
-        model (Linregr or Regr): Trained model
+    """
+    Plot explainability of the model
+
+    Parameters
+    ----------
+    model: type[GlobalForecastingModel]
+        The model to plot explainability for
+    explainability_raw: bool
+        Whether to plot raw explainability or not
+        external_axes: Optional[List[plt.axes]]
+        Optional list of axes to plot on
+
+    Returns
+    -------
+    None
     """
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -573,7 +593,7 @@ def plot_explainability(
     shap_explain = ShapExplainer(model)
     shap_explain.summary_plot(horizons=1)
     if explainability_raw:
-        console.print("")
+        console.print("\n")
         console.print("[green]Exporting Raw Explainability DataFrame[/green]")
         raw_df = shap_explain.explain().get_explanation(horizon=1).pd_dataframe()
         export_data(
@@ -627,6 +647,16 @@ def get_series(
         fill_missing_dates=True,
     )
     try:
+        # for the sdk, we must check if date is a column not an index
+        # check if date is in the index, if true, reset the index
+        if time_col in data.index.names:
+            # # make a new column with the index
+            data[time_col] = data.index
+            # reset the index
+            data.reset_index(drop=True, inplace=True)
+            # remove 00:00:00 from 2019-11-19 00:00:00
+            data[time_col] = data[time_col].apply(lambda x: dt_format(x))
+
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
     except ValueError:
         # remove business days to allow base lib to assume freq
@@ -652,11 +682,11 @@ def get_series(
 
 
 def fit_model(
-    model,
-    series,
-    val_series=None,
-    past_covariates=None,
-    val_past_covariates=None,
+    model: type[GlobalForecastingModel],
+    series: TimeSeries,
+    val_series: Optional[TimeSeries] = None,
+    past_covariates: Optional[TimeSeries] = None,
+    val_past_covariates: Optional[TimeSeries] = None,
     **kwargs,
 ):
     fit_kwargs = dict(
@@ -673,18 +703,20 @@ def fit_model(
 
 
 def get_prediction(
-    model_name,
-    probabilistic,
-    use_scalers,
-    scaler,
-    past_covariates,
-    best_model,
-    ticker_series,
-    past_covariate_whole,
-    train_split,
-    forecast_horizon,
+    model_name: str,
+    probabilistic: bool,
+    use_scalers: bool,
+    scaler: Optional[Scaler],
+    past_covariates: Optional[str],
+    best_model: type[GlobalForecastingModel],
+    ticker_series: TimeSeries,
+    past_covariate_whole: Optional[TimeSeries],
+    train_split: float,
+    forecast_horizon: int,
     n_predict: int,
 ):
+    _, val = ticker_series.split_before(train_split)
+
     print(f"Predicting {model_name} for {n_predict} days")
     if model_name not in ["Regression", "Logistic Regression"]:
         # need to create a new pytorch trainer for historical backtesting to remove progress bar
@@ -735,12 +767,12 @@ def get_prediction(
             prediction = best_model.predict(series=ticker_series, n=n_predict)
 
     precision = mape(
-        actual_series=ticker_series, pred_series=historical_fcast
-    )  # mape = mean average precision error
+        actual_series=val, pred_series=historical_fcast
+    )  # mape = mean average percentage error
     console.print(f"{model_name} model obtains MAPE: {precision:.2f}% \n")
 
     # scale back
-    if use_scalers:
+    if use_scalers and isinstance(scaler, Scaler):
         ticker_series = scaler.inverse_transform(ticker_series)
         historical_fcast = scaler.inverse_transform(historical_fcast)
         prediction = scaler.inverse_transform(prediction)
@@ -770,9 +802,9 @@ def check_parser_input(parser: argparse.ArgumentParser, datasets, *args) -> bool
 
 
 def plot_residuals(
-    model,
-    past_covariates,
-    series,
+    model: type[GlobalForecastingModel],
+    past_covariates: Optional[str],
+    series: Optional[Union[type[TimeSeries], List[type[TimeSeries]], List[np.ndarray]]],
     forecast_horizon: int = 1,
     num_bins: int = 20,
     default_formatting: bool = False,

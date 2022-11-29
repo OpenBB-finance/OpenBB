@@ -280,9 +280,7 @@ en:
   stocks/ca/ticker: set ticker to get similar companies from
   stocks/ca/_ticker: Ticker to get similar companies from
   stocks/ca/tsne: run TSNE on all SP500 stocks and returns closest tickers
-  stocks/ca/getpoly: get similar stocks
-  stocks/ca/getfinnhub: get similar stocks
-  stocks/ca/getfinviz: get similar stocks
+  stocks/ca/get: get similar stocks
   stocks/ca/set: reset and set similar companies
   stocks/ca/add: add more similar companies
   stocks/ca/rmv: remove similar companies individually or all
@@ -906,8 +904,8 @@ en:
   econometrics/coint: co-integration test on a multitude of columns
   portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase
   portfolio/po: portfolio optimization,  optimize your portfolio weights efficiently
-  portfolio/load: load data into the portfolio
-  portfolio/_loaded: Loaded orderbook
+  portfolio/load: load transactions into the portfolio
+  portfolio/_loaded: Loaded transactions
   portfolio/_riskfreerate: Risk Free Rate
   portfolio/show: show existing transactions
   portfolio/bench: define the benchmark
@@ -927,6 +925,7 @@ en:
   portfolio/rbeta: rolling beta
   portfolio/_metrics_: Metrics
   portfolio/alloc: allocation on an asset, sector, countries or regions basis
+  portfolio/attrib: display sector attribution of the portfolio compared to the S&P 500
   portfolio/summary: all portfolio vs benchmark metrics for a certain period of choice
   portfolio/metric: portfolio vs benchmark metric for all different periods
   portfolio/perf: performance of the portfolio versus benchmark
@@ -963,6 +962,7 @@ en:
   portfolio/bro/cb/history: show history of your account
   portfolio/bro/cb/deposits: show all your deposits or internal transfers
   portfolio/bro/cb/orders: show all your orders
+  portfolio/po/file: file that contains portfolio risk parameters
   portfolio/po/load: load tickers and categories from .xlsx or .csv file
   portfolio/po/_loaded: Portfolio loaded
   portfolio/po/_tickers: Tickers
@@ -1042,7 +1042,12 @@ en:
   forecast/atr: Add Average True Range
   forecast/signal: Add Price Signal (short vs. long term)
   forecast/_tsforecasting_: TimeSeries Forecasting
+  forecast/autoarima: Automatic ARIMA Model
+  forecast/autoselect: Select best statistical model from AutoARIMA, AutoETS, AutoCES, MSTL, etc.
+  forecast/autoces: Automatic Complex Exponential Smoothing Model
   forecast/autoets: Automatic ETS (Error, Trend, Seasonality) Model
+  forecast/mstl: Multiple Seasonalities and Trend using Loess (MSTL) Model
+  forecast/rwd: Random Walk with Drift Model
   forecast/arima: Arima (Non-darts)
   forecast/expo: Probabilistic Exponential Smoothing
   forecast/theta: Theta Method
@@ -1051,6 +1056,7 @@ en:
   forecast/rnn: Probabilistic Recurrent Neural Network (RNN, LSTM, GRU)
   forecast/brnn: Block Recurrent Neural Network (RNN, LSTM, GRU) (feat. Past covariates)
   forecast/nbeats: Neural Bayesian Estimation (feat. Past covariates)
+  forecast/seasonalnaive: Seasonal Naive Model
   forecast/tcn: Temporal Convolutional Neural Network (feat. Past covariates)
   forecast/trans: Transformer Network (feat. Past covariates)
   forecast/tft: Temporal Fusion Transformer Network(feat. Past covariates)

@@ -65,6 +65,7 @@ class InsiderController(StockBaseController):
     preset_choices = openinsider_model.get_preset_choices()
 
     PATH = "/stocks/ins/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self,
@@ -84,54 +85,7 @@ class InsiderController(StockBaseController):
         self.preset = "whales"
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["view"] = {c: {} for c in self.preset_choices}
-            choices["set"] = {c: {} for c in self.preset_choices}
-            choices["filter"] = {
-                "--urls": {},
-                "-u": "--urls",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            limit = {
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["lcb"] = limit
-            choices["lpsb"] = limit
-            choices["lit"] = limit
-            choices["lip"] = limit
-            choices["blip"] = limit
-            choices["blop"] = limit
-            choices["blcp"] = limit
-            choices["lis"] = limit
-            choices["blis"] = limit
-            choices["blos"] = limit
-            choices["blcs"] = limit
-            choices["topt"] = limit
-            choices["toppw"] = limit
-            choices["toppm"] = limit
-            choices["tipt"] = limit
-            choices["lcb"] = limit
-            choices["tippw"] = limit
-            choices["tippm"] = limit
-            choices["tist"] = limit
-            choices["tispw"] = limit
-            choices["tispm"] = limit
-            choices["stats"] = {
-                "--urls": {},
-                "-u": "--urls",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["act"] = {
-                "--raw": {},
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["lins"] = limit
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

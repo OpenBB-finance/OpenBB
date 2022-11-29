@@ -155,10 +155,8 @@ def getFINRAdata(
 
     Returns
     -------
-    int
-        Status code from request
-    List
-        List of response data
+    Tuple[int, List]
+        Status code from request, List of response data
     """
     req_hdr = {"Accept": "application/json", "Content-Type": "application/json"}
 
@@ -225,10 +223,8 @@ def getATSdata(limit: int = 1000, tier_ats: str = "T1") -> Tuple[pd.DataFrame, D
 
     Returns
     -------
-    pd.DataFrame
-        Dark Pools (ATS) Data
-    Dict
-        Tickers from Dark Pools with better regression slope
+    Tuple[pd.DataFrame, Dict]
+        Dark Pools (ATS) Data, Tickers from Dark Pools with better regression slope
     """
     if tier_ats:
         tiers = [tier_ats]
@@ -304,10 +300,8 @@ def getTickerFINRAdata(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     Returns
     -------
-    pd.DataFrame
-        Dark Pools (ATS) Data
-    pd.DataFrame
-        OTC (Non-ATS) Data
+    Tuple[pd.DataFrame, pd.DataFrame]
+        Dark Pools (ATS) Data, OTC (Non-ATS) Data
     """
     tiers = ["T1", "T2", "OTCE"]
 

@@ -1,0 +1,5 @@
+,F-test,P-value,Count,Lags
+ssr_ftest,2.66991,0.04882,193.0,3.0
+ssr_chi2test,8.30024,0.0402,-,3.0
+lrtest,8.13263,0.04335,-,3.0
+params_ftest,2.66991,0.04882,193.0,3.0

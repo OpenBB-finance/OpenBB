@@ -48,82 +48,14 @@ class DiscoveryController(BaseController):
     ]
 
     PATH = "/crypto/disc/"
-
-    ORDERED_LIST_SOURCES_TOP = get_ordered_list_sources(f"{PATH}top")
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["gainers"] = {
-                "--interval": {c: {} for c in pycoingecko_model.API_PERIODS},
-                "-i": "--interval",
-                "--sort": {c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-            }
-            choices["losers"] = {
-                "--interval": {c: {} for c in pycoingecko_model.API_PERIODS},
-                "-i": "--interval",
-                "--sort": {c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-            }
-            choices["top"] = {
-                "--sort": {c: {} for c in pycoingecko_view.COINS_COLUMNS}
-                if self.ORDERED_LIST_SOURCES_TOP
-                and self.ORDERED_LIST_SOURCES_TOP[0] == "CoinGecko"
-                else {c: {} for c in coinmarketcap_model.FILTERS},
-                "-s": "--sort",
-                "--category": {c: {} for c in pycoingecko_model.get_categories_keys()},
-                "-c": "--category",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-                "--source": {c: {} for c in self.ORDERED_LIST_SOURCES_TOP},
-            }
-            choices["search"] = {
-                "--query": None,
-                "-q": "--query",
-                "--sort": {c: {} for c in coinpaprika_model.FILTERS},
-                "-s": "--sort",
-                "--cat": {c: {} for c in coinpaprika_model.CATEGORIES},
-                "-c": "--cat",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["nft"] = {
-                "--sort": {c: {} for c in dappradar_model.NFT_COLUMNS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-            }
-            choices["games"] = {
-                "--sort": {c: {} for c in dappradar_model.DEX_COLUMNS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-            }
-            choices["dex"] = {
-                "--sort": {c: {} for c in dappradar_model.DEX_COLUMNS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-            }
-            choices["dapps"] = {
-                "--sort": {c: {} for c in dappradar_model.DAPPS_COLUMNS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -144,6 +76,18 @@ class DiscoveryController(BaseController):
     @log_start_end(log=logger)
     def call_top(self, other_args):
         """Process top command"""
+        ordered_list_sources_top = get_ordered_list_sources(f"{self.PATH}top")
+
+        if ordered_list_sources_top and ordered_list_sources_top[0] == "CoinGecko":
+            argument_sort_default = "Market Cap Rank"
+        else:
+            argument_sort_default = "CMC_Rank"
+
+        if ordered_list_sources_top and ordered_list_sources_top[0] == "CoinGecko":
+            argument_sort_choices = pycoingecko_view.COINS_COLUMNS
+        else:
+            argument_sort_choices = coinmarketcap_model.FILTERS
+
         parser = argparse.ArgumentParser(
             prog="top",
             add_help=False,
@@ -163,6 +107,8 @@ class DiscoveryController(BaseController):
             default="",
             dest="category",
             help="Category (e.g., stablecoins). Empty for no category. Only works for 'CoinGecko' source.",
+            choices=pycoingecko_model.get_categories_keys(),
+            metavar="CATEGORY",
         )
 
         parser.add_argument(
@@ -179,19 +125,22 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default="Market Cap Rank"
-            if self.ORDERED_LIST_SOURCES_TOP
-            and self.ORDERED_LIST_SOURCES_TOP[0] == "CoinGecko"
-            else "CMC_Rank",
+            default=argument_sort_default,
+            choices=argument_sort_choices,
+            metavar="SORTBY",
         )
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
 
@@ -205,13 +154,13 @@ class DiscoveryController(BaseController):
                     category=ns_parser.category,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
-                    ascend=not ns_parser.descend,
+                    ascend=ns_parser.reverse,
                 )
             elif ns_parser.source == "CoinMarketCap":
                 coinmarketcap_view.display_cmc_top_coins(
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    ascend=not ns_parser.descend,
+                    ascend=ns_parser.reverse,
                     export=ns_parser.export,
                 )
 
@@ -244,6 +193,8 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
+            choices=dappradar_model.DAPPS_COLUMNS,
+            metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -284,6 +235,8 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
+            choices=dappradar_model.DEX_COLUMNS,
+            metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -324,6 +277,8 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
+            choices=dappradar_model.DEX_COLUMNS,
+            metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -364,6 +319,8 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Market Cap",
             default="Market Cap",
+            choices=dappradar_model.NFT_COLUMNS,
+            metavar="SORTBY",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -417,6 +374,8 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
             default=["market_cap"],
+            choices=pycoingecko_model.GAINERS_LOSERS_COLUMNS,
+            metavar="SORTBY",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -471,6 +430,8 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
             default=["Market Cap"],
+            choices=pycoingecko_model.GAINERS_LOSERS_COLUMNS,
+            metavar="SORTBY",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -507,54 +468,6 @@ class DiscoveryController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_cmctop(self, other_args):
-        """Process cmctop command"""
-        parser = argparse.ArgumentParser(
-            prog="cmctop",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="This gets the top ranked coins from coinmarketcap.com",
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            default=15,
-            dest="limit",
-            help="Limit of records",
-            type=check_positive,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="column to sort data by.",
-            default="CMC_Rank",
-            choices=coinmarketcap_model.FILTERS,
-        )
-
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=False,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            coinmarketcap_view.display_cmc_top_coins(
-                limit=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
     def call_search(self, other_args):
         """Process search command"""
         parser = argparse.ArgumentParser(
@@ -563,13 +476,12 @@ class DiscoveryController(BaseController):
             prog="search",
             description="""Search over CoinPaprika API
             You can display only N number of results with --limit parameter.
-            You can sort data by id, name , category --sort parameter and also with --descend flag to sort descending.
+            You can sort data by id, name , category --sort parameter and also with --reverse flag to sort descending.
             To choose category in which you are searching for use --cat/-c parameter. Available categories:
             currencies|exchanges|icos|people|tags|all
             Displays:
                 id, name, category""",
         )
-
         parser.add_argument(
             "-q",
             "--query",
@@ -579,17 +491,15 @@ class DiscoveryController(BaseController):
             type=str,
             required="-h" not in other_args,
         )
-
         parser.add_argument(
             "-c",
-            "--cat",
+            "--category",
             help="Categories to search: currencies|exchanges|icos|people|tags|all. Default: all",
             dest="category",
             default="all",
             type=str,
             choices=coinpaprika_model.CATEGORIES,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -598,7 +508,6 @@ class DiscoveryController(BaseController):
             help="Limit of records",
             type=check_positive,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -608,15 +517,18 @@ class DiscoveryController(BaseController):
             default="id",
             choices=coinpaprika_model.FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         if other_args:
             if not other_args[0][0] == "-":
                 other_args.insert(0, "-q")
@@ -628,7 +540,7 @@ class DiscoveryController(BaseController):
             coinpaprika_view.display_search_results(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
                 query=" ".join(ns_parser.query),
                 category=ns_parser.category,

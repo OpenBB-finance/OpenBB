@@ -159,6 +159,7 @@ class EconomyController(BaseController):
     stored_datasets = ""
 
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -176,167 +177,29 @@ class EconomyController(BaseController):
         self.DATASETS["index"] = pd.DataFrame()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            self.choices: dict = {c: {} for c in self.controller_choices}
-            self.choices["overview"] = {
-                "--type": {c: None for c in self.overview_options},
-                "-t": "--type",
+            choices: dict = self.choices_default
+            # This is still needed because we can't use choices and nargs separated by comma
+            choices["treasury"]["--type"] = {
+                c: {} for c in econdb_model.TREASURIES["instruments"]
             }
-            self.choices["futures"] = {
-                "--commodity": {c: {} for c in self.futures_commodities},
-                "-c": "--commodity",
-                "--sortby": {c: {} for c in self.wsj_sortby_cols_dict.keys()},
-                "-s": "--sortby",
-                "--ascend": {},
-                "-a": "--ascend",
+            choices["treasury"]["-t"] = "--type"
+            choices["macro"]["--parameters"] = {c: {} for c in econdb_model.PARAMETERS}
+            choices["macro"]["-p"] = "--parameters"
+            choices["macro"]["--countries"] = {
+                c: {} for c in econdb_model.COUNTRY_CODES
             }
-            self.choices["map"] = {
-                "--period": {c: {} for c in self.map_period_list},
-                "-p": "--period",
-                "--type": {c: {} for c in self.map_filter_list},
-                "-t": "--type",
+            choices["macro"]["-c"] = "--countries"
+            choices["fred"]["--parameter"] = {c: {} for c in self.fred_query.tolist()}
+            choices["fred"]["-p"] = "--parameter"
+            choices["index"]["--indices"] = {c: {} for c in yfinance_model.INDICES}
+            choices["index"]["-i"] = "--indices"
+            choices["bigmac"]["--countries"] = {
+                c: {} for c in nasdaq_model.get_country_codes()["Code"].values
             }
-            self.choices["bigmac"] = {
-                "--countries": {
-                    c: {} for c in nasdaq_model.get_country_codes()["Code"].values
-                },
-                "-c": "--countries",
-                "--codes": {},
-                "--raw": {},
-            }
-            self.choices["ycrv"] = {
-                "--country": {c: {} for c in investingcom_model.BOND_COUNTRIES},
-                "-c": "--country",
-                "--date": None,
-                "-d": "--date",
-                "--raw": {},
-                "--source": {
-                    "FRED": {},
-                },
-            }
-            # self.choices["spread"] = {
-            #     "--group": {c: None for c in investingcom_model.MATRIX_CHOICES},
-            #     "-g": "--group",
-            #     "--countries": {c: None for c in investingcom_model.BOND_COUNTRIES},
-            #     "-c": "--countries",
-            #     "--maturity": None,
-            #     "-m": "--maturity",
-            #     "--change": None,
-            #     "--color": {c: None for c in investingcom_view.COLORS},
-            # }
-            self.choices["events"] = {
-                "--country": {
-                    c.replace(" ", "_"): {}
-                    for c in investingcom_model.CALENDAR_COUNTRIES
-                },
-                "-c": "--country",
-                "--importance": {c: {} for c in investingcom_model.IMPORTANCES},
-                "-i": "--importance",
-                "--categories": {c: {} for c in investingcom_model.CATEGORIES},
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--limit": {str(c): {} for c in range(1, 500)},
-                "-l": "--limit",
-                "--raw": {},
-            }
-            self.choices["edebt"] = {
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-            }
-            self.choices["rtps"] = {
-                "--raw": {},
-            }
-            self.choices["valuation"] = {
-                "--group": {c: {} for c in self.d_GROUPS},
-                "-g": "--group",
-                "--sortby": {c: {} for c in self.valuation_sort_cols},
-                "-s": "--sortby",
-                "--ascend": {},
-                "-a": "--ascend",
-            }
-            self.choices["performance"] = {
-                "--group": {c: {} for c in self.d_GROUPS},
-                "-g": "--group",
-                "--sortby": {c: {} for c in self.performance_sort_list},
-                "-s": "--sortby",
-                "--ascend": {},
-                "-a": "--ascend",
-            }
-            self.choices["spectrum"] = {
-                "--group": {c: {} for c in self.d_GROUPS},
-                "-g": "--group",
-            }
-            self.choices["macro"] = {
-                "--parameters": {c: {} for c in econdb_model.PARAMETERS},
-                "-p": "--parameters",
-                "--countries": {c: {} for c in econdb_model.COUNTRY_CODES},
-                "-c": "--countries",
-                "--transform": {c: {} for c in econdb_model.TRANSFORM},
-                "-t": "--transform",
-                "--convert": {c: {} for c in econdb_model.COUNTRY_CURRENCIES},
-                "--show": {c: {} for c in self.macro_show},
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--raw": {},
-            }
-            self.choices["treasury"] = {
-                "--maturity": None,
-                "-m": "--maturity",
-                "--freq": {c: {} for c in econdb_model.TREASURIES["frequencies"]},
-                "--type": {c: {} for c in econdb_model.TREASURIES["instruments"]},
-                "-t": "--type",
-                "--show": {},
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--raw": {},
-            }
-            self.choices["fred"] = {
-                "--parameter": {c: {} for c in self.fred_query},
-                "-p": "--parameter",
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--query": None,
-                "-q": "--query",
-                "--raw": {},
-            }
-            self.choices["index"] = {
-                "--indices": {c: {} for c in yfinance_model.INDICES},
-                "-i": "--indices",
-                "--interval": {c: {} for c in self.index_interval},
-                "--show": {},
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--query": None,
-                "-q": "--query",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--returns": {},
-                "-r": "--returns",
-                "--raw": {},
-            }
-            self.choices["plot"] = {
-                "--y1": None,
-                "--y2": None,
-                "--raw": {},
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-            }
+            choices["bigmac"]["-c"] = "--countries"
 
-            self.choices["support"] = self.SUPPORT_CHOICES
-            self.choices["about"] = self.ABOUT_CHOICES
-
-            self.completer = NestedCompleter.from_nested_dict(self.choices)  # type: ignore
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def parse_input(self, an_input: str) -> List:
         """Parse controller input
@@ -494,14 +357,17 @@ class EconomyController(BaseController):
             default="ticker",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
         ns_parser = self.parse_known_args_and_warn(
@@ -514,7 +380,7 @@ class EconomyController(BaseController):
                     finviz_view.display_future(
                         future_type=ns_parser.commodity.capitalize(),
                         sortby=ns_parser.sortby,
-                        ascend=ns_parser.ascend,
+                        ascend=ns_parser.reverse,
                         export=ns_parser.export,
                     )
                 else:
@@ -591,7 +457,7 @@ class EconomyController(BaseController):
             help="Country codes to get data for.",
             dest="countries",
             default="USA",
-            type=nasdaq_model.check_country_code_type,
+            type=str,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -601,6 +467,7 @@ class EconomyController(BaseController):
             raw=True,
         )
         if ns_parser:
+            ns_parser.countries = list_from_str(ns_parser.countries)
             if ns_parser.codes:
                 console.print(
                     nasdaq_model.get_country_codes().to_string(index=False), "\n"
@@ -675,6 +542,7 @@ class EconomyController(BaseController):
             dest="currency",
             help="Convert the currency of the chosen country to a specified currency. To find the "
             "currency symbols use '--show countries'",
+            choices=econdb_model.COUNTRY_CURRENCIES,
             default=False,
         )
         if other_args and "-" not in other_args[0][0]:
@@ -807,6 +675,7 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             parameters = list_from_str(ns_parser.parameter.upper())
+
             if ns_parser.query:
                 query = ns_parser.query.replace(",", " ")
                 df_search = fred_model.get_series_notes(search_query=query)
@@ -816,6 +685,11 @@ class EconomyController(BaseController):
 
                     self.fred_query = df_search["id"].head(ns_parser.limit)
                     self.update_runtime_choices()
+
+                if parameters:
+                    console.print(
+                        "\nWarning: -p/--parameter is ignored when using -q/--query."
+                    )
 
                 return self.queue
 
@@ -835,39 +709,41 @@ class EconomyController(BaseController):
                 if not series_dict:
                     return self.queue
 
-                df, detail = fred_model.get_aggregated_series_data(
+                df, detail = fred_view.display_fred_series(
                     series_ids=parameters,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
+                    limit=ns_parser.limit,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    get_data=True,
                 )
 
-                for series_id, data in detail.items():
-                    self.FRED_TITLES[series_id] = f"{data['title']} ({data['units']})"
-
                 if not df.empty:
-                    self.DATASETS["fred"] = pd.concat(
-                        [
-                            self.DATASETS["fred"],
-                            df,
-                        ]
-                    )
+
+                    for series_id, data in detail.items():
+                        self.FRED_TITLES[
+                            series_id
+                        ] = f"{data['title']} ({data['units']})"
+
+                        # Making data available at the class level
+                        self.DATASETS["fred"][series_id] = df[series_id]
 
                     self.stored_datasets = (
                         economy_helpers.update_stored_datasets_string(self.DATASETS)
                     )
 
-                    fred_view.display_fred_series(
-                        series_ids=parameters,
-                        start_date=ns_parser.start_date,
-                        end_date=ns_parser.end_date,
-                        limit=ns_parser.limit,
-                        raw=ns_parser.raw,
-                        export=ns_parser.export,
-                    )
-
                     self.update_runtime_choices()
                     if obbff.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
+
+                else:
+                    console.print("[red]No data found for the given Series ID[/red]")
+
+            elif not parameters and ns_parser.raw:
+                console.print(
+                    "Warning: -r/--raw should be combined with -p/--parameter."
+                )
 
     @log_start_end(log=logger)
     def call_index(self, other_args: List[str]):
@@ -1135,6 +1011,7 @@ class EconomyController(BaseController):
             action="store",
             dest="country",
             default="united_states",
+            choices=investingcom_model.BOND_COUNTRIES,
             help="Yield curve for a country. Ex: united_states",
         )
 
@@ -1157,7 +1034,9 @@ class EconomyController(BaseController):
 
             if country == "united states":
                 fred_view.display_yield_curve(
-                    ns_parser.date,
+                    date=ns_parser.date.strftime("%Y-%m-%d")
+                    if ns_parser.date
+                    else None,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
@@ -1264,6 +1143,9 @@ class EconomyController(BaseController):
             "--country",
             action="store",
             dest="country",
+            choices=[
+                x.replace(" ", "_") for x in investingcom_model.CALENDAR_COUNTRIES
+            ],
             type=str,
             default="",
             help="Display calendar for specific country.",
@@ -1438,9 +1320,17 @@ class EconomyController(BaseController):
                                         f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]
                                 elif key == "fred":
-                                    dataset_yaxis1[self.FRED_TITLES[variable]] = data[
-                                        variable
-                                    ]
+                                    compound_detail = self.FRED_TITLES[variable]
+                                    detail = {
+                                        "units": compound_detail.split("(")[-1].split(
+                                            ")"
+                                        )[0],
+                                        "title": compound_detail.split("(")[0].strip(),
+                                    }
+                                    data_to_plot, title = fred_view.format_data_to_plot(
+                                        data[variable], detail
+                                    )
+                                    dataset_yaxis1[title] = data_to_plot
                                 elif (
                                     key == "index"
                                     and variable in yfinance_model.INDICES
@@ -1500,9 +1390,17 @@ class EconomyController(BaseController):
                                         f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]
                                 elif key == "fred":
-                                    dataset_yaxis2[self.FRED_TITLES[variable]] = data[
-                                        variable
-                                    ]
+                                    compound_detail = self.FRED_TITLES[variable]
+                                    detail = {
+                                        "units": compound_detail.split("(")[-1].split(
+                                            ")"
+                                        )[0],
+                                        "title": compound_detail.split("(")[0].strip(),
+                                    }
+                                    data_to_plot, title = fred_view.format_data_to_plot(
+                                        data[variable], detail
+                                    )
+                                    dataset_yaxis2[title] = data_to_plot
                                 elif (
                                     key == "index"
                                     and variable in yfinance_model.INDICES
@@ -1586,12 +1484,16 @@ class EconomyController(BaseController):
             help="Column to sort by",
         )
         parser.add_argument(
-            "-a",
-            "-ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
@@ -1608,7 +1510,7 @@ class EconomyController(BaseController):
             finviz_view.display_valuation(
                 group=ns_group,
                 sortby=ns_parser.sortby,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -1641,12 +1543,16 @@ class EconomyController(BaseController):
             help="Column to sort by",
         )
         parser.add_argument(
-            "-a",
-            "-ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
@@ -1662,7 +1568,7 @@ class EconomyController(BaseController):
             finviz_view.display_performance(
                 group=ns_group,
                 sortby=ns_parser.sortby,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
