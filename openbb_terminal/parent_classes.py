@@ -747,7 +747,6 @@ class BaseController(metaclass=ABCMeta):
                 type=check_file_type_saved(choices_export),
                 dest="export",
                 help=help_export,
-                choices=choices_export,
             )
 
         if raw:
