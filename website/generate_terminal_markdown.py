@@ -227,8 +227,6 @@ def main() -> bool:
                 terminal_ref = add_todict(terminal_ref, trail, cat["cmd_name"], trail)
                 filepath = content_path / f"{'/'.join(trail)}/{cat['cmd_name']}.md"
 
-                if cat['cmd_name'] == "fred":
-                    print(filepath)
                 filepath.parent.mkdir(parents=True, exist_ok=True)
                 with open(filepath, "w", **kwargs) as f:
                     f.write(markdown)
