@@ -30,7 +30,8 @@ RUN apt-get install --no-install-recommends -y \
     curl \
     build-essential \
     unzip \
-    git
+    git \
+    python3-tk
 
 RUN curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
