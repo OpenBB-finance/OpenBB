@@ -69,23 +69,14 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
-
-      - name: Install Extra Doc
-        run: poetry install --no-interaction -E doc
-
-      - name: Install Extra Optimization
         run: poetry install --no-interaction -E optimization
-
-      - name: Run Extra prediction
-        run: poetry install --no-interaction -E prediction
 
       - name: Run tests
         env:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --autodoc
+          pytest tests/ --optimization
 
       - name: Start Terminal and exit
         run: |
@@ -141,10 +132,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
-
-      - name: Install Package
-        run: poetry install --no-interaction -E doc
+        run: poetry install --no-interaction -E optimization
 
       - name: List installed packages
         shell: bash -l {0}
@@ -157,7 +145,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/
+          pytest tests/ --optimization
 
       - name: Start Terminal and exit
         run: |
@@ -251,7 +239,6 @@ jobs:
         shell: bash -l {0}
         run: |
           pip install --requirement requirements-full.txt
-          pip install docstring_parser
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
@@ -263,7 +250,7 @@ jobs:
         env:
           MPLBACKEND: Agg
         shell: bash -l {0}
-        run: pytest tests/ -m "not linux"
+        run: pytest tests/ -m "not linux" --optimization
 
       - name: Start Terminal and exit
         shell: bash -l {0}

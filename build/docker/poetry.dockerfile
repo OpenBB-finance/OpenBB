@@ -30,7 +30,8 @@ RUN apt-get install --no-install-recommends -y \
     curl \
     build-essential \
     unzip \
-    git
+    git \
+    python3-tk
 
 RUN curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
@@ -45,16 +46,16 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
 
-# Copy poetry files and install git
-COPY pyproject.toml openbb_terminal/SDK_README.md poetry.lock ./
+# Copy poetry files
+COPY pyproject.toml website/content/sdk/quickstart/installation.md poetry.lock ./
 
-RUN mkdir $PYSETUP_PATH/openbb_terminal
-RUN mv SDK_README.md ./openbb_terminal
+RUN mkdir -p website/content/sdk/quickstart
+RUN mkdir openbb_terminal
+RUN mv installation.md ./website/content/sdk/quickstart
 RUN touch openbb_terminal/__init__.py
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
-RUN poetry install
-RUN poetry install -E optimization
+RUN poetry install --no-dev --no-interaction -E optimization -E prediction
 
 ###############################################
 # Production Image openbb poetry build
@@ -66,7 +67,6 @@ COPY --from=poetry-deps $PYSETUP_PATH $PYSETUP_PATH
 
 WORKDIR $PYSETUP_PATH
 COPY . .
-RUN pip install "u8darts[torch]"
 
 RUN echo "OPENBB_LOGGING_APP_NAME=gst_docker" > .env
 

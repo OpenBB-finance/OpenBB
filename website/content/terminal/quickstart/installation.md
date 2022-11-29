@@ -5,6 +5,7 @@ title: Installation
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import InstallerButton from "@site/src/components/General/InstallerButton";
 
 The OpenBB Terminal can be directly installed on your computer via our installation program. Within this section, you are guided through the installation process and how to launch the program. If you struggle with the installation process, please don’t hesitate to reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
 
@@ -13,55 +14,61 @@ OpenBB Terminal is available in all major platforms. With MacOS/Windows you can 
 :::info Installation Instructions
 
 <Tabs>
-  <TabItem value="Windows" label="Windows">Install on Windows
+  <TabItem value="windows" label="Windows">Install on Windows
   <div class="gdoc-page">
 
-</div><p>Download the installer from the <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/Windows10.OpenBB.Terminal.v1.9.0.exe">here</a>.</p>
+</div><p>Download the installer from the button below:</p>
+
+<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.0.0/Windows.10.OpenBB.Terminal.v2.0.0.exe" label="Windows Installer" />
 
 <p>When the file is downloaded, use the following steps to run the OpenBB Terminal:</p>
 <div class="gdoc-columns">
 
 <div class="gdoc-columns__content gdoc-markdown--nested">
     <p><strong>Step 1: Double-click the <code>.exe</code> file that got downloaded to your <code>Downloads</code> folder</strong></p>
-<p>You will most likely receive the error below stating &ldquo;Windows protected your PC&rdquo;. This is because the installer is
-still in beta phase, and the team has not yet requested verification from Windows.</p>
-<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502271-69ad8075-165f-4b1a-8ab8-254d643a5dae.png"><img width="500" alt="windows_protected_your_pc" src="https://user-images.githubusercontent.com/46355364/169502271-69ad8075-165f-4b1a-8ab8-254d643a5dae.png"></img></a></p>
+<p align="center"><a target="_blank" href="https://openbb-web-assets.s3.amazonaws.com/docs/installation/install_step_1.png"><img width="500" alt="windows_protected_your_pc" src="https://openbb-web-assets.s3.amazonaws.com/docs/installation/install_step_1.png"></img></a></p>
 
 </div>
 
 <div class="gdoc-columns__content gdoc-markdown--nested">
-    <p><strong>Step 2: Click on <code>More info</code> and select <code>Run anyway</code> to start the installation process</strong></p>
-<p>Proceed by following the steps. Do note that if you wish to install the application to &ldquo;Program Files&rdquo; that you will have to run the resulting application as Administrator.</p>
-<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502143-ba88de53-7757-48f2-9ec4-748d4917044b.png"><img width="500" alt="run_anyway" src="https://user-images.githubusercontent.com/46355364/169502143-ba88de53-7757-48f2-9ec4-748d4917044b.png"></img></a></p>
+    <p><strong>Step 2: Follow the prompts clicking <code>Next ></code> where needed to complete the installation process</strong></p>
 
 </div>
+
+
 
 <div class="gdoc-columns__content gdoc-markdown--nested">
     <p><strong>Step 3: Double-click on the application that appeared on your Desktop, you are now able to run the OpenBB Terminal</strong></p>
-<p>The first time this takes a bit longer to load, this can take up to a few minutes.</p>
-<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502187-f4e42333-a947-464b-9320-a8f63c7ce089.png"><img width="500" alt="run_the_terminal" src="https://user-images.githubusercontent.com/46355364/169502187-f4e42333-a947-464b-9320-a8f63c7ce089.png"></img></a></p>
+    <p align="center"><a target="_blank" href="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"><img width="100" alt="run_the_terminal" src="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"></img></a></p>
+<p>The first time this takes a bit longer to load, this can take up to a few minutes. If everything was successful you should see a screen like the one below : </p>
+<p align="center"><img width="500" alt="run_the_terminal" src="https://openbb-web-assets.s3.amazonaws.com/docs/installation/final_install.png"></img></p>
 
 </div>
 
 </div>
 </TabItem>
 
-<TabItem value="macOS" label="MacOS">Install on macOS 🍎
+<TabItem value="mac" label="MacOS">Install on macOS
 
-For mac there are two installers available, one for Intel and one for Apple Silicon (M1). Please download the correct one for your machine.
+For Mac there are two installers available, one for Intel and one for Apple Silicon (M1). Please download the correct one for your machine.
+
 <ul>
-<li>If you are using Mac Intel click <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/x86_64.MacOS.OpenBB.Terminal.v1.9.0.dmg">here</a> to download the installer.</li>
-<li>If you are using Mac Apple Silicon (M1) click <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/ARM64.MacOS.OpenBB.Terminal.v1.9.0.dmg">here</a> to download the installer.</li>
+<li>If you are using Mac Intel: <br />
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.0.0/x86_64.MacOS.OpenBB.Terminal.v2.0.0.dmg" label="Mac Intel Installer" />
+</li>
+<li>If you are using Mac Apple Silicon (M1): <br />
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.0.0/ARM64.MacOS.OpenBB.Terminal.v2.0.0.dmg" label="Mac M1 Installer" />
+</li>
 </ul>
 
 <p>When the DMG file is downloaded, use the following steps to run the OpenBB Terminal:</p>
 <div class="gdoc-columns">
 
 <div class="gdoc-columns__content gdoc-markdown--nested">
-    <p><strong>Step 1: Open the downloaded <code>OpenBB Terminal.dmg</code> and copy <code>OpenBB Terminal</code> folder into your <code>Applications</code></strong></p>
-<p>Open the <code>OpenBB Terminal.dmg</code> file that got saved to your &ldquo;Downloads&rdquo; folder and drag the &ldquo;OpenBB Terminal&rdquo; folder into &ldquo;Applications&rdquo; folder. A link to the <code>Applications</code> folder is presented on the screen.
+    <p><strong>Step 1: Open the downloaded <code>OpenBB Terminal.dmg</code> and drag the <code>OpenBB Terminal</code> folder into your <code>Applications</code></strong></p>
+<p>A link to the <code>Applications</code> folder is presented on the screen.
 Note that this should take some time as it is extracting the files from the .dmg file.</p>
-<p align="center"><img width="100%" alt="image" src="https://user-images.githubusercontent.com/11668535/173027899-9b25ae4f-1eef-462c-9dc9-86086e9cf197.png"></img></p>
+<p align="center"><img width="70%" alt="image" src="https://user-images.githubusercontent.com/11668535/173027899-9b25ae4f-1eef-462c-9dc9-86086e9cf197.png"></img></p>
 
 </div>
 
@@ -69,13 +76,14 @@ Note that this should take some time as it is extracting the files from the .dmg
     <p><strong>Step 2: Open the <code>OpenBB Terminal</code> app in the folder that you have just copied to your <code>Applications</code>.</strong></p>
 <p>During first launch if you get a message saying that the application can&rsquo;t be launched, do the following:
 Right-Click the app and select <code>Open</code>. You will see a message saying that macOS was not able to check whether the application contains malicious software. Click <code>Open</code> to proceed.</p>
-<p align="center"><img width="100%" alt="image" src="https://user-images.githubusercontent.com/11668535/173027798-b4d25a20-d932-4ed9-a8ce-f911c4ee4342.png"></img></p>
+<p align="center"><img width="70%" alt="image" src="https://user-images.githubusercontent.com/11668535/173027798-b4d25a20-d932-4ed9-a8ce-f911c4ee4342.png"></img></p>
 
 </div>
 
 </div>
 </TabItem>
-  <TabItem value="docker" label="Docker">Install with Docker
+  <TabItem value="docker" label="Docker">
+  <p>Install with Docker</p>
   Here are the steps to get OpenBBTerminal using the Docker containers that we provide:
 
 1. Installing `Docker` and `Docker Compose`
@@ -133,12 +141,12 @@ Is the docker daemon running?
 Here are the commands to use `Docker Compose` to pull and run the `OpenBBTerminal Docker Container`:
 
 ```bash
-curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml
+curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
 docker compose run poetry
 ```
 
-The command line with `curl` is downloading this file : [`docker-compose.yaml`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml).
+The command line with `curl` is downloading this file : [`docker-compose.yaml`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml).
 
 The `docker-compose.yaml` file is a configuration file telling `Docker Compose`:
 
@@ -166,7 +174,7 @@ Be sure to replace `X.Y.Z` with the version you want to pull and run.
 Note for windows:
 
 ```text
-    Ignore this message if you are using Powershell or a more evolved interpreters. 
+    Ignore this message if you are using Powershell or a more evolved interpreters.
     If you are using the builtin Windows interpreter.
     Replace `~` by `%USERPROFILE%` in the command above.
 ```
@@ -184,7 +192,7 @@ When running the program is important to check "Disable access control"
 Run `Docker Compose` like this:
 
 ```bash
-curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml
+curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
 docker compose run poetry
 ```
@@ -253,10 +261,10 @@ If you're using remote docker host, you can connect with "ssh -X <FQDN/IP>".
 Then run the previous docker command.
 
 </TabItem>
-  <TabItem value="Source" label="Source">
+  <TabItem value="python" label="Python">
 This installation type supports both Windows and Unix systems (Linux + MacOS).
 
-**NOTE for Windows users:** Some _not all_ Windows users would prefer to use an environment similar to what Linux and macOS users use. In this case it is easier to use Windows Subsystem for Linux (WSL). WSL emulates a Linux machine inside your Windows system. If this is the case - jump to the <a href="#installing-wsl-only-for-windows-users">Installing WSL (Only for Windows users)</a> section before proceeding.
+**NOTE for Windows users:** For Windows users who prefer to use an environment similar to what Linux and macOS users use, we recommend Windows Subsystem for Linux (WSL). WSL emulates a Linux machine inside your Windows system. If this is the case - jump to the <a href="#installing-wsl-only-for-windows-users">Installing WSL (Only for Windows users)</a> section before proceeding.
 
 ### Installing the terminal
 
@@ -275,11 +283,11 @@ issues.
 Miniconda is a python environment and package manager. It is required if you want to
 have the dependencies working straight away.
 
-- Follow the [link to the page with the latest installers for all platforms](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) or click direct links to installer packages based on your operating system:
-  - If you are using macOS click [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
-  - If you are using WSL or Linux click [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
-  - If you are using a Raspberry PI click [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
-  - If you are using Windows click [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe).
+- Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) to find the download for your operating system or use the links below:
+  - If you are using macOS [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
+  - If you are using WSL or Linux [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
+  - If you are using a Raspberry PI [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
+  - If you are using Windows [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe).
 
       **ONLY REQUIRED ON WINDOWS IF NOT USING WSL**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
@@ -392,11 +400,13 @@ poetry install -E all
 
 #### 9. You're ready to use the terminal!
 
+Start the terminal by running:
+
 ```bash
 openbb
 ```
 
-Or if you are old-fashioned run:
+Or the old-fashioned way:
 
 ```bash
 python terminal.py
@@ -404,11 +414,11 @@ python terminal.py
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate obb` before you call `openbb` again.
 
-**TROUBLESHOOT:** If you are having troubles to install, check out the [troubleshoot page](/terminal/quickstart/troubleshooting). You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
+**TROUBLESHOOT:** If you are having troubles with installation, check out the [FAQ page](/terminal/quickstart/faq). You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
 ## Advanced User Install - Custom installation procedures
 
-By default we advice using `conda` and `poetry` for environment setup and dependency management. Conda ships binaries for packages like `numpy` so these dependencies are not built from source locally by `pip`. Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies use versions that are compatible with each other.
+By default we advise using `conda` and `poetry` for environment setup and dependency management. Conda ships binaries for packages like `numpy` so these dependencies are not built from source locally by `pip`. Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies use versions that are compatible with each other.
 
 If you are using a conda environment the `build/conda` folder contains multiple `.yaml` configuration files that you can choose from.
 

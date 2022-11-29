@@ -5,7 +5,6 @@ portfolio.po.ef,openbb_terminal.portfolio.portfolio_optimization.po_model.get_ef
 portfolio.po.equal,openbb_terminal.portfolio.portfolio_optimization.po_model.get_equal,
 portfolio.po.file,openbb_terminal.portfolio.portfolio_optimization.po_model.load_parameters_file,
 portfolio.po.get_properties,openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_properties,
-portfolio.po.hcp,openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hcp_portfolio,
 portfolio.po.herc,openbb_terminal.portfolio.portfolio_optimization.po_model.get_herc,
 portfolio.po.hrp,openbb_terminal.portfolio.portfolio_optimization.po_model.get_hrp,
 portfolio.po.load,openbb_terminal.portfolio.portfolio_optimization.po_model.generate_portfolio,

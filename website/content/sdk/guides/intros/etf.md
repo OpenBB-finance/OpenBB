@@ -58,7 +58,7 @@ ETFs are categorized into different buckets. Use the code block below as a way t
 etf_list = pd.DataFrame.from_dict(openbb.etf.etf_by_category('')).transpose()
 categories = list(etf_list['category'].drop_duplicates())
 categories = pd.DataFrame(categories[1::], columns = ['Type'])
-​
+
 categories.head(6)
 ```
 
@@ -77,7 +77,7 @@ categories.head(6)
 ```python
 etf_category = pd.DataFrame.from_dict(openbb.etf.etf_by_category('Foreign Large Blend')).transpose()
 etf_category = etf_category.sort_values(by=['total_assets'], ascending = False)
-​
+
 etf_category.head(2)
 ```
 

@@ -1034,7 +1034,9 @@ class EconomyController(BaseController):
 
             if country == "united states":
                 fred_view.display_yield_curve(
-                    ns_parser.date,
+                    date=ns_parser.date.strftime("%Y-%m-%d")
+                    if ns_parser.date
+                    else None,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )

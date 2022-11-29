@@ -449,7 +449,7 @@ def get_mean_risk_portfolio(
     covariance = kwargs.get("covariance", "hist")
     d_ewma = kwargs.get("d_ewma", 0.94)
 
-    risk_measure = risk_measure.upper()
+    risk_measure = optimizer_helper.validate_risk_measure(risk_measure)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1496,6 +1496,7 @@ def get_ef(
     seed = kwargs.get("seed", 123)
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+    risk_measure = optimizer_helper.validate_risk_measure(risk_measure)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1715,6 +1716,7 @@ def get_risk_parity_portfolio(
     )
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+    risk_measure = optimizer_helper.validate_risk_measure(risk_measure)
 
     # Building the portfolio object
     port = rp.Portfolio(returns=stock_returns, alpha=alpha)
@@ -2113,7 +2115,7 @@ def get_hcp_portfolio(
     alpha_tail = kwargs.get("alpha_tail", 0.05)
     leaf_order = kwargs.get("leaf_order", True)
 
-    risk_measure = risk_measure.upper()
+    risk_measure = optimizer_helper.validate_risk_measure(risk_measure)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
