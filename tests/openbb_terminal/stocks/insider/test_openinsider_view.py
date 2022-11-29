@@ -2,6 +2,7 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
+import pandas as pd
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.insider import openinsider_view
@@ -82,14 +83,10 @@ def test_print_insider_data(color, mocker):
 @pytest.mark.vcr(record_mode="none")
 def test_print_insider_data_no_table(mocker):
     # MOCK GET
-    mocker.patch(target="requests.get")
-
-    # MOCK BEAUTIFULSOUP
-    mock_soup = mocker.Mock()
-    mocker.patch.object(target=mock_soup, attribute="find", return_value=None)
+    mocker.patch("requests.get")
     mocker.patch(
-        target="openbb_terminal.stocks.insider.openinsider_model.BeautifulSoup",
-        return_value=mock_soup,
+        target="openbb_terminal.stocks.insider.openinsider_model.pd.read_html",
+        return_value=[pd.DataFrame(columns=["1d", "1w", "1m", "6m"]) for _ in range(5)],
     )
 
     openinsider_view.print_insider_data(
