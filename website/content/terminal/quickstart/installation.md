@@ -5,6 +5,7 @@ title: Installation
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import InstallerButton from "@site/src/components/General/InstallerButton";
 
 The OpenBB Terminal can be directly installed on your computer via our installation program. Within this section, you are guided through the installation process and how to launch the program. If you struggle with the installation process, please don’t hesitate to reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
 
@@ -16,7 +17,9 @@ OpenBB Terminal is available in all major platforms. With MacOS/Windows you can 
   <TabItem value="windows" label="Windows">Install on Windows
   <div class="gdoc-page">
 
-</div><p>Download the installer from the website <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/Windows10.OpenBB.Terminal.v1.9.0.exe">here</a>.</p>
+</div><p>Download the installer from the button below:</p>
+
+<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.0.0/Windows.10.OpenBB.Terminal.v2.0.0.exe" label="Windows Installer" />
 
 <p>When the file is downloaded, use the following steps to run the OpenBB Terminal:</p>
 <div class="gdoc-columns">
@@ -45,12 +48,17 @@ OpenBB Terminal is available in all major platforms. With MacOS/Windows you can 
 </div>
 </TabItem>
 
-<TabItem value="mac" label="MacOS">Install on macOS 🍎
+<TabItem value="mac" label="MacOS">Install on macOS
 
 For Mac there are two installers available, one for Intel and one for Apple Silicon (M1). Please download the correct one for your machine.
+
 <ul>
-<li>If you are using Mac Intel click <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/x86_64.MacOS.OpenBB.Terminal.v1.9.0.dmg">here</a> to download the installer.</li>
-<li>If you are using Mac Apple Silicon (M1) click <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/ARM64.MacOS.OpenBB.Terminal.v1.9.0.dmg">here</a> to download the installer.</li>
+<li>If you are using Mac Intel: <br />
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.0.0/x86_64.MacOS.OpenBB.Terminal.v2.0.0.dmg" label="Mac Intel Installer" />
+</li>
+<li>If you are using Mac Apple Silicon (M1): <br />
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.0.0/ARM64.MacOS.OpenBB.Terminal.v2.0.0.dmg" label="Mac M1 Installer" />
+</li>
 </ul>
 
 <p>When the DMG file is downloaded, use the following steps to run the OpenBB Terminal:</p>
@@ -133,12 +141,12 @@ Is the docker daemon running?
 Here are the commands to use `Docker Compose` to pull and run the `OpenBBTerminal Docker Container`:
 
 ```bash
-curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml
+curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
 docker compose run poetry
 ```
 
-The command line with `curl` is downloading this file : [`docker-compose.yaml`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml).
+The command line with `curl` is downloading this file : [`docker-compose.yaml`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml).
 
 The `docker-compose.yaml` file is a configuration file telling `Docker Compose`:
 
@@ -184,7 +192,7 @@ When running the program is important to check "Disable access control"
 Run `Docker Compose` like this:
 
 ```bash
-curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml
+curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
 docker compose run poetry
 ```
