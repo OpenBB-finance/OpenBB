@@ -30,7 +30,8 @@ RUN apt-get install --no-install-recommends -y \
     curl \
     build-essential \
     unzip \
-    git
+    git \
+    python3-tk
 
 RUN curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
@@ -48,7 +49,8 @@ WORKDIR $PYSETUP_PATH
 # Copy poetry files
 COPY pyproject.toml website/content/sdk/quickstart/installation.md poetry.lock ./
 
-RUN mkdir $PYSETUP_PATH/openbb_terminal
+RUN mkdir -p website/content/sdk/quickstart
+RUN mkdir openbb_terminal
 RUN mv installation.md ./website/content/sdk/quickstart
 RUN touch openbb_terminal/__init__.py
 

@@ -44,7 +44,6 @@ class TechnicalAnalysisController(BaseController):
     """Technical Analysis Controller class"""
 
     CHOICES_COMMANDS = [
-        "load",
         "ema",
         "sma",
         "wma",
@@ -66,7 +65,6 @@ class TechnicalAnalysisController(BaseController):
         "adosc",
         "obv",
         "fib",
-        "tv",
         "clenow",
         "demark",
         "atr",
@@ -90,7 +88,7 @@ class TechnicalAnalysisController(BaseController):
         self.data = data
         self.interval = "1440min"
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

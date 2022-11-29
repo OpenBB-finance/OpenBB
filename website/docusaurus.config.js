@@ -29,6 +29,17 @@ const config = {
   },
 
   plugins: [
+    [
+      "@docusaurus/plugin-client-redirects",
+      {
+        redirects: [
+          {
+            from: "/terminal/guides/intros/forecasting",
+            to: "/terminal/guides/intros/forecast",
+          },
+        ],
+      },
+    ],
     async function twPlugin(context, options) {
       return {
         name: "docusaurus-tailwindcss",
