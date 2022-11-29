@@ -40,7 +40,7 @@ def get_nhits_data(
     batch_size: int = 32,
     n_epochs: int = 100,
     learning_rate: float = 1e-3,
-    model_save_name: str = "brnn_model",
+    model_save_name: str = "nhits_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
 ) -> Tuple[

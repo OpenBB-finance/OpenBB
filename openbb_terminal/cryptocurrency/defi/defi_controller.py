@@ -61,127 +61,14 @@ class DefiController(BaseController):
     ]
 
     PATH = "/crypto/defi/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["newspaper"] = {
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["vaults"] = {
-                "--chain": {c: {} for c in coindix_model.CHAINS},
-                "-c": "--chain",
-                "--sort": {c: {} for c in coindix_model.VAULTS_FILTERS},
-                "-s": "--sort",
-                "--kind": {c: {} for c in coindix_model.VAULT_KINDS},
-                "-k": "--kind",
-                "--top": {str(c): {} for c in range(1, 1000)},
-                "-t": "--top",
-                "--protocol": {c: {} for c in coindix_model.PROTOCOLS},
-                "-p": "--protocol",
-                "--links": None,
-                "-l": "--links",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["tokens"] = {
-                "--sort": {c: {} for c in graph_model.TOKENS_FILTERS},
-                "-s": "--sort",
-                "--skip": {str(c): {} for c in range(1, 1000)},
-                "--limit": None,
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["pairs"] = {
-                "--sort": {c: {} for c in graph_model.PAIRS_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--vol": {str(c): {} for c in range(1, 1000)},
-                "-v": "--vol",
-                "--tx": {str(c): {} for c in range(1, 1000)},
-                "-tx": "--tx",
-                "--days": {str(c): {} for c in range(1, 1000)},
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["pools"] = {
-                "--sort": {c: {} for c in graph_model.POOLS_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["swaps"] = {
-                "--sort": {c: {} for c in graph_model.SWAPS_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["ldapps"] = {
-                "--sort": {c: {} for c in llama_model.LLAMA_FILTERS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--desc": {},
-            }
-            choices["gdapps"] = {
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["stvl"] = {
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["dtvl"] = {"--dapps": {}, "-d": "--dapps"}
-            choices["sinfo"] = {
-                "--address": None,
-                "-a": "--address",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["validators"] = {
-                "--sort": {c: {} for c in terramoney_fcd_model.VALIDATORS_COLUMNS},
-                "-s": "--sort",
-                "--limit": None,
-                "-l": "--limit",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            choices["gacc"] = {
-                "--kind": {c: {} for c in ["active", "total"]},
-                "-k": "--kind",
-                "--cumulative": {},
-                "--reverse": {},
-                "-r": "--reverse",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["sreturn"] = {
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["lcsc"] = {
-                "--days": {str(c): {} for c in range(1, 1000)},
-                "-d": "--days",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["anchor"] = {
-                "--address": None,
-                "--transactions": {},
-            }
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -316,14 +203,7 @@ class DefiController(BaseController):
             type=str,
             help="Sort by given column. Default: votingPower",
             default="votingPower",
-            choices=[
-                "validatorName",
-                "tokensAmount",
-                "votingPower",
-                "commissionRate",
-                "status",
-                "uptime",
-            ],
+            choices=terramoney_fcd_model.VALIDATORS_COLUMNS,
         )
         parser.add_argument(
             "-r",
@@ -651,6 +531,8 @@ class DefiController(BaseController):
             type=check_positive,
             help="Number of records to skip",
             default=0,
+            choices=range(1, 1000),
+            metavar="SKIP",
         )
         parser.add_argument(
             "--limit",
@@ -739,6 +621,8 @@ class DefiController(BaseController):
             type=check_positive,
             help="Minimum trading volume",
             default=100,
+            choices=range(1, 1000),
+            metavar="VOL",
         )
         parser.add_argument(
             "-tx",
@@ -747,6 +631,8 @@ class DefiController(BaseController):
             type=check_positive,
             help="Minimum number of transactions",
             default=100,
+            choices=range(1, 1000),
+            metavar="TX",
         )
         parser.add_argument(
             "--days",
@@ -754,6 +640,8 @@ class DefiController(BaseController):
             type=check_positive,
             help="Number of days the pair has been active,",
             default=10,
+            choices=range(1, 1000),
+            metavar="DAY",
         )
         parser.add_argument(
             "-s",
@@ -946,6 +834,8 @@ class DefiController(BaseController):
             type=check_positive,
             help="Number of records to display",
             default=10,
+            choices=range(1, 1000),
+            metavar="TOP",
         )
         parser.add_argument(
             "-s",
@@ -1020,6 +910,8 @@ class DefiController(BaseController):
             type=check_positive,
             help="Number of days to display. Default: 30 days",
             default=30,
+            choices=range(1, 1000),
+            metavar="DAYS",
         )
 
         ns_parser = self.parse_known_args_and_warn(

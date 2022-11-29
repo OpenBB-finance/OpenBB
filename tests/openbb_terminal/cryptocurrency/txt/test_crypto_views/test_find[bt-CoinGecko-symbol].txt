@@ -1,0 +1,33 @@
+    index symbol               id             name
+0       0     bt  bictory-finance  Bictory Finance
+1       0     bt   bitenium-token         Bitenium
+2       0     bt    bithash-token          BitHash
+3       0     bt    bozkurt-token          Bozkurt
+4       0     bt       bt-finance       BT.Finance
+5       1     bt  bictory-finance  Bictory Finance
+6       1     bt   bitenium-token         Bitenium
+7       1     bt    bithash-token          BitHash
+8       1     bt    bozkurt-token          Bozkurt
+9       1     bt       bt-finance       BT.Finance
+10      2     bt  bictory-finance  Bictory Finance
+11      2     bt   bitenium-token         Bitenium
+12      2     bt    bithash-token          BitHash
+13      2     bt    bozkurt-token          Bozkurt
+14      2     bt       bt-finance       BT.Finance
+15      3     bt  bictory-finance  Bictory Finance
+16      3     bt   bitenium-token         Bitenium
+17      3     bt    bithash-token          BitHash
+18      3     bt    bozkurt-token          Bozkurt
+19      3     bt       bt-finance       BT.Finance
+20      4     bt  bictory-finance  Bictory Finance
+21      4     bt   bitenium-token         Bitenium
+22      4     bt    bithash-token          BitHash
+23      4     bt    bozkurt-token          Bozkurt
+24      4     bt       bt-finance       BT.Finance
+25      5    xbt             xbit             Xbit
+26      6    wbt         whitebit   WhiteBIT Token
+27      6    wbt  world-bet-token  World Bet Token
+28      7    wbt         whitebit   WhiteBIT Token
+29      7    wbt  world-bet-token  World Bet Token
+30      8    ubt        unibright        Unibright
+31      9    tbt   theboringtoken        TheBoring

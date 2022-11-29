@@ -28,7 +28,6 @@ from openbb_terminal.etf.technical_analysis import ta_controller
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_non_negative_float,
     check_positive,
     export_data,
     valid_date,
@@ -37,7 +36,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 
@@ -82,6 +81,7 @@ class ETFController(BaseController):
 
     PATH = "/etf/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -93,58 +93,7 @@ class ETFController(BaseController):
         self.TRY_RELOAD = True
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["search"] = {
-                "--name": None,
-                "-n": "--name",
-                "--description": None,
-                "-d": "--description",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}search")
-                },
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["load"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["weights"] = {"--min": one_to_hundred, "-m": "--min", "--raw": {}}
-
-            choices["candle"] = {
-                "--sort": {c: {} for c in self.CANDLE_COLUMNS},
-                "-s": "--sort",
-                "--plotly": {},
-                "-p": "--plotly",
-                "--ma": None,
-                "--reverse": {},
-                "-r": "--reverse",
-                "--trend": {},
-                "-t": "--trend",
-                "--raw": {},
-                "--num": one_to_hundred,
-                "-n": "--num",
-            }
-            choices["pir"] = {
-                "--etfs": None,
-                "-e": "--etfs",
-                "--filename": None,
-                "--folder": None,
-            }
-            choices["compare"] = {
-                "--etfs": None,
-                "-e": "--etfs",
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -313,6 +262,7 @@ class ETFController(BaseController):
             if holdings.empty:
                 console.print("No company holdings found!")
             else:
+                self.etf_holdings.clear()
                 console.print("Top holdings found:")
                 for val in holdings["Name"].values[: ns_parser.limit].tolist():
                     console.print(f"   {val}")
@@ -371,9 +321,6 @@ class ETFController(BaseController):
             help="Number of holdings to get",
             default=10,
         )
-        if not self.etf_name:
-            console.print("Please load a ticker using <load name>. \n")
-            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
@@ -381,12 +328,15 @@ class ETFController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            stockanalysis_view.view_holdings(
-                symbol=self.etf_name,
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-            )
-            console.print()
+            if self.etf_name:
+                stockanalysis_view.view_holdings(
+                    symbol=self.etf_name,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                )
+                console.print()
+            else:
+                console.print("Please load a ticker using <load name>. \n")
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
@@ -497,19 +447,14 @@ class ETFController(BaseController):
             ),
         )
         parser.add_argument(
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Shows raw data instead of chart",
-        )
-        parser.add_argument(
             "-n",
             "--num",
             type=check_positive,
             help="Number to show if raw selected",
             dest="num",
             default=20,
+            choices=range(1, 100),
+            metavar="NUM",
         )
         parser.add_argument(
             "-t",
@@ -531,7 +476,10 @@ class ETFController(BaseController):
         )
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser,
+            other_args,
+            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
         )
         if ns_parser:
             if not self.etf_name:
@@ -654,22 +602,21 @@ class ETFController(BaseController):
         parser.add_argument(
             "-m",
             "--min",
-            type=check_non_negative_float,
+            type=check_positive,
             dest="min",
             help="Minimum positive float to display sector",
             default=5,
-        )
-        parser.add_argument(
-            "--raw",
-            action="store_true",
-            dest="raw",
-            help="Only output raw data",
+            choices=range(1, 100),
+            metavar="MIN",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
         )
         if ns_parser:
             yfinance_view.display_etf_weightings(

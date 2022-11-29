@@ -1,24 +1,65 @@
 from pathlib import Path
 from typing import Dict, Optional
 
+import dotenv
 import pandas as pd
 
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.base_helpers import load_env_vars, strtobool
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY, USER_ENV_FILE
+from openbb_terminal.rich_config import console
 
+
+DISABLE_FORECASTING_WARNING = load_env_vars(
+    "OPENBB_DISABLE_FORECASTING_WARNING", strtobool, False
+)
 try:
     import darts  # pylint: disable=W0611 # noqa: F401
-
     from darts import utils  # pylint: disable=W0611 # noqa: F401
 
-    FORECASTING = True
-except ImportError:
-    FORECASTING = False
+    FORECASTING_TOOLKIT_ENABLED = True
+except ModuleNotFoundError:
+    FORECASTING_TOOLKIT_ENABLED = False
+    if not DISABLE_FORECASTING_WARNING:
+        dotenv.set_key(str(USER_ENV_FILE), "OPENBB_DISABLE_FORECASTING_WARNING", "True")
+        console.print(
+            "[yellow]"
+            "Forecasting Toolkit is disabled. "
+            "To use the Forecasting features please install the toolkit following the "
+            "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+            "\n"
+            "[/yellow]"
+        )
+
+DISABLE_OPTIMIZATION_WARNING = load_env_vars(
+    "OPENBB_DISABLE_OPTIMIZATION_WARNING", strtobool, False
+)
+try:
+    # import riskfolio  # pylint: disable=W0611 # noqa: F401
+
+    OPTIMIZATION_TOOLKIT_ENABLED = True
+except ModuleNotFoundError:
+    OPTIMIZATION_TOOLKIT_ENABLED = False
+    if not DISABLE_OPTIMIZATION_WARNING:
+        dotenv.set_key(
+            str(USER_ENV_FILE), "OPENBB_DISABLE_OPTIMIZATION_WARNING", "True"
+        )
+        console.print(
+            "[yellow]"
+            "Portfolio Optimization Toolkit is disabled. "
+            "To use the Optimization features please install the toolkit following the "
+            "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+            "\n"
+            "[/yellow]"
+        )
 
 
 class TrailMap:
     MAP_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map.csv"
     MAP_FORECASTING_PATH = (
         MISCELLANEOUS_DIRECTORY / "library" / "trail_map_forecasting.csv"
+    )
+    MAP_OPTIMIZATION_PATH = (
+        MISCELLANEOUS_DIRECTORY / "library" / "trail_map_optimization.csv"
     )
 
     @classmethod
@@ -84,9 +125,12 @@ class TrailMap:
 
     def load(self):
         map_dict = self.load_csv(path=self.MAP_PATH)
-        if FORECASTING:
+        if FORECASTING_TOOLKIT_ENABLED:
             map_forecasting_dict = self.load_csv(path=self.MAP_FORECASTING_PATH)
             map_dict = {**map_dict, **map_forecasting_dict}
+        if OPTIMIZATION_TOOLKIT_ENABLED:
+            map_optimization_dict = self.load_csv(path=self.MAP_OPTIMIZATION_PATH)
+            map_dict = {**map_dict, **map_optimization_dict}
 
         self.__map_dict = map_dict
 

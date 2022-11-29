@@ -1,8 +1,9 @@
 from argparse import ArgumentParser
-from inspect import unwrap
+from contextlib import contextmanager
+from inspect import isfunction, unwrap
 from os import environ
 from types import MethodType
-from typing import List
+from typing import Callable, List
 from unittest.mock import patch
 from openbb_terminal.helper_funcs import check_file_type_saved, check_positive
 from openbb_terminal.rich_config import get_ordered_list_sources
@@ -16,7 +17,8 @@ def __mock_parse_known_args_and_warn(
     raw: bool = False,
     limit: int = 0,
 ) -> None:
-    """Add the arguments that would have normally added by `parse_known_args_and_warn`.
+    """Add the arguments that would have normally added by :
+        - openbb_terminal.parent_classes.BaseController.parse_known_args_and_warn
 
     Parameters
     ----------
@@ -92,6 +94,16 @@ def __mock_parse_known_args_and_warn(
 
 
 def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> None:
+    """Add the arguments that would have normally added by:
+        - openbb_terminal.helper_funcs.parse_simple_args
+
+    Parameters
+    ----------
+    parser: argparse.ArgumentParser
+        Parser with predefined arguments
+    other_args: List[str]
+        List of arguments to parse
+    """
     parser.add_argument(
         "-h", "--help", action="store_true", help="show this help message"
     )
@@ -100,64 +112,168 @@ def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> N
     return None
 
 
+def __get_command_func(controller, command: str):
+    """Get the function with the name `f"call_{command}"` from controller object.
+
+    Parameters
+    ----------
+    controller: BaseController
+        Instance of the Terminal Controller.
+    command: str
+        A name from controller.CHOICES_COMMANDS
+
+    Returns
+    -------
+    Callable: Command function.
+    """
+
+    if command not in controller.CHOICES_COMMANDS:
+        raise AttributeError(
+            f"The following command is not inside `CHOICES_COMMANDS` : '{command}'"
+        )
+
+    command = f"call_{command}"
+    command_func = getattr(controller, command)
+    command_func = unwrap(func=command_func)
+
+    if isfunction(command_func):
+        command_func = MethodType(command_func, controller)
+
+    return command_func
+
+
+def contains_functions_to_patch(command_func: Callable) -> bool:
+    """Check if a `command_func` actually contains the functions we want to mock, i.e.:
+        - parse_simple_args
+        - parse_known_args_and_warn
+
+    Parameters
+    ----------
+    command_func: Callable
+        Function to check.
+
+    Returns
+    -------
+    bool: Whether or not `command_func` contains the mocked functions.
+    """
+
+    co_names = command_func.__code__.co_names
+
+    if "parse_simple_args" in co_names:
+        in_command = True
+    elif "parse_known_args_and_warn" in co_names:
+        in_command = True
+    else:
+        in_command = False
+
+    return in_command
+
+
+@contextmanager
+def __patch_controller_functions(controller):
+    """Patch the following function from a BaseController instance:
+        - parse_simple_args
+        - parse_known_args_and_warn
+
+    These functions take an 'argparse.ArgumentParser' object as parameter.
+    We want to intercept this 'argparse.ArgumentParser' object.
+
+    Parameters
+    ----------
+    controller: BaseController
+        BaseController object that needs to be patched.
+
+    Returns
+    -------
+    List[Callable]: List of mocked functions.
+    """
+
+    bound_mock_parse_known_args_and_warn = MethodType(
+        __mock_parse_known_args_and_warn,
+        controller,
+    )
+
+    rich = patch(
+        target="openbb_terminal.rich_config.ConsoleAndPanel.print",
+        return_value=None,
+    )
+
+    patcher_list = [
+        patch(
+            target="openbb_terminal.parent_classes.parse_simple_args",
+            side_effect=__mock_parse_simple_args,
+            return_value=None,
+        ),
+        patch.object(
+            target=controller,
+            attribute="parse_known_args_and_warn",
+            side_effect=bound_mock_parse_known_args_and_warn,
+            return_value=None,
+        ),
+    ]
+
+    if environ.get("DEBUG_MODE", "false") != "true":
+        rich.start()
+    patched_function_list = []
+    for patcher in patcher_list:
+        patched_function_list.append(patcher.start())
+
+    yield patched_function_list
+
+    if environ.get("DEBUG_MODE", "false") != "true":
+        rich.stop()
+    for patcher in patcher_list:
+        patcher.stop()
+
+
 def _get_argument_parser(
     controller,
     command: str,
 ) -> ArgumentParser:
     """Intercept the ArgumentParser instance from the command function.
 
-    A command function being a function like : call_help, call_overview
+    A command function being a function starting with `call_`, like:
+        - call_help
+        - call_overview
+        - call_load
 
-    Args:
-        controller (BaseController): Instance of the Terminal Controller.
-        command (str): A name from controller.CHOICES_COMMANDS
+    Parameters
+    ----------
+    controller: BaseController
+        Instance of the Terminal Controller.
+    command: str
+        A name from `controller.CHOICES_COMMANDS`.
 
-    Returns:
-        ArgumentParser: ArgumentParser instance from the command function.
+    Returns
+    -------
+    ArgumentParser: ArgumentParser instance from the command function.
     """
 
-    if command not in controller.CHOICES_COMMANDS:
-        raise AttributeError(f"Invalid command : '{command}'")
+    command_func: Callable = __get_command_func(controller=controller, command=command)
 
-    bound_mock_parse_known_args_and_warn = MethodType(
-        __mock_parse_known_args_and_warn, controller
-    )
-
-    patch_parse_simple_args = patch(
-        target="openbb_terminal.helper_funcs.parse_simple_args",
-        side_effect=__mock_parse_simple_args,
-        return_value=None,
-    )
-    patch_parse_known_args_and_warn = patch.object(
-        target=controller,
-        attribute="parse_known_args_and_warn",
-        side_effect=bound_mock_parse_known_args_and_warn,
-        return_value=None,
-    )
-
-    parse_simple_args = patch_parse_simple_args.start()
-    parse_known_args_and_warn = patch_parse_known_args_and_warn.start()
-
-    command = "call_" + command
-    command_func = getattr(controller, command)
-    command_func = unwrap(func=command_func, stop=(lambda f: isinstance(f, MethodType)))
-    command_func([])
-
-    if parse_known_args_and_warn.call_count == 1:
-        args = parse_known_args_and_warn.call_args.args
-        argument_parser = args[0]
-    elif parse_simple_args.call_count == 1:
-        args = parse_simple_args.call_args.args
-        argument_parser = args[0]
-    else:
+    if not contains_functions_to_patch(command_func=command_func):
         raise AssertionError(
-            "One of these functions should be called once:\n"
-            " - patch_parse_simple_args\n"
+            f"One of these functions should be inside `call_{command}`:\n"
+            " - parse_simple_args\n"
             " - parse_known_args_and_warn\n"
         )
 
-    patch_parse_simple_args.stop()
-    patch_parse_known_args_and_warn.stop()
+    with __patch_controller_functions(controller=controller) as patched_function_list:
+        command_func([])
+
+        call_count = 0
+        for patched_function in patched_function_list:
+            call_count += patched_function.call_count
+            if patched_function.call_count == 1:
+                args = patched_function.call_args.args
+                argument_parser = args[0]
+
+        if call_count != 1:
+            raise AssertionError(
+                f"One of these functions should be called once inside `call_{command}`:\n"
+                " - parse_simple_args\n"
+                " - parse_known_args_and_warn\n"
+            )
 
     return argument_parser
 
@@ -174,7 +290,7 @@ def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
         else:
             raise AttributeError(f"Invalid argument_parser: {argument_parser}")
 
-        if action.choices:
+        if hasattr(action, "choices") and action.choices:
             choice_map[long_name] = {str(c): {} for c in action.choices}
         else:
             choice_map[long_name] = {}
@@ -191,8 +307,8 @@ def build_controller_choice_map(controller) -> dict:
     controller_choice_map["support"] = controller.SUPPORT_CHOICES
     controller_choice_map["about"] = controller.ABOUT_CHOICES
 
-    try:
-        for command in command_list:
+    for command in command_list:
+        try:
             argument_parser = _get_argument_parser(
                 controller=controller,
                 command=command,
@@ -200,8 +316,10 @@ def build_controller_choice_map(controller) -> dict:
             controller_choice_map[command] = _build_command_choice_map(
                 argument_parser=argument_parser
             )
-    except Exception as exception:
-        if environ.get("DEBUG_MODE", "false") == "true":
-            raise exception
+        except Exception as exception:
+            if environ.get("DEBUG_MODE", "false") == "true":
+                raise Exception(
+                    f"On command : `{command}`.\n{str(exception)}"
+                ) from exception
 
     return controller_choice_map

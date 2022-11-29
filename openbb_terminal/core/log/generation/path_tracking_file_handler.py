@@ -169,7 +169,9 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
             with self.lock:
                 super().doRollover()
 
-                if log_sender.check_sending_conditions():
+                log_path = Path(self.baseFilename)
+
+                if log_sender.check_sending_conditions(file=log_path):
                     to_delete_path_list = self.getFilesToDelete()
                     for path in to_delete_path_list:
                         log_sender.send_path(path=Path(path))
@@ -181,7 +183,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         log_sender = self.__log_sender
         closed_log_path = Path(self.baseFilename)
 
-        if log_sender.check_sending_conditions():
+        if log_sender.check_sending_conditions(file=closed_log_path):
             log_sender.send_path(path=closed_log_path, last=True)
             try:
                 log_sender.join(timeout=3)
@@ -190,5 +192,5 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
 
         super().close()
 
-        if log_sender.check_sending_conditions():
+        if log_sender.check_sending_conditions(file=closed_log_path):
             closed_log_path.unlink(missing_ok=True)

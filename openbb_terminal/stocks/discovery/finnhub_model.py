@@ -15,16 +15,16 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
 def get_ipo_calendar(
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Get IPO calendar
 
     Parameters
     ----------
-    start_date : str
+    start_date : Optional[str]
         Initial date, format YYYY-MM-DD
-    end_date : str
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
 
     Returns

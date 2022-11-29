@@ -416,6 +416,10 @@ def display_categories(
         title to display
     """
 
+    if column == "CURRENT_INVESTED_AMOUNT":
+        console.print(f"[yellow]'{column}' cannot be displayed as a category.[/yellow]")
+        return
+
     df = optimizer_model.get_categories(weights, categories, column)
 
     if df.empty:
@@ -452,12 +456,13 @@ def display_categories(
         )
     )
 
-    df.reset_index(inplace=True)
-    df.set_index("CURRENCY", inplace=True)
+    df.reset_index(level=1, inplace=True)
+    headers = [s.title() for s in list(df.columns)]
+    show_index = True
+    if column == "CURRENCY":
+        show_index = False
 
-    headers = list(df.columns)
-    headers = [s.title() for s in headers]
-    print_rich_table(df, headers=headers, show_index=True, title=title)
+    print_rich_table(df, headers=headers, show_index=show_index, title=title)
 
 
 @log_start_end(log=logger)
@@ -710,9 +715,9 @@ def display_property_weighting(
     threshold: float = 0,
     method: str = "time",
     s_property: str = "marketCap",
-    risk_measure="mv",
+    risk_measure: str = "mv",
     risk_free_rate: float = 0,
-    alpha=0.05,
+    alpha: float = 0.05,
     value: float = 1,
     table: bool = False,
 ) -> Dict[str, float]:
@@ -3696,7 +3701,7 @@ def pie_chart_weights(
 
 @log_start_end(log=logger)
 def additional_plots(
-    weights,
+    weights: Dict,
     data: pd.DataFrame,
     category: Dict = None,
     title_opt: str = "",
@@ -3791,20 +3796,20 @@ def additional_plots(
         Optional axes to plot data on
     """
     if category is not None:
-        weights = pd.DataFrame.from_dict(
+        weights_df = pd.DataFrame.from_dict(
             data=weights, orient="index", columns=["value"], dtype=float
         )
         category_df = pd.DataFrame.from_dict(
             data=category, orient="index", columns=["category"]
         )
-        weights = weights.join(category_df, how="inner")
-        weights.sort_index(inplace=True)
+        weights_df = weights_df.join(category_df, how="inner")
+        weights_df.sort_index(inplace=True)
 
         # Calculating classes returns
-        classes = list(set(weights["category"]))
-        weights_classes = weights.groupby(["category"]).sum()
-        matrix_classes = np.zeros((len(weights), len(classes)))
-        labels = weights["category"].tolist()
+        classes = list(set(weights_df["category"]))
+        weights_classes = weights_df.groupby(["category"]).sum()
+        matrix_classes = np.zeros((len(weights_df), len(classes)))
+        labels = weights_df["category"].tolist()
 
         j_value = 0
         for i in classes:
@@ -3813,23 +3818,23 @@ def additional_plots(
             )
             matrix_classes[:, j_value] = (
                 matrix_classes[:, j_value]
-                * weights["value"]
+                * weights_df["value"]
                 / weights_classes.loc[i, "value"]
             )
             j_value += 1
 
         matrix_classes = pd.DataFrame(
-            matrix_classes, columns=classes, index=weights.index
+            matrix_classes, columns=classes, index=weights_df.index
         )
         data = data @ matrix_classes
-        weights = weights_classes["value"].copy()
-        weights.replace(0, np.nan, inplace=True)
-        weights.dropna(inplace=True)
-        weights.sort_values(ascending=True, inplace=True)
-        data = data[weights.index.tolist()]
+        weights_df = weights_classes["value"].copy()
+        weights_df.replace(0, np.nan, inplace=True)
+        weights_df.dropna(inplace=True)
+        weights_df.sort_values(ascending=True, inplace=True)
+        data = data[weights_df.index.tolist()]
         data.columns = [i.title() for i in data.columns]
-        weights.index = [i.title() for i in weights.index]
-        weights = weights.to_dict()
+        weights_df.index = [i.title() for i in weights_df.index]
+        weights = weights_df.to_dict()
 
     colors = theme.get_colors()
     if pie:
@@ -3934,6 +3939,11 @@ def additional_plots(
             theme.visualize_output()
 
     if heat:
+
+        if len(weights) == 1:
+            console.print(f"Heatmap needs at least two values for '{category}'.")
+            return
+
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
@@ -4004,7 +4014,7 @@ def additional_plots(
             theme.visualize_output(force_tight_layout=True)
 
 
-def display_show(weights: Dict, tables: List[str], categories: Dict[Any, Any]):
+def display_show(weights: Dict, tables: List[str], categories_dict: Dict[Any, Any]):
     """Display the results of the optimization.
 
     Parameters
@@ -4013,7 +4023,7 @@ def display_show(weights: Dict, tables: List[str], categories: Dict[Any, Any]):
         Dictionary of weights.
     tables : List[str]
         List of tables to display.
-    categories : Dict[Any, Any]
+    categories_dict : Dict[Any, Any]
         Dictionary of categories.
     """
 
@@ -4023,7 +4033,7 @@ def display_show(weights: Dict, tables: List[str], categories: Dict[Any, Any]):
         console.print("")
         display_categories(
             weights=weights,
-            categories=categories,
+            categories=categories_dict,
             column=t,
             title="Category - " + t.title(),
         )

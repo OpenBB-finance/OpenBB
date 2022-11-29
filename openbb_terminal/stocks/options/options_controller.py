@@ -6,7 +6,6 @@ import logging
 from datetime import datetime, timedelta
 from typing import Any, List
 
-import numpy as np
 import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
@@ -113,6 +112,7 @@ class OptionsController(BaseController):
     plot_vars_choices = ["ltd", "s", "lp", "b", "a", "c", "pc", "v", "oi", "iv"]
     plot_custom_choices = ["smile"]
     PATH = "/stocks/options/"
+    CHOICES_GENERATION = True
 
     def __init__(self, ticker: str, queue: List[str] = None):
         """Constructor"""
@@ -138,141 +138,7 @@ class OptionsController(BaseController):
         self.default_chain = get_ordered_list_sources(f"{self.PATH}chains")[0]
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            zero_to_one_detailed: dict = {
-                str(c): {} for c in np.arange(0.0, 1.0, 0.005)
-            }
-            one_to_thousand: dict = {str(c): {} for c in range(1, 1000)}
-            minus_one_to_thousand: dict = {str(c): {} for c in range(-1, 1000)}
-            choices["unu"] = {
-                "--sortby": {c: {} for c in self.unu_sortby_choices},
-                "-s": "--sortby",
-                "--reverse": {},
-                "-r": "--reverse",
-                "--puts_only": {},
-                "-p": "--puts_only",
-                "--calls_only": {},
-                "-c": "--calls_only",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["calc"] = {
-                "--put": {},
-                "--sell": {},
-                "--strike": one_to_thousand,
-                "-s": "--strike",
-                "--premium": one_to_hundred,
-                "-p": "--premium",
-                "--min": minus_one_to_thousand,
-                "-m": "--min",
-                "--max": minus_one_to_thousand,
-                "-M": "--max",
-            }
-            choices["load"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
-                },
-            }
-            choices["pcr"] = {c: {} for c in self.pcr_length_choices}
-            choices["pcr"]["--length"] = {c: {} for c in self.pcr_length_choices}
-            choices["pcr"]["-l"] = "--length"
-            choices["pcr"]["--start"] = None
-            choices["pcr"]["-s"] = "--start"
-            choices["chains"] = {
-                "--calls": {},
-                "-c": "--calls",
-                "--puts": {},
-                "-p": "--puts",
-                "--min": minus_one_to_thousand,
-                "-m": "--min",
-                "--max": minus_one_to_thousand,
-                "-M": "--max",
-                "--display": {c: {} for c in tradier_model.default_columns},
-                "-d": "--display",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}chains")
-                },
-            }
-            plots = {
-                "--calls": {},
-                "-c": "--calls",
-                "--puts": {},
-                "-p": "--puts",
-                "--min": minus_one_to_thousand,
-                "-m": "--min",
-                "--max": minus_one_to_thousand,
-                "-M": "--max",
-                "--raw": {},
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}chains")
-                },
-            }
-            choices["oi"] = plots
-            choices["vol"] = plots
-            choices["voi"] = {
-                "--minv": None,
-                "-v": "--minv",
-                "--min": minus_one_to_thousand,
-                "-m": "--min",
-                "--max": minus_one_to_thousand,
-                "-M": "--max",
-                "--raw": {},
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}chains")
-                },
-            }
-            choices["vsurf"] = {c: {} for c in ["IV", "OI", "LP"]}
-            choices["disp"] = {c: {} for c in self.preset_choices}
-            choices["scr"] = {c: {} for c in self.preset_choices}
-            choices["grhist"] = {
-                "--strike": None,
-                "-s": "--strike",
-                "--put": {},
-                "-p": "--put",
-                "--greek": {c: {} for c in self.grhist_greeks_choices},
-                "-g": "--greek",
-                "--chain": None,
-                "-c": "--chain",
-                "--raw": {},
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["plot"] = {
-                "--x_axis": {c: {} for c in self.plot_vars_choices},
-                "-x": "--x_axis",
-                "--y_axis": "--x_axis",
-                "-y": "--y_axis",
-                "--custom": {c: {} for c in self.plot_custom_choices},
-                "-c": "--custom",
-            }
-            choices["parity"] = {
-                "--put": {},
-                "-p": "--put",
-                "--ask": {},
-                "-a": "--ask",
-                "--min": minus_one_to_thousand,
-                "-m": "--min",
-                "--max": minus_one_to_thousand,
-                "-M": "--max",
-            }
-            choices["greeks"] = {
-                "--risk-free": zero_to_one_detailed,
-                "-r": "--risk-free",
-                "--dividend": one_to_hundred,
-                "-d": "--dividend",
-                "--put": {},
-                "-p": "--put",
-                "--min": minus_one_to_thousand,
-                "-m": "--min",
-                "--max": minus_one_to_thousand,
-                "-M": "--max",
-                "--all": {},
-                "-a": "--all",
-            }
+            choices: dict = self.choices_default
 
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
@@ -763,7 +629,8 @@ class OptionsController(BaseController):
         )
 
         if other_args and "-" not in other_args[0][0]:
-            if other_args[0].split("-")[0] > "2000":
+            first_int = int(other_args[0].split("-")[0])
+            if first_int > 2000:
                 other_args.insert(0, "-d")
             else:
                 other_args.insert(0, "-i")
@@ -876,7 +743,9 @@ class OptionsController(BaseController):
                     ns_parser.export,
                 )
 
-            elif API_TRADIER_TOKEN != "REPLACE_ME":  # nosec
+            elif (
+                ns_parser.source == "Tradier" and API_TRADIER_TOKEN != "REPLACE_ME"
+            ):  # nosec
                 tradier_view.display_historical(
                     symbol=self.ticker,
                     expiry=self.selected_date,

@@ -1,0 +1,11 @@
+,index,id,rank,name,symbol,type
+0,0,btc-bitcoin,1,Bitcoin,BTC,coin
+1,1,bcx-bitcoinx,4129,BitcoinX,BCX,coin
+2,2,xbt-xbit-coin,3309,XBIT Coin,XBT,coin
+3,3,orb-orbitcoin,1323,Orbitcoin,ORB,coin
+4,4,btcz-bitcoinz,922,BitcoinZ,BTCZ,coin
+5,5,btcv-bitcoinv,1878,BitcoinV,BTCV,coin
+6,6,bme-bitcomine,7633,BitcoMine,BME,token
+7,7,bhd-bitcoinhd,6068,BitcoinHD,BHD,coin
+8,8,tit-titcoin,1400,Titcoin,TIT,coin
+9,9,gtc-gitcoin,1995,Gitcoin,GTC,token

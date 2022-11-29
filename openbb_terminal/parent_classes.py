@@ -419,7 +419,15 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            open_openbb_documentation(self.PATH, command=ns_parser.command)
+            arg_type = ""
+            if ns_parser.command in self.CHOICES_COMMANDS:
+                arg_type = "command"
+            elif ns_parser.command in self.CHOICES_MENUS:
+                arg_type = "menu"
+
+            open_openbb_documentation(
+                self.PATH, command=ns_parser.command, arg_type=arg_type
+            )
 
     @log_start_end(log=logger)
     def call_quit(self, _) -> None:
@@ -454,14 +462,23 @@ class BaseController(metaclass=ABCMeta):
                 self.queue.insert(0, "quit")
 
     @log_start_end(log=logger)
-    def call_resources(self, _) -> None:
+    def call_resources(self, other_args: List[str]) -> None:
         """Process resources command."""
-        if os.path.isfile(self.FILE_PATH):
-            with open(self.FILE_PATH) as f:
-                console.print(Markdown(f.read()))
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="resources",
+            description="Display available markdown resources.",
+        )
+        ns_parser = parse_simple_args(parser, other_args)
 
-        else:
-            console.print("No resources available.\n")
+        if ns_parser:
+            if os.path.isfile(self.FILE_PATH):
+                with open(self.FILE_PATH) as f:
+                    console.print(Markdown(f.read()))
+
+            else:
+                console.print("No resources available.\n")
 
     @log_start_end(log=logger)
     def call_support(self, other_args: List[str]) -> None:
@@ -1213,7 +1230,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                     ns_parser.vs = "usd"
             (self.current_df) = cryptocurrency_helpers.load(
                 symbol=ns_parser.coin.lower(),
-                vs_currency=ns_parser.vs,
+                to_symbol=ns_parser.vs,
                 end_date=ns_parser.end.strftime("%Y-%m-%d"),
                 start_date=ns_parser.start.strftime("%Y-%m-%d"),
                 interval=ns_parser.interval,

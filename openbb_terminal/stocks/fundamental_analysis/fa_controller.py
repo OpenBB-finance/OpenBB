@@ -85,6 +85,7 @@ class FundamentalAnalysisController(StockBaseController):
     PATH = "/stocks/fa/"
 
     SHRS_CHOICES = ["major", "institutional", "mutualfund"]
+    CHOICES_GENERATION = True
 
     def __init__(
         self,
@@ -107,131 +108,7 @@ class FundamentalAnalysisController(StockBaseController):
         self.default_cash = get_ordered_list_sources(f"{self.PATH}cash")[0]
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["load"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
-                "-i": "--interval",
-                "--prepost": {},
-                "-p": "--prepost",
-                "--file": None,
-                "-f": "--file",
-                "--monthly": {},
-                "-m": "--monthly",
-                "--weekly": {},
-                "-w": "--weekly",
-                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
-                "-r": "--iexrange",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
-                },
-            }
-            choices["income"] = {
-                "--plot": {
-                    c: {} for c in stocks_helper.INCOME_PLOT[self.default_income]
-                },
-                "-p": "--plot",
-                "--quarter": {},
-                "-q": "--quarter",
-                "--ratios": {},
-                "-r": "--ratios",
-                "--limit": None,
-                "-l": "--limit",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}income")
-                },
-            }
-            choices["balance"] = {
-                "--plot": {
-                    c: {} for c in stocks_helper.BALANCE_PLOT[self.default_balance]
-                },
-                "-p": "--plot",
-                "--quarter": {},
-                "-q": "--quarter",
-                "--ratios": {},
-                "-r": "--ratios",
-                "--limit": None,
-                "-l": "--limit",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}balance")
-                },
-            }
-            choices["cash"] = {
-                "--plot": {c: {} for c in stocks_helper.CASH_PLOT[self.default_cash]},
-                "-p": "--plot",
-                "--quarter": {},
-                "-q": "--quarter",
-                "--ratios": {},
-                "-r": "--ratios",
-                "--limit": None,
-                "-l": "--limit",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}cash")
-                },
-            }
-            fmp_standard = {
-                "--quarter": {},
-                "-q": "--quarter",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["enterprise"] = fmp_standard
-            choices["metrics"] = fmp_standard
-            choices["ratios"] = fmp_standard
-            choices["growth"] = fmp_standard
-            choices["warnings"] = {"--debug": {}, "-d": "--debug"}
-            choices["dcf"] = {
-                "--prediction": one_to_hundred,
-                "-p": "--prediction",
-                "--similar": None,
-                "-s": "--similar",
-                "--audit": {},
-                "-a": "--audit",
-                "--growth": {},
-                "-g": "--growth",
-                "--no-ratios": {},
-                "--no-filter": {},
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["dcfc"] = fmp_standard
-            choices["mktcap"] = {
-                "--start": None,
-                "-s": "--start",
-            }
-            choices["divs"] = {
-                "--plot": {},
-                "-p": "--plot",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["earnings"] = {
-                "--quarter": {},
-                "-q": "--quarter",
-                "--limit": None,
-                "-l": "--limit",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}earnings")
-                },
-            }
-            choices["shrs"] = {c: {} for c in self.SHRS_CHOICES}
-            choices["fraud"] = {
-                "--explanation": {},
-                "-e": "--explanation",
-                "--detail": {},
-                "-d": "--detail",
-            }
-            choices["dupont"]["--raw"] = {}
-            choices["revfc"] = {}
-            choices["epsfc"] = {}
-
+            choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -678,9 +555,7 @@ class FundamentalAnalysisController(StockBaseController):
             prog="epsfc",
             description="""Estimated EPS [Source: Seeking Alpha]""",
         )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args 
-        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             seeking_alpha_view.display_eps_estimates(self.ticker)
@@ -694,9 +569,7 @@ class FundamentalAnalysisController(StockBaseController):
             prog="revfc",
             description="""Estimated revenue [Source: Seeking Alpha]""",
         )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args 
-        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             seeking_alpha_view.display_rev_estimates(self.ticker)
@@ -740,13 +613,13 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not self.suffix:
-            if ns_parser:
+        if ns_parser:
+            if not self.suffix:
                 yahoo_finance_view.display_shareholders(
                     self.ticker, holder=ns_parser.holder, export=ns_parser.export
                 )
-        else:
-            console.print("Only US tickers are recognized.", "\n")
+            else:
+                console.print("Only US tickers are recognized.", "\n")
 
     @log_start_end(log=logger)
     def call_sust(self, other_args: List[str]):
@@ -767,13 +640,13 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not self.suffix:
-            if ns_parser:
+        if ns_parser:
+            if not self.suffix:
                 yahoo_finance_view.display_sustainability(
                     self.ticker, export=ns_parser.export
                 )
-        else:
-            console.print("Only US tickers are recognized.", "\n")
+            else:
+                console.print("Only US tickers are recognized.", "\n")
 
     @log_start_end(log=logger)
     def call_cal(self, other_args: List[str]):
@@ -790,13 +663,13 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not self.suffix:
-            if ns_parser:
+        if ns_parser:
+            if not self.suffix:
                 yahoo_finance_view.display_calendar_earnings(
                     symbol=self.ticker, export=ns_parser.export
                 )
-        else:
-            console.print("Only US tickers are recognized.", "\n")
+            else:
+                console.print("Only US tickers are recognized.", "\n")
 
     @log_start_end(log=logger)
     def call_web(self, other_args: List[str]):
@@ -812,11 +685,11 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not self.suffix:
-            if ns_parser:
+        if ns_parser:
+            if not self.suffix:
                 yahoo_finance_view.open_web(self.ticker)
-        else:
-            console.print("Only US tickers are recognized.", "\n")
+            else:
+                console.print("Only US tickers are recognized.", "\n")
 
     @log_start_end(log=logger)
     def call_hq(self, other_args: List[str]):
@@ -832,11 +705,11 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not self.suffix:
-            if ns_parser:
+        if ns_parser:
+            if not self.suffix:
                 yahoo_finance_view.open_headquarters_map(self.ticker)
-        else:
-            console.print("Only US tickers are recognized.", "\n")
+            else:
+                console.print("Only US tickers are recognized.", "\n")
 
     @log_start_end(log=logger)
     def call_divs(self, other_args: List[str]):
@@ -866,16 +739,16 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if not self.suffix:
-            if ns_parser:
+        if ns_parser:
+            if not self.suffix:
                 yahoo_finance_view.display_dividends(
                     symbol=self.ticker,
                     limit=ns_parser.limit,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-        else:
-            console.print("Only US tickers are recognized.", "\n")
+            else:
+                console.print("Only US tickers are recognized.", "\n")
 
     @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
@@ -967,6 +840,8 @@ class FundamentalAnalysisController(StockBaseController):
             "-p",
             "--plot",
             action="store",
+            metavar="column",
+            choices=stocks_helper.INCOME_PLOT[self.default_income],
             type=str,
             default=None,
             dest="plot",
@@ -1078,7 +953,9 @@ class FundamentalAnalysisController(StockBaseController):
             "-p",
             "--plot",
             action="store",
+            choices=stocks_helper.BALANCE_PLOT[self.default_balance],
             type=str,
+            metavar="column",
             default=None,
             dest="plot",
             help="Rows to plot, comma separated. (-1 represents invalid data)",
@@ -1195,6 +1072,8 @@ class FundamentalAnalysisController(StockBaseController):
             "--plot",
             action="store",
             type=str,
+            choices=stocks_helper.CASH_PLOT[self.default_cash],
+            metavar="column",
             default=None,
             dest="plot",
             help="Rows to plot. (-1 represents invalid data)",

@@ -9,7 +9,8 @@ import logging
 import os
 import subprocess  # nosec
 import sys
-from typing import List
+from typing import List, Union
+from packaging import version
 
 # IMPORTATION THIRDPARTY
 import requests
@@ -117,41 +118,67 @@ def update_terminal():
 
 
 def open_openbb_documentation(
-    path, url="https://openbb-finance.github.io/OpenBBTerminal/", command=None
+    path, url="https://docs.openbb.co/terminal", command=None, arg_type=""
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
-    if "ta" in path:
-        path = "terminal/common/ta/"
-    elif "ba" in path:
-        path = "terminal/common/ba/"
-    elif "qa" in path:
-        path = "terminal/common/qa/"
-    elif "keys" in path:
-        path = "#accessing-other-sources-of-data-via-api-keys"
+    if path == "/" and command is None:
+        path = "/"
         command = ""
-    elif "settings" in path or "featflags" in path or "sources" in path:
-        path = "#customizing-the-terminal"
+    elif "keys" in path:
+        path = "/guides/advanced/api-keys"
+        command = ""
+    elif "settings" in path:
+        path = "/guides/advanced/customizing-the-terminal"
+        command = ""
+    elif "featflags" in path:
+        path = "/guides/advanced/customizing-the-terminal"
+        command = ""
+    elif "sources" in path:
+        path = "/guides/advanced/changing-sources"
         command = ""
     else:
-        path = f"terminal/{path}"
+        if arg_type == "command":  # user passed a command name
+            path = f"/reference/{path}"
+        elif arg_type == "menu":  # user passed a menu name
+            if command in ["ta", "ba", "qa"]:
+                menu = path.split("/")[-2]
+                path = f"/guides/intros/common/{menu}"
+            elif command == "forecast":
+                command = ""
+                path = "/guides/intros/forecast"
+            else:
+                path = f"/guides/intros/{path}"
+        else:  # user didn't pass argument and is in a menu
+            menu = path.split("/")[-2]
+            if menu in ["ta", "ba", "qa"]:
+                path = f"/guides/intros/common/{menu}"
+            else:
+                path = f"/guides/intros/{path}"
 
     if command:
-        if command in ["ta", "ba", "qa"]:
-            path = "terminal/common/"
-        elif "keys" == command:
-            path = "#accessing-other-sources-of-data-via-api-keys"
+        if "keys" == command:
+            path = "/guides/advanced/api-keys"
+            command = ""
+        elif "settings" in path or "featflags" in path:
+            path = "/guides/advanced/customizing-the-terminal"
+            command = ""
+        elif "sources" in path:
+            path = "/guides/advanced/changing-sources"
             command = ""
         elif "exe" == command:
-            path = "/terminal/scripts/"
+            path = "/guides/advanced/scripts-and-routines"
             command = ""
-        elif command in ["settings", "featflags", "sources"]:
-            path = "#customizing-the-terminal"
+        elif command in ["ta", "ba", "qa"]:
+            path = f"/guides/intros/common/{command}"
             command = ""
 
         path += command
 
     full_url = f"{url}{path}".replace("//", "/")
+
+    if full_url[-1] == "/":
+        full_url = full_url[:-1]
 
     webbrowser.open(full_url)
 
@@ -220,29 +247,50 @@ def check_for_updates() -> None:
         r = None
 
     if r is not None and r.status_code == 200:
-        release: str = r.json()["html_url"].split("/")[-1].replace("v", "")
-        lastest_split = release.split(".")
-        current = obbff.VERSION.replace("m", "").split(".")
-        for i in range(3):
-            if int(lastest_split[i]) > int(current[i]):
+        latest_tag_name = r.json()["tag_name"]
+        latest_version = version.parse(latest_tag_name)
+        current_version = version.parse(obbff.VERSION)
+
+        if check_valid_versions(latest_version, current_version):
+
+            if current_version == latest_version:
+                console.print("[green]You are using the latest stable version[/green]")
+            else:
                 console.print(
-                    "[bold red]You are not using the latest version[/bold red]"
+                    "[yellow]You are not using the latest stable version[/yellow]"
                 )
-                console.print(
-                    "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
-                )
-                break
-            if int(lastest_split[i]) < int(current[i]):
-                console.print("[yellow]You are using an unreleased version[/yellow]")
-            if release == obbff.VERSION.replace("m", ""):
-                console.print("[green]You are using the latest version[/green]")
-                break
+                if current_version < latest_version:
+                    console.print(
+                        "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
+                    )
+
+                else:
+                    console.print(
+                        "[yellow]You are using an unreleased version[/yellow]"
+                    )
+
+        else:
+            console.print("[red]You are using an unrecognized version.[/red]")
     else:
         console.print(
             "[yellow]Unable to check for updates... "
             + "Check your internet connection and try again...[/yellow]"
         )
     console.print("\n")
+
+
+def check_valid_versions(
+    latest_version: Union[version.LegacyVersion, version.Version],
+    current_version: Union[version.LegacyVersion, version.Version],
+) -> bool:
+    if (
+        not latest_version
+        or not current_version
+        or not isinstance(latest_version, version.Version)
+        or not isinstance(current_version, version.Version)
+    ):
+        return False
+    return True
 
 
 def welcome_message():

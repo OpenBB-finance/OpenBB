@@ -84,7 +84,6 @@ class Operation:
         self._trail = trail
         self._trail_map = trail_map
         self._method = method
-
         self.__doc__ = metadata.docstring
         self.__signature__ = signature(method)
 
@@ -110,12 +109,15 @@ class Operation:
         import webbrowser
 
         trail = self._trail
-        url = "https://openbb-finance.github.io/OpenBBTerminal/SDK/"
+        url = "https://docs.openbb.co/sdk/reference/"
         url += "/".join(trail.split("."))
         webbrowser.open(url)
 
 
 class OperationLogger:
+
+    last_method: Dict[Any, Any] = {}
+
     def __init__(
         self,
         trail: str,
@@ -133,7 +135,7 @@ class OperationLogger:
     def log_before_call(
         self,
     ):
-        if not cfg.LOGGING_SUPPRESS:
+        if self.__check_logging_conditions():
             logger = self.__logger
             self.__log_start(logger=logger, method_chosen=self.__method_chosen)
             self.__log_method_info(
@@ -151,17 +153,16 @@ class OperationLogger:
             extra={"func_name_override": method_chosen.__name__},
         )
 
-    @classmethod
     def __log_method_info(
-        cls,
+        self,
         logger: Logger,
         trail: str,
         method_chosen: Callable,
         args: Any,
         kwargs: Any,
     ):
-        merged_args = cls.__merge_function_args(method_chosen, args, kwargs)
-        merged_args = cls.__remove_key_and_log_state(
+        merged_args = self.__merge_function_args(method_chosen, args, kwargs)
+        merged_args = self.__remove_key_and_log_state(
             method_chosen.__module__, merged_args
         )
 
@@ -244,7 +245,7 @@ class OperationLogger:
         self,
         method_result: Any,
     ):
-        if not cfg.LOGGING_SUPPRESS:
+        if self.__check_logging_conditions():
             logger = self.__logger
             self.__log_exception_if_any(
                 logger=logger,
@@ -255,6 +256,12 @@ class OperationLogger:
                 logger=logger,
                 method_chosen=self.__method_chosen,
             )
+            OperationLogger.last_method = {
+                f"{self.__method_chosen.__module__}.{self.__method_chosen.__name__}": {
+                    "args": str(self.__args)[:100],
+                    "kwargs": str(self.__kwargs)[:100],
+                }
+            }
 
     @staticmethod
     def __log_exception_if_any(
@@ -274,3 +281,15 @@ class OperationLogger:
             "END",
             extra={"func_name_override": method_chosen.__name__},
         )
+
+    def __check_logging_conditions(self) -> bool:
+        return not cfg.LOGGING_SUPPRESS and not self.__check_last_method()
+
+    def __check_last_method(self) -> bool:
+        current_method = {
+            f"{self.__method_chosen.__module__}.{self.__method_chosen.__name__}": {
+                "args": str(self.__args)[:100],
+                "kwargs": str(self.__kwargs)[:100],
+            }
+        }
+        return OperationLogger.last_method == current_method
