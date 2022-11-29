@@ -269,11 +269,11 @@ def test_call_feat_eng_invalid(feature):
         "combine": {"data.first": 1, "data.second": 2, "data.third": 3},
         "delete": {"data.first": 1, "data.second": 2, "data.third": 3},
     }
-    the_list = ["data"]
+    a_list = ["data"]
     if feature == "rsi":
-        the_list.append("--period")
-        the_list.append("2")
-    getattr(cont, f"call_{feature}")(the_list)
+        a_list.append("--period")
+        a_list.append("2")
+    getattr(cont, f"call_{feature}")(a_list)
 
 
 @pytest.mark.parametrize(
@@ -294,11 +294,11 @@ def test_call_feat_eng_invalid_parser(feature, mocker):
         "combine": {"data.first": 1, "data.second": 2, "data.third": 3},
         "delete": {"data.first": 1, "data.second": 2, "data.third": 3},
     }
-    the_list = ["data"]
+    a_list = ["data"]
     if feature == "rsi":
-        the_list.append("--period")
-        the_list.append("2")
-    getattr(cont, f"call_{feature}")(the_list)
+        a_list.append("--period")
+        a_list.append("2")
+    getattr(cont, f"call_{feature}")(a_list)
 
 
 def test_call_ema(mocker):
