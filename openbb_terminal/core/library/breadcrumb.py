@@ -70,6 +70,8 @@ class MetadataBuilder:
 
 
 class Breadcrumb:
+    __version__ = obbff.VERSION
+
     def __init__(
         self,
         metadata: Optional[Metadata] = None,
@@ -102,7 +104,6 @@ class Breadcrumb:
         self._trail = trail
 
         self.__doc__ = metadata.docstring
-        self.__version__ = obbff.VERSION
         if trail == "":
             BreadcrumbLogger()
 
