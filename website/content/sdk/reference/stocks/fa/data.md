@@ -31,3 +31,12 @@ openbb.stocks.fa.data(symbol: str)
 | pd.DataFrame | DataFrame of fundamental data |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.stocks.fa.data("IWV")
+```
+
+---
+

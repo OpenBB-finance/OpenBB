@@ -16,7 +16,7 @@ Get stock volume. [Source: Yahoo Finance]
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_model.py#L134)]
 
 ```python
-openbb.stocks.ca.volume(similar: List[str], start_date: str = None)
+openbb.stocks.ca.volume(similar: List[str], start_date: Optional[str] = None)
 ```
 
 ---
@@ -26,7 +26,7 @@ openbb.stocks.ca.volume(similar: List[str], start_date: str = None)
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | similar | List[str] | List of similar tickers.<br/>Comparable companies can be accessed through<br/>finnhub_peers(), finviz_peers(), polygon_peers(). | None | False |
-| start_date | str | Initial date (e.g., 2021-10-01). Defaults to 1 year back | None | True |
+| start_date | Optional[str] | Initial date (e.g., 2021-10-01). Defaults to 1 year back | None | True |
 
 
 ---
@@ -48,7 +48,7 @@ Display stock volume. [Source: Yahoo Finance]
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_view.py#L107)]
 
 ```python
-openbb.stocks.ca.volume_chart(similar: List[str], start_date: str = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+openbb.stocks.ca.volume_chart(similar: List[str], start_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -58,7 +58,7 @@ openbb.stocks.ca.volume_chart(similar: List[str], start_date: str = None, export
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | similar | List[str] | List of similar tickers.<br/>Comparable companies can be accessed through<br/>finnhub_peers(), finviz_peers(), polygon_peers(). | None | False |
-| start_date | str | Initial date (e.g., 2021-10-01). Defaults to 1 year back | None | True |
+| start_date | Optional[str] | Initial date (e.g., 2021-10-01). Defaults to 1 year back | None | True |
 | export | str | Format to export historical prices, by default "" |  | True |
 | external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 

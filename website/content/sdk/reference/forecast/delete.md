@@ -7,7 +7,7 @@ description: OpenBB SDK Function
 
 None
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L442)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L466)]
 
 ```python
 openbb.forecast.delete(data: pd.DataFrame, column: str)

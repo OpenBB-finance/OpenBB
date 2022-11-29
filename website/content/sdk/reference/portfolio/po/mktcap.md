@@ -42,6 +42,13 @@ openbb.portfolio.po.mktcap(symbols: List[str] = None, portfolio_engine: portfoli
 ---
 
 ## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.portfolio.po.mktcap(symbols=["AAPL", "MSFT", "AMZN"])
+```
+
+```
 (         value
  AAPL  0.465338
  MSFT  0.345488
@@ -49,10 +56,11 @@ openbb.portfolio.po.mktcap(symbols: List[str] = None, portfolio_engine: portfoli
  {'Return': 0.25830567048487474,
   'Volatility': 0.33058479906988086,
   'Sharpe ratio': 0.7813597939519071})
-
+```
 ```python
 from openbb_terminal.sdk import openbb
-openbb.portfolio.po.mktcap(symbols=["AAPL", "MSFT", "AMZN"])
+p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+weights, performance = openbb.portfolio.po.mktcap(portfolio_engine=p)
 ```
 
 ---

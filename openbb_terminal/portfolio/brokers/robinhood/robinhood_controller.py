@@ -105,6 +105,6 @@ class RobinhoodController(BaseController):
         if ns_parser:
             robinhood_view.display_historical(
                 interval=ns_parser.interval,
-                span=ns_parser.span,
+                window=ns_parser.span,
                 export=ns_parser.export,
             )

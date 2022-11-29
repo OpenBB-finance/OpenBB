@@ -10,7 +10,7 @@ Display info about your trading accounts on Robinhood
 ### Usage
 
 ```python
-usage: holdings
+holdings
 ```
 
 ---
@@ -19,5 +19,5 @@ usage: holdings
 
 This command has no parameters
 
----
 
+---

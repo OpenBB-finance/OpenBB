@@ -12,9 +12,9 @@ Define the keys for the OpenBB installation with:
 
 ```python
 
-obb.keys.fred(key = 'REPLACE_ME', persist = True)
-obb.keys.quandl(key = 'REPLACE_ME', persist = True)
-obb.keys.av(key = 'REPLACE_ME', persist = True)
+openbb.keys.fred(key = 'REPLACE_ME', persist = True)
+openbb.keys.quandl(key = 'REPLACE_ME', persist = True)
+openbb.keys.av(key = 'REPLACE_ME', persist = True)
 ```
 
 ## How to Use
@@ -33,8 +33,6 @@ Below is brief description of each function within the Economy module:
 | openbb.economy.events               |  Function  |                                              Economic Calendar |
 | openbb.economy.fred_ids             |  Function  |                         Search for a FRED series ID by keyword |
 | openbb.economy.fred_notes           |  Function  |                       Search by Keyword for Series Information |
-| openbb.economy.fred_series          |  Function  |                               Get Data for a FRED Series ID(s) |
-| openbb.economy.fred_series_chart    |  Function  |                                        Chart for `fred_series` |
 | openbb.economy.futures              |  Function  |                                  Current Prices of Commodities |
 | openbb.economy.gdpc                 |  Function  |                            US GDP per Capita from AlphaVantage |
 | openbb.economy.gdpc_chart           |  Function  |                                               Chart for `gdpc` |
@@ -266,30 +264,6 @@ series_ids.head(5)
 | IPG211111CS     | Industrial Production: Mining, Quarrying, and Oil and Gas Extraction: Crude Oil (NAICS = 211111pt.) |
 | A33DNO          | Manufacturers' New Orders: Mining, Oil, and Gas Field Machinery Manufacturing                       |
 | PCU21112111     | Producer Price Index by Industry: Oil and Gas Extraction                                            |
-
-Request the data for a series ID, or a list of IDs:
-
-```python
-data,titles = openbb.economy.fred_series(series_ids=['A33DNO', 'PCU21112111'])
-
-data.tail(5)
-```
-
-|                     | A33DNO | PCU21112111 |
-| :------------------ | -----: | ----------: |
-| 2022-05-01 00:00:00 |   1509 |     339.024 |
-| 2022-06-01 00:00:00 |   1534 |     374.936 |
-| 2022-07-01 00:00:00 |   1516 |     315.785 |
-| 2022-08-01 00:00:00 |   1661 |     350.329 |
-| 2022-09-01 00:00:00 |   1551 |     339.109 |
-
-Series can also be plotted together:
-
-```python
-openbb.economy.fred_series_chart(series_ids=['A33DNO', 'PCU21112111'])
-```
-
-![openbb.economy.fred_series_chart](https://user-images.githubusercontent.com/85772166/202557759-322a05ed-2740-4abf-8055-82a4abe0cc0d.png)
 
 ### Macro
 

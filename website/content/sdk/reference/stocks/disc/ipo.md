@@ -10,7 +10,7 @@ Get IPO calendar
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/finnhub_model.py#L16)]
 
 ```python
-openbb.stocks.disc.ipo(start_date: str = None, end_date: str = None)
+openbb.stocks.disc.ipo(start_date: Optional[str] = None, end_date: Optional[str] = None)
 ```
 
 ---
@@ -19,8 +19,8 @@ openbb.stocks.disc.ipo(start_date: str = None, end_date: str = None)
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| start_date | str | Initial date, format YYYY-MM-DD | None | True |
-| end_date | str | Final date, format YYYY-MM-DD | None | True |
+| start_date | Optional[str] | Initial date, format YYYY-MM-DD | None | True |
+| end_date | Optional[str] | Final date, format YYYY-MM-DD | None | True |
 
 
 ---

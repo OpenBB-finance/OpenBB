@@ -6,8 +6,8 @@ with a brief overview of the features."
 geekdocCollapseSection: true
 ---
 
-The Cryptocurrency Due Diligence menu gives the user the ability to delve deeper into the coin of choice. To be able to do this, the menu offers basic information about the loaded coin (<a href="/terminal/reference/cryptocurrency/dd/info" target="_blank">info</a> and <a href="/terminal/reference/cryptocurrency/dd/basic" target="_blank">basic</a>), information about the project, technology details, audits etcetera (<a href="/terminal/reference/cryptocurrency/dd/pi" target="_blank">pi</a>), insights into the coin balance and order book (<a href="/terminal/reference/cryptocurrency/dd/balance" target="_blank">balance</a> and <a href="/terminal/reference/cryptocurrency/dd/cbbook" target="_blank">cbbook</a>), the tokenomics and fundraising details
-(<a href="/terminal/reference/cryptocurrency/dd/tk" target="_blank">tk</a> and <a href="/terminal/reference/cryptocurrency/dd/fr" target="_blank">fr</a>) and lastly, social media activity (<a href="/terminal/reference/cryptocurrency/dd/mt" target="_blank">mt</a>, <a href="/terminal/reference/cryptocurrency/dd/twitter" target="_blank">twitter</a> and <a href="/terminal/reference/cryptocurrency/dd/dev" target="_blank">dev</a>).
+The Cryptocurrency Due Diligence menu gives the user the ability to delve deeper into the coin of choice. To be able to do this, the menu offers basic information about the loaded coin (<a href="/terminal/reference/crypto/dd/info" target="_blank" rel="noreferrer noopener">info</a> and <a href="/terminal/reference/crypto/dd/basic" target="_blank" rel="noreferrer noopener">basic</a>), information about the project, technology details, audits etcetera (<a href="/terminal/reference/crypto/dd/pi" target="_blank" rel="noreferrer noopener">pi</a>), insights into the coin balance and order book (<a href="/terminal/reference/crypto/dd/balance" target="_blank" rel="noreferrer noopener">balance</a> and <a href="/terminal/reference/crypto/dd/cbbook" target="_blank" rel="noreferrer noopener">cbbook</a>), the tokenomics and fundraising details
+(<a href="/terminal/reference/crypto/dd/tk" target="_blank" rel="noreferrer noopener">tk</a> and <a href="/terminal/reference/crypto/dd/fr" target="_blank" rel="noreferrer noopener">fr</a>) and lastly, social media activity (<a href="/terminal/reference/crypto/dd/mt" target="_blank" rel="noreferrer noopener">mt</a>, <a href="/terminal/reference/crypto/dd/twitter" target="_blank" rel="noreferrer noopener">twitter</a> and <a href="/terminal/reference/crypto/dd/dev" target="_blank" rel="noreferrer noopener">dev</a>).
 
 ### How to use
 
@@ -87,7 +87,7 @@ To get an understanding of the coin we are looking at, it is possible to look in
 └─────────────┴───────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Then, we have the option to look into the project information with `pi`. Note that this requires an API Key from Messari which you can find more information about <a href="/terminal/quickstart/keys" target="_blank">here</a>. This command returns the following:
+Then, we have the option to look into the project information with `pi`. Note that this requires an API Key from Messari which you can find more information about <a href="/terminal/quickstart/keys" target="_blank" rel="noreferrer noopener">here</a>. This command returns the following:
 
 ```
 2022 Jul 13, 07:51 (🦋) /crypto/dd/ $ pi

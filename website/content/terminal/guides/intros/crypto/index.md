@@ -4,9 +4,9 @@ keywords: ["crypto", "web3", "nft", "blockchain", "cryptocurrency"]
 excerpt: "The Introduction to Cryptocurrency explains how to use the Cryptocurrency and provides a brief description of its sub-menus"
 ---
 
-The Cryptocurrency menu allows you to discover trending cryptocurrency (<a href="/terminal/reference/cryptocurrency/disc/" target="_blank">disc</a>). Additionally, you can also perform research of a specific coin (<a href="/terminal/reference/cryptocurrency/dd" target="_blank">dd</a>),
-NFT (<a href="/terminal/reference/cryptocurrency/nft" target="_blank">nft</a>) or most lucrative Defi project
-(<a href="/terminal/reference/cryptocurrency/defi" target="_blank">defi</a>). It does so by handing you tools to (among other things) perform technical analysis (<a href="/terminal/guides/intros/common/ta/" target="_blank">ta</a>), quantitative analysis (<a href="/terminal/guides/intros/common/qa" target="_blank">qa</a>), and give you access to onchain information (<a href="/terminal/reference/cryptocurrency/onchain/" target="_blank">onchain</a>).
+The Cryptocurrency menu allows you to discover trending cryptocurrency (<a href="/terminal/guides/intros/crypto/disc/" target="_blank" rel="noreferrer noopener">disc</a>). Additionally, you can also perform research of a specific coin (<a href="/terminal/guides/intros/crypto/dd" target="_blank" rel="noreferrer noopener">dd</a>),
+NFT (<a href="/terminal/guides/intros/crypto/nft" target="_blank" rel="noreferrer noopener">nft</a>) or most lucrative Defi project
+(<a href="/terminal//guides/intros/crypto/defi" target="_blank" rel="noreferrer noopener">defi</a>). It does so by handing you tools to (among other things) perform technical analysis (<a href="/terminal/guides/intros/common/ta/" target="_blank" rel="noreferrer noopener">ta</a>), quantitative analysis (<a href="/terminal/guides/intros/common/qa" target="_blank" rel="noreferrer noopener">qa</a>), and give you access to onchain information (<a href="/terminal/guides/intros/crypto/onchain/" target="_blank" rel="noreferrer noopener">onchain</a>).
 
 ### How to use
 

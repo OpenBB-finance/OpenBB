@@ -118,41 +118,67 @@ def update_terminal():
 
 
 def open_openbb_documentation(
-    path, url="https://openbb-finance.github.io/OpenBBTerminal/", command=None
+    path, url="https://docs.openbb.co/terminal", command=None, arg_type=""
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
-    if "ta" in path:
-        path = "terminal/common/ta/"
-    elif "ba" in path:
-        path = "terminal/common/ba/"
-    elif "qa" in path:
-        path = "terminal/common/qa/"
-    elif "keys" in path:
-        path = "#accessing-other-sources-of-data-via-api-keys"
+    if path == "/" and command is None:
+        path = "/"
         command = ""
-    elif "settings" in path or "featflags" in path or "sources" in path:
-        path = "#customizing-the-terminal"
+    elif "keys" in path:
+        path = "/guides/advanced/api-keys"
+        command = ""
+    elif "settings" in path:
+        path = "/guides/advanced/customizing-the-terminal"
+        command = ""
+    elif "featflags" in path:
+        path = "/guides/advanced/customizing-the-terminal"
+        command = ""
+    elif "sources" in path:
+        path = "/guides/advanced/changing-sources"
         command = ""
     else:
-        path = f"terminal/{path}"
+        if arg_type == "command":  # user passed a command name
+            path = f"/reference/{path}"
+        elif arg_type == "menu":  # user passed a menu name
+            if command in ["ta", "ba", "qa"]:
+                menu = path.split("/")[-2]
+                path = f"/guides/intros/common/{menu}"
+            elif command == "forecast":
+                command = ""
+                path = "/guides/intros/forecast"
+            else:
+                path = f"/guides/intros/{path}"
+        else:  # user didn't pass argument and is in a menu
+            menu = path.split("/")[-2]
+            if menu in ["ta", "ba", "qa"]:
+                path = f"/guides/intros/common/{menu}"
+            else:
+                path = f"/guides/intros/{path}"
 
     if command:
-        if command in ["ta", "ba", "qa"]:
-            path = "terminal/common/"
-        elif "keys" == command:
-            path = "#accessing-other-sources-of-data-via-api-keys"
+        if "keys" == command:
+            path = "/guides/advanced/api-keys"
+            command = ""
+        elif "settings" in path or "featflags" in path:
+            path = "/guides/advanced/customizing-the-terminal"
+            command = ""
+        elif "sources" in path:
+            path = "/guides/advanced/changing-sources"
             command = ""
         elif "exe" == command:
-            path = "/terminal/scripts/"
+            path = "/guides/advanced/scripts-and-routines"
             command = ""
-        elif command in ["settings", "featflags", "sources"]:
-            path = "#customizing-the-terminal"
+        elif command in ["ta", "ba", "qa"]:
+            path = f"/guides/intros/common/{command}"
             command = ""
 
         path += command
 
     full_url = f"{url}{path}".replace("//", "/")
+
+    if full_url[-1] == "/":
+        full_url = full_url[:-1]
 
     webbrowser.open(full_url)
 

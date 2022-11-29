@@ -33,13 +33,21 @@ openbb.portfolio.po.file(portfolio_engine: portfolio_optimization.po_engine.PoEn
 ---
 
 ## Examples
-{}
+
 ```python
 from openbb_terminal.sdk import openbb
 p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
 p.get_params()
 ```
 
+```
+{}
+```
+```python
+parameters = openbb.portfolio.po.file(portfolio_engine=p, parameters_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/optimization/defaults.ini")
+```
+
+```
 Parameters:
     interval    : 3y
     log_returns : 0
@@ -47,20 +55,25 @@ Parameters:
     maxnan      : 0.05
     threshold   : 0.3
     alpha       : 0.05
+```
 ```python
-parameters = openbb.portfolio.po.file(portfolio_engine=p, parameters_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/optimization/defaults.ini")
+p.get_params()
 ```
 
+```
 {'interval': '3y',
  'log_returns': '0',
  'freq': 'd',
  'maxnan': '0.05',
  'threshold': '0.3',
  'alpha': '0.05'}
+```
 ```python
+p.set_params({"risk_free_rate": 0.05})
 p.get_params()
 ```
 
+```
 {'interval': '3y',
 'log_returns': '0',
 'freq': 'd',
@@ -68,9 +81,9 @@ p.get_params()
 'threshold': '0.3',
 'alpha': '0.05',
 'risk_free_rate': 0.05}
+```
 ```python
-p.set_params({"risk_free_rate": 0.05})
-p.get_params()
+weights, performance = openbb.portfolio.po.maxsharpe(portfolio_engine=p)
 ```
 
 ---

@@ -42,6 +42,16 @@ openbb.economy.index(indices: list, interval: str = "1d", start_date: int = None
 | pd.Dataframe | Dataframe with historical data on selected indices. |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.economy.available_indices()
+openbb.economy.index(["^GSPC", "sp400"])
+```
+
+---
+
 
 
 </TabItem>

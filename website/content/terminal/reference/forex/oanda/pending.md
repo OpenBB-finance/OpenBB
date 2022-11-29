@@ -10,7 +10,7 @@ Get information about pending orders.
 ### Usage
 
 ```python
-usage: pending
+pending
 ```
 
 ---
@@ -19,5 +19,5 @@ usage: pending
 
 This command has no parameters
 
----
 
+---
