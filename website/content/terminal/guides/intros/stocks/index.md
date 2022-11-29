@@ -96,7 +96,6 @@ The Stock menu has an extensive list of available sub-menus ranging from fundame
 - <a href="/terminal/guides/intros/stocks/comparison" target="_blank" rel="noreferrer noopener">Introduction to Comparison Analysis</a>: have the ability to compare companies based on, among other things, correlation, financial statements, sentiment, valuations and performance.
 - <a href="/terminal/guides/intros/stocks/fa" target="_blank" rel="noreferrer noopener">Introduction to Fundamental Analysis</a>: look into the fundamentals of a chosen company including financial statements, SEC filings, investing scores, discounted cash flow analysis (DCF), sustainability scores and key ratios.
 - <a href="/terminal/guides/intros/stocks/dd" target="_blank" rel="noreferrer noopener">Introduction to Due Diligence</a>: explore analyst recommendations, ratings over time, price targets and quarterly and yearly earnings estimates.
-- <a href="/terminal/guides/intros/stocks/bt" target="_blank" rel="noreferrer noopener">Introduction to Strategy Backtesting</a>: explore back testing strategies based on technical indicators.
 - <a href="/terminal/guides/intros/common/ta" target="_blank" rel="noreferrer noopener">Introduction to Technical Analysis</a>: analysis the chosen company's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
 - <a href="/terminal/guides/intros/common/qa" target="_blank" rel="noreferrer noopener">Introduction to Quantitative Analysis</a>: delve deeper in the historical data with quantitative methods including cumulative distribution function (CDF), (conditional) Value at Risk and rolling ratios.
 - <a href="/terminal/guides/intros/forecast/" target="_blank" rel="noreferrer noopener">Introduction to Forecasting menu</a>: apply advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN), Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
@@ -156,11 +155,11 @@ We can now plot the corresponding stock chart with <a href="/terminal/reference/
 
 ![Candle Chart Microsoft with Moving Average](https://user-images.githubusercontent.com/46355364/169504138-ca51c824-c2d1-428f-90b4-77b7b021718e.png)
 
-Now we can go ahead and enter the Fundamental Analysis menu by typing `fa`. Please see <a href="fundamental_analysis" target="_blank" rel="noreferrer noopener">Introduction to Fundamental Analysis</a> for a more detailed guide on this menu. This will open the following:
+Now we can go ahead and enter the Fundamental Analysis menu by typing `fa`. Please see <a href="/terminal/guides/intros/fa" target="_blank" rel="noreferrer noopener">Introduction to Fundamental Analysis</a> for a more detailed guide on this menu. This will open the following:
 
 ![Fundamental Analysis Menu](https://user-images.githubusercontent.com/46355364/169504216-17484f7d-9cc5-4a56-9c62-d79cde79e91d.png)
 
-Within this menu, I am now able to present the quarterly income statements over the last 3 years (or any other period) by using <a href="/terminal/reference/stocks/fundamental_analysis/income/" target="_blank" rel="noreferrer noopener">income</a>.
+Within this menu, I am now able to present the quarterly income statements over the last 3 years (or any other period) by using <a href="/terminal/reference/stocks/fa/income/" target="_blank" rel="noreferrer noopener">income</a>.
 
 ```
 2022 May 18, 05:52 (🦋) /stocks/fa/ $ income -q -l 12
