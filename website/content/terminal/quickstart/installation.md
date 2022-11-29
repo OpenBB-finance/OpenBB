@@ -138,7 +138,7 @@ curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/Ope
 docker compose run poetry
 ```
 
-The command line with `curl` is downloading this file : [`docker-compose.yaml`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml).
+The command line with `curl` is downloading this file : [`docker-compose.yaml`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml).
 
 The `docker-compose.yaml` file is a configuration file telling `Docker Compose`:
 
