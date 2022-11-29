@@ -225,9 +225,11 @@ def main() -> bool:
                 trail = ctrl.trailmap.split(".")
 
                 terminal_ref = add_todict(terminal_ref, trail, cat["cmd_name"], trail)
-                filepath = f"{str(content_path)}/{'/'.join(trail)}/{cat['cmd_name']}.md"
+                filepath = content_path / f"{'/'.join(trail)}/{cat['cmd_name']}.md"
 
-                os.makedirs(os.path.dirname(filepath), exist_ok=True)
+                if cat['cmd_name'] == "fred":
+                    print(filepath)
+                filepath.parent.mkdir(parents=True, exist_ok=True)
                 with open(filepath, "w", **kwargs) as f:
                     f.write(markdown)
 
