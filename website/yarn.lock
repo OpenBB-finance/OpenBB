@@ -1390,7 +1390,7 @@
     "fs-extra" "^10.1.0"
     "lodash" "^4.17.21"
     "tslib" "^2.4.0"
-
+    
 "@docusaurus/plugin-content-blog@2.2.0":
   "integrity" "sha512-0mWBinEh0a5J2+8ZJXJXbrCk1tSTNf7Nm4tYAl5h2/xx+PvH/Bnu0V+7mMljYm/1QlDYALNIIaT/JcoZQFUN3w=="
   "resolved" "https://registry.npmjs.org/@docusaurus/plugin-content-blog/-/plugin-content-blog-2.2.0.tgz"

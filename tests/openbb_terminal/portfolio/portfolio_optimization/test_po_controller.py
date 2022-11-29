@@ -5,7 +5,10 @@ import os
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.portfolio.portfolio_optimization import po_controller
+try:
+    from openbb_terminal.portfolio.portfolio_optimization import po_controller
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 # pylint: disable=E1101
 # pylint: disable=W0603

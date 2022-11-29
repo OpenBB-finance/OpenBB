@@ -22,9 +22,9 @@ nhits [--num-stacks NUM_STACKS] [--num-blocks NUM_BLOCKS] [--num-layers NUM_LAYE
 | num_stacks | The number of stacks that make up the model | 3 | True | None |
 | num_blocks | The number of blocks making up every stack | 1 | True | None |
 | num_layers | The number of fully connected layers | 2 | True | None |
-| layer_widths | The number of neurons in each layer | 3 | True | None |
+| layer_widths | The number of neurons in each layer | 512 | True | None |
 | activation | The desired activation | ReLU | True | ReLU, RReLU, PReLU, Softplus, Tanh, SELU, LeakyReLU, Sigmoid |
-| maxpool1d | Whether to use max_pool_1d or AvgPool1d | False | True | None |
+| maxpool1d | Whether to use max_pool_1d or AvgPool1d | True | True | None |
 | past_covariates | Past covariates(columns/features) in same dataset. Comma separated. | None | True | None |
 | all_past_covariates | Adds all rows as past covariates except for date and the target column. | False | True | None |
 | naive | Show the naive baseline for a model. | False | True | None |
@@ -36,7 +36,7 @@ nhits [--num-stacks NUM_STACKS] [--num-blocks NUM_BLOCKS] [--num-layers NUM_LAYE
 | output_chunk_length | The length of the forecast of the model. | 5 | True | None |
 | force_reset | If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded). | True | True | None |
 | save_checkpoints | Whether to automatically save the untrained model and checkpoints. | True | True | None |
-| model_save_name | Name of the model to save. | tft_model | True | None |
+| model_save_name | Name of the model to save. | nhits_model | True | None |
 | n_epochs | Number of epochs over which to train the model. | 300 | True | None |
 | dropout | Fraction of neurons affected by Dropout, from 0 to 1. | 0.1 | True | None |
 | batch_size | Number of time series (input and output) used in each training pass | 32 | True | None |
