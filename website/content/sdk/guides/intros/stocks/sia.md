@@ -26,22 +26,22 @@ in the SIA SDK
 
 | Path                     |   Type   |                                            Description |
 | :----------------------- | :------: | -----------------------------------------------------: |
-| openbb.sia.filter_stocks | Function |         generates a list of tickers filtered on inputs |
-| openbb.sia.cpci          | Function | companies per Country based on Industry and Market Cap |
-| openbb.sia.cpcs          | Function |   companies per Country based on Sector and Market Cap |
-| openbb.sia.cpic          | Function | companies per Industry based on Country and Market Cap |
-| openbb.sia.cpis          | Function |  companies per Industry based on Sector and Market Cap |
-| openbb.sia.cps           | Function |   companies per Sector based on Country and Market Cap |
-| openbb.sia.countries     | Function |                lists all countries valid for selection |
-| openbb.sia.industries    | Function |               lists all industries valid for selection |
-| openbb.sia.maketcap      | Function |               lists all marketcaps valid for selection |
-| openbb.sia.sectors       | Function |                  lists all sectors valid for selection |
-| openbb.sia.stocks_data   | Function |              historics financial statement information |
+| openbb.stocks.sia.filter_stocks | Function |         generates a list of tickers filtered on inputs |
+| openbb.stocks.sia.cpci          | Function | companies per Country based on Industry and Market Cap |
+| openbb.stocks.sia.cpcs          | Function |   companies per Country based on Sector and Market Cap |
+| openbb.stocks.sia.cpic          | Function | companies per Industry based on Country and Market Cap |
+| openbb.stocks.sia.cpis          | Function |  companies per Industry based on Sector and Market Cap |
+| openbb.stocks.sia.cps           | Function |   companies per Sector based on Country and Market Cap |
+| openbb.stocks.sia.countries     | Function |                lists all countries valid for selection |
+| openbb.stocks.sia.industries    | Function |               lists all industries valid for selection |
+| openbb.stocks.sia.maketcap      | Function |               lists all marketcaps valid for selection |
+| openbb.stocks.sia.sectors       | Function |                  lists all sectors valid for selection |
+| openbb.stocks.sia.stocks_data   | Function |              historics financial statement information |
 
 Alteratively you can print the contents of the SIA SDK with: ​
 
 ```python
-help(openbb.sia)
+help(openbb.stocks.sia)
 ```
 
 ## Examples

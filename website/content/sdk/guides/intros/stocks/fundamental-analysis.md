@@ -25,37 +25,37 @@ A brief description below highlights the main Functions and Modules available in
 
 | Path                       |    Type    |                                  Description |
 | :------------------------- | :--------: | -------------------------------------------: |
-| openbb.fa.mgmt             |  Function  |                      Company Management Team |
-| openbb.fa.score            |  Function  |           Investing Score from Warren Buffet |
-| openbb.fa.sust             |  Function  |                        Sustianability Values |
-| openbb.fa.divs             |  Function  |           Historical Dividends for a Company |
-| openbb.fa.shrs             |  Function  | Shareholders (Insiders, Institutions, Funds) |
-| openbb.fa.earnings         |  Function  |                        Earnings Data and EPS |
-| openbb.fa.info             |  Function  |                  Information About a Company |
-| openbb.fa.dcf              |  Function  |                Shows DCF Values for a Ticker |
-| openbb.fa.overview         |  Function  |                      Overview of the Company |
-| openbb.fa.data             |  Function  |               Fundamental and Technical Data |
-| openbb.fa.ratios           |  Function  |                    In-Depth Ratios over Time |
-| openbb.fa.growth           |  Function  |          Growth of Financial Statement Items |
-| openbb.fa.enterprise       |  Function  |                     Company Enterprise Value |
-| openbb.fa.analysis         |  Function  |  Analysis SEC Fillings with Machine Learning |
-| openbb.fa.balance          |  Function  |                        Company Balance Sheet |
-| openbb.fa.dupont           |  Function  |                       Detailed ROE Breakdown |
-| openbb.fa.profile          |  Function  |                              Company Profile |
-| openbb.fa.fraud            |  Function  |                             Key Fraud Ratios |
-| openbb.fa.income           |  Function  |                     Company Income Statement |
-| openbb.fa.key              |  Function  |                          Company Key Metrics |
-| openbb.fa.splits           |  Function  |    Stock Splits and Reverse Splits Since IPO |
-| openbb.fa.hq               |  Function  |                      HQ Location for Company |
-| openbb.fa.cal              |  Function  |              Calendar Earnings and Estimates |
-| openbb.fa.mktcap           |  Function  |                         Estimated Market Cap |
-| openbb.fa.metrics          |  Function  |                        Key Metrics Over Time |
-| openbb.fa.cash             |  Function  |                           Company Cash Flows |
+| openbb.stocks.fa.mgmt             |  Function  |                      Company Management Team |
+| openbb.stocks.fa.score            |  Function  |           Investing Score from Warren Buffet |
+| openbb.stocks.fa.sust             |  Function  |                        Sustianability Values |
+| openbb.stocks.fa.divs             |  Function  |           Historical Dividends for a Company |
+| openbb.stocks.fa.shrs             |  Function  | Shareholders (Insiders, Institutions, Funds) |
+| openbb.stocks.fa.earnings         |  Function  |                        Earnings Data and EPS |
+| openbb.stocks.fa.info             |  Function  |                  Information About a Company |
+| openbb.stocks.fa.dcf              |  Function  |                Shows DCF Values for a Ticker |
+| openbb.stocks.fa.overview         |  Function  |                      Overview of the Company |
+| openbb.stocks.fa.data             |  Function  |               Fundamental and Technical Data |
+| openbb.stocks.fa.ratios           |  Function  |                    In-Depth Ratios over Time |
+| openbb.stocks.fa.growth           |  Function  |          Growth of Financial Statement Items |
+| openbb.stocks.fa.enterprise       |  Function  |                     Company Enterprise Value |
+| openbb.stocks.fa.analysis         |  Function  |  Analysis SEC Fillings with Machine Learning |
+| openbb.stocks.fa.balance          |  Function  |                        Company Balance Sheet |
+| openbb.stocks.fa.dupont           |  Function  |                       Detailed ROE Breakdown |
+| openbb.stocks.fa.profile          |  Function  |                              Company Profile |
+| openbb.stocks.fa.fraud            |  Function  |                             Key Fraud Ratios |
+| openbb.stocks.fa.income           |  Function  |                     Company Income Statement |
+| openbb.stocks.fa.key              |  Function  |                          Company Key Metrics |
+| openbb.stocks.fa.splits           |  Function  |    Stock Splits and Reverse Splits Since IPO |
+| openbb.stocks.fa.hq               |  Function  |                      HQ Location for Company |
+| openbb.stocks.fa.cal              |  Function  |              Calendar Earnings and Estimates |
+| openbb.stocks.fa.mktcap           |  Function  |                         Estimated Market Cap |
+| openbb.stocks.fa.metrics          |  Function  |                        Key Metrics Over Time |
+| openbb.stocks.fa.cash             |  Function  |                           Company Cash Flows |
 
 Alteratively you can print the contents of the FA SDK with:
 
 ```python
-help(openbb.fa)
+help(openbb.stocks.fa)
 ```
 
 ## Examples
@@ -106,7 +106,7 @@ openbb.stocks.fa.enterprise("TSLA")
 Income statements over time for a ticker
 
 ```python
-openbb.stocks.ca.income(["tsla", "aapl"])
+openbb.stocks.fa.income(["tsla", "aapl"])
 ```
 
 | Breakdown                                   |           ttm |      2021-12-31 |       2020-12-31 |   2019-12-31 |

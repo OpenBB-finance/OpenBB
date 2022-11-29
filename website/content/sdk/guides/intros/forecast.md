@@ -338,7 +338,7 @@ openbb.forecast.delete(spy, 'Close')
 Then, let's rename, 'Adj Close', as, 'Close', and verify the results:
 
 ```python
-openbb.forecast.rename(spy, 'Adj Close', 'Close')
+spy = openbb.forecast.rename(spy, 'Adj Close', 'Close')
 
 spy.tail(1)
 ```
@@ -440,7 +440,7 @@ Let's add another potential past-covariate to the dataset by taking the adjusted
 
 ```python
 xom = openbb.stocks.load("XOM", start_date = '1993-01-29')
-openbb.forecast.combine(df1 = spy, df2 = xom, column = 'Adj Close', dataset = 'XOM' )
+spy = openbb.forecast.combine(df1 = spy, df2 = xom, column = 'Adj Close', dataset = 'XOM' )
 spy.rename(columns = {'XOM_Adj Close': 'XOM'}, inplace = True)
 ```
 
