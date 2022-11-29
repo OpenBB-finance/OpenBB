@@ -14,7 +14,7 @@ keywords:
 excerpt: "The Introduction to Econometrics explains how to use the menu"
 ---
 
-The capabilities of the [Econometrics menu](/terminal/guides/econometrics) from the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets. The menu allows the user to load in his/her own dataset(s), modify the data by adding columns or setting indices, apply statistical tests (e.g. <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Godfrey_test" target="_blank" rel="noreferrer noopener">Breusch-Godfrey autocorrelation tests</a>) as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikipedia.org/wiki/Random_effects_model" target="_blank" rel="noreferrer noopener">Random Effects</a> and <a href="https://en.wikipedia.org/wiki/Fixed_effects_model" target="_blank" rel="noreferrer noopener">Fixed Effects</a>)
+The capabilities of the [Econometrics menu](/terminal/guides/intros/econometrics) from the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets. The menu allows the user to load in his/her own dataset(s), modify the data by adding columns or setting indices, apply statistical tests (e.g. <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Godfrey_test" target="_blank" rel="noreferrer noopener">Breusch-Godfrey autocorrelation tests</a>) as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikipedia.org/wiki/Random_effects_model" target="_blank" rel="noreferrer noopener">Random Effects</a> and <a href="https://en.wikipedia.org/wiki/Fixed_effects_model" target="_blank" rel="noreferrer noopener">Fixed Effects</a>)
 
 ## How to use
 
@@ -67,7 +67,7 @@ help(openbb.econometrics)
 ### Loading a dataset
 
 The first step in using this menu is loading a dataset. This can be either an example dataset, see the list below, or any locally stored Excel file. To demonstrate the usage of the menu, the <a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank" rel="noreferrer noopener">longley</a>
-dataset is loaded in. This can be done with the following
+ dataset is loaded in. This can be done with the following
 
 ```python
 example_load = openbb.econometrics.load("anes96")

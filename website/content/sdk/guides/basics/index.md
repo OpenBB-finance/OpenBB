@@ -1,15 +1,61 @@
 ---
-title: Using the SDK 
-sidebar_position: 2
+title: Basics
+sidebar_position: 1
 ---
+### Importing the SDK
 
-After you have imported the OpenBB SDK you are able to run many of the commands presents within the extensive list found [here]](/sdk/reference).
+Now that you have the SDK installed, the first step is to import the OpenBB SDK in your preferred code editor. Nearly everything required to interact with any function from the OpenBB Terminal gets imported in one line. Begin a Python script or Notebook file with:
 
 ```python
 from openbb_terminal.sdk import openbb
 ```
 
-For example, you are able to show Economic events by running the following command. Note that the results from data functions are not stored to memory unless explicitly instructed to. Most functions that return data are presented as a Pandas DataFrame.
+Example snippets used in the remainder of this guide will assume the code block above is used.
+
+### Navigation
+
+In the same way as operating the OpenBB Terminal, functions are divided into menus which are scrollable after importing into a jupyter notebook. Entering a period, `.`, after `openbb`, will display the Sub-menus available.
+
+![Navigation](https://user-images.githubusercontent.com/85772166/202795900-5f1cb00a-a0ff-4899-b6e2-c5af54b653d1.png "Navigation")
+
+An alternate way to view the contents of a menu is to use Python's built-in help.
+
+```python
+help(openbb.stocks.dd)
+```
+
+### Docstrings
+
+In addition to Python's built-in help, docstrings are also displayed in the Contextual Help window, within a Jupyter environment or by running `help(openbb.economy.events)` in your code editor.
+
+```python
+help(openbb.economy.events)
+
+Help on Operation in module openbb_terminal.core.library.operation:
+
+<openbb_terminal.core.library.operation.Operation object>
+    Get economic calendar for countries between specified dates
+
+    Parameters
+    ----------
+    countries : [List[str],str]
+        List of countries to include in calendar.  Empty returns all
+    start_date : str
+        Start date for calendar
+    end_date : str
+        End date for calendar
+
+    Returns
+    -------
+    pd.DataFrame
+        Economic calendar
+```
+
+## How to use the SDK
+
+### Your First Function
+
+To get started using the OpenBB SDK you can try the below code for your first function.
 
 ```python
 openbb.economy.events()
@@ -23,7 +69,16 @@ openbb.economy.events()
 |   3 | 02:00      | United Kingdom | Claimant Count Change         | 3.3K   | 17.3K     | 3.9K     | 2022-11-15 |
 |   4 | 02:00      | United Kingdom | Employment Change 3M/3M       | -52K   | -25K      | -109K    | 2022-11-15 |
 
-As most data is stored as a Pandas DataFrame, it is possible to adjust or filter the data directly through the use of the built-in functionalities of [Pandas](https://pandas.pydata.org/). For example, the code block below will filter the results of the events function to display only events scheduled at a specific time.
+:::note - The results from data functions are not stored to memory unless explicitly instructed to. Most functions returning data are presented as a Pandas DataFrame.
+:::
+
+Modify the syntax slightly to deliver the output into a DataFrame:
+
+```python
+economic_calendar = openbb.economy.events()
+```
+
+Defined as a variable, interacting with the results becomes a matter of manipulating tables. For example, the code block below will filter the results of the events function to display only events scheduled at a specific time.
 
 ```python
 economic_calendar = openbb.economy.events()
@@ -41,7 +96,13 @@ events
 
 ### Passing Results to Another Function
 
-It may be desirable to derive a list of tickers from a different function. This can be useful for screening tickers, or analyzing particular industries or sectors. The Comparison Analysis sub-module, within Stocks, has one set of functions that can benefit from this kind of workflow. As an example, holdings with the highest allocation of the [Dow Jones Industrial Average ETF](https://www.ssga.com/us/en/intermediary/etfs/funds/spdr-dow-jones-industrial-average-etf-trust-dia) are used.
+Let's take a look at another example where the input to a function is a list. It may be desirable to derive that list from a different function. This can be useful for screening tickers, or analyzing particular industries or sectors. The Comparison Analysis sub-module, within Stocks, is one set of functions that can benefit from this kind of workflow. Instead of something like:
+
+```python
+openbb.stocks.ca.screener(similar = ['AAPL', 'NFLX', 'META', 'AMZN', 'MSFT', 'GOOGL', 'DIS', 'TSLA'], data_type = 'valuation')
+```
+
+Try, `openbb.etf.holdings`, to populate a list dynamically:
 
 ```python
 symbols = openbb.etf.holdings('DIA')
@@ -60,9 +121,10 @@ dia_valuation.head(5)
 |   1 | AMGN   | 1.5543e+11 | 22.86 |    15.4 | 3.38 |  5.9 | 41.77   | 13.54 |  32.04 |     -0.165 |     0.0486 |       0.001 |      0.0677 |         0.025 |  283.6 |  -0.006 | 2761083 |
 |  18 | MCD    | 2.0272e+11 |  34.3 |   26.01 | 5.14 | 8.71 | N/A     | 71.67 | 118.65 |      0.591 |     0.0522 |        0.13 |      0.0667 |        -0.012 | 267.84 | -0.0163 | 5421817 |
 
+
 ### Displaying Charts
 
-The OpenBB SDK has built-in charting libraries for Matplotlib, for any chart available from the Terminal. User style sheets can be added to the folder (more on this in [Importing and Exporting Data](/sdk/guides/basics/data)), `~/OpenBBUserData/styles/user`. Styles are shared properties between the OpenBB Terminal and the SDK.
+The OpenBB SDK has built-in charting libraries for Matplotlib, for any chart available from the Terminal. User style sheets can be added to the folder (more on this in [Importing and Exporting Data](/sdk/guides/advanced/data)), `~/OpenBBUserData/styles/user`. Styles are shared properties between the OpenBB Terminal and the SDK.
 
 :::note Displaying charts in Jupyter Notebooks requires an additional line of code. You can either render a static image with `%matplotlib inline` or add in pan/zoom functionality with `%matplotlib widget`.
 :::
@@ -127,4 +189,4 @@ openbb.futures.curve_chart('GE')
 
 ![openbb.futures.curve](https://user-images.githubusercontent.com/85772166/201583945-18364efa-c305-4c1a-a032-f779e28894c8.png "openbb.futures.curve")
 
-The intros section for each module explore further functionality and provide sample code snippets.
+The intros section for each module explore further functionality and provide sample code snippets. For example, an introduction to Stocks can be found [here](/sdk/guides/intros/stocks).

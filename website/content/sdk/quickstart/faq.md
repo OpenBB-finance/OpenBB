@@ -56,7 +56,7 @@ An installation will use approximately 4GB of space.
 <details><summary>How do I launch Jupyter Lab or Jupyter Notebook for use with the OpenBB SDK?</summary>
 <p>
 
-Once the installation is finished via `pip` and you have activated the conda environment, as explained in the [installation guide](/sdk/quickstart/installation) you are able to activate a Jupyter Notebook by running `jupyter notebook` or Jupyter Lab with `jupyter lab`. Then, you should be able to use the OpenBB SDK by following along with the [Structure of the SDK](/sdk/guides/basics/structure) and [Using the SDK](/sdk/guides/basics/using) guides.
+Once the installation is finished via `pip` and you have activated the conda environment, as explained in the [installation guide](/sdk/quickstart/installation) you are able to activate a Jupyter Notebook by running `jupyter notebook` or Jupyter Lab with `jupyter lab`. Then, you should be able to use the OpenBB SDK by following along with the [How to use the SDK](/sdk/guides/basics#how-to-use-the-sdk) guide.
 
 </p>
 </details>
@@ -104,8 +104,57 @@ You can get help with OpenBB SDK by joining our [Discord server](https://openbb.
 </p>
 </details>
 
+<details><summary>How can I give feedback about the OpenBB SDK?</summary>
+<p>
+
+Being an open source platform that wishes to tailor to the needs of any type of investor, we highly encourage anyone to share with us their experience and/or how we can further improve the OpenBB Terminal. This can be anything from a very small bug, a new feature, or the implementation of a highly advanced Machine Learning model.
+
+You can contact us via the following routes:
+
+- If you notice that a feature is missing inside the terminal, please fill in the <a href="https://openbb.co/request-a-feature" target="_blank" rel="noreferrer noopener">Request a Feature form</a>.
+- If you wish to report a bug, have a question/suggestion or anything else, please fill in the <a href="https://openbb.co/support" target="_blank" rel="noreferrer noopener">Support form</a>.
+- If you wish to speak to us directly, please contact us via <a href="https://openbb.co/discord" target="_blank" rel="noreferrer noopener">Discord</a>.
+
+</p>
+</details>
+
 
 ## Functionality
+
+<details><summary>What kind of architectural pattern does the OpenBB SDK use?</summary>
+<p>
+
+Throughout the entire OpenBB Platform, the [Model-view-controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) architectural pattern is used for creating functionality in the terminal.
+
+This is visible in the OpenBB SDK with the addition of `_chart` within functions relating to the `view` portfion of the pattern.
+
+For example the model is displayed with:
+
+```
+openbb.economy.ycrv()
+```
+
+|     |  Maturity | Rate |
+| --: | --------: | ---: |
+|   0 | 0.0833333 | 3.93 |
+|   1 |      0.25 | 4.34 |
+|   2 |       0.5 | 4.61 |
+| ... |       ... |  ... |
+|   8 |        10 | 3.82 |
+|   9 |        20 | 4.13 |
+|  10 |        30 | 3.92 |
+
+And the view with:
+
+```
+openbb.economy.ycrv_chart()
+```
+
+![Screenshot 2022-11-21 at 4 29 17 PM](https://user-images.githubusercontent.com/85772166/203185342-f019414d-24e2-4d8a-a718-10eeedb59e8c.png)
+
+</p>
+</details>
+
 
 <details><summary>Why is data from today missing when I use the load function?</summary>
 <p>
