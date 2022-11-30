@@ -5,6 +5,7 @@ title: Installation
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import InstallerButton from "@site/src/components/General/InstallerButton";
 
 The OpenBB Terminal can be directly installed on your computer via our installation program. Within this section, you are guided through the installation process and how to launch the program. If you struggle with the installation process, please don’t hesitate to reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
 
@@ -16,7 +17,9 @@ OpenBB Terminal is available in all major platforms. With MacOS/Windows you can 
   <TabItem value="windows" label="Windows">Install on Windows
   <div class="gdoc-page">
 
-</div><p>Download the installer from the website <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/Windows10.OpenBB.Terminal.v1.9.0.exe">here</a>.</p>
+</div><p>Download the installer from the button below:</p>
+
+<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.0.0/Windows.10.OpenBB.Terminal.v2.0.0.exe" label="Windows Installer" />
 
 <p>When the file is downloaded, use the following steps to run the OpenBB Terminal:</p>
 <div class="gdoc-columns">
@@ -45,12 +48,17 @@ OpenBB Terminal is available in all major platforms. With MacOS/Windows you can 
 </div>
 </TabItem>
 
-<TabItem value="mac" label="MacOS">Install on macOS 🍎
+<TabItem value="mac" label="MacOS">Install on macOS
 
 For Mac there are two installers available, one for Intel and one for Apple Silicon (M1). Please download the correct one for your machine.
+
 <ul>
-<li>If you are using Mac Intel click <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/x86_64.MacOS.OpenBB.Terminal.v1.9.0.dmg">here</a> to download the installer.</li>
-<li>If you are using Mac Apple Silicon (M1) click <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.9.0/ARM64.MacOS.OpenBB.Terminal.v1.9.0.dmg">here</a> to download the installer.</li>
+<li>If you are using Mac Intel: <br />
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.0.0/x86_64.MacOS.OpenBB.Terminal.v2.0.0.dmg" label="Mac Intel Installer" />
+</li>
+<li>If you are using Mac Apple Silicon (M1): <br />
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.0.0/ARM64.MacOS.OpenBB.Terminal.v2.0.0.dmg" label="Mac M1 Installer" />
+</li>
 </ul>
 
 <p>When the DMG file is downloaded, use the following steps to run the OpenBB Terminal:</p>
@@ -135,7 +143,7 @@ Here are the commands to use `Docker Compose` to pull and run the `OpenBBTermina
 ```bash
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
-docker compose run poetry
+docker compose run openbb
 ```
 
 The command line with `curl` is downloading this file : [`docker-compose.yaml`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml).
@@ -156,12 +164,12 @@ If you don't have `Docker Compose` you can also use `Docker` directly to run the
 Here is the commands to run:
 
 ```bash
-docker pull ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
+docker pull ghcr.io/openbb-finance/openbbterminal/openbb:latest
 
-docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
+docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal/openbb:latest
 ```
 
-Be sure to replace `X.Y.Z` with the version you want to pull and run.
+You can replace `latest` with the version you want to pull and run.
 
 Note for windows:
 
@@ -192,7 +200,7 @@ docker compose run poetry
 Or run `Docker` directly:
 
 ```bash
-docker run -v ~/.openbb_terminal:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env DISPLAY=host.docker.internal:0.0 ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
+docker run -v ~/.openbb_terminal:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env DISPLAY=host.docker.internal:0.0 ghcr.io/openbb-finance/openbbterminal/openbb:latest
 ```
 
 ### X-Server on macOS
@@ -221,7 +229,7 @@ xhost + $IP
 Now we can run the docker container, adding the display to the environment:
 
 ```bash
-docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env-file=path/to/setenv --env DISPLAY=$IP:0 ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
+docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env-file=path/to/setenv --env DISPLAY=$IP:0 ghcr.io/openbb-finance/openbbterminal/openbb:latest
 ```
 
 This container will be able to display all the same plots as the terminal interface.
@@ -244,7 +252,7 @@ And run the following commands.
 
 ```bash
 xhost +local:
-docker run -it --rm --name openbb --env-file=./.env -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
+docker run -it --rm --name openbb --env-file=./.env -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ghcr.io/openbb-finance/openbbterminal/openbb:latest
 xhost -local:
 ```
 

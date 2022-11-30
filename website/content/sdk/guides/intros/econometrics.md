@@ -109,8 +109,7 @@ file_load = openbb.econometric.load("PATH_TO_FILE/FILE.xlsx")
 ### Working with Time Series data
 
 To demonstrate the usage of the Econometrics SDK for time series data, the
-<a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank" rel="noreferrer noopener">longley</a>
-dataset is loaded in.
+<a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank" rel="noreferrer noopener">longley</a> dataset is loaded in.
 
 ```python
 # Load the data

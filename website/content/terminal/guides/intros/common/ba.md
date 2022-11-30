@@ -73,7 +73,7 @@ Some data sources will require a valid API key, which can be obtained for free a
 - <a href="https://sentimentinvestor.com/" target="_blank" rel="noreferrer noopener">Sentiment
   Investor</a><br/>
 
-See the <a href="/terminal/guides/advanced/keys" target="_blank" rel="noreferrer noopener">Set API keys</a> for help with API keys in the Terminal.
+See the <a href="/terminal/guides/advanced/api-keys" target="_blank" rel="noreferrer noopener">Set API keys</a> for help with API keys in the Terminal.
 
 ### Examples
 
@@ -169,7 +169,7 @@ The <a href="/terminal/reference/stocks/ba/sentiment/" target="_blank" rel="nore
 
 <img alt="sentiment" src="https://user-images.githubusercontent.com/46355364/170243539-1ea3fc6a-d7ec-4991-a6bb-ed5879753328.png"></img>
 
-More advanced techniques can also be applied by using tools from <a href="https://sentimentinvestor.com" target="_blank" rel="noreferrer noopener">Sentiment Investor</a> that analyzes millions of messages to show the most talked about stocks by hour. This has the ability to show the most trending tickers with <a href="/terminal/reference/stocks/ba/trending/" target="_blank" rel="noreferrer noopener">trending</a> and historical sentiment data with <a href="/terminal/reference/stocks/ba/hist/" target="_blank" rel="noreferrer noopener">hist</a>.
+More advanced techniques can also be applied by using tools from <a href="https://sentimentinvestor.com" target="_blank" rel="noreferrer noopener">Sentiment Investor</a> that analyzes millions of messages to show the most talked about stocks by hour. This has the ability to show the most trending tickers with <a href="/terminal/reference/stocks/ba/trending/" target="_blank" rel="noreferrer noopener">trending</a>.
 
 ```
 (🦋) /stocks/ba/ $ trending
@@ -188,12 +188,7 @@ Most trending stocks at 2022-05-23 00:00
 | NVAX   | 13.00 | 4.00   | 0.47 | 0.40 |
 | NVDA   | 12.00 | 11.00  | 0.45 | 0.47 |
 | DIS    | 12.00 | 1.00   | 0.69 | 0.44 |
-
-
-(🦋) /stocks/ba/ $ hist -s 2022-05-01
 ```
-
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170243719-fccf414b-3a89-4776-88de-e30f4eb34f89.png"><img alt="hist" src="https://user-images.githubusercontent.com/46355364/170243719-fccf414b-3a89-4776-88de-e30f4eb34f89.png"></img></a>
 
 Inspired by the Twitter user, <a href="https://twitter.com/CramerTracker" target="_blank" rel="noreferrer noopener">@cramertracker</a>, the final two features follow (CNBC Talking Head) Jim Cramer stock recommendations as satire that rings true.
 
