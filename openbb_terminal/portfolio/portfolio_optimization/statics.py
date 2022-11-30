@@ -1,3 +1,7 @@
+from typing import List
+from openbb_terminal.helper_funcs import get_rf
+
+
 PERIOD_CHOICES = [
     "1d",
     "5d",
@@ -255,4 +259,217 @@ PARAM_TYPES = {
     "d_ewma": float,
     "value": float,
     "value_short": float,
+}
+
+NAN_FILL_METHOD_CHOICES = [
+    "linear",
+    "time",
+    "nearest",
+    "zero",
+    "slinear",
+    "quadratic",
+    "cubic",
+    "barycentric",
+]
+
+TECHNIQUE_CHOICES = [
+    "maxsharpe",
+    "minrisk",
+    "maxutil",
+    "maxret",
+    "maxdiv",
+    "maxdecorr",
+    "ef",
+    "equal",
+    "mktcap",
+    "dividend",
+    "blacklitterman",
+    "riskparity",
+    "relriskparity",
+    "hrp",
+    "herc",
+    "nco",
+]
+
+VALID_PARAMS = {
+        "historic_period": {
+            "type_": str,
+            "default": "3y",
+            "choices": PERIOD_CHOICES,
+        },
+        "start_period": {
+            "type_": str,
+            "default": "",
+        },
+        "end_period": {
+            "type_": str,
+            "default": "",
+        },
+        "log_returns": {
+            "type_": bool,
+            "default": False,
+        },
+        "return_frequency": {
+            "type_": str,
+            "default": "d",
+            "choices": FREQ_CHOICES,
+        },
+        "max_nan": {
+            "type_": float,
+            "default": 0.05,
+        },
+        "threshold_value": {
+            "type_": float,
+            "default": 0.3,
+        },
+        "nan_fill_method": {
+            "type_": str,
+            "default": "time",
+            "choices": NAN_FILL_METHOD_CHOICES,
+        },
+        "risk_free": {
+            "type_": float,
+            "default": get_rf(),
+        },
+        "significance_level": {
+            "type_": float,
+            "default": 0.05,
+        },
+        "technique": {
+            "type_": str,
+            "default": "maxsharpe",
+            "choices": TECHNIQUE_CHOICES,
+        },
+        "risk_measure": {
+            "type_": str,
+            "default": "MV",
+            "choices": MEAN_RISK_CHOICES,
+        },
+        "target_return": {
+            "type_": float,
+            "default": -1,
+        },
+        "target_risk": {
+            "type_": float,
+            "default": -1,
+        },
+        "expected_return": {
+            "type_": str,
+            "default": "hist",
+            "choices": MEAN_CHOICES,
+        },
+        "covariance": {
+            "type_": str,
+            "default": "hist",
+            "choices": COVARIANCE_CHOICES,
+        },
+        "smoothing_factor_ewma": {
+            "type_": float,
+            "default": 0.94,
+        },
+        "long_allocation": {
+            "type_": float,
+            "default": 1.0,
+        },
+        "short_allocation": {
+            "type_": float,
+            "default": 0.0,
+        },
+        "risk_aversion": {
+            "type_": float,
+            "default": 1.0,
+        },
+        "amount_portfolios": {
+            "type_": int,
+            "default": 100,
+        },
+        "random_seed": {
+            "type_": int,
+            "default": 123,
+        },
+        "tangency": {
+            "type_": bool,
+            "default": False,
+        },
+        "risk_contribution": {
+            "type_": List[str],
+            "default": None,
+        },
+        "risk_parity_model": {
+            "type_": str,
+            "default": "A",
+            "choices": REL_RISK_PARITY_CHOICES,
+        },
+        "penal_factor": {
+            "type_": float,
+            "default": 1.0,
+        },
+        "p_views": {
+            "type_": List[List[float]],
+            "default": None,
+        },
+        "q_views": {
+            "type_": List[List[float]],
+            "default": None,
+        },
+        "delta": {
+            "type_": float,
+            "default": 1,
+        },
+        "equilibrium": {
+            "type_": bool,
+            "default": True,
+        },
+        "optimize": {
+            "type_": bool,
+            "default": True,
+        },
+        "co_dependence": {
+            "type_": str,
+            "default": None,
+            "choices": CODEPENDENCE_CHOICES,
+        },
+        "cvar_simulations_losses": {
+            "type_": int,
+            "default": 100,
+        },
+        "cvar_simulations_gains": {
+            "type_": int,
+            "default": 100,
+        },
+        "cvar_significance": {
+            "type_": float,
+            "default": 0.05,
+        },
+        "linkage": {
+            "type_": str,
+            "default": "single",
+            "choices": LINKAGE_CHOICES,
+        },
+        "amount_clusters": {
+            "type_": int,
+            "default": 10,
+        },
+        "max_clusters": {
+            "type_": int,
+            "default": 10,
+        },
+        "amount_bins": {
+            "type_": str,
+            "default": 10,
+            "choices": BINS_CHOICES,
+        },
+        "alpha_tail": {
+            "type_": float,
+            "default": 0.05,
+        },
+        "leaf_order": {
+            "type_": bool,
+            "default": True,
+        },
+        "objective": {
+            "type_": str,
+            "default": "MinRisk",
+            "choices": OBJECTIVE_CHOICES,
+        },
 }
