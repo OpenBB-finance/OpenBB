@@ -4,6 +4,9 @@ __docformat__ = "numpy"
 import argparse
 import pandas as pd
 
+from openbb_terminal.portfolio.portfolio_optimization import statics
+from openbb_terminal.rich_config import console
+
 # These are all the possible yfinance properties
 valid_property_infos = [
     "previousClose",
@@ -128,3 +131,23 @@ def dict_to_df(d: dict) -> pd.DataFrame:
     df = pd.DataFrame.from_dict(data=d, orient="index", columns=["value"])
 
     return df
+
+
+def validate_risk_measure(risk_measure: str, warning: bool = True) -> str:
+    """Check that the risk measure selected is valid
+
+    Parameters
+    ----------
+    risk_measure : str
+        Risk measure to check
+
+    Returns
+    -------
+    str
+        Validated risk measure
+    """
+    if risk_measure.lower() in statics.RISK_CHOICES:
+        return statics.RISK_CHOICES[risk_measure.lower()]
+    if warning:
+        console.print("[yellow]Risk measure not found. Using 'MV'.[/yellow]")
+    return "MV"
