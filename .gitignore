@@ -16,6 +16,7 @@ iframe_figures/
 exports/*
 .idea
 .coverage
+.scannerwork
 htmlcov
 openbb_terminal/config_plot.py
 openbb_terminal/config_terminal.py
