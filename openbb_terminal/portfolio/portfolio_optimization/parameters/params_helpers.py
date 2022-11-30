@@ -95,8 +95,11 @@ def check_convert_parameter(name, value, parameter):
     """
 
     try:
-        # Try to cast the value to the correct type
-        new_value = parameter.type_(value)
+        # Try to cast the value to the correct type if int or float
+        if parameter.type_ is int or parameter.type_ is float:
+            new_value = parameter.type_(value)
+        else:
+            new_value = value
     except ValueError:
         new_value = parameter.default
         console.print(
