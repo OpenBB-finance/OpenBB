@@ -438,12 +438,12 @@ OPTIMIZATION_PARAMETERS = {
     ),
     "p_views": Parameter(
         name="p_views",
-        type_=List[List[float]],
+        type_=Optional[List[List[float]]],
         default=None,
     ),
     "q_views": Parameter(
         name="q_views",
-        type_=List[List[float]],
+        type_=Optional[List[List[float]]],
         default=None,
     ),
     "delta": Parameter(
