@@ -143,7 +143,7 @@ Here are the commands to use `Docker Compose` to pull and run the `OpenBBTermina
 ```bash
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
-docker compose run poetry
+docker compose run openbb
 ```
 
 The command line with `curl` is downloading this file : [`docker-compose.yaml`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml).
@@ -164,12 +164,12 @@ If you don't have `Docker Compose` you can also use `Docker` directly to run the
 Here is the commands to run:
 
 ```bash
-docker pull ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
+docker pull ghcr.io/openbb-finance/openbbterminal/openbb:latest
 
-docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
+docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal/openbb:latest
 ```
 
-Be sure to replace `X.Y.Z` with the version you want to pull and run.
+You can replace `latest` with the version you want to pull and run.
 
 Note for windows:
 
@@ -200,7 +200,7 @@ docker compose run poetry
 Or run `Docker` directly:
 
 ```bash
-docker run -v ~/.openbb_terminal:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env DISPLAY=host.docker.internal:0.0 ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
+docker run -v ~/.openbb_terminal:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env DISPLAY=host.docker.internal:0.0 ghcr.io/openbb-finance/openbbterminal/openbb:latest
 ```
 
 ### X-Server on macOS
@@ -229,7 +229,7 @@ xhost + $IP
 Now we can run the docker container, adding the display to the environment:
 
 ```bash
-docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env-file=path/to/setenv --env DISPLAY=$IP:0 ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
+docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env-file=path/to/setenv --env DISPLAY=$IP:0 ghcr.io/openbb-finance/openbbterminal/openbb:latest
 ```
 
 This container will be able to display all the same plots as the terminal interface.
@@ -252,7 +252,7 @@ And run the following commands.
 
 ```bash
 xhost +local:
-docker run -it --rm --name openbb --env-file=./.env -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
+docker run -it --rm --name openbb --env-file=./.env -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ghcr.io/openbb-finance/openbbterminal/openbb:latest
 xhost -local:
 ```
 
