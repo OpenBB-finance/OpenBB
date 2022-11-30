@@ -45,12 +45,14 @@ class Parameter:
             If the value is not in the list of possible values.
         """
         if not self.validate_type(self.default):
-            raise TypeError(f"Parameter {self.name} must be of type {self.type_}.")
+            raise TypeError(
+                f"Default for '{self.name}' must be of type '{self.type_.__name__}'."
+            )
         if self.choices is not None:
             if not all(self.validate_type(choice) for choice in self.choices):
                 raise TypeError(
                     f"Choices must be of the same type as the parameter.\n"
-                    f"{self.name}: {self.choices} -> {self.type_}"
+                    f"{self.name}: {self.choices} -> {self.type_.__name__}"
                 )
         if self.choices is not None and self.default not in self.choices:
             raise ValueError(f"Parameter {self.name} must be one of {self.choices}.")
