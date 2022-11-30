@@ -377,7 +377,7 @@ Further analysis can be done by looking at the portfolio's returns <a href="http
 
 ````
 2022 May 31, 03:39 (🦋) /portfolio/po/ $ plot HRP_0 -ct SECTOR -hi -dd
-```
+````
 
 <img alt="Portfokio Returns Histogram" src="https://user-images.githubusercontent.com/46355364/171145848-5a3f5333-6b7f-4d7a-a96e-0859adb1ce78.png"></img>
 <img alt="Portfolio Drawdowns" src="https://user-images.githubusercontent.com/46355364/171145983-2d2c1c2e-67d2-4839-b43a-51bd22332de8.png"></img>
@@ -388,8 +388,7 @@ Next to that, to delve deeper in the underlying conclusions the HRP method has d
 
 2022 May 31, 03:45 (🦋) /portfolio/po/ $ plot HRP_0 -ct SECTOR -rc -he
 
-```
+````
 
 <img alt="Heatmap with Linkage Method" src="https://user-images.githubusercontent.com/46355364/171146147-1b30a5f7-c488-4fe1-93e0-8266945ca4e7.png"></img>
 <img alt="Risk Contributions" src="https://user-images.githubusercontent.com/46355364/171146286-84d268e5-ac77-4d50-bddb-9a0859ac896b.png"></img>
-```
