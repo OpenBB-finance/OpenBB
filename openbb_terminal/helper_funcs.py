@@ -1243,7 +1243,8 @@ def check_file_type_saved(valid_types: List[str] = None):
                 valid_filenames.append(filename)
             else:
                 console.print(
-                    f"[red]Filename '{filename}' provided is not valid![/red]"
+                    f"[red]Filename '{filename}' provided is not valid!\nPlease use one of the following file types:"
+                    f"{','.join(valid_types)}[/red]\n"
                 )
         return ",".join(valid_filenames)
 
@@ -1315,9 +1316,24 @@ def export_data(
                     export_folder, f"{export_filename}.{exp_type}"
                 )
 
+            df = df.replace(
+                {
+                    r"\[yellow\]": "",
+                    r"\[/yellow\]": "",
+                    r"\[green\]": "",
+                    r"\[/green\]": "",
+                    r"\[red\]": "",
+                    r"\[/red\]": "",
+                    r"\[magenta\]": "",
+                    r"\[/magenta\]": "",
+                },
+                regex=True,
+            )
+
             if exp_type.endswith("csv"):
                 df.to_csv(saved_path)
             elif exp_type.endswith("json"):
+                df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
                 df.to_excel(saved_path, index=True, header=True)
@@ -1330,9 +1346,9 @@ def export_data(
             elif exp_type.endswith("svg"):
                 plt.savefig(saved_path)
             else:
-                console.print("Wrong export file specified.")
+                console.print("\nWrong export file specified.")
 
-            console.print(f"Saved file: {saved_path}")
+            console.print(f"\nSaved file: {saved_path}")
 
 
 def get_rf() -> float:

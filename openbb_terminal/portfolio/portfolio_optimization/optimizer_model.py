@@ -449,7 +449,7 @@ def get_mean_risk_portfolio(
     covariance = kwargs.get("covariance", "hist")
     d_ewma = kwargs.get("d_ewma", 0.94)
 
-    risk_measure = risk_measure.upper()
+    risk_measure = optimizer_helper.validate_risk_measure(risk_measure)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1496,6 +1496,7 @@ def get_ef(
     seed = kwargs.get("seed", 123)
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+    risk_measure = optimizer_helper.validate_risk_measure(risk_measure)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1715,6 +1716,7 @@ def get_risk_parity_portfolio(
     )
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+    risk_measure = optimizer_helper.validate_risk_measure(risk_measure)
 
     # Building the portfolio object
     port = rp.Portfolio(returns=stock_returns, alpha=alpha)
@@ -2113,7 +2115,7 @@ def get_hcp_portfolio(
     alpha_tail = kwargs.get("alpha_tail", 0.05)
     leaf_order = kwargs.get("leaf_order", True)
 
-    risk_measure = risk_measure.upper()
+    risk_measure = optimizer_helper.validate_risk_measure(risk_measure)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -2904,17 +2906,15 @@ def get_categories(
     if not weights:
         return pd.DataFrame()
 
+    if column == "CURRENT_INVESTED_AMOUNT":
+        return pd.DataFrame()
+
     df = pd.DataFrame.from_dict(
         data=weights, orient="index", columns=["value"], dtype=float
     )
     categories_df = pd.DataFrame.from_dict(data=categories, dtype=float)
 
-    col = list(categories_df.columns).index(column)
-    col_inv_amt = list(categories_df.columns).index("CURRENT_INVESTED_AMOUNT")
-    col_crncy = list(categories_df.columns).index("CURRENCY")
-    categories_df = df.join(
-        categories_df.iloc[:, [col, col_inv_amt, col_crncy]], how="inner"
-    )
+    categories_df = df.join(categories_df)
     categories_df.set_index(column, inplace=True)
     categories_df.groupby(level=0).sum()
 

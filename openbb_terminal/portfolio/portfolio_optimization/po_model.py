@@ -15,6 +15,7 @@ from riskfolio import rp
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio.portfolio_optimization import (
+    optimizer_helper,
     optimizer_model,
 )
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
@@ -88,15 +89,15 @@ def generate_portfolio(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -250,6 +251,8 @@ def get_portfolio_performance(weights: Dict, data: pd.DataFrame, **kwargs) -> Di
         "Sharpe ratio": sharpe,
     }
 
+    risk_measure = optimizer_helper.validate_risk_measure(risk_measure, warning=False)
+
     if risk_measure != "MV":
         risk = rp.Sharpe_Risk(
             weights,
@@ -385,15 +388,15 @@ def get_maxsharpe(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -531,15 +534,15 @@ def get_minrisk(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -677,15 +680,15 @@ def get_maxutil(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -823,15 +826,15 @@ def get_maxret(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -946,15 +949,15 @@ def get_maxdiv(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -1047,15 +1050,15 @@ def get_maxdecorr(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -1157,15 +1160,15 @@ def get_blacklitterman(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -1283,15 +1286,15 @@ def get_ef(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -1414,15 +1417,15 @@ def get_riskparity(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -1558,15 +1561,15 @@ def get_relriskparity(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -1759,15 +1762,15 @@ def get_hrp(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, 
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -1958,15 +1961,15 @@ def get_herc(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame,
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -2157,15 +2160,15 @@ def get_nco(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, 
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -2234,15 +2237,15 @@ def get_equal(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -2315,15 +2318,15 @@ def get_mktcap(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -2396,15 +2399,15 @@ def get_dividend(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -2482,15 +2485,15 @@ def get_property(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
                 },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
@@ -2556,21 +2559,21 @@ def show(
                     "MSFT": "INFORMATION TECHNOLOGY",
                     "AMZN": "CONSUMER DISCRETIONARY",
                 },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
                 "CURRENCY": {
                     "AAPL": "USD",
                     "MSFT": "USD",
                     "AMZN": "USD",
                 },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
             }
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
     >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
     >>> p.get_available_categories()
-    ['SECTOR']
+    ['SECTOR', 'CURRENCY']
     >>> weights_df, category_df = openbb.portfolio.po.show(portfolio_engine=p, category="SECTOR")
 
     >>> from openbb_terminal.sdk import openbb
@@ -2581,7 +2584,6 @@ def show(
      'SECTOR',
      'INDUSTRY',
      'COUNTRY',
-     'CURRENT_INVESTED_AMOUNT',
      'CURRENCY']
     >>> weights_df, category_df = openbb.portfolio.po.show(portfolio_engine=p, category="ASSET_CLASS")
     """
