@@ -24,7 +24,7 @@ This folder contains all things user-created. For example:
 
 The location of this folder can be set by the user from the `/settings` menu. There should be no need to update paths in this menu unless the folders have been moved manually.
 
-<img width="1117" alt="The settings menu" src="https://user-images.githubusercontent.com/85772166/195736718-a1b821da-5977-437a-bd18-b44add2a29a2.png"></img>
+[The Settings Menu](https://user-images.githubusercontent.com/85772166/195736718-a1b821da-5977-437a-bd18-b44add2a29a2.png "The Settings Menu")
 
 ## Exporting Files
 
@@ -34,7 +34,7 @@ If the location of the OpenBBUserData folder must be changed, it is best to move
 userdata --folder /path_to/OpenBBUserData
 ```
 
-The types of files which can be exported for tables and raw data are:
+The types of files which can be exported from tables and raw data are:
 
 - CSV
 - JSON
