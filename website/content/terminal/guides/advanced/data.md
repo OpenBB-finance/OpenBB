@@ -22,3 +22,13 @@ This folder contains all things user-created. For example:
  The location of this folder can be set by the user from the `/settings` menu.
 
 <img width="1117" alt="The settings menu" src="https://user-images.githubusercontent.com/85772166/195736718-a1b821da-5977-437a-bd18-b44add2a29a2.png"></img>
+
+Basic Instructions for Exporting Files:
+- Setting up a new folder: (in settings) "userdata myNewFolder" [enter]. This will ask you to create a new folder called "myNewFolder". Enter "Y".
+- Changing to your new folder: (in settings) "userdata myNewFolder" [enter]. This sets "myNewFolder" as the new default location.
+- Exporting files: "yourCommand stockTicker --export csv" [enter]. This exports the data of your chosen stock to your new folder.
+- Exporting files as a specific name: "yourCommand stockTicker --export data.csv" [enter]. This exports your data as "data.csv".
+- Options for exporting data: csv, json, xlsx
+- Options for exporting images: png, jpg, pdf, svg
+- Example for exporting OHLC data for Chewy stock: load chwy --export chwyOHLC.xlsx   
+
