@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, List, Optional, Type, Union, get_origin
+from typing import Any, List, Optional, Type
 
 # pylint: disable=unidiomatic-typecheck
 
