@@ -6,7 +6,7 @@ The Stocks Screener module imports the same screener found in the OpenBB Termina
 
 `path_to_git_clone/OpenBBTerminal/openbb_terminal/stocks/screener/presets`
 
-For convenience, they are supplied here as a ZIP file, [screener_presets.zip](https://github.com/OpenBB-finance/OpenBBTerminal/files/10119826/screener_presets.zip).
+For convenience, they are supplied here as a ZIP file, [stocks_screener_preset.zip](https://github.com/OpenBB-finance/OpenBBTerminal/files/10127462/stocks_screener_preset.zip).
 
 This screener can find stocks on three exchanges:
 
@@ -54,7 +54,7 @@ Price/Free Cash Flow = Any
 To make a screener with only a few filters, it should look something like this:
 
 ```console
-# Author of preset: Danglewood
+# Author of preset: OpenBB
 # Description: SDK Demo Screener
 
 [General]
@@ -91,7 +91,6 @@ openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset.ini', data_
 |  2 | TME      |      0.1871 |       0.7984 |       0.3721 |      0.5789 |     -0.0531 |    -0.0365 |         0.0681 |         0.0756 |     2.3 |      9.95e+06 |         2.2  |    6.6  |   0.0611 |      2.18486e+07 |
 |  3 | QFIN     |      0.0874 |       0.4331 |      -0.0738 |     -0.0744 |     -0.389  |    -0.365  |         0.0472 |         0.0787 |     1.4 | 997070        |         1.62 |   14.56 |   0.0849 |      1.61386e+06 |
 |  4 | ATHM     |      0.0229 |       0.0391 |      -0.1772 |     -0.2256 |     -0.1971 |    -0.0455 |         0.0492 |         0.0579 |     2.2 | 577050        |         1.6  |   28.14 |   0.0484 | 922812           |
-...continued...
 | 93 | TGNA     |      0.0093 |      -0.0514 |      -0.0882 |     -0.1073 |     -0.0528 |     0.0533 |         0.0133 |         0.0286 |     2.3 |      1.38e+06 |         0.45 |   19.55 |   0.0046 |   620767 |
 | 94 | AMN      |      0.0096 |      -0.0365 |       0.1685 |      0.2591 |      0.0558 |    -0.0026 |         0.0243 |         0.0464 |     1.7 | 607420        |         0.43 |  122.01 |  -0.0078 |   264138 |
 | 95 | MCY      |     -0.0028 |       0.2416 |       0.1165 |     -0.2619 |     -0.3014 |    -0.3191 |         0.0206 |         0.0386 |     2   | 565130        |         0.43 |   36.13 |   0.0036 |   241950 |
@@ -155,7 +154,9 @@ openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset.ini', data_
 
 When `data_type = 'ownership'`, data presented are statistics for the general float, insider, institutional, and the short ratio.
 
+```python
 openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset.ini', data_type = 'ownership', limit = 100)
+```
 
 |    | Ticker   |   Market Cap |   Outstanding |      Float |   Insider Own |   Insider Trans |   Inst Own |   Inst Trans |   Float Short |   Short Ratio |    Avg Volume |   Price |   Change |           Volume |
 |---:|:---------|-------------:|--------------:|-----------:|--------------:|----------------:|-----------:|-------------:|--------------:|--------------:|--------------:|--------:|---------:|-----------------:|
@@ -206,6 +207,7 @@ Lastly, `valuation` gets the basic fundamental ratios.
 |  2 | GOOG     |   95.44 |  -0.0084 | 20145081 |  1.23434e+12 | 18.68 |     18.04 |  2.09 |  4.38 |  4.88 |  N/A  |  N/A    |       -0.159 |       0.121  |        0.2848 |        0.0895 |  N/A            |
 |  3 | GOOGL    |   95.19 |  -0.009  | 20047848 |  1.21605e+12 | 19.51 |     18.12 |  2.18 |  4.31 |  4.89 | 10.46 | 19.44   |        0.914 |       0.1139 |        0.321  |        0.0895 | 0.233           |
 |  4 | AMZN     |   92.42 |  -0.0163 | 65245723 |  9.3352e+11  | 85.26 |     55.08 |  3.28 |  1.86 |  6.85 | 15.91 |  N/A    |        0.549 |       0.8239 |        0.676  |        0.26   | 0.281           |
+...continued
 
 Combined, the five DataFrames provide an outline of who they are, which segment of they market they belong to, and how they are currently trading.
 
@@ -214,7 +216,7 @@ Combined, the five DataFrames provide an outline of who they are, which segment 
 One way to use the screener is to feed it the least amount of variables possible. In this next example, the preset file contains only one filter; requesting data for all constituents of the S&P 500 Index.
 
 ```console
-# Author of preset: Danglewood
+# Author of preset: OpenBB
 # Description: S&P Index
 
 [General]
@@ -228,36 +230,7 @@ Index = S&P 500
 [Technical]
 ```
 
-Copy and past the block above into any text editor; then save the file, as `sp500_filter.ini`, to the OpenBBUserData folder.
-
-```python
-sp500_overview = openbb.stocks.screener.screener_data(preset_loaded='sp500_filter.ini', data_type = 'overview', limit = 500)
-sp500_overview = sp500_overview.convert_dtypes()
-
-sp500_overview
-```
-
-|    | Ticker   | Company               | Sector                 | Industry                       | Country   |   Market Cap |   P/E |   Price |   Change |   Volume |
-|---:|:---------|:----------------------|:-----------------------|:-------------------------------|:----------|-------------:|------:|--------:|---------:|---------:|
-|  0 | AAPL     | Apple Inc.            | Technology             | Consumer Electronics           | USA       |  2.23252e+12 | 23.14 |  141.17 |  -0.0211 | 83578852 |
-|  1 | MSFT     | Microsoft Corporation | Technology             | Software - Infrastructure      | USA       |  1.77308e+12 | 25.9  |  240.33 |  -0.0059 | 17929705 |
-|  2 | GOOG     | Alphabet Inc.         | Communication Services | Internet Content & Information | USA       |  1.23434e+12 | 18.68 |   95.44 |  -0.0084 | 20145081 |
-|  3 | GOOGL    | Alphabet Inc.         | Communication Services | Internet Content & Information | USA       |  1.21605e+12 | 19.51 |   95.19 |  -0.009  | 20047848 |
-|  4 | AMZN     | Amazon.com, Inc.      | Consumer Cyclical      | Internet Retail                | USA       |  9.3352e+11  | 85.26 |   92.42 |  -0.0163 | 65245723 |
-...continued...
-| 498 | LUMN     | Lumen Technologies, Inc. | Communication Services | Telecom Services              | USA       |     5.61e+09 |  2.74 |    5.47 |  -0.0091 | 31885469 |
-| 499 | PENN     | PENN Entertainment, Inc. | Consumer Cyclical      | Resorts & Casinos             | USA       |     5.35e+09 | 24.72 |   34.07 |   0.0119 |  1689121 |
-| 500 | NWL      | Newell Brands Inc.       | Consumer Defensive     | Household & Personal Products | USA       |     5.27e+09 |  9.6  |   12.87 |  -0.0191 |  5725896 |
-| 501 | VNO      | Vornado Realty Trust     | Real Estate            | REIT - Office                 | USA       |     4.86e+09 | 50.72 |   25.31 |   0.0218 |  2560781 |
-| 502 | PVH      | PVH Corp.                | Consumer Cyclical      | Apparel Manufacturing         | USA       |     4.21e+09 |  4.96 |   64.88 |   0.0399 |  1100532 |
-
-With this preset, the five different data types can be quickly assembled as one dataframe. Occasionally, an error may pop up when the screener is run; but, it should remedy itself if the command is repeated.
-
-```console
-There was an error connecting to the API. Please try again later.
-```
-
-The sample code below combines all five DataFrames for the entire S&P 500 into one, fifty-column, DataFrame. **It will likely take over two-minutes to collect the data.**
+Copy and past the block above into any text editor; then save the file, as `sp500_filter.ini`, to the OpenBBUserData folder. The sample code below combines all five DataFrames for the entire S&P 500 into one, fifty-column, DataFrame. **It will likely take over two-minutes to collect the data.**
 
 ```python
 from openbb_terminal.sdk import openbb
@@ -275,14 +248,16 @@ sp500_performance = sp500_performance.convert_dtypes()
 sp500_technical = sp500_technical.convert_dtypes()
 sp500_valuation = sp500_valuation.convert_dtypes()
 
+sp500_overview.drop(columns = ['P/E'], inplace = True)
 sp500_overview.set_index(keys = ['Ticker', 'Price', 'Change', 'Volume'], inplace = True)
-sp500_overview.drop(columns = ['Market Cap', 'P/E'], inplace = True)
-sp500_performance.set_index(keys = ['Ticker', 'Price', 'Change', 'Volume'], inplace = True)
-sp500_performance.drop(columns = ['Avg Volume'], inplace = True)
-sp500_ownership.set_index(keys = ['Ticker', 'Price', 'Change', 'Volume'], inplace = True)
-sp500_ownership.drop(columns = ['Market Cap'], inplace = True)
-sp500_technical.set_index(keys = ['Ticker', 'Price', 'Change', 'Volume'], inplace = True)
-sp500_valuation.set_index(keys = ['Ticker', 'Price', 'Change', 'Volume'], inplace = True)
+sp500_performance.drop(columns = ['Avg Volume', 'Price', 'Change', 'Volume'], inplace = True)
+sp500_performance.set_index(keys = ['Ticker'], inplace = True)
+sp500_ownership.drop(columns = ['Price', 'Change', 'Volume', 'Market Cap'], inplace = True)
+sp500_ownership.set_index(keys = ['Ticker'], inplace = True)
+sp500_technical.drop(columns = ['Price', 'Change', 'Volume'], inplace = True)
+sp500_technical.set_index(keys = ['Ticker'], inplace = True)
+sp500_valuation.drop(columns = ['Price', 'Change', 'Volume', 'Market Cap'], inplace = True)
+sp500_valuation.set_index(keys = ['Ticker'], inplace = True)
 
 sp500_df = sp500_overview.join(sp500_valuation)
 sp500_df = sp500_df.join(sp500_ownership)
