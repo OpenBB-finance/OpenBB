@@ -1518,8 +1518,8 @@ class PortfolioOptimizationController(BaseController):
             "--risk-aversion",
             type=float,
             dest="risk_aversion",
-            default=self.params["long_allocation"]
-            if "long_allocation" in self.params
+            default=self.params["risk_aversion"]
+            if "risk_aversion" in self.params
             else 1,
             help="Risk aversion parameter",
         )
