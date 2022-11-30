@@ -5,7 +5,9 @@ from pathlib import Path
 from openbb_terminal.helper_funcs import log_and_raise
 from openbb_terminal.core.config import paths
 from openbb_terminal.rich_config import console
-from openbb_terminal.portfolio.portfolio_optimization.statics import VALID_PARAMS
+from openbb_terminal.portfolio.portfolio_optimization.statics import (
+    OPTIMIZATION_PARAMETERS,
+)
 
 
 def check_save_file(file: str) -> str:
@@ -45,26 +47,64 @@ def load_data_files() -> Dict[str, Path]:
     return data_files
 
 
-def check_convert_params(params: dict) -> dict:
-    params = check_convert_dates(params, ["start_period", "end_period"])
+def check_convert_params(received_parameters: dict) -> dict:
+    """Check if the argument is in the parameters list.
+    If it is, try to cast it to the correct type, else use default value.
 
-    for param_name, param_value in params.items():
-        if param_name in VALID_PARAMS:
+    Parameters
+    ----------
+    received_parameters: dict
+        The parameters to be checked
 
-            param_info = VALID_PARAMS.get(param_name)
-            param_type = param_info.get("type_")
+    Returns
+    -------
+    dict
+        The parameters with the correct types
+    """
 
-            if not isinstance(param_value, param_type):
-                try:
-                    params[param_name] = param_type(param_value)
-                except ValueError:
-                    param_info[param_name] = param_info.get("default")
-                    console.print(
-                        f"[red]'{param_name}' format should be '{param_type}' type[/red]",
-                        f"[red] and could not be converted. Setting default {param_info[param_name]}.[/red]",
-                    )
+    converted_parameters = check_convert_dates(
+        received_parameters, ["start_period", "end_period"]
+    )
 
-    return params
+    for received_name, received_value in received_parameters.items():
+        if received_name in OPTIMIZATION_PARAMETERS:
+            PARAMETER = OPTIMIZATION_PARAMETERS[received_name]
+            if not PARAMETER.validate_type(received_value):
+                converted_parameters[received_name] = convert_parameter(
+                    name=received_name, value=received_value, parameter=PARAMETER
+                )
+
+    return converted_parameters
+
+
+def convert_parameter(name, value, parameter):
+    """Converts a parameter to the correct type
+
+    Parameters
+    ----------
+    name: str
+        The name of the received parameter
+    value: str
+        The value of the received parameter
+    parameter: Parameter
+        The parameter object
+
+    Returns
+    -------
+    The converted parameter
+    """
+
+    try:
+        # Try to cast the value to the correct type
+        new_value = parameter.type_(value)
+    except ValueError:
+        new_value = parameter.default
+        console.print(
+            f"[red]'{name}' format should be '{parameter.type_.__name__}' type[/red]",
+            f"[red]and could not be converted. Setting default {new_value}.\n[/red]",
+        )
+
+    return new_value
 
 
 def check_convert_dates(params: dict, param_name_list: List[str]) -> dict:
