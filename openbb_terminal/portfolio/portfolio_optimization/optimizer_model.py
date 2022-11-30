@@ -427,6 +427,7 @@ def get_mean_risk_portfolio(
         DataFrame of stock returns.
     """
 
+    # TODO: Set defaults from statics.VALID_PARAMS defaults
     interval = kwargs.get("interval", "3y")
     start_date = kwargs.get("start_date", "")
     end_date = kwargs.get("end_date", "")
@@ -467,6 +468,16 @@ def get_mean_risk_portfolio(
             "[red]Not enough data points in range to run calculations.[/red]\n"
         )
         return {}, pd.DataFrame()
+
+    if stock_returns.shape[1] < 2:
+        console.print(
+            f"[red]Given the parameters could only get data for '{stock_returns.columns[0]}'.[/red]\n"
+            "[red]Optimization needs at least two assets.[/red]\n",
+        )
+        return {}, pd.DataFrame()
+
+    first_day = stock_returns.index[0].strftime("%Y-%m-%d")
+    console.print(f"[yellow]Data available from {first_day}[/yellow]\n")
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
