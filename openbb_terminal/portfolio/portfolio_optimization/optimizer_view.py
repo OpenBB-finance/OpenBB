@@ -981,8 +981,8 @@ def display_mean_risk(
         value_short=value_short,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with these parameters")
+    if not weights:
+        console.print("There is no solution with these parameters")
         return {}
 
     if table:
@@ -1153,8 +1153,8 @@ def display_max_sharpe(
     if stock_returns is None or stock_returns.empty:
         return {}
 
-    if weights is None:
-        console.print("\n", "There is no solution with these parameters")
+    if not weights:
+        console.print("There is no solution with these parameters")
         return {}
 
     if table:
@@ -1321,8 +1321,8 @@ def display_min_risk(
         value_short=value_short,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with these parameters")
+    if not weights:
+        console.print("There is no solution with these parameters")
         return {}
 
     if table:
@@ -1489,8 +1489,8 @@ def display_max_util(
         value_short=value_short,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with these parameters")
+    if not weights:
+        console.print("There is no solution with these parameters")
         return {}
 
     if table:
@@ -1657,8 +1657,8 @@ def display_max_ret(
         value_short=value_short,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with these parameters")
+    if not weights:
+        console.print("There is no solution with these parameters")
         return {}
 
     if table:
@@ -1771,8 +1771,8 @@ def display_max_div(
         value=value,
         value_short=value_short,
     )
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -1886,8 +1886,8 @@ def display_max_decorr(
         value_short=value_short,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -2026,8 +2026,8 @@ def display_black_litterman(
         value_short=value_short,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -2401,8 +2401,8 @@ def display_risk_parity(
         value=value,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -2542,8 +2542,8 @@ def display_rel_risk_parity(
         value=value,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -2807,8 +2807,8 @@ def display_hcp(
         value=value,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -3051,8 +3051,8 @@ def display_hrp(
         value=value,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -3303,8 +3303,8 @@ def display_herc(
         value=value,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -3566,8 +3566,8 @@ def display_nco(
         value=value,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
