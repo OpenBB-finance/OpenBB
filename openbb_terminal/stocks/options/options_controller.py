@@ -643,14 +643,14 @@ class OptionsController(BaseController):
                     tradier_view.display_expiry_dates(self.expiry_dates)
                 elif ns_parser.date:
                     if ns_parser.date in self.expiry_dates:
-                        console.print(f"Expiration set to {ns_parser.date} \n")
+                        console.print(f"Expiration set to {ns_parser.date}")
                         self.selected_date = ns_parser.date
                         self.update_runtime_choices()
                     else:
                         console.print("Expiration not an option")
                 else:
                     expiry_date = self.expiry_dates[ns_parser.index]
-                    console.print(f"Expiration set to {expiry_date} \n")
+                    console.print(f"Expiration set to {expiry_date}")
                     self.selected_date = expiry_date
                     self.update_runtime_choices()
 
@@ -921,6 +921,7 @@ class OptionsController(BaseController):
                             calls_only=ns_parser.calls,
                             puts_only=ns_parser.puts,
                             export=ns_parser.export,
+                            raw=ns_parser.raw,
                         )
                     elif ns_parser.source == "Nasdaq":
                         nasdaq_view.display_volume(
@@ -996,6 +997,7 @@ class OptionsController(BaseController):
                             min_sp=ns_parser.min_sp,
                             max_sp=ns_parser.max_sp,
                             min_vol=ns_parser.min_vol,
+                            raw=ns_parser.raw,
                             export=ns_parser.export,
                         )
                     elif ns_parser.source == "Nasdaq":
@@ -1087,6 +1089,7 @@ class OptionsController(BaseController):
                             calls_only=ns_parser.calls,
                             puts_only=ns_parser.puts,
                             export=ns_parser.export,
+                            raw=ns_parser.raw,
                         )
                     elif ns_parser.source == "Nasdaq":
                         nasdaq_view.display_oi(

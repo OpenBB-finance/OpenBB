@@ -39,7 +39,7 @@ from openbb_terminal.stocks.options.yfinance_model import (
     get_price,
 )
 
-# pylint: disable=C0302
+# pylint: disable=C0302,R0913
 
 
 logger = logging.getLogger(__name__)
@@ -242,6 +242,7 @@ def plot_oi(
     max_sp: float = -1,
     calls_only: bool = False,
     puts_only: bool = False,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -326,12 +327,30 @@ def plot_oi(
     ax.set_ylabel("Open Interest [1k] ")
     ax.set_xlim(min_strike, max_strike)
     ax.legend(fontsize="x-small")
-    ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiry}")
+    title = f"Open Interest for {symbol.upper()} expiring {expiry}"
+    ax.set_title(title)
 
     theme.style_primary_axis(ax)
 
     if external_axes is None:
         theme.visualize_output()
+
+    if raw:
+        df_calls, df_puts = op_helpers.raw_yf_options(options=options)
+        if not puts_only:
+            print_rich_table(
+                df_calls,
+                headers=list(df_calls.columns),
+                show_index=False,
+                title=f"{title} - Calls",
+            )
+        if not calls_only:
+            print_rich_table(
+                df_puts,
+                headers=list(df_puts.columns),
+                show_index=False,
+                title=f"{title} - Puts",
+            )
 
 
 @log_start_end(log=logger)
@@ -342,6 +361,7 @@ def plot_vol(
     max_sp: float = -1,
     calls_only: bool = False,
     puts_only: bool = False,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -417,12 +437,30 @@ def plot_vol(
     ax.set_ylabel("Volume [1k] ")
     ax.set_xlim(min_strike, max_strike)
     ax.legend(fontsize="x-small")
-    ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
+    title = f"Volume for {symbol.upper()} expiring {expiry}"
+    ax.set_title(title)
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
 
     op_helpers.export_yf_options(export, options, "vol_yf")
+
+    if raw:
+        df_calls, df_puts = op_helpers.raw_yf_options(options=options)
+        if not puts_only:
+            print_rich_table(
+                df_calls,
+                headers=list(df_calls.columns),
+                show_index=False,
+                title=f"{title} - Calls",
+            )
+        if not calls_only:
+            print_rich_table(
+                df_puts,
+                headers=list(df_puts.columns),
+                show_index=False,
+                title=f"{title} - Puts",
+            )
 
 
 @log_start_end(log=logger)
@@ -432,6 +470,7 @@ def plot_volume_open_interest(
     min_sp: float = -1,
     max_sp: float = -1,
     min_vol: float = -1,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -618,9 +657,8 @@ def plot_volume_open_interest(
     xlabels = [f"{x:,.0f}".replace("-", "") for x in g.get_xticks()]
     g.set_xticklabels(xlabels)
 
-    ax.set_title(
-        f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)",
-    )
+    title = f"{symbol} volumes for {expiry}"
+    ax.set_title(f"{title}\n(open interest displayed only during market hours)")
     ax.invert_yaxis()
 
     handles, _ = ax.get_legend_handles_labels()
@@ -643,6 +681,21 @@ def plot_volume_open_interest(
 
     if external_axes is None:
         theme.visualize_output()
+
+    if raw:
+        df_calls, df_puts = op_helpers.raw_yf_options(options=options)
+        print_rich_table(
+            df_calls,
+            headers=list(df_calls.columns),
+            show_index=False,
+            title=f"{title} - Calls",
+        )
+        print_rich_table(
+            df_puts,
+            headers=list(df_puts.columns),
+            show_index=False,
+            title=f"{title} - Puts",
+        )
 
     op_helpers.export_yf_options(export, options, "voi_yf")
 

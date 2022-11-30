@@ -17,7 +17,7 @@ import seaborn as sns
 from openbb_terminal import config_plot as cfp
 from openbb_terminal import rich_config
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal.helper_funcs import (
     export_data,
     is_valid_axes_count,
@@ -431,6 +431,7 @@ def plot_vol(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_TRADIER_TOKEN"])
 def plot_volume_open_interest(
     symbol: str,
     expiry: str,
