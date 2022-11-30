@@ -9,7 +9,7 @@ from openbb_terminal.portfolio.portfolio_optimization import excel_model
 from openbb_terminal.rich_config import console
 from openbb_terminal.portfolio.portfolio_optimization.parameters import params_statics
 from openbb_terminal.portfolio.portfolio_optimization.parameters.params_helpers import (
-    check_convert_params,
+    check_convert_parameters,
 )
 from openbb_terminal.core.config import paths
 
@@ -47,7 +47,7 @@ def load_file(path: str = "") -> Tuple[dict, str]:
         console.print("Cannot load in the file due to not being an .ini or .xlsx file.")
         return {}, ""
 
-    converted_parameters = check_convert_params(received_parameters=params)
+    converted_parameters = check_convert_parameters(received_parameters=params)
 
     max_len = max(len(k) for k in converted_parameters.keys())
     help_text = "[info]Parameters:[/info]\n"

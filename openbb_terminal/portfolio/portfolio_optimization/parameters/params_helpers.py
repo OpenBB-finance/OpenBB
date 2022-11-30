@@ -47,7 +47,7 @@ def load_data_files() -> Dict[str, Path]:
     return data_files
 
 
-def check_convert_params(received_parameters: dict) -> dict:
+def check_convert_parameters(received_parameters: dict) -> dict:
     """Check if the argument is in the parameters list.
     If it is, try to cast it to the correct type, else use default value.
 
@@ -70,14 +70,14 @@ def check_convert_params(received_parameters: dict) -> dict:
         if received_name in OPTIMIZATION_PARAMETERS:
             PARAMETER = OPTIMIZATION_PARAMETERS[received_name]
             if not PARAMETER.validate_type(received_value):
-                converted_parameters[received_name] = convert_parameter(
+                converted_parameters[received_name] = check_convert_parameter(
                     name=received_name, value=received_value, parameter=PARAMETER
                 )
 
     return converted_parameters
 
 
-def convert_parameter(name, value, parameter):
+def check_convert_parameter(name, value, parameter):
     """Converts a parameter to the correct type
 
     Parameters
