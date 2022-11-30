@@ -27,6 +27,8 @@ RUN apt-get -y install --no-install-recommends \
     libpng16-16 \
     python3-tk
 
+RUN apt-get clean
+
 RUN useradd --create-home --shell /bin/bash python
 
 USER python
