@@ -22,7 +22,7 @@ This folder contains all things user-created. For example:
  - Styles and themes
  - Preferred data sources
 
- The location of this folder can be set by the user from the `/settings` menu. There should be no need to update paths in this menu unless the folders have been moved manually.
+The location of this folder can be set by the user from the `/settings` menu. There should be no need to update paths in this menu unless the folders have been moved manually.
 
 <img width="1117" alt="The settings menu" src="https://user-images.githubusercontent.com/85772166/195736718-a1b821da-5977-437a-bd18-b44add2a29a2.png"></img>
 
@@ -69,7 +69,7 @@ Saved file: /Users/{username}/OpenBBUserData/exports/20221130_141425_stocks_CHWY
 
 ![Screenshot 2022-11-30 at 2 16 19 PM](https://user-images.githubusercontent.com/85772166/204919882-3cf7ba23-7fba-4b9d-b278-25752efab0c6.png)
 
-Every funcion capable of exporting content will work in exactly the same manner. Print the `--help` dialogue for any function to see the options available.
+Every function capable of exporting content will work in exactly the same manner. Print the `--help` dialogue for any function to see the options available.
 
 ```console
 (🦋) /stocks/options/ $ chains --help
