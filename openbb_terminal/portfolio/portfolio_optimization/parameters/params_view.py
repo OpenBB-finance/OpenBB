@@ -47,13 +47,13 @@ def load_file(path: str = "") -> Tuple[dict, str]:
         console.print("Cannot load in the file due to not being an .ini or .xlsx file.")
         return {}, ""
 
-    params = check_convert_params(params=params)
+    converted_parameters = check_convert_params(received_parameters=params)
 
-    max_len = max(len(k) for k in params.keys())
+    max_len = max(len(k) for k in converted_parameters.keys())
     help_text = "[info]Parameters:[/info]\n"
 
     if current_model:
-        for k, v in params.items():
+        for k, v in converted_parameters.items():
             all_params = (
                 params_statics.DEFAULT_PARAMETERS
                 + params_statics.MODEL_PARAMS[current_model]
@@ -61,12 +61,12 @@ def load_file(path: str = "") -> Tuple[dict, str]:
             if k in all_params:
                 help_text += f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
     else:
-        for k, v in params.items():
+        for k, v in converted_parameters.items():
             help_text += f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
 
     console.print(help_text)
 
-    return params, current_model
+    return converted_parameters, current_model
 
 
 def save_file(path: str, params: dict) -> Path:
