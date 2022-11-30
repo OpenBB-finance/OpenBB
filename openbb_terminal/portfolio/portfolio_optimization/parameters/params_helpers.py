@@ -5,6 +5,7 @@ from pathlib import Path
 from openbb_terminal.helper_funcs import log_and_raise
 from openbb_terminal.core.config import paths
 from openbb_terminal.rich_config import console
+from openbb_terminal.portfolio.portfolio_optimization.statics import VALID_PARAMS
 
 
 def check_save_file(file: str) -> str:
@@ -42,6 +43,28 @@ def load_data_files() -> Dict[str, Path]:
                     data_files[filepath.name] = filepath
 
     return data_files
+
+
+def check_convert_params(params: dict) -> dict:
+    params = check_convert_dates(params, ["start_period", "end_period"])
+
+    for param_name, param_value in params.items():
+        if param_name in VALID_PARAMS:
+
+            param_info = VALID_PARAMS.get(param_name)
+            param_type = param_info.get("type_")
+
+            if not isinstance(param_value, param_type):
+                try:
+                    params[param_name] = param_type(param_value)
+                except ValueError:
+                    param_info[param_name] = param_info.get("default")
+                    console.print(
+                        f"[red]'{param_name}' format should be '{param_type}' type[/red]",
+                        f"[red] and could not be converted. Setting default {param_info[param_name]}.[/red]",
+                    )
+
+    return params
 
 
 def check_convert_dates(params: dict, param_name_list: List[str]) -> dict:
