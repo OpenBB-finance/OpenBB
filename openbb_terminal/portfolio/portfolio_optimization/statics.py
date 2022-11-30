@@ -1,5 +1,8 @@
-from typing import List
+from typing import List, Optional
 from openbb_terminal.helper_funcs import get_rf
+from openbb_terminal.portfolio.portfolio_optimization.parameters.Parameter import (
+    Parameter,
+)
 
 
 PERIOD_CHOICES = [
@@ -10,6 +13,7 @@ PERIOD_CHOICES = [
     "6mo",
     "1y",
     "2y",
+    "3y",
     "5y",
     "10y",
     "ytd",
@@ -243,7 +247,7 @@ PARAM_TYPES = {
     "start_date": str,
     "end_date": str,
     "log_returns": bool,
-    "freq": str,
+    "return_frequency": str,
     "maxnan": float,
     "threshold": float,
     "method": str,
@@ -291,185 +295,274 @@ TECHNIQUE_CHOICES = [
     "nco",
 ]
 
-VALID_PARAMS = {
-        "historic_period": {
-            "type_": str,
-            "default": "3y",
-            "choices": PERIOD_CHOICES,
-        },
-        "start_period": {
-            "type_": str,
-            "default": "",
-        },
-        "end_period": {
-            "type_": str,
-            "default": "",
-        },
-        "log_returns": {
-            "type_": bool,
-            "default": False,
-        },
-        "return_frequency": {
-            "type_": str,
-            "default": "d",
-            "choices": FREQ_CHOICES,
-        },
-        "max_nan": {
-            "type_": float,
-            "default": 0.05,
-        },
-        "threshold_value": {
-            "type_": float,
-            "default": 0.3,
-        },
-        "nan_fill_method": {
-            "type_": str,
-            "default": "time",
-            "choices": NAN_FILL_METHOD_CHOICES,
-        },
-        "risk_free": {
-            "type_": float,
-            "default": get_rf(),
-        },
-        "significance_level": {
-            "type_": float,
-            "default": 0.05,
-        },
-        "technique": {
-            "type_": str,
-            "default": "maxsharpe",
-            "choices": TECHNIQUE_CHOICES,
-        },
-        "risk_measure": {
-            "type_": str,
-            "default": "MV",
-            "choices": MEAN_RISK_CHOICES,
-        },
-        "target_return": {
-            "type_": float,
-            "default": -1,
-        },
-        "target_risk": {
-            "type_": float,
-            "default": -1,
-        },
-        "expected_return": {
-            "type_": str,
-            "default": "hist",
-            "choices": MEAN_CHOICES,
-        },
-        "covariance": {
-            "type_": str,
-            "default": "hist",
-            "choices": COVARIANCE_CHOICES,
-        },
-        "smoothing_factor_ewma": {
-            "type_": float,
-            "default": 0.94,
-        },
-        "long_allocation": {
-            "type_": float,
-            "default": 1.0,
-        },
-        "short_allocation": {
-            "type_": float,
-            "default": 0.0,
-        },
-        "risk_aversion": {
-            "type_": float,
-            "default": 1.0,
-        },
-        "amount_portfolios": {
-            "type_": int,
-            "default": 100,
-        },
-        "random_seed": {
-            "type_": int,
-            "default": 123,
-        },
-        "tangency": {
-            "type_": bool,
-            "default": False,
-        },
-        "risk_contribution": {
-            "type_": List[str],
-            "default": None,
-        },
-        "risk_parity_model": {
-            "type_": str,
-            "default": "A",
-            "choices": REL_RISK_PARITY_CHOICES,
-        },
-        "penal_factor": {
-            "type_": float,
-            "default": 1.0,
-        },
-        "p_views": {
-            "type_": List[List[float]],
-            "default": None,
-        },
-        "q_views": {
-            "type_": List[List[float]],
-            "default": None,
-        },
-        "delta": {
-            "type_": float,
-            "default": 1,
-        },
-        "equilibrium": {
-            "type_": bool,
-            "default": True,
-        },
-        "optimize": {
-            "type_": bool,
-            "default": True,
-        },
-        "co_dependence": {
-            "type_": str,
-            "default": None,
-            "choices": CODEPENDENCE_CHOICES,
-        },
-        "cvar_simulations_losses": {
-            "type_": int,
-            "default": 100,
-        },
-        "cvar_simulations_gains": {
-            "type_": int,
-            "default": 100,
-        },
-        "cvar_significance": {
-            "type_": float,
-            "default": 0.05,
-        },
-        "linkage": {
-            "type_": str,
-            "default": "single",
-            "choices": LINKAGE_CHOICES,
-        },
-        "amount_clusters": {
-            "type_": int,
-            "default": 10,
-        },
-        "max_clusters": {
-            "type_": int,
-            "default": 10,
-        },
-        "amount_bins": {
-            "type_": str,
-            "default": 10,
-            "choices": BINS_CHOICES,
-        },
-        "alpha_tail": {
-            "type_": float,
-            "default": 0.05,
-        },
-        "leaf_order": {
-            "type_": bool,
-            "default": True,
-        },
-        "objective": {
-            "type_": str,
-            "default": "MinRisk",
-            "choices": OBJECTIVE_CHOICES,
-        },
+# Model functions
+DEFAULT_PARAMETERS = {
+    "interval": "3y",
+    "start_date": "",
+    "end_date": "",
+    "log_returns": False,
+    "freq": "d",
+    "maxnan": 0.05,
+    "threshold": 0.3,
+    "method": "time",
+    "risk_free_rate": get_rf(),
+    "alpha": 0.05,
+    "technique": "maxsharpe",
+    "risk_measure": "MV",
+    "target_return": -1.0,
+    "target_risk": -1.0,
+    "mean": "hist",
+    "covariance": "hist",
+    "d_ewma": 0.94,
+    "value": 1.0,
+    "value_short": 0.0,
+    "risk_aversion": 1.0,
+    "amount_portfolios": 100,
+    "random_seed": 123.0,
+    "tangency": False,
+    "risk_contribution": None,
+    "risk_parity_model": "A",
+    "penal_factor": 1.0,
+    "p_views": None,
+    "q_views": None,
+    "delta": 1.0,
+    "equilibrium": True,
+    "optimize": True,
+    "codependence": "pearson",
+    "a_sim": 100,
+    "b_sim": 100,
+    "beta": 0.05,
+    "linkage": "single",
+    "k": 10,
+    "max_k": 10,
+    "bins_info": "KN",
+    "alpha_tail": 0.05,
+    "leaf_order": True,
+    "objective": "MinRisk",
+}
+
+# Parameter template files
+# TODO: Template variable names are different from functions variable names, should be the same everywhere
+OPTIMIZATION_PARAMETERS = {
+    "historic_period": Parameter(
+        name="interval",
+        type_=str,
+        default=DEFAULT_PARAMETERS["interval"],
+        choices=PERIOD_CHOICES,
+    ),
+    "start_period": Parameter(
+        name="start_date",
+        type_=str,
+        default=DEFAULT_PARAMETERS["start_date"],
+    ),
+    "end_period": Parameter(
+        name="end_date",
+        type_=str,
+        default=DEFAULT_PARAMETERS["end_date"],
+    ),
+    "log_returns": Parameter(
+        name="log_returns",
+        type_=bool,
+        default=DEFAULT_PARAMETERS["log_returns"],
+    ),
+    "return_frequency": Parameter(
+        name="return_frequency",
+        type_=str,
+        default=DEFAULT_PARAMETERS["freq"],
+        choices=FREQ_CHOICES,
+    ),
+    "max_nan": Parameter(
+        name="maxnan",
+        type_=float,
+        default=DEFAULT_PARAMETERS["maxnan"],
+    ),
+    "threshold_value": Parameter(
+        name="threshold",
+        type_=float,
+        default=DEFAULT_PARAMETERS["threshold"],
+    ),
+    "nan_fill_method": Parameter(
+        name="nan_fill_method",
+        type_=str,
+        default=DEFAULT_PARAMETERS["method"],
+        choices=NAN_FILL_METHOD_CHOICES,
+    ),
+    "risk_free_rate": Parameter(
+        name="risk_free_rate",
+        type_=float,
+        default=DEFAULT_PARAMETERS["risk_free_rate"],
+    ),
+    "significance_level": Parameter(
+        name="significance_level",
+        type_=float,
+        default=DEFAULT_PARAMETERS["alpha"],
+    ),
+    "technique": Parameter(
+        name="technique",
+        type_=str,
+        default=DEFAULT_PARAMETERS["technique"],
+        choices=TECHNIQUE_CHOICES,
+    ),
+    "risk_measure": Parameter(
+        name="risk_measure",
+        type_=str,
+        default=DEFAULT_PARAMETERS["risk_measure"],
+        choices=MEAN_RISK_CHOICES,
+    ),
+    "target_return": Parameter(
+        name="target_return",
+        type_=float,
+        default=DEFAULT_PARAMETERS["target_return"],
+    ),
+    "target_risk": Parameter(
+        name="target_risk",
+        type_=float,
+        default=DEFAULT_PARAMETERS["target_risk"],
+    ),
+    "expected_return": Parameter(
+        name="expected_return",
+        type_=str,
+        default=DEFAULT_PARAMETERS["mean"],
+        choices=MEAN_CHOICES,
+    ),
+    "covariance": Parameter(
+        name="covariance",
+        type_=str,
+        default=DEFAULT_PARAMETERS["covariance"],
+        choices=COVARIANCE_CHOICES,
+    ),
+    "smoothing_factor_ewma": Parameter(
+        name="smoothing_factor_ewma",
+        type_=float,
+        default=DEFAULT_PARAMETERS["d_ewma"],
+    ),
+    "long_allocation": Parameter(
+        name="long_allocation",
+        type_=float,
+        default=DEFAULT_PARAMETERS["value"],
+    ),
+    "short_allocation": Parameter(
+        name="short_allocation",
+        type_=float,
+        default=DEFAULT_PARAMETERS["value_short"],
+    ),
+    "risk_aversion": Parameter(
+        name="risk_aversion",
+        type_=float,
+        default=DEFAULT_PARAMETERS["risk_aversion"],
+    ),
+    "amount_portfolios": Parameter(
+        name="amount_portfolios",
+        type_=int,
+        default=DEFAULT_PARAMETERS["amount_portfolios"],
+    ),
+    "random_seed": Parameter(
+        name="random_seed",
+        type_=float,
+        default=DEFAULT_PARAMETERS["random_seed"],
+    ),
+    "tangency": Parameter(
+        name="tangency",
+        type_=bool,
+        default=DEFAULT_PARAMETERS["tangency"],
+    ),
+    "risk_contribution": Parameter(
+        name="risk_contribution",
+        type_=Optional[List[str]],
+        default=DEFAULT_PARAMETERS["risk_contribution"],
+    ),
+    "risk_parity_model": Parameter(
+        name="risk_parity_model",
+        type_=str,
+        default=DEFAULT_PARAMETERS["risk_parity_model"],
+        choices=REL_RISK_PARITY_CHOICES,
+    ),
+    "penal_factor": Parameter(
+        name="penal_factor",
+        type_=float,
+        default=DEFAULT_PARAMETERS["penal_factor"],
+    ),
+    "p_views": Parameter(
+        name="p_views",
+        type_=List[List[float]],
+        default=DEFAULT_PARAMETERS["p_views"],
+    ),
+    "q_views": Parameter(
+        name="q_views",
+        type_=List[List[float]],
+        default=DEFAULT_PARAMETERS["q_views"],
+    ),
+    "delta": Parameter(
+        name="delta",
+        type_=float,
+        default=DEFAULT_PARAMETERS["delta"],
+    ),
+    "equilibrium": Parameter(
+        name="equilibrium",
+        type_=bool,
+        default=DEFAULT_PARAMETERS["equilibrium"],
+    ),
+    "optimize": Parameter(
+        name="optimize",
+        type_=bool,
+        default=DEFAULT_PARAMETERS["optimize"],
+    ),
+    "co_dependence": Parameter(
+        name="co_dependence",
+        type_=str,
+        default=DEFAULT_PARAMETERS["codependence"],
+        choices=CODEPENDENCE_CHOICES,
+    ),
+    "cvar_simulations_losses": Parameter(
+        name="cvar_simulations_losses",
+        type_=int,
+        default=DEFAULT_PARAMETERS["a_sim"],
+    ),
+    "cvar_simulations_gains": Parameter(
+        name="cvar_simulations_gains",
+        type_=int,
+        default=DEFAULT_PARAMETERS["b_sim"],
+    ),
+    "cvar_significance": Parameter(
+        name="cvar_significance",
+        type_=float,
+        default=DEFAULT_PARAMETERS["beta"],
+    ),
+    "linkage": Parameter(
+        name="linkage",
+        type_=str,
+        default=DEFAULT_PARAMETERS["linkage"],
+        choices=LINKAGE_CHOICES,
+    ),
+    "amount_clusters": {
+        "type_": int,
+        "default": DEFAULT_PARAMETERS["k"],
+    },
+    "max_clusters": Parameter(
+        name="max_clusters",
+        type_=int,
+        default=DEFAULT_PARAMETERS["max_k"],
+    ),
+    "amount_bins": Parameter(
+        name="amount_bins",
+        type_=str,
+        default=DEFAULT_PARAMETERS["bins_info"],
+        choices=BINS_CHOICES,
+    ),
+    "alpha_tail": Parameter(
+        name="alpha_tail",
+        type_=float,
+        default=DEFAULT_PARAMETERS["alpha_tail"],
+    ),
+    "leaf_order": Parameter(
+        name="leaf_order",
+        type_=bool,
+        default=DEFAULT_PARAMETERS["leaf_order"],
+    ),
+    "objective": Parameter(
+        name="objective",
+        type_=str,
+        default=DEFAULT_PARAMETERS["objective"],
+        choices=OBJECTIVE_CHOICES,
+    ),
 }
