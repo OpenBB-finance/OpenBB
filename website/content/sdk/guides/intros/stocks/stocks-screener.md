@@ -251,7 +251,7 @@ sp500_overview
 | 501 | VNO      | Vornado Realty Trust     | Real Estate            | REIT - Office                 | USA       |     4.86e+09 | 50.72 |   25.31 |   0.0218 |  2560781 |
 | 502 | PVH      | PVH Corp.                | Consumer Cyclical      | Apparel Manufacturing         | USA       |     4.21e+09 |  4.96 |   64.88 |   0.0399 |  1100532 |
 
-With this preset, the five different data types can be quickly assembled as one dataframe. Occassionally, an error may pop up when the screener is run; but, it should remedy itself if the command is repeated.
+With this preset, the five different data types can be quickly assembled as one dataframe. Occasionally, an error may pop up when the screener is run; but, it should remedy itself if the command is repeated.
 
 ```console
 There was an error connecting to the API. Please try again later.
