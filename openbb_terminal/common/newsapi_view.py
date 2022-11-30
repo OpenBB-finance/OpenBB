@@ -3,8 +3,8 @@ __docformat__ = "numpy"
 
 import os
 import logging
+from typing import Optional
 
-from datetime import datetime, timedelta
 import pandas as pd
 
 from openbb_terminal.decorators import check_api_key
@@ -21,18 +21,18 @@ logger = logging.getLogger(__name__)
 def display_news(
     query: str,
     limit: int = 3,
-    start_date: str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
+    start_date: Optional[str] = None,
     show_newest: bool = True,
     sources: str = "",
     export: str = "",
 ) -> None:
-    """Display news for a given term. [Source: NewsAPI]
+    """Prints table showing news for a given term. [Source: NewsAPI]
 
     Parameters
     ----------
     query : str
         term to search on the news articles
-    start_date: str
+    start_date: Optional[str]
         date to start searching articles from formatted YYYY-MM-DD
     limit : int
         number of articles to display

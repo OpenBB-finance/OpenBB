@@ -1,6 +1,6 @@
 stocks
 ba
-load aapl
+load ${ticker=aapl}
 headlines
 headlines --raw
 wsb
@@ -23,6 +23,5 @@ interest -w yolo
 queries
 rise
 jcdr
-load tsla
 jctr
 exit

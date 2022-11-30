@@ -4,117 +4,25 @@ __docformat__ = "numpy"
 # pylint: disable=eval-used
 
 import logging
-from pathlib import Path
 import warnings
-from typing import Dict, Union, Any, List, Optional
+from itertools import combinations
+from typing import Any, Dict, Tuple, Optional, Union
 
 import pandas as pd
-from pandas import DataFrame
-from scipy import stats
 import statsmodels.api as sm
-from statsmodels.tsa.stattools import adfuller, kpss, grangercausalitytests
-from linearmodels.datasets import wage_panel
+from scipy import stats
+from statsmodels.tsa.stattools import adfuller, grangercausalitytests, kpss
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-DATA_EXAMPLES: Dict[str, str] = {
-    "anes96": "American National Election Survey 1996",
-    "cancer": "Breast Cancer Data",
-    "ccard": "Bill Greene’s credit scoring data.",
-    "cancer_china": "Smoking and lung cancer in eight cities in China.",
-    "co2": "Mauna Loa Weekly Atmospheric CO2 Data",
-    "committee": "First 100 days of the US House of Representatives 1995",
-    "copper": "World Copper Market 1951-1975 Dataset",
-    "cpunish": "US Capital Punishment dataset.",
-    "danish_data": "Danish Money Demand Data",
-    "elnino": "El Nino - Sea Surface Temperatures",
-    "engel": "Engel (1857) food expenditure data",
-    "fair": "Affairs dataset",
-    "fertility": "World Bank Fertility Data",
-    "grunfeld": "Grunfeld (1950) Investment Data",
-    "heart": "Transplant Survival Data",
-    "interest_inflation": "(West) German interest and inflation rate 1972-1998",
-    "longley": "Longley dataset",
-    "macrodata": "United States Macroeconomic data",
-    "modechoice": "Travel Mode Choice",
-    "nile": "Nile River flows at Ashwan 1871-1970",
-    "randhie": "RAND Health Insurance Experiment Data",
-    "scotland": "Taxation Powers Vote for the Scottish Parliament 1997",
-    "spector": "Spector and Mazzeo (1980) - Program Effectiveness Data",
-    "stackloss": "Stack loss data",
-    "star98": "Star98 Educational Dataset",
-    "statecrim": "Statewide Crime Data 2009",
-    "strikes": "U.S. Strike Duration Data",
-    "sunspots": "Yearly sunspots data 1700-2008",
-    "wage_panel": "Veila and M. Verbeek (1998): Whose Wages Do Unions Raise?",
-}
-
-
-@log_start_end(log=logger)
-def load(
-    file: str,
-    file_types: Optional[List[str]] = None,
-    data_files: Optional[Dict[Any, Any]] = None,
-    data_examples: Optional[Dict[Any, Any]] = None,
-) -> pd.DataFrame:
-    """Load custom file into dataframe.
-
-    Parameters
-    ----------
-    file: str
-        Path to file
-    file_types: list
-        Supported file types
-    data_files: dict
-        Contains all available data files within the Export folder
-    data_examples: dict
-        Contains all available examples from Statsmodels
-
-    Returns
-    -------
-    pd.DataFrame:
-        Dataframe with custom data
-    """
-    if file_types is None:
-        file_types = ["xlsx", "csv"]
-    if data_files is None:
-        data_files = {}
-    if data_examples is None:
-        data_examples = DATA_EXAMPLES
-    if file in data_examples:
-        if file == "wage_panel":
-            return wage_panel.load()
-        return getattr(sm.datasets, file).load_pandas().data
-
-    if file in data_files:
-        file = data_files[file]
-
-    if not Path(file).exists():
-        console.print(f"[red]Cannot find the file {file}[/red]\n")
-        return pd.DataFrame()
-
-    file_type = Path(file).suffix
-
-    if file_type == ".xlsx":
-        data = pd.read_excel(file)
-    elif file_type == ".csv":
-        data = pd.read_csv(file)
-    else:
-        return console.print(
-            f"The file type {file_type} is not supported. Please choose one of the following: "
-            f"{', '.join(file_types)}"
-        )
-
-    return data
-
 
 @log_start_end(log=logger)
 def get_options(
     datasets: Dict[str, pd.DataFrame], dataset_name: str = ""
-) -> Dict[Union[str, Any], DataFrame]:
+) -> Dict[Union[str, Any], pd.DataFrame]:
     """Obtain columns-dataset combinations from loaded in datasets that can be used in other commands
 
     Parameters
@@ -126,7 +34,7 @@ def get_options(
 
     Returns
     -------
-    option_tables: dict
+    Dict[Union[str, Any], pd.DataFrame]
         A dictionary with a DataFrame for each option. With dataset_name set, only shows one
         options table.
     """
@@ -177,7 +85,7 @@ def clean(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with cleaned up data
     """
     fill_dict = {
@@ -299,7 +207,9 @@ def get_root(
 
 
 @log_start_end(log=logger)
-def get_granger_causality(dependent_series, independent_series, lags):
+def get_granger_causality(
+    dependent_series: pd.Series, independent_series: pd.Series, lags: int = 3
+) -> dict:
     """Calculate granger tests
 
     Parameters
@@ -310,15 +220,97 @@ def get_granger_causality(dependent_series, independent_series, lags):
         The series that you want to test whether it Granger-causes time_series_y
     lags : int
         The amount of lags for the Granger test. By default, this is set to 3.
+
+    Returns
+    -------
+    dict
+        Dictionary containing results of Granger test
     """
     granger_set = pd.concat([dependent_series, independent_series], axis=1)
 
     granger = grangercausalitytests(granger_set, [lags], verbose=False)
 
-    return granger
+    for test in granger[lags][0]:
+        # As ssr_chi2test and lrtest have one less value in the tuple, we fill
+        # this value with a '-' to allow the conversion to a DataFrame
+        if len(granger[lags][0][test]) != 4:
+            pars = granger[lags][0][test]
+            granger[lags][0][test] = (pars[0], pars[1], "-", pars[2])
+
+    granger_df = pd.DataFrame(
+        granger[lags][0], index=["F-test", "P-value", "Count", "Lags"]
+    ).T
+
+    return granger_df
 
 
-def get_engle_granger_two_step_cointegration_test(dependent_series, independent_series):
+# TODO: Maybe make a new function to return z instead of having this flag.
+# TODO: Allow for numpy arrays as well
+def get_coint_df(
+    *datasets: pd.Series, return_z: bool = False
+) -> Union[pd.DataFrame, Dict]:
+    """Calculate cointegration tests between variable number of input series
+
+    Parameters
+    ----------
+    datasets : pd.Series
+        Input series to test cointegration for
+    return_z : bool
+        Flag to return the z data to plot
+
+    Returns
+    -------
+    Union[pd.DataFrame,Dict]
+        Dataframe with results of cointegration tests or a Dict of the z results
+    """
+    result: Dict[str, list] = {}
+    z_values: Dict[str, pd.Series] = {}
+
+    # The *datasets lets us pass in a variable number of arguments
+    # Here we are getting all possible combinations of unique inputs
+
+    pairs = list(combinations(datasets, 2))
+    for x, y in pairs:
+        if sum(y.isnull()) > 0:
+            console.print(
+                f"The Series {y} has nan-values. Please consider dropping or filling these "
+                f"values with 'clean'."
+            )
+        elif sum(x.isnull()) > 0:
+            console.print(
+                f"The Series {x.name} has nan-values. Please consider dropping or filling these "
+                f"values with 'clean'."
+            )
+        elif not y.index.equals(x.index):
+            console.print(
+                f"The Series {y.name} and {x.name} do not have the same index."
+            )
+        (
+            c,
+            gamma,
+            alpha,
+            z,
+            adfstat,
+            pvalue,
+        ) = get_engle_granger_two_step_cointegration_test(x, y)
+        result[f"{x.name}/{y.name}"] = [c, gamma, alpha, adfstat, pvalue]
+        z_values[f"{x.name}/{y.name}"] = z
+
+    if result and z_values:
+        if return_z:
+            return z_values
+        df = pd.DataFrame.from_dict(
+            result,
+            orient="index",
+            columns=["Constant", "Gamma", "Alpha", "Dickey-Fuller", "P Value"],
+        )
+        return df
+    return pd.DataFrame()
+
+
+def get_engle_granger_two_step_cointegration_test(
+    dependent_series: pd.Series, independent_series: pd.Series
+) -> Tuple[float, float, float, pd.Series, float, float]:
     """Estimates long-run and short-run cointegration relationship for series y and x and apply
     the two-step Engle & Granger test for cointegration.
 
@@ -340,35 +332,35 @@ def get_engle_granger_two_step_cointegration_test(dependent_series, independent_
     ----------
     dependent_series : pd.Series
         The first time series of the pair to analyse.
-
     independent_series : pd.Series
         The second time series of the pair to analyse.
 
     Returns
     -------
-    c : float
-        The constant term in the long-run relationship y_t = c + gamma * x_t + z_t. This
-        describes the static shift of y with respect to gamma * x.
+    Tuple[float, float, float, pd.Series, float, float]
+        c : float
+            The constant term in the long-run relationship y_t = c + gamma * x_t + z_t. This
+            describes the static shift of y with respect to gamma * x.
 
-    gamma : float
-        The gamma term in the long-run relationship y_t = c + gamma * x_t + z_t. This
-        describes the ratio between the const-shifted y and x.
+        gamma : float
+            The gamma term in the long-run relationship y_t = c + gamma * x_t + z_t. This
+            describes the ratio between the const-shifted y and x.
 
-    alpha : float
-        The alpha term in the short-run relationship y_t - y_(t-1) = alpha * z_(t-1) + epsilon. This
-        gives an indication of the strength of the error correction toward the long-run mean.
+        alpha : float
+            The alpha term in the short-run relationship y_t - y_(t-1) = alpha * z_(t-1) + epsilon. This
+            gives an indication of the strength of the error correction toward the long-run mean.
 
-    z : pd.Series
-        Series of residuals z_t from the long-run relationship y_t = c + gamma * x_t + z_t, representing
-        the value of the error correction term.
+        z : pd.Series
+            Series of residuals z_t from the long-run relationship y_t = c + gamma * x_t + z_t, representing
+            the value of the error correction term.
 
-    dfstat : float
-        The Dickey Fuller test-statistic for phi = 1 vs phi < 1 in the second equation. A more
-        negative value implies the existence of stronger cointegration.
+        dfstat : float
+            The Dickey Fuller test-statistic for phi = 1 vs phi < 1 in the second equation. A more
+            negative value implies the existence of stronger cointegration.
 
-    pvalue : float
-        The p-value corresponding to the Dickey Fuller test-statistic. A lower value implies
-        stronger rejection of no-cointegration, thus stronger evidence of cointegration.
+        pvalue : float
+            The p-value corresponding to the Dickey Fuller test-statistic. A lower value implies
+            stronger rejection of no-cointegration, thus stronger evidence of cointegration.
 
     """
     warnings.simplefilter(action="ignore", category=FutureWarning)

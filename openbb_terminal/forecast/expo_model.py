@@ -3,10 +3,11 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Union, Optional, List, Tuple
+from typing import Union, Optional, List, Tuple
 
 import warnings
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
+from numpy import ndarray
 import pandas as pd
 from darts import TimeSeries
 from darts.models import ExponentialSmoothing
@@ -37,22 +38,28 @@ def get_expo_data(
     seasonal: str = "A",
     seasonal_periods: int = 7,
     dampen: str = "F",
-    n_predict: int = 30,
+    n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
+) -> Tuple[
+    List[TimeSeries],
+    List[TimeSeries],
+    List[TimeSeries],
+    Optional[Union[float, ndarray]],
+    ExponentialSmoothing,
+]:
 
     """Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
     we refer to this link for the original and more complete documentation of the parameters.
 
-    https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html?highlight=exponential
+    https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html
 
     Parameters
     ----------
     data : Union[pd.Series, np.ndarray]
         Input data.
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     trend: str
         Trend component.  One of [N, A, M]
@@ -74,15 +81,11 @@ def get_expo_data(
 
     Returns
     -------
-    list[float]
-        Adjusted Data series
-    list[float]
-        List of historical fcast values
-    list[float]
-        List of predicted fcast values
-    Optional[float]
-        precision
-    Any
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[Union[float, ndarray]], ExponentialSmoothing]
+        Adjusted Data series,
+        List of historical fcast values,
+        List of predicted fcast values,
+        Optional[float] - precision,
         Fit Prob. Expo model object.
     """
 

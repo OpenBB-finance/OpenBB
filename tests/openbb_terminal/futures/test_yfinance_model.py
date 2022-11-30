@@ -11,6 +11,10 @@ from openbb_terminal.futures import yfinance_model
 def vcr_config():
     return {
         "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("period1", "MOCK_PERIOD_1"),
+            ("period2", "MOCK_PERIOD_2"),
+        ],
     }
 
 
@@ -30,25 +34,25 @@ def test_get_search_futures(recorder, category):
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "tickers",
+    "symbols",
     [
         ["BLK"],
     ],
 )
-def test_get_historical_futures(recorder, tickers):
-    result = yfinance_model.get_historical_futures(tickers)
+def test_get_historical_futures(recorder, symbols):
+    result = yfinance_model.get_historical_futures(symbols)
 
     recorder.capture(result)
 
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "ticker",
+    "symbol",
     [
         ["ES"],
     ],
 )
-def test_get_curve_futures(recorder, ticker):
-    result = yfinance_model.get_curve_futures(ticker)
+def test_get_curve_futures(recorder, symbol):
+    result = yfinance_model.get_curve_futures(symbol)
 
     recorder.capture(result)

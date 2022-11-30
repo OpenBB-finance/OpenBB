@@ -1,271 +1,65 @@
 import configparser
+from typing import Tuple
+from pathlib import Path
 
 import pandas as pd
 
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.portfolio.portfolio_optimization import excel_model
 from openbb_terminal.rich_config import console
-
-DEFAULT_RANGE = [value / 1000 for value in range(0, 1001)]
-DEFAULT_BOOL = ["True", "False"]
-
-AVAILABLE_OPTIONS = {
-    "historic_period": ["d", "w", "mo", "y", "ytd", "max"],
-    "start_period": ["Any"],
-    "end_period": ["Any"],
-    "log_returns": DEFAULT_BOOL,
-    "return_frequency": ["d", "w", "m"],
-    "max_nan": DEFAULT_RANGE,
-    "threshold_value": DEFAULT_RANGE,
-    "nan_fill_method": [
-        "linear",
-        "time",
-        "nearest",
-        "zero",
-        "slinear",
-        "quadratic",
-        "cubic",
-    ],
-    "risk_free": DEFAULT_RANGE,
-    "significance_level": DEFAULT_RANGE,
-    "risk_measure": [
-        "MV",
-        "MAD",
-        "MSV",
-        "FLPM",
-        "SLPM",
-        "CVaR",
-        "EVaR",
-        "WR",
-        "ADD",
-        "UCI",
-        "CDaR",
-        "EDaR",
-        "MDD",
-    ],
-    "target_return": DEFAULT_RANGE + [-x for x in DEFAULT_RANGE],
-    "target_risk": DEFAULT_RANGE + [-x for x in DEFAULT_RANGE],
-    "expected_return": ["hist", "ewma1", "ewma2"],
-    "covariance": [
-        "hist",
-        "ewma1",
-        "ewma2",
-        "ledoit",
-        "oas",
-        "shrunk",
-        "gl",
-        "jlogo",
-        "fixed",
-        "spectral",
-        "shrink",
-    ],
-    "smoothing_factor_ewma": DEFAULT_RANGE,
-    "long_allocation": DEFAULT_RANGE,
-    "short_allocation": DEFAULT_RANGE,
-    "risk_aversion": [value / 100 for value in range(-500, 501)],
-    "amount_portfolios": range(1, 10001),
-    "random_seed": range(1, 10001),
-    "tangency": DEFAULT_BOOL,
-    "risk_parity_model": ["A", "B", "C"],
-    "penal_factor": DEFAULT_RANGE + [-x for x in DEFAULT_RANGE],
-    "co_dependence": [
-        "pearson",
-        "spearman",
-        "abs_pearson",
-        "abs_spearman",
-        "distance",
-        "mutual_info",
-        "tail",
-    ],
-    "cvar_simulations": range(1, 10001),
-    "cvar_significance": DEFAULT_RANGE,
-    "linkage": [
-        "single",
-        "complete",
-        "average",
-        "weighted",
-        "centroid",
-        "ward",
-        "dbht",
-    ],
-    "max_clusters": range(1, 101),
-    "amount_bins": ["KN", "FD", "SC", "HGR", "Integer"],
-    "alpha_tail": DEFAULT_RANGE,
-    "leaf_order": DEFAULT_BOOL,
-    "objective": ["MinRisk", "Utility", "Sharpe", "MaxRet"],
-}
-
-DEFAULT_PARAMETERS = [
-    "historic_period",
-    "start_period",
-    "end_period",
-    "log_returns",
-    "return_frequency",
-    "max_nan",
-    "threshold_value",
-    "nan_fill_method",
-    "risk_free",
-    "significance_level",
-]
-MODEL_PARAMS = {
-    "maxsharpe": [
-        "risk_measure",
-        "target_return",
-        "target_risk",
-        "expected_return",
-        "covariance",
-        "smoothing_factor_ewma",
-        "long_allocation",
-        "short_allocation",
-    ],
-    "minrisk": [
-        "risk_measure",
-        "target_return",
-        "target_risk",
-        "expected_return",
-        "covariance",
-        "smoothing_factor_ewma",
-        "long_allocation",
-        "short_allocation",
-    ],
-    "maxutil": [
-        "risk_measure",
-        "target_return",
-        "target_risk",
-        "expected_return",
-        "covariance",
-        "smoothing_factor_ewma",
-        "long_allocation",
-        "short_allocation",
-        "risk_aversion",
-    ],
-    "maxret": [
-        "risk_measure",
-        "target_return",
-        "target_risk",
-        "expected_return",
-        "covariance",
-        "smoothing_factor_ewma",
-        "long_allocation",
-    ],
-    "maxdiv": ["covariance", "long_allocation"],
-    "maxdecorr": ["covariance", "long_allocation"],
-    "ef": [
-        "risk_measure",
-        "long_allocation",
-        "short_allocation",
-        "amount_portfolios",
-        "random_seed",
-        "tangency",
-    ],
-    "equal": ["risk_measure", "long_allocation"],
-    "mktcap": ["risk_measure", "long_allocation"],
-    "dividend": ["risk_measure", "long_allocation"],
-    "riskparity": [
-        "risk_measure",
-        "target_return",
-        "long_allocation",
-        "risk_contribution",
-    ],
-    "relriskparity": [
-        "risk_measure",
-        "covariance",
-        "smoothing_factor_ewma",
-        "long_allocation",
-        "risk_contribution",
-        "risk_parity_model",
-        "penal_factor",
-    ],
-    "hrp": [
-        "risk_measure",
-        "covariance",
-        "smoothing_factor_ewma",
-        "long_allocation",
-        "co_dependence",
-        "cvar_simulations",
-        "cvar_significance",
-        "linkage",
-        "amount_clusters",
-        "max_clusters",
-        "amount_bins",
-        "alpha_tail",
-        "leaf_order",
-        "objective",
-    ],
-    "herc": [
-        "risk_measure",
-        "covariance",
-        "smoothing_factor_ewma",
-        "long_allocation",
-        "co_dependence",
-        "cvar_simulations",
-        "cvar_significance",
-        "linkage",
-        "amount_clusters",
-        "max_clusters",
-        "amount_bins",
-        "alpha_tail",
-        "leaf_order",
-        "objective",
-    ],
-    "nco": [
-        "risk_measure",
-        "covariance",
-        "smoothing_factor_ewma",
-        "long_allocation",
-        "co_dependence",
-        "cvar_simulations",
-        "cvar_significance",
-        "linkage",
-        "amount_clusters",
-        "max_clusters",
-        "amount_bins",
-        "alpha_tail",
-        "leaf_order",
-        "objective",
-    ],
-}
+from openbb_terminal.portfolio.portfolio_optimization.parameters import params_statics
+from openbb_terminal.portfolio.portfolio_optimization.parameters.params_helpers import (
+    check_convert_dates,
+)
+from openbb_terminal.core.config import paths
 
 
-def load_file(file_location=None):
+def load_file(path: str = "") -> Tuple[dict, str]:
     """
-    Loads in the configuration file and return the parameters in a dictionary including the model if available.
+    Loads in the configuration file and return the parameters in a dictionary including the model
+    if available.
 
     Parameters
     ----------
-    file_location: str
+    path: str
         The location of the file to be loaded in either xlsx or ini.
 
     Returns
     -------
-    Return the parameters and the model, if available.
+    Tuple[dict, str]
+        Return the parameters and the model, if available.
     """
-    if str(file_location).endswith(".ini"):
-        params = configparser.RawConfigParser()
-        params.read(file_location)
-        params.optionxform = str  # type: ignore
-        params = params["OPENBB"]
+    if str(path).endswith(".ini"):
+        params_obj = configparser.RawConfigParser()
+        params_obj.read(path)
+        params_obj.optionxform = str  # type: ignore
+        params: dict = dict(params_obj["OPENBB"].items())
 
         if "technique" in params:
             current_model = params["technique"]
         else:
-            current_model = None
+            current_model = ""
 
-    elif str(file_location).endswith(".xlsx"):
-        params, _ = excel_model.load_configuration(file_location)
+    elif str(path).endswith(".xlsx"):
+        params, _ = excel_model.load_configuration(path)
         current_model = params["technique"]
     else:
-        console.print(
-            "Can not load in the file due to not being an .ini or .xlsx file."
-        )
-        return None, None
+        console.print("Cannot load in the file due to not being an .ini or .xlsx file.")
+        return {}, ""
+
+    params = check_convert_dates(
+        params=params, param_name_list=["start_period", "end_period"]
+    )
 
     max_len = max(len(k) for k in params.keys())
     help_text = "[info]Parameters:[/info]\n"
 
     if current_model:
         for k, v in params.items():
-            all_params = DEFAULT_PARAMETERS + MODEL_PARAMS[current_model]
+            all_params = (
+                params_statics.DEFAULT_PARAMETERS
+                + params_statics.MODEL_PARAMS[current_model]
+            )
             if k in all_params:
                 help_text += f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
     else:
@@ -275,6 +69,26 @@ def load_file(file_location=None):
     console.print(help_text)
 
     return params, current_model
+
+
+def save_file(path: str, params: dict) -> Path:
+    if not path.endswith(".ini"):
+        console.print("[red]File to be saved needs to be a .ini file.[/red]\n")
+    # Create file if it does not exist
+    base_path = paths.USER_EXPORTS_DIRECTORY / "portfolio"
+    if not base_path.is_dir():
+        base_path.mkdir()
+    filepath = base_path / path
+
+    config_parser = configparser.RawConfigParser()
+    config_parser.add_section("OPENBB")
+    for key, value in params.items():
+        config_parser.set("OPENBB", key, value)
+
+    with open(filepath, "w") as configfile:
+        config_parser.write(configfile)
+
+    return filepath
 
 
 def show_arguments(arguments, description=None):

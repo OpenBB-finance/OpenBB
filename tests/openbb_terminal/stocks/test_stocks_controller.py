@@ -7,6 +7,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks import stocks_controller
+from tests.test_helpers import no_dfs
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -250,7 +251,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--query=mock_query",
                 "--limit=1",
-                "--export=''",
+                "--export=csv",
             ],
             "stocks_helper.search",
             [],
@@ -261,13 +262,13 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 sector="",
                 industry="",
                 exchange_country="",
-                export="",
+                export="csv",
             ),
         ),
         (
             "call_quote",
             [],
-            "stocks_helper.quote",
+            "stocks_view.display_quote",
             [],
             dict(),
         ),
@@ -283,7 +284,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--plotly",
                 "--sort=Open",
-                "--descending",
+                "--reverse",
                 "--raw",
                 "--limit=1",
                 "--trend",
@@ -294,7 +295,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 data=EMPTY_DF,
                 sortby="Open",
-                descend=False,
+                ascend=False,
                 limit=1,
             ),
         ),
@@ -303,7 +304,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--plotly",
                 "--sort=Open",
-                "--descending",
+                "--reverse",
                 "--limit=1",
                 "--trend",
                 "--ma=20,30",
@@ -463,7 +464,7 @@ def test_call_func(
 
         getattr(controller, tested_func)(other_args)
 
-        if called_args or called_kwargs:
+        if called_args or called_kwargs and no_dfs(called_args, called_kwargs):
             mock.assert_called_once_with(*called_args, **called_kwargs)
         else:
             mock.assert_called_once()

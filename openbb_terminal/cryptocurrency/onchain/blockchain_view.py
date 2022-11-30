@@ -18,6 +18,7 @@ from openbb_terminal.helper_funcs import (
     lambda_long_number_format,
     plot_autoscale,
     is_valid_axes_count,
+    str_date_to_timestamp,
 )
 
 logger = logging.getLogger(__name__)
@@ -25,8 +26,8 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_btc_circulating_supply(
-    start_date: int = int(datetime(2010, 1, 1).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: Optional[str] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -34,20 +35,27 @@ def display_btc_circulating_supply(
 
     Parameters
     ----------
-    start_date : int
-        Initial date timestamp (e.g., 1_609_459_200)
-    until : int
-        End date timestamp (e.g., 1_641_588_030)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : Optional[str]
+        Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
 
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     df = blockchain_model.get_btc_circulating_supply()
+
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
+
     df = df[
-        (df["x"] > datetime.fromtimestamp(start_date))
-        & (df["x"] < datetime.fromtimestamp(end_date))
+        (df["x"] > datetime.fromtimestamp(ts_start_date))
+        & (df["x"] < datetime.fromtimestamp(ts_end_date))
     ]
 
     # This plot has 1 axis
@@ -78,8 +86,8 @@ def display_btc_circulating_supply(
 
 @log_start_end(log=logger)
 def display_btc_confirmed_transactions(
-    start_date: int = int(datetime(2010, 1, 1).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: Optional[str] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -87,20 +95,27 @@ def display_btc_confirmed_transactions(
 
     Parameters
     ----------
-    since : int
-        Initial date timestamp (e.g., 1_609_459_200)
-    until : int
-        End date timestamp (e.g., 1_641_588_030)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : Optional[str]
+        Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
 
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     df = blockchain_model.get_btc_confirmed_transactions()
+
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
+
     df = df[
-        (df["x"] > datetime.fromtimestamp(start_date))
-        & (df["x"] < datetime.fromtimestamp(end_date))
+        (df["x"] > datetime.fromtimestamp(ts_start_date))
+        & (df["x"] < datetime.fromtimestamp(ts_end_date))
     ]
 
     # This plot has 1 axis

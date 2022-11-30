@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from typing import List, Union
+from typing import List, Optional, Union
 
 from datetime import datetime as dt
 import pandas as pd
@@ -20,8 +20,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_economic_calendar(
     countries: Union[List[str], str] = "",
-    start_date: str = dt.now().strftime("%Y-%m-%d"),
-    end_date: str = dt.now().strftime("%Y-%m-%d"),
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Get economic calendar for countries between specified dates
 
@@ -29,16 +29,35 @@ def get_economic_calendar(
     ----------
     countries : [List[str],str]
         List of countries to include in calendar.  Empty returns all
-    start_date : str
+    start_date : Optional[str]
         Start date for calendar
-    end_date : str
+    end_date : Optional[str]
         End date for calendar
 
     Returns
     -------
     pd.DataFrame
         Economic calendar
+
+    Examples
+    --------
+    Get todays economic calendar for the United States
+    >>> from openbb_terminal.sdk import openbb
+    >>> calendar = openbb.economy.events("United States")
+
+    To get multiple countries for a given date, pass the same start and end date as well as
+    a list of countries
+    >>> calendars = openbb.economy.events(["United States","Canada"], start_date="2022-11-18", end_date="2022-11-18")
     """
+
+    if start_date is None:
+        start_date = dt.now().strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = dt.now().strftime("%Y-%m-%d")
+
+    if countries == "":
+        countries = []
     if isinstance(countries, str):
         countries = [countries]
     if start_date == end_date:
@@ -119,7 +138,7 @@ def get_country_codes() -> List[str]:
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
 def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
-    """Gets the Big Mac index calculated by the Economist
+    """Get the Big Mac index calculated by the Economist
 
     Parameters
     ----------

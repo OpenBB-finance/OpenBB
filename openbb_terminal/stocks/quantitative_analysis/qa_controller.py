@@ -6,7 +6,6 @@ import logging
 from datetime import datetime
 from typing import List
 
-import numpy as np
 import pandas as pd
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -23,10 +22,11 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.quantitative_analysis.beta_view import beta_view
 from openbb_terminal.stocks.quantitative_analysis.factors_view import capm_view
 from openbb_terminal.stocks.quantitative_analysis.qa_model import full_stock_df
+from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=C0302
 
@@ -56,8 +56,6 @@ class QaController(StockBaseController):
         "normality",
         "qqplot",
         "unitroot",
-        "goodness",
-        "unitroot",
         "capm",
         "beta",
         "var",
@@ -74,6 +72,7 @@ class QaController(StockBaseController):
     KPS_REG = ["c", "ct"]
     VALID_DISTRIBUTIONS = ["laplace", "student_t", "logistic", "normal"]
     PATH = "/stocks/qa/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self,
@@ -93,135 +92,7 @@ class QaController(StockBaseController):
         self.target = "returns"
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            zero_to_hundred: dict = {str(c): {} for c in range(0, 100)}
-            zero_to_hundred_detailed: dict = {
-                str(c): {} for c in np.arange(0.0, 100.0, 0.1)
-            }
-            choices["pick"] = {c: {} for c in list(self.stock.columns)}
-            choices["load"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
-                "-i": "--interval",
-                "--prepost": {},
-                "-p": "--prepost",
-                "--file": None,
-                "-f": "--file",
-                "--monthly": {},
-                "-m": "--monthly",
-                "--weekly": {},
-                "-w": "--weekly",
-                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
-                "-r": "--iexrange",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
-                },
-            }
-            choices["unitroot"] = {
-                "--fuller_reg": {c: {} for c in self.FULLER_REG},
-                "-r": "--fuller_reg",
-                "--kps_reg": {c: {} for c in self.KPS_REG},
-                "-k": "--kps_reg",
-            }
-            choices["line"] = {
-                "--log": {},
-                "--draw": {},
-                "-d": "--draw",
-                "--ml": None,
-                "--ms": None,
-            }
-            choices["hist"] = {
-                "--bins": {str(c): {} for c in range(10, 100)},
-                "-b": "--bins",
-            }
-            choices["bw"] = {
-                "--yearly": {},
-                "-y": {},
-            }
-            choices["acf"] = {
-                "--lags": {str(c): {} for c in range(5, 100)},
-                "-l": "--lags",
-            }
-            choices["rolling"] = {
-                "--window": {str(c): {} for c in range(5, 100)},
-                "-w": "--window",
-            }
-            choices["spread"] = {
-                "--window": {str(c): {} for c in range(5, 100)},
-                "-w": "--window",
-            }
-            choices["quantile"] = {
-                "--window": {str(c): {} for c in range(5, 100)},
-                "-w": "--window",
-                "--quantile": {str(c): {} for c in np.arange(0.0, 1.0, 0.01)},
-                "-q": "--quantile",
-            }
-            choices["skew"] = {
-                "--window": {str(c): {} for c in range(5, 100)},
-                "-w": "--window",
-            }
-            choices["kurtosis"] = {
-                "--window": {str(c): {} for c in range(5, 100)},
-                "-w": "--window",
-            }
-            choices["raw"] = {
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["decompose"] = {
-                "--multiplicative": None,
-                "-m": "--multiplicative",
-            }
-            choices["cusum"] = {
-                "--threshold": None,
-                "-t": "--threshold",
-                "--drift": None,
-                "-d": "--drift",
-            }
-            choices["var"] = {
-                "--mean": {},
-                "-m": "--mean",
-                "--adjusted": {},
-                "-a": "--adjusted",
-                "--student": {},
-                "-s": "--student",
-                "--percentile": zero_to_hundred_detailed,
-                "-p": "--percentile",
-                "--datarange": zero_to_hundred,
-                "-d": "--datarange",
-            }
-            choices["es"] = {
-                "--mean": {},
-                "-m": "--mean",
-                "--dist": {c: {} for c in self.VALID_DISTRIBUTIONS},
-                "-d": "--dist",
-                "--percentile": zero_to_hundred_detailed,
-                "-p": "--percentile",
-            }
-            choices["om"] = {
-                "--start": zero_to_hundred_detailed,
-                "-s": "--start",
-                "--end": zero_to_hundred_detailed,
-                "-e": "--end",
-            }
-            choices["so"] = {
-                "--target": None,
-                "-t": "--target",
-                "--adjusted": {},
-                "-a": "--adjusted",
-                "--window": {str(c): {} for c in range(1, 960)},
-                "-w": "--window",
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -296,7 +167,7 @@ class QaController(StockBaseController):
             "-t",
             "--target",
             dest="target",
-            type=lambda x: x.lower(),
+            type=str.lower,
             choices=list(self.stock.columns),
             help="Select variable to analyze",
         )
@@ -306,7 +177,6 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.target = ns_parser.target
-        console.print("")
 
     @log_start_end(log=logger)
     def call_raw(self, other_args: List[str]):
@@ -327,12 +197,24 @@ class QaController(StockBaseController):
             dest="limit",
         )
         parser.add_argument(
-            "-d",
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            dest="descend",
-            help="Sort in descending order",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
+        )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            help="The column to sort by",
+            choices=stocks_helper.format_parse_choices(self.stock.columns),
+            type=str.lower,
+            dest="sortby",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -340,10 +222,10 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_raw(
-                data=self.stock[self.target],
+                data=self.stock,
                 limit=ns_parser.limit,
-                sortby="",
-                descend=ns_parser.descend,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -371,20 +253,12 @@ class QaController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
             prog="line",
-            description="Show line plot of selected data and allow to draw lines or highlight specific datetimes.",
+            description="Show line plot of selected data or highlight specific datetimes.",
         )
         parser.add_argument(
             "--log",
             help="Plot with y on log scale",
             dest="log",
-            action="store_true",
-            default=False,
-        )
-        parser.add_argument(
-            "-d",
-            "--draw",
-            help="Draw lines and annotate on the plot",
-            dest="draw",
             action="store_true",
             default=False,
         )
@@ -411,7 +285,6 @@ class QaController(StockBaseController):
                 self.stock[self.target],
                 title=f"{self.ticker} {self.target}",
                 log_y=ns_parser.log,
-                draw=ns_parser.draw,
                 markers_lines=ns_parser.ml,
                 markers_scatter=ns_parser.ms,
             )
@@ -1000,9 +873,7 @@ class QaController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="es",
-            description="""
-                Provides Expected Shortfall (short: ES) of the selected stock.
-            """,
+            description="Provides Expected Shortfall (short: ES) of the selected stock.",
         )
         parser.add_argument(
             "-m",
@@ -1015,9 +886,8 @@ class QaController(StockBaseController):
         parser.add_argument(
             "-d",
             "--dist",
-            "--distributions",
             dest="distributions",
-            type=str,
+            type=str.lower,
             choices=self.distributions,
             default="normal",
             help="Distribution used for the calculations",
@@ -1030,7 +900,7 @@ class QaController(StockBaseController):
             type=float,
             default=99.9,
             help="""
-                Percentile used for ES calculations, for example input 99.9 equals a 99.9 Percent Expected Shortfall
+                Percentile for calculations, i.e. input 99.9 equals a 99.9 Percent Expected Shortfall
             """,
         )
 

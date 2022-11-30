@@ -42,43 +42,15 @@ class CoinbaseController(BaseController):
     ]
     deposit_type = ["internal_deposit", "deposit"]
     PATH = "/portfolio/bro/cb/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["account"] = {
-                "--all": {},
-                "--currency": None,
-                "-c": "--currency",
-            }
-            choices["history"] = {
-                "--acc": None,
-                "-a": "--acc",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["orders"] = {
-                "--sortby": {c: {} for c in self.order_sortby},
-                "-s": "--sortby",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["deposits"] = {
-                "--type": {c: {} for c in self.deposit_type},
-                "-t": "--type",
-                "--sortby": {c: {} for c in self.deposit_sort},
-                "-s": "--sortby",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-                "--descend": {},
-            }
-
+            choices: dict = self.choices_default
+            self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -194,11 +166,16 @@ class CoinbaseController(BaseController):
             choices=self.order_sortby,
         )
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         if other_args and other_args[0][0] != "-":
             other_args.insert(0, "--acc")
@@ -209,7 +186,10 @@ class CoinbaseController(BaseController):
 
         if ns_parser:
             coinbase_view.display_orders(
-                ns_parser.limit, ns_parser.sortby, ns_parser.descend, ns_parser.export
+                limit=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=not ns_parser.reverse,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -248,20 +228,25 @@ class CoinbaseController(BaseController):
             choices=self.deposit_sort,
         )
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             coinbase_view.display_deposits(
-                ns_parser.limit,
-                ns_parser.sortby,
-                ns_parser.type,
-                ns_parser.descend,
-                ns_parser.export,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                deposit_type=ns_parser.type,
+                descend=ns_parser.reverse,
+                export=ns_parser.export,
             )

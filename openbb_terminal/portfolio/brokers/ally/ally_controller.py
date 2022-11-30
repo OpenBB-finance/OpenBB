@@ -35,32 +35,15 @@ class AllyController(BaseController):
     ]
     list_exchanges = ["A", "N", "Q", "U", "V"]
     PATH = "/portfolio/bro/ally/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["history"] = {
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["quote"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-            }
-            choices["movers"] = {
-                "--type": {c: {} for c in self.list_choices},
-                "-t": "--type",
-                "--exchange": {c: {} for c in self.list_exchanges},
-                "-e": "--exchange",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-
+            choices: dict = self.choices_default
+            self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

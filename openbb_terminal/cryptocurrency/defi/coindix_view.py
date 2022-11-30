@@ -26,23 +26,23 @@ def display_defi_vaults(
     link: bool = False,
     export: str = "",
 ) -> None:
-    """Display Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to
+    """Prints table showing Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to
     maximize returns of its crypto assets. [Source: https://coindix.com/]
 
     Parameters
     ----------
     chain: str
         Blockchain - one from list [
-            'ethereum', 'polygon', 'avalanche', 'bsc', 'terra', 'fantom',
-            'moonriver', 'celo', 'heco', 'okex', 'cronos', 'arbitrum', 'eth',
-            'harmony', 'fuse', 'defichain', 'solana', 'optimism'
+        'ethereum', 'polygon', 'avalanche', 'bsc', 'terra', 'fantom',
+        'moonriver', 'celo', 'heco', 'okex', 'cronos', 'arbitrum', 'eth',
+        'harmony', 'fuse', 'defichain', 'solana', 'optimism'
         ]
     protocol: str
         DeFi protocol - one from list: [
-            'aave', 'acryptos', 'alpaca', 'anchor', 'autofarm', 'balancer', 'bancor',
-            'beefy', 'belt', 'compound', 'convex', 'cream', 'curve', 'defichain', 'geist',
-            'lido', 'liquity', 'mirror', 'pancakeswap', 'raydium', 'sushi', 'tarot', 'traderjoe',
-            'tulip', 'ubeswap', 'uniswap', 'venus', 'yearn'
+        'aave', 'acryptos', 'alpaca', 'anchor', 'autofarm', 'balancer', 'bancor',
+        'beefy', 'belt', 'compound', 'convex', 'cream', 'curve', 'defichain', 'geist',
+        'lido', 'liquity', 'mirror', 'pancakeswap', 'raydium', 'sushi', 'tarot', 'traderjoe',
+        'tulip', 'ubeswap', 'uniswap', 'venus', 'yearn'
         ]
     kind: str
         Kind/type of vault - one from list: ['lp','single','noimploss','stable']

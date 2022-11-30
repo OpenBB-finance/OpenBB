@@ -170,9 +170,10 @@ def test_call_cls(mocker):
                 "quit",
                 "quit",
                 "quit",
+                "quit",
             ],
         ),
-        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "quit", "help"]),
         ("call_home", [], ["quit", "quit"]),
         ("call_help", [], []),
         ("call_quit", [], ["quit"]),
@@ -285,6 +286,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 symbols=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
+                export="",
             ),
         ),
         (
@@ -299,6 +301,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 symbols=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
+                export="csv",
             ),
         ),
         (
@@ -313,6 +316,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 symbols=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
+                export="csv",
             ),
         ),
         (

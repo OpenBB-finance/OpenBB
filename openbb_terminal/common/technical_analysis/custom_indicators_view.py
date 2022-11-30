@@ -20,6 +20,7 @@ from openbb_terminal.helper_funcs import (
     is_intraday,
     is_valid_axes_count,
 )
+from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,7 @@ def fibonacci_retracement(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Calculate fibonacci retracement levels
+    """Plots Calculated fibonacci retracement levels
 
     Parameters
     ----------
@@ -77,7 +78,10 @@ def fibonacci_retracement(
     else:
         return
 
-    ax1.plot(plot_data["Adj Close"])
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
+    ax1.plot(plot_data[close_col])
 
     if is_intraday(data):
         date_format = "%b %d %H:%M"

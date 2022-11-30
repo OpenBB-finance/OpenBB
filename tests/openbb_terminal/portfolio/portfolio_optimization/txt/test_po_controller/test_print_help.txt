@@ -5,7 +5,7 @@ Portfolio loaded:
 Tickers: 
 Categories: 
 
-    file               select portfolio parameter file
+    file               file that contains portfolio risk parameters
 >   params             specify and show portfolio risk parameters
 
 Parameter file: 
@@ -19,13 +19,16 @@ Mean Risk Optimization:
 [unvl]    maxdecorr          maximum decorrelation portfolio[/unvl]
 [unvl]    blacklitterman     black litterman portfolio[/unvl]
 [unvl]    ef                 show the efficient frontier[/unvl]
+
 Risk Parity Optimization:
 [unvl]    riskparity         risk parity portfolio using risk budgeting approach[/unvl]
 [unvl]    relriskparity      relaxed risk parity using least squares approach[/unvl]
+
 Hierarchical Clustering Models:
 [unvl]    hrp                hierarchical risk parity[/unvl]
 [unvl]    herc               hierarchical equal risk contribution[/unvl]
 [unvl]    nco                nested clustering optimization[/unvl]
+
 Other Optimization Techniques:
 [unvl]    equal              equally weighted[/unvl]
 [unvl]    mktcap             weighted according to market cap (property marketCap)[/unvl]

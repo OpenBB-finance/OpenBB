@@ -1,4 +1,4 @@
-"""Main helper"""
+"""Main helper."""
 __docformat__ = "numpy"
 
 # pylint: disable=unsupported-assignment-operation,too-many-lines
@@ -23,7 +23,6 @@ import requests
 from requests.exceptions import ReadTimeout
 
 import yfinance as yf
-from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
 from scipy import stats
 
@@ -37,7 +36,7 @@ from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
-from openbb_terminal.stocks.stocks_models import (
+from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
     load_stock_yf,
     load_stock_eodhd,
@@ -58,8 +57,42 @@ logger = logging.getLogger(__name__)
 exch_file_path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "mappings", "Mic_Codes.csv"
 )
-exhcnage_df = pd.read_csv(exch_file_path, index_col=0, header=None)
-exchange_mappings = exhcnage_df.squeeze("columns").to_dict()
+exchange_df = pd.read_csv(exch_file_path, index_col=0, header=None)
+exchange_mappings = exchange_df.squeeze("columns").to_dict()
+
+
+def check_datetime(
+    ck_date: Optional[Union[datetime, str]] = None, start: bool = True
+) -> datetime:
+    """Checks if given argument is string and attempts to convert to datetime.
+
+    Parameters
+    ----------
+    ck_date : Optional[Union[datetime, str]], optional
+        Date to check, by default None
+    start : bool, optional
+        If True and string is invalid, will return 1100 days ago
+        If False and string is invalid, will return today, by default True
+
+    Returns
+    -------
+    datetime
+        Datetime object
+    """
+    error_catch = (datetime.now() - timedelta(days=1100)) if start else datetime.now()
+    try:
+        if ck_date is None:
+            return error_catch
+        if isinstance(ck_date, datetime):
+            return ck_date
+        if isinstance(ck_date, str):
+            return datetime.strptime(ck_date, "%Y-%m-%d")
+    except Exception:
+        console.print(
+            f"Invalid date format (YYYY-MM-DD), "
+            f"Using {error_catch.strftime('%Y-%m-%d')} for {ck_date}"
+        )
+    return error_catch
 
 
 def search(
@@ -89,6 +122,11 @@ def search(
         The limit of companies shown.
     export : str
         Export data
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.search(country="united states", exchange_country="Germany")
     """
     kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
@@ -107,6 +145,11 @@ def search(
             " please check if you can access this website without a VPN.[/red]\n"
         )
         data = {}
+    except ValueError:
+        console.print(
+            "[red]No companies were found that match the given criteria.[/red]\n"
+        )
+        return
     if not data:
         console.print("No companies found.\n")
         return
@@ -150,15 +193,22 @@ def search(
     if query:
         title += f" on term {query}"
     if exchange_country:
-        title += f" {exchange_country} exchange"
+        title += f" on an exchange in {exchange_country.replace('_', ' ').title()}"
     if country:
-        title += f" in {country}"
+        title += f" in {country.replace('_', ' ').title()}"
     if sector:
         title += f" within {sector}"
         if industry:
             title += f" and {industry}"
     if not sector and industry:
         title += f" within {industry}"
+
+    df["exchange"] = df["exchange"].apply(
+        lambda x: x.replace("_", " ").title() if x else None
+    )
+    df["exchange"] = df["exchange"].apply(
+        lambda x: "United States" if x == "Usa" else None
+    )
 
     print_rich_table(
         df.iloc[:limit] if limit else df,
@@ -172,18 +222,17 @@ def search(
 
 def load(
     symbol: str,
-    start_date: datetime = None,
+    start_date: Optional[Union[datetime, str]] = None,
     interval: int = 1440,
-    end_date: datetime = None,
+    end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
     iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
+    verbose: bool = True,
 ):
-
-    """
-    Load a symbol to perform analysis using the string above as a template.
+    """Load a symbol to perform analysis using the string above as a template.
 
     Optional arguments and their descriptions are listed above.
 
@@ -196,7 +245,7 @@ def load(
     Please note that certain analytical features are exclusive to the specific source.
 
     To load a symbol from an exchange outside of the NYSE/NASDAQ default, use yFinance as the source and
-    add the corresponding exchange to the end of the symbol. i.e. ‘BNS.TO’.  Note this may be possible with
+    add the corresponding exchange to the end of the symbol. i.e. `BNS.TO`.  Note this may be possible with
     other paid sources check their docs.
 
     BNS is a dual-listed stock, there are separate options chains and order books for each listing.
@@ -207,8 +256,8 @@ def load(
     https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html
 
     Certain analytical features, such as VWAP, require the ticker to be loaded as intraday
-    using the ‘-i x’ argument.  When encountering this error, simply reload the symbol using
-    the interval argument. i.e. ‘load -t BNS -s YYYY-MM-DD -i 1 -p’ loads one-minute intervals,
+    using the `-i x` argument.  When encountering this error, simply reload the symbol using
+    the interval argument. i.e. `load -t BNS -s YYYY-MM-DD -i 1 -p` loads one-minute intervals,
     including Pre/After Market data, using the default source, yFinance.
 
     Certain features, such as the Prediction menu, require the symbol to be loaded as daily and not intraday.
@@ -217,12 +266,12 @@ def load(
     ----------
     symbol: str
         Ticker to get data
-    start_date: datetime
-        Start date to get data from with
+    start_date: str or datetime, optional
+        Start date to get data from with. - datetime or string format (YYYY-MM-DD)
     interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end_date: datetime
-        End date to get data from with
+    end_date: str or datetime, optional
+        End date to get data from with. - datetime or string format (YYYY-MM-DD)
     prepost: bool
         Pre and After hours data
     source: str
@@ -233,16 +282,23 @@ def load(
         Flag to get weekly data
     monthly: bool
         Flag to get monthly data
+    verbose: bool
+        Display verbose information on what was the symbol that was loaded
 
     Returns
     -------
     df_stock_candidate: pd.DataFrame
         Dataframe of data
     """
+
     if start_date is None:
-        start_date = datetime.now() - timedelta(days=1100)
+        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+
     if end_date is None:
-        end_date = datetime.now()
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
+    start_date = check_datetime(start_date)
+    end_date = check_datetime(end_date, start=False)
 
     # Daily
     if int(interval) == 1440:
@@ -306,7 +362,6 @@ def load(
 
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
-                console.print()
                 return pd.DataFrame()
 
             df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
@@ -358,7 +413,6 @@ def load(
             df_stock_candidate = df_stock_candidate.set_index("date")
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
-                console.print()
                 return pd.DataFrame()
 
             df_stock_candidate.index = (
@@ -377,10 +431,11 @@ def load(
 
     s_intraday = (f"Intraday {s_interval}", int_string)[interval == 1440]
 
-    console.print(
-        f"Loading {s_intraday} {symbol.upper()} stock "
-        f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.",
-    )
+    if verbose:
+        console.print(
+            f"Loading {s_intraday} data for {symbol.upper()} "
+            f"with starting period {s_start.strftime('%Y-%m-%d')}.",
+        )
 
     return df_stock_candidate
 
@@ -393,9 +448,9 @@ def display_candle(
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = "",
-    start_date: datetime = (datetime.now() - timedelta(days=1100)),
+    start_date: Optional[Union[datetime, str]] = None,
     interval: int = 1440,
-    end_date: datetime = datetime.now(),
+    end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
     iexrange: str = "ytd",
@@ -405,7 +460,9 @@ def display_candle(
     raw: bool = False,
     yscale: str = "linear",
 ):
-    """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
+    """Show candle plot of loaded ticker.
+
+    [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
     Parameters
     ----------
@@ -427,12 +484,12 @@ def display_candle(
         External axes (2 axes are expected in the list), by default None
     asset_type_: str
         String to include in title
-    start_date: datetime
-        Start date to get data from with
+    start_date: str or datetime, optional
+        Start date to get data from with. - datetime or string format (YYYY-MM-DD)
     interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end_date: datetime
-        End date to get data from with
+    end_date: str or datetime, optional
+        End date to get data from with. - datetime or string format (YYYY-MM-DD)
     prepost: bool
         Pre and After hours data
     source: str
@@ -447,7 +504,21 @@ def display_candle(
         Flag to display raw data, by default False
     yscale: str
         Linear or log for yscale
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.candle("AAPL")
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
+    start_date = check_datetime(start_date)
+    end_date = check_datetime(end_date, start=False)
 
     if data is None:
         data = load(
@@ -708,70 +779,14 @@ def display_candle(
         return data
 
 
-def quote(symbol: str) -> pd.DataFrame:
-    """Ticker quote
-
-    Parameters
-    ----------
-    symbol : str
-        Ticker
-    """
-    ticker = yf.Ticker(symbol)
-
-    try:
-        quote_df = pd.DataFrame(
-            [
-                {
-                    "Symbol": ticker.info["symbol"],
-                    "Name": ticker.info["shortName"],
-                    "Price": ticker.info["regularMarketPrice"],
-                    "Open": ticker.info["regularMarketOpen"],
-                    "High": ticker.info["dayHigh"],
-                    "Low": ticker.info["dayLow"],
-                    "Previous Close": ticker.info["previousClose"],
-                    "Volume": ticker.info["volume"],
-                    "52 Week High": ticker.info["fiftyTwoWeekHigh"],
-                    "52 Week Low": ticker.info["fiftyTwoWeekLow"],
-                }
-            ]
-        )
-
-        quote_df["Change"] = quote_df["Price"] - quote_df["Previous Close"]
-        quote_df["Change %"] = quote_df.apply(
-            lambda x: f'{((x["Change"] / x["Previous Close"]) * 100):.2f}%',
-            axis="columns",
-        )
-        for c in [
-            "Price",
-            "Open",
-            "High",
-            "Low",
-            "Previous Close",
-            "52 Week High",
-            "52 Week Low",
-            "Change",
-        ]:
-            quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
-        quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
-
-        quote_df = quote_df.set_index("Symbol")
-
-        quote_data = transpose(quote_df)
-
-        print_rich_table(quote_data, title="Ticker Quote", show_index=True)
-        return quote_data
-
-    except KeyError:
-        logger.exception("Invalid stock ticker")
-        console.print(f"Invalid stock ticker: {symbol}")
-        return ""
-
-
 def load_ticker(
-    ticker: str, start_date: Union[str, datetime], end_date: Union[str, datetime] = ""
+    ticker: str,
+    start_date: Union[str, datetime],
+    end_date: Optional[Union[str, datetime]] = None,
 ) -> pd.DataFrame:
-    """Loads a ticker data from Yahoo Finance, adds a data index column data_id and Open-Close
-    High/Low columns.
+    """Load a ticker data from Yahoo Finance.
+
+    Adds a data index column data_id and Open-Close High/Low columns after loading.
 
     Parameters
     ----------
@@ -787,11 +802,13 @@ def load_ticker(
     DataFrame
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
         date_id, OC-High, OC-Low.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> msft_df = openbb.stocks.load("MSFT")
     """
-    if end_date:
-        df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
-    else:
-        df_data = yf.download(ticker, start=start_date, progress=False)
+    df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
 
     df_data.index = pd.to_datetime(df_data.index)
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
@@ -806,7 +823,7 @@ def load_ticker(
 
 
 def process_candle(data: pd.DataFrame) -> pd.DataFrame:
-    """Process DataFrame into candle style plot
+    """Process DataFrame into candle style plot.
 
     Parameters
     ----------
@@ -837,7 +854,7 @@ def process_candle(data: pd.DataFrame) -> pd.DataFrame:
 def find_trendline(
     df_data: pd.DataFrame, y_key: str, high_low: str = "high"
 ) -> pd.DataFrame:
-    """Attempts to find a trend line based on y_key column from a given stock ticker data frame.
+    """Attempt to find a trend line based on y_key column from a given stock ticker data frame.
 
     Parameters
     ----------
@@ -856,7 +873,6 @@ def find_trendline(
         If no trend was found,
             An original Panda's data frame
     """
-
     for iteration in [3, 4, 5, 6, 7]:
         df_temp = df_data.copy()
         while len(df_temp) > iteration:
@@ -891,7 +907,10 @@ def find_trendline(
 
 
 def additional_info_about_ticker(ticker: str) -> str:
-    """Information about trading the ticker such as exchange, currency, timezone and market status
+    """Get information about trading the ticker.
+
+    Includes exchange, currency, timezone and market status.
+
     Parameters
     ----------
     ticker : str
@@ -933,7 +952,7 @@ def additional_info_about_ticker(ticker: str) -> str:
 
 
 def clean_fraction(num, denom):
-    """Returns the decimal value or NA if the operation cannot be performed
+    """Return the decimal value or NA if the operation cannot be performed.
 
     Parameters
     ----------
@@ -943,7 +962,7 @@ def clean_fraction(num, denom):
         The denominator for the fraction
 
     Returns
-    ----------
+    -------
     val : Any
         The value of the fraction
     """
@@ -954,7 +973,7 @@ def clean_fraction(num, denom):
 
 
 def load_custom(file_path: str) -> pd.DataFrame:
-    """Loads in a custom csv file
+    """Load in a custom csv file.
 
     Parameters
     ----------
@@ -963,7 +982,7 @@ def load_custom(file_path: str) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe of stock data
     """
     # Double check that the file exists
@@ -1001,7 +1020,10 @@ def load_custom(file_path: str) -> pd.DataFrame:
 
 
 def clean_function(entry: str) -> Union[str, float]:
-    """Helper function for cleaning stock data from csv.  This can be customized for csvs"""
+    """Clean stock data from csv.
+
+    This can be customized for csvs.
+    """
     # If there is a digit, get rid of common characters and return float
     if any(char.isdigit() for char in entry):
         return float(entry.replace("$", "").replace(",", ""))
@@ -1009,7 +1031,10 @@ def clean_function(entry: str) -> Union[str, float]:
 
 
 def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
-    """Show quick performance stats of stock prices.  Daily prices expected"""
+    """Show quick performance stats of stock prices.
+
+    Daily prices expected.
+    """
     closes = stock_df["Adj Close"]
     volumes = stock_df["Volume"]
 
@@ -1053,7 +1078,7 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
 
 
 def show_codes_polygon(ticker: str):
-    """Show FIGI, SIC and SIK codes for ticker
+    """Show FIGI, SIC and SIK codes for ticker.
 
     Parameters
     ----------
@@ -1075,8 +1100,44 @@ def show_codes_polygon(ticker: str):
     r_json = r_json["results"]
     cols = ["cik", "composite_figi", "share_class_figi", "sic_code"]
     vals = [r_json[col] for col in cols]
-    polyon_df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
-    polyon_df.codes = polyon_df.codes.apply(lambda x: x.replace("_", " "))
+    polygon_df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
+    polygon_df.codes = polygon_df.codes.apply(lambda x: x.replace("_", " "))
     print_rich_table(
-        polyon_df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
+        polygon_df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
     )
+
+
+def format_parse_choices(choices: List[str]) -> List[str]:
+    """Formats a list of strings to be lowercase and replace spaces with underscores.
+
+    Parameters
+    ----------
+    choices: List[str]
+        The options to be formatted
+
+    Returns
+    -------
+    clean_choices: List[str]
+        The cleaned options
+
+    """
+    return [x.lower().replace(" ", "_") for x in choices]
+
+
+def map_parse_choices(choices: List[str]) -> Dict[str, str]:
+    """Creates a mapping of clean arguments (keys) to original arguments (values)
+
+    Parameters
+    ----------
+    choices: List[str]
+        The options to be formatted
+
+    Returns
+    -------
+    clean_choices: Dict[str, str]
+        The mappung
+
+    """
+    the_dict = {x.lower().replace(" ", "_"): x for x in choices}
+    the_dict[""] = ""
+    return the_dict

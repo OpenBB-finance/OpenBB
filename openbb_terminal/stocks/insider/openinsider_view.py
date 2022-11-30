@@ -49,7 +49,7 @@ def lambda_red_highlight(values) -> List[str]:
         dataframe values to color
 
     Returns
-    ----------
+    -------
     List[str]
         colored dataframes values
     """
@@ -65,7 +65,7 @@ def lambda_yellow_highlight(values) -> List[str]:
         dataframe values to color
 
     Returns
-    ----------
+    -------
     List[str]
         colored dataframes values
     """
@@ -81,7 +81,7 @@ def lambda_magenta_highlight(values):
         dataframe values to color
 
     Returns
-    ----------
+    -------
     List[str]
         colored dataframes values
     """
@@ -97,7 +97,7 @@ def lambda_green_highlight(values):
         dataframe values to color
 
     Returns
-    ----------
+    -------
     List[str]
         colored dataframes values
     """
@@ -117,11 +117,11 @@ def print_insider_data(type_insider: str = "lcb", limit: int = 10, export: str =
     export: str
         Export data format
     """
-    df = get_print_insider_data(type_insider, limit)
+    df = get_print_insider_data(type_insider)
 
     if not df.empty:
         print_rich_table(
-            df,
+            df.head(limit),
             headers=[x.title() for x in df.columns],
             show_index=False,
             title="Insider Data",
@@ -132,7 +132,7 @@ def print_insider_data(type_insider: str = "lcb", limit: int = 10, export: str =
         )
 
         if df.shape[1] == 13:
-            l_chars = [list(chars) for chars in df["X"].values]
+            l_chars = [list(chars) for chars in df["X"].values if chars != "-"]
             l_uchars = np.unique(list(itertools.chain(*l_chars)))
 
             for char in l_uchars:
@@ -168,7 +168,6 @@ def print_insider_filter(
         link = get_open_insider_link(preset)
 
     if not link:
-        console.print("")
         return
 
     df_insider = get_open_insider_data(link, has_company_name=bool(not symbol))
@@ -227,14 +226,6 @@ def print_insider_filter(
         title="Insider filtered",
     )
 
-    if export:
-        if symbol:
-            cmd = "lis"
-        else:
-            cmd = "filter"
-
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), cmd, df_insider)
-
     if not links:
         l_chars = [list(chars) for chars in df_insider_orig["X"].values]
         l_uchars = np.unique(list(itertools.chain(*l_chars)))
@@ -248,4 +239,10 @@ def print_insider_filter(
         for tradetype in l_utradetype:
             console.print(d_trade_types[tradetype])
 
-    console.print("")
+    if export:
+        if symbol:
+            cmd = "stats"
+        else:
+            cmd = "filter"
+
+        export_data(export, os.path.dirname(os.path.abspath(__file__)), cmd, df_insider)

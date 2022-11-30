@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
@@ -28,6 +28,7 @@ from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_helper,
     optimizer_model,
     optimizer_view,
+    statics,
 )
 from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 from openbb_terminal.portfolio.portfolio_optimization.parameters import (
@@ -59,11 +60,107 @@ def add_arguments(parser_update, parser, not_in_list):
                 )
 
 
+def check_input(
+    input_type: str, input_list: List[str], available_list: List[str]
+) -> List[str]:
+    """Check if input is valid
+
+    Parameters
+    ----------
+    input_type : str
+        Type of input
+    input_list : List[str]
+        List of input
+    available_list : List[str]
+        List of available input
+
+    Returns
+    -------
+    List[str]
+        Valid categories
+    """
+
+    valid: List[str] = []
+
+    for i in input_list:
+        if i in available_list:
+            valid.append(i)
+        else:
+            console.print(f"[red]{input_type} '{i}' not available.[/red]\n")
+    return valid
+
+
+def get_valid_portfolio_categories(
+    input_portfolios: List[str],
+    available_portfolios: Dict,
+    input_categories: List[str],
+    available_categories: Dict,
+) -> Tuple[List[str], List[str]]:
+    """Get valid portfolios and categories
+
+    Parameters
+    ----------
+    input_portfolios : List[str]
+        List of input portfolios
+    available_portfolios : Dict
+        Dict of available portfolios
+    input_categories : List[str]
+        List of input categories
+    available_categories : Dict
+        Dict of available categories
+
+    Returns
+    -------
+    Tuple[List[str], List[str]]
+        Valid portfolios and categories
+    """
+    portfolios_list = list(set(available_portfolios.keys()))
+    categories_list = list(set(available_categories.keys()))
+
+    if not portfolios_list:
+        portfolio_msg = "None. Perform some optimization to build a portfolio."
+    else:
+        if not input_portfolios:
+            console.print("[yellow]Please select at least one portfolio.[/yellow]\n")
+        portfolio_msg = ", ".join(portfolios_list)
+
+    if not categories_list:
+        categories_msg = "None. Attribute some categories in the loaded file."
+    else:
+        categories_msg = ", ".join(categories_list)
+
+    console.print(
+        f"[yellow]Current Portfolios: [/yellow]{portfolio_msg}\n",
+    )
+
+    console.print(
+        f"[yellow]Current Categories: [/yellow]{categories_msg}\n",
+    )
+
+    valid_portfolios = check_input(
+        input_type="Portfolio",
+        input_list=input_portfolios,
+        available_list=portfolios_list,
+    )
+
+    valid_categories = check_input(
+        input_type="Category",
+        input_list=input_categories,
+        available_list=categories_list,
+    )
+
+    return valid_portfolios, valid_categories
+
+
 class PortfolioOptimizationController(BaseController):
     """Portfolio Optimization Controller class"""
 
+    DEFAULT_PORTFOLIO_DIRECTORY = MISCELLANEOUS_DIRECTORY / "portfolio_examples"
+    DEFAULT_ALLOCATION_DIRECTORY = DEFAULT_PORTFOLIO_DIRECTORY / "allocation"
+    DEFAULT_OPTIMIZATION_DIRECTORY = DEFAULT_PORTFOLIO_DIRECTORY / "optimization"
+    FILE_TYPE_LIST = ["xlsx", "ini"]
+
     CHOICES_COMMANDS = [
-        "select",
         "show",
         "rpf",
         "load",
@@ -85,199 +182,53 @@ class PortfolioOptimizationController(BaseController):
         "herc",
         "nco",
         "ef",
-        "yolo",
         "file",
-        "params",
     ]
-
-    PERIOD_CHOICES = [
-        "1d",
-        "5d",
-        "1mo",
-        "3mo",
-        "6mo",
-        "1y",
-        "2y",
-        "5y",
-        "10y",
-        "ytd",
-        "max",
-    ]
-
-    MEAN_RISK_CHOICES = [
-        "MV",
-        "MAD",
-        "MSV",
-        "FLPM",
-        "SLPM",
-        "CVaR",
-        "EVaR",
-        "WR",
-        "ADD",
-        "UCI",
-        "CDaR",
-        "EDaR",
-        "MDD",
-    ]
-
-    RISK_PARITY_CHOICES = [
-        "MV",
-        "MAD",
-        "MSV",
-        "FLPM",
-        "SLPM",
-        "CVaR",
-        "EVaR",
-        "CDaR",
-        "EDaR",
-        "UCI",
-    ]
-
-    REL_RISK_PARITY_CHOICES = [
-        "A",
-        "B",
-        "C",
-    ]
-
-    HCP_CHOICES = [
-        "MV",
-        "MAD",
-        "GMD",
-        "MSV",
-        "VaR",
-        "CVaR",
-        "TG",
-        "EVaR",
-        "RG",
-        "CVRG",
-        "TGRG",
-        "WR",
-        "FLPM",
-        "SLPM",
-        "MDD",
-        "ADD",
-        "DaR",
-        "CDaR",
-        "EDaR",
-        "UCI",
-        "MDD_Rel",
-        "ADD_Rel",
-        "DaR_Rel",
-        "CDaR_Rel",
-        "EDaR_Rel",
-        "UCI_Rel",
-    ]
-
-    RISK_CHOICES = {
-        "mv": "MV",
-        "mad": "MAD",
-        "gmd": "GMD",
-        "msv": "MSV",
-        "var": "VaR",
-        "cvar": "CVaR",
-        "tg": "TG",
-        "evar": "EVaR",
-        "rg": "RG",
-        "cvrg": "CVRG",
-        "tgrg": "TGRG",
-        "wr": "WR",
-        "flpm": "FLPM",
-        "slpm": "SLPM",
-        "mdd": "MDD",
-        "add": "ADD",
-        "dar": "DaR",
-        "cdar": "CDaR",
-        "edar": "EDaR",
-        "uci": "UCI",
-        "mdd_rel": "MDD_Rel",
-        "add_rel": "ADD_Rel",
-        "dar_rel": "DaR_Rel",
-        "cdar_rel": "CDaR_Rel",
-        "edar_rel": "EDaR_Rel",
-        "uci_rel": "UCI_Rel",
-    }
-    MEAN_CHOICES = [
-        "hist",
-        "ewma1",
-        "ewma2",
-    ]
-
-    CODEPENDENCE_CHOICES = [
-        "pearson",
-        "spearman",
-        "abs_pearson",
-        "abs_spearman",
-        "distance",
-        "mutual_info",
-        "tail",
-    ]
-
-    COVARIANCE_CHOICES = [
-        "hist",
-        "ewma1",
-        "ewma2",
-        "ledoit",
-        "oas",
-        "shrunk",
-        "gl",
-        "jlogo",
-        "fixed",
-        "spectral",
-        "shrink",
-    ]
-
-    OBJECTIVE_CHOICES = [
-        "MinRisk",
-        "Utility",
-        "Sharpe",
-        "MaxRet",
-    ]
-
-    NCO_OBJECTIVE_CHOICES = [
-        "MinRisk",
-        "Utility",
-        "Sharpe",
-        "ERC",
-    ]
-
-    LINKAGE_CHOICES = [
-        "single",
-        "complete",
-        "average",
-        "weighted",
-        "centroid",
-        "median",
-        "ward",
-        "dbht",
-    ]
-
-    BINS_CHOICES = [
-        "KN",
-        "FD",
-        "SC",
-        "HGR",
-    ]
-
-    FREQ_CHOICES = [
-        "d",
-        "w",
-        "m",
-    ]
-
-    METHOD_CHOICES = [
-        "linear",
-        "time",
-        "nearest",
-        "zero",
-        "slinear",
-        "quadratic",
-        "cubic",
-        "barycentric",
-    ]
+    CHOICES_MENUS = ["params"]
 
     PATH = "/portfolio/po/"
+    CHOICES_GENERATION = True
 
     files_available: List = list()
+
+    @classmethod
+    def build_allocation_file_map(cls) -> dict:
+        allocation_file_map = {
+            filepath.name: filepath
+            for file_type in cls.FILE_TYPE_LIST
+            for filepath in cls.DEFAULT_ALLOCATION_DIRECTORY.rglob(f"*.{file_type}")
+        }
+        allocation_file_map.update(
+            {
+                filepath.name: filepath
+                for file_type in cls.FILE_TYPE_LIST
+                for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "allocation").rglob(
+                    f"*.{file_type}"
+                )
+            }
+        )
+
+        return allocation_file_map
+
+    @classmethod
+    def build_optimization_file_map(cls) -> dict:
+        optimization_file_map = {
+            filepath.name: filepath
+            for file_type in cls.FILE_TYPE_LIST
+            for filepath in cls.DEFAULT_OPTIMIZATION_DIRECTORY.rglob(f"*.{file_type}")
+        }
+
+        optimization_file_map.update(
+            {
+                filepath.name: filepath
+                for file_type in cls.FILE_TYPE_LIST
+                for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "optimization").rglob(
+                    f"*.{file_type}"
+                )
+            }
+        )
+
+        return optimization_file_map
 
     def __init__(
         self,
@@ -303,173 +254,30 @@ class PortfolioOptimizationController(BaseController):
 
         if categories:
             self.categories = dict(categories)
+            self.available_categories = list(self.categories.keys())
         else:
             self.categories = dict()
+            self.available_categories = list()
 
         self.count = 0
         self.current_portfolio = ""
 
-        models = [
-            "maxsharpe",
-            "minrisk",
-            "maxutil",
-            "maxret",
-            "maxdiv",
-            "maxdecorr",
-            "blacklitterman",
-            "ef",
-            "riskparity",
-            "relriskparity",
-            "hrp",
-            "herc",
-            "nco",
-            "equal",
-            "mktcap",
-            "dividend",
-            "property",
-        ]
-        self.file_types = ["xlsx", "ini"]
-        self.DEFAULT_ALLOCATION_PATH = USER_PORTFOLIO_DATA_DIRECTORY / "allocation"
-
-        self.DATA_ALLOCATION_FILES = {
-            filepath.name: filepath
-            for file_type in self.file_types
-            for filepath in self.DEFAULT_ALLOCATION_PATH.rglob(f"*.{file_type}")
-        }
-
-        self.DATA_ALLOCATION_FILES.update(
-            {
-                filepath.name: filepath
-                for file_type in self.file_types
-                for filepath in (
-                    MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "allocation"
-                ).rglob(f"*.{file_type}")
-            }
-        )
+        self.allocation_file_map = self.build_allocation_file_map()
+        self.optimization_file_map = self.build_optimization_file_map()
 
         self.current_file = ""
-        self.DEFAULT_OPTIMIZATION_PATH = USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
-
-        self.DATA_OPTIMIZATION_FILES = {
-            filepath.name: filepath
-            for file_type in self.file_types
-            for filepath in self.DEFAULT_OPTIMIZATION_PATH.rglob(f"*.{file_type}")
-        }
-
-        self.DATA_OPTIMIZATION_FILES.update(
-            {
-                filepath.name: filepath
-                for file_type in self.file_types
-                for filepath in (
-                    MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "optimization"
-                ).rglob(f"*.{file_type}")
-            }
-        )
 
         self.params: Dict = {}
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            self.choices: dict = {c: {} for c in self.controller_choices}
-            self.choices["property"]["-p"] = {
-                c: None for c in yahoo_finance_model.yf_info_choices
-            }
-            self.choices["property"]["--property"] = {
-                c: None for c in yahoo_finance_model.yf_info_choices
-            }
-            self.choices["file"]["--file"] = {
-                c: {} for c in self.DATA_OPTIMIZATION_FILES
-            }
-            self.choices["file"]["-f"] = "--file"
-            self.choices["load"] = {c: {} for c in self.DATA_ALLOCATION_FILES}
-            self.choices["load"]["--file"] = {c: {} for c in self.DATA_ALLOCATION_FILES}
-            self.choices["load"]["-f"] = "--file"
-            for fn in models:
-                self.choices[fn]["-p"] = {c: {} for c in self.PERIOD_CHOICES}
-                self.choices[fn]["--period"] = {c: {} for c in self.PERIOD_CHOICES}
-                self.choices[fn]["--freq"] = {c: {} for c in self.FREQ_CHOICES}
-                self.choices[fn]["-mt"] = {c: {} for c in self.METHOD_CHOICES}
-                self.choices[fn]["--method"] = {c: {} for c in self.METHOD_CHOICES}
-                self.choices[fn]["--name"] = None
-                self.choices[fn]["--start"] = None
-                self.choices[fn]["-s"] = "--start"
-                self.choices[fn]["--end"] = None
-                self.choices[fn]["-e"] = "--end"
-
-            for fn in ["maxsharpe", "minrisk", "maxutil", "maxret", "nco", "ef"]:
-                self.choices[fn]["-rm"] = {c: {} for c in self.MEAN_RISK_CHOICES}
-                self.choices[fn]["--risk-measure"] = {
-                    c: {} for c in self.MEAN_RISK_CHOICES
-                }
-
-            self.choices["riskparity"]["-rm"] = {
-                c: {} for c in self.RISK_PARITY_CHOICES
-            }
-            self.choices["riskparity"]["--risk-measure"] = {
-                c: {} for c in self.RISK_PARITY_CHOICES
-            }
-            self.choices["relriskparity"]["-ve"] = {
-                c: {} for c in self.RISK_PARITY_CHOICES
-            }
-            self.choices["relriskparity"]["--version"] = {
-                c: {} for c in self.RISK_PARITY_CHOICES
-            }
-
-            for fn in [
-                "maxsharpe",
-                "minrisk",
-                "maxutil",
-                "maxret",
-                "riskparity",
-                "relriskparity",
-            ]:
-                self.choices[fn]["-m"] = {c: {} for c in self.MEAN_CHOICES}
-                self.choices[fn]["--mean"] = {c: {} for c in self.MEAN_CHOICES}
-                self.choices[fn]["-cv"] = {c: {} for c in self.COVARIANCE_CHOICES}
-                self.choices[fn]["--covariance"] = {
-                    c: {} for c in self.COVARIANCE_CHOICES
-                }
-
-            for fn in ["maxdiv", "maxdecorr"]:
-                self.choices[fn]["-cv"] = {c: {} for c in self.COVARIANCE_CHOICES}
-                self.choices[fn]["--covariance"] = {
-                    c: {} for c in self.COVARIANCE_CHOICES
-                }
-
-            for fn in ["hrp", "herc"]:
-                self.choices[fn]["-rm"] = {c: {} for c in self.HCP_CHOICES}
-                self.choices[fn]["--risk-measure"] = {c: {} for c in self.HCP_CHOICES}
-
-            for fn in ["hrp", "herc", "nco"]:
-                self.choices[fn]["-cd"] = {c: {} for c in self.CODEPENDENCE_CHOICES}
-                self.choices[fn]["--codependence"] = {
-                    c: {} for c in self.CODEPENDENCE_CHOICES
-                }
-                self.choices[fn]["-cv"] = {c: {} for c in self.COVARIANCE_CHOICES}
-                self.choices[fn]["--covariance"] = {
-                    c: {} for c in self.COVARIANCE_CHOICES
-                }
-                self.choices[fn]["-lk"] = {c: {} for c in self.LINKAGE_CHOICES}
-                self.choices[fn]["--linkage"] = {c: {} for c in self.LINKAGE_CHOICES}
-                self.choices[fn]["-bi"] = {c: {} for c in self.BINS_CHOICES}
-                self.choices[fn]["--bins-info"] = {c: {} for c in self.BINS_CHOICES}
-
-            self.choices["blacklitterman"]["-o"] = {
-                c: {} for c in self.OBJECTIVE_CHOICES
-            }
-            self.choices["blacklitterman"]["--objective"] = {
-                c: {} for c in self.OBJECTIVE_CHOICES
-            }
-            self.choices["nco"]["-o"] = {c: {} for c in self.NCO_OBJECTIVE_CHOICES}
-            self.choices["nco"]["--objective"] = {
-                c: {} for c in self.NCO_OBJECTIVE_CHOICES
-            }
-            self.completer = NestedCompleter.from_nested_dict(self.choices)
+            choices: dict = self.choices_default
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
             if self.portfolios:
                 self.choices["show"] = {c: {} for c in list(self.portfolios.keys())}
-                self.choices["plot"] = {c: {} for c in list(self.portfolios.keys())}
 
                 self.choices = {**self.choices, **self.SUPPORT_CHOICES}
                 self.completer = NestedCompleter.from_nested_dict(self.choices)
@@ -482,7 +290,7 @@ class PortfolioOptimizationController(BaseController):
         mt.add_param("_loaded", self.current_portfolio or "")
         mt.add_raw("\n")
         mt.add_param("_tickers", ", ".join(self.tickers))
-        mt.add_param("_categories", ", ".join(self.categories.keys()))
+        mt.add_param("_categories", ", ".join(self.available_categories))
         mt.add_raw("\n")
         mt.add_cmd("file")
         mt.add_menu("params")
@@ -498,15 +306,18 @@ class PortfolioOptimizationController(BaseController):
         mt.add_cmd("maxdecorr", self.tickers)
         mt.add_cmd("blacklitterman", self.tickers)
         mt.add_cmd("ef", self.tickers)
+        mt.add_raw("\n")
 
         mt.add_info("_risk_parity_optimization_")
         mt.add_cmd("riskparity", self.tickers)
         mt.add_cmd("relriskparity", self.tickers)
+        mt.add_raw("\n")
 
         mt.add_info("_hierarchical_clustering_models_")
         mt.add_cmd("hrp", self.tickers)
         mt.add_cmd("herc", self.tickers)
         mt.add_cmd("nco", self.tickers)
+        mt.add_raw("\n")
 
         mt.add_info("_other_optimization_techniques_")
         mt.add_cmd("equal", self.tickers)
@@ -567,7 +378,7 @@ class PortfolioOptimizationController(BaseController):
                         'EDaR' : Entropic Drawdown at Risk of uncompounded returns
                         'MDD' : Maximum Drawdown of uncompounded returns
                         """,
-                choices=self.MEAN_RISK_CHOICES,
+                choices=statics.MEAN_RISK_CHOICES,
             )
         if mt:
             parser.add_argument(
@@ -587,6 +398,8 @@ class PortfolioOptimizationController(BaseController):
                         'quadratic': spline of second order
                         'cubic': spline of third order
                         'barycentric': builds a polynomial that pass for all points""",
+                choices=statics.METHOD_CHOICES,
+                metavar="METHOD",
             )
         if ct:
             parser.add_argument(
@@ -594,7 +407,7 @@ class PortfolioOptimizationController(BaseController):
                 "--categories",
                 dest="categories",
                 type=lambda s: [str(item).upper() for item in s.split(",")],
-                default=[],
+                default=self.available_categories,
                 help="Show selected categories",
             )
         if p:
@@ -613,6 +426,8 @@ class PortfolioOptimizationController(BaseController):
                         'y': means years, for example '1y' means 1 year
                         'ytd': downloads data from beginning of year to today
                         'max': downloads all data available for each asset""",
+                choices=statics.PERIOD_CHOICES,
+                metavar="PERIOD",
             )
         if s:
             parser.add_argument(
@@ -659,7 +474,7 @@ class PortfolioOptimizationController(BaseController):
                         'w': for weekly returns
                         'm': for monthly returns
                         """,
-                choices=self.FREQ_CHOICES,
+                choices=statics.FREQ_CHOICES,
             )
         if mn:
             parser.add_argument(
@@ -753,6 +568,8 @@ class PortfolioOptimizationController(BaseController):
             nargs="+",
             dest="file",
             help="Parameter file to be used",
+            choices=self.optimization_file_map.keys(),
+            metavar="FILE",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--file")
@@ -762,8 +579,8 @@ class PortfolioOptimizationController(BaseController):
         if ns_parser:
             self.current_file = " ".join(ns_parser.file)
 
-            if self.current_file in self.DATA_OPTIMIZATION_FILES:
-                file_location = self.DATA_OPTIMIZATION_FILES[self.current_file]
+            if self.current_file in self.optimization_file_map:
+                file_location = self.optimization_file_map[self.current_file]
             else:
                 file_location = self.current_file  # type: ignore
 
@@ -809,38 +626,22 @@ class PortfolioOptimizationController(BaseController):
 
         parser = self.po_parser(parser, ct=True)
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
-            portfolios = set(self.portfolios.keys())
-            if not ns_parser.categories:
-                categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
-            else:
-                categories = ns_parser.categories
+            portfolios, categories = get_valid_portfolio_categories(
+                input_portfolios=ns_parser.portfolios,
+                available_portfolios=self.portfolios,
+                input_categories=ns_parser.categories,
+                available_categories=self.categories,
+            )
 
-            flag = True
-            for portfolio in ns_parser.portfolios:
-                if portfolio in portfolios:
-                    console.print("")
-                    console.print("Portfolio - " + portfolio)
-                    optimizer_view.display_weights(self.portfolios[portfolio])
-
-                    for category in categories:
-                        console.print("")
-                        optimizer_view.display_categories(
-                            weights=self.portfolios[portfolio],
-                            categories=self.categories,
-                            column=category,
-                            title="Category - " + category.title(),
-                        )
-                    flag = False
-
-            if flag:
-                console.print(
-                    f"\nCurrent Portfolios: {('None', ', '.join(portfolios))[bool(portfolios)]}"
+            for p in portfolios:
+                console.print("[yellow]Portfolio[/yellow]: " + p + "\n")
+                optimizer_view.display_show(
+                    weights=self.portfolios[p],
+                    tables=categories,
+                    categories_dict=self.categories,
                 )
-                console.print(
-                    f"\nCurrent Categories: {('None', ', '.join(categories))[bool(categories)]}"
-                )
-            console.print("")
 
     @log_start_end(log=logger)
     def call_rpf(self, other_args: List[str]):
@@ -869,14 +670,16 @@ class PortfolioOptimizationController(BaseController):
                 if portfolio in portfolios:
                     self.portfolios.pop(portfolio)
                     portfolios.remove(portfolio)
+                    console.print(f"[yellow]Removed '{portfolio}'.[/yellow]")
+                else:
+                    console.print(f"[red]Portfolio '{portfolio}' does not exist.[/red]")
 
             if self.portfolios:
                 console.print(
-                    f"\nCurrent Portfolios: {('None', ', '.join(portfolios))[bool(portfolios)]}"
+                    f"\n[yellow]Current Portfolios: [/yellow]{('None', ', '.join(portfolios))[bool(portfolios)]}"
                 )
 
             self.update_runtime_choices()
-            console.print("")
 
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
@@ -893,6 +696,8 @@ class PortfolioOptimizationController(BaseController):
             nargs="+",
             dest="file",
             help="Allocation file to be used",
+            choices=self.allocation_file_map.keys(),
+            metavar="FILE",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--file")
@@ -901,16 +706,18 @@ class PortfolioOptimizationController(BaseController):
         if ns_parser:
             filename = " ".join(ns_parser.file)
 
-            if filename in self.DATA_ALLOCATION_FILES:
-                file_location = self.DATA_ALLOCATION_FILES[filename]
+            if filename in self.allocation_file_map:
+                file_location = self.allocation_file_map[filename]
             else:
                 file_location = filename  # type: ignore
 
             self.tickers, self.categories = excel_model.load_allocation(file_location)
+            self.available_categories = list(self.categories.keys())
+            if "CURRENT_INVESTED_AMOUNT" in self.available_categories:
+                self.available_categories.remove("CURRENT_INVESTED_AMOUNT")
             self.portfolios = dict()
             self.update_runtime_choices()
             self.current_portfolio = filename
-        console.print()
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -990,13 +797,28 @@ class PortfolioOptimizationController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if len(self.tickers) < 2:
+            portfolios, categories = get_valid_portfolio_categories(
+                input_portfolios=ns_parser.portfolios,
+                available_portfolios=self.portfolios,
+                input_categories=ns_parser.categories,
+                available_categories=self.categories,
+            )
+            if not portfolios:
+                return
+
+            if not (
+                ns_parser.pie
+                or ns_parser.hist
+                or ns_parser.dd
+                or ns_parser.rc_chart
+                or ns_parser.heat
+            ):
                 console.print(
-                    "Please have at least 2 loaded tickers to calculate weights.\n"
+                    "[yellow]Please select at least one chart to plot[/yellow]",
+                    "[yellow]from the following: -pi, -hi, -dd, -rc, -he.[/yellow]",
                 )
                 return
 
-            portfolios = ns_parser.portfolios
             stocks = []
             for i in portfolios:
                 stocks += list(self.portfolios[i].keys())
@@ -1016,34 +838,46 @@ class PortfolioOptimizationController(BaseController):
                 value=1,
             )
 
-            categories = ns_parser.categories
+            if ns_parser.hist or ns_parser.dd:
+                for i in portfolios:
+                    weights = self.portfolios[i]
+                    weights = dict(
+                        sorted(weights.items(), key=lambda x: x[1], reverse=True)
+                    )
+                    stocks = list(weights.keys())
 
-            for i in portfolios:
-                weights = self.portfolios[i]
-                weights = dict(
-                    sorted(weights.items(), key=lambda x: x[1], reverse=True)
-                )
-                stocks = list(weights.keys())
-                optimizer_view.additional_plots(
-                    weights=weights,
-                    data=stock_returns[stocks],
-                    category=None,
-                    title_opt=i,
-                    freq=ns_parser.return_frequency,
-                    risk_measure=ns_parser.risk_measure.lower(),
-                    risk_free_rate=ns_parser.risk_free,
-                    alpha=ns_parser.significance_level,
-                    a_sim=100,
-                    beta=ns_parser.significance_level,
-                    b_sim=100,
-                    pie=ns_parser.pie,
-                    hist=ns_parser.hist,
-                    dd=ns_parser.dd,
-                    rc_chart=ns_parser.rc_chart,
-                    heat=ns_parser.heat,
-                    external_axes=None,
-                )
-                if ns_parser.pie or ns_parser.heat or ns_parser.rc_chart:
+                    # hist and dd are transversal to all categories
+                    optimizer_view.additional_plots(
+                        weights=weights,
+                        data=stock_returns[stocks],
+                        title_opt=i,
+                        freq=ns_parser.return_frequency,
+                        risk_measure=ns_parser.risk_measure.lower(),
+                        risk_free_rate=ns_parser.risk_free,
+                        alpha=ns_parser.significance_level,
+                        a_sim=100,
+                        beta=ns_parser.significance_level,
+                        b_sim=100,
+                        hist=ns_parser.hist,
+                        dd=ns_parser.dd,
+                    )
+
+            if ns_parser.pie or ns_parser.rc_chart or ns_parser.heat:
+
+                if not categories:
+                    console.print(
+                        "[yellow]Categories must be provided to use -pi, -rc or -he.[/yellow]"
+                    )
+                    return
+
+                for i in portfolios:
+                    weights = self.portfolios[i]
+                    weights = dict(
+                        sorted(weights.items(), key=lambda x: x[1], reverse=True)
+                    )
+                    stocks = list(weights.keys())
+
+                    # pie, rc_chart and heat apply to each category
                     for category in categories:
                         filtered_categories = dict(
                             filter(
@@ -1064,11 +898,8 @@ class PortfolioOptimizationController(BaseController):
                             beta=ns_parser.significance_level,
                             b_sim=100,
                             pie=ns_parser.pie,
-                            hist=ns_parser.hist,
-                            dd=ns_parser.dd,
                             rc_chart=ns_parser.rc_chart,
                             heat=ns_parser.heat,
-                            external_axes=None,
                         )
 
     @log_start_end(log=logger)
@@ -1158,6 +989,10 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
+
             weights = optimizer_view.display_property_weighting(
                 symbols=self.tickers,
                 interval=ns_parser.historic_period,
@@ -1213,6 +1048,10 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
+
             weights = optimizer_view.display_property_weighting(
                 symbols=self.tickers,
                 interval=ns_parser.historic_period,
@@ -1252,6 +1091,7 @@ class PortfolioOptimizationController(BaseController):
             dest="s_property",
             choices=yahoo_finance_model.yf_info_choices,
             help="""Property info to weight. Use one of yfinance info options.""",
+            metavar="PROPERTY",
         )
         parser = self.po_parser(
             parser,
@@ -1276,6 +1116,10 @@ class PortfolioOptimizationController(BaseController):
                     "Please have at least 2 stocks selected to perform calculations."
                 )
                 return
+
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
 
             weights = optimizer_view.display_property_weighting(
                 symbols=self.tickers,
@@ -1315,6 +1159,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
+            type=int,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
@@ -1332,7 +1177,7 @@ class PortfolioOptimizationController(BaseController):
             else "hist",
             dest="expected_return",
             help="Method used to estimate the expected return vector",
-            choices=self.MEAN_CHOICES,
+            choices=statics.MEAN_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -1354,7 +1199,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-de",
@@ -1376,12 +1221,6 @@ class PortfolioOptimizationController(BaseController):
             if "short_allocation" in self.params
             else 0.0,
         )
-        subparsers = parser.add_subparsers(
-            title="sensitivity analysis command", help="sensitivity analysis"
-        )
-        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
-
-        add_arguments(parser_update, parser, ["name"])
 
         parser = self.po_parser(
             parser,
@@ -1412,7 +1251,9 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
 
             weights = optimizer_view.display_max_sharpe(
                 symbols=self.tickers,
@@ -1517,7 +1358,7 @@ class PortfolioOptimizationController(BaseController):
             else "hist",
             dest="expected_return",
             help="Method used to estimate expected returns vector",
-            choices=self.MEAN_CHOICES,
+            choices=statics.MEAN_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -1537,7 +1378,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-de",
@@ -1559,12 +1400,6 @@ class PortfolioOptimizationController(BaseController):
             dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
         )
-        subparsers = parser.add_subparsers(
-            title="sensitivity analysis command", help="sensitivity analysis"
-        )
-        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
-
-        add_arguments(parser_update, parser, ["name"])
 
         parser = self.po_parser(
             parser,
@@ -1595,7 +1430,9 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
 
             weights = optimizer_view.display_min_risk(
                 symbols=self.tickers,
@@ -1710,7 +1547,7 @@ class PortfolioOptimizationController(BaseController):
             else "hist",
             dest="expected_return",
             help="Method used to estimate the expected return vector",
-            choices=self.MEAN_CHOICES,
+            choices=statics.MEAN_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -1732,7 +1569,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-de",
@@ -1754,12 +1591,6 @@ class PortfolioOptimizationController(BaseController):
             if "short_allocation" in self.params
             else 0.0,
         )
-        subparsers = parser.add_subparsers(
-            title="sensitivity analysis command", help="sensitivity analysis"
-        )
-        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
-
-        add_arguments(parser_update, parser, ["name"])
 
         parser = self.po_parser(
             parser,
@@ -1790,7 +1621,9 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
 
             weights = optimizer_view.display_max_util(
                 symbols=self.tickers,
@@ -1897,7 +1730,7 @@ class PortfolioOptimizationController(BaseController):
             else "hist",
             dest="expected_return",
             help="Method used to estimate the expected return vector",
-            choices=self.MEAN_CHOICES,
+            choices=statics.MEAN_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -1919,7 +1752,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-de",
@@ -1941,12 +1774,6 @@ class PortfolioOptimizationController(BaseController):
             if "short_allocation" in self.params
             else 0.0,
         )
-        subparsers = parser.add_subparsers(
-            title="sensitivity analysis command", help="sensitivity analysis"
-        )
-        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
-
-        add_arguments(parser_update, parser, ["name"])
 
         parser = self.po_parser(
             parser,
@@ -1977,7 +1804,9 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
 
             weights = optimizer_view.display_max_ret(
                 symbols=self.tickers,
@@ -2078,7 +1907,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-de",
@@ -2100,12 +1929,6 @@ class PortfolioOptimizationController(BaseController):
             if "short_allocation" in self.params
             else 0.0,
         )
-        subparsers = parser.add_subparsers(
-            title="sensitivity analysis command", help="sensitivity analysis"
-        )
-        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
-
-        add_arguments(parser_update, parser, ["name"])
 
         parser = self.po_parser(
             parser,
@@ -2133,7 +1956,9 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
 
             weights = optimizer_view.display_max_div(
                 symbols=self.tickers,
@@ -2222,7 +2047,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-de",
@@ -2244,12 +2069,6 @@ class PortfolioOptimizationController(BaseController):
             if "short_allocation" in self.params
             else 0.0,
         )
-        subparsers = parser.add_subparsers(
-            title="sensitivity analysis command", help="sensitivity analysis"
-        )
-        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
-
-        add_arguments(parser_update, parser, ["name"])
 
         parser = self.po_parser(
             parser,
@@ -2277,7 +2096,9 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
 
             weights = optimizer_view.display_max_decorr(
                 symbols=self.tickers,
@@ -2362,7 +2183,7 @@ class PortfolioOptimizationController(BaseController):
             else "Sharpe",
             dest="objective",
             help="Objective function used to optimize the portfolio",
-            choices=self.OBJECTIVE_CHOICES,
+            choices=statics.OBJECTIVE_CHOICES,
         )
         parser.add_argument(
             "-pv",
@@ -2438,12 +2259,6 @@ class PortfolioOptimizationController(BaseController):
             default="",
             help="Upload an Excel file with views for Black Litterman model",
         )
-        subparsers = parser.add_subparsers(
-            title="sensitivity analysis command", help="sensitivity analysis"
-        )
-        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
-
-        add_arguments(parser_update, parser, ["name", "benchmark"])
 
         parser.add_argument(
             "--download",
@@ -2499,7 +2314,9 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
 
             weights = optimizer_view.display_black_litterman(
                 symbols=self.tickers,
@@ -2713,7 +2530,8 @@ class PortfolioOptimizationController(BaseController):
                     'CDaR' : Conditional Drawdown at Risk of uncompounded returns
                     'EDaR' : Entropic Drawdown at Risk of uncompounded returns
                     """,
-            choices=self.RISK_PARITY_CHOICES,
+            choices=statics.RISK_PARITY_CHOICES,
+            metavar="RISK-MEASURE",
         )
         parser.add_argument(
             "-rc",
@@ -2744,12 +2562,6 @@ class PortfolioOptimizationController(BaseController):
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
-        subparsers = parser.add_subparsers(
-            title="sensitivity analysis command", help="sensitivity analysis"
-        )
-        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
-
-        add_arguments(parser_update, parser, ["name"])
 
         parser = self.po_parser(
             parser,
@@ -2779,7 +2591,9 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
 
             weights = optimizer_view.display_risk_parity(
                 symbols=self.tickers,
@@ -2864,7 +2678,8 @@ class PortfolioOptimizationController(BaseController):
                 'A': risk parity without regularization and penalization constraints
                 'B': with regularization constraint but without penalization constraint
                 'C': with regularization and penalization constraints""",
-            choices=self.REL_RISK_PARITY_CHOICES,
+            choices=statics.REL_RISK_PARITY_CHOICES,
+            metavar="VERSION",
         )
         parser.add_argument(
             "-rc",
@@ -2904,12 +2719,6 @@ class PortfolioOptimizationController(BaseController):
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
-        subparsers = parser.add_subparsers(
-            title="sensitivity analysis command", help="sensitivity analysis"
-        )
-        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
-
-        add_arguments(parser_update, parser, ["name"])
 
         parser = self.po_parser(
             parser,
@@ -2937,7 +2746,9 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
 
             weights = optimizer_view.display_rel_risk_parity(
                 symbols=self.tickers,
@@ -3026,7 +2837,7 @@ class PortfolioOptimizationController(BaseController):
                 'distance': distance correlation matrix
                 'mutual_info': mutual information codependence matrix
                 'tail': tail index codependence matrix""",
-            choices=self.CODEPENDENCE_CHOICES,
+            choices=statics.CODEPENDENCE_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -3048,7 +2859,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-rm",
@@ -3085,7 +2896,8 @@ class PortfolioOptimizationController(BaseController):
                     'EDaR_Rel' : Entropic Drawdown at Risk of compounded returns
                     'MDD_Rel' : Maximum Drawdown of compounded returns
                     """,
-            choices=self.HCP_CHOICES,
+            choices=statics.HCP_CHOICES,
+            metavar="RISK-MEASURE",
         )
         parser.add_argument(
             "-as",
@@ -3126,7 +2938,8 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["linkage"] if "linkage" in self.params else "single",
             dest="linkage",
             help="Linkage method of hierarchical clustering",
-            choices=self.LINKAGE_CHOICES,
+            choices=statics.LINKAGE_CHOICES,
+            metavar="LINKAGE",
         )
         parser.add_argument(
             "-k",
@@ -3157,6 +2970,7 @@ class PortfolioOptimizationController(BaseController):
             else "KN",
             dest="amount_bins",
             help="Number of bins used to calculate the variation of information",
+            choices=statics.BINS_CHOICES,
         )
         parser.add_argument(
             "-at",
@@ -3185,12 +2999,6 @@ class PortfolioOptimizationController(BaseController):
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
-        subparsers = parser.add_subparsers(
-            title="sensitivity analysis command", help="sensitivity analysis"
-        )
-        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
-
-        add_arguments(parser_update, parser, ["name"])
 
         parser = self.po_parser(
             parser,
@@ -3220,7 +3028,9 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
 
             weights = optimizer_view.display_hrp(
                 symbols=self.tickers,
@@ -3327,7 +3137,7 @@ class PortfolioOptimizationController(BaseController):
                 'distance': distance correlation matrix
                 'mutual_info': mutual information codependence matrix
                 'tail': tail index codependence matrix""",
-            choices=self.CODEPENDENCE_CHOICES,
+            choices=statics.CODEPENDENCE_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -3349,7 +3159,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-rm",
@@ -3386,7 +3196,8 @@ class PortfolioOptimizationController(BaseController):
                     'EDaR_Rel' : Entropic Drawdown at Risk of compounded returns
                     'MDD_Rel' : Maximum Drawdown of compounded returns
                     """,
-            choices=self.HCP_CHOICES,
+            choices=statics.HCP_CHOICES,
+            metavar="RISK-MEASURE",
         )
         parser.add_argument(
             "-as",
@@ -3427,7 +3238,8 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["linkage"] if "linkage" in self.params else "single",
             dest="linkage",
             help="Linkage method of hierarchical clustering",
-            choices=self.LINKAGE_CHOICES,
+            choices=statics.LINKAGE_CHOICES,
+            metavar="LINKAGE",
         )
         parser.add_argument(
             "-k",
@@ -3458,6 +3270,7 @@ class PortfolioOptimizationController(BaseController):
             else "KN",
             dest="amount_bins",
             help="Number of bins used to calculate the variation of information",
+            choices=statics.BINS_CHOICES,
         )
         parser.add_argument(
             "-at",
@@ -3486,12 +3299,6 @@ class PortfolioOptimizationController(BaseController):
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
-        subparsers = parser.add_subparsers(
-            title="sensitivity analysis command", help="sensitivity analysis"
-        )
-        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
-
-        add_arguments(parser_update, parser, ["name"])
 
         parser = self.po_parser(
             parser,
@@ -3521,7 +3328,9 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
 
             weights = optimizer_view.display_herc(
                 symbols=self.tickers,
@@ -3630,7 +3439,7 @@ class PortfolioOptimizationController(BaseController):
                 'distance': distance correlation matrix
                 'mutual_info': mutual information codependence matrix
                 'tail': tail index codependence matrix""",
-            choices=self.CODEPENDENCE_CHOICES,
+            choices=statics.CODEPENDENCE_CHOICES,
         )
         parser.add_argument(
             "-cv",
@@ -3652,7 +3461,7 @@ class PortfolioOptimizationController(BaseController):
                     'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
                     'shrink': Lopez de Prado's book shrinkage method
                     """,
-            choices=self.COVARIANCE_CHOICES,
+            choices=statics.COVARIANCE_CHOICES,
         )
         parser.add_argument(
             "-o",
@@ -3662,7 +3471,7 @@ class PortfolioOptimizationController(BaseController):
             else "MinRisk",
             dest="objective",
             help="Objective function used to optimize the portfolio",
-            choices=self.NCO_OBJECTIVE_CHOICES,
+            choices=statics.NCO_OBJECTIVE_CHOICES,
         )
         parser.add_argument(
             "-ra",
@@ -3680,7 +3489,8 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["linkage"] if "linkage" in self.params else "single",
             dest="linkage",
             help="Linkage method of hierarchical clustering",
-            choices=self.LINKAGE_CHOICES,
+            choices=statics.LINKAGE_CHOICES,
+            metavar="LINKAGE",
         )
         parser.add_argument(
             "-k",
@@ -3711,6 +3521,7 @@ class PortfolioOptimizationController(BaseController):
             else "KN",
             dest="amount_bins",
             help="Number of bins used to calculate the variation of information",
+            choices=statics.BINS_CHOICES,
         )
         parser.add_argument(
             "-at",
@@ -3740,12 +3551,6 @@ class PortfolioOptimizationController(BaseController):
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
-        subparsers = parser.add_subparsers(
-            title="sensitivity analysis command", help="sensitivity analysis"
-        )
-        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
-
-        add_arguments(parser_update, parser, ["name"])
 
         parser = self.po_parser(
             parser,
@@ -3776,7 +3581,9 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print(
+                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
+            )
 
             weights = optimizer_view.display_nco(
                 symbols=self.tickers,

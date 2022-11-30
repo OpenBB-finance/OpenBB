@@ -15,23 +15,30 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
 def get_ipo_calendar(
-    start_date: str = (datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Get IPO calendar
 
     Parameters
     ----------
-    start_date : str
-        start date (%Y-%m-%d) to get IPO calendar
-    end_date : str
-        end date (%Y-%m-%d) to get IPO calendar
+    start_date : Optional[str]
+        Initial date, format YYYY-MM-DD
+    end_date : Optional[str]
+        Final date, format YYYY-MM-DD
 
     Returns
     -------
     pd.DataFrame
-        Get dataframe with economic calendar events
+        Get dataframe with IPO calendar events
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
     response = requests.get(
         f"https://finnhub.io/api/v1/calendar/ipo?from={start_date}&to={end_date}&token={cfg.API_FINNHUB_KEY}"
     )
@@ -68,7 +75,7 @@ def get_ipo_calendar(
 def get_past_ipo(
     num_days_behind: int = 5,
     start_date: Optional[str] = None,
-):
+) -> pd.DataFrame:
     """Past IPOs dates. [Source: Finnhub]
 
     Parameters
@@ -77,6 +84,11 @@ def get_past_ipo(
         Number of days to look behind for IPOs dates
     start_date: str
         The starting date (format YYYY-MM-DD) to look for IPOs
+
+    Returns
+    -------
+    pd.DataFrame
+        Get dataframe with past IPOs
     """
     today = datetime.now()
 
@@ -103,7 +115,7 @@ def get_past_ipo(
 def get_future_ipo(
     num_days_ahead: int = 5,
     end_date: Optional[str] = None,
-):
+) -> pd.DataFrame:
     """Future IPOs dates. [Source: Finnhub]
 
     Parameters
@@ -112,6 +124,11 @@ def get_future_ipo(
         Number of days to look ahead for IPOs dates
     end_date: datetime
         The end date (format YYYY-MM-DD) to look for IPOs from today onwards
+
+    Returns
+    -------
+    pd.DataFrame
+        Get dataframe with future IPOs
     """
     today = datetime.now()
 

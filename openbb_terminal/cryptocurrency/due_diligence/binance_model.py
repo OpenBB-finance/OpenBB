@@ -28,23 +28,23 @@ def _get_trading_pairs() -> List[dict]:
     List[dict]
         list of dictionaries in format:
         [
-            {'symbol': 'ETHBTC', 'status': 'TRADING', 'baseAsset': 'ETH', 'baseAssetPrecision': 8,
-            'quoteAsset': 'BTC', 'quotePrecision': 8, 'quoteAssetPrecision': 8,
-            'baseCommissionPrecision': 8, 'quoteCommissionPrecision': 8,
-            'orderTypes': ['LIMIT', 'LIMIT_MAKER', 'MARKET', 'STOP_LOSS_LIMIT', 'TAKE_PROFIT_LIMIT'],
-            'icebergAllowed': True,
-            'ocoAllowed': True,
-            'quoteOrderQtyMarketAllowed': True,
-            'isSpotTradingAllowed': True,
-            'isMarginTradingAllowed': True,
-            'filters': [{'filterType': 'PRICE_FILTER', 'minPrice': '0.00000100',
-            'maxPrice': '922327.00000000', 'tickSize': '0.00000100'},
-            {'filterType': 'PERCENT_PRICE', 'multiplierUp': '5', 'multiplierDown': '0.2', 'avgPriceMins': 5},
-            {'filterType': 'LOT_SIZE', 'minQty': '0.00100000', 'maxQty': '100000.00000000', 'stepSize': '0.00100000'},
-            {'filterType': 'MIN_NOTIONAL', 'minNotional': '0.00010000', 'applyToMarket': True, 'avgPriceMins': 5},
-            {'filterType': 'ICEBERG_PARTS', 'limit': 10}, {'filterType': 'MARKET_LOT_SIZE', 'minQty': '0.00000000',
-            'maxQty': '930.49505347', 'stepSize': '0.00000000'}, {'filterType': 'MAX_NUM_ORDERS', 'maxNumOrders': 200},
-            {'filterType': 'MAX_NUM_ALGO_ORDERS', 'maxNumAlgoOrders': 5}], 'permissions': ['SPOT', 'MARGIN']},
+        {'symbol': 'ETHBTC', 'status': 'TRADING', 'baseAsset': 'ETH', 'baseAssetPrecision': 8,
+        'quoteAsset': 'BTC', 'quotePrecision': 8, 'quoteAssetPrecision': 8,
+        'baseCommissionPrecision': 8, 'quoteCommissionPrecision': 8,
+        'orderTypes': ['LIMIT', 'LIMIT_MAKER', 'MARKET', 'STOP_LOSS_LIMIT', 'TAKE_PROFIT_LIMIT'],
+        'icebergAllowed': True,
+        'ocoAllowed': True,
+        'quoteOrderQtyMarketAllowed': True,
+        'isSpotTradingAllowed': True,
+        'isMarginTradingAllowed': True,
+        'filters': [{'filterType': 'PRICE_FILTER', 'minPrice': '0.00000100',
+        'maxPrice': '922327.00000000', 'tickSize': '0.00000100'},
+        {'filterType': 'PERCENT_PRICE', 'multiplierUp': '5', 'multiplierDown': '0.2', 'avgPriceMins': 5},
+        {'filterType': 'LOT_SIZE', 'minQty': '0.00100000', 'maxQty': '100000.00000000', 'stepSize': '0.00100000'},
+        {'filterType': 'MIN_NOTIONAL', 'minNotional': '0.00010000', 'applyToMarket': True, 'avgPriceMins': 5},
+        {'filterType': 'ICEBERG_PARTS', 'limit': 10}, {'filterType': 'MARKET_LOT_SIZE', 'minQty': '0.00000000',
+        'maxQty': '930.49505347', 'stepSize': '0.00000000'}, {'filterType': 'MAX_NUM_ORDERS', 'maxNumOrders': 200},
+        {'filterType': 'MAX_NUM_ALGO_ORDERS', 'maxNumAlgoOrders': 5}], 'permissions': ['SPOT', 'MARGIN']},
         ...
         ]
     """
@@ -80,7 +80,7 @@ def get_binance_available_quotes_for_each_coin() -> dict:
 
     Returns
     -------
-    dict:
+    dict
         All quote assets for given coin
         {'ETH' : ['BTC', 'USDT' ...], 'UNI' : ['ETH', 'BTC','BUSD', ...]
 
@@ -95,7 +95,13 @@ def get_binance_available_quotes_for_each_coin() -> dict:
 @log_start_end(log=logger)
 @check_api_key(["API_BINANCE_KEY", "API_BINANCE_SECRET"])
 def check_valid_binance_str(symbol: str) -> str:
-    """Check if symbol is in defined binance. [Source: Binance]"""
+    """Check if symbol is in defined binance. [Source: Binance]
+
+    Returns
+    -------
+    str
+        Symbol
+    """
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
     try:
         client.get_avg_price(symbol=symbol.upper())
@@ -116,15 +122,14 @@ def show_available_pairs_for_given_symbol(
 
     Parameters
     ----------
-    symbol:
+    symbol: str
         Uppercase symbol of coin e.g BTC, ETH, UNI, LUNA, DOT ...
 
     Returns
     -------
-    str:
-        Coin symbol
-    list:
-        Quoted assets for given symbol: ["BTC", "USDT" , "BUSD"]
+    Tuple[Union[str, None], list]
+        Tuple of symbol,
+        list of quoted assets for given symbol: ["BTC", "USDT" , "BUSD"]
     """
 
     symbol_upper = symbol.upper()
@@ -146,7 +151,6 @@ def get_order_book(
 
     Parameters
     ----------
-
     from_symbol: str
         Cryptocurrency symbol
     limit: int

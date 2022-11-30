@@ -1,13 +1,14 @@
 """Optimization View"""
 __docformat__ = "numpy"
 
-# pylint: disable=R0913, R0914, C0302, too-many-branches, too-many-statements
+# pylint: disable=R0913, R0914, C0302, too-many-branches, too-many-statements, line-too-long
+# flake8: noqa: E501
 
 import logging
 import math
 import warnings
 from datetime import date
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -22,7 +23,10 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale, print_rich_table
-from openbb_terminal.portfolio.portfolio_optimization import optimizer_model
+from openbb_terminal.portfolio.portfolio_optimization import (
+    optimizer_helper,
+    optimizer_model,
+)
 from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")
@@ -231,7 +235,7 @@ def portfolio_performance(
     factor_1 = str(int(time_factor[freq])) + ") "
     factor_2 = "√" + factor_1
 
-    print("Annual (by " + factor_1 + f"expected return: {100 * mu:.2f}%")
+    print("\nAnnual (by " + factor_1 + f"expected return: {100 * mu:.2f}%")
     print("Annual (by " + factor_2 + f"volatility: {100 * sigma:.2f}%")
     print(f"Sharpe ratio: {sharpe:.4f}")
 
@@ -298,35 +302,33 @@ def display_weights(weights: dict, market_neutral: bool = False):
     market_neutral : bool
         Flag indicating shorting allowed (negative weights)
     """
-    if not weights:
+
+    df = optimizer_helper.dict_to_df(weights)
+
+    if df.empty:
         return
-    weight_df = pd.DataFrame.from_dict(data=weights, orient="index", columns=["value"])
-    if not market_neutral:
-        if math.isclose(weight_df.sum()["value"], 1, rel_tol=0.1):
-            weight_df["value"] = (weight_df["value"] * 100).apply(
-                lambda s: f"{s:.2f}"
-            ) + " %"
-            weight_df["value"] = (
-                weight_df["value"]
-                .astype(str)
-                .apply(lambda s: " " * (8 - len(s)) + s if len(s) < 8 else "" + s)
-            )
-        else:
-            weight_df["value"] = (weight_df["value"] * 100).apply(
-                lambda s: f"{s:.0f}"
-            ) + " $"
-            weight_df["value"] = (
-                weight_df["value"]
-                .astype(str)
-                .apply(lambda s: " " * (16 - len(s)) + s if len(s) < 16 else "" + s)
-            )
 
-        print_rich_table(weight_df, headers=["Value"], show_index=True, title="Weights")
-
+    if math.isclose(df.sum()["value"], 1, rel_tol=0.1):
+        df["value"] = (df["value"] * 100).apply(lambda s: f"{s:.2f}") + " %"
+        df["value"] = (
+            df["value"]
+            .astype(str)
+            .apply(lambda s: " " * (8 - len(s)) + s if len(s) < 8 else "" + s)
+        )
     else:
-        tot_value = weight_df["value"].abs().mean()
+        df["value"] = (df["value"] * 100).apply(lambda s: f"{s:.0f}") + " $"
+        df["value"] = (
+            df["value"]
+            .astype(str)
+            .apply(lambda s: " " * (16 - len(s)) + s if len(s) < 16 else "" + s)
+        )
+
+    if market_neutral:
+        tot_value = df["value"].abs().mean()
         header = "Value ($)" if tot_value > 1.01 else "Value (%)"
-        print_rich_table(weight_df, headers=[header], show_index=True, title="Weights")
+        print_rich_table(df, headers=[header], show_index=True, title="Weights")
+    else:
+        print_rich_table(df, headers=["Value"], show_index=True, title="Weights")
 
 
 @log_start_end(log=logger)
@@ -404,7 +406,7 @@ def display_categories(
         weights to display.  Keys are stocks.  Values are either weights or values
     categories: dict
         categories to display. Keys are stocks.  Values are either weights or values
-    column: str.
+    column: str
         column selected to show table
         - ASSET_CLASS
         - SECTOR
@@ -413,51 +415,27 @@ def display_categories(
     title: str
         title to display
     """
-    if not weights:
+
+    if column == "CURRENT_INVESTED_AMOUNT":
+        console.print(f"[yellow]'{column}' cannot be displayed as a category.[/yellow]")
         return
-    weight_df = pd.DataFrame.from_dict(
-        data=weights, orient="index", columns=["value"], dtype=float
-    )
-    categories_df = pd.DataFrame.from_dict(data=categories, dtype=float)
 
-    col = list(categories_df.columns).index(column)
-    categories_df = weight_df.join(categories_df.iloc[:, [col, 4, 5]], how="inner")
-    categories_df.set_index(column, inplace=True)
-    categories_df.groupby(level=0).sum()
+    df = optimizer_model.get_categories(weights, categories, column)
 
-    table_df = pd.pivot_table(
-        categories_df,
-        values=["value", "CURRENT_INVESTED_AMOUNT"],
-        index=["CURRENCY", column],
-        aggfunc=np.sum,
-    )
-    table_df["CURRENT_WEIGHTS"] = (
-        table_df["CURRENT_INVESTED_AMOUNT"]
-        .groupby(level=0)
-        .transform(lambda x: x / sum(x))
-    )
-    table_df["value"] = (
-        table_df["value"].groupby(level=0).transform(lambda x: x / sum(x))
-    )
-    table_df = pd.concat(
-        [
-            d.append(d.sum().rename((k, "TOTAL " + k)))
-            for k, d in table_df.groupby(level=0)
-        ]
-    )
-    table_df = table_df.iloc[:, [0, 2, 1]]
+    if df.empty:
+        return
 
-    table_df["value"] = (table_df["value"] * 100).apply(lambda s: f"{s:.2f}") + " %"
-    table_df["value"] = (
-        table_df["value"]
+    df["value"] = (df["value"] * 100).apply(lambda s: f"{s:.2f}") + " %"
+    df["value"] = (
+        df["value"]
         .astype(str)
         .apply(lambda s: " " * (8 - len(s)) + s if len(s) < 8 else "" + s)
     )
-    table_df["CURRENT_WEIGHTS"] = (table_df["CURRENT_WEIGHTS"] * 100).apply(
+    df["CURRENT_WEIGHTS"] = (df["CURRENT_WEIGHTS"] * 100).apply(
         lambda s: f"{s:.2f}"
     ) + " %"
-    table_df["CURRENT_WEIGHTS"] = (
-        table_df["CURRENT_WEIGHTS"]
+    df["CURRENT_WEIGHTS"] = (
+        df["CURRENT_WEIGHTS"]
         .astype(str)
         .apply(
             lambda s: " " * (len("CURRENT_WEIGHTS") - len(s)) + s
@@ -465,11 +443,11 @@ def display_categories(
             else "" + s
         )
     )
-    table_df["CURRENT_INVESTED_AMOUNT"] = (
-        table_df["CURRENT_INVESTED_AMOUNT"].apply(lambda s: f"{s:,.0f}") + " $"
+    df["CURRENT_INVESTED_AMOUNT"] = (
+        df["CURRENT_INVESTED_AMOUNT"].apply(lambda s: f"{s:,.0f}") + " $"
     )
-    table_df["CURRENT_INVESTED_AMOUNT"] = (
-        table_df["CURRENT_INVESTED_AMOUNT"]
+    df["CURRENT_INVESTED_AMOUNT"] = (
+        df["CURRENT_INVESTED_AMOUNT"]
         .astype(str)
         .apply(
             lambda s: " " * (len("CURRENT_INVESTED_AMOUNT") - len(s)) + s
@@ -478,12 +456,13 @@ def display_categories(
         )
     )
 
-    table_df.reset_index(inplace=True)
-    table_df.set_index("CURRENCY", inplace=True)
+    df.reset_index(level=1, inplace=True)
+    headers = [s.title() for s in list(df.columns)]
+    show_index = True
+    if column == "CURRENCY":
+        show_index = False
 
-    headers = list(table_df.columns)
-    headers = [s.title() for s in headers]
-    print_rich_table(table_df, headers=headers, show_index=True, title=title)
+    print_rich_table(df, headers=headers, show_index=show_index, title=title)
 
 
 @log_start_end(log=logger)
@@ -661,8 +640,7 @@ def display_equal_weight(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -708,7 +686,7 @@ def display_equal_weight(
     )
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -721,7 +699,6 @@ def display_equal_weight(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -738,12 +715,12 @@ def display_property_weighting(
     threshold: float = 0,
     method: str = "time",
     s_property: str = "marketCap",
-    risk_measure="mv",
+    risk_measure: str = "mv",
     risk_free_rate: float = 0,
-    alpha=0.05,
+    alpha: float = 0.05,
     value: float = 1,
     table: bool = False,
-) -> Dict:
+) -> Dict[str, float]:
     """
     Builds a portfolio weighted by selected property
 
@@ -764,9 +741,9 @@ def display_property_weighting(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -774,8 +751,7 @@ def display_property_weighting(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     s_property : str
         Property to get weighted portfolio of
     risk_measure: str, optional
@@ -824,7 +800,7 @@ def display_property_weighting(
     )
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -837,7 +813,6 @@ def display_property_weighting(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -887,9 +862,9 @@ def display_mean_risk(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -897,8 +872,7 @@ def display_mean_risk(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -943,28 +917,24 @@ def display_mean_risk(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1016,7 +986,7 @@ def display_mean_risk(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1029,7 +999,6 @@ def display_mean_risk(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1078,9 +1047,9 @@ def display_max_sharpe(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1088,8 +1057,7 @@ def display_max_sharpe(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -1125,28 +1093,24 @@ def display_max_sharpe(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1186,12 +1150,15 @@ def display_max_sharpe(
         value_short=value_short,
     )
 
+    if stock_returns is None or stock_returns.empty:
+        return {}
+
     if weights is None:
         console.print("\n", "There is no solution with these parameters")
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1204,7 +1171,6 @@ def display_max_sharpe(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1253,9 +1219,9 @@ def display_min_risk(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1263,8 +1229,7 @@ def display_min_risk(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -1300,28 +1265,24 @@ def display_min_risk(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1365,7 +1326,7 @@ def display_min_risk(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1378,7 +1339,6 @@ def display_min_risk(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1427,9 +1387,9 @@ def display_max_util(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1437,8 +1397,7 @@ def display_max_util(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -1474,28 +1433,24 @@ def display_max_util(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1539,7 +1494,7 @@ def display_max_util(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1552,7 +1507,6 @@ def display_max_util(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1601,9 +1555,9 @@ def display_max_ret(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1611,8 +1565,7 @@ def display_max_ret(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -1648,28 +1601,24 @@ def display_max_ret(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1713,7 +1662,7 @@ def display_max_ret(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1726,7 +1675,6 @@ def display_max_ret(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1768,9 +1716,9 @@ def display_max_div(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1778,25 +1726,22 @@ def display_max_div(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1831,7 +1776,7 @@ def display_max_div(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1844,7 +1789,6 @@ def display_max_div(
             # b_sim=None,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1886,9 +1830,9 @@ def display_max_decorr(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1896,25 +1840,22 @@ def display_max_decorr(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1950,7 +1891,7 @@ def display_max_decorr(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -1963,7 +1904,6 @@ def display_max_decorr(
             # b_simb_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1971,8 +1911,9 @@ def display_max_decorr(
 @log_start_end(log=logger)
 def display_black_litterman(
     symbols: List[str],
-    p_views: List,
-    q_views: List,
+    p_views: List = None,
+    q_views: List = None,
+    benchmark: Dict = None,
     interval: str = "3y",
     start_date: str = "",
     end_date: str = "",
@@ -1981,7 +1922,6 @@ def display_black_litterman(
     maxnan: float = 0.05,
     threshold: float = 0,
     method: str = "time",
-    benchmark: Dict = None,
     objective: str = "Sharpe",
     risk_free_rate: float = 0,
     risk_aversion: float = 1,
@@ -2017,9 +1957,9 @@ def display_black_litterman(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2027,8 +1967,7 @@ def display_black_litterman(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     benchmark : Dict
         Dict of portfolio weights
     objective: str
@@ -2092,7 +2031,7 @@ def display_black_litterman(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -2105,7 +2044,6 @@ def display_black_litterman(
             # b_simb_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -2152,9 +2090,9 @@ def display_ef(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2162,8 +2100,7 @@ def display_ef(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -2204,26 +2141,26 @@ def display_ef(
         Whether to plot the tickers for the assets
     """
 
-    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
-
     frontier, mu, cov, stock_returns, weights, X1, Y1, port = optimizer_model.get_ef(
-        symbols,
-        interval,
-        start_date,
-        end_date,
-        log_returns,
-        freq,
-        maxnan,
-        threshold,
-        method,
-        risk_measure,
-        risk_free_rate,
-        alpha,
-        value,
-        value_short,
-        n_portfolios,
-        seed,
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
+        log_returns=log_returns,
+        freq=freq,
+        maxnan=maxnan,
+        threshold=threshold,
+        method=method,
+        risk_measure=risk_measure,
+        risk_free_rate=risk_free_rate,
+        alpha=alpha,
+        value=value,
+        value_short=value_short,
+        n_portfolios=n_portfolios,
+        seed=seed,
     )
+
+    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -2371,10 +2308,10 @@ def display_risk_parity(
     freq: str
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
-            - X (integer days) for returns calculated every X days.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
+        - X (integer days) for returns calculated every X days.
 
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
@@ -2382,8 +2319,7 @@ def display_risk_parity(
     threshold: float
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -2414,28 +2350,24 @@ def display_risk_parity(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -2474,7 +2406,7 @@ def display_risk_parity(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -2483,7 +2415,6 @@ def display_risk_parity(
             risk_free_rate=risk_free_rate,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -2529,10 +2460,10 @@ def display_rel_risk_parity(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
-            - X (integer days) for returns calculated every X days.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
+        - X (integer days) for returns calculated every X days.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2540,8 +2471,7 @@ def display_rel_risk_parity(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     version : str, optional
         Relaxed risk parity model version. The default is 'A'.
         Possible values are:
@@ -2563,28 +2493,24 @@ def display_rel_risk_parity(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -2621,7 +2547,7 @@ def display_rel_risk_parity(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -2629,7 +2555,6 @@ def display_rel_risk_parity(
             risk_measure=risk_choices["mv"],
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -2686,9 +2611,9 @@ def display_hcp(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2696,8 +2621,7 @@ def display_hcp(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     model: str, optional
         The hierarchical cluster portfolio model used for optimize the
         portfolio. The default is 'HRP'. Possible values are:
@@ -2711,36 +2635,34 @@ def display_hcp(
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}.
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}.
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}.
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}.
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}.
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `c-MLforAM`.
 
     objective: str, optional
         Objective function used by the NCO model.
@@ -2800,8 +2722,7 @@ def display_hcp(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -2824,12 +2745,9 @@ def display_hcp(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional
@@ -2894,7 +2812,7 @@ def display_hcp(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -2907,7 +2825,6 @@ def display_hcp(
             b_sim=b_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -2962,9 +2879,9 @@ def display_hrp(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2972,43 +2889,40 @@ def display_hrp(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     codependence: str, optional
         The codependence or similarity matrix used to build the distance
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}.
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}.
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}.
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}.
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}.
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `c-MLforAM`.
 
     risk_measure: str, optional
         The risk measure used to optimize the portfolio. If model is 'NCO',
@@ -3059,8 +2973,7 @@ def display_hrp(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -3083,12 +2996,9 @@ def display_hrp(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional
@@ -3146,7 +3056,7 @@ def display_hrp(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -3159,7 +3069,6 @@ def display_hrp(
             b_sim=b_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -3214,9 +3123,9 @@ def display_herc(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -3224,8 +3133,7 @@ def display_herc(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     model: str, optional
         The hierarchical cluster portfolio model used for optimize the
         portfolio. The default is 'HRP'. Possible values are:
@@ -3239,36 +3147,34 @@ def display_herc(
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}.
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}.
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}.
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}.
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}.
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `c-MLforAM`.
 
     risk_measure: str, optional
         The risk measure used to optimize the portfolio. If model is 'NCO',
@@ -3319,8 +3225,7 @@ def display_herc(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -3343,12 +3248,9 @@ def display_herc(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional
@@ -3406,7 +3308,7 @@ def display_herc(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -3419,7 +3321,6 @@ def display_herc(
             b_sim=b_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -3475,9 +3376,9 @@ def display_nco(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -3485,8 +3386,7 @@ def display_nco(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     model: str, optional
         The hierarchical cluster portfolio model used for optimize the
         portfolio. The default is 'HRP'. Possible values are:
@@ -3500,36 +3400,34 @@ def display_nco(
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}.
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}.
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}.
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}.
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}.
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `c-MLforAM`.
 
     objective: str, optional
         Objective function used by the NCO model.
@@ -3589,8 +3487,7 @@ def display_nco(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -3613,12 +3510,9 @@ def display_nco(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional
@@ -3677,7 +3571,7 @@ def display_nco(
         return {}
 
     if table:
-        console.print("\n", s_title)
+        console.print(s_title)
         display_weights(weights)
         portfolio_performance(
             weights=weights,
@@ -3690,7 +3584,6 @@ def display_nco(
             b_sim=b_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -3808,7 +3701,7 @@ def pie_chart_weights(
 
 @log_start_end(log=logger)
 def additional_plots(
-    weights,
+    weights: Dict,
     data: pd.DataFrame,
     category: Dict = None,
     title_opt: str = "",
@@ -3840,9 +3733,9 @@ def additional_plots(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     risk_measure: str, optional
         The risk measure used to optimize the portfolio. If model is 'NCO',
@@ -3903,20 +3796,20 @@ def additional_plots(
         Optional axes to plot data on
     """
     if category is not None:
-        weights = pd.DataFrame.from_dict(
+        weights_df = pd.DataFrame.from_dict(
             data=weights, orient="index", columns=["value"], dtype=float
         )
         category_df = pd.DataFrame.from_dict(
             data=category, orient="index", columns=["category"]
         )
-        weights = weights.join(category_df, how="inner")
-        weights.sort_index(inplace=True)
+        weights_df = weights_df.join(category_df, how="inner")
+        weights_df.sort_index(inplace=True)
 
         # Calculating classes returns
-        classes = list(set(weights["category"]))
-        weights_classes = weights.groupby(["category"]).sum()
-        matrix_classes = np.zeros((len(weights), len(classes)))
-        labels = weights["category"].tolist()
+        classes = list(set(weights_df["category"]))
+        weights_classes = weights_df.groupby(["category"]).sum()
+        matrix_classes = np.zeros((len(weights_df), len(classes)))
+        labels = weights_df["category"].tolist()
 
         j_value = 0
         for i in classes:
@@ -3925,23 +3818,23 @@ def additional_plots(
             )
             matrix_classes[:, j_value] = (
                 matrix_classes[:, j_value]
-                * weights["value"]
+                * weights_df["value"]
                 / weights_classes.loc[i, "value"]
             )
             j_value += 1
 
         matrix_classes = pd.DataFrame(
-            matrix_classes, columns=classes, index=weights.index
+            matrix_classes, columns=classes, index=weights_df.index
         )
         data = data @ matrix_classes
-        weights = weights_classes["value"].copy()
-        weights.replace(0, np.nan, inplace=True)
-        weights.dropna(inplace=True)
-        weights.sort_values(ascending=True, inplace=True)
-        data = data[weights.index.tolist()]
+        weights_df = weights_classes["value"].copy()
+        weights_df.replace(0, np.nan, inplace=True)
+        weights_df.dropna(inplace=True)
+        weights_df.sort_values(ascending=True, inplace=True)
+        data = data[weights_df.index.tolist()]
         data.columns = [i.title() for i in data.columns]
-        weights.index = [i.title() for i in weights.index]
-        weights = weights.to_dict()
+        weights_df.index = [i.title() for i in weights_df.index]
+        weights = weights_df.to_dict()
 
     colors = theme.get_colors()
     if pie:
@@ -4046,6 +3939,11 @@ def additional_plots(
             theme.visualize_output()
 
     if heat:
+
+        if len(weights) == 1:
+            console.print(f"Heatmap needs at least two values for '{category}'.")
+            return
+
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
@@ -4114,3 +4012,28 @@ def additional_plots(
 
         if external_axes is None:
             theme.visualize_output(force_tight_layout=True)
+
+
+def display_show(weights: Dict, tables: List[str], categories_dict: Dict[Any, Any]):
+    """Display the results of the optimization.
+
+    Parameters
+    ----------
+    weights : Dict
+        Dictionary of weights.
+    tables : List[str]
+        List of tables to display.
+    categories_dict : Dict[Any, Any]
+        Dictionary of categories.
+    """
+
+    display_weights(weights)
+
+    for t in tables:
+        console.print("")
+        display_categories(
+            weights=weights,
+            categories=categories_dict,
+            column=t,
+            title="Category - " + t.title(),
+        )

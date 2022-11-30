@@ -22,7 +22,7 @@ def display_autoets_forecast(
     target_column: str = "close",
     dataset_name: str = "",
     seasonal_periods: int = 7,
-    n_predict: int = 30,
+    n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
     export: str = "",
@@ -42,7 +42,7 @@ def display_autoets_forecast(
         Data to forecast
     dataset_name str
         The name of the ticker to be predicted
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     seasonal_periods: int
         Number of seasonal periods in a year

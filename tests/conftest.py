@@ -3,11 +3,12 @@ import json
 import os
 import pathlib
 from typing import Any, Dict, List, Optional, Type
-from distutils.util import strtobool
+
+import importlib_metadata
 
 # IMPORTATION THIRDPARTY
+import matplotlib
 import pandas as pd
-import importlib_metadata
 import pytest
 from _pytest.capture import MultiCapture, SysCapture
 from _pytest.config import Config
@@ -16,8 +17,8 @@ from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
-from openbb_terminal import decorators, helper_funcs
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import decorators, feature_flags as obbff, helper_funcs
+from openbb_terminal.base_helpers import strtobool
 
 # pylint: disable=redefined-outer-name
 
@@ -30,8 +31,6 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 }
 
 os.environ["TEST_MODE"] = "True"
-os.environ["OPENBB_IMG_HOST_ACTIVE"] = "False"
-os.environ["OPENBB_IMGUR_CLIENT_ID"] = "123"
 obbff.ENABLE_EXIT_AUTO_HELP = strtobool("True")
 
 
@@ -100,11 +99,7 @@ class Record:
         self.__recorded = self.load_string(path=record_path)
 
     def __init__(
-        self,
-        captured: Any,
-        record_path: str,
-        strip: bool = False,
-        **kwargs,
+        self, captured: Any, record_path: str, strip: bool = False, **kwargs
     ) -> None:
         self.__captured = self.extract_string(data=captured, **kwargs)
         self.__record_path = record_path
@@ -147,10 +142,7 @@ class PathTemplate:
             raise Exception(f"Unsupported extension : {extension}")
 
         path = os.path.join(
-            self.__module_dir,
-            extension,
-            self.__module_name,
-            self.__test_name,
+            self.__module_dir, extension, self.__module_name, self.__test_name
         )
         if index:
             path += "_" + str(index)
@@ -210,14 +202,10 @@ class Recorder:
     def capture(self, captured: Any, strip: bool = False, **kwargs):
         record_list = self.__record_list
         record_path = self.__path_template.build_path_by_data(
-            data=captured,
-            index=len(record_list),
+            data=captured, index=len(record_list)
         )
         record = Record(
-            captured=captured,
-            record_path=record_path,
-            strip=strip,
-            **kwargs,
+            captured=captured, record_path=record_path, strip=strip, **kwargs
         )
         self.__record_list.append(record)
 
@@ -271,18 +259,14 @@ class Recorder:
 
 
 def build_path_by_extension(
-    request: SubRequest,
-    extension: str,
-    create_folder: bool = False,
+    request: SubRequest, extension: str, create_folder: bool = False
 ) -> str:
     # SETUP PATH TEMPLATE
     module_dir = request.node.fspath.dirname
     module_name = request.node.fspath.purebasename
     test_name = request.node.name
     path_template = PathTemplate(
-        module_dir=module_dir,
-        module_name=module_name,
-        test_name=test_name,
+        module_dir=module_dir, module_name=module_name, test_name=test_name
     )
 
     # BUILD PATH
@@ -307,9 +291,7 @@ def merge_markers_kwargs(markers: List[Mark]) -> Dict[str, Any]:
 
 
 def record_stdout_format_kwargs(
-    test_name: str,
-    record_mode: str,
-    record_stdout_markers: List[Mark],
+    test_name: str, record_mode: str, record_stdout_markers: List[Mark]
 ) -> Dict[str, Any]:
     kwargs = merge_markers_kwargs(record_stdout_markers)
 
@@ -331,9 +313,20 @@ def pytest_addoption(parser: Parser):
         help="To run tests with the marker : @pytest.mark.prediction",
     )
     parser.addoption(
+        "--optimization",
+        action="store_true",
+        help="To run tests with the marker : @pytest.mark.optimization",
+    )
+    parser.addoption(
         "--rewrite-expected",
         action="store_true",
         help="To force `record_stdout` and `recorder` to rewrite all files.",
+    )
+    parser.addoption(
+        "--autodoc",
+        action="store_true",
+        default=False,
+        help="run auto documantation tests",
     )
 
 
@@ -348,6 +341,11 @@ def disable_rich():
         print(df.to_string())
 
     helper_funcs.print_rich_table = effect
+
+
+def disable_matplotlib():
+    # We add this to avoid multiple figures being opened
+    matplotlib.use("Agg")
 
 
 def disable_check_api():
@@ -365,6 +363,7 @@ def pytest_configure(config: Config) -> None:
     enable_debug()
     disable_rich()
     disable_check_api()
+    disable_matplotlib()
 
 
 @pytest.fixture(scope="session")  # type: ignore
@@ -456,8 +455,7 @@ def record_stdout(
             capsys = request.getfixturevalue("capsys")
             yield
             recorder.capture(
-                captured=capsys.readouterr().out,
-                strip=formatted_kwargs["strip"],
+                captured=capsys.readouterr().out, strip=formatted_kwargs["strip"]
             )
 
         # SAVE/CHECK RECORD
@@ -483,9 +481,7 @@ def recorder(
     module_name = request.node.fspath.purebasename
     test_name = request.node.name
     path_template = PathTemplate(
-        module_dir=module_dir,
-        module_name=module_name,
-        test_name=test_name,
+        module_dir=module_dir, module_name=module_name, test_name=test_name
     )
     if disable_recording:
         yield None

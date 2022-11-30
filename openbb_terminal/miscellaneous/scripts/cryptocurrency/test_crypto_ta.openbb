@@ -1,86 +1,65 @@
 crypto
-load eth
+load ${crypto=eth}
 
-# tv
 tv
 
-# ema
 ema
 ema -l 100 -o 10
 
-# sma
 sma
 sma -l 100 -o 10
 
-# wma
 wma
 wma -l 100 -o 10
 
-# hma
 hma
 hma -l 100 -o 10
 
-# zlma
 zlma
 zlma -l 100 -o 10
 
 # vwap
 
-# cci
 cci
 cci --length 10 --scalar 10
 
-# macd
 macd
 macd --fast 10 --slow 10 --signal 5
 
-# rsi
 rsi
 rsi -l 10 -s 10 -d 2
 
-# stoch
 stoch
 stoch -k 10 -d 10 --slowkperiod 2
 
-# fisher
 fisher
 fisher --length 10
 
-# cg
 cg
 cg --length 10
 
-# adx
 adx
 adx -l 10 -s 10 -d 10
 
-# aroon
 aroon
 aroon -l 10 -s 10
 
-# bbands
 bbands
 bbands -l 10 -s 0.5 -m ema
 
-# donchian
 donchian
 donchian -u 10 -l 10
 
-# kc
 kc
 kc -l 10 -s 10 -m sma -o 1
 
-# ad
 ad
 
-# adosc
 adosc
 adosc --open --fast 10 --slow 10
 
-# obv
 obv
 
-# fib
 fib
 fib --period 10 --start 2022-01-01 --end 2022-03-03
 

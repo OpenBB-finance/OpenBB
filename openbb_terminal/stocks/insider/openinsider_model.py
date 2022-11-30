@@ -574,7 +574,7 @@ def check_valid_range(
         max value to allow
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -606,7 +606,7 @@ def check_dates(d_date: Dict) -> str:
         dictionary with dates from open insider
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -681,7 +681,7 @@ def check_valid_multiple(category: str, field: str, val: str, multiple: int) -> 
         value must be multiple of this number
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -713,7 +713,7 @@ def check_boolean_list(category: str, d_data: Dict, l_fields_to_check: List) -> 
         list of fields from data dictionary to check if they are bool
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -744,7 +744,7 @@ def check_in_list(
         list of possible values that should be allowed
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -778,7 +778,7 @@ def check_int_in_list(
         list of possible values that should be allowed
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -810,7 +810,7 @@ def check_open_insider_general(d_general) -> str:
         dictionary of general
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -843,7 +843,7 @@ def check_open_insider_date(d_date: Dict) -> str:
         dictionary of date
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -869,7 +869,7 @@ def check_open_insider_transaction_filing(d_transaction_filing: Dict) -> str:
         dictionary of transaction filing
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -925,7 +925,7 @@ def check_open_insider_industry(d_industry: Dict) -> str:
         dictionary of industry
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -946,7 +946,7 @@ def check_open_insider_insider_title(d_insider_title: Dict) -> str:
         dictionary of title
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -979,7 +979,7 @@ def check_open_insider_others(d_others: Dict) -> str:
         dictionary of others
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -1009,7 +1009,7 @@ def check_open_insider_company_totals(d_company_totals: Dict) -> str:
         dictionary of company totals
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -1086,7 +1086,7 @@ def check_open_insider_screener(
         dictionary of company totals
 
     Returns
-    ----------
+    -------
     error : str
         error message. If empty, no error.
     """
@@ -1137,7 +1137,7 @@ def get_open_insider_link(preset_loaded: str) -> str:
         Loaded preset filter
 
     Returns
-    ----------
+    -------
     link : str
         open insider filtered link
     """
@@ -1312,7 +1312,7 @@ def get_open_insider_data(url: str, has_company_name: bool) -> pd.DataFrame:
         contains company name columns
 
     Returns
-    ----------
+    -------
     data : pd.DataFrame
         open insider filtered data
     """
@@ -1434,33 +1434,30 @@ def get_insider_types() -> Dict:
 
 
 @log_start_end(log=logger)
-def get_print_insider_data(type_insider: str = "lcb", limit: int = 10):
+def get_print_insider_data(type_insider: str = "lcb"):
     """Print insider data
 
     Parameters
     ----------
     type_insider: str
         Insider type of data. Available types can be accessed through get_insider_types().
-    limit: int
-        Limit of data rows to display
+
+    Returns
+    -------
+    data : pd.DataFrame
+        Open insider filtered data
     """
-    response = requests.get(f"http://openinsider.com/{d_open_insider[type_insider]}")
-    soup = BeautifulSoup(response.text, "html.parser")
-    table = soup.find("table", {"class": "tinytable"})
-
-    if not table:
-        console.print("No insider information found", "\n")
+    response = requests.get(
+        f"http://openinsider.com/{d_open_insider[type_insider]}",
+        headers={"User-Agent": "Mozilla/5.0"},
+    )
+    df = (
+        pd.read_html(response.text)[-3]
+        .drop(columns=["1d", "1w", "1m", "6m"])
+        .fillna("-")
+    )
+    if df.empty:
         return pd.DataFrame()
-
-    table_rows = table.find_all("tr")
-
-    res = []
-    for tr in table_rows:
-        td = tr.find_all("td")
-        row = [tr.text.strip() for tr in td if tr.text.strip()]
-        res.append(row)
-
-    df = pd.DataFrame(res).dropna().head(n=limit)
     columns = [
         "X",
         "Filing Date",
@@ -1498,5 +1495,4 @@ def get_print_insider_data(type_insider: str = "lcb", limit: int = 10):
         df["Insider Name"] = df["Insider Name"].apply(
             lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
         )
-
     return df

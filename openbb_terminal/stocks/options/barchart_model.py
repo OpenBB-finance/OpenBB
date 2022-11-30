@@ -25,7 +25,7 @@ def get_options_info(symbol: str) -> pd.DataFrame:
     Returns
     -------
     df: pd.DataFrame
-        Dataframe of information
+        Dataframe of options information
     """
     page = f"https://www.barchart.com/stocks/quotes/{symbol}/overview"
 

@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Any, Tuple, Union, List, Optional
+from typing import Tuple, Union, List, Optional
 
 import pandas as pd
 
@@ -34,72 +34,75 @@ def get_trans_data(
     activation: str = "relu",
     dropout: float = 0.0,
     batch_size: int = 32,
-    n_epochs: int = 100,
+    n_epochs: int = 300,
     learning_rate: float = 1e-3,
     model_save_name: str = "trans_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
+) -> Tuple[
+    Optional[List[TimeSeries]],
+    Optional[List[TimeSeries]],
+    Optional[List[TimeSeries]],
+    Optional[float],
+    Optional[type[TransformerModel]],
+]:
     """Performs Transformer forecasting
 
-    Args:
-        data (Union[pd.Series, pd.DataFrame]):
-            Input Data
-        n_predict (int, optional):
-            Days to predict. Defaults to 5.
-        target_column (str, optional):
-            Target column to forecast. Defaults to "close".
-        train_split (float, optional):
-            Train/val split. Defaults to 0.85.
-        past_covariates (str, optional):
-            Multiple secondary columns to factor in when forecasting. Defaults to None.
-        forecast_horizon (int, optional):
-            Forecast horizon when performing historical forecasting. Defaults to 5.
-        input_chunk_length (int, optional):
-            Number of past time steps that are fed to the forecasting module at prediction time. Defaults to 14.
-        output_chunk_length (int, optional):
-            The length of the forecast of the model. Defaults to 5.
-        d_model (int):
-            The number of expected features in the encoder/decoder inputs. Defaults to 64.
-        nhead (int):
-            The number of heads in the multi-head attention mechanism. Defaults to 4.
-        num_encoder_layers (int):
-            The number of encoder layers in the encoder. Defaults to 3.
-        num_decoder_layers (int):
-            The number of decoder layers in the encoder. Defaults to 3.
-        dim_feedforward (int):
-            The dimension of the feedforward network model. Defaults to 512.
-        activation (str):
-            The activation function of encoder/decoder intermediate layer, ‘relu’ or ‘gelu’. Defaults to 'relu'.
-        dropout (float, optional):
-            Fraction of neurons afected by Dropout. Defaults to 0.0.
-        batch_size (int, optional):
-            Number of time series (input and output sequences) used in each training pass. Defaults to 32.
-        n_epochs (int, optional):
-            Number of epochs over which to train the model. Defaults to 100.
-        learning_rate (float, optional):
-            Defaults to 1e-3.
-        model_save_name (str, optional):
-            Name for model. Defaults to "brnn_model".
-        force_reset (bool, optional):
-            If set to True, any previously-existing model with the same name will be reset (all checkpoints will be
-            discarded). Defaults to True.
-        save_checkpoints (bool, optional):
-            Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
+    Parameters
+    ----------
+    data: Union[pd.Series, pd.DataFrame]
+        Input Data
+    n_predict: int
+        Days to predict. Defaults to 5.
+    target_column: str
+        Target column to forecast. Defaults to "close".
+    train_split: float
+        Train/val split. Defaults to 0.85.
+    past_covariates: str
+        Multiple secondary columns to factor in when forecasting. Defaults to None.
+    forecast_horizon: int
+        Forecast horizon when performing historical forecasting. Defaults to 5.
+    input_chunk_length: int
+        Number of past time steps that are fed to the forecasting module at prediction time. Defaults to 14.
+    output_chunk_length: int
+        The length of the forecast of the model. Defaults to 5.
+    d_model: int
+        The number of expected features in the encoder/decoder inputs. Defaults to 64.
+    nhead: int
+        The number of heads in the multi-head attention mechanism. Defaults to 4.
+    num_encoder_layers: int
+        The number of encoder layers in the encoder. Defaults to 3.
+    num_decoder_layers: int
+        The number of decoder layers in the encoder. Defaults to 3.
+    dim_feedforward: int
+        The dimension of the feedforward network model. Defaults to 512.
+    activation: str
+        The activation function of encoder/decoder intermediate layer, ‘relu’ or ‘gelu’. Defaults to 'relu'.
+    dropout: float
+        Fraction of neurons afected by Dropout. Defaults to 0.0.
+    batch_size: int
+        Number of time series (input and output sequences) used in each training pass. Defaults to 32.
+    n_epochs: int
+        Number of epochs over which to train the model. Defaults to 100.
+    learning_rate: float
+        Defaults to 1e-3.
+    model_save_name: str
+        Name for model. Defaults to "brnn_model".
+    force_reset: bool
+        If set to True, any previously-existing model with the same name will be reset (all checkpoints will be
+        discarded). Defaults to True.
+    save_checkpoints: bool
+        Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
 
-    Returns:
-        List[TimeSeries]
-            Adjusted Data series
-        List[TimeSeries]
-            Historical forecast by best RNN model
-        List[TimeSeries]
-            list of Predictions
-        Optional[float]
-            Mean average precision error
-        Any
-            Best transformer Model
+    Returns
+    -------
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], type[TransformerModel]]
+        Adjusted Data series,
+        Historical forecast by best RNN model,
+        list of Predictions,
+        Mean average precision error,
+        Best transformer Model.
     """
-
     # TODO Check if torch GPU AVAILABLE
 
     use_scalers = True

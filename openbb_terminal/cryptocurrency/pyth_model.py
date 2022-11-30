@@ -1,4 +1,5 @@
 import logging
+from typing import Tuple
 
 from pythclient.pythaccounts import PythPriceAccount, PythPriceStatus
 from pythclient.solana import (
@@ -8,7 +9,6 @@ from pythclient.solana import (
     SOLANA_DEVNET_WS_ENDPOINT,
 )
 
-from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,6 @@ ASSETS = {
     "APE-USD": {"feedID": "EfnLcrwxCgwALc5vXr4cwPZMVcmotZAuqmHa8afG8zJe"},
     "ATLAS-USD": {"feedID": "Dzs6SE1cssUqBpWCKzE4jeS5PrmRK1Fp2Kw1WMaDCiVR"},
     "ATOM-USD": {"feedID": "7YAze8qFUMkBnyLVdKT4TFUUFui99EwS5gfRArMcrvFk"},
-    "AUST-UST": {"feedID": "9g8mGLKcDiKSrWahbjKGtpGCcrLkC5kbwmpFFGRs6euf"},
     "AVAX-USD": {"feedID": "FVb5h1VmHPfVb1RfqZckchq18GxRv4iKt8T4eVTQAqdz"},
     "BCH-USD": {"feedID": "4EQrNZYk5KR1RnjyzbaaRbHsv8VqZWzSUtvx58wLsZbj"},
     "BETH-USD": {"feedID": "HyShqBUTtwAaCas9Dnib3ut6GmEDk9hTdKsrNfRffX8E"},
@@ -74,8 +73,7 @@ ASSETS = {
 }
 
 
-@log_start_end(log=logger)
-async def get_price(symbol: str):
+async def get_price(symbol: str) -> Tuple[float, float, float]:
     """Returns price and confidence interval from pyth live feed. [Source: Pyth]
 
     Parameters
@@ -85,11 +83,9 @@ async def get_price(symbol: str):
 
     Returns
     -------
-    float
-        Price of the asset
-    float
-        Confidence level
-    float
+    Tuple[float, float, float]
+        Price of the asset,
+        Confidence level,
         Previous price of the asset
     """
 

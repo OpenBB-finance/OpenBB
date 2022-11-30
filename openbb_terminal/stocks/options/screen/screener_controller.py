@@ -5,16 +5,15 @@ import argparse
 import logging
 from typing import List
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.comparison_analysis import ca_controller
-from openbb_terminal.stocks.options.screen import syncretism_view, syncretism_model
+from openbb_terminal.stocks.options.screen import syncretism_model, syncretism_view
 
 # pylint: disable=E1121
 
@@ -33,6 +32,7 @@ class ScreenerController(BaseController):
     preset_choices = syncretism_model.get_preset_choices()
 
     PATH = "/stocks/options/screen/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -42,15 +42,7 @@ class ScreenerController(BaseController):
         self.screen_tickers: List = list()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            presets: dict = {c: {} for c in self.preset_choices}
-            choices["view"] = presets
-            choices["set"] = presets
-            choices["scr"] = presets
-            choices["scr"]["--limit"] = one_to_hundred
-            choices["scr"]["-l"] = "--limit"
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -97,7 +89,6 @@ class ScreenerController(BaseController):
             else:
                 for preset in self.preset_choices:
                     console.print(preset)
-                console.print("")
 
     @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
@@ -122,7 +113,6 @@ class ScreenerController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
-        console.print("")
 
     @log_start_end(log=logger)
     def call_scr(self, other_args: List[str]):

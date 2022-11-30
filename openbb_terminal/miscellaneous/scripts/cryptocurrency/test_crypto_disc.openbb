@@ -4,6 +4,7 @@ disc
 # gctop
 top
 top -c stablecoins -s Volume [$] -l 5
+top -s Market Cap -r
 
 # cgtrending
 trending
@@ -17,13 +18,13 @@ losers
 losers -s Price [$] -l 5 -i 14d
 
 # cpsearch CURRENTLY BUGGY
-search bitcoin
-search -q bitcoin -s name
-cpssearchearch -q bitcoin -c exchanges -l 2
+search ${crypto=bitcoin}
+search -q ${crypto=bitcoin} -s name
+search -q ${crypto=bitcoin} -c exchanges -l 2
 
-# # Broken commands
-# nft
-# games
-# dapps
-# dex
+nft
+games
+dapps
+dex
+
 exit

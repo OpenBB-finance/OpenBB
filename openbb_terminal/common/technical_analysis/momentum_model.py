@@ -9,8 +9,9 @@ import pandas as pd
 import pandas_ta as ta
 from sklearn.linear_model import LinearRegression
 
-from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.common.technical_analysis import ta_helpers
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -37,16 +38,19 @@ def cci(
         Scalar variable
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
 
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return pd.DataFrame()
     return pd.DataFrame(
         ta.cci(
             high=data["High"],
             low=data["Low"],
-            close=data["Adj Close"],
+            close=data[close_col],
             length=window,
             scalar=scalar,
         ).dropna()
@@ -55,7 +59,7 @@ def cci(
 
 @log_start_end(log=logger)
 def macd(
-    values: pd.DataFrame,
+    data: pd.Series,
     n_fast: int = 12,
     n_slow: int = 26,
     n_signal: int = 9,
@@ -64,7 +68,7 @@ def macd(
 
     Parameters
     ----------
-    values: pd.Series
+    data: pd.Series
         Values for calculation
     n_fast : int
         Fast period
@@ -73,24 +77,27 @@ def macd(
     n_signal : int
         Signal period
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
+    if isinstance(data, pd.DataFrame):
+        console.print("[red]Please send a series and not a DataFrame.[/red]\n")
+        return pd.DataFrame()
     return pd.DataFrame(
-        ta.macd(values, fast=n_fast, slow=n_slow, signal=n_signal).dropna()
+        ta.macd(data, fast=n_fast, slow=n_slow, signal=n_signal).dropna()
     )
 
 
 @log_start_end(log=logger)
 def rsi(
-    values: pd.Series, window: int = 14, scalar: float = 100, drift: int = 1
+    data: pd.Series, window: int = 14, scalar: float = 100, drift: int = 1
 ) -> pd.DataFrame:
     """Relative strength index
 
     Parameters
     ----------
-    values: pd.Series
+    data: pd.Series
         Dataframe of prices
     window: int
         Length of window
@@ -100,20 +107,24 @@ def rsi(
         Drift variable
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
-    return pd.DataFrame(
-        ta.rsi(values, length=window, scalar=scalar, drift=drift).dropna()
-    )
+    if isinstance(data, pd.DataFrame):
+        console.print("[red]Please send a series and not a DataFrame.[/red]\n")
+        return pd.DataFrame()
+    raw_data = ta.rsi(data, length=window, scalar=scalar, drift=drift)
+    if raw_data is None:
+        return pd.DataFrame()
+    if raw_data.empty:
+        return pd.DataFrame()
+    return pd.DataFrame(raw_data.dropna())
 
 
 @log_start_end(log=logger)
 def stoch(
-    high_vals: pd.Series,
-    low_vals: pd.Series,
-    close_vals: pd.Series,
+    data: pd.DataFrame,
     fastkperiod: int = 14,
     slowdperiod: int = 3,
     slowkperiod: int = 3,
@@ -122,12 +133,8 @@ def stoch(
 
     Parameters
     ----------
-    high_vals: pd.Series
-        High values
-    low_vals: pd.Series
-        Low values
-    close-vals: pd.Series
-        Close values
+    data : pd.DataFrame
+        Dataframe of OHLC prices
     fastkperiod : int
         Fast k period
     slowdperiod : int
@@ -135,15 +142,18 @@ def stoch(
     slowkperiod : int
         Slow k period
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return pd.DataFrame()
     return pd.DataFrame(
         ta.stoch(
-            high=high_vals,
-            low=low_vals,
-            close=close_vals,
+            high=data["High"],
+            low=data["Low"],
+            close=data[close_col],
             k=fastkperiod,
             d=slowdperiod,
             smooth_k=slowkperiod,
@@ -152,24 +162,27 @@ def stoch(
 
 
 @log_start_end(log=logger)
-def fisher(high_vals: pd.Series, low_vals: pd.Series, window: int = 14) -> pd.DataFrame:
+def fisher(data: pd.DataFrame, window: int = 14) -> pd.DataFrame:
     """Fisher Transform
 
     Parameters
     ----------
-    high_vals: pd.Series
-        High values
-    low_vals: pd.Series
-        Low values
+    data : pd.DataFrame
+        Dataframe of OHLC prices
     window: int
         Length for indicator window
     Returns
-    ----------
+    -------
     df_ta: pd.DataFrame
         Dataframe of technical indicator
     """
     # Daily
-    return pd.DataFrame(ta.fisher(high=high_vals, low=low_vals, length=window).dropna())
+    close_col = ta_helpers.check_columns(data, close=False)
+    if close_col is None:
+        return pd.DataFrame()
+    return pd.DataFrame(
+        ta.fisher(high=data["High"], low=data["Low"], length=window).dropna()
+    )
 
 
 @log_start_end(log=logger)
@@ -183,7 +196,7 @@ def cg(values: pd.Series, window: int) -> pd.DataFrame:
     window: int
         Length for indicator window
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe of technical indicator
     """
@@ -212,6 +225,12 @@ def clenow_momentum(
         Coefficient of linear regression
     pd.Series:
         Values for best fit line
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.ta.clenow(df["Close"])
     """
     if len(values) < window:
         console.print(
@@ -247,5 +266,11 @@ def demark_seq(values: pd.Series) -> pd.DataFrame:
     -------
     pd.DataFrame
         Dataframe of UP and DOWN sequential indicators
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.ta.demark(df["Close"])
     """
     return ta.td_seq(values, asint=True)

@@ -5,11 +5,10 @@ __docformat__ = "numpy"
 
 import logging
 from pathlib import Path
-from typing import Dict, Union, Any, Optional, List
+from typing import Dict, Union, Any, Optional
 from itertools import chain
 
 import pandas as pd
-from pandas import DataFrame
 import numpy as np
 
 from openbb_terminal.decorators import log_start_end
@@ -18,11 +17,9 @@ from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     USER_CUSTOM_IMPORTS_DIRECTORY,
 )
+from openbb_terminal.common import common_model
 
 logger = logging.getLogger(__name__)
-
-
-base_file_types = ["csv", "xlsx"]
 
 
 def get_default_files() -> Dict[str, Path]:
@@ -35,7 +32,7 @@ def get_default_files() -> Dict[str, Path]:
     """
     default_files = {
         filepath.name: filepath
-        for file_type in base_file_types
+        for file_type in common_model.file_types
         for filepath in chain(
             USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
             USER_CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
@@ -45,71 +42,22 @@ def get_default_files() -> Dict[str, Path]:
     return default_files
 
 
-@log_start_end(log=logger)
-def load(
-    file: str,
-    file_types: Optional[List[str]] = None,
-    data_files: Optional[Dict[Any, Any]] = None,
-    add_extension: bool = False,
-) -> pd.DataFrame:
-    """Load custom file into dataframe.
-
-    Parameters
-    ----------
-    file: str
-        Path to file
-    file_types: list
-        Supported file types
-    data_files: dict
-        Contains all available data files within the Export folder
-    add_extension:
-        Takes a file name and tries loading with csv or xlsx extension
-
-    Returns
-    -------
-    pd.DataFrame:
-        Dataframe with custom data
+def __sdk_dt_format(x) -> str:
+    """Convert any Timestamp to YYYY-MM-DD when using SDK
+    Args:
+        x: Pandas Timestamp of any length
+    Returns:
+        x: formatted string
     """
-    if file_types is None:
-        file_types = ["csv", "xlsx"]
-    if data_files is None:
-        data_files = get_default_files()
-
-    if file in data_files:
-        full_file = data_files[file]
-    else:
-        full_file = file
-
-    if add_extension:
-        for ext in ["xlsx", "csv"]:
-            tmp = f"{full_file}.{ext}"
-            if tmp in data_files:
-                full_file = data_files[tmp]
-
-    if not Path(full_file).exists():
-        console.print(f"[red]Cannot find the file {full_file}[/red]\n")
-
-        return pd.DataFrame()
-
-    file_type = Path(full_file).suffix
-
-    if file_type == ".xlsx":
-        data = pd.read_excel(full_file)
-    elif file_type == ".csv":
-        data = pd.read_csv(full_file)
-    else:
-        return console.print(
-            f"The file type {file_type} is not supported. Please choose one of the following: "
-            f"{', '.join(file_types)}"
-        )
-
-    return data
+    x = pd.to_datetime(x)
+    x = x.strftime("%Y-%m-%d")
+    return x
 
 
 @log_start_end(log=logger)
 def get_options(
     datasets: Dict[str, pd.DataFrame], dataset_name: str = None
-) -> Dict[Union[str, Any], DataFrame]:
+) -> Dict[Union[str, Any], pd.DataFrame]:
     """Obtain columns-dataset combinations from loaded in datasets that can be used in other commands
 
     Parameters
@@ -121,7 +69,7 @@ def get_options(
 
     Returns
     -------
-    option_tables: dict
+    option_tables: Dict[Union[str, Any], pd.DataFrame]
         A dictionary with a DataFrame for each option. With dataset_name set, only shows one
         options table.
     """
@@ -170,7 +118,7 @@ def clean(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with cleaned up data
     """
     kwargs = {}
@@ -225,7 +173,7 @@ def add_ema(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added EMA column
     """
     dataset[f"EMA_{period}"] = (
@@ -254,11 +202,17 @@ def add_sto(
     dataset : pd.DataFrame
         The dataset you wish to calculate for
     period : int
-        Span
+        Span of time to calculate over
+    close_column : str
+        The column name for the close price
+    high_column : str
+        The column name for the high price
+    low_column : str
+        The column name for the low price
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added STO K & D columns
     """
 
@@ -303,7 +257,7 @@ def add_rsi(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added RSI column
     """
 
@@ -345,7 +299,7 @@ def add_roc(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added ROC column
     """
     M = dataset[target_column].diff(period - 1)
@@ -374,7 +328,7 @@ def add_momentum(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added MOM column
     """
 
@@ -439,7 +393,7 @@ def add_signal(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added signal column
     """
 
@@ -475,10 +429,22 @@ def combine_dfs(
         A name for df2 (shows in name of new column)
 
     Returns
-    ----------
+    -------
     data: pd.DataFrame
         The new dataframe
     """
+
+    # for use with SDK
+    # check if date is index, if true, reset index
+    if df1.index.name == "date":
+        df1 = df1.reset_index()
+        # remove 00:00:00 from 2019-11-19 00:00:00
+        df1["date"] = df1["date"].apply(lambda x: __sdk_dt_format(x))
+    if df2.index.name == "date":
+        df2 = df2.reset_index()
+        # remove 00:00:00 from 2019-11-19 00:00:00
+        df2["date"] = df2["date"].apply(lambda x: __sdk_dt_format(x))
+
     if column not in df2:
         console.print(
             f"Not able to find the column {column}. Please choose one of "
@@ -503,23 +469,36 @@ def combine_dfs(
 
 
 @log_start_end(log=logger)
-def delete_column(df: pd.DataFrame, column: str) -> None:
-    if column not in df:
+def delete_column(data: pd.DataFrame, column: str) -> None:
+    """Delete a column from a dataframe
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        The dataframe to delete a column from
+    column : str
+        The column to delete
+
+    Returns
+    -------
+    None
+    """
+    if column not in data:
         console.print(
             f"Not able to find the column {column}. Please choose one of "
-            f"the following: {', '.join(df.columns)}"
+            f"the following: {', '.join(data.columns)}"
         )
     else:
-        del df[column]
+        del data[column]
 
 
 @log_start_end(log=logger)
-def rename_column(df: pd.DataFrame, old_column: str, new_column: str) -> pd.DataFrame:
+def rename_column(data: pd.DataFrame, old_column: str, new_column: str) -> pd.DataFrame:
     """Rename a column in a dataframe
 
     Parameters
     ----------
-    df: pd.DataFrame
+    data: pd.DataFrame
         The dataframe to have a column renamed
     old_column: str
         The column that will have its name changed
@@ -527,49 +506,49 @@ def rename_column(df: pd.DataFrame, old_column: str, new_column: str) -> pd.Data
         The name to update to
 
     Returns
-    ----------
+    -------
     new_df: pd.DataFrame
         The dataframe with the renamed column
     """
-    if old_column not in df:
+    if old_column not in data:
         console.print(
             f"Not able to find the column {old_column}. Please choose one of "
-            f"the following: {', '.join(df.columns)}"
+            f"the following: {', '.join(data.columns)}"
         )
-        return df
-    return df.rename(columns={old_column: new_column})
+        return data
+    return data.rename(columns={old_column: new_column})
 
 
 @log_start_end(log=logger)
-def describe_df(df: pd.DataFrame) -> pd.DataFrame:
+def describe_df(data: pd.DataFrame) -> pd.DataFrame:
     """Returns statistics for a given df
 
     Parameters
     ----------
-    df: pd.DataFrame
+    data: pd.DataFrame
         The df to produce statistics for
 
     Returns
-    ----------
+    -------
     df: pd.DataFrame
         The df with the new data
     """
-    return df.describe()
+    return data.describe()
 
 
 @log_start_end(log=logger)
-def corr_df(df: pd.DataFrame) -> pd.DataFrame:
+def corr_df(data: pd.DataFrame) -> pd.DataFrame:
     """Returns correlation for a given df
 
     Parameters
     ----------
-    df: pd.DataFrame
+    data: pd.DataFrame
         The df to produce statistics for
 
     Returns
-    ----------
+    -------
     df: pd.DataFrame
         The df with the new data
     """
-    corr = df.corr(numeric_only=True)
+    corr = data.corr(numeric_only=True)
     return corr
