@@ -232,15 +232,20 @@ class PoEngine:
             return pd.DataFrame()
         return optimizer_helper.dict_to_df(self._weights)
 
-    def set_params(self, params: Dict[str, float]):
+    def set_params(self, params: Dict[str, float], update=False):
         """Set the parameters
 
         Parameters
         ----------
         params : Dict[str, float]
             Parameters
+        update : bool, optional
+            Update the current model, by default False
         """
-        self._params.update(params)
+        if update:
+            self._params.update(params)
+        else:
+            self._params = params
 
     def get_params(self) -> Dict:
         """Get the parameters

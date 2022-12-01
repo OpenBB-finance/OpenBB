@@ -23,6 +23,7 @@ from openbb_terminal.portfolio.portfolio_optimization.parameters.params_helpers 
 )
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
     RISK_NAMES,
+    TERMINAL_TEMPLATE_MAP,
     TIME_FACTOR,
     DRAWDOWNS,
 )
@@ -141,7 +142,7 @@ def load_parameters_file(
      'maxnan': '0.05',
      'threshold': '0.3',
      'alpha': '0.05'}
-    >>> p.set_params({"risk_free_rate": 0.05})
+    >>> p.set_params({"risk_free_rate": 0.05}, update=True)
     >>> p.get_params()
     {'interval': '3y',
     'log_returns': '0',
@@ -186,7 +187,13 @@ def validate_inputs(
 
     converted_parameters = check_convert_parameters(received_parameters=parameters)
 
-    return symbols, portfolio_engine, converted_parameters
+    terminal_parameters = {}
+    # TODO: Remove this conversion when mapping between template and terminal is not needed
+    TEMPLATE_TERMINAL_MAP = {v: k for k, v in TERMINAL_TEMPLATE_MAP.items()}
+    for key, value in converted_parameters.items():
+        terminal_parameters[TEMPLATE_TERMINAL_MAP.get(key, key)] = value
+
+    return symbols, portfolio_engine, terminal_parameters
 
 
 @log_start_end(log=logger)

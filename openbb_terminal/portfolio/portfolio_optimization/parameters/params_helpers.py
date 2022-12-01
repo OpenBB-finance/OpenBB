@@ -69,7 +69,7 @@ def check_convert_parameters(received_parameters: dict) -> dict:
 
     for received_name, received_value in received_parameters.items():
 
-        # TODO: Remove this line when mapping between template and terminal is done
+        # TODO: Remove this line when mapping between template and terminal is not needed
         template_name = TERMINAL_TEMPLATE_MAP.get(received_name, received_name)
 
         if template_name in OPTIMIZATION_PARAMETERS:
