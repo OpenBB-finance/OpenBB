@@ -2995,7 +2995,6 @@ class PortfolioOptimizationController(BaseController):
             "--leaf-order",
             default=self.params["leaf_order"] if "leaf_order" in self.params else True,
             dest="leaf_order",
-            type=bool,
             help="""Indicates if the cluster are ordered so that the distance
                 between successive leaves is minimal""",
         )
@@ -3296,7 +3295,6 @@ class PortfolioOptimizationController(BaseController):
             "--leaf-order",
             default=self.params["leaf_order"] if "leaf_order" in self.params else True,
             dest="leaf_order",
-            type=bool,
             help="""Indicates if the cluster are ordered so that the distance
                 between successive leaves is minimal""",
         )
@@ -3549,7 +3547,6 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             default=self.params["leaf_order"] if "leaf_order" in self.params else True,
             dest="leaf_order",
-            type=bool,
             help="""indicates if the cluster are ordered so that the distance
                 between successive leaves is minimal""",
         )
