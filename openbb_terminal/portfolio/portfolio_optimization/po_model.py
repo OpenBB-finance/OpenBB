@@ -217,13 +217,13 @@ def get_portfolio_performance(weights: Dict, data: pd.DataFrame, **kwargs) -> Di
         if not weights:
             return {}
 
-        freq = kwargs.get("freq", "D")
-        risk_measure = kwargs.get("risk_measure", "MV")
-        risk_free_rate = kwargs.get("risk_free_rate", 0.0)
-        alpha = kwargs.get("alpha", 0.05)
-        a_sim = kwargs.get("a_sim", 100)
-        beta = kwargs.get("beta", None)
-        b_sim = kwargs.get("b_sim", None)
+        freq = optimizer_helper.get_kwarg("freq", kwargs)
+        risk_measure = optimizer_helper.get_kwarg("risk_measure", kwargs)
+        risk_free_rate = optimizer_helper.get_kwarg("risk_free_rate", kwargs)
+        alpha = optimizer_helper.get_kwarg("alpha", kwargs)
+        a_sim = optimizer_helper.get_kwarg("a_sim", kwargs)
+        beta = optimizer_helper.get_kwarg("beta", kwargs)
+        b_sim = optimizer_helper.get_kwarg("b_sim", kwargs)
 
         freq = freq.upper()
         weights = pd.Series(weights).to_frame()

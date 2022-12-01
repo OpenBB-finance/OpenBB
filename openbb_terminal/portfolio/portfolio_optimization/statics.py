@@ -242,29 +242,6 @@ DRAWDOWNS = [
     "UCI_Rel",
 ]
 
-PARAM_TYPES = {
-    "interval": str,
-    "start_date": str,
-    "end_date": str,
-    "log_returns": bool,
-    "return_frequency": str,
-    "maxnan": float,
-    "threshold": float,
-    "method": str,
-    "risk_measure": str,
-    "objective": str,
-    "risk_free_rate": float,
-    "risk_aversion": float,
-    "alpha": float,
-    "target_return": float,
-    "target_risk": float,
-    "mean": str,
-    "covariance": str,
-    "d_ewma": float,
-    "value": float,
-    "value_short": float,
-}
-
 NAN_FILL_METHOD_CHOICES = [
     "linear",
     "time",
