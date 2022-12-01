@@ -78,8 +78,8 @@ class Parameter:
         # isinstance for subscripted generics (e.g. List[str]) is only available
         # in Python 3.10, so this method does not check for the type of subscripted generics.
         # TODO: Though we should implement it.
-        # See https://stackoverflow.com/questions/70825351/python-3-typeerror-subscripted-generics-cannot-be-used-with-class-and-instance
+        # See https://stackoverflow.com/questions/70825351/python-3-typeerror-subscripted-generics-cannot-be-used-with-class-and-instance # noqa: E501
         try:
             return isinstance(value, self.type_)
-        except Exception as _:
+        except Exception as _:  # noqa: F841
             return True
