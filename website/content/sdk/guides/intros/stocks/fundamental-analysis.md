@@ -185,7 +185,7 @@ openbb.stocks.fa.shrs(symbol = 'COST', holder = 'major')
 |  2 | 69.21% | Percentage of Float Held by Institutions  |
 |  3 | 3444   | Number of Institutions Holding Shares     |
 
-Acccepted arguments for `holder` are `major`, `mutualfund`, and `institutional`.
+Accepted arguments for `holder` are `major`, `mutualfund`, and `institutional`.
 
 ```python
 openbb.stocks.fa.shrs(symbol = 'COST', holder = 'mutualfund')
