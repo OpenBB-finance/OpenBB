@@ -1407,7 +1407,6 @@ def get_black_litterman_portfolio(
                 hist=True,
             )
         except Exception as _:
-            logger.error(e)
             weights = None
 
     if weights is not None:
