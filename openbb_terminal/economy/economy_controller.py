@@ -660,6 +660,7 @@ class EconomyController(BaseController):
             "--query",
             type=str,
             action="store",
+            nargs="+",
             dest="query",
             help="Query the FRED database to obtain Series IDs given the query search term.",
         )
@@ -676,7 +677,7 @@ class EconomyController(BaseController):
             parameters = list_from_str(ns_parser.parameter.upper())
 
             if ns_parser.query:
-                query = ns_parser.query.replace(",", " ")
+                query = " ".join(ns_parser.query)
                 df_search = fred_model.get_series_notes(search_query=query)
 
                 if not df_search.empty:
