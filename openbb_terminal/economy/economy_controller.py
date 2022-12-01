@@ -31,7 +31,6 @@ from openbb_terminal.economy import (
     yfinance_model,
     yfinance_view,
     investingcom_model,
-    investingcom_view,
     plot_view,
     commodity_view,
 )
@@ -1006,16 +1005,6 @@ class EconomyController(BaseController):
             " at different maturities.",
         )
         parser.add_argument(
-            "-c",
-            "--country",
-            action="store",
-            dest="country",
-            default="united_states",
-            choices=investingcom_model.BOND_COUNTRIES,
-            help="Yield curve for a country. Ex: united_states",
-        )
-
-        parser.add_argument(
             "-d",
             "--date",
             type=valid_date,
@@ -1030,104 +1019,14 @@ class EconomyController(BaseController):
             raw=True,
         )
         if ns_parser:
-            country = ns_parser.country.lower().replace("_", " ")
 
-            if country == "united states":
-                fred_view.display_yield_curve(
-                    date=ns_parser.date.strftime("%Y-%m-%d")
-                    if ns_parser.date
-                    else None,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
-            else:
-                console.print("Source FRED is only available for united states.\n")
+            fred_view.display_yield_curve(
+                date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else None,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
 
             # TODO: Add `Investing` to sources again when `investpy` is fixed
-
-    @log_start_end(log=logger)
-    def call_spread(self, other_args: List[str]):
-        """Process spread command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="spread",
-            description="Generate bond spread matrix.",
-        )
-        parser.add_argument(
-            "-g",
-            "--group",
-            action="store",
-            dest="group",
-            choices=investingcom_model.MATRIX_CHOICES,
-            default="G7",
-            help="Show bond spread matrix for group of countries.",
-        )
-        parser.add_argument(
-            "-c",
-            "--countries",
-            action="store",
-            dest="countries",
-            type=str,
-            help="Show bond spread matrix for explicit list of countries.",
-        )
-        parser.add_argument(
-            "-m",
-            "--maturity",
-            action="store",
-            dest="maturity",
-            type=str,
-            default="10Y",
-            help="Specify maturity to compare rates.",
-        )
-        parser.add_argument(
-            "--change",
-            action="store",
-            dest="change",
-            type=bool,
-            default=False,
-            help="Get matrix of 1 day change in rates or spreads.",
-        )
-        parser.add_argument(
-            "--color",
-            action="store",
-            dest="color",
-            type=str,
-            choices=investingcom_view.COLORS,
-            default="openbb",
-            help="Set color palette on heatmap.",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            raw=True,
-        )
-        if ns_parser:
-            if ns_parser.countries:
-                countries_string = ns_parser.countries.replace("_", " ")
-                countries_list = investingcom_model.countries_string_to_list(
-                    countries_string
-                )
-
-                investingcom_view.display_spread_matrix(
-                    countries=countries_list,
-                    maturity=ns_parser.maturity.upper(),
-                    change=ns_parser.change,
-                    color=ns_parser.color,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
-            elif ns_parser.group:
-                investingcom_view.display_spread_matrix(
-                    countries=ns_parser.group,
-                    maturity=ns_parser.maturity.upper(),
-                    change=ns_parser.change,
-                    color=ns_parser.color,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
 
     @log_start_end(log=logger)
     def call_events(self, other_args: List[str]):

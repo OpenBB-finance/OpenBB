@@ -256,7 +256,7 @@ def get_aggregated_series_data(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def get_yield_curve(
-    date: str = None,
+    date: str = None, return_date: bool = False
 ) -> Tuple[pd.DataFrame, str]:
     """Gets yield curve data from FRED
 
@@ -264,6 +264,8 @@ def get_yield_curve(
     ----------
     date: str
         Date to get curve for. If None, gets most recent date (format yyyy-mm-dd)
+    return_date: bool
+        If True, returns date of yield curve
 
     Returns
     -------
@@ -275,6 +277,9 @@ def get_yield_curve(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> ycrv_df = openbb.economy.ycrv()
+
+    Since there is a delay with the data, the most recent date is returned and can be accessed with return_date=True
+    >>> ycrv_df, ycrv_date = openbb.economy.ycrv(return_date=True)
     """
 
     # Necessary for installer so that it can locate the correct certificates for
@@ -310,9 +315,15 @@ def get_yield_curve(
             ],
             axis=1,
         )
+    if df.empty:
+        if return_date:
+            return pd.DataFrame(), date
+        return pd.DataFrame()
+    # Drop rows with NaN -- corresponding to weekends typically
+    df = df.dropna()
 
-    if date is None:
-        date_of_yield = df.index[-1]
+    if date not in df.index:
+        date_of_yield = df.index[-1].strftime("%Y-%m-%d")
         rates = pd.DataFrame(df.iloc[-1, :].values, columns=["Rate"])
     else:
         date_of_yield = date
@@ -326,5 +337,6 @@ def get_yield_curve(
         "Maturity",
         [1 / 12, 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30],
     )
-
-    return rates, date_of_yield
+    if return_date:
+        return rates, date_of_yield
+    return rates

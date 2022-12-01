@@ -203,7 +203,7 @@ def display_yield_curve(
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
-    rates, date_of_yield = fred_model.get_yield_curve(date)
+    rates, date_of_yield = fred_model.get_yield_curve(date, True)
     if rates.empty:
         console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
         return
