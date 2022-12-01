@@ -1,5 +1,5 @@
 import argparse
-from datetime import datetime
+from datetime import datetime, date
 from typing import Dict, List
 from pathlib import Path
 from openbb_terminal.helper_funcs import log_and_raise
@@ -7,6 +7,7 @@ from openbb_terminal.core.config import paths
 from openbb_terminal.rich_config import console
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
     OPTIMIZATION_PARAMETERS,
+    TERMINAL_TEMPLATE_MAP,
 )
 
 
@@ -63,12 +64,16 @@ def check_convert_parameters(received_parameters: dict) -> dict:
     """
 
     converted_parameters = check_convert_dates(
-        received_parameters, ["start_period", "end_period"]
+        received_parameters, ["start_period", "start_date", "end_period", "end_date"]
     )
 
     for received_name, received_value in received_parameters.items():
-        if received_name in OPTIMIZATION_PARAMETERS:
-            PARAMETER = OPTIMIZATION_PARAMETERS[received_name]
+
+        # TODO: Remove this line when mapping between template and terminal is done
+        template_name = TERMINAL_TEMPLATE_MAP.get(received_name, received_name)
+
+        if template_name in OPTIMIZATION_PARAMETERS:
+            PARAMETER = OPTIMIZATION_PARAMETERS[template_name]
             if not PARAMETER.validate_type(received_value):
                 converted_parameters[received_name] = check_convert_parameter(
                     name=received_name, value=received_value, parameter=PARAMETER
@@ -128,7 +133,7 @@ def check_convert_dates(params: dict, param_name_list: List[str]) -> dict:
     for param_name in param_name_list:
         if param_name in params:
             param_value = params[param_name]
-            if isinstance(param_value, datetime):
+            if isinstance(param_value, date):
                 params[param_name] = param_value.strftime("%Y-%m-%d")
             elif isinstance(param_value, str):
                 try:
