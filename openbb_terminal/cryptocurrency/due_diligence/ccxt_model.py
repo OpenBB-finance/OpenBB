@@ -2,8 +2,10 @@
 __docformat__ = "numpy"
 
 from typing import Any, Dict, List
+
 import ccxt
 import pandas as pd
+
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_column_names
 
 
@@ -37,10 +39,45 @@ def get_binance_currencies() -> List[str]:
 
     # Refactor this eventually to allow for any entered exchange -
     # right now only works on default binace for "ob" and "trades"
-    exchange = ccxt.binance({"fetchCurrencies": True})
-    exchange.load_markets()
-    currencies = exchange.quoteCurrencies
-    return [c["code"] for c in currencies.values()]
+
+    # Commented out for now, since binance started blocking requests
+    # exchange = ccxt.binance({"fetchCurrencies": True})
+    # exchange.load_markets()
+    # currencies = exchange.quoteCurrencies
+    # return [c["code"] for c in currencies.values()]
+    return [
+        "AUD",
+        "BIDR",
+        "BKRW",
+        "BNB",
+        "BRL",
+        "BTC",
+        "BUSD",
+        "BVND",
+        "DAI",
+        "DOGE",
+        "DOT",
+        "ETH",
+        "EUR",
+        "GBP",
+        "IDRT",
+        "NGN",
+        "PAX",
+        "PLN",
+        "RUB",
+        "TRX",
+        "TRY",
+        "TUSD",
+        "UAH",
+        "USDC",
+        "USDP",
+        "USDS",
+        "USDT",
+        "UST",
+        "VAI",
+        "XRP",
+        "ZAR",
+    ]
 
 
 def get_orderbook(exchange: str, symbol: str, to_symbol: str) -> Dict[str, Any]:
