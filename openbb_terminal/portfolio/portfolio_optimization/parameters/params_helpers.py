@@ -109,7 +109,7 @@ def check_convert_parameter(name, value, parameter):
         new_value = parameter.default
         console.print(
             f"[red]'{name}' format should be '{parameter.type_.__name__}' type[/red]",
-            f"[red]and could not be converted. Setting default {new_value}.\n[/red]",
+            f"[red]and could not be converted. Setting default '{new_value}'.\n[/red]",
         )
 
     return new_value
