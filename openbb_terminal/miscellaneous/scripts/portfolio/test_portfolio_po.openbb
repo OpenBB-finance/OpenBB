@@ -31,7 +31,7 @@ minrisk -r 0.08
 maxutil -a 0.1 -ra 2 -tk 0.4 -tr 8
 maxret -e 2022-11-20
 maxdiv -mn 0.1
-maxdecorr -lr
+maxdecorr -lr -p max
 ef -t -se 420 -n 0
 equal -th 0.1
 riskparity -p 1y
