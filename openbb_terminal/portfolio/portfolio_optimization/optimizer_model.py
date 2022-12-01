@@ -518,14 +518,17 @@ def get_mean_risk_portfolio(
         else:
             setattr(port, upper_risk[risk_measure], float(target_risk))
 
-    weights = port.optimization(
-        model=model,
-        rm=risk_measure,
-        obj=objective,
-        rf=risk_free_rate,
-        l=risk_aversion,
-        hist=hist,
-    )
+    try:
+        weights = port.optimization(
+            model=model,
+            rm=risk_measure,
+            obj=objective,
+            rf=risk_free_rate,
+            l=risk_aversion,
+            hist=hist,
+        )
+    except:
+        weights = None
 
     if weights is not None:
         weights = weights.round(5)
@@ -1091,7 +1094,12 @@ def get_max_diversification_portfolio(
         port.budget = value
 
     # Estimate optimal portfolio:
-    weights = port.optimization(model="Classic", rm="MV", obj="Sharpe", rf=0, hist=True)
+    try:
+        weights = port.optimization(
+            model="Classic", rm="MV", obj="Sharpe", rf=0, hist=True
+        )
+    except:
+        weights = None
 
     if weights is not None:
         weights = weights.round(5)
@@ -1210,9 +1218,12 @@ def get_max_decorrelation_portfolio(
         port.budget = value
 
     # Estimate optimal portfolio:
-    weights = port.optimization(
-        model="Classic", rm="MV", obj="MinRisk", rf=0, hist=True
-    )
+    try:
+        weights = port.optimization(
+            model="Classic", rm="MV", obj="MinRisk", rf=0, hist=True
+        )
+    except:
+        weights = None
 
     if weights is not None:
         weights = weights.round(5)
@@ -1383,14 +1394,17 @@ def get_black_litterman_portfolio(
             port.budget = value
 
         # Estimate optimal portfolio:
-        weights = port.optimization(
-            model="BL",
-            rm="MV",
-            obj=objective,
-            rf=risk_free_rate,
-            l=risk_aversion,
-            hist=True,
-        )
+        try:
+            weights = port.optimization(
+                model="BL",
+                rm="MV",
+                obj=objective,
+                rf=risk_free_rate,
+                l=risk_aversion,
+                hist=True,
+            )
+        except:
+            weights = None
 
     if weights is not None:
         weights = weights.round(5)
@@ -1542,13 +1556,16 @@ def get_ef(
         port.budget = value
 
     # Estimate tangency portfolio:
-    weights: Optional[pd.DataFrame] = port.optimization(
-        model="Classic",
-        rm=risk_choices[risk_measure.lower()],
-        obj="Sharpe",
-        rf=risk_free_rate,
-        hist=True,
-    )
+    try:
+        weights: Optional[pd.DataFrame] = port.optimization(
+            model="Classic",
+            rm=risk_choices[risk_measure.lower()],
+            obj="Sharpe",
+            rf=risk_free_rate,
+            hist=True,
+        )
+    except:
+        weights = None
 
     points = 20  # Number of points of the frontier
     frontier = port.efficient_frontier(
@@ -1753,9 +1770,12 @@ def get_risk_parity_portfolio(
     if target_return > -1:
         port.lowerret = float(target_return) / time_factor[freq.upper()]
 
-    weights = port.rp_optimization(
-        model=model, rm=risk_measure, rf=risk_free_rate, b=risk_cont_, hist=hist
-    )
+    try:
+        weights = port.rp_optimization(
+            model=model, rm=risk_measure, rf=risk_free_rate, b=risk_cont_, hist=hist
+        )
+    except:
+        weights = None
 
     if weights is not None:
         if value > 0.0:
@@ -1904,9 +1924,12 @@ def get_rel_risk_parity_portfolio(
     if target_return > -1:
         port.lowerret = float(target_return) / time_factor[freq.upper()]
 
-    weights = port.rrp_optimization(
-        model=model, version=version, l=penal_factor, b=risk_cont_, hist=hist
-    )
+    try:
+        weights = port.rrp_optimization(
+            model=model, version=version, l=penal_factor, b=risk_cont_, hist=hist
+        )
+    except:
+        weights = None
 
     if weights is not None:
         if value > 0.0:
@@ -2158,22 +2181,25 @@ def get_hcp_portfolio(
         b_sim=b_sim,
     )
 
-    weights = port.optimization(
-        model=model,
-        codependence=codependence,
-        covariance=covariance,
-        obj=objective,
-        rm=risk_measure,
-        rf=risk_free_rate,
-        l=risk_aversion,
-        linkage=linkage,
-        k=k,
-        max_k=max_k,
-        bins_info=bins_info,
-        alpha_tail=alpha_tail,
-        leaf_order=leaf_order,
-        d=d_ewma,
-    )
+    try:
+        weights = port.optimization(
+            model=model,
+            codependence=codependence,
+            covariance=covariance,
+            obj=objective,
+            rm=risk_measure,
+            rf=risk_free_rate,
+            l=risk_aversion,
+            linkage=linkage,
+            k=k,
+            max_k=max_k,
+            bins_info=bins_info,
+            alpha_tail=alpha_tail,
+            leaf_order=leaf_order,
+            d=d_ewma,
+        )
+    except:
+        weights = None
 
     if weights is not None:
         if value > 0.0:

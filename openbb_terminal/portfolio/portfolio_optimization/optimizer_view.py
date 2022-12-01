@@ -225,68 +225,76 @@ def portfolio_performance(
         Number of CVaRs used to approximate Tail Gini of gains. If None
         it duplicates a_sim value. The default is None.
     """
-    freq = freq.upper()
-    weights = pd.Series(weights).to_frame()
-    returns = data @ weights
-    mu = returns.mean().item() * time_factor[freq]
-    sigma = returns.std().item() * time_factor[freq] ** 0.5
-    sharpe = (mu - risk_free_rate) / sigma
 
-    factor_1 = str(int(time_factor[freq])) + ") "
-    factor_2 = "√" + factor_1
+    try:
+        freq = freq.upper()
+        weights = pd.Series(weights).to_frame()
+        returns = data @ weights
+        mu = returns.mean().item() * time_factor[freq]
+        sigma = returns.std().item() * time_factor[freq] ** 0.5
+        sharpe = (mu - risk_free_rate) / sigma
 
-    print("\nAnnual (by " + factor_1 + f"expected return: {100 * mu:.2f}%")
-    print("Annual (by " + factor_2 + f"volatility: {100 * sigma:.2f}%")
-    print(f"Sharpe ratio: {sharpe:.4f}")
+        factor_1 = str(int(time_factor[freq])) + ") "
+        factor_2 = "√" + factor_1
 
-    if risk_measure != "MV":
-        risk = rp.Sharpe_Risk(
-            weights,
-            cov=data.cov(),
-            returns=data,
-            rm=risk_measure,
-            rf=risk_free_rate,
-            alpha=alpha,
-            a_sim=a_sim,
-            beta=beta,
-            b_sim=b_sim,
-        )
+        print("\nAnnual (by " + factor_1 + f"expected return: {100 * mu:.2f}%")
+        print("Annual (by " + factor_2 + f"volatility: {100 * sigma:.2f}%")
+        print(f"Sharpe ratio: {sharpe:.4f}")
 
-        drawdowns = [
-            "MDD",
-            "ADD",
-            "DaR",
-            "CDaR",
-            "EDaR",
-            "UCI",
-            "MDD_Rel",
-            "ADD_Rel",
-            "DaR_Rel",
-            "CDaR_Rel",
-            "EDaR_Rel",
-            "UCI_Rel",
-        ]
-
-        if risk_measure in drawdowns:
-            sharpe_2 = (mu - risk_free_rate) / risk
-            print(
-                risk_names[risk_measure.lower()].capitalize()
-                + " : "
-                + f"{100 * risk:.2f}%"
+        if risk_measure != "MV":
+            risk = rp.Sharpe_Risk(
+                weights,
+                cov=data.cov(),
+                returns=data,
+                rm=risk_measure,
+                rf=risk_free_rate,
+                alpha=alpha,
+                a_sim=a_sim,
+                beta=beta,
+                b_sim=b_sim,
             )
-        else:
-            risk = risk * time_factor[freq] ** 0.5
-            sharpe_2 = (mu - risk_free_rate) / risk
+
+            drawdowns = [
+                "MDD",
+                "ADD",
+                "DaR",
+                "CDaR",
+                "EDaR",
+                "UCI",
+                "MDD_Rel",
+                "ADD_Rel",
+                "DaR_Rel",
+                "CDaR_Rel",
+                "EDaR_Rel",
+                "UCI_Rel",
+            ]
+
+            if risk_measure in drawdowns:
+                sharpe_2 = (mu - risk_free_rate) / risk
+                print(
+                    risk_names[risk_measure.lower()].capitalize()
+                    + " : "
+                    + f"{100 * risk:.2f}%"
+                )
+            else:
+                risk = risk * time_factor[freq] ** 0.5
+                sharpe_2 = (mu - risk_free_rate) / risk
+                print(
+                    "Annual (by "
+                    + factor_2
+                    + risk_names[risk_measure.lower()]
+                    + " : "
+                    + f"{100 * risk:.2f}%"
+                )
+
             print(
-                "Annual (by "
-                + factor_2
+                "Return / "
                 + risk_names[risk_measure.lower()]
-                + " : "
-                + f"{100 * risk:.2f}%"
+                + f" ratio: {sharpe_2:.4f}"
             )
-
-        print(
-            "Return / " + risk_names[risk_measure.lower()] + f" ratio: {sharpe_2:.4f}"
+    except:
+        console.print(
+            "[red]\nFailed to calculate portfolio performance indicators.[/red]"
         )
 
 
@@ -685,6 +693,10 @@ def display_equal_weight(
         value=value,
     )
 
+    if not weights:
+        console.print("There is no solution with these parameters.")
+        return {}
+
     if table:
         console.print(s_title)
         display_weights(weights)
@@ -798,6 +810,10 @@ def display_property_weighting(
         s_property=s_property,
         value=value,
     )
+
+    if not weights:
+        console.print("There is no solution with these parameters.")
+        return {}
 
     if table:
         console.print(s_title)
@@ -982,7 +998,7 @@ def display_mean_risk(
     )
 
     if not weights:
-        console.print("There is no solution with these parameters")
+        console.print("There is no solution with these parameters.")
         return {}
 
     if table:
@@ -1150,11 +1166,8 @@ def display_max_sharpe(
         value_short=value_short,
     )
 
-    if stock_returns is None or stock_returns.empty:
-        return {}
-
     if not weights:
-        console.print("There is no solution with these parameters")
+        console.print("There is no solution with these parameters.")
         return {}
 
     if table:
@@ -1322,7 +1335,7 @@ def display_min_risk(
     )
 
     if not weights:
-        console.print("There is no solution with these parameters")
+        console.print("There is no solution with these parameters.")
         return {}
 
     if table:
@@ -1490,7 +1503,7 @@ def display_max_util(
     )
 
     if not weights:
-        console.print("There is no solution with these parameters")
+        console.print("There is no solution with these parameters.")
         return {}
 
     if table:
@@ -1658,7 +1671,7 @@ def display_max_ret(
     )
 
     if not weights:
-        console.print("There is no solution with these parameters")
+        console.print("There is no solution with these parameters.")
         return {}
 
     if table:
@@ -1771,8 +1784,9 @@ def display_max_div(
         value=value,
         value_short=value_short,
     )
+
     if not weights:
-        console.print("There is no solution with this parameters")
+        console.print("There is no solution with these parameters.")
         return {}
 
     if table:
@@ -2160,110 +2174,113 @@ def display_ef(
         seed=seed,
     )
 
-    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+    try:
+        risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes[0]
 
-    ax = rp.plot_frontier(
-        w_frontier=frontier,
-        mu=mu,
-        cov=cov,
-        returns=stock_returns,
-        rm=risk_choices[risk_measure.lower()],
-        rf=risk_free_rate,
-        alpha=alpha,
-        cmap="RdYlBu",
-        w=weights,
-        label="",
-        marker="*",
-        s=16,
-        c="r",
-        t_factor=time_factor[freq.upper()],
-        ax=ax,
-    )
-
-    # Add risk free line
-    if tangency:
-        ret_sharpe = (mu @ weights).to_numpy().item() * time_factor[freq.upper()]
-        risk_sharpe = rp.Sharpe_Risk(
-            weights,
+        ax = rp.plot_frontier(
+            w_frontier=frontier,
+            mu=mu,
             cov=cov,
             returns=stock_returns,
             rm=risk_choices[risk_measure.lower()],
             rf=risk_free_rate,
             alpha=alpha,
-            # a_sim=a_sim,
-            # beta=beta,
-            # b_sim=b_sim,
+            cmap="RdYlBu",
+            w=weights,
+            label="",
+            marker="*",
+            s=16,
+            c="r",
+            t_factor=time_factor[freq.upper()],
+            ax=ax,
         )
-        if risk_choices[risk_measure.lower()] not in [
-            "ADD",
-            "MDD",
-            "CDaR",
-            "EDaR",
-            "UCI",
-        ]:
-            risk_sharpe = risk_sharpe * time_factor[freq.upper()] ** 0.5
 
-        y = ret_sharpe * 1.5
-        b = risk_free_rate * time_factor[freq.upper()]
-        m = (ret_sharpe - b) / risk_sharpe
-        x2 = (y - b) / m
-        x = [0, x2]
-        y = [b, y]
-        line = Line2D(x, y, label="Capital Allocation Line")
-        ax.set_xlim(xmin=min(X1) * 0.8)
-        ax.add_line(line)
-
-    ax.plot(X1, Y1, color="b")
-
-    plot_tickers = True
-    if plot_tickers:
-        ticker_plot = pd.DataFrame(columns=["ticker", "var"])
-        for ticker in port.cov.columns:
-            weight_df = pd.DataFrame({"weights": 1}, index=[ticker])
-            risk = rp.Sharpe_Risk(
-                weight_df,
-                cov=port.cov[ticker][ticker],
-                returns=stock_returns.loc[:, [ticker]],
+        # Add risk free line
+        if tangency:
+            ret_sharpe = (mu @ weights).to_numpy().item() * time_factor[freq.upper()]
+            risk_sharpe = rp.Sharpe_Risk(
+                weights,
+                cov=cov,
+                returns=stock_returns,
                 rm=risk_choices[risk_measure.lower()],
                 rf=risk_free_rate,
                 alpha=alpha,
+                # a_sim=a_sim,
+                # beta=beta,
+                # b_sim=b_sim,
             )
-
             if risk_choices[risk_measure.lower()] not in [
-                "MDD",
                 "ADD",
+                "MDD",
                 "CDaR",
                 "EDaR",
                 "UCI",
             ]:
-                risk = risk * time_factor[freq.upper()] ** 0.5
+                risk_sharpe = risk_sharpe * time_factor[freq.upper()] ** 0.5
 
-            ticker_plot = ticker_plot.append(
-                {"ticker": ticker, "var": risk}, ignore_index=True
+            y = ret_sharpe * 1.5
+            b = risk_free_rate * time_factor[freq.upper()]
+            m = (ret_sharpe - b) / risk_sharpe
+            x2 = (y - b) / m
+            x = [0, x2]
+            y = [b, y]
+            line = Line2D(x, y, label="Capital Allocation Line")
+            ax.set_xlim(xmin=min(X1) * 0.8)
+            ax.add_line(line)
+
+        ax.plot(X1, Y1, color="b")
+
+        plot_tickers = True
+        if plot_tickers:
+            ticker_plot = pd.DataFrame(columns=["ticker", "var"])
+            for ticker in port.cov.columns:
+                weight_df = pd.DataFrame({"weights": 1}, index=[ticker])
+                risk = rp.Sharpe_Risk(
+                    weight_df,
+                    cov=port.cov[ticker][ticker],
+                    returns=stock_returns.loc[:, [ticker]],
+                    rm=risk_choices[risk_measure.lower()],
+                    rf=risk_free_rate,
+                    alpha=alpha,
+                )
+
+                if risk_choices[risk_measure.lower()] not in [
+                    "MDD",
+                    "ADD",
+                    "CDaR",
+                    "EDaR",
+                    "UCI",
+                ]:
+                    risk = risk * time_factor[freq.upper()] ** 0.5
+
+                ticker_plot = ticker_plot.append(
+                    {"ticker": ticker, "var": risk}, ignore_index=True
+                )
+            ticker_plot = ticker_plot.set_index("ticker")
+            ticker_plot = ticker_plot.merge(
+                port.mu.T * time_factor[freq.upper()], right_index=True, left_index=True
             )
-        ticker_plot = ticker_plot.set_index("ticker")
-        ticker_plot = ticker_plot.merge(
-            port.mu.T * time_factor[freq.upper()], right_index=True, left_index=True
-        )
-        ticker_plot = ticker_plot.rename(columns={0: "ret"})
-        ax.scatter(ticker_plot["var"], ticker_plot["ret"])
-        for row in ticker_plot.iterrows():
-            ax.annotate(row[0], (row[1]["var"], row[1]["ret"]))
-    ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
-    ax.legend(loc="best", scatterpoints=1)
-    theme.style_primary_axis(ax)
-    l, b, w, h = ax.get_position().bounds
-    ax.set_position([l, b, w * 0.9, h])
-    ax1 = ax.get_figure().axes
-    ll, bb, ww, hh = ax1[-1].get_position().bounds
-    ax1[-1].set_position([ll * 1.02, bb, ww, hh])
-    if external_axes is None:
-        theme.visualize_output(force_tight_layout=False)
+            ticker_plot = ticker_plot.rename(columns={0: "ret"})
+            ax.scatter(ticker_plot["var"], ticker_plot["ret"])
+            for row in ticker_plot.iterrows():
+                ax.annotate(row[0], (row[1]["var"], row[1]["ret"]))
+        ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
+        ax.legend(loc="best", scatterpoints=1)
+        theme.style_primary_axis(ax)
+        l, b, w, h = ax.get_position().bounds
+        ax.set_position([l, b, w * 0.9, h])
+        ax1 = ax.get_figure().axes
+        ll, bb, ww, hh = ax1[-1].get_position().bounds
+        ax1[-1].set_position([ll * 1.02, bb, ww, hh])
+        if external_axes is None:
+            theme.visualize_output(force_tight_layout=False)
+    except:
+        console.print("[red]Error plotting efficient frontier.[/red]")
 
 
 @log_start_end(log=logger)

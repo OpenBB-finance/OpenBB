@@ -213,54 +213,57 @@ def get_portfolio_performance(weights: Dict, data: pd.DataFrame, **kwargs) -> Di
         Portfolio performance
     """
 
-    if not weights:
-        return {}
+    try:
+        if not weights:
+            return {}
 
-    freq = kwargs.get("freq", "D")
-    risk_measure = kwargs.get("risk_measure", "MV")
-    risk_free_rate = kwargs.get("risk_free_rate", 0.0)
-    alpha = kwargs.get("alpha", 0.05)
-    a_sim = kwargs.get("a_sim", 100)
-    beta = kwargs.get("beta", None)
-    b_sim = kwargs.get("b_sim", None)
+        freq = kwargs.get("freq", "D")
+        risk_measure = kwargs.get("risk_measure", "MV")
+        risk_free_rate = kwargs.get("risk_free_rate", 0.0)
+        alpha = kwargs.get("alpha", 0.05)
+        a_sim = kwargs.get("a_sim", 100)
+        beta = kwargs.get("beta", None)
+        b_sim = kwargs.get("b_sim", None)
 
-    freq = freq.upper()
-    weights = pd.Series(weights).to_frame()
-    returns = data @ weights
-    mu = returns.mean().item() * TIME_FACTOR[freq]
-    sigma = returns.std().item() * TIME_FACTOR[freq] ** 0.5
-    sharpe = (mu - risk_free_rate) / sigma
+        freq = freq.upper()
+        weights = pd.Series(weights).to_frame()
+        returns = data @ weights
+        mu = returns.mean().item() * TIME_FACTOR[freq]
+        sigma = returns.std().item() * TIME_FACTOR[freq] ** 0.5
+        sharpe = (mu - risk_free_rate) / sigma
 
-    performance_dict = {
-        "Return": mu,
-        "Volatility": sigma,
-        "Sharpe ratio": sharpe,
-    }
+        performance_dict = {
+            "Return": mu,
+            "Volatility": sigma,
+            "Sharpe ratio": sharpe,
+        }
 
-    risk_measure = optimizer_helper.validate_risk_measure(risk_measure, warning=False)
+        risk_measure = optimizer_helper.validate_risk_measure(risk_measure, warning=False)
 
-    if risk_measure != "MV":
-        risk = rp.Sharpe_Risk(
-            weights,
-            cov=data.cov(),
-            returns=data,
-            rm=risk_measure,
-            rf=risk_free_rate,
-            alpha=alpha,
-            a_sim=a_sim,
-            beta=beta,
-            b_sim=b_sim,
-        )
+        if risk_measure != "MV":
+            risk = rp.Sharpe_Risk(
+                weights,
+                cov=data.cov(),
+                returns=data,
+                rm=risk_measure,
+                rf=risk_free_rate,
+                alpha=alpha,
+                a_sim=a_sim,
+                beta=beta,
+                b_sim=b_sim,
+            )
 
-        if risk_measure in DRAWDOWNS:
-            sharpe_2 = (mu - risk_free_rate) / risk
-        else:
-            risk = risk * TIME_FACTOR[freq] ** 0.5
-            sharpe_2 = (mu - risk_free_rate) / risk
+            if risk_measure in DRAWDOWNS:
+                sharpe_2 = (mu - risk_free_rate) / risk
+            else:
+                risk = risk * TIME_FACTOR[freq] ** 0.5
+                sharpe_2 = (mu - risk_free_rate) / risk
 
-        performance_dict[RISK_NAMES[risk_measure.lower()]] = risk
-        performance_dict.update({"Sharpe ratio (risk adjusted)": sharpe_2})
-
+            performance_dict[RISK_NAMES[risk_measure.lower()]] = risk
+            performance_dict.update({"Sharpe ratio (risk adjusted)": sharpe_2})
+    except:
+        console.print("[red]\nFailed to calculate portfolio performance indicators.[/red]")
+        performance_dict = {}
     return performance_dict
 
 
