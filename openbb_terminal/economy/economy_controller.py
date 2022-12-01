@@ -675,7 +675,7 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             parameters = list_from_str(ns_parser.parameter.upper())
-
+            print(ns_parser.query)
             if ns_parser.query:
                 query = " ".join(ns_parser.query)
                 df_search = fred_model.get_series_notes(search_query=query)
