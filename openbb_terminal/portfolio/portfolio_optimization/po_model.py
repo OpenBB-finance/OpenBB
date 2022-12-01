@@ -238,7 +238,9 @@ def get_portfolio_performance(weights: Dict, data: pd.DataFrame, **kwargs) -> Di
             "Sharpe ratio": sharpe,
         }
 
-        risk_measure = optimizer_helper.validate_risk_measure(risk_measure, warning=False)
+        risk_measure = optimizer_helper.validate_risk_measure(
+            risk_measure, warning=False
+        )
 
         if risk_measure != "MV":
             risk = rp.Sharpe_Risk(
@@ -262,7 +264,9 @@ def get_portfolio_performance(weights: Dict, data: pd.DataFrame, **kwargs) -> Di
             performance_dict[RISK_NAMES[risk_measure.lower()]] = risk
             performance_dict.update({"Sharpe ratio (risk adjusted)": sharpe_2})
     except:
-        console.print("[red]\nFailed to calculate portfolio performance indicators.[/red]")
+        console.print(
+            "[red]\nFailed to calculate portfolio performance indicators.[/red]"
+        )
         performance_dict = {}
     return performance_dict
 
