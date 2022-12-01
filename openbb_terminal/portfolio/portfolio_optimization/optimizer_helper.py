@@ -187,9 +187,9 @@ def get_kwarg(key: str, kwargs: dict, default: Any = None) -> Any:
         return default
 
     # TODO: Remove this line when mapping between template and terminal is done
-    terminal_key = TERMINAL_TEMPLATE_MAP.get(key, key)
+    template_key = TERMINAL_TEMPLATE_MAP.get(key, key)
 
-    PARAMETER = OPTIMIZATION_PARAMETERS.get(terminal_key)
+    PARAMETER = OPTIMIZATION_PARAMETERS.get(template_key)
     if PARAMETER is None:
         return default
     return PARAMETER.default

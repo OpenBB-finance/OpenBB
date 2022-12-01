@@ -194,8 +194,13 @@ class PoEngine:
         """
         self._weights = weights
 
-    def get_weights(self) -> Dict[str, float]:
+    def get_weights(self, warning=True) -> Dict[str, float]:
         """Get the weights
+
+        Parameters
+        ----------
+        warning : bool, optional
+            Display warning, by default True
 
         Returns
         -------
@@ -203,12 +208,18 @@ class PoEngine:
             Weights
         """
         if not self._weights:
-            console.print("No weights found. Please perform some optimization.")
+            if warning:
+                console.print("No weights found. Please perform some optimization.")
             return {}
         return self._weights
 
-    def get_weights_df(self) -> pd.DataFrame:
+    def get_weights_df(self, warning=True) -> pd.DataFrame:
         """Get the weights
+
+        Parameters
+        ----------
+        warning : bool, optional
+            Display warning, by default True
 
         Returns
         -------
@@ -216,7 +227,8 @@ class PoEngine:
             Weights
         """
         if not self._weights:
-            console.print("No weights found. Please perform some optimization.")
+            if warning:
+                console.print("No weights found. Please perform some optimization.")
             return pd.DataFrame()
         return optimizer_helper.dict_to_df(self._weights)
 

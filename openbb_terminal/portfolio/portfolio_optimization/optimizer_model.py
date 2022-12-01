@@ -480,7 +480,9 @@ def get_mean_risk_portfolio(
         return {}, pd.DataFrame()
 
     first_day = stock_returns.index[0].strftime("%Y-%m-%d")
-    console.print(f"[yellow]Data available from {first_day}[/yellow]\n")
+    console.print(
+        f"[yellow]First day of data respecting parameters: {first_day}[/yellow]\n"
+    )
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 

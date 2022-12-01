@@ -1181,8 +1181,8 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-cv",
             "--covariance",
-            default=self.params["expected_return"]
-            if "expected_return" in self.params
+            default=self.params["covariance"]
+            if "covariance" in self.params
             else "hist",
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
