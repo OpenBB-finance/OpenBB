@@ -73,7 +73,7 @@ def save_file(path: str, params: dict) -> Path:
     if not path.endswith(".ini"):
         console.print("[red]File to be saved needs to be a .ini file.[/red]\n")
     # Create file if it does not exist
-    base_path = paths.USER_EXPORTS_DIRECTORY / "portfolio"
+    base_path = paths.USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
     if not base_path.is_dir():
         base_path.mkdir()
     filepath = base_path / path
