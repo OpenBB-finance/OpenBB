@@ -2150,7 +2150,7 @@ def get_hcp_portfolio(
 
     codependence = get_kwarg("codependence", kwargs)
     linkage = get_kwarg("linkage", kwargs)
-    k = get_kwarg("amount_clusters", kwargs)
+    k = get_kwarg("k", kwargs)
     max_k = get_kwarg("max_k", kwargs)
     bins_info = get_kwarg("bins_info", kwargs)
     alpha_tail = get_kwarg("alpha_tail", kwargs)
@@ -2811,6 +2811,7 @@ def black_litterman(
         Portfolio weights.
     """
 
+    benchmark = get_kwarg("benchmark", kwargs)
     p_views = get_kwarg("p_views", kwargs)
     q_views = get_kwarg("q_views", kwargs)
     delta = get_kwarg("delta", kwargs)

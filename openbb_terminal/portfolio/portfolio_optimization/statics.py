@@ -448,8 +448,8 @@ OPTIMIZATION_PARAMETERS = {
     ),
     "delta": Parameter(
         name="delta",
-        type_=float,
-        default=1.0,
+        type_=Optional[float],
+        default=None,
     ),
     "equilibrium": Parameter(
         name="equilibrium",
@@ -474,13 +474,13 @@ OPTIMIZATION_PARAMETERS = {
     ),
     "cvar_simulations_gains": Parameter(
         name="cvar_simulations_gains",
-        type_=int,
-        default=100,
+        type_=Optional[int],
+        default=None,
     ),
     "cvar_significance": Parameter(
         name="cvar_significance",
-        type_=float,
-        default=0.05,
+        type_=Optional[float],
+        default=None,
     ),
     "linkage": Parameter(
         name="linkage",
@@ -490,8 +490,8 @@ OPTIMIZATION_PARAMETERS = {
     ),
     "amount_clusters": Parameter(
         name="amount_clusters",
-        type_=int,
-        default=10,
+        type_=Optional[int],
+        default=None,
     ),
     "max_clusters": Parameter(
         name="max_clusters",
