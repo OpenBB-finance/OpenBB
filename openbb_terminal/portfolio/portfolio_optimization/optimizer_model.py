@@ -486,39 +486,39 @@ def get_mean_risk_portfolio(
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
-
-    # Estimate input parameters:
-    port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
-
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
-
-    # Estimate optimal portfolio:
-    model = "Classic"
-    hist = True
-
-    if target_return > -1:
-        port.lowerret = float(target_return) / time_factor[freq.upper()]
-
-    if target_risk > -1:
-        if risk_measure not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
-            setattr(
-                port,
-                upper_risk[risk_measure],
-                float(target_risk) / time_factor[freq.upper()] ** 0.5,
-            )
-        else:
-            setattr(port, upper_risk[risk_measure], float(target_risk))
-
     try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+
+        # Estimate input parameters:
+        port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
+
+        # Budget constraints
+        port.upperlng = value
+        if value_short > 0:
+            port.sht = True
+            port.uppersht = value_short
+            port.budget = value - value_short
+        else:
+            port.budget = value
+
+        # Estimate optimal portfolio:
+        model = "Classic"
+        hist = True
+
+        if target_return > -1:
+            port.lowerret = float(target_return) / time_factor[freq.upper()]
+
+        if target_risk > -1:
+            if risk_measure not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
+                setattr(
+                    port,
+                    upper_risk[risk_measure],
+                    float(target_risk) / time_factor[freq.upper()] ** 0.5,
+                )
+            else:
+                setattr(port, upper_risk[risk_measure], float(target_risk))
+
         weights = port.optimization(
             model=model,
             rm=risk_measure,
@@ -1077,24 +1077,24 @@ def get_max_diversification_portfolio(
         method=method,
     )
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns)
-
-    # Estimate input parameters:
-    port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
-    port.mu = stock_returns.std().to_frame().T
-
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
-
-    # Estimate optimal portfolio:
     try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns)
+
+        # Estimate input parameters:
+        port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
+        port.mu = stock_returns.std().to_frame().T
+
+        # Budget constraints
+        port.upperlng = value
+        if value_short > 0:
+            port.sht = True
+            port.uppersht = value_short
+            port.budget = value - value_short
+        else:
+            port.budget = value
+
+        # Estimate optimal portfolio:
         weights = port.optimization(
             model="Classic", rm="MV", obj="Sharpe", rf=0, hist=True
         )
@@ -1201,24 +1201,24 @@ def get_max_decorrelation_portfolio(
         method=method,
     )
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns)
-
-    # Estimate input parameters:
-    port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
-    port.cov = rp.cov2corr(port.cov)
-
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
-
-    # Estimate optimal portfolio:
     try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns)
+
+        # Estimate input parameters:
+        port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
+        port.cov = rp.cov2corr(port.cov)
+
+        # Budget constraints
+        port.upperlng = value
+        if value_short > 0:
+            port.sht = True
+            port.uppersht = value_short
+            port.budget = value - value_short
+        else:
+            port.budget = value
+
+        # Estimate optimal portfolio:
         weights = port.optimization(
             model="Classic", rm="MV", obj="MinRisk", rf=0, hist=True
         )
@@ -1376,25 +1376,25 @@ def get_black_litterman_portfolio(
     weights = pd.DataFrame(weights)
 
     if optimize:
-        # Building the portfolio object
-        port = rp.Portfolio(returns=stock_returns)
-
-        # Estimate input parameters:
-        port.assets_stats(method_mu="hist", method_cov="hist")
-        port.mu_bl = pd.DataFrame(mu).T
-        port.cov_bl = pd.DataFrame(cov)
-
-        # Budget constraints
-        port.upperlng = value
-        if value_short > 0:
-            port.sht = True
-            port.uppersht = value_short
-            port.budget = value - value_short
-        else:
-            port.budget = value
-
-        # Estimate optimal portfolio:
         try:
+            # Building the portfolio object
+            port = rp.Portfolio(returns=stock_returns)
+
+            # Estimate input parameters:
+            port.assets_stats(method_mu="hist", method_cov="hist")
+            port.mu_bl = pd.DataFrame(mu).T
+            port.cov_bl = pd.DataFrame(cov)
+
+            # Budget constraints
+            port.upperlng = value
+            if value_short > 0:
+                port.sht = True
+                port.uppersht = value_short
+                port.budget = value - value_short
+            else:
+                port.budget = value
+
+            # Estimate optimal portfolio:
             weights = port.optimization(
                 model="BL",
                 rm="MV",
@@ -1540,23 +1540,23 @@ def get_ef(
         method=method,
     )
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
-
-    # Estimate input parameters:
-    port.assets_stats(method_mu="hist", method_cov="hist")
-
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
-
-    # Estimate tangency portfolio:
     try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+
+        # Estimate input parameters:
+        port.assets_stats(method_mu="hist", method_cov="hist")
+
+        # Budget constraints
+        port.upperlng = value
+        if value_short > 0:
+            port.sht = True
+            port.uppersht = value_short
+            port.budget = value - value_short
+        else:
+            port.budget = value
+
+        # Estimate tangency portfolio:
         weights: Optional[pd.DataFrame] = port.optimization(
             model="Classic",
             rm=risk_choices[risk_measure.lower()],
@@ -1751,26 +1751,26 @@ def get_risk_parity_portfolio(
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
     risk_measure = validate_risk_measure(risk_measure)
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
-
-    # Calculating optimal portfolio
-    port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
-
-    # Estimate optimal portfolio:
-    model = "Classic"
-    hist = True
-
-    if risk_cont is None:
-        risk_cont_ = None  # Risk contribution constraints vector
-    else:
-        risk_cont_ = np.array(risk_cont).reshape(1, -1)
-        risk_cont_ = risk_cont_ / np.sum(risk_cont_)
-
-    if target_return > -1:
-        port.lowerret = float(target_return) / time_factor[freq.upper()]
-
     try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+
+        # Calculating optimal portfolio
+        port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
+
+        # Estimate optimal portfolio:
+        model = "Classic"
+        hist = True
+
+        if risk_cont is None:
+            risk_cont_ = None  # Risk contribution constraints vector
+        else:
+            risk_cont_ = np.array(risk_cont).reshape(1, -1)
+            risk_cont_ = risk_cont_ / np.sum(risk_cont_)
+
+        if target_return > -1:
+            port.lowerret = float(target_return) / time_factor[freq.upper()]
+
         weights = port.rp_optimization(
             model=model, rm=risk_measure, rf=risk_free_rate, b=risk_cont_, hist=hist
         )
@@ -1905,29 +1905,29 @@ def get_rel_risk_parity_portfolio(
         method=method,
     )
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns)
-
-    # Calculating optimal portfolio
-    port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
-
-    # Estimate optimal portfolio:
-    model = "Classic"
-    hist = True
-
-    if risk_cont is None:
-        risk_cont_ = None  # Risk contribution constraints vector
-    else:
-        risk_cont_ = np.array(risk_cont).reshape(1, -1)
-        risk_cont_ = risk_cont_ / np.sum(risk_cont_)
-
-    if target_return > -1:
-        port.lowerret = float(target_return) / time_factor[freq.upper()]
-
     try:
-        weights = port.rrp_optimization(
-            model=model, version=version, l=penal_factor, b=risk_cont_, hist=hist
-        )
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns)
+
+        # Calculating optimal portfolio
+        port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
+
+        # Estimate optimal portfolio:
+        model = "Classic"
+        hist = True
+
+        if risk_cont is None:
+            risk_cont_ = None  # Risk contribution constraints vector
+        else:
+            risk_cont_ = np.array(risk_cont).reshape(1, -1)
+            risk_cont_ = risk_cont_ / np.sum(risk_cont_)
+
+        if target_return > -1:
+            port.lowerret = float(target_return) / time_factor[freq.upper()]
+
+            weights = port.rrp_optimization(
+                model=model, version=version, l=penal_factor, b=risk_cont_, hist=hist
+            )
     except:
         weights = None
 
@@ -2172,16 +2172,17 @@ def get_hcp_portfolio(
         linkage = linkage.upper()
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
-    # Building the portfolio object
-    port = rp.HCPortfolio(
-        returns=stock_returns,
-        alpha=alpha,
-        a_sim=a_sim,
-        beta=beta,
-        b_sim=b_sim,
-    )
 
     try:
+        # Building the portfolio object
+        port = rp.HCPortfolio(
+            returns=stock_returns,
+            alpha=alpha,
+            a_sim=a_sim,
+            beta=beta,
+            b_sim=b_sim,
+        )
+
         weights = port.optimization(
             model=model,
             codependence=codependence,
