@@ -2811,7 +2811,6 @@ def black_litterman(
         Portfolio weights.
     """
 
-    benchmark = get_kwarg("benchmark", kwargs)
     p_views = get_kwarg("p_views", kwargs)
     q_views = get_kwarg("q_views", kwargs)
     delta = get_kwarg("delta", kwargs)
