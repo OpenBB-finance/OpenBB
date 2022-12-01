@@ -277,9 +277,9 @@ class PortfolioOptimizationController(BaseController):
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
             if self.portfolios:
-                self.choices["show"] = {c: {} for c in list(self.portfolios.keys())}
-
-                self.choices = {**self.choices, **self.SUPPORT_CHOICES}
+                self.choices["show"]["--portfolios"] = {
+                    c: {} for c in list(self.portfolios.keys())
+                }
                 self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
@@ -697,7 +697,6 @@ class PortfolioOptimizationController(BaseController):
             dest="file",
             help="Allocation file to be used",
             choices=self.allocation_file_map.keys(),
-            metavar="FILE",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--file")
