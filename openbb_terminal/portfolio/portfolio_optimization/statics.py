@@ -412,8 +412,8 @@ OPTIMIZATION_PARAMETERS = {
     ),
     "random_seed": Parameter(
         name="random_seed",
-        type_=float,
-        default=123.0,
+        type_=int,
+        default=123,
     ),
     "tangency": Parameter(
         name="tangency",
