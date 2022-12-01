@@ -518,7 +518,7 @@ OPTIMIZATION_PARAMETERS = {
         name="objective",
         type_=str,
         default="MinRisk",
-        choices=OBJECTIVE_CHOICES+NCO_OBJECTIVE_CHOICES,
+        choices=OBJECTIVE_CHOICES + NCO_OBJECTIVE_CHOICES,
     ),
 }
 

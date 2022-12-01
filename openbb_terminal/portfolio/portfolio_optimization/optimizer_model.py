@@ -528,8 +528,7 @@ def get_mean_risk_portfolio(
             hist=hist,
         )
 
-    except Exception as e:
-        logger.error(e)
+    except Exception as _:
         weights = None
 
     if weights is not None:
@@ -1100,8 +1099,7 @@ def get_max_diversification_portfolio(
         weights = port.optimization(
             model="Classic", rm="MV", obj="Sharpe", rf=0, hist=True
         )
-    except Exception as e:
-        logger.error(e)
+    except Exception as _:
         weights = None
 
     if weights is not None:
@@ -1227,8 +1225,7 @@ def get_max_decorrelation_portfolio(
         weights = port.optimization(
             model="Classic", rm="MV", obj="MinRisk", rf=0, hist=True
         )
-    except Exception as e:
-        logger.error(e)
+    except Exception as _:
         weights = None
 
     if weights is not None:
@@ -1409,7 +1406,7 @@ def get_black_litterman_portfolio(
                 l=risk_aversion,
                 hist=True,
             )
-        except Exception as e:
+        except Exception as _:
             logger.error(e)
             weights = None
 
@@ -1571,8 +1568,7 @@ def get_ef(
             rf=risk_free_rate,
             hist=True,
         )
-    except Exception as e:
-        logger.error(e)
+    except Exception as _:
         weights = None
 
     points = 20  # Number of points of the frontier
@@ -1782,8 +1778,7 @@ def get_risk_parity_portfolio(
         weights = port.rp_optimization(
             model=model, rm=risk_measure, rf=risk_free_rate, b=risk_cont_, hist=hist
         )
-    except Exception as e:
-        logger.error(e)
+    except Exception as _:
         weights = None
 
     if weights is not None:
@@ -1934,11 +1929,10 @@ def get_rel_risk_parity_portfolio(
         if target_return > -1:
             port.lowerret = float(target_return) / time_factor[freq.upper()]
 
-            weights = port.rrp_optimization(
-                model=model, version=version, l=penal_factor, b=risk_cont_, hist=hist
-            )
-    except Exception as e:
-        logger.error(e)
+        weights = port.rrp_optimization(
+            model=model, version=version, l=penal_factor, b=risk_cont_, hist=hist
+        )
+    except Exception as _:
         weights = None
 
     if weights is not None:
@@ -2209,8 +2203,7 @@ def get_hcp_portfolio(
             leaf_order=leaf_order,
             d=d_ewma,
         )
-    except Exception as e:
-        logger.error(e)
+    except Exception as _:
         weights = None
 
     if weights is not None:
