@@ -1158,7 +1158,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
-            type=int,
+            type=float,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
@@ -1166,6 +1166,7 @@ class PortfolioOptimizationController(BaseController):
             "--target-risk",
             dest="target_risk",
             default=self.params["target_risk"] if "target_risk" in self.params else -1,
+            type=float,
             help="Constraint on maximum level of portfolio's risk",
         )
         parser.add_argument(
@@ -1340,6 +1341,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
+            type=float,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
@@ -1347,6 +1349,7 @@ class PortfolioOptimizationController(BaseController):
             "--target-risk",
             dest="target_risk",
             default=self.params["target_risk"] if "target_risk" in self.params else -1,
+            type=float,
             help="Constraint on maximum level of portfolio's risk",
         )
         parser.add_argument(
@@ -1529,6 +1532,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
+            type=float,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
@@ -1536,6 +1540,7 @@ class PortfolioOptimizationController(BaseController):
             "--target-risk",
             dest="target_risk",
             default=self.params["target_risk"] if "target_risk" in self.params else -1,
+            type=float,
             help="Constraint on maximum level of portfolio's risk",
         )
         parser.add_argument(
@@ -1712,6 +1717,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
+            type=float,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
@@ -1719,6 +1725,7 @@ class PortfolioOptimizationController(BaseController):
             "--target-risk",
             dest="target_risk",
             default=self.params["target_risk"] if "target_risk" in self.params else -1,
+            type=float,
             help="Constraint on maximum level of portfolio's risk",
         )
         parser.add_argument(
@@ -2217,6 +2224,7 @@ class PortfolioOptimizationController(BaseController):
             "--delta",
             default=self.params["delta"] if "delta" in self.params else None,
             dest="delta",
+            type=float,
             help="Risk aversion factor of Black Litterman model",
         )
         parser.add_argument(
@@ -2549,6 +2557,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
+            type=float,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
@@ -2706,6 +2715,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
+            type=float,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
@@ -2985,6 +2995,7 @@ class PortfolioOptimizationController(BaseController):
             "--leaf-order",
             default=self.params["leaf_order"] if "leaf_order" in self.params else True,
             dest="leaf_order",
+            type=bool,
             help="""Indicates if the cluster are ordered so that the distance
                 between successive leaves is minimal""",
         )
@@ -3285,6 +3296,7 @@ class PortfolioOptimizationController(BaseController):
             "--leaf-order",
             default=self.params["leaf_order"] if "leaf_order" in self.params else True,
             dest="leaf_order",
+            type=bool,
             help="""Indicates if the cluster are ordered so that the distance
                 between successive leaves is minimal""",
         )
@@ -3537,6 +3549,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             default=self.params["leaf_order"] if "leaf_order" in self.params else True,
             dest="leaf_order",
+            type=bool,
             help="""indicates if the cluster are ordered so that the distance
                 between successive leaves is minimal""",
         )
