@@ -292,7 +292,7 @@ def portfolio_performance(
                 + risk_names[risk_measure.lower()]
                 + f" ratio: {sharpe_2:.4f}"
             )
-    except:
+    except Exception as _:
         console.print(
             "[red]\nFailed to calculate portfolio performance indicators.[/red]"
         )
@@ -2279,7 +2279,7 @@ def display_ef(
         ax1[-1].set_position([ll * 1.02, bb, ww, hh])
         if external_axes is None:
             theme.visualize_output(force_tight_layout=False)
-    except:
+    except Exception as _:
         console.print("[red]Error plotting efficient frontier.[/red]")
 
 

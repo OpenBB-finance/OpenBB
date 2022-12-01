@@ -263,7 +263,7 @@ def get_portfolio_performance(weights: Dict, data: pd.DataFrame, **kwargs) -> Di
 
             performance_dict[RISK_NAMES[risk_measure.lower()]] = risk
             performance_dict.update({"Sharpe ratio (risk adjusted)": sharpe_2})
-    except:
+    except Exception as _:
         console.print(
             "[red]\nFailed to calculate portfolio performance indicators.[/red]"
         )
