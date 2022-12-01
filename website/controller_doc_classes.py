@@ -13,7 +13,10 @@ import pandas as pd
 from pandas.tseries.holiday import USFederalHolidayCalendar
 
 import openbb_terminal
+from openbb_terminal.decorators import disable_check_api
 from openbb_terminal.parent_classes import BaseController, CryptoBaseController
+
+disable_check_api()
 
 DF_STOCK = pd.DataFrame.from_dict(
     data={
