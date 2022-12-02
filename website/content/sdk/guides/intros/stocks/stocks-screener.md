@@ -76,7 +76,7 @@ Copy the block above to a new text file in any editor, and save the file to the 
 
 **This preset file has been included in the ZIP file at the top of the page.**
 
-It is a good idea to test choices made before making it too complicated. Start with a handful of filters and modify, or add, them one-at-a-time. Let's pass what we have so far through the screener with `overview` selected as the `data_type`.
+It is a good idea to test choices made before making it too complicated. Start with a handful of filters and modify, or add, them one-at-a-time. Let's pass what we have so far through the screener with `performance` selected as the `data_type`.
 
 ### Performance
 
@@ -209,7 +209,7 @@ Lastly, `valuation` gets the basic fundamental ratios.
 |  4 | AMZN     |   92.42 |  -0.0163 | 65245723 |  9.3352e+11  | 85.26 |     55.08 |  3.28 |  1.86 |  6.85 | 15.91 |  N/A    |        0.549 |       0.8239 |        0.676  |        0.26   | 0.281           |
 ...continued
 
-Combined, the five DataFrames provide an outline of who they are, which segment of they market they belong to, and how they are currently trading.
+Combined, the five DataFrames provide an outline of who they are, which segment of the market they belong to, and how they are currently trading.
 
 ### Unconventional Applications
 
