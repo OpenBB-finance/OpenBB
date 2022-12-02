@@ -185,7 +185,7 @@ def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame,
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def display_yield_curve(
-    date: str = None,
+    date: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",

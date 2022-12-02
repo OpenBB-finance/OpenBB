@@ -1022,7 +1022,7 @@ class EconomyController(BaseController):
         if ns_parser:
 
             fred_view.display_yield_curve(
-                date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else None,
+                date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
