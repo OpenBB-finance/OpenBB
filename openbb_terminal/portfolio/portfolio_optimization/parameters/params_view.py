@@ -9,6 +9,7 @@ from openbb_terminal.portfolio.portfolio_optimization import excel_model
 from openbb_terminal.rich_config import console
 from openbb_terminal.portfolio.portfolio_optimization.parameters import params_statics
 from openbb_terminal.portfolio.portfolio_optimization.parameters.params_helpers import (
+    booltostr,
     check_convert_parameters,
 )
 from openbb_terminal.core.config import paths
@@ -53,15 +54,18 @@ def load_file(path: str = "") -> Tuple[dict, str]:
     help_text = "[info]Parameters:[/info]\n"
 
     if current_model:
+
         for k, v in converted_parameters.items():
             all_params = (
                 params_statics.DEFAULT_PARAMETERS
                 + params_statics.MODEL_PARAMS[current_model]
             )
             if k in all_params:
+                v = booltostr(v)
                 help_text += f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
     else:
         for k, v in converted_parameters.items():
+            v = booltostr(v)
             help_text += f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
 
     console.print(help_text)

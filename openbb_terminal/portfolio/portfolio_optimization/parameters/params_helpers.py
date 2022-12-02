@@ -1,6 +1,6 @@
 import argparse
 from datetime import datetime, date
-from typing import Dict, List
+from typing import Any, Dict, List
 from pathlib import Path
 from openbb_terminal.helper_funcs import log_and_raise
 from openbb_terminal.core.config import paths
@@ -37,7 +37,7 @@ def load_data_files() -> Dict[str, Path]:
         The dictionary of filenames and their paths
     """
     default_path = paths.MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "optimization"
-    custom_exports = paths.USER_EXPORTS_DIRECTORY / "portfolio"
+    custom_exports = paths.USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
     data_files = {}
     for directory in [default_path, custom_exports]:
         for file_type in ["xlsx", "ini"]:
@@ -101,8 +101,12 @@ def check_convert_parameter(name, value, parameter):
 
     try:
         # Try to cast the value to the correct type if int or float
-        if parameter.type_ is int or parameter.type_ is float:
+        if parameter.type_ is int:
+            new_value = parameter.type_(float(value))
+        elif parameter.type_ is float:
             new_value = parameter.type_(value)
+        elif parameter.type_ is bool:
+            new_value = strtobool(value)
         else:
             new_value = value
     except ValueError:
@@ -150,3 +154,44 @@ def check_convert_dates(params: dict, param_name_list: List[str]) -> dict:
                 params.pop(param_name)
 
     return params
+
+
+def booltostr(value: bool) -> Any:
+    """Converts a bool to a string or returns the value itself if not bool
+
+    Parameters
+    ----------
+    value: bool
+        The bool to be converted or the value itself if not bool
+
+    Returns
+    -------
+    Any
+        The converted value
+    """
+
+    if isinstance(value, bool):
+        return "True" if value else "False"
+    return value
+
+
+def strtobool(value: str) -> Any:
+    """Converts a string to a bool or returns the value itself if not string
+
+    Parameters
+    ----------
+    value: str
+        The string to be converted or the value itself if not string
+
+    Returns
+    -------
+    Any
+        The converted value
+    """
+
+    if isinstance(value, str):
+        if value.lower() == "true":
+            return True
+        elif value.lower() == "false":
+            return False
+    return value
