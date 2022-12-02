@@ -316,7 +316,7 @@ def display_weights(weights: dict, market_neutral: bool = False):
     if df.empty:
         return
 
-    if math.isclose(df.sum()["value"], 1, rel_tol=0.1):
+    if math.isclose(df.sum()["value"], 1, rel_tol=0.5):
         df["value"] = (df["value"] * 100).apply(lambda s: f"{s:.2f}") + " %"
         df["value"] = (
             df["value"]
