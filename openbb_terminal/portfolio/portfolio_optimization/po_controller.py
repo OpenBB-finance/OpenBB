@@ -280,6 +280,12 @@ class PortfolioOptimizationController(BaseController):
                 self.choices["show"]["--portfolios"] = {
                     c: {} for c in list(self.portfolios.keys())
                 }
+                self.choices["rpf"]["--portfolios"] = {
+                    c: {} for c in list(self.portfolios.keys())
+                }
+                self.choices["plot"]["--portfolios"] = {
+                    c: {} for c in list(self.portfolios.keys())
+                }
                 self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
@@ -849,7 +855,7 @@ class PortfolioOptimizationController(BaseController):
                     optimizer_view.additional_plots(
                         weights=weights,
                         data=stock_returns[stocks],
-                        title_opt=i,
+                        portfolio_name=i,
                         freq=ns_parser.return_frequency,
                         risk_measure=ns_parser.risk_measure.lower(),
                         risk_free_rate=ns_parser.risk_free,
@@ -887,8 +893,9 @@ class PortfolioOptimizationController(BaseController):
                         optimizer_view.additional_plots(
                             weights=weights,
                             data=stock_returns[stocks],
-                            category=filtered_categories,
-                            title_opt=category + " - " + i,
+                            category_dict=filtered_categories,
+                            category=category,
+                            portfolio_name=i,
                             freq=ns_parser.return_frequency,
                             risk_measure=ns_parser.risk_measure.lower(),
                             risk_free_rate=ns_parser.risk_free,

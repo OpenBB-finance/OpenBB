@@ -3720,8 +3720,9 @@ def pie_chart_weights(
 def additional_plots(
     weights: Dict,
     data: pd.DataFrame,
-    category: Dict = None,
-    title_opt: str = "",
+    category_dict: Dict = None,
+    category: str = "",
+    portfolio_name: str = "",
     freq: str = "D",
     risk_measure: str = "MV",
     risk_free_rate: float = 0,
@@ -3745,8 +3746,12 @@ def additional_plots(
         Dict of portfolio weights
     data: pd.DataFrame
         DataFrame of stock returns
-    title_opt: str
-        Title to be used on the pie chart
+    category_dict: Dict
+        Dict of categories
+    category: str
+        Category to plot
+    portfolio_name: str
+        Portfolio name
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
@@ -3812,12 +3817,15 @@ def additional_plots(
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
     """
-    if category is not None:
+
+    title_opt = category if not portfolio_name else category + " - " + portfolio_name
+
+    if category_dict is not None:
         weights_df = pd.DataFrame.from_dict(
             data=weights, orient="index", columns=["value"], dtype=float
         )
         category_df = pd.DataFrame.from_dict(
-            data=category, orient="index", columns=["category"]
+            data=category_dict, orient="index", columns=["category"]
         )
         weights_df = weights_df.join(category_df, how="inner")
         weights_df.sort_index(inplace=True)
@@ -3958,7 +3966,10 @@ def additional_plots(
     if heat:
 
         if len(weights) == 1:
-            console.print(f"Heatmap needs at least two values for '{category}'.")
+            single_key = list(weights.keys())[0].upper()
+            console.print(
+                f"[yellow]Heatmap needs at least two values for '{category}', only found '{single_key}'.[/yellow]"
+            )
             return
 
         if external_axes is None:
@@ -3988,7 +3999,7 @@ def additional_plots(
         ax[0].grid(False)
         ax[0].axis("off")
 
-        if category is None:
+        if category_dict is None:
             # Vertical dendrogram
             l, b, w, h = ax[4].get_position().bounds
             l1 = l * 0.5

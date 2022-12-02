@@ -404,7 +404,10 @@ def display_heat(**kwargs):
     external_axes = kwargs.get("external_axes", None)
 
     if len(weights) == 1:
-        console.print(f"Heatmap needs at least two values for '{category}'.")
+        single_key = list(weights.keys())[0].upper()
+        console.print(
+            f"[yellow]Heatmap needs at least two values for '{category}', only found '{single_key}'.[/yellow]"
+        )
         return
 
     if external_axes is None:
