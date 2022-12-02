@@ -245,7 +245,7 @@ We can use IPC socket to connect Desktop.
 Add this setting to your `.env` file.
 
 ```bash
-OPENBB_BACKEND=Qt5Agg
+OPENBB_BACKEND=TkAgg
 ```
 
 And run the following commands.
@@ -266,34 +266,29 @@ This installation type supports both Windows and Unix systems (Linux + MacOS).
 
 **NOTE for Windows users:** For Windows users who prefer to use an environment similar to what Linux and macOS users use, we recommend Windows Subsystem for Linux (WSL). WSL emulates a Linux machine inside your Windows system. If this is the case - jump to the <a href="#installing-wsl-only-for-windows-users">Installing WSL (Only for Windows users)</a> section before proceeding.
 
-### Installing the terminal
+### Installation via Python
 
 These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
 
-This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.9.13
-
-Our current recommendation is to use this project with Anaconda's Python distribution - either full [**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or [**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html) (recommended). Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, the "Miniconda3 MacOSX 64-bit" version that works on both Intel and M1 macs is recommended.
-
-**NOTE:** We recommend using `conda` and `poetry` because it just works. You can use other python
-distributions and use raw `pip` instead of `poetry` but you will very likely bump into installation
-issues.
+To install via Python, a virtual environment must be created. This isolates the packages installed from the rest of the system. It is our recommendation that you utilize a Conda environment because there are optional features, such as forecast, that utilize libraries specifically sourced from conda-forge. Due to this, if you do not use a Conda environment, you will not be able to use some of these features. As such, the installation steps will be written under the assumption that you are using Conda.
 
 #### 1. [Install Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 
-Miniconda is a python environment and package manager. It is required if you want to
-have the dependencies working straight away.
+Miniconda is a Python environment and package manager. To ensure compatibility across all dependencies, Mac M1/M2 systems should download and install the x86/64 version of Miniconda3.
 
 - Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) to find the download for your operating system or use the links below:
-  - If you are using macOS [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
+  - If you are using MacOS [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.pkg) 
   - If you are using WSL or Linux [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
   - If you are using a Raspberry PI [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
-  - If you are using Windows [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe).
+  - If you are using Windows [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe)
+    
+      **ONLY REQUIRED ON WINDOWS IF NOT USING WSL, or VS Code is not installed on the machine**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/downloads/> - Scroll down to `Other Tools, Frameworks, and Redistributables and and download Microsoft Visual C++ Redistributable for Visual Studio 2022.
 
-      **ONLY REQUIRED ON WINDOWS IF NOT USING WSL**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
-
-   **NOTE for macOS users:** The link above gets you the Intel version of miniconda meaning if you're on an Apple Silicon powered machine you will be using the terminal through Apple's rosetta2 layer. We recommend sticking to this distribution for better compatibility until the dependency developers fully catch up with Apple's transition to Apple Silicon.
-
-- After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output should be something along the lines of: `conda 22.9.0`
+- After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output should be something along the lines of: `conda 22.9.0`. If the version number begins with 4, then run the following command: 
+    
+    ```bash
+    conda update -n base -c conda-forge conda
+    ```
 
 #### 2. Install CMake
 
@@ -327,10 +322,10 @@ brew install cmake
 
 If you have followed the instructions in step 1 of this guide CMake was installed as a part of you Microsoft C++ Build Tools
 
-#### 3. Install git
+#### 3. Install Git
 
 ```bash
-conda install -c anaconda git
+conda install -c conda-forge git
 ```
 
 #### 4. Clone the Project
@@ -338,7 +333,7 @@ conda install -c anaconda git
 - Via HTTPS: `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`
 - via SSH: `git clone git@github.com:OpenBB-finance/OpenBBTerminal.git`
 
-#### 5. Navigate into the project's folder
+#### 5. Navigate into the Project's Folder
 
 ```bash
 cd OpenBBTerminal/
@@ -348,7 +343,7 @@ cd OpenBBTerminal/
 
 You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway` or `diamondhands`, we recommend something simple and intuitive like `obb`. This is because this name will be used from now onwards.
 
-Please note, the following setup has been confirmed to work for all OS (including M1) with the standard miniconda distribution. If you are using a different distribution, you will need to install it manually before proceeding.
+Please note, the following setup has been confirmed to work for all OS (including M1/M2) with the standard Miniconda distribution. If you are using a different distribution, you will need to install it manually before proceeding.
 
 ```bash
 conda env create -n obb --file build/conda/conda-3-9-env.yaml
@@ -362,7 +357,7 @@ conda env create -n obb --file build/conda/conda-3-9-env-full.yaml
 
 Note: Using python 3.10+ can lead to undesirable functionality for certain commands.
 
-#### 7. Activate the virtual environment
+#### 7. Activate the Virtual Environment
 
 ```bash
 conda activate obb
@@ -370,7 +365,7 @@ conda activate obb
 
 Note: At the end, you can deactivate it with: `conda deactivate`.
 
-#### 8. Install dependencies with poetry
+#### 8. Install Dependencies with Poetry
 
 Install the main dependencies with
 
@@ -398,7 +393,7 @@ To install both the Portfolio Optimization and the Machine Learning Toolkit run:
 poetry install -E all
 ```
 
-#### 9. You're ready to use the terminal!
+#### 9. You're Ready to use the Terminal!
 
 Start the terminal by running:
 
@@ -414,15 +409,15 @@ python terminal.py
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate obb` before you call `openbb` again.
 
-**TROUBLESHOOT:** If you are having troubles with installation, check out the [FAQ page](/terminal/quickstart/faq). You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
+**TROUBLESHOOTING:** If you are having troubles with installation, check out the [FAQ page](/terminal/quickstart/faq). You can also reach for help on our [Discord](https://discord.gg/Up2QGbMKHY).
 
-## Advanced User Install - Custom installation procedures
+## Advanced User Install - Custom Installation Procedures
 
 By default we advise using `conda` and `poetry` for environment setup and dependency management. Conda ships binaries for packages like `numpy` so these dependencies are not built from source locally by `pip`. Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies use versions that are compatible with each other.
 
-If you are using a conda environment the `build/conda` folder contains multiple `.yaml` configuration files that you can choose from.
+If you are using a Conda environment the `build/conda` folder contains multiple `.yaml` configuration files that you can choose from.
 
-If you are using other python distributions we highly recommend that you use some virtual environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
+If you are using other Python distributions we highly recommend that you use some virtual environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
 
 Requirements files that you can find in the project root:
 
@@ -435,15 +430,15 @@ You can install them with with pip
  pip install -r requirements.txt
  ```
 
-The dependency tree is solved by poetry.
+The dependency tree is solved by Poetry.
 
-Note: The libraries specified in the requirements files have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
+Note: The libraries specified in the requirements files have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual Python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
 
 ### Installing WSL (Only for Windows users)
 
-If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/). Once you reach the section **Update Linux** on that tutorial, you should have a linux machine installed and can proceed to the next steps.
+If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/). Once you reach the section **Update Linux** on that tutorial, you should have a Linux machine installed and can proceed to the next steps.
 
-Since WSL installation is headless by default (i.e., you have only access to a terminal running a linux distribution) you need some extra steps to be able to visualize the charts produced by the terminal (more detailed tutorial [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a)):
+Since WSL installation is headless by default (i.e., you have only access to a terminal running a Linux distribution) you need some extra steps to be able to visualize the charts produced by the terminal (more detailed tutorial [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a)):
 
 1. Dynamically export the DISPLAY environment variable in WSL2:
 
