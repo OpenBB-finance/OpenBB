@@ -18,11 +18,14 @@ from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_helper,
     optimizer_model,
 )
+from openbb_terminal.portfolio.portfolio_optimization.parameters.params_helpers import (
+    check_convert_parameters,
+)
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
     RISK_NAMES,
+    TERMINAL_TEMPLATE_MAP,
     TIME_FACTOR,
     DRAWDOWNS,
-    PARAM_TYPES,
 )
 from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.rich_config import console
@@ -30,32 +33,6 @@ from openbb_terminal.rich_config import console
 warnings.filterwarnings("ignore")
 
 logger = logging.getLogger(__name__)
-
-
-@log_start_end(log=logger)
-def validate_parameters_type(parameters):
-    """Validate parameters type
-
-    Parameters
-    ----------
-    parameters : dict
-        Keyword arguments
-    """
-    for key, value in parameters.items():
-        if key in PARAM_TYPES:
-            expected_type = PARAM_TYPES[key]
-            if not isinstance(value, expected_type):
-                if expected_type is str:
-                    parameters.update({key: str(value)})
-                elif expected_type is float:
-                    parameters.update({key: float(value)})
-                elif expected_type is bool:
-                    parameters.update({key: bool(value)})
-                else:
-                    console.print(
-                        f"[info]Parameter {key} should be of type {expected_type.__name__}. Casting failed, reverting to default.[/info]"
-                    )
-                    parameters.pop(key)
 
 
 @log_start_end(log=logger)
@@ -165,7 +142,7 @@ def load_parameters_file(
      'maxnan': '0.05',
      'threshold': '0.3',
      'alpha': '0.05'}
-    >>> p.set_params({"risk_free_rate": 0.05})
+    >>> p.set_params({"risk_free_rate": 0.05}, update=True)
     >>> p.get_params()
     {'interval': '3y',
     'log_returns': '0',
@@ -208,9 +185,15 @@ def validate_inputs(
     else:
         console.print("No 'portfolio_engine' provided.")
 
-    validate_parameters_type(parameters)
+    converted_parameters = check_convert_parameters(received_parameters=parameters)
 
-    return symbols, portfolio_engine, parameters
+    terminal_parameters = {}
+    # TODO: Remove this conversion when mapping between template and terminal is not needed
+    TEMPLATE_TERMINAL_MAP = {v: k for k, v in TERMINAL_TEMPLATE_MAP.items()}
+    for key, value in converted_parameters.items():
+        terminal_parameters[TEMPLATE_TERMINAL_MAP.get(key, key)] = value
+
+    return symbols, portfolio_engine, terminal_parameters
 
 
 @log_start_end(log=logger)
@@ -230,51 +213,61 @@ def get_portfolio_performance(weights: Dict, data: pd.DataFrame, **kwargs) -> Di
         Portfolio performance
     """
 
-    freq = kwargs.get("freq", "D")
-    risk_measure = kwargs.get("risk_measure", "MV")
-    risk_free_rate = kwargs.get("risk_free_rate", 0.0)
-    alpha = kwargs.get("alpha", 0.05)
-    a_sim = kwargs.get("a_sim", 100)
-    beta = kwargs.get("beta", None)
-    b_sim = kwargs.get("b_sim", None)
+    try:
+        if not weights:
+            return {}
 
-    freq = freq.upper()
-    weights = pd.Series(weights).to_frame()
-    returns = data @ weights
-    mu = returns.mean().item() * TIME_FACTOR[freq]
-    sigma = returns.std().item() * TIME_FACTOR[freq] ** 0.5
-    sharpe = (mu - risk_free_rate) / sigma
+        freq = optimizer_helper.get_kwarg("freq", kwargs)
+        risk_measure = optimizer_helper.get_kwarg("risk_measure", kwargs)
+        risk_free_rate = optimizer_helper.get_kwarg("risk_free_rate", kwargs)
+        alpha = optimizer_helper.get_kwarg("alpha", kwargs)
+        a_sim = optimizer_helper.get_kwarg("a_sim", kwargs)
+        beta = optimizer_helper.get_kwarg("beta", kwargs)
+        b_sim = optimizer_helper.get_kwarg("b_sim", kwargs)
 
-    performance_dict = {
-        "Return": mu,
-        "Volatility": sigma,
-        "Sharpe ratio": sharpe,
-    }
+        freq = freq.upper()
+        weights = pd.Series(weights).to_frame()
+        returns = data @ weights
+        mu = returns.mean().item() * TIME_FACTOR[freq]
+        sigma = returns.std().item() * TIME_FACTOR[freq] ** 0.5
+        sharpe = (mu - risk_free_rate) / sigma
 
-    risk_measure = optimizer_helper.validate_risk_measure(risk_measure, warning=False)
+        performance_dict = {
+            "Return": mu,
+            "Volatility": sigma,
+            "Sharpe ratio": sharpe,
+        }
 
-    if risk_measure != "MV":
-        risk = rp.Sharpe_Risk(
-            weights,
-            cov=data.cov(),
-            returns=data,
-            rm=risk_measure,
-            rf=risk_free_rate,
-            alpha=alpha,
-            a_sim=a_sim,
-            beta=beta,
-            b_sim=b_sim,
+        risk_measure = optimizer_helper.validate_risk_measure(
+            risk_measure, warning=False
         )
 
-        if risk_measure in DRAWDOWNS:
-            sharpe_2 = (mu - risk_free_rate) / risk
-        else:
-            risk = risk * TIME_FACTOR[freq] ** 0.5
-            sharpe_2 = (mu - risk_free_rate) / risk
+        if risk_measure != "MV":
+            risk = rp.Sharpe_Risk(
+                weights,
+                cov=data.cov(),
+                returns=data,
+                rm=risk_measure,
+                rf=risk_free_rate,
+                alpha=alpha,
+                a_sim=a_sim,
+                beta=beta,
+                b_sim=b_sim,
+            )
 
-        performance_dict[RISK_NAMES[risk_measure.lower()]] = risk
-        performance_dict.update({"Sharpe ratio (risk adjusted)": sharpe_2})
+            if risk_measure in DRAWDOWNS:
+                sharpe_2 = (mu - risk_free_rate) / risk
+            else:
+                risk = risk * TIME_FACTOR[freq] ** 0.5
+                sharpe_2 = (mu - risk_free_rate) / risk
 
+            performance_dict[RISK_NAMES[risk_measure.lower()]] = risk
+            performance_dict.update({"Sharpe ratio (risk adjusted)": sharpe_2})
+    except Exception as _:
+        console.print(
+            "[red]\nFailed to calculate portfolio performance indicators.[/red]"
+        )
+        performance_dict = {}
     return performance_dict
 
 
@@ -421,7 +414,7 @@ def get_maxsharpe(
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -567,7 +560,7 @@ def get_minrisk(
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -713,7 +706,7 @@ def get_maxutil(
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -859,7 +852,7 @@ def get_maxret(
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -982,7 +975,7 @@ def get_maxdiv(
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -1083,7 +1076,7 @@ def get_maxdecorr(
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -1193,7 +1186,7 @@ def get_blacklitterman(
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -1450,7 +1443,7 @@ def get_riskparity(
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -1594,7 +1587,7 @@ def get_relriskparity(
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -1793,7 +1786,7 @@ def get_hrp(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, 
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -1992,7 +1985,7 @@ def get_herc(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame,
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -2191,7 +2184,7 @@ def get_nco(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, 
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -2270,7 +2263,7 @@ def get_equal(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -2351,7 +2344,7 @@ def get_mktcap(
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -2432,7 +2425,7 @@ def get_dividend(
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
@@ -2522,7 +2515,7 @@ def get_property(
     valid_portfolio_engine.set_weights(weights=weights)
     valid_portfolio_engine.set_returns(returns=returns)
 
-    return valid_portfolio_engine.get_weights_df(), performance_dict
+    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
 
 
 @log_start_end(log=logger)
