@@ -2,16 +2,18 @@
 title: Fundamental Analysis
 ---
 
-The FA module provides programmatic access to the commands from within the OpenBB Terminal. To get the most out of these functions, we recommend obtaining free API keys from:
+The FA module provides programmatic access to the commands from within the OpenBB Terminal. To get the most out of these functions, we recommend obtaining API keys from:
 
 - AlphaVantage
 - EODHD (premium subscribers only)
 - Financial Modeling Prep
 - Polygon
 
+View [this page](https://docs.openbb.co/terminal/guides/advanced/api-keys) for a list of all API sources used across the platform. 
+
 ## How to Use
 
-The contextual help for the module is activated after the `.` after `openbb.stocks.fa`. A brief description below highlights the functions within the `fa` module.
+The contextual help will be activated upon entering ., after, openbb.stocks.fa. A brief description below highlights the functions within the `fa` module.
 
 | Path                              |                                    Description |
 | :---------------------------------|----------------------------------------------: |
@@ -92,7 +94,6 @@ openbb.stocks.fa.growth('COST', limit = 20)
 | Revenue growth      | 0.158  | 0.175  | 0.092  | 0.079  | 0.097  | 0.087  | 0.022  | 0.032  | 0.071  | 0.061  | 0.115  | 0.141  | 0.091  | -0.015 | 0.126  | 0.071  | 0.136  | 0.100  | 0.131  | 0.098  |
 | Gross profit growth | 0.092  | 0.157  | 0.101  | 0.076  | 0.075  | 0.084  | 0.045  | 0.067  | 0.074  | 0.073  | 0.102  | 0.123  | 0.095  | 0.012  | 0.130  | 0.074  | 0.124  | 0.095  | 0.133  | 0.111  |
 | Debt growth        | -0.108 | -0.003 |   0.49 |  0.052 | -0.026 |   0.29 |  -0.16 |  0.207 |  0.019 |  2.616 | -0.358 | -0.006 | -0.059 | -0.018 |  0.056 |   2.93 | -0.264 | -0.418 | -0.012 |  0.023 |
-...continued
 
 ### Analysis
 
@@ -229,15 +230,111 @@ Financial statement items can be displayed as their reported value or as a perce
 openbb.stocks.fa.balance(symbol = 'COST', ratios=True)
 ```
 
-| Breakdown                                  |   2022-08-31 |   2021-08-31 |   2020-08-31 |   2019-08-31 |
-|:-------------------------------------------|-------------:|-------------:|-------------:|-------------:|
-| Cash and cash equivalents                  |   -0.0937111 |   -0.0830007 |   0.464337   |            0 |
-| Other short-term investments               |   -0.0774264 |   -0.107977  |  -0.0301887  |            0 |
-| Total cash                                 |   -0.0924846 |   -0.0849305 |   0.408831   |            0 |
-| Net receivables                            |    0.242928  |    0.163226  |   0.00977199 |            0 |
-| Inventory                                  |    0.259726  |    0.161166  |   0.0743308  |            0 |
-| Other current assets                       |    0.14253   |    0.282502  |  -0.0792079  |            0 |
-| Total current assets                       |    0.108151  |    0.0492532 |   0.19736    |            0 |
-...continued
+| Breakdown                                  |   2022-08-31 |   2021-08-31 |   2020-08-31 |
+|:-------------------------------------------|-------------:|-------------:|-------------:|
+| Cash and cash equivalents                  |   -0.0937111 |   -0.0830007 |   0.464337   |
+| Other short-term investments               |   -0.0774264 |   -0.107977  |  -0.0301887  |
+| Total cash                                 |   -0.0924846 |   -0.0849305 |   0.408831   |
+| Net receivables                            |    0.242928  |    0.163226  |   0.00977199 |
+| Inventory                                  |    0.259726  |    0.161166  |   0.0743308  |
+| Other current assets                       |    0.14253   |    0.282502  |  -0.0792079  |
+| Total current assets                       |    0.108151  |    0.0492532 |   0.19736    |
+| Gross property, plant and equipment        |    0.0532209 |    0.0815396 |   0.149114   |
+| Accumulated depreciation                   |    0.0790625 |    0.0984801 |   0.0988412  |
+| Net property, plant and equipment          |    0.039345  |    0.072657  |   0.177358   |
+| Other long-term assets                     |    0.19787   |    0.190074  |   1.77171    |
+| Total non-current assets                   |    0.0573531 |    0.0848156 |   0.251928   |
+| Total assets                               |    0.0826416 |    0.0668155 |   0.2237     |
+| Current debt                               |   -0.908636  |    7.41053   |  -0.944085   |
+| Accounts payable                           |    0.0964492 |    0.148603  |   0.21346    |
+| Accrued liabilities                        |    0.0921715 |    0.152661  |   0.147383   |
+| Other current liabilities                  |    0.230213  |    0.223444  |  -0.0168776  |
+| Total current liabilities                  |    0.0868517 |    0.185035  |   0.0691569  |
+| Long-term debt                             |   -0.0310819 |   -0.109396  |   0.466432   |
+| Other long-term liabilities                |    0.057971  |    0.248062  |   0.329897   |
+| Total non-current liabilities              |   -0.0194059 |   -0.0214875 |   0.825049   |
+| Total liabilities                          |    0.0565429 |    0.117744  |   0.235947   |
+| Common stock                               |   -0.5       |    0         |   0          |
+| Retained earnings                          |    0.335933  |   -0.0941843 |   0.255508   |
+| Accumulated other comprehensive income     |    0.608619  |   -0.123362  |  -0.0967967  |
+| Total stockholders' equity                 |    0.175245  |   -0.0393787 |   0.199501   |
+| Total liabilities and stockholders' equity |    0.0826416 |    0.0668155 |   0.2237     |
 
-Cashflow and Income statements function in the same way as `balance` does; `cash` and `income` respectively.
+
+Cashflow and Income statements function in the same way as `balance` does.
+
+### Cash
+
+Get the company's cash statements.
+
+```python
+openbb.stocks.fa.cash(symbol = 'COST')
+```
+
+| Breakdown                                                 |         ttm |   2022-08-31 |   2021-08-31 |   2020-08-31 | 2019-08-31   |
+|:----------------------------------------------------------|------------:|-------------:|-------------:|-------------:|:-------------|
+| Net income                                                |  5844000000 |   5844000000 |   5007000000 |   4002000000 | 3659000000   |
+| Depreciation & amortisation                               |  1900000000 |   1900000000 |   1781000000 |   1645000000 | 1492000000   |
+| Deferred income taxes                                     |   -37000000 |    -37000000 |     59000000 |    104000000 | 147000000    |
+| Stock-based compensation                                  |   724000000 |    724000000 |    665000000 |    619000000 | 595000000    |
+| Change in working capital                                 | -1563000000 |  -1563000000 |   1003000000 |   2198000000 | 409000000    |
+| Inventory                                                 | -4003000000 |  -4003000000 |  -1892000000 |   -791000000 | -536000000   |
+| Accounts payable                                          |  1891000000 |   1891000000 |   1838000000 |   2261000000 | 322000000    |
+| Other working capital                                     |  3501000000 |   3501000000 |   5370000000 |   6051000000 | 3358000000   |
+| Other non-cash items                                      |   453000000 |    453000000 |    371000000 |    236000000 | 9000000      |
+| Net cash provided by operating activities                 |  7392000000 |   7392000000 |   8958000000 |   8861000000 | 6356000000   |
+| Investments in property, plant and equipment              | -3891000000 |  -3891000000 |  -3588000000 |  -2810000000 | -2998000000  |
+| Acquisitions, net                                         |           0 |            0 |            0 |  -1163000000 | <NA>         |
+| Purchases of investments                                  | -1121000000 |  -1121000000 |  -1331000000 |  -1626000000 | -1094000000  |
+| Sales/maturities of investments                           |  1145000000 |   1145000000 |   1446000000 |   1678000000 | 1231000000   |
+| Other investing activities                                |   -48000000 |    -48000000 |    -62000000 |     30000000 | -4000000     |
+| Net cash used for investing activities                    | -3915000000 |  -3915000000 |  -3535000000 |  -3891000000 | -2865000000  |
+| Debt repayment                                            |  -800000000 |   -800000000 |    -94000000 |  -3200000000 | -89000000    |
+| Common stock repurchased                                  |  -439000000 |   -439000000 |   -496000000 |   -196000000 | -247000000   |
+| Dividends paid                                            | -1498000000 |  -1498000000 |  -5748000000 |  -1479000000 | -1038000000  |
+| Other financing activities                                | -1546000000 |  -1546000000 |   -379000000 |   -401000000 | -281000000   |
+| Net cash used provided by (used for) financing activities | -4283000000 |  -4283000000 |  -6488000000 |  -1147000000 | -1147000000  |
+| Net change in cash                                        | -1055000000 |  -1055000000 |  -1019000000 |   3893000000 | 2329000000   |
+| Cash at beginning of period                               | 11258000000 |  11258000000 |  12277000000 |   8384000000 | 6055000000   |
+| Cash at end of period                                     | 10203000000 |  10203000000 |  11258000000 |  12277000000 | 8384000000   |
+| Operating cash flow                                       |  7392000000 |   7392000000 |   8958000000 |   8861000000 | 6356000000   |
+| Capital expenditure                                       | -3891000000 |  -3891000000 |  -3588000000 |  -2810000000 | -2998000000  |
+| Free cash flow                                            |  3501000000 |   3501000000 |   5370000000 |   6051000000 | 3358000000   |
+
+### Income
+  
+Get the company's income statements.
+  
+```python
+openbb.stocks.fa.income('COST')
+```
+
+| Breakdown                                                 |         ttm |   2022-08-31 |   2021-08-31 |   2020-08-31 | 2019-08-31   |
+|:----------------------------------------------------------|------------:|-------------:|-------------:|-------------:|:-------------|
+| Net income                                                |  5844000000 |   5844000000 |   5007000000 |   4002000000 | 3659000000   |
+| Depreciation & amortisation                               |  1900000000 |   1900000000 |   1781000000 |   1645000000 | 1492000000   |
+| Deferred income taxes                                     |   -37000000 |    -37000000 |     59000000 |    104000000 | 147000000    |
+| Stock-based compensation                                  |   724000000 |    724000000 |    665000000 |    619000000 | 595000000    |
+| Change in working capital                                 | -1563000000 |  -1563000000 |   1003000000 |   2198000000 | 409000000    |
+| Inventory                                                 | -4003000000 |  -4003000000 |  -1892000000 |   -791000000 | -536000000   |
+| Accounts payable                                          |  1891000000 |   1891000000 |   1838000000 |   2261000000 | 322000000    |
+| Other working capital                                     |  3501000000 |   3501000000 |   5370000000 |   6051000000 | 3358000000   |
+| Other non-cash items                                      |   453000000 |    453000000 |    371000000 |    236000000 | 9000000      |
+| Net cash provided by operating activities                 |  7392000000 |   7392000000 |   8958000000 |   8861000000 | 6356000000   |
+| Investments in property, plant and equipment              | -3891000000 |  -3891000000 |  -3588000000 |  -2810000000 | -2998000000  |
+| Acquisitions, net                                         |           0 |            0 |            0 |  -1163000000 | <NA>         |
+| Purchases of investments                                  | -1121000000 |  -1121000000 |  -1331000000 |  -1626000000 | -1094000000  |
+| Sales/maturities of investments                           |  1145000000 |   1145000000 |   1446000000 |   1678000000 | 1231000000   |
+| Other investing activities                                |   -48000000 |    -48000000 |    -62000000 |     30000000 | -4000000     |
+| Net cash used for investing activities                    | -3915000000 |  -3915000000 |  -3535000000 |  -3891000000 | -2865000000  |
+| Debt repayment                                            |  -800000000 |   -800000000 |    -94000000 |  -3200000000 | -89000000    |
+| Common stock repurchased                                  |  -439000000 |   -439000000 |   -496000000 |   -196000000 | -247000000   |
+| Dividends paid                                            | -1498000000 |  -1498000000 |  -5748000000 |  -1479000000 | -1038000000  |
+| Other financing activities                                | -1546000000 |  -1546000000 |   -379000000 |   -401000000 | -281000000   |
+| Net cash used provided by (used for) financing activities | -4283000000 |  -4283000000 |  -6488000000 |  -1147000000 | -1147000000  |
+| Net change in cash                                        | -1055000000 |  -1055000000 |  -1019000000 |   3893000000 | 2329000000   |
+| Cash at beginning of period                               | 11258000000 |  11258000000 |  12277000000 |   8384000000 | 6055000000   |
+| Cash at end of period                                     | 10203000000 |  10203000000 |  11258000000 |  12277000000 | 8384000000   |
+| Operating cash flow                                       |  7392000000 |   7392000000 |   8958000000 |   8861000000 | 6356000000   |
+| Capital expenditure                                       | -3891000000 |  -3891000000 |  -3588000000 |  -2810000000 | -2998000000  |
+| Free cash flow                                            |  3501000000 |   3501000000 |   5370000000 |   6051000000 | 3358000000   |
