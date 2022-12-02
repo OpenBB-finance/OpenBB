@@ -26,8 +26,8 @@ The functions of the `qa` module are grouped into categories, listed below along
 |openbb.qa.rolling |Rolling Metrics |Rolling Mean and Standard Deviation of Prices |
 |openbb.qa.sharpe |Risk |Sharpe Ratio (Measure of Risk-Adjusted Return) |
 |openbb.qa.skew |Rolling Metrics |Rolling Skewness of Distribution of Prices |
+|openbb.qa.sortino |Risk |Sortino Ratio Risk Adjustment Metric |
 |openbb.qa.spread |Rolling Metrics |Rolling Variance and Standard Deviation of Prices |
-|openbb.qa.so |Risk |Sortino Ratio Risk Adjustment Metric |
 |openbb.qa.summary |Statistics |A Brief Summary of Statistics for the DataFrame |
 |openbb.qa.unitroot |Statistics |Normality Statistics and Tests |
 |openbb.qa.var |Risk |Value at Risk |
@@ -44,7 +44,7 @@ import pandas as pd
 from openbb_terminal.sdk import openbb
 from openbb_terminal import config_terminal as cfg
 
-%matplotlib inline
+# %matplotlib inline (uncomment if using a Jupyter environment)
 ```
 
 ### Get Data
