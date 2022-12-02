@@ -24,7 +24,7 @@ This folder contains all things user-created. For example:
 
 The location of this folder can be set by the user from the `/settings` menu. There should be no need to update paths in this menu unless the folders have been moved manually.
 
-[The Settings Menu](https://user-images.githubusercontent.com/85772166/195736718-a1b821da-5977-437a-bd18-b44add2a29a2.png "The Settings Menu")
+![The Settings Menu](https://user-images.githubusercontent.com/85772166/195736718-a1b821da-5977-437a-bd18-b44add2a29a2.png "The Settings Menu")
 
 ## Exporting Files
 
