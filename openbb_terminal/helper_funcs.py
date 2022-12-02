@@ -1300,7 +1300,8 @@ def check_file_type_saved(valid_types: List[str] = None):
                 valid_filenames.append(filename)
             else:
                 console.print(
-                    f"[red]Filename '{filename}' provided is not valid![/red]"
+                    f"[red]Filename '{filename}' provided is not valid!\nPlease use one of the following file types:"
+                    f"{','.join(valid_types)}[/red]\n"
                 )
         return ",".join(valid_filenames)
 
