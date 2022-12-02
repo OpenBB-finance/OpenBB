@@ -32,6 +32,8 @@ from openbb_terminal.stocks.tradinghours.pandas_market_cal_view import (
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=R0902
+
 
 class TradingHoursController(BaseController):
 
