@@ -36,13 +36,16 @@ openbb.keys.degiro(username: str, password: str, secret: str = "", persist: bool
 ---
 
 ## Examples
-        username="example_username",
-        password="example_password"
-    )
+
 ```python
 from openbb_terminal.sdk import openbb
 openbb.keys.degiro(
 ```
 
+```
+username="example_username",
+        password="example_password"
+    )
+```
 ---
 

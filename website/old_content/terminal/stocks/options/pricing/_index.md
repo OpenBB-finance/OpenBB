@@ -12,7 +12,7 @@ This set of features is for composing hypothetical outcomes through user-defined
   - price - the price for the underlying at the close on expiration.
   - probability - the statistical probability of the outcome, where 1 = 100% & probability always = 1.
 
-The Pricing submenu is accessible after selecting an <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/exp/" target="_blank">expiration date</a> for the options chain. Type, `pricing`, and press enter for access.
+The Pricing submenu is accessible after selecting an <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/exp/" target="_blank" rel="noreferrer noopener">expiration date</a> for the options chain. Type, `pricing`, and press enter for access.
 
 ![The Options Pricing Submenu](https://user-images.githubusercontent.com/85772166/172729310-dd341d26-c55e-4e29-a190-3e1eea1a6950.png)
 
@@ -40,4 +40,4 @@ RFR as 0 for call options
 
 ![RFR as 0 for call options](https://user-images.githubusercontent.com/85772166/172734277-223f855a-8ad1-4f45-ad5b-0a1d92d94290.png)
 
-Back to <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/" target="_blank">Introduction to the Options Menu</a>
+Back to <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/" target="_blank" rel="noreferrer noopener">Introduction to the Options Menu</a>

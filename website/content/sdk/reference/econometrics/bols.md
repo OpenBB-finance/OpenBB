@@ -7,7 +7,7 @@ description: OpenBB SDK Function
 
 The between estimator is an alternative, usually less efficient estimator, can can be used to
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L321)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L314)]
 
 ```python
 openbb.econometrics.bols(Y: pd.DataFrame, X: pd.DataFrame)

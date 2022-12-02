@@ -35,21 +35,6 @@ def get_global_cases(country: str) -> pd.DataFrame:
     -------
     pd.DataFrame
         Dataframe of historical cases
-
-    Examples
-    --------
-
-    >>> df = get_global_cases("United States")
-    Dataframe of historical cases for United States
-
-
-    >>> df = get_global_cases("Portugal")
-    Dataframe of historical cases for Portugal
-
-
-    >>> df = get_global_cases("Spain")
-    Dataframe of historical cases for Spain
-
     """
     cases = pd.read_csv(global_cases_time_series)
     cases = cases.rename(columns={"Country/Region": "Country"})

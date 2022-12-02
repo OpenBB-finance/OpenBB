@@ -5,6 +5,8 @@ from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
 from openbb_terminal.core.library.operation import Operation
 
+from openbb_terminal import feature_flags as obbff
+
 # pylint: disable=import-outside-toplevel
 
 
@@ -15,7 +17,7 @@ class MetadataBuilder:
         for key in trail_map.map_dict:
             if trail == "":
                 option = key.split(".")[0]
-            elif key.startswith(trail):
+            elif key.startswith(trail) and key[len(trail)] == ".":
                 option = key[len(trail) + 1 :].split(".")[0]
             else:
                 option = None
@@ -68,6 +70,8 @@ class MetadataBuilder:
 
 
 class Breadcrumb:
+    __version__ = obbff.VERSION
+
     def __init__(
         self,
         metadata: Optional[Metadata] = None,
@@ -100,7 +104,6 @@ class Breadcrumb:
         self._trail = trail
 
         self.__doc__ = metadata.docstring
-
         if trail == "":
             BreadcrumbLogger()
 
@@ -140,7 +143,7 @@ class Breadcrumb:
         import webbrowser
 
         trail = self._trail
-        url = "https://openbb-finance.github.io/OpenBBTerminal/SDK/"
+        url = "https://docs.openbb.co/sdk/reference/"
         url += "/".join(trail.split("."))
         webbrowser.open(url)
 

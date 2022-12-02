@@ -1,5 +1,5 @@
 stocks
-load tsla
+load ${ticker=tsla}
 bt
 whatif
 whatif -n 2.34

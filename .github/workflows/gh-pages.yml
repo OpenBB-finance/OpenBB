@@ -7,16 +7,16 @@ on:
 
 jobs:
   generate:
-    name: Generate documentation
+    name: Generate and Deploy documentation
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # actions/checkout v3.0.2
+        uses: actions/checkout@v3 # actions/checkout v3.0.2
 
-      - name: Setup Python 3.10
+      - name: Setup Python 3.9
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.9"
           architecture: x64
 
       - name: Install Poetry
@@ -35,27 +35,18 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
+        run: poetry install --no-interaction --no-root -E doc
 
       - name: Install packages
         run: poetry install --no-interaction -E prediction -E doc -E optimization
 
       - run: |
           source $VENV
-          pip install "u8darts[torch]"
+          pytest tests/website --autodoc
           python website/generate_sdk_markdown.py && python website/generate_terminal_markdown.py
 
-      - name: Commit Documentation
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Automated Change
-
-  deploy:
-    name: Deploy to GitHub Pages
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: yarn

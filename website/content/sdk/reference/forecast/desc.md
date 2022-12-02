@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 Returns statistics for a given df
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L480)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L504)]
 
 ```python
 openbb.forecast.desc(data: pd.DataFrame)

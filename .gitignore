@@ -16,6 +16,7 @@ iframe_figures/
 exports/*
 .idea
 .coverage
+.scannerwork
 htmlcov
 openbb_terminal/config_plot.py
 openbb_terminal/config_terminal.py
@@ -31,7 +32,8 @@ openbb_terminal/portfolio/portfolios/*
 .coverage.*
 !openbb_terminal/reports/templates/*.ipynb
 *_tests.csv
-integration_test_output/*
+integration_test_output/
+integration_test_summary/
 openbb_terminal/reports/templates/*.html
 website/functions
 *_sdk_audit.csv

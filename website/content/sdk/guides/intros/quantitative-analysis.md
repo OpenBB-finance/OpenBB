@@ -26,8 +26,8 @@ The functions of the `qa` module are grouped into categories, listed below along
 |openbb.qa.rolling |Rolling Metrics |Rolling Mean and Standard Deviation of Prices |
 |openbb.qa.sharpe |Risk |Sharpe Ratio (Measure of Risk-Adjusted Return) |
 |openbb.qa.skew |Rolling Metrics |Rolling Skewness of Distribution of Prices |
+|openbb.qa.sortino |Risk |Sortino Ratio Risk Adjustment Metric |
 |openbb.qa.spread |Rolling Metrics |Rolling Variance and Standard Deviation of Prices |
-|openbb.qa.so |Risk |Sortino Ratio Risk Adjustment Metric |
 |openbb.qa.summary |Statistics |A Brief Summary of Statistics for the DataFrame |
 |openbb.qa.unitroot |Statistics |Normality Statistics and Tests |
 |openbb.qa.var |Risk |Value at Risk |
@@ -44,7 +44,7 @@ import pandas as pd
 from openbb_terminal.sdk import openbb
 from openbb_terminal import config_terminal as cfg
 
-%matplotlib inline
+# %matplotlib inline (uncomment if using a Jupyter environment)
 ```
 
 ### Get Data
@@ -72,11 +72,6 @@ sp500_df
 
 | Date                |   S&P Inflation-Adjusted Value |   S&P 500 % Change |   P/E Ratio |   P/E % Change |
 |:--------------------|-------------------------------:|-------------------:|------------:|---------------:|
-| 1871-01-31 00:00:00 |                         105.76 |        nan         |      nan    |    nan         |
-| 1871-02-28 00:00:00 |                         104.02 |         -0.0164523 |       10.92 |    nan         |
-| 1871-03-31 00:00:00 |                         105.01 |          0.0095174 |       11.19 |      0.0247253 |
-| 1871-04-30 00:00:00 |                         112.01 |          0.0666603 |       12.05 |      0.0768543 |
-...continued...
 | 2022-08-31 00:00:00 |                        3955    |         0.0092504  |       29.64 |     0.022069   |
 | 2022-09-30 00:00:00 |                        3585.62 |        -0.0933957  |       26.84 |    -0.0944669  |
 | 2022-10-31 00:00:00 |                        3871.98 |         0.0798635  |       28.53 |     0.0629657  |

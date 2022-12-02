@@ -16,7 +16,7 @@ Get Series data. [Source: FRED]
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_model.py#L208)]
 
 ```python
-openbb.economy.fred(series_ids: List[str], start_date: str = None, end_date: str = None)
+openbb.economy.fred(series_ids: List[str], start_date: Optional[str] = None, end_date: Optional[str] = None)
 ```
 
 ---
@@ -49,7 +49,7 @@ Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_view.py#L76)]
 
 ```python
-openbb.economy.fred_chart(series_ids: List[str], start_date: str = None, end_date: str = None, limit: int = 10, get_data: bool = False, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+openbb.economy.fred_chart(series_ids: List[str], start_date: Optional[str] = None, end_date: Optional[str] = None, limit: int = 10, get_data: bool = False, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -59,8 +59,8 @@ openbb.economy.fred_chart(series_ids: List[str], start_date: str = None, end_dat
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | series_ids | List[str] | FRED Series ID from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3 | None | False |
-| start_date | str | Starting date (YYYY-MM-DD) of data | None | True |
-| end_date | str | Ending date (YYYY-MM-DD) of data | None | True |
+| start_date | Optional[str] | Starting date (YYYY-MM-DD) of data | None | True |
+| end_date | Optional[str] | Ending date (YYYY-MM-DD) of data | None | True |
 | limit | int | Number of data points to display. | 10 | True |
 | raw | bool | Output only raw data | False | True |
 | export | str | Export data to csv,json,xlsx or png,jpg,pdf,svg file |  | True |

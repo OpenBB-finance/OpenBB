@@ -419,7 +419,15 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            open_openbb_documentation(self.PATH, command=ns_parser.command)
+            arg_type = ""
+            if ns_parser.command in self.CHOICES_COMMANDS:
+                arg_type = "command"
+            elif ns_parser.command in self.CHOICES_MENUS:
+                arg_type = "menu"
+
+            open_openbb_documentation(
+                self.PATH, command=ns_parser.command, arg_type=arg_type
+            )
 
     @log_start_end(log=logger)
     def call_quit(self, _) -> None:
@@ -739,7 +747,6 @@ class BaseController(metaclass=ABCMeta):
                 type=check_file_type_saved(choices_export),
                 dest="export",
                 help=help_export,
-                choices=choices_export,
             )
 
         if raw:
@@ -1222,7 +1229,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                     ns_parser.vs = "usd"
             (self.current_df) = cryptocurrency_helpers.load(
                 symbol=ns_parser.coin.lower(),
-                vs_currency=ns_parser.vs,
+                to_symbol=ns_parser.vs,
                 end_date=ns_parser.end.strftime("%Y-%m-%d"),
                 start_date=ns_parser.start.strftime("%Y-%m-%d"),
                 interval=ns_parser.interval,

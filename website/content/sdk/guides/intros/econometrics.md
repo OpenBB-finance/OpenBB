@@ -14,7 +14,7 @@ keywords:
 excerpt: "The Introduction to Econometrics explains how to use the menu"
 ---
 
-The capabilities of the [Econometrics menu](/terminal/guides/econometrics) from the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets. The menu allows the user to load in his/her own dataset(s), modify the data by adding columns or setting indices, apply statistical tests (e.g. <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Godfrey_test" target="_blank">Breusch-Godfrey autocorrelation tests</a>) as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikipedia.org/wiki/Random_effects_model" target="_blank">Random Effects</a> and <a href="https://en.wikipedia.org/wiki/Fixed_effects_model" target="_blank">Fixed Effects</a>)
+The capabilities of the [Econometrics menu](/terminal/guides/intros/econometrics) from the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets. The menu allows the user to load in his/her own dataset(s), modify the data by adding columns or setting indices, apply statistical tests (e.g. <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Godfrey_test" target="_blank" rel="noreferrer noopener">Breusch-Godfrey autocorrelation tests</a>) as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikipedia.org/wiki/Random_effects_model" target="_blank" rel="noreferrer noopener">Random Effects</a> and <a href="https://en.wikipedia.org/wiki/Fixed_effects_model" target="_blank" rel="noreferrer noopener">Fixed Effects</a>)
 
 ## How to use
 
@@ -66,8 +66,8 @@ help(openbb.econometrics)
 
 ### Loading a dataset
 
-The first step in using this menu is loading a dataset. This can be either an example dataset, see the list below, or any locally stored Excel file. To demonstrate the usage of the menu, the <a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank">longley</a>
-dataset is loaded in. This can be done with the following
+The first step in using this menu is loading a dataset. This can be either an example dataset, see the list below, or any locally stored Excel file. To demonstrate the usage of the menu, the <a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank" rel="noreferrer noopener">longley</a>
+ dataset is loaded in. This can be done with the following
 
 ```python
 example_load = openbb.econometrics.load("anes96")
@@ -109,8 +109,7 @@ file_load = openbb.econometric.load("PATH_TO_FILE/FILE.xlsx")
 ### Working with Time Series data
 
 To demonstrate the usage of the Econometrics SDK for time series data, the
-<a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank">longley</a>
-dataset is loaded in.
+<a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank" rel="noreferrer noopener">longley</a> dataset is loaded in.
 
 ```python
 # Load the data
@@ -183,7 +182,7 @@ openbb.econometrics.root(longley['POP'])
 | Nobs           |        9 |        0 |
 | ICBest         |  113.054 |        0 |
 
-The longley dataset is known for the ability to create an OLS regression that results in a <a href="https://www.investopedia.com/terms/r/r-squared.asp" target="_blank">R-squared</a> of 1.0 due to the fact that the US macroeconomic variables are known to be highly collinear. See the following regression performed with `openbb.econometrics.ols` as follows:
+The longley dataset is known for the ability to create an OLS regression that results in a <a href="https://www.investopedia.com/terms/r/r-squared.asp" target="_blank" rel="noreferrer noopener">R-squared</a> of 1.0 due to the fact that the US macroeconomic variables are known to be highly collinear. See the following regression performed with `openbb.econometrics.ols` as follows:
 
 ```python
 # Perform the regression technique. TOTEMP is dependent,  all others independent
@@ -256,7 +255,7 @@ openbb.econometrics.bpag(ols_regression)
 
 ### Working with Panel data
 
-Within the examples there is one panel dataset available named `wage_panel`. This is a dataset from the paper by Vella and M. Verbeek (1998), “Whose Wages Do Unions Raise? A Dynamic Model of Unionism and Wage Rate Determination for Young Men,” Journal of Applied Econometrics 13, 163-183. This is a well-known dataset also used within Chapter 14 of <a href="https://www.amazon.com/Introductory-Econometrics-Modern-Approach-Economics/dp/1111531048" target="_blank">Introduction to Econometrics by Jeffrey Wooldridge</a>.
+Within the examples there is one panel dataset available named `wage_panel`. This is a dataset from the paper by Vella and M. Verbeek (1998), “Whose Wages Do Unions Raise? A Dynamic Model of Unionism and Wage Rate Determination for Young Men,” Journal of Applied Econometrics 13, 163-183. This is a well-known dataset also used within Chapter 14 of <a href="https://www.amazon.com/Introductory-Econometrics-Modern-Approach-Economics/dp/1111531048" target="_blank" rel="noreferrer noopener">Introduction to Econometrics by Jeffrey Wooldridge</a>.
 
 ```python
 # Load the data

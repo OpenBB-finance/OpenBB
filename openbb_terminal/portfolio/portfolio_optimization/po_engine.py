@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import pandas as pd
 from openbb_terminal.portfolio.portfolio_optimization import (
     excel_model,
@@ -14,8 +14,7 @@ class PoEngine:
 
     def __init__(
         self,
-        symbols: List[str] = None,
-        categories: Dict[str, Dict[str, str]] = None,
+        symbols_categories: Dict[str, Dict[str, str]] = None,
         symbols_file_path: str = None,
         parameters_file_path: str = None,
     ):
@@ -23,9 +22,7 @@ class PoEngine:
 
         Parameters
         ----------
-        symbols : List[str]
-            List of symbols
-        categories : Dict[str, float], optional
+        symbols_categories : Dict[str, float], optional
             Categories, by default None
         symbols_file_path : str, optional
             Symbols file path, by default None
@@ -33,14 +30,18 @@ class PoEngine:
             Parameters file path, by default None
         """
 
-        self._categories: Dict[str, Dict[str, str]] = categories or {}
+        self._categories: Dict[str, Dict[str, str]] = {}
+        self._symbols: List[str] = []
         self._weights: Dict[str, float] = {}
         self._returns: pd.DataFrame = None
         self._params: Dict[str, float] = {}
         self._current_model: str
 
-        if symbols is not None:
-            self._symbols: List[str] = symbols
+        if symbols_categories is not None:
+            self._symbols, self._categories = PoEngine.__parse_dictionary(
+                symbols_categories
+            )
+
         elif symbols_file_path is not None:
             self._symbols, self._categories = excel_model.load_allocation(
                 symbols_file_path
@@ -53,6 +54,65 @@ class PoEngine:
                 parameters_file_path
             )
 
+    @staticmethod
+    def __parse_dictionary(
+        symbols_categories: Dict[str, Dict[str, str]]
+    ) -> Tuple[List[str], Dict[str, Dict[str, str]]]:
+        """Parse the categories dictionary
+
+        Parameters
+        ----------
+        symbols_categories : Dict[str, Dict[str, str]]
+            Categories
+
+        Returns
+        -------
+        Tuple[List[str], Dict[str, Dict[str, str]]]
+            Symbols and categories
+        """
+        if isinstance(symbols_categories, dict):
+            symbols = PoEngine.__get_symbols_from_categories(symbols_categories)
+        else:
+            raise TypeError("'symbols_categories' must be a dictionary.")
+
+        for symbol in symbols:
+            symbols_categories["CURRENCY"].setdefault(symbol, "USD")
+            symbols_categories["CURRENT_INVESTED_AMOUNT"].setdefault(symbol, "0")
+
+        return symbols, symbols_categories
+
+    @staticmethod
+    def __get_symbols_from_categories(
+        symbols_categories: Dict[str, Dict[str, str]]
+    ) -> List[str]:
+        """Get the symbols from the categories dictionary
+
+        Parameters
+        ----------
+        symbols_categories : Dict[str, Dict[str, str]], optional
+            Categories
+
+        Returns
+        -------
+        List[str]
+            List of symbols
+        """
+
+        try:
+            symbols = []
+            for item in symbols_categories.items():
+                _, values = item
+                for v in values.keys():
+                    symbols.append(v)
+
+            return list(set(symbols))
+
+        except Exception:
+            console.print(
+                "Unsupported dictionary format. See `portfolio.po.load` examples for correct format."
+            )
+            return []
+
     def get_symbols(self):
         return self._symbols
 
@@ -64,17 +124,12 @@ class PoEngine:
         List[str]
             Available categories
         """
-        return list(self._categories.keys())
+        available_categories = list(self._categories.keys())
 
-    def set_categories_dict(self, categories: Dict[str, Dict[str, str]]):
-        """Set the categories
+        if "CURRENT_INVESTED_AMOUNT" in available_categories:
+            available_categories.remove("CURRENT_INVESTED_AMOUNT")
 
-        Parameters
-        ----------
-        categories : Dict[str, Dict[str, str]]
-            Categories
-        """
-        self._categories = categories
+        return available_categories
 
     def get_category(self, category: str = None) -> Dict[str, str]:
         """Get the category

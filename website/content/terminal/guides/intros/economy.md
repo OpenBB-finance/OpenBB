@@ -1,11 +1,11 @@
 ---
 title: Economy
 keywords: ['economy', 'macro', 'index', 'treasury', 'fred', 'market']
-excerpt: "The Introduction to Economy explains how to use the 
+excerpt: "The Introduction to Economy explains how to use the
 menu and provides a brief description of its sub-menus"
 ---
 
-The Economy menu enables you to obtain market overviews (<a href="/terminal/reference/economy/overview" target="_blank">overview</a> and <a href="/terminal/reference/economy/futures" target="_blank">futures</a>), see yield curves of any country (<a href="/terminal/reference/economy/ycrv" target="_blank">ycrv</a>) and discover sector, industry and country performance (<a href="/terminal/reference/economy/performance" target="_blank">performance</a>). Next to that, the databases of <a href="https://www.econdb.com/" target="_blank">EconDB</a>, <a href="https://fred.stlouisfed.org/" target="_blank">FRED</a> and <a href="https://finance.yahoo.com/" target="_blank">Yahoo Finance</a> can be accessed via <a href="/terminal/reference/economy/macro" target="_blank">macro</a>, <a href="/terminal/reference/economy/fred" target="_blank">fred</a> and <a href="/terminal/reference/economy/index_cmd" target="_blank">index</a> respectively. All of this can also be further analysed with <a href="/terminal/guides/intros/forecast" target="_blank">Forecasting menu</a> (`forecast`) and <a href="/terminal/guides/intros/common/qa" target="_blank">Quantitative Techniques</a> (`qa`).
+The Economy menu enables you to obtain market overviews (<a href="/terminal/reference/economy/overview" target="_blank" rel="noreferrer noopener">overview</a> and <a href="/terminal/reference/economy/futures" target="_blank" rel="noreferrer noopener">futures</a>), see yield curves of any country (<a href="/terminal/reference/economy/ycrv" target="_blank" rel="noreferrer noopener">ycrv</a>) and discover sector, industry and country performance (<a href="/terminal/reference/economy/performance" target="_blank" rel="noreferrer noopener">performance</a>). Next to that, the databases of <a href="https://www.econdb.com/" target="_blank" rel="noreferrer noopener">EconDB</a>, <a href="https://fred.stlouisfed.org/" target="_blank" rel="noreferrer noopener">FRED</a> and <a href="https://finance.yahoo.com/" target="_blank" rel="noreferrer noopener">Yahoo Finance</a> can be accessed via <a href="/terminal/reference/economy/macro" target="_blank" rel="noreferrer noopener">macro</a>, <a href="/terminal/reference/economy/fred" target="_blank" rel="noreferrer noopener">fred</a> and <a href="/terminal/reference/economy/index_cmd" target="_blank" rel="noreferrer noopener">index</a> respectively. All of this can also be further analysed with <a href="/terminal/guides/intros/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a> (`forecast`) and <a href="/terminal/guides/intros/common/qa" target="_blank" rel="noreferrer noopener">Quantitative Techniques</a> (`qa`).
 
 ### How to use
 
@@ -17,7 +17,7 @@ Within the Economy menu you have a variety of options ranging from treasury rate
 
 #### Performance and valuations
 
-By using <a href="/terminal/reference/economy/overview" target="_blank">overview</a> we can look into market overviews from the perspective of indices (`indices`), bonds (`usbonds` and `glbonds`), currencies (`currencies`) and in general. E.g. let's look at global bond performance by adding the `-t` argument:
+By using <a href="/terminal/reference/economy/overview" target="_blank" rel="noreferrer noopener">overview</a> we can look into market overviews from the perspective of indices (`indices`), bonds (`usbonds` and `glbonds`), currencies (`currencies`) and in general. E.g. let's look at global bond performance by adding the `-t` argument:
 
 ```
 2022 Jun 29, 09:56 (🦋) /economy/ $ overview -t glbonds
@@ -40,7 +40,7 @@ By using <a href="/terminal/reference/economy/overview" target="_blank">overview
 └───────────────────────────────────┴──────────┴─────────┴─────────────┘
 ```
 
-Next to that, to better understand the current commodity market we can look into the <a href="/terminal/reference/economy/futures" target="_blank">futures</a> of a variety of commodities. For example, let's look at a general overview:
+Next to that, to better understand the current commodity market we can look into the <a href="/terminal/reference/economy/futures" target="_blank" rel="noreferrer noopener">futures</a> of a variety of commodities. For example, let's look at a general overview:
 
 ```
 2022 Jun 29, 09:58 (🦋) /economy/ $ futures
@@ -79,7 +79,7 @@ Which then returns the following plot:
 
 ![Yield Curve](https://user-images.githubusercontent.com/46355364/176679949-dd8b5b47-1125-4b1c-9558-25f1d2d70ffc.png)
 
-Lastly, we can also show industry, sector and country performance with <a href="/terminal/reference/economy/performance" target="_blank">performance</a>. For example, looking at the `sectors` returns the following:
+Lastly, we can also show industry, sector and country performance with <a href="/terminal/reference/economy/performance" target="_blank" rel="noreferrer noopener">performance</a>. For example, looking at the `sectors` returns the following:
 
 ```
 2022 Jun 29, 10:03 (🦋) /economy/ $ performance -g sector
@@ -114,7 +114,7 @@ Lastly, we can also show industry, sector and country performance with <a href="
 
 #### Economic Databases
 
-Starting with the EconDB database (via <a href="/terminal/reference/economy/macro" target="_blank">macro</a>) a large selection of Economic data can be obtained. What can be obtained is easily found by typing `macro --show parameters` which returns the following:
+Starting with the EconDB database (via <a href="/terminal/reference/economy/macro" target="_blank" rel="noreferrer noopener">macro</a>) a large selection of Economic data can be obtained. What can be obtained is easily found by typing `macro --show parameters` which returns the following:
 
 ```
 2022 Jun 29, 10:16 (🦋) /economy/ $ macro --show parameters
@@ -175,7 +175,7 @@ This returns the following graph:
 
 ![Unemployment Rates](https://user-images.githubusercontent.com/46355364/176680030-b7936018-16ae-4dce-b652-5718977e9d57.png)
 
-The FRED database similarly has a lot of macroeconomic data, do note that you need an API key to do this which is explained in more detail in the <a href="/terminal/quickstart/keys" target="_blank">Accessing other sources of data via API keys</a> section.
+The FRED database similarly has a lot of macroeconomic data, do note that you need an API key to do this which is explained in more detail in the <a href="/terminal/guides/advanced/changing-sources" target="_blank" rel="noreferrer noopener">Accessing other sources of data via API keys</a> section.
 
 You have the ability to query the entire FRED database with the `-q` argument. For example, down below we look for datasets that are centered around inflation. The `-l` argument is set to show a maximum of 10 datasets:
 
@@ -277,7 +277,7 @@ Which plots the following:
 
 ![Index Plot](https://user-images.githubusercontent.com/46355364/176680336-9ce60aa4-b2f7-4199-be42-62a8d78b1f5c.png)
 
-This then all comes together within the <a href="/terminal/reference/economy/plot" target="_blank">plot</a> command where you can combine the datasets from the above commands into one graph. For example, it seems there is a relationship between the inflation rates and the unemployment rate (<a href="https://www.investopedia.com/articles/markets/081515/how-inflation-and-unemployment-are-related.asp" target="_blank">source</a>) which we can graphically show with:
+This then all comes together within the <a href="/terminal/reference/economy/plot" target="_blank" rel="noreferrer noopener">plot</a> command where you can combine the datasets from the above commands into one graph. For example, it seems there is a relationship between the inflation rates and the unemployment rate (<a href="https://www.investopedia.com/articles/markets/081515/how-inflation-and-unemployment-are-related.asp" target="_blank" rel="noreferrer noopener">source</a>) which we can graphically show with:
 
 ```
 2022 Jun 29, 10:38 (🦋) /economy/ $ macro -p URATE -s 2010-01-01
@@ -295,8 +295,8 @@ Resulting in the following graph:
 
 The Economy menu has a few sub-menus available to delve further into a specific macroeconomic indicator. To find more information about each menu, click on oneof the following:
 
-- <a href="/terminal/guides/intros/forecast/" target="_blank">Introduction to Forecasting menu</a>: apply advanced AI and Machine Learning models to form prediction of future macroeconomic indicators including Recurrent Neural Network (RNN), Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
-- <a href="/terminal/guides/intros/common/qa" target="_blank">Introduction to Quantitative Analysis</a>: analyse the macroeconomic indicators extensively for seasonality, rolling windows and statistical techniques.
+- <a href="/terminal/guides/intros/forecast/" target="_blank" rel="noreferrer noopener">Introduction to Forecasting menu</a>: apply advanced AI and Machine Learning models to form prediction of future macroeconomic indicators including Recurrent Neural Network (RNN), Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
+- <a href="/terminal/guides/intros/common/qa" target="_blank" rel="noreferrer noopener">Introduction to Quantitative Analysis</a>: analyse the macroeconomic indicators extensively for seasonality, rolling windows and statistical techniques.
 
 ### Examples
 
@@ -352,7 +352,7 @@ This gives insights in the current future contracts and their (relative) perform
 └─────────────────┴───────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Here, we take the `CBOE Crude OIL ETF Volatility Index` to get some understanding of how volatile oil is. Here, a period is defined from 2008 to 2015, showing the influence of the <a href="https://en.wikipedia.org/wiki/Financial_crisis_of_2007%E2%80%932008" target="_blank">Financial Crisis of 2008</a>.
+Here, we take the `CBOE Crude OIL ETF Volatility Index` to get some understanding of how volatile oil is. Here, a period is defined from 2008 to 2015, showing the influence of the <a href="https://en.wikipedia.org/wiki/Financial_crisis_of_2007%E2%80%932008" target="_blank" rel="noreferrer noopener">Financial Crisis of 2008</a>.
 
 ```
 2022 Jun 30, 06:22 (🦋) /economy/ $ fred OVXCLS -s 2008-01-01 -e 2015-01-01

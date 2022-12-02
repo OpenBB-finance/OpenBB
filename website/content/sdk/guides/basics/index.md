@@ -1,8 +1,7 @@
 ---
 title: Basics
-sidebar_position: 2
+sidebar_position: 1
 ---
-
 ### Importing the SDK
 
 Now that you have the SDK installed, the first step is to import the OpenBB SDK in your preferred code editor. Nearly everything required to interact with any function from the OpenBB Terminal gets imported in one line. Begin a Python script or Notebook file with:
@@ -11,11 +10,11 @@ Now that you have the SDK installed, the first step is to import the OpenBB SDK 
 from openbb_terminal.sdk import openbb
 ```
 
-Example snippets used in the remainder of this guide will assume the code block above is used, and that the `Python kernel` selected is the environment created during the installation process.
+Example snippets used in the remainder of this guide will assume the code block above is used.
 
-### **Navigation**
+### Navigation
 
-In the same way as operating the OpenBB Terminal, functions are divided into menus which are scrollable after code completion is activated. Entering a period, `.`, after `openbb`, will display the Sub-menus available.
+In the same way as operating the OpenBB Terminal, functions are divided into menus which are scrollable after importing into a jupyter notebook. Entering a period, `.`, after `openbb`, will display the Sub-menus available.
 
 ![Navigation](https://user-images.githubusercontent.com/85772166/202795900-5f1cb00a-a0ff-4899-b6e2-c5af54b653d1.png "Navigation")
 
@@ -25,7 +24,7 @@ An alternate way to view the contents of a menu is to use Python's built-in help
 help(openbb.stocks.dd)
 ```
 
-### **Docstrings**
+### Docstrings
 
 In addition to Python's built-in help, docstrings are also displayed in the Contextual Help window, within a Jupyter environment or by running `help(openbb.economy.events)` in your code editor.
 
@@ -52,7 +51,7 @@ Help on Operation in module openbb_terminal.core.library.operation:
         Economic calendar
 ```
 
-## Requesting and Handling Data
+## How to use the SDK
 
 ### Your First Function
 
@@ -122,11 +121,15 @@ dia_valuation.head(5)
 |   1 | AMGN   | 1.5543e+11 | 22.86 |    15.4 | 3.38 |  5.9 | 41.77   | 13.54 |  32.04 |     -0.165 |     0.0486 |       0.001 |      0.0677 |         0.025 |  283.6 |  -0.006 | 2761083 |
 |  18 | MCD    | 2.0272e+11 |  34.3 |   26.01 | 5.14 | 8.71 | N/A     | 71.67 | 118.65 |      0.591 |     0.0522 |        0.13 |      0.0667 |        -0.012 | 267.84 | -0.0163 | 5421817 |
 
+
 ### Displaying Charts
 
-The OpenBB SDK has built-in charting libraries for Matplotlib, for any chart available from the Terminal. User style sheets can be added to the folder (more on this in [User Settings](/sdk/guides/advanced/user-settings)), `~/OpenBBUserData/styles/user`. Styles are shared properties between the OpenBB Terminal and the SDK.
+The OpenBB SDK has built-in charting libraries for Matplotlib, for any chart available from the Terminal. User style sheets can be added to the folder (more on this in [Importing and Exporting Data](/sdk/guides/advanced/data)), `~/OpenBBUserData/styles/user`. Styles are shared properties between the OpenBB Terminal and the SDK.
 
-Functions, such as `candle`, exist to display charts. Others, like those within the Technical Analysis module, have the option to return either, a chart or raw data. The next examples will outline a few different scenarios. Lets first get some data :
+:::note Displaying charts in Jupyter Notebooks requires an additional line of code. You can either render a static image with `%matplotlib inline` or add in pan/zoom functionality with `%matplotlib widget`.
+:::
+
+Functions, such as `candle`, exist to display charts. Others, like those within the Technical Analysis module, have the option to return either, a chart or raw data. The next examples will outline a few different scenarios. First, let's get some data:
 
 ```python
 spy_daily = openbb.stocks.load(
@@ -135,7 +138,7 @@ spy_daily = openbb.stocks.load(
         monthly = True)
 ```
 
-Data from the previous example, `spy_daily`, can feed the inputs to the `openbb.stocks.candle` function, for example:
+Data from the previous example, `spy_daily`, can be used in the `openbb.stocks.candle` function, for example:
 
 ```python
 openbb.stocks.candle(
@@ -146,6 +149,14 @@ openbb.stocks.candle(
 ```
 
 ![openbb.stocks.candle](https://user-images.githubusercontent.com/85772166/202801049-083ec045-7038-440b-8a54-7a02269e4a40.png "openbb.stocks.candle")
+
+The function will also respond to individual tickers without saving the data first as done with `load`:
+
+```python
+openbb.stocks.candle('SPY')
+```
+
+![openbb.stocks.candle](https://user-images.githubusercontent.com/85772166/203477909-6a97175b-b3e3-4236-9753-609895c6aa69.png "openbb.stocks.candle")
 
 Where functions in the Terminal display either a chart or raw data, the command will have an additional `_chart` component. For example, Donchian Channels:
 
@@ -178,4 +189,4 @@ openbb.futures.curve_chart('GE')
 
 ![openbb.futures.curve](https://user-images.githubusercontent.com/85772166/201583945-18364efa-c305-4c1a-a032-f779e28894c8.png "openbb.futures.curve")
 
-The guides section for each module explore further functionality and provide sample code snippets.
+The intros section for each module explore further functionality and provide sample code snippets. For example, an introduction to Stocks can be found [here](/sdk/guides/intros/stocks).

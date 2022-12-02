@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 Calculate test statistics for autocorrelation
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L537)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L525)]
 
 ```python
 openbb.econometrics.bgod(model: pd.DataFrame, lags: int = 3)

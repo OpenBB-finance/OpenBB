@@ -32,3 +32,13 @@ openbb.portfolio.metric.trackerr(portfolio_engine: portfolio_engine.PortfolioEng
 | pd.DataFrame | DataFrame of tracking errors during different time windows |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.metric.trackerr(p)
+```
+
+---
+

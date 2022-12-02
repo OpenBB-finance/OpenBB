@@ -36,14 +36,17 @@ openbb.keys.coinbase(key: str, secret: str, passphrase: str, persist: bool = Fal
 ---
 
 ## Examples
-        key="example_key",
-        secret="example_secret",
-        passphrase="example_passphrase"
-    )
+
 ```python
 from openbb_terminal.sdk import openbb
 openbb.keys.coinbase(
 ```
 
+```
+key="example_key",
+        secret="example_secret",
+        passphrase="example_passphrase"
+    )
+```
 ---
 

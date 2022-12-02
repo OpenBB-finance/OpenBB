@@ -38,6 +38,16 @@ openbb.portfolio.rbeta(portfolio_engine: portfolio_engine.PortfolioEngine, windo
 | pd.DataFrame | DataFrame of the portfolio's rolling beta |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.rbeta(p)
+```
+
+---
+
 
 
 </TabItem>

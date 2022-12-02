@@ -33,3 +33,13 @@ openbb.portfolio.metric.jensens(portfolio_engine: portfolio_engine.PortfolioEngi
 | pd.DataFrame | DataFrame of jensens's alpha during different time windows |
 ---
 
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+output = openbb.portfolio.metric.jensens(p)
+```
+
+---
+

@@ -10,7 +10,7 @@ National debt statistics for various countries. [Source: Wikipedia]
 ### Usage
 
 ```python
-usage: edebt
+edebt
 ```
 
 ---
@@ -19,5 +19,5 @@ usage: edebt
 
 This command has no parameters
 
----
 
+---

@@ -10,7 +10,7 @@ Display account history
 ### Usage
 
 ```python
-usage: history [-a ACCOUNT] [-l LIMIT]
+history [-a ACCOUNT] [-l LIMIT]
 ```
 
 ---
@@ -21,5 +21,5 @@ usage: history [-a ACCOUNT] [-l LIMIT]
 | ---- | ----------- | ------- | -------- | ------- |
 | account | Symbol of coin of account or id | BTC | True | None |
 | limit | Limit parameter. | 20 | True | None |
----
 
+---
