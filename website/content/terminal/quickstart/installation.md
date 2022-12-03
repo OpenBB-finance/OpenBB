@@ -264,9 +264,11 @@ Then run the previous docker command.
   <TabItem value="python" label="Python">
 This installation type supports both Windows and Unix systems (Linux + MacOS).
 
-**NOTE for Windows users:** For Windows users who prefer to use an environment similar to what Linux and macOS users use, we recommend Windows Subsystem for Linux (WSL). WSL emulates a Linux machine inside your Windows system. If this is the case - jump to the <a href="#installing-wsl-only-for-windows-users">Installing WSL (Only for Windows users)</a> section before proceeding.
+**NOTE for Windows users:** For Windows users who prefer to use an environment similar to what Linux and MacOS users use, we recommend Windows Subsystem for Linux (WSL). WSL emulates a Linux machine inside your Windows system. If this is the case - jump to the <a href="#installing-wsl-only-for-windows-users">Installing WSL (Only for Windows users)</a> section before proceeding.
 
 ### Installation via Python
+
+Refer to the [SDK installation instructions](https://docs.openbb.co/sdk/quickstart/installation) for installing via `pip`.
 
 These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
 
@@ -282,7 +284,7 @@ Miniconda is a Python environment and package manager. To ensure compatibility a
   - If you are using a Raspberry PI [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
   - If you are using Windows [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe)
     
-      **ONLY REQUIRED ON WINDOWS IF NOT USING WSL, or VS Code is not installed on the machine**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/downloads/> - Scroll down to `Other Tools, Frameworks, and Redistributables and and download Microsoft Visual C++ Redistributable for Visual Studio 2022.
+      **ONLY REQUIRED ON WINDOWS IF NOT USING WSL, or VS Code is not installed on the machine**, install/update [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools) 
 
 - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output should be something along the lines of: `conda 22.9.0`. If the version number begins with 4, then run the following command: 
     
