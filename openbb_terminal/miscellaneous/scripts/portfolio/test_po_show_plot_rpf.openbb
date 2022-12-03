@@ -52,3 +52,4 @@ plot -pf name_0 -ct sector -he
 maxsharpe
 rpf -pf a,b,c
 rpf -pf name_0,maxsharpe_1
+exit
