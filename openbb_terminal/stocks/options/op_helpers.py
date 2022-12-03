@@ -282,19 +282,14 @@ class Option:
 
     def Vega(self):
         """Vega for 1% change in vol"""
-        return (
-            0.01
-            * self.price
-            * np.exp(-self.div_cont * self.exp_time)
-            * norm.pdf(self.d1)
-            * self.exp_time**0.5
-        )
+        dfq = np.exp(-self.div_cont * self.exp_time)
+        return 0.01 * self.price * dfq * norm.pdf(self.d1) * self.exp_time**0.5
 
-    def Theta(self):
-        """Theta for 1 day change"""
+    def Theta(self, time_factor=1.0 / 365.0):
+        """Theta, by default for 1 calendar day change"""
         df = np.exp(-self.risk_free * self.exp_time)
         dfq = np.exp(-self.div_cont * self.exp_time)
-        tmptheta = (1.0 / 365.0) * (
+        tmptheta = time_factor * (
             -0.5
             * self.price
             * dfq
@@ -310,7 +305,7 @@ class Option:
         return tmptheta
 
     def Rho(self):
-        df = e ** -(self.risk_free * self.exp_time)
+        df = np.exp(-self.risk_free * self.exp_time)
         return (
             self.Type
             * self.strike
@@ -321,30 +316,28 @@ class Option:
         )
 
     def Phi(self):
+        dfq = np.exp(-self.div_cont * self.exp_time)
         return (
             0.01
             * -self.Type
             * self.exp_time
             * self.price
-            * e ** (-self.div_cont * self.exp_time)
+            * dfq
             * norm.cdf(self.Type * self.d1)
         )
 
     # 2nd order greeks
 
     def Gamma(self):
-        return (
-            e ** (-self.div_cont * self.exp_time)
-            * norm.pdf(self.d1)
-            / (self.price * self.sigmaT)
-        )
+        dfq = np.exp(-self.div_cont * self.exp_time)
+        return dfq * norm.pdf(self.d1) / (self.price * self.sigmaT)
 
-    def Charm(self):
-        """Calculates Charm for one day change"""
-        dfq = e ** (-self.div_cont * self.exp_time)
+    def Charm(self, time_factor=1.0 / 365.0):
+        """Calculates Charm, by default for 1 calendar day change"""
+        dfq = np.exp(-self.div_cont * self.exp_time)
         cdf = norm.cdf(self.Type * self.d1)
         return (
-            (1.0 / 365.0)
+            time_factor
             * -dfq
             * (
                 norm.pdf(self.d1)
