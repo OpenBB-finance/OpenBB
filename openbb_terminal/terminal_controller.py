@@ -90,6 +90,7 @@ class TerminalController(BaseController):
         "guess",
         "news",
         "intro",
+        "gpt",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -172,6 +173,7 @@ class TerminalController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("news")
         mt.add_cmd("exe")
+        mt.add_cmd("gpt")
         mt.add_raw("\n")
         mt.add_info("_main_menu_")
         mt.add_menu("stocks")
@@ -334,6 +336,56 @@ class TerminalController(BaseController):
         except Exception as e:
             console.print(
                 f"[red]Failed to load guess game from file: "
+                f"{obbff.GUESS_EASTER_EGG_FILE}[/red]"
+            )
+            console.print(f"[red]{e}[/red]")
+
+    def call_gpt(self, other_args: List[str]) -> None:
+        """Process gpt command."""
+        import json
+
+        if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_SUM_SCORE < 0.01:
+            parser_exe = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="guess",
+                description="Guess command to achieve task successfully.",
+            )
+            parser_exe.add_argument(
+                "-s",
+                "--sentence",
+                type=str,
+                help="Sentence to try to transform into command.",
+                dest="sentence",
+                nargs="+",
+            )
+            if other_args and "-" not in other_args[0][0]:
+                other_args.insert(0, "-s")
+                ns_parser = parse_simple_args(parser_exe, other_args)
+
+        try:
+            with open(obbff.GUESS_EASTER_EGG_FILE) as f:
+                # Load the file as a JSON document
+                json_doc = json.load(f)
+
+                output = difflib.get_close_matches(
+                    " ".join(ns_parser.sentence),
+                    list(json_doc.keys()),
+                    n=1,
+                    cutoff=0.8,
+                )
+
+                if output:
+                    task = output[0]
+
+                    self.queue = json_doc[task].split("/") + ["home"]
+
+                else:
+                    console.print("I do not understand.\n")
+
+        except Exception as e:
+            console.print(
+                f"[red]Failed to load training data: "
                 f"{obbff.GUESS_EASTER_EGG_FILE}[/red]"
             )
             console.print(f"[red]{e}[/red]")
