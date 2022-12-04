@@ -136,6 +136,13 @@ class OnchainController(BaseController):
                 "--since": None,
                 "-s": "--since",
             }
+
+            choices["btcblockdata"] = {
+                "--blockhash": None,
+                "-b": "--blockhash",
+                "--export": None,
+                "-e": "--export",
+            }
             choices["baas"]["-c"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
             choices["baas"]["--coin"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
             choices["balance"] = {
@@ -1654,6 +1661,9 @@ class OnchainController(BaseController):
                       """,
         )
 
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "--blockhash")
+
         parser.add_argument(
             "--blockhash",
             action="store",
@@ -1665,7 +1675,6 @@ class OnchainController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
 
         if ns_parser:
             blockchain_view.display_btc_single_block(

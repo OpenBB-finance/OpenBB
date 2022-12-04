@@ -149,7 +149,7 @@ def display_btc_single_block(
     """
 
     df = blockchain_model.get_btc_single_block(blockhash)
-    df.rename(index={0: "Values"}, inplace=True)
+    df.rename(index={0: "Value"}, inplace=True)
     df_data = df.copy()
 
     df_essentials = df[[
