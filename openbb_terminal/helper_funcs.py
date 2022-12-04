@@ -350,6 +350,24 @@ def print_rich_table(
             table.add_row(*row_idx)
         console.print(table)
     else:
+
+        if obbff.USE_COLOR and automatic_coloring:
+            if columns_to_auto_color:
+                for col in columns_to_auto_color:
+                    # checks whether column exists
+                    if col in df.columns:
+                        df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
+            if rows_to_auto_color:
+                for row in rows_to_auto_color:
+                    # checks whether row exists
+                    if row in df.index:
+                        df.loc[row] = df.loc[row].apply(
+                            lambda x: return_colored_value(str(x))
+                        )
+
+            if columns_to_auto_color is None and rows_to_auto_color is None:
+                df = df.applymap(lambda x: return_colored_value(str(x)))
+
         console.print(df.to_string(col_space=0))
 
 
