@@ -539,7 +539,7 @@ def get_greeks(
 
     risk_free = rf if rf is not None else get_rf()
     expire_dt = datetime.strptime(expire, "%Y-%m-%d")
-    dif = (expire_dt - datetime.now()).seconds / (60 * 60 * 24)
+    dif = (expire_dt - datetime.now()).total_seconds() / (60 * 60 * 24)
 
     strikes = []
     for _, row in chain.iterrows():
