@@ -67,6 +67,12 @@ MAX = None
 
 ## Examples
 
+The examples below assume that the OpenBB SDK has been imported and the preset file is located in the `OpenBBUserData` folder.
+
+```python
+from openbb_terminal.sdk import openbb
+```
+
 ### Get All ETFs
 
 Setting all parameters as `None` will return every ETF available, which is about 2,500. The empty contents pasted above, `etf_config.ini`, is in the software installation folder and is reachable without declaring a path. User-generated presets stored in the `OpenBBUserData` folder also do not require the full path to be used.
