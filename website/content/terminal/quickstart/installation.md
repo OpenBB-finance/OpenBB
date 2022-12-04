@@ -157,7 +157,7 @@ Install and run Docker Desktop as describe above in this document.
 
 ### 2.2. Install XQuartz
 
-You can downlaod XQuartz here: [Download XQuartz](https://www.xquartz.org)
+You can download XQuartz here: [Download XQuartz](https://www.xquartz.org)
 
 Open X Quartz.
 
