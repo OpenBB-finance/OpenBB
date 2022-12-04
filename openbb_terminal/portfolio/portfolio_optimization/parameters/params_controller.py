@@ -9,7 +9,7 @@ from typing import List, Optional
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
-from openbb_terminal import feature_flags as gtff
+from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -76,7 +76,7 @@ class ParametersController(BaseController):
         self.description: Optional[str] = None
         self.DATA_FILES = params_helpers.load_data_files()
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["set"] = {c: None for c in self.models}
             choices["set"]["--model"] = {c: None for c in self.models}
@@ -93,7 +93,14 @@ class ParametersController(BaseController):
                 "--show_arguments": {},
                 "-s": "--show_arguments",
             }
+            self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def update_runtime_choices(self):
+        if session and obbff.USE_PROMPT_TOOLKIT:
+            self.DATA_FILES = params_helpers.load_data_files()
+            self.choices["load"]["--file"] = {c: {} for c in self.DATA_FILES}
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
@@ -112,8 +119,10 @@ class ParametersController(BaseController):
             mt.add_raw("\n")
             mt.add_info("_parameters_")
             if self.current_model:
+
                 max_len = max(len(k) for k in self.params.keys())
                 for k, v in self.params.items():
+                    v = params_helpers.booltostr(v)
                     all_params = DEFAULT_PARAMETERS + MODEL_PARAMS[self.current_model]
                     if k in all_params:
                         mt.add_raw(
@@ -122,6 +131,7 @@ class ParametersController(BaseController):
             else:
                 max_len = max(len(k) for k in self.params.keys())
                 for k, v in self.params.items():
+                    v = params_helpers.booltostr(v)
                     mt.add_raw(
                         f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
                     )
@@ -200,7 +210,8 @@ class ParametersController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.current_file = str(params_view.save_file(ns_parser.file, self.params))
-            console.print()
+
+        self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):
