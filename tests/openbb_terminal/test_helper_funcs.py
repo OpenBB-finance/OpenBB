@@ -15,6 +15,7 @@ from openbb_terminal import feature_flags as obbff
 # pylint: disable=E1111
 # pylint: disable=W0621
 # pylint: disable=W0613
+# pylint: disable=too-many-branches
 
 
 @pytest.fixture
