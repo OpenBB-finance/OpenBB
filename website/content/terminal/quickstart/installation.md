@@ -240,15 +240,7 @@ X-Server is default in Linux distribution. There is no need to install any clien
 
 #### Local docker container
 
-We can use IPC socket to connect Desktop.
-
-Add this setting to your `.env` file.
-
-```bash
-OPENBB_BACKEND=TkAgg
-```
-
-And run the following commands.
+We can use IPC socket to connect Linux Desktop, run the following commands.
 
 ```bash
 xhost +local:
