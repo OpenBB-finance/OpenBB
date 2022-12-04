@@ -90,6 +90,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      algolia: {
+        apiKey: "a2e289977b4b663ed9cf3d4635a438fd",
+        indexName: "openbbterminal",
+        appId: "7D1HQ0IXAS"
+      },
       image: "img/banner.png",
       prism: {
         theme: lightCodeTheme,
