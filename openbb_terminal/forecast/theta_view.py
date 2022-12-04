@@ -24,7 +24,7 @@ def display_theta_forecast(
     dataset_name: str = "",
     seasonal: str = "M",
     seasonal_periods: int = 7,
-    n_predict: int = 30,
+    n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
     export: str = "",
@@ -33,6 +33,7 @@ def display_theta_forecast(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     naive: bool = False,
+    export_pred_raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Display Theta forecast
@@ -41,9 +42,9 @@ def display_theta_forecast(
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
-    dataset_name str
+    dataset_name: str
         The name of the ticker to be predicted
     seasonal: str
         Seasonal component.  One of [N, A, M]
@@ -93,25 +94,30 @@ def display_theta_forecast(
         start_window=start_window,
         forecast_horizon=forecast_horizon,
     )
+    if ticker_series == []:
+        return
+
     probabilistic = False
     helpers.plot_forecast(
-        f"Theta {best_theta:.2f}",
-        target_column,
-        historical_fcast,
-        predicted_values,
-        ticker_series,
-        dataset_name,
-        data,
-        n_predict,
-        forecast_horizon,
-        None,
-        precision,
-        probabilistic,
-        export,
+        name=f"THETA_{best_theta:.2f}",
+        target_col=target_column,
+        historical_fcast=historical_fcast,
+        predicted_values=predicted_values,
+        ticker_series=ticker_series,
+        ticker_name=dataset_name,
+        data=data,
+        n_predict=n_predict,
+        forecast_horizon=forecast_horizon,
+        past_covariates=None,
+        precision=precision,
+        probabilistic=probabilistic,
+        export=export,
         forecast_only=forecast_only,
         naive=naive,
+        export_pred_raw=export_pred_raw,
         external_axes=external_axes,
     )
+
     if residuals:
         # TODO: Figure out why residuals do not work with Theta
         console.print(

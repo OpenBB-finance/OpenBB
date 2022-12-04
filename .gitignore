@@ -4,6 +4,7 @@ logs/
 .DS_Store
 *.env
 .venv
+venv
 .vscode
 *.ipynb
 env/
@@ -15,6 +16,7 @@ iframe_figures/
 exports/*
 .idea
 .coverage
+.scannerwork
 htmlcov
 openbb_terminal/config_plot.py
 openbb_terminal/config_terminal.py
@@ -28,7 +30,15 @@ openbb_terminal/portfolio/portfolios/*
 *.swp
 *.http
 .coverage.*
-!openbb_terminal/custom_reports/*/.ipynb
+!openbb_terminal/reports/templates/*.ipynb
+*_tests.csv
+integration_test_output/
+integration_test_summary/
+openbb_terminal/reports/templates/*.html
+website/functions
+*_sdk_audit.csv
+website/terminaltest
+!build/docker/compose.env
 
 # pyinstaller artifacts
 *.pyo
@@ -50,9 +60,6 @@ jupyterlab/*/.ipynb_checkpoints
 jupyterlab/*/*.tsbuildinfo
 jupyterlab/*/ui-tests/test-results/
 jupyterlab/*/ui-tests/tests/*.ts-snapshots/
-
-# Sphinx documentation build files
-docs/_build
 
 # User stylesheets
 styles/user

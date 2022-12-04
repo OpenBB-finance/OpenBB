@@ -25,6 +25,7 @@ class BrokersController(BaseController):
     CHOICES_COMMANDS: List = []
     CHOICES_MENUS = ["cb", "ally", "rh", "degiro"]
     PATH = "/portfolio/bro/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -34,11 +35,8 @@ class BrokersController(BaseController):
         self.merged_holdings = None
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
-
+            choices: dict = self.choices_default
+            self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

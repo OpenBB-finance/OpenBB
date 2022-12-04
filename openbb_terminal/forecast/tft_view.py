@@ -21,7 +21,7 @@ def display_tft_forecast(
     data: Union[pd.Series, pd.DataFrame],
     target_column: str = "close",
     dataset_name: str = "",
-    n_predict: int = 30,
+    n_predict: int = 5,
     past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
@@ -44,6 +44,7 @@ def display_tft_forecast(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     naive: bool = False,
+    export_pred_raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Display Temporal Fusion Transformer forecast
@@ -52,7 +53,7 @@ def display_tft_forecast(
     ----------
     data (Union[pd.Series, pd.DataFrame]):
         Input Data
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     dataset_name str
         The name of the ticker to be predicted
@@ -148,21 +149,22 @@ def display_tft_forecast(
 
     probabilistic = True
     helpers.plot_forecast(
-        "TFT",
-        target_column,
-        historical_fcast,
-        predicted_values,
-        ticker_series,
-        dataset_name,
-        data,
-        n_predict,
-        forecast_horizon,
-        past_covariates,
-        precision,
-        probabilistic,
-        export,
+        name="TFT",
+        target_col=target_column,
+        historical_fcast=historical_fcast,
+        predicted_values=predicted_values,
+        ticker_series=ticker_series,
+        ticker_name=dataset_name,
+        data=data,
+        n_predict=n_predict,
+        forecast_horizon=forecast_horizon,
+        past_covariates=past_covariates,
+        precision=precision,
+        probabilistic=probabilistic,
+        export=export,
         forecast_only=forecast_only,
         naive=naive,
+        export_pred_raw=export_pred_raw,
         external_axes=external_axes,
     )
     if residuals:

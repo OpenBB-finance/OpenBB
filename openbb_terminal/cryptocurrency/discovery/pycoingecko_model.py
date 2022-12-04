@@ -11,15 +11,15 @@ from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
-COINS_COLUMNS = [
-    "Symbol",
-    "Name",
-    "total_volume",
-    "market_cap Cap",
-    "market_cap Cap Rank",
-    "7D Change [%]",
-    "24H Change [%]",
-]
+COINS_COLUMNS_MAP = {
+    "Symbol": "symbol",
+    "Name": "name",
+    "Volume [$]": "total_volume",
+    "Market Cap": "market_cap",
+    "Market Cap Rank": "market_cap_rank",
+    "7D Change [%]": "price_change_percentage_7d_in_currency",
+    "24H Change [%]": "price_change_percentage_24h_in_currency",
+}
 
 PERIODS = {
     "1h": "?time=h1",
@@ -89,6 +89,15 @@ DEX_FILTERS = [
     "Market_Share",
 ]
 
+GAINERS_LOSERS_COLUMNS = [
+    "Symbol",
+    "Name",
+    "Price [$]",
+    "Market Cap",
+    "Market Cap Rank",
+    "Volume [$]",
+]
+
 
 @log_start_end(log=logger)
 def read_file_data(file_name: str) -> dict:
@@ -104,12 +113,24 @@ def read_file_data(file_name: str) -> dict:
 
 @log_start_end(log=logger)
 def get_categories_keys() -> List[str]:
+    """Get list of categories keys
+
+    Returns
+    -------
+    List[str]
+        List of categories keys
+    """
     categories = read_file_data("coingecko_categories.json")
     return list(categories.keys())
 
 
 @log_start_end(log=logger)
-def get_coins(limit: int = 250, category: str = "", sortby="Symbol") -> pd.DataFrame:
+def get_coins(
+    limit: int = 250,
+    category: str = "",
+    sortby: str = "Symbol",
+    ascend: bool = False,
+) -> pd.DataFrame:
 
     """Get N coins from CoinGecko [Source: CoinGecko]
 
@@ -117,62 +138,58 @@ def get_coins(limit: int = 250, category: str = "", sortby="Symbol") -> pd.DataF
     ----------
     limit: int
         Number of top coins to grab from CoinGecko
+    category: str
+        Category of the coins we want to retrieve
     sortby: str
         Key to sort data
+    ascend: bool
+        Sort data in ascending order
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         N coins
     """
     client = CoinGeckoAPI()
     df = pd.DataFrame()
-    if limit <= 250:
+    table_size = limit
+    # CoinGecko's API returns all coins without limit when the category is set.
+    if category:
         kwargs = {
             "vs_currency": "usd",
             "order": "market_cap_desc",
             "per_page": limit,
             "sparkline": False,
             "price_change_percentage": "1h,24h,7d,14d,30d,200d,1y",
+            "category": category,
         }
-        if category:
-            kwargs["category"] = category
         data = client.get_coins_markets(**kwargs)
         df = pd.concat([df, pd.DataFrame(data)], ignore_index=True)
-        # df = df.append(pd.DataFrame(data), ignore_index=True)
     else:
-        p = 1
+        page_size = min(limit, 250)
+        page = 1
         while limit > 0:
             kwargs = {
                 "vs_currency": "usd",
                 "order": "market_cap_desc",
-                "per_page": limit,
+                "per_page": page_size,
                 "sparkline": False,
                 "price_change_percentage": "1h,24h,7d,14d,30d,200d,1y",
-                "page": p,
+                "page": page,
             }
-            if category:
-                kwargs["category"] = category
 
             data = client.get_coins_markets(**kwargs)
             df = pd.concat([df, pd.DataFrame(data)], ignore_index=True)
-            # df = df.append(pd.DataFrame(data), ignore_index=True)
-            limit -= 250
-            p += 1
-    if sortby in COINS_COLUMNS:
+            limit -= page_size
+            page += 1
+
+    if sortby in COINS_COLUMNS_MAP:
         df = df[(df["total_volume"].notna()) & (df["market_cap"].notna())]
-        df = df.sort_values(by=sortby.lower(), ascending=False)
-    return df.head(limit)
+        df = df.sort_values(by=COINS_COLUMNS_MAP[sortby], ascending=ascend)
 
+    df = df.astype({"market_cap_rank": "Int64"})
 
-GAINERS_LOSERS_COLUMNS = [
-    "Symbol",
-    "Name",
-    "Price [$]",
-    "market_cap",
-    "market_cap_rank",
-    "total_volume",
-]
+    return df.head(table_size)
 
 
 @log_start_end(log=logger)
@@ -187,7 +204,7 @@ def get_gainers_or_losers(
 
     Parameters
     ----------
-    top: int
+    limit: int
         Num of coins to get
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
@@ -196,9 +213,10 @@ def get_gainers_or_losers(
         One from {14d,1h,1y,200d,24h,30d,7d}
     typ: str
         Either "gainers" or "losers"
+
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Top Gainers / Top Losers - coins which gain/lost most in price in given period of time.
         Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
     """
@@ -226,11 +244,16 @@ def get_gainers_or_losers(
     sorted_df = sorted_df.set_axis(
         GAINERS_LOSERS_COLUMNS + [f"Change {interval} [%]"],
         axis=1,
-        inplace=False,
+        copy=True,
     )
-    if sortby in COINS_COLUMNS:
-        df = df[(df["total_volume"].notna()) & (df["market_cap"].notna())]
-        df = df.sort_values(by=sortby, ascending=True)
+
+    if sortby in GAINERS_LOSERS_COLUMNS:
+
+        sorted_df = sorted_df[
+            (sorted_df["Volume [$]"].notna()) & (sorted_df["Market Cap"].notna())
+        ]
+        sorted_df = sorted_df.sort_values(by=sortby, ascending=True)
+
     return sorted_df
 
 
@@ -299,7 +322,7 @@ def get_trending_coins() -> pd.DataFrame:
 
     Returns
     -------
-    pandas.DataFrame:
+    pd.DataFrame
         Trending Coins
     """
     client = CoinGeckoAPI()
@@ -318,7 +341,7 @@ def get_coin_list() -> pd.DataFrame:
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Coins available on CoinGecko
         Columns: id, symbol, name
     """

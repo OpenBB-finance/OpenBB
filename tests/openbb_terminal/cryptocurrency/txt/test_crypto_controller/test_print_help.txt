@@ -1,6 +1,6 @@
     load               load a specific cryptocurrency for analysis                     [YahooFinance, CoinGecko, CCXT]
     find               find coins                                                      [CoinGecko, CoinPaprika, Binance, Coinbase, YahooFinance]
-    price              real-time price and interval of confidence
+    price              real-time price and interval of confidence                      [Pyth]
 
 Coin: 
 Source: 
@@ -8,7 +8,7 @@ Interval (min):
 
     headlines          crypto sentiment from 15+ major news headlines                  [FinBrain]
 [unvl]    candle             view a candle chart for a specific cryptocurrency[/unvl]
-[unvl]    prt                potential returns tool - check how much upside if ETH reaches BTC market cap[/unvl] [CoinGecko]
+[unvl]    prt                potential returns (e.g. upside if ETH reaches BTC market cap)[/unvl]   [CoinGecko]
 
 >   disc               discover trending cryptocurrencies,     top gainers, losers, top sentiment
 >   ov                 overview of the cryptocurrencies,       market cap, DeFi, latest news, top exchanges, stables
@@ -19,5 +19,5 @@ Interval (min):
 [unvl]>   dd                 due-diligence for loaded coin,          coin information, social media, market stats[/unvl]
 [unvl]>   ta                 technical analysis for loaded coin,     ema, macd, rsi, adx, bbands, obv[/unvl]
 [unvl]>   qa                 quantitative analysis                   decompose, cusum, residuals analysis[/unvl]
-[unvl]>   forecast           forecast techniques,                 rnn, nbeats, transformer, block rnn[/unvl]
+[unvl]>   forecast           forecast techniques,                    rnn, nbeats, transformer, block rnn[/unvl]
 

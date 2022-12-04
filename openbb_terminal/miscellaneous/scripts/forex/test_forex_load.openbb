@@ -1,0 +1,5 @@
+forex
+load ${currency=EUR}${currency_vs=USD} --source YahooFinance
+load ${currency_vs=USD}${currency=EUR} --source Polygon
+load ${currency=EUR}${currency_vs=USD} --source AlphaVantage
+exit

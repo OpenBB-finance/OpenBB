@@ -3,11 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Any, Tuple, Union
+from typing import Tuple, Union
 import pandas as pd
 import statsmodels.api as sm
 from statsmodels.tools.sm_exceptions import MissingDataError
-from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.seasonal import DecomposeResult, seasonal_decompose
 from statsmodels.tsa.stattools import adfuller, kpss
 from scipy import stats
 import numpy as np
@@ -45,7 +45,7 @@ def get_summary(data: pd.DataFrame) -> pd.DataFrame:
 @log_start_end(log=logger)
 def get_seasonal_decomposition(
     data: pd.DataFrame, multiplicative: bool = False
-) -> Tuple[Any, pd.DataFrame, pd.DataFrame]:
+) -> Tuple[DecomposeResult, pd.DataFrame, pd.DataFrame]:
     """Perform seasonal decomposition
 
     Parameters
@@ -57,12 +57,10 @@ def get_seasonal_decomposition(
 
     Returns
     -------
-    result: Any
-        Result of statsmodels seasonal_decompose
-    cycle: pd.DataFrame
-        Filtered cycle
-    trend: pd.DataFrame
-        Filtered Trend
+    Tuple[DecomposeResult, pd.DataFrame, pd.DataFrame]
+        DecomposeResult class from statsmodels (observed, seasonal, trend, residual, and weights),
+        Filtered cycle DataFrame,
+        Filtered trend DataFrame
     """
     seasonal_periods = 5
     # Hodrick-Prescott filter
@@ -231,7 +229,7 @@ def get_var(
     percentile: Union[int, float] = 99.9,
     portfolio: bool = False,
 ) -> pd.DataFrame:
-    """Gets value at risk for specified stock dataframe
+    """Gets value at risk for specified stock dataframe.
 
     Parameters
     ----------
@@ -250,10 +248,8 @@ def get_var(
 
     Returns
     -------
-    list
-        list of VaR
-    list
-        list of historical VaR
+    pd.DataFrame
+        DataFrame with Value at Risk per percentile
     """
     if not portfolio:
         data = data[["adjclose"]].copy()
@@ -310,10 +306,10 @@ def get_var(
 
     else:
         # Regular Var
-        var_90 = np.exp(mean + percentile_90 * std) - 1
-        var_95 = np.exp(mean + percentile_95 * std) - 1
-        var_99 = np.exp(mean + percentile_99 * std) - 1
-        var_custom = np.exp(mean + percentile_custom * std) - 1
+        var_90 = mean + percentile_90 * std
+        var_95 = mean + percentile_95 * std
+        var_99 = mean + percentile_99 * std
+        var_custom = mean + percentile_custom * std
 
     if not portfolio:
         data.sort_values("return", inplace=True, ascending=True)
@@ -328,17 +324,22 @@ def get_var(
     hist_var_99 = data_return.quantile(0.01)
     hist_var_custom = data_return.quantile(1 - percentile)
 
-    var_list = [var_90, var_95, var_99, var_custom]
-    hist_var_list = [hist_var_90, hist_var_95, hist_var_99, hist_var_custom]
+    var_list = [var_90 * 100, var_95 * 100, var_99 * 100, var_custom * 100]
+    hist_var_list = [
+        hist_var_90 * 100,
+        hist_var_95 * 100,
+        hist_var_99 * 100,
+        hist_var_custom * 100,
+    ]
 
-    str_hist_label = "Historical VaR"
+    str_hist_label = "Historical VaR [%]"
 
     if adjusted_var:
-        str_var_label = "Adjusted VaR"
+        str_var_label = "Adjusted VaR [%]"
     elif student_t:
-        str_var_label = "Student-t VaR"
+        str_var_label = "Student-t VaR [%]"
     else:
-        str_var_label = "VaR"
+        str_var_label = "Gaussian VaR [%]"
 
     data_dictionary = {str_var_label: var_list, str_hist_label: hist_var_list}
     df = pd.DataFrame(
@@ -346,6 +347,7 @@ def get_var(
     )
 
     df.sort_index(inplace=True)
+    df = df.replace(np.nan, "-")
 
     return df
 
@@ -357,7 +359,7 @@ def get_es(
     percentile: Union[float, int] = 99.9,
     portfolio: bool = False,
 ) -> pd.DataFrame:
-    """Gets Expected Shortfall for specified stock dataframe
+    """Gets Expected Shortfall for specified stock dataframe.
 
     Parameters
     ----------
@@ -374,10 +376,8 @@ def get_es(
 
     Returns
     -------
-    list
-        list of ES
-    list
-        list of historical ES
+    pd.DataFrame
+        DataFrame with Expected Shortfall per percentile
     """
     if not portfolio:
         data = data[["adjclose"]].copy()
@@ -497,26 +497,31 @@ def get_es(
     # Historical Expected Shortfall
     df = get_var(data, use_mean, False, False, percentile, portfolio)
 
-    hist_var_list = list(df["Historical VaR"].values)
+    hist_var_list = list(df["Historical VaR [%]"].values)
 
     hist_es_90 = data_return[data_return <= hist_var_list[0]].mean()
     hist_es_95 = data_return[data_return <= hist_var_list[1]].mean()
     hist_es_99 = data_return[data_return <= hist_var_list[2]].mean()
     hist_es_custom = data_return[data_return <= hist_var_list[3]].mean()
 
-    es_list = [es_90, es_95, es_99, es_custom]
-    hist_es_list = [hist_es_90, hist_es_95, hist_es_99, hist_es_custom]
+    es_list = [es_90 * 100, es_95 * 100, es_99 * 100, es_custom * 100]
+    hist_es_list = [
+        hist_es_90 * 100,
+        hist_es_95 * 100,
+        hist_es_99 * 100,
+        hist_es_custom * 100,
+    ]
 
-    str_hist_label = "Historical ES"
+    str_hist_label = "Historical ES [%]"
 
     if distribution == "laplace":
-        str_es_label = "Laplace ES"
+        str_es_label = "Laplace ES [%]"
     elif distribution == "student_t":
-        str_es_label = "Student-t ES"
+        str_es_label = "Student-t ES [%]"
     elif distribution == "logistic":
-        str_es_label = "Logistic ES"
+        str_es_label = "Logistic ES [%]"
     else:
-        str_es_label = "ES"
+        str_es_label = "ES [%]"
 
     data_dictionary = {str_es_label: es_list, str_hist_label: hist_es_list}
     df = pd.DataFrame(
@@ -524,12 +529,14 @@ def get_es(
     )
 
     df.sort_index(inplace=True)
+    df = df.replace(np.nan, "-")
 
     return df
 
 
 def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> pd.DataFrame:
     """Calculates the sharpe ratio
+
     Parameters
     ----------
     data: pd.DataFrame
@@ -559,6 +566,7 @@ def get_sortino(
     adjusted: bool = False,
 ) -> pd.DataFrame:
     """Calculates the sortino ratio
+
     Parameters
     ----------
     data: pd.DataFrame
@@ -597,6 +605,7 @@ def get_sortino(
 
 def get_omega_ratio(data: pd.DataFrame, threshold: float = 0) -> float:
     """Calculates the omega ratio
+
     Parameters
     ----------
     data: pd.DataFrame
@@ -631,6 +640,7 @@ def get_omega(
     data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5
 ) -> pd.DataFrame:
     """Get the omega series
+
     Parameters
     ----------
     data: pd.DataFrame
@@ -639,6 +649,11 @@ def get_omega(
         annualized target return threshold start of plotted threshold range
     threshold_end: float
         annualized target return threshold end of plotted threshold range
+
+    Returns
+    -------
+    omega: pd.DataFrame
+        omega series
     """
     threshold = np.linspace(threshold_start, threshold_end, 50)
     df = pd.DataFrame(threshold, columns=["threshold"])

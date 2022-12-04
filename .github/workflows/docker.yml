@@ -6,23 +6,37 @@ jobs:
   publish-image:
     runs-on: ubuntu-latest
     env: 
-      OWNER: openbb-finance
-      IMAGE: openbbterminal-poetry
+      OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY: ${{ github.repository }}
+      OPENBB_LOGGING_APP_NAME: "gst_docker"
+
 
     steps:
-    - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v1
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build the Docker image
-      run: |
-        source docker/compose.env 
-        docker-compose -f docker/docker-compose.yaml build
-        docker tag `docker images -q ghcr.io/$OWNER/$IMAGE` ghcr.io/$OWNER/$IMAGE:$OPENBBTERMINAL_DOCKER_POETRY_VERSION
-        docker run ghcr.io/$OWNER/$IMAGE:$OPENBBTERMINAL_DOCKER_POETRY_VERSION
-        docker push ghcr.io/$OWNER/$IMAGE:$OPENBBTERMINAL_DOCKER_POETRY_VERSION
+      - name: Setup commit hash
+        run: |
+          echo "OPENBB_LOGGING_COMMIT_HASH=sha:$(git rev-parse --short=8 "$GITHUB_SHA")" >> $GITHUB_ENV
+
+      - name: Build env file
+        run: |
+          echo "OPENBB_LOGGING_APP_NAME='${OPENBB_LOGGING_APP_NAME}'" > openbb_terminal/.env
+          echo "OPENBB_LOGGING_COMMIT_HASH='${OPENBB_LOGGING_COMMIT_HASH}'" >> openbb_terminal/.env
+          cat openbb_terminal/.env
+
+      - name: Building the Docker image
+        run: |
+          source build/docker/compose.env
+          source build/docker/build.sh
+          echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE" >> $GITHUB_ENV
+          
+      - name: Publishing the Docker image
+        run: |
+          docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"

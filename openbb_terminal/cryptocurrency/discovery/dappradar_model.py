@@ -49,9 +49,10 @@ def _make_request(url: str, verbose: bool = True) -> Optional[dict]:
         endpoint url
     verbose: bool
         whether to print the text from the response
+
     Returns
     -------
-    dict:
+    Optional[dict]:
         dictionary with response data
     """
 
@@ -110,7 +111,7 @@ def get_top_nfts(sortby: str = "", limit: int = 10) -> pd.DataFrame:
         df = df.set_axis(
             NFT_COLUMNS,
             axis=1,
-            inplace=False,
+            copy=False,
         )
         df["Protocols"] = df["Protocols"].apply(lambda x: ",".join(x))
     if sortby in NFT_COLUMNS:
@@ -170,6 +171,7 @@ def get_top_games(sortby: str = "", limit: int = 10) -> pd.DataFrame:
         Number of records to display
     sortby: str
         Key by which to sort data
+
     Returns
     -------
     pd.DataFrame

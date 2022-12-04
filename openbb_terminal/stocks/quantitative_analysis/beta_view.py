@@ -20,6 +20,7 @@ def beta_view(
     ref_symbol: str,
     data: pd.DataFrame = None,
     ref_data: pd.DataFrame = None,
+    interval: int = 1440,
     export: str = "",
 ) -> None:
     """Display the beta scatterplot + linear regression.
@@ -34,16 +35,20 @@ def beta_view(
         The selected ticker symbols price data
     ref_data : pd.DataFrame
         The reference ticker symbols price data
+    interval: int
+        The interval of the ref_data. This will ONLY be used if ref_data is None
     """
     try:
-        sr, rr, beta, alpha = beta_model(symbol, ref_symbol, data, ref_data)
+        sr, rr, beta, alpha = beta_model(
+            symbol, ref_symbol, data, ref_data, interval=interval
+        )
     except Exception as e:
         if str(e) == "Invalid ref ticker":
             console.print(str(e) + "\n")
             return
         raise e
 
-    fig, ax = plt.subplots()
+    _, ax = plt.subplots()
     ax.scatter(rr, sr)  # plot returns
     ax.plot(ax.get_xlim(), [x * beta + alpha for x in ax.get_xlim()])  # plot lin reg
     ax.set(
@@ -53,7 +58,6 @@ def beta_view(
     )
     beta_text = f"Raw Beta={round(beta, 2)}\nAlpha={round(alpha, 2)}"
     ax.text(0.9, 0.1, beta_text, horizontalalignment="right", transform=ax.transAxes)
-    fig.show()
     console.print()
 
     df = pd.DataFrame({"sr": sr, "rr": rr})

@@ -1,8 +1,13 @@
-import os
+# IMPORTATION STANDARD
+
+# IMPORTATION THIRDPARTY
 import pytest
-from openbb_terminal.core.log.generation import formatter_with_exceptions
+
+# IMPORTATION INTERNAL
+from openbb_terminal.core.log.generation.formatter_with_exceptions import (
+    FormatterWithExceptions,
+)
 from openbb_terminal.core.log.generation.settings import AppSettings
-from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 
 app_settings = AppSettings(
     commit_hash="MOCK_COMMIT_HASH",
@@ -10,56 +15,40 @@ app_settings = AppSettings(
     identifier="MOCK_COMMIT_HASH",
     session_id="MOCK_SESSION_ID",
 )
-
-
-formatter = formatter_with_exceptions.FormatterWithExceptions(app_settings)
+formatter = FormatterWithExceptions(app_settings)
 
 
 @pytest.mark.parametrize("exc, level", [(True, True), (False, "name"), (False, False)])
-def test_calculate_level_name(exc, level, mocker):
+def test_calculate_level_name(exc, level, mocker, recorder):
     mock = mocker.Mock()
     mock.exc_text = exc
     mock.levelname = level
-    value = formatter.calculate_level_name(mock)
-    assert value
+    text_expected = FormatterWithExceptions.calculate_level_name(mock)
+    recorder.capture(text_expected)
 
 
-def test_extract_log_extra(mocker):
+def test_extract_log_extra(mocker, recorder):
     mock = mocker.Mock()
     mock.exc_text = True
-    mock.levelname = "name"
-    value = formatter.extract_log_extra(mock)
-    assert value
+    mock.levelname = "MOCK_LEVELNAME"
+    mock.user_id = "MOCK_USER_ID"
+    mock.session_id = "MOCK_SESSION_ID"
+    text_expected = FormatterWithExceptions.extract_log_extra(mock)
+    recorder.capture(text_expected)
 
 
-def test_filter_piis():
-    text = (
-        f"test 1.1.1.1 chavi@chavi.com {REPOSITORY_DIRECTORY.name}{os.sep} dd{os.sep}dd"
-    )
-    value = formatter.filter_piis(text)
-    assert value
+def test_filter_log_line(recorder):
+    text = "test 1.1.1.1 testestest chavi@chavi.com testestest C:\\Users\\username\\some folder\\some path testestest"
+    text_expected = FormatterWithExceptions.filter_log_line(text=text)
+    recorder.capture(text_expected)
 
+    text = "test 1.1.1.1 testestest chavi@chavi.com testestest /home/username/some folder/some path testestest"
+    text_expected = FormatterWithExceptions.filter_log_line(text=text)
+    recorder.capture(text_expected)
 
-def test_filter_special_characters():
-    text = "\nhello \this \rgreetings"
-    value = formatter.filter_special_characters(text)
-    assert value == " - hello  his greetings"
-
-
-def test_detect_terminal_message():
-    value = formatter.detect_terminal_message("The command doesn't exist on the")
-    assert value or os.sep != "/"
-    new_val = formatter.detect_terminal_message("boring message")
-    assert new_val is False
-
-
-def test_filter_log_line():
-    value = formatter.filter_log_line("stocks")
-    assert value
-    value = formatter.filter_log_line(
-        "The command doesn't exist on the menu. - Traceback hello"
-    )
-    assert value
+    text = "\nhello this is greetings"
+    text_expected = FormatterWithExceptions.filter_log_line(text=text)
+    recorder.capture(text_expected)
 
 
 def test_formatException_invalid():

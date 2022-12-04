@@ -42,14 +42,13 @@ class FundController(BaseController):
         "resources",
         "country",
         "search",
-        "overview",
         "info",
         "load",
         "plot",
         "sector",
         "equity",
-        "al_swe",
-        "info_swe",
+        "alswe",
+        "infoswe",
         "forecast",
     ]
 
@@ -85,7 +84,7 @@ class FundController(BaseController):
             one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
             choices["country"] = {c: {} for c in self.fund_countries}
             choices["overview"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["search"] = {
@@ -94,10 +93,10 @@ class FundController(BaseController):
                 "--fund": None,
                 "--sortby": {c: None for c in self.search_cols},
                 "-s": "--sortby",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
-                "--ascend": {},
-                "-a": "--ascend",
+                "--reverse": {},
+                "-r": "--reverse",
             }
             choices["load"] = {
                 "--fund": None,
@@ -112,7 +111,7 @@ class FundController(BaseController):
                 "--min": one_to_hundred,
                 "-m": "--min",
             }
-            choices["al_swe"] = {"--focus": {c: {} for c in self.focus_choices}}
+            choices["alswe"] = {"--focus": {c: {} for c in self.focus_choices}}
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
@@ -133,7 +132,6 @@ class FundController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_country", self.country.title())
         mt.add_raw("\n")
-        mt.add_cmd("overview")
         mt.add_cmd("search")
         mt.add_cmd("load")
         mt.add_raw("\n")
@@ -145,8 +143,8 @@ class FundController(BaseController):
             mt.add_cmd("sector", self.fund_symbol)
             mt.add_cmd("equity", self.fund_symbol)
         if self.country == "sweden":
-            mt.add_cmd("al_swe", self.fund_symbol)
-            mt.add_cmd("info_swe", self.fund_symbol)
+            mt.add_cmd("alswe", self.fund_symbol)
+            mt.add_cmd("infoswe", self.fund_symbol)
             mt.add_cmd("forecast", self.fund_symbol)
         console.print(text=mt.menu_text, menu="Mutual Funds")
 
@@ -184,7 +182,6 @@ class FundController(BaseController):
                 console.print(
                     f"{country_candidate.lower()} not a valid country to select."
                 )
-        console.print("")
         return self.queue
 
     @log_start_end(log=logger)
@@ -229,12 +226,16 @@ class FundController(BaseController):
             default=10,
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
-            dest="ascending",
-            help="Sort in ascending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--fund")
@@ -247,7 +248,7 @@ class FundController(BaseController):
                 country=self.country,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=ns_parser.ascending,
+                ascend=ns_parser.reverse,
             )
         return self.queue
 
@@ -363,7 +364,6 @@ Potential errors
     -- ISIN supplied instead of symbol
     -- Name used, but --name flag not passed"""
                 )
-        console.print("")
         return self.queue
 
     @log_start_end(log=logger)
@@ -457,12 +457,12 @@ Potential errors
         return self.queue
 
     @log_start_end(log=logger)
-    def call_al_swe(self, other_args: List[str]):
-        """Process al_swe command"""
+    def call_alswe(self, other_args: List[str]):
+        """Process alswe command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="al_swe",
+            prog="alswe",
             description="Show allocation of a swedish fund.",
         )
         parser.add_argument(
@@ -503,12 +503,12 @@ Potential errors
         return self.queue
 
     @log_start_end(log=logger)
-    def call_info_swe(self, other_args: List[str]):
-        """Process info_swe command"""
+    def call_infoswe(self, other_args: List[str]):
+        """Process infoswe command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="info_swe",
+            prog="infoswe",
             description="Show fund info of a swedish fund.",
         )
 

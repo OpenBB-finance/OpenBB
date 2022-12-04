@@ -1,0 +1,9 @@
+reports
+
+## defaults
+equity
+
+## simple ticker
+equity --symbol ${ticker=AAPL}
+
+exit

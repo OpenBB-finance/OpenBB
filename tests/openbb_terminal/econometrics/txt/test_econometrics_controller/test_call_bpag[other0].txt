@@ -1,4 +1,3 @@
-
 The following args couldn't be interpreted: ['data']
 Perform an OLS regression before estimating the Breusch-Pagan statistic.
 

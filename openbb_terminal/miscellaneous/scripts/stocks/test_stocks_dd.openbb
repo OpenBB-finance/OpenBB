@@ -1,0 +1,19 @@
+stocks
+load ${ticker=aapl}
+dd
+analyst
+rating
+rot
+rot -l 3 --raw
+pt
+pt -l 3 --raw
+est
+est -e annualrevenue
+est -e annualearnings
+est -e quarterearnings
+sec
+supplier
+customer
+load ${ticker=tsla}
+arktrades
+exit

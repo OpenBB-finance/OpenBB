@@ -1,4 +1,4 @@
-"""Stock Context Controller"""
+"""Stock Context Controller."""
 __docformat__ = "numpy"
 
 import argparse
@@ -17,10 +17,9 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks import cboe_view
 
-from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    choice_check_after_action,
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     export_data,
     valid_date,
 )
@@ -29,10 +28,10 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import (
     MenuText,
     console,
-    get_ordered_list_sources,
     translate,
 )
 from openbb_terminal.stocks import stocks_helper
+from openbb_terminal.stocks import stocks_view
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
@@ -40,7 +39,7 @@ logger = logging.getLogger(__name__)
 
 
 class StocksController(StockBaseController):
-    """Stocks Controller class"""
+    """Stocks Controller class."""
 
     CHOICES_COMMANDS = [
         "search",
@@ -79,95 +78,18 @@ class StocksController(StockBaseController):
     sector = financedatabase.show_options("equities", "sectors")
     industry = financedatabase.show_options("equities", "industries")
     TOB_EXCHANGES = ["BZX", "EDGX", "BYX", "EDGA"]
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
-        """Constructor"""
+        """Construct stocks controller."""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["load"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
-                "-i": "--interval",
-                "--prepost": {},
-                "-p": "--prepost",
-                "--file": None,
-                "-f": "--file",
-                "--monthly": {},
-                "-m": "--monthly",
-                "--weekly": {},
-                "-w": "--weekly",
-                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
-                "-r": "--iexrange",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
-                },
-            }
-            choices["quote"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-            }
-            choices["tob"] = {
-                "--exchange": {c: {} for c in self.TOB_EXCHANGES},
-                "-e": "--exchange",
-            }
-            choices["search"] = {
-                "--query": None,
-                "-q": "--query",
-                "--country": {c: {} for c in self.country},
-                "-c": "--country",
-                "--sector": {c: {} for c in self.sector},
-                "-s": "--sector",
-                "--industry": {c: {} for c in self.industry},
-                "-i": "--industry",
-                "--exchange": {c: {} for c in stocks_helper.market_coverage_suffix},
-                "-e": "--exchange",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["candle"] = {
-                "--sort": {c: {} for c in stocks_helper.CANDLE_SORT},
-                "--plotly": {},
-                "-p": "--plotly",
-                "--descending": {},
-                "-d": "--descending",
-                "--raw": {},
-                "--trend": {},
-                "-t": "--trend",
-                "--ma": None,
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["news"] = {
-                "--date": None,
-                "-d": "--date",
-                "--oldest": {},
-                "-o": "--oldest",
-                "--sources": None,
-                "-s": "--sources",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}news")
-                },
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
-
+            choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
-        """Print help"""
+        """Print help."""
         stock_text = ""
         if self.ticker:
             s_intraday = (f"Intraday {self.interval}", "Daily")[
@@ -210,7 +132,7 @@ class StocksController(StockBaseController):
         console.print(text=mt.menu_text, menu="Stocks")
 
     def custom_reset(self):
-        """Class specific component of reset command"""
+        """Class specific component of reset command."""
         if self.ticker:
             return [
                 "stocks",
@@ -222,12 +144,12 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
-        """Process search command"""
+        """Process search command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="search",
-            description=translate("stocks/SEARCH"),
+            description="Show companies matching the search query",
         )
         parser.add_argument(
             "-q",
@@ -237,42 +159,50 @@ class StocksController(StockBaseController):
             type=str.lower,
             default="",
             nargs="+",
-            help=translate("stocks/SEARCH_query"),
+            help="The search term used to find company tickers",
         )
+        clean_countries = [x.lower().replace(" ", "_") for x in self.country]
         parser.add_argument(
             "-c",
             "--country",
             default="",
-            nargs=argparse.ONE_OR_MORE,
-            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.country),
+            choices=clean_countries,
             dest="country",
-            help=translate("stocks/SEARCH_country"),
+            metavar="country",
+            type=str.lower,
+            help="Search by country to find stocks matching the criteria",
         )
         parser.add_argument(
             "-s",
             "--sector",
             default="",
-            nargs=argparse.ONE_OR_MORE,
-            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.sector),
+            choices=stocks_helper.format_parse_choices(self.sector),
+            type=str.lower,
+            metavar="sector",
             dest="sector",
-            help=translate("stocks/SEARCH_sector"),
+            help="Search by sector to find stocks matching the criteria",
         )
         parser.add_argument(
             "-i",
             "--industry",
             default="",
-            nargs=argparse.ONE_OR_MORE,
-            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.industry),
+            choices=stocks_helper.format_parse_choices(self.industry),
+            type=str.lower,
+            metavar="industry",
             dest="industry",
-            help=translate("stocks/SEARCH_industry"),
+            help="Search by industry to find stocks matching the criteria",
         )
         parser.add_argument(
             "-e",
             "--exchange",
             default="",
-            choices=list(stocks_helper.market_coverage_suffix.keys()),
+            choices=stocks_helper.format_parse_choices(
+                list(stocks_helper.market_coverage_suffix.keys())
+            ),
+            type=str.lower,
+            metavar="exchange",
             dest="exchange_country",
-            help=translate("stocks/SEARCH_exchange"),
+            help="Search by a specific exchange country to find stocks matching the criteria",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
@@ -283,19 +213,28 @@ class StocksController(StockBaseController):
             limit=10,
         )
         if ns_parser:
+            # Mapping
+            sector = stocks_helper.map_parse_choices(self.sector)[ns_parser.sector]
+            industry = stocks_helper.map_parse_choices(self.industry)[
+                ns_parser.industry
+            ]
+            exchange = stocks_helper.map_parse_choices(
+                list(stocks_helper.market_coverage_suffix.keys())
+            )[ns_parser.exchange_country]
+
             stocks_helper.search(
                 query=" ".join(ns_parser.query),
                 country=ns_parser.country,
-                sector=ns_parser.sector,
-                industry=ns_parser.industry,
-                exchange_country=ns_parser.exchange_country,
+                sector=sector,
+                industry=industry,
+                exchange_country=exchange,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
     def call_tob(self, other_args: List[str]):
-        """Process quote command"""
+        """Process quote command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -330,13 +269,13 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
-        """Process quote command"""
+        """Process quote command."""
         ticker = self.ticker + "." + self.suffix if self.suffix else self.ticker
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="quote",
-            description=translate("stocks/QUOTE"),
+            description="Current quote for stock ticker",
         )
         if self.ticker:
             parser.add_argument(
@@ -345,7 +284,7 @@ class StocksController(StockBaseController):
                 action="store",
                 dest="s_ticker",
                 default=ticker,
-                help=translate("stocks/QUOTE_ticker"),
+                help="Stock ticker",
             )
         else:
             parser.add_argument(
@@ -361,11 +300,11 @@ class StocksController(StockBaseController):
             other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            stocks_helper.quote(ns_parser.s_ticker)
+            stocks_view.display_quote(ns_parser.s_ticker)
 
     @log_start_end(log=logger)
     def call_codes(self, _):
-        """Process codes command"""
+        """Process codes command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -374,19 +313,19 @@ class StocksController(StockBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, _)
         if ns_parser:
-            if not self.ticker:
+            if self.ticker:
+                stocks_helper.show_codes_polygon(self.ticker)
+            else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
-                return
-            stocks_helper.show_codes_polygon(self.ticker)
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
-        """Process candle command"""
+        """Process candle command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="candle",
-            description=translate("stocks/CANDLE"),
+            description="Shows historic data for a stock",
         )
         parser.add_argument(
             "-p",
@@ -394,44 +333,51 @@ class StocksController(StockBaseController):
             dest="plotly",
             action="store_false",
             default=True,
-            help=translate("stocks/CANDLE_plotly"),
+            help="Flag to show interactive plotly chart",
         )
         parser.add_argument(
             "--sort",
             choices=stocks_helper.CANDLE_SORT,
             default="",
-            type=str,
+            type=str.lower,
             dest="sort",
-            help=translate("stocks/CANDLE_sort"),
+            help="Choose a column to sort by. Only works when raw data is displayed.",
         )
         parser.add_argument(
-            "-d",
-            "--descending",
-            action="store_false",
-            dest="descending",
-            default=True,
-            help=translate("stocks/CANDLE_descending"),
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "--raw",
             action="store_true",
             dest="raw",
             default=False,
-            help=translate("stocks/CANDLE_raw"),
+            help="Shows raw data instead of chart.",
         )
         parser.add_argument(
             "-t",
             "--trend",
             action="store_true",
             default=False,
-            help=translate("stocks/CANDLE_trend"),
+            help="Flag to add high and low trends to candle",
             dest="trendlines",
         )
         parser.add_argument(
             "--ma",
             dest="mov_avg",
             type=str,
-            help=translate("stocks/CANDLE_mov_avg"),
+            help=(
+                "Add moving average in number of days to plot and separate by a comma. "
+                "Value for ma (moving average) keyword needs to be greater than 1."
+            ),
             default=None,
         )
         parser.add_argument(
@@ -444,43 +390,18 @@ class StocksController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
-            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=20,
         )
         if ns_parser:
             if self.ticker:
-                export_data(
-                    ns_parser.export,
-                    os.path.join(
-                        os.path.dirname(os.path.abspath(__file__)), "raw_data"
-                    ),
-                    f"{self.ticker}",
-                    self.stock,
-                )
-
-                if ns_parser.sort and not self.stock.empty:
-                    sort = (
-                        ns_parser.sort if ns_parser.sort != "AdjClose" else "Adj Close"
-                    )
-                    if sort not in self.stock.columns:
-                        col_names_no_spaces = [
-                            "'" + col.replace(" ", "") + "'"
-                            for col in self.stock.columns
-                        ]
-                        console.print(
-                            f"candle: error: argument --sort: invalid choice: '{sort}' for the source chosen "
-                            f"(choose from {(', '.join(list(col_names_no_spaces)))})"
-                        )
-                        return
-
                 if ns_parser.raw:
                     qa_view.display_raw(
                         data=self.stock,
                         sortby=ns_parser.sort,
-                        descend=ns_parser.descending,
+                        ascend=ns_parser.reverse,
                         limit=ns_parser.limit,
                     )
-
                 else:
                     data = stocks_helper.process_candle(self.stock)
                     mov_avgs = []
@@ -490,10 +411,15 @@ class StocksController(StockBaseController):
 
                         for num in mov_list:
                             try:
-                                mov_avgs.append(int(num))
+                                num = int(num)
+
+                                if num <= 1:
+                                    raise ValueError
+
+                                mov_avgs.append(num)
                             except ValueError:
                                 console.print(
-                                    f"{num} is not a valid moving average, must be integer"
+                                    f"[red]{num} is not a valid moving average, must be an integer greater than 1."
                                 )
 
                     stocks_helper.display_candle(
@@ -505,16 +431,23 @@ class StocksController(StockBaseController):
                         ma=mov_avgs,
                         yscale="log" if ns_parser.logy else "linear",
                     )
+
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{self.ticker}",
+                    self.stock,
+                )
             else:
-                console.print("No ticker loaded. First use `load {ticker}`\n")
+                console.print("No ticker loaded. First use 'load <ticker>'")
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
-        """Process news command"""
+        """Process news command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="news",
-            description=translate("stocks/news"),
+            description="latest news of the company",
         )
         parser.add_argument(
             "-d",
@@ -523,7 +456,7 @@ class StocksController(StockBaseController):
             dest="n_start_date",
             type=valid_date,
             default=datetime.now() - timedelta(days=7),
-            help=translate("stocks/NEWS_date"),
+            help="The starting date (format YYYY-MM-DD) to search articles from",
         )
         parser.add_argument(
             "-o",
@@ -531,15 +464,15 @@ class StocksController(StockBaseController):
             action="store_false",
             dest="n_oldest",
             default=True,
-            help=translate("stocks/NEWS_oldest"),
+            help="Show oldest articles first",
         )
         parser.add_argument(
             "-s",
             "--sources",
             dest="sources",
-            default=[],
-            nargs="+",
-            help=translate("stocks/NEWS_sources"),
+            type=str,
+            default="",
+            help="Show news only from the sources specified (e.g bloomberg,reuters)",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
@@ -547,51 +480,43 @@ class StocksController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=3
         )
         if ns_parser:
-            if not self.ticker:
-                console.print("Use 'load <ticker>' prior to this command!", "\n")
-                return
+            if self.ticker:
+                if ns_parser.source == "NewsApi":
+                    d_stock = yf.Ticker(self.ticker).info
 
-            if ns_parser.source == "NewsAPI":
-                sources = ns_parser.sources
-                for idx, source in enumerate(sources):
-                    if source.find(".") == -1:
-                        sources[idx] += ".com"
+                    newsapi_view.display_news(
+                        query=d_stock["shortName"].replace(" ", "+")
+                        if "shortName" in d_stock
+                        else self.ticker,
+                        limit=ns_parser.limit,
+                        start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                        show_newest=ns_parser.n_oldest,
+                        sources=ns_parser.sources,
+                    )
+                elif ns_parser.source == "Feedparser":
+                    d_stock = yf.Ticker(self.ticker).info
 
-                d_stock = yf.Ticker(self.ticker).info
-
-                newsapi_view.display_news(
-                    query=d_stock["shortName"].replace(" ", "+")
-                    if "shortName" in d_stock
-                    else self.ticker,
-                    limit=ns_parser.limit,
-                    start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
-                    show_newest=ns_parser.n_oldest,
-                    sources=",".join(sources),
-                )
-
-            elif ns_parser.source == "Feedparser":
-
-                d_stock = yf.Ticker(self.ticker).info
-
-                feedparser_view.display_news(
-                    term=d_stock["shortName"].replace(" ", "+")
-                    if "shortName" in d_stock
-                    else self.ticker,
-                    sources=" ".join(ns_parser.sources),
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                )
+                    feedparser_view.display_news(
+                        term=d_stock["shortName"].replace(" ", "+")
+                        if "shortName" in d_stock
+                        else self.ticker,
+                        sources=ns_parser.sources,
+                        limit=ns_parser.limit,
+                        export=ns_parser.export,
+                    )
+            else:
+                console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_disc(self, _):
-        """Process disc command"""
+        """Process disc command."""
         from openbb_terminal.stocks.discovery.disc_controller import DiscoveryController
 
         self.queue = self.load_class(DiscoveryController, self.queue)
 
     @log_start_end(log=logger)
     def call_dps(self, _):
-        """Process dps command"""
+        """Process dps command."""
         from openbb_terminal.stocks.dark_pool_shorts.dps_controller import (
             DarkPoolShortsController,
         )
@@ -602,7 +527,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_scr(self, _):
-        """Process scr command"""
+        """Process scr command."""
         from openbb_terminal.stocks.screener.screener_controller import (
             ScreenerController,
         )
@@ -611,7 +536,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_sia(self, _):
-        """Process ins command"""
+        """Process ins command."""
         from openbb_terminal.stocks.sector_industry_analysis.sia_controller import (
             SectorIndustryAnalysisController,
         )
@@ -622,7 +547,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_ins(self, _):
-        """Process ins command"""
+        """Process ins command."""
         from openbb_terminal.stocks.insider.insider_controller import InsiderController
 
         self.queue = self.load_class(
@@ -636,21 +561,21 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_gov(self, _):
-        """Process gov command"""
+        """Process gov command."""
         from openbb_terminal.stocks.government.gov_controller import GovController
 
         self.queue = self.load_class(GovController, self.ticker, self.queue)
 
     @log_start_end(log=logger)
     def call_options(self, _):
-        """Process options command"""
+        """Process options command."""
         from openbb_terminal.stocks.options.options_controller import OptionsController
 
         self.queue = self.load_class(OptionsController, self.ticker, self.queue)
 
     @log_start_end(log=logger)
     def call_th(self, _):
-        """Process th command"""
+        """Process th command."""
         from openbb_terminal.stocks.tradinghours import tradinghours_controller
 
         self.queue = self.load_class(
@@ -661,7 +586,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_res(self, _):
-        """Process res command"""
+        """Process res command."""
         if self.ticker:
             from openbb_terminal.stocks.research.res_controller import (
                 ResearchController,
@@ -671,11 +596,11 @@ class StocksController(StockBaseController):
                 ResearchController, self.ticker, self.start, self.interval, self.queue
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_dd(self, _):
-        """Process dd command"""
+        """Process dd command."""
         if self.ticker:
             from openbb_terminal.stocks.due_diligence import dd_controller
 
@@ -688,12 +613,11 @@ class StocksController(StockBaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_ca(self, _):
-        """Process ca command"""
-
+        """Process ca command."""
         from openbb_terminal.stocks.comparison_analysis import ca_controller
 
         self.queue = self.load_class(
@@ -706,7 +630,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_fa(self, _):
-        """Process fa command"""
+        """Process fa command."""
         if self.ticker:
             from openbb_terminal.stocks.fundamental_analysis import fa_controller
 
@@ -719,11 +643,11 @@ class StocksController(StockBaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_bt(self, _):
-        """Process bt command"""
+        """Process bt command."""
         if self.ticker:
             from openbb_terminal.stocks.backtesting import bt_controller
 
@@ -731,11 +655,11 @@ class StocksController(StockBaseController):
                 bt_controller.BacktestingController, self.ticker, self.stock, self.queue
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_ta(self, _):
-        """Process ta command"""
+        """Process ta command."""
         if self.ticker:
             from openbb_terminal.stocks.technical_analysis import ta_controller
 
@@ -748,11 +672,11 @@ class StocksController(StockBaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_ba(self, _):
-        """Process ba command"""
+        """Process ba command."""
         from openbb_terminal.stocks.behavioural_analysis import ba_controller
 
         self.queue = self.load_class(
@@ -764,7 +688,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_qa(self, _):
-        """Process qa command"""
+        """Process qa command."""
         if self.ticker:
             from openbb_terminal.stocks.quantitative_analysis import qa_controller
 
@@ -777,11 +701,11 @@ class StocksController(StockBaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_forecast(self, _):
-        """Process forecast command"""
+        """Process forecast command."""
         from openbb_terminal.forecast import forecast_controller
 
         self.queue = self.load_class(

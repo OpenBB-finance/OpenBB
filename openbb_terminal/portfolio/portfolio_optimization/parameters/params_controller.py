@@ -4,21 +4,18 @@ __docformat__ = "numpy"
 # pylint: disable=C0302, no-else-return
 
 import argparse
-import configparser
 import logging
-import os
-from pathlib import Path
 from typing import List, Optional
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
-from openbb_terminal import feature_flags as gtff
+from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import log_and_raise
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.portfolio_optimization.parameters import params_view
-from openbb_terminal.portfolio.portfolio_optimization.parameters.params_view import (
+from openbb_terminal.portfolio.portfolio_optimization.parameters import params_helpers
+from openbb_terminal.portfolio.portfolio_optimization.parameters.params_statics import (
     AVAILABLE_OPTIONS,
     DEFAULT_PARAMETERS,
     DEFAULT_BOOL,
@@ -29,29 +26,12 @@ from openbb_terminal.rich_config import console, MenuText
 logger = logging.getLogger(__name__)
 
 
-def check_save_file(file: str) -> str:
-    """Argparse type to check parameter file to be saved"""
-    if file == "defaults.ini":
-        log_and_raise(
-            argparse.ArgumentTypeError(
-                "Cannot overwrite defaults.ini file, please save with a different name"
-            )
-        )
-    else:
-        if not file.endswith(".ini") and not file.endswith(".xlsx"):
-            log_and_raise(
-                argparse.ArgumentTypeError("File to be saved needs to be .ini or .xlsx")
-            )
-
-    return file
-
-
 class ParametersController(BaseController):
     """Portfolio Optimization Parameters Controller class"""
 
     CHOICES_COMMANDS = [
         "set",
-        "file",
+        "load",
         "save",
         "new",
         "clear",
@@ -79,64 +59,32 @@ class ParametersController(BaseController):
 
     current_model = ""
     current_file = ""
-    params = configparser.RawConfigParser()
 
     def __init__(
         self,
         file: str,
         queue: List[str] = None,
-        params=None,
+        params: Optional[dict] = None,
         current_model=None,
     ):
         """Constructor"""
         super().__init__(queue)
 
+        self.params: dict = params if params else {}
         self.current_file = file
         self.current_model = current_model
         self.description: Optional[str] = None
-        self.DEFAULT_PATH = os.path.abspath(
-            os.path.join(
-                os.path.dirname(__file__),
-                "..",
-                "..",
-                "..",
-                "..",
-                "portfolio",
-                "optimization",
-            )
-        )
+        self.DATA_FILES = params_helpers.load_data_files()
 
-        self.file_types = ["xlsx", "ini"]
-        self.DATA_FILES = {
-            filepath.name: filepath
-            for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_PATH).rglob(f"*.{file_type}")
-            if filepath.is_file()
-        }
-
-        if params:
-            self.params = params
-        else:
-            pass
-            # TODO: Enable .ini reading
-            # self.params.read(
-            #     os.path.join(
-            #         self.DEFAULT_PATH,
-            #         self.current_file if self.current_file else "defaults.ini",
-            #     )
-            # )
-            # self.params.optionxform = str  # type: ignore
-            # self.params = self.params["OPENBB"]
-
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["set"] = {c: None for c in self.models}
             choices["set"]["--model"] = {c: None for c in self.models}
             choices["set"]["-m"] = "--model"
             choices["arg"] = {c: None for c in AVAILABLE_OPTIONS}
-            choices["file"] = {c: {} for c in self.DATA_FILES}
-            choices["file"]["--file"] = {c: {} for c in self.DATA_FILES}
-            choices["file"]["-f"] = "--file"
+            choices["load"] = {c: {} for c in self.DATA_FILES}
+            choices["load"]["--file"] = {c: {} for c in self.DATA_FILES}
+            choices["load"]["-f"] = "--file"
             choices["save"]["--file"] = None
             choices["save"]["-f"] = "--file"
             choices["arg"] = {
@@ -145,14 +93,21 @@ class ParametersController(BaseController):
                 "--show_arguments": {},
                 "-s": "--show_arguments",
             }
+            self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def update_runtime_choices(self):
+        if session and obbff.USE_PROMPT_TOOLKIT:
+            self.DATA_FILES = params_helpers.load_data_files()
+            self.choices["load"]["--file"] = {c: {} for c in self.DATA_FILES}
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
         mt = MenuText("portfolio/po/params/")
         mt.add_param("_loaded", self.current_file)
         mt.add_raw("\n")
-        mt.add_cmd("file")
+        mt.add_cmd("load")
         mt.add_cmd("save")
         mt.add_raw("\n")
         mt.add_param("_model", self.current_model or "")
@@ -164,8 +119,10 @@ class ParametersController(BaseController):
             mt.add_raw("\n")
             mt.add_info("_parameters_")
             if self.current_model:
+
                 max_len = max(len(k) for k in self.params.keys())
                 for k, v in self.params.items():
+                    v = params_helpers.booltostr(v)
                     all_params = DEFAULT_PARAMETERS + MODEL_PARAMS[self.current_model]
                     if k in all_params:
                         mt.add_raw(
@@ -174,6 +131,7 @@ class ParametersController(BaseController):
             else:
                 max_len = max(len(k) for k in self.params.keys())
                 for k, v in self.params.items():
+                    v = params_helpers.booltostr(v)
                     mt.add_raw(
                         f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
                     )
@@ -197,7 +155,7 @@ class ParametersController(BaseController):
         return []
 
     @log_start_end(log=logger)
-    def call_file(self, other_args: List[str]):
+    def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -215,6 +173,8 @@ class ParametersController(BaseController):
             help="Parameter file to be used",
         )
 
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-f")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -226,8 +186,6 @@ class ParametersController(BaseController):
                 file_location = str(self.current_file)
 
             self.params, self.current_model = params_view.load_file(file_location)
-
-            console.print()
 
     @log_start_end(log=logger)
     def call_save(self, other_args: List[str]):
@@ -242,31 +200,18 @@ class ParametersController(BaseController):
             "-f",
             "--file",
             required=True,
-            type=check_save_file,
+            type=params_helpers.check_save_file,
             dest="file",
             help="Filename to be saved",
         )
 
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-f")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if ns_parser.file.endswith(".ini"):
-                # Create file if it does not exist
-                filepath = os.path.abspath(
-                    os.path.join(
-                        os.path.dirname(__file__),
-                        ns_parser.file,
-                    )
-                )
-                Path(filepath)
+            self.current_file = str(params_view.save_file(ns_parser.file, self.params))
 
-                with open(filepath, "w") as configfile:
-                    self.params.write(configfile)
-
-                self.current_file = ns_parser.file
-                console.print()
-
-            elif ns_parser.file.endswith(".xlsx"):
-                console.print("It is not yet possible to save to .xlsx")
+        self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):
@@ -279,13 +224,7 @@ class ParametersController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if not self.current_file:
-                console.print(
-                    "[red]Load portfolio risk parameters first using `file`.\n[/red]"
-                )
-                return
             self.current_model = ""
-            console.print("")
 
     @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
@@ -314,7 +253,6 @@ class ParametersController(BaseController):
                 )
                 return
             self.current_model = ns_parser.model
-            console.print("")
 
     @log_start_end(log=logger)
     def call_arg(self, other_args: List[str]):

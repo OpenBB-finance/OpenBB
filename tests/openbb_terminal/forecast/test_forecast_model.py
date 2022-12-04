@@ -2,17 +2,14 @@ from typing import Tuple
 import pandas as pd
 import pytest
 from openbb_terminal.forecast import forecast_model as fm
+from openbb_terminal.common import common_model
 from tests.openbb_terminal.forecast import conftest
 
 
 @pytest.mark.parametrize("file_type", ["csv", "xlsx", "swp", "juan"])
 def test_load(file_type):
     path = conftest.create_path("forecast", "data", f"TSLA.{file_type}")
-    if not file_type == "xlsx":
-        fm.load("TSLA", file_type, {"TSLA": path})
-    else:
-        with pytest.raises(ValueError):
-            fm.load("TSLA", file_type, {"TSLA": path})
+    common_model.load(file_type, {"TSLA": path})
 
 
 @pytest.mark.parametrize("name", ["data", None])

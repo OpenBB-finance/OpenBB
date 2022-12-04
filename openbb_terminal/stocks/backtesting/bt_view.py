@@ -149,7 +149,6 @@ def display_simple_ema(
         console.print("Backtesting on intraday data is not yet supported.")
         console.print("Submit a feature request to let us know that you need it here:")
         console.print("https://openbb.co/request-a-feature")
-        console.print("")
         return
 
     # This plot has 1 axis
@@ -178,7 +177,7 @@ def display_simple_ema(
 
 
 @log_start_end(log=logger)
-def display_ema_cross(
+def display_emacross(
     symbol: str,
     data: pd.DataFrame,
     short_ema: int = 20,
@@ -218,7 +217,6 @@ def display_ema_cross(
         console.print("Backtesting on intraday data is not yet supported.")
         console.print("Submit a feature request to let us know that you need it here:")
         console.print("https://openbb.co/request-a-feature")
-        console.print("")
         return
 
     # This plot has 1 axis
@@ -229,7 +227,7 @@ def display_ema_cross(
     else:
         return
 
-    res = bt_model.ema_cross_strategy(
+    res = bt_model.emacross_strategy(
         symbol, data, short_ema, long_ema, spy_bt, no_bench, shortable
     )
     res.plot(title=f"EMA Cross for EMA({short_ema})/EMA({long_ema})", ax=ax)
@@ -240,7 +238,7 @@ def display_ema_cross(
         theme.visualize_output()
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "ema_cross", res.stats
+        export, os.path.dirname(os.path.abspath(__file__)), "emacross", res.stats
     )
     return
 
@@ -290,7 +288,6 @@ def display_rsi_strategy(
         console.print("Backtesting on intraday data is not yet supported.")
         console.print("Submit a feature request to let us know that you need it here:")
         console.print("https://openbb.co/request-a-feature")
-        console.print("")
         return
 
     # This plot has 1 axis

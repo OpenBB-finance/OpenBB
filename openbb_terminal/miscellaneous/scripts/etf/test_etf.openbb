@@ -1,0 +1,15 @@
+etf
+load spy
+overview
+holdings
+weights
+weights -m 10
+summary
+candle
+candle --raw
+candle --sort adjclose --reverse --raw
+candle -t --ma 4
+news
+pir
+compare spy,ivv
+exit

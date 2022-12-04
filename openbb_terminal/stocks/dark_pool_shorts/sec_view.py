@@ -18,6 +18,7 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
 )
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.dark_pool_shorts import sec_model
 
 logger = logging.getLogger(__name__)
@@ -26,9 +27,9 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def fails_to_deliver(
     symbol: str,
-    data: pd.DataFrame,
-    start_date: str = (datetime.now() - timedelta(days=60)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    data: pd.DataFrame = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     limit: int = 0,
     raw: bool = False,
     export: str = "",
@@ -42,9 +43,9 @@ def fails_to_deliver(
         Stock ticker
     data: pd.DataFrame
         Stock data
-    start_date: str
+    start_date: Optional[str]
         Start of data, in YYYY-MM-DD format
-    end_date: str
+    end_date: Optional[str]
         End of data, in YYYY-MM-DD format
     limit : int
         Number of latest fails-to-deliver being printed
@@ -56,6 +57,18 @@ def fails_to_deliver(
         External axes (2 axes are expected in the list), by default None
 
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=60)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
+    if data is None:
+        data = stocks_helper.load(
+            symbol=symbol, start_date=start_date, end_date=end_date
+        )
+
     ftds_data = sec_model.get_fails_to_deliver(symbol, start_date, end_date, limit)
 
     # This plot has 2 axes

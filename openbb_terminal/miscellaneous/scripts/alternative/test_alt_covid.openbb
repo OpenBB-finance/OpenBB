@@ -1,0 +1,10 @@
+alternative
+covid
+country ${country=Australia}
+reset
+slopes
+ov
+deaths
+cases
+rates
+exit

@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
     reindex_dates,
     is_valid_axes_count,
 )
+from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +36,7 @@ def display_adx(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot ADX indicator
+    """Plots ADX indicator
 
     Parameters
     ----------
@@ -55,9 +56,7 @@ def display_adx(
         External axes (2 axes are expected in the list), by default None
     """
     df_ta = trend_indicators_model.adx(
-        high_values=data["High"],
-        low_values=data["Low"],
-        close_values=data["Adj Close"],
+        data=data,
         window=window,
         scalar=scalar,
         drift=drift,
@@ -127,7 +126,7 @@ def display_aroon(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot Aroon indicator
+    """Plots Aroon indicator
 
     Parameters
     ----------
@@ -145,8 +144,7 @@ def display_aroon(
         External axes (3 axes are expected in the list), by default None
     """
     df_ta = trend_indicators_model.aroon(
-        high_values=data["High"],
-        low_values=data["Low"],
+        data=data,
         window=window,
         scalar=scalar,
     )
@@ -164,7 +162,10 @@ def display_aroon(
     else:
         return
 
-    ax1.plot(plot_data.index, plot_data["Adj Close"].values)
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
+    ax1.plot(plot_data.index, plot_data[close_col].values)
     ax1.set_title(f"Aroon on {symbol}")
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Price")

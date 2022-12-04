@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import configparser
 import logging
 import os
-from typing import List, Optional
+from typing import List, Optional, Union
 
 import matplotlib.pyplot as plt
 
@@ -38,21 +38,22 @@ def view_available_presets(preset: str):
         preset_choices = syncretism_model.get_preset_choices()
         preset_filter.read(preset_choices[preset])
         filters_headers = ["FILTER"]
-        console.print("")
 
-        for filter_header in filters_headers:
+        for i, filter_header in enumerate(filters_headers):
             console.print(f" - {filter_header} -")
             d_filters = {**preset_filter[filter_header]}
             d_filters = {k: v for k, v in d_filters.items() if v}
+
             if d_filters:
                 max_len = len(max(d_filters, key=len)) + 2
                 for key, value in d_filters.items():
                     console.print(f"{key}{(max_len-len(key))*' '}: {value}")
-            console.print("")
+
+            if i < len(filters_headers) - 1:
+                console.print("\n")
 
     else:
         console.print("Please provide a preset template.")
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -106,12 +107,12 @@ def view_screener_output(
 def view_historical_greeks(
     symbol: str,
     expiry: str,
-    strike: float,
+    strike: Union[float, str],
     greek: str = "Delta",
     chain_id: str = "",
     put: bool = False,
     raw: bool = False,
-    limit: int = 20,
+    limit: Union[int, str] = 20,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -123,7 +124,7 @@ def view_historical_greeks(
         Stock ticker
     expiry: str
         Expiration date
-    strike: float
+    strike: Union[str, float]
         Strike price to consider
     greek: str
         Greek variable to plot
@@ -141,10 +142,25 @@ def view_historical_greeks(
         External axes (1 axis is expected in the list), by default None
     """
     df = syncretism_model.get_historical_greeks(symbol, expiry, strike, chain_id, put)
+    if df is None:
+        return
+    if df.empty:
+        return
 
+    if isinstance(limit, str):
+        try:
+            limit = int(limit)
+        except ValueError:
+            console.print(
+                f"[red]Could not convert limit of {limit} to a number.[/red]\n"
+            )
+            return
     if raw:
         print_rich_table(
-            df.tail(limit), headers=list(df.columns), title="Historical Greeks"
+            df.tail(limit),
+            headers=list(df.columns),
+            title="Historical Greeks",
+            show_index=True,
         )
 
     if not external_axes:
@@ -154,7 +170,12 @@ def view_historical_greeks(
     else:
         return
 
-    im1 = ax.plot(df.index, df[greek], label=greek.title(), color=theme.up_color)
+    try:
+        greek_df = df[greek.lower()]
+    except KeyError:
+        console.print(f"[red]Could not find greek {greek} in data.[/red]\n")
+        return
+    im1 = ax.plot(df.index, greek_df, label=greek.title(), color=theme.up_color)
     ax.set_ylabel(greek)
     ax1 = ax.twinx()
     im2 = ax1.plot(df.index, df.price, label="Stock Price", color=theme.down_color)

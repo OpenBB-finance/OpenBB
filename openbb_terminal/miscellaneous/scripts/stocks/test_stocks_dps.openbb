@@ -1,0 +1,16 @@
+stocks
+dps
+shorted
+ctb
+ctb -source stocksera
+hsi
+pos
+sidtc
+load -t ${ticker=gme}
+spos
+psi
+ftd
+load ${ticker=aapl} -i 5
+ftd -n 5 --raw
+dpotc
+exit

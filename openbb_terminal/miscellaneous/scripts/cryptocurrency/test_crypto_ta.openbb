@@ -1,0 +1,67 @@
+crypto
+load ${crypto=eth}
+
+tv
+
+ema
+ema -l 100 -o 10
+
+sma
+sma -l 100 -o 10
+
+wma
+wma -l 100 -o 10
+
+hma
+hma -l 100 -o 10
+
+zlma
+zlma -l 100 -o 10
+
+# vwap
+
+cci
+cci --length 10 --scalar 10
+
+macd
+macd --fast 10 --slow 10 --signal 5
+
+rsi
+rsi -l 10 -s 10 -d 2
+
+stoch
+stoch -k 10 -d 10 --slowkperiod 2
+
+fisher
+fisher --length 10
+
+cg
+cg --length 10
+
+adx
+adx -l 10 -s 10 -d 10
+
+aroon
+aroon -l 10 -s 10
+
+bbands
+bbands -l 10 -s 0.5 -m ema
+
+donchian
+donchian -u 10 -l 10
+
+kc
+kc -l 10 -s 10 -m sma -o 1
+
+ad
+
+adosc
+adosc --open --fast 10 --slow 10
+
+obv
+
+fib
+fib --period 10 --start 2022-01-01 --end 2022-03-03
+
+exit
+

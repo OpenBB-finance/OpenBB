@@ -21,8 +21,6 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_ark_orders(
-    sortby: str = "",
-    ascend: bool = False,
     buys_only: bool = False,
     sells_only: bool = False,
     fund: str = "",
@@ -32,10 +30,6 @@ def get_ark_orders(
 
     Parameters
     ----------
-    sortby: str
-        Column to sort on
-    ascend: bool
-        Flag to sort in ascending order
     buys_only: bool
         Flag to filter on buys only
     sells_only: bool
@@ -46,8 +40,8 @@ def get_ark_orders(
     Returns
     -------
     DataFrame
-        ARK orders data frame with the following columns:
-        ticker, date, shares, weight, fund, direction
+        ARK orders data frame with the following columns -
+        (ticker, date, shares, weight, fund, direction)
     """
     url_orders = "https://cathiesark.com/ark-funds-combined/trades"
 
@@ -102,9 +96,6 @@ def get_ark_orders(
     if sells_only:
         df_orders = df_orders[df_orders.direction == "Sell"]
 
-    if sortby:
-        df_orders = df_orders.sort_values(by=sortby, ascending=ascend)
-
     return df_orders
 
 
@@ -116,20 +107,18 @@ def add_order_total(data: DataFrame) -> DataFrame:
     Parameters
     ----------
     data: DataFrame
-        ARK orders data frame with the following columns:
-        ticker, date, shares, weight, fund, direction
+        ARK orders data frame with the following columns -
+        (ticker, date, shares, weight, fund, direction)
 
     Returns
     -------
     DataFrame
-        ARK orders data frame with the following columns:
-        ticker, date, shares, volume, open, close, high, low, total, weight, fund, direction
+        ARK orders data frame with the following columns -
+        (ticker, date, shares, volume, open, close, high, low, total, weight, fund, direction)
     """
     start_date = data["date"].iloc[-1] - timedelta(days=1)
 
     tickers = " ".join(data["ticker"].unique())
-
-    console.print("")
 
     prices = yf.download(tickers, start=start_date, progress=False)
 

@@ -7,6 +7,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.forex.quantitative_analysis import qa_controller
+from tests.test_helpers import no_dfs
 
 
 DF_PAIR = pd.DataFrame.from_dict(
@@ -307,14 +308,14 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_raw",
-            ["--limit=1", "--descend", "--export=csv"],
+            ["--limit=1", "--reverse", "--export=csv"],
             "qa_view.display_raw",
             [],
             dict(
-                data=QA_CONTROLLER.data[QA_CONTROLLER.target],
+                data=QA_CONTROLLER.data,
                 limit=1,
                 sortby="",
-                descend=True,
+                ascend=True,
                 export="csv",
             ),
         ),
@@ -330,14 +331,14 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_hist",
-            ["--bins=1"],
+            ["--bins=10"],
             "qa_view.display_hist",
             [],
             dict(
                 symbol=QA_CONTROLLER.ticker,
                 data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
-                bins=1,
+                bins=10,
             ),
         ),
         (
@@ -366,14 +367,14 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_rolling",
-            ["--window=1", "--export=csv"],
+            ["--window=5", "--export=csv"],
             "rolling_view.display_mean_std",
             [],
             dict(
                 symbol=QA_CONTROLLER.ticker,
                 data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
-                window=1,
+                window=5,
                 export="csv",
             ),
         ),
@@ -404,66 +405,66 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_acf",
-            ["--lags=1"],
+            ["--lags=5"],
             "qa_view.display_acf",
             [],
             dict(
                 symbol=QA_CONTROLLER.ticker,
                 data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
-                lags=1,
+                lags=5,
             ),
         ),
         (
             "call_spread",
-            ["--window=1", "--export=csv"],
+            ["--window=5", "--export=csv"],
             "rolling_view.display_spread",
             [],
             dict(
                 symbol=QA_CONTROLLER.ticker,
                 data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
-                window=1,
+                window=5,
                 export="csv",
             ),
         ),
         (
             "call_quantile",
-            ["--window=1", "--quantile=0.1", "--export=csv"],
+            ["--window=5", "--quantile=0.1", "--export=csv"],
             "rolling_view.display_quantile",
             [],
             dict(
                 symbol=QA_CONTROLLER.ticker,
                 data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
-                window=1,
+                window=5,
                 quantile=0.1,
                 export="csv",
             ),
         ),
         (
             "call_skew",
-            ["--window=1", "--export=csv"],
+            ["--window=5", "--export=csv"],
             "rolling_view.display_skew",
             [],
             dict(
                 symbol=QA_CONTROLLER.ticker,
                 data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
-                window=1,
+                window=5,
                 export="csv",
             ),
         ),
         (
             "call_kurtosis",
-            ["--window=1", "--export=csv"],
+            ["--window=5", "--export=csv"],
             "rolling_view.display_kurtosis",
             [],
             dict(
                 symbol=QA_CONTROLLER.ticker,
                 data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
-                window=1,
+                window=5,
                 export="csv",
             ),
         ),
@@ -516,7 +517,7 @@ def test_call_func(
 
         getattr(QA_CONTROLLER, tested_func)(other_args=other_args)
 
-        if called_args or called_kwargs:
+        if called_args or called_kwargs and no_dfs(called_args, called_kwargs):
             mock.assert_called_once_with(*called_args, **called_kwargs)
         else:
             mock.assert_called_once()

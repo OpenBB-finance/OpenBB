@@ -170,9 +170,10 @@ def test_call_cls(mocker):
                 "quit",
                 "quit",
                 "quit",
+                "quit",
             ],
         ),
-        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "quit", "help"]),
         ("call_home", [], ["quit", "quit"]),
         ("call_help", [], []),
         ("call_quit", [], ["quit"]),
@@ -285,6 +286,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 symbols=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
+                export="",
             ),
         ),
         (
@@ -299,6 +301,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 symbols=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
+                export="csv",
             ),
         ),
         (
@@ -313,6 +316,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 symbols=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
+                export="csv",
             ),
         ),
         (
@@ -446,9 +450,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
     "func",
     [
         "call_ticker",
-        "call_getpoly",
-        "call_getfinnhub",
-        "call_getfinviz",
+        "call_get",
         "call_set",
         "call_add",
         "call_rmv",
@@ -501,19 +503,19 @@ def test_call_ticker(mocker):
     "tested_func, mocked_func, other_args",
     [
         (
-            "call_getfinviz",
+            "call_get",
             "finviz_compare_model.get_similar_companies",
-            ["--nocountry"],
+            ["--nocountry", "--source=Finviz"],
         ),
         (
-            "call_getpoly",
+            "call_get",
             "polygon_model.get_similar_companies",
-            ["--us_only"],
+            ["--us_only", "--source=Polygon"],
         ),
         (
-            "call_getfinnhub",
+            "call_get",
             "finnhub_model.get_similar_companies",
-            [],
+            ["--source=Finnhub"],
         ),
     ],
 )

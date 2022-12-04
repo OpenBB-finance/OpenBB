@@ -19,6 +19,7 @@ def _make_request(endpoint: str) -> dict:
     ----------
     endpoint: str
         endpoint url
+
     Returns
     -------
     dict:

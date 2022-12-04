@@ -11,9 +11,6 @@ from matplotlib import ticker
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
-from openbb_terminal.cryptocurrency.dataframe_helpers import (
-    lambda_replace_underscores_in_column_names,
-)
 from openbb_terminal.cryptocurrency.defi import llama_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -31,7 +28,7 @@ logger = logging.getLogger(__name__)
 def display_grouped_defi_protocols(
     limit: int = 50, export: str = "", external_axes: Optional[List[plt.Axes]] = None
 ) -> None:
-    """Display top dApps (in terms of TVL) grouped by chain.
+    """Plots top dApps (in terms of TVL) grouped by chain.
     [Source: https://docs.llama.fi/api]
 
     Parameters
@@ -44,7 +41,7 @@ def display_grouped_defi_protocols(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df = llama_model.get_defi_protocols(limit)
+    df = llama_model.get_defi_protocols(limit, drop_chain=False)
     chains = llama_model.get_grouped_defi_protocols(limit)
 
     # This plot has 1 axis
@@ -58,13 +55,13 @@ def display_grouped_defi_protocols(
     colors = iter(cfg.theme.get_colors(reverse=True))
 
     for chain in chains:
-        chain_filter = df.loc[df.chain == chain]
+        chain_filter = df.loc[df.Chain == chain]
         ax.barh(
             y=chain_filter.index,
-            width=chain_filter.tvl,
+            width=chain_filter["TVL ($)"],
             label=chain,
             height=0.5,
-            color=next(colors),
+            color=next(colors, "#B6A9CB"),
         )
 
     ax.set_xlabel("Total Value Locked ($)")
@@ -95,13 +92,13 @@ def display_grouped_defi_protocols(
 
 @log_start_end(log=logger)
 def display_defi_protocols(
-    limit: int,
     sortby: str,
+    limit: int = 20,
     ascend: bool = False,
     description: bool = False,
     export: str = "",
 ) -> None:
-    """Display information about listed DeFi protocols, their current TVL and changes to it in
+    """Prints table showing information about listed DeFi protocols, their current TVL and changes to it in
     the last hour/day/week. [Source: https://docs.llama.fi/api]
 
     Parameters
@@ -118,37 +115,7 @@ def display_defi_protocols(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = llama_model.get_defi_protocols()
-    df_data = df.copy()
-
-    df = df.sort_values(by=sortby, ascending=ascend)
-    df = df.drop(columns="chain")
-
-    df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))
-
-    if not description:
-        df.drop(["description", "url"], axis=1, inplace=True)
-    else:
-        df = df[
-            [
-                "name",
-                "symbol",
-                "category",
-                "description",
-                "url",
-            ]
-        ]
-
-    df.columns = [lambda_replace_underscores_in_column_names(val) for val in df.columns]
-    df.rename(
-        columns={
-            "Change 1H": "Change 1H (%)",
-            "Change 1D": "Change 1D (%)",
-            "Change 7D": "Change 7D (%)",
-            "Tvl": "TVL ($)",
-        },
-        inplace=True,
-    )
+    df = llama_model.get_defi_protocols(limit, sortby, ascend, description)
 
     print_rich_table(df.head(limit), headers=list(df.columns), show_index=False)
 
@@ -156,7 +123,7 @@ def display_defi_protocols(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ldapps",
-        df_data,
+        df,
     )
 
 
@@ -166,7 +133,7 @@ def display_historical_tvl(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Displays historical TVL of different dApps
+    """Plots historical TVL of different dApps
     [Source: https://docs.llama.fi/api]
 
     Parameters
@@ -223,7 +190,7 @@ def display_defi_tvl(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Displays historical values of the total sum of TVLs from all listed protocols.
+    """Plots historical values of the total sum of TVLs from all listed protocols.
     [Source: https://docs.llama.fi/api]
 
     Parameters

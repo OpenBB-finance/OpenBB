@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.27.1
     method: GET
-    uri: https://api.coingecko.com/api/v3/coins/markets?order=market_cap_desc&per_page=250&sparkline=false&price_change_percentage=1h,24h,7d,14d,30d,200d,1y&vs_currency=usd
+    uri: https://api.coingecko.com/api/v3/coins/markets?order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=1h,24h,7d,14d,30d,200d,1y&vs_currency=usd
   response:
     body:
       string: !!binary |

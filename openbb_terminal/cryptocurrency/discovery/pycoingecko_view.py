@@ -33,9 +33,13 @@ COINS_COLUMNS = [
 
 @log_start_end(log=logger)
 def display_coins(
-    category: str, limit: int = 250, sortby: str = "Symbol", export: str = ""
+    category: str,
+    limit: int = 250,
+    sortby: str = "Symbol",
+    export: str = "",
+    ascend: bool = False,
 ) -> None:
-    """Display top coins [Source: CoinGecko]
+    """Prints table showing top coins [Source: CoinGecko]
 
     Parameters
     ----------
@@ -47,8 +51,15 @@ def display_coins(
         Key to sort data
     export : str
         Export dataframe data to csv,json,xlsx file
+    ascend: bool
+        Sort data in ascending order
     """
-    df = pycoingecko_model.get_coins(limit=limit, category=category, sortby=sortby)
+    df = pycoingecko_model.get_coins(
+        limit=limit,
+        category=category,
+        sortby=sortby,
+        ascend=ascend,
+    )
     if not df.empty:
         df = df[
             [
@@ -64,7 +75,7 @@ def display_coins(
         df = df.set_axis(
             COINS_COLUMNS,
             axis=1,
-            inplace=False,
+            copy=True,
         )
         for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
@@ -92,7 +103,7 @@ def display_gainers(
     sortby: str = "market_cap_rank",
     export: str = "",
 ) -> None:
-    """Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
+    """Prints table showing Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
     Parameters
     ----------
@@ -108,14 +119,13 @@ def display_gainers(
     """
 
     df = pycoingecko_model.get_gainers(limit=limit, interval=interval, sortby=sortby)
+
     if not df.empty:
-        if sortby in COINS_COLUMNS:
-            df = df[
-                (df["total_volume"].notna()) & (df["market_cap"].notna())
-            ].sort_values(by=sortby, ascending=True)
-        for col in ["total_volume", "market_cap"]:
+
+        for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
+
         print_rich_table(
             df.head(limit),
             headers=list(df.columns),
@@ -139,7 +149,7 @@ def display_losers(
     export: str = "",
     sortby: str = "Market Cap Rank",
 ) -> None:
-    """Shows Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
+    """Prints table showing Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
 
     Parameters
     ----------
@@ -155,10 +165,13 @@ def display_losers(
     """
 
     df = pycoingecko_model.get_losers(limit=limit, interval=interval, sortby=sortby)
+
     if not df.empty:
+
         for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
+
         print_rich_table(
             df.head(limit),
             headers=list(df.columns),
@@ -177,7 +190,7 @@ def display_losers(
 
 @log_start_end(log=logger)
 def display_trending(export: str = "") -> None:
-    """Display trending coins [Source: CoinGecko]
+    """Prints table showing trending coins [Source: CoinGecko]
 
     Parameters
     ----------

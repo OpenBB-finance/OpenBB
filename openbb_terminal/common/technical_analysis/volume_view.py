@@ -18,6 +18,8 @@ from openbb_terminal.helper_funcs import (
     reindex_dates,
     is_valid_axes_count,
 )
+from openbb_terminal.rich_config import console
+from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +32,7 @@ def display_ad(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot AD technical indicator
+    """Plots AD technical indicator
 
     Parameters
     ----------
@@ -49,7 +51,14 @@ def display_ad(
     df_vol = data["Volume"] / divisor
     df_vol.name = "Adj Volume"
     df_ta = volume_model.ad(data, use_open)
-    df_cal = df_ta["AD"] / divisor
+    # check if AD exists in dataframe
+    if "AD" in df_ta.columns:
+        df_cal = df_ta["AD"] / divisor
+    elif "ADo" in df_ta.columns:
+        df_cal = df_ta["ADo"] / divisor
+    else:
+        console.print("AD not found in dataframe")
+        return
     df_cal.name = "Adj AD"
 
     plot_data = pd.merge(data, df_vol, how="outer", left_index=True, right_index=True)
@@ -76,7 +85,10 @@ def display_ad(
     else:
         return
 
-    ax1.plot(plot_data.index, plot_data["Adj Close"].values)
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
+    ax1.plot(plot_data.index, plot_data[close_col].values)
     ax1.set_title(f"{symbol} AD", x=0.04, y=1)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Price")
@@ -135,7 +147,7 @@ def display_adosc(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display AD Osc Indicator
+    """Plots AD Osc Indicator
 
     Parameters
     ----------
@@ -144,7 +156,7 @@ def display_adosc(
     use_open : bool
         Whether to use open prices in calculation
     fast: int
-         Length of fast window
+        Length of fast window
     slow : int
         Length of slow window
     symbol : str
@@ -240,7 +252,7 @@ def display_obv(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot OBV technical indicator
+    """Plots OBV technical indicator
 
     Parameters
     ----------
@@ -284,7 +296,10 @@ def display_obv(
     else:
         return
 
-    ax1.plot(plot_data.index, plot_data["Adj Close"].values)
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
+    ax1.plot(plot_data.index, plot_data[close_col].values)
     ax1.set_title(f"{symbol} OBV")
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Price")

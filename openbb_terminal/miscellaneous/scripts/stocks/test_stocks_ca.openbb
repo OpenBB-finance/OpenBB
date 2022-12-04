@@ -1,0 +1,32 @@
+stocks
+load ${ticker=aapl}
+ca
+tsne
+historical
+historical -t o -n
+hcorr
+hcorr --raw
+hcorr -t h --display-full-matrix
+volume
+ticker ${ticker=msft}
+income
+income -t 31-Mar-2022 -q
+balance
+balance -t 31-Mar-2022 -q
+cashflow
+cashflow -t 31-Mar-2022 -q
+sentiment
+sentiment -r
+scorr
+scorr -h
+overview
+valuation
+financial
+ownership
+performance
+technical
+ticker -t ${ticker=tsla}
+get --source Polygon
+get --source Finnhub
+get
+exit

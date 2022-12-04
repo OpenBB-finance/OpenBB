@@ -1,0 +1,44 @@
+stocks
+load ${ticker=aapl}
+fa
+income -l 2 --source YahooFinance
+income -l 2 --source Polygon
+income -l 2 --source AlphaVantage
+income -l 2 --source FinancialModelingPrep
+balance -l 2 --source YahooFinance
+balance -l 2 --source Polygon
+balance -l 2 --source AlphaVantage
+balance -l 2 --source FinancialModelingPrep
+cash -l 2 --source YahooFinance
+cash -l 2 --source Polygon
+cash -l 2 --source AlphaVantage
+cash -l 2 --source FinancialModelingPrep
+data
+mgmt
+analysis
+score
+profile
+quote
+enterprise
+metrics
+ratios
+growth
+warnings
+warnings -d
+dcfc
+info
+mktcap
+shrs
+shrs major
+shrs mutualfund
+sust
+cal
+divs
+divs -p
+splits
+overview
+key
+earnings --source YahooFinance
+earnings --source AlphaVantage
+fraud
+dupont

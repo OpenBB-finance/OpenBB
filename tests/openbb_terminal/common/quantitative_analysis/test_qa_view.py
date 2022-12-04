@@ -25,12 +25,12 @@ def test_display_summary():
 
 @pytest.mark.parametrize("df_use, external", [(df, None), (df2, None), (df, [1, 2])])
 def test_display_hist(df_use, external):
-    qa_view.display_hist("Data", df_use, "col2", 2, external)
+    qa_view.display_hist(df_use, "col2", "Data", 2, external)
 
 
 def test_display_hist_fail():
     with pytest.raises(Exception):
-        qa_view.display_hist("Data", df, "col1", 2, [MagicMock()])
+        qa_view.display_hist(df, "col1", "Data", 2, [MagicMock()])
 
 
 @pytest.mark.parametrize("external", [None, [1, 2]])
@@ -97,7 +97,6 @@ def test_display_line(y, external):
         markers_scatter=dates,
         external_axes=external,
         title=True,
-        draw=False,
     )
 
 

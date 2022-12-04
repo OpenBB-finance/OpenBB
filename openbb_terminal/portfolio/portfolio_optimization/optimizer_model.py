@@ -1,13 +1,17 @@
 """Optimization Model"""
 __docformat__ = "numpy"
 
-# pylint: disable=R0913, C0302, E1101
+# pylint: disable=R0913, C0302, E1101, line-too-long
+# flake8: noqa: E501
 
 import logging
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 from datetime import date
 
+
 import numpy as np
+from numpy.typing import NDArray
+from numpy import floating
 import pandas as pd
 import riskfolio as rp
 from dateutil.relativedelta import relativedelta, FR
@@ -17,7 +21,11 @@ from scipy.interpolate import interp1d
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio.portfolio_optimization import (
     yahoo_finance_model,
-    optimizer_helper,
+)
+from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import (
+    get_kwarg,
+    validate_risk_measure,
+    valid_property_infos,
 )
 from openbb_terminal.rich_config import console
 
@@ -162,55 +170,48 @@ def d_period(interval: str = "1y", start_date: str = "", end_date: str = ""):
 @log_start_end(log=logger)
 def get_equal_weights(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    value: float = 1.0,
-) -> Tuple:
+    **kwargs,
+) -> Union[Tuple[Dict[str, float], pd.DataFrame], None]:
     """Equally weighted portfolio, where weight = 1/# of symbols
 
     Parameters
     ----------
     symbols : List[str]
-        List of portfolio stocks
+        List of symbols to be included in the portfolio
     interval : str, optional
-        interval to get stock data, by default "3mo"
+        Interval to get data, by default "3y"
     start_date: str, optional
-        If not using interval, start date string (YYYY-MM-DD)
+        If not using interval, start date string (YYYY-MM-DD), by default ""
     end_date: str, optional
-        If not using interval, end date string (YYYY-MM-DD). If empty use last
-        weekday.
+        If not using interval, end date string (YYYY-MM-DD). If empty use last weekday, by default ""
     log_returns: bool, optional
-        If True calculate log returns, else arithmetic returns. Default value
-        is False
+        If True use log returns, else arithmetic returns, by default False
     freq: str, optional
-        The frequency used to calculate returns. Default value is 'D'. Possible
-        values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
-
+        Frequency of returns, by default "D". Options: "D" for daily, "W" for weekly, "M" for monthly
     maxnan: float
-        Max percentage of nan values accepted per asset to be included in
-        returns.
+        Maximum percentage of NaNs allowed in the data, by default 0.05
     threshold: float
-        Value used to replace outliers that are higher to threshold.
+        Value used to replace outliers that are higher than threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     value : float, optional
         Amount to allocate.  Returns percentages if set to 1.
 
     Returns
     -------
-    dict
-        Dictionary of weights where keys are the tickers
+    Union[Tuple[Dict[str, float], pd.DataFrame], None]
+        Dictionary of weights where keys are the tickers, dataframe of stock returns
     """
+
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -232,17 +233,8 @@ def get_equal_weights(
 @log_start_end(log=logger)
 def get_property_weights(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    s_property: str = "marketCap",
-    value: float = 1.0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[Dict[str, Any]], Optional[pd.DataFrame]]:
     """Calculate portfolio weights based on selected property
 
     Parameters
@@ -262,18 +254,16 @@ def get_property_weights(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
-
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
         returns.
     threshold: float
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     s_property : str
         Property to weight portfolio by
     value : float, optional
@@ -281,9 +271,21 @@ def get_property_weights(
 
     Returns
     -------
-    Dict
+    Tuple[Dict[str, Any], pd.DataFrame]
         Dictionary of portfolio weights or allocations
     """
+
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+
+    s_property = get_kwarg("s_property", kwargs, default="marketCap")
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -318,27 +320,8 @@ def get_property_weights(
 @log_start_end(log=logger)
 def get_mean_risk_portfolio(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    objective: str = "Sharpe",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    target_risk: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0.0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a mean risk optimal portfolio
 
     Parameters
@@ -358,9 +341,10 @@ def get_mean_risk_portfolio(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
@@ -368,8 +352,7 @@ def get_mean_risk_portfolio(
     threshold: float
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     objective: str
         Objective function of the optimization model.
         The default is 'Sharpe'. Possible values are:
@@ -414,28 +397,24 @@ def get_mean_risk_portfolio(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -447,9 +426,35 @@ def get_mean_risk_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
+
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+    value_short = get_kwarg("value_short", kwargs)
+
+    risk_measure = get_kwarg("risk_measure", kwargs)
+    objective = get_kwarg("objective", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    risk_aversion = get_kwarg("risk_aversion", kwargs)
+    alpha = get_kwarg("alpha", kwargs)
+    target_return = get_kwarg("target_return", kwargs)
+    target_risk = get_kwarg("target_risk", kwargs)
+    mean = get_kwarg("mean", kwargs)
+    covariance = get_kwarg("covariance", kwargs)
+    d_ewma = get_kwarg("d_ewma", kwargs)
+
+    risk_measure = validate_risk_measure(risk_measure)
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -461,49 +466,70 @@ def get_mean_risk_portfolio(
         threshold=threshold,
         method=method,
     )
+    if stock_returns.empty:
+        console.print(
+            "[red]Not enough data points in range to run calculations.[/red]\n"
+        )
+        return {}, pd.DataFrame()
+
+    if stock_returns.shape[1] < 2:
+        console.print(
+            f"[red]Given the parameters could only get data for '{stock_returns.columns[0]}'.[/red]\n"
+            "[red]Optimization needs at least two assets.[/red]\n",
+        )
+        return {}, pd.DataFrame()
+
+    first_day = stock_returns.index[0].strftime("%Y-%m-%d")
+    console.print(
+        f"[yellow]First day of data respecting parameters: {first_day}[/yellow]\n"
+    )
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+    try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns, alpha=alpha)
 
-    # Estimate input parameters:
-    port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
+        # Estimate input parameters:
+        port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
 
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
-
-    # Estimate optimal portfolio:
-    model = "Classic"
-    hist = True
-
-    if target_return > -1:
-        port.lowerret = float(target_return) / time_factor[freq.upper()]
-
-    if target_risk > -1:
-        if risk_measure not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
-            setattr(
-                port,
-                upper_risk[risk_measure],
-                float(target_risk) / time_factor[freq.upper()] ** 0.5,
-            )
+        # Budget constraints
+        port.upperlng = value
+        if value_short > 0:
+            port.sht = True
+            port.uppersht = value_short
+            port.budget = value - value_short
         else:
-            setattr(port, upper_risk[risk_measure], float(target_risk))
+            port.budget = value
 
-    weights = port.optimization(
-        model=model,
-        rm=risk_measure,
-        obj=objective,
-        rf=risk_free_rate,
-        l=risk_aversion,
-        hist=hist,
-    )
+        # Estimate optimal portfolio:
+        model = "Classic"
+        hist = True
+
+        if target_return > -1:
+            port.lowerret = float(target_return) / time_factor[freq.upper()]
+
+        if target_risk > -1:
+            if risk_measure not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
+                setattr(
+                    port,
+                    upper_risk[risk_measure],
+                    float(target_risk) / time_factor[freq.upper()] ** 0.5,
+                )
+            else:
+                setattr(port, upper_risk[risk_measure], float(target_risk))
+
+        weights = port.optimization(
+            model=model,
+            rm=risk_measure,
+            obj=objective,
+            rf=risk_free_rate,
+            l=risk_aversion,
+            hist=hist,
+        )
+
+    except Exception as _:
+        weights = None
 
     if weights is not None:
         weights = weights.round(5)
@@ -515,26 +541,8 @@ def get_mean_risk_portfolio(
 @log_start_end(log=logger)
 def get_max_sharpe(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    target_risk: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0.0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a maximal return/risk ratio portfolio
 
@@ -555,9 +563,10 @@ def get_max_sharpe(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -565,8 +574,7 @@ def get_max_sharpe(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -599,28 +607,24 @@ def get_max_sharpe(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -632,31 +636,15 @@ def get_max_sharpe(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
+
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-        risk_measure=risk_choices[risk_measure.lower()],
         objective=objectives_choices["sharpe"],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        target_return=target_return,
-        target_risk=target_risk,
-        mean=mean,
-        covariance=covariance,
-        d_ewma=d_ewma,
-        value=value,
-        value_short=value_short,
+        **kwargs,
     )
 
     return weights, stock_returns
@@ -665,26 +653,8 @@ def get_max_sharpe(
 @log_start_end(log=logger)
 def get_min_risk(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    target_risk: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0.0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a maximal return/risk ratio portfolio
 
@@ -705,9 +675,10 @@ def get_min_risk(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -715,8 +686,7 @@ def get_min_risk(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -749,28 +719,24 @@ def get_min_risk(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -782,31 +748,15 @@ def get_min_risk(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
+
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-        risk_measure=risk_choices[risk_measure.lower()],
         objective=objectives_choices["minrisk"],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        target_return=target_return,
-        target_risk=target_risk,
-        mean=mean,
-        covariance=covariance,
-        d_ewma=d_ewma,
-        value=value,
-        value_short=value_short,
+        **kwargs,
     )
 
     return weights, stock_returns
@@ -815,26 +765,8 @@ def get_min_risk(
 @log_start_end(log=logger)
 def get_max_util(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    target_risk: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0.0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a maximal return/risk ratio portfolio
 
@@ -855,9 +787,10 @@ def get_max_util(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -865,8 +798,7 @@ def get_max_util(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -899,28 +831,24 @@ def get_max_util(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -932,31 +860,15 @@ def get_max_util(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
+
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-        risk_measure=risk_choices[risk_measure.lower()],
         objective=objectives_choices["utility"],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        target_return=target_return,
-        target_risk=target_risk,
-        mean=mean,
-        covariance=covariance,
-        d_ewma=d_ewma,
-        value=value,
-        value_short=value_short,
+        **kwargs,
     )
 
     return weights, stock_returns
@@ -965,26 +877,8 @@ def get_max_util(
 @log_start_end(log=logger)
 def get_max_ret(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    target_risk: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0.0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a maximal return/risk ratio portfolio
 
@@ -1005,9 +899,10 @@ def get_max_ret(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1015,8 +910,7 @@ def get_max_ret(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -1049,28 +943,24 @@ def get_max_ret(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1082,31 +972,14 @@ def get_max_ret(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-        risk_measure=risk_choices[risk_measure.lower()],
         objective=objectives_choices["maxret"],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        target_return=target_return,
-        target_risk=target_risk,
-        mean=mean,
-        covariance=covariance,
-        d_ewma=d_ewma,
-        value=value,
-        value_short=value_short,
+        **kwargs,
     )
 
     return weights, stock_returns
@@ -1115,19 +988,8 @@ def get_max_ret(
 @log_start_end(log=logger)
 def get_max_diversification_portfolio(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a maximal diversification portfolio
 
     Parameters
@@ -1147,9 +1009,10 @@ def get_max_diversification_portfolio(
     freq: str
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
@@ -1157,25 +1020,22 @@ def get_max_diversification_portfolio(
     threshold: float
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1187,9 +1047,25 @@ def get_max_diversification_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
+
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+    value_short = get_kwarg("value_short", kwargs)
+
+    covariance = get_kwarg("covariance", kwargs)
+    d_ewma = get_kwarg("d_ewma", kwargs)
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -1202,24 +1078,29 @@ def get_max_diversification_portfolio(
         method=method,
     )
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns)
+    try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns)
 
-    # Estimate input parameters:
-    port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
-    port.mu = stock_returns.std().to_frame().T
+        # Estimate input parameters:
+        port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
+        port.mu = stock_returns.std().to_frame().T
 
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
+        # Budget constraints
+        port.upperlng = value
+        if value_short > 0:
+            port.sht = True
+            port.uppersht = value_short
+            port.budget = value - value_short
+        else:
+            port.budget = value
 
-    # Estimate optimal portfolio:
-    weights = port.optimization(model="Classic", rm="MV", obj="Sharpe", rf=0, hist=True)
+        # Estimate optimal portfolio:
+        weights = port.optimization(
+            model="Classic", rm="MV", obj="Sharpe", rf=0, hist=True
+        )
+    except Exception as _:
+        weights = None
 
     if weights is not None:
         weights = weights.round(5)
@@ -1231,19 +1112,8 @@ def get_max_diversification_portfolio(
 @log_start_end(log=logger)
 def get_max_decorrelation_portfolio(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a maximal decorrelation portfolio
 
     Parameters
@@ -1263,9 +1133,10 @@ def get_max_decorrelation_portfolio(
     freq: str
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
@@ -1273,25 +1144,22 @@ def get_max_decorrelation_portfolio(
     threshold: float
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        s`interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see s`interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1303,9 +1171,25 @@ def get_max_decorrelation_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
+
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+    value_short = get_kwarg("value_short", kwargs)
+
+    covariance = get_kwarg("covariance", kwargs)
+    d_ewma = get_kwarg("d_ewma", kwargs)
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -1318,26 +1202,30 @@ def get_max_decorrelation_portfolio(
         method=method,
     )
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns)
+    try:
 
-    # Estimate input parameters:
-    port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
-    port.cov = rp.cov2corr(port.cov)
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns)
 
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
+        # Estimate input parameters:
+        port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
+        port.cov = rp.cov2corr(port.cov)
 
-    # Estimate optimal portfolio:
-    weights = port.optimization(
-        model="Classic", rm="MV", obj="MinRisk", rf=0, hist=True
-    )
+        # Budget constraints
+        port.upperlng = value
+        if value_short > 0:
+            port.sht = True
+            port.uppersht = value_short
+            port.budget = value - value_short
+        else:
+            port.budget = value
+
+        # Estimate optimal portfolio:
+        weights = port.optimization(
+            model="Classic", rm="MV", obj="MinRisk", rf=0, hist=True
+        )
+    except Exception as _:
+        weights = None
 
     if weights is not None:
         weights = weights.round(5)
@@ -1349,26 +1237,8 @@ def get_max_decorrelation_portfolio(
 @log_start_end(log=logger)
 def get_black_litterman_portfolio(
     symbols: List[str],
-    benchmark: Dict,
-    p_views: List,
-    q_views: List,
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    objective: str = "Sharpe",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    delta: float = None,
-    equilibrium: bool = True,
-    optimize: bool = True,
-    value: float = 1.0,
-    value_short: float = 0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a maximal diversification portfolio
 
     Parameters
@@ -1395,9 +1265,10 @@ def get_black_litterman_portfolio(
     freq: str
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
@@ -1405,8 +1276,7 @@ def get_black_litterman_portfolio(
     threshold: float
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     objective: str
         Objective function of the optimization model.
         The default is 'Sharpe'. Possible values are:
@@ -1438,9 +1308,32 @@ def get_black_litterman_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
+
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+    value_short = get_kwarg("value_short", kwargs)
+
+    benchmark = get_kwarg("benchmark", kwargs)
+    p_views = get_kwarg("p_views", kwargs)
+    q_views = get_kwarg("q_views", kwargs)
+    objective = get_kwarg("objective", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    risk_aversion = get_kwarg("risk_aversion", kwargs)
+    delta = get_kwarg("delta", kwargs)
+    equilibrium = get_kwarg("equilibrium", kwargs)
+    optimize = get_kwarg("optimize", kwargs)
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -1485,32 +1378,35 @@ def get_black_litterman_portfolio(
     weights = pd.DataFrame(weights)
 
     if optimize:
-        # Building the portfolio object
-        port = rp.Portfolio(returns=stock_returns)
+        try:
+            # Building the portfolio object
+            port = rp.Portfolio(returns=stock_returns)
 
-        # Estimate input parameters:
-        port.assets_stats(method_mu="hist", method_cov="hist")
-        port.mu_bl = pd.DataFrame(mu).T
-        port.cov_bl = pd.DataFrame(cov)
+            # Estimate input parameters:
+            port.assets_stats(method_mu="hist", method_cov="hist")
+            port.mu_bl = pd.DataFrame(mu).T
+            port.cov_bl = pd.DataFrame(cov)
 
-        # Budget constraints
-        port.upperlng = value
-        if value_short > 0:
-            port.sht = True
-            port.uppersht = value_short
-            port.budget = value - value_short
-        else:
-            port.budget = value
+            # Budget constraints
+            port.upperlng = value
+            if value_short > 0:
+                port.sht = True
+                port.uppersht = value_short
+                port.budget = value - value_short
+            else:
+                port.budget = value
 
-        # Estimate optimal portfolio:
-        weights = port.optimization(
-            model="BL",
-            rm="MV",
-            obj=objective,
-            rf=risk_free_rate,
-            l=risk_aversion,
-            hist=True,
-        )
+            # Estimate optimal portfolio:
+            weights = port.optimization(
+                model="BL",
+                rm="MV",
+                obj=objective,
+                rf=risk_free_rate,
+                l=risk_aversion,
+                hist=True,
+            )
+        except Exception as _:
+            weights = None
 
     if weights is not None:
         weights = weights.round(5)
@@ -1522,22 +1418,17 @@ def get_black_litterman_portfolio(
 @log_start_end(log=logger)
 def get_ef(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    alpha: float = 0.05,
-    value: float = 1.0,
-    value_short: float = 0.0,
-    n_portfolios: int = 100,
-    seed: int = 123,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    Optional[pd.DataFrame],
+    NDArray[floating],
+    NDArray[floating],
+    rp.Portfolio,
+]:
     """
     Get efficient frontier
 
@@ -1558,9 +1449,10 @@ def get_ef(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1568,8 +1460,7 @@ def get_ef(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -1605,9 +1496,40 @@ def get_ef(
 
     Returns
     -------
-    Tuple
-        Parameters to create efficient frontier: frontier, mu, cov, stock_returns, weights, X1, Y1, port
+    Tuple[
+        pd.DataFrame,
+        pd.DataFrame,
+        pd.DataFrame,
+        pd.DataFrame,
+        Optional[pd.DataFrame],
+        NDArray[floating],
+        NDArray[floating],
+        rp.Portfolio,
+    ]
+        Parameters to create efficient frontier:
+        frontier, mu, cov, stock_returns, weights, X1, Y1, port
     """
+
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+    value_short = get_kwarg("value_short", kwargs)
+
+    risk_measure = get_kwarg("risk_measure", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    alpha = get_kwarg("alpha", kwargs)
+    n_portfolios = get_kwarg("n_portfolios", kwargs)
+    seed = get_kwarg("seed", kwargs)
+
+    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+    risk_measure = validate_risk_measure(risk_measure)
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -1620,29 +1542,32 @@ def get_ef(
         method=method,
     )
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+    try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns, alpha=alpha)
 
-    # Estimate input parameters:
-    port.assets_stats(method_mu="hist", method_cov="hist")
+        # Estimate input parameters:
+        port.assets_stats(method_mu="hist", method_cov="hist")
 
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
+        # Budget constraints
+        port.upperlng = value
+        if value_short > 0:
+            port.sht = True
+            port.uppersht = value_short
+            port.budget = value - value_short
+        else:
+            port.budget = value
 
-    # Estimate tangency portfolio:
-    weights = port.optimization(
-        model="Classic",
-        rm=risk_choices[risk_measure.lower()],
-        obj="Sharpe",
-        rf=risk_free_rate,
-        hist=True,
-    )
+        # Estimate tangency portfolio:
+        weights: Optional[pd.DataFrame] = port.optimization(
+            model="Classic",
+            rm=risk_choices[risk_measure.lower()],
+            obj="Sharpe",
+            rf=risk_free_rate,
+            hist=True,
+        )
+    except Exception as _:
+        weights = None
 
     points = 20  # Number of points of the frontier
     frontier = port.efficient_frontier(
@@ -1699,24 +1624,8 @@ def get_ef(
 @log_start_end(log=logger)
 def get_risk_parity_portfolio(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_cont: List[str] = None,
-    risk_free_rate: float = 0,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a risk parity portfolio using the risk budgeting approach
 
     Parameters
@@ -1736,9 +1645,10 @@ def get_risk_parity_portfolio(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1746,8 +1656,7 @@ def get_risk_parity_portfolio(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -1778,28 +1687,24 @@ def get_risk_parity_portfolio(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1809,9 +1714,30 @@ def get_risk_parity_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
+
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+
+    risk_measure = get_kwarg("risk_measure", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    alpha = get_kwarg("alpha", kwargs)
+    target_return = get_kwarg("target_return", kwargs)
+    mean = get_kwarg("mean", kwargs)
+    covariance = get_kwarg("covariance", kwargs)
+    d_ewma = get_kwarg("d_ewma", kwargs)
+    risk_cont = get_kwarg("risk_cont", kwargs)
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -1825,29 +1751,33 @@ def get_risk_parity_portfolio(
     )
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+    risk_measure = validate_risk_measure(risk_measure)
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+    try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns, alpha=alpha)
 
-    # Calculating optimal portfolio
-    port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
+        # Calculating optimal portfolio
+        port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
 
-    # Estimate optimal portfolio:
-    model = "Classic"
-    hist = True
+        # Estimate optimal portfolio:
+        model = "Classic"
+        hist = True
 
-    if risk_cont is None:
-        risk_cont_ = None  # Risk contribution constraints vector
-    else:
-        risk_cont_ = np.array(risk_cont).reshape(1, -1)
-        risk_cont_ = risk_cont_ / np.sum(risk_cont_)
+        if risk_cont is None:
+            risk_cont_ = None  # Risk contribution constraints vector
+        else:
+            risk_cont_ = np.array(risk_cont).reshape(1, -1)
+            risk_cont_ = risk_cont_ / np.sum(risk_cont_)
 
-    if target_return > -1:
-        port.lowerret = float(target_return) / time_factor[freq.upper()]
+        if target_return > -1:
+            port.lowerret = float(target_return) / time_factor[freq.upper()]
 
-    weights = port.rp_optimization(
-        model=model, rm=risk_measure, rf=risk_free_rate, b=risk_cont_, hist=hist
-    )
+        weights = port.rp_optimization(
+            model=model, rm=risk_measure, rf=risk_free_rate, b=risk_cont_, hist=hist
+        )
+    except Exception as _:
+        weights = None
 
     if weights is not None:
         if value > 0.0:
@@ -1861,23 +1791,8 @@ def get_risk_parity_portfolio(
 @log_start_end(log=logger)
 def get_rel_risk_parity_portfolio(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    version: str = "A",
-    risk_cont: List[str] = None,
-    penal_factor: float = 1,
-    target_return: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds a relaxed risk parity portfolio using the least squares approach
 
     Parameters
@@ -1897,9 +1812,10 @@ def get_rel_risk_parity_portfolio(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1907,8 +1823,7 @@ def get_rel_risk_parity_portfolio(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     version : str, optional
         Relaxed risk parity model version. The default is 'A'.
         Possible values are:
@@ -1930,28 +1845,24 @@ def get_rel_risk_parity_portfolio(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1961,9 +1872,29 @@ def get_rel_risk_parity_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
+
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+
+    target_return = get_kwarg("target_return", kwargs)
+    mean = get_kwarg("mean", kwargs)
+    covariance = get_kwarg("covariance", kwargs)
+    d_ewma = get_kwarg("d_ewma", kwargs)
+    risk_cont = get_kwarg("risk_cont", kwargs)
+    version = get_kwarg("version", kwargs)
+    penal_factor = get_kwarg("penal_factor", kwargs)
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -1976,28 +1907,31 @@ def get_rel_risk_parity_portfolio(
         method=method,
     )
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns)
+    try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns)
 
-    # Calculating optimal portfolio
-    port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
+        # Calculating optimal portfolio
+        port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
 
-    # Estimate optimal portfolio:
-    model = "Classic"
-    hist = True
+        # Estimate optimal portfolio:
+        model = "Classic"
+        hist = True
 
-    if risk_cont is None:
-        risk_cont_ = None  # Risk contribution constraints vector
-    else:
-        risk_cont_ = np.array(risk_cont).reshape(1, -1)
-        risk_cont_ = risk_cont_ / np.sum(risk_cont_)
+        if risk_cont is None:
+            risk_cont_ = None  # Risk contribution constraints vector
+        else:
+            risk_cont_ = np.array(risk_cont).reshape(1, -1)
+            risk_cont_ = risk_cont_ / np.sum(risk_cont_)
 
-    if target_return > -1:
-        port.lowerret = float(target_return) / time_factor[freq.upper()]
+        if target_return > -1:
+            port.lowerret = float(target_return) / time_factor[freq.upper()]
 
-    weights = port.rrp_optimization(
-        model=model, version=version, l=penal_factor, b=risk_cont_, hist=hist
-    )
+        weights = port.rrp_optimization(
+            model=model, version=version, l=penal_factor, b=risk_cont_, hist=hist
+        )
+    except Exception as _:
+        weights = None
 
     if weights is not None:
         if value > 0.0:
@@ -2011,34 +1945,8 @@ def get_rel_risk_parity_portfolio(
 @log_start_end(log=logger)
 def get_hcp_portfolio(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    model: str = "HRP",
-    codependence: str = "pearson",
-    covariance: str = "hist",
-    objective: str = "MinRisk",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
-    alpha: float = 0.05,
-    a_sim: int = 100,
-    beta: float = None,
-    b_sim: int = None,
-    linkage: str = "single",
-    k: int = 0,
-    max_k: int = 10,
-    bins_info: str = "KN",
-    alpha_tail: float = 0.05,
-    leaf_order: bool = True,
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """Builds hierarchical clustering based portfolios
 
     Parameters
@@ -2058,9 +1966,10 @@ def get_hcp_portfolio(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2068,8 +1977,7 @@ def get_hcp_portfolio(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     model: str, optional
         The hierarchical cluster portfolio model used for optimize the
         portfolio. The default is 'HRP'. Possible values are:
@@ -2083,36 +1991,34 @@ def get_hcp_portfolio(
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `c-MLforAM`.
 
     objective: str, optional
         Objective function used by the NCO model.
@@ -2172,9 +2078,8 @@ def get_hcp_portfolio(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.
-        cluster.hierarchy.linkage.html?highlight=linkage#scipy.cluster.hierarchy.linkage>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.
+        cluster.hierarchy.linkage.html?highlight=linkage#scipy.cluster.hierarchy.linkage>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -2197,12 +2102,9 @@ def get_hcp_portfolio(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional
@@ -2218,9 +2120,44 @@ def get_hcp_portfolio(
 
     Returns
     -------
-    Tuple
-        Dictionary of portfolio weights and DataFrame of stock returns
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
+
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+
+    objective = get_kwarg("objective", kwargs)
+    risk_measure = get_kwarg("risk_measure", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    risk_aversion = get_kwarg("risk_aversion", kwargs)
+    alpha = get_kwarg("alpha", kwargs)
+    a_sim = get_kwarg("a_sim", kwargs)
+    beta = get_kwarg("beta", kwargs)
+    b_sim = get_kwarg("b_sim", kwargs)
+    covariance = get_kwarg("covariance", kwargs)
+    d_ewma = get_kwarg("d_ewma", kwargs)
+
+    model = get_kwarg("model", kwargs, default="HRP")
+
+    codependence = get_kwarg("codependence", kwargs)
+    linkage = get_kwarg("linkage", kwargs)
+    k = get_kwarg("k", kwargs)
+    max_k = get_kwarg("max_k", kwargs)
+    bins_info = get_kwarg("bins_info", kwargs)
+    alpha_tail = get_kwarg("alpha_tail", kwargs)
+    leaf_order = get_kwarg("leaf_order", kwargs)
+
+    risk_measure = validate_risk_measure(risk_measure)
+
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -2237,31 +2174,35 @@ def get_hcp_portfolio(
         linkage = linkage.upper()
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
-    # Building the portfolio object
-    port = rp.HCPortfolio(
-        returns=stock_returns,
-        alpha=alpha,
-        a_sim=a_sim,
-        beta=beta,
-        b_sim=b_sim,
-    )
 
-    weights = port.optimization(
-        model=model,
-        codependence=codependence,
-        covariance=covariance,
-        obj=objective,
-        rm=risk_measure,
-        rf=risk_free_rate,
-        l=risk_aversion,
-        linkage=linkage,
-        k=k,
-        max_k=max_k,
-        bins_info=bins_info,
-        alpha_tail=alpha_tail,
-        leaf_order=leaf_order,
-        d=d_ewma,
-    )
+    try:
+        # Building the portfolio object
+        port = rp.HCPortfolio(
+            returns=stock_returns,
+            alpha=alpha,
+            a_sim=a_sim,
+            beta=beta,
+            b_sim=b_sim,
+        )
+
+        weights = port.optimization(
+            model=model,
+            codependence=codependence,
+            covariance=covariance,
+            obj=objective,
+            rm=risk_measure,
+            rf=risk_free_rate,
+            l=risk_aversion,
+            linkage=linkage,
+            k=k,
+            max_k=max_k,
+            bins_info=bins_info,
+            alpha_tail=alpha_tail,
+            leaf_order=leaf_order,
+            d=d_ewma,
+        )
+    except Exception as _:
+        weights = None
 
     if weights is not None:
         if value > 0.0:
@@ -2275,33 +2216,8 @@ def get_hcp_portfolio(
 @log_start_end(log=logger)
 def get_hrp(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    codependence: str = "pearson",
-    covariance: str = "hist",
-    objective: str = "minrisk",
-    risk_measure: str = "mv",
-    risk_free_rate: float = 0.0,
-    risk_aversion: float = 1.0,
-    alpha: float = 0.05,
-    a_sim: int = 100,
-    beta: float = None,
-    b_sim: int = None,
-    linkage: str = "single",
-    k: int = 0,
-    max_k: int = 10,
-    bins_info: str = "KN",
-    alpha_tail: float = 0.05,
-    leaf_order: bool = True,
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a hierarchical risk parity portfolio
 
@@ -2322,9 +2238,10 @@ def get_hrp(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2332,43 +2249,40 @@ def get_hrp(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     codependence: str, optional
         The codependence or similarity matrix used to build the distance
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `c-MLforAM`.
 
     objective: str, optional
         Objective function used by the NCO model.
@@ -2428,8 +2342,7 @@ def get_hrp(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -2452,12 +2365,9 @@ def get_hrp(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional
@@ -2474,36 +2384,18 @@ def get_hrp(
         Amount to allocate to portfolio in short positions, by default 0.0
     table: bool, optional
         True if plot table weights, by default False
+
+    Returns
+    -------
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
+
     weights, stock_returns = get_hcp_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
         model="HRP",
-        codependence=codependence,
-        covariance=covariance,
-        objective=objectives_choices[objective],
-        risk_measure=risk_choices[risk_measure.lower()],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        a_sim=a_sim,
-        beta=beta,
-        b_sim=b_sim,
-        linkage=linkage,
-        k=k,
-        max_k=max_k,
-        bins_info=bins_info,
-        alpha_tail=alpha_tail,
-        leaf_order=leaf_order,
-        d_ewma=d_ewma,
-        value=value,
+        **kwargs,
     )
     return weights, stock_returns
 
@@ -2511,33 +2403,8 @@ def get_hrp(
 @log_start_end(log=logger)
 def get_herc(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    codependence: str = "pearson",
-    covariance: str = "hist",
-    objective: str = "minrisk",
-    risk_measure: str = "mv",
-    risk_free_rate: float = 0.0,
-    risk_aversion: float = 1.0,
-    alpha: float = 0.05,
-    a_sim: int = 100,
-    beta: float = None,
-    b_sim: int = None,
-    linkage: str = "single",
-    k: int = 0,
-    max_k: int = 10,
-    bins_info: str = "KN",
-    alpha_tail: float = 0.05,
-    leaf_order: bool = True,
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a hierarchical risk parity portfolio
 
@@ -2558,9 +2425,10 @@ def get_herc(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2568,43 +2436,40 @@ def get_herc(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     codependence: str, optional
         The codependence or similarity matrix used to build the distance
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `c-MLforAM`.
 
     objective: str, optional
         Objective function used by the NCO model.
@@ -2664,8 +2529,7 @@ def get_herc(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -2688,12 +2552,9 @@ def get_herc(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional
@@ -2710,36 +2571,17 @@ def get_herc(
         Amount to allocate to portfolio in short positions, by default 0.0
     table: bool, optional
         True if plot table weights, by default False
+
+    Returns
+    -------
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     weights, stock_returns = get_hcp_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
         model="HERC",
-        codependence=codependence,
-        covariance=covariance,
-        objective=objectives_choices[objective],
-        risk_measure=risk_choices[risk_measure.lower()],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        a_sim=a_sim,
-        beta=beta,
-        b_sim=b_sim,
-        linkage=linkage,
-        k=k,
-        max_k=max_k,
-        bins_info=bins_info,
-        alpha_tail=alpha_tail,
-        leaf_order=leaf_order,
-        d_ewma=d_ewma,
-        value=value,
+        **kwargs,
     )
     return weights, stock_returns
 
@@ -2747,33 +2589,8 @@ def get_herc(
 @log_start_end(log=logger)
 def get_nco(
     symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    codependence: str = "pearson",
-    covariance: str = "hist",
-    objective: str = "minrisk",
-    risk_measure: str = "mv",
-    risk_free_rate: float = 0.0,
-    risk_aversion: float = 1.0,
-    alpha: float = 0.05,
-    a_sim: int = 100,
-    beta: float = None,
-    b_sim: int = None,
-    linkage: str = "single",
-    k: int = None,
-    max_k: int = 10,
-    bins_info: str = "KN",
-    alpha_tail: float = 0.05,
-    leaf_order: bool = True,
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[Optional[dict], pd.DataFrame]:
     """
     Builds a hierarchical risk parity portfolio
 
@@ -2794,9 +2611,10 @@ def get_nco(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2804,43 +2622,40 @@ def get_nco(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     codependence: str, optional
         The codependence or similarity matrix used to build the distance
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `c-MLforAM`.
 
     objective: str, optional
         Objective function used by the NCO model.
@@ -2900,8 +2715,7 @@ def get_nco(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -2924,12 +2738,9 @@ def get_nco(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional
@@ -2946,36 +2757,17 @@ def get_nco(
         Amount to allocate to portfolio in short positions, by default 0.0
     table: bool, optional
         True if plot table weights, by default False
+
+    Returns
+    -------
+    Tuple[Optional[dict], pd.DataFrame]
+        Dictionary of portfolio weights,
+        DataFrame of stock returns.
     """
     weights, stock_returns = get_hcp_portfolio(
         symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
         model="NCO",
-        codependence=codependence,
-        covariance=covariance,
-        objective=objectives_choices[objective.lower()],
-        risk_measure=risk_choices[risk_measure.lower()],
-        risk_free_rate=risk_free_rate,
-        risk_aversion=risk_aversion,
-        alpha=alpha,
-        a_sim=a_sim,
-        beta=beta,
-        b_sim=b_sim,
-        linkage=linkage,
-        k=k,
-        max_k=max_k,
-        bins_info=bins_info,
-        alpha_tail=alpha_tail,
-        leaf_order=leaf_order,
-        d_ewma=d_ewma,
-        value=value,
+        **kwargs,
     )
     return weights, stock_returns
 
@@ -2984,13 +2776,8 @@ def get_nco(
 def black_litterman(
     stock_returns: pd.DataFrame,
     benchmark,
-    p_views=None,
-    q_views=None,
-    delta=None,
-    risk_free_rate: float = 0,
-    equilibrium: bool = True,
-    factor: float = 252,
-) -> Tuple:
+    **kwargs,
+) -> Tuple[dict, dict, dict]:
     """
     Calculates Black-Litterman estimates following He and Litterman (1999)
 
@@ -2999,7 +2786,7 @@ def black_litterman(
     stock_returns: pd.DataFrame
         _description_
     benchmark: Dict
-        lala
+        Dict of portfolio weights
     p_views: List
         Matrix P of views that shows relationships among assets and returns.
         Default value to None.
@@ -3018,10 +2805,19 @@ def black_litterman(
 
     Returns
     -------
-    Tuple:
+    Tuple[dict, dict, dict]
         Black-Litterman model estimates of expected returns,
-        covariance matrix and portfolio weights.
+        Covariance matrix,
+        Portfolio weights.
     """
+
+    p_views = get_kwarg("p_views", kwargs)
+    q_views = get_kwarg("q_views", kwargs)
+    delta = get_kwarg("delta", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    equilibrium = get_kwarg("equilibrium", kwargs)
+    factor = get_kwarg("factor", kwargs, default=252)
+
     symbols = stock_returns.columns.tolist()
     benchmark = pd.Series(benchmark).to_numpy().reshape(-1, 1)
 
@@ -3122,9 +2918,64 @@ def generate_random_portfolios(
 @log_start_end(log=logger)
 def get_properties() -> List[str]:
     """Get properties to use on property optimization.
+
     Returns
     -------
     List[str]:
         List of available properties to use on property optimization.
     """
-    return optimizer_helper.valid_property_infos
+    return valid_property_infos
+
+
+@log_start_end(log=logger)
+def get_categories(
+    weights: dict, categories: dict, column: str = "ASSET_CLASS"
+) -> pd.DataFrame:
+    """Get categories from dictionary
+
+    Parameters
+    ----------
+    weights : dict
+        Dictionary with weights
+    categories: dict
+        Dictionary with categories
+    column : str, optional
+        Column name to use on categories, by default "ASSET_CLASS"
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with weights
+    """
+
+    if not weights:
+        return pd.DataFrame()
+
+    if column == "CURRENT_INVESTED_AMOUNT":
+        return pd.DataFrame()
+
+    df = pd.DataFrame.from_dict(
+        data=weights, orient="index", columns=["value"], dtype=float
+    )
+    categories_df = pd.DataFrame.from_dict(data=categories, dtype=float)
+
+    categories_df = df.join(categories_df)
+    categories_df.set_index(column, inplace=True)
+    categories_df.groupby(level=0).sum()
+
+    df = pd.pivot_table(
+        categories_df,
+        values=["value", "CURRENT_INVESTED_AMOUNT"],
+        index=["CURRENCY", column],
+        aggfunc=np.sum,
+    )
+    df["CURRENT_WEIGHTS"] = (
+        df["CURRENT_INVESTED_AMOUNT"].groupby(level=0).transform(lambda x: x / sum(x))
+    )
+    df["value"] = df["value"].groupby(level=0).transform(lambda x: x / sum(x))
+    df = pd.concat(
+        [d.append(d.sum().rename((k, "TOTAL " + k))) for k, d in df.groupby(level=0)]
+    )
+    df = df.iloc[:, [0, 2, 1]]
+
+    return df

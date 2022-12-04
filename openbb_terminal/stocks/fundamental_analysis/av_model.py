@@ -19,6 +19,19 @@ from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 logger = logging.getLogger(__name__)
 
 
+def check_premium_key(json_response: Dict) -> bool:
+    """Checks if the response is the premium endpoint"""
+    if json_response == {
+        "Information": "Thank you for using Alpha Vantage! This is a premium endpoint. You may subscribe to "
+        "any of the premium plans at https://www.alphavantage.co/premium/ to instantly unlock all premium endpoints"
+    }:
+        console.print(
+            "This is a premium endpoint for AlphaVantage. Please use a premium key.\n"
+        )
+        return True
+    return False
+
+
 @log_start_end(log=logger)
 def get_overview(symbol: str) -> pd.DataFrame:
     """Get alpha vantage company overview
@@ -179,6 +192,8 @@ def get_income_statements(
     )
     r = requests.get(url)
     response_json = r.json()
+    if check_premium_key(response_json):
+        return pd.DataFrame()
 
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
@@ -265,7 +280,8 @@ def get_balance_sheet(
     url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
     response_json = r.json()
-
+    if check_premium_key(response_json):
+        return pd.DataFrame()
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
         console.print(response_json["Error Message"])
@@ -351,7 +367,8 @@ def get_cash_flow(
     url = f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
     response_json = r.json()
-
+    if check_premium_key(response_json):
+        return pd.DataFrame()
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
         console.print(response_json["Error Message"])
@@ -543,7 +560,7 @@ def color_mscore(value: str) -> str:
         The string value
 
     Returns
-    ----------
+    -------
     new_value : str
         The string formatted with rich color
     """
@@ -563,7 +580,7 @@ def color_zscore_mckee(value: str) -> str:
         The string value
 
     Returns
-    ----------
+    -------
     new_value : str
         The string formatted with rich color
     """
@@ -597,8 +614,11 @@ def get_fraud_ratios(symbol: str, detail: bool = False) -> pd.DataFrame:
         df_bs, _ = fd.get_balance_sheet_annual(symbol=symbol)
         df_is, _ = fd.get_income_statement_annual(symbol=symbol)
 
-    except Exception as e:
-        console.print(e)
+    except ValueError as e:
+        if "premium endpoint" in str(e):
+            console.print(
+                "This is a premium endpoint for AlphaVantage. Please use a premium key.\n"
+            )
         return pd.DataFrame()
 
     # pylint: disable=no-member
@@ -712,8 +732,11 @@ def get_dupont(symbol: str) -> pd.DataFrame:
         df_bs, _ = fd.get_balance_sheet_annual(symbol=symbol)
         df_is, _ = fd.get_income_statement_annual(symbol=symbol)
 
-    except Exception as e:
-        console.print(e)
+    except ValueError as e:
+        if "premium endpoint" in str(e):
+            console.print(
+                "This is a premium endpoint for AlphaVantage. Please use a premium key.\n"
+            )
         return pd.DataFrame()
 
     # pylint: disable=no-member

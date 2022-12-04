@@ -1,3 +1,73 @@
+# OpenBB Documentation Website
+
+This repository contains the source code for the OpenBB Documentation Website. 
+
+The website was built using [Docusaurus](https://docusaurus.io/), a modern static website generator and [TailwindCSS](https://tailwindcss.com) as styling solution.
+The final website can be found at [https://docs.openbb.co](https://docs.openbb.co).
+
+
+## Folder Structure
+
+```bash
+website
+├── content # Markdown files
+| ├── sdk # SDK markdown files
+| └── terminal # Terminal markdown files
+├── old_content # previous terminal documentation; required to get the examples for terminal reference
+├── src # react stuff for website
+├── static # Static files
+├── generate_sdk_markdown.py # Script to generate markdown files for SDK
+└── generate_terminal_markdown.py # Script to generate markdown files for Terminal
+```
+
+### Markdown files
+
+The markdown files are used to generate the website. The markdown files are located in the `content` folder. The markdown files are generated using the `generate_sdk_markdown.py` and `generate_terminal_markdown.py` scripts. The markdown files are generated from the docstrings in the SDK and Terminal code. Files inside `content/sdk/reference` and `content/terminal/reference` should not be changed manually because they are generated automatically on every commit.
+
+
+## Run locally
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/en/) >= 16.13.0
+To check if you have Node.js installed, run this command in your terminal:
+
+```bash
+node --version # should be v16.13.0 or higher
+```
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Start development server
+
+```bash
+npm start
+```
+
+This command starts a local development server and open up a browser window in `http://localhost:3000`. Most changes are reflected live without having to restart the server.
+
+### Build
+
+```bash
+npm run build
+```
+
+This command generates static content into the `build` directory and can be served using any static contents hosting service. We use Github Pages to host our website. It's deployed in the `gh-pages` branch.
+
+
+
+## Contributing
+
+We welcome contributions to the OpenBB Documentation Website.
+
+--- 
+<details><summary>DEPRECATED - OLD README</summary>
+<p>
+
 # Hugo Server
 
 The current features can be found in [OpenBB Terminal Features](https://openbb-finance.github.io/OpenBBTerminal).
@@ -144,3 +214,6 @@ main:
           - name: map
             ref: "/stocks/discovery/map"
 ```
+
+</p>
+</details>

@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime
-from typing import Optional
+from typing import Dict, Optional
 
 import pandas as pd
 import yfinance as yf
@@ -603,7 +603,7 @@ def get_index(
     index: str
         The index you wish to collect data for.
     start_date : Optional[str]
-       the selected country
+        the selected country
     end_date : Optional[str]
         The currency you wish to convert the data to.
     interval : str
@@ -613,7 +613,7 @@ def get_index(
         The column you wish to select, by default this is Adjusted Close.
 
     Returns
-    ----------
+    -------
     pd.Series
         A series with the requested index
     """
@@ -657,11 +657,13 @@ def get_index(
 
 
 @log_start_end(log=logger)
-def get_available_indices() -> dict:
+def get_available_indices() -> Dict[str, Dict[str, str]]:
     """Get available indices
 
-    Returns:
-        dict: dictionary with available indices and respective detail
+    Returns
+    -------
+    Dict[str, Dict[str, str]]
+        Dictionary with available indices and respective detail
     """
     return INDICES
 
@@ -677,6 +679,7 @@ def get_indices(
 ) -> pd.DataFrame:
 
     """Get data on selected indices over time [Source: Yahoo Finance]
+
     Parameters
     ----------
     indices: list
@@ -689,13 +692,20 @@ def get_indices(
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     column : str
-        Which column to load in, by default this is the Adjusted Close.
+        Which column to load in, by default "Adjusted Close".
     returns: bool
         Flag to show cumulative returns on index
+
     Returns
-    ----------
+    -------
     pd.Dataframe
         Dataframe with historical data on selected indices.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.economy.available_indices()
+    >>> openbb.economy.index(["^GSPC", "sp400"])
     """
 
     indices_data: pd.DataFrame = pd.DataFrame()
@@ -714,18 +724,23 @@ def get_indices(
 @log_start_end(log=logger)
 def get_search_indices(keyword: list, limit: int = 10) -> pd.DataFrame:
     """Search indices by keyword. [Source: FinanceDatabase]
+
     Parameters
     ----------
     keyword: list
         The keyword you wish to search for. This can include spaces.
     limit: int
         The amount of views you want to show, by default this is set to 10.
+
     Returns
-    ----------
+    -------
     pd.Dataframe
         Dataframe with the available options.
     """
-    keyword_adjusted = " ".join(keyword)
+    if isinstance(keyword, str):
+        keyword_adjusted = keyword.replace(",", " ")
+    else:
+        keyword_adjusted = " ".join(keyword)
 
     indices = fd.select_indices()
 

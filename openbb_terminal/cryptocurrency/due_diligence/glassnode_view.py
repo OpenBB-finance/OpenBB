@@ -1,12 +1,9 @@
 import logging
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List, Optional
 
-import matplotlib
 import numpy as np
-import pandas as pd
-from matplotlib import dates as mdates
 from matplotlib import pyplot as plt
 from matplotlib import ticker
 from matplotlib.lines import Line2D
@@ -16,7 +13,6 @@ from openbb_terminal.decorators import check_api_key
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_active_addresses,
-    get_btc_rainbow,
     get_exchange_balances,
     get_exchange_net_position_change,
     get_hashrate,
@@ -34,146 +30,25 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_GLASSNODE_KEY"])
-def display_btc_rainbow(
-    start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
-    export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Displays bitcoin rainbow chart
-    [Price data from source: https://glassnode.com]
-    [Inspired by: https://blockchaincenter.net]
-
-    Parameters
-    ----------
-    start_date : int
-        Initial date, format YYYY-MM-DD
-    end_date : int
-        Final date, format YYYY-MM-DD
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
-    """
-
-    df_data = get_btc_rainbow(start_date, end_date)
-
-    if df_data.empty:
-        return
-
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    d0 = datetime.strptime("2012-01-01", "%Y-%m-%d")
-    dend = datetime.strptime(end_date, "%Y-%m-%d")
-
-    x = range((df_data.index[0] - d0).days, (dend - d0).days + 1)
-
-    y0 = [10 ** ((2.90 * ln_x) - 19.463) for ln_x in [np.log(val + 1400) for val in x]]
-    y1 = [10 ** ((2.886 * ln_x) - 19.463) for ln_x in [np.log(val + 1375) for val in x]]
-    y2 = [10 ** ((2.872 * ln_x) - 19.463) for ln_x in [np.log(val + 1350) for val in x]]
-    y3 = [10 ** ((2.859 * ln_x) - 19.463) for ln_x in [np.log(val + 1320) for val in x]]
-    y4 = [
-        10 ** ((2.8445 * ln_x) - 19.463) for ln_x in [np.log(val + 1293) for val in x]
-    ]
-    y5 = [
-        10 ** ((2.8295 * ln_x) - 19.463) for ln_x in [np.log(val + 1275) for val in x]
-    ]
-    y6 = [10 ** ((2.815 * ln_x) - 19.463) for ln_x in [np.log(val + 1250) for val in x]]
-    y7 = [10 ** ((2.801 * ln_x) - 19.463) for ln_x in [np.log(val + 1225) for val in x]]
-    y8 = [10 ** ((2.788 * ln_x) - 19.463) for ln_x in [np.log(val + 1200) for val in x]]
-
-    x_dates = pd.date_range(df_data.index[0], dend, freq="d")
-
-    ax.fill_between(x_dates, y0, y1, color="red", alpha=0.7)
-    ax.fill_between(x_dates, y1, y2, color="orange", alpha=0.7)
-    ax.fill_between(x_dates, y2, y3, color="yellow", alpha=0.7)
-    ax.fill_between(x_dates, y3, y4, color="green", alpha=0.7)
-    ax.fill_between(x_dates, y4, y5, color="blue", alpha=0.7)
-    ax.fill_between(x_dates, y5, y6, color="violet", alpha=0.7)
-    ax.fill_between(x_dates, y6, y7, color="indigo", alpha=0.7)
-    ax.fill_between(x_dates, y7, y8, color="purple", alpha=0.7)
-
-    ax.semilogy(df_data.index, df_data["v"].values)
-    ax.set_xlim(df_data.index[0], dend)
-    ax.set_title("Bitcoin Rainbow Chart")
-    ax.set_ylabel("Price ($)")
-
-    ax.legend(
-        [
-            "Bubble bursting imminent!!",
-            "SELL!",
-            "Everyone FOMO'ing....",
-            "Is this a bubble??",
-            "Still cheap",
-            "Accumulate",
-            "BUY!",
-            "Basically a Fire Sale",
-            "Bitcoin Price",
-        ],
-        prop={"size": 8},
-    )
-
-    sample_dates = np.array(
-        [
-            datetime(2012, 11, 28),
-            datetime(2016, 7, 9),
-            datetime(2020, 5, 11),
-            datetime(2024, 4, 4),
-        ]
-    )
-    sample_dates = mdates.date2num(sample_dates)
-    ax.vlines(x=sample_dates, ymin=0, ymax=max(y0), color="grey")
-    for i, x in enumerate(sample_dates):
-        ax.text(x, 1, f"Halving {i+1}", rotation=-90, verticalalignment="center")
-
-    ax.minorticks_off()
-    ax.yaxis.set_major_formatter(
-        matplotlib.ticker.FuncFormatter(lambda x, _: int(x) if x >= 1 else x)
-    )
-    ax.yaxis.set_major_locator(
-        matplotlib.ticker.LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
-    )
-
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "rainbox",
-        df_data,
-    )
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_GLASSNODE_KEY"])
 def display_active_addresses(
     symbol: str,
-    start_date: int = 1577836800,
-    end_date: int = 1609459200,
+    start_date: str = "2010-01-01",
+    end_date: Optional[str] = None,
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display active addresses of a certain symbol over time
+    """Plots active addresses of a certain symbol over time
     [Source: https://glassnode.org]
 
     Parameters
     ----------
     symbol : str
         Asset to search active addresses (e.g., BTC)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : Optional[str]
+        Final date, format YYYY-MM-DD
     interval : str
         Interval frequency (possible values are: 24h, 1w, 1month)
     export : str
@@ -181,6 +56,9 @@ def display_active_addresses(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_addresses = get_active_addresses(symbol, interval, start_date, end_date)
 
@@ -218,27 +96,30 @@ def display_active_addresses(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_non_zero_addresses(
     symbol: str,
-    start_date: int = 1577836800,
-    end_date: int = 1609459200,
+    start_date: str = "2010-01-01",
+    end_date: Optional[str] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display addresses with non-zero balance of a certain symbol
+    """Plots addresses with non-zero balance of a certain symbol
     [Source: https://glassnode.org]
 
     Parameters
     ----------
     symbol : str
         Asset to search (e.g., BTC)
-    start_date : int
-        Initial date timestamp (e.g., 1_577_836_800)
-    end_date : int
-        End date timestamp (e.g., 1_609_459_200)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : Optional[str]
+        Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_addresses = get_non_zero_addresses(symbol, start_date, end_date)
 
@@ -277,12 +158,12 @@ def display_non_zero_addresses(
 def display_exchange_net_position_change(
     symbol: str,
     exchange: str = "binance",
-    start_date: int = 1577836800,
-    end_date: int = 1609459200,
+    start_date: str = "2010-01-01",
+    end_date: Optional[str] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display 30d change of the supply held in exchange wallets.
+    """Plots 30d change of the supply held in exchange wallets.
     [Source: https://glassnode.org]
 
     Parameters
@@ -293,15 +174,18 @@ def display_exchange_net_position_change(
         Exchange to check net position change (possible values are: aggregated, binance,
         bittrex, coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex,
         hitbtc, kraken, okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : Optional[str]
+        Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_addresses = get_exchange_net_position_change(
         symbol, exchange, start_date, end_date
@@ -354,14 +238,14 @@ def display_exchange_net_position_change(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_exchange_balances(
     symbol: str,
-    exchange: str = "binance",
-    start_date: int = 1577836800,
-    end_date: int = 1609459200,
+    exchange: str = "aggregated",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     percentage: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display total amount of coins held on exchange addresses in units and percentage.
+    """Plots total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.org]
 
     Parameters
@@ -371,17 +255,22 @@ def display_exchange_balances(
     exchange : str
         Exchange to check net position change (possible values are: aggregated, binance, bittrex,
         coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex, hitbtc, kraken,
-        okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+        okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno), by default "aggregated"
+    start_date : Optional[str], optional
+        Initial date (format YYYY-MM-DD) by default 2 years ago
+    end_date : Optional[str], optional
+        Final date (format YYYY-MM-DD) by default 1 year ago
     percentage : bool
         Show percentage instead of stacked value.
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.crypto.dd.eb_chart(symbol="BTC")
     """
 
     df_balance = get_exchange_balances(symbol, exchange, start_date, end_date)
@@ -431,23 +320,23 @@ def display_exchange_balances(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_hashrate(
     symbol: str,
-    start_date: int = int((datetime.now() - timedelta(days=365)).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: Optional[str] = None,
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display dataframe with mean hashrate of btc or eth blockchain and symbol price.
+    """Plots dataframe with mean hashrate of btc or eth blockchain and symbol price.
     [Source: https://glassnode.org]
 
     Parameters
     ----------
     symbol : str
         Blockchain to check mean hashrate (BTC or ETH)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : Optional[str]
+        Final date, format YYYY-MM-DD
     interval : str
         Interval frequency (possible values are: 24, 1w, 1month)
     export : str
@@ -455,6 +344,9 @@ def display_hashrate(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df = get_hashrate(symbol, interval, start_date, end_date)
 

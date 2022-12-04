@@ -7,21 +7,68 @@ import warnings
 from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Tuple
 
+import numpy as np
 import pandas as pd
 import yfinance as yf
-import numpy as np
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.options import op_helpers
 from openbb_terminal.stocks.options.op_helpers import Option
 
 logger = logging.getLogger(__name__)
 
 
+option_chain_cols = [
+    "strike",
+    "lastPrice",
+    "bid",
+    "ask",
+    "volume",
+    "openInterest",
+    "impliedVolatility",
+]
+
+option_chain_dict = {"openInterest": "openinterest", "impliedVolatility": "iv"}
+
+
+def get_full_option_chain(symbol: str) -> pd.DataFrame:
+    """Get all options for given ticker [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    symbol: str
+        Stock ticker symbol
+
+    Returns
+    -------
+    pd.Dataframe
+        Option chain
+    """
+    ticker = yf.Ticker(symbol)
+    dates = ticker.options
+
+    options = pd.DataFrame()
+
+    for _date in dates:
+        calls = ticker.option_chain(_date).calls
+        puts = ticker.option_chain(_date).puts
+        calls = calls[option_chain_cols].rename(columns=option_chain_dict)
+        puts = puts[option_chain_cols].rename(columns=option_chain_dict)
+        calls.columns = [x + "_c" if x != "strike" else x for x in calls.columns]
+        puts.columns = [x + "_p" if x != "strike" else x for x in puts.columns]
+
+        temp = pd.merge(calls, puts, how="outer", on="strike")
+        temp["expiration"] = _date
+        options = pd.concat([options, temp], axis=0).reset_index(drop=True)
+
+    return options
+
+
 # pylint: disable=W0640
 @log_start_end(log=logger)
-def get_full_option_chain(
+def get_option_chain_expiry(
     symbol: str,
     expiry: str,
     min_sp: float = -1,
@@ -175,7 +222,7 @@ def get_option_chain(symbol: str, expiry: str):
         chains = yf_ticker.option_chain(expiry)
     except Exception:
         console.print(f"[red]Error: Expiration {expiry} cannot be found.[/red]")
-        chains = pd.DataFrame()
+        chains = op_helpers.Chain(pd.DataFrame(), "yahoo")
 
     return chains
 
@@ -241,6 +288,10 @@ def generate_data(
     current_price: float, options: List[Dict[str, int]], underlying: int
 ) -> Tuple[List[float], List[float], List[float]]:
     """Gets x values, and y values before and after premiums"""
+
+    # Remove empty elements from options
+    options = [o for o in options if o]
+
     x_vals = get_x_values(current_price, options)
     base = current_price
     total_cost = sum(x["cost"] for x in options)
@@ -263,7 +314,7 @@ def get_price(symbol: str) -> float:
         The ticker symbol to get the price for
 
     Returns
-    ----------
+    -------
     price : float
         The price of the ticker
     """
@@ -284,7 +335,7 @@ def get_info(symbol: str):
         The ticker symbol to get the price for
 
     Returns
-    ----------
+    -------
     price : float
         The info for a given ticker
     """
@@ -302,7 +353,7 @@ def get_closing(symbol: str) -> pd.Series:
         The ticker symbol to get the price for
 
     Returns
-    ----------
+    -------
     price : List[float]
         A list of closing prices for a ticker
     """

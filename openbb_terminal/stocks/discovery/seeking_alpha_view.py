@@ -36,6 +36,9 @@ def upcoming_earning_release_dates(
 
     df_earnings = seeking_alpha_model.get_next_earnings(num_pages)
 
+    if df_earnings.empty:
+        console.print("No upcoming earnings release dates found")
+
     pd.set_option("display.max_colwidth", None)
     if export:
         l_earnings = []
@@ -94,7 +97,6 @@ def news(article_id: int = -1, limit: int = 5, export: str = ""):
         Article ID. If -1, none is selected
     limit: int
         Number of articles to display. Only used if article_id is -1.
-
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -114,7 +116,7 @@ def news(article_id: int = -1, limit: int = 5, export: str = ""):
                 article["title"],
             )
             console.print(article["url"])
-            console.print("")
+            console.print("\n")
 
             if idx >= limit - 1:
                 break
@@ -134,7 +136,7 @@ def news(article_id: int = -1, limit: int = 5, export: str = ""):
             article["title"],
         )
         console.print(article["url"])
-        console.print("")
+        console.print("\n")
         console.print(article["content"])
 
     if export:
@@ -175,7 +177,7 @@ def display_news(news_type: str = "Top-News", limit: int = 5, export: str = ""):
                 + news_element["title"]
             )
             console.print(news_element["url"])
-            console.print("")
+            console.print("\n")
 
         export_data(
             export,

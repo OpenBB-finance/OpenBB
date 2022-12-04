@@ -1,12 +1,11 @@
 # IMPORTATION STANDARD
 import logging
-import os
 import re
 
 # IMPORTATION THIRDPARTY
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
+from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.log.generation.settings import AppSettings
 
 
@@ -20,7 +19,7 @@ class FormatterWithExceptions(logging.Formatter):
     )
 
     @staticmethod
-    def calculate_level_name(record: logging.LogRecord):
+    def calculate_level_name(record: logging.LogRecord) -> str:
         if record.exc_text:
             level_name = "X"
         elif record.levelname:
@@ -38,7 +37,7 @@ class FormatterWithExceptions(logging.Formatter):
             record.funcName = record.func_name_override  # type: ignore
             record.lineno = 0
 
-        log_extra["userId"] = record.user_id if hasattr(record, "user_id") else "NA"  # type: ignore
+        log_extra["userId"] = getattr(record, "user_id", "NA")
 
         if hasattr(record, "session_id"):
             log_extra["sessionId"] = record.session_id  # type: ignore
@@ -46,68 +45,49 @@ class FormatterWithExceptions(logging.Formatter):
         return log_extra
 
     @staticmethod
-    def filter_piis(text: str) -> str:
-        ip_regex = r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
-        s_list = []
-        ip_reg = re.compile(ip_regex)
+    def mock_ipv4(text: str) -> str:
+        pattern = r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
+        replacement = " FILTERED_IP "
+        text_mocked = re.sub(pattern, replacement, text)
 
-        for word in text.split():
-
-            if ip_reg.search(word):
-                s_list.append("suspected_ip")
-            elif "@" in word and "." in word:
-                s_list.append("suspected_email")
-            elif f"{REPOSITORY_DIRECTORY.name}{os.sep}" in word:
-                s_list.append(
-                    word.split(f"{REPOSITORY_DIRECTORY.name}{os.sep}")[1]
-                    .replace('"', "")
-                    .replace("'", "")
-                )
-            elif os.sep in word and os.sep != word:
-                s_list.append(
-                    (f"cut{os.sep}file{os.sep}path{os.sep}" + word.split(os.sep)[-1])
-                    .replace('"', "")
-                    .replace("'", "")
-                )
-            else:
-                s_list.append(word)
-
-            text = " ".join(s_list)
-
-        return text
+        return text_mocked
 
     @staticmethod
-    def filter_special_characters(text: str):
-        filtered_text = (
-            text.replace("\\n", " - ")
-            .replace("\n", " - ")
-            .replace("\t", " ")
-            .replace("\r", "")
-            .replace("'Traceback", "Traceback")
-        )
-        return filtered_text
+    def mock_email(text: str) -> str:
+        pattern = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
+        replacement = " FILTERED_EMAIL "
+        text_mocked = re.sub(pattern, replacement, text)
+
+        return text_mocked
 
     @staticmethod
-    def detect_terminal_message(text: str):
-        if "The command " in text and "doesn't exist on the" in text and os.sep == "/":
-            return True
-        return False
+    def mock_home_directory(text: str) -> str:
+        user_home_directory = str(HOME_DIRECTORY)
+        text_mocked = text.replace(user_home_directory, "MOCKING_USER_PATH")
+
+        return text_mocked
+
+    @classmethod
+    def filter_special_tags(cls, text: str) -> str:
+        text_filtered = text.replace("\n", " MOCKING_BREAKLINE ")
+        text_filtered = text_filtered.replace("'Traceback", "Traceback")
+
+        return text_filtered
+
+    @classmethod
+    def filter_piis(cls, text: str) -> str:
+        text_filtered = cls.mock_ipv4(text=text)
+        text_filtered = cls.mock_email(text=text_filtered)
+        text_filtered = cls.mock_home_directory(text=text_filtered)
+
+        return text_filtered
 
     @classmethod
     def filter_log_line(cls, text: str):
-        text = cls.filter_special_characters(text=text)
-        contains_terminal_menu = cls.detect_terminal_message(text)
-        if contains_terminal_menu:
-            first_message, second_message = text.split("menu. - Traceback")
-            text = (
-                first_message
-                + "menu. - Traceback"
-                + cls.filter_piis(text=second_message)
-            )
-        elif "CMD: {" not in text and "QUEUE: {" not in text:
-            text = cls.filter_piis(text=text)
+        text_filtered = cls.filter_special_tags(text=text)
+        text_filtered = cls.filter_piis(text=text_filtered)
 
-        return text
+        return text_filtered
 
     # OVERRIDE
     def __init__(
@@ -132,7 +112,7 @@ class FormatterWithExceptions(logging.Formatter):
         ei : logging._SysExcInfoType
             Exception to be logged
         Returns
-        -------
+        ----------
         str
             Formatted exception
         """
@@ -148,7 +128,7 @@ class FormatterWithExceptions(logging.Formatter):
         record : logging.LogRecord
             Logging record
         Returns
-        -------
+        ----------
         str
             Formatted_log message
         """

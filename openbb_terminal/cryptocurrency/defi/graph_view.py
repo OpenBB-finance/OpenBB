@@ -22,7 +22,7 @@ def display_uni_tokens(
     ascend: bool = False,
     export: str = "",
 ) -> None:
-    """Displays tokens trade-able on Uniswap DEX.
+    """Prints table showing tokens trade-able on Uniswap DEX.
     [Source: https://thegraph.com/en/]
 
     Parameters
@@ -39,8 +39,15 @@ def display_uni_tokens(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_uni_tokens(skip=skip, sortby=sortby, ascend=ascend)
+    df = graph_model.get_uni_tokens(skip=skip)
     df_data = df.copy()
+
+    # Converting these to float
+    df["tradeVolumeUSD"] = df["tradeVolumeUSD"].astype(float)
+    df["totalLiquidity"] = df["totalLiquidity"].astype(float)
+    df["txCount"] = df["txCount"].astype(float)
+
+    df = df.sort_values(by=sortby, ascending=ascend)
 
     df[["totalLiquidity", "tradeVolumeUSD"]] = df[
         ["totalLiquidity", "tradeVolumeUSD"]
@@ -63,7 +70,7 @@ def display_uni_tokens(
 
 @log_start_end(log=logger)
 def display_uni_stats(export: str = "") -> None:
-    """Displays base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
+    """Prints table showing base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
     [Source: https://thegraph.com/en/]
 
     Parameters
@@ -102,7 +109,7 @@ def display_recently_added(
     ascend: bool = False,
     export: str = "",
 ) -> None:
-    """Displays Lastly added pairs on Uniswap DEX.
+    """Prints table showing Lastly added pairs on Uniswap DEX.
     [Source: https://thegraph.com/en/]
 
     Parameters
@@ -133,6 +140,11 @@ def display_recently_added(
     )
     df_data = df.copy()
 
+    # Converting these to float
+    df["volumeUSD"] = df["volumeUSD"].astype(float)
+    df["txCount"] = df["txCount"].astype(float)
+    df["totalSupply"] = df["totalSupply"].astype(float)
+
     df = df.sort_values(by=sortby, ascending=ascend)
 
     df[["volumeUSD", "totalSupply"]] = df[["volumeUSD", "totalSupply"]].applymap(
@@ -158,7 +170,7 @@ def display_recently_added(
 def display_uni_pools(
     limit: int = 20, sortby: str = "volumeUSD", ascend: bool = True, export: str = ""
 ) -> None:
-    """Displays uniswap pools by volume.
+    """Prints table showing uniswap pools by volume.
     [Source: https://thegraph.com/en/]
 
     Parameters
@@ -174,7 +186,14 @@ def display_uni_pools(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_uni_pools_by_volume().sort_values(by=sortby, ascending=ascend)
+    df = graph_model.get_uni_pools_by_volume()
+
+    # Converting these to float
+    df["volumeUSD"] = df["volumeUSD"].astype(float)
+    df["txCount"] = df["txCount"].astype(float)
+
+    df = df.sort_values(by=sortby, ascending=ascend)
+
     df["volumeUSD"] = df["volumeUSD"].apply(
         lambda x: lambda_very_long_number_formatter(x)
     )
@@ -199,7 +218,7 @@ def display_uni_pools(
 def display_last_uni_swaps(
     limit: int = 10, sortby: str = "timestamp", ascend: bool = False, export: str = ""
 ) -> None:
-    """Displays last swaps done on Uniswap
+    """Prints table showing last swaps done on Uniswap
     [Source: https://thegraph.com/en/]
 
     Parameters
@@ -215,13 +234,7 @@ def display_last_uni_swaps(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_last_uni_swaps(limit=limit).sort_values(
-        by=sortby, ascending=ascend
-    )
-    df["amountUSD"] = df["amountUSD"].apply(
-        lambda x: lambda_very_long_number_formatter(x)
-    )
-    df_data = df.copy()
+    df = graph_model.get_last_uni_swaps(limit=limit, sortby=sortby, ascend=ascend)
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Last Uniswap Swaps"
@@ -231,5 +244,5 @@ def display_last_uni_swaps(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "swaps",
-        df_data,
+        df,
     )

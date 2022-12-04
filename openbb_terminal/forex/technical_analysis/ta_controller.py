@@ -27,6 +27,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_positive,
     check_positive_list,
+    check_positive_float,
     valid_date,
 )
 from openbb_terminal.forex.forex_helper import FOREX_SOURCES
@@ -58,6 +59,7 @@ class TechnicalAnalysisController(StockBaseController):
     ]
 
     PATH = "/forex/ta/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self,
@@ -79,80 +81,7 @@ class TechnicalAnalysisController(StockBaseController):
         self.data["Adj Close"] = data["Close"]
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            zero_to_hundred: dict = {str(c): {} for c in range(0, 100)}
-            ma = {
-                "--length": None,
-                "-l": "--length",
-                "--offset": zero_to_hundred,
-                "-o": "--offset",
-            }
-            choices["ema"] = ma
-            choices["sma"] = ma
-            choices["wma"] = ma
-            choices["hma"] = ma
-            choices["zlma"] = ma
-            choices["cci"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--scalar": None,
-                "-s": "--scalar",
-                "--drift": "--length",
-                "-d": "--drift",
-            }
-            choices["stoch"] = {
-                "--fastkperiod": one_to_hundred,
-                "-k": "--fastkperiod",
-                "--slowdperiod": "--fastkperiod",
-                "-d": "--slowdperiod",
-                "--slowkperiod": "--fastkperiod",
-            }
-            choices["fisher"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-            }
-            choices["cg"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-            }
-            choices["adx"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--scalar": None,
-                "-s": "--scalar",
-                "--drift": "--length",
-                "-d": "--drift",
-            }
-            choices["aroon"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--scalar": None,
-                "-s": "--scalar",
-            }
-            choices["bbands"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--std": {str(c): {} for c in np.arange(0.0, 10, 0.25)},
-                "-s": "--std",
-                "--mamode": {c: {} for c in volatility_model.MAMODES},
-                "-m": "--mamode",
-            }
-            choices["donchian"] = {
-                "--length_upper": one_to_hundred,
-                "-u": "--length_upper",
-                "--length_lower": "--length_upper",
-                "-l": "--length_lower",
-            }
-            choices["fib"] = {
-                "--period": {str(c): {} for c in range(1, 960)},
-                "--start": None,
-                "--end": None,
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -812,9 +741,11 @@ class TechnicalAnalysisController(StockBaseController):
             "--std",
             action="store",
             dest="n_std",
-            type=check_positive,
+            type=check_positive_float,
             default=2,
             help="std",
+            choices=np.arange(0.0, 10, 0.25).tolist(),
+            metavar="N_STD",
         )
 
         parser.add_argument(
@@ -974,6 +905,8 @@ class TechnicalAnalysisController(StockBaseController):
             type=int,
             help="Days to look back for retracement",
             default=120,
+            choices=range(1, 960),
+            metavar="PERIOD",
         )
 
         parser.add_argument(

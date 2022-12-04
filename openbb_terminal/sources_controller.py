@@ -3,9 +3,10 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import argparse
-from pathlib import Path
 import json
 import logging
+import os
+from pathlib import Path
 from typing import List, Dict
 
 # IMPORTATION THIRDPARTY
@@ -55,7 +56,11 @@ class SourcesController(BaseController):
             self.json_doc = json.load(json_file)
 
         # If the user has added sources to their own sources file in OpenBBUserData, then use that
-        if user_data_source.exists() and user_data_source.stat().st_size > 0:
+        if (
+            not os.getenv("TEST_MODE")
+            and user_data_source.exists()
+            and user_data_source.stat().st_size > 0
+        ):
             with open(str(user_data_source)) as json_file:
                 self.json_doc = json.load(json_file)
 
@@ -110,6 +115,7 @@ class SourcesController(BaseController):
             action="store",
             dest="cmd",
             choices=list(self.commands_with_sources.keys()),
+            required="-h" not in other_args,
             help="Command that we want to check the available data sources and the default one.",
             metavar="COMMAND",
         )
@@ -117,7 +123,14 @@ class SourcesController(BaseController):
             other_args.insert(0, "-c")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            if self.commands_with_sources[ns_parser.cmd]:
+            try:
+                the_item = self.commands_with_sources[ns_parser.cmd]
+            except KeyError:
+                console.print(
+                    [f"[red]'{ns_parser.cmd}' is not a valid command.[/red]\n"]
+                )
+                return
+            if the_item:
                 console.print(
                     f"\n[param]Default   :[/param] {self.commands_with_sources[ns_parser.cmd][0]}"
                 )

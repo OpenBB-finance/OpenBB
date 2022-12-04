@@ -8,6 +8,7 @@ from typing import Tuple
 import investpy
 import investiny
 import pandas as pd
+from requests.exceptions import RequestException
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -36,6 +37,12 @@ def search_funds(by: str = "name", value: str = "") -> pd.DataFrame:
     except RuntimeError as e:
         logger.exception(str(e))
         return pd.DataFrame()
+    except RequestException:
+        console.print("[red]The request to the website failed[/red]\n")
+        return pd.DataFrame()
+    except ConnectionError:
+        console.print("[red]The request to the website failed[/red]\n")
+        return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -54,9 +61,16 @@ def get_overview(country: str = "united states", limit: int = 20) -> pd.DataFram
     pd.DataFrame
         Dataframe containing overview
     """
-    return investpy.funds.get_funds_overview(
-        country=country, as_json=False, n_results=limit
-    )
+    try:
+        return investpy.funds.get_funds_overview(
+            country=country, as_json=False, n_results=limit
+        )
+    except RequestException:
+        console.print("[red]The request to the website failed[/red]\n")
+        return pd.DataFrame()
+    except ConnectionError:
+        console.print("[red]The request to the website failed[/red]\n")
+        return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -70,12 +84,17 @@ def get_fund_symbol_from_name(name: str) -> Tuple[str, str]:
 
     Returns
     -------
-    str
-        Name of Symbol matching provided name
-    str
-        Country in which matching symbol was found
+    Tuple[str, str]
+        Name of Symbol matching provided name, Country in which matching symbol was found
     """
-    name_search_results = investpy.search_funds(by="name", value=name)
+    try:
+        name_search_results = investpy.search_funds(by="name", value=name)
+    except RequestException:
+        console.print("[red]The request to the website failed[/red]\n")
+        return "", ""
+    except ConnectionError:
+        console.print("[red]The request to the website failed[/red]\n")
+        return "", ""
     if name_search_results.empty:
         return "", ""
     symbol = name_search_results.loc[:, "symbol"][0]
@@ -97,12 +116,17 @@ def get_fund_name_from_symbol(symbol: str) -> Tuple[str, str]:
 
     Returns
     -------
-    str
-        Name of fund matching provided symbol
-    str
-        Country matching symbol
+    Tuple[str, str]
+        Name of fund matching provided symbol, Country matching symbol
     """
-    symbol_search_results = investpy.search_funds(by="symbol", value=symbol)
+    try:
+        symbol_search_results = investpy.search_funds(by="symbol", value=symbol)
+    except RequestException:
+        console.print("[red]The request to the website failed[/red]\n")
+        return "", ""
+    except ConnectionError:
+        console.print("[red]The request to the website failed[/red]\n")
+        return "", ""
     if symbol_search_results.empty:
         return "", ""
     name = symbol_search_results.loc[:, "name"][0]
@@ -129,7 +153,14 @@ def get_fund_info(name: str, country: str = "united states") -> pd.DataFrame:
     pd.DataFrame
         Dataframe of fund information
     """
-    return investpy.funds.get_fund_information(name, country).T
+    try:
+        return investpy.funds.get_fund_information(name, country).T
+    except RequestException:
+        console.print("[red]The request to the website failed[/red]\n")
+        return pd.DataFrame()
+    except ConnectionError:
+        console.print("[red]The request to the website failed[/red]\n")
+        return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -157,29 +188,26 @@ def get_fund_historical(
 
     Returns
     -------
-    pd.DataFrame:
-        Dataframe of OHLC prices
-    str:
-        Fund name
-    str:
-        Fund symbol
-    str:
-        Country that matches search results
+    Tuple[pd.DataFrame, str, str, str]
+        Dataframe of OHLC prices, Fund name, Fund symbol, Country that matches search results
     """
-    if by_name:
-        fund_name = name
-        try:
+    try:
+        if by_name:
+            fund_name = name
             fund_symbol, matching_country = get_fund_symbol_from_name(name)
-        except RuntimeError as e:
-            logger.exception(str(e))
-            return pd.DataFrame(), name, "", country
-    else:
-        fund_symbol = name
-        try:
+        else:
+            fund_symbol = name
             fund_name, matching_country = get_fund_name_from_symbol(name)
-        except RuntimeError as e:
-            logger.exception(str(e))
-            return pd.DataFrame(), "", name, country
+
+    except RuntimeError as e:
+        logger.exception(str(e))
+        return pd.DataFrame(), name, "", country
+    except RequestException:
+        console.print("[red]The request to the website failed[/red]\n")
+        return pd.DataFrame(), "", "", ""
+    except ConnectionError:
+        console.print("[red]The request to the website failed[/red]\n")
+        return pd.DataFrame(), "", "", ""
 
     # Note that dates for investpy need to be in the format mm/dd/yyyy
     from_date = start_date.strftime("%m/%d/%Y")
@@ -199,6 +227,10 @@ def get_fund_historical(
         return (df, fund_name, fund_symbol, matching_country)
 
     except RuntimeError as e:
+        console.print("[red]Error connecting to the data source.[/red]\n")
+        logger.exception(str(e))
+        return pd.DataFrame(), fund_name, fund_symbol, search_country
+    except RequestException as e:
         console.print("[red]Error connecting to the data source.[/red]\n")
         logger.exception(str(e))
         return pd.DataFrame(), fund_name, fund_symbol, search_country

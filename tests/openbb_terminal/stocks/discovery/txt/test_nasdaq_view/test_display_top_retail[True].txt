@@ -9,6 +9,7 @@
 7   NVDA    0.0313         -4
 8    AMD    0.0647         -5
 9   AAPL    0.0410          0
+
   Ticker  Activity  Sentiment
 0   TSLA    0.0373          0
 1   TQQQ    0.0261          6
@@ -20,6 +21,7 @@
 7   MSFT    0.0118          1
 8    AMD    0.0661         -6
 9   AAPL    0.0485         -4
+
   Ticker  Activity  Sentiment
 0   TSLA    0.0623          0
 1   TQQQ    0.0238          4
@@ -31,3 +33,4 @@
 7     FB    0.0138         -4
 8    AMD    0.0633         -6
 9   AAPL    0.0481         -1
+

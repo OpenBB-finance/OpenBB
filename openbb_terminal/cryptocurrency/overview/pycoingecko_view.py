@@ -88,12 +88,17 @@ def display_crypto_heatmap(
             axis=1,
         )
 
+        # index needs to get sorted - was matching with different values
+        df.sort_index(inplace=True)
+        df_copy.sort_index(inplace=True)
         squarify.plot(
             df["market_cap"],
-            alpha=0.8,
+            alpha=0.5,
             color=colors,
         )
+
         text_sizes = squarify.normalize_sizes(df["market_cap"], 100, 100)
+
         rects = squarify.squarify(text_sizes, 0, 0, 100, 100)
         for la, r in zip(df_copy["symbol"], rects):
             x, y, dx, dy = r["x"], r["y"], r["dx"], r["dy"]
@@ -158,8 +163,10 @@ def display_holdings_overview(
 
             for _, row in df.iterrows():
                 ax.bar(x=row["Symbol"], height=row["Total Holdings"])
-
-            ax.set_ylabel("BTC Number")
+            if symbol == "bitcoin":
+                ax.set_ylabel("BTC Number")
+            else:
+                ax.set_ylabel("ETH Number")
             ax.get_yaxis().set_major_formatter(
                 ticker.FuncFormatter(
                     lambda x, _: lambda_long_number_format_with_type_check(x)
@@ -167,7 +174,10 @@ def display_holdings_overview(
             )
             ax.set_xlabel("Company Symbol")
             fig.tight_layout(pad=8)
-            ax.set_title("Total BTC Holdings per company")
+            if symbol == "bitcoin":
+                ax.set_title("Total BTC Holdings per company")
+            else:
+                ax.set_title("Total ETH Holdings per company")
             ax.tick_params(axis="x", labelrotation=90)
         console.print(f"\n{stats_string}\n")
         df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
@@ -221,9 +231,7 @@ def display_exchange_rates(
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -286,9 +294,7 @@ def display_global_market_info(pie: bool = False, export: str = "") -> None:
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -318,18 +324,16 @@ def display_global_defi_info(export: str = "") -> None:
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 @log_start_end(log=logger)
 def display_stablecoins(
     limit: int = 15,
     export: str = "",
-    sortby: str = "rank",
+    sortby: str = "Market_Cap_[$]",
     ascend: bool = False,
-    pie: bool = False,
+    pie: bool = True,
 ) -> None:
     """Shows stablecoins data [Source: CoinGecko]
 
@@ -338,47 +342,37 @@ def display_stablecoins(
     limit: int
         Number of records to display
     sortby: str
-        Key by which to sort data
+        Key by which to sort data, default is Market_Cap_[$]
     ascend: bool
         Flag to sort data ascending
+    pie: bool
+        Whether to show a pie chart, default is True
     export : str
         Export dataframe data to csv,json,xlsx file
     pie : bool
         Whether to show a pie chart
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.crypto.ov.stables_chart(sortby="Volume_[$]", ascend=True, limit=10)
     """
 
     df = gecko.get_stable_coins(limit, sortby=sortby, ascend=ascend)
 
     if not df.empty:
-        total_market_cap = int(df["market_cap"].sum())
-        df[f"Percentage [%] of top {limit}"] = (
-            df["market_cap"] / total_market_cap
-        ) * 100
-        df_data = df
-        df = df.set_axis(
-            [
-                "Symbol",
-                "Name",
-                "Price [$]",
-                "Market Cap [$]",
-                "Market Cap Rank",
-                "Change 24h [%]",
-                "Change 7d [%]",
-                "Volume [$]",
-                f"Percentage [%] of top {limit}",
-            ],
-            axis=1,
-            inplace=False,
-        )
-        df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
+
+        total_market_cap = int(df["Market_Cap_[$]"].sum())
+        df.columns = df.columns.str.replace("_", " ")
+
         if pie:
-            stables_to_display = df_data[df_data[f"Percentage [%] of top {limit}"] >= 1]
-            other_stables = df_data[df_data[f"Percentage [%] of top {limit}"] < 1]
+            stables_to_display = df[df[f"Percentage [%] of top {limit}"] >= 1]
+            other_stables = df[df[f"Percentage [%] of top {limit}"] < 1]
             values_list = list(
                 stables_to_display[f"Percentage [%] of top {limit}"].values
             )
             values_list.append(other_stables[f"Percentage [%] of top {limit}"].sum())
-            labels_list = list(stables_to_display["name"].values)
+            labels_list = list(stables_to_display["Name"].values)
             labels_list.append("Others")
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             ax.pie(
@@ -393,11 +387,14 @@ def display_stablecoins(
             if obbff.USE_ION:
                 plt.ion()
             plt.show()
+
         console.print(
             f"First {limit} stablecoins have a total "
             f"{lambda_long_number_format_with_type_check(total_market_cap)}"
-            "dollars of market cap."
+            "dollars of market cap.\n"
         )
+
+        df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         print_rich_table(
             df.head(limit),
             headers=list(df.columns),
@@ -483,7 +480,7 @@ def display_categories(
 
 @log_start_end(log=logger)
 def display_exchanges(
-    sortby: str = "name",
+    sortby: str = "Rank",
     ascend: bool = False,
     limit: int = 15,
     links: bool = False,
@@ -528,9 +525,7 @@ def display_exchanges(
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -606,9 +601,7 @@ def display_products(
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -645,9 +638,7 @@ def display_indexes(
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -686,6 +677,4 @@ def display_derivatives(
             df,
         )
     else:
-        console.print("")
         console.print("Unable to retrieve data from CoinGecko.")
-        console.print("")

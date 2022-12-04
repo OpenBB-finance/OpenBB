@@ -11,7 +11,6 @@ import yfinance as yf
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
-from openbb_terminal.decorators import check_api_key
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -23,7 +22,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks.comparison_analysis import (
     finbrain_view,
     finnhub_model,
@@ -49,9 +48,7 @@ class ComparisonAnalysisController(BaseController):
 
     CHOICES_COMMANDS = [
         "ticker",
-        "getpoly",
-        "getfinnhub",
-        "getfinviz",
+        "get",
         "set",
         "add",
         "rmv",
@@ -74,6 +71,7 @@ class ComparisonAnalysisController(BaseController):
     choices_ohlca = ["o", "h", "l", "c", "a"]
     CHOICES_MENUS: List = list()
     PATH = "/stocks/ca/"
+    CHOICES_GENERATION = True
 
     def __init__(self, similar: List[str] = None, queue: List[str] = None):
         """Constructor"""
@@ -90,81 +88,15 @@ class ComparisonAnalysisController(BaseController):
             self.similar = []
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            one_to_three_hundred: dict = {str(c): {} for c in range(1, 300)}
-            choices["load"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-            }
-            choices["tsne"] = {
-                "--learnrate": one_to_three_hundred,
-                "-r": "--learnrate",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["getpoly"] = {
-                "--us_only": {},
-                "-u": "--us_only",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            limit = {
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["getfinnhub"] = limit
-            choices["getfinviz"] = {
-                "--nocountry": {},
-                "-n": "--nocountry",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            complete_similar = {
-                "--similar": None,
-                "-s": "--similar",
-            }
-            choices["set"] = complete_similar
-            choices["add"] = complete_similar
-            choices["rmv"] = complete_similar
-            choices["historical"] = {
-                "--type": {c: {} for c in self.choices_ohlca},
-                "-t": "--type",
-                "--normalize": {},
-                "-n": "--normalize",
-                "--start": None,
-                "-s": "--start",
-            }
-            choices["hcorr"] = {
-                "--type": {c: {} for c in self.choices_ohlca},
-                "-t": "--type",
-                "--start": None,
-                "-s": "--start",
-                "--display-full-matrix": {},
-                "--raw": {},
-            }
-            choices["volume"] = {
-                "--start": None,
-                "-s": "--start",
-            }
-            statements: dict = {
-                "--timeframe": None,
-                "-t": "--timeframe",
-                "--quarter": {},
-                "-q": "--quarter",
-            }
-            choices["income"] = statements
-            choices["balance"] = statements
-            choices["cashflow"] = statements
-            raw = {
-                "--raw": {},
-                "-r": "--raw",
-            }
-            choices["sentiment"] = raw
-            choices["scorr"] = raw
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def call_exit(self, _) -> None:
+        """Process exit terminal command from forecast menu."""
+        self.save_class()
+        for _ in range(self.PATH.count("/") + 1):
+            self.queue.insert(0, "quit")
 
     def print_help(self):
         """Print help"""
@@ -174,9 +106,7 @@ class ComparisonAnalysisController(BaseController):
         mt.add_param("_ticker", self.ticker)
         mt.add_raw("\n")
         mt.add_cmd("tsne", self.ticker)
-        mt.add_cmd("getpoly", self.ticker)
-        mt.add_cmd("getfinnhub", self.ticker)
-        mt.add_cmd("getfinviz", self.ticker)
+        mt.add_cmd("get", self.ticker)
         mt.add_raw("\n")
         mt.add_cmd("set")
         mt.add_cmd("add")
@@ -241,7 +171,6 @@ class ComparisonAnalysisController(BaseController):
                     )
                 else:
                     self.ticker = ns_parser.ticker.upper()
-            console.print()
 
     @log_start_end(log=logger)
     def call_tsne(self, other_args: List[str]):
@@ -295,13 +224,21 @@ class ComparisonAnalysisController(BaseController):
                 )
 
     @log_start_end(log=logger)
-    def call_getfinviz(self, other_args: List[str]):
-        """Process getfinviz command"""
+    def call_get(self, other_args: List[str]):
+        """Process get command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="getfinviz",
-            description="""Get similar companies from finviz to compare with.""",
+            prog="get",
+            description="""Get similar companies from selected data source (default: Finviz) to compare with.""",
+        )
+        parser.add_argument(
+            "-u",
+            "--us_only",
+            action="store_true",
+            default=False,
+            dest="us_only",
+            help="Show only stocks from the US stock exchanges. Works only with Polygon",
         )
         parser.add_argument(
             "-n",
@@ -324,144 +261,85 @@ class ComparisonAnalysisController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                if ns_parser.b_no_country:
-                    compare_list = ["Sector", "Industry"]
+                if ns_parser.source == "Finviz":
+                    if ns_parser.b_no_country:
+                        compare_list = ["Sector", "Industry"]
+                    else:
+                        compare_list = ["Sector", "Industry", "Country"]
+
+                    self.similar = finviz_compare_model.get_similar_companies(
+                        self.ticker, compare_list
+                    )
+                    if self.similar is None:
+                        return
+                    self.user = "Finviz"
+
+                    if self.ticker.upper() in self.similar:
+                        self.similar.remove(self.ticker.upper())
+
+                    if len(self.similar) > ns_parser.limit:
+                        random.shuffle(self.similar)
+                        self.similar = sorted(self.similar[: ns_parser.limit])
+                        console.print(
+                            f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
+                        )
+
+                    if self.similar:
+                        self.similar = [self.ticker] + self.similar
+
+                        console.print(
+                            f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
+                            "\n",
+                        )
+                elif ns_parser.source == "Polygon":
+                    self.similar = polygon_model.get_similar_companies(
+                        self.ticker, ns_parser.us_only
+                    )
+                    if self.similar is None:
+                        return
+                    self.user = "Polygon"
+
+                    if self.ticker.upper() in self.similar:
+                        self.similar.remove(self.ticker.upper())
+
+                    if len(self.similar) > ns_parser.limit:
+                        random.shuffle(self.similar)
+                        self.similar = sorted(self.similar[: ns_parser.limit])
+                        console.print(
+                            f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
+                        )
+
+                    if self.similar:
+                        self.similar = [self.ticker] + self.similar
+                        console.print(
+                            f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
+                            "\n",
+                        )
+                elif ns_parser.source == "Finnhub":
+                    self.similar = finnhub_model.get_similar_companies(self.ticker)
+
+                    self.user = "Finnhub"
+
+                    if self.ticker.upper() in self.similar:
+                        self.similar.remove(self.ticker.upper())
+
+                    if len(self.similar) > ns_parser.limit:
+                        random.shuffle(self.similar)
+                        self.similar = sorted(self.similar[: ns_parser.limit])
+                        console.print(
+                            f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
+                        )
+
+                    if self.similar:
+                        self.similar = [self.ticker] + self.similar
+                        console.print(
+                            f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
+                            "\n",
+                        )
                 else:
-                    compare_list = ["Sector", "Industry", "Country"]
-
-                self.similar = finviz_compare_model.get_similar_companies(
-                    self.ticker, compare_list
-                )
-
-                self.user = "Finviz"
-
-                if self.ticker.upper() in self.similar:
-                    self.similar.remove(self.ticker.upper())
-
-                if len(self.similar) > ns_parser.limit:
-                    random.shuffle(self.similar)
-                    self.similar = sorted(self.similar[: ns_parser.limit])
                     console.print(
-                        f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
+                        f"Use a valid data source: {', '.join(get_ordered_list_sources(f'{self.PATH}get'))}"
                     )
-
-                if self.similar:
-                    self.similar = [self.ticker] + self.similar
-
-                    console.print(
-                        f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
-                        "\n",
-                    )
-            else:
-                console.print(
-                    "You need to 'set' a ticker to get similar companies from first!"
-                )
-
-    @log_start_end(log=logger)
-    @check_api_key(["API_POLYGON_KEY"])
-    def call_getpoly(self, other_args: List[str]):
-        """Process get command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="getpoly",
-            description="""Get similar companies from polygon to compare with.""",
-        )
-        parser.add_argument(
-            "-u",
-            "--us_only",
-            action="store_true",
-            default=False,
-            dest="us_only",
-            help="Show only stocks from the US stock exchanges",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            default=10,
-            dest="limit",
-            type=check_positive,
-            help="Limit of stocks to retrieve.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser:
-            if self.ticker:
-                self.similar = polygon_model.get_similar_companies(
-                    self.ticker, ns_parser.us_only
-                )
-
-                self.user = "Polygon"
-
-                if self.ticker.upper() in self.similar:
-                    self.similar.remove(self.ticker.upper())
-
-                if len(self.similar) > ns_parser.limit:
-                    random.shuffle(self.similar)
-                    self.similar = sorted(self.similar[: ns_parser.limit])
-                    console.print(
-                        f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
-                    )
-
-                if self.similar:
-                    self.similar = [self.ticker] + self.similar
-                    console.print(
-                        f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
-                        "\n",
-                    )
-
-            else:
-                console.print(
-                    "You need to 'set' a ticker to get similar companies from first!"
-                )
-
-    @log_start_end(log=logger)
-    @check_api_key(["API_FINNHUB_KEY"])
-    def call_getfinnhub(self, other_args: List[str]):
-        """Process get command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="getfinnhub",
-            description="""Get similar companies from finnhub to compare with.""",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            default=10,
-            dest="limit",
-            type=check_positive,
-            help="Limit of stocks to retrieve.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if self.ticker:
-                self.similar = finnhub_model.get_similar_companies(self.ticker)
-
-                self.user = "Finnhub"
-
-                if self.ticker.upper() in self.similar:
-                    self.similar.remove(self.ticker.upper())
-
-                if len(self.similar) > ns_parser.limit:
-                    random.shuffle(self.similar)
-                    self.similar = sorted(self.similar[: ns_parser.limit])
-                    console.print(
-                        f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
-                    )
-
-                if self.similar:
-
-                    self.similar = [self.ticker] + self.similar
-                    console.print(
-                        f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
-                        "\n",
-                    )
-
             else:
                 console.print(
                     "You need to 'set' a ticker to get similar companies from first!"
@@ -637,7 +515,7 @@ class ComparisonAnalysisController(BaseController):
             action="store",
             dest="type_candle",
             type=str,
-            choices=["o", "h", "l", "c", "a", "r"],
+            choices=self.choices_ohlca,
             default="a",  # in case it's adjusted close
             help="Candle data to use: o-open, h-high, l-low, c-close, a-adjusted close, r-returns.",
         )
@@ -710,6 +588,7 @@ class ComparisonAnalysisController(BaseController):
                 symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -782,6 +661,7 @@ class ComparisonAnalysisController(BaseController):
                 symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -821,6 +701,7 @@ class ComparisonAnalysisController(BaseController):
                 symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)

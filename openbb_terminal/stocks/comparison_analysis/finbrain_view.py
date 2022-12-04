@@ -35,7 +35,7 @@ def display_sentiment_compare(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display sentiment for all ticker. [Source: FinBrain]
+    """Display sentiment for all ticker. [Source: FinBrain].
 
     Parameters
     ----------
@@ -115,7 +115,6 @@ def display_sentiment_compare(
             "sentiment",
             df_sentiment,
         )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -125,7 +124,7 @@ def display_sentiment_correlation(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot correlation sentiments heatmap across similar companies. [Source: FinBrain]
+    """Plot correlation sentiments heatmap across similar companies. [Source: FinBrain].
 
     Parameters
     ----------

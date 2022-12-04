@@ -1,0 +1,14 @@
+crypto
+nft
+
+# stats
+stats --slugs cryptopunks
+
+# fp
+fp --slug cryptopunks --limit 3 --raw
+
+# collections
+collections --limit 3 --fp
+collections --limit 3 --sales
+
+exit

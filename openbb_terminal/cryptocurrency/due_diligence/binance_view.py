@@ -28,7 +28,7 @@ def display_order_book(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Get order book for currency. [Source: Binance]
+    """Plots order book for currency. [Source: Binance]
 
     Parameters
     ----------
@@ -64,7 +64,7 @@ def display_order_book(
 def display_balance(
     from_symbol: str, to_symbol: str = "USDT", export: str = ""
 ) -> None:
-    """Get account holdings for asset. [Source: Binance]
+    """Prints table showing account holdings for asset. [Source: Binance]
 
     Parameters
     ----------
@@ -77,6 +77,10 @@ def display_balance(
     """
 
     df = get_balance(from_symbol, to_symbol)
+
+    if df is None or df.empty:
+        console.print("[red]No data found[/red]\n")
+        return
 
     total = np.sum(df["Amount"])
     console.print(f"\nYou currently have {total} coins and the breakdown is:")

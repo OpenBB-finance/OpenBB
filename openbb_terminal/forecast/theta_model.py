@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union, List
+from typing import Optional, Tuple, Union, List
 
 import warnings
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
@@ -31,10 +31,17 @@ def get_theta_data(
     target_column: str = "close",
     seasonal: str = "M",
     seasonal_periods: int = 7,
-    n_predict: int = 30,
+    n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, float, Any]:
+) -> Tuple[
+    Optional[List[TimeSeries]],
+    Optional[List[TimeSeries]],
+    Optional[List[TimeSeries]],
+    Optional[float],
+    Optional[float],
+    Optional[type[Theta]],
+]:
 
     """Performs Theta forecasting
     An implementation of the 4Theta method with configurable theta parameter.
@@ -45,7 +52,7 @@ def get_theta_data(
     ----------
     data : Union[pd.Series, np.ndarray]
         Input data.
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     seasonal: str
         Seasonal component.  One of [N, A, M]
@@ -62,18 +69,13 @@ def get_theta_data(
 
     Returns
     -------
-    List[TimeSeries]
-        Adjusted Data series
-    List[TimeSeries]
-        Historical forecast by best theta
-    List[TimeSeries]
-        list of Predictions
-    float
-        Mean average precision error
-    float
-        Best Theta
-    Any
-        Theta Model
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, float, type[Theta]]
+        Adjusted Data series,
+        Historical forecast by best theta,
+        list of Predictions,
+        Mean average precision error,
+        Best Theta,
+        Theta Model.
     """
 
     use_scalers = False
@@ -90,18 +92,26 @@ def get_theta_data(
     thetas = np.linspace(-10, 10, 50)
     best_mape = float("inf")
     best_theta = 0
+    error = ""
     for theta in thetas:
         model = Theta(
             theta=theta,
             season_mode=seasonal,
             seasonality_period=seasonal_periods,
         )
-        model.fit(train)
-        pred_theta = model.predict(len(val))
-        res = mape(val, pred_theta)
-        if res < best_mape:
-            best_mape = res
-            best_theta = theta
+        try:
+            model.fit(train)
+            pred_theta = model.predict(len(val))
+            res = mape(val, pred_theta)
+            if res < best_mape:
+                best_mape = res
+                best_theta = theta
+        except Exception as e:  # noqa
+            error = str(e)
+
+    if best_theta == 0:
+        console.print(f"[red]{error}[/red]")
+        return [], [], [], 0, 0, None
 
     best_theta_model = Theta(
         best_theta,

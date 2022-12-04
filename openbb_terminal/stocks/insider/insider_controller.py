@@ -65,6 +65,7 @@ class InsiderController(StockBaseController):
     preset_choices = openinsider_model.get_preset_choices()
 
     PATH = "/stocks/ins/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self,
@@ -84,54 +85,7 @@ class InsiderController(StockBaseController):
         self.preset = "whales"
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["view"] = {c: {} for c in self.preset_choices}
-            choices["set"] = {c: {} for c in self.preset_choices}
-            choices["filter"] = {
-                "--urls": {},
-                "-u": "--urls",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            limit = {
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["lcb"] = limit
-            choices["lpsb"] = limit
-            choices["lit"] = limit
-            choices["lip"] = limit
-            choices["blip"] = limit
-            choices["blop"] = limit
-            choices["blcp"] = limit
-            choices["lis"] = limit
-            choices["blis"] = limit
-            choices["blos"] = limit
-            choices["blcs"] = limit
-            choices["topt"] = limit
-            choices["toppw"] = limit
-            choices["toppm"] = limit
-            choices["tipt"] = limit
-            choices["lcb"] = limit
-            choices["tippw"] = limit
-            choices["tippm"] = limit
-            choices["tist"] = limit
-            choices["tispw"] = limit
-            choices["tispm"] = limit
-            choices["stats"] = {
-                "--urls": {},
-                "-u": "--urls",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["act"] = {
-                "--raw": {},
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
-            choices["lins"] = limit
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -199,6 +153,7 @@ class InsiderController(StockBaseController):
             help="View specific preset",
             default="",
             choices=self.preset_choices,
+            metavar="Desired preset",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -242,7 +197,7 @@ class InsiderController(StockBaseController):
                             if line.strip() == "[General]":
                                 break
                             description += line.strip()
-                    console.print(f"\nPRESET: {preset}")
+                    console.print(f"\nPRESET: {preset.strip('.ini')}")
                     console.print(
                         description.split("Description: ")[1].replace("#", "")
                     )
@@ -265,6 +220,7 @@ class InsiderController(StockBaseController):
             default="template",
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -925,15 +881,6 @@ class InsiderController(StockBaseController):
             description="""Prints insider activity over time [Source: Business Insider]""",
         )
         parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=10,
-            help="Limit of latest insider activity.",
-        )
-        parser.add_argument(
             "--raw",
             action="store_true",
             default=False,
@@ -943,7 +890,7 @@ class InsiderController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
             if self.ticker:

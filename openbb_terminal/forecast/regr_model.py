@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union, List
+from typing import Tuple, Union, List
 import warnings
 
 
@@ -26,40 +26,40 @@ def get_regression_data(
     past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
-    output_chunk_length: int = 1,
-    lags: Union[int, List[int]] = 72,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
+    output_chunk_length: int = 5,
+    lags: Union[int, List[int]] = 14,
+) -> Tuple[
+    List[TimeSeries], List[TimeSeries], List[TimeSeries], float, type[RegressionModel]
+]:
     """Perform Regression Forecasting
 
-    Args:
-        data (Union[pd.Series, pd.DataFrame]):
-            Input Data
-        n_predict (int, optional):
-            Days to predict. Defaults to 5.
-        target_column (str, optional):
-            Target column to forecast. Defaults to "close".
-        train_split (float, optional):
-            Train/val split. Defaults to 0.85.
-        past_covariates (str, optional):
-            Multiple secondary columns to factor in when forecasting. Defaults to None.
-        forecast_horizon (int, optional):
-            Forecast horizon when performing historical forecasting. Defaults to 5.
-        output_chunk_length (int, optional):
-            The length of the forecast of the model. Defaults to 1.
-        lags (int, list)
-            lagged target values to predict the next time step
+    Parameters
+    ----------
+    data: Union[pd.Series, pd.DataFrame]
+        Input Data
+    n_predict: int
+        Days to predict. Defaults to 5.
+    target_column: str
+        Target column to forecast. Defaults to "close".
+    train_split: float
+        Train/val split. Defaults to 0.85.
+    past_covariates: str
+        Multiple secondary columns to factor in when forecasting. Defaults to None.
+    forecast_horizon: int
+        Forecast horizon when performing historical forecasting. Defaults to 5.
+    output_chunk_length: int
+        The length of the forecast of the model. Defaults to 1.
+    lags: Union[int, List[int]]
+        lagged target values to predict the next time step
 
-    Returns:
-        List[TimeSeries]
-            Adjusted Data series
-        List[TimeSeries]
-            Historical forecast by best RNN model
-        List[TimeSeries]
-            list of Predictions
-        float
-            Mean average precision error
-        Any
-            Best Regression Model
+    Returns
+    -------
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, type[RegressionModel]]
+        Adjusted Data series,
+        Historical forecast by best RNN model,
+        list of Predictions,
+        Mean average precision error,
+        Best Regression Model.
     """
 
     use_scalers = False

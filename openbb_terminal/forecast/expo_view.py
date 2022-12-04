@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from openbb_terminal.forecast import expo_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -25,7 +26,7 @@ def display_expo_forecast(
     seasonal: str = "A",
     seasonal_periods: int = 7,
     dampen: str = "F",
-    n_predict: int = 30,
+    n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
     export: str = "",
@@ -34,6 +35,7 @@ def display_expo_forecast(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     naive: bool = False,
+    export_pred_raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Display Probabilistic Exponential Smoothing forecast
@@ -42,9 +44,9 @@ def display_expo_forecast(
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
-    dataset_name str
+    dataset_name: str
         The name of the ticker to be predicted
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     trend: str
         Trend component.  One of [N, A, M]
@@ -76,7 +78,7 @@ def display_expo_forecast(
     naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the same
         as the previous day's closing price. Defaults to False.
-    external_axes:Optional[List[plt.axes]]
+    external_axes: Optional[List[plt.axes]]
         External axes to plot on
     """
     data = helpers.clean_data(data, start_date, end_date, target_column, None)
@@ -100,26 +102,32 @@ def display_expo_forecast(
         start_window=start_window,
         forecast_horizon=forecast_horizon,
     )
+
+    if ticker_series == []:
+        return
+
     probabilistic = True
     helpers.plot_forecast(
-        "PES",
-        target_column,
-        historical_fcast,
-        predicted_values,
-        ticker_series,
-        dataset_name,
-        data,
-        n_predict,
-        forecast_horizon,
-        None,
-        precision,
-        probabilistic,
-        export,
+        name="PES",
+        target_col=target_column,
+        historical_fcast=historical_fcast,
+        predicted_values=predicted_values,
+        ticker_series=ticker_series,
+        ticker_name=dataset_name,
+        data=data,
+        n_predict=n_predict,
+        forecast_horizon=forecast_horizon,
+        past_covariates=None,
+        precision=precision,
+        probabilistic=probabilistic,
+        export=export,
         forecast_only=forecast_only,
         naive=naive,
+        export_pred_raw=export_pred_raw,
         external_axes=external_axes,
     )
     if residuals:
-        helpers.plot_residuals(
-            _model, None, ticker_series, forecast_horizon=forecast_horizon
-        )
+        console.print("[red]Expo model does not support residuals at this time[/red]\n")
+        # helpers.plot_residuals(
+        #     _model, None, ticker_series, forecast_horizon=forecast_horizon
+        # )

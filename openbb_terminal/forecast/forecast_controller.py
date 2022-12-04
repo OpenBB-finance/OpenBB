@@ -16,7 +16,8 @@ try:
     if darts.__version__ != darts_latest:
         print(f"You are currently using Darts version {darts.__version__}")
         print(
-            f"Follow instructions on creating a new conda environment with the latest Darts version ({darts_latest}):"
+            "Follow instructions on creating a new conda environment with the latest "
+            f"Darts version ({darts_latest}):"
         )
         print(
             "https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md"
@@ -47,13 +48,19 @@ from openbb_terminal.helper_funcs import (
     log_and_raise,
     valid_date,
 )
-from openbb_terminal.helper_funcs import check_list_values
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.forecast import (
     forecast_model,
     forecast_view,
+    autoselect_view,
+    autoarima_view,
+    autoces_view,
+    autoets_view,
+    mstl_view,
+    rwd_view,
+    seasonalnaive_view,
     expo_model,
     expo_view,
     linregr_view,
@@ -68,6 +75,7 @@ from openbb_terminal.forecast import (
     trans_view,
     nhits_view,
 )
+from openbb_terminal.common import common_model
 
 logger = logging.getLogger(__name__)
 empty_df = pd.DataFrame()
@@ -107,6 +115,13 @@ class ForecastController(BaseController):
         "delta",
         "atr",
         "signal",
+        "autoselect",
+        "autoarima",
+        "autoces",
+        "autoets",
+        "mstl",
+        "rwd",
+        "seasonalnaive",
         "expo",
         "theta",
         "rnn",
@@ -141,6 +156,7 @@ class ForecastController(BaseController):
     damages."""
 
     PATH = "/forecast/"
+    CHOICES_GENERATION = True
 
     loaded_dataset_cols = "\n"
     list_dataset_cols: list = list()
@@ -151,13 +167,14 @@ class ForecastController(BaseController):
         """Constructor"""
         super().__init__(queue)
         self.files: List[str] = []
+        self.choices = {}
         # The full file name with extension, this allows the rest command to work
         self.files_full: List[List[str]] = []
         self.datasets: Dict[str, pd.DataFrame] = dict()
+        self.MINIMUM_DATA_LENGTH = 100
 
         if ticker and not data.empty:
-            # data["date"] = data.index
-            data = data.reset_index()  # convert date from index to column
+            data = data.reset_index()
             data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
 
             self.files.append(ticker)
@@ -182,8 +199,7 @@ class ForecastController(BaseController):
             "mod": "%",
             "pow": "**",
         }
-        self.file_types = forecast_model.base_file_types
-        self.DATA_FILES = forecast_model.default_files
+        self.DATA_FILES = forecast_model.get_default_files()
 
         # setting device on GPU if available, else CPU
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -193,81 +209,32 @@ class ForecastController(BaseController):
         self.darts_version = darts.__version__
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"] = {c: None for c in self.DATA_FILES.keys()}
-            choices["show"] = {c: None for c in self.files}
-
-            for feature in ["export", "show"]:
-                choices[feature] = {c: None for c in self.files}
-
-            for feature in ["plot"]:
-                choices[feature] = dict()
+            choices: dict = self.choices_default
 
             self.choices = choices
-
-            # To link to the support HTML
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
-
             self.completer = NestedCompleter.from_nested_dict(choices)
-            self.update_runtime_choices()
+
+    def call_exit(self, _) -> None:
+        """Process exit terminal command from forecast menu."""
+        self.save_class()
+        for _ in range(self.PATH.count("/") + 1):
+            self.queue.insert(0, "quit")
+
+    def get_dataset_columns(self):
+        return {
+            f"{dataset}.{column}": {column: None, dataset: None}
+            for dataset, dataframe in self.datasets.items()
+            for column in dataframe.columns
+        }
 
     def update_runtime_choices(self):
+        # Load in any newly exported files
+        self.DATA_FILES = forecast_model.get_default_files()
         if session and obbff.USE_PROMPT_TOOLKIT:
-            dataset_columns = {
-                f"{dataset}.{column}": {column: None, dataset: None}
-                for dataset, dataframe in self.datasets.items()
-                for column in dataframe.columns
-            }
+            choices: dict = self.choices_default
 
-            for feature in [
-                "plot",
-                "delete",
-            ]:
-                self.choices[feature] = dataset_columns
-
-            for feature in [
-                "export",
-                "show",
-                "clean",
-                "desc",
-                "corr",
-                "ema",
-                "sto",
-                "rsi",
-                "roc",
-                "mom",
-                "delta",
-                "atr",
-                "signal",
-                # "index",
-                # "remove",
-                "combine",
-                "rename",
-                "expo",
-                "theta",
-                "rnn",
-                "brnn",
-                "nbeats",
-                "tcn",
-                "regr",
-                "linregr",
-                "trans",
-                "tft",
-                "season",
-                "nhits",
-            ]:
-                self.choices[feature] = {c: None for c in self.files}
-
-            pairs_timeseries = list()
-            for dataset_col in list(dataset_columns.keys()):
-                pairs_timeseries += [
-                    f"{dataset_col},{dataset_col2}"
-                    for dataset_col2 in list(dataset_columns.keys())
-                    if dataset_col != dataset_col2
-                ]
-
-            self.completer = NestedCompleter.from_nested_dict(self.choices)
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def refresh_datasets_on_menu(self):
         """Refresh datasets on menu with new columns when adding new features"""
@@ -320,6 +287,13 @@ class ForecastController(BaseController):
         mt.add_cmd("signal", self.files)
         mt.add_raw("\n")
         mt.add_info("_tsforecasting_")
+        mt.add_cmd("autoselect", self.files)
+        mt.add_cmd("autoarima", self.files)
+        mt.add_cmd("autoces", self.files)
+        mt.add_cmd("autoets", self.files)
+        mt.add_cmd("mstl", self.files)
+        mt.add_cmd("rwd", self.files)
+        mt.add_cmd("seasonalnaive", self.files)
         mt.add_cmd("expo", self.files)
         mt.add_cmd("theta", self.files)
         mt.add_cmd("linregr", self.files)
@@ -331,7 +305,6 @@ class ForecastController(BaseController):
         mt.add_cmd("tcn", self.files)
         mt.add_cmd("trans", self.files)
         mt.add_cmd("tft", self.files)
-        # mt.add_info("_comingsoon_")
 
         console.print(text=mt.menu_text, menu="Forecast")
 
@@ -349,14 +322,9 @@ class ForecastController(BaseController):
             return queue
         return []
 
-    def parse_known_args_and_warn(
+    def add_standard_args(
         self,
         parser: argparse.ArgumentParser,
-        other_args: List[str],
-        export_allowed: int = NO_EXPORT,
-        raw: bool = False,
-        limit: int = 0,
-        # Custom items
         target_dataset: bool = False,
         target_column: bool = False,
         period: Optional[int] = None,
@@ -386,6 +354,7 @@ class ForecastController(BaseController):
         forecast_only: bool = False,
         naive: bool = False,
         explainability_raw: bool = False,
+        export_pred_raw: bool = False,
     ):
         if hidden_size:
             parser.add_argument(
@@ -424,7 +393,7 @@ class ForecastController(BaseController):
         if target_dataset:
             parser.add_argument(
                 "-d",
-                "--target-dataset",
+                "--dataset",
                 help="The name of the dataset you want to select",
                 dest="target_dataset",
                 type=str,
@@ -570,7 +539,7 @@ class ForecastController(BaseController):
                 dest="dropout",
                 default=dropout,
                 type=check_positive_float,
-                help="Fraction of neurons afected by Dropout.",
+                help="Fraction of neurons affected by Dropout, from 0 to 1.",
             )
         if batch_size is not None:
             parser.add_argument(
@@ -638,7 +607,7 @@ class ForecastController(BaseController):
         if forecast_only:
             parser.add_argument(
                 "--forecast-only",
-                help="Do not plot the hisotorical data without forecasts.",
+                help="Do not plot the historical data without forecasts.",
                 action="store_true",
                 default=False,
                 dest="forecast_only",
@@ -652,13 +621,31 @@ class ForecastController(BaseController):
                 help="Prints out a raw dataframe showing explainability results.",
             )
 
-            # if user does not put in --target-dataset
-        return super().parse_known_args_and_warn(
-            parser, other_args, export_allowed, raw, limit
-        )
+        if export_pred_raw:
+            parser.add_argument(
+                "--export-pred-raw",
+                action="store_true",
+                dest="export_pred_raw",
+                default=False,
+                help="Export predictions to a csv file.",
+            )
+
+            # if user does not put in --dataset
+        return parser
 
     def load(self, ticker: str, data: pd.DataFrame):
         """Loads news dataframes into memory"""
+
+        # check if data has minimum number of rows
+        if len(data) < self.MINIMUM_DATA_LENGTH:
+            console.print(
+                f"[red]Dataset is smaller than recommended minimum {self.MINIMUM_DATA_LENGTH} data points. [/red]"
+            )
+            console.print(
+                f"[red]Please increase the number of data points for [ {ticker} ] and try again.[/red]"
+            )
+            return
+
         if not data.empty:
             data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
 
@@ -677,8 +664,6 @@ class ForecastController(BaseController):
 
             self.files.append(ticker)
             self.datasets[ticker] = data
-
-            self.update_runtime_choices()
 
             # Process new datasets to be updated
             self.list_dataset_cols = list()
@@ -706,6 +691,7 @@ class ForecastController(BaseController):
             "-f",
             "--file",
             help="File to load data in (can be custom import, may have been exported before.)",
+            choices=self.DATA_FILES.keys(),
             type=str,
         )
         parser.add_argument(
@@ -714,6 +700,8 @@ class ForecastController(BaseController):
             help="Alias name to give to the dataset",
             type=str,
         )
+        # Load in any newly exported files
+        self.DATA_FILES = forecast_model.get_default_files()
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
@@ -736,12 +724,11 @@ class ForecastController(BaseController):
                         "[red]The file/dataset selected has already been loaded.[/red]\n"
                     )
                     return
-
-                data = forecast_model.load(file, self.file_types, self.DATA_FILES)
-                self.files_full.append([ns_parser.file, ns_parser.alias])
-
-                self.load(alias, data)
-                console.print()
+                data = common_model.load(file, self.DATA_FILES, {})
+                if not data.empty:
+                    self.files_full.append([ns_parser.file, ns_parser.alias])
+                    self.load(alias, data)
+            self.update_runtime_choices()
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
@@ -759,7 +746,7 @@ class ForecastController(BaseController):
         )
 
         if ns_parser:
-            console.print()
+
             console.print(
                 f"[green]Current Compute Device (CPU or GPU):[/green] {self.device.upper()}"
             )
@@ -769,7 +756,6 @@ class ForecastController(BaseController):
             )
             console.print(f"[green]Torch version:[/green] {self.torch_version}")
             console.print(f"[green]Darts version:[/green] {self.darts_version}")
-            console.print()
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
@@ -791,26 +777,41 @@ class ForecastController(BaseController):
         )
         parser.add_argument(
             "-s",
-            "--sortcol",
+            "--sortby",
             help="Sort based on a column in the DataFrame",
             nargs="+",
             type=str,
-            dest="sortcol",
+            dest="sortby",
             default="",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
-            help="Use this argument to sort in a descending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            dest="ascend",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
+        )
+        parser.add_argument(
+            "--limit-col",
+            action="store",
+            dest="limit_col",
+            default=10,
+            type=check_positive,
+            help="Set the number of columns to display when showing the dataset",
         )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=10,
         )
 
         if ns_parser:
@@ -826,17 +827,19 @@ class ForecastController(BaseController):
                     console.print(
                         f"[red]No data available for {ns_parser.name}.[/red]\n"
                     )
-                elif ns_parser.sortcol:
-                    sort_column = " ".join(ns_parser.sortcol)
+                elif ns_parser.sortby:
+                    sort_column = " ".join(ns_parser.sortby)
                     if sort_column not in self.datasets[name].columns:
                         console.print(
                             f"[red]{sort_column} not a valid column."
                             "Showing without sorting.\n[/red]"
                         )
                     else:
-                        df = df.sort_values(by=sort_column, ascending=ns_parser.ascend)
+                        df = df.sort_values(by=sort_column, ascending=ns_parser.reverse)
 
-                forecast_view.show_df(df, ns_parser.limit, name, ns_parser.export)
+                forecast_view.show_df(
+                    df, ns_parser.limit, ns_parser.limit_col, name, ns_parser.export
+                )
 
     @log_start_end(log=logger)
     def call_rename(self, other_args: List[str]):
@@ -852,7 +855,7 @@ class ForecastController(BaseController):
             "--dataset",
             help="Dataset that will get a column renamed",
             dest="dataset",
-            choices=self.choices["rename"],
+            choices=self.datasets.keys(),
             type=str,
         )
         parser.add_argument(
@@ -890,8 +893,11 @@ class ForecastController(BaseController):
                     self.datasets[dataset], column_old, column_new
                 )
             self.update_runtime_choices()
+            self.refresh_datasets_on_menu()
 
-        console.print()
+            console.print(
+                f"[green]Successfully renamed {column_old} into {column_new}, in {dataset}[/green]"
+            )
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
@@ -904,15 +910,15 @@ class ForecastController(BaseController):
             description="Show descriptive statistics of a dataset",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
+        parser = self.add_standard_args(parser, target_dataset=True)
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_ONLY_RAW_DATA_ALLOWED,
-            target_dataset=True,
         )
 
         if ns_parser:
@@ -936,7 +942,8 @@ class ForecastController(BaseController):
         parser.add_argument(
             "-v",
             "--values",
-            help="Dataset.column values to be displayed in a plot",
+            help="Dataset.column values to be displayed in a plot. Use comma to separate multiple",
+            choices=self.get_dataset_columns(),
             dest="values",
             type=str,
         )
@@ -984,6 +991,7 @@ class ForecastController(BaseController):
             "--values",
             help="Dataset.column values to be displayed in a plot",
             dest="values",
+            choices=self.get_dataset_columns(),
             type=str,
         )
         parser.add_argument(
@@ -1047,15 +1055,15 @@ class ForecastController(BaseController):
             description="Plot correlation coefficients.",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
+        parser = self.add_standard_args(parser, target_dataset=True)
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_ONLY_FIGURES_ALLOWED,
-            target_dataset=True,
         )
 
         if ns_parser:
@@ -1079,23 +1087,25 @@ class ForecastController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="combine",
             description="Combine two entire datasets, or add specific columns. Add specific"
-            "columns with the syntax: <datasetX.column2>,<datasetY.column3>",
+            "columns with the syntax: <datasetX.column2>",
         )
         parser.add_argument(
             "--dataset",
             help="Dataset to add columns to",
             dest="dataset",
-            choices=self.choices["combine"],
+            choices=list(self.datasets.keys()),
         )
+        # pylint: disable=consider-using-dict-items
+        column_choices = [
+            f"{x}.{y}" for x in self.datasets for y in self.datasets[x].columns
+        ]
+        column_choices.extend(list(self.datasets))
         parser.add_argument(
             "-c",
             "--columns",
-            help="The columns we want to add <dataset.column>,<datasetb.column2>",
+            help="The columns we want to add <dataset.column>",
             dest="columns",
-            type=check_list_values(
-                list(self.choices["delete"].keys())
-                + list(self.choices["combine"].keys())
-            ),
+            choices=column_choices,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--dataset")
@@ -1111,7 +1121,7 @@ class ForecastController(BaseController):
 
             data = self.datasets[ns_parser.dataset]
 
-            for option in ns_parser.columns:
+            for option in ns_parser.columns.split(","):
                 if "." in option:
                     dataset, col = option.split(".")
                     columns = [col]
@@ -1132,7 +1142,11 @@ class ForecastController(BaseController):
 
             self.datasets[ns_parser.dataset] = data
             self.update_runtime_choices()
-        console.print()
+            self.refresh_datasets_on_menu()
+
+            console.print(
+                f"[green]Successfully added {ns_parser.columns} into {ns_parser.dataset}[/green]"
+            )
 
     @log_start_end(log=logger)
     def call_clean(self, other_args: List[str]):
@@ -1161,15 +1175,15 @@ class ForecastController(BaseController):
             choices=["rdrop", "cdrop"],
             default="",
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
+        parser = self.add_standard_args(parser, target_dataset=True)
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             NO_EXPORT,
-            target_dataset=True,
             limit=5,
         )
         if ns_parser:
@@ -1189,12 +1203,10 @@ class ForecastController(BaseController):
             )
             if not clean_status:
                 console.print(
-                    f"Successfully cleaned '{ns_parser.target_dataset}' dataset"
+                    f"[green]Successfully cleaned '{ns_parser.target_dataset}' dataset[/green]"
                 )
             else:
                 console.print(f"[red]{ns_parser.name} still contains NaNs.[/red]")
-
-        console.print()
 
     @log_start_end(log=logger)
     def call_ema(self, other_args: List[str]):
@@ -1206,17 +1218,17 @@ class ForecastController(BaseController):
             description="Add exponential moving average to dataset based on specific column.",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
+        parser = self.add_standard_args(
+            parser, target_dataset=True, period=10, target_column=True
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             NO_EXPORT,
-            period=10,
-            target_dataset=True,
-            target_column=True,
         )
         if ns_parser:
             # check proper file name is provided
@@ -1235,24 +1247,45 @@ class ForecastController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
-        console.print()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_sto(self, other_args: List[str]):
-        """Process Stoch Oscill"""
+        """Process Stochastic Oscillator"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="sto",
             description="Add in Stochastic Oscillator %K and %D",
         )
-        # if user does not put in --target-dataset
+        parser.add_argument(
+            "--close-col",
+            help="Close column name to use for Stochastic Oscillator",
+            dest="close_col",
+            type=str,
+            default="close",
+        )
+        parser.add_argument(
+            "--high-col",
+            help="High column name to use for Stochastic Oscillator",
+            dest="high_col",
+            type=str,
+            default="high",
+        )
+        parser.add_argument(
+            "--low-col",
+            help="Low column name to use for Stochastic Oscillator",
+            dest="low_col",
+            type=str,
+            default="low",
+        )
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
+        parser = self.add_standard_args(parser, target_dataset=True, period=10)
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, NO_EXPORT, limit=5, period=10, target_dataset=True
+            parser, other_args, NO_EXPORT, limit=5
         )
         if ns_parser:
             # check proper file name is provided
@@ -1260,19 +1293,30 @@ class ForecastController(BaseController):
                 console.print("[red]Please enter valid dataset.\n[/red]")
                 return
 
-            self.datasets[ns_parser.target_dataset] = forecast_model.add_sto(
+            df = forecast_model.add_sto(
                 self.datasets[ns_parser.target_dataset],
-                ns_parser.period,
+                close_column=ns_parser.close_col,
+                high_column=ns_parser.high_col,
+                low_column=ns_parser.low_col,
+                period=ns_parser.period,
             )
+            if not df.empty:
+                self.datasets[ns_parser.target_dataset] = df
+                console.print(
+                    f"Successfully added 'STOCH&D_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+                )
+                # update forecast menu with new column on modified dataset
+                self.refresh_datasets_on_menu()
+                self.update_runtime_choices()
+
+    def handle_delete(self, dataset, column):
+        if dataset not in self.datasets:
             console.print(
-                f"Successfully added 'STOK&D_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+                f"Not able to find the dataset {dataset}. Please choose one of "
+                f"the following: {', '.join(self.datasets)}"
             )
-
-            # update forecast menu with new column on modified dataset
-            self.refresh_datasets_on_menu()
-
-        self.update_runtime_choices()
-        console.print()
+        else:
+            forecast_model.delete_column(self.datasets[dataset], column)
 
     @log_start_end(log=logger)
     def call_delete(self, other_args: List[str]):
@@ -1288,26 +1332,26 @@ class ForecastController(BaseController):
             help="The columns you want to delete from a dataset. Use format: <dataset.column> or"
             " multiple with <dataset.column>,<datasetb.column2>",
             dest="delete",
-            type=check_list_values(self.choices["delete"]),
+            choices=self.get_dataset_columns(),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--delete")
         ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
-            for option in ns_parser.delete:
-                dataset, column = option.split(".", 1)
-
-                if dataset not in self.datasets:
-                    console.print(
-                        f"Not able to find the dataset {dataset}. Please choose one of "
-                        f"the following: {', '.join(self.datasets)}"
-                    )
-                else:
-                    forecast_model.delete_column(self.datasets[dataset], column)
+            if "," in ns_parser.delete:
+                for option in ns_parser.delete:
+                    print(option)
+                    dataset, column = option.split(".")
+                    self.handle_delete(dataset, column)
+            else:
+                dataset, column = ns_parser.delete.split(".")
+                self.handle_delete(dataset, column)
 
             self.update_runtime_choices()
-        console.print()
+            self.refresh_datasets_on_menu()
+
+            console.print(f"[green]Successfully deleted {ns_parser.delete}[/green]")
 
     @log_start_end(log=logger)
     def call_rsi(self, other_args: List[str]):
@@ -1318,17 +1362,17 @@ class ForecastController(BaseController):
             prog="rsi",
             description="Add rsi to dataset based on specific column.",
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
+        parser = self.add_standard_args(
+            parser, target_dataset=True, target_column=True, period=10
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             NO_EXPORT,
-            target_dataset=True,
-            target_column=True,
-            period=10,
         )
         if ns_parser:
             # check proper file name is provided
@@ -1342,14 +1386,14 @@ class ForecastController(BaseController):
                 ns_parser.period,
             )
             console.print(
-                f"Successfully added 'RSI_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+                f"Successfully added 'RSI_{ns_parser.period}_{ns_parser.target_column}' "
+                f"to '{ns_parser.target_dataset}' dataset"
             )
 
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
-        console.print()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_roc(self, other_args: List[str]):
@@ -1360,17 +1404,17 @@ class ForecastController(BaseController):
             prog="roc",
             description="Add rate of change to dataset based on specific column.",
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
+        parser = self.add_standard_args(
+            parser, target_dataset=True, target_column=True, period=10
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             NO_EXPORT,
-            target_dataset=True,
-            target_column=True,
-            period=10,
         )
         if ns_parser:
             # check proper file name is provided
@@ -1389,8 +1433,7 @@ class ForecastController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
-        console.print()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_mom(self, other_args: List[str]):
@@ -1401,17 +1444,17 @@ class ForecastController(BaseController):
             prog="mom",
             description="Add momentum to dataset based on specific column.",
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
+        parser = self.add_standard_args(
+            parser, target_dataset=True, target_column=True, period=10
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             NO_EXPORT,
-            target_dataset=True,
-            target_column=True,
-            period=10,
         )
         if ns_parser:
             # check proper file name is provided
@@ -1430,8 +1473,7 @@ class ForecastController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
-        console.print()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_delta(self, other_args: List[str]):
@@ -1443,16 +1485,15 @@ class ForecastController(BaseController):
             description="Add %Change (Delta) to dataset based on specific column.",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
+        parser = self.add_standard_args(parser, target_dataset=True, target_column=True)
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             NO_EXPORT,
-            target_dataset=True,
-            target_column=True,
         )
         if ns_parser:
             # check proper file name is provided
@@ -1469,8 +1510,7 @@ class ForecastController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
-        console.print()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_atr(self, other_args: List[str]):
@@ -1481,17 +1521,37 @@ class ForecastController(BaseController):
             prog="atr",
             description="Add Average True Range to dataset of specific stock ticker.",
         )
+        parser.add_argument(
+            "--close-col",
+            help="Close column name to use for Average True Range.",
+            dest="close_col",
+            type=str,
+            default="close",
+        )
+        parser.add_argument(
+            "--high-col",
+            help="High column name to use for Average True Range.",
+            dest="high_col",
+            type=str,
+            default="high",
+        )
+        parser.add_argument(
+            "--low-col",
+            help="Low column name to use for Average True Range.",
+            dest="low_col",
+            type=str,
+            default="low",
+        )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
+        parser = self.add_standard_args(parser, target_dataset=True, target_column=True)
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             NO_EXPORT,
-            target_dataset=True,
-            target_column=True,
         )
         if ns_parser:
             # check proper file name is provided
@@ -1500,7 +1560,10 @@ class ForecastController(BaseController):
 
             check = False
             self.datasets[ns_parser.target_dataset], check = forecast_model.add_atr(
-                self.datasets[ns_parser.target_dataset]
+                self.datasets[ns_parser.target_dataset],
+                close_column=ns_parser.close_col,
+                high_column=ns_parser.high_col,
+                low_column=ns_parser.low_col,
             )
             if check:
                 console.print(
@@ -1514,8 +1577,7 @@ class ForecastController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
-        console.print()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_signal(self, other_args: List[str]):
@@ -1529,16 +1591,15 @@ class ForecastController(BaseController):
             0 if the signal is that short term price will go down as compared to the long term.
             """,
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
+        parser = self.add_standard_args(parser, target_dataset=True, target_column=True)
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             NO_EXPORT,
-            target_dataset=True,
-            target_column=True,
         )
         if ns_parser:
             # check proper file name is provided
@@ -1546,7 +1607,8 @@ class ForecastController(BaseController):
                 return
 
             self.datasets[ns_parser.target_dataset] = forecast_model.add_signal(
-                self.datasets[ns_parser.target_dataset]
+                self.datasets[ns_parser.target_dataset],
+                target_column=ns_parser.target_column,
             )
             console.print(
                 f"Successfully added 'Price Signal' to '{ns_parser.target_dataset}' dataset"
@@ -1555,8 +1617,7 @@ class ForecastController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
-        self.update_runtime_choices()
-        console.print()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_export(self, other_args: List[str]):
@@ -1572,19 +1633,19 @@ class ForecastController(BaseController):
             "--type",
             help="The file type you wish to export to",
             dest="type",
-            choices=self.file_types,
+            choices=common_model.file_types,
             type=str,
             default="xlsx",
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
+        parser = self.add_standard_args(parser, target_dataset=True)
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=NO_EXPORT,
-            target_dataset=True,
         )
 
         if not helpers.check_parser_input(ns_parser, self.datasets, "ignore_column"):
@@ -1595,7 +1656,410 @@ class ForecastController(BaseController):
             ns_parser.type,
             ns_parser.target_dataset,
         )
-        console.print()
+
+    # Best Statistical Model
+    @log_start_end(log=logger)
+    def call_autoselect(self, other_args: List[str]):
+        """Process autoselect command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="autoselect",
+            description="""
+                Perform Automatic Statistical Forecast
+                (select best statistical model from AutoARIMA, AutoETS, AutoCES, MSTL, ...)
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--dataset")
+
+        parser = self.add_standard_args(
+            parser,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=True,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+            autoselect_view.display_autoselect_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
+
+    # AutoARIMA Model
+    @log_start_end(log=logger)
+    def call_autoarima(self, other_args: List[str]):
+        """Process autoarima command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="autoarima",
+            description="""
+                Perform Automatic ARIMA forecast:
+                https://nixtla.github.io/statsforecast/examples/getting_started_with_auto_arima_and_ets.html
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--dataset")
+
+        parser = self.add_standard_args(
+            parser,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=True,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            autoarima_view.display_autoarima_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
+
+    # AutoCES Model
+    @log_start_end(log=logger)
+    def call_autoces(self, other_args: List[str]):
+        """Process autoces command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="autoces",
+            description="""
+                Perform Automatic Complex Exponential Smoothing forecast:
+                https://nixtla.github.io/statsforecast/models.html#autoces
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--dataset")
+
+        parser = self.add_standard_args(
+            parser,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=True,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            autoces_view.display_autoces_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
+
+    # AutoETS Model
+    @log_start_end(log=logger)
+    def call_autoets(self, other_args: List[str]):
+        """Process autoets command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="autoets",
+            description="""
+                Perform Automatic ETS (Error, Trend, Seasonality) forecast:
+                https://nixtla.github.io/statsforecast/examples/getting_started_with_auto_arima_and_ets.html
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--dataset")
+
+        parser = self.add_standard_args(
+            parser,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=True,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            autoets_view.display_autoets_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
+
+    # MSTL Model
+    @log_start_end(log=logger)
+    def call_mstl(self, other_args: List[str]):
+        """Process mstl command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="mstl",
+            description="""
+                Perform Multiple Seasonalities and Trend using Loess (MSTL) forecast:
+                https://nixtla.github.io/statsforecast/examples/multipleseasonalities.html
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--dataset")
+
+        parser = self.add_standard_args(
+            parser,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=True,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            mstl_view.display_mstl_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
+
+    # RWD Model
+    @log_start_end(log=logger)
+    def call_rwd(self, other_args: List[str]):
+        """Process rwd command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="rwd",
+            description="""
+                Perform Random Walk with Drift forecast:
+                https://nixtla.github.io/statsforecast/models.html#randomwalkwithdrift
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--dataset")
+
+        parser = self.add_standard_args(
+            parser,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=False,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            rwd_view.display_rwd_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
+
+    # SeasonalNaive Model
+    @log_start_end(log=logger)
+    def call_seasonalnaive(self, other_args: List[str]):
+        """Process seasonalnaive command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="seasonalnaive",
+            description="""
+                Perform SeasonalNaive forecasting:
+                https://nixtla.github.io/statsforecast/models.html#seasonalnaive
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--dataset")
+
+        parser = self.add_standard_args(
+            parser,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=True,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            seasonalnaive_view.display_seasonalnaive_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
 
     # EXPO Model
     @log_start_end(log=logger)
@@ -1606,10 +2070,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="expo",
             description="""
-                Perform Probabilistic Exponential Smoothing forecast
-                Trend: N: None, A: Additive, M: Multiplicative
-                Seasonality: N: None, A: Additive, M: Multiplicative
-                Dampen: T: True, F: False
+                Perform Probabilistic Exponential Smoothing forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html
             """,
         )
         parser.add_argument(
@@ -1628,12 +2090,10 @@ class ForecastController(BaseController):
             help="Dampening",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
-        ns_parser = self.parse_known_args_and_warn(
+        parser = self.add_standard_args(
             parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             target_dataset=True,
             target_column=True,
             n_days=True,
@@ -1645,6 +2105,12 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
         )
         # TODO Convert this to multi series
         if ns_parser:
@@ -1668,6 +2134,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -1678,17 +2145,16 @@ class ForecastController(BaseController):
             add_help=False,
             prog="theta",
             description="""
-                Perform Theta forecast
+                Perform Theta forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.theta.html
             """,
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
-        ns_parser = self.parse_known_args_and_warn(
+        parser = self.add_standard_args(
             parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             target_dataset=True,
             n_days=True,
             target_column=True,
@@ -1700,6 +2166,12 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
         )
 
         if ns_parser:
@@ -1721,6 +2193,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -1731,7 +2204,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="rnn",
             description="""
-                Perform RNN forecast (Vanilla RNN, LSTM, GRU)
+                Perform RNN forecast (Vanilla RNN, LSTM, GRU):
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.rnn_model.html
             """,
         )
         # RNN Hyperparameters
@@ -1754,14 +2228,12 @@ class ForecastController(BaseController):
             during training the RNN is never run for as many iterations as it will during training.""",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
-        ns_parser = self.parse_known_args_and_warn(
+        parser = self.add_standard_args(
             parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             target_dataset=True,
             n_days=True,
             target_column=True,
@@ -1780,6 +2252,12 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
         )
 
         if ns_parser:
@@ -1810,6 +2288,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -1820,7 +2299,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="nbeats",
             description="""
-                Perform NBEATS forecast (Neural Bayesian Estimation of Time Series).
+                Perform NBEATS forecast (Neural Bayesian Estimation of Time Series):
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.nbeats.html
             """,
         )
         # NBEATS Hyperparameters
@@ -1859,14 +2339,12 @@ class ForecastController(BaseController):
                 in each block of every stack""",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
-        ns_parser = self.parse_known_args_and_warn(
+        parser = self.add_standard_args(
             parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             target_dataset=True,
             n_days=True,
             target_column=True,
@@ -1886,6 +2364,12 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
         )
 
         if ns_parser:
@@ -1922,6 +2406,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -1932,7 +2417,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="tcn",
             description="""
-                Perform TCN forecast.
+                Perform TCN forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tcn_model.html
             """,
         )
         # TCN Hyperparameters
@@ -1961,14 +2447,12 @@ class ForecastController(BaseController):
             help="The base of the exponent that will determine the dilation on every level.",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
-        ns_parser = self.parse_known_args_and_warn(
+        parser = self.add_standard_args(
             parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             target_dataset=True,
             n_days=True,
             target_column=True,
@@ -1989,6 +2473,12 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
         )
 
         if ns_parser:
@@ -2026,6 +2516,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2036,18 +2527,17 @@ class ForecastController(BaseController):
             add_help=False,
             prog="regr",
             description="""
-                Perform a regression forecast
+                Perform a regression forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.regression_model.html
             """,
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
-        ns_parser = self.parse_known_args_and_warn(
+        parser = self.add_standard_args(
             parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             output_chunk_length=True,
             train_split=True,
             past_covariates=True,
@@ -2062,6 +2552,12 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             explainability_raw=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
         )
 
         if ns_parser:
@@ -2090,6 +2586,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 explainability_raw=ns_parser.explainability_raw,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2100,17 +2597,16 @@ class ForecastController(BaseController):
             add_help=False,
             prog="linregr",
             description="""
-                Perform a linear regression forecast
+                Perform a linear regression forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.linear_regression_model.html
             """,
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
-        ns_parser = self.parse_known_args_and_warn(
+        parser = self.add_standard_args(
             parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             lags=True,
             output_chunk_length=True,
             train_split=True,
@@ -2125,6 +2621,12 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             explainability_raw=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
         )
 
         if ns_parser:
@@ -2152,6 +2654,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 explainability_raw=ns_parser.explainability_raw,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2162,7 +2665,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="brnn",
             description="""
-                Perform BRNN forecast (Vanilla RNN, LSTM, GRU)
+                Perform BRNN forecast (Vanilla RNN, LSTM, GRU):
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.block_rnn_model.html
             """,
         )
         # BRNN Hyperparameters
@@ -2174,14 +2678,12 @@ class ForecastController(BaseController):
             type=check_positive,
             help="Number of layers in the RNN module.",
         )
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
-        ns_parser = self.parse_known_args_and_warn(
+        parser = self.add_standard_args(
             parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             save_checkpoints=True,
             force_reset=True,
             model_save_name="brnn_model",
@@ -2203,6 +2705,12 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
         )
 
         if ns_parser:
@@ -2238,6 +2746,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2247,7 +2756,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="trans",
             description="""
-                Perform Transformer Forecast.
+                Perform Transformer Forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.transformer_model.html
             """,
         )
         parser.add_argument(
@@ -2272,7 +2782,7 @@ class ForecastController(BaseController):
             dest="num_encoder_layers",
             default=3,
             type=check_positive,
-            help="The number of encoder leayers in the encoder.",
+            help="The number of encoder layers in the encoder.",
         )
         parser.add_argument(
             "--num_decoder_layers",
@@ -2280,7 +2790,7 @@ class ForecastController(BaseController):
             dest="num_decoder_layers",
             default=3,
             type=check_positive,
-            help="The number of decoder leayers in the encoder.",
+            help="The number of decoder layers in the encoder.",
         )
         parser.add_argument(
             "--dim_feedforward",
@@ -2300,12 +2810,10 @@ class ForecastController(BaseController):
             help="Number of LSTM layers.",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
-        ns_parser = self.parse_known_args_and_warn(
+        parser = self.add_standard_args(
             parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             n_days=True,
             target_column=True,
             target_dataset=True,
@@ -2325,6 +2833,12 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
         )
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
@@ -2362,6 +2876,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2372,7 +2887,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="tft",
             description="""
-                Perform TFT forecast (Temporal Fusion Transformer).
+                Perform TFT forecast (Temporal Fusion Transformer):
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html
             """,
         )
         parser.add_argument(
@@ -2407,14 +2923,12 @@ class ForecastController(BaseController):
             help="Default hidden size for processing continuous variables.",
         )
 
-        # if user does not put in --target-dataset
+        # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
-        ns_parser = self.parse_known_args_and_warn(
+        parser = self.add_standard_args(
             parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             save_checkpoints=True,
             target_dataset=True,
             n_days=True,
@@ -2435,6 +2949,12 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
         )
 
         if ns_parser:
@@ -2472,6 +2992,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2481,7 +3002,10 @@ class ForecastController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
             prog="nhits",
-            description="Perform nhits forecast",
+            description="""
+                Perform nhits forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html
+            """,
         )
         parser.add_argument(
             "--num-stacks",
@@ -2508,7 +3032,7 @@ class ForecastController(BaseController):
             "--layer_widths",
             dest="layer_widths",
             type=check_positive,
-            default=3,
+            default=512,
             help="The number of neurons in each layer",
         )
         parser.add_argument(
@@ -2532,21 +3056,19 @@ class ForecastController(BaseController):
             "--max_pool_1d",
             action="store_true",
             dest="maxpool1d",
-            default=False,
+            default=True,
             help="Whether to use max_pool_1d or AvgPool1d",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
+            other_args.insert(0, "--dataset")
 
-        ns_parser = self.parse_known_args_and_warn(
+        parser = self.add_standard_args(
             parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             save_checkpoints=True,
             target_dataset=True,
             n_days=True,
             force_reset=True,
-            model_save_name="tft_model",
+            model_save_name="nhits_model",
             train_split=True,
             dropout=0.1,
             input_chunk_length=True,
@@ -2561,6 +3083,12 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
         )
 
         if ns_parser:
@@ -2599,4 +3127,5 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )

@@ -27,9 +27,11 @@ from openbb_terminal.common.technical_analysis import (
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    check_non_negative,
     check_positive,
     check_positive_list,
     valid_date,
+    EXPORT_ONLY_FIGURES_ALLOWED,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -42,11 +44,11 @@ class TechnicalAnalysisController(BaseController):
     """Technical Analysis Controller class"""
 
     CHOICES_COMMANDS = [
-        "load",
         "ema",
         "sma",
         "wma",
         "hma",
+        "vwap",
         "zlma",
         "cci",
         "macd",
@@ -63,9 +65,13 @@ class TechnicalAnalysisController(BaseController):
         "adosc",
         "obv",
         "fib",
+        "clenow",
+        "demark",
+        "atr",
     ]
 
     PATH = "/etf/ta/"
+    CHOICES_GENERATION = True
 
     def __init__(
         self,
@@ -80,115 +86,9 @@ class TechnicalAnalysisController(BaseController):
         self.ticker = ticker
         self.start = start
         self.data = data
-
+        self.interval = "1440min"
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            zero_to_hundred: dict = {str(c): {} for c in range(0, 100)}
-            ma = {
-                "--length": None,
-                "-l": "--length",
-                "--offset": zero_to_hundred,
-                "-o": "--offset",
-            }
-            choices["ema"] = ma
-            choices["sma"] = ma
-            choices["wma"] = ma
-            choices["hma"] = ma
-            choices["zlma"] = ma
-            choices["vwap"] = {
-                "--offset": zero_to_hundred,
-                "-o": "--offset",
-                "--start": None,
-                "--end": None,
-            }
-            choices["cci"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--scalar": None,
-                "-s": "--scalar",
-            }
-            choices["macd"] = {
-                "--fast": one_to_hundred,
-                "--slow": "--fast",
-                "--signal": "--fast",
-            }
-            choices["cci"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--scalar": None,
-                "-s": "--scalar",
-                "--drift": "--length",
-                "-d": "--drift",
-            }
-            choices["stoch"] = {
-                "--fastkperiod": one_to_hundred,
-                "-k": "--fastkperiod",
-                "--slowdperiod": "--fastkperiod",
-                "-d": "--slowdperiod",
-                "--slowkperiod": "--fastkperiod",
-            }
-            choices["fisher"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-            }
-            choices["cg"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-            }
-            choices["adx"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--scalar": None,
-                "-s": "--scalar",
-                "--drift": "--length",
-                "-d": "--drift",
-            }
-            choices["aroon"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--scalar": None,
-                "-s": "--scalar",
-            }
-            choices["bbands"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--std": {str(c): {} for c in np.arange(0.0, 10, 0.25)},
-                "-s": "--std",
-                "--mamode": {c: {} for c in volatility_model.MAMODES},
-                "-m": "--mamode",
-            }
-            choices["donchian"] = {
-                "--length_upper": one_to_hundred,
-                "-u": "--length_upper",
-                "--length_lower": "--length_upper",
-                "-l": "--length_lower",
-            }
-            choices["kc"] = {
-                "--length": one_to_hundred,
-                "-l": "--length",
-                "--scalar": None,
-                "-s": "--scalar",
-                "--mamode": {c: {} for c in volatility_model.MAMODES},
-                "-m": "--mamode",
-                "--offset": zero_to_hundred,
-                "-o": "--offset",
-            }
-            choices["ad"]["--open"] = {}
-            choices["adosc"] = {
-                "--open": {},
-                "--fast": one_to_hundred,
-                "--slow": "--fast",
-            }
-            choices["fib"] = {
-                "--period": {str(c): {} for c in range(1, 960)},
-                "--start": None,
-                "--end": None,
-            }
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -211,6 +111,8 @@ class TechnicalAnalysisController(BaseController):
         mt.add_cmd("stoch")
         mt.add_cmd("fisher")
         mt.add_cmd("cg")
+        mt.add_cmd("clenow")
+        mt.add_cmd("demark")
         mt.add_info("_trend_")
         mt.add_cmd("adx")
         mt.add_cmd("aroon")
@@ -218,6 +120,7 @@ class TechnicalAnalysisController(BaseController):
         mt.add_cmd("bbands")
         mt.add_cmd("donchian")
         mt.add_cmd("kc")
+        mt.add_cmd("atr")
         mt.add_info("_volume_")
         mt.add_cmd("ad")
         mt.add_cmd("adosc")
@@ -264,9 +167,11 @@ class TechnicalAnalysisController(BaseController):
             "--offset",
             action="store",
             dest="n_offset",
-            type=int,
+            type=check_non_negative,
             default=0,
             help="offset",
+            choices=range(0, 100),
+            metavar="N_OFFSET",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -316,9 +221,11 @@ class TechnicalAnalysisController(BaseController):
             "--offset",
             action="store",
             dest="n_offset",
-            type=int,
+            type=check_non_negative,
             default=0,
             help="offset",
+            choices=range(0, 100),
+            metavar="N_OFFSET",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -365,9 +272,11 @@ class TechnicalAnalysisController(BaseController):
             "--offset",
             action="store",
             dest="n_offset",
-            type=int,
+            type=check_non_negative,
             default=0,
             help="offset",
+            choices=range(0, 100),
+            metavar="N_OFFSET",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -414,9 +323,11 @@ class TechnicalAnalysisController(BaseController):
             "--offset",
             action="store",
             dest="n_offset",
-            type=int,
+            type=check_non_negative,
             default=0,
             help="offset",
+            choices=range(0, 100),
+            metavar="N_OFFSET",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -466,9 +377,11 @@ class TechnicalAnalysisController(BaseController):
             "--offset",
             action="store",
             dest="n_offset",
-            type=int,
+            type=check_non_negative,
             default=0,
             help="offset",
+            choices=range(0, 100),
+            metavar="N_OFFSET",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -484,6 +397,69 @@ class TechnicalAnalysisController(BaseController):
                 data=self.data["Adj Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_vwap(self, other_args: List[str]):
+        """Process vwap command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="vwap",
+            description="""
+                The Volume Weighted Average Price that measures the average typical price
+                by volume. It is typically used with intraday charts to identify general direction.
+            """,
+        )
+        parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=check_non_negative,
+            default=0,
+            help="offset",
+            choices=range(0, 100),
+            metavar="N_OFFSET",
+        )
+        parser.add_argument(
+            "--start",
+            dest="start",
+            type=valid_date,
+            help="Starting date to select",
+            required="--end" in other_args,
+        )
+        parser.add_argument(
+            "--end",
+            dest="end",
+            type=valid_date,
+            help="Ending date to select",
+            required="--start" in other_args,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            # Daily
+            if self.interval == "1440min":
+                if not ns_parser.start:
+                    console.print(
+                        "If no date conditions, VWAP should be used with intraday data. \n"
+                    )
+                    return
+                interval_text = "Daily"
+            else:
+                interval_text = self.interval
+
+            overlap_view.view_vwap(
+                data=self.data,
+                symbol=self.ticker,
+                start_date=ns_parser.start,
+                end_date=ns_parser.end,
+                offset=ns_parser.n_offset,
+                interval=interval_text,
                 export=ns_parser.export,
             )
 
@@ -512,6 +488,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=14,
             help="length",
+            choices=range(1, 100),
+            metavar="N_LENGTH",
         )
         parser.add_argument(
             "-s",
@@ -561,6 +539,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=12,
             help="The short period.",
+            choices=range(1, 100),
+            metavar="N_FAST",
         )
         parser.add_argument(
             "--slow",
@@ -569,6 +549,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=26,
             help="The long period.",
+            choices=range(1, 100),
+            metavar="N_SLOW",
         )
         parser.add_argument(
             "--signal",
@@ -577,6 +559,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=9,
             help="The signal period.",
+            choices=range(1, 100),
+            metavar="N_SIGNAL",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -616,6 +600,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=14,
             help="length",
+            choices=range(1, 100),
+            metavar="N_LENGTH",
         )
         parser.add_argument(
             "-s",
@@ -634,6 +620,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=1,
             help="drift",
+            choices=range(1, 100),
+            metavar="N_DRIFT",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -676,6 +664,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=14,
             help="The time period of the fastk moving average",
+            choices=range(1, 100),
+            metavar="N_FASTKPERIOD",
         )
         parser.add_argument(
             "-d",
@@ -685,6 +675,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=3,
             help="The time period of the slowd moving average",
+            choices=range(1, 100),
+            metavar="N_SLOWDPERIOD",
         )
         parser.add_argument(
             "--slowkperiod",
@@ -693,6 +685,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=3,
             help="The time period of the slowk moving average",
+            choices=range(1, 100),
+            metavar="N_SLOWKPERIOD",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -731,6 +725,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=14,
             help="length",
+            choices=range(1, 100),
+            metavar="N_LENGTH",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -770,6 +766,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=14,
             help="length",
+            choices=range(1, 100),
+            metavar="N_LENGTH",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -807,6 +805,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=14,
             help="length",
+            choices=range(1, 100),
+            metavar="N_LENGTH",
         )
         parser.add_argument(
             "-s",
@@ -825,6 +825,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=1,
             help="drift",
+            choices=range(1, 100),
+            metavar="N_DRIFT",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -872,6 +874,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=25,
             help="length",
+            choices=range(1, 100),
+            metavar="N_LENGTH",
         )
         parser.add_argument(
             "-s",
@@ -925,8 +929,10 @@ class TechnicalAnalysisController(BaseController):
             action="store",
             dest="n_length",
             type=check_positive,
-            default=5,
+            default=15,
             help="length",
+            choices=range(1, 100),
+            metavar="N_LENGTH",
         )
         parser.add_argument(
             "-s",
@@ -936,6 +942,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=2,
             help="std",
+            choices=np.arange(0.0, 10, 0.25).tolist(),
+            metavar="N_STD",
         )
         parser.add_argument(
             "-m",
@@ -944,6 +952,7 @@ class TechnicalAnalysisController(BaseController):
             dest="s_mamode",
             default="sma",
             help="mamode",
+            choices=volatility_model.MAMODES,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -986,6 +995,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=20,
             help="length",
+            choices=range(1, 100),
+            metavar="N_LENGTH_UPPER",
         )
         parser.add_argument(
             "-l",
@@ -995,6 +1006,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=20,
             help="length",
+            choices=range(1, 100),
+            metavar="N_LENGTH_LOWER",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1032,6 +1045,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=20,
             help="Window length",
+            choices=range(1, 100),
+            metavar="N_LENGTH",
         )
         parser.add_argument(
             "-s",
@@ -1056,9 +1071,11 @@ class TechnicalAnalysisController(BaseController):
             "--offset",
             action="store",
             dest="n_offset",
-            type=int,
+            type=check_non_negative,
             default=0,
             help="offset",
+            choices=range(0, 100),
+            metavar="N_OFFSET",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -1148,6 +1165,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=3,
             help="fast length",
+            choices=range(1, 100),
+            metavar="N_LENGTH_FAST",
         )
         parser.add_argument(
             "--slow",
@@ -1156,6 +1175,8 @@ class TechnicalAnalysisController(BaseController):
             type=check_positive,
             default=10,
             help="slow length",
+            choices=range(1, 100),
+            metavar="N_LENGTH_SLOW",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1212,9 +1233,11 @@ class TechnicalAnalysisController(BaseController):
             "-p",
             "--period",
             dest="period",
-            type=int,
+            type=check_positive,
             help="Days to look back for retracement",
             default=120,
+            choices=range(1, 960),
+            metavar="PERIOD",
         )
         parser.add_argument(
             "--start",
@@ -1244,5 +1267,123 @@ class TechnicalAnalysisController(BaseController):
                 limit=ns_parser.period,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_clenow(self, other_args: List[str]):
+        """Process clenow command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="clenow",
+            description="Calculates the Clenow Volatility Adjusted Momentum.",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            dest="period",
+            help="Lookback period for regression",
+            default=90,
+            type=check_positive,
+        )
+
+        if self.interval != "1440min":
+            console.print(
+                "[red]This regression should be performed with daily data and at least 90 days.[/red]"
+            )
+            return
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            momentum_view.display_clenow_momentum(
+                self.data["Adj Close"],
+                self.ticker.upper(),
+                ns_parser.period,
+                ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_demark(self, other_args: List[str]):
+        """Process demark command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="demark",
+            description="Calculates the Demark sequential indicator.",
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            help="Minimum value of indicator to show (declutters plot).",
+            dest="min_to_show",
+            type=check_positive,
+            default=5,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            momentum_view.display_demark(
+                self.data,
+                self.ticker.upper(),
+                min_to_show=ns_parser.min_to_show,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_atr(self, other_args: List[str]):
+        """Process atr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="atr",
+            description="""
+                 Averge True Range is used to measure volatility, especially volatility caused by
+                gaps or limit moves.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=14,
+            help="Window length",
+        )
+        parser.add_argument(
+            "-m",
+            "--mamode",
+            action="store",
+            dest="s_mamode",
+            default="ema",
+            choices=volatility_model.MAMODES,
+            help="mamode",
+        )
+        parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            volatility_view.display_atr(
+                data=self.data,
+                symbol=self.ticker,
+                window=ns_parser.n_length,
+                mamode=ns_parser.s_mamode,
+                offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )

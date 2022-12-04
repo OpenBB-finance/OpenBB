@@ -84,6 +84,8 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
         Format to export data
     """
     overview = investpy_model.get_overview(country=country, limit=limit)
+    if overview.empty:
+        return
     overview["Assets (1B)"] = overview.total_assets / 1_000_000_000
     overview = overview.drop(columns=["country", "total_assets"])
     print_rich_table(
@@ -95,7 +97,6 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
         f"overview_{country.replace(' ','_')}",
         overview,
     )
-    console.print("\n")
 
 
 @log_start_end(log=logger)
@@ -115,6 +116,8 @@ def display_fund_info(name: str, country: str = "united states"):
         .applymap(lambda x: np.nan if not x else x)
         .dropna()
     )
+    if info.empty:
+        return
 
     # redact inception date if it appears castable to a float
     try:

@@ -7,6 +7,7 @@ import os
 import subprocess  # nosec
 from typing import List
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -154,20 +155,21 @@ def create_call_voila(other_args: List[str], name: str, filename: str = None) ->
             console.print(
                 f"Warning: opens a port on your computer to run a {cmd} server."
             )
-            response = input("Would you like us to run the server for you? y/n\n")
+            response = input("Would you like us to run the server for you [yn]? ")
         args = ""
         if ns_parser.dark and not ns_parser.jupyter:
             args += "--theme=dark"
         if ns_parser.input or response.lower() == "y":
+            cfg.LOGGING_SUPPRESS = True
             subprocess.Popen(
                 f"{cmd} {file} {args}",
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 shell=True,  # nosec
             )
+            cfg.LOGGING_SUPPRESS = False
         else:
             console.print(f"Type: {cmd} voila/{file}\ninto a terminal to run.")
-        console.print("")
 
 
 def create_call_streamlit(
@@ -199,7 +201,7 @@ def create_call_streamlit(
             console.print(
                 f"Warning: opens a port on your computer to run a {cmd} server."
             )
-            response = input("Would you like us to run the server for you? y/n\n")
+            response = input("Would you like us to run the server for you [yn]? ")
         args = ""
         if ns_parser.input or response.lower() == "y":
             subprocess.Popen(
@@ -210,4 +212,3 @@ def create_call_streamlit(
             )
         else:
             console.print(f"Type: {cmd} stream/{file}\ninto a terminal to run.")
-        console.print("")

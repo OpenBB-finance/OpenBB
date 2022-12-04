@@ -1,0 +1,30 @@
+crypto
+disc
+
+# gctop
+top
+top -c stablecoins -s Volume [$] -l 5
+top -s Market Cap -r
+
+# cgtrending
+trending
+
+# cggainers
+gainers
+gainers -s Price [$] -l 5 -i 14d
+
+# cglosers
+losers
+losers -s Price [$] -l 5 -i 14d
+
+# cpsearch CURRENTLY BUGGY
+search ${crypto=bitcoin}
+search -q ${crypto=bitcoin} -s name
+search -q ${crypto=bitcoin} -c exchanges -l 2
+
+nft
+games
+dapps
+dex
+
+exit

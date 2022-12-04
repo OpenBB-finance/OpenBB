@@ -4,13 +4,13 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Any, Union, Optional, List, Tuple
-
+from typing import Union, Optional, List, Tuple
 
 import pandas as pd
 
 from darts import TimeSeries
 from darts.models import BlockRNNModel
+from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
 from darts.utils.likelihood_models import GaussianLikelihood
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
@@ -37,57 +37,61 @@ def get_brnn_data(
     model_save_name: str = "brnn_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
-) -> Tuple[list[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
+) -> Tuple[
+    Optional[List[TimeSeries]],
+    Optional[List[TimeSeries]],
+    Optional[List[TimeSeries]],
+    Optional[float],
+    Optional[type[GlobalForecastingModel]],
+]:
     """Performs Block RNN forecasting
 
-    Args:
-        data (Union[pd.Series, pd.DataFrame]):
-            Input Data
-        target_column (str, optional):
-            Target column to forecast. Defaults to "close".
-        n_predict (int, optional):
-            Days to predict. Defaults to 5.
-        train_split (float, optional):
-            Train/val split. Defaults to 0.85.
-        past_covariates (str, optional):
-            Multiple secondary columns to factor in when forecasting. Defaults to None.
-        forecast_horizon (int, optional):
-            Forecast horizon when performing historical forecasting. Defaults to 5.
-        input_chunk_length (int, optional):
-            Number of past time steps that are fed to the forecasting module at prediction time. Defaults to 14.
-        output_chunk_length (int, optional):
-            The length of the forecast of the model. Defaults to 5.
-        model_type (str, optional):
-            Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU"). Defaults to "LSTM".
-        n_rnn_layers (int, optional):
-             Number of layers in the RNN module. Defaults to 1.
-        dropout (float, optional):
-            Fraction of neurons afected by Dropout. Defaults to 0.0.
-        batch_size (int, optional):
-            Number of time series (input and output sequences) used in each training pass. Defaults to 32.
-        n_epochs (int, optional):
-            Number of epochs over which to train the model. Defaults to 100.
-        learning_rate (float, optional):
-            Defaults to 1e-3.
-        model_save_name (str, optional):
-            Name for model. Defaults to "brnn_model".
-        force_reset (bool, optional):
-            If set to True, any previously-existing model with the same name will be reset (all checkpoints will be
-            discarded). Defaults to True.
-        save_checkpoints (bool, optional):
-            Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
+    Parameters
+    ----------
+    data: Union[pd.Series, pd.DataFrame]
+        Input Data
+    target_column: str
+        Target column to forecast. Defaults to "close".
+    n_predict: int
+        Days to predict. Defaults to 5.
+    train_split: float
+        Train/val split. Defaults to 0.85.
+    past_covariates: str
+        Multiple secondary columns to factor in when forecasting. Defaults to None.
+    forecast_horizon: int
+        Forecast horizon when performing historical forecasting. Defaults to 5.
+    input_chunk_length: int
+        Number of past time steps that are fed to the forecasting module at prediction time. Defaults to 14.
+    output_chunk_length: int
+        The length of the forecast of the model. Defaults to 5.
+    model_type: str
+        Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU"). Defaults to "LSTM".
+    n_rnn_layers: int
+            Number of layers in the RNN module. Defaults to 1.
+    dropout: float
+        Fraction of neurons affected by Dropout. Defaults to 0.0.
+    batch_size: int
+        Number of time series (input and output sequences) used in each training pass. Defaults to 32.
+    n_epochs: int
+        Number of epochs over which to train the model. Defaults to 100.
+    learning_rate: float
+        Defaults to 1e-3.
+    model_save_name: str
+        Name for model. Defaults to "brnn_model".
+    force_reset: bool
+        If set to True, any previously-existing model with the same name will be reset (all checkpoints will be
+        discarded). Defaults to True.
+    save_checkpoints: bool
+        Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
 
-    Returns:
-        list[TimeSeries]
-            Adjusted Data series
-        list[TimeSeries]
-            Historical forecast by best RNN model
-        list[TimeSeries]
-            list of Predictions
-        Optional[float]
-            Mean average precision error
-        Any
-            Best BRNN Model
+    Returns
+    -------
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[Union[float, ndarray]], type[GlobalForecastingModel]]  # noqa: E501
+        Adjusted Data series,
+        Historical forecast by best RNN model,
+        list of Predictions,
+        Mean average precision error,
+        Best BRNN Model.
     """
 
     # TODO Check if torch GPU AVAILABLE

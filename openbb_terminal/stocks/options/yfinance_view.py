@@ -55,7 +55,7 @@ def header_fmt(header: str) -> str:
         The string to be formatted
 
     Returns
-    ----------
+    -------
     new_header: str
         The clean string to use as a header
     """
@@ -108,7 +108,7 @@ def display_chains(
         call_bool = False
         put_bool = True
 
-    option_chains = yfinance_model.get_full_option_chain(
+    option_chains = yfinance_model.get_option_chain_expiry(
         symbol=symbol,
         expiry=expiry,
         calls=call_bool,
@@ -325,7 +325,7 @@ def plot_oi(
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Open Interest [1k] ")
     ax.set_xlim(min_strike, max_strike)
-    ax.legend()
+    ax.legend(fontsize="x-small")
     ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiry}")
 
     theme.style_primary_axis(ax)
@@ -416,7 +416,7 @@ def plot_vol(
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Volume [1k] ")
     ax.set_xlim(min_strike, max_strike)
-    ax.legend()
+    ax.legend(fontsize="x-small")
     ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
     theme.style_primary_axis(ax)
     if external_axes is None:
@@ -637,7 +637,7 @@ def plot_volume_open_interest(
         f"Max pain = {max_pain}",
     ]
 
-    ax.legend(handles=handles[:], labels=labels, loc="lower left")
+    ax.legend(fontsize="xx-small", handles=handles[:], labels=labels, loc="lower left")
     sns.despine(left=True, bottom=True)
     theme.style_primary_axis(ax)
 
@@ -703,8 +703,21 @@ def plot_plot(
         if y is None:
             console.print("[red]Invalid option sent for y-axis[/red]\n")
             return
-        x = convert[x]
-        y = convert[y]
+        if x in convert:
+            x = convert[x]
+        else:
+            x = "strike"
+            console.print(
+                f"[red]'{x}' is not a valid option. Defaulting to `strike`.[/red]\n"
+            )
+        if y in convert:
+            y = convert[y]
+        else:
+            y = "impliedVolatility"
+            console.print(
+                f"[red]'{y}' is not a valid option. Defaulting to `impliedVolatility`.[/red]\n"
+            )
+
     varis = op_helpers.opt_chain_cols
     chain = yfinance_model.get_option_chain(symbol, expiry)
     values = chain.puts if put else chain.calls

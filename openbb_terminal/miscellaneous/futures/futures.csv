@@ -1,0 +1,188 @@
+﻿Ticker,Description,Exchange,Category
+YI,"1,000 oz Mini Silver Futures",NYB,metals
+ALI,Aluminum Futures,CMX,metals
+BLK,Block Cheese Futures,CME,agriculture
+AW,Bloomberg Commodity Index Futures,CBT,index
+BZ,Brent Crude Oil Last Day Finance Futures,NYM,hydrocarbon
+BZT,Brent Crude Oil Last Day TAS Futures,NYM,hydrocarbon
+CB,Cash-Settled Butter Futures,CME,agriculture
+CSC,Cash-Settled Cheese Futures,CME,agriculture
+GEO,CBL Global Emissions Offset Futures,NYM,hydrocarbon
+ZW,Chicago SRW Wheat Futures,CBT,agriculture
+ZWT,Chicago SRW Wheat TAS Futures,CBT,agriculture
+DC,Class III Milk Futures,CME,agriculture
+GDK,Class IV Milk Futures,CME,agriculture
+HG0,Copper Spot TAS Futures,CMX,metals
+HGT,Copper TAS Futures,CMX,metals
+ZC,Corn Futures,CBT,agriculture
+ZCT,Corn TAS Futures,CBT,agriculture
+CLT,Crude Oil TAS Futures,NYM,hydrocarbon
+DY,Dry Whey Futures,CME,agriculture
+QC,E-mini Copper Futures,CMX,metals
+QM,E-mini Crude Oil Futures,NYM,hydrocarbon
+XAE,E-mini Energy Select Sector Futures,CME,index
+QO,E-mini Gold Futures,CMX,metals
+GC,CME Gold Futures,CMX,metals
+SGU,Shanghai Gold (USD) Futures,CMX,metals
+QG,E-mini Natural Gas Futures,NYM,hydrocarbon
+QH,E-mini NY Harbor ULSD Futures,NYM,hydrocarbon
+QU,E-mini RBOB Gasoline Futures,NYM,hydrocarbon
+QI,E-mini Silver Futures,CMX,metals
+GF,Feeder Cattle Futures,CME,agriculture
+GFT,Feeder Cattle TAS Futures,CME,agriculture
+GCT,Gold TAS Futures Futures,CMX,metals
+KE,KC HRW Wheat Futures,CBT,agriculture
+KET,KC HRW Wheat TAS Futures,CBT,agriculture
+HE,Lean Hogs Futures,CME,agriculture
+HET,Lean Hogs TAS Futures,CME,agriculture
+LE,Live Cattle Futures,CME,agriculture
+LET,Live Cattle TAS Futures,CME,agriculture
+HG,Copper Futures,CMX,metals
+MHG,E-mini Micro Copper Futures,CMX,metals
+MGC,E-mini Micro Gold Futures,CMX,metals
+SIL,E-mini Micro Silver Futures ,CMX,metals
+MCL,Micro WTI Crude Oil Futures,NYM,hydrocarbon
+YG,E-mini Gold Futures,NYB,metals
+XK,Mini Soybean Futures,CBT,agriculture
+XC,Mini Corn Futures,CBT,agriculture
+XW,Mini Chicago SRW Wheat Futures,CBT,agriculture
+GNF,Nonfat Dry Milk Futures,CME,agriculture
+ZO,Oats Futures,CBT,agriculture
+PRK,Pork Cutout Futures,CME,agriculture
+RBT,RBOB Gasoline TAS Futures,NYM,hydrocarbon
+ZR,Rough Rice Futures,CBT,agriculture
+GD,S&P GSCI Commodity Index Futures,CME,index
+SIT,Silver TAS Futures,CMX,metals
+ZS,Soybean Futures,CBT,agriculture
+ZM,Soybean Meal Futures,CBT,agriculture
+ZMT,Soybean Meal TAS Futures,CBT,agriculture
+ZL,Soybean Oil Futures,CBT,agriculture
+ZLT,Soybean Oil TAS Futures,CBT,agriculture
+SBT,Soybean TAS Futures,CBT,agriculture
+ZN,10-Year T-Note Futures,CBT,bonds
+N1U,10-Year USD MAC Swap Futures,CBT,bonds
+TWE,20-Year U.S. Treasury Bond Futures,CBT,bonds
+ZT,2-Year T-Note Futures,CBT,bonds
+F1U,5-Year USD MAC Swap Futures,CBT,bonds
+RX,Dow Jones Real Estate Index Futures,CBT,index
+GE,Eurodollar Futures,CME,currency
+GLB,One-Month Eurodollar Futures,CME,currency
+ZF,Five-Year US Treasury Note Futures,CBT,bonds
+10Y,Micro 10-Year Yield Futures,CBT,bonds
+2YY,Micro 2-Year Yield Futures,CBT,bonds
+30Y,Micro 30-Year Yield Futures,CBT,bonds
+5YY,Micro 5-Year Yield Futures,CBT,bonds
+SR1,One-Month SOFR Futures,CME,bonds
+ZFT,TAS on 5-Year Treasury Note Futures,CBT,bonds
+ZQ,Thirty-Day Fed Fund Futures,CBT,bonds
+Z3N,Three Year Treasury Note Futures,CBT,bonds
+SR3,Three-Month SOFR Futures,CME,bonds
+ZB,U.S. Treasury Bond Futures,CBT,bonds
+UB,Ultra U.S. Treasury Bond Futures,CBT,bonds
+BTM,Bakkt BTC (USD) Monthly Futures,NYB,currency
+BTC,Bitcoin Futures,CME,currency
+ETH,Ether Futures,CME,currency
+MBT,E-mini Micro Bitcoin Futures,CME,currency
+MET,E-mini Micro Ether Futures,CME,currency
+6A,Australian Dollar Futures,CME,currency
+6L,Brazilian Real Futures,CME,currency
+6B,British Pound Futures,CME,currency
+PJY,British Pound/Japanese Yen Futures,CME,currency
+PSF,British Pound/Swiss Franc Futures,CME,currency
+6C,Canadian Dollar Futures,CME,currency
+E7,E-mini Euro FX Futures,CME,currency
+J7,E-mini Japanese Yen Futures,CME,currency
+6E,Euro FX Futures,CME,currency
+EAD,Euro/Australian Dollar Futures,CME,currency
+RP,Euro/British Pound Futures,CME,currency
+ECD,Euro/Canadian Dollar Futures,CME,currency
+RY,Euro/Japanese Yen Futures,CME,currency
+ENK,Euro/Norwegian Krone Futures,CME,currency
+ESK,Euro/Swedish Krona Futures,CME,currency
+RF,Euro/Swiss Franc Futures,CME,currency
+SIR,Indian Rupee/USD Futures,CME,currency
+6J,Japanese Yen Futures,CME,currency
+KRW,Korean Won Futures,CME,currency
+6M,Mexican Peso Futures,CME,currency
+M6A,Micro AUD/USD Futures,CME,currency
+MCD,Micro CAD/USD Futures,CME,currency
+MSF,Micro CHF/USD Futures,CME,currency
+M6E,Micro EUR/USD Futures,CME,currency
+M6B,Micro GBP/USD Futures,CME,currency
+MIR,Micro INR/USD Futures,CME,currency
+M6C,Micro USD/CAD Futures,CME,currency
+M6J,Micro USD/JPY Futures,CME,currency
+6N,New Zealand Dollar Futures,CME,currency
+NKD,Nikkei Index (USD) Futures,CME,index
+NIY,Nikkei Index (YEN) Futures,CME,index
+NOK,Norwegian Krone Futures,CME,currency
+6R,Russian Ruble Futures,CME,currency
+6Z,South African Rand Futures,CME,currency
+SEK,Swedish Krona Futures,CME,currency
+6S,Swiss Franc Futures,CME,currency
+SJY,Swiss Franc/Japanese Yen Futures,CME,currency
+TPY,Yen Denominated TOPIX Futures,CME,index
+YMT,E-mini DJIA Index BTIC Futures,CBT,index
+NQT,E-mini Nasdaq 100 BTIC Futures,CME,index
+EST,E-mini S&P 500 BTIC Futures,CME,index
+XAF,E-mini S&P 500 Financial Select Sector Index Futures,CME,index
+RS1,E-mini Russell 1000 Index Futures,CME,index
+RSG,E-mini Russell 1000 Growth Index Futures,CME,index
+RSV,E-mini Russell 1000 Value Index Futures,CME,index
+RTY,E-mini Russell 2000 Index Futures,CME,index
+M2K,E-mini Micro Russell 2000 Index Futures,CME,index
+ESG,E-mini S&P 500 ESG Index Futures,CME,index
+EMT,E-mini S&P MidCap 400 Index BTIC Futures,CME,index
+EMD,E-mini S&P MidCap 400 Index Futures,CME,index
+MNQ,E-mini Micro Nasdaq 100 Index Futures,CME,index
+MES,E-mini Micro S&P 500 Index Futures,CME,index
+ES,E-Mini S&P 500 Index Futures,CME,index
+FNG,ICE Micro FANG+ Index Futures,NYB,index
+MMW,ICE MSCI ACWI NTR Index Futures,NYB,index
+CHH,ICE MSCI China NTR Futures,NYB,index
+MFS,ICE MSCI EAFE Index Futures,NYB,index
+ASN,ICE MSCI EM Asia NTR Index Futures,NYB,index
+LFM,ICE MSCI EM ESG Leaders NTR Index Futures,NYB,index
+MML,ICE MSCI EM Latin America NTR Index Futures,NYB,index
+MME,ICE MSCI Emerging Markets Index Futures,NYB,index
+MIN,ICE MSCI India NTR Index Futures,NYB,index
+USS,ICE MSCI USA GTR Index Futures,NYB,index
+MWL,ICE MSCI World Index Futures,NYB,index
+MWS,ICE MSCI World NTR Index Futures,NYB,index
+VLQ,Nasdaq 100 Volatility Index Futures,CME,index
+SDA,S&P 500 Annual Dividend Index Futures,CME,index
+SED,SED (SOFR-Eurodollar) Spread Futures,CME,bonds
+PL,Platinum Futures,NYM,metals
+PA,Palladium Futures,NYM,metals
+BUS,US Midwest Busheling Ferrous Futures,CMX,metals
+AUP,Aluminum MW U.S. Transaction,CMX,metals
+GLI,European Low Sulphur Gasoil Futures,NYM,hydrocarbon
+DX,ICE U.S. Dollar Index Futures,NYB,index
+FT5,E-mini FTSE China 50 Index Futures,CME,index
+MMM,ICE MSCI Emerging Markets EMEA NTR Index Futures,NYB,index
+MMN,ICE MSCI Emerging Markets NTR Index Futures,NYB,index
+MLE,ICE MSCI Latin America Index Futures,NYB,index
+YM,E-mini DJ $5 Index Futures,CBT,index
+XAI,E-mini S&P 500 Industrial Select Sector Futures,CME,index
+XAB,E-mini S&P 500 Materials Select Sector Futures,CME,index
+XAK,E-mini S&P 500 Technology Select Sector Futures,CME,index
+XAP,E-mini S&P 500 Consumer Staples Select Sector Futures,CME,index
+XAR,E-mini S&P 500 Real Estate Select Sector Futures,CME,index
+XAU,E-mini S&P 500 Utilities Select Sector Futures,CME,index
+XAV,E-mini S&P 500 Health Care Select Sector Futures,CME,index
+XAY,E-mini S&P 500 Consumer Discretionary Select Sector Futures,CME,index
+XAZ,E-mini S&P 500 Communication Services Select Sector Futures,CME,index
+BIO,E-mini Nasdaq Biotech Industry Futures,CME,index
+NQ,CME Nasdaq 100 Index Futures,CME,index
+NQQ,TACO on E-mini Nasdaq 100 Index Futures,CME,index
+UFV,Urea (Granular) FOB US Gulf Futures,CBT,agriculture
+CC,Cocoa Futures,NYB,agriculture
+KC,Coffee Futures,NYB,agriculture
+CT,Cotton Futures,NYB,agriculture
+SF,Sugar No. 16 Futures,NYB,agriculture
+SB,Sugar No. 11 Futures,NYB,agriculture
+OJ,Orange Juice Futures,NYB,agriculture
+NG,Natural Gas Futures,NYM,hydrocarbon
+RB,RBOB Gasoline Futures,NYM,hydrocarbon
+CL,WTI Crude Oil Futures,NYM,hydrocarbon
+TRM,ICE TRY/USD Futures,NYB,currency

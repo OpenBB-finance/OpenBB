@@ -157,8 +157,10 @@ MATRIX_CHOICES = list(MATRIX_COUNTRIES.keys())
 def check_correct_country(country: str, countries: list) -> bool:
     """Check if country is in list and warn if not."""
     if country.lower() not in countries:
+        joined_countries = [x.replace(" ", "_").lower() for x in countries]
+        choices = ", ".join(joined_countries)
         console.print(
-            f"[red]'{country}' is an invalid country. Choose from {', '.join(countries)}[/red]"
+            f"[red]'{country}' is an invalid country. Choose from {choices}[/red]\n"
         )
         return False
     return True
@@ -166,7 +168,18 @@ def check_correct_country(country: str, countries: list) -> bool:
 
 @log_start_end(log=logger)
 def countries_string_to_list(countries_list: str) -> List[str]:
-    """Transform countries string to list if countries valid"""
+    """Transform countries string to list if countries valid
+
+    Parameters
+    ----------
+    countries_list : str
+        String of countries separated by commas
+
+    Returns
+    -------
+    List[str]
+        List of countries
+    """
     valid_countries = [
         country.lower().strip()
         for country in countries_list.split(",")
@@ -191,7 +204,6 @@ def create_matrix(dictionary: Dict[str, Dict[str, float]]) -> pd.DataFrame:
     -------
     pd.DataFrame
         Spread matrix.
-
     """
 
     maturity = list(dictionary.keys())[0]
@@ -239,7 +251,6 @@ def get_spread_matrix(
     -------
     pd.DataFrame
         Spread matrix.
-
     """
 
     if isinstance(countries, str) and countries.upper() in MATRIX_CHOICES:
@@ -271,31 +282,37 @@ def get_spread_matrix(
 
 
 @log_start_end(log=logger)
-def get_ycrv_countries() -> list:
+def get_ycrv_countries() -> List[str]:
     """Get available countries for ycrv command.
 
-    Returns:
-        list: List of available countries.
+    Returns
+    -------
+    List[str]
+        List of available countries.
     """
     return BOND_COUNTRIES
 
 
 @log_start_end(log=logger)
-def get_events_countries() -> list:
+def get_events_countries() -> List[str]:
     """Get available countries for events command.
 
-    Returns:
-        list: List of available countries.
+    Returns
+    -------
+    List[str]
+        List of available countries.
     """
     return CALENDAR_COUNTRIES
 
 
 @log_start_end(log=logger)
-def get_events_categories() -> list:
+def get_events_categories() -> List[str]:
     """Get available event categories for events command.
 
-    Returns:
-        list: List of available event categories.
+    Returns
+    -------
+    List[str]
+        List of available event categories.
     """
     return CATEGORIES
 
@@ -460,26 +477,24 @@ def get_economic_calendar(
     sign = "+" if offset > 0 else ""
     time_zone = "GMT " + sign + str(int(offset)) + ":00"
 
+    args = [
+        time_filter,
+        countries_list,
+        importances_list,
+        categories_list,
+        start_date_string,
+        end_date_string,
+    ]
     try:
-        data = investpy.news.economic_calendar(
-            time_zone,
-            time_filter,
-            countries_list,
-            importances_list,
-            categories_list,
-            start_date_string,
-            end_date_string,
-        )
+        data = investpy.news.economic_calendar(time_zone, *args)
     except Exception:
-        data = investpy.news.economic_calendar(
-            None,
-            time_filter,
-            countries_list,
-            importances_list,
-            categories_list,
-            start_date_string,
-            end_date_string,
-        )
+        try:
+            data = investpy.news.economic_calendar(None, *args)
+        except Exception:
+            console.print(
+                f"[red]Economic calendar data not found for {country}.[/red]\n"
+            )
+            return pd.DataFrame(), ""
 
     if data.empty:
         logger.error("No data")

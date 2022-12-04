@@ -18,7 +18,7 @@ def get_collection_stats(slug: str) -> pd.DataFrame:
     """Get stats of a nft collection [Source: opensea.io]
 
     Parameters
-    -------
+    ----------
     slug : str
         Opensea collection slug. If the name of the collection is Mutant Ape Yacht Club the slug is mutant-ape-yacht-club
 

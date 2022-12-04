@@ -3,11 +3,12 @@ import os
 import dotenv
 
 from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE
+from openbb_terminal.base_helpers import load_env_vars
 
 dotenv.load_dotenv(USER_ENV_FILE)
 dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
-PLOT_DPI = int(os.getenv("OPENBB_PLOT_DPI", "100"))
+PLOT_DPI = load_env_vars("OPENBB_PLOT_DPI", int, 100, "settings")
 
 # Backend to use for plotting
 BACKEND = os.getenv("OPENBB_BACKEND", "None")
@@ -21,16 +22,20 @@ if BACKEND == "None":
 # See more: https://matplotlib.org/stable/tutorials/introductory/usage.html#the-builtin-backends
 
 # Used when USE_PLOT_AUTOSCALING is set to False
-PLOT_HEIGHT = int(os.getenv("OPENBB_PLOT_HEIGHT", "500"))
-PLOT_WIDTH = int(os.getenv("OPENBB_PLOT_WIDTH", "800"))
+PLOT_HEIGHT = load_env_vars("OPENBB_PLOT_HEIGHT", int, 500, "settings")
+PLOT_WIDTH = load_env_vars("OPENBB_PLOT_WIDTH", int, 800, "settings")
 
 # Used when USE_PLOT_AUTOSCALING is set to True
-PLOT_HEIGHT_PERCENTAGE = float(os.getenv("OPENBB_PLOT_HEIGHT_PERCENTAGE", "50.00"))
-PLOT_WIDTH_PERCENTAGE = float(os.getenv("OPENBB_PLOT_WIDTH_PERCENTAGE", "70.00"))
+PLOT_HEIGHT_PERCENTAGE = load_env_vars(
+    "OPENBB_PLOT_HEIGHT_PERCENTAGE", float, 50.0, "settings"
+)
+PLOT_WIDTH_PERCENTAGE = load_env_vars(
+    "OPENBB_PLOT_WIDTH_PERCENTAGE", float, 70.0, "settings"
+)
 
 # When autoscaling is True, choose which monitor to scale to
 # Primary monitor = 0, secondary monitor use 1
-MONITOR = int(os.getenv("OPENBB_MONITOR", "0"))
+MONITOR = load_env_vars("OPENBB_MONITOR", int, 0, "settings")
 
 # Color for `view` command data.  All pyplot colors listed at:
 # https://matplotlib.org/stable/gallery/color/named_colors.html

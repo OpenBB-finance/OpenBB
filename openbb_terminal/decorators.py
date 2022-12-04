@@ -3,7 +3,9 @@ __docformat__ = "numpy"
 import functools
 import logging
 import os
+from ssl import SSLError
 import pandas as pd
+from requests.exceptions import RequestException
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.rich_config import console  # pragma: allowlist secret
@@ -66,6 +68,28 @@ def log_start_end(func=None, log=None):
                 value = func(*args, **kwargs)
                 logger_used.info("END", extra={"func_name_override": func.__name__})
                 return value
+            except RequestException as e:
+                console.print(
+                    "[red]There was an error connecting to the API."
+                    " Please try again later.\n[/red]"
+                )
+                logger_used.exception(
+                    "Exception: %s",
+                    str(e),
+                    extra={"func_name_override": func.__name__},
+                )
+                return []
+            except SSLError as e:
+                console.print(
+                    "[red]There was an error connecting to the API."
+                    " Please check whether your wifi is blocking this site.\n[/red]"
+                )
+                logger_used.exception(
+                    "Exception: %s",
+                    str(e),
+                    extra={"func_name_override": func.__name__},
+                )
+                return []
             except Exception as e:
                 console.print(f"[red]Error: {e}\n[/red]")
                 logger_used.exception(
@@ -105,7 +129,7 @@ def check_api_key(api_keys):
                     undefined_apis_name = ", ".join(undefined_apis)
                     console.print(
                         f"[red]{undefined_apis_name} not defined. "
-                        "Set API Keys in config_terminal.py or under keys menu.[/red]\n"
+                        "Set API Keys in ~/.openbb_terminal/.env or under keys menu.[/red]\n"
                     )  # pragma: allowlist secret
                     return None
             return func(*args, **kwargs)

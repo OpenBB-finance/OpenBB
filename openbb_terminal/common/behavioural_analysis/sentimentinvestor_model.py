@@ -1,7 +1,7 @@
 """SentimentInvestor Model"""
 __docformat__ = "numpy"
 
-from typing import Union, Dict
+from typing import Union, Dict, Optional
 from datetime import datetime, timedelta
 import logging
 
@@ -19,11 +19,11 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def get_historical(
     symbol: str,
-    start_date: str = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.utcnow().strftime("%Y-%m-%d"),
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     number: int = 100,
 ) -> pd.DataFrame:
-    """Get hour-level sentiment data for the chosen symbol
+    """Get hour-level sentiment data for the chosen symbol.
 
     Source: [Sentiment Investor]
 
@@ -31,9 +31,9 @@ def get_historical(
     ----------
     symbol: str
         Ticker to view sentiment data
-    start_date: str
+    start_date: Optional[str]
         Initial date like string or unix timestamp (e.g. 12-21-2021)
-    end_date: str
+    end_date: Optional[str]
         End date like string or unix timestamp (e.g. 12-21-2021)
     number : int
         Number of results returned by API call
@@ -44,6 +44,12 @@ def get_historical(
     pd.DataFrame
         Dataframe of historical sentiment
     """
+
+    if start_date is None:
+        start_date = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.utcnow().strftime("%Y-%m-%d")
 
     payload: Dict[str, Union[int, str]] = {
         "token": cfg.API_SENTIMENTINVESTOR_TOKEN,
@@ -79,7 +85,7 @@ def get_historical(
 
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def check_supported_ticker(symbol: str) -> bool:
-    """Check if the ticker is supported
+    """Check if the ticker is supported.
 
     Source: [Sentiment Investor]
 
@@ -90,8 +96,8 @@ def check_supported_ticker(symbol: str) -> bool:
 
     Returns
     -------
-    result: Boolean
-
+    bool
+        True if ticker is supported
     """
 
     payload: Dict[str, str] = {
@@ -128,17 +134,17 @@ def check_supported_ticker(symbol: str) -> bool:
 
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def get_trending(
-    start_date: datetime = datetime.today(), hour: int = 0, number: int = 10
+    start_date: Optional[str] = None,
+    hour: int = 0,
+    number: int = 10,
 ) -> pd.DataFrame:
     """Get sentiment data on the most talked about tickers
-    within the last hour
-
-    Source: [Sentiment Investor]
+    within the last hour Source: [Sentiment Investor].
 
     Parameters
     ----------
-    start_date: datetime
-        Datetime object (e.g. datetime(2021, 12, 21)
+    start_date : Optional[str]
+        Initial date, format YYYY-MM-DD
     hour: int
         Hour of the day in 24-hour notation (e.g. 14)
     number : int
@@ -151,8 +157,11 @@ def get_trending(
         Dataframe of trending data
     """
 
+    if start_date is None:
+        start_date = datetime.today().strftime("%Y-%m-%d")
+
     # type is datetime
-    start_timestamp = start_date + timedelta(hours=hour)
+    start_timestamp = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(hours=hour)
 
     payload: Dict[str, Union[int, str]] = {
         "token": cfg.API_SENTIMENTINVESTOR_TOKEN,

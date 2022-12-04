@@ -17,7 +17,7 @@ def format_large_numbers(num: float) -> str:
         The number to convert
 
     Returns
-    ----------
+    -------
     num: str
         The formatted number
     """
@@ -42,7 +42,7 @@ def display_debt(export: str = "", limit: int = 20):
 
     print_rich_table(
         debt_df[:limit],
-        show_index=True,
+        show_index=False,
         headers=debt_df.columns,
         title="External Debt (USD)",
     )

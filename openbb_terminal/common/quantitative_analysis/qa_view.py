@@ -27,7 +27,6 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.quantitative_analysis import qa_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_classes import LineAnnotateDrawer
 from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
@@ -52,7 +51,7 @@ def lambda_color_red(val: Any) -> str:
 
 @log_start_end(log=logger)
 def display_summary(data: pd.DataFrame, export: str = "") -> None:
-    """Show summary statistics
+    """Prints table showing summary statistics
 
     Parameters
     ----------
@@ -81,26 +80,32 @@ def display_summary(data: pd.DataFrame, export: str = "") -> None:
 
 @log_start_end(log=logger)
 def display_hist(
-    symbol: str,
     data: pd.DataFrame,
     target: str,
+    symbol: str = "",
     bins: int = 15,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Generate of histogram of data
+    """Plots histogram of data
 
     Parameters
     ----------
-    symbol : str
-        Name of dataset
     data : pd.DataFrame
         Dataframe to look at
     target : str
         Data column to get histogram of the dataframe
+    symbol : str
+        Name of dataset
     bins : int
         Number of bins in histogram
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.hist(data=df, target="Adj Close")
     """
     data = data[target]
 
@@ -158,7 +163,7 @@ def display_cdf(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot Cumulative Distribution Function
+    """Plots Cumulative Distribution Function
 
     Parameters
     ----------
@@ -172,6 +177,12 @@ def display_cdf(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.cdf(data=df, target="Adj Close")
     """
     data = data[target]
     start = data.index[0]
@@ -263,7 +274,7 @@ def display_bw(
     yearly: bool = True,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Show box and whisker plots
+    """Plots box and whisker plots
 
     Parameters
     ----------
@@ -277,6 +288,12 @@ def display_bw(
         Flag to indicate yearly accumulation
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.bw(data=df, target="Adj Close")
     """
     data = data[target]
     start = data.index[0]
@@ -359,7 +376,7 @@ def display_acf(
     lags: int = 15,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Show Auto and Partial Auto Correlation of returns and change in returns
+    """Plots Auto and Partial Auto Correlation of returns and change in returns
 
     Parameters
     ----------
@@ -373,6 +390,12 @@ def display_acf(
         Max number of lags to look at
     external_axes : Optional[List[plt.Axes]], optional
         External axes (4 axes are expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.acf(data=df, target="Adj Close")
     """
     data = data[target]
     start = data.index[0]
@@ -395,7 +418,9 @@ def display_acf(
     sm.graphics.tsa.plot_acf(np.diff(np.diff(data.values)), lags=lags, ax=ax1)
     ax1.set_title(f"{symbol} Returns Auto-Correlation", fontsize=9)
     # Diff Partial auto - correlation function for original time series
-    sm.graphics.tsa.plot_pacf(np.diff(np.diff(data.values)), lags=lags, ax=ax2)
+    sm.graphics.tsa.plot_pacf(
+        np.diff(np.diff(data.values)), lags=lags, ax=ax2, method="ywm"
+    )
     ax2.set_title(
         f"{symbol} Returns Partial Auto-Correlation",
         fontsize=9,
@@ -408,7 +433,9 @@ def display_acf(
         fontsize=9,
     )
     # Diff Diff Partial auto-correlation function for original time series
-    sm.graphics.tsa.plot_pacf(np.diff(np.diff(data.values)), lags=lags, ax=ax4)
+    sm.graphics.tsa.plot_pacf(
+        np.diff(np.diff(data.values)), lags=lags, ax=ax4, method="ywm"
+    )
     ax4.set_title(
         f"Change in {symbol} Returns Partial Auto-Correlation",
         fontsize=9,
@@ -438,7 +465,7 @@ def display_qqplot(
     symbol: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Show QQ plot for data against normal quantiles
+    """Plots QQ plot for data against normal quantiles
 
     Parameters
     ----------
@@ -450,6 +477,12 @@ def display_qqplot(
         Stock ticker
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.qqplot(data=df, target="Adj Close")
     """
     # Statsmodels has a UserWarning for marker kwarg-- which we don't use
     warnings.filterwarnings(category=UserWarning, action="ignore")
@@ -494,7 +527,7 @@ def display_cusum(
     drift: float = 2.1,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
+    """Plots Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 
     Parameters
     ----------
@@ -508,6 +541,12 @@ def display_cusum(
         Drift parameter
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.cusum(data=df, target="Adj Close")
     """
     target_series = data[target].values
 
@@ -623,7 +662,7 @@ def display_seasonal(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display seasonal decomposition data
+    """Plots seasonal decomposition data
 
     Parameters
     ----------
@@ -764,7 +803,7 @@ def display_seasonal(
 
 @log_start_end(log=logger)
 def display_normality(data: pd.DataFrame, target: str, export: str = "") -> None:
-    """View normality statistics
+    """Prints table showing normality statistics
 
     Parameters
     ----------
@@ -804,7 +843,7 @@ def display_unitroot(
     kpss_reg: str = "c",
     export: str = "",
 ):
-    """Show unit root test calculations
+    """Prints table showing unit root test calculations
 
     Parameters
     ----------
@@ -841,11 +880,11 @@ def display_unitroot(
 def display_raw(
     data: pd.DataFrame,
     sortby: str = "",
-    descend: bool = False,
+    ascend: bool = False,
     limit: int = 20,
     export: str = "",
 ) -> None:
-    """Return raw stock data
+    """Prints table showing raw stock data
 
     Parameters
     ----------
@@ -853,7 +892,7 @@ def display_raw(
         DataFrame with historical information
     sortby : str
         The column to sort by
-    descend : bool
+    ascend : bool
         Whether to sort descending
     limit : int
         Number of rows to show
@@ -861,30 +900,37 @@ def display_raw(
         Export data as CSV, JSON, XLSX
     """
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "history",
-        data,
-    )
-
     if isinstance(data, pd.Series):
         df1 = pd.DataFrame(data)
     else:
         df1 = data.copy()
 
     if sortby:
-        df1 = data.sort_values(
-            by=sortby if sortby != "AdjClose" else "Adj Close", ascending=descend
-        )
+        try:
+            sort_col = [x.lower().replace(" ", "") for x in df1.columns].index(
+                sortby.lower().replace(" ", "")
+            )
+        except ValueError:
+            console.print("[red]The provided column is not a valid option[/red]\n")
+            return
+        df1 = df1.sort_values(by=data.columns[sort_col], ascending=ascend)
+    else:
+        df1 = df1.sort_index(ascending=ascend)
     df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
 
     print_rich_table(
-        df1.head(limit) if sortby else df1.tail(limit),
+        df1.head(limit),
         headers=[x.title() if x != "" else "Date" for x in df1.columns],
         title="[bold]Raw Data[/bold]",
         show_index=True,
         floatfmt=".3f",
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "raw",
+        data,
     )
 
 
@@ -893,7 +939,6 @@ def display_line(
     data: pd.Series,
     title: str = "",
     log_y: bool = True,
-    draw: bool = False,
     markers_lines: Optional[List[datetime]] = None,
     markers_scatter: Optional[List[datetime]] = None,
     export: str = "",
@@ -909,8 +954,6 @@ def display_line(
         Title for plot
     log_y: bool
         Flag for showing y on log scale
-    draw: bool
-        Flag for drawing lines and annotating on the plot
     markers_lines: Optional[List[datetime]]
         List of dates to highlight using vertical lines
     markers_scatter: Optional[List[datetime]]
@@ -919,6 +962,12 @@ def display_line(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load("AAPL")
+    >>> openbb.qa.line(data=df["Adj Close"])
     """
     # This plot has 1 axis
     if external_axes is None:
@@ -983,8 +1032,6 @@ def display_line(
 
     if title:
         ax.set_title(title)
-    if draw:
-        LineAnnotateDrawer(ax).draw_lines_and_annotate()
 
     theme.style_primary_axis(ax)
 
@@ -1008,7 +1055,7 @@ def display_var(
     data_range: int = 0,
     portfolio: bool = False,
 ) -> None:
-    """Displays VaR of dataframe
+    """Prints table showing VaR of dataframe.
 
     Parameters
     ----------
@@ -1054,7 +1101,7 @@ def display_var(
         show_index=True,
         headers=list(df.columns),
         title=f"[bold]{symbol}{str_title}Value at Risk[/bold]",
-        floatfmt=".4f",
+        floatfmt=".2f",
     )
 
 
@@ -1066,7 +1113,7 @@ def display_es(
     percentile: float = 99.9,
     portfolio: bool = False,
 ) -> None:
-    """Displays expected shortfall
+    """Prints table showing expected shortfall.
 
     Parameters
     ----------
@@ -1102,12 +1149,13 @@ def display_es(
         show_index=True,
         headers=list(df.columns),
         title=f"[bold]{symbol}{str_title}Expected Shortfall[/bold]",
-        floatfmt=".4f",
+        floatfmt=".2f",
     )
 
 
 def display_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> None:
-    """Calculates the sharpe ratio
+    """Plots Calculated the sharpe ratio
+
     Parameters
     ----------
     data: pd.DataFrame
@@ -1133,7 +1181,8 @@ def display_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> N
 def display_sortino(
     data: pd.DataFrame, target_return: float, window: float, adjusted: bool
 ) -> None:
-    """Displays the sortino ratio
+    """Plots the sortino ratio
+
     Parameters
     ----------
     data: pd.DataFrame
@@ -1165,7 +1214,8 @@ def display_sortino(
 def display_omega(
     data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5
 ) -> None:
-    """Displays the omega ratio
+    """Plots the omega ratio
+
     Parameters
     ----------
     data: pd.DataFrame

@@ -53,7 +53,7 @@ def display_messari_timeseries_list(
     only_free: bool = True,
     export: str = "",
 ) -> None:
-    """Display messari timeseries list
+    """Prints table showing messari timeseries list
     [Source: https://messari.io/]
 
     Parameters
@@ -104,13 +104,13 @@ def display_messari_timeseries_list(
 def display_messari_timeseries(
     symbol: str,
     timeseries_id: str,
-    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display messari timeseries
+    """Plots messari timeseries
     [Source: https://messari.io/]
 
     Parameters
@@ -119,9 +119,9 @@ def display_messari_timeseries(
         Crypto symbol to check market cap dominance
     timeseries_id: str
         Obtained by api.crypto.dd.get_mt command
-    start_date : int
+    start_date : Optional[str]
         Initial date like string (e.g., 2021-10-01)
-    end_date : int
+    end_date : Optional[str]
         End date like string (e.g., 2021-10-01)
     interval : str
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
@@ -130,6 +130,12 @@ def display_messari_timeseries(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df, title = get_messari_timeseries(
         symbol=symbol,
@@ -175,22 +181,22 @@ def display_messari_timeseries(
 @check_api_key(["API_MESSARI_KEY"])
 def display_marketcap_dominance(
     symbol: str,
-    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display market dominance of a coin over time
+    """Plots market dominance of a coin over time
     [Source: https://messari.io/]
 
     Parameters
     ----------
     symbol : str
         Crypto symbol to check market cap dominance
-    start_date : int
+    start_date : Optional[str]
         Initial date like string (e.g., 2021-10-01)
-    end_date : int
+    end_date : Optional[str]
         End date like string (e.g., 2021-10-01)
     interval : str
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
@@ -199,6 +205,12 @@ def display_marketcap_dominance(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df = get_marketcap_dominance(
         symbol=symbol, start_date=start_date, end_date=end_date, interval=interval
@@ -236,7 +248,7 @@ def display_marketcap_dominance(
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
 def display_links(symbol: str, export: str = "") -> None:
-    """Display coin links
+    """Prints table showing coin links
     [Source: https://messari.io/]
 
     Parameters
@@ -277,7 +289,7 @@ def display_roadmap(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display coin roadmap
+    """Plots coin roadmap
     [Source: https://messari.io/]
 
     Parameters
@@ -377,7 +389,7 @@ def display_tokenomics(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display coin tokenomics
+    """Plots coin tokenomics
     [Source: https://messari.io/]
 
     Parameters
@@ -460,7 +472,7 @@ def display_project_info(
     symbol: str,
     export: str = "",
 ) -> None:
-    """Display project info
+    """Prints table showing project info
     [Source: https://messari.io/]
 
     Parameters
@@ -500,7 +512,7 @@ def display_investors(
     symbol: str,
     export: str = "",
 ) -> None:
-    """Display coin investors
+    """Prints table showing coin investors
     [Source: https://messari.io/]
 
     Parameters
@@ -546,7 +558,7 @@ def display_team(
     symbol: str,
     export: str = "",
 ) -> None:
-    """Display coin team
+    """Prints table showing coin team
     [Source: https://messari.io/]
 
     Parameters
@@ -592,7 +604,7 @@ def display_governance(
     symbol: str,
     export: str = "",
 ) -> None:
-    """Display coin governance
+    """Prints table showing coin governance
     [Source: https://messari.io/]
 
     Parameters

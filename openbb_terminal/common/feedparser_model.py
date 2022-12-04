@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import os
+from typing import List
 from urllib.parse import quote
 import certifi
 import feedparser
@@ -10,7 +11,7 @@ from openbb_terminal.rich_config import console
 
 
 def get_news(
-    term: str = "", sources: str = "bloomberg.com", sort: str = "published"
+    term: str = "", sources: str = "", sort: str = "published"
 ) -> pd.DataFrame:
     """Get news for a given term and source. [Source: Feedparser]
 
@@ -19,14 +20,19 @@ def get_news(
     term : str
         term to search on the news articles
     sources: str
-        sources to exclusively show news from
+        sources to exclusively show news from (separated by commas)
     sort: str
         the column to sort by
 
     Returns
-    ----------
-    articles : dict
+    -------
+    articles: pd.DataFrame
         term to search on the news articles
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.news()
     """
     # Necessary for installer so that it can locate the correct certificates for
     # API calls and https
@@ -57,7 +63,7 @@ def get_news(
             if data.entries:
                 have_data = True
             elif limit == 60:  # Breaking if 60 successful requests return no data
-                console.print("[red]Timeout occurred. Please try again\n[/red")
+                console.print("[red]Timeout occurred. Please try again\n[/red]")
                 break
             limit = limit + 1
 
@@ -68,7 +74,26 @@ def get_news(
             console.print("[red]Could not retrieve data\n[/red]")
             break
 
-    df = pd.DataFrame(data.entries, columns=["title", "link", "published"])
+    # Filter based on data sources
+    if sources:
+        newdata: List = []
+        for entry in list(data.entries):
+            # check if sources specified
+            if "," in sources:
+                if entry["source"]["title"].lower().find(sources.lower()) != -1:
+                    newdata.append(entry)
+            else:
+                for s in sources.split(","):
+                    if entry["source"]["title"].lower().find(s.lower()) != -1:
+                        newdata.append(entry)
+
+        if newdata:
+            df = pd.DataFrame(newdata, columns=["title", "link", "published"])
+        else:
+            return pd.DataFrame()
+    else:
+        df = pd.DataFrame(data.entries, columns=["title", "link", "published"])
     df["published"] = pd.to_datetime(df["published"])
     df = df.sort_values(by=[sort], ascending=False)
+
     return df

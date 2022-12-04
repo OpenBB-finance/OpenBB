@@ -8,11 +8,10 @@ from typing import Dict, List
 
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import check_non_negative, print_rich_table
+from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
@@ -20,6 +19,7 @@ from openbb_terminal.stocks.options.hedge import hedge_view
 from openbb_terminal.stocks.options.hedge.hedge_model import add_hedge_option
 from openbb_terminal.stocks.options.yfinance_model import get_option_chain, get_price
 from openbb_terminal.stocks.options.yfinance_view import plot_payoff
+from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=R0902
 
@@ -40,6 +40,7 @@ class HedgeController(BaseController):
     ]
 
     PATH = "/stocks/options/hedge/"
+    CHOICES_GENERATION = True
 
     def __init__(self, ticker: str, expiration: str, queue: List[str] = None):
         """Constructor"""
@@ -52,6 +53,7 @@ class HedgeController(BaseController):
                 self.chain.calls["strike"].tolist(),
                 self.chain.calls["impliedVolatility"].tolist(),
                 self.chain.calls["lastPrice"].tolist(),
+                self.chain.calls["currency"].tolist(),
             )
         )
         self.puts = list(
@@ -59,6 +61,7 @@ class HedgeController(BaseController):
                 self.chain.puts["strike"].tolist(),
                 self.chain.puts["impliedVolatility"].tolist(),
                 self.chain.puts["lastPrice"].tolist(),
+                self.chain.calls["currency"].tolist(),
             )
         )
 
@@ -83,17 +86,7 @@ class HedgeController(BaseController):
         self.greeks: Dict = {"Portfolio": {}, "Option A": {}, "Option B": {}}
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: None for c in self.controller_choices}
-            choices["pick"] = {c: None for c in self.PICK_CHOICES}
-            choices["pick"]["--amount"] = None
-            choices["pick"]["-a"] = "--amount"
-            choices["add"] = {
-                str(c): {} for c in list(range(max(len(self.puts), len(self.calls))))
-            }
-            choices["add"]["--put"] = {}
-            choices["add"]["-p"] = "--put"
-            choices["add"]["--short"] = {}
-            choices["add"]["-s"] = "--short"
+            choices: dict = self.choices_default
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -194,16 +187,17 @@ class HedgeController(BaseController):
             help="Short the option instead of buying it",
             default=False,
         )
+        option_type = (
+            self.put_index_choices if "-p" in other_args else self.call_index_choices
+        )
         parser.add_argument(
             "-i",
             "--identifier",
             dest="identifier",
-            type=check_non_negative,
             help="The identifier of the option as found in the list command",
             required="-h" not in other_args and "-k" not in other_args,
-            choices=self.put_index_choices
-            if "-p" in other_args
-            else self.call_index_choices,
+            type=int,
+            choices=option_type,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
@@ -223,6 +217,7 @@ class HedgeController(BaseController):
                     strike = options_list[ns_parser.identifier][0]
                     implied_volatility = options_list[ns_parser.identifier][1]
                     cost = options_list[ns_parser.identifier][2]
+                    currency = options_list[ns_parser.identifier][3]
 
                     option = {
                         "type": opt_type,
@@ -230,9 +225,8 @@ class HedgeController(BaseController):
                         "strike": strike,
                         "implied_volatility": implied_volatility,
                         "cost": cost,
+                        "currency": currency,
                     }
-
-                    print(cost)
 
                     if opt_type == "Call":
                         side = 1
@@ -294,11 +288,22 @@ class HedgeController(BaseController):
                                         option_position,
                                         values["strike"],
                                         values["implied_volatility"],
+                                        values["cost"],
+                                        values["currency"],
                                     ]
                                 ]
                             )
 
-                    positions.columns = ["Type", "Hold", "Strike", "Implied Volatility"]
+                    positions.columns = [
+                        "Type",
+                        "Hold",
+                        "Strike",
+                        "Implied Volatility",
+                        "Cost",
+                        "Currency",
+                    ]
+
+                    console.print("")
 
                     print_rich_table(
                         positions,
@@ -406,7 +411,8 @@ class HedgeController(BaseController):
             "-p",
             "--pick",
             dest="pick",
-            nargs="+",
+            type=str.lower,
+            choices=stocks_helper.format_parse_choices(self.PICK_CHOICES),
             help="Choose what you would like to pick",
             required="-h" not in other_args,
         )
@@ -423,7 +429,8 @@ class HedgeController(BaseController):
             other_args.insert(0, "-p")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            strike_type, underlying_type, side_type = ns_parser.pick
+            pick = stocks_helper.map_parse_choices(self.PICK_CHOICES)[ns_parser.pick]
+            strike_type, underlying_type, side_type = pick.split(" ")
             amount_type = ns_parser.amount
 
             self.underlying_asset_position = (
@@ -443,7 +450,7 @@ class HedgeController(BaseController):
                 side = 1
 
             self.amount = float(amount_type)
-            self.strike = strike_type
+            self.strike = float(strike_type)
 
             index = -1
             date_obj = datetime.strptime(self.expiration, "%Y-%m-%d")
@@ -503,11 +510,20 @@ class HedgeController(BaseController):
                                     option_side,
                                     value["strike"],
                                     value["implied_volatility"],
+                                    value["cost"],
+                                    value["currency"],
                                 ]
                             ]
                         )
 
-                positions.columns = ["Type", "Hold", "Strike", "Implied Volatility"]
+                positions.columns = [
+                    "Type",
+                    "Hold",
+                    "Strike",
+                    "Implied Volatility",
+                    "Cost",
+                    "Currency",
+                ]
 
                 print_rich_table(
                     positions,
@@ -538,10 +554,13 @@ class HedgeController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            plot_payoff(
-                self.current_price,
-                [self.options["Option A"], self.options["Option B"]],
-                self.underlying,
-                self.ticker,
-                self.expiration,
-            )
+            if not self.options["Option A"] and not self.options["Option B"]:
+                console.print("Please add Options by using the 'add' command.\n")
+            else:
+                plot_payoff(
+                    self.current_price,
+                    [self.options["Option A"], self.options["Option B"]],
+                    self.underlying,
+                    self.ticker,
+                    self.expiration,
+                )

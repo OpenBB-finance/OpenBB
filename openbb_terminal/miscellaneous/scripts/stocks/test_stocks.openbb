@@ -1,0 +1,14 @@
+stocks
+search -c United States -s Consumer Cyclical -i Specialty Retail -e USA -l 5
+load ${ticker=aapl} -i 5
+load ${ticker=aapl} -s 2022-10-01
+quote
+tob
+tob -e EDGX
+candle
+candle -t --ma 5,10
+candle --raw
+candle --sort AdjClose -r --raw
+codes
+news -l 3
+exit

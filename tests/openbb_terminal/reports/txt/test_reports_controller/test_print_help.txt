@@ -1,0 +1,14 @@
+Build and run your custom reports or try one of our templates:
+
+OpenBB reports:
+    crypto      <symbol>
+    economy     
+    equity      <symbol>
+    etf         <symbol>
+    forecast    <symbol>
+    forex       <symbol>
+    portfolio   <transactions>
+
+Custom reports:
+    run                Run a Jupyter notebook from OpenBBUserData/reports/custom reports
+

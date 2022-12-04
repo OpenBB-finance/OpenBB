@@ -1,7 +1,7 @@
-       % Of Etf   Shares
-Symbol                  
-TSLA     11.46%   150797
-TRMB      8.50%  1461824
-KTOS      7.90%  6618836
-IRDM      6.09%  1575945
-PATH      5.64%  3835055
+                                             Name % Of Etf   Shares
+Symbol                                                             
+TSLA                                  Tesla, Inc.   10.29%   427599
+TRMB                                 Trimble Inc.    8.79%  1396770
+KTOS    Kratos Defense & Security Solutions, Inc.    7.16%  6324309
+IRDM                  Iridium Communications Inc.    6.34%  1213624
+DE                                Deere & Company    6.30%   148732

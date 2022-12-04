@@ -9,7 +9,7 @@ def test_display_btc_circulating_supply(mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
-    blockchain_view.display_btc_circulating_supply(1_601_596_800, 1_641_573_787, "")
+    blockchain_view.display_btc_circulating_supply("2010-01-01", "2022-11-10", "")
 
 
 @pytest.mark.vcr
@@ -17,4 +17,4 @@ def test_display_btc_circulating_supply(mocker):
 def test_display_btc_confirmed_transactions(mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-    blockchain_view.display_btc_confirmed_transactions(1_601_596_800, 1_641_573_787, "")
+    blockchain_view.display_btc_confirmed_transactions("2010-01-01", "2022-11-10", "")

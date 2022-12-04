@@ -4,14 +4,14 @@ __docformat__ = "numpy"
 import configparser
 import logging
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Union
 
 import pandas as pd
 import requests
 import yfinance as yf
 
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import yfinance_model
 
@@ -35,7 +35,11 @@ accepted_orders = [
 
 @log_start_end(log=logger)
 def get_historical_greeks(
-    symbol: str, expiry: str, strike: float, chain_id: str = "", put: bool = False
+    symbol: str,
+    expiry: str,
+    strike: Union[str, float],
+    chain_id: str = "",
+    put: bool = False,
 ) -> pd.DataFrame:
     """Get histoical option greeks
 
@@ -45,7 +49,7 @@ def get_historical_greeks(
         Stock ticker symbol
     expiry: str
         Option expiration date
-    strike: float
+    strike: Union[str, float]
         Strike price to look for
     chain_id: str
         OCC option symbol.  Overwrites other inputs
@@ -57,6 +61,14 @@ def get_historical_greeks(
     df: pd.DataFrame
         Dataframe containing historical greeks
     """
+    if isinstance(strike, str):
+        try:
+            strike = float(strike)
+        except ValueError:
+            console.print(
+                f"[red]Strike of {strike} cannot be converted to a number.[/red]\n"
+            )
+            return pd.DataFrame()
     if not chain_id:
         options = yfinance_model.get_option_chain(symbol, expiry)
 
@@ -65,7 +77,12 @@ def get_historical_greeks(
         else:
             options = options.calls
 
-        chain_id = options.loc[options.strike == strike, "contractSymbol"].values[0]
+        selection = options.loc[options.strike == strike, "contractSymbol"]
+        try:
+            chain_id = selection.values[0]
+        except IndexError:
+            console.print(f"[red]Strike price of {strike} not found.[/red]\n")
+            return pd.DataFrame()
 
     r = requests.get(f"https://api.syncretism.io/ops/historical/{chain_id}")
 
@@ -146,12 +163,11 @@ def get_screener_output(preset: str) -> Tuple[pd.DataFrame, str]:
     ----------
     preset: str
         Chosen preset
+
     Returns
     -------
-    pd.DataFrame:
-        DataFrame with screener data, or empty if errors
-    str:
-        String containing error message if supplied
+    Tuple[pd.DataFrame, str]
+        DataFrame with screener data or empty if errors, String containing error message if supplied
     """
     d_cols = {
         "contractSymbol": "CS",
@@ -239,6 +255,7 @@ def check_presets(preset_dict: dict) -> str:
     ----------
     preset_dict: dict
         Defined presets from configparser
+
     Returns
     -------
     error: str

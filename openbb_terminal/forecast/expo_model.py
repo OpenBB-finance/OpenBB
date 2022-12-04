@@ -3,10 +3,11 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Union, Optional, List, Tuple
+from typing import Union, Optional, List, Tuple
 
 import warnings
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
+from numpy import ndarray
 import pandas as pd
 from darts import TimeSeries
 from darts.models import ExponentialSmoothing
@@ -37,22 +38,28 @@ def get_expo_data(
     seasonal: str = "A",
     seasonal_periods: int = 7,
     dampen: str = "F",
-    n_predict: int = 30,
+    n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
-) -> Tuple[list[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
+) -> Tuple[
+    List[TimeSeries],
+    List[TimeSeries],
+    List[TimeSeries],
+    Optional[Union[float, ndarray]],
+    ExponentialSmoothing,
+]:
 
     """Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
     we refer to this link for the original and more complete documentation of the parameters.
 
-    https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html?highlight=exponential
+    https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html
 
     Parameters
     ----------
     data : Union[pd.Series, np.ndarray]
         Input data.
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     trend: str
         Trend component.  One of [N, A, M]
@@ -74,15 +81,11 @@ def get_expo_data(
 
     Returns
     -------
-    list[float]
-        Adjusted Data series
-    list[float]
-        List of historical fcast values
-    list[float]
-        List of predicted fcast values
-    Optional[float]
-        precision
-    Any
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[Union[float, ndarray]], ExponentialSmoothing]
+        Adjusted Data series,
+        List of historical fcast values,
+        List of predicted fcast values,
+        Optional[float] - precision,
         Fit Prob. Expo model object.
     """
 
@@ -116,13 +119,25 @@ def get_expo_data(
         random_state=42,
     )
 
-    # Historical backtesting
-    historical_fcast_es = model_es.historical_forecasts(
-        ticker_series,  # backtest on entire ts
-        start=float(start_window),
-        forecast_horizon=int(forecast_horizon),
-        verbose=True,
-    )
+    try:
+        # Historical backtesting
+        historical_fcast_es = model_es.historical_forecasts(
+            ticker_series,  # backtest on entire ts
+            start=float(start_window),
+            forecast_horizon=int(forecast_horizon),
+            verbose=True,
+        )
+    except Exception as e:  # noqa
+        error = str(e)
+        # lets translate this to something everyone understands
+        if "with`overlap_end` set to `False`." in error:
+            console.print(
+                "[red]Dataset too small.[/red]"
+                "[red] Please increase size to at least 100 data points.[/red]"
+            )
+        else:
+            console.print(f"[red]{error}[/red]")
+        return [], [], [], None, None
 
     # train new model on entire timeseries to provide best current forecast
     best_model = ExponentialSmoothing(
@@ -137,7 +152,7 @@ def get_expo_data(
     best_model.fit(ticker_series)
     probabilistic_forecast = best_model.predict(int(n_predict), num_samples=500)
     precision = mape(actual_series=ticker_series, pred_series=historical_fcast_es)
-    console.print(f"Exponential smoothing obtains MAPE: {precision:.2f}% \n")  # TODO
+    console.print(f"Exponential smoothing obtains MAPE: {precision:.2f}% \n")
 
     return (
         ticker_series,

@@ -13,6 +13,7 @@ def beta_model(
     ref_symbol: str,
     data: pd.DataFrame = None,
     ref_data: pd.DataFrame = None,
+    interval: int = 1440,
 ) -> Tuple[pd.Series, pd.Series, float, float]:
     """Calculate beta for a ticker and a reference ticker.
 
@@ -26,15 +27,13 @@ def beta_model(
         The selected ticker symbols price data
     ref_data: pd.DataFrame
         The reference ticker symbols price data
+    interval: int
+        The interval of the ref_data. This will ONLY be used if ref_data is None
 
     Returns
     -------
-    sr: pd.Series
-        Stock ticker symbols close-to-close returns
-    rr: pd.Series
-        Reference ticker symbols close-to-close returns
-    beta: float
-    alpha: float
+    Tuple[pd.Series, pd.Series, float, float]
+        Stock ticker symbols close-to-close returns, Reference ticker symbols close-to-close returns, beta, alpha
     """
     if data is None:
         data = stocks_helper.load(symbol)
@@ -44,7 +43,7 @@ def beta_model(
         # with an uppercase char. This should be consistent.
         data = data.rename({"close": "Close"}, axis=1)
     if ref_data is None:
-        ref_data = stocks_helper.load(ref_symbol)
+        ref_data = stocks_helper.load(ref_symbol, interval=interval)
         if ref_data.empty:
             raise Exception("Invalid ref_symbol ticker")
     else:
@@ -61,6 +60,8 @@ def beta_model(
     rr = df["Ref Pct Ret"].tolist()
 
     # compute lin reg
+    if not rr or not sr:
+        return pd.Series(dtype="object"), pd.Series(dtype="object"), 0.0, 0.0
     model = stats.linregress(rr, sr)
     beta = model.slope
     alpha = model.intercept

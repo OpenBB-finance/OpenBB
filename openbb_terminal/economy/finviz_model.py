@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 from ast import literal_eval
 import webbrowser
+from typing import List
 
 import pandas as pd
 import requests
@@ -51,14 +52,12 @@ def get_performance_map(period: str = "1d", map_filter: str = "sp500"):
     # Conversion from period and type, to fit url requirements
     d_period = {"1d": "", "1w": "w1", "1m": "w4", "3m": "w13", "6m": "w26", "1y": "w52"}
     d_type = {"sp500": "sec", "world": "geo", "full": "sec_all", "etf": "etf"}
-    # TODO: Try to get this image and output it instead of opening browser
     url = f"https://finviz.com/map.ashx?t={d_type[map_filter]}&st={d_period[period]}"
     webbrowser.open(url)
-    console.print("")
 
 
 @log_start_end(log=logger)
-def get_groups() -> list:
+def get_groups() -> List[str]:
     """Get group available"""
     return list(GROUPS.keys())
 
@@ -72,14 +71,14 @@ def get_valuation_data(
     Parameters
     ----------
     group : str
-       Group by category. Available groups can be accessed through get_groups().
+        Group by category. Available groups can be accessed through get_groups().
     sortby : str
         Column to sort by
     ascend : bool
         Flag to sort in ascending order
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         dataframe with valuation/performance data
     """
@@ -118,14 +117,14 @@ def get_performance_data(
     Parameters
     ----------
     group : str
-       Group by category. Available groups can be accessed through get_groups().
+        Group by category. Available groups can be accessed through get_groups().
     sortby : str
         Column to sort by
     ascend : bool
         Flag to sort in ascending order
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         dataframe with performance data
     """
@@ -172,7 +171,7 @@ def get_spectrum_data(group: str = "sector"):
     Parameters
     ----------
     group : str
-       Group by category. Available groups can be accessed through get_groups().
+        Group by category. Available groups can be accessed through get_groups().
     """
     if group not in GROUPS:
         console.print(
@@ -200,9 +199,9 @@ def get_futures(
         Flag to sort in ascending order
 
     Returns
-    ----------
+    -------
     pd.Dataframe
-       Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
+        Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
     """
     source = requests.get(
         "https://finviz.com/futures.ashx", headers={"User-Agent": get_user_agent()}

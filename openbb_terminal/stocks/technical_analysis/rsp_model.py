@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_rsp(
     s_ticker: str = "",
-) -> Tuple[pd.DataFrame]:
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Relative strength percentile [Source: https://github.com/skyte/relative-strength]
     Currently takes from https://github.com/soggyomelette/rs-log in order to get desired output
 
@@ -25,26 +25,22 @@ def get_rsp(
         Stock Ticker
 
     Returns
-    ----------
-    pd.DataFrame
-        Dataframe of stock percentile
-    pd.Dataframe
-        Dataframe of industry percentile
-    pd.Dataframe
-        Raw stock dataframe for export
-    pd.Dataframe
-        Raw industry dataframe for export
+    -------
+    Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]
+        Dataframe of stock percentile, Dataframe of industry percentile,
+        Raw stock dataframe for export, Raw industry dataframe for export
     """
+
     df_stock_p = pd.read_csv(
         "https://raw.githubusercontent.com/soggyomelette/rs-log/main/output/rs_stocks.csv"
     )
     df_industries_p = pd.read_csv(
         "https://raw.githubusercontent.com/soggyomelette/rs-log/main/output/rs_industries.csv"
     )
-    if s_ticker == "":
-        rsp_stock = pd.DataFrame()
-        rsp_industry = pd.DataFrame()
-    else:
+    rsp_stock = pd.DataFrame()
+    rsp_industry = pd.DataFrame()
+
+    if s_ticker != "":
         rsp_stock = df_stock_p[df_stock_p["Ticker"].str.match(s_ticker)]
         for i in range(len(df_industries_p)):
             if s_ticker in df_industries_p.iloc[i]["Tickers"]:
