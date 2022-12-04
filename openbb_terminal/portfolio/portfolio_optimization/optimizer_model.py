@@ -21,7 +21,11 @@ from scipy.interpolate import interp1d
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio.portfolio_optimization import (
     yahoo_finance_model,
-    optimizer_helper,
+)
+from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import (
+    get_kwarg,
+    validate_risk_measure,
+    valid_property_infos,
 )
 from openbb_terminal.rich_config import console
 
@@ -199,15 +203,15 @@ def get_equal_weights(
         Dictionary of weights where keys are the tickers, dataframe of stock returns
     """
 
-    interval = kwargs.get("interval", "3y")
-    start_date = kwargs.get("start_date", "")
-    end_date = kwargs.get("end_date", "")
-    log_returns = kwargs.get("log_returns", False)
-    freq = kwargs.get("freq", "D")
-    maxnan = kwargs.get("maxnan", 0.05)
-    threshold = kwargs.get("threshold", 0.0)
-    method = kwargs.get("method", "time")
-    value = kwargs.get("value", 1.0)
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -271,17 +275,17 @@ def get_property_weights(
         Dictionary of portfolio weights or allocations
     """
 
-    interval = kwargs.get("interval", "3y")
-    start_date = kwargs.get("start_date", "")
-    end_date = kwargs.get("end_date", "")
-    log_returns = kwargs.get("log_returns", False)
-    freq = kwargs.get("freq", "D")
-    maxnan = kwargs.get("maxnan", 0.05)
-    threshold = kwargs.get("threshold", 0.0)
-    method = kwargs.get("method", "time")
-    value = kwargs.get("value", 1.0)
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
 
-    s_property = kwargs.get("s_property", "marketCap")
+    s_property = get_kwarg("s_property", kwargs, default="marketCap")
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -427,29 +431,29 @@ def get_mean_risk_portfolio(
         DataFrame of stock returns.
     """
 
-    interval = kwargs.get("interval", "3y")
-    start_date = kwargs.get("start_date", "")
-    end_date = kwargs.get("end_date", "")
-    log_returns = kwargs.get("log_returns", False)
-    freq = kwargs.get("freq", "D")
-    maxnan = kwargs.get("maxnan", 0.05)
-    threshold = kwargs.get("threshold", 0.0)
-    method = kwargs.get("method", "time")
-    value = kwargs.get("value", 1.0)
-    value_short = kwargs.get("value_short", 0.0)
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+    value_short = get_kwarg("value_short", kwargs)
 
-    risk_measure = kwargs.get("risk_measure", "MV")
-    objective = kwargs.get("objective", "Sharpe")
-    risk_free_rate = kwargs.get("risk_free_rate", 0.0)
-    risk_aversion = kwargs.get("risk_aversion", 1.0)
-    alpha = kwargs.get("alpha", 0.05)
-    target_return = kwargs.get("target_return", -1.0)
-    target_risk = kwargs.get("target_risk", -1.0)
-    mean = kwargs.get("mean", "hist")
-    covariance = kwargs.get("covariance", "hist")
-    d_ewma = kwargs.get("d_ewma", 0.94)
+    risk_measure = get_kwarg("risk_measure", kwargs)
+    objective = get_kwarg("objective", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    risk_aversion = get_kwarg("risk_aversion", kwargs)
+    alpha = get_kwarg("alpha", kwargs)
+    target_return = get_kwarg("target_return", kwargs)
+    target_risk = get_kwarg("target_risk", kwargs)
+    mean = get_kwarg("mean", kwargs)
+    covariance = get_kwarg("covariance", kwargs)
+    d_ewma = get_kwarg("d_ewma", kwargs)
 
-    risk_measure = optimizer_helper.validate_risk_measure(risk_measure)
+    risk_measure = validate_risk_measure(risk_measure)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -468,48 +472,64 @@ def get_mean_risk_portfolio(
         )
         return {}, pd.DataFrame()
 
+    if stock_returns.shape[1] < 2:
+        console.print(
+            f"[red]Given the parameters could only get data for '{stock_returns.columns[0]}'.[/red]\n"
+            "[red]Optimization needs at least two assets.[/red]\n",
+        )
+        return {}, pd.DataFrame()
+
+    first_day = stock_returns.index[0].strftime("%Y-%m-%d")
+    console.print(
+        f"[yellow]First day of data respecting parameters: {first_day}[/yellow]\n"
+    )
+
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+    try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns, alpha=alpha)
 
-    # Estimate input parameters:
-    port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
+        # Estimate input parameters:
+        port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
 
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
-
-    # Estimate optimal portfolio:
-    model = "Classic"
-    hist = True
-
-    if target_return > -1:
-        port.lowerret = float(target_return) / time_factor[freq.upper()]
-
-    if target_risk > -1:
-        if risk_measure not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
-            setattr(
-                port,
-                upper_risk[risk_measure],
-                float(target_risk) / time_factor[freq.upper()] ** 0.5,
-            )
+        # Budget constraints
+        port.upperlng = value
+        if value_short > 0:
+            port.sht = True
+            port.uppersht = value_short
+            port.budget = value - value_short
         else:
-            setattr(port, upper_risk[risk_measure], float(target_risk))
+            port.budget = value
 
-    weights = port.optimization(
-        model=model,
-        rm=risk_measure,
-        obj=objective,
-        rf=risk_free_rate,
-        l=risk_aversion,
-        hist=hist,
-    )
+        # Estimate optimal portfolio:
+        model = "Classic"
+        hist = True
+
+        if target_return > -1:
+            port.lowerret = float(target_return) / time_factor[freq.upper()]
+
+        if target_risk > -1:
+            if risk_measure not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
+                setattr(
+                    port,
+                    upper_risk[risk_measure],
+                    float(target_risk) / time_factor[freq.upper()] ** 0.5,
+                )
+            else:
+                setattr(port, upper_risk[risk_measure], float(target_risk))
+
+        weights = port.optimization(
+            model=model,
+            rm=risk_measure,
+            obj=objective,
+            rf=risk_free_rate,
+            l=risk_aversion,
+            hist=hist,
+        )
+
+    except Exception as _:
+        weights = None
 
     if weights is not None:
         weights = weights.round(5)
@@ -1032,19 +1052,19 @@ def get_max_diversification_portfolio(
         DataFrame of stock returns.
     """
 
-    interval = kwargs.get("interval", "3y")
-    start_date = kwargs.get("start_date", "")
-    end_date = kwargs.get("end_date", "")
-    log_returns = kwargs.get("log_returns", False)
-    freq = kwargs.get("freq", "D")
-    maxnan = kwargs.get("maxnan", 0.05)
-    threshold = kwargs.get("threshold", 0.0)
-    method = kwargs.get("method", "time")
-    value = kwargs.get("value", 1.0)
-    value_short = kwargs.get("value_short", 0.0)
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+    value_short = get_kwarg("value_short", kwargs)
 
-    covariance = kwargs.get("covariance", "hist")
-    d_ewma = kwargs.get("d_ewma", 0.94)
+    covariance = get_kwarg("covariance", kwargs)
+    d_ewma = get_kwarg("d_ewma", kwargs)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1058,24 +1078,29 @@ def get_max_diversification_portfolio(
         method=method,
     )
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns)
+    try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns)
 
-    # Estimate input parameters:
-    port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
-    port.mu = stock_returns.std().to_frame().T
+        # Estimate input parameters:
+        port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
+        port.mu = stock_returns.std().to_frame().T
 
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
+        # Budget constraints
+        port.upperlng = value
+        if value_short > 0:
+            port.sht = True
+            port.uppersht = value_short
+            port.budget = value - value_short
+        else:
+            port.budget = value
 
-    # Estimate optimal portfolio:
-    weights = port.optimization(model="Classic", rm="MV", obj="Sharpe", rf=0, hist=True)
+        # Estimate optimal portfolio:
+        weights = port.optimization(
+            model="Classic", rm="MV", obj="Sharpe", rf=0, hist=True
+        )
+    except Exception as _:
+        weights = None
 
     if weights is not None:
         weights = weights.round(5)
@@ -1151,19 +1176,19 @@ def get_max_decorrelation_portfolio(
         DataFrame of stock returns.
     """
 
-    interval = kwargs.get("interval", "3y")
-    start_date = kwargs.get("start_date", "")
-    end_date = kwargs.get("end_date", "")
-    log_returns = kwargs.get("log_returns", False)
-    freq = kwargs.get("freq", "D")
-    maxnan = kwargs.get("maxnan", 0.05)
-    threshold = kwargs.get("threshold", 0.0)
-    method = kwargs.get("method", "time")
-    value = kwargs.get("value", 1.0)
-    value_short = kwargs.get("value_short", 0.0)
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+    value_short = get_kwarg("value_short", kwargs)
 
-    covariance = kwargs.get("covariance", "hist")
-    d_ewma = kwargs.get("d_ewma", 0.94)
+    covariance = get_kwarg("covariance", kwargs)
+    d_ewma = get_kwarg("d_ewma", kwargs)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1177,26 +1202,30 @@ def get_max_decorrelation_portfolio(
         method=method,
     )
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns)
+    try:
 
-    # Estimate input parameters:
-    port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
-    port.cov = rp.cov2corr(port.cov)
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns)
 
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
+        # Estimate input parameters:
+        port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
+        port.cov = rp.cov2corr(port.cov)
 
-    # Estimate optimal portfolio:
-    weights = port.optimization(
-        model="Classic", rm="MV", obj="MinRisk", rf=0, hist=True
-    )
+        # Budget constraints
+        port.upperlng = value
+        if value_short > 0:
+            port.sht = True
+            port.uppersht = value_short
+            port.budget = value - value_short
+        else:
+            port.budget = value
+
+        # Estimate optimal portfolio:
+        weights = port.optimization(
+            model="Classic", rm="MV", obj="MinRisk", rf=0, hist=True
+        )
+    except Exception as _:
+        weights = None
 
     if weights is not None:
         weights = weights.round(5)
@@ -1284,26 +1313,26 @@ def get_black_litterman_portfolio(
         DataFrame of stock returns.
     """
 
-    interval = kwargs.get("interval", "3y")
-    start_date = kwargs.get("start_date", "")
-    end_date = kwargs.get("end_date", "")
-    log_returns = kwargs.get("log_returns", False)
-    freq = kwargs.get("freq", "D")
-    maxnan = kwargs.get("maxnan", 0.05)
-    threshold = kwargs.get("threshold", 0.0)
-    method = kwargs.get("method", "time")
-    value = kwargs.get("value", 1.0)
-    value_short = kwargs.get("value_short", 0.0)
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+    value_short = get_kwarg("value_short", kwargs)
 
-    benchmark = kwargs.get("benchmark", None)
-    p_views = kwargs.get("p_views", None)
-    q_views = kwargs.get("q_views", None)
-    objective = kwargs.get("objective", "Sharpe")
-    risk_free_rate = kwargs.get("risk_free_rate", 0)
-    risk_aversion = kwargs.get("risk_aversion", 1)
-    delta = kwargs.get("delta", None)
-    equilibrium = kwargs.get("equilibrium", True)
-    optimize = kwargs.get("optimize", True)
+    benchmark = get_kwarg("benchmark", kwargs)
+    p_views = get_kwarg("p_views", kwargs)
+    q_views = get_kwarg("q_views", kwargs)
+    objective = get_kwarg("objective", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    risk_aversion = get_kwarg("risk_aversion", kwargs)
+    delta = get_kwarg("delta", kwargs)
+    equilibrium = get_kwarg("equilibrium", kwargs)
+    optimize = get_kwarg("optimize", kwargs)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1349,32 +1378,35 @@ def get_black_litterman_portfolio(
     weights = pd.DataFrame(weights)
 
     if optimize:
-        # Building the portfolio object
-        port = rp.Portfolio(returns=stock_returns)
+        try:
+            # Building the portfolio object
+            port = rp.Portfolio(returns=stock_returns)
 
-        # Estimate input parameters:
-        port.assets_stats(method_mu="hist", method_cov="hist")
-        port.mu_bl = pd.DataFrame(mu).T
-        port.cov_bl = pd.DataFrame(cov)
+            # Estimate input parameters:
+            port.assets_stats(method_mu="hist", method_cov="hist")
+            port.mu_bl = pd.DataFrame(mu).T
+            port.cov_bl = pd.DataFrame(cov)
 
-        # Budget constraints
-        port.upperlng = value
-        if value_short > 0:
-            port.sht = True
-            port.uppersht = value_short
-            port.budget = value - value_short
-        else:
-            port.budget = value
+            # Budget constraints
+            port.upperlng = value
+            if value_short > 0:
+                port.sht = True
+                port.uppersht = value_short
+                port.budget = value - value_short
+            else:
+                port.budget = value
 
-        # Estimate optimal portfolio:
-        weights = port.optimization(
-            model="BL",
-            rm="MV",
-            obj=objective,
-            rf=risk_free_rate,
-            l=risk_aversion,
-            hist=True,
-        )
+            # Estimate optimal portfolio:
+            weights = port.optimization(
+                model="BL",
+                rm="MV",
+                obj=objective,
+                rf=risk_free_rate,
+                l=risk_aversion,
+                hist=True,
+            )
+        except Exception as _:
+            weights = None
 
     if weights is not None:
         weights = weights.round(5)
@@ -1478,25 +1510,25 @@ def get_ef(
         frontier, mu, cov, stock_returns, weights, X1, Y1, port
     """
 
-    interval = kwargs.get("interval", "3y")
-    start_date = kwargs.get("start_date", "")
-    end_date = kwargs.get("end_date", "")
-    log_returns = kwargs.get("log_returns", False)
-    freq = kwargs.get("freq", "D")
-    maxnan = kwargs.get("maxnan", 0.05)
-    threshold = kwargs.get("threshold", 0.05)
-    method = kwargs.get("method", "time")
-    value = kwargs.get("value", 1.0)
-    value_short = kwargs.get("value_short", 0.0)
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
+    value_short = get_kwarg("value_short", kwargs)
 
-    risk_measure = kwargs.get("risk_measure", "MV")
-    risk_free_rate = kwargs.get("risk_free_rate", 0.0)
-    alpha = kwargs.get("alpha", 0.05)
-    n_portfolios = kwargs.get("n_portfolios", 100)
-    seed = kwargs.get("seed", 123)
+    risk_measure = get_kwarg("risk_measure", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    alpha = get_kwarg("alpha", kwargs)
+    n_portfolios = get_kwarg("n_portfolios", kwargs)
+    seed = get_kwarg("seed", kwargs)
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
-    risk_measure = optimizer_helper.validate_risk_measure(risk_measure)
+    risk_measure = validate_risk_measure(risk_measure)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1510,29 +1542,32 @@ def get_ef(
         method=method,
     )
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+    try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns, alpha=alpha)
 
-    # Estimate input parameters:
-    port.assets_stats(method_mu="hist", method_cov="hist")
+        # Estimate input parameters:
+        port.assets_stats(method_mu="hist", method_cov="hist")
 
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
+        # Budget constraints
+        port.upperlng = value
+        if value_short > 0:
+            port.sht = True
+            port.uppersht = value_short
+            port.budget = value - value_short
+        else:
+            port.budget = value
 
-    # Estimate tangency portfolio:
-    weights: Optional[pd.DataFrame] = port.optimization(
-        model="Classic",
-        rm=risk_choices[risk_measure.lower()],
-        obj="Sharpe",
-        rf=risk_free_rate,
-        hist=True,
-    )
+        # Estimate tangency portfolio:
+        weights: Optional[pd.DataFrame] = port.optimization(
+            model="Classic",
+            rm=risk_choices[risk_measure.lower()],
+            obj="Sharpe",
+            rf=risk_free_rate,
+            hist=True,
+        )
+    except Exception as _:
+        weights = None
 
     points = 20  # Number of points of the frontier
     frontier = port.efficient_frontier(
@@ -1684,24 +1719,24 @@ def get_risk_parity_portfolio(
         DataFrame of stock returns.
     """
 
-    interval = kwargs.get("interval", "3y")
-    start_date = kwargs.get("start_date", "")
-    end_date = kwargs.get("end_date", "")
-    log_returns = kwargs.get("log_returns", False)
-    freq = kwargs.get("freq", "D")
-    maxnan = kwargs.get("maxnan", 0.05)
-    threshold = kwargs.get("threshold", 0.05)
-    method = kwargs.get("method", "time")
-    value = kwargs.get("value", 1)
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
 
-    risk_measure = kwargs.get("risk_measure", "MV")
-    risk_free_rate = kwargs.get("risk_free_rate", 0)
-    alpha = kwargs.get("alpha", 0.05)
-    target_return = kwargs.get("target_return", -1.0)
-    mean = kwargs.get("mean", "hist")
-    covariance = kwargs.get("covariance", "hist")
-    d_ewma = kwargs.get("d_ewma", 0.94)
-    risk_cont = kwargs.get("risk_cont", None)
+    risk_measure = get_kwarg("risk_measure", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    alpha = get_kwarg("alpha", kwargs)
+    target_return = get_kwarg("target_return", kwargs)
+    mean = get_kwarg("mean", kwargs)
+    covariance = get_kwarg("covariance", kwargs)
+    d_ewma = get_kwarg("d_ewma", kwargs)
+    risk_cont = get_kwarg("risk_cont", kwargs)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1716,30 +1751,33 @@ def get_risk_parity_portfolio(
     )
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
-    risk_measure = optimizer_helper.validate_risk_measure(risk_measure)
+    risk_measure = validate_risk_measure(risk_measure)
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+    try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns, alpha=alpha)
 
-    # Calculating optimal portfolio
-    port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
+        # Calculating optimal portfolio
+        port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
 
-    # Estimate optimal portfolio:
-    model = "Classic"
-    hist = True
+        # Estimate optimal portfolio:
+        model = "Classic"
+        hist = True
 
-    if risk_cont is None:
-        risk_cont_ = None  # Risk contribution constraints vector
-    else:
-        risk_cont_ = np.array(risk_cont).reshape(1, -1)
-        risk_cont_ = risk_cont_ / np.sum(risk_cont_)
+        if risk_cont is None:
+            risk_cont_ = None  # Risk contribution constraints vector
+        else:
+            risk_cont_ = np.array(risk_cont).reshape(1, -1)
+            risk_cont_ = risk_cont_ / np.sum(risk_cont_)
 
-    if target_return > -1:
-        port.lowerret = float(target_return) / time_factor[freq.upper()]
+        if target_return > -1:
+            port.lowerret = float(target_return) / time_factor[freq.upper()]
 
-    weights = port.rp_optimization(
-        model=model, rm=risk_measure, rf=risk_free_rate, b=risk_cont_, hist=hist
-    )
+        weights = port.rp_optimization(
+            model=model, rm=risk_measure, rf=risk_free_rate, b=risk_cont_, hist=hist
+        )
+    except Exception as _:
+        weights = None
 
     if weights is not None:
         if value > 0.0:
@@ -1839,23 +1877,23 @@ def get_rel_risk_parity_portfolio(
         DataFrame of stock returns.
     """
 
-    interval = kwargs.get("interval", "3y")
-    start_date = kwargs.get("start_date", "")
-    end_date = kwargs.get("end_date", "")
-    log_returns = kwargs.get("log_returns", False)
-    freq = kwargs.get("freq", "D")
-    maxnan = kwargs.get("maxnan", 0.05)
-    threshold = kwargs.get("threshold", 0.05)
-    method = kwargs.get("method", "time")
-    value = kwargs.get("value", 1)
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
 
-    target_return = kwargs.get("target_return", -1)
-    mean = kwargs.get("mean", "hist")
-    covariance = kwargs.get("covariance", "hist")
-    d_ewma = kwargs.get("d_ewma", 0.94)
-    risk_cont = kwargs.get("risk_cont", None)
-    version = kwargs.get("version", "A")
-    penal_factor = kwargs.get("penal_factor", 1)
+    target_return = get_kwarg("target_return", kwargs)
+    mean = get_kwarg("mean", kwargs)
+    covariance = get_kwarg("covariance", kwargs)
+    d_ewma = get_kwarg("d_ewma", kwargs)
+    risk_cont = get_kwarg("risk_cont", kwargs)
+    version = get_kwarg("version", kwargs)
+    penal_factor = get_kwarg("penal_factor", kwargs)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -1869,28 +1907,31 @@ def get_rel_risk_parity_portfolio(
         method=method,
     )
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns)
+    try:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns)
 
-    # Calculating optimal portfolio
-    port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
+        # Calculating optimal portfolio
+        port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
 
-    # Estimate optimal portfolio:
-    model = "Classic"
-    hist = True
+        # Estimate optimal portfolio:
+        model = "Classic"
+        hist = True
 
-    if risk_cont is None:
-        risk_cont_ = None  # Risk contribution constraints vector
-    else:
-        risk_cont_ = np.array(risk_cont).reshape(1, -1)
-        risk_cont_ = risk_cont_ / np.sum(risk_cont_)
+        if risk_cont is None:
+            risk_cont_ = None  # Risk contribution constraints vector
+        else:
+            risk_cont_ = np.array(risk_cont).reshape(1, -1)
+            risk_cont_ = risk_cont_ / np.sum(risk_cont_)
 
-    if target_return > -1:
-        port.lowerret = float(target_return) / time_factor[freq.upper()]
+        if target_return > -1:
+            port.lowerret = float(target_return) / time_factor[freq.upper()]
 
-    weights = port.rrp_optimization(
-        model=model, version=version, l=penal_factor, b=risk_cont_, hist=hist
-    )
+        weights = port.rrp_optimization(
+            model=model, version=version, l=penal_factor, b=risk_cont_, hist=hist
+        )
+    except Exception as _:
+        weights = None
 
     if weights is not None:
         if value > 0.0:
@@ -2084,38 +2125,38 @@ def get_hcp_portfolio(
         DataFrame of stock returns.
     """
 
-    interval = kwargs.get("interval", "3y")
-    start_date = kwargs.get("start_date", "")
-    end_date = kwargs.get("end_date", "")
-    log_returns = kwargs.get("log_returns", False)
-    freq = kwargs.get("freq", "D")
-    maxnan = kwargs.get("maxnan", 0.05)
-    threshold = kwargs.get("threshold", 0.0)
-    method = kwargs.get("method", "time")
-    value = kwargs.get("value", 1.0)
+    interval = get_kwarg("interval", kwargs)
+    start_date = get_kwarg("start_date", kwargs)
+    end_date = get_kwarg("end_date", kwargs)
+    log_returns = get_kwarg("log_returns", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    maxnan = get_kwarg("maxnan", kwargs)
+    threshold = get_kwarg("threshold", kwargs)
+    method = get_kwarg("method", kwargs)
+    value = get_kwarg("value", kwargs)
 
-    objective = kwargs.get("objective", "MinRisk")
-    risk_measure = kwargs.get("risk_measure", "MV")
-    risk_free_rate = kwargs.get("risk_free_rate", 0.0)
-    risk_aversion = kwargs.get("risk_aversion", 1.0)
-    alpha = kwargs.get("alpha", 0.05)
-    a_sim = kwargs.get("a_sim", 100)
-    beta = kwargs.get("beta", None)
-    b_sim = kwargs.get("b_sim", None)
-    covariance = kwargs.get("covariance", "hist")
-    d_ewma = kwargs.get("d_ewma", 0.94)
+    objective = get_kwarg("objective", kwargs)
+    risk_measure = get_kwarg("risk_measure", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    risk_aversion = get_kwarg("risk_aversion", kwargs)
+    alpha = get_kwarg("alpha", kwargs)
+    a_sim = get_kwarg("a_sim", kwargs)
+    beta = get_kwarg("beta", kwargs)
+    b_sim = get_kwarg("b_sim", kwargs)
+    covariance = get_kwarg("covariance", kwargs)
+    d_ewma = get_kwarg("d_ewma", kwargs)
 
-    model = kwargs.get("model", "HRP")
+    model = get_kwarg("model", kwargs, default="HRP")
 
-    codependence = kwargs.get("codependence", "pearson")
-    linkage = kwargs.get("linkage", "single")
-    k = kwargs.get("k", None)
-    max_k = kwargs.get("max_k", 10)
-    bins_info = kwargs.get("bins_info", "KN")
-    alpha_tail = kwargs.get("alpha_tail", 0.05)
-    leaf_order = kwargs.get("leaf_order", True)
+    codependence = get_kwarg("codependence", kwargs)
+    linkage = get_kwarg("linkage", kwargs)
+    k = get_kwarg("k", kwargs)
+    max_k = get_kwarg("max_k", kwargs)
+    bins_info = get_kwarg("bins_info", kwargs)
+    alpha_tail = get_kwarg("alpha_tail", kwargs)
+    leaf_order = get_kwarg("leaf_order", kwargs)
 
-    risk_measure = optimizer_helper.validate_risk_measure(risk_measure)
+    risk_measure = validate_risk_measure(risk_measure)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -2133,31 +2174,35 @@ def get_hcp_portfolio(
         linkage = linkage.upper()
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
-    # Building the portfolio object
-    port = rp.HCPortfolio(
-        returns=stock_returns,
-        alpha=alpha,
-        a_sim=a_sim,
-        beta=beta,
-        b_sim=b_sim,
-    )
 
-    weights = port.optimization(
-        model=model,
-        codependence=codependence,
-        covariance=covariance,
-        obj=objective,
-        rm=risk_measure,
-        rf=risk_free_rate,
-        l=risk_aversion,
-        linkage=linkage,
-        k=k,
-        max_k=max_k,
-        bins_info=bins_info,
-        alpha_tail=alpha_tail,
-        leaf_order=leaf_order,
-        d=d_ewma,
-    )
+    try:
+        # Building the portfolio object
+        port = rp.HCPortfolio(
+            returns=stock_returns,
+            alpha=alpha,
+            a_sim=a_sim,
+            beta=beta,
+            b_sim=b_sim,
+        )
+
+        weights = port.optimization(
+            model=model,
+            codependence=codependence,
+            covariance=covariance,
+            obj=objective,
+            rm=risk_measure,
+            rf=risk_free_rate,
+            l=risk_aversion,
+            linkage=linkage,
+            k=k,
+            max_k=max_k,
+            bins_info=bins_info,
+            alpha_tail=alpha_tail,
+            leaf_order=leaf_order,
+            d=d_ewma,
+        )
+    except Exception as _:
+        weights = None
 
     if weights is not None:
         if value > 0.0:
@@ -2766,12 +2811,12 @@ def black_litterman(
         Portfolio weights.
     """
 
-    p_views = kwargs.get("p_views", None)
-    q_views = kwargs.get("q_views", None)
-    delta = kwargs.get("delta", None)
-    risk_free_rate = kwargs.get("risk_free_rate", 0)
-    equilibrium = kwargs.get("equilibrium", True)
-    factor = kwargs.get("factor", 252)
+    p_views = get_kwarg("p_views", kwargs)
+    q_views = get_kwarg("q_views", kwargs)
+    delta = get_kwarg("delta", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    equilibrium = get_kwarg("equilibrium", kwargs)
+    factor = get_kwarg("factor", kwargs, default=252)
 
     symbols = stock_returns.columns.tolist()
     benchmark = pd.Series(benchmark).to_numpy().reshape(-1, 1)
@@ -2879,7 +2924,7 @@ def get_properties() -> List[str]:
     List[str]:
         List of available properties to use on property optimization.
     """
-    return optimizer_helper.valid_property_infos
+    return valid_property_infos
 
 
 @log_start_end(log=logger)

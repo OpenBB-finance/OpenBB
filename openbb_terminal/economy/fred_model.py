@@ -256,14 +256,16 @@ def get_aggregated_series_data(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def get_yield_curve(
-    date: str = None,
+    date: str = "", return_date: bool = False
 ) -> Tuple[pd.DataFrame, str]:
     """Gets yield curve data from FRED
 
     Parameters
     ----------
     date: str
-        Date to get curve for. If None, gets most recent date (format yyyy-mm-dd)
+        Date to get curve for. If empty, gets most recent date (format yyyy-mm-dd)
+    return_date: bool
+        If True, returns date of yield curve
 
     Returns
     -------
@@ -275,6 +277,9 @@ def get_yield_curve(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> ycrv_df = openbb.economy.ycrv()
+
+    Since there is a delay with the data, the most recent date is returned and can be accessed with return_date=True
+    >>> ycrv_df, ycrv_date = openbb.economy.ycrv(return_date=True)
     """
 
     # Necessary for installer so that it can locate the correct certificates for
@@ -298,9 +303,20 @@ def get_yield_curve(
         "30Year": "DGS30",
     }
     df = pd.DataFrame()
+    # Check that the date is in the past
+    today = datetime.now().strftime("%Y-%m-%d")
+    if date and date >= today:
+        console.print("[red]Date cannot be today or in the future[/red]")
+        if return_date:
+            return pd.DataFrame(), date
+        return pd.DataFrame()
 
-    if date is None:
+    # Add in logic that will get the most recent date.
+    get_last = False
+
+    if not date:
         date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
+        get_last = True
 
     for key, s_id in fred_series.items():
         df = pd.concat(
@@ -310,10 +326,18 @@ def get_yield_curve(
             ],
             axis=1,
         )
+    if df.empty:
+        if return_date:
+            return pd.DataFrame(), date
+        return pd.DataFrame()
+    # Drop rows with NaN -- corresponding to weekends typically
+    df = df.dropna()
 
-    if date is None:
-        date_of_yield = df.index[-1]
-        rates = pd.DataFrame(df.iloc[-1, :].values, columns=["Rate"])
+    if date not in df.index or get_last:
+        # If the get_last flag is true, we want the first date, otherwise we want the last date.
+        idx = -1 if get_last else 0
+        date_of_yield = df.index[idx].strftime("%Y-%m-%d")
+        rates = pd.DataFrame(df.iloc[idx, :].values, columns=["Rate"])
     else:
         date_of_yield = date
         series = df[df.index == date]
@@ -326,5 +350,6 @@ def get_yield_curve(
         "Maturity",
         [1 / 12, 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30],
     )
-
-    return rates, date_of_yield
+    if return_date:
+        return rates, date_of_yield
+    return rates

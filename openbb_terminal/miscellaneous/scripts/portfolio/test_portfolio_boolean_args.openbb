@@ -2,8 +2,9 @@ portfolio
 load --file Public_Equity_Orderbook.xlsx
 po
 params
-file --file OpenBB_Parameters_Template_v1.0.0.xlsx
+load OpenBB_Parameters_Template_v1.0.0.xlsx
 set ef
 arg tangency False
 arg log_returns True
+clear
 exit
