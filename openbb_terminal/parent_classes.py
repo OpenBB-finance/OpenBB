@@ -731,9 +731,8 @@ class BaseController(metaclass=ABCMeta):
 
         if l_unknown_args:
             console.print(
-                f"The following args couldn't be interpreted: {l_unknown_args}"
+                f"The following args couldn't be interpreted: {l_unknown_args}\n"
             )
-            console.print("\n")
 
         return ns_parser
 
