@@ -62,7 +62,6 @@ const config = {
         sidebarPath: require.resolve("./sidebars.js"),
       },
     ],
-    require.resolve("@cmfcmf/docusaurus-search-local"),
   ],
   presets: [
     [
@@ -78,10 +77,6 @@ const config = {
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
-        },
-        gtag: {
-          trackingID: "G-YN9SL785J6",
-          anonymizeIP: true,
         },
       }),
     ],
