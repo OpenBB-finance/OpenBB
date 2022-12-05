@@ -2,7 +2,7 @@
 title: Options
 ---
 
-Please be advised that this module is subject to improvements, the guide here may not reflect its current status.
+The Options module wraps the Terminal commands for the SDK layer, providing programmatic access and greater flexibility for processing data.
 
 ## How to Use
 
@@ -31,24 +31,21 @@ help(openbb.stocks.options)
 
 ## Examples
 
-To reduce the amount of characters in a script, try importing the module as shown below.
-
 ### Import Statements
+
+The examples in this section will assume these statements are included at the top of the file:
 
 ```python
 from openbb_terminal.sdk import openbb
 import pandas as pd
-opt = openbb.stocks.options
 ```
-
-The examples in this section will assume these statements are included at the top of the file.
 
 ### Unusual Options
 
-`opt.unu` returns a DataFrame with the current day's unusual options, those having a very high volume/open interest ratio. This function returns a Tuple containing the DataFrame and a string. Unpack it like this:
+`openbb.stocks.options.unu` returns a DataFrame with the current day's unusual options, those having a very high volume/open interest ratio. This function returns a Tuple containing the DataFrame and a string. Unpack it like this:
 
 ```python
-unu_df,unu_ts = opt.unu(limit = 500)
+unu_df,unu_ts = openbb.stocks.options.unu(limit = 500)
 unu_df = unu_df.sort_values(by = 'Vol/OI', ascending = False)
 
 unu_df
@@ -72,7 +69,7 @@ unu_df
 Get up to ten years of historical Put-Call Ratios.
 
 ```python
-opt.pcr(start_date = '2012-01-01', window = 10, symbol = 'SPY')
+openbb.stocks.options.pcr(start_date = '2012-01-01', window = 10, symbol = 'SPY')
 ```
 
 | Date                |    PCR |
@@ -93,7 +90,7 @@ opt.pcr(start_date = '2012-01-01', window = 10, symbol = 'SPY')
 The historical daily data of an individual option, from ChartExchange, includes open interest.
 
 ```python
-opt.hist_ce(symbol = 'SPY', price = '400', date = '2023-01-20', call = False)
+openbb.stocks.options.hist_ce(symbol = 'SPY', price = '400', date = '2023-01-20', call = False)
 ```
 
 |    | Date       |   Open |   High |   Low |   Close |   Change |   Volume |   Open Interest |   Change Since |
@@ -106,5 +103,3 @@ opt.hist_ce(symbol = 'SPY', price = '400', date = '2023-01-20', call = False)
 | 367 | 2021-05-20 |  38    |  38    | 38    |   38    | -0.07317 |        2 |               0 |       -0.77158 |
 | 368 | 2021-05-19 |  41.67 |  41.67 | 41    |   41    |  0.07471 |       26 |               0 |       -0.78829 |
 | 369 | 2021-05-17 |  37.43 |  38.15 | 37.43 |   38.15 | -0.0453  |        3 |               0 |       -0.77248 |
-
-Stay tuned, more to come soon!
