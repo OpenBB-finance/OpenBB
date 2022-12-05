@@ -209,7 +209,7 @@ Execute this commands:
 ```bash
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
-xhost +local
+xhost +local:
 docker compose run openbb
 ```
 
