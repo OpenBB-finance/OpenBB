@@ -333,6 +333,7 @@
       "hr": ["Glassnode"],
       "btccp": ["Blockchain"],
       "btcct": ["Blockchain"],
+      "btcblockdata": ["Blockchain"],
       "gwei": ["ETHGasStations"],
       "whales": ["WhaleAlert"],
       "lt": ["BitQuery"],
