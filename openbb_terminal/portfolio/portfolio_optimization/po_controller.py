@@ -277,9 +277,15 @@ class PortfolioOptimizationController(BaseController):
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
             if self.portfolios:
-                self.choices["show"] = {c: {} for c in list(self.portfolios.keys())}
-
-                self.choices = {**self.choices, **self.SUPPORT_CHOICES}
+                self.choices["show"]["--portfolios"] = {
+                    c: {} for c in list(self.portfolios.keys())
+                }
+                self.choices["rpf"]["--portfolios"] = {
+                    c: {} for c in list(self.portfolios.keys())
+                }
+                self.choices["plot"]["--portfolios"] = {
+                    c: {} for c in list(self.portfolios.keys())
+                }
                 self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
@@ -697,7 +703,6 @@ class PortfolioOptimizationController(BaseController):
             dest="file",
             help="Allocation file to be used",
             choices=self.allocation_file_map.keys(),
-            metavar="FILE",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--file")
@@ -850,7 +855,7 @@ class PortfolioOptimizationController(BaseController):
                     optimizer_view.additional_plots(
                         weights=weights,
                         data=stock_returns[stocks],
-                        title_opt=i,
+                        portfolio_name=i,
                         freq=ns_parser.return_frequency,
                         risk_measure=ns_parser.risk_measure.lower(),
                         risk_free_rate=ns_parser.risk_free,
@@ -888,8 +893,9 @@ class PortfolioOptimizationController(BaseController):
                         optimizer_view.additional_plots(
                             weights=weights,
                             data=stock_returns[stocks],
-                            category=filtered_categories,
-                            title_opt=category + " - " + i,
+                            category_dict=filtered_categories,
+                            category=category,
+                            portfolio_name=i,
                             freq=ns_parser.return_frequency,
                             risk_measure=ns_parser.risk_measure.lower(),
                             risk_free_rate=ns_parser.risk_free,
@@ -1159,7 +1165,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
-            type=int,
+            type=float,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
@@ -1167,6 +1173,7 @@ class PortfolioOptimizationController(BaseController):
             "--target-risk",
             dest="target_risk",
             default=self.params["target_risk"] if "target_risk" in self.params else -1,
+            type=float,
             help="Constraint on maximum level of portfolio's risk",
         )
         parser.add_argument(
@@ -1182,8 +1189,8 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-cv",
             "--covariance",
-            default=self.params["expected_return"]
-            if "expected_return" in self.params
+            default=self.params["covariance"]
+            if "covariance" in self.params
             else "hist",
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
@@ -1341,6 +1348,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
+            type=float,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
@@ -1348,6 +1356,7 @@ class PortfolioOptimizationController(BaseController):
             "--target-risk",
             dest="target_risk",
             default=self.params["target_risk"] if "target_risk" in self.params else -1,
+            type=float,
             help="Constraint on maximum level of portfolio's risk",
         )
         parser.add_argument(
@@ -1518,8 +1527,8 @@ class PortfolioOptimizationController(BaseController):
             "--risk-aversion",
             type=float,
             dest="risk_aversion",
-            default=self.params["long_allocation"]
-            if "long_allocation" in self.params
+            default=self.params["risk_aversion"]
+            if "risk_aversion" in self.params
             else 1,
             help="Risk aversion parameter",
         )
@@ -1530,6 +1539,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
+            type=float,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
@@ -1537,6 +1547,7 @@ class PortfolioOptimizationController(BaseController):
             "--target-risk",
             dest="target_risk",
             default=self.params["target_risk"] if "target_risk" in self.params else -1,
+            type=float,
             help="Constraint on maximum level of portfolio's risk",
         )
         parser.add_argument(
@@ -1713,6 +1724,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
+            type=float,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
@@ -1720,6 +1732,7 @@ class PortfolioOptimizationController(BaseController):
             "--target-risk",
             dest="target_risk",
             default=self.params["target_risk"] if "target_risk" in self.params else -1,
+            type=float,
             help="Constraint on maximum level of portfolio's risk",
         )
         parser.add_argument(
@@ -2208,8 +2221,8 @@ class PortfolioOptimizationController(BaseController):
             "--risk-aversion",
             type=float,
             dest="risk_aversion",
-            default=self.params["long_allocation"]
-            if "long_allocation" in self.params
+            default=self.params["risk_aversion"]
+            if "risk_aversion" in self.params
             else 1,
             help="Risk aversion parameter",
         )
@@ -2218,6 +2231,7 @@ class PortfolioOptimizationController(BaseController):
             "--delta",
             default=self.params["delta"] if "delta" in self.params else None,
             dest="delta",
+            type=float,
             help="Risk aversion factor of Black Litterman model",
         )
         parser.add_argument(
@@ -2550,6 +2564,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
+            type=float,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
@@ -2707,6 +2722,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
+            type=float,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
