@@ -51,7 +51,7 @@ function getInstallationTabType() {
   } else if(osName === 'Linux' || osName === 'UNIX') {
     return 'python';
   }
-  return '';
+  return 'windows';
 }
 
 function TabsComponent(props) {
