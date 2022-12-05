@@ -70,6 +70,9 @@ export default function Home(): JSX.Element {
               </p>
             </Link>
           </div>
+          <Link to="/faq" className="mt-8 text-sm text-grey-900 dark:text-white">
+            Have any questions? Check out our FAQ.
+          </Link>
         </div>
       </main>
     </Layout>

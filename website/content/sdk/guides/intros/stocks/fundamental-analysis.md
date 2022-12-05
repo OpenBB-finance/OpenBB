@@ -284,7 +284,7 @@ openbb.stocks.fa.cash(symbol = 'COST')
 | Other non-cash items                                      |   453000000 |    453000000 |    371000000 |    236000000 | 9000000      |
 | Net cash provided by operating activities                 |  7392000000 |   7392000000 |   8958000000 |   8861000000 | 6356000000   |
 | Investments in property, plant and equipment              | -3891000000 |  -3891000000 |  -3588000000 |  -2810000000 | -2998000000  |
-| Acquisitions, net                                         |           0 |            0 |            0 |  -1163000000 | <NA>         |
+| Acquisitions, net                                         |           0 |            0 |            0 |  -1163000000 | ``<NA>``         |
 | Purchases of investments                                  | -1121000000 |  -1121000000 |  -1331000000 |  -1626000000 | -1094000000  |
 | Sales/maturities of investments                           |  1145000000 |   1145000000 |   1446000000 |   1678000000 | 1231000000   |
 | Other investing activities                                |   -48000000 |    -48000000 |    -62000000 |     30000000 | -4000000     |
@@ -322,7 +322,7 @@ openbb.stocks.fa.income('COST')
 | Other non-cash items                                      |   453000000 |    453000000 |    371000000 |    236000000 | 9000000      |
 | Net cash provided by operating activities                 |  7392000000 |   7392000000 |   8958000000 |   8861000000 | 6356000000   |
 | Investments in property, plant and equipment              | -3891000000 |  -3891000000 |  -3588000000 |  -2810000000 | -2998000000  |
-| Acquisitions, net                                         |           0 |            0 |            0 |  -1163000000 | <NA>         |
+| Acquisitions, net                                         |           0 |            0 |            0 |  -1163000000 | `<NA>`         |
 | Purchases of investments                                  | -1121000000 |  -1121000000 |  -1331000000 |  -1626000000 | -1094000000  |
 | Sales/maturities of investments                           |  1145000000 |   1145000000 |   1446000000 |   1678000000 | 1231000000   |
 | Other investing activities                                |   -48000000 |    -48000000 |    -62000000 |     30000000 | -4000000     |
