@@ -171,7 +171,7 @@ docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserD
 
 You can replace `latest` with the version you want to pull and run.
 
-Note for windows:
+Note for Windows:
 
 ```text
     Ignore this message if you are using Powershell or a more evolved interpreters.
@@ -181,7 +181,7 @@ Note for windows:
 
 ## 3. Configuring your X-server to show plots
 
-In order to display plots in the docker container, we need to configure the XServer on the host machine. Without this configuration the interactive charts will not be displayed.
+In order to display plots in the Docker Container, we need to configure the XServer on the host machine. Without this configuration the interactive charts will not be displayed.
 
 ### On Windows
 
@@ -226,7 +226,7 @@ IP=$(ifconfig | grep inet | grep -v -e "127.0.0.1" | awk '$1=="inet" {print $2}'
 xhost + $IP
 ```
 
-Now we can run the docker container, adding the display to the environment:
+Now we can run the Docker Container, adding the display to the environment:
 
 ```bash
 docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env-file=path/to/setenv --env DISPLAY=$IP:0 ghcr.io/openbb-finance/openbbterminal/openbb:latest
@@ -248,9 +248,9 @@ docker run -it --rm --name openbb --env-file=./.env -e DISPLAY=$DISPLAY -v /tmp/
 xhost -local:
 ```
 
-If you're using remote docker host, you can connect with "ssh -X <FQDN/IP>".
+If you're using a remote Docker host, you can connect with "ssh -X <FQDN/IP>".
 
-Then run the previous docker command.
+Then run the previous Docker command.
 
 </TabItem>
   <TabItem value="python" label="Python">
@@ -264,11 +264,11 @@ Refer to the [SDK installation instructions](https://docs.openbb.co/sdk/quicksta
 
 These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
 
-To install via Python, a virtual environment must be created. This isolates the packages installed from the rest of the system. It is our recommendation that you utilize a Conda environment because there are optional features, such as forecast, that utilize libraries specifically sourced from conda-forge. Due to this, if you do not use a Conda environment, you will not be able to use some of these features. As such, the installation steps will be written under the assumption that you are using Conda.
+We recommend creating a virtual environment when installing via Python. This isolates the packages installed from the rest of the system. It is our recommendation that you utilize a Conda environment because there are optional features, such as forecast, that utilize libraries specifically sourced from conda-forge. Due to this, if you do not use a Conda environment, you will not be able to use some of these features. As such, the installation steps will be written under the assumption that you are using Conda.
 
 #### 1. [Install Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 
-Miniconda is a Python environment and package manager. To ensure compatibility across all dependencies, Mac M1/M2 systems should download and install the x86/64 version of Miniconda3.
+Miniconda is a Python environment and package manager. To ensure compatibility across all dependencies, Mac M1/M2 systems should download and install the x86/64 version of Miniconda3. An alternative is Anaconda; however, we currently recommend using Miniconda to create and manage the virtual environment.
 
 - Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) to find the download for your operating system or use the links below:
   - If you are using MacOS [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.pkg) 
