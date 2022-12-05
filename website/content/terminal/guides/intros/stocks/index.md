@@ -78,6 +78,22 @@ Attaching the source argument to a command enables users to select their preferr
 news --source NewsApi
 ```
 
+### Sub-Menus
+
+Access the sub-menus, like `Fundamental Analysis` and `Technical Analysis`, by entering the abbreviation on the left-side of the screen, beside `>`, and pressing return. Alternatively, navigation can take the form of absolute paths. This makes it possible to quickly jump between all menus, from anywhere.
+
+[Fundamental Analysis](https://docs.openbb.co/terminal/guides/intros/stocks/fa)
+
+```console
+/stocks/fa
+```
+
+[Technical Analysis](https://docs.openbb.co/terminal/guides/intros/common/ta)
+
+```console
+/stocks/ta
+```
+
 Let's get started using the Stocks menu with some examples.
 
 ## Examples
@@ -468,5 +484,3 @@ The exported file will contain all results, despite not being shown on screen. T
 ```console
 search -s technology --country india -e india --limit 1000
 ```
-
-Refer to the introductory guides for each sub-menu for help getting started with the commands.
