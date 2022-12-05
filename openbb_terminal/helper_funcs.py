@@ -67,6 +67,8 @@ MENU_RESET = 2
 command_location = ""
 
 
+# pylint: disable=R0912
+
 # pylint: disable=global-statement
 def set_command_location(cmd_loc: str):
     """Set command location.
