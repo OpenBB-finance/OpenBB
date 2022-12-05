@@ -143,7 +143,8 @@ def get_sean_seah_warnings(
     symbol : str
         Ticker to look at
     debug : bool, optional
-        [description], by default False
+        Whether or not to return debug messages.
+        Defaults to False.
 
     Returns
     -------
@@ -154,6 +155,7 @@ def get_sean_seah_warnings(
     List[str]
         List of debug messages
     """
+
     # From INCOME STATEMENT, get: 'EPS (Basic)', 'Net Income', 'Interest Expense', 'EBITDA'
     url_financials = (
         f"https://www.marketwatch.com/investing/stock/{symbol}/financials/income"
