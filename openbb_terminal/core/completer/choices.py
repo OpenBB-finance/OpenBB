@@ -188,10 +188,6 @@ def __patch_controller_functions(controller):
     List[Callable]: List of mocked functions.
     """
 
-    bound_mock_parse_simple_args = MethodType(
-        __mock_parse_simple_args,
-        controller,
-    )
     bound_mock_parse_known_args_and_warn = MethodType(
         __mock_parse_known_args_and_warn,
         controller,
@@ -206,7 +202,7 @@ def __patch_controller_functions(controller):
         patch.object(
             target=controller,
             attribute="parse_simple_args",
-            side_effect=bound_mock_parse_simple_args,
+            side_effect=__mock_parse_simple_args,
             return_value=None,
         ),
         patch.object(
