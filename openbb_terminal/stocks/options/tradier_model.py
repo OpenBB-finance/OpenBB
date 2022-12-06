@@ -146,7 +146,7 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
 
     for expiry in expirations:
         options_dfs.append(get_option_chains(symbol, expiry))
-    
+
     options_df = pd.concat(options_dfs)
 
     options_df.set_index(keys="symbol", inplace=True)
@@ -212,9 +212,9 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
 
     options = pd.DataFrame(options_df, columns=options_columns)
     options = options.reset_index()
-    options.drop(labels = ['Ticker'], inplace = True, axis = 1)
-    options.rename(columns = {'Expiration': 'expiration'}, inplace = True)
-        
+    options.drop(labels=["Ticker"], inplace=True, axis=1)
+    options.rename(columns={"Expiration": "expiration"}, inplace=True)
+
     return options
 
 
