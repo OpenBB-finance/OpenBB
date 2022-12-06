@@ -30,6 +30,7 @@ from openbb_terminal.rich_config import (
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.forex.forex_helper import parse_forex_symbol
+from openbb_terminal.forex import forex_exceptions
 
 # pylint: disable=R1710,import-outside-toplevel
 
@@ -164,8 +165,7 @@ class ForexController(BaseController):
         if ns_parser:
             if ns_parser.ticker not in FX_TICKERS:
                 logger.error("Invalid forex pair")
-                console.print(f"{ns_parser.ticker} not a valid forex pair.\n")
-                return
+                raise forex_exceptions.InvalidCurrencyPairError(ns_parser.ticker)
 
             self.fx_pair = ns_parser.ticker
             self.from_symbol = ns_parser.ticker[:3]
@@ -183,11 +183,7 @@ class ForexController(BaseController):
                 )
 
                 if self.data.empty:
-                    console.print(
-                        "\n[red]No historical data loaded.\n\n"
-                        f"Make sure you have appropriate access for the '{ns_parser.source}' data source "
-                        f"and that '{ns_parser.source}' supports the requested range.[/red]\n"
-                    )
+                    raise forex_exceptions.DataNotLoadedError(ns_parser.source)
                 else:
                     self.data.index.name = "date"
 
@@ -202,8 +198,7 @@ class ForexController(BaseController):
                 if self.source != "YahooFinance":
                     console.print(f"{self.from_symbol}-{self.to_symbol} loaded.\n")
             else:
-
-                console.print("\n[red]Make sure to load.[/red]\n")
+                raise forex_exceptions.CurrencyPairNotLoadedError
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
@@ -284,8 +279,7 @@ class ForexController(BaseController):
 
         if ns_parser:
             if not self.to_symbol:
-                console.print("No ticker loaded. First use 'load <ticker>'")
-                return
+                raise forex_exceptions.CurrencyPairNotLoadedError
 
             data = stocks_helper.process_candle(self.data)
             if ns_parser.raw:
@@ -308,17 +302,12 @@ class ForexController(BaseController):
                     mov_list = (num for num in ns_parser.mov_avg.split(","))
 
                     for num in mov_list:
-                        try:
-                            num = int(num)
+                        num = int(num)
 
-                            if num <= 1:
-                                raise ValueError
+                        if num <= 1:
+                            raise forex_exceptions.InvalidMovingAverageError(num)
 
-                            mov_avgs.append(num)
-                        except ValueError:
-                            console.print(
-                                f"[red]{num} is not a valid moving average, must be an integer greater than 1."
-                            )
+                        mov_avgs.append(num)
 
                 forex_helper.display_candle(
                     to_symbol=self.to_symbol,
@@ -366,15 +355,13 @@ class ForexController(BaseController):
                     )
                     console.print(f"Last value     : {self.data['Adj Close'][-1]}\n")
                 else:
-                    logger.error("No forex pair loaded.")
-                    console.print("[red]Make sure a forex pair is loaded.[/red]\n")
+                    raise forex_exceptions.CurrencyPairNotLoadedError
 
             elif ns_parser.source == "AlphaVantage":
                 if self.to_symbol and self.from_symbol:
                     av_view.display_quote(self.to_symbol, self.from_symbol)
                 else:
-                    logger.error("No forex pair loaded.")
-                    console.print("[red]Make sure a forex pair is loaded.[/red]\n")
+                    raise forex_exceptions.CurrencyPairNotLoadedError
 
     @log_start_end(log=logger)
     def call_fwd(self, other_args: List[str]):
@@ -394,8 +381,7 @@ class ForexController(BaseController):
                     self.to_symbol, self.from_symbol, ns_parser.export
                 )
             else:
-                logger.error("Make sure ba currency pair is loaded.")
-                console.print("[red]Make sure a currency pair is loaded.[/red]\n")
+                raise forex_exceptions.CurrencyPairNotLoadedError
 
     # MENUS
     @log_start_end(log=logger)
@@ -409,6 +395,7 @@ class ForexController(BaseController):
     @log_start_end(log=logger)
     def call_ta(self, _):
         """Process ta command"""
+
         from openbb_terminal.forex.technical_analysis.ta_controller import (
             TechnicalAnalysisController,
         )
@@ -426,16 +413,14 @@ class ForexController(BaseController):
             )
 
         else:
-            console.print("No currency pair data is loaded. Use 'load' to load data.\n")
+            raise forex_exceptions.CurrencyPairNotLoadedError
 
     @log_start_end(log=logger)
     def call_qa(self, _):
         """Process qa command"""
         if self.from_symbol and self.to_symbol:
             if self.data.empty:
-                console.print(
-                    "No currency pair data is loaded. Use 'load' to load data.\n"
-                )
+                raise forex_exceptions.CurrencyPairNotLoadedError
             else:
                 from openbb_terminal.forex.quantitative_analysis import qa_controller
 
@@ -447,7 +432,7 @@ class ForexController(BaseController):
                     self.queue,
                 )
         else:
-            console.print("No pair selected.\n")
+            raise forex_exceptions.CurrencyPairNotLoadedError
 
     @log_start_end(log=logger)
     def call_forecast(self, _):

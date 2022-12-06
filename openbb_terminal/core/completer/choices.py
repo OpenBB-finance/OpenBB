@@ -218,12 +218,13 @@ def __patch_controller_functions(controller):
     for patcher in patcher_list:
         patched_function_list.append(patcher.start())
 
-    yield patched_function_list
-
-    if environ.get("DEBUG_MODE", "false") != "true":
-        rich.stop()
-    for patcher in patcher_list:
-        patcher.stop()
+    try:
+        yield patched_function_list
+    finally:
+        if environ.get("DEBUG_MODE", "false") != "true":
+            rich.stop()
+        for patcher in patcher_list:
+            patcher.stop()
 
 
 def _get_argument_parser(

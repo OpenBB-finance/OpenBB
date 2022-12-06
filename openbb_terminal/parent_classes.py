@@ -49,6 +49,7 @@ from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.core.completer.choices import build_controller_choice_map
+from openbb_terminal.core.exceptions.exceptions import handle_exception
 
 logger = logging.getLogger(__name__)
 
@@ -361,11 +362,14 @@ class BaseController(metaclass=ABCMeta):
             set_command_location(f"{self.PATH}{known_args.cmd}")
             self.log_cmd_and_queue(known_args.cmd, ";".join(other_args), an_input)
 
-            getattr(
-                self,
-                "call_" + known_args.cmd,
-                lambda _: "Command not recognized!",
-            )(other_args)
+            try:
+                getattr(
+                    self,
+                    "call_" + known_args.cmd,
+                    lambda _: "Command not recognized!",
+                )(other_args)
+            except Exception as e:
+                handle_exception(e, logger)
 
         self.log_queue()
 
