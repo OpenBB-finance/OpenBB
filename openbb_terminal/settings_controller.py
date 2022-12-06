@@ -21,7 +21,6 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     get_flair,
-    parse_simple_args,
     get_user_timezone_or_invalid,
     replace_user_timezone,
     set_user_data_folder,
@@ -175,7 +174,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             try:
 
@@ -224,7 +223,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.value:
             set_key(obbff.USER_ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
             cfg_plot.PLOT_DPI = ns_parser.value
@@ -248,7 +247,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(obbff.USER_ENV_FILE, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
             cfg_plot.PLOT_HEIGHT = ns_parser.value
@@ -272,7 +271,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(obbff.USER_ENV_FILE, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
             cfg_plot.PLOT_WIDTH = ns_parser.value
@@ -295,7 +294,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(
                 obbff.USER_ENV_FILE,
@@ -322,7 +321,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(
                 obbff.USER_ENV_FILE,
@@ -349,7 +348,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(obbff.USER_ENV_FILE, "OPENBB_MONITOR", str(ns_parser.value))
             cfg_plot.MONITOR = ns_parser.value
@@ -372,7 +371,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(obbff.USER_ENV_FILE, "OPENBB_BACKEND", str(ns_parser.value))
             if ns_parser.value == "None":
@@ -400,7 +399,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             if ns_parser.value:
                 set_key(
@@ -433,7 +432,7 @@ class SettingsController(BaseController):
         if other_args and "-t" not in other_args[0]:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             if ns_parser.timezone:
                 replace_user_timezone(ns_parser.timezone.replace("_", "/", 1))
@@ -457,7 +456,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             if not ns_parser.emoji:
                 ns_parser.emoji = ""
@@ -484,7 +483,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--folder")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
             if other_args or self.queue:
