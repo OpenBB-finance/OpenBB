@@ -637,7 +637,8 @@ class BehaviouralAnalysisController(StockBaseController):
             "--words",
             help="Select multiple sentences/words separated by commas. E.g. COVID,WW3,NFT",
             dest="words",
-            type=lambda s: [str(item) for item in s.split(",")],
+            nargs="+",
+            type=str,
             default=None,
         )
         if other_args and "-" not in other_args[0][0]:
@@ -648,6 +649,7 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 if ns_parser.words:
+                    words = " ".join(ns_parser.words).split(",")
                     df_stock = yf.download(
                         self.ticker,
                         start=ns_parser.start.strftime("%Y-%m-%d"),
@@ -658,7 +660,7 @@ class BehaviouralAnalysisController(StockBaseController):
                         google_view.display_correlation_interest(
                             symbol=self.ticker,
                             data=df_stock,
-                            words=ns_parser.words,
+                            words=words,
                             export=ns_parser.export,
                         )
                     else:

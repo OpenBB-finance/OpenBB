@@ -966,47 +966,6 @@ def patch_pandas_text_adjustment():
     pandas.io.formats.format.TextAdjustment.adjoin = text_adjustment_adjoin
 
 
-def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
-    """Parse list of arguments into the supplied parser.
-
-    Parameters
-    ----------
-    parser: argparse.ArgumentParser
-        Parser with predefined arguments
-    other_args: List[str]
-        List of arguments to parse
-
-    Returns
-    -------
-    ns_parser:
-        Namespace with parsed arguments
-    """
-    parser.add_argument(
-        "-h", "--help", action="store_true", help="show this help message"
-    )
-
-    if obbff.USE_CLEAR_AFTER_CMD:
-        system_clear()
-
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
-    except SystemExit:
-        # In case the command has required argument that isn't specified
-        console.print("\n")
-        return None
-
-    if ns_parser.help:
-        txt_help = parser.format_help()
-        console.print(f"[help]{txt_help}[/help]")
-        return None
-
-    if l_unknown_args:
-        console.print(f"The following args couldn't be interpreted: {l_unknown_args}")
-        console.print("\n")
-
-    return ns_parser
-
-
 def lambda_financials_colored_values(val: str) -> str:
     """Add a color to a value."""
     if val == "N/A" or str(val) == "nan":
