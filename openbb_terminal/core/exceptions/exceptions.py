@@ -2,10 +2,10 @@ from typing import List
 import os
 from openbb_terminal.rich_config import console
 
-IGNORE_ERROR: List[str] = ["OpenBBUserError"]
+IGNORE: List[str] = ["OpenBBUserError"]
 
 
-def handle_exception(exception=None) -> None:
+def handle_exception(exception: Exception) -> None:
     """Handle exceptions
 
     Parameters
@@ -18,8 +18,7 @@ def handle_exception(exception=None) -> None:
     None
     """
 
-    ignore_exception_list = IGNORE_ERROR
-
+    ignore_exception_list = IGNORE
     exception_name = exception.__class__.__name__
 
     if exception_name in ignore_exception_list:
@@ -42,7 +41,7 @@ class OpenBBBaseError(Exception):
     """Base class for other exceptions"""
 
     def __init__(self, message=None, **kwargs):
-        style = kwargs.get("style", "red")
+        style = kwargs.get("style", "info")
 
         if message:
             self.message = message
@@ -50,4 +49,4 @@ class OpenBBBaseError(Exception):
 
 
 class OpenBBUserError(OpenBBBaseError):
-    """Raised for users"""
+    """Raised for user usage errors"""
