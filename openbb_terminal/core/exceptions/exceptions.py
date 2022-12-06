@@ -25,11 +25,13 @@ def handle_exception(exception: Exception) -> None:
         pass
     elif exception_name == "RequestException":
         console.print(
-            "[red]There was an error connecting to the API. Please try again later.\n[/red]"
+            "There was an error connecting to the API. Please try again later.", style="red"
         )
     elif exception_name == "SSLError":
         console.print(
-            "[red]There was an error connecting to the API. Please check whether your wifi is blocking this site.\n[/red]"
+            "There was an error connecting to the API. "
+            + "Please check whether your wifi is blocking this site.",
+            style="red",
         )
     elif os.environ.get("DEBUG_MODE") == "true":
         raise exception
