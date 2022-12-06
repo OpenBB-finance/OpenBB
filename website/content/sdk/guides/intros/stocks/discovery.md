@@ -25,27 +25,27 @@ A brief description below highlights the main Functions and Modules available in
 
 | Path                       |    Type    |                                  Description |
 | :------------------------- | :--------: | -------------------------------------------: |
-| openbb.disc.pipo           |  Function  |                               Past IPO Dates |
-| openbb.disc.active         |  Function  |            Stocks with Highest Trade Volumes |
-| openbb.disc.gainers        |  Function  |                           Latest Top Gainers | 
-| openbb.disc.asc            |  Function  |    Small Caps with Earnings Growth Above 25% |
-| openbb.disc.lowfloat       |  Function  |           Stocks with Under 10M Shares Float |
-| openbb.disc.fipo           |  Function  |                             Future IPO Dates |
-| openbb.disc.upcoming       |  Function  |              Upcoming Earnings Release Dates |
-| openbb.disc.trending       |  Function  |                                Trending News |
-| openbb.disc.ulc            |  Function  |     Potentially Undervalued Large Cap Stocks |
-| openbb.disc.arkord         |  Function  |      Orders of ARK Investment Management LLC |
-| openbb.disc.hotpenny       |  Function  |                             Hot Penny Stocks |
-| openbb.disc.gtech          |  Function  |    Tech Stocks with Earnings Growth Over 25% |
-| openbb.disc.losers         |  Function  |                              Show Top Losers |
-| openbb.disc.ugs            |  Function  |   Undervalueds with Earnings Growth Over 25% |
-| openbb.disc.rtat           |  Function  |                  Top 10 Retail Traded Stocks |
-| openbb.disc.dividends      |  Function  |                            Screener Overview |
+| openbb.stocks.disc.pipo           |  Function  |                               Past IPO Dates |
+| openbb.stocks.disc.active         |  Function  |            Stocks with Highest Trade Volumes |
+| openbb.stocks.disc.gainers        |  Function  |                           Latest Top Gainers |
+| openbb.stocks.disc.asc            |  Function  |    Small Caps with Earnings Growth Above 25% |
+| openbb.stocks.disc.lowfloat       |  Function  |           Stocks with Under 10M Shares Float |
+| openbb.stocks.disc.fipo           |  Function  |                             Future IPO Dates |
+| openbb.stocks.disc.upcoming       |  Function  |              Upcoming Earnings Release Dates |
+| openbb.stocks.disc.trending       |  Function  |                                Trending News |
+| openbb.stocks.disc.ulc            |  Function  |     Potentially Undervalued Large Cap Stocks |
+| openbb.stocks.disc.arkord         |  Function  |      Orders of ARK Investment Management LLC |
+| openbb.stocks.disc.hotpenny       |  Function  |                             Hot Penny Stocks |
+| openbb.stocks.disc.gtech          |  Function  |    Tech Stocks with Earnings Growth Over 25% |
+| openbb.stocks.disc.losers         |  Function  |                              Show Top Losers |
+| openbb.stocks.disc.ugs            |  Function  |   Undervalueds with Earnings Growth Over 25% |
+| openbb.stocks.disc.rtat           |  Function  |                  Top 10 Retail Traded Stocks |
+| openbb.stocks.disc.dividends      |  Function  |                            Screener Overview |
 
 Alteratively you can print the contents of the Disc SDK with:
 
 ```python
-help(openbb.disc)
+help(openbb.stocks.disc)
 ```
 
 ## Examples

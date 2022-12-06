@@ -5,6 +5,8 @@ from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
 from openbb_terminal.core.library.operation import Operation
 
+from openbb_terminal import feature_flags as obbff
+
 # pylint: disable=import-outside-toplevel
 
 
@@ -68,6 +70,8 @@ class MetadataBuilder:
 
 
 class Breadcrumb:
+    __version__ = obbff.VERSION
+
     def __init__(
         self,
         metadata: Optional[Metadata] = None,
@@ -100,7 +104,6 @@ class Breadcrumb:
         self._trail = trail
 
         self.__doc__ = metadata.docstring
-
         if trail == "":
             BreadcrumbLogger()
 

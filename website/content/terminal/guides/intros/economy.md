@@ -1,7 +1,7 @@
 ---
 title: Economy
 keywords: ['economy', 'macro', 'index', 'treasury', 'fred', 'market']
-excerpt: "The Introduction to Economy explains how to use the 
+excerpt: "The Introduction to Economy explains how to use the
 menu and provides a brief description of its sub-menus"
 ---
 
@@ -175,7 +175,7 @@ This returns the following graph:
 
 ![Unemployment Rates](https://user-images.githubusercontent.com/46355364/176680030-b7936018-16ae-4dce-b652-5718977e9d57.png)
 
-The FRED database similarly has a lot of macroeconomic data, do note that you need an API key to do this which is explained in more detail in the <a href="/terminal/quickstart/keys" target="_blank" rel="noreferrer noopener">Accessing other sources of data via API keys</a> section.
+The FRED database similarly has a lot of macroeconomic data, do note that you need an API key to do this which is explained in more detail in the <a href="/terminal/guides/advanced/changing-sources" target="_blank" rel="noreferrer noopener">Accessing other sources of data via API keys</a> section.
 
 You have the ability to query the entire FRED database with the `-q` argument. For example, down below we look for datasets that are centered around inflation. The `-l` argument is set to show a maximum of 10 datasets:
 

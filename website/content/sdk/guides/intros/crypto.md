@@ -11,7 +11,7 @@ The list below are all the SDK functions at the `openbb.crypto` level:
 
 | Path                  |    Type    |           Description |
 | :-------------------- | :--------: | --------------------: |
-| openbb.crypto.candles |  Function  |          OHLC+V chart |
+| openbb.crypto.candle  |  Function  |          OHLC+V chart |
 | openbb.crypto.dd      | Sub-Module |         Due Diligence |
 | openbb.crypto.defi    | Sub-Module |                  DeFi |
 | openbb.crypto.disc    | Sub-Module |             Discovery |
@@ -244,10 +244,10 @@ eth_df.tail(3)
 A loaded DataFrame is used as the input for the `candles` function:
 
 ```python
-openbb.crypto.candles(eth_df)
+openbb.crypto.candle(eth_df)
 ```
 
-![openbb.crypto.candles](https://user-images.githubusercontent.com/85772166/202791587-d69c7568-69ff-46b3-b41f-146ed8796f7e.png "openbb.crypto.candles")
+![openbb.crypto.candle](https://user-images.githubusercontent.com/85772166/202791587-d69c7568-69ff-46b3-b41f-146ed8796f7e.png "openbb.crypto.candle")
 
 Notice that the chart has no title. It can be added using the `title` argument.
 
@@ -255,14 +255,14 @@ Notice that the chart has no title. It can be added using the `title` argument.
 openbb.crypto.candles(eth_df, title = 'ETH/USDT (Monthly)')
 ```
 
-![openbb.crypto.candles](https://user-images.githubusercontent.com/85772166/202791726-b4a775d9-5a00-4d92-8fbc-bd26aeff62d2.png "openbb.crypto.candles")
+![openbb.crypto.candle](https://user-images.githubusercontent.com/85772166/202791726-b4a775d9-5a00-4d92-8fbc-bd26aeff62d2.png "openbb.crypto.candle")
 
 ### Find
 
 Find similar coins by name, symbol, or ID.
 
 ```python
-results = openbb.crypto.search(
+results = openbb.crypto.find(
     query = 'Genesis',
     source = 'CoinPaprika',
     key = 'name',

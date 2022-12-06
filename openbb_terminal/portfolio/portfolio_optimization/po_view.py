@@ -28,6 +28,7 @@ from openbb_terminal.portfolio.portfolio_optimization.statics import (
     RISK_CHOICES,
     TIME_FACTOR,
 )
+from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import get_kwarg
 from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.rich_config import console
 
@@ -121,11 +122,11 @@ def display_ef(portfolio_engine: PoEngine = None, **kwargs):
     >>> openbb.portfolio.po.ef_chart(portfolio_engine=p)
     """
 
-    n_portfolios = kwargs.get("n_portfolios", 100)
-    freq = kwargs.get("freq", "D")
-    risk_measure = kwargs.get("risk_measure", "MV")
-    risk_free_rate = kwargs.get("risk_free_rate", 0.0)
-    alpha = kwargs.get("alpha", 0.05)
+    n_portfolios = get_kwarg("n_portfolios", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    risk_measure = get_kwarg("risk_measure", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    alpha = get_kwarg("alpha", kwargs)
 
     # Pop chart args
     tangency = kwargs.pop("tangency", False)
@@ -280,7 +281,7 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
     >>> p = openbb.portfolio.po.load(symbols_categories=d)
     >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
     >>> p.get_available_categories()
-    ['SECTOR']
+    ['SECTOR', 'CURRENCY']
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="pie")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="dd")
@@ -295,7 +296,6 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
      'SECTOR',
      'INDUSTRY',
      'COUNTRY',
-     'CURRENT_INVESTED_AMOUNT',
      'CURRENCY']
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type="pie")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
@@ -403,6 +403,13 @@ def display_heat(**kwargs):
     title = kwargs.get("title", "")
     external_axes = kwargs.get("external_axes", None)
 
+    if len(weights) == 1:
+        single_key = list(weights.keys())[0].upper()
+        console.print(
+            f"[yellow]Heatmap needs at least two values for '{category}', only found '{single_key}'.[/yellow]"
+        )
+        return
+
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
@@ -479,15 +486,16 @@ def display_rc(**kwargs):
     weights = kwargs.get("weights", None)
     data = kwargs.get("data", None)
     colors = kwargs.get("colors", None)
-    risk_measure = kwargs.get("risk_measure", "MV")
-    risk_free_rate = kwargs.get("risk_free_rate", 0.0)
     title = kwargs.get("title", "")
-    alpha = kwargs.get("alpha", 0.05)
-    a_sim = kwargs.get("a_sim", 100.0)
-    beta = kwargs.get("beta", 0.0)
-    b_sim = kwargs.get("b_sim", 0.0)
-    freq = kwargs.get("freq", "D")
     external_axes = kwargs.get("external_axes", None)
+
+    risk_measure = get_kwarg("risk_measure", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    alpha = get_kwarg("alpha", kwargs)
+    a_sim = get_kwarg("a_sim", kwargs)
+    beta = get_kwarg("beta", kwargs)
+    b_sim = get_kwarg("b_sim", kwargs)
+    freq = get_kwarg("freq", kwargs)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -530,8 +538,9 @@ def display_hist(**kwargs):
     data = kwargs.get("data", None)
     colors = kwargs.get("colors", None)
     title = kwargs.get("title", "")
-    alpha = kwargs.get("alpha", 0.05)
     external_axes = kwargs.get("external_axes", None)
+
+    alpha = kwargs.get("alpha", 0.05)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -568,8 +577,9 @@ def display_dd(**kwargs):
     data = kwargs.get("data", None)
     colors = kwargs.get("colors", None)
     title = kwargs.get("title", "")
-    alpha = kwargs.get("alpha", 0.05)
     external_axes = kwargs.get("external_axes", None)
+
+    alpha = get_kwarg("alpha", kwargs)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

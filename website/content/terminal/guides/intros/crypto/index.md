@@ -4,9 +4,9 @@ keywords: ["crypto", "web3", "nft", "blockchain", "cryptocurrency"]
 excerpt: "The Introduction to Cryptocurrency explains how to use the Cryptocurrency and provides a brief description of its sub-menus"
 ---
 
-The Cryptocurrency menu allows you to discover trending cryptocurrency (<a href="/terminal/reference/cryptocurrency/disc/" target="_blank" rel="noreferrer noopener">disc</a>). Additionally, you can also perform research of a specific coin (<a href="/terminal/reference/cryptocurrency/dd" target="_blank" rel="noreferrer noopener">dd</a>),
-NFT (<a href="/terminal/reference/cryptocurrency/nft" target="_blank" rel="noreferrer noopener">nft</a>) or most lucrative Defi project
-(<a href="/terminal/reference/cryptocurrency/defi" target="_blank" rel="noreferrer noopener">defi</a>). It does so by handing you tools to (among other things) perform technical analysis (<a href="/terminal/guides/intros/common/ta/" target="_blank" rel="noreferrer noopener">ta</a>), quantitative analysis (<a href="/terminal/guides/intros/common/qa" target="_blank" rel="noreferrer noopener">qa</a>), and give you access to onchain information (<a href="/terminal/reference/cryptocurrency/onchain/" target="_blank" rel="noreferrer noopener">onchain</a>).
+The Cryptocurrency menu allows you to discover trending cryptocurrency (<a href="/terminal/guides/intros/crypto/disc/" target="_blank" rel="noreferrer noopener">disc</a>). Additionally, you can also perform research of a specific coin (<a href="/terminal/guides/intros/crypto/dd" target="_blank" rel="noreferrer noopener">dd</a>),
+NFT (<a href="/terminal/guides/intros/crypto/nft" target="_blank" rel="noreferrer noopener">nft</a>) or most lucrative Defi project
+(<a href="/terminal/guides/intros/crypto/defi" target="_blank" rel="noreferrer noopener">defi</a>). It does so by handing you tools to (among other things) perform technical analysis (<a href="/terminal/guides/intros/common/ta/" target="_blank" rel="noreferrer noopener">ta</a>), quantitative analysis (<a href="/terminal/guides/intros/common/qa" target="_blank" rel="noreferrer noopener">qa</a>), and give you access to onchain information (<a href="/terminal/guides/intros/crypto/onchain/" target="_blank" rel="noreferrer noopener">onchain</a>).
 
 ### How to use
 
@@ -46,7 +46,6 @@ The Cryptocurrency menu has an extensive list of available sub-menus ranging fro
 - [Introduction to Cryptocurrency Overview](/terminal/guides/intros/crypto/ov/): gives the overview of the cryptocurrency market, including global Defi market, stablecoins, exchanges as well as latest news.
 - [Introduction to Cryptocurrency Onchain](/terminal/guides/intros/crypto/onchain/): provides information on different blockchains, whales transaction and traded volumes on certain crypto pair. You can also specify a Ethereum address and look up past transactions and balance history.
 - [Introduction to Cryptocurrency Decentralized Finance (DeFi)](/terminal/guides/intros/crypto/defi/): explore the decentralized finance market through a variety of indicators and data, from lending interests, staking ratio, Uniswap pools to top Defi dApps.
-- [Introduction to Cryptocurrency Tools](/terminal/guides/intros/crypto/tools/): gives you the tool to calculate crypto metrics, such as impermanent loss and converting APR to APY.
 - [Introduction to Non Fungible Tokens (NFTs)](/terminal/guides/intros/crypto/nft/): Discover latest NFT drops and OpenSea's NFT Collection statistics.
 - [Introduction to Cryptocurrency Due Diligence](/terminal/guides/intros/crypto/dd/): performs due diligence on a chosen coin based on, among other things, tokenomics, roadmaps, news, and community.
 - [Introduction to Technical Analysis](/terminal/guides/intros/common/ta/): analyzes the chosen coin's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
