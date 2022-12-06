@@ -53,6 +53,12 @@ COPY --chown=python:python openbb_terminal openbb_terminal
 RUN mkdir -p website/content/sdk/quickstart
 COPY --chown=python:python ./website/content/sdk/quickstart/installation.md ./website/content/sdk/quickstart
 
+RUN mkdir OpenBBUserData
+RUN chown python:python OpenBBUserData
+
+RUN mkdir .openbb_terminal
+RUN chown python:python .openbb_terminal
+
 # SETUP OPENBB IMAGE
 FROM repository as dependencies
 
