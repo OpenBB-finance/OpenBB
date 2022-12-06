@@ -38,15 +38,14 @@ def handle_exception(exception: Exception) -> None:
 
 
 class OpenBBBaseError(Exception):
-    """Base class for other exceptions"""
-
-    def __init__(self, message=None, **kwargs):
-        style = kwargs.get("style", "info")
-
-        if message:
-            self.message = message
-            console.print(self.message, style=style)
+    """Base class for other OpenBB exceptions"""
 
 
 class OpenBBUserError(OpenBBBaseError):
     """Raised for user usage errors"""
+
+    def __init__(self, message=None):
+
+        if message:
+            self.message = message
+            console.print(self.message, style="info")
