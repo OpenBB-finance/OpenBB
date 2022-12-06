@@ -1,0 +1,42 @@
+[
+    {
+        "question": "What is the capital of France?",
+        "answer": "Paris",
+        "categories": [
+            "Geography",
+            "Europe"
+        ]
+    },
+    {
+        "question": "What is the capital of Germany?",
+        "answer": "Berlin",
+        "categories": [
+            "Geography",
+            "Europe"
+        ]
+    },
+    {
+        "question": "What is the capital of Spain?",
+        "answer": "Madrid",
+        "categories": [
+            "Geography",
+            "Europe"
+        ]
+    },
+    {
+        "question": "What is the capital of Italy?",
+        "answer": "Rome",
+        "categories": [
+            "Geography",
+            "Europe"
+        ]
+    },
+    {
+        "question": "What is the capital of the United Kingdom?",
+        "answer": "London",
+        "categories": [
+            "Geography",
+            "Europe"
+        ]
+    }
+]

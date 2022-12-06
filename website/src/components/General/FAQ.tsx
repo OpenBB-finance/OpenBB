@@ -13,7 +13,7 @@ export default function FAQ({ items }: { items: AccordionItem[] }) {
       defaultValue={[selectedQuestion]}
       className="space-y-12 mt-12 text-sm"
     >
-      {items.map(({ header, content }, i) => (
+      {items.map(({ question, answer }, i) => (
         <AccordionPrimitive.Item
           id={`faq-${i + 1}`}
           key={`header-${i}`}
@@ -39,7 +39,7 @@ export default function FAQ({ items }: { items: AccordionItem[] }) {
                 className="text-sm"
                 style={{ fontFamily: "Fira Code, sans-serif", fontWeight: 500 }}
               >
-                {header}
+                {question}
               </span>
               <ChevronRightIcon
                 className={clsx(
@@ -50,7 +50,7 @@ export default function FAQ({ items }: { items: AccordionItem[] }) {
             </AccordionPrimitive.Trigger>
           </AccordionPrimitive.Header>
           <AccordionPrimitive.Content asChild>
-            <div className="pt-r1 w-full text-left rounded-b-lg p-6 pt-0 dark:text-grey-400" dangerouslySetInnerHTML={{ __html: content }} />
+            <div className="pt-r1 w-full text-left rounded-b-lg p-6 pt-0 dark:text-grey-400" dangerouslySetInnerHTML={{ __html: answer }} />
           </AccordionPrimitive.Content>
         </AccordionPrimitive.Item>
       ))}
@@ -58,6 +58,6 @@ export default function FAQ({ items }: { items: AccordionItem[] }) {
   )
 }
 export interface AccordionItem {
-  header: string
-  content: string
+  question: string
+  answer: string
 }
