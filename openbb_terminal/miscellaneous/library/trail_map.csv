@@ -399,7 +399,7 @@ stocks.fa.fama_raw,openbb_terminal.stocks.fundamental_analysis.dcf_model.get_fam
 stocks.fa.historical_5,openbb_terminal.stocks.fundamental_analysis.dcf_model.get_historical_5,
 stocks.fa.similar_dfs,openbb_terminal.stocks.fundamental_analysis.dcf_model.get_similar_dfs,
 stocks.fa.analysis,openbb_terminal.stocks.fundamental_analysis.eclect_us_model.get_filings_analysis,
-stocks.fa.dcf,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_dcf,
+stocks.fa.dcfc,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_dcf,
 stocks.fa.enterprise,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_enterprise,
 stocks.fa.growth,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_financial_growth,
 stocks.fa.metrics,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_key_metrics,
