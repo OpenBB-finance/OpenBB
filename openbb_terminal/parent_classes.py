@@ -369,7 +369,7 @@ class BaseController(metaclass=ABCMeta):
                     lambda _: "Command not recognized!",
                 )(other_args)
             except Exception as e:
-                handle_exception(e, logger)
+                handle_exception(e)
 
         self.log_queue()
 

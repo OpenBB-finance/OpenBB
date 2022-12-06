@@ -60,9 +60,35 @@ def log_start_end(func=None, log=None):
                 extra={"func_name_override": func.__name__},
             )
 
-            value = func(*args, **kwargs)
-            log.info("END", extra={"func_name_override": func.__name__})
-            return value
+            if os.environ.get("DEBUG_MODE") == "true":
+                value = func(*args, **kwargs)
+                log.info("END", extra={"func_name_override": func.__name__})
+                return value
+            try:
+                value = func(*args, **kwargs)
+                logger_used.info("END", extra={"func_name_override": func.__name__})
+                return value
+            except RequestException as e:
+                logger_used.exception(
+                    "Exception: %s",
+                    str(e),
+                    extra={"func_name_override": func.__name__},
+                )
+                raise
+            except SSLError as e:
+                logger_used.exception(
+                    "Exception: %s",
+                    str(e),
+                    extra={"func_name_override": func.__name__},
+                )
+                raise
+            except Exception as e:
+                logger_used.exception(
+                    "Exception: %s",
+                    str(e),
+                    extra={"func_name_override": func.__name__},
+                )
+                raise
 
         return wrapper
 
