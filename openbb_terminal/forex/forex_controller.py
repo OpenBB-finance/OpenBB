@@ -306,14 +306,17 @@ class ForexController(BaseController):
                     mov_list = (num for num in ns_parser.mov_avg.split(","))
 
                     for num in mov_list:
-                        num = int(num)
+                        try:
+                            num = int(num)
 
-                        if num <= 1:
+                            if num <= 1:
+                                raise ValueError
+
+                            mov_avgs.append(num)
+                        except ValueError as e:
                             raise OpenBBUserError(
                                 f"'{num}' is not a valid moving average, must be an integer greater than 1."
-                            )
-
-                        mov_avgs.append(num)
+                            ) from e
 
                 forex_helper.display_candle(
                     to_symbol=self.to_symbol,
