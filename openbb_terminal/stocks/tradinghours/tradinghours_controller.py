@@ -254,14 +254,12 @@ class TradingHoursController(BaseController):
             "--name",
             help="Exchange short name",
             dest="exchange",
+            choices=self.all_holiday_exchange_short_names,
+            metavar="LSE",
         )
 
         parser.add_argument(
-            "-y",
-            "--year",
-            help="Year",
-            type=int,
-            dest="year",
+            "-y", "--year", help="Year", type=int, dest="year", metavar="2022"
         )
 
         if (

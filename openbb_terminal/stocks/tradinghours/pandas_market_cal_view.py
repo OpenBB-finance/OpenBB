@@ -50,6 +50,6 @@ def display_exchange_holidays(exchange_symbol: str, year: int = 2022):
 
     print_rich_table(
         exchange,
-        show_index=True,
+        show_index=False,
         title=f"[bold]{exchange_symbol}[/bold]",
     )
