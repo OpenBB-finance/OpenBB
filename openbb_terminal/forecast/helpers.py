@@ -454,7 +454,7 @@ def get_pl_kwargs(
     pl_trainer_kwargs = {
         "callbacks": [my_stopper],
         "accelerator": accelerator,
-        "logger": False,
+        # "logger": False,
         # "enable_progress_bar": False,
         "enable_model_summary": False,
     }

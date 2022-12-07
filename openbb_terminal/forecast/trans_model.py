@@ -142,6 +142,7 @@ def get_trans_data(
         pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator="cpu"),
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
+        log_tensorboard=True,
     )
 
     # fit model on train series for historical forecasting

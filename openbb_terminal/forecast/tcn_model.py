@@ -132,6 +132,7 @@ def get_tcn_data(
         save_checkpoints=save_checkpoints,
         random_state=42,
         pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator="cpu"),
+        log_tensorboard=True,
     )
 
     # fit model on train series for historical forecasting

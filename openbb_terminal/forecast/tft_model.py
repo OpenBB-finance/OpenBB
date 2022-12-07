@@ -172,6 +172,7 @@ def get_tft_data(
             quantiles=quantiles
         ),  # QuantileRegression is set per default
         add_relative_index=True,  # TODO There is a bug with this. Must fix. Should be false
+        log_tensorboard=True,
     )
 
     # fit model on train series for historical forecasting

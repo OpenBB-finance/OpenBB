@@ -132,6 +132,7 @@ def get_brnn_data(
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
         likelihood=GaussianLikelihood(),
+        log_tensorboard=True,
     )
 
     # fit model on train series for historical forecasting
