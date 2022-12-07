@@ -2,7 +2,7 @@ from typing import List
 import os
 from openbb_terminal.rich_config import console
 
-IGNORE: List[str] = ["OpenBBUserError"]
+IGNORE: List[str] = ["OpenBBUserError", "OpenBBAPIError", "OpenBBBaseError"]
 
 
 def handle_exception(exception: Exception) -> None:
@@ -25,7 +25,8 @@ def handle_exception(exception: Exception) -> None:
         pass
     elif exception_name == "RequestException":
         console.print(
-            "There was an error connecting to the API. Please try again later.", style="red"
+            "There was an error connecting to the API. Please try again later.",
+            style="red",
         )
     elif exception_name == "SSLError":
         console.print(
@@ -42,12 +43,16 @@ def handle_exception(exception: Exception) -> None:
 class OpenBBBaseError(Exception):
     """Base class for other OpenBB exceptions"""
 
-
-class OpenBBUserError(OpenBBBaseError):
-    """Raised for user usage errors"""
-
     def __init__(self, message=None):
 
         if message:
             self.message = message
             console.print(self.message, style="info")
+
+
+class OpenBBUserError(OpenBBBaseError):
+    """Raised for user usage errors"""
+
+
+class OpenBBAPIError(OpenBBBaseError):
+    """Raised for API errors"""
