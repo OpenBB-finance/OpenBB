@@ -126,7 +126,10 @@ def get_btc_single_block(blockhash: str) -> pd.DataFrame:
 
     data = _blockchain_data_api_make_request(f"rawblock/{blockhash}?format=json")
 
-    df = pd.json_normalize(data)
+    if data:
 
-    return df
+        df = pd.json_normalize(data)
+        return df
+
+    return pd.DataFrame()
 

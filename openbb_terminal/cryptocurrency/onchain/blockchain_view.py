@@ -149,35 +149,33 @@ def display_btc_single_block(
     """
 
     df = blockchain_model.get_btc_single_block(blockhash)
-    df.rename(index={0: "Value"}, inplace=True)
-    df.index.name = "Metric"
-    df_data = df.copy()
+    if not df.empty:
+        df.rename(index={0: "Value"}, inplace=True)
+        df_data = df.copy()
 
-    df_essentials = df[[
-            "hash",
-            "ver",
-            "prev_block",
-            "mrkl_root",
-            "bits",
-            "next_block",
-            "fee",
-            "nonce",
-            "n_tx",
-            "size",
-            "block_index",
-            "main_chain",
-            "height",
-            "weight",
-        ]]
+        df_essentials = df[[
+                "hash",
+                "ver",
+                "prev_block",
+                "mrkl_root",
+                "bits",
+                "next_block",
+                "fee",
+                "nonce",
+                "n_tx",
+                "size",
+                "block_index",
+                "main_chain",
+                "height",
+                "weight",
+            ]]
 
-    df_flipped = df_essentials.transpose()
+        df_flipped = df_essentials.transpose()
 
-    if df_flipped.empty:
-        console.print("No data found.")
-    else:
         print_rich_table(
             df_flipped,
             show_index=True,
+            index_name="Metric",
             title=f"Block {int(df['height'])}",
         )
 
