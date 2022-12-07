@@ -39,7 +39,6 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,
-    parse_simple_args,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from openbb_terminal.loggers import setup_logging
@@ -250,7 +249,7 @@ class TerminalController(BaseController):
             )
             if other_args and "-" not in other_args[0][0]:
                 other_args.insert(0, "-l")
-                ns_parser_guess = parse_simple_args(parser_exe, other_args)
+                ns_parser_guess = self.parse_simple_args(parser_exe, other_args)
 
                 if self.GUESS_TOTAL_TRIES == 0:
                     self.GUESS_NUMBER_TRIES_LEFT = ns_parser_guess.limit
@@ -696,7 +695,7 @@ class TerminalController(BaseController):
         )
         if args and "-" not in args[0][0]:
             args.insert(0, "--file")
-        ns_parser_exe = parse_simple_args(parser_exe, args)
+        ns_parser_exe = self.parse_simple_args(parser_exe, args)
         if ns_parser_exe:
             if ns_parser_exe.path:
                 if ns_parser_exe.path in self.ROUTINE_CHOICES:
