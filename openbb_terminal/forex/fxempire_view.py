@@ -4,7 +4,6 @@ import logging
 import os
 from openbb_terminal.forex import fxempire_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import print_rich_table, export_data
 
 logger = logging.getLogger(__name__)
@@ -27,9 +26,6 @@ def display_forward_rates(
     """
     forward_rates = fxempire_model.get_forward_rates(to_symbol, from_symbol)
     if forward_rates.empty:
-        console.print(
-            f"[red]Forward rates not found for {to_symbol}/{from_symbol}.[/red]\n"
-        )
         return
 
     print_rich_table(

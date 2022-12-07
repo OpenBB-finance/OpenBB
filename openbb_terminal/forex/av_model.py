@@ -10,7 +10,7 @@ import requests
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
+from openbb_terminal.core.exceptions.exceptions import OpenBBAPIError
 
 logger = logging.getLogger(__name__)
 
@@ -81,12 +81,15 @@ def get_quote(to_symbol: str = "USD", from_symbol: str = "EUR") -> Dict[str, Any
 
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
-        console.print(response_json["Error Message"])
         logger.error(response_json["Error Message"])
+        raise OpenBBAPIError(response_json["Error Message"])
     else:
         # check if json is empty
         if not response_json:
-            console.print("No data found.\n")
+            raise OpenBBAPIError(
+                "No data found."
+                + " Make sure 'av' supports the requested pair and you aren't hitting your API call limits."
+            )
         else:
             result = response_json
 
@@ -138,13 +141,13 @@ def get_historical(
 
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
-        console.print(response_json["Error Message"])
+        raise OpenBBAPIError(response_json["Error Message"])
     elif "Note" in response_json:
-        console.print(response_json["Note"])
+        raise OpenBBAPIError(response_json["Note"])
     else:
         # check if json is empty
         if not response_json:
-            console.print("No data found.\n")
+            raise OpenBBAPIError("No data found.")
         else:
             key = list(response_json.keys())[1]
 

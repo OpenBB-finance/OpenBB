@@ -9,7 +9,7 @@ from openbb_terminal.decorators import check_api_key
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex import av_model
 from openbb_terminal.helper_funcs import print_rich_table
-from openbb_terminal.rich_config import console
+from openbb_terminal.core.exceptions.exceptions import OpenBBUserError
 
 logger = logging.getLogger(__name__)
 
@@ -28,22 +28,11 @@ def display_quote(to_symbol: str = "USD", from_symbol: str = "EUR"):
     """
     quote = av_model.get_quote(to_symbol, from_symbol)
 
-    if not bool(quote) or "Note" in quote:
-        if "Note" in quote:
-            console.print(quote["Note"])
-        console.print(
-            "\n[red]"
-            + "No historical data loaded.\n"
-            + "Make sure 'av' supports the requested pair and you aren't hitting your API call limits."
-            + "[/red]\n"
-        )
-        return
-
     try:
         df = pd.DataFrame.from_dict(quote)
-    except ValueError:
-        console.print(f"[red]{quote['Information']}[/red]\n")
-        return
+    except ValueError as e:
+        raise OpenBBUserError(f"{quote['Information']}") from e
+
     df.index = df.index.to_series().apply(lambda x: x[3:]).values
     df = df.iloc[[0, 2, 5, 4, 7, 8]]
     print_rich_table(

@@ -6,6 +6,7 @@ import pandas as pd
 
 from openbb_terminal.helper_funcs import get_user_agent
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.core.exceptions.exceptions import OpenBBUserError
 
 logger = logging.getLogger(__name__)
 
@@ -36,4 +37,4 @@ def get_forward_rates(to_symbol: str = "USD", from_symbol: str = "EUR") -> pd.Da
         return forwards
 
     logger.info("Currency not found.")
-    return pd.DataFrame()
+    raise OpenBBUserError(f"Forward rates not found for '{to_symbol}/{from_symbol}'.")
