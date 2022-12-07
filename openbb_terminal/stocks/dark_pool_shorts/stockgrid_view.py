@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from datetime import timedelta
 from typing import List, Optional
 
 import matplotlib.pyplot as plt

@@ -134,6 +134,7 @@ def _maybe_allow_interrupt(qapp: QtWidgets.QApplication):
         # this may fire too soon / more than once on Windows so we should be
         # forgiving about reading an empty socket.
         rsock.setblocking(False)
+
         # Clear the socket to re-arm the notifier.
         @sn.activated.connect
         def _may_clear_sock(*args):  # pylint: disable=unused-argument

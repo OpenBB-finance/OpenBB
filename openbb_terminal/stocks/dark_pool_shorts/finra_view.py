@@ -5,7 +5,6 @@ import logging
 import os
 from typing import List, Optional
 
-import matplotlib.dates as mdates
 import pandas as pd
 from matplotlib import pyplot as plt
 from plotly.subplots import make_subplots
@@ -40,6 +39,7 @@ def darkpool_ats_otc(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
+    del external_axes
     ats, otc = finra_model.getTickerFINRAdata(symbol)
     if ats.empty:
         console.print("[red]Could not get data[/red]\n")

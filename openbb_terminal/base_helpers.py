@@ -129,6 +129,7 @@ PLT_TA_COLORWAY = [
     "#FFF466",
 ]
 
+
 # pylint: disable=no-member
 class Show:
     def show(self):
