@@ -132,8 +132,6 @@ class QtBackend:
 # To avoid having plotly.js in the repo, we download it if it's not present
 if not (Path(__file__).parent.resolve() / "assets/plotly.js").exists():
     download = requests.get("https://cdn.plot.ly/plotly-2.16.1.min.js", stream=True)
-    with open(
-        Path(__file__).parent.resolve() / "assets/plotly.js", "wb", encoding="utf-8"
-    ) as f:
+    with open(Path(__file__).parent.resolve() / "assets/plotly.js", "wb") as f:
         for chunk in download.iter_content(chunk_size=1024):
             f.write(chunk)

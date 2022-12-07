@@ -131,6 +131,7 @@ def short_interest_volume(
         External axes (3 axes are expected in the list), by default None
 
     """
+    del external_axes
 
     df, prices = stockgrid_model.get_short_interest_volume(symbol)
     if df.empty:

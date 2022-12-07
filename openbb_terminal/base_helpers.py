@@ -132,21 +132,20 @@ PLT_TA_COLORWAY = [
 
 # pylint: disable=no-member
 class Show:
-    def show(self):
+    def show(self) -> None:
         """Show the figure."""
-        self.update_layout(template="plotly_dark")
+        self.update_layout(template="plotly_dark")  # type: ignore
 
-        if os.environ.get("INSTALLER"):
-            return self.to_json()
-        try:
-            run_qt_backend()
-            QtBackend().send_fig(self)
-        except Exception:
+        if not os.environ.get("INSTALLER", False):
             try:
                 run_qt_backend()
                 QtBackend().send_fig(self)
             except Exception:
-                self._show()
+                try:
+                    run_qt_backend()
+                    QtBackend().send_fig(self)
+                except Exception:
+                    self._show()  # type: ignore
 
 
 if not JUPYTER_NOTEBOOK:
