@@ -152,8 +152,6 @@ def darkpool_ats_otc(
         )
 
     fig.update_layout(
-        width=800,
-        height=500,
         margin=dict(l=0, r=0, t=10, b=50),
         colorway=PLT_TA_COLORWAY,
         title=f"<b>Dark Pools (ATS) vs OTC (Non-ATS) Data for {symbol}</b>",
@@ -193,82 +191,6 @@ def darkpool_ats_otc(
         hoverdistance=1,
     )
     fig.show()
-
-    # This plot has 2 axes
-    if not external_axes:
-        _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
-        )
-        (ax1, ax2) = axes
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
-
-    if not ats.empty and not otc.empty:
-        ax1.bar(
-            ats.index,
-            (ats["totalWeeklyShareQuantity"] + otc["totalWeeklyShareQuantity"])
-            / 1_000_000,
-            color=theme.down_color,
-        )
-        ax1.bar(
-            otc.index, otc["totalWeeklyShareQuantity"] / 1_000_000, color=theme.up_color
-        )
-        ax1.legend(["ATS", "OTC"])
-
-    elif not ats.empty:
-        ax1.bar(
-            ats.index,
-            ats["totalWeeklyShareQuantity"] / 1_000_000,
-            color=theme.down_color,
-        )
-        ax1.legend(["ATS"])
-
-    elif not otc.empty:
-        ax1.bar(
-            otc.index, otc["totalWeeklyShareQuantity"] / 1_000_000, color=theme.up_color
-        )
-        ax1.legend(["OTC"])
-
-    ax1.set_ylabel("Total Weekly Shares [Million]")
-    ax1.set_title(f"Dark Pools (ATS) vs OTC (Non-ATS) Data for {symbol}")
-    ax1.set_xticks([])
-
-    if not ats.empty:
-        ax2.plot(
-            ats.index,
-            ats["totalWeeklyShareQuantity"] / ats["totalWeeklyTradeCount"],
-            color=theme.down_color,
-        )
-        ax2.legend(["ATS"])
-
-        if not otc.empty:
-            ax2.plot(
-                otc.index,
-                otc["totalWeeklyShareQuantity"] / otc["totalWeeklyTradeCount"],
-                color=theme.up_color,
-            )
-            ax2.legend(["ATS", "OTC"])
-
-    else:
-        ax2.plot(
-            otc.index,
-            otc["totalWeeklyShareQuantity"] / otc["totalWeeklyTradeCount"],
-            color=theme.up_color,
-        )
-        ax2.legend(["OTC"])
-
-    ax2.set_ylabel("Shares per Trade")
-    ax2.xaxis.set_major_locator(mdates.DayLocator(interval=10))
-    ax2.set_xlim(otc.index[0], otc.index[-1])
-    ax2.set_xlabel("Weeks")
-
-    theme.style_primary_axis(ax1)
-    theme.style_primary_axis(ax2)
-
-    if not external_axes:
-        theme.visualize_output()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dpotc_ats", ats)
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dpotc_otc", otc)

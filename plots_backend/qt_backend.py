@@ -82,7 +82,7 @@ def _create_qApp():
             try:
                 import ctypes  # pylint: disable=import-outside-toplevel
 
-                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('openbb')
+                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("openbb")
             except (AttributeError, ImportError):
                 pass
             except OSError:
@@ -413,7 +413,7 @@ class QtFigure(go.Figure):
     def get_fig_size(self):
         """Gets the width and height of the plotly figure."""
         height = 565 if self.layout.height is None else self.layout.height
-        width = 750 if self.layout.width is None else self.layout.width
+        width = 786 if self.layout.width is None else self.layout.width
         return height + 20, width + 50
 
 
@@ -433,7 +433,7 @@ class WebSocketServer(QtCore.QObject):
         if self.server.listen(QtNetwork.QHostAddress.LocalHost, websocket_port):
             print(f"Listening on port {self.server.serverPort()}")
         else:
-            print('error')
+            print("error")
             sys.exit(1)
 
         self.server.acceptError.connect(self.onAcceptError)
@@ -475,7 +475,7 @@ class WebSocketServer(QtCore.QObject):
 if __name__ == "__main__":
     openbb = _create_qApp()
     serverObject = QtWebSockets.QWebSocketServer(
-        'openbb', QtWebSockets.QWebSocketServer.NonSecureMode
+        "openbb", QtWebSockets.QWebSocketServer.NonSecureMode
     )
     ws = WebSocketServer(serverObject)
 
