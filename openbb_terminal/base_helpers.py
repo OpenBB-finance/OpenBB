@@ -1,8 +1,11 @@
 # This is for helpers that do NOT import any OpenBB Modules
-from typing import Callable, Any, Literal
 import os
+from typing import Any, Callable, Literal
 
+import plotly.graph_objects as go
 from rich.console import Console
+
+from plots_backend.helpers import QtBackend, run_qt_backend
 
 console = Console()
 
@@ -85,3 +88,66 @@ def strtobool(val):
         raise ValueError(f"invalid truth value {val}")
 
     return output
+
+
+try:
+    from IPython import get_ipython
+
+    if "IPKernelApp" not in get_ipython().config:
+        raise ImportError("console")
+    if (
+        "parent_header"
+        in get_ipython().kernel._parent_ident  # pylint: disable=protected-access
+    ):
+        raise ImportError("notebook")
+except (ImportError, AttributeError):
+    JUPYTER_NOTEBOOK = False
+else:
+    JUPYTER_NOTEBOOK = True
+
+PLT_FONT = dict(family="Fira Code", size=16)
+PLT_TA_COLORWAY = [
+    "#fdc708",
+    "#d81aea",
+    "#00e6c3",
+    "#9467bd",
+    "#e250c3",
+    "#d1fa3d",
+    "#CCEEFF",
+    "#66CCFF",
+    "#CCDEEE",
+    "#669DCB",
+    "#DAD4E5",
+    "#917DB0",
+    "#E6D4DF",
+    "#B47DA0",
+    "#FACCD8",
+    "#EF6689",
+    "#FCE5CC",
+    "#F5B166",
+    "#FFFBCC",
+    "#FFF466",
+]
+
+# pylint: disable=no-member
+class Show:
+    def show(self):
+        """Show the figure."""
+        self.update_layout(template="plotly_dark")
+
+        if os.environ.get("INSTALLER"):
+            return self.to_json()
+        try:
+            run_qt_backend()
+            QtBackend().send_fig(self)
+        except Exception:
+            try:
+                run_qt_backend()
+                QtBackend().send_fig(self)
+            except Exception:
+                self._show()
+
+
+if not JUPYTER_NOTEBOOK:
+    setattr(go.Figure, "_show", go.Figure.show)
+    go.Figure.show = Show.show

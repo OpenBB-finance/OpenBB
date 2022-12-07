@@ -7,52 +7,42 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from datetime import datetime, timedelta, date
-from typing import Any, Union, Optional, Iterable, List, Dict
+from datetime import date, datetime, timedelta
+from typing import Any, Dict, Iterable, List, Optional, Union
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-from matplotlib.ticker import LogLocator, ScalarFormatter
-import mplfinance as mpf
 import numpy as np
 import pandas as pd
-import plotly.graph_objects as go
 import pytz
 import requests
-from requests.exceptions import ReadTimeout
-
 import yfinance as yf
 from plotly.subplots import make_subplots
+from requests.exceptions import ReadTimeout
 from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.base_helpers import go
+from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import
-from openbb_terminal.stocks.stock_statics import market_coverage_suffix
+from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import INTERVALS  # noqa: F401
 from openbb_terminal.stocks.stock_statics import SOURCES  # noqa: F401
-from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import market_coverage_suffix
 from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
-    load_stock_yf,
     load_stock_eodhd,
     load_stock_iex_cloud,
     load_stock_polygon,
+    load_stock_yf,
 )
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-    lambda_long_number_format_y_axis,
-)
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
-
 
 exch_file_path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "mappings", "Mic_Codes.csv"
@@ -434,7 +424,7 @@ def load(
     if verbose:
         console.print(
             f"Loading {s_intraday} data for {symbol.upper()} "
-            f"with starting period {s_start.strftime('%Y-%m-%d')}.",
+            f"with starting period {s_start.strftime('%Y-%m-%d')}."
         )
 
     return df_stock_candidate
@@ -541,88 +531,6 @@ def display_candle(
 
     if not raw:
         if use_matplotlib:
-            ap0 = []
-            if add_trend:
-                if "OC_High_trend" in data.columns:
-                    ap0.append(
-                        mpf.make_addplot(
-                            data["OC_High_trend"],
-                            color=cfg.theme.up_color,
-                            secondary_y=False,
-                        ),
-                    )
-
-                if "OC_Low_trend" in data.columns:
-                    ap0.append(
-                        mpf.make_addplot(
-                            data["OC_Low_trend"],
-                            color=cfg.theme.down_color,
-                            secondary_y=False,
-                        ),
-                    )
-
-            candle_chart_kwargs = {
-                "type": "candle",
-                "style": cfg.theme.mpf_style,
-                "volume": True,
-                "addplot": ap0,
-                "xrotation": cfg.theme.xticks_rotation,
-                "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-                "update_width_config": {
-                    "candle_linewidth": 0.6,
-                    "candle_width": 0.8,
-                    "volume_linewidth": 0.8,
-                    "volume_width": 0.8,
-                },
-                "warn_too_much_data": 10000,
-                "yscale": yscale,
-            }
-
-            kwargs = {"mav": ma} if ma else {}
-
-            if external_axes is None:
-                candle_chart_kwargs["returnfig"] = True
-                candle_chart_kwargs["figratio"] = (10, 7)
-                candle_chart_kwargs["figscale"] = 1.10
-                candle_chart_kwargs["figsize"] = plot_autoscale()
-                candle_chart_kwargs["warn_too_much_data"] = 100_000
-
-                fig, ax = mpf.plot(data, **candle_chart_kwargs, **kwargs)
-                lambda_long_number_format_y_axis(data, "Volume", ax)
-
-                fig.suptitle(
-                    f"{asset_type} {symbol}",
-                    x=0.055,
-                    y=0.965,
-                    horizontalalignment="left",
-                )
-
-                if ma:
-                    # Manually construct the chart legend
-                    colors = [cfg.theme.get_colors()[i] for i, _ in enumerate(ma)]
-                    lines = [Line2D([0], [0], color=c) for c in colors]
-                    labels = ["MA " + str(label) for label in ma]
-                    ax[0].legend(lines, labels)
-
-                if yscale == "log":
-                    ax[0].yaxis.set_major_formatter(ScalarFormatter())
-                    ax[0].yaxis.set_major_locator(
-                        LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
-                    )
-                    ax[0].ticklabel_format(style="plain", axis="y")
-
-                cfg.theme.visualize_output(force_tight_layout=False)
-            else:
-                if len(external_axes) != 2:
-                    logger.error("Expected list of one axis item.")
-                    console.print("[red]Expected list of 2 axis items.\n[/red]")
-                    return pd.DataFrame()
-                ax1, ax2 = external_axes
-                candle_chart_kwargs["ax"] = ax1
-                candle_chart_kwargs["volume"] = ax2
-                mpf.plot(data, **candle_chart_kwargs)
-
-        else:
             fig = make_subplots(
                 rows=2,
                 cols=1,
@@ -639,6 +547,8 @@ def display_candle(
                     low=data.Low,
                     close=data.Close,
                     name="OHLC",
+                    increasing=dict(line_color="#00ACFF", fillcolor="#00ACFF"),
+                    decreasing=dict(line_color="#e4003a", fillcolor="#e4003a"),
                 ),
                 row=1,
                 col=1,
@@ -679,7 +589,7 @@ def display_candle(
                             y=data["OC_High_trend"],
                             name="High Trend",
                             mode="lines",
-                            line=go.scatter.Line(color="green"),
+                            line=go.scatter.Line(color="#00ACFF"),
                         ),
                         row=1,
                         col=1,
@@ -691,30 +601,30 @@ def display_candle(
                             y=data["OC_Low_trend"],
                             name="Low Trend",
                             mode="lines",
-                            line=go.scatter.Line(color="red"),
+                            line=go.scatter.Line(color="#e4003a"),
                         ),
                         row=1,
                         col=1,
                     )
 
             colors = [
-                "red" if row.Open < row["Adj Close"] else "green"
+                "#e4003a" if row.Open < row["Close"] else "#00ACFF"
                 for _, row in data.iterrows()
             ]
             fig.add_trace(
-                go.Bar(
-                    x=data.index,
-                    y=data.Volume,
-                    name="Volume",
-                    marker_color=colors,
-                ),
+                go.Bar(x=data.index, y=data.Volume, name="Volume", marker_color=colors),
                 row=2,
                 col=1,
             )
             fig.update_layout(
+                margin=dict(l=10, r=10, t=40, b=20),
+                template="plotly_dark",
                 yaxis_title="Stock Price ($)",
                 xaxis=dict(
                     rangeselector=dict(
+                        bgcolor="#111111",
+                        bordercolor="gold",
+                        font=dict(color="white"),
                         buttons=list(
                             [
                                 dict(
@@ -740,16 +650,27 @@ def display_candle(
                                 ),
                                 dict(step="all"),
                             ]
-                        )
+                        ),
                     ),
                     rangeslider=dict(visible=False),
                     type="date",
+                ),
+                legend=dict(
+                    yanchor="top",
+                    y=0.99,
+                    xanchor="left",
+                    font_size=8,
+                    bgcolor="rgba(0, 0, 0, 0)",
+                    x=0.01,
                 ),
             )
 
             fig.update_layout(
                 updatemenus=[
                     dict(
+                        bgcolor="#111111",
+                        bordercolor="gold",
+                        font=dict(color="white"),
                         buttons=[
                             dict(
                                 label="linear",
@@ -761,7 +682,7 @@ def display_candle(
                                 method="relayout",
                                 args=[{"yaxis.type": "log"}],
                             ),
-                        ]
+                        ],
                     )
                 ]
             )
@@ -773,8 +694,21 @@ def display_candle(
                         dict(bounds=[20, 9], pattern="hour"),
                     ]
                 )
+            else:
+                dt_unique_days = pd.bdate_range(
+                    start=data.index[0], end=data.index[-1], normalize=True
+                )
+                dt_unique = [d.strftime("%Y-%m-%d") for d in data.index]
+                mkt_holidays = [
+                    d
+                    for d in dt_unique_days.strftime("%Y-%m-%d").tolist()
+                    if d not in dt_unique
+                ]
+                fig.update_xaxes(
+                    rangebreaks=[dict(bounds=["sat", "mon"]), dict(values=mkt_holidays)]
+                )
 
-            fig.show(config=dict({"scrollZoom": True}))
+            fig.show()
     else:
         return data
 
@@ -876,10 +810,7 @@ def find_trendline(
     for iteration in [3, 4, 5, 6, 7]:
         df_temp = df_data.copy()
         while len(df_temp) > iteration:
-            reg = stats.linregress(
-                x=df_temp["date_id"],
-                y=df_temp[y_key],
-            )
+            reg = stats.linregress(x=df_temp["date_id"], y=df_temp[y_key])
 
             if high_low == "high":
                 df_temp = df_temp.loc[
@@ -896,10 +827,7 @@ def find_trendline(
     if len(df_temp) == 1:
         return df_data
 
-    reg = stats.linregress(
-        x=df_temp["date_id"],
-        y=df_temp[y_key],
-    )
+    reg = stats.linregress(x=df_temp["date_id"], y=df_temp[y_key])
 
     df_data[f"{y_key}_trend"] = reg[0] * df_data["date_id"] + reg[1]
 

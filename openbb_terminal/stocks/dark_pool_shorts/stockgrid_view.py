@@ -7,15 +7,17 @@ from datetime import timedelta
 from typing import List, Optional
 
 import matplotlib.pyplot as plt
+from plotly.subplots import make_subplots
 
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.base_helpers import PLT_FONT, PLT_TA_COLORWAY, go
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
@@ -25,10 +27,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def dark_pool_short_positions(
-    limit: int = 10,
-    sortby: str = "dpp_dollar",
-    ascend: bool = False,
-    export: str = "",
+    limit: int = 10, sortby: str = "dpp_dollar", ascend: bool = False, export: str = ""
 ):
     """Get dark pool short positions. [Source: Stockgrid]
 
@@ -74,12 +73,7 @@ def dark_pool_short_positions(
         title=f"Data for: {dp_date}",
     )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "dppos",
-        df,
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dppos", df)
 
 
 @log_start_end(log=logger)
@@ -111,12 +105,7 @@ def short_interest_days_to_cover(
         title=f"Data for: {dp_date}",
     )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "shortdtc",
-        df,
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "shortdtc", df)
 
 
 @log_start_end(log=logger)
@@ -160,86 +149,117 @@ def short_interest_volume(
         )
     else:
 
-        # This plot has 3 axes
-        if not external_axes:
-            _, axes = plt.subplots(
-                2,
-                1,
-                sharex=True,
-                figsize=plot_autoscale(),
-                dpi=PLOT_DPI,
-                gridspec_kw={"height_ratios": [2, 1]},
-            )
-            (ax, ax1) = axes
-            ax2 = ax.twinx()
-        elif is_valid_axes_count(external_axes, 3):
-            (ax, ax1, ax2) = external_axes
-        else:
-            return
-
-        ax.bar(
-            df["date"],
-            df["Total Vol. [1M]"],
-            width=timedelta(days=1),
-            color=theme.up_color,
-            label="Total Volume",
+        # Output data
+        fig = make_subplots(
+            rows=2,
+            cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.06,
+            row_width=[0.3, 0.6],
+            specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
         )
-        ax.bar(
-            df["date"],
-            df["Short Vol. [1M]"],
-            width=timedelta(days=1),
-            color=theme.down_color,
-            label="Short Volume",
+        # pycodestyle: disable=E501,E203
+        fig.add_trace(
+            go.Scatter(
+                name=symbol,
+                x=df["date"].values,
+                y=prices[len(prices) - len(df) :],  # pycodestyle: disable=E501,E203
+                line=dict(color="#fdc708", width=2),
+                opacity=1,
+                showlegend=False,
+            ),
+            row=1,
+            col=1,
+            secondary_y=False,
+        )
+        fig.add_trace(
+            go.Bar(
+                x=df["date"],
+                y=df["Total Vol. [1M]"] / 1_000_000,
+                name="Total Volume",
+                yaxis="y2",
+            ),
+            row=1,
+            col=1,
+            secondary_y=True,
+        )
+        fig.add_trace(
+            go.Bar(
+                x=df["date"],
+                y=df["Short Vol. [1M]"] / 1_000_000,
+                name="Short Volume",
+                yaxis="y2",
+            ),
+            row=1,
+            col=1,
+            secondary_y=True,
+        )
+        fig.add_trace(
+            go.Scatter(
+                name="Short Vol. %",
+                x=df["date"].values,
+                y=100 * df["Short Vol. %"],
+                line=dict(width=2),
+                opacity=1,
+                showlegend=False,
+            ),
+            row=2,
+            col=1,
+            secondary_y=False,
         )
 
-        ax.set_ylabel("Volume [1M]")
-
-        ax2.plot(
-            df["date"].values,
-            prices[len(prices) - len(df) :],  # noqa: E203
-            label="Price",
+        fig.update_traces(hovertemplate="%{y:.2f}")
+        fig.update_layout(
+            margin=dict(l=10, r=0, t=40, b=50),
+            colorway=PLT_TA_COLORWAY,
+            title=f"<b>Price vs Short Volume Interest for {symbol}</b>",
+            title_x=0.025,
+            title_font_size=14,
+            yaxis_title="Stock Price ($)",
+            yaxis2_title="FINRA Volume [M]",
+            yaxis3_title="Short Vol. %",
+            font=PLT_FONT,
+            yaxis=dict(
+                side="right",
+                fixedrange=False,
+                showgrid=False,
+                titlefont=dict(color="#fdc708"),
+                tickfont=dict(color="#fdc708"),
+                nticks=20,
+            ),
+            yaxis2=dict(
+                side="left",
+                fixedrange=False,
+                anchor="x",
+                overlaying="y",
+                titlefont=dict(color="#d81aea"),
+                tickfont=dict(color="#d81aea"),
+                nticks=20,
+            ),
+            yaxis3=dict(
+                fixedrange=False,
+                titlefont=dict(color="#9467bd"),
+                tickfont=dict(color="#9467bd"),
+                nticks=20,
+            ),
+            xaxis=dict(rangeslider=dict(visible=False), type="date"),
+            dragmode="pan",
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="left",
+                x=1,
+                bgcolor="rgba(0, 0, 0, 0)",
+            ),
+            hovermode="x unified",
+            spikedistance=1,
+            hoverdistance=1,
         )
-        ax2.set_ylabel("Price ($)")
-
-        lines, labels = ax.get_legend_handles_labels()
-        lines2, labels2 = ax2.get_legend_handles_labels()
-        ax2.legend(lines + lines2, labels + labels2, loc="upper left")
-
-        ax.set_xlim(
-            df["date"].values[max(0, len(df) - limit)],
-            df["date"].values[len(df) - 1],
-        )
-
-        ax.ticklabel_format(style="plain", axis="y")
-        ax.set_title(f"Price vs Short Volume Interest for {symbol}")
-
-        ax1.plot(
-            df["date"].values,
-            df["Short Vol. %"],
-            label="Short Vol. %",
-        )
-
-        ax1.set_xlim(
-            df["date"].values[max(0, len(df) - limit)],
-            df["date"].values[len(df) - 1],
-        )
-        ax1.set_ylabel("Short Vol. %")
-
-        lines, labels = ax1.get_legend_handles_labels()
-        ax1.legend(lines, labels, loc="upper left")
-        ax1.set_ylim([0, 100])
-
-        theme.style_twin_axes(ax, ax2)
-        theme.style_primary_axis(ax1)
-
-        if not external_axes:
-            theme.visualize_output()
+        fig.show()
 
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "shortint(stockgrid)",
-        df,
+        export, os.path.dirname(os.path.abspath(__file__)), "shortint(stockgrid)", df
     )
 
 
@@ -317,8 +337,7 @@ def net_short_position(
         ax2.legend(lines + lines2, labels + labels2, loc="upper left")
 
         ax1.set_xlim(
-            df["dates"].values[max(0, len(df) - limit)],
-            df["dates"].values[len(df) - 1],
+            df["dates"].values[max(0, len(df) - limit)], df["dates"].values[len(df) - 1]
         )
 
         ax1.set_title(f"Net Short Vol. vs Position for {symbol}")
@@ -328,9 +347,4 @@ def net_short_position(
         if not external_axes:
             theme.visualize_output()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "shortpos",
-        df,
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "shortpos", df)

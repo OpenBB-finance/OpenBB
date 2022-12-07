@@ -8,14 +8,16 @@ from typing import List, Optional
 import matplotlib.dates as mdates
 import pandas as pd
 from matplotlib import pyplot as plt
+from plotly.subplots import make_subplots
 
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.base_helpers import PLT_FONT, PLT_TA_COLORWAY, go
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import finra_model
@@ -45,6 +47,152 @@ def darkpool_ats_otc(
 
     if ats.empty and otc.empty:
         console.print("No ticker data found!")
+
+    fig = make_subplots(
+        rows=2,
+        cols=1,
+        shared_xaxes=True,
+        vertical_spacing=0.05,
+        row_width=[0.4, 0.6],
+        specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
+    )
+
+    if not ats.empty and not otc.empty:
+        fig.add_trace(
+            go.Bar(
+                x=ats.index,
+                y=(ats["totalWeeklyShareQuantity"] + otc["totalWeeklyShareQuantity"]),
+                name="ATS",
+                opacity=0.8,
+            ),
+            row=1,
+            col=1,
+            secondary_y=False,
+        )
+        fig.add_trace(
+            go.Bar(
+                x=otc.index,
+                y=otc["totalWeeklyShareQuantity"],
+                name="OTC",
+                opacity=0.8,
+                yaxis="y2",
+                offset=0.0001,
+            ),
+            row=1,
+            col=1,
+        )
+
+    elif not ats.empty:
+        fig.add_trace(
+            go.Bar(
+                x=ats.index,
+                y=(ats["totalWeeklyShareQuantity"] + otc["totalWeeklyShareQuantity"]),
+                name="ATS",
+                opacity=0.8,
+            ),
+            row=1,
+            col=1,
+            secondary_y=False,
+        )
+
+    elif not otc.empty:
+        fig.add_trace(
+            go.Bar(
+                x=otc.index,
+                y=otc["totalWeeklyShareQuantity"],
+                name="OTC",
+                opacity=0.8,
+                yaxis="y2",
+                secondary_y=False,
+            ),
+            row=1,
+            col=1,
+        )
+
+    if not ats.empty:
+        fig.add_trace(
+            go.Scatter(
+                name="ATS",
+                x=ats.index,
+                y=ats["totalWeeklyShareQuantity"] / ats["totalWeeklyTradeCount"],
+                line=dict(color="#fdc708", width=2),
+                opacity=1,
+                showlegend=False,
+                yaxis="y2",
+            ),
+            row=2,
+            col=1,
+        )
+
+        if not otc.empty:
+            fig.add_trace(
+                go.Scatter(
+                    name="OTC",
+                    x=otc.index,
+                    y=otc["totalWeeklyShareQuantity"] / otc["totalWeeklyTradeCount"],
+                    line=dict(color="#d81aea", width=2),
+                    opacity=1,
+                    showlegend=False,
+                ),
+                row=2,
+                col=1,
+            )
+    else:
+        fig.add_trace(
+            go.Scatter(
+                name="OTC",
+                x=otc.index,
+                y=otc["totalWeeklyShareQuantity"] / otc["totalWeeklyTradeCount"],
+                line=dict(color="#d81aea", width=2),
+                opacity=1,
+                showlegend=False,
+            ),
+            row=2,
+            col=1,
+        )
+
+    fig.update_layout(
+        width=800,
+        height=500,
+        margin=dict(l=0, r=0, t=10, b=50),
+        colorway=PLT_TA_COLORWAY,
+        title=f"<b>Dark Pools (ATS) vs OTC (Non-ATS) Data for {symbol}</b>",
+        title_x=0.025,
+        title_font_size=14,
+        yaxis3_title="Shares per Trade",
+        yaxis_title="Total Weekly Shares",
+        xaxis2_title="Weeks",
+        font=PLT_FONT,
+        yaxis=dict(fixedrange=False, side="left", nticks=20),
+        yaxis2=dict(
+            fixedrange=False,
+            showgrid=False,
+            overlaying="y",
+            anchor="x",
+            layer="above traces",
+            title_standoff=0,
+        ),
+        yaxis3=dict(fixedrange=False, nticks=10),
+        xaxis=dict(
+            rangeslider=dict(visible=False), type="date", showspikes=True, nticks=20
+        ),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            bgcolor="rgba(0, 0, 0, 0)",
+        ),
+        barmode="group",
+        bargap=0.5,
+        bargroupgap=0,
+        dragmode="pan",
+        hovermode="x unified",
+        spikedistance=1,
+        hoverdistance=1,
+    )
+    fig.show()
 
     # This plot has 2 axes
     if not external_axes:
@@ -122,25 +270,13 @@ def darkpool_ats_otc(
     if not external_axes:
         theme.visualize_output()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "dpotc_ats",
-        ats,
-    )
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "dpotc_otc",
-        otc,
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dpotc_ats", ats)
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dpotc_otc", otc)
 
 
 @log_start_end(log=logger)
 def plot_dark_pools_ats(
-    data: pd.DataFrame,
-    symbols: List,
-    external_axes: Optional[List[plt.Axes]] = None,
+    data: pd.DataFrame, symbols: List, external_axes: Optional[List[plt.Axes]] = None
 ):
     """Plots promising tickers based on growing ATS data
 
@@ -222,12 +358,7 @@ def darkpool_otc(
 
         plot_dark_pools_ats(df_ats, symbols, external_axes)
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "prom",
-            df_ats,
-        )
+        export_data(export, os.path.dirname(os.path.abspath(__file__)), "prom", df_ats)
     else:
         console.print("[red]Could not get data[/red]\n")
         return
