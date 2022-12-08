@@ -248,8 +248,8 @@ def check_for_updates() -> None:
 
     if r is not None and r.status_code == 200:
         latest_tag_name = r.json()["tag_name"]
-        latest_version = version.parse(latest_tag_name)  # type: ignore
-        current_version = version.parse(obbff.VERSION)  # type: ignore
+        latest_version = version.parse(latest_tag_name)  # type:ignore
+        current_version = version.parse(obbff.VERSION)  # type:ignore
 
         if check_valid_versions(latest_version, current_version):
 
