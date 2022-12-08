@@ -149,3 +149,4 @@ class Show:
 if not JUPYTER_NOTEBOOK:
     setattr(go.Figure, "_show", go.Figure.show)
     go.Figure.show = Show.show
+    PLOTLY_BACKEND.start()
