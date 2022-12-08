@@ -52,13 +52,7 @@ Coins can be filtered by category. For a list of defined categories enter:
 categories:dict = openbb.crypto.disc.categories_keys()
 ```
 
-```python
-categories[10]
-```
-
-```console
-'big-data'
-```
+The category chosen below is called, `big-data`.
 
 ```python
 openbb.crypto.disc.coins(category = categories[10], sortby = 'market_cap').head(5)
