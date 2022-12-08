@@ -6,6 +6,7 @@ import os
 from typing import List, Optional
 
 import matplotlib.pyplot as plt
+import pandas as pd
 from plotly.subplots import make_subplots
 
 from openbb_terminal.base_helpers import PLT_FONT, PLT_TA_COLORWAY, go
@@ -174,10 +175,7 @@ def short_interest_volume(
         )
         fig.add_trace(
             go.Bar(
-                x=df["date"],
-                y=df["Total Vol. [1M]"] / 1_000_000,
-                name="Total Volume",
-                yaxis="y2",
+                x=df["date"], y=df["Total Vol. [1M]"], name="Total Volume", yaxis="y2"
             ),
             row=1,
             col=1,
@@ -185,10 +183,7 @@ def short_interest_volume(
         )
         fig.add_trace(
             go.Bar(
-                x=df["date"],
-                y=df["Short Vol. [1M]"] / 1_000_000,
-                name="Short Volume",
-                yaxis="y2",
+                x=df["date"], y=df["Short Vol. [1M]"], name="Short Volume", yaxis="y2"
             ),
             row=1,
             col=1,
@@ -198,7 +193,7 @@ def short_interest_volume(
             go.Scatter(
                 name="Short Vol. %",
                 x=df["date"].values,
-                y=100 * df["Short Vol. %"],
+                y=df["Short Vol. %"],
                 line=dict(width=2),
                 opacity=1,
                 showlegend=False,
@@ -211,6 +206,7 @@ def short_interest_volume(
         fig.update_traces(hovertemplate="%{y:.2f}")
         fig.update_layout(
             margin=dict(l=10, r=0, t=40, b=50),
+            template="plotly_dark",
             colorway=PLT_TA_COLORWAY,
             title=f"<b>Price vs Short Volume Interest for {symbol}</b>",
             title_x=0.025,
@@ -255,6 +251,18 @@ def short_interest_volume(
             hovermode="x unified",
             spikedistance=1,
             hoverdistance=1,
+        )
+        dt_unique_days = pd.bdate_range(
+            start=df["date"].iloc[-1], end=df["date"].iloc[0]
+        )
+        dt_unique = [d.strftime("%Y-%m-%d") for d in df["date"].tolist()]
+        mkt_holidays = [
+            d
+            for d in dt_unique_days.strftime("%Y-%m-%d").tolist()
+            if d not in dt_unique
+        ]
+        fig.update_xaxes(
+            rangebreaks=[dict(bounds=["sat", "mon"]), dict(values=mkt_holidays)]
         )
         fig.show()
 
