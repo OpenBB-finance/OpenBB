@@ -31,9 +31,9 @@ def test_news(mocker):
     finviz_view.news(symbol="TSLA", limit=5)
 
 
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-def test_analyst(mocker):
-    # REMOVE FINVIZ STOCK_PAGE CACHE
-    mocker.patch.object(target=finviz.main_func, attribute="STOCK_PAGE", new={})
-    finviz_view.analyst(symbol="TSLA", export="")
+# @pytest.mark.vcr
+# @pytest.mark.record_stdout
+# def test_analyst(mocker):
+#     # REMOVE FINVIZ STOCK_PAGE CACHE
+#     mocker.patch.object(target=finviz.main_func, attribute="STOCK_PAGE", new={})
+#     finviz_view.analyst(symbol="TSLA", export="")
