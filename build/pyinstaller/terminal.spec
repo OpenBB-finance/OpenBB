@@ -53,8 +53,6 @@ added_files = [
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
     (os.path.join(pathex, "prophet"), "prophet"),
-    (os.path.join(pathex, "riskfolio"), "riskfolio"),
-    (os.path.join(pathex, "astropy"), "astropy"),
     (os.path.join(pathex, "frozendict", "VERSION"), "frozendict"),
     (
         os.path.join(pathex, "linearmodels", "datasets"),
@@ -98,15 +96,12 @@ hidden_imports = [
     "frozendict",
     "textwrap3",
     "pyEX",
-    "tensorflow",
     "feedparser",
     "pymongo",
     "bson",
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
-    "riskfolio",
-    "astropy",
 ]
 
 
