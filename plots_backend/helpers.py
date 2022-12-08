@@ -161,9 +161,6 @@ class QtBackend:
         self.thread.join()
 
 
-PLOTLY_BACKEND = QtBackend()
-PLOTLY_BACKEND.start()
-
 # To avoid having plotly.js in the repo, we download it if it's not present
 if not (Path(__file__).parent.resolve() / "assets/plotly.js").exists():
     download = requests.get("https://cdn.plot.ly/plotly-2.16.1.min.js", stream=True)
@@ -181,5 +178,7 @@ def kill_subprocess():
     except psutil.NoSuchProcess:
         pass
 
+
+PLOTLY_BACKEND = QtBackend()
 
 atexit.register(kill_subprocess)
