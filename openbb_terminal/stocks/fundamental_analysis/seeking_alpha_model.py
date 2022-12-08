@@ -6,6 +6,7 @@ import requests
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import lambda_long_number_format
 
 logger = logging.getLogger(__name__)
 
@@ -119,6 +120,12 @@ def get_estimates_eps(ticker: str) -> pd.DataFrame:
 
             eps_estimates["change %"] = percent
 
+            # format correction (before return, so calculation still works)
+            eps_estimates["consensus_mean"] = lambda_long_number_format(float(eps_estimates["consensus_mean"]))
+            eps_estimates["consensus_low"] = lambda_long_number_format(float(eps_estimates["consensus_low"]))
+            eps_estimates["consensus_high"] = lambda_long_number_format(float(eps_estimates["consensus_high"]))
+            eps_estimates["actual"] = lambda_long_number_format(float(eps_estimates["actual"]))
+            
             # df append replacement
             new_row = pd.DataFrame(eps_estimates, index=[0])
             output = pd.concat([output, new_row])
@@ -204,6 +211,9 @@ def get_estimates_rev(ticker: str) -> pd.DataFrame:
             revenue_estimates["consensus_mean"] = seek_object["revenue_consensus_mean"][
                 str(i)
             ][0]["dataitemvalue"]
+
+
+
             revenue_estimates["analysts"] = seek_object["revenue_num_of_estimates"][
                 str(i)
             ][0]["dataitemvalue"]
@@ -239,6 +249,13 @@ def get_estimates_rev(ticker: str) -> pd.DataFrame:
                 percent = float(0)
 
             revenue_estimates["change %"] = percent
+
+            # format correction (before return, so calculation still works)
+            revenue_estimates["consensus_mean"] = lambda_long_number_format(float(revenue_estimates["consensus_mean"]))
+            revenue_estimates["consensus_low"] = lambda_long_number_format(float(revenue_estimates["consensus_low"]))
+            revenue_estimates["consensus_high"] = lambda_long_number_format(float(revenue_estimates["consensus_high"]))
+            revenue_estimates["actual"] = lambda_long_number_format(float(revenue_estimates["actual"]))
+            
             # df append replacement
             new_row = pd.DataFrame(revenue_estimates, index=[0])
             output = pd.concat([output, new_row])
