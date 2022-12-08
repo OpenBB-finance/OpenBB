@@ -1,4 +1,4 @@
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments,E1101
 """Multiple Seasonalities and Trend using Loess (MSTL) Model"""
 __docformat__ = "numpy"
 
