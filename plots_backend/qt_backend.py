@@ -65,7 +65,6 @@ def _create_qApp():
         app = QtWidgets.QApplication.instance()
         if app is None:
             try:
-                # AA_ShareOpenGLContexts
                 QtWidgets.QApplication.setHighDpiScaleFactorRoundingPolicy(
                     QtCore.Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
                 )
@@ -209,7 +208,6 @@ class PlotlyFigureHTMLWebView(QWebEngineView):
             modebar=dict(
                 orientation="v", bgcolor=bg_color, color="gold", activecolor="#d1030d"
             ),
-            legend=dict(x=0, y=1),
             dragmode="pan",
         )
         self.figure_ = figure
@@ -279,6 +277,7 @@ class QtPlotlyFigureWindow(QtWidgets.QMainWindow):
         active_windows.append(self)
 
         self.closing.connect(lambda: active_windows.remove(self))
+        self.on_open.connect(self.widget_.view_.setFocus)
 
         self._download_popup = QtWidgets.QDialog(self)
         self.widget_.view_.page().profile().setDownloadPath(
@@ -405,11 +404,6 @@ class QtFigure(go.Figure):
         )
         self._window._download_popup.close()
 
-    def _on_open(self):
-        """Handle the figure window being opened."""
-        # Makes sure the figure is shown on top of the main window
-        self._window.set_figure(self)
-
     def get_fig_size(self):
         """Gets the width and height of the plotly figure."""
         height = 565 if self.layout.height is None else self.layout.height
@@ -433,7 +427,7 @@ class WebSocketServer(QtCore.QObject):
         if self.server.listen(QtNetwork.QHostAddress.LocalHost, websocket_port):
             print(f"Listening on port {self.server.serverPort()}")
         else:
-            print("error")
+            print("Error listening on port")
             sys.exit(1)
 
         self.server.acceptError.connect(self.onAcceptError)
@@ -451,7 +445,15 @@ class WebSocketServer(QtCore.QObject):
 
     def processTextMessage(self, message):
         """Process the incoming message."""
+        print("onTextMessageReceived")
         try:
+            # If the message is "init", we create a figure and close it immediately.
+            # This is so the first plot doesn't have to wait for the QtWebEngine to initialize.
+            if message == "init":
+                window = QtPlotlyFigureWindow(QtFigure())
+                window.close()
+                del window
+                return
             data = json.loads(message)
             fig = QtFigure(data)
             self.figures.append(fig)

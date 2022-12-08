@@ -132,20 +132,23 @@ PLT_TA_COLORWAY = [
 
 # pylint: disable=no-member
 class Show:
+    """Monkey patch the show method to send the figure to the backend."""
+
     def show(self) -> None:
         """Show the figure."""
         self.update_layout(template="plotly_dark")  # type: ignore
+        try:
+            # We send the figure to the backend to be displayed
+            PLOTLY_BACKEND.send_fig(self)
+        except Exception:
+            # If the backend fails, we just show the figure normally
+            # This is a very rare case, but it's better to have a fallback
+            if os.environ.get("DEBUG", False):
+                console.print_exception()
+            self._show()  # type: ignore
 
-        if not os.environ.get("INSTALLER", False):
-            try:
-                PLOTLY_BACKEND.send_fig(self)
-            except Exception:
-                try:
-                    PLOTLY_BACKEND.send_fig(self)
-                except Exception:
-                    self._show()  # type: ignore
 
-
+# If we are not in a notebook, we monkey patch the show method
 if not JUPYTER_NOTEBOOK:
     setattr(go.Figure, "_show", go.Figure.show)
     go.Figure.show = Show.show

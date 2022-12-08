@@ -1,7 +1,6 @@
 # pylint: disable=c-extension-no-member
 import asyncio
 import atexit
-import contextlib
 import os
 import pickle
 import subprocess
@@ -88,8 +87,11 @@ def run_qt_backend():
         return False
 
     if not is_running("qt_backend.py"):
+        # if the qt_backend is not running, we run it in a subprocess
         kwargs = {"stdout": subprocess.PIPE, "stderr": subprocess.PIPE}
 
+        # if the DEBUG env variable is set to True
+        # we don't want to hide the output of the subprocess
         if os.environ.get("DEBUG", False):
             kwargs = {}
 
@@ -103,6 +105,8 @@ def run_qt_backend():
 
 class QtBackend:
     def __new__(cls):
+        # We only want to create one instance of the class
+        # so we use the __new__ method to check if the instance already exists
         if not hasattr(cls, "instance"):
             cls.instance = super(QtBackend, cls).__new__(cls)
         return cls.instance
@@ -111,6 +115,7 @@ class QtBackend:
         self.socket_port: int = None
         self.figures: List[go.Figure] = []
         self.thread = None
+        self.init_engine = False
 
     async def connect(self, retry: bool = False):
         """Connects to qt_backend and maintains the connection until the terminal is closed"""
@@ -124,6 +129,13 @@ class QtBackend:
             async with connect(
                 f"ws://localhost:{self.socket_port}", open_timeout=6, timeout=1
             ) as websocket:
+                if not self.init_engine:
+                    # sends init message to qt_backend to initialize the engine
+                    # this is only done once, and makes sure the first plot doesn't
+                    # have to wait for the engine to be initialized
+                    await websocket.send("init")
+                    self.init_engine = True
+
                 while True:
                     if self.figures:
                         data = self.figures.pop(0)

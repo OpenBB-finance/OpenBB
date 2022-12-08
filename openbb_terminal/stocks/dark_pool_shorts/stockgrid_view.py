@@ -156,6 +156,7 @@ def short_interest_volume(
             cols=1,
             shared_xaxes=True,
             vertical_spacing=0.06,
+            horizontal_spacing=0,
             row_width=[0.3, 0.6],
             specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
         )
@@ -205,7 +206,7 @@ def short_interest_volume(
 
         fig.update_traces(hovertemplate="%{y:.2f}")
         fig.update_layout(
-            margin=dict(l=10, r=0, t=40, b=50),
+            margin=dict(l=10, r=0, t=60, b=50),
             template="plotly_dark",
             colorway=PLT_TA_COLORWAY,
             title=f"<b>Price vs Short Volume Interest for {symbol}</b>",
@@ -244,8 +245,9 @@ def short_interest_volume(
                 orientation="h",
                 yanchor="bottom",
                 y=1.02,
-                xanchor="left",
+                xanchor="right",
                 x=1,
+                font=dict(size=14, family="Fire Code"),
                 bgcolor="rgba(0, 0, 0, 0)",
             ),
             hovermode="x unified",
