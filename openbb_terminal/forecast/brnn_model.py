@@ -148,7 +148,9 @@ def get_brnn_data(
             past_covariate_val,
         )
     best_model = BlockRNNModel.load_from_checkpoint(
-        model_name=model_save_name, best=True, work_dir=USER_FORECAST_MODELS_DIRECTORY,
+        model_name=model_save_name,
+        best=True,
+        work_dir=USER_FORECAST_MODELS_DIRECTORY,
     )
 
     helpers.print_tensorboard_logs(model_save_name, USER_FORECAST_MODELS_DIRECTORY)
