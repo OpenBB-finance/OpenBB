@@ -72,13 +72,13 @@ def _create_qApp():
             except AttributeError:
                 pass
             qApp = QtWidgets.QApplication(["openbb"])
-            qApp.setQuitOnLastWindowClosed(True)
             qApp.setPalette(palette)
             qApp.setApplicationName("openbb")
             qApp.setApplicationVersion("2.0.0")
             qApp.setOrganizationName("OpenBB")
             qApp.setOrganizationDomain("https://openbb.co")
-            qApp.setWindowIcon(QtGui.QIcon("favicon.ico"))
+            qApp.setWindowIcon(QtGui.QIcon(str(QT_PATH / "assets/favicon.ico")))
+            qApp.setQuitOnLastWindowClosed(False)
             try:
                 import ctypes  # pylint: disable=import-outside-toplevel
 
@@ -304,7 +304,6 @@ class QtPlotlyFigureWindow(QtWidgets.QMainWindow):
     def closeEvent(self, event):
         self.closing.emit()
         super().closeEvent(event)
-        self.deleteLater()
 
     def sizeHint(self):
         """Return the size hint for the widget."""

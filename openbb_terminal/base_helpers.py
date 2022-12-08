@@ -5,7 +5,7 @@ from typing import Any, Callable, Literal
 import plotly.graph_objects as go
 from rich.console import Console
 
-from plots_backend.helpers import QtBackend, run_qt_backend
+from plots_backend.helpers import PLOTLY_BACKEND
 
 console = Console()
 
@@ -138,12 +138,10 @@ class Show:
 
         if not os.environ.get("INSTALLER", False):
             try:
-                run_qt_backend()
-                QtBackend().send_fig(self)
+                PLOTLY_BACKEND.send_fig(self)
             except Exception:
                 try:
-                    run_qt_backend()
-                    QtBackend().send_fig(self)
+                    PLOTLY_BACKEND.send_fig(self)
                 except Exception:
                     self._show()  # type: ignore
 

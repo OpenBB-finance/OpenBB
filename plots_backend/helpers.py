@@ -4,8 +4,9 @@ import os
 import pickle
 import subprocess
 import sys
-import warnings
+import threading
 from pathlib import Path
+from typing import List
 
 import plotly.graph_objects as go
 import psutil
@@ -13,6 +14,7 @@ import requests
 from websockets.client import connect
 
 QT_PATH = Path(__file__).parent.resolve()
+BACKEND_RUNNING = False
 
 
 class PlotsBackendError(Exception):
@@ -61,6 +63,11 @@ def get_qt_backend_socket(retry: bool = False, error: bool = False):
 
 
 def run_qt_backend():
+    """Runs the qt_backend.py script in a subprocess"""
+
+    if BACKEND_RUNNING:
+        return True
+
     qt_backend_pid = get_qt_backend_pid()
 
     def is_running(process_name):
@@ -69,6 +76,8 @@ def run_qt_backend():
             process = psutil.Process(qt_backend_pid)
             if len(process.cmdline()) > 1 and process_name in process.cmdline()[1]:
                 if process.is_running():
+                    global BACKEND_RUNNING  # pylint: disable=global-statement
+                    BACKEND_RUNNING = True
                     return True
         except psutil.NoSuchProcess:
             pass
@@ -84,24 +93,34 @@ def run_qt_backend():
         subprocess.Popen(
             [sys.executable, "qt_backend.py"], shell=True, cwd=QT_PATH, **kwargs
         )
-
         return True
 
     return False
 
 
 class QtBackend:
+    def __new__(cls):
+        if not hasattr(cls, "instance"):
+            cls.instance = super(QtBackend, cls).__new__(cls)
+        return cls.instance
+
     def __init__(self):
         self.socket_port = get_qt_backend_socket()
+        self.figures: List[go.Figure] = []
+        self.thread = None
 
-    async def connect(self, data: dict, retry: bool = False, **kwargs):
+    async def connect(self, retry: bool = False):
         """Connect to server and send data."""
         try:
 
             async with connect(
-                f"ws://localhost:{self.socket_port}", open_timeout=6, **kwargs
+                f"ws://localhost:{self.socket_port}", open_timeout=6, timeout=1
             ) as websocket:
-                await websocket.send(data)
+                while True:
+                    if self.figures:
+                        data = self.figures.pop(0)
+                        await websocket.send(data.to_json())
+                    await asyncio.sleep(0.1)
 
         except asyncio.exceptions.TimeoutError as time:
             raise PlotsBackendError from time
@@ -109,25 +128,35 @@ class QtBackend:
         except ConnectionRefusedError as conn:
             get_qt_backend_socket(error=True)
             if not retry:
-                await self.connect(data, True, **kwargs)
+                await self.connect(True)
             else:
+                global BACKEND_RUNNING  # pylint: disable=global-statement
+                BACKEND_RUNNING = False
                 raise PlotsBackendError from conn
 
-    def send_fig(self, fig: go.Figure, timeout: int = 1):
+    def start(self):
         """Connect to server and send data."""
-        data = fig.to_json()
+        thread = threading.Thread(
+            target=asyncio.run, args=(self.connect(),), daemon=True
+        )
+        self.thread = thread
+        thread.start()
 
-        warnings.filterwarnings("ignore", category=DeprecationWarning)
-        try:
-            asyncio.get_event_loop()
-        except RuntimeError:
-            asyncio.set_event_loop(asyncio.new_event_loop())
+    def send_fig(self, fig: go.Figure):
+        if not BACKEND_RUNNING:
+            run_qt_backend()
+            self.start()
+        if not self.thread.is_alive():
+            self.start()
+        self.figures.append(fig)
 
-        if asyncio.get_event_loop().is_running():
-            asyncio.create_task(self.connect(data, timeout=timeout))
-        else:
-            asyncio.run(self.connect(data, timeout=timeout))
+    def close(self):
+        """Close the connection."""
+        self.thread.join()
 
+
+PLOTLY_BACKEND = QtBackend()
+PLOTLY_BACKEND.start()
 
 # To avoid having plotly.js in the repo, we download it if it's not present
 if not (Path(__file__).parent.resolve() / "assets/plotly.js").exists():
