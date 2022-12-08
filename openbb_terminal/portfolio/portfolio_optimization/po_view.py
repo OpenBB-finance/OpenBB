@@ -7,7 +7,6 @@ __docformat__ = "numpy"
 import logging
 import math
 import warnings
-from typing import List
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -29,6 +28,7 @@ from openbb_terminal.portfolio.portfolio_optimization.statics import (
     RISK_CHOICES,
     TIME_FACTOR,
 )
+from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import get_kwarg
 from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.rich_config import console
 
@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_ef(portfolio_engine: PoEngine = None, symbols: List[str] = None, **kwargs):
+def display_ef(portfolio_engine: PoEngine = None, **kwargs):
     """Display efficient frontier
 
     Parameters
@@ -46,8 +46,6 @@ def display_ef(portfolio_engine: PoEngine = None, symbols: List[str] = None, **k
     portfolio_engine : PoEngine, optional
         Portfolio optimization engine, by default None
         Use `portfolio.po.load` to load a portfolio engine
-    symbols : List[str], optional
-        List of symbols, by default None
     interval : str, optional
         Interval to get data, by default '3y'
     start_date : str, optional
@@ -99,32 +97,45 @@ def display_ef(portfolio_engine: PoEngine = None, symbols: List[str] = None, **k
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> frontier = openbb.portfolio.po.ef_chart(symbols=["AAPL", "MSFT", "AMZN"])
+    >>> d = {
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
+    >>> openbb.portfolio.po.ef_chart(portfolio_engine=p)
 
     >>> from openbb_terminal.sdk import openbb
     >>> p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> frontier = openbb.portfolio.po.ef_chart(portfolio_engine=p)
+    >>> openbb.portfolio.po.ef_chart(portfolio_engine=p)
     """
 
-    valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        symbols, portfolio_engine, kwargs
-    )
-
-    n_portfolios = valid_kwargs.get("n_portfolios", 100)
-    freq = valid_kwargs.get("freq", "D")
-    risk_measure = valid_kwargs.get("risk_measure", "MV")
-    risk_free_rate = valid_kwargs.get("risk_free_rate", 0.0)
-    alpha = valid_kwargs.get("alpha", 0.05)
+    n_portfolios = get_kwarg("n_portfolios", kwargs)
+    freq = get_kwarg("freq", kwargs)
+    risk_measure = get_kwarg("risk_measure", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    alpha = get_kwarg("alpha", kwargs)
 
     # Pop chart args
-    tangency = valid_kwargs.pop("tangency", False)
-    plot_tickers = valid_kwargs.pop("plot_tickers", False)
-    external_axes = valid_kwargs.pop("external_axes", None)
+    tangency = kwargs.pop("tangency", False)
+    plot_tickers = kwargs.pop("plot_tickers", False)
+    external_axes = kwargs.pop("external_axes", None)
 
     frontier, mu, cov, stock_returns, weights, X1, Y1, port = get_ef(
-        valid_portfolio_engine,
-        valid_symbols,
-        **valid_kwargs,
+        portfolio_engine,
+        **kwargs,
     )
 
     risk_free_rate = risk_free_rate / TIME_FACTOR[freq.upper()]
@@ -250,28 +261,27 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
     >>> d = {
-            "SECTOR": {
-                "AAPL": "INFORMATION TECHNOLOGY",
-                "MSFT": "INFORMATION TECHNOLOGY",
-                "AMZN": "CONSUMER DISCRETIONARY",
-            },
-            "CURRENT_INVESTED_AMOUNT": {
-                "AAPL": "100000.0",
-                "MSFT": "200000.0",
-                "AMZN": "300000.0",
-            },
-            "CURRENCY": {
-                "AAPL": "USD",
-                "MSFT": "USD",
-                "AMZN": "USD",
-            },
-        }
-    >>> p.set_categories_dict(categories=d)
+                "SECTOR": {
+                    "AAPL": "INFORMATION TECHNOLOGY",
+                    "MSFT": "INFORMATION TECHNOLOGY",
+                    "AMZN": "CONSUMER DISCRETIONARY",
+                },
+                "CURRENT_INVESTED_AMOUNT": {
+                    "AAPL": "100000.0",
+                    "MSFT": "200000.0",
+                    "AMZN": "300000.0",
+                },
+                "CURRENCY": {
+                    "AAPL": "USD",
+                    "MSFT": "USD",
+                    "AMZN": "USD",
+                },
+            }
+    >>> p = openbb.portfolio.po.load(symbols_categories=d)
     >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
     >>> p.get_available_categories()
-    ['SECTOR']
+    ['SECTOR', 'CURRENCY']
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="pie")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="dd")
@@ -286,7 +296,6 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
      'SECTOR',
      'INDUSTRY',
      'COUNTRY',
-     'CURRENT_INVESTED_AMOUNT',
      'CURRENCY']
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type="pie")
     >>> openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="hist")
@@ -370,15 +379,15 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
         valid_kwargs["colors"] = theme.get_colors()
 
         if chart_type == "pie":
-            display_pie(**kwargs)
+            display_pie(**valid_kwargs)
         elif chart_type == "hist":
-            display_hist(**kwargs)
+            display_hist(**valid_kwargs)
         elif chart_type == "dd":
-            display_dd(**kwargs)
-        elif chart_type == "rc_chart":
-            display_rc(**kwargs)
+            display_dd(**valid_kwargs)
+        elif chart_type == "rc":
+            display_rc(**valid_kwargs)
         elif chart_type == "heat":
-            display_heat(**kwargs)
+            display_heat(**valid_kwargs)
         else:
             console.print(
                 "Invalid chart type, please choose from the following: pie, hist, dd, rc, heat"
@@ -393,6 +402,13 @@ def display_heat(**kwargs):
     category = kwargs.get("category", None)
     title = kwargs.get("title", "")
     external_axes = kwargs.get("external_axes", None)
+
+    if len(weights) == 1:
+        single_key = list(weights.keys())[0].upper()
+        console.print(
+            f"[yellow]Heatmap needs at least two values for '{category}', only found '{single_key}'.[/yellow]"
+        )
+        return
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -470,15 +486,16 @@ def display_rc(**kwargs):
     weights = kwargs.get("weights", None)
     data = kwargs.get("data", None)
     colors = kwargs.get("colors", None)
-    risk_measure = kwargs.get("risk_measure", "MV")
-    risk_free_rate = kwargs.get("risk_free_rate", 0.0)
     title = kwargs.get("title", "")
-    alpha = kwargs.get("alpha", 0.05)
-    a_sim = kwargs.get("a_sim", 100.0)
-    beta = kwargs.get("beta", 0.0)
-    b_sim = kwargs.get("b_sim", 0.0)
-    freq = kwargs.get("freq", "D")
     external_axes = kwargs.get("external_axes", None)
+
+    risk_measure = get_kwarg("risk_measure", kwargs)
+    risk_free_rate = get_kwarg("risk_free_rate", kwargs)
+    alpha = get_kwarg("alpha", kwargs)
+    a_sim = get_kwarg("a_sim", kwargs)
+    beta = get_kwarg("beta", kwargs)
+    b_sim = get_kwarg("b_sim", kwargs)
+    freq = get_kwarg("freq", kwargs)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -521,8 +538,9 @@ def display_hist(**kwargs):
     data = kwargs.get("data", None)
     colors = kwargs.get("colors", None)
     title = kwargs.get("title", "")
-    alpha = kwargs.get("alpha", 0.05)
     external_axes = kwargs.get("external_axes", None)
+
+    alpha = kwargs.get("alpha", 0.05)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -559,8 +577,9 @@ def display_dd(**kwargs):
     data = kwargs.get("data", None)
     colors = kwargs.get("colors", None)
     title = kwargs.get("title", "")
-    alpha = kwargs.get("alpha", 0.05)
     external_axes = kwargs.get("external_axes", None)
+
+    alpha = get_kwarg("alpha", kwargs)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

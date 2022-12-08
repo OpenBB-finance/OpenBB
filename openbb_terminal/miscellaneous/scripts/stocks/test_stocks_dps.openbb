@@ -6,11 +6,11 @@ ctb -source stocksera
 hsi
 pos
 sidtc
-load -t gme
+load -t ${ticker=gme}
 spos
 psi
 ftd
-load aapl -i 5
+load ${ticker=aapl} -i 5
 ftd -n 5 --raw
 dpotc
 exit

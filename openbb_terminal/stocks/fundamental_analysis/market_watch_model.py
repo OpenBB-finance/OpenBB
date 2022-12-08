@@ -143,7 +143,8 @@ def get_sean_seah_warnings(
     symbol : str
         Ticker to look at
     debug : bool, optional
-        [description], by default False
+        Whether or not to return debug messages.
+        Defaults to False.
 
     Returns
     -------
@@ -154,6 +155,7 @@ def get_sean_seah_warnings(
     List[str]
         List of debug messages
     """
+
     # From INCOME STATEMENT, get: 'EPS (Basic)', 'Net Income', 'Interest Expense', 'EBITDA'
     url_financials = (
         f"https://www.marketwatch.com/investing/stock/{symbol}/financials/income"
@@ -246,36 +248,31 @@ def get_sean_seah_warnings(
     df_financials = df_financials.set_index("Item")
 
     # Create dataframe to compute meaningful metrics from sean seah book
-    df_sean_seah = df_sean_seah.append(
-        df_financials.loc[
-            [
-                "Total Shareholders' Equity",
-                "Liabilities & Shareholders' Equity",
-                "Long-Term Debt",
-            ]
-        ]
-    )
+    transfer_cols = [
+        "Total Shareholders' Equity",
+        "Liabilities & Shareholders' Equity",
+        "Long-Term Debt",
+    ]
+    df_sean_seah = pd.concat([df_sean_seah, df_financials.loc[transfer_cols]])
 
     # Clean these metrics by parsing their values to float
     df_sean_seah = df_sean_seah.applymap(lambda x: lambda_clean_data_values_to_float(x))
+    df_sean_seah = df_sean_seah.T
 
     # Add additional necessary metrics
-    series = (
-        df_sean_seah.loc["Net Income"] / df_sean_seah.loc["Total Shareholders' Equity"]
+    df_sean_seah["ROE"] = (
+        df_sean_seah["Net Income"] / df_sean_seah["Total Shareholders' Equity"]
     )
-    series.name = "ROE"
-    df_sean_seah = df_sean_seah.append(series)
 
-    series = df_sean_seah.loc["EBITDA"] / df_sean_seah.loc["Interest Expense"]
-    series.name = "Interest Coverage Ratio"
-    df_sean_seah = df_sean_seah.append(series)
-
-    series = (
-        df_sean_seah.loc["Net Income"]
-        / df_sean_seah.loc["Liabilities & Shareholders' Equity"]
+    df_sean_seah["Interest Coverage Ratio"] = (
+        df_sean_seah["EBITDA"] / df_sean_seah["Interest Expense"]
     )
-    series.name = "ROA"
-    df_sean_seah = df_sean_seah.append(series)
+
+    df_sean_seah["ROA"] = (
+        df_sean_seah["Net Income"] / df_sean_seah["Liabilities & Shareholders' Equity"]
+    )
+    df_sean_seah = df_sean_seah.sort_index()
+    df_sean_seah = df_sean_seah.T
 
     n_warnings = 0
     warnings = []

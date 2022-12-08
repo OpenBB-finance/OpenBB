@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from openbb_terminal.forecast import expo_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -43,7 +44,7 @@ def display_expo_forecast(
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
-    dataset_name str
+    dataset_name: str
         The name of the ticker to be predicted
     target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
@@ -77,7 +78,7 @@ def display_expo_forecast(
     naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the same
         as the previous day's closing price. Defaults to False.
-    external_axes:Optional[List[plt.axes]]
+    external_axes: Optional[List[plt.axes]]
         External axes to plot on
     """
     data = helpers.clean_data(data, start_date, end_date, target_column, None)
@@ -126,6 +127,7 @@ def display_expo_forecast(
         external_axes=external_axes,
     )
     if residuals:
-        helpers.plot_residuals(
-            _model, None, ticker_series, forecast_horizon=forecast_horizon
-        )
+        console.print("[red]Expo model does not support residuals at this time[/red]\n")
+        # helpers.plot_residuals(
+        #     _model, None, ticker_series, forecast_horizon=forecast_horizon
+        # )

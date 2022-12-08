@@ -33,8 +33,8 @@ jobs:
 
       - name: Building the Docker image
         run: |
-          source docker/compose.env
-          source docker/build.sh
+          source build/docker/compose.env
+          source build/docker/build.sh
           echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE" >> $GITHUB_ENV
           
       - name: Publishing the Docker image

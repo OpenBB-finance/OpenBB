@@ -288,6 +288,10 @@ def generate_data(
     current_price: float, options: List[Dict[str, int]], underlying: int
 ) -> Tuple[List[float], List[float], List[float]]:
     """Gets x values, and y values before and after premiums"""
+
+    # Remove empty elements from options
+    options = [o for o in options if o]
+
     x_vals = get_x_values(current_price, options)
     base = current_price
     total_cost = sum(x["cost"] for x in options)
@@ -535,7 +539,7 @@ def get_greeks(
 
     risk_free = rf if rf is not None else get_rf()
     expire_dt = datetime.strptime(expire, "%Y-%m-%d")
-    dif = (expire_dt - datetime.now()).seconds / (60 * 60 * 24)
+    dif = (expire_dt - datetime.now()).total_seconds() / (60 * 60 * 24)
 
     strikes = []
     for _, row in chain.iterrows():

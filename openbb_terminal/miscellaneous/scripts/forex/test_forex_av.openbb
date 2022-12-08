@@ -1,13 +1,13 @@
 forex
 load -h
 load -i
-to EUR
+to ${currency=EUR}
 quote -h
 quote -argument
 quote
 load
 candle
-from ILS
+from ${currency_vs=ILS}
 quote
 load
 candle

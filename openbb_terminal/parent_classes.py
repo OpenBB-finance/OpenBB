@@ -35,7 +35,6 @@ from openbb_terminal.helper_funcs import (
     get_flair,
     load_json,
     parse_and_split_input,
-    parse_simple_args,
     prefill_form,
     screenshot,
     search_wikipedia,
@@ -419,7 +418,15 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            open_openbb_documentation(self.PATH, command=ns_parser.command)
+            arg_type = ""
+            if ns_parser.command in self.CHOICES_COMMANDS:
+                arg_type = "command"
+            elif ns_parser.command in self.CHOICES_MENUS:
+                arg_type = "menu"
+
+            open_openbb_documentation(
+                self.PATH, command=ns_parser.command, arg_type=arg_type
+            )
 
     @log_start_end(log=logger)
     def call_quit(self, _) -> None:
@@ -454,14 +461,23 @@ class BaseController(metaclass=ABCMeta):
                 self.queue.insert(0, "quit")
 
     @log_start_end(log=logger)
-    def call_resources(self, _) -> None:
+    def call_resources(self, other_args: List[str]) -> None:
         """Process resources command."""
-        if os.path.isfile(self.FILE_PATH):
-            with open(self.FILE_PATH) as f:
-                console.print(Markdown(f.read()))
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="resources",
+            description="Display available markdown resources.",
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
 
-        else:
-            console.print("No resources available.\n")
+        if ns_parser:
+            if os.path.isfile(self.FILE_PATH):
+                with open(self.FILE_PATH) as f:
+                    console.print(Markdown(f.read()))
+
+            else:
+                console.print("No resources available.\n")
 
     @log_start_end(log=logger)
     def call_support(self, other_args: List[str]) -> None:
@@ -514,7 +530,7 @@ class BaseController(metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
             prefill_form(
@@ -546,7 +562,7 @@ class BaseController(metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-w")
 
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
 
         glossary_file = os.path.join(os.path.dirname(__file__), "glossary.json")
         glossary_dict = load_json(glossary_file)
@@ -583,7 +599,7 @@ class BaseController(metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
 
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
             if ns_parser.expression:
@@ -610,7 +626,7 @@ class BaseController(metaclass=ABCMeta):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-r")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
             global SESSION_RECORDED_NAME
@@ -673,13 +689,56 @@ class BaseController(metaclass=ABCMeta):
             "Default target is plot if there is one open, otherwise it's terminal window. "
             " In case the user wants the terminal window, it can be forced with '-t` or '--terminal' flag passed.",
         )
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
             screenshot()
 
+    @staticmethod
+    def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
+        """Parse list of arguments into the supplied parser.
+
+        Parameters
+        ----------
+        parser: argparse.ArgumentParser
+            Parser with predefined arguments
+        other_args: List[str]
+            List of arguments to parse
+
+        Returns
+        -------
+        ns_parser:
+            Namespace with parsed arguments
+        """
+        parser.add_argument(
+            "-h", "--help", action="store_true", help="show this help message"
+        )
+
+        if obbff.USE_CLEAR_AFTER_CMD:
+            system_clear()
+
+        try:
+            (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+        except SystemExit:
+            # In case the command has required argument that isn't specified
+            console.print("\n")
+            return None
+
+        if ns_parser.help:
+            txt_help = parser.format_help()
+            console.print(f"[help]{txt_help}[/help]")
+            return None
+
+        if l_unknown_args:
+            console.print(
+                f"The following args couldn't be interpreted: {l_unknown_args}\n"
+            )
+
+        return ns_parser
+
+    @classmethod
     def parse_known_args_and_warn(
-        self,
+        cls,
         parser: argparse.ArgumentParser,
         other_args: List[str],
         export_allowed: int = NO_EXPORT,
@@ -730,7 +789,6 @@ class BaseController(metaclass=ABCMeta):
                 type=check_file_type_saved(choices_export),
                 dest="export",
                 help=help_export,
-                choices=choices_export,
             )
 
         if raw:
@@ -750,7 +808,7 @@ class BaseController(metaclass=ABCMeta):
                 help="Number of entries to show in data.",
                 type=check_positive,
             )
-        sources = get_ordered_list_sources(f"{self.PATH}{parser.prog}")
+        sources = get_ordered_list_sources(f"{cls.PATH}{parser.prog}")
         # Allow to change source if there is more than one
         if len(sources) > 1:
             parser.add_argument(
@@ -1213,7 +1271,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                     ns_parser.vs = "usd"
             (self.current_df) = cryptocurrency_helpers.load(
                 symbol=ns_parser.coin.lower(),
-                vs_currency=ns_parser.vs,
+                to_symbol=ns_parser.vs,
                 end_date=ns_parser.end.strftime("%Y-%m-%d"),
                 start_date=ns_parser.start.strftime("%Y-%m-%d"),
                 interval=ns_parser.interval,

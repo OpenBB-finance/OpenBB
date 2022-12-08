@@ -83,7 +83,7 @@ def display_global_market(export: str = "") -> None:
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = paprika.get_global_market()
+    df = paprika.get_global_info()
     df_data = df.copy()
     df["Value"] = df["Value"].apply(  # pylint:disable=unsupported-assignment-operation
         lambda x: lambda_long_number_format_with_type_check(x)

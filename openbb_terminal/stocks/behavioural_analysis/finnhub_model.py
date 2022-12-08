@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 
 from datetime import datetime, timedelta
-from typing import List, Dict
+from typing import List, Dict, Optional
 import finnhub
 import pandas as pd
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
@@ -20,8 +20,8 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_FINNHUB_KEY"])
 def get_company_news(
     symbol: str,
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> List[Dict]:
     """Get news from a company. [Source: Finnhub]
 
@@ -29,9 +29,9 @@ def get_company_news(
     ----------
     symbol : str
         company ticker to look for news articles
-    start_date: str
+    start_date: Optional[str]
         date to start searching articles, with format YYYY-MM-DD
-    end_date: str
+    end_date: Optional[str]
         date to end searching articles, with format YYYY-MM-DD
 
     Returns
@@ -103,8 +103,17 @@ def get_headlines_sentiment(
     ----------
     symbol : str
         Ticker of company
+
+    Returns
+    ----------
+    pd.DataFrame
+        The news article information
     """
     start = datetime.now() - timedelta(days=30)
+    if not symbol:
+        console.print("[red]Do not run this command without setting a ticker.[/red]\n")
+        return pd.DataFrame()
+
     articles = get_company_news(
         symbol.upper(),
         start_date=start.strftime("%Y-%m-%d"),

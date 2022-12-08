@@ -1,40 +1,39 @@
 """Cryptocurrency helpers"""
 # pylint: disable=too-many-lines,too-many-return-statements
 
-from __future__ import annotations
-
-import os
-import json
-from datetime import datetime, timedelta
 import difflib
+import json
 import logging
+from typing import Union, Optional, List
+import os
+from datetime import datetime, timedelta
 
-import pandas as pd
-import numpy as np
 import ccxt
 import matplotlib.pyplot as plt
-from matplotlib.ticker import LogLocator, ScalarFormatter
-import yfinance as yf
 import mplfinance as mpf
+import numpy as np
+import pandas as pd
+import yfinance as yf
+from matplotlib.ticker import LogLocator, ScalarFormatter
 from pycoingecko import CoinGeckoAPI
 
-from openbb_terminal.helper_funcs import (
-    lambda_long_number_format,
-    plot_autoscale,
-    export_data,
-    print_rich_table,
-    lambda_long_number_format_y_axis,
-    is_valid_axes_count,
-)
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.rich_config import console
-from openbb_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from openbb_terminal.cryptocurrency.discovery import pycoingecko_model
+from openbb_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import (
-    get_ohlc,
     get_coin_tokenomics,
+    get_ohlc,
 )
+from openbb_terminal.helper_funcs import (
+    export_data,
+    is_valid_axes_count,
+    lambda_long_number_format,
+    lambda_long_number_format_y_axis,
+    plot_autoscale,
+    print_rich_table,
+)
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -115,13 +114,13 @@ YF_CURRENCY = [
 
 
 def check_datetime(
-    ck_date: datetime | str | None = None, start: bool = True
+    ck_date: Union[datetime, Union[str, None]] = None, start: bool = True
 ) -> datetime:
     """Checks if given argument is string and attempts to convert to datetime.
 
     Parameters
     ----------
-    ck_date : Optional[Union[datetime, str]], optional
+    ck_date : Union[datetime, Union[str, None]], optional
         Date to check, by default None
     start : bool, optional
         If True and string is invalid, will return 1100 days ago
@@ -325,7 +324,7 @@ def load_from_ccxt(
     start_date: datetime = (datetime.now() - timedelta(days=1100)),
     interval: str = "1440",
     exchange: str = "binance",
-    vs_currency: str = "usdt",
+    to_symbol: str = "usdt",
 ) -> pd.DataFrame:
     """Load crypto currency data [Source: https://github.com/ccxt/ccxt]
 
@@ -340,7 +339,7 @@ def load_from_ccxt(
         Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
     exchange: str:
         The exchange to get data from.
-    vs_currency: str
+    to_symbol: str
         Quote Currency (Defaults to usdt)
 
     Returns
@@ -349,7 +348,7 @@ def load_from_ccxt(
         Dataframe consisting of price and volume data
     """
     df = pd.DataFrame()
-    pair = f"{symbol.upper()}/{vs_currency.upper()}"
+    pair = f"{symbol.upper()}/{to_symbol.upper()}"
 
     try:
         df = fetch_ccxt_ohlc(
@@ -372,7 +371,7 @@ def load_from_ccxt(
 def load_from_coingecko(
     symbol: str,
     start_date: datetime = (datetime.now() - timedelta(days=1100)),
-    vs_currency: str = "usdt",
+    to_symbol: str = "usdt",
 ) -> pd.DataFrame:
     """Load crypto currency data [Source: https://www.coingecko.com/]
 
@@ -382,7 +381,7 @@ def load_from_coingecko(
         Coin to get
     start_date: datetime
         The datetime to start at
-    vs_currency: str
+    to_symbol: str
         Quote Currency (Defaults to usdt)
 
     Returns
@@ -403,9 +402,9 @@ def load_from_coingecko(
         console.print(f"{symbol} not found in Coingecko\n")
         return df
 
-    df = get_ohlc(coingecko_id, vs_currency, days)
+    df = get_ohlc(coingecko_id, to_symbol, days)
     df_coin = yf.download(
-        f"{symbol}-{vs_currency}",
+        f"{symbol}-{to_symbol}",
         end=datetime.now(),
         start=start_date,
         progress=False,
@@ -422,7 +421,7 @@ def load_from_yahoofinance(
     symbol: str,
     start_date: datetime = (datetime.now() - timedelta(days=1100)),
     interval: str = "1440",
-    vs_currency: str = "usdt",
+    to_symbol: str = "usdt",
     end_date: datetime = datetime.now(),
 ) -> pd.DataFrame:
     """Load crypto currency data [Source: https://finance.yahoo.com/]
@@ -436,7 +435,7 @@ def load_from_yahoofinance(
     interval: str
         The interval between data points in minutes.
         Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
-    vs_currency: str
+    to_symbol: str
         Quote Currency (Defaults to usdt)
     end_date: datetime
        The datetime to end at
@@ -446,7 +445,7 @@ def load_from_yahoofinance(
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
-    pair = f"{symbol}-{vs_currency}"
+    pair = f"{symbol}-{to_symbol}"
     if int(interval) >= 1440:
         YF_INTERVAL_MAP = {
             "1440": "1d",
@@ -488,11 +487,11 @@ def load_from_yahoofinance(
 
 def load(
     symbol: str,
-    start_date: datetime | str | None = None,
-    interval: str = "1440",
+    start_date: Union[datetime, Union[str, None]] = None,
+    interval: Union[str, int] = "1440",
     exchange: str = "binance",
-    vs_currency: str = "usdt",
-    end_date: datetime | str | None = None,
+    to_symbol: str = "usdt",
+    end_date: Union[datetime, Union[str, None]] = None,
     source: str = "CCXT",
 ) -> pd.DataFrame:
     """Load crypto currency to get data for
@@ -501,16 +500,16 @@ def load(
     ----------
     symbol: str
         Coin to get
-    start_date: str or datetime, optional
+    start_date: Union[datetime, Union[str, None]], optional
         Start date to get data from with. - datetime or string format (YYYY-MM-DD)
-    interval: str
+    interval: Union[str, int]
         The interval between data points in minutes.
         Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
     exchange: str:
         The exchange to get data from.
-    vs_currency: str
+    to_symbol: str
         Quote Currency (Defaults to usdt)
-    end_date: str or datetime, optional
+    end_date: Union[datetime, Union[str, None]], optional
         End date to get data from with. - datetime or string format (YYYY-MM-DD)
     source: str
         The source of the data
@@ -521,7 +520,8 @@ def load(
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
-
+    if isinstance(interval, int):
+        interval = str(interval)
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
 
@@ -532,13 +532,11 @@ def load(
     end_date = check_datetime(end_date, start=False)
 
     if source == "CCXT":
-        return load_from_ccxt(symbol, start_date, interval, exchange, vs_currency)
+        return load_from_ccxt(symbol, start_date, interval, exchange, to_symbol)
     if source == "CoinGecko":
-        return load_from_coingecko(symbol, start_date, vs_currency)
+        return load_from_coingecko(symbol, start_date, to_symbol)
     if source == "YahooFinance":
-        return load_from_yahoofinance(
-            symbol, start_date, interval, vs_currency, end_date
-        )
+        return load_from_yahoofinance(symbol, start_date, interval, to_symbol, end_date)
     console.print("[red]Invalid source sent[/red]\n")
     return pd.DataFrame()
 
@@ -612,118 +610,7 @@ def show_quick_performance(
         headers=df.columns,
         title=f"{symbol.upper()}/{current_currency.upper()} Performance {exchange_str}",
     )
-
-
-# TODO: Find better algorithm then difflib.get_close_matches to find most similar coins
-
-
-def find(
-    query: str,
-    source: str = "CoinGecko",
-    key: str = "symbol",
-    limit: int = 10,
-    export: str = "",
-) -> None:
-    """Find similar coin by coin name,symbol or id.
-
-    If you don't know exact name or id of the Coin at CoinGecko CoinPaprika, Binance or Coinbase
-    you use this command to display coins with similar name, symbol or id to your search query.
-    Example: coin name is something like "polka". So I can try: find -c polka -k name -t 25
-    It will search for coin that has similar name to polka and display top 25 matches.
-
-        -c, --coin stands for coin - you provide here your search query
-        -k, --key it's a searching key. You can search by symbol, id or name of coin
-        -t, --top it displays top N number of records.
-
-    Parameters
-    ----------
-    query: str
-        Cryptocurrency
-    source: str
-        Data source of coins.  CoinGecko (cg) or CoinPaprika (cp) or Binance (bin), Coinbase (cb)
-    key: str
-        Searching key (symbol, id, name)
-    limit: int
-        Number of records to display
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-
-    if source == "CoinGecko":
-        coins_df = pycoingecko_model.get_coin_list()
-        coins_list = coins_df[key].to_list()
-        if key in ["symbol", "id"]:
-            query = query.lower()
-
-        sim = difflib.get_close_matches(query, coins_list, limit)
-        df = pd.Series(sim).to_frame().reset_index()
-        df.columns = ["index", key]
-        coins_df.drop("index", axis=1, inplace=True)
-        df = df.merge(coins_df, on=key)
-
-    elif source == "CoinPaprika":
-        coins_df = coinpaprika_model.get_coin_list()
-        coins_list = coins_df[key].to_list()
-        keys = {"name": "title", "symbol": "upper", "id": "lower"}
-
-        func_key = keys[key]
-        query = getattr(query, str(func_key))()
-
-        sim = difflib.get_close_matches(query, coins_list, limit)
-        df = pd.Series(sim).to_frame().reset_index()
-        df.columns = ["index", key]
-        df = df.merge(coins_df, on=key)
-
-    elif source == "Binance":
-
-        # TODO: Fix it in future. Determine if user looks for symbol like ETH or ethereum
-        if len(query) > 5:
-            key = "id"
-
-        coins_df_gecko = pycoingecko_model.get_coin_list()
-        coins_df_bin = load_binance_map()
-        coins = pd.merge(
-            coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
-        )
-        coins_list = coins[key].to_list()
-
-        sim = difflib.get_close_matches(query, coins_list, limit)
-        df = pd.Series(sim).to_frame().reset_index()
-        df.columns = ["index", key]
-        df = df.merge(coins, on=key)
-
-    elif source == "Coinbase":
-        if len(query) > 5:
-            key = "id"
-
-        coins_df_gecko = pycoingecko_model.get_coin_list()
-        coins_df_bin = load_coinbase_map()
-        coins = pd.merge(
-            coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
-        )
-        coins_list = coins[key].to_list()
-
-        sim = difflib.get_close_matches(query, coins_list, limit)
-        df = pd.Series(sim).to_frame().reset_index()
-        df.columns = ["index", key]
-        df = df.merge(coins, on=key)
-
-    else:
-        console.print(
-            "Couldn't execute find methods for CoinPaprika, Binance, Coinbase or CoinGecko\n"
-        )
-        df = pd.DataFrame()
-
-    print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="Similar Coins"
-    )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "find",
-        df,
-    )
+    console.print()
 
 
 def load_yf_data(symbol: str, currency: str, interval: str, days: int):
@@ -862,7 +749,7 @@ def plot_chart(
     source: str = "",
     exchange: str = "",
     interval: str = "",
-    external_axes: list[plt.Axes] | None = None,
+    external_axes: Union[List[plt.Axes], None] = None,
     yscale: str = "linear",
 ) -> None:
     """Load data for Technical Analysis
@@ -877,6 +764,12 @@ def plot_chart(
         Currency (only used for chart title), by default ""
     yscale: str
         Scale for y axis of plot Either linear or log
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> eth_df = openbb.crypto.load("ETH")
+    >>> openbb.crypto.chart(prices_df=eth_df, to_symbol="usdt", from_symbol="eth", source="binance")
     """
     del interval
 
@@ -896,7 +789,8 @@ def plot_chart(
         prices_df["Volume"] = prices_df["Volume"] / 1_000_000
 
     plot_candles(
-        candles_df=prices_df,
+        symbol=to_symbol,
+        data=prices_df,
         title=title,
         volume=True,
         ylabel="Volume [1M]" if volume_mean > 1_000_000 else "Volume",
@@ -907,20 +801,42 @@ def plot_chart(
     console.print()
 
 
-def plot_candles(
-    candles_df: pd.DataFrame,
+def plot_candles(  # pylint: disable=too-many-arguments
+    symbol: str,
+    data: pd.DataFrame = None,
+    start_date: Union[datetime, Union[str, None]] = None,
+    end_date: Union[datetime, Union[str, None]] = None,
+    interval: Union[str, int] = "1440",
+    exchange: str = "binance",
+    to_symbol: str = "usdt",
+    source: str = "CCXT",
     volume: bool = True,
     ylabel: str = "",
     title: str = "",
-    external_axes: list[plt.Axes] | None = None,
+    external_axes: Union[List[plt.Axes], None] = None,
     yscale: str = "linear",
-) -> None:
+    raw: bool = False,
+) -> Optional[pd.DataFrame]:
     """Plot candle chart from dataframe. [Source: Binance]
 
     Parameters
     ----------
-    candles_df: pd.DataFrame
+    symbol: str
+        Ticker name
+    data: pd.DataFrame
         Dataframe containing time and OHLCV
+    start_date: Union[datetime, Union[str, None]]
+        Start date for data
+    end_date: Union[datetime, Union[str, None]]
+        End date for data
+    interval: Union[str, int]
+        Interval for data
+    exchange: str
+        Exchange to use
+    to_symbol: str
+        Currency to use
+    source: str
+        Source to use
     volume: bool
         If volume data shall be plotted, by default True
     ylabel: str
@@ -931,7 +847,28 @@ def plot_candles(
         External axes (1 axis is expected in the list), by default None
     yscale : str
         Scaling for y axis.  Either linear or log
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.crypto.candle(symbol="eth")
+    >>> openbb.crypto.candle(symbol="btc", raw=True)
     """
+
+    if data is None:
+        data = load(
+            symbol=symbol,
+            start_date=start_date,
+            end_date=end_date,
+            interval=interval,
+            exchange=exchange,
+            to_symbol=to_symbol,
+            source=source,
+        )
+
+    if raw:
+        return data
+
     candle_chart_kwargs = {
         "type": "candle",
         "style": theme.mpf_style,
@@ -955,16 +892,17 @@ def plot_candles(
         candle_chart_kwargs["figratio"] = (10, 7)
         candle_chart_kwargs["figscale"] = 1.10
         candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, ax = mpf.plot(candles_df, **candle_chart_kwargs)
+        fig, ax = mpf.plot(data, **candle_chart_kwargs)
 
         fig.suptitle(
-            f"\n{title}",
+            f"\n{symbol if title == '' else title}",
             horizontalalignment="left",
             verticalalignment="top",
             x=0.05,
             y=1,
         )
-        lambda_long_number_format_y_axis(candles_df, "Volume", ax)
+        if volume:
+            lambda_long_number_format_y_axis(data, "Volume", ax)
         if yscale == "log":
             ax[0].yaxis.set_major_formatter(ScalarFormatter())
             ax[0].yaxis.set_major_locator(
@@ -975,7 +913,7 @@ def plot_candles(
     else:
         nr_external_axes = 2 if volume else 1
         if not is_valid_axes_count(external_axes, nr_external_axes):
-            return
+            return None
 
         if volume:
             (ax, volume) = external_axes
@@ -985,14 +923,16 @@ def plot_candles(
 
         candle_chart_kwargs["ax"] = ax
 
-        mpf.plot(candles_df, **candle_chart_kwargs)
+        mpf.plot(data, **candle_chart_kwargs)
+
+    return None
 
 
 def plot_order_book(
     bids: np.ndarray,
     asks: np.ndarray,
     coin: str,
-    external_axes: list[plt.Axes] | None = None,
+    external_axes: Union[List[plt.Axes], None] = None,
 ) -> None:
     """
     Plots Bid/Ask. Can be used for Coinbase and Binance

@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=C0301,C0302
 
 import logging
-from typing import Any, Tuple
+from typing import Any, Optional, Tuple
 from datetime import datetime, timedelta
 import re
 import pandas as pd
@@ -81,8 +81,8 @@ base_url2 = "https://data.messari.io/api/v2/"
 def get_marketcap_dominance(
     symbol: str,
     interval: str = "1d",
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Returns market dominance of a coin over time
     [Source: https://messari.io/]
@@ -93,9 +93,9 @@ def get_marketcap_dominance(
         Crypto symbol to check market cap dominance
     interval : str
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
-    start_date : int
+    start_date : Optional[str]
         Initial date like string (e.g., 2021-10-01)
-    end_date : int
+    end_date : Optional[str]
         End date like string (e.g., 2021-10-01)
 
     Returns
@@ -126,8 +126,8 @@ def get_messari_timeseries(
     symbol: str,
     timeseries_id: str,
     interval: str = "1d",
-    start_date: str = None,
-    end_date: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> Tuple[pd.DataFrame, str]:
     """Returns messari timeseries
     [Source: https://messari.io/]
@@ -140,9 +140,9 @@ def get_messari_timeseries(
         Messari timeserie id
     interval : str
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
-    start : int
+    start : Optional[str]
         Initial date like string (e.g., 2021-10-01)
-    end : int
+    end : Optional[str]
         End date like string (e.g., 2021-10-01)
 
     Returns

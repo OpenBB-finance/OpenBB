@@ -573,37 +573,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         #     dict(country="portugal", export="csv", raw=False),
         # ),
         (
-            "call_spread",
-            [
-                "--countries=United states, United Kingdom, France",
-                "--export=csv",
-            ],
-            "investingcom_view.display_spread_matrix",
-            [],
-            dict(
-                countries=["united states", "united kingdom", "france"],
-                maturity="10Y",
-                change=False,
-                color="openbb",
-                raw=False,
-                export="csv",
-            ),
-        ),
-        (
-            "call_spread",
-            ["--group=EZ", "--color=binary", "--maturity=5Y", "--change=True"],
-            "investingcom_view.display_spread_matrix",
-            [],
-            dict(
-                countries="EZ",
-                maturity="5Y",
-                change=True,
-                color="binary",
-                raw=False,
-                export="",
-            ),
-        ),
-        (
             "call_events",
             [
                 "--export=csv",
@@ -718,7 +687,7 @@ def test_call_bigmac_countries(mocker):
     # MOCK READ_CSV
     mocker.patch(
         target=f"{path_controller}.nasdaq_model.check_country_code_type",
-        return_value=["MOCK_COUNTRY_CODE"],
+        return_value=["VNM"],
     )
 
     # MOCK DISPLAY_BIG_MAC_INDEX
@@ -730,14 +699,14 @@ def test_call_bigmac_countries(mocker):
 
     controller = economy_controller.EconomyController(queue=None)
     other_args = [
-        "--countries=MOCK_COUNTRY_CODE",
+        "--countries=VNM",
         "--raw",
         "--export=csv",
     ]
     controller.call_bigmac(other_args=other_args)
 
     mock_print.assert_called_with(
-        country_codes=["MOCK_COUNTRY_CODE"],
+        country_codes=["VNM"],
         raw=True,
         export="csv",
     )

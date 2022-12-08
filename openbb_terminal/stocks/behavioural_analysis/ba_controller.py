@@ -29,7 +29,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.rich_config import console, MenuText
 
 # pylint:disable=R0904,C0302
 
@@ -71,6 +71,7 @@ class BehaviouralAnalysisController(StockBaseController):
     reddit_sort = ["relevance", "hot", "top", "new", "comments"]
     reddit_time = ["hour", "day", "week", "month", "year", "all"]
     PATH = "/stocks/ba/"
+    CHOICES_GENERATION = True
 
     def __init__(self, ticker: str, start: datetime, queue: List[str] = None):
         """Constructor"""
@@ -80,111 +81,7 @@ class BehaviouralAnalysisController(StockBaseController):
         self.start = start
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            choices["load"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
-                "-i": "--interval",
-                "--prepost": {},
-                "-p": "--prepost",
-                "--file": None,
-                "-f": "--file",
-                "--monthly": {},
-                "-m": "--monthly",
-                "--weekly": {},
-                "-w": "--weekly",
-                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
-                "-r": "--iexrange",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
-                },
-            }
-            choices["headlines"]["--raw"] = {}
-            choices["wsb"] = {
-                "--new": {},
-                "--limit": None,
-                "-l": "--limit",
-            }
-            limit = {
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["watchlist"] = limit
-            choices["popular"] = {
-                "--limit": None,
-                "-l": "--limit",
-                "--num": one_to_hundred,
-                "-n": "--num",
-                "--sub": None,
-                "-s": "--sub",
-            }
-            choices["spacc"] = {
-                "--popular": {},
-                "-p": "--popular",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["spac"] = limit
-            choices["getdd"] = {
-                "--limit": None,
-                "-l": "--limit",
-                "--days": one_to_hundred,
-                "-d": "--days",
-                "--all": {},
-                "-a": "--all",
-            }
-            choices["redditsent"] = {
-                "--sort": {c: {} for c in self.reddit_sort},
-                "-s": "--sort",
-                "--company": None,
-                "-c": "--company",
-                "--subreddits": None,
-                "--time": {c: {} for c in self.reddit_time},
-                "-t": "--time",
-                "--full": {},
-                "--graphic": {},
-                "-g": "--graphic",
-                "--display": {},
-                "-d": "--display",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["stalker"] = {
-                "--user": None,
-                "-u": "--user",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["messages"] = limit
-            choices["infer"] = limit
-            choices["sentiment"] = {
-                "--limit": None,
-                "-l": "--limit",
-                "--days": one_to_hundred,
-                "-d": "--days",
-                "--compare": {},
-                "-c": "--compare",
-            }
-            choices["mentions"] = {
-                "--start": None,
-                "-s": "--start",
-            }
-            choices["regions"] = limit
-            choices["mentions"] = {
-                "--start": None,
-                "-s": "--start",
-                "--words": None,
-                "-w": "--words",
-            }
-            choices["queries"] = limit
-            choices["rise"] = limit
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -740,7 +637,8 @@ class BehaviouralAnalysisController(StockBaseController):
             "--words",
             help="Select multiple sentences/words separated by commas. E.g. COVID,WW3,NFT",
             dest="words",
-            type=lambda s: [str(item) for item in s.split(",")],
+            nargs="+",
+            type=str,
             default=None,
         )
         if other_args and "-" not in other_args[0][0]:
@@ -751,6 +649,7 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 if ns_parser.words:
+                    words = " ".join(ns_parser.words).split(",")
                     df_stock = yf.download(
                         self.ticker,
                         start=ns_parser.start.strftime("%Y-%m-%d"),
@@ -761,7 +660,7 @@ class BehaviouralAnalysisController(StockBaseController):
                         google_view.display_correlation_interest(
                             symbol=self.ticker,
                             data=df_stock,
-                            words=ns_parser.words,
+                            words=words,
                             export=ns_parser.export,
                         )
                     else:
@@ -999,11 +898,11 @@ class BehaviouralAnalysisController(StockBaseController):
         )
 
         if ns_parser:
-            if not self.ticker:
+            if self.ticker:
+                cramer_view.display_cramer_ticker(
+                    symbol=self.ticker, raw=ns_parser.raw, export=ns_parser.export
+                )
+            else:
                 console.print(
                     "[red]No ticker loaded.  Please use load <ticker> first.\n[/red]"
                 )
-                return
-            cramer_view.display_cramer_ticker(
-                symbol=self.ticker, raw=ns_parser.raw, export=ns_parser.export
-            )

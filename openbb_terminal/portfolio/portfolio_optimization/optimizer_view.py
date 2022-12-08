@@ -225,68 +225,76 @@ def portfolio_performance(
         Number of CVaRs used to approximate Tail Gini of gains. If None
         it duplicates a_sim value. The default is None.
     """
-    freq = freq.upper()
-    weights = pd.Series(weights).to_frame()
-    returns = data @ weights
-    mu = returns.mean().item() * time_factor[freq]
-    sigma = returns.std().item() * time_factor[freq] ** 0.5
-    sharpe = (mu - risk_free_rate) / sigma
 
-    factor_1 = str(int(time_factor[freq])) + ") "
-    factor_2 = "√" + factor_1
+    try:
+        freq = freq.upper()
+        weights = pd.Series(weights).to_frame()
+        returns = data @ weights
+        mu = returns.mean().item() * time_factor[freq]
+        sigma = returns.std().item() * time_factor[freq] ** 0.5
+        sharpe = (mu - risk_free_rate) / sigma
 
-    print("\nAnnual (by " + factor_1 + f"expected return: {100 * mu:.2f}%")
-    print("Annual (by " + factor_2 + f"volatility: {100 * sigma:.2f}%")
-    print(f"Sharpe ratio: {sharpe:.4f}")
+        factor_1 = str(int(time_factor[freq])) + ") "
+        factor_2 = "√" + factor_1
 
-    if risk_measure != "MV":
-        risk = rp.Sharpe_Risk(
-            weights,
-            cov=data.cov(),
-            returns=data,
-            rm=risk_measure,
-            rf=risk_free_rate,
-            alpha=alpha,
-            a_sim=a_sim,
-            beta=beta,
-            b_sim=b_sim,
-        )
+        print("\nAnnual (by " + factor_1 + f"expected return: {100 * mu:.2f}%")
+        print("Annual (by " + factor_2 + f"volatility: {100 * sigma:.2f}%")
+        print(f"Sharpe ratio: {sharpe:.4f}")
 
-        drawdowns = [
-            "MDD",
-            "ADD",
-            "DaR",
-            "CDaR",
-            "EDaR",
-            "UCI",
-            "MDD_Rel",
-            "ADD_Rel",
-            "DaR_Rel",
-            "CDaR_Rel",
-            "EDaR_Rel",
-            "UCI_Rel",
-        ]
-
-        if risk_measure in drawdowns:
-            sharpe_2 = (mu - risk_free_rate) / risk
-            print(
-                risk_names[risk_measure.lower()].capitalize()
-                + " : "
-                + f"{100 * risk:.2f}%"
+        if risk_measure != "MV":
+            risk = rp.Sharpe_Risk(
+                weights,
+                cov=data.cov(),
+                returns=data,
+                rm=risk_measure,
+                rf=risk_free_rate,
+                alpha=alpha,
+                a_sim=a_sim,
+                beta=beta,
+                b_sim=b_sim,
             )
-        else:
-            risk = risk * time_factor[freq] ** 0.5
-            sharpe_2 = (mu - risk_free_rate) / risk
+
+            drawdowns = [
+                "MDD",
+                "ADD",
+                "DaR",
+                "CDaR",
+                "EDaR",
+                "UCI",
+                "MDD_Rel",
+                "ADD_Rel",
+                "DaR_Rel",
+                "CDaR_Rel",
+                "EDaR_Rel",
+                "UCI_Rel",
+            ]
+
+            if risk_measure in drawdowns:
+                sharpe_2 = (mu - risk_free_rate) / risk
+                print(
+                    risk_names[risk_measure.lower()].capitalize()
+                    + " : "
+                    + f"{100 * risk:.2f}%"
+                )
+            else:
+                risk = risk * time_factor[freq] ** 0.5
+                sharpe_2 = (mu - risk_free_rate) / risk
+                print(
+                    "Annual (by "
+                    + factor_2
+                    + risk_names[risk_measure.lower()]
+                    + " : "
+                    + f"{100 * risk:.2f}%"
+                )
+
             print(
-                "Annual (by "
-                + factor_2
+                "Return / "
                 + risk_names[risk_measure.lower()]
-                + " : "
-                + f"{100 * risk:.2f}%"
+                + f" ratio: {sharpe_2:.4f}"
             )
-
-        print(
-            "Return / " + risk_names[risk_measure.lower()] + f" ratio: {sharpe_2:.4f}"
+    except Exception as _:
+        console.print(
+            "[red]\nFailed to calculate portfolio performance indicators.[/red]"
         )
 
 
@@ -308,7 +316,7 @@ def display_weights(weights: dict, market_neutral: bool = False):
     if df.empty:
         return
 
-    if math.isclose(df.sum()["value"], 1, rel_tol=0.1):
+    if math.isclose(df.sum()["value"], 1, rel_tol=0.5):
         df["value"] = (df["value"] * 100).apply(lambda s: f"{s:.2f}") + " %"
         df["value"] = (
             df["value"]
@@ -416,6 +424,10 @@ def display_categories(
         title to display
     """
 
+    if column == "CURRENT_INVESTED_AMOUNT":
+        console.print(f"[yellow]'{column}' cannot be displayed as a category.[/yellow]")
+        return
+
     df = optimizer_model.get_categories(weights, categories, column)
 
     if df.empty:
@@ -452,12 +464,13 @@ def display_categories(
         )
     )
 
-    df.reset_index(inplace=True)
-    df.set_index("CURRENCY", inplace=True)
+    df.reset_index(level=1, inplace=True)
+    headers = [s.title() for s in list(df.columns)]
+    show_index = True
+    if column == "CURRENCY":
+        show_index = False
 
-    headers = list(df.columns)
-    headers = [s.title() for s in headers]
-    print_rich_table(df, headers=headers, show_index=True, title=title)
+    print_rich_table(df, headers=headers, show_index=show_index, title=title)
 
 
 @log_start_end(log=logger)
@@ -680,6 +693,10 @@ def display_equal_weight(
         value=value,
     )
 
+    if not weights:
+        console.print("There is no solution with these parameters.")
+        return {}
+
     if table:
         console.print(s_title)
         display_weights(weights)
@@ -710,9 +727,9 @@ def display_property_weighting(
     threshold: float = 0,
     method: str = "time",
     s_property: str = "marketCap",
-    risk_measure="mv",
+    risk_measure: str = "mv",
     risk_free_rate: float = 0,
-    alpha=0.05,
+    alpha: float = 0.05,
     value: float = 1,
     table: bool = False,
 ) -> Dict[str, float]:
@@ -793,6 +810,10 @@ def display_property_weighting(
         s_property=s_property,
         value=value,
     )
+
+    if not weights:
+        console.print("There is no solution with these parameters.")
+        return {}
 
     if table:
         console.print(s_title)
@@ -976,8 +997,8 @@ def display_mean_risk(
         value_short=value_short,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with these parameters")
+    if not weights:
+        console.print("There is no solution with these parameters.")
         return {}
 
     if table:
@@ -1145,11 +1166,8 @@ def display_max_sharpe(
         value_short=value_short,
     )
 
-    if stock_returns is None or stock_returns.empty:
-        return {}
-
-    if weights is None:
-        console.print("\n", "There is no solution with these parameters")
+    if not weights:
+        console.print("There is no solution with these parameters.")
         return {}
 
     if table:
@@ -1316,8 +1334,8 @@ def display_min_risk(
         value_short=value_short,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with these parameters")
+    if not weights:
+        console.print("There is no solution with these parameters.")
         return {}
 
     if table:
@@ -1484,8 +1502,8 @@ def display_max_util(
         value_short=value_short,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with these parameters")
+    if not weights:
+        console.print("There is no solution with these parameters.")
         return {}
 
     if table:
@@ -1652,8 +1670,8 @@ def display_max_ret(
         value_short=value_short,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with these parameters")
+    if not weights:
+        console.print("There is no solution with these parameters.")
         return {}
 
     if table:
@@ -1766,8 +1784,9 @@ def display_max_div(
         value=value,
         value_short=value_short,
     )
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+
+    if not weights:
+        console.print("There is no solution with these parameters.")
         return {}
 
     if table:
@@ -1881,8 +1900,8 @@ def display_max_decorr(
         value_short=value_short,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -2021,8 +2040,8 @@ def display_black_litterman(
         value_short=value_short,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -2155,110 +2174,113 @@ def display_ef(
         seed=seed,
     )
 
-    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+    try:
+        risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes[0]
 
-    ax = rp.plot_frontier(
-        w_frontier=frontier,
-        mu=mu,
-        cov=cov,
-        returns=stock_returns,
-        rm=risk_choices[risk_measure.lower()],
-        rf=risk_free_rate,
-        alpha=alpha,
-        cmap="RdYlBu",
-        w=weights,
-        label="",
-        marker="*",
-        s=16,
-        c="r",
-        t_factor=time_factor[freq.upper()],
-        ax=ax,
-    )
-
-    # Add risk free line
-    if tangency:
-        ret_sharpe = (mu @ weights).to_numpy().item() * time_factor[freq.upper()]
-        risk_sharpe = rp.Sharpe_Risk(
-            weights,
+        ax = rp.plot_frontier(
+            w_frontier=frontier,
+            mu=mu,
             cov=cov,
             returns=stock_returns,
             rm=risk_choices[risk_measure.lower()],
             rf=risk_free_rate,
             alpha=alpha,
-            # a_sim=a_sim,
-            # beta=beta,
-            # b_sim=b_sim,
+            cmap="RdYlBu",
+            w=weights,
+            label="",
+            marker="*",
+            s=16,
+            c="r",
+            t_factor=time_factor[freq.upper()],
+            ax=ax,
         )
-        if risk_choices[risk_measure.lower()] not in [
-            "ADD",
-            "MDD",
-            "CDaR",
-            "EDaR",
-            "UCI",
-        ]:
-            risk_sharpe = risk_sharpe * time_factor[freq.upper()] ** 0.5
 
-        y = ret_sharpe * 1.5
-        b = risk_free_rate * time_factor[freq.upper()]
-        m = (ret_sharpe - b) / risk_sharpe
-        x2 = (y - b) / m
-        x = [0, x2]
-        y = [b, y]
-        line = Line2D(x, y, label="Capital Allocation Line")
-        ax.set_xlim(xmin=min(X1) * 0.8)
-        ax.add_line(line)
-
-    ax.plot(X1, Y1, color="b")
-
-    plot_tickers = True
-    if plot_tickers:
-        ticker_plot = pd.DataFrame(columns=["ticker", "var"])
-        for ticker in port.cov.columns:
-            weight_df = pd.DataFrame({"weights": 1}, index=[ticker])
-            risk = rp.Sharpe_Risk(
-                weight_df,
-                cov=port.cov[ticker][ticker],
-                returns=stock_returns.loc[:, [ticker]],
+        # Add risk free line
+        if tangency:
+            ret_sharpe = (mu @ weights).to_numpy().item() * time_factor[freq.upper()]
+            risk_sharpe = rp.Sharpe_Risk(
+                weights,
+                cov=cov,
+                returns=stock_returns,
                 rm=risk_choices[risk_measure.lower()],
                 rf=risk_free_rate,
                 alpha=alpha,
+                # a_sim=a_sim,
+                # beta=beta,
+                # b_sim=b_sim,
             )
-
             if risk_choices[risk_measure.lower()] not in [
-                "MDD",
                 "ADD",
+                "MDD",
                 "CDaR",
                 "EDaR",
                 "UCI",
             ]:
-                risk = risk * time_factor[freq.upper()] ** 0.5
+                risk_sharpe = risk_sharpe * time_factor[freq.upper()] ** 0.5
 
-            ticker_plot = ticker_plot.append(
-                {"ticker": ticker, "var": risk}, ignore_index=True
+            y = ret_sharpe * 1.5
+            b = risk_free_rate * time_factor[freq.upper()]
+            m = (ret_sharpe - b) / risk_sharpe
+            x2 = (y - b) / m
+            x = [0, x2]
+            y = [b, y]
+            line = Line2D(x, y, label="Capital Allocation Line")
+            ax.set_xlim(xmin=min(X1) * 0.8)
+            ax.add_line(line)
+
+        ax.plot(X1, Y1, color="b")
+
+        plot_tickers = True
+        if plot_tickers:
+            ticker_plot = pd.DataFrame(columns=["ticker", "var"])
+            for ticker in port.cov.columns:
+                weight_df = pd.DataFrame({"weights": 1}, index=[ticker])
+                risk = rp.Sharpe_Risk(
+                    weight_df,
+                    cov=port.cov[ticker][ticker],
+                    returns=stock_returns.loc[:, [ticker]],
+                    rm=risk_choices[risk_measure.lower()],
+                    rf=risk_free_rate,
+                    alpha=alpha,
+                )
+
+                if risk_choices[risk_measure.lower()] not in [
+                    "MDD",
+                    "ADD",
+                    "CDaR",
+                    "EDaR",
+                    "UCI",
+                ]:
+                    risk = risk * time_factor[freq.upper()] ** 0.5
+
+                ticker_plot = ticker_plot.append(
+                    {"ticker": ticker, "var": risk}, ignore_index=True
+                )
+            ticker_plot = ticker_plot.set_index("ticker")
+            ticker_plot = ticker_plot.merge(
+                port.mu.T * time_factor[freq.upper()], right_index=True, left_index=True
             )
-        ticker_plot = ticker_plot.set_index("ticker")
-        ticker_plot = ticker_plot.merge(
-            port.mu.T * time_factor[freq.upper()], right_index=True, left_index=True
-        )
-        ticker_plot = ticker_plot.rename(columns={0: "ret"})
-        ax.scatter(ticker_plot["var"], ticker_plot["ret"])
-        for row in ticker_plot.iterrows():
-            ax.annotate(row[0], (row[1]["var"], row[1]["ret"]))
-    ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
-    ax.legend(loc="best", scatterpoints=1)
-    theme.style_primary_axis(ax)
-    l, b, w, h = ax.get_position().bounds
-    ax.set_position([l, b, w * 0.9, h])
-    ax1 = ax.get_figure().axes
-    ll, bb, ww, hh = ax1[-1].get_position().bounds
-    ax1[-1].set_position([ll * 1.02, bb, ww, hh])
-    if external_axes is None:
-        theme.visualize_output(force_tight_layout=False)
+            ticker_plot = ticker_plot.rename(columns={0: "ret"})
+            ax.scatter(ticker_plot["var"], ticker_plot["ret"])
+            for row in ticker_plot.iterrows():
+                ax.annotate(row[0], (row[1]["var"], row[1]["ret"]))
+        ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
+        ax.legend(loc="best", scatterpoints=1)
+        theme.style_primary_axis(ax)
+        l, b, w, h = ax.get_position().bounds
+        ax.set_position([l, b, w * 0.9, h])
+        ax1 = ax.get_figure().axes
+        ll, bb, ww, hh = ax1[-1].get_position().bounds
+        ax1[-1].set_position([ll * 1.02, bb, ww, hh])
+        if external_axes is None:
+            theme.visualize_output(force_tight_layout=False)
+    except Exception as _:
+        console.print("[red]Error plotting efficient frontier.[/red]")
 
 
 @log_start_end(log=logger)
@@ -2396,8 +2418,8 @@ def display_risk_parity(
         value=value,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -2537,8 +2559,8 @@ def display_rel_risk_parity(
         value=value,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -2802,8 +2824,8 @@ def display_hcp(
         value=value,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -3046,8 +3068,8 @@ def display_hrp(
         value=value,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -3298,8 +3320,8 @@ def display_herc(
         value=value,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -3561,8 +3583,8 @@ def display_nco(
         value=value,
     )
 
-    if weights is None:
-        console.print("\n", "There is no solution with this parameters")
+    if not weights:
+        console.print("There is no solution with this parameters")
         return {}
 
     if table:
@@ -3696,10 +3718,11 @@ def pie_chart_weights(
 
 @log_start_end(log=logger)
 def additional_plots(
-    weights,
+    weights: Dict,
     data: pd.DataFrame,
-    category: Dict = None,
-    title_opt: str = "",
+    category_dict: Dict = None,
+    category: str = "",
+    portfolio_name: str = "",
     freq: str = "D",
     risk_measure: str = "MV",
     risk_free_rate: float = 0,
@@ -3723,8 +3746,12 @@ def additional_plots(
         Dict of portfolio weights
     data: pd.DataFrame
         DataFrame of stock returns
-    title_opt: str
-        Title to be used on the pie chart
+    category_dict: Dict
+        Dict of categories
+    category: str
+        Category to plot
+    portfolio_name: str
+        Portfolio name
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
@@ -3790,21 +3817,24 @@ def additional_plots(
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
     """
-    if category is not None:
-        weights = pd.DataFrame.from_dict(
+
+    title_opt = category if not portfolio_name else category + " - " + portfolio_name
+
+    if category_dict is not None:
+        weights_df = pd.DataFrame.from_dict(
             data=weights, orient="index", columns=["value"], dtype=float
         )
         category_df = pd.DataFrame.from_dict(
-            data=category, orient="index", columns=["category"]
+            data=category_dict, orient="index", columns=["category"]
         )
-        weights = weights.join(category_df, how="inner")
-        weights.sort_index(inplace=True)
+        weights_df = weights_df.join(category_df, how="inner")
+        weights_df.sort_index(inplace=True)
 
         # Calculating classes returns
-        classes = list(set(weights["category"]))
-        weights_classes = weights.groupby(["category"]).sum()
-        matrix_classes = np.zeros((len(weights), len(classes)))
-        labels = weights["category"].tolist()
+        classes = list(set(weights_df["category"]))
+        weights_classes = weights_df.groupby(["category"]).sum()
+        matrix_classes = np.zeros((len(weights_df), len(classes)))
+        labels = weights_df["category"].tolist()
 
         j_value = 0
         for i in classes:
@@ -3813,23 +3843,23 @@ def additional_plots(
             )
             matrix_classes[:, j_value] = (
                 matrix_classes[:, j_value]
-                * weights["value"]
+                * weights_df["value"]
                 / weights_classes.loc[i, "value"]
             )
             j_value += 1
 
         matrix_classes = pd.DataFrame(
-            matrix_classes, columns=classes, index=weights.index
+            matrix_classes, columns=classes, index=weights_df.index
         )
         data = data @ matrix_classes
-        weights = weights_classes["value"].copy()
-        weights.replace(0, np.nan, inplace=True)
-        weights.dropna(inplace=True)
-        weights.sort_values(ascending=True, inplace=True)
-        data = data[weights.index.tolist()]
+        weights_df = weights_classes["value"].copy()
+        weights_df.replace(0, np.nan, inplace=True)
+        weights_df.dropna(inplace=True)
+        weights_df.sort_values(ascending=True, inplace=True)
+        data = data[weights_df.index.tolist()]
         data.columns = [i.title() for i in data.columns]
-        weights.index = [i.title() for i in weights.index]
-        weights = weights.to_dict()
+        weights_df.index = [i.title() for i in weights_df.index]
+        weights = weights_df.to_dict()
 
     colors = theme.get_colors()
     if pie:
@@ -3934,6 +3964,14 @@ def additional_plots(
             theme.visualize_output()
 
     if heat:
+
+        if len(weights) == 1:
+            single_key = list(weights.keys())[0].upper()
+            console.print(
+                f"[yellow]Heatmap needs at least two values for '{category}', only found '{single_key}'.[/yellow]"
+            )
+            return
+
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
@@ -3961,7 +3999,7 @@ def additional_plots(
         ax[0].grid(False)
         ax[0].axis("off")
 
-        if category is None:
+        if category_dict is None:
             # Vertical dendrogram
             l, b, w, h = ax[4].get_position().bounds
             l1 = l * 0.5
@@ -4004,7 +4042,7 @@ def additional_plots(
             theme.visualize_output(force_tight_layout=True)
 
 
-def display_show(weights: Dict, tables: List[str], categories: Dict[Any, Any]):
+def display_show(weights: Dict, tables: List[str], categories_dict: Dict[Any, Any]):
     """Display the results of the optimization.
 
     Parameters
@@ -4013,7 +4051,7 @@ def display_show(weights: Dict, tables: List[str], categories: Dict[Any, Any]):
         Dictionary of weights.
     tables : List[str]
         List of tables to display.
-    categories : Dict[Any, Any]
+    categories_dict : Dict[Any, Any]
         Dictionary of categories.
     """
 
@@ -4023,7 +4061,7 @@ def display_show(weights: Dict, tables: List[str], categories: Dict[Any, Any]):
         console.print("")
         display_categories(
             weights=weights,
-            categories=categories,
+            categories=categories_dict,
             column=t,
             title="Category - " + t.title(),
         )

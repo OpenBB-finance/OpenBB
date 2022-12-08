@@ -31,7 +31,6 @@ from openbb_terminal.economy import (
     yfinance_model,
     yfinance_view,
     investingcom_model,
-    investingcom_view,
     plot_view,
     commodity_view,
 )
@@ -159,6 +158,7 @@ class EconomyController(BaseController):
     stored_datasets = ""
 
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -176,167 +176,29 @@ class EconomyController(BaseController):
         self.DATASETS["index"] = pd.DataFrame()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            self.choices: dict = {c: {} for c in self.controller_choices}
-            self.choices["overview"] = {
-                "--type": {c: None for c in self.overview_options},
-                "-t": "--type",
+            choices: dict = self.choices_default
+            # This is still needed because we can't use choices and nargs separated by comma
+            choices["treasury"]["--type"] = {
+                c: {} for c in econdb_model.TREASURIES["instruments"]
             }
-            self.choices["futures"] = {
-                "--commodity": {c: {} for c in self.futures_commodities},
-                "-c": "--commodity",
-                "--sortby": {c: {} for c in self.wsj_sortby_cols_dict.keys()},
-                "-s": "--sortby",
-                "--reverse": {},
-                "-r": "--reverse",
+            choices["treasury"]["-t"] = "--type"
+            choices["macro"]["--parameters"] = {c: {} for c in econdb_model.PARAMETERS}
+            choices["macro"]["-p"] = "--parameters"
+            choices["macro"]["--countries"] = {
+                c: {} for c in econdb_model.COUNTRY_CODES
             }
-            self.choices["map"] = {
-                "--period": {c: {} for c in self.map_period_list},
-                "-p": "--period",
-                "--type": {c: {} for c in self.map_filter_list},
-                "-t": "--type",
+            choices["macro"]["-c"] = "--countries"
+            choices["fred"]["--parameter"] = {c: {} for c in self.fred_query.tolist()}
+            choices["fred"]["-p"] = "--parameter"
+            choices["index"]["--indices"] = {c: {} for c in yfinance_model.INDICES}
+            choices["index"]["-i"] = "--indices"
+            choices["bigmac"]["--countries"] = {
+                c: {} for c in nasdaq_model.get_country_codes()["Code"].values
             }
-            self.choices["bigmac"] = {
-                "--countries": {
-                    c: {} for c in nasdaq_model.get_country_codes()["Code"].values
-                },
-                "-c": "--countries",
-                "--codes": {},
-                "--raw": {},
-            }
-            self.choices["ycrv"] = {
-                "--country": {c: {} for c in investingcom_model.BOND_COUNTRIES},
-                "-c": "--country",
-                "--date": None,
-                "-d": "--date",
-                "--raw": {},
-                "--source": {
-                    "FRED": {},
-                },
-            }
-            # self.choices["spread"] = {
-            #     "--group": {c: None for c in investingcom_model.MATRIX_CHOICES},
-            #     "-g": "--group",
-            #     "--countries": {c: None for c in investingcom_model.BOND_COUNTRIES},
-            #     "-c": "--countries",
-            #     "--maturity": None,
-            #     "-m": "--maturity",
-            #     "--change": None,
-            #     "--color": {c: None for c in investingcom_view.COLORS},
-            # }
-            self.choices["events"] = {
-                "--country": {
-                    c.replace(" ", "_"): {}
-                    for c in investingcom_model.CALENDAR_COUNTRIES
-                },
-                "-c": "--country",
-                "--importance": {c: {} for c in investingcom_model.IMPORTANCES},
-                "-i": "--importance",
-                "--categories": {c: {} for c in investingcom_model.CATEGORIES},
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--limit": None,
-                "-l": "--limit",
-                "--raw": {},
-            }
-            self.choices["edebt"] = {
-                "--limit": None,
-                "-l": "--limit",
-            }
-            self.choices["rtps"] = {
-                "--raw": {},
-            }
-            self.choices["valuation"] = {
-                "--group": {c: {} for c in self.d_GROUPS},
-                "-g": "--group",
-                "--sortby": {c: {} for c in self.valuation_sort_cols},
-                "-s": "--sortby",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            self.choices["performance"] = {
-                "--group": {c: {} for c in self.d_GROUPS},
-                "-g": "--group",
-                "--sortby": {c: {} for c in self.performance_sort_list},
-                "-s": "--sortby",
-                "--reverse": {},
-                "-r": "--reverse",
-            }
-            self.choices["spectrum"] = {
-                "--group": {c: {} for c in self.d_GROUPS},
-                "-g": "--group",
-            }
-            self.choices["macro"] = {
-                "--parameters": {c: {} for c in econdb_model.PARAMETERS},
-                "-p": "--parameters",
-                "--countries": {c: {} for c in econdb_model.COUNTRY_CODES},
-                "-c": "--countries",
-                "--transform": {c: {} for c in econdb_model.TRANSFORM},
-                "-t": "--transform",
-                "--convert": {c: {} for c in econdb_model.COUNTRY_CURRENCIES},
-                "--show": {c: {} for c in self.macro_show},
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--raw": {},
-            }
-            self.choices["treasury"] = {
-                "--maturity": None,
-                "-m": "--maturity",
-                "--freq": {c: {} for c in econdb_model.TREASURIES["frequencies"]},
-                "--type": {c: {} for c in econdb_model.TREASURIES["instruments"]},
-                "-t": "--type",
-                "--show": {},
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--limit": None,
-                "-l": "--limit",
-                "--raw": {},
-            }
-            self.choices["fred"] = {
-                "--parameter": {c: {} for c in self.fred_query},
-                "-p": "--parameter",
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--query": None,
-                "-q": "--query",
-                "--raw": {},
-            }
-            self.choices["index"] = {
-                "--indices": {c: {} for c in yfinance_model.INDICES},
-                "-i": "--indices",
-                "--interval": {c: {} for c in self.index_interval},
-                "--show": {},
-                "--start": None,
-                "-s": "--start",
-                "--end": None,
-                "-e": "--end",
-                "--query": None,
-                "-q": "--query",
-                "--limit": None,
-                "-l": "--limit",
-                "--returns": {},
-                "-r": "--returns",
-                "--raw": {},
-            }
-            self.choices["plot"] = {
-                "--y1": None,
-                "--y2": None,
-                "--raw": {},
-                "--limit": None,
-                "-l": "--limit",
-            }
+            choices["bigmac"]["-c"] = "--countries"
 
-            self.choices["support"] = self.SUPPORT_CHOICES
-            self.choices["about"] = self.ABOUT_CHOICES
-
-            self.completer = NestedCompleter.from_nested_dict(self.choices)  # type: ignore
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def parse_input(self, an_input: str) -> List:
         """Parse controller input
@@ -594,7 +456,7 @@ class EconomyController(BaseController):
             help="Country codes to get data for.",
             dest="countries",
             default="USA",
-            type=nasdaq_model.check_country_code_type,
+            type=str,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -604,6 +466,7 @@ class EconomyController(BaseController):
             raw=True,
         )
         if ns_parser:
+            ns_parser.countries = list_from_str(ns_parser.countries)
             if ns_parser.codes:
                 console.print(
                     nasdaq_model.get_country_codes().to_string(index=False), "\n"
@@ -678,6 +541,7 @@ class EconomyController(BaseController):
             dest="currency",
             help="Convert the currency of the chosen country to a specified currency. To find the "
             "currency symbols use '--show countries'",
+            choices=econdb_model.COUNTRY_CURRENCIES,
             default=False,
         )
         if other_args and "-" not in other_args[0][0]:
@@ -796,6 +660,7 @@ class EconomyController(BaseController):
             "--query",
             type=str,
             action="store",
+            nargs="+",
             dest="query",
             help="Query the FRED database to obtain Series IDs given the query search term.",
         )
@@ -810,9 +675,8 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             parameters = list_from_str(ns_parser.parameter.upper())
-
             if ns_parser.query:
-                query = ns_parser.query.replace(",", " ")
+                query = " ".join(ns_parser.query)
                 df_search = fred_model.get_series_notes(search_query=query)
 
                 if not df_search.empty:
@@ -1141,15 +1005,6 @@ class EconomyController(BaseController):
             " at different maturities.",
         )
         parser.add_argument(
-            "-c",
-            "--country",
-            action="store",
-            dest="country",
-            default="united_states",
-            help="Yield curve for a country. Ex: united_states",
-        )
-
-        parser.add_argument(
             "-d",
             "--date",
             type=valid_date,
@@ -1164,102 +1019,14 @@ class EconomyController(BaseController):
             raw=True,
         )
         if ns_parser:
-            country = ns_parser.country.lower().replace("_", " ")
 
-            if country == "united states":
-                fred_view.display_yield_curve(
-                    ns_parser.date,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
-            else:
-                console.print("Source FRED is only available for united states.\n")
+            fred_view.display_yield_curve(
+                date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
 
             # TODO: Add `Investing` to sources again when `investpy` is fixed
-
-    @log_start_end(log=logger)
-    def call_spread(self, other_args: List[str]):
-        """Process spread command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="spread",
-            description="Generate bond spread matrix.",
-        )
-        parser.add_argument(
-            "-g",
-            "--group",
-            action="store",
-            dest="group",
-            choices=investingcom_model.MATRIX_CHOICES,
-            default="G7",
-            help="Show bond spread matrix for group of countries.",
-        )
-        parser.add_argument(
-            "-c",
-            "--countries",
-            action="store",
-            dest="countries",
-            type=str,
-            help="Show bond spread matrix for explicit list of countries.",
-        )
-        parser.add_argument(
-            "-m",
-            "--maturity",
-            action="store",
-            dest="maturity",
-            type=str,
-            default="10Y",
-            help="Specify maturity to compare rates.",
-        )
-        parser.add_argument(
-            "--change",
-            action="store",
-            dest="change",
-            type=bool,
-            default=False,
-            help="Get matrix of 1 day change in rates or spreads.",
-        )
-        parser.add_argument(
-            "--color",
-            action="store",
-            dest="color",
-            type=str,
-            choices=investingcom_view.COLORS,
-            default="openbb",
-            help="Set color palette on heatmap.",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            raw=True,
-        )
-        if ns_parser:
-            if ns_parser.countries:
-                countries_string = ns_parser.countries.replace("_", " ")
-                countries_list = investingcom_model.countries_string_to_list(
-                    countries_string
-                )
-
-                investingcom_view.display_spread_matrix(
-                    countries=countries_list,
-                    maturity=ns_parser.maturity.upper(),
-                    change=ns_parser.change,
-                    color=ns_parser.color,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
-            elif ns_parser.group:
-                investingcom_view.display_spread_matrix(
-                    countries=ns_parser.group,
-                    maturity=ns_parser.maturity.upper(),
-                    change=ns_parser.change,
-                    color=ns_parser.color,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
 
     @log_start_end(log=logger)
     def call_events(self, other_args: List[str]):
@@ -1275,6 +1042,9 @@ class EconomyController(BaseController):
             "--country",
             action="store",
             dest="country",
+            choices=[
+                x.replace(" ", "_") for x in investingcom_model.CALENDAR_COUNTRIES
+            ],
             type=str,
             default="",
             help="Display calendar for specific country.",

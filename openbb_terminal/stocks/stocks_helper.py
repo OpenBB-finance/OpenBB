@@ -926,22 +926,19 @@ def additional_info_about_ticker(ticker: str) -> str:
         if ".US" in ticker.upper():
             ticker = ticker.rstrip(".US")
             ticker = ticker.rstrip(".us")
-        ticker_info = yf.Ticker(ticker).info
+        ticker_stats = yf.Ticker(ticker).stats()
         extra_info += "\n[param]Company:  [/param]"
-        if "shortName" in ticker_info and ticker_info["shortName"]:
-            extra_info += ticker_info["shortName"]
+        extra_info += ticker_stats.get("quoteType", {}).get("shortName")
         extra_info += "\n[param]Exchange: [/param]"
-        if "exchange" in ticker_info and ticker_info["exchange"]:
-            exchange_name = ticker_info["exchange"]
-            extra_info += (
-                exchange_mappings["X" + exchange_name]
-                if "X" + exchange_name in exchange_mappings
-                else exchange_name
-            )
+        exchange_name = ticker_stats.get("quoteType", {}).get("exchange")
+        extra_info += (
+            exchange_mappings["X" + exchange_name]
+            if "X" + exchange_name in exchange_mappings
+            else exchange_name
+        )
 
         extra_info += "\n[param]Currency: [/param]"
-        if "currency" in ticker_info and ticker_info["currency"]:
-            extra_info += ticker_info["currency"]
+        extra_info += ticker_stats.get("summaryDetail", {}).get("currency")
 
     else:
         extra_info += "\n[param]Company: [/param]"
@@ -1105,3 +1102,39 @@ def show_codes_polygon(ticker: str):
     print_rich_table(
         polygon_df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
     )
+
+
+def format_parse_choices(choices: List[str]) -> List[str]:
+    """Formats a list of strings to be lowercase and replace spaces with underscores.
+
+    Parameters
+    ----------
+    choices: List[str]
+        The options to be formatted
+
+    Returns
+    -------
+    clean_choices: List[str]
+        The cleaned options
+
+    """
+    return [x.lower().replace(" ", "_") for x in choices]
+
+
+def map_parse_choices(choices: List[str]) -> Dict[str, str]:
+    """Creates a mapping of clean arguments (keys) to original arguments (values)
+
+    Parameters
+    ----------
+    choices: List[str]
+        The options to be formatted
+
+    Returns
+    -------
+    clean_choices: Dict[str, str]
+        The mappung
+
+    """
+    the_dict = {x.lower().replace(" ", "_"): x for x in choices}
+    the_dict[""] = ""
+    return the_dict

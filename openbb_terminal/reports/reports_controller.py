@@ -8,18 +8,18 @@ import os
 # pylint: disable=R1732, R0912
 from typing import Any, Dict, List
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_REPORTS_DIRECTORY,
 )
-from openbb_terminal.helper_funcs import parse_simple_args
 from openbb_terminal.reports import reports_model
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
-import openbb_terminal.config_terminal as cfg
+from openbb_terminal.terminal_helper import is_packaged_application
 
 logger = logging.getLogger(__name__)
 
@@ -144,22 +144,28 @@ class ReportController(BaseController):
 
     @log_start_end(log=logger)
     def call_forecast(self, other_args: List[str]):
+        if is_packaged_application():
+            console.print("This report is disabled for the installed version")
+            return
+
         try:
             import darts  # pyright: reportMissingImports=false # noqa: F401, E501 #pylint: disable=import-outside-toplevel, unused-import
             from darts import (  # pyright: reportMissingImports=false # noqa: F401, E501 #pylint: disable=import-outside-toplevel, unused-import
                 utils,
             )
 
-            forecast = True
+            FORECASTING_TOOLKIT_ENABLED = True
         except ImportError:
-            forecast = False
+            FORECASTING_TOOLKIT_ENABLED = False
             console.print(
-                "\n'forecast' menu dependencies are not installed."
-                " This part of the SDK will not be usable.\n\n"
-                "For more information see the official documentation at: "
-                "[blue]https://openbb-finance.github.io/OpenBBTerminal/SDK/[/blue]\n"
+                "[yellow]"
+                "Forecasting Toolkit is disabled. "
+                "To use the Forecasting features please install the toolkit following the "
+                "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+                "\n"
+                "[/yellow]"
             )
-        if forecast:
+        if FORECASTING_TOOLKIT_ENABLED:
             self.run_report("forecast", other_args)
 
     @log_start_end(log=logger)
@@ -195,7 +201,7 @@ class ReportController(BaseController):
                 other_args.insert(
                     0, "--" + list(self.PARAMETERS_DICT[report_name].keys())[0]
                 )
-            ns_parser = parse_simple_args(parser, other_args)
+            ns_parser = self.parse_simple_args(parser, other_args)
 
             if ns_parser:
                 cfg.LOGGING_SUPPRESS = True

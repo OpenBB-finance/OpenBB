@@ -31,7 +31,7 @@ def display_nbeats_forecast(
     num_blocks: int = 3,
     num_layers: int = 4,
     layer_widths: int = 512,
-    n_epochs: int = 100,
+    n_epochs: int = 300,
     learning_rate: float = 1e-3,
     batch_size: int = 800,
     model_save_name: str = "nbeats_model",

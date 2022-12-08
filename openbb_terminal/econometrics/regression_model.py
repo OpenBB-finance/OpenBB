@@ -67,7 +67,7 @@ def get_regressions_results(
     >>> Y = df["lwage"]
     >>> pooled_ols_model = openbb.econometrics.panel(Y,X,"POLS")
     >>> print(pooled_ols_model.summary)
-                          PooledOLS Estimation Summary
+                        PooledOLS Estimation Summary
     ================================================================================
     Dep. Variable:                  lwage   R-squared:                        0.1634
     Estimator:                  PooledOLS   R-squared (Between):              0.1686
@@ -85,7 +85,6 @@ def get_regressions_results(
     Avg Obs:                       545.00
     Min Obs:                       545.00
     Max Obs:                       545.00
-
                                 Parameter Estimates
     ==============================================================================
                 Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
@@ -131,8 +130,10 @@ def get_regression_data(
     Returns
     -------
     Tuple[DataFrame, Any, List[Any]]
-        The dataset used, the dependent variable, the independent variable and
-        the OLS model.
+        The dataset used,
+        Dependent variable,
+        Independent variable,
+        OLS model.
     """
 
     datasets = get_datasets(data)
@@ -172,10 +173,7 @@ def get_regression_data(
 
 
 @log_start_end(log=logger)
-def get_ols(
-    Y: pd.DataFrame,
-    X: pd.DataFrame,
-) -> Any:
+def get_ols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
     """Performs an OLS regression on timeseries data. [Source: Statsmodels]
 
     Parameters
@@ -192,11 +190,11 @@ def get_ols(
 
     Examples
     --------
-    >>> import openbb_terminal.sdk as openbb
+    >>> from openbb_terminal.sdk import openbb
     >>> df = openbb.econometrics.load("wage_panel")
-    >>> OLS_model = openbb.econometrics.OLS(df["lwage"], df[["educ", "exper", "expersq"]])
-    >>> print(OLS_model.summary())
-                                        OLS Regression Results
+    >>> OLS_model = openbb.econometrics.ols(df["lwage"], df[["educ", "exper", "expersq"]])
+    >>> print(OLS_model.summary())`
+                                OLS Regression Results
     =======================================================================================
     Dep. Variable:                  lwage   R-squared (uncentered):                   0.920
     Model:                            OLS   Adj. R-squared (uncentered):              0.919
@@ -219,7 +217,6 @@ def get_ols(
     Skew:                          -1.152   Prob(JB):                         0.00
     Kurtosis:                       9.905   Cond. No.                         86.4
     ==============================================================================
-
     Notes:
     [1] R² is computed without centering (uncentered) since the model does not contain a constant.
     [2] Standard Errors assume that the covariance matrix of the errors is correctly specified.
@@ -245,14 +242,18 @@ def get_pols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
     Parameters
     ----------
-    Y: pd.DataFrame
-        Dataframe containing the dependent variable.
-    X: pd.DataFrame
-        Dataframe containing the independent variables.
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
 
     Returns
     -------
-    Any
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used,
+        Dependent variable,
+        Independent variable,
         PooledOLS model
     """
 
@@ -279,14 +280,18 @@ def get_re(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
     Parameters
     ----------
-    Y: pd.DataFrame
-        Dataframe containing the dependent variable.
-    X: pd.DataFrame
-        Dataframe containing the independent variables.
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
 
     Returns
     -------
-    Any
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used,
+        Dependent variable,
+        Independent variable,
         RandomEffects model
     """
 
@@ -308,20 +313,24 @@ def get_re(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 @log_start_end(log=logger)
 def get_bols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
     """The between estimator is an alternative, usually less efficient estimator, can can be used to
-     estimate model parameters. It is particular simple since it first computes the time averages of
-     y and x and then runs a simple regression using these averages. [Source: LinearModels]
+    estimate model parameters. It is particular simple since it first computes the time averages of
+    y and x and then runs a simple regression using these averages. [Source: LinearModels]
 
     Parameters
     ----------
-    Y: pd.DataFrame
-        Dataframe containing the dependent variable.
-    X: pd.DataFrame
-        Dataframe containing the independent variables.
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
 
     Returns
     -------
-    Any
-        BetweenOLS model
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used,
+        Dependent variable,
+        Independent variable,
+        Between OLS model.
     """
     if Y.empty or X.empty:
         model = None
@@ -351,10 +360,11 @@ def get_fe(
 
     Parameters
     ----------
-    Y: pd.DataFrame
-        Dataframe containing the dependent variable.
-    X: pd.DataFrame
-        Dataframe containing the independent variables.
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
     entity_effects : bool
         Whether to include entity effects
     time_effects : bool
@@ -362,7 +372,10 @@ def get_fe(
 
     Returns
     -------
-    Any
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used,
+        Dependent variable,
+        Independent variable,
         PanelOLS model with Fixed Effects
     """
     if X.empty or Y.empty:
@@ -371,10 +384,7 @@ def get_fe(
         with warnings.catch_warnings(record=True) as warning_messages:
             exogenous = add_constant(X)
             model = PanelOLS(
-                Y,
-                exogenous,
-                entity_effects=entity_effects,
-                time_effects=time_effects,
+                Y, exogenous, entity_effects=entity_effects, time_effects=time_effects
             ).fit()
 
             if len(warning_messages) > 0:
@@ -395,14 +405,18 @@ def get_fdols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
     Parameters
     ----------
-    Y: pd.DataFrame
-        Dataframe containing the dependent variable.
-    X: pd.DataFrame
-        Dataframe containing the independent variables.
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
 
     Returns
     -------
-    Any
+    Tuple[DataFrame, Any, List[Any], Any]
+        The dataset used,
+        Dependent variable,
+        Independent variable,
         First Difference OLS model
     """
     if X.empty or Y.empty:
@@ -495,8 +509,7 @@ def get_dwat(
     >>> Y, X = df["lwage"], df[["exper","educ"]]
     >>> model = openbb.econometrics.ols(Y,X)
     >>> durbin_watson_value = openbb.econometrics.dwat(model)
-    >>> durbin_watson_value
-        0.96
+    0.96
     """
     # Durbin Watson test: The test statistic is approximately equal to 2*(1-r) where r is the
     # sample autocorrelation of the residuals. Thus, for r == 0, indicating no serial correlation,
@@ -509,9 +522,7 @@ def get_dwat(
 
 
 @log_start_end(log=logger)
-def get_bgod(
-    model: statsmodels.regression.linear_model.RegressionResultsWrapper, lags: int = 3
-) -> pd.DataFrame:
+def get_bgod(model: pd.DataFrame, lags: int = 3) -> Tuple[float, float, float, float]:
     """Calculate test statistics for autocorrelation
 
     Parameters

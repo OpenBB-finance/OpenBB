@@ -1,9 +1,0 @@
-stocks
-load aapl
-th
-open
-closed
-all
-exchange
-symbol MSFT
-exit

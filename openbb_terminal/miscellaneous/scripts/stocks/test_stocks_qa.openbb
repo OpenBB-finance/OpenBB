@@ -1,5 +1,5 @@
 stocks
-load aapl
+load ${ticker=aapl}
 qa
 summary
 normality
@@ -33,7 +33,7 @@ es
 sh
 so
 om
-load aapl -i 1
+load ${ticker=aapl} -i 1
 pick returns
 summary
 normality
@@ -57,7 +57,7 @@ es
 sh
 so
 om
-load aapl --source Polygon
+load ${ticker=aapl} --source Polygon
 pick returns
 summary
 normality

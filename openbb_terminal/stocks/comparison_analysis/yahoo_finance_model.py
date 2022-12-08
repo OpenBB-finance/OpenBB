@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 import warnings
 
 import numpy as np
@@ -30,7 +30,7 @@ d_candle_types = {
 @log_start_end(log=logger)
 def get_historical(
     similar: List[str],
-    start_date: str = None,
+    start_date: Optional[str] = None,
     candle_type: str = "a",
 ) -> pd.DataFrame:
     """Get historical prices for all comparison stocks
@@ -41,7 +41,7 @@ def get_historical(
         List of similar tickers.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
-    start_date: str, optional
+    start_date: Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type: str, optional
         Candle variable to compare, by default "a" for Adjusted Close. Possible values are: o, h, l, c, a, v, r
@@ -55,8 +55,9 @@ def get_historical(
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
+    candle_type = candle_type.lower()
     use_returns = False
-    if candle_type.lower() == "r":
+    if candle_type == "r":
         # Calculate returns based off of adjusted close
         use_returns = True
         candle_type = "a"
@@ -97,7 +98,7 @@ def get_historical(
 @log_start_end(log=logger)
 def get_correlation(
     similar: List[str],
-    start_date: str = None,
+    start_date: Optional[str] = None,
     candle_type: str = "a",
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
@@ -109,7 +110,7 @@ def get_correlation(
         List of similar tickers.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
-    start_date : str, optional
+    start_date : Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
@@ -133,7 +134,7 @@ def get_correlation(
 @log_start_end(log=logger)
 def get_volume(
     similar: List[str],
-    start_date: str = None,
+    start_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Get stock volume. [Source: Yahoo Finance]
 
@@ -143,7 +144,7 @@ def get_volume(
         List of similar tickers.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
-    start_date : str, optional
+    start_date : Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
 
     Returns
@@ -156,7 +157,7 @@ def get_volume(
         start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
     df_similar = get_historical(similar, start_date, "v")
-    df_similar = df_similar[similar]
+    df_similar = df_similar[df_similar.columns]
     return df_similar
 
 
@@ -203,6 +204,7 @@ def get_sp500_comps_tsne(
     pd.DataFrame
         Dataframe of tickers closest to selected ticker
     """
+
     # Adding the type makes pylint stop yelling
     close_vals: pd.DataFrame = get_1y_sp500()
     if symbol not in close_vals.columns:

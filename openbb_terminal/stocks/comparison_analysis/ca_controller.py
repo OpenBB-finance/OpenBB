@@ -71,6 +71,7 @@ class ComparisonAnalysisController(BaseController):
     choices_ohlca = ["o", "h", "l", "c", "a"]
     CHOICES_MENUS: List = list()
     PATH = "/stocks/ca/"
+    CHOICES_GENERATION = True
 
     def __init__(self, similar: List[str] = None, queue: List[str] = None):
         """Constructor"""
@@ -87,74 +88,15 @@ class ComparisonAnalysisController(BaseController):
             self.similar = []
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_three_hundred: dict = {str(c): {} for c in range(1, 300)}
-            choices["load"] = {
-                "--ticker": None,
-                "-t": "--ticker",
-            }
-            choices["tsne"] = {
-                "--learnrate": one_to_three_hundred,
-                "-r": "--learnrate",
-                "--limit": None,
-                "-l": "--limit",
-            }
-            choices["get"] = {
-                "--us_only": {},
-                "-u": "--us_only",
-                "--nocountry": {},
-                "-n": "--nocountry",
-                "--limit": None,
-                "-l": "--limit",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}get")
-                },
-            }
-            complete_similar = {
-                "--similar": None,
-                "-s": "--similar",
-            }
-            choices["set"] = complete_similar
-            choices["add"] = complete_similar
-            choices["rmv"] = complete_similar
-            choices["historical"] = {
-                "--type": {c: {} for c in self.choices_ohlca},
-                "-t": "--type",
-                "--normalize": {},
-                "-n": "--normalize",
-                "--start": None,
-                "-s": "--start",
-            }
-            choices["hcorr"] = {
-                "--type": {c: {} for c in self.choices_ohlca},
-                "-t": "--type",
-                "--start": None,
-                "-s": "--start",
-                "--display-full-matrix": {},
-                "--raw": {},
-            }
-            choices["volume"] = {
-                "--start": None,
-                "-s": "--start",
-            }
-            statements: dict = {
-                "--timeframe": None,
-                "-t": "--timeframe",
-                "--quarter": {},
-                "-q": "--quarter",
-            }
-            choices["income"] = statements
-            choices["balance"] = statements
-            choices["cashflow"] = statements
-            raw = {
-                "--raw": {},
-                "-r": "--raw",
-            }
-            choices["sentiment"] = raw
-            choices["scorr"] = raw
+            choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def call_exit(self, _) -> None:
+        """Process exit terminal command from forecast menu."""
+        self.save_class()
+        for _ in range(self.PATH.count("/") + 1):
+            self.queue.insert(0, "quit")
 
     def print_help(self):
         """Print help"""
@@ -573,7 +515,7 @@ class ComparisonAnalysisController(BaseController):
             action="store",
             dest="type_candle",
             type=str,
-            choices=["o", "h", "l", "c", "a", "r"],
+            choices=self.choices_ohlca,
             default="a",  # in case it's adjusted close
             help="Candle data to use: o-open, h-high, l-low, c-close, a-adjusted close, r-returns.",
         )
@@ -646,6 +588,7 @@ class ComparisonAnalysisController(BaseController):
                 symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -718,6 +661,7 @@ class ComparisonAnalysisController(BaseController):
                 symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -757,6 +701,7 @@ class ComparisonAnalysisController(BaseController):
                 symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)

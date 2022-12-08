@@ -25,9 +25,9 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SANTIMENT_KEY"])
 def display_github_activity(
     symbol: str,
-    start_date: str = None,
+    start_date: Optional[str] = None,
     dev_activity: bool = False,
-    end_date: str = None,
+    end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -42,9 +42,9 @@ def display_github_activity(
         Crypto symbol to check github activity
     dev_activity: bool
         Whether to filter only for development activity
-    start_date : int
+    start_date : Optional[str]
         Initial date like string (e.g., 2021-10-01)
-    end_date : int
+    end_date : Optional[str]
         End date like string (e.g., 2021-10-01)
     interval : str
         Interval frequency (some possible values are: 1h, 1d, 1w)
