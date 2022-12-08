@@ -1,7 +1,0 @@
-True
-None
-['first', 2]
-          A   B
-first     1   0
-second  123  -5
-2         0   6
