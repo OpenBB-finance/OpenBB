@@ -36,7 +36,7 @@ To know more about OpenBB SDK, you can start by reading the [Installation Guide]
 
 ### Using OpenBB SDK
 
-To learn how to use OpenBB SDK, you can start by reading the [Structure of the SDK](/sdk/guides/basics/structure) and [Using the SDK](/sdk/guides/basics/using) guides.
+To learn how to use OpenBB SDK, you can start by reading the [Basics Guide](/sdk/guides/basics).
 
 ### SDK Reference
 

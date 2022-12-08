@@ -13,7 +13,7 @@ The purpose of this menu is to provide the user with tools for gauging the level
 
 <img alt="The Dark Pools Menu" src="https://user-images.githubusercontent.com/46355364/171151760-9f65424e-b4d6-41a7-b31f-e9bc1c723bd9.png"></img>
 
-To use every feature in the Dark Pools menu, an API key for <a href="https://www.quandl.com/" target="_blank" rel="noreferrer noopener">Quandl</a> must be obtained (for free) and authorized on the local installation. See the <a href="/terminal/quickstart/keys" target="_blank" rel="noreferrer noopener">Getting Started Guide</a> for help setting up the API keys in the OpenBB Terminal. The four commands at the bottom of the menu rely on a loaded ticker while the six above do not.
+To use every feature in the Dark Pools menu, an API key for <a href="https://www.quandl.com/" target="_blank" rel="noreferrer noopener">Quandl</a> must be obtained (for free) and authorized on the local installation. See the <a href="/terminal/guides/advanced/api-keys" target="_blank" rel="noreferrer noopener">Getting Started Guide</a> for help setting up the API keys in the OpenBB Terminal. The four commands at the bottom of the menu rely on a loaded ticker while the six above do not.
 
 ### How to use
 
