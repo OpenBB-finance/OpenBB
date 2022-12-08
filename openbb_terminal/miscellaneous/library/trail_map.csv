@@ -431,6 +431,7 @@ stocks.gov.toplobbying,openbb_terminal.stocks.government.quiverquant_model.get_t
 stocks.ins.act,openbb_terminal.stocks.insider.businessinsider_model.get_insider_activity,openbb_terminal.stocks.insider.businessinsider_view.insider_activity
 stocks.ins.lins,openbb_terminal.stocks.insider.finviz_model.get_last_insider_activity,openbb_terminal.stocks.insider.finviz_view.last_insider_activity
 stocks.ins.print_insider_data,openbb_terminal.stocks.insider.openinsider_model.get_print_insider_data,openbb_terminal.stocks.insider.openinsider_view.print_insider_data
+stocks.ins.stats,openbb_terminal.stocks.insider.sdk_helper.stats,
 stocks.options.pcr,openbb_terminal.stocks.options.alphaquery_model.get_put_call_ratio,openbb_terminal.stocks.options.alphaquery_view.display_put_call_ratio
 stocks.options.info,openbb_terminal.stocks.options.yfinance_model.get_info,openbb_terminal.stocks.options.barchart_view.print_options_data
 stocks.options.hist_ce,openbb_terminal.stocks.options.chartexchange_model.get_option_history,openbb_terminal.stocks.options.chartexchange_view.display_raw
