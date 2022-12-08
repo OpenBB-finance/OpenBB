@@ -6,9 +6,7 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal import feature_flags as obbff
-
+from openbb_terminal.helper_funcs import export_data
 
 # pylint: disable=E1101
 # pylint: disable=W0603
