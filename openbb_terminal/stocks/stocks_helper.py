@@ -659,9 +659,10 @@ def display_candle(
                     yanchor="top",
                     y=0.99,
                     xanchor="left",
-                    font_size=8,
+                    font_size=14,
                     bgcolor="rgba(0, 0, 0, 0)",
                     x=0.01,
+                    orientation="h",
                 ),
             )
 

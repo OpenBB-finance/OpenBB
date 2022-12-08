@@ -480,4 +480,4 @@ if __name__ == "__main__":
     ws = WebSocketServer(serverObject)
 
     with _maybe_allow_interrupt(openbb):
-        openbb.exec()
+        sys.exit(openbb.exec())
