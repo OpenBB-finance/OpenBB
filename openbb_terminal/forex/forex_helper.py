@@ -134,11 +134,9 @@ def load(
 
         if interval not in interval_map.keys() and resolution != "d":
             if verbose:
-                raise OpenBBUserError(
-                    f"Interval not supported by {FOREX_SOURCES[source]}."
-                    " Need to be one of the following options",
-                    list(interval_map.keys()),
-                )
+                options = ", ".join(list(interval_map.keys()))
+                msg = f"Interval not supported by {FOREX_SOURCES[source]}. Options: {options}."
+                raise OpenBBUserError(msg)
 
         # Check interval in multiple ways
         if interval in interval_map:
