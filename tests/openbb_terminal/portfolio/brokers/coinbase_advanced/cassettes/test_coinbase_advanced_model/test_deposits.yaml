@@ -1,0 +1,81 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      CB-ACCESS-KEY:
+      - MOCK-CB-ACCESS-KEY
+      CB-ACCESS-SIGN:
+      - MOCK-CB-ACCESS-SIGN
+      CB-ACCESS-TIMESTAMP:
+      - MOCK-CB-ACCESS-TIMESTAMP
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+      accept:
+      - application/json
+    method: GET
+    uri: https://coinbase.com/api/v3/brokerage/transfers?type=deposit
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6pWSi0qyi9SslIqzcvOyy/PU9KBiMSnpJYkZuYUK1kpBeWXlqQq5OWXKKTll+al
+        KOko5aYWFyemp2KRqwUAAAD//wMAGO1AKVEAAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type, Accept, Second-Factor-Proof-Token, Client-Id, Access-Token,
+        X-Cb-Project-Name, X-Cb-Is-Logged-In, X-Cb-Platform, X-Cb-Session-Uuid, X-Cb-Pagekey,
+        X-Cb-Ujs, Fingerprint-Tokens, X-Cb-Device-Id, X-Cb-Version-Name
+      Access-Control-Allow-Methods:
+      - GET,POST,DELETE,PUT
+      Access-Control-Allow-Private-Network:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ''
+      Access-Control-Max-Age:
+      - '7200'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 776ed96c1b2fc445-EWR
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 09 Dec 2022 15:42:11 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=1_2XfHEwuI1IhdiV3tdjessSnDv5.NcA56lv40hMKf8-1670600531-0-AaPysclNtm3fu/vyOnnbMwp1SkzW8A+ragYBDvv1BQaq3Tl14S8c+2qxW9ExBTeGouxc1594oC3nTX0TwlGU1EI=;
+        path=/; expires=Fri, 09-Dec-22 16:12:11 GMT; domain=.coinbase.com; HttpOnly;
+        Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Trace-Id:
+      - '7121556776226830014'
+      - '7121556776226830014'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Dns-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 404
+      message: Not Found
+version: 1
