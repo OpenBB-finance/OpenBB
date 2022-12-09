@@ -80,7 +80,3 @@ def test_ValueError_debug_true():
     # In debug mode, built-in exceptions are not caught
     with pytest.raises(ValueError):
         handle_exception(e.value)
-
-
-if __name__ == "__main__":
-    test_OpenBBUserError()
