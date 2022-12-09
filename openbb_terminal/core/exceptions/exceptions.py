@@ -37,7 +37,7 @@ def handle_exception(exception: Exception) -> None:
     elif os.environ.get("DEBUG_MODE") == "true":
         raise exception
     else:
-        console.print("[red]Unexpected error.[/red]")
+        console.print("Unexpected error", style="red")
 
 
 class OpenBBBaseError(Exception):
