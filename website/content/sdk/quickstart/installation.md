@@ -37,13 +37,15 @@ pip install openbb
 
 #### 5.1 **If you would like to use the Portfolio Optimization features**
 
-On Apple Silicon Macs (M1/M2) install dependency from conda-forge
-
+:::note NOTE
+If on Apple Silicon Macs (M1/M2) you will need to install dependency from conda-forge first
 ```bash
 conda install -c conda-forge cvxpy=1.2.2 -y
 ```
+:::
 
-And install the Portfolio Optimization Toolkit
+
+Install the Portfolio Optimization Toolkit
 
 ```bash
 pip install "openbb[optimization]"
@@ -51,13 +53,14 @@ pip install "openbb[optimization]"
 
 #### 5.2 **If you would like ML Forecasting features**
 
-On Apple Silicon Macs (M1/M2) install dependency from conda-forge
-
+:::note NOTE
+If on Apple Silicon Macs (M1/M2) you will need to install the dependency from conda-forge first
 ```bash
 conda install -c conda-forge lightgbm=3.3.3 -y
 ```
+:::
 
-And install the Forecasting Toolkit
+Install the Forecasting Toolkit
 
 ```bash
 pip install "openbb[prediction]"
@@ -65,13 +68,14 @@ pip install "openbb[prediction]"
 
 #### 5.3 **If you would like to use both Portfolio Optimization and ML forecast features**
 
-On Apple Silicon Macs (M1/M2) install dependencies from conda-forge
-
+:::note NOTE
+If on Apple Silicon Macs (M1/M2) you will need to install the dependencies from conda-forge first
 ```bash
 conda install -c conda-forge lightgbm=3.3.3 cvxpy=1.2.2 -y
 ```
+:::
 
-And install the Both Toolkits
+Install all Toolkits
 
 ```bash
 pip install "openbb[all]"
