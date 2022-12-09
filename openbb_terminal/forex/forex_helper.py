@@ -189,6 +189,7 @@ def load(
 
     raise OpenBBUserError(f"Source {source} not supported")
 
+
 @log_start_end(log=logger)
 def get_yf_currency_list() -> List:
     """Load YF list of forex pair a local file."""
@@ -254,7 +255,9 @@ def display_candle(
         External axes (1 axis is expected in the list), by default None
     """
     # We check if there's Volume data to avoid errors and empty subplots
-    has_volume = bool(data["Volume"].sum() > 0)
+    has_volume = False
+    if "Volume" in data.columns:
+        has_volume = bool(data["Volume"].sum() > 0)
 
     if add_trend:
         if (data.index[1] - data.index[0]).total_seconds() >= 86400:
@@ -336,11 +339,16 @@ def display_candle(
                 ax[0].ticklabel_format(style="plain", axis="y")
 
             cfg.theme.visualize_output(force_tight_layout=False)
-        elif is_valid_axes_count(external_axes, 2):
-            ax1, ax2 = external_axes
-            candle_chart_kwargs["ax"] = ax1
+        else:
             if has_volume:
+                is_valid_axes_count(external_axes, 2)
+                ax1, ax2 = external_axes
                 candle_chart_kwargs["volume"] = ax2
+            else:
+                is_valid_axes_count(external_axes, 1)
+                (ax1,) = external_axes
+
+            candle_chart_kwargs["ax"] = ax1
             mpf.plot(data, **candle_chart_kwargs)
 
     if not use_matplotlib:
