@@ -7,7 +7,6 @@ from typing import Callable, List
 from unittest.mock import patch
 from openbb_terminal.helper_funcs import check_file_type_saved, check_positive
 from openbb_terminal.rich_config import get_ordered_list_sources
-from openbb_terminal.core.exceptions import exceptions
 
 
 def __mock_parse_known_args_and_warn(
