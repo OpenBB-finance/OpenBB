@@ -17,10 +17,10 @@ def test_get_news(mocker, recorder):
     recorder.capture(result_dict)
 
 
-@pytest.mark.vcr
-def test_get_analyst_data(mocker, recorder):
-    # REMOVE FINVIZ STOCK_PAGE CACHE
-    mocker.patch.object(target=finviz.main_func, attribute="STOCK_PAGE", new={})
-    result_df = finviz_model.get_analyst_data(symbol="TSLA")
+# @pytest.mark.vcr
+# def test_get_analyst_data(mocker, recorder):
+#     # REMOVE FINVIZ STOCK_PAGE CACHE
+#     mocker.patch.object(target=finviz.main_func, attribute="STOCK_PAGE", new={})
+#     result_df = finviz_model.get_analyst_data(symbol="TSLA")
 
-    recorder.capture(result_df)
+#     recorder.capture(result_df)
