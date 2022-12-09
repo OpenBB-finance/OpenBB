@@ -4,9 +4,9 @@ import os
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
-from openbb_terminal.core.exceptions.exceptions import OpenBBUserError
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.exceptions.exceptions import OpenBBUserError
 from openbb_terminal.forex import forex_controller
 from openbb_terminal.forex.technical_analysis.ta_controller import (
     TechnicalAnalysisController,
@@ -298,10 +298,8 @@ def test_call_func(
         controller.from_symbol = "MOCK_TICKER"
         controller.interval = "1440min"
 
-        try:
+        with pytest.raises(OpenBBUserError):
             getattr(controller, tested_func)(other_args)
-        except OpenBBUserError:
-            pass
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -344,8 +342,9 @@ def test_call_func_no_ticker(func, mocker):
 
     controller = forex_controller.ForexController(queue=None)
 
-    func_result = getattr(controller, func)([])
-    assert func_result is None
+    with pytest.raises(OpenBBUserError):
+        getattr(controller, func)([])
+
     assert controller.queue == []
 
 

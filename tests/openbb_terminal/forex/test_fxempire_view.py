@@ -1,5 +1,6 @@
 import pytest
 from openbb_terminal.forex.fxempire_view import display_forward_rates
+from openbb_terminal.core.exceptions.exceptions import OpenBBUserError
 
 
 @pytest.fixture(scope="module")
@@ -16,4 +17,5 @@ def test_forwards():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_forwards_not_known():
-    display_forward_rates("HUGYDIBWU", "GWUBWYBCY")
+    with pytest.raises(OpenBBUserError):
+        display_forward_rates("HUGYDIBWU", "GWUBWYBCY")

@@ -9,30 +9,35 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1
+      - Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0
     method: GET
     uri: https://api.polygon.io/v2/aggs/ticker/C:BADTICKER/range/1/day/2022-02-20/2022-03-15?adjusted=true&apiKey=MOCK_API_KEY&limit=50000&sort=desc
   response:
     body:
-      string: '{"status":"ERROR","request_id":"fc1e7162856618ea7b59a00692271594","error":"You''ve
-        exceeded the maximum requests per minute, please wait or upgrade your subscription
-        to continue. https://polygon.io/pricing"}'
+      string: !!binary |
+        H4sIAAAAAAAA/0TKvarCQBAG0Hf56hQh5OdmuutqISkEsZfszixERcnOTCHiu4uV7eG8YEu6SgEh
+        0OZ/e9qHaXdEhdWlPMPD7waqKxRRv5n+YOaLqwmDrLhUUJvNFYTDhG9fXdTOC4PwJyk1XdPWOafY
+        DyNzHpuh57brY451i/cnAAD//4v5HnqGAAAA
     headers:
       Connection:
       - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Length:
-      - '206'
+      - '141'
       Content-Type:
       - application/json
       Date:
-      - Tue, 31 May 2022 10:55:48 GMT
+      - Fri, 09 Dec 2022 13:47:23 GMT
       Server:
       - nginx/1.19.2
       Strict-Transport-Security:
       - max-age=15724800; includeSubDomains
+      Vary:
+      - Accept-Encoding
       X-Request-Id:
-      - fc1e7162856618ea7b59a00692271594
+      - 8ecc25240ffcb679ddf9276d456bfb04
     status:
-      code: 429
-      message: Too Many Requests
+      code: 200
+      message: OK
 version: 1

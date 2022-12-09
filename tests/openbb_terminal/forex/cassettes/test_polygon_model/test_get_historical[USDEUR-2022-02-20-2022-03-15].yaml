@@ -9,30 +9,46 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1
+      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0
     method: GET
     uri: https://api.polygon.io/v2/aggs/ticker/C:USDEUR/range/1/day/2022-02-20/2022-03-15?adjusted=true&apiKey=MOCK_API_KEY&limit=50000&sort=desc
   response:
     body:
-      string: '{"status":"ERROR","request_id":"949c4e3b99e26fc523d4ee8dbd33a8f4","error":"You''ve
-        exceeded the maximum requests per minute, please wait or upgrade your subscription
-        to continue. https://polygon.io/pricing"}'
+      string: !!binary |
+        H4sIAAAAAAAA/2SWT4scNxDFv4vOTShVlepPX52ccggk+BRCWM+MiZPFxjszDsHsdw/StKpkvKdG
+        LO83r94rdX8ttw+nfy4vZS9v9re//fjT21/LVj7fLy//vfl0/3grO9atvFyu9+fbdTl5Ov99v94u
+        57LfXu6X+I+y//61fCl7BSTArXz5t+zwg9e6lU+PJ7KtnI5D28pfj8eGtJXn8QyKKlu5lb0KKwEy
+        9L+tfJyyr9tguIhpIoiCwcoBIatBUWpBcQ4GVoFkDNkDwdxVJ4E9CEIeBFYMwjh/Ps4rBaKiSyK6
+        7EGowNzn8N2gQD0nJZSjUkwTjfoEHgzxJraOqgtPShVeZgUtnMCI6TSRHJgKMxFzD4YprHEM2WAA
+        S04LPPNQiTwevGlFNKx05wdEjWGFdN0JYYS69MomA6E36BiXthgX1kBUJIxiibguiTx0J0Rs/JwJ
+        8czdW+QeNrARZ+iSgUituCCG6oHQWn1xIVnd7JUvLoBx6VW6aMhL5l11ekBSXBCVMnHJYlHNxK1F
+        d4FiO4QarmkM3bmBqH1VZ+I4bZh7b9sptR4IEKpZqkSgtCWLoRo2kNtSXLBA2My70yQQvCAki1vV
+        1yyGbKygI7TJsDH2g1HFA2J97w5IjeKaA+R1JeD4zQ525YmhSrhgKKfF/V46TeRM3Vx5rrqZ534A
+        yLqEQzcgy7VrHnturpoMJg3GED6sUL/JHpB2jCsgee9WcFdNSE0j1AJiCglpjcNI93cwlBW/mZZr
+        hCKPG2hCslvGbOFk6RZQXFjG0a0mAmsiQ/ZgiEt/URwIWxAYK2LGbb5AzDiHZRCBtKa8BDJk54Yw
+        CC4ITRcYBBQJQrNolnr0qrHZ+orqqtMEj/ZPQt/ng7CGwZgEDA+qtiCgLks4ZA8EjRWeBFoJEgRK
+        D5QeDDXHRLUtcXfV1z+2cr093e7Xspdffi79O+Lz/XK9/fnhXPaieDnXC+s7oAoE76u+pzNre3p3
+        qS5OZSun+Uny+n8AAAD//wc30i7KCAAA
     headers:
       Connection:
       - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Length:
-      - '206'
+      - '765'
       Content-Type:
       - application/json
       Date:
-      - Tue, 31 May 2022 10:55:48 GMT
+      - Fri, 09 Dec 2022 13:48:35 GMT
       Server:
       - nginx/1.19.2
       Strict-Transport-Security:
       - max-age=15724800; includeSubDomains
+      Vary:
+      - Accept-Encoding
       X-Request-Id:
-      - 949c4e3b99e26fc523d4ee8dbd33a8f4
+      - 72ed1e47b031030f17f3d475abe19693
     status:
-      code: 429
-      message: Too Many Requests
+      code: 200
+      message: OK
 version: 1

@@ -1,5 +1,6 @@
 import pytest
 from openbb_terminal.forex.fxempire_model import get_forward_rates
+from openbb_terminal.core.exceptions.exceptions import OpenBBUserError
 
 
 @pytest.fixture(scope="module")
@@ -15,7 +16,7 @@ def test_forwards(recorder):
 
 
 @pytest.mark.vcr
-def test_forwards_not_known(recorder):
-    df = get_forward_rates("GWYG", "GUCHWUHW")
-    assert df.empty is True
-    recorder.capture(df)
+@pytest.mark.record_stdout
+def test_forwards_not_known():
+    with pytest.raises(OpenBBUserError):
+        get_forward_rates("GWYG", "GUCHWUHW")

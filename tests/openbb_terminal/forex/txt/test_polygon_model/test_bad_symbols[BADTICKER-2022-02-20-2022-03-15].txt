@@ -1,2 +1,1 @@
-[red]You've exceeded the maximum requests per minute, please wait or upgrade your subscription to continue. https://polygon.io/pricing[/red]
-
+No results found.

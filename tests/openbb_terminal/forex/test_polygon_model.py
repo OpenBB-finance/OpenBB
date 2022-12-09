@@ -1,6 +1,7 @@
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.exceptions.exceptions import OpenBBUserError
 from openbb_terminal.forex import polygon_model
 
 
@@ -37,6 +38,7 @@ def test_get_historical(fx_pair, start_date, end_date, recorder):
 )
 @pytest.mark.record_stdout
 def test_bad_symbols(fx_pair, start_date, end_date):
-    polygon_model.get_historical(
-        fx_pair=fx_pair, start_date=start_date, end_date=end_date
-    )
+    with pytest.raises(OpenBBUserError):
+        polygon_model.get_historical(
+            fx_pair=fx_pair, start_date=start_date, end_date=end_date
+        )
