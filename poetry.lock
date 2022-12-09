@@ -4784,6 +4784,15 @@ pandas = ">=0.24.0"
 requests = ">=2.26"
 
 [[package]]
+name = "mstarpy"
+version = "0.0.1"
+description = "Mutual funds data extraction from MorningStar with Python"
+category = "main"
+optional = false
+python-versions = "*"
+
+
+[[package]]
 name = "zipp"
 version = "3.10.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"

@@ -264,3 +264,4 @@ yarl==1.8.1; python_version >= "3.7" and python_full_version >= "3.7.0"
 yfinance==0.1.74
 zipp==3.10.0; python_version >= "3.7" and python_full_version < "3.9.7" and python_version < "3.10" or python_full_version > "3.9.7" and python_version >= "3.7" and python_version < "3.10"
 zope.interface==5.5.0; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5"
+mstarpy==0.0.1; python_version >= "3.8" and python_version < "3.11"
