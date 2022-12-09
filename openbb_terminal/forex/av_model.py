@@ -10,7 +10,7 @@ import requests
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.core.exceptions.exceptions import OpenBBAPIError
+from openbb_terminal.core.exceptions.exceptions import OpenBBAPIError, OpenBBUserError
 
 logger = logging.getLogger(__name__)
 
@@ -132,9 +132,7 @@ def get_historical(
     response_json = r.json()
 
     if r.status_code != 200:
-        return pd.DataFrame()
-
-    df = pd.DataFrame()
+        raise OpenBBAPIError("AlphaVantage API returned an error.")
 
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
@@ -145,7 +143,7 @@ def get_historical(
 
     # check if json is empty
     if not response_json:
-        raise OpenBBAPIError("No data found.")
+        raise OpenBBUserError("No data found.")
 
     key = list(response_json.keys())[1]
 
