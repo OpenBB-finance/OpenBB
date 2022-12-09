@@ -108,6 +108,7 @@ u8darts = {extras = ["torch"], version = "0.22.0", optional = true}
 docstring-parser = {version = "^0.15", optional = true}
 grpcio = "<1.51.0"
 jupyterlab-widgets = "^3.0.3"
+mstarpy = "^0.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
