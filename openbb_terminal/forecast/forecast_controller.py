@@ -3,21 +3,13 @@ __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines, too-many-branches, too-many-arguments, R0904,R0902,W0707
 # flake8: noqa
-print("1")
 import argparse
-
-print("2")
 import logging
-
-print("3")
 from typing import Any, Optional, List, Dict
 
-print("4")
 try:
-    print("5")
     import torch
 
-    print("6")
     import darts
 
     darts_latest = "0.22.0"
@@ -37,19 +29,12 @@ except ModuleNotFoundError:
         "are here: https://github.com/OpenBB-finance/OpenBBTerminal/"
         "blob/main/openbb_terminal/README.md#anaconda--python"
     )
-print("7")
 import pandas as pd
-
-print("8")
 import psutil
-
-print("9")
 from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     USER_CUSTOM_IMPORTS_DIRECTORY,
 )
-
-print("10")
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -63,7 +48,6 @@ from openbb_terminal.helper_funcs import (
     valid_date,
 )
 
-print("11")
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
@@ -92,7 +76,6 @@ from openbb_terminal.forecast import (
     nhits_view,
 )
 
-print("12")
 from openbb_terminal.common import common_model
 
 logger = logging.getLogger(__name__)

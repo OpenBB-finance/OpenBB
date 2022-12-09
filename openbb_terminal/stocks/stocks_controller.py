@@ -50,7 +50,6 @@ class StocksController(StockBaseController):
         "news",
         "resources",
         "codes",
-        "importer",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -112,7 +111,6 @@ class StocksController(StockBaseController):
         mt.add_cmd("candle", self.ticker)
         mt.add_cmd("codes", self.ticker)
         mt.add_cmd("news", self.ticker)
-        mt.add_cmd("importer")
         mt.add_raw("\n")
         mt.add_menu("th")
         mt.add_menu("options")
@@ -233,33 +231,6 @@ class StocksController(StockBaseController):
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
-
-    @log_start_end(log=logger)
-    def call_importer(self, other_args: List[str]):
-        """Process search command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="importer",
-            description="Check to see if import worked",
-        )
-        parser.add_argument(
-            "-m",
-            "--module",
-            dest="module",
-            type=str,
-            default="",
-            nargs="+",
-            help="The module to check",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-m")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            import importlib
-
-            importlib.import_module(ns_parser.module[0])
-            print(f"Successfully imported {ns_parser.module[0]}")
 
     @log_start_end(log=logger)
     def call_tob(self, other_args: List[str]):
