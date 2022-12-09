@@ -151,7 +151,7 @@ class PortfolioController(BaseController):
 
         self.portfolio_name: str = ""
         self.benchmark_name: str = ""
-        self.original_benchmark_name = ""
+        self.original_benchmark_ticker = ""
         self.risk_free_rate = 0
         self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
         self.portfolio = None
@@ -269,8 +269,8 @@ class PortfolioController(BaseController):
         objects_to_reload = ["portfolio"]
         if self.portfolio_name:
             objects_to_reload.append(f"load {self.portfolio_name}")
-        if self.original_benchmark_name:
-            objects_to_reload.append(f'bench "{self.original_benchmark_name}"')
+        if self.original_benchmark_ticker:
+            objects_to_reload.append(f'bench "{self.original_benchmark_ticker}"')
         return objects_to_reload
 
     @log_start_end(log=logger)
@@ -334,7 +334,8 @@ class PortfolioController(BaseController):
             dest="risk_free_rate",
             help="Set the risk free rate.",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-f")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser and ns_parser.file:
@@ -364,7 +365,7 @@ class PortfolioController(BaseController):
 
             self.benchmark_name = "SPDR S&P 500 ETF Trust (SPY)"
             console.print(
-                f"[bold][param]Benchmark:[/param][/bold] {self.benchmark_name}\n"
+                f"[bold][param]Benchmark:[/param][/bold] {self.benchmark_name}"
             )
 
     @log_start_end(log=logger)
@@ -404,11 +405,10 @@ class PortfolioController(BaseController):
             "--benchmark",
             type=str,
             default="SPY",
-            nargs="+",
             dest="benchmark",
             required="-h" not in other_args,
             help="Set the benchmark for the portfolio. By default, this is SPDR S&P 500 ETF Trust (SPY).",
-            choices={c: {} for c in statics.BENCHMARK_LIST},
+            choices={c: {} for c in statics.BENCHMARK_CHOICES},
             metavar="BENCHMARK",
         )
         parser.add_argument(
@@ -423,26 +423,15 @@ class PortfolioController(BaseController):
             other_args.insert(0, "-b")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser and self.portfolio is not None:
-            # Needs to be checked since we want to use the start date of the portfolio when comparing with benchmark
-            if self.portfolio_name:
-                chosen_benchmark = " ".join(ns_parser.benchmark)
-
-                if chosen_benchmark in statics.BENCHMARK_LIST:
-                    benchmark_ticker = statics.BENCHMARK_LIST[chosen_benchmark]
-                    self.original_benchmark_name = chosen_benchmark
-                else:
-                    benchmark_ticker = chosen_benchmark
-
-                self.portfolio.set_benchmark(benchmark_ticker, ns_parser.full_shares)
-
-                self.benchmark_name = chosen_benchmark
-
-            else:
+        if ns_parser:
+            if self.portfolio is None:
                 console.print(
-                    "[red]Please first load transactions file using 'load'[/red]\n"
+                    "[red]Please first load transactions file using 'load'[/red]"
                 )
-            console.print()
+            else:
+                self.benchmark_name = statics.BENCHMARK_CHOICES.get(ns_parser.benchmark)
+                self.original_benchmark_ticker = ns_parser.benchmark
+                self.portfolio.set_benchmark(ns_parser.benchmark, ns_parser.full_shares)
 
     @log_start_end(log=logger)
     def call_alloc(self, other_args: List[str]):
