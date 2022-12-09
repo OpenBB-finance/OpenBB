@@ -43,7 +43,6 @@ added_files = [
     (os.path.join(pathex, "property_cached"), "property_cached"),
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
-    (os.path.join(pathex, "darts"), "darts"),
     (os.path.join(pathex, "prophet"), "prophet"),
     (os.path.join(pathex, "frozendict", "VERSION"), "frozendict"),
     (
@@ -95,7 +94,6 @@ hidden_imports = [
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
-    "darts",
 ]
 
 
