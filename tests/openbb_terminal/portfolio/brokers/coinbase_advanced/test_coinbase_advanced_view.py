@@ -1,6 +1,6 @@
 import pytest
 
-import openbb_terminal.portfolio.brokers.coinbase.coinbase_advanced_view as cbv
+import openbb_terminal.portfolio.brokers.coinbase_advanced.coinbase_advanced_view as cbv
 
 
 @pytest.fixture(scope="module")
