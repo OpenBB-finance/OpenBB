@@ -433,6 +433,17 @@ stocks.ins.lins,openbb_terminal.stocks.insider.finviz_model.get_last_insider_act
 stocks.ins.print_insider_data,openbb_terminal.stocks.insider.openinsider_model.get_print_insider_data,openbb_terminal.stocks.insider.openinsider_view.print_insider_data
 stocks.ins.stats,openbb_terminal.stocks.insider.sdk_helper.stats,
 stocks.ins.filter,openbb_terminal.stocks.insider.sdk_helper.insider_filter,
+stocks.ins.lcb,openbb_terminal.stocks.insider.sdk_helper.lcb,
+stocks.ins.lpsb,openbb_terminal.stocks.insider.sdk_helper.lpsb,
+stocks.ins.lit,openbb_terminal.stocks.insider.sdk_helper.lit,
+stocks.ins.lip,openbb_terminal.stocks.insider.sdk_helper.lip,
+stocks.ins.blip,openbb_terminal.stocks.insider.sdk_helper.blip,
+stocks.ins.blop,openbb_terminal.stocks.insider.sdk_helper.blop,
+stocks.ins.blcp,openbb_terminal.stocks.insider.sdk_helper.blcp,
+stocks.ins.lis,openbb_terminal.stocks.insider.sdk_helper.lis,
+stocks.ins.blis,openbb_terminal.stocks.insider.sdk_helper.blis,
+stocks.ins.blos,openbb_terminal.stocks.insider.sdk_helper.blos,
+stocks.ins.blcs,openbb_terminal.stocks.insider.sdk_helper.blcs,
 stocks.options.pcr,openbb_terminal.stocks.options.alphaquery_model.get_put_call_ratio,openbb_terminal.stocks.options.alphaquery_view.display_put_call_ratio
 stocks.options.info,openbb_terminal.stocks.options.yfinance_model.get_info,openbb_terminal.stocks.options.barchart_view.print_options_data
 stocks.options.hist_ce,openbb_terminal.stocks.options.chartexchange_model.get_option_history,openbb_terminal.stocks.options.chartexchange_view.display_raw
