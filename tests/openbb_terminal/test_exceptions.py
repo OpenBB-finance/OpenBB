@@ -61,7 +61,7 @@ def test_Exception_debug_true():
     with pytest.raises(Exception) as e:
         function_that_raises(error_type="Exception", debug_mode="true")
 
-    # In debug mode, general exceptions are not caught
+    # In debug mode, built-in exceptions are not caught
     with pytest.raises(Exception):
         handle_exception(e.value)
 
@@ -77,8 +77,8 @@ def test_ValueError_debug_true():
     with pytest.raises(ValueError) as e:
         function_that_raises(error_type="ValueError", debug_mode="true")
 
-    # In debug mode, general exceptions are not caught
-    with pytest.raises(Exception):
+    # In debug mode, built-in exceptions are not caught
+    with pytest.raises(ValueError):
         handle_exception(e.value)
 
 
