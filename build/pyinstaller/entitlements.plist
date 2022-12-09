@@ -12,5 +12,7 @@
     <true/>
     <key>com.apple.security.cs.disable-executable-page-protection</key>
     <true/>
+    <key>com.apple.security.cs.debugger</key>
+    <true/>
 </dict>
 </plist>
