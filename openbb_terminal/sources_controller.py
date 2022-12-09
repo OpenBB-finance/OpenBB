@@ -19,7 +19,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
-from openbb_terminal.helper_funcs import parse_simple_args
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
@@ -121,7 +120,7 @@ class SourcesController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             try:
                 the_item = self.commands_with_sources[ns_parser.cmd]
@@ -171,7 +170,7 @@ class SourcesController(BaseController):
             other_args.insert(0, "-c")
             if "-s" not in other_args and "--source" not in other_args:
                 other_args.insert(2, "-s")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             menus = ns_parser.cmd.split("_")
             num_menus = len(menus)
