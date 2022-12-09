@@ -132,7 +132,7 @@ def get_historical(
     response_json = r.json()
 
     if r.status_code != 200:
-        raise OpenBBAPIError("AlphaVantage API returned an error.")
+        raise OpenBBAPIError(f"AlphaVantage API returned an error -> {r.status_code}")
 
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
