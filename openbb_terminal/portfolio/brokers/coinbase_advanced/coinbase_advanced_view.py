@@ -73,7 +73,7 @@ def display_orders(
         df,
         headers=list(df.columns),
         show_index=False,
-        title="Current Open Doors",
+        title="Current Open Orders",
     )
 
     export_data(
