@@ -200,7 +200,9 @@ def get_estimates(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame
         for quarter_title in df_quarter_earnings.columns:
             l_quarter.append(re.split("  ending", quarter_title)[0])
             if len(re.split("  ending", quarter_title)) == 2:
-                l_date.append("ending " + re.split("  ending", quarter_title)[1].strip())
+                l_date.append(
+                    "ending " + re.split("  ending", quarter_title)[1].strip()
+                )
             else:
                 l_date.append("-")
 
