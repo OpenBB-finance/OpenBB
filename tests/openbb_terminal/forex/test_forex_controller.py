@@ -4,6 +4,7 @@ import os
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
+from openbb_terminal.core.exceptions.exceptions import OpenBBUserError
 
 # IMPORTATION INTERNAL
 from openbb_terminal.forex import forex_controller
@@ -297,7 +298,10 @@ def test_call_func(
         controller.from_symbol = "MOCK_TICKER"
         controller.interval = "1440min"
 
-        getattr(controller, tested_func)(other_args)
+        try:
+            getattr(controller, tested_func)(other_args)
+        except OpenBBUserError:
+            pass
 
 
 @pytest.mark.vcr(record_mode="none")

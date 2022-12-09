@@ -312,6 +312,7 @@ class ConsoleAndPanel:
             if not os.getenv("TEST_MODE"):
                 self.console.print(*args, **kwargs)
             else:
+                kwargs.pop("style", None)
                 print(*args, **kwargs)
 
 
