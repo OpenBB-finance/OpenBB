@@ -19,13 +19,13 @@ def function_that_raises(error_type: str, debug_mode: str):
     os.environ["DEBUG_MODE"] = debug_mode
     if error_type == "OpenBBUserError":
         raise OpenBBUserError("User failure")
-    elif error_type == "OpenBBAPIError":
+    if error_type == "OpenBBAPIError":
         raise OpenBBAPIError("API failure")
-    elif error_type == "OpenBBBaseError":
+    if error_type == "OpenBBBaseError":
         raise OpenBBBaseError("Base failure")
-    elif error_type == "Exception":
+    if error_type == "Exception":
         raise Exception("Bug failure")
-    elif error_type == "ValueError":
+    if error_type == "ValueError":
         raise ValueError("Value failure")
 
 
