@@ -15,7 +15,8 @@ def function_that_fails():
 
 def test_debug_false():
     os.environ["DEBUG_MODE"] = "false"
-    function_that_fails()
+    with pytest.raises(ValueError):
+        function_that_fails()
 
 
 def test_debug_true():

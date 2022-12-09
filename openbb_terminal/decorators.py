@@ -60,10 +60,6 @@ def log_start_end(func=None, log=None):
                 extra={"func_name_override": func.__name__},
             )
 
-            if os.environ.get("DEBUG_MODE") == "true":
-                value = func(*args, **kwargs)
-                log.info("END", extra={"func_name_override": func.__name__})
-                return value
             try:
                 value = func(*args, **kwargs)
                 logger_used.info("END", extra={"func_name_override": func.__name__})
