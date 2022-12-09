@@ -12,6 +12,9 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.brokers.ally import ally_controller
 from openbb_terminal.portfolio.brokers.coinbase import coinbase_controller
+from openbb_terminal.portfolio.brokers.coinbase_advanced import (
+    coinbase_advanced_controller,
+)
 from openbb_terminal.portfolio.brokers.degiro import degiro_controller
 from openbb_terminal.portfolio.brokers.robinhood import robinhood_controller
 from openbb_terminal.rich_config import console, MenuText
@@ -23,7 +26,7 @@ class BrokersController(BaseController):
     """Brokers Controller class"""
 
     CHOICES_COMMANDS: List = []
-    CHOICES_MENUS = ["cb", "ally", "rh", "degiro"]
+    CHOICES_MENUS = ["cb", "ally", "rh", "degiro", "cbadv"]
     PATH = "/portfolio/bro/"
     CHOICES_GENERATION = True
 
@@ -46,6 +49,7 @@ class BrokersController(BaseController):
         mt.add_menu("degiro")
         mt.add_menu("rh")
         mt.add_menu("cb")
+        mt.add_menu("cbadv")
         console.print(text=mt.menu_text, menu="Portfolio - Brokers")
 
     @log_start_end(log=logger)
@@ -69,6 +73,13 @@ class BrokersController(BaseController):
     def call_cb(self, _):
         """Process coinbase command."""
         self.queue = self.load_class(coinbase_controller.CoinbaseController, self.queue)
+
+    @log_start_end(log=logger)
+    def call_cbadv(self, _):
+        """Process coinbase advanced command."""
+        self.queue = self.load_class(
+            coinbase_advanced_controller.CoinbaseAdvController, self.queue
+        )
 
     # TODO: Consistent way of merging across brokers including crypto
     # def call_login(self, other_args):

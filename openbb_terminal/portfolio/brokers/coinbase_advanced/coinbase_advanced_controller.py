@@ -1,0 +1,214 @@
+"""Coinbase Controller"""
+__docformat__ = "numpy"
+
+# pylint: disable=R0904, C0302, W0622
+import argparse
+import logging
+from typing import List
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+)
+from openbb_terminal.menu import session
+from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.portfolio.brokers.coinbase_advanced import coinbase_advanced_view
+from openbb_terminal.rich_config import console, MenuText
+
+logger = logging.getLogger(__name__)
+
+
+class CoinbaseAdvController(BaseController):
+    """Coinbase Advanced Controller class"""
+
+    CHOICES_COMMANDS = ["account", "orders"]
+
+    order_sortby = [
+        "product_id",
+        "side",
+        "price",
+        "size",
+        "type",
+        "created_time",
+        "status",
+    ]
+    deposit_sort = [
+        "created_time",
+        "amount",
+    ]
+    deposit_type = ["internal_deposit", "deposit"]
+    PATH = "/portfolio/bro/cbadv/"
+    CHOICES_GENERATION = True
+
+    def __init__(self, queue: List[str] = None):
+        """Constructor"""
+        super().__init__(queue)
+
+        if session and obbff.USE_PROMPT_TOOLKIT:
+            choices: dict = self.choices_default
+            self.choices = choices
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def print_help(self):
+        """Print help"""
+        mt = MenuText("portfolio/bro/cbadv/")
+        mt.add_cmd("account")
+        # mt.add_cmd("deposits")
+        mt.add_cmd("orders")
+        console.print(
+            text=mt.menu_text, menu="Portfolio - Brokers - Coinbase Advanced (Beta)"
+        )
+
+    @log_start_end(log=logger)
+    def call_account(self, other_args):
+        """Process account command"""
+        parser = argparse.ArgumentParser(
+            prog="account",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Display info about your trading accounts on Coinbase Advanced",
+        )
+        parser.add_argument(
+            "--all",
+            action="store_true",
+            help="Flag to display all your account",
+            dest="all",
+            default=False,
+        )
+        parser.add_argument(
+            "-c",
+            "--currency",
+            default="USD",
+            type=str,
+            dest="currency",
+            help="Currency to display value in.",
+        )
+
+        if other_args and other_args[0][0] != "-":
+            other_args.insert(0, "--acc")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            coinbase_advanced_view.display_account(
+                currency=ns_parser.currency,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_orders(self, other_args):
+        """Process orders command"""
+        parser = argparse.ArgumentParser(
+            prog="orders",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="List your current open orders",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            help="Limit parameter.",
+            default=20,
+            type=check_positive,
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: created_time",
+            default="created_time",
+            choices=self.order_sortby,
+        )
+        parser.add_argument(
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
+        )
+        if other_args and other_args[0][0] != "-":
+            other_args.insert(0, "--acc")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            coinbase_advanced_view.display_orders(
+                limit=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                descend=not ns_parser.reverse,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_deposits(self, other_args):
+        """Process deposits command"""
+        parser = argparse.ArgumentParser(
+            prog="deposits",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Display a list of deposits for your account.",
+        )
+        parser.add_argument(
+            "-t",
+            "--type",
+            dest="type",
+            type=str,
+            help="Deposit type. Either: internal_deposits (transfer between portfolios) or deposit",
+            default="deposit",
+            choices=self.deposit_type,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            help="Limit parameter.",
+            default=20,
+            type=check_positive,
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: created_time",
+            default="created_time",
+            choices=self.deposit_sort,
+        )
+        parser.add_argument(
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            coinbase_advanced_view.display_deposits(
+                limit=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                deposit_type=ns_parser.type,
+                descend=ns_parser.reverse,
+                export=ns_parser.export,
+            )
