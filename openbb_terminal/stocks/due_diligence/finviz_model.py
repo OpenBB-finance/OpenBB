@@ -45,6 +45,7 @@ def get_analyst_data(symbol: str) -> pd.DataFrame:
     """
     d_finviz_analyst_price = finviz.get_analyst_price_targets(symbol)
     df_fa = pd.DataFrame.from_dict(d_finviz_analyst_price)
-    df_fa.set_index("date", inplace=True)
+    if not df_fa.empty:
+        df_fa.set_index("date", inplace=True)
 
     return df_fa
