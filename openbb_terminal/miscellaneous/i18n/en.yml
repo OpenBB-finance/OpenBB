@@ -936,7 +936,7 @@ en:
   portfolio/bro/degiro: Degiro Menu
   portfolio/bro/rh: Robinhood Menu
   portfolio/bro/cb: Coinbase Pro Menu
-  portfolio/bro/cbadv: Coinbase Advanced Menu (Beta)
+  portfolio/bro/cbadv: Coinbase Advanced Menu
   portfolio/bro/cbadv/account: Coinbase Advanced account list
   portfolio/bro/cbadv/orders: Coinbase Advanced latest orders
   portfolio/bro/ally/holdings: show account holdings

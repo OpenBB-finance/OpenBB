@@ -59,9 +59,7 @@ class CoinbaseAdvController(BaseController):
         mt.add_cmd("account")
         # mt.add_cmd("deposits")
         mt.add_cmd("orders")
-        console.print(
-            text=mt.menu_text, menu="Portfolio - Brokers - Coinbase Advanced (Beta)"
-        )
+        console.print(text=mt.menu_text, menu="Portfolio - Brokers - Coinbase Advanced")
 
     @log_start_end(log=logger)
     def call_account(self, other_args):
