@@ -6,7 +6,7 @@ import logging
 import os
 
 from typing import List
-
+from datetime import date
 import pandas as pd
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -254,12 +254,21 @@ class TradingHoursController(BaseController):
             "--name",
             help="Exchange short name",
             dest="exchange",
+            required=True,
+            type=str.upper,
             choices=self.all_holiday_exchange_short_names,
             metavar="LSE",
         )
 
         parser.add_argument(
-            "-y", "--year", help="Year", type=int, dest="year", metavar="2022"
+            "-y",
+            "--year",
+            help="Year",
+            nargs="?",
+            type=int,
+            const=date.today().year,
+            dest="year",
+            metavar="year",
         )
 
         if (
@@ -272,8 +281,12 @@ class TradingHoursController(BaseController):
             other_args.insert(2, "-y")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser and ns_parser.exchange:
-            display_exchange_holidays(ns_parser.exchange, ns_parser.year)
+        if ns_parser:
+            if ns_parser.exchange:
+                if ns_parser.year:
+                    display_exchange_holidays(ns_parser.exchange, ns_parser.year)
+                else:
+                    display_exchange_holidays(ns_parser.exchange, date.today().year)
         else:
             logger.error("Select the exchange and year you want holiday calendar for.")
             console.print(
