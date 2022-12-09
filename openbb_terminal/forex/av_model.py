@@ -77,23 +77,20 @@ def get_quote(to_symbol: str = "USD", from_symbol: str = "EUR") -> Dict[str, Any
 
     response = requests.get(url)
     response_json = response.json()
-    result = {}
 
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
         logger.error(response_json["Error Message"])
         raise OpenBBAPIError(response_json["Error Message"])
-    else:
-        # check if json is empty
-        if not response_json:
-            raise OpenBBAPIError(
-                "No data found."
-                + " Make sure 'av' supports the requested pair and you aren't hitting your API call limits."
-            )
-        else:
-            result = response_json
 
-    return result
+    # check if json is empty
+    if not response_json:
+        raise OpenBBAPIError(
+            "No data found."
+            + " Make sure 'av' supports the requested pair and you aren't hitting your API call limits."
+        )
+
+    return response_json
 
 
 @log_start_end(log=logger)
@@ -142,29 +139,30 @@ def get_historical(
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
         raise OpenBBAPIError(response_json["Error Message"])
-    elif "Note" in response_json:
+
+    if "Note" in response_json:
         raise OpenBBAPIError(response_json["Note"])
-    else:
-        # check if json is empty
-        if not response_json:
-            raise OpenBBAPIError("No data found.")
-        else:
-            key = list(response_json.keys())[1]
 
-            df = pd.DataFrame.from_dict(response_json[key], orient="index")
+    # check if json is empty
+    if not response_json:
+        raise OpenBBAPIError("No data found.")
 
-            if start_date and resolution != "i":
-                df = df[df.index > start_date]
+    key = list(response_json.keys())[1]
 
-            df = df.rename(
-                columns={
-                    "1. open": "Open",
-                    "2. high": "High",
-                    "3. low": "Low",
-                    "4. close": "Close",
-                }
-            )
-            df.index = pd.DatetimeIndex(df.index)
-            df = df[::-1]
+    df = pd.DataFrame.from_dict(response_json[key], orient="index")
+
+    if start_date and resolution != "i":
+        df = df[df.index > start_date]
+
+    df = df.rename(
+        columns={
+            "1. open": "Open",
+            "2. high": "High",
+            "3. low": "Low",
+            "4. close": "Close",
+        }
+    )
+    df.index = pd.DatetimeIndex(df.index)
+    df = df[::-1]
 
     return df.astype(float)

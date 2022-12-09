@@ -188,8 +188,8 @@ class ForexController(BaseController):
                         f"Make sure you have appropriate access for the '{ns_parser.source}' data source "
                         f"and that '{ns_parser.source}' supports the requested range.[/red]"
                     )
-                else:
-                    self.data.index.name = "date"
+
+                self.data.index.name = "date"
 
                 export_data(
                     ns_parser.export,
@@ -409,43 +409,40 @@ class ForexController(BaseController):
     def call_ta(self, _):
         """Process ta command"""
 
+        # TODO: Play with this to get correct usage
+        if not self.to_symbol or not self.from_symbol or self.data.empty:
+            raise OpenBBUserError("No ticker loaded. First use 'load <ticker>'.")
+
         from openbb_terminal.forex.technical_analysis.ta_controller import (
             TechnicalAnalysisController,
         )
 
-        # TODO: Play with this to get correct usage
-        if self.to_symbol and self.from_symbol and not self.data.empty:
-            self.queue = self.load_class(
-                TechnicalAnalysisController,
-                ticker=f"{self.from_symbol}/{self.to_symbol}",
-                source=self.source,
-                data=self.data,
-                start=self.data.index[0],
-                interval="",
-                queue=self.queue,
-            )
-
-        else:
-            raise OpenBBUserError("No ticker loaded. First use 'load <ticker>'.")
+        self.queue = self.load_class(
+            TechnicalAnalysisController,
+            ticker=f"{self.from_symbol}/{self.to_symbol}",
+            source=self.source,
+            data=self.data,
+            start=self.data.index[0],
+            interval="",
+            queue=self.queue,
+        )
 
     @log_start_end(log=logger)
     def call_qa(self, _):
         """Process qa command"""
-        if self.from_symbol and self.to_symbol:
-            if self.data.empty:
-                raise OpenBBUserError("No ticker loaded. First use 'load <ticker>'.")
-            else:
-                from openbb_terminal.forex.quantitative_analysis import qa_controller
 
-                self.queue = self.load_class(
-                    qa_controller.QaController,
-                    self.from_symbol,
-                    self.to_symbol,
-                    self.data,
-                    self.queue,
-                )
-        else:
+        if not self.to_symbol or not self.from_symbol or self.data.empty:
             raise OpenBBUserError("No ticker loaded. First use 'load <ticker>'.")
+
+        from openbb_terminal.forex.quantitative_analysis import qa_controller
+
+        self.queue = self.load_class(
+            qa_controller.QaController,
+            self.from_symbol,
+            self.to_symbol,
+            self.data,
+            self.queue,
+        )
 
     @log_start_end(log=logger)
     def call_forecast(self, _):
