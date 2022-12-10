@@ -5,11 +5,15 @@ import mstarpy
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from datetime import datetime
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     print_rich_table,
+    
 )
+
+from openbb_terminal.mutual_funds.mutual_funds_utils import mapping_country
 
 from openbb_terminal.mutual_funds import mstarpy_model
 from openbb_terminal.rich_config import console
@@ -52,7 +56,7 @@ def display_exclusion_policy(loaded_funds: mstarpy.Funds):
     )
     
 @log_start_end(log=logger)
-def display_historical(loaded_funds: mstarpy.Funds):
+def display_historical(loaded_funds: mstarpy.Funds, start_date: datetime, end_date: datetime, comparison: str = ""):
     """Display historical fund, category, index price
 
     Parameters
@@ -60,34 +64,54 @@ def display_historical(loaded_funds: mstarpy.Funds):
     loaded_funds: mstarpy.funds
         class mstarpy.Funds instanciated with selected funds
     """
-
-    data =loaded_funds.historicalData()
-    fig, ax = plt.subplots(figsize=(10,10))
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Performance (Base 100)")
-
+    
     title = f"Performance of {loaded_funds.name}"
-    for x in ['fund', 'index', 'category']:
-        
-        df = pd.DataFrame(data["graphData"][x])
+    data =loaded_funds.historicalData()
+    if not comparison:
+        fig, ax = plt.subplots(figsize=(10,10))
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Price")
+        df = pd.DataFrame(data["graphData"]['fund'])
         df["date"] =pd.to_datetime(df["date"])
-        df["pct"] = (df["value"]/df["value"].shift(1)-1).fillna(0)
-        df["base_100"] = 100*np.cumprod(1+df["pct"])
+        df = df.loc[(df["date"] >= start_date) & (df["date"] <= end_date)]
         
-        if x == 'fund':
-            label = f"funds : {loaded_funds.name}"
-        else:
-            key = f"{x}Name"
-            if key in data:
-                
-                label = f"{x} : {data[key]}"
-                title += f" vs {label}"
+        ax.plot(df.date, df.value, label = loaded_funds.name)
+        ax.legend(loc="best")
+        ax.set_title(title)
+        ax.tick_params(axis='x', rotation=45)
+
+    else:
+        comparison_list ={
+            "index": ['fund', 'index',],
+            "category": ['fund', 'category'],
+            "both" :  ['fund', 'index', 'category']
+            }
+        fig, ax = plt.subplots(figsize=(10,10))
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Performance (Base 100)")
+
+        for x in comparison_list[comparison]:
+            
+            df = pd.DataFrame(data["graphData"][x])
+            df["date"] =pd.to_datetime(df["date"])
+            df = df.loc[(df["date"] >= start_date) & (df["date"] <= end_date)]
+            df["pct"] = (df["value"]/df["value"].shift(1)-1).fillna(0)
+            df["base_100"] = 100*np.cumprod(1+df["pct"])
+            
+            if x == 'fund':
+                label = f"funds : {loaded_funds.name}"
             else:
-                label = x
-        ax.plot(df.date, df.base_100, label = label)
-    ax.legend(loc="best")
-    ax.set_title(title)
-    ax.tick_params(axis='x', rotation=45)
+                key = f"{x}Name"
+                if key in data:
+                    
+                    label = f"{x} : {data[key]}"
+                    title += f" vs {label}"
+                else:
+                    label = x
+            ax.plot(df.date, df.base_100, label = label)
+        ax.legend(loc="best")
+        ax.set_title(title)
+        ax.tick_params(axis='x', rotation=45)
 
 
 
@@ -106,13 +130,21 @@ def display_holdings(loaded_funds: mstarpy.Funds, holding_type: str = "all"):
         type of holdings, can be all, equity, bond, other
 
     """
-    holdings = mstarpy_model.load_holdings(loaded_funds, holding_type)
 
-    print_rich_table(
-        holdings,
-        show_index=False,
-        title=f"[bold]{holding_type} holdings of the funds {loaded_funds.name}[/bold]",
-    )
+    holdings = mstarpy_model.load_holdings(loaded_funds, holding_type)
+    if isinstance(holdings,pd.DataFrame):
+        if holdings.empty:
+            if holding_type !="all":
+                console.print(f"The funds does not hold {holding_type} assets 🤨")
+            else:
+                console.print("No holdings displayed 🤨")
+
+        else:
+            print_rich_table(
+                holdings,
+                show_index=False,
+                title=f"[bold]{holding_type} holdings of the funds {loaded_funds.name}[/bold]",
+            )
 
 
 @log_start_end(log=logger)
@@ -131,9 +163,13 @@ def display_load(
         Country to filter on
 
     """
-    funds = mstarpy_model.load_funds(term, country=country)
     if country:
-        console.print(f"The funds {funds.name} - {funds.isin} ({funds.code}) from the country {country} is loaded")
+        iso_country = mapping_country[country]
+    else:
+        iso_country = ""
+    funds = mstarpy_model.load_funds(term, country=iso_country)
+    if country:
+        console.print(f"The funds {funds.name} - {funds.isin} ({funds.code}) from the country {country.title()} is loaded")
     else:
         console.print(f"The funds {funds.name} - {funds.isin} ({funds.code}) is loaded")
 
@@ -156,13 +192,17 @@ def display_search(
     limit: int
         Number to show
     """
-    searches = mstarpy_model.search_funds(term,country=country,pageSize=limit)
+    if country:
+        iso_country = mapping_country[country]
+    else:
+        iso_country = ""
+    searches = mstarpy_model.search_funds(term,country=iso_country,pageSize=limit)
     if searches.empty:
         console.print("No matches found.\n")
         return
 
     if country:
-        title = f"Mutual Funds from {country} matching {term}"
+        title = f"Mutual Funds from {country.title()} matching {term}"
     else:
         title = f"Mutual Funds matching {term}"
 
