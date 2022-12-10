@@ -9,7 +9,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from plotly.subplots import make_subplots
 
-from openbb_terminal.base_helpers import PLT_FONT, PLT_TA_COLORWAY, go
+from openbb_terminal.base_helpers import go
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
@@ -20,6 +20,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import finra_model
+from plots_backend.assets.openbb_styles import PLT_FONT, PLT_TA_COLORWAY
 
 logger = logging.getLogger(__name__)
 
