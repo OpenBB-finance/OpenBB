@@ -83,6 +83,8 @@ def load_holdings(loaded_funds : mstarpy.Funds, holding_type : str = "all"):
         pd.DataFrame of funds holdings
     """
     holdings = loaded_funds.holdings(holding_type)
+    if holdings.empty:
+        return pd.DataFrame()
     return holdings[["isin", "securityName", "weighting", "country"]]
      
 
