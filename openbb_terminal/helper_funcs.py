@@ -1271,6 +1271,10 @@ def export_data(
                 saved_path = os.path.join(export_folder, exp_type)
             # In this scenario we use the default filename
             else:
+                if ".OpenBB_openbb_terminal" in export_filename:
+                    export_filename = export_filename.replace(
+                        ".OpenBB_openbb_terminal", "OpenBBTerminal"
+                    )
                 saved_path = os.path.join(
                     export_folder, f"{export_filename}.{exp_type}"
                 )
