@@ -68,7 +68,7 @@ while True:
         websocket_port += 1
         continue
 
-# We save the port and the pid of the this process in pickle file so that the frontend can access it
+# We save the port and the pid of the this process in pickle file so that the terminal can access it
 pickle.dump(websocket_port, open(QT_PATH / "assets/qt_socket", "wb"))
 pickle.dump(os.getpid(), open(QT_PATH / "assets/qt_backend_pid", "wb"))
 
@@ -500,7 +500,7 @@ class WebSocketServer(QObject):
             fig.show()
             fig._window.closing.connect(lambda: self.on_figure_closed(fig))
             # This is needed to make sure the window opens on top of the terminal.
-            # initally the window is created with the WindowStaysOnTopHint flag set,
+            # initially the window is created with the WindowStaysOnTopHint flag set,
             # but this is removed when the window is shown. This is done so the
             # window doesn't stay on top when the user clicks on the window.
             fig._window.setWindowFlags(
@@ -543,7 +543,7 @@ class WebSocketServer(QObject):
 #         self._widget: "ReportsWidget" = self._window.parent()
 
 #     def interceptRequest(self, info: QWebEngineUrlRequestInfo):
-#         # We make sure open user clicked links in the default browser
+#         # We make sure to open user clicked links in the default browser
 #         if (
 #             info.resourceType()
 #             == QWebEngineUrlRequestInfo.ResourceType.ResourceTypeMainFrame
