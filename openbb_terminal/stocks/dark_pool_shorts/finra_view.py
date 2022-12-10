@@ -155,6 +155,7 @@ def darkpool_ats_otc(
     fig.update_layout(
         margin=dict(l=0, r=0, t=10, b=50),
         colorway=PLT_TA_COLORWAY,
+        template="plotly_dark",
         title=f"<b>Dark Pools (ATS) vs OTC (Non-ATS) Data for {symbol}</b>",
         title_x=0.025,
         title_font_size=14,
