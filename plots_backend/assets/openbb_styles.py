@@ -1,14 +1,16 @@
 import os
 from typing import Any, List, Optional, Tuple
 
-BOT_PLOT_DPI = int(os.environ.get("OPENBB_BOT_PLOT_DPI", "200"))
-BOT_PLOT_HEIGHT = int(os.environ.get("OPENBB_BOT_PLOT_HEIGHT", "860"))
-BOT_PLOT_WIDTH = int(os.environ.get("OPENBB_BOT_PLOT_WIDTH", "1160"))
+import pandas as pd
+
+PLOT_DPI = int(os.environ.get("OPENBB_PLOT_DPI", "200"))
+PLOT_HEIGHT = int(os.environ.get("OPENBB_PLOT_HEIGHT", "860"))
+PLOT_WIDTH = int(os.environ.get("OPENBB_PLOT_WIDTH", "1160"))
 
 
-def bot_plot_scale():
-    x = BOT_PLOT_WIDTH / (BOT_PLOT_DPI)
-    y = BOT_PLOT_HEIGHT / (BOT_PLOT_DPI)
+def plot_scale():
+    x = PLOT_WIDTH / (PLOT_DPI)
+    y = PLOT_HEIGHT / (PLOT_DPI)
     return x, y
 
 
@@ -177,7 +179,7 @@ PLT_DECREASING_COLORWAY_RED = [
 
 
 def de_increasing_color_list(
-    df_column=None,
+    df_column: pd.DataFrame.columns = None,
     text: str = None,
     contains_str: str = "-",
     increasing_color: str = PLT_TBL_INCREASING,

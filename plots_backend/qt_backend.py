@@ -13,26 +13,22 @@ from typing import List, Optional
 
 import plotly.graph_objects as go
 from PySide6.QtCore import (
-    QFileSystemWatcher,
     QObject,
     QSize,
     QSocketNotifier,
     Qt,
     QUrl,
     Signal,
-)
+)  # QFileSystemWatcher,
 from PySide6.QtGui import QDesktopServices, QGuiApplication, QIcon
 from PySide6.QtNetwork import QHostAddress
-from PySide6.QtWebEngineCore import (
+from PySide6.QtWebEngineCore import (  # QWebEngineUrlRequestInfo,; QWebEngineUrlRequestInterceptor,
     QWebEngineDownloadRequest,
-    QWebEngineUrlRequestInfo,
-    QWebEngineUrlRequestInterceptor,
 )
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWebSockets import QWebSocketServer
-from PySide6.QtWidgets import (
+from PySide6.QtWidgets import (  # QFileDialog,
     QDialog,
-    QFileDialog,
     QLabel,
     QMainWindow,
     QMessageBox,
@@ -44,8 +40,7 @@ from PySide6.QtWidgets import (
 
 from openbb_terminal.core.config.paths import (
     USER_DATA_DIRECTORY,
-    USER_REPORTS_DIRECTORY,
-)
+)  # USER_REPORTS_DIRECTORY,
 from plots_backend.app_config import (
     APP_PALETTE,
     STYLE_SHEET,
