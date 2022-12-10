@@ -79,33 +79,35 @@ def get_estimates_eps(ticker: str) -> pd.DataFrame:
         for i in range(0, items - 3):
             # python_dict
             eps_estimates = {}
-            eps_estimates["fiscalyear"] = seek_object["eps_normalized_num_of_estimates"][
-                str(i)
-            ][0]["period"]["fiscalyear"]
+            eps_estimates["fiscalyear"] = seek_object[
+                "eps_normalized_num_of_estimates"
+            ][str(i)][0]["period"]["fiscalyear"]
             eps_estimates["analysts"] = seek_object["eps_normalized_num_of_estimates"][
                 str(i)
             ][0]["dataitemvalue"]
             try:
-                eps_estimates["actual"] = seek_object["eps_normalized_actual"][str(i)][0][
-                    "dataitemvalue"
-                ]
+                eps_estimates["actual"] = seek_object["eps_normalized_actual"][str(i)][
+                    0
+                ]["dataitemvalue"]
             except:
                 eps_estimates["actual"] = 0
-            eps_estimates["consensus_low"] = seek_object["eps_normalized_consensus_low"][
-                str(i)
-            ][0]["dataitemvalue"]
-            eps_estimates["consensus_high"] = seek_object["eps_normalized_consensus_high"][
-                str(i)
-            ][0]["dataitemvalue"]
-            eps_estimates["consensus_mean"] = seek_object["eps_normalized_consensus_mean"][
-                str(i)
-            ][0]["dataitemvalue"]
+            eps_estimates["consensus_low"] = seek_object[
+                "eps_normalized_consensus_low"
+            ][str(i)][0]["dataitemvalue"]
+            eps_estimates["consensus_high"] = seek_object[
+                "eps_normalized_consensus_high"
+            ][str(i)][0]["dataitemvalue"]
+            eps_estimates["consensus_mean"] = seek_object[
+                "eps_normalized_consensus_mean"
+            ][str(i)][0]["dataitemvalue"]
 
             try:
                 this = float(eps_estimates["consensus_mean"])
                 try:
                     prev = float(
-                        seek_object["eps_normalized_actual"][str(i - 1)][0]["dataitemvalue"]
+                        seek_object["eps_normalized_actual"][str(i - 1)][0][
+                            "dataitemvalue"
+                        ]
                     )
                 except:
                     prev = float(
@@ -121,11 +123,19 @@ def get_estimates_eps(ticker: str) -> pd.DataFrame:
             eps_estimates["change %"] = percent
 
             # format correction (before return, so calculation still works)
-            eps_estimates["consensus_mean"] = lambda_long_number_format(float(eps_estimates["consensus_mean"]))
-            eps_estimates["consensus_low"] = lambda_long_number_format(float(eps_estimates["consensus_low"]))
-            eps_estimates["consensus_high"] = lambda_long_number_format(float(eps_estimates["consensus_high"]))
-            eps_estimates["actual"] = lambda_long_number_format(float(eps_estimates["actual"]))
-            
+            eps_estimates["consensus_mean"] = lambda_long_number_format(
+                float(eps_estimates["consensus_mean"])
+            )
+            eps_estimates["consensus_low"] = lambda_long_number_format(
+                float(eps_estimates["consensus_low"])
+            )
+            eps_estimates["consensus_high"] = lambda_long_number_format(
+                float(eps_estimates["consensus_high"])
+            )
+            eps_estimates["actual"] = lambda_long_number_format(
+                float(eps_estimates["actual"])
+            )
+
             # df append replacement
             new_row = pd.DataFrame(eps_estimates, index=[0])
             output = pd.concat([output, new_row])
@@ -212,8 +222,6 @@ def get_estimates_rev(ticker: str) -> pd.DataFrame:
                 str(i)
             ][0]["dataitemvalue"]
 
-
-
             revenue_estimates["analysts"] = seek_object["revenue_num_of_estimates"][
                 str(i)
             ][0]["dataitemvalue"]
@@ -251,11 +259,19 @@ def get_estimates_rev(ticker: str) -> pd.DataFrame:
             revenue_estimates["change %"] = percent
 
             # format correction (before return, so calculation still works)
-            revenue_estimates["consensus_mean"] = lambda_long_number_format(float(revenue_estimates["consensus_mean"]))
-            revenue_estimates["consensus_low"] = lambda_long_number_format(float(revenue_estimates["consensus_low"]))
-            revenue_estimates["consensus_high"] = lambda_long_number_format(float(revenue_estimates["consensus_high"]))
-            revenue_estimates["actual"] = lambda_long_number_format(float(revenue_estimates["actual"]))
-            
+            revenue_estimates["consensus_mean"] = lambda_long_number_format(
+                float(revenue_estimates["consensus_mean"])
+            )
+            revenue_estimates["consensus_low"] = lambda_long_number_format(
+                float(revenue_estimates["consensus_low"])
+            )
+            revenue_estimates["consensus_high"] = lambda_long_number_format(
+                float(revenue_estimates["consensus_high"])
+            )
+            revenue_estimates["actual"] = lambda_long_number_format(
+                float(revenue_estimates["actual"])
+            )
+
             # df append replacement
             new_row = pd.DataFrame(revenue_estimates, index=[0])
             output = pd.concat([output, new_row])
@@ -307,7 +323,6 @@ def get_seekingalpha_id(ticker: str) -> str:
         "GET", url, data=payload, headers=headers, params=querystring
     )
 
-    
     try:
         seekingalphaID = str(response.json()["symbols"][0]["id"])
     except:
