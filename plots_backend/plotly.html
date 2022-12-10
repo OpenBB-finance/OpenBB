@@ -33,6 +33,14 @@
             font-family: 'Fira Code', monospace, 'Arial Black';
         }
 
+        .plotly-table {
+            width: 100%;
+            height: 100%;
+            font-size: 12px;
+            font-size: 1.2rem;
+            font-family: 'Fira Code', monospace, 'Arial Black';
+        }
+
         body {
             background-color: #111111;
             font-family: 'Fira Code', monospace, 'Arial Black';
@@ -48,18 +56,48 @@
     <div>
         <script type="text/javascript">window.PlotlyConfig = { MathJaxConfig: 'local' };</script>
         <div id="openbb_chart" class="plotly-graph-div"></div>
-        <script type="text/javascript">
+        <div id="openbb_table" class="plotly-table"></div>
+    </div>
 
-            var interval = setInterval(function () {
-                if (window.plotly_figure) {
-                    clearInterval(interval);
-                    main();
-                }
-            }, 100);
+    <script type="text/javascript">
+        CHART_DIV = document.getElementById('openbb_chart');
+        TABLE_DIV = document.getElementById('openbb_table');
 
-            function main() {
-                CHART_DIV = document.getElementById('openbb_chart');
+        var interval = setInterval(function () {
+            if (window.plotly_figure) {
+                clearInterval(interval);
+                main();
+            }
+            if (window.plotly_table) {
+                clearInterval(interval);
+
+                main();
+            }
+        }, 100);
+
+        function filename(data) {
+            if (window.plotly_figure) {
+                var title = 'plots';
+            } else if (window.plotly_table) {
+                var title = 'table';
+            }
+            if (data.layout.title != undefined) {
+                title = data.layout.title.text;
+            }
+            var filename = 'openbb_' + title.replace(/<b>|<\/b>/g, '').replace(/ /g, '_');
+
+            var date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+            var time = new Date().toISOString().slice(11, 19).replace(/:/g, '');
+            var dateTime = date + '_' + time;
+
+            return filename + '_' + dateTime;
+        }
+
+        function main() {
+
+            if (window.plotly_figure) {
                 var graphs = JSON.parse(window.plotly_figure);
+
                 if (!('font' in graphs.layout)) {
                     graphs.layout['font'] = {
                         'family': 'Fira Code, monospace, Arial Black',
@@ -88,7 +126,6 @@
 
                 var font_size = graphs.layout.font;
                 var old_annotations = graphs.layout.annotations;
-
                 window.addEventListener('resize', function () {
                     var new_annotations = [];
                     if (graphs.layout.annotations != undefined) {
@@ -106,23 +143,13 @@
                     Plotly.Plots.resize(CHART_DIV);
                 });
 
-                var title = 'plots';
-                if (graphs.layout.title != undefined) {
-                    title = graphs.layout.title.text;
-                }
-                var filename = 'openbb_' + title.replace(/<b>|<\/b>/g, '').replace(/ /g, '_');
-
-                var date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-                var time = new Date().toISOString().slice(11, 19).replace(/:/g, '');
-                var dateTime = date + '_' + time;
-
                 var config = {
                     "scrollZoom": true,
                     "responsive": true,
                     'displaylogo': false,
                     'toImageButtonOptions': {
                         'format': 'png',
-                        'filename': filename + '_' + dateTime,
+                        'filename': filename(graphs),
                         'height': graphs.layout.height,
                         'width': graphs.layout.width,
                     },
@@ -155,9 +182,51 @@
 
                 Plotly.setPlotConfig(config);
                 Plotly.newPlot(CHART_DIV, graphs, { responsive: true });
-            }
+                TABLE_DIV.style.display = 'none';
 
-        </script>
+            } else if (window.plotly_table) {
+                var table = JSON.parse(window.plotly_table);
+                if (!('font' in table.layout)) {
+                    table.layout['font'] = {
+                        'family': 'Fira Code, monospace, Arial Black',
+                        'size': 18,
+                    }
+                }
+                var config = {
+                    "scrollX": true,
+                    "scrollY": true,
+                    "responsive": true,
+                    'displaylogo': false,
+                    'toImageButtonOptions': {
+                        'format': 'png',
+                        'filename': filename(table),
+                        'height': 600,
+                        'width': 800,
+                    },
+                };
+
+                window.addEventListener('resize', function () {
+                    Plotly.Plots.resize(TABLE_DIV)
+                });
+
+                table.layout.autosize = true;
+                table.layout.margin = {
+                    l: 0,
+                    r: 0,
+                    b: 0,
+                    t: 0,
+                    pad: 0
+                };
+                table.layout.font.size = Math.min(TABLE_DIV.clientWidth / 50, 18);
+
+                Plotly.setPlotConfig(config);
+                Plotly.newPlot(TABLE_DIV, table, { responsive: true });
+                CHART_DIV.style.display = 'none';
+            }
+        }
+    </script>
+
+
     </div>
 </body>
 

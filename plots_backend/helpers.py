@@ -1,4 +1,4 @@
-# pylint: disable=c-extension-no-member
+# pylint: disable=c-extension-no-member,consider-using-with
 import asyncio
 import atexit
 import os
@@ -6,6 +6,7 @@ import pickle
 import subprocess
 import sys
 import threading
+import time
 from pathlib import Path
 from typing import List
 
@@ -16,6 +17,7 @@ from websockets.client import connect
 
 QT_PATH = Path(__file__).parent.resolve()
 BACKEND_RUNNING = False
+IS_TERMINAL = "terminal.py" in sys.argv[0]
 
 
 class PlotsBackendError(Exception):
@@ -36,7 +38,7 @@ def get_qt_backend_pid():
     return qt_backend_pid
 
 
-async def get_qt_backend_socket(retry: bool = False, error: bool = False):
+async def get_qt_backend_socket(error: bool = False):
     try:
         socket_port = pickle.load(open(QT_PATH / "assets/qt_socket", "rb"))
         if error:
@@ -50,14 +52,14 @@ async def get_qt_backend_socket(retry: bool = False, error: bool = False):
             await asyncio.sleep(2)
             qt_backend_pid = get_qt_backend_pid()
             process = psutil.Process(qt_backend_pid)
-            process.kill()
+            if process.is_running():
+                process.kill()
+            global BACKEND_RUNNING  # pylint: disable=global-statement
+            BACKEND_RUNNING = False
             run_qt_backend()
             socket_port = pickle.load(open(QT_PATH / "assets/qt_socket", "rb"))
-        except FileNotFoundError as file:
-            if not retry:
-                socket_port = await get_qt_backend_socket(True)
-            else:
-                raise PlotsBackendError from file
+        except FileNotFoundError:
+            socket_port = await get_qt_backend_socket()
         except psutil.NoSuchProcess as proc:
             raise PlotsBackendError from proc
 
@@ -78,6 +80,7 @@ def run_qt_backend():
             process = psutil.Process(qt_backend_pid)
             if len(process.cmdline()) > 1 and process_name in process.cmdline()[1]:
                 if process.is_running():
+                    process.kill()
                     global BACKEND_RUNNING  # pylint: disable=global-statement
                     BACKEND_RUNNING = True
                     return True
@@ -88,7 +91,11 @@ def run_qt_backend():
 
     if not is_running("qt_backend.py"):
         # if the qt_backend is not running, we run it in a subprocess
-        kwargs = {"stdout": subprocess.PIPE, "stderr": subprocess.PIPE}
+        kwargs = {
+            "stdout": subprocess.PIPE,
+            "stderr": subprocess.PIPE,
+            "stdin": subprocess.PIPE,
+        }
 
         # if the DEBUG env variable is set to True
         # we don't want to hide the output of the subprocess
@@ -114,44 +121,42 @@ class QtBackend:
     def __init__(self):
         self.socket_port: int = None
         self.figures: List[go.Figure] = []
+        self.reports: List[str] = []
         self.thread = None
-        self.init_engine = False
+        self.init_engine = ["init"]
 
-    async def connect(self, retry: bool = False):
+    async def connect(self):
         """Connects to qt_backend and maintains the connection until the terminal is closed"""
         try:
+            run_qt_backend()
             global BACKEND_RUNNING  # pylint: disable=global-statement
-            if not BACKEND_RUNNING:
-                run_qt_backend()
-                await asyncio.sleep(1)
-                self.socket_port = await get_qt_backend_socket()
+            BACKEND_RUNNING = True
+            self.socket_port = await get_qt_backend_socket()
 
             async with connect(
                 f"ws://localhost:{self.socket_port}", open_timeout=6, timeout=1
             ) as websocket:
-                if not self.init_engine:
+                if self.init_engine:
                     # sends init message to qt_backend to initialize the engine
                     # this is only done once, and makes sure the first plot doesn't
                     # have to wait for the engine to be initialized
-                    await websocket.send("init")
-                    self.init_engine = True
+                    for msg in self.init_engine:
+                        await websocket.send(msg)
+                    self.init_engine = []
 
                 while True:
                     if self.figures:
                         data = self.figures.pop(0)
+                        self.init_engine.append(data.to_json())
+
                         await websocket.send(data.to_json())
+                        self.init_engine = ["init"]
                     await asyncio.sleep(0.1)
 
-        except asyncio.exceptions.TimeoutError as time:
-            raise PlotsBackendError from time
-
-        except ConnectionRefusedError as conn:
-            await get_qt_backend_socket(error=True)
-            if not retry:
-                await self.connect(True)
-            else:
-                BACKEND_RUNNING = False
-                raise PlotsBackendError from conn
+        except Exception:
+            await get_qt_backend_socket()
+            BACKEND_RUNNING = False
+            await self.connect()
 
     def start(self):
         """Connect to qt_backend in a separate thread."""
@@ -161,12 +166,26 @@ class QtBackend:
         self.thread = thread
         thread.start()
 
+        # We check to see if initialize was called from the OpenBB terminal
+        # or from a script. If it was called from a script, we need to wait
+        # in case the user is using the sdk in a script called from the command line
+        # e.g. `python custom_script.py`
+        if not IS_TERMINAL:
+            asyncio.run(asyncio.sleep(8))
+
     def send_fig(self, fig: go.Figure):
         """Send figure to qt_backend."""
         if not BACKEND_RUNNING or not self.thread.is_alive():
             self.start()
 
         self.figures.append(fig)
+
+    def send_reports(self, report: Path):
+        """Send report to qt_backend."""
+        if not BACKEND_RUNNING or not self.thread.is_alive():
+            self.start()
+
+        self.reports.append(str(report))
 
     def close(self):
         """Close the connection."""
@@ -181,16 +200,42 @@ if not (Path(__file__).parent.resolve() / "assets/plotly.js").exists():
             f.write(chunk)
 
 
-def kill_subprocess():
-    """Kills the qt_backend subprocess when the terminal is closed"""
-    try:
-        qt_backend_pid = get_qt_backend_pid()
-        process = psutil.Process(qt_backend_pid)
-        process.kill()
-    except psutil.NoSuchProcess:
-        pass
+def closeonlastwindowclosed(is_terminal: bool):
+    socket_port = pickle.load(open(QT_PATH / "assets/qt_socket", "rb"))
+    message = "isterminal" if is_terminal else "isatty"
+
+    async def close():
+        async with connect(f"ws://localhost:{socket_port}") as websocket:
+            await websocket.send(message)
+            sys.exit(1)
+
+    asyncio.run(close())
+
+
+def setCloseonLastWindowClosed():
+    """Sends a message to qt_backend when the terminal is closed"""
+    if BACKEND_RUNNING:
+        try:
+            if not IS_TERMINAL:
+                # We make sure the qt_backend has time to start up
+                # if the user is using the sdk in a script called from the command line
+                time.sleep(2)
+
+            # We run the closeonlastwindowclosed function in a subprocess
+            # since we can't create a new future after interpreter shutdown
+            subprocess.Popen(
+                [
+                    sys.executable,
+                    "-c",
+                    f"import asyncio;from helpers import closeonlastwindowclosed; closeonlastwindowclosed({IS_TERMINAL})",
+                ],
+                shell=True,
+                cwd=QT_PATH,
+            )
+        except FileNotFoundError:
+            pass
 
 
 PLOTLY_BACKEND = QtBackend()
 
-atexit.register(kill_subprocess)
+atexit.register(setCloseonLastWindowClosed)

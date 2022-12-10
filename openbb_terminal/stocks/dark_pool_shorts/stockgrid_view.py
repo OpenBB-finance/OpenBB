@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from plotly.subplots import make_subplots
 
-from openbb_terminal.base_helpers import PLT_FONT, PLT_TA_COLORWAY, go
+from openbb_terminal.base_helpers import go
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
@@ -21,6 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
+from plots_backend.assets.openbb_styles import PLT_FONT, PLT_TA_COLORWAY
 
 logger = logging.getLogger(__name__)
 
@@ -266,11 +267,38 @@ def short_interest_volume(
         fig.update_xaxes(
             rangebreaks=[dict(bounds=["sat", "mon"]), dict(values=mkt_holidays)]
         )
-        fig.show()
 
-    export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "shortint(stockgrid)", df
-    )
+        def fig_show_export(
+            fig: go.Figure, export: str, dir_path: str, filename: str, df: pd.DataFrame
+        ):
+            """Figure show with export data. We use in case we're in Terminal Pro and we're expected a plotly json
+            to display in the app. Since we'd have to return fig.show() in that case, we need to wrap it in a function
+            to be able to return the fig.show() and export_data().
+
+            Parameters
+            ----------
+            fig : plt.Figure
+                Figure to export
+            export : str
+                Export format
+            dir_path : str
+                Directory path to export to
+            filename : str
+                Filename to export to
+            df : pd.DataFrame
+                Dataframe to export
+            """
+
+            export_data(export, dir_path, filename, df)
+            return fig.show()
+
+        return fig_show_export(
+            fig,
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "shortint(stockgrid)",
+            df,
+        )
 
 
 @log_start_end(log=logger)

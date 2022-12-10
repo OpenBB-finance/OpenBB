@@ -1,6 +1,7 @@
 # This is for helpers that do NOT import any OpenBB Modules
 import os
-from typing import Any, Callable, Literal
+import sys
+from typing import Any, Callable, Literal, Union
 
 import plotly.graph_objects as go
 from rich.console import Console
@@ -105,38 +106,17 @@ except (ImportError, AttributeError):
 else:
     JUPYTER_NOTEBOOK = True
 
-PLT_FONT = dict(family="Fira Code", size=16)
-PLT_TA_COLORWAY = [
-    "#fdc708",
-    "#d81aea",
-    "#00e6c3",
-    "#9467bd",
-    "#e250c3",
-    "#d1fa3d",
-    "#CCEEFF",
-    "#66CCFF",
-    "#CCDEEE",
-    "#669DCB",
-    "#DAD4E5",
-    "#917DB0",
-    "#E6D4DF",
-    "#B47DA0",
-    "#FACCD8",
-    "#EF6689",
-    "#FCE5CC",
-    "#F5B166",
-    "#FFFBCC",
-    "#FFF466",
-]
-
 
 # pylint: disable=no-member
 class Show:
-    """Monkey patch the show method to send the figure to the backend."""
+    """Monkey patch the show method to send the figure to the backend, or return the json if
+    we are in a terminal pro session.
+    """
 
-    def show(self) -> None:
+    def show(self) -> Union[str, None]:
         """Show the figure."""
-        self.update_layout(template="plotly_dark")  # type: ignore
+        if os.environ.get("TERMINAL_PRO", False):
+            return self.to_json()  # type: ignore
         try:
             # We send the figure to the backend to be displayed
             PLOTLY_BACKEND.send_fig(self)
@@ -147,9 +127,11 @@ class Show:
                 console.print_exception()
             self._show()  # type: ignore
 
+        return None
+
 
 # If we are not in a notebook, we monkey patch the show method
-if not JUPYTER_NOTEBOOK:
+if not JUPYTER_NOTEBOOK and sys.stdin.isatty():
     setattr(go.Figure, "_show", go.Figure.show)
     go.Figure.show = Show.show
     PLOTLY_BACKEND.start()
