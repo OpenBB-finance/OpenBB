@@ -150,7 +150,6 @@ def short_interest_volume(
             title="Price vs Short Volume",
         )
     else:
-
         # Output data
         fig = make_subplots(
             rows=2,
@@ -268,37 +267,41 @@ def short_interest_volume(
             rangebreaks=[dict(bounds=["sat", "mon"]), dict(values=mkt_holidays)]
         )
 
-        def fig_show_export(
-            fig: go.Figure, export: str, dir_path: str, filename: str, df: pd.DataFrame
-        ):
-            """Figure show with export data. We use in case we're in Terminal Pro and we're expected a plotly json
-            to display in the app. Since we'd have to return fig.show() in that case, we need to wrap it in a function
-            to be able to return the fig.show() and export_data().
+        # POC FOR TERMINAL PRO
+        # def fig_show_export(
+        #     fig: go.Figure, export: str, dir_path: str, filename: str, df: pd.DataFrame
+        # ):
+        #     """Figure show with export data. We use in case we're in Terminal Pro and we're expected a plotly json
+        #     to display in the app. Since we'd have to return fig.show() in that case, we need to wrap it in a function
+        #     to be able to return the fig.show() and export_data().
 
-            Parameters
-            ----------
-            fig : plt.Figure
-                Figure to export
-            export : str
-                Export format
-            dir_path : str
-                Directory path to export to
-            filename : str
-                Filename to export to
-            df : pd.DataFrame
-                Dataframe to export
-            """
+        #     Parameters
+        #     ----------
+        #     fig : plt.Figure
+        #         Figure to export
+        #     export : str
+        #         Export format
+        #     dir_path : str
+        #         Directory path to export to
+        #     filename : str
+        #         Filename to export to
+        #     df : pd.DataFrame
+        #         Dataframe to export
+        #     """
 
-            export_data(export, dir_path, filename, df)
-            return fig.show()
+        #     export_data(export, dir_path, filename, df)
+        #     return fig.show()
 
-        return fig_show_export(
-            fig,
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "shortint(stockgrid)",
-            df,
-        )
+        # return fig_show_export(
+        #     fig,
+        #     export,
+        #     os.path.dirname(os.path.abspath(__file__)),
+        #     "shortint(stockgrid)",
+        #     df,
+        # )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "shortint(stockgrid)", df
+    )
 
 
 @log_start_end(log=logger)
