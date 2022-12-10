@@ -20,7 +20,6 @@ WEB_ENGINE_SETTINGS = [
 
 STYLE_SHEET = """
 QPushButton {
-    font-size: 16px;
     background-color: "#3d3d40";
 }
 QWidget,
