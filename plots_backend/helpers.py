@@ -115,7 +115,7 @@ class QtBackend:
         # We only want to create one instance of the class
         # so we use the __new__ method to check if the instance already exists
         if not hasattr(cls, "instance"):
-            cls.instance = super(QtBackend, cls).__new__(cls)
+            cls.instance = super().__new__(cls)
         return cls.instance
 
     def __init__(self):
