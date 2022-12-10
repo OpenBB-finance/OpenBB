@@ -859,10 +859,6 @@ en:
   funds/forecast: forecasting techniques
   funds/country_ms: set a country for filtering
   funds/holdings: holdings of the loaded funds
-  funds/search_ms: search for Mutual Funds
-  funds/load_ms: load funds to access data
-  funds/plot_ms: plot loaded historical fund, category and index data
-  funds/sector_ms: sector breakdown
   funds/carbon_metrics: carbon metrics
   funds/exclusion_policy: exclusion policy
   funds/_country_ms: Current Country MorningStar
