@@ -216,6 +216,7 @@ class PlotlyFigureHTMLWebView(QWebEngineView):
                 )
                 print("table")
                 return
+
         self.page().runJavaScript(
             f"window.plotly_figure = {json.dumps(self.figure_.to_json())}"
         )
@@ -303,9 +304,7 @@ class QtPlotlyFigureWindow(QMainWindow):
 
     def sizeHint(self):
         """Return the size hint for the widget."""
-        width, height = self.widget_.figure_.get_fig_size()
-
-        return QSize(int(width), int(height))
+        return QSize(*self.widget_.figure_.get_fig_size())
 
     def get_popup(self):
         """Return the popup window."""
@@ -401,7 +400,7 @@ class QtFigure(go.Figure):
         """Gets the width and height of the plotly figure."""
         height = 585 if self.layout.height is None else self.layout.height
         width = 800 if self.layout.width is None else self.layout.width
-        return width, height
+        return int(width), int(height)
 
 
 class WebSocketServer(QObject):
@@ -463,7 +462,7 @@ class WebSocketServer(QObject):
                 return
 
             if message in ["isatty", "isterminal"]:
-                # We've received isatty, so we can close the application when the last
+                # We've received isatty/isterminal, so we can close the application when the last
                 # window is closed.
                 self.isatty_signal.emit(True)
                 if message == "isterminal":

@@ -80,7 +80,6 @@ def run_qt_backend():
             process = psutil.Process(qt_backend_pid)
             if len(process.cmdline()) > 1 and process_name in process.cmdline()[1]:
                 if process.is_running():
-                    process.kill()
                     global BACKEND_RUNNING  # pylint: disable=global-statement
                     BACKEND_RUNNING = True
                     return True
@@ -147,6 +146,11 @@ class QtBackend:
                 while True:
                     if self.figures:
                         data = self.figures.pop(0)
+                        # Just in case the user still had windows open from a previous
+                        # terminal session and closed them after starting a new session
+                        # [ at terminal close we set backend to quit after last window is closed ]
+                        # we append the fig json to the init_engine so that if the send fails, the engine will
+                        # still have the fig data to display at the next connection
                         self.init_engine.append(data.to_json())
 
                         await websocket.send(data.to_json())
@@ -175,17 +179,18 @@ class QtBackend:
 
     def send_fig(self, fig: go.Figure):
         """Send figure to qt_backend."""
-        if not BACKEND_RUNNING or not self.thread.is_alive():
-            self.start()
-
+        self.check_backend()
         self.figures.append(fig)
 
     def send_reports(self, report: Path):
         """Send report to qt_backend."""
+        self.check_backend()
+        self.reports.append(str(report))
+
+    def check_backend(self):
+        """Check if the backend is running."""
         if not BACKEND_RUNNING or not self.thread.is_alive():
             self.start()
-
-        self.reports.append(str(report))
 
     def close(self):
         """Close the connection."""
