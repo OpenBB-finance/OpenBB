@@ -1,9 +1,9 @@
 # This is for helpers that do NOT import any OpenBB Modules
 import os
 import sys
+import threading
 from typing import Any, Callable, Literal, Union
 
-import plotly.graph_objects as go
 from rich.console import Console
 
 from qt_app.backend import PLOTLY_BACKEND
@@ -130,8 +130,19 @@ class Show:
         return None
 
 
-# If we are not in a notebook, we monkey patch the show method
 if not JUPYTER_NOTEBOOK and sys.stdin.isatty():
-    setattr(go.Figure, "_show", go.Figure.show)
-    go.Figure.show = Show.show
+
+    def override_show():
+        """Override the show method in all modules that have a Figure class."""
+        for module in sys.modules.values():
+            if module is None:
+                continue
+            if hasattr(module, "Figure"):
+                setattr(module.Figure, "_show", module.Figure.show)
+                module.Figure.show = Show.show  # type: ignore
+
+    # We monkey patch the show method in a
+    # separate thread to avoid blocking the main thread
+    thread = threading.Thread(target=override_show)
+    thread.start()
     PLOTLY_BACKEND.start()

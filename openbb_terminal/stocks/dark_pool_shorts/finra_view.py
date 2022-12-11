@@ -6,10 +6,10 @@ import os
 from typing import List, Optional
 
 import pandas as pd
+import plotly.graph_objects as go
 from matplotlib import pyplot as plt
 from plotly.subplots import make_subplots
 
-from openbb_terminal.base_helpers import go
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end

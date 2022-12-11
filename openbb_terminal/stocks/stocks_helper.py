@@ -14,6 +14,7 @@ import financedatabase as fd
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import plotly.graph_objects as go
 import pytz
 import requests
 import yfinance as yf
@@ -22,7 +23,6 @@ from requests.exceptions import ReadTimeout
 from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.base_helpers import go
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
