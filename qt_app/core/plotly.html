@@ -5,7 +5,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500&display=swap" rel="stylesheet">
-    <script type="text/javascript" src="./assets/plotly.js"></script>
+    <script type="text/javascript" src="../assets/plotly.js"></script>
     <style>
         /* latin */
         @font-face {
@@ -42,13 +42,11 @@
         }
 
         body {
-            background-color: #111111;
             font-family: 'Fira Code', monospace, 'Arial Black';
             font-size: 12px;
             font-size: 1.2rem;
             color: #ffffff;
         }
-
     </style>
 </head>
 
@@ -84,6 +82,26 @@
             if (data.layout.title != undefined) {
                 title = data.layout.title.text;
             }
+
+            if (data.layout.template.layout.mapbox.style == "dark") {
+                var style = document.createElement('style');
+                style.type = 'text/css';
+                style.innerHTML = `
+                .updatemenu-item-rect {
+                    fill: #111111 !important;
+                }
+                .updatemenu-item-rect:hover {
+                    fill: #00ACFF !important;
+                    background-color: #111111 !important;
+
+                }
+                .updatemenu-item-text:hover {
+                    fill: #d1030d !important;
+                }
+                `
+                document.getElementsByTagName('head')[0].appendChild(style);
+            }
+
             var filename = 'openbb_' + title.replace(/<b>|<\/b>/g, '').replace(/ /g, '_');
 
             var date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
@@ -108,7 +126,7 @@
                     graphs.layout['annotations'] = []
                 }
                 if (!('height' in graphs.layout)) {
-                    graphs.layout['height'] = 600
+                    graphs.layout['height'] = 586
                 }
                 if (!('width' in graphs.layout)) {
                     graphs.layout['width'] = 800
@@ -123,6 +141,25 @@
                         'pad': 2
                     }
                 }
+                var config = {
+                    "scrollZoom": true,
+                    "responsive": true,
+                    'displaylogo': false,
+                    'toImageButtonOptions': {
+                        'format': 'png',
+                        'filename': filename(graphs),
+                        'height': CHART_DIV.clientHeight,
+                        'width': CHART_DIV.clientWidth,
+                    },
+                    'modeBarButtonsToAdd': [
+                        'drawline',
+                        'drawopenpath',
+                        'drawclosedpath',
+                        'drawcircle',
+                        'drawrect',
+                        'eraseshape'
+                    ],
+                };
 
                 var font_size = graphs.layout.font;
                 var old_annotations = graphs.layout.annotations;
@@ -138,30 +175,18 @@
                     Plotly.relayout(CHART_DIV, {
                         'annotations': new_annotations,
                         'font.size': Math.min(CHART_DIV.clientWidth / 50, font_size),
+                        'height': CHART_DIV.clientHeight,
+                        'width': CHART_DIV.clientWidth,
                     });
 
-                    Plotly.Plots.resize(CHART_DIV);
+                    config.toImageButtonOptions.height = CHART_DIV.clientHeight;
+                    config.toImageButtonOptions.width = CHART_DIV.clientWidth;
+
+                    Plotly.setPlotConfig(config);
+                    Plotly.react(CHART_DIV, graphs.data, graphs.layout, config);
+
                 });
 
-                var config = {
-                    "scrollZoom": true,
-                    "responsive": true,
-                    'displaylogo': false,
-                    'toImageButtonOptions': {
-                        'format': 'png',
-                        'filename': filename(graphs),
-                        'height': graphs.layout.height,
-                        'width': graphs.layout.width,
-                    },
-                    'modeBarButtonsToAdd': [
-                        'drawline',
-                        'drawopenpath',
-                        'drawclosedpath',
-                        'drawcircle',
-                        'drawrect',
-                        'eraseshape'
-                    ],
-                };
                 graphs.layout.autosize = true;
                 delete graphs.layout.height;
                 delete graphs.layout.width;
@@ -200,8 +225,8 @@
                     'toImageButtonOptions': {
                         'format': 'png',
                         'filename': filename(table),
-                        'height': 600,
-                        'width': 800,
+                        'height': TABLE_DIV.clientHeight,
+                        'width': TABLE_DIV.clientWidth,
                     },
                 };
 

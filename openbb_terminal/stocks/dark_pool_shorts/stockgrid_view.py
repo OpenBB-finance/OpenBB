@@ -21,7 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
-from plots_backend.assets.openbb_styles import PLT_FONT, PLT_TA_COLORWAY
+from qt_app.config.openbb_styles import PLT_FONT, PLT_TA_COLORWAY
 
 logger = logging.getLogger(__name__)
 
@@ -266,6 +266,7 @@ def short_interest_volume(
         fig.update_xaxes(
             rangebreaks=[dict(bounds=["sat", "mon"]), dict(values=mkt_holidays)]
         )
+        fig.show()
 
         # POC FOR TERMINAL PRO
         # def fig_show_export(
@@ -299,6 +300,7 @@ def short_interest_volume(
         #     "shortint(stockgrid)",
         #     df,
         # )
+
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "shortint(stockgrid)", df
     )

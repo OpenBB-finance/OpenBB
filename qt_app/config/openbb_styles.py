@@ -1,18 +1,6 @@
-import os
 from typing import Any, List, Optional, Tuple
 
 import pandas as pd
-
-PLOT_DPI = int(os.environ.get("OPENBB_PLOT_DPI", "200"))
-PLOT_HEIGHT = int(os.environ.get("OPENBB_PLOT_HEIGHT", "860"))
-PLOT_WIDTH = int(os.environ.get("OPENBB_PLOT_WIDTH", "1160"))
-
-
-def plot_scale():
-    x = PLOT_WIDTH / (PLOT_DPI)
-    y = PLOT_HEIGHT / (PLOT_DPI)
-    return x, y
-
 
 # Vsurf Plot Settings
 PLT_3DMESH_COLORSCALE = "Jet"
@@ -197,9 +185,9 @@ def de_increasing_color_list(
     contains_str : str, optional
         Decreasing String to search for in df_column. The default is "-".
     increasing_color : str, optional
-        Color to use for increasing values. The default is imps.PLT_CANDLE_INCREASING.
+        Color to use for increasing values. The default is PLT_CANDLE_INCREASING.
     decreasing_color : str, optional
-        Color to use for decreasing values. The default is imps.PLT_CANDLE_DECREASING.
+        Color to use for decreasing values. The default is PLT_CANDLE_DECREASING.
 
     Returns
     -------

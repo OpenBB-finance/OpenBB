@@ -88,7 +88,7 @@ def run_qt_backend():
 
         return False
 
-    if not is_running("qt_backend.py"):
+    if not is_running("main.py"):
         # if the qt_backend is not running, we run it in a subprocess
         kwargs = {
             "stdout": subprocess.PIPE,
@@ -101,9 +101,8 @@ def run_qt_backend():
         if os.environ.get("DEBUG", False):
             kwargs = {}
 
-        subprocess.Popen(
-            [sys.executable, "qt_backend.py"], shell=True, cwd=QT_PATH, **kwargs
-        )
+        kwargs = {}
+        subprocess.Popen([sys.executable, "app.py"], shell=True, cwd=QT_PATH, **kwargs)
         return True
 
     return False
@@ -232,7 +231,8 @@ def setCloseonLastWindowClosed():
                 [
                     sys.executable,
                     "-c",
-                    f"import asyncio;from helpers import closeonlastwindowclosed; closeonlastwindowclosed({IS_TERMINAL})",
+                    "import asyncio;from backend import closeonlastwindowclosed; "
+                    f"closeonlastwindowclosed({IS_TERMINAL})",
                 ],
                 shell=True,
                 cwd=QT_PATH,

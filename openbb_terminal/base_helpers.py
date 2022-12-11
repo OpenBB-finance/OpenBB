@@ -6,7 +6,7 @@ from typing import Any, Callable, Literal, Union
 import plotly.graph_objects as go
 from rich.console import Console
 
-from plots_backend.helpers import PLOTLY_BACKEND
+from qt_app.backend import PLOTLY_BACKEND
 
 console = Console()
 
