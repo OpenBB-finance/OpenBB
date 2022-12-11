@@ -126,9 +126,9 @@ class QtPlotlyFigureWindow(QMainWindow):
         self.widget_ = QtPlotlyFigureWidget(self)
         self.widget_.set_figure(figure)
         self.setCentralWidget(self.widget_.view_)
-        self.setMinimumSize(800, 586)
-        active_windows.append(self)
+        self.setMinimumSize(800, 600)
 
+        self.on_open.connect(lambda: active_windows.append(self))
         self.closing.connect(lambda: active_windows.remove(self))
         self.on_open.connect(lambda: self.raise_())
 

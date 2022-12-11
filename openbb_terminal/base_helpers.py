@@ -141,7 +141,6 @@ if not JUPYTER_NOTEBOOK and sys.stdin.isatty():
         for module in list(sys.modules.values()):
             if not hasattr(module, "Figure") or not issubclass(module.Figure, Figure):
                 continue
-            print(f"Monkey patching {module.__name__}")
             setattr(module.Figure, "_show", module.Figure.show)
             module.Figure.show = Show.show
 

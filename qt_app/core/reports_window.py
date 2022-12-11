@@ -188,9 +188,6 @@ class ReportsWindow(QMainWindow):
     def _on_new_report(self, report_path: str):
         """Open the most recent report in the webview"""
         self._view.load(QUrl.fromLocalFile(report_path))
-        self.show()
-        self.raise_()
-        self.activateWindow()
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.show()
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
@@ -239,7 +236,6 @@ class ReportsFileSystemWatcher(QFileSystemWatcher):
         active_windows.append(window)
         window.closing.connect(lambda: active_windows.remove(window))
         window._on_new_report(report_path)
-        window.show()
 
     def _on_new_report(self, report_path: str):
         """Open the most recent report in the webview"""
