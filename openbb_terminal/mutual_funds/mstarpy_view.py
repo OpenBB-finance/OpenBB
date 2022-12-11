@@ -159,7 +159,7 @@ def display_load(
     term: str = "",
     country: str = "",
 ):
-    """instanciate mstarpy Funds class and display the funds selected
+    """instantiate mstarpy Funds class and display the funds selected
 
     Parameters
     ----------
