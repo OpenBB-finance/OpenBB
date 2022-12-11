@@ -6,7 +6,7 @@ from typing import Any, Callable, Literal, Union
 
 from rich.console import Console
 
-from qt_app.backend import PLOTLY_BACKEND
+from qt_app.backend import QT_BACKEND
 
 console = Console()
 
@@ -109,17 +109,13 @@ else:
 
 # pylint: disable=no-member
 class Show:
-    """Monkey patch the show method to send the figure to the backend, or return the json if
-    we are in a terminal pro session.
-    """
+    """Monkey patch the show method to send the figure to the backend"""
 
     def show(self) -> Union[str, None]:
         """Show the figure."""
-        if os.environ.get("TERMINAL_PRO", False):
-            return self.to_json()  # type: ignore
         try:
             # We send the figure to the backend to be displayed
-            PLOTLY_BACKEND.send_fig(self)
+            QT_BACKEND.send_fig(self)
         except Exception:
             # If the backend fails, we just show the figure normally
             # This is a very rare case, but it's better to have a fallback
@@ -133,16 +129,25 @@ class Show:
 if not JUPYTER_NOTEBOOK and sys.stdin.isatty():
 
     def override_show():
-        """Override the show method in all modules that have a Figure class."""
-        for module in sys.modules.values():
-            if module is None:
+        """Override the show method in all sys modules that have a Figure class"""
+        # pylint: disable=import-outside-toplevel
+        import gc
+
+        from plotly.graph_objs import Figure
+
+        # We need to force a garbage collection to make sure all modules are loaded
+        gc.collect()
+
+        for module in list(sys.modules.values()):
+            if not hasattr(module, "Figure") or not issubclass(module.Figure, Figure):
                 continue
-            if hasattr(module, "Figure"):
-                setattr(module.Figure, "_show", module.Figure.show)
-                module.Figure.show = Show.show  # type: ignore
+            print(f"Monkey patching {module.__name__}")
+            setattr(module.Figure, "_show", module.Figure.show)
+            module.Figure.show = Show.show
 
     # We monkey patch the show method in a
     # separate thread to avoid blocking the main thread
     thread = threading.Thread(target=override_show)
     thread.start()
-    PLOTLY_BACKEND.start()
+    QT_BACKEND.start()
+    thread.join()
