@@ -268,39 +268,6 @@ def short_interest_volume(
         )
         fig.show()
 
-        # POC FOR TERMINAL PRO
-        # def fig_show_export(
-        #     fig: go.Figure, export: str, dir_path: str, filename: str, df: pd.DataFrame
-        # ):
-        #     """Figure show with export data. We use in case we're in Terminal Pro and we're expected a plotly json
-        #     to display in the app. Since we'd have to return fig.show() in that case, we need to wrap it in a function
-        #     to be able to return the fig.show() and export_data().
-
-        #     Parameters
-        #     ----------
-        #     fig : plt.Figure
-        #         Figure to export
-        #     export : str
-        #         Export format
-        #     dir_path : str
-        #         Directory path to export to
-        #     filename : str
-        #         Filename to export to
-        #     df : pd.DataFrame
-        #         Dataframe to export
-        #     """
-
-        #     export_data(export, dir_path, filename, df)
-        #     return fig.show()
-
-        # return fig_show_export(
-        #     fig,
-        #     export,
-        #     os.path.dirname(os.path.abspath(__file__)),
-        #     "shortint(stockgrid)",
-        #     df,
-        # )
-
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "shortint(stockgrid)", df
     )
