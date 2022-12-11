@@ -42,6 +42,7 @@ from openbb_terminal.helper_funcs import (
     support_message,
     system_clear,
     valid_date,
+    update_news_from_tweet_to_be_displayed,
 )
 from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
@@ -50,6 +51,8 @@ from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 
 logger = logging.getLogger(__name__)
+
+# pylint: disable=R0912
 
 NO_EXPORT = 0
 EXPORT_ONLY_RAW_DATA_ALLOWED = 1
@@ -891,7 +894,57 @@ class BaseController(metaclass=ABCMeta):
                 try:
                     # Get input from user using auto-completion
                     if session and obbff.USE_PROMPT_TOOLKIT:
-                        if bool(obbff.TOOLBAR_HINT):
+
+                        # Check if tweet news is enabled
+                        if obbff.TOOLBAR_TWEET_NEWS:
+
+                            news_tweet = update_news_from_tweet_to_be_displayed()
+
+                            # Check if there is a valid tweet news to be displayed
+                            if news_tweet:
+                                an_input = session.prompt(
+                                    f"{get_flair()} {self.PATH} $ ",
+                                    completer=self.completer,
+                                    search_ignore_case=True,
+                                    bottom_toolbar=HTML(news_tweet),
+                                    style=Style.from_dict(
+                                        {
+                                            "bottom-toolbar": "#ffffff bg:#333333",
+                                        }
+                                    ),
+                                )
+
+                            else:
+                                # Check if toolbar hint was enabled
+                                if obbff.TOOLBAR_HINT:
+                                    an_input = session.prompt(
+                                        f"{get_flair()} {self.PATH} $ ",
+                                        completer=self.completer,
+                                        search_ignore_case=True,
+                                        bottom_toolbar=HTML(
+                                            '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
+                                            '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu'
+                                            '    <style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
+                                            '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
+                                            "see usage and available options    "
+                                            f'<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
+                                            f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
+                                        ),
+                                        style=Style.from_dict(
+                                            {
+                                                "bottom-toolbar": "#ffffff bg:#333333",
+                                            }
+                                        ),
+                                    )
+                                else:
+                                    an_input = session.prompt(
+                                        f"{get_flair()} {self.PATH} $ ",
+                                        completer=self.completer,
+                                        search_ignore_case=True,
+                                    )
+
+                        # Check if toolbar hint was enabled
+                        elif obbff.TOOLBAR_HINT:
                             an_input = session.prompt(
                                 f"{get_flair()} {self.PATH} $ ",
                                 completer=self.completer,

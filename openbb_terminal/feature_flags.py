@@ -121,6 +121,11 @@ EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
 # Toolbar hint
 TOOLBAR_HINT = load_env_vars("OPENBB_TOOLBAR_HINT", strtobool, True, "featflags")
 
+# Toolbar Twitter news
+TOOLBAR_TWEET_NEWS = load_env_vars(
+    "OPENBB_TOOLBAR_TWEET_NEWS", strtobool, True, "featflags"
+)
+
 # Select language to be used
 USE_LANGUAGE = str(os.getenv("OPENBB_USE_LANGUAGE", "en"))
 
@@ -143,6 +148,7 @@ GUESS_EASTER_EGG_FILE = str(
 try:
     if not WITH_GIT:
         import pkg_resources
+
         version = pkg_resources.get_distribution("OpenBB").version
     else:
         raise Exception("Using git")
