@@ -15,7 +15,7 @@ def load_carbon_metrics(loaded_funds: mstarpy.Funds):
     Parameters
     ----------
     loaded_funds: mstarpy.Funds
-        class mstarpy.Funds instanciated with selected funds
+        class mstarpy.Funds instantiated with selected funds
 
     Returns
     -------
@@ -32,7 +32,7 @@ def load_exclusion_policy(loaded_funds: mstarpy.Funds):
     Parameters
     ----------
     loaded_funds: mstarpy.Funds
-        class mstarpy.Funds instanciated with selected funds
+        class mstarpy.Funds instantiated with selected funds
 
     Returns
     -------
@@ -76,7 +76,7 @@ def load_holdings(loaded_funds: mstarpy.Funds, holding_type: str = "all"):
     Parameters
     ----------
     loaded_funds: mstarpy.Funds
-        class mstarpy.Funds instanciated with selected funds
+        class mstarpy.Funds instantiated with selected funds
 
     holding_type : str
          type of holdings, can be all, equity, bond, other

@@ -26,7 +26,7 @@ def display_carbon_metrics(loaded_funds: mstarpy.Funds):
     Parameters
     ----------
     loaded_funds: mstarpy.Funds
-        class mstarpy.Funds instanciated with selected funds
+        class mstarpy.Funds instantiated with selected funds
 
     """
     carbonMetrics = mstarpy_model.load_carbon_metrics(loaded_funds)
@@ -45,7 +45,7 @@ def display_exclusion_policy(loaded_funds: mstarpy.Funds):
     Parameters
     ----------
     loaded_funds: mstarpy.Funds
-        class mstarpy.Funds instanciated with selected funds
+        class mstarpy.Funds instantiated with selected funds
 
     """
     exclusion_policy = mstarpy_model.load_exclusion_policy(loaded_funds)
@@ -69,7 +69,7 @@ def display_historical(
     Parameters
     ----------
     loaded_funds: mstarpy.funds
-        class mstarpy.Funds instanciated with selected funds
+        class mstarpy.Funds instantiated with selected funds
     """
 
     title = f"Performance of {loaded_funds.name}"
@@ -131,7 +131,7 @@ def display_holdings(loaded_funds: mstarpy.Funds, holding_type: str = "all"):
     Parameters
     ----------
     loaded_funds: mstarpy.Funds
-        class mstarpy.Funds instanciated with selected funds
+        class mstarpy.Funds instantiated with selected funds
 
     holding_type : str
         type of holdings, can be all, equity, bond, other
@@ -230,7 +230,7 @@ def display_sector(loaded_funds: mstarpy.Funds, asset_type: str = "equity"):
     Parameters
     ----------
     loaded_funds: mstarpy.funds
-        class mstarpy.Funds instanciated with selected funds
+        class mstarpy.Funds instantiated with selected funds
     asset_type: str
         can be equity or fixed income
     """
