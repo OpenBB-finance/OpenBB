@@ -129,8 +129,9 @@ class QtPlotlyFigureWindow(QMainWindow):
         self.setMinimumSize(800, 600)
 
         self.on_open.connect(lambda: active_windows.append(self))
-        self.closing.connect(lambda: active_windows.remove(self))
-        self.on_open.connect(lambda: self.raise_())
+        self.closing.connect(
+            lambda: active_windows.remove(self) if self in active_windows else None
+        )
 
         self._download_popup = QDialog(self)
         self.widget_.view_.page().profile().setDownloadPath(

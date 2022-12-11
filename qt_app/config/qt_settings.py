@@ -42,44 +42,16 @@ QTreeView::item::selected,
 QListView::item::selected {
     background-color: #3d3d3d;
     color: white;
+    border: 1px solid #2d2d2d;
 }
-QScrollBar {
-    background: #3d3d3d;
-    alternate-background-color: #3d3d3d;
-}
-QScrollBar:horizontal {
-    border: 1px solid #3d3d3d;
-    background: #3d3d3d;
-    height: 10px;
-    margin: 0px 0px 0px 0px;
-}
-QScrollBar::handle:horizontal {
+QScrollBar:vertical, QScrollBar:horizontal {
     background: #2d2d2d;
-    min-width: 0px;
+    width: 15px;
+    height: 15px;
 }
-QScrollBar:vertical {
-    border: 1px solid #3d3d3d;
-    background: #3d3d3d;
-    width: 10px;
-    margin: 0px 0px 0px 0px;
-}
-QScrollBar::handle:vertical {
-    background: #2d2d2d;
-    min-height: 0px;
-}
-QScrollBar::add-line:vertical {
-    border: 1px solid #3d3d3d;
-    background: #3d3d3d;
-    height: 0px;
-    subcontrol-position: bottom;
-    subcontrol-origin: margin;
-}
-QScrollBar::sub-line:vertical {
-    border: 1px solid #3d3d3d;
-    background: #3d3d3d;
-    height: 0 px;
-    subcontrol-position: top;
-    subcontrol-origin: margin;
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical,
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
 }
 """
 

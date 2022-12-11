@@ -207,14 +207,14 @@ class ReportsFileSystemWatcher(QFileSystemWatcher):
         self.addPath(str(USER_REPORTS_DIRECTORY))
         self._last_report: Path = [
             max(USER_REPORTS_DIRECTORY.glob("*.html"), key=lambda x: x.stat().st_ctime)
-            if USER_REPORTS_DIRECTORY.glob("*.html")
+            if list(USER_REPORTS_DIRECTORY.glob("*.html"))
             else None
         ][0]
         self.directoryChanged.connect(self.on_directory_changed)
 
     def on_directory_changed(self):
         """Open the most recent report in the webview"""
-        if USER_REPORTS_DIRECTORY.iterdir():
+        if list(USER_REPORTS_DIRECTORY.glob("*.html")):
             most_recent = max(
                 USER_REPORTS_DIRECTORY.glob("*.html"), key=lambda x: x.stat().st_ctime
             )
