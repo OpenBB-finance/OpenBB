@@ -88,7 +88,7 @@ def run_qt_backend():
 
         return False
 
-    if not is_running("main.py"):
+    if not is_running("app.py"):
         # if the qt_backend is not running, we run it in a subprocess
         kwargs = {
             "stdout": subprocess.PIPE,
