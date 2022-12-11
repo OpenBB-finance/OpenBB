@@ -7,7 +7,7 @@ import logging
 from pathlib import Path
 from typing import List, Union, Optional, Dict
 from functools import lru_cache
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from datetime import date as d
 import types
 from collections.abc import Iterable
@@ -19,6 +19,7 @@ from difflib import SequenceMatcher
 import webbrowser
 import urllib.parse
 import json
+import tweepy
 
 import pytz
 import pandas as pd
@@ -39,6 +40,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 from openbb_terminal.rich_config import console
+from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.core.config.paths import (
@@ -47,6 +49,20 @@ from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
 )
 from openbb_terminal.core.config import paths
+
+try:
+    twitter_api = tweepy.API(
+        tweepy.OAuth2BearerHandler(
+            cfg.API_TWITTER_BEARER_TOKEN,
+        )
+    )
+    # A test to ensure that the Twitter API key is correct,
+    # otherwise we disable the Toolbar with Tweet News
+    twitter_api.user_timeline(screen_name="openbb_finance", count=1)
+except tweepy.errors.Unauthorized:
+    # Set toolbar tweet news to False because the Twitter API is not set up correctly
+    obbff.TOOLBAR_TWEET_NEWS = False
+
 
 logger = logging.getLogger(__name__)
 
@@ -62,6 +78,9 @@ EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
+
+NEWS_TWEET = ""
+LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now() - timedelta(hours=1)
 
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
@@ -1879,3 +1898,56 @@ def str_date_to_timestamp(date: str) -> int:
     )
 
     return date_ts
+
+
+def update_news_from_tweet_to_be_displayed() -> str:
+    """Update news from tweet to be displayed.
+
+    Returns
+    -------
+    str
+        The news from tweet to be displayed
+    """
+    global LAST_TWEET_NEWS_UPDATE_CHECK_TIME
+
+    # Check whether it has passed a certain amount of time since the last news update
+    if (datetime.now() - LAST_TWEET_NEWS_UPDATE_CHECK_TIME).seconds > 60:
+
+        # This doesn't depende on the time of the tweet but the time that the check was made
+        LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now()
+
+        news_sources_twitter_handles = [
+            "unusual_whales",
+            "gurgavin",
+            "WatcherGuru",
+            "CBSNews",
+        ]
+
+        news_tweet_to_use = ""
+        handle_to_use = ""
+        last_tweet_dt = (datetime.now() - timedelta(hours=1)).replace(
+            tzinfo=timezone.utc
+        )
+        for handle in news_sources_twitter_handles:
+
+            # Get last N tweets from each handle
+            for last_tweet in twitter_api.user_timeline(screen_name=handle, count=3)[
+                :3
+            ]:
+                # Check if the tweet contains "JUST IN:" or "BREAKING:"
+                if "JUST IN:" in last_tweet.text or "BREAKING:" in last_tweet.text:
+                    # Check if the tweet is newer than the last one
+                    # we want to grab the most recent one
+                    if last_tweet.created_at > last_tweet_dt:
+                        handle_to_use = handle
+                        last_tweet_dt = last_tweet.created_at
+                        news_tweet_to_use = last_tweet.text.replace(
+                            "JUST IN: ", ""
+                        ).replace("BREAKING: ", "")
+
+        if news_tweet_to_use:
+            global NEWS_TWEET
+            # Update NEWS_TWEET with the new news tweet found
+            NEWS_TWEET = f"{last_tweet_dt.hour}:{last_tweet_dt.hour} - @{handle_to_use} - {news_tweet_to_use}"
+
+    return NEWS_TWEET
