@@ -70,9 +70,6 @@ class QtFigure(go.Figure):
         self._window.setWindowState(
             self._window.windowState() & ~Qt.WindowMinimized | Qt.WindowActive
         )
-        self._window.activateWindow()
-        self._window.raise_()
-        self._window.show()
 
     def _on_download_requested(self, download_item: QWebEngineDownloadRequest):
         """Handle download requests."""
