@@ -1,16 +1,15 @@
-
 import logging
 
 import mstarpy
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
+
 logger = logging.getLogger(__name__)
 
 
-
 @log_start_end(log=logger)
-def load_carbon_metrics(loaded_funds : mstarpy.Funds):
+def load_carbon_metrics(loaded_funds: mstarpy.Funds):
     """Search mstarpy for carbon metrics
 
     Parameters
@@ -23,10 +22,11 @@ def load_carbon_metrics(loaded_funds : mstarpy.Funds):
         pd.DataFrame of carbon metrics
     """
     carbonMetrics = loaded_funds.carbonMetrics()
-    return pd.Series(carbonMetrics, name='carbonMetrics').reset_index()
+    return pd.Series(carbonMetrics, name="carbonMetrics").reset_index()
+
 
 @log_start_end(log=logger)
-def load_exclusion_policy(loaded_funds : mstarpy.Funds):
+def load_exclusion_policy(loaded_funds: mstarpy.Funds):
     """Search mstarpy exclusion policy in esgData
 
     Parameters
@@ -41,15 +41,18 @@ def load_exclusion_policy(loaded_funds : mstarpy.Funds):
     esgData = loaded_funds.esgData()
     if "sustainabilityIntentionality" in esgData:
 
-        return pd.Series(esgData["sustainabilityIntentionality"], name='exclusionPolicy').reset_index()
+        return pd.Series(
+            esgData["sustainabilityIntentionality"], name="exclusionPolicy"
+        ).reset_index()
     else:
         return pd.DataFrame()
 
+
 @log_start_end(log=logger)
 def load_funds(
-    term : str = "",
-    country : str = "",
-    ):
+    term: str = "",
+    country: str = "",
+):
     """Search mstarpy for matching funds
 
     Parameters
@@ -67,7 +70,7 @@ def load_funds(
 
 
 @log_start_end(log=logger)
-def load_holdings(loaded_funds : mstarpy.Funds, holding_type : str = "all"):
+def load_holdings(loaded_funds: mstarpy.Funds, holding_type: str = "all"):
     """Search mstarpy for holdings
 
     Parameters
@@ -86,15 +89,15 @@ def load_holdings(loaded_funds : mstarpy.Funds, holding_type : str = "all"):
     if holdings.empty:
         return pd.DataFrame()
     return holdings[["isin", "securityName", "weighting", "country"]]
-     
-
 
 
 @log_start_end(log=logger)
 def search_funds(
-    term : str = "", 
-    field : str = ['SecId','TenforeId','LegalName'],
-    country : str = "", pageSize=10) -> pd.DataFrame:
+    term: str = "",
+    field: str = ["SecId", "TenforeId", "LegalName"],
+    country: str = "",
+    pageSize=10,
+) -> pd.DataFrame:
     """Search mstarpy for matching funds
 
     Parameters
@@ -114,9 +117,9 @@ def search_funds(
         Dataframe containing matches
     """
     try:
-        return pd.DataFrame(mstarpy.search_funds(term, field, country =country, pageSize=pageSize))
+        return pd.DataFrame(
+            mstarpy.search_funds(term, field, country=country, pageSize=pageSize)
+        )
     except RuntimeError as e:
         logger.exception(str(e))
         return pd.DataFrame()
-
-    

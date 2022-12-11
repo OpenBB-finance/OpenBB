@@ -468,7 +468,6 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(FuturesController, self.queue)
 
-
     def call_funds(self, _):
         """Process etf command"""
         from openbb_terminal.mutual_funds.mutual_fund_controller import (
