@@ -240,6 +240,6 @@ def setCloseonLastWindowClosed():
             pass
 
 
-PLOTLY_BACKEND = QtBackend()
+QT_BACKEND = QtBackend()
 
 atexit.register(setCloseonLastWindowClosed)
