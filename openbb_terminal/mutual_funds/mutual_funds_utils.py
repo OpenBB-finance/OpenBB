@@ -72,7 +72,6 @@ mapping_country = {
     "eswatini": "sz",
     "ethiopia": "et",
     "falkland_islands": "fk",
-    "faroe_islands": "fo",
     "fiji": "fj",
     "finland": "fi",
     "france": "fr",
