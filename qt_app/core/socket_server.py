@@ -4,7 +4,6 @@ import json
 import logging
 import pickle
 import sys
-from typing import List
 
 from PySide6.QtCore import QObject, Qt, Signal
 from PySide6.QtNetwork import QHostAddress
@@ -24,7 +23,6 @@ logger.info("Starting socket server")
 class BackendSocketServer(QObject):
     connected = Signal()
     disconnected = Signal()
-    data_received = Signal(QtFigure)
     isatty_signal = Signal(bool)
     error = Signal(str)
     to_close = Signal(QMessageBox.StandardButton)
@@ -32,7 +30,6 @@ class BackendSocketServer(QObject):
     def __init__(self, parent: QWebSocketServer):
         super().__init__(parent)
         self.server = QWebSocketServer(parent.serverName(), parent.secureMode(), parent)
-        self.figures: List[QtFigure] = []
         self.clientConnection = None
         self.websocket_port = pickle.load(open(QT_PATH / "assets/qt_socket", "rb"))
 
@@ -60,7 +57,6 @@ class BackendSocketServer(QObject):
         # Setting up the signal connections
         self.to_close.connect(self.on_to_close)
         self.error.connect(lambda x: logger.error(x))
-        self.data_received.connect(lambda x: self.figures.append(x))
         self.server.acceptError.connect(self.onAcceptError)
         self.server.newConnection.connect(self.onNewConnection)
 
@@ -124,9 +120,7 @@ class BackendSocketServer(QObject):
                 return
 
             fig = QtFigure(json.loads(message))
-            self.data_received.emit(fig)
             fig.show()
-            fig._window.closing.connect(lambda: self.figures.remove(fig))
 
             # This is needed to make sure the window opens on top of the terminal.
             # initially the window is created with the WindowStaysOnTopHint flag set,
