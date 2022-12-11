@@ -101,7 +101,6 @@ def run_qt_backend():
         if os.environ.get("DEBUG", False):
             kwargs = {}
 
-        kwargs = {}
         subprocess.Popen([sys.executable, "app.py"], shell=True, cwd=QT_PATH, **kwargs)
         return True
 
