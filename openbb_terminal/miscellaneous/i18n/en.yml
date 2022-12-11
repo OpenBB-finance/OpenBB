@@ -42,7 +42,7 @@ en:
   featflags/ion: interactive matplotlib mode
   featflags/watermark: watermark in figures
   featflags/cmdloc: command location displayed in figures
-  featflags/tbhint: displays usage hints in a bottom toolbar
+  featflags/tbhint: displays usage hints in the bottom toolbar
   settings/_info_: Settings through environment variables
   settings/colors: set your own terminal colors
   settings/autoscaling: plot autoscaling
@@ -72,6 +72,11 @@ en:
   settings/_timezone: Timezone
   settings/source: specify data source file
   settings/_data_source: Data sources
+  settings/tbnews: displays tweets news in the bottom toolbar
+  settings/tweetnews: tweak tweet news parameters
+  settings/_tbnu: Time (in seconds) between tweet news updates
+  settings/_tatt: Twitter accounts to track
+  settings/_nttli: Number of tweets to look into from each account
   _others_: Others
   stocks: access historical pricing data, options, sector and industry, and overall due diligence
   crypto: dive into onchain data, tokenomics, circulation supply, nfts and more

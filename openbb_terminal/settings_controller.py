@@ -24,6 +24,7 @@ from openbb_terminal.helper_funcs import (
     get_user_timezone_or_invalid,
     replace_user_timezone,
     set_user_data_folder,
+    check_positive,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -54,6 +55,8 @@ class SettingsController(BaseController):
         "source",
         "flair",
         "colors",
+        "tbnews",
+        "tweetnews",
     ]
     PATH = "/settings/"
 
@@ -132,6 +135,14 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_data_source", obbff.PREFERRED_DATA_SOURCE_FILE)
         mt.add_raw("\n")
+        mt.add_setting("tbnews", obbff.TOOLBAR_TWEET_NEWS)
+        if obbff.TOOLBAR_TWEET_NEWS:
+            mt.add_raw("\n")
+            mt.add_cmd("tweetnews")
+            mt.add_raw("\n")
+            mt.add_param("_tbnu", obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES)
+            mt.add_param("_nttli", obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ)
+            mt.add_param("_tatt", obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK)
         console.print(text=mt.menu_text, menu="Settings")
 
     @log_start_end(log=logger)
@@ -553,3 +564,76 @@ class SettingsController(BaseController):
                             success_userdata = True
 
         console.print()
+
+    @log_start_end(log=logger)
+    def call_tbnews(self, _):
+        """Process tbnews command"""
+        if obbff.TOOLBAR_TWEET_NEWS:
+            console.print("Will take effect when running terminal next.")
+        obbff.TOOLBAR_TWEET_NEWS = not obbff.TOOLBAR_TWEET_NEWS
+        set_key(
+            obbff.USER_ENV_FILE,
+            "OPENBB_TOOLBAR_TWEET_NEWS",
+            str(obbff.TOOLBAR_TWEET_NEWS),
+        )
+
+    @log_start_end(log=logger)
+    def call_tweetnews(self, other_args: List[str]):
+        """Process tweetnews command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tweetnews",
+            description="Tweak tweet news parameters",
+        )
+        parser.add_argument(
+            "-t",
+            "--time",
+            type=check_positive,
+            required=False,
+            dest="time",
+            help="Time (in seconds) between tweet news updates, e.g. 300",
+        )
+        parser.add_argument(
+            "-a",
+            "--accounts",
+            type=str,
+            required=False,
+            dest="accounts",
+            help="Twitter accounts to track news separated by commmas."
+            "For instance: 'WatcherGuru,unusual_whales,gurgavin'",
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            type=check_positive,
+            required=False,
+            dest="number",
+            help="Number of tweets to look into from each account, e.g. 3",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+
+            if ns_parser.time:
+                obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES = ns_parser.time
+                set_key(
+                    obbff.USER_ENV_FILE,
+                    "OPENBB_TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES",
+                    str(ns_parser.time),
+                )
+
+            if ns_parser.number:
+                obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ = ns_parser.number
+                set_key(
+                    obbff.USER_ENV_FILE,
+                    "OPENBB_TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ",
+                    str(ns_parser.number),
+                )
+
+            if ns_parser.accounts:
+                obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK = ns_parser.accounts
+                set_key(
+                    obbff.USER_ENV_FILE,
+                    "OPENBB_TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK",
+                    str(ns_parser.accounts),
+                )

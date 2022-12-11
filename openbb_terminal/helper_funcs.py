@@ -85,6 +85,8 @@ LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now() - timedelta(hours=1)
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
 
+# pylint: disable=R1702
+
 
 # pylint: disable=global-statement
 def set_command_location(cmd_loc: str):
@@ -1830,17 +1832,19 @@ def update_news_from_tweet_to_be_displayed() -> str:
     global LAST_TWEET_NEWS_UPDATE_CHECK_TIME
 
     # Check whether it has passed a certain amount of time since the last news update
-    if (datetime.now() - LAST_TWEET_NEWS_UPDATE_CHECK_TIME).seconds > 60:
+    if (
+        datetime.now() - LAST_TWEET_NEWS_UPDATE_CHECK_TIME
+    ).seconds > obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES:
 
         # This doesn't depende on the time of the tweet but the time that the check was made
         LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now()
 
-        news_sources_twitter_handles = [
-            "unusual_whales",
-            "gurgavin",
-            "WatcherGuru",
-            "CBSNews",
-        ]
+        if "," in obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK:
+            news_sources_twitter_handles = (
+                obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK.split(",")
+            )
+        else:
+            news_sources_twitter_handles = [obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK]
 
         news_tweet_to_use = ""
         handle_to_use = ""
@@ -1849,24 +1853,42 @@ def update_news_from_tweet_to_be_displayed() -> str:
         )
         for handle in news_sources_twitter_handles:
 
-            # Get last N tweets from each handle
-            for last_tweet in twitter_api.user_timeline(screen_name=handle, count=3)[
-                :3
-            ]:
-                # Check if the tweet contains "JUST IN:" or "BREAKING:"
-                if "JUST IN:" in last_tweet.text or "BREAKING:" in last_tweet.text:
-                    # Check if the tweet is newer than the last one
-                    # we want to grab the most recent one
-                    if last_tweet.created_at > last_tweet_dt:
-                        handle_to_use = handle
-                        last_tweet_dt = last_tweet.created_at
-                        news_tweet_to_use = last_tweet.text.replace(
-                            "JUST IN: ", ""
-                        ).replace("BREAKING: ", "")
+            try:
+                # Get last N tweets from each handle
+                for last_tweet in twitter_api.user_timeline(
+                    screen_name=handle,
+                    count=obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
+                )[: obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ]:
+                    # Check if the tweet contains "JUST IN:" or "BREAKING:"
+                    if "JUST IN" in last_tweet.text or "BREAKING" in last_tweet.text:
+                        # Check if the tweet is newer than the last one
+                        # we want to grab the most recent one
+                        if last_tweet.created_at > last_tweet_dt:
+                            handle_to_use = handle
+                            last_tweet_dt = last_tweet.created_at
+                            news_tweet_to_use = last_tweet.text.replace(
+                                "JUST IN: ", ""
+                            ).replace("BREAKING: ", "")
+
+                            # Get url associated with tweet
+                            if last_tweet.entities:
+                                if "urls" in last_tweet.entities:
+                                    if last_tweet.entities["urls"]:
+                                        if (
+                                            "expanded_url"
+                                            in last_tweet.entities["urls"][-1]
+                                        ):
+                                            url = last_tweet.entities["urls"][-1][
+                                                "expanded_url"
+                                            ]
+
+            # In case the handle provided doesn't exist, we skip it
+            except tweepy.errors.NotFound:
+                pass
 
         if news_tweet_to_use:
             global NEWS_TWEET
             # Update NEWS_TWEET with the new news tweet found
-            NEWS_TWEET = f"{last_tweet_dt.hour}:{last_tweet_dt.hour} - @{handle_to_use} - {news_tweet_to_use}"
+            NEWS_TWEET = f"{last_tweet_dt.hour}:{last_tweet_dt.hour} - @{handle_to_use} - {url}\n\n{news_tweet_to_use}"
 
     return NEWS_TWEET

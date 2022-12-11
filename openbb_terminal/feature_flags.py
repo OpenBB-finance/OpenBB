@@ -126,6 +126,19 @@ TOOLBAR_TWEET_NEWS = load_env_vars(
     "OPENBB_TOOLBAR_TWEET_NEWS", strtobool, True, "featflags"
 )
 
+TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES = load_env_vars(
+    "OPENBB_TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES", int, 300, "settings"
+)
+TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK = load_env_vars(
+    "OPENBB_TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK",
+    str,
+    "WatcherGuru,unusual_whales,gurgavin,CBSNews",
+    "settings",
+)
+TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ = load_env_vars(
+    "OPENBB_TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ", int, 3, "settings"
+)
+
 # Select language to be used
 USE_LANGUAGE = str(os.getenv("OPENBB_USE_LANGUAGE", "en"))
 
