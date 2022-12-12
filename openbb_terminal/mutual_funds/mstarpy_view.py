@@ -1,10 +1,10 @@
 import logging
 
+from datetime import datetime
 import mstarpy
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from datetime import datetime
 
 from openbb_terminal.mutual_funds.mutual_funds_utils import mapping_country
 from openbb_terminal.mutual_funds import mstarpy_model
@@ -84,6 +84,7 @@ def display_historical(
         ax.legend(loc="best")
         ax.set_title(title)
         ax.tick_params(axis="x", rotation=45)
+        fig.tight_layout(pad=2)
 
     else:
         comparison_list = {
@@ -120,6 +121,7 @@ def display_historical(
         ax.legend(loc="best")
         ax.set_title(title)
         ax.tick_params(axis="x", rotation=45)
+        fig.tight_layout(pad=2)
 
 
 @log_start_end(log=logger)
@@ -263,3 +265,4 @@ def display_sector(loaded_funds: mstarpy.Funds, asset_type: str = "equity"):
     ax.set_xticks(label_loc, labels)
     ax.tick_params(axis="x", rotation=90)
     ax.set_title(title)
+    fig.tight_layout(pad=2)

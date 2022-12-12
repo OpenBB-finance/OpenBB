@@ -4,9 +4,10 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-import pandas as pd
 from datetime import datetime, timedelta
 from typing import List
+import pandas as pd
+
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal import feature_flags as obbff
@@ -75,6 +76,7 @@ class FundController(BaseController):
 
         self.country = ""
         self.data = pd.DataFrame()
+        self.funds_loaded = None
         self.fund_name = ""
         self.fund_symbol = ""
         self.TRY_RELOAD = True

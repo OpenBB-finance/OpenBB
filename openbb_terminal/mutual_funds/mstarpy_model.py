@@ -44,8 +44,7 @@ def load_exclusion_policy(loaded_funds: mstarpy.Funds):
         return pd.Series(
             esgData["sustainabilityIntentionality"], name="exclusionPolicy"
         ).reset_index()
-    else:
-        return pd.DataFrame()
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
