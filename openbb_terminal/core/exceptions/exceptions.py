@@ -27,17 +27,17 @@ def handle_exception(exception: Exception) -> None:
         raise exception
     elif exception_name == "RequestException":
         console.print(
-            "There was an error connecting to the API. Please try again later.",
+            "Error: There was an error connecting to the API. Please try again later.",
             style="red",
         )
     elif exception_name == "SSLError":
         console.print(
-            "There was an error connecting to the API. "
+            "Error: There was an error connecting to the API. "
             + "Please check whether your wifi is blocking this site.",
             style="red",
         )
     else:
-        console.print("An unexpected error occurred.", style="red")
+        console.print("Error: An unexpected error occurred.", style="red")
 
 
 def shout(message: str) -> None:
