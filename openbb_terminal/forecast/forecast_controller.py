@@ -22,8 +22,8 @@ try:
         print("https://docs.openbb.co/terminal/quickstart/installation")
 except ModuleNotFoundError:
     raise ModuleNotFoundError(
-        "Please install the forecast version of the terminal. Instructions "
-        "are here under python: https://docs.openbb.co/terminal/quickstart/installation"
+        "Please install the forecast version of the terminal. Instructions can be found "
+        "under the python tab: https://docs.openbb.co/terminal/quickstart/installation"
     )
 
 import pandas as pd
