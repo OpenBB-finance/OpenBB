@@ -74,5 +74,6 @@ if __name__ == "__main__":
     ws = BackendSocketServer(serverObject)
     reports = ReportsFileSystemWatcher()
 
-    with _maybe_allow_interrupt(qApp):
-        sys.exit(qApp.exec())
+    def main() -> None:
+        with _maybe_allow_interrupt(qApp):
+            sys.exit(qApp.exec())

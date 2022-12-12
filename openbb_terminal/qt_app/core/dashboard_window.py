@@ -16,7 +16,7 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import QMainWindow, QSizePolicy, QWidget
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.qt_app.config.qt_settings import WEB_ENGINE_SETTINGS
+from openbb_terminal.qt_app.config.qt_settings import LOADING_HTML, WEB_ENGINE_SETTINGS
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -41,9 +41,7 @@ class QtVoila(QWebEngineView):
 
         self.setMinimumSize(600, 400)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.setHtml(
-            "<div style='text-align:center; margin-top: 30%'><h1>Loading</h1></div>"
-        )
+        self.setHtml(str(LOADING_HTML))
         self.voilathread = None
         self.nbpath = None
         self.notebook = notebook

@@ -16,6 +16,8 @@ import psutil
 import requests
 from websockets.client import connect
 
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
+
 QT_PATH = Path(__file__).parent.resolve()
 BACKEND_RUNNING = False
 IS_TERMINAL = "terminal.py" in sys.argv[0]
@@ -106,14 +108,16 @@ def run_qt_backend():
             kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
         else:
             kwargs["preexec_fn"] = os.setsid  # pylint: disable=no-member
+            kwargs["shell"] = True
 
-        if hasattr(sys, "real_prefix") or (
-            hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix
-        ):
-            subprocess.Popen([sys.executable, str(QT_PATH / "app.py")], **kwargs)
-        else:
-            os.environ["PYTHONPATH"] = QT_PATH.parent.parent.as_posix()
-            subprocess.Popen(["python", str(QT_PATH / "app.py")], **kwargs)
+        cmd_line = f"{sys.executable} {QT_PATH / 'app.py'}"
+        os.environ["PYTHONPATH"] = REPOSITORY_DIRECTORY.as_posix()
+
+        if "conda" in sys.executable:
+            cmd_line = f"{sys.executable} -c 'import sys; sys.path.append(\"{REPOSITORY_DIRECTORY.as_posix()}\"); from openbb_terminal.qt_app.app import main; main()'"
+            kwargs["shell"] = True
+
+        subprocess.Popen(cmd_line, **kwargs)
 
         return True
 
