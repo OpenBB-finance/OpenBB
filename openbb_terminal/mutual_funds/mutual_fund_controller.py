@@ -4,23 +4,16 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+import pandas as pd
 from datetime import datetime, timedelta
 from typing import List
 
-import investpy
-import pandas as pd
-import mstarpy
-
-
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_non_negative_float,
     check_positive,
     valid_date,
 )
@@ -255,7 +248,6 @@ class FundController(BaseController):
             )
         return self.queue
 
-    @log_start_end(log=logger)
     # def call_info(self, other_args: List[str]):
     #     """Process country command"""
     #     parser = argparse.ArgumentParser(

@@ -1,22 +1,20 @@
 import logging
 
-logger = logging.getLogger(__name__)
-
 import mstarpy
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from datetime import datetime
 
+from openbb_terminal.mutual_funds.mutual_funds_utils import mapping_country
+from openbb_terminal.mutual_funds import mstarpy_model
+from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 
-from openbb_terminal.mutual_funds.mutual_funds_utils import mapping_country
-
-from openbb_terminal.mutual_funds import mstarpy_model
-from openbb_terminal.rich_config import console
+logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
@@ -243,7 +241,7 @@ def display_sector(loaded_funds: mstarpy.Funds, asset_type: str = "equity"):
     else:
         key = "FIXEDINCOME"
 
-    title = f"Sector breakdown of "
+    title = "Sector breakdown of "
     for x in ["fund", "index", "category"]:
 
         name = d[key][f"{x}Name"]
@@ -254,14 +252,14 @@ def display_sector(loaded_funds: mstarpy.Funds, asset_type: str = "equity"):
         labels = list(data.keys())
         values = list(data.values())
 
-        l = np.arange(len(labels))  # the label locations
+        label_loc = np.arange(len(labels))  # the label locations
 
-        ax.bar(l + width, values, 0.3, label=f"{x} : {name} - {portfolio_date}")
+        ax.bar(label_loc + width, values, 0.3, label=f"{x} : {name} - {portfolio_date}")
         width += 0.3  # the width of the bars
 
         title += f" {name}"
 
     ax.legend(loc="best")
-    ax.set_xticks(l, labels)
+    ax.set_xticks(label_loc, labels)
     ax.tick_params(axis="x", rotation=90)
     ax.set_title(title)
