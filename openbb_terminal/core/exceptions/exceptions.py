@@ -1,8 +1,5 @@
-from typing import List
 import os
 from openbb_terminal.rich_config import console
-
-IGNORE: List[str] = ["OpenBBUserError"]
 
 
 def handle_exception(exception: Exception) -> None:
@@ -18,11 +15,10 @@ def handle_exception(exception: Exception) -> None:
     None
     """
 
-    ignore_exception_list = IGNORE
     exception_name = exception.__class__.__name__
 
-    if exception_name in ignore_exception_list:
-        pass
+    if exception_name == "OpenBBUserError":
+        console.print("Error:", exception, style="red")
     elif os.environ.get("DEBUG_MODE") == "true":
         raise exception
     elif exception_name == "RequestException":
@@ -59,7 +55,4 @@ class OpenBBUserError(Exception):
     """OpenBB exception"""
 
     def __init__(self, message: str):
-
-        if message:
-            self.message = "Error: " + message
-            console.print(self.message, style="red")
+        self.message = message
