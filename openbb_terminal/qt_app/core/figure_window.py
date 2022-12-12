@@ -123,11 +123,17 @@ class QtPlotlyFigureWindow(QMainWindow):
         self.widget_.set_figure(figure)
         self.setCentralWidget(self.widget_.view_)
         self.setMinimumSize(800, 600)
+        self.setWindowState(
+            self.windowState() & ~Qt.WindowState.WindowMinimized
+            | Qt.WindowState.WindowActive
+        )
 
         self._download_popup = QDialog(self)
         self.widget_.view_.page().profile().setDownloadPath(
             str(USER_DATA_DIRECTORY / "saved_plots")
         )
+
+        self.on_open.emit()
 
     def set_figure(self, figure: go.Figure):
         """Set the figure to display.
@@ -151,3 +157,9 @@ class QtPlotlyFigureWindow(QMainWindow):
     def get_popup(self):
         """Return the popup window."""
         return self._download_popup
+
+    def reShow(self):
+        self.showMinimized()
+        self.setWindowState(
+            self.windowState() and (not Qt.WindowMinimized or Qt.WindowActive)
+        )

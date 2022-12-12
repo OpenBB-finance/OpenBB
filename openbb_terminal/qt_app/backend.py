@@ -79,7 +79,11 @@ def run_qt_backend():
         """Checks if the qt_backend is running and if the process is the same as qt_backend_pid"""
         try:
             process = psutil.Process(qt_backend_pid)
-            if len(process.cmdline()) > 1 and process_name in process.cmdline()[1]:
+            print(
+                f"Checking if running = {len(process.cmdline()) > 1 and process_name in process.cmdline()}"
+            )
+            if len(process.cmdline()) > 1 and process_name in process.cmdline():
+                print("qt_backend is running")
                 if process.is_running():
                     global BACKEND_RUNNING  # pylint: disable=global-statement
                     BACKEND_RUNNING = True
@@ -89,13 +93,9 @@ def run_qt_backend():
 
         return False
 
-    if not is_running("app.py"):
+    if not is_running(str(QT_PATH / "app.py")):
         # if the qt_backend is not running, we run it in a subprocess
-        kwargs = {
-            "stdout": subprocess.PIPE,
-            "stderr": subprocess.PIPE,
-            "stdin": subprocess.PIPE,
-        }
+        kwargs = {"stdin": subprocess.PIPE}
 
         # if the DEBUG env variable is set to True
         # we don't want to hide the output of the subprocess
@@ -108,7 +108,7 @@ def run_qt_backend():
             kwargs["preexec_fn"] = os.setsid  # pylint: disable=no-member
 
         subprocess.Popen(
-            f"{sys.executable} {QT_PATH}/app.py", shell=True, cwd=QT_PATH, **kwargs
+            [sys.executable, str(QT_PATH / "app.py")], shell=True, **kwargs
         )
         return True
 
@@ -169,6 +169,7 @@ class QtBackend:
                     await asyncio.sleep(0.1)
 
         except Exception:
+            print("Connection to qt_backend failed. Trying again...")
             await get_qt_backend_socket()
             BACKEND_RUNNING = False
             await self.connect()

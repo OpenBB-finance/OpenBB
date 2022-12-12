@@ -16,7 +16,7 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import QMainWindow, QSizePolicy, QWidget
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.qt_app.config.qt_settings import QT_PATH, WEB_ENGINE_SETTINGS
+from openbb_terminal.qt_app.config.qt_settings import WEB_ENGINE_SETTINGS
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -93,6 +93,8 @@ class VoilaThread(QThread):
             "stderr": subprocess.PIPE,
             "stdin": subprocess.PIPE,
         }
+        if os.environ.get("DEBUG"):
+            kwargs = {"stdin": subprocess.PIPE}
 
         if sys.platform == "win32":
             kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
@@ -102,7 +104,6 @@ class VoilaThread(QThread):
         cfg.LOGGING_SUPPRESS = True
         self.voila_process = psutil.Popen(
             f"{sys.executable} -m voila --no-browser --port {self.port} {self.nbpath}",
-            cwd=QT_PATH.parent,
             shell=True,
             **kwargs,
         )
@@ -153,8 +154,8 @@ class VoilaRendererWidget(QWidget):
         self._view = QtVoila(self, notebook=self.notebook)
 
     def run_voila(self):
-        self.show()
         self._view.run_voila()
+        self.show()
 
 
 class VoilaWindow(QMainWindow):
@@ -187,3 +188,9 @@ class VoilaWindow(QMainWindow):
     def showEvent(self, event):
         self.voila.run_voila()
         event.accept()
+
+    def reShow(self):
+        self.showMinimized()
+        self.setWindowState(
+            self.windowState() and (not Qt.WindowMinimized or Qt.WindowActive)
+        )

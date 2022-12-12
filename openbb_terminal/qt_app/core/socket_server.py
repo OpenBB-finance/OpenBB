@@ -110,17 +110,21 @@ class BackendSocketServer(QObject):
                     )
                     msg.resize(400, 100)
                     msg.buttonClicked.connect(lambda x: self.to_close.emit(x))
-                    window.raise_()
-                    window.activateWindow()
+                    window.setWindowState(
+                        window.windowState()
+                        and (not Qt.WindowMinimized or Qt.WindowActive)
+                    )
 
                     if hasattr(window, "_window"):
                         window._window._download_popup = msg
                     else:
                         setattr(window, "_download_popup", msg)
 
-                    msg.setWindowFlags(msg.windowFlags() | Qt.WindowStaysOnTopHint)
-                    msg.show()
-                    msg.setWindowFlags(msg.windowFlags() & ~Qt.WindowStaysOnTopHint)
+                    window.raise_()
+                    window.activateWindow()
+                    window.reShow()
+                    window.show()
+                    msg.setWindowModality(Qt.ApplicationModal)
                     msg.show()
 
                 return
@@ -134,19 +138,14 @@ class BackendSocketServer(QObject):
                 fig.show()
                 window = fig._window
 
-                # This is needed to make sure the window opens on top of the terminal.
-                # initially the window is created with the WindowStaysOnTopHint flag set,
-                # but this is removed when the window is shown. This is done so the
-                # window doesn't stay on top when the user clicks on the window.
-                window.setWindowFlags(window.windowFlags() | Qt.WindowStaysOnTopHint)
-                window.show()
-                window.setWindowFlags(window.windowFlags() & ~Qt.WindowStaysOnTopHint)
-
             window.closing.connect(
                 lambda: active_windows.remove(window)
                 if window in active_windows
                 else None
             )
+            window.raise_()
+            window.activateWindow()
+            window.reShow()
             window.show()
             active_windows.append(window)
         except json.JSONDecodeError:
@@ -158,7 +157,7 @@ class BackendSocketServer(QObject):
 
     def socketDisconnected(self):
         logger.info("Socket Disconnected")
-        self.clientConnection.deleteLater()
+        self.clientConnection = None
 
     def on_to_close(self, message):
         """This is called when the user clicks on the popup asking if they would like

@@ -1,7 +1,6 @@
 # This is for helpers that do NOT import any OpenBB Modules
 import os
 import sys
-import threading
 from typing import Any, Callable, Literal, Union
 
 from rich.console import Console
@@ -127,26 +126,18 @@ class Show:
 
 
 if not JUPYTER_NOTEBOOK and sys.stdin.isatty():
-
-    def override_show():
-        """Override the show method in all sys modules that have a Figure class"""
-        # pylint: disable=import-outside-toplevel
-        import gc
-
-        from plotly.graph_objs import Figure
-
-        # We need to force a garbage collection to make sure all modules are loaded
-        gc.collect()
-
-        for module in list(sys.modules.values()):
-            if not hasattr(module, "Figure") or not issubclass(module.Figure, Figure):
-                continue
-            setattr(module.Figure, "_show", module.Figure.show)
-            module.Figure.show = Show.show
-
-    # We monkey patch the show method in a
-    # separate thread to avoid blocking the main thread
-    thread = threading.Thread(target=override_show)
-    thread.start()
     QT_BACKEND.start()
-    thread.join()
+
+    # pylint: disable=import-outside-toplevel
+    import gc
+
+    from plotly.graph_objs import Figure
+
+    # We need to force a garbage collection to make sure all modules are loaded
+    gc.collect()
+
+    for module in list(sys.modules.values()):
+        if not hasattr(module, "Figure") or not issubclass(module.Figure, Figure):
+            continue
+        setattr(module.Figure, "_show", module.Figure.show)
+        module.Figure.show = Show.show
