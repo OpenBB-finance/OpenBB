@@ -30,7 +30,7 @@ from openbb_terminal.rich_config import (
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.forex.forex_helper import parse_forex_symbol
-from openbb_terminal.core.exceptions.exceptions import OpenBBUserError
+from openbb_terminal.core.exceptions.exceptions import shout
 
 # pylint: disable=R1710,import-outside-toplevel
 
@@ -163,9 +163,13 @@ class ForexController(BaseController):
         )
 
         if ns_parser:
+
+            if not ns_parser.ticker:
+                logger.error("Invalid forex pair.")
+                shout("Invalid forex pair.")
             if ns_parser.ticker not in FX_TICKERS:
-                logger.error("Invalid forex pair")
-                raise OpenBBUserError(f"{ns_parser.ticker} not a valid forex pair.")
+                logger.error("Invalid forex pair.")
+                shout(f"{ns_parser.ticker} not a valid forex pair.")
 
             self.fx_pair = ns_parser.ticker
             self.from_symbol = ns_parser.ticker[:3]
@@ -183,7 +187,7 @@ class ForexController(BaseController):
                 )
 
                 if self.data.empty:
-                    raise OpenBBUserError(
+                    shout(
                         "\n[red]No historical data loaded.\n\n"
                         f"Make sure you have appropriate access for the '{ns_parser.source}' data source "
                         f"and that '{ns_parser.source}' supports the requested range.[/red]"
@@ -202,7 +206,7 @@ class ForexController(BaseController):
                 if self.source != "YahooFinance":
                     console.print(f"{self.from_symbol}-{self.to_symbol} loaded.\n")
             else:
-                raise OpenBBUserError("No ticker loaded. First use 'load <ticker>'.")
+                shout("No ticker loaded. First use 'load <ticker>'.")
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
@@ -283,7 +287,7 @@ class ForexController(BaseController):
 
         if ns_parser:
             if not self.to_symbol:
-                raise OpenBBUserError("No ticker loaded. First use 'load <ticker>'.")
+                shout("No ticker loaded. First use 'load <ticker>'.")
 
             data = stocks_helper.process_candle(self.data)
             if ns_parser.raw:
@@ -313,10 +317,10 @@ class ForexController(BaseController):
                                 raise ValueError
 
                             mov_avgs.append(num)
-                        except ValueError as e:
-                            raise OpenBBUserError(
+                        except ValueError:
+                            shout(
                                 f"'{num}' is not a valid moving average, must be an integer greater than 1."
-                            ) from e
+                            )
 
                 forex_helper.display_candle(
                     to_symbol=self.to_symbol,
@@ -364,17 +368,13 @@ class ForexController(BaseController):
                     )
                     console.print(f"Last value     : {self.data['Adj Close'][-1]}\n")
                 else:
-                    raise OpenBBUserError(
-                        "No ticker loaded. First use 'load <ticker>'."
-                    )
+                    shout("No ticker loaded. First use 'load <ticker>'.")
 
             elif ns_parser.source == "AlphaVantage":
                 if self.to_symbol and self.from_symbol:
                     av_view.display_quote(self.to_symbol, self.from_symbol)
                 else:
-                    raise OpenBBUserError(
-                        "No ticker loaded. First use 'load <ticker>'."
-                    )
+                    shout("No ticker loaded. First use 'load <ticker>'.")
 
     @log_start_end(log=logger)
     def call_fwd(self, other_args: List[str]):
@@ -394,7 +394,7 @@ class ForexController(BaseController):
                     self.to_symbol, self.from_symbol, ns_parser.export
                 )
             else:
-                raise OpenBBUserError("No ticker loaded. First use 'load <ticker>'.")
+                shout("No ticker loaded. First use 'load <ticker>'.")
 
     # MENUS
     @log_start_end(log=logger)
@@ -411,7 +411,7 @@ class ForexController(BaseController):
 
         # TODO: Play with this to get correct usage
         if not self.to_symbol or not self.from_symbol or self.data.empty:
-            raise OpenBBUserError("No ticker loaded. First use 'load <ticker>'.")
+            shout("No ticker loaded. First use 'load <ticker>'.")
 
         from openbb_terminal.forex.technical_analysis.ta_controller import (
             TechnicalAnalysisController,
@@ -432,7 +432,7 @@ class ForexController(BaseController):
         """Process qa command"""
 
         if not self.to_symbol or not self.from_symbol or self.data.empty:
-            raise OpenBBUserError("No ticker loaded. First use 'load <ticker>'.")
+            shout("No ticker loaded. First use 'load <ticker>'.")
 
         from openbb_terminal.forex.quantitative_analysis import qa_controller
 

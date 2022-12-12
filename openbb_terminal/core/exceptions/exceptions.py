@@ -2,7 +2,7 @@ from typing import List
 import os
 from openbb_terminal.rich_config import console
 
-IGNORE: List[str] = ["OpenBBUserError", "OpenBBAPIError", "OpenBBBaseError"]
+IGNORE: List[str] = ["OpenBBUserError"]
 
 
 def handle_exception(exception: Exception) -> None:
@@ -40,19 +40,26 @@ def handle_exception(exception: Exception) -> None:
         console.print("An unexpected error occurred.", style="red")
 
 
-class OpenBBBaseError(Exception):
-    """Base class for other OpenBB exceptions"""
+def shout(message: str) -> None:
+    """Raises an OpenBBUserError
 
-    def __init__(self, message=None):
+    Parameters
+    ----------
+    message : str
+        Error message
+
+    Returns
+    -------
+    None
+    """
+    raise OpenBBUserError(message)
+
+
+class OpenBBUserError(Exception):
+    """OpenBB exception"""
+
+    def __init__(self, message: str):
 
         if message:
-            self.message = message
-            console.print(self.message, style="info")
-
-
-class OpenBBUserError(OpenBBBaseError):
-    """Raised for user usage errors"""
-
-
-class OpenBBAPIError(OpenBBBaseError):
-    """Raised for API errors"""
+            self.message = "Error: " + message
+            console.print(self.message, style="red")

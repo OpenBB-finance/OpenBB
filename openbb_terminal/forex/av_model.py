@@ -10,7 +10,7 @@ import requests
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.core.exceptions.exceptions import OpenBBAPIError, OpenBBUserError
+from openbb_terminal.core.exceptions.exceptions import shout
 
 logger = logging.getLogger(__name__)
 
@@ -81,11 +81,11 @@ def get_quote(to_symbol: str = "USD", from_symbol: str = "EUR") -> Dict[str, Any
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
         logger.error(response_json["Error Message"])
-        raise OpenBBAPIError(response_json["Error Message"])
+        shout(response_json["Error Message"])
 
     # check if json is empty
     if not response_json:
-        raise OpenBBAPIError(
+        shout(
             "No data found."
             + " Make sure 'av' supports the requested pair and you aren't hitting your API call limits."
         )
@@ -132,18 +132,18 @@ def get_historical(
     response_json = r.json()
 
     if r.status_code != 200:
-        raise OpenBBAPIError(f"AlphaVantage API returned an error -> {r.status_code}")
+        shout(f"AlphaVantage API returned an error -> {r.status_code}")
 
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
-        raise OpenBBAPIError(response_json["Error Message"])
+        shout(response_json["Error Message"])
 
     if "Note" in response_json:
-        raise OpenBBAPIError(response_json["Note"])
+        shout(response_json["Note"])
 
     # check if json is empty
     if not response_json:
-        raise OpenBBUserError("No data found.")
+        shout("No data found.")
 
     key = list(response_json.keys())[1]
 

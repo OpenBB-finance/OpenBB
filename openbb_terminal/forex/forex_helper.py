@@ -18,7 +18,7 @@ from plotly.subplots import make_subplots
 
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.forex import av_model, polygon_model
-from openbb_terminal.core.exceptions.exceptions import OpenBBUserError
+from openbb_terminal.core.exceptions.exceptions import shout
 from openbb_terminal.decorators import log_start_end
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.helper_funcs import (
@@ -136,7 +136,7 @@ def load(
             if verbose:
                 options = ", ".join(list(interval_map.keys()))
                 msg = f"Interval not supported by {FOREX_SOURCES[source]}. Options: {options}."
-                raise OpenBBUserError(msg)
+                shout(msg)
 
         # Check interval in multiple ways
         if interval in interval_map:
@@ -144,7 +144,7 @@ def load(
         elif interval in interval_map.values():
             clean_interval = interval
         else:
-            raise OpenBBUserError(f"'{interval}' is an invalid interval.")
+            shout(f"'{interval}' is an invalid interval.")
 
         if source == "AlphaVantage":
             if "min" in interval:
@@ -185,7 +185,7 @@ def load(
         df.index.name = "date"
         return df
 
-    raise OpenBBUserError(f"Source {source} not supported")
+    shout(f"Source {source} not supported")
 
 
 @log_start_end(log=logger)

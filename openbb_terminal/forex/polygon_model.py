@@ -6,7 +6,7 @@ from typing import Optional
 import requests
 import pandas as pd
 from openbb_terminal.config_terminal import API_POLYGON_KEY as api_key
-from openbb_terminal.core.exceptions.exceptions import OpenBBAPIError, OpenBBUserError
+from openbb_terminal.core.exceptions.exceptions import shout
 from openbb_terminal.helper_funcs import get_user_agent
 from openbb_terminal.decorators import check_api_key
 
@@ -54,10 +54,10 @@ def get_historical(
     ).json()
 
     if json_response["status"] == "ERROR":
-        raise OpenBBAPIError(json_response["error"])
+        shout(json_response["error"])
 
     if "results" not in json_response.keys():
-        raise OpenBBUserError("No results found.")
+        shout("No results found.")
 
     historical = pd.DataFrame(json_response["results"]).rename(
         columns={

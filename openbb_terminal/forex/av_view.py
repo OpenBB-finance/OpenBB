@@ -9,7 +9,7 @@ from openbb_terminal.decorators import check_api_key
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex import av_model
 from openbb_terminal.helper_funcs import print_rich_table
-from openbb_terminal.core.exceptions.exceptions import OpenBBUserError
+from openbb_terminal.core.exceptions.exceptions import shout
 
 logger = logging.getLogger(__name__)
 
@@ -30,8 +30,8 @@ def display_quote(to_symbol: str = "USD", from_symbol: str = "EUR"):
 
     try:
         df = pd.DataFrame.from_dict(quote)
-    except ValueError as e:
-        raise OpenBBUserError(f"{quote['Information']}") from e
+    except ValueError:
+        shout(f"{quote['Information']}")
 
     df.index = df.index.to_series().apply(lambda x: x[3:]).values
     df = df.iloc[[0, 2, 5, 4, 7, 8]]
