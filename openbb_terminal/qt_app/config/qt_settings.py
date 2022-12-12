@@ -1,9 +1,9 @@
-from pathlib import Path
-
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QPalette
 from PySide6.QtWebEngineCore import QWebEngineSettings
 from PySide6.QtWidgets import QApplication
+
+from openbb_terminal.qt_app.backend import QT_PATH
 
 QApplication.setHighDpiScaleFactorRoundingPolicy(
     Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
@@ -125,5 +125,4 @@ APP_PALETTE.setColor(QPalette.ColorRole.Highlight, QColor(42, 130, 218))
 APP_PALETTE.setColor(QPalette.ColorRole.HighlightedText, Qt.GlobalColor.black)
 
 
-QT_PATH = Path(__file__).parent.parent.resolve()
 ICON_PATH = QT_PATH / "assets/favicon.ico"

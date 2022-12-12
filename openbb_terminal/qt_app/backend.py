@@ -76,15 +76,20 @@ def run_qt_backend():
         return True
 
     qt_backend_pid = get_qt_backend_pid()
+    cmd_line = (
+        f'import sys; sys.path.append(\'{REPOSITORY_DIRECTORY.as_posix()}\'); '
+        f'from openbb_terminal.qt_app.app import main; main()'
+    )
 
     def is_running(process_name):
         """Checks if the qt_backend is running and if the process is the same as qt_backend_pid"""
         try:
             process = psutil.Process(qt_backend_pid)
-            print(
-                f"Checking if running = {len(process.cmdline()) > 1 and process_name in process.cmdline()}"
-            )
-            if len(process.cmdline()) > 1 and process_name in process.cmdline():
+            check = len(process.cmdline()) > 1 and process_name in process.cmdline()
+
+            print(f"Checking if running = {check}")
+
+            if check:
                 print("qt_backend is running")
                 if process.is_running():
                     global BACKEND_RUNNING  # pylint: disable=global-statement
@@ -95,7 +100,7 @@ def run_qt_backend():
 
         return False
 
-    if not is_running(str(QT_PATH / "app.py")):
+    if not is_running(cmd_line):
         # if the qt_backend is not running, we run it in a subprocess
         kwargs = {"stdin": subprocess.PIPE}
 
@@ -113,10 +118,7 @@ def run_qt_backend():
         env = os.environ.copy()
         env["PYTHONPATH"] = REPOSITORY_DIRECTORY.as_posix()
 
-        cmd_line = (
-            f'{sys.executable} -c "import sys; sys.path.append(\'{REPOSITORY_DIRECTORY.as_posix()}\'); '
-            f'from openbb_terminal.qt_app.app import main; main()"'
-        )
+        cmd_line = f'{sys.executable} -c "{cmd_line}"'
         subprocess.Popen(cmd_line, **kwargs, env=env)
 
         return True

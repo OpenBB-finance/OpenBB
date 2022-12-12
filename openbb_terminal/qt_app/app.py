@@ -5,10 +5,12 @@ import pickle
 import sys
 from typing import Optional
 
+import psutil
 from PySide6.QtGui import QIcon
 from PySide6.QtNetwork import QHostAddress
 from PySide6.QtWebSockets import QWebSocketServer
 
+from openbb_terminal.qt_app.backend import get_qt_backend_pid
 from openbb_terminal.qt_app.config.qt_settings import (
     APP_PALETTE,
     ICON_PATH,
@@ -38,6 +40,18 @@ while True:
 
 # We save the port and the pid of the this process in pickle file so that the terminal can access it
 pickle.dump(websocket_port, open(QT_PATH / "assets/qt_socket", "wb"))
+
+
+# In rare cases the backend process is not terminated properly
+# We check if the process is still running and terminate it
+try:
+    process = psutil.Process(get_qt_backend_pid())
+    if process.is_running():
+        process.terminate()
+except psutil.NoSuchProcess:
+    pass
+
+# We save the pid of this process in a pickle file so that the terminal can access it
 pickle.dump(os.getpid(), open(QT_PATH / "assets/qt_backend_pid", "wb"))
 
 
