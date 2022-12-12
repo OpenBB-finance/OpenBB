@@ -39,9 +39,9 @@ website/functions
 *_sdk_audit.csv
 website/terminaltest
 !build/docker/compose.env
-qt_app/assets/qt_backend_pid
-qt_app/assets/qt_socket
-qt_app/assets/plotly.js
+openbb_terminal/qt_app/assets/qt_backend_pid
+openbb_terminal/qt_app/assets/qt_socket
+openbb_terminal/qt_app/assets/plotly.js
 
 # pyinstaller artifacts
 *.pyo

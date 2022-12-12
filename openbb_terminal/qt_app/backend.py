@@ -1,6 +1,7 @@
 # pylint: disable=c-extension-no-member,consider-using-with
 import asyncio
 import atexit
+import json
 import os
 import pickle
 import subprocess
@@ -8,7 +9,7 @@ import sys
 import threading
 import time
 from pathlib import Path
-from typing import List
+from typing import List, Union
 
 import plotly.graph_objects as go
 import psutil
@@ -101,7 +102,14 @@ def run_qt_backend():
         if os.environ.get("DEBUG", False):
             kwargs = {}
 
-        subprocess.Popen([sys.executable, "app.py"], shell=True, cwd=QT_PATH, **kwargs)
+        if sys.platform == "win32":
+            kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
+        else:
+            kwargs["preexec_fn"] = os.setsid  # pylint: disable=no-member
+
+        subprocess.Popen(
+            f"{sys.executable} {QT_PATH}/app.py", shell=True, cwd=QT_PATH, **kwargs
+        )
         return True
 
     return False
@@ -118,7 +126,7 @@ class QtBackend:
     def __init__(self):
         self.socket_port: int = None
         self.figures: List[go.Figure] = []
-        self.reports: List[str] = []
+        self.dashboard: List[str] = []
         self.thread = None
         self.init_engine = ["init"]
 
@@ -153,6 +161,11 @@ class QtBackend:
 
                         await websocket.send(data.to_json())
                         self.init_engine = ["init"]
+
+                    if self.dashboard:
+                        data = self.dashboard.pop(0)
+                        await websocket.send(json.dumps({"dashboard": data}))
+
                     await asyncio.sleep(0.1)
 
         except Exception:
@@ -180,10 +193,10 @@ class QtBackend:
         self.check_backend()
         self.figures.append(fig)
 
-    def send_reports(self, report: Path):
-        """Send report to qt_backend."""
+    def send_dashboard(self, dashboard: Union[Path, str]):
+        """Send dashboard to qt_backend."""
         self.check_backend()
-        self.reports.append(str(report))
+        self.dashboard.append(str(dashboard))
 
     def check_backend(self):
         """Check if the backend is running."""

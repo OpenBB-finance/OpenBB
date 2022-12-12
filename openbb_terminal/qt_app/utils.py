@@ -6,7 +6,7 @@ import socket
 
 from PySide6.QtCore import QSocketNotifier
 
-from qt_app.config.qt_settings import QApplication
+from openbb_terminal.qt_app.config.qt_settings import QApplication
 
 
 @contextlib.contextmanager

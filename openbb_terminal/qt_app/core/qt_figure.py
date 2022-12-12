@@ -8,7 +8,7 @@ from PySide6.QtGui import QDesktopServices, QGuiApplication
 from PySide6.QtWebEngineCore import QWebEngineDownloadRequest
 from PySide6.QtWidgets import QLabel, QPushButton, QVBoxLayout
 
-from qt_app.core.figure_window import QtPlotlyFigureWindow
+from openbb_terminal.qt_app.core.figure_window import QtPlotlyFigureWindow
 
 
 class QtFigure(go.Figure):

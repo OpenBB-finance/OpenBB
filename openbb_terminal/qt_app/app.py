@@ -2,23 +2,22 @@
 # type: ignore
 import os
 import pickle
-import sys
 from typing import Optional
 
 from PySide6.QtGui import QIcon
 from PySide6.QtNetwork import QHostAddress
 from PySide6.QtWebSockets import QWebSocketServer
 
-from qt_app.config.qt_settings import (
+from openbb_terminal.qt_app.config.qt_settings import (
     APP_PALETTE,
     ICON_PATH,
     QT_PATH,
     STYLE_SHEET,
     QApplication,
 )
-from qt_app.core.reports_window import ReportsFileSystemWatcher
-from qt_app.core.socket_server import BackendSocketServer
-from qt_app.utils import _maybe_allow_interrupt
+from openbb_terminal.qt_app.core.reports_window import ReportsFileSystemWatcher
+from openbb_terminal.qt_app.core.socket_server import BackendSocketServer
+from openbb_terminal.qt_app.utils import _maybe_allow_interrupt
 
 qApp: Optional[QApplication] = None
 websocket_port = 14733
@@ -75,4 +74,4 @@ if __name__ == "__main__":
     reports = ReportsFileSystemWatcher()
 
     with _maybe_allow_interrupt(qApp):
-        sys.exit(qApp.exec())
+        qApp.exec()

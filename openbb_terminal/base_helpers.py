@@ -6,7 +6,7 @@ from typing import Any, Callable, Literal, Union
 
 from rich.console import Console
 
-from qt_app.backend import QT_BACKEND
+from openbb_terminal.qt_app.backend import QT_BACKEND
 
 console = Console()
 

@@ -19,9 +19,9 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
 )
+from openbb_terminal.qt_app.config.openbb_styles import PLT_FONT, PLT_TA_COLORWAY
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
-from qt_app.config.openbb_styles import PLT_FONT, PLT_TA_COLORWAY
 
 logger = logging.getLogger(__name__)
 

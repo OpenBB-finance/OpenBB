@@ -9,16 +9,13 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import QDialog, QMainWindow, QSizePolicy, QWidget
 
 from openbb_terminal.core.config.paths import USER_DATA_DIRECTORY
-from qt_app.config.qt_settings import QT_PATH, WEB_ENGINE_SETTINGS
+from openbb_terminal.qt_app.config.qt_settings import QT_PATH, WEB_ENGINE_SETTINGS
 
 if TYPE_CHECKING:
     from .qt_figure import QtFigure
 
 
 QtFigureType = TypeVar("QtFigureType", bound="QtFigure")
-
-
-active_windows: list["QtPlotlyFigureWindow"] = []
 
 
 class PlotlyFigureHTMLWebView(QWebEngineView):
@@ -32,7 +29,6 @@ class PlotlyFigureHTMLWebView(QWebEngineView):
         for attribute in WEB_ENGINE_SETTINGS:
             self.settings().setAttribute(*attribute)
 
-        self.setContextMenuPolicy(Qt.NoContextMenu)
         self.setMinimumSize(600, 400)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.setUrl(QUrl.fromLocalFile(QT_PATH / "core/plotly.html"))
@@ -127,11 +123,6 @@ class QtPlotlyFigureWindow(QMainWindow):
         self.widget_.set_figure(figure)
         self.setCentralWidget(self.widget_.view_)
         self.setMinimumSize(800, 600)
-
-        self.on_open.connect(lambda: active_windows.append(self))
-        self.closing.connect(
-            lambda: active_windows.remove(self) if self in active_windows else None
-        )
 
         self._download_popup = QDialog(self)
         self.widget_.view_.page().profile().setDownloadPath(

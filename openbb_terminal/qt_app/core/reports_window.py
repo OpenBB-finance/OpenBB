@@ -24,8 +24,8 @@ from PySide6.QtWidgets import (
 )
 
 from openbb_terminal.core.config.paths import USER_REPORTS_DIRECTORY
-from qt_app.config.qt_settings import ICON_PATH, WEB_ENGINE_SETTINGS
-from qt_app.core.figure_window import active_windows
+from openbb_terminal.qt_app.config.qt_settings import ICON_PATH, WEB_ENGINE_SETTINGS
+from openbb_terminal.qt_app.core.socket_server import active_windows
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -117,10 +117,10 @@ class ReportsWebView(QWebEngineView):
             self._filedialog.resize(800, 600)
             self._filedialog.show()
             if self._filedialog.exec():
-                self._on_file_selected(download_item)
+                self.on_file_selected_(download_item)
                 self.page().triggerAction(QWebEnginePage.WebAction.DownloadImageToDisk)
 
-    def _on_file_selected(self, download_item: QWebEngineDownloadRequest):
+    def on_file_selected_(self, download_item: QWebEngineDownloadRequest):
         """This method is called when the user selects a file in the file dialog."""
         download_item.setDownloadDirectory(self._filedialog.directory().path())
         download_item.setDownloadFileName(self._filedialog.selectedFiles()[0])

@@ -4,20 +4,26 @@ import json
 import logging
 import pickle
 import sys
+from typing import List, Union
 
 from PySide6.QtCore import QObject, Qt, Signal
 from PySide6.QtNetwork import QHostAddress
 from PySide6.QtWebSockets import QWebSocketServer
 from PySide6.QtWidgets import QMessageBox
 
-from qt_app.config.qt_settings import QT_PATH, QApplication
-from qt_app.core.figure_window import QtPlotlyFigureWindow, active_windows
-from qt_app.core.qt_figure import QtFigure
+from openbb_terminal.qt_app.config.qt_settings import QT_PATH, QApplication
+from openbb_terminal.qt_app.core.dashboard_window import VoilaWindow
+from openbb_terminal.qt_app.core.figure_window import QtPlotlyFigureWindow
+from openbb_terminal.qt_app.core.qt_figure import QtFigure
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 logger.setLevel(logging.INFO)
 logger.info("Starting socket server")
+
+active_windows: List[
+    Union["QtPlotlyFigureWindow", "QtPlotlyFigureWindow", "VoilaWindow"]
+] = []
 
 
 class BackendSocketServer(QObject):
@@ -119,21 +125,30 @@ class BackendSocketServer(QObject):
 
                 return
 
-            fig = QtFigure(json.loads(message))
-            fig.show()
+            data = json.loads(message)
+            if "dashboard" in data:
+                logger.info("Dashboard detected")
+                window = VoilaWindow(notebook=data["dashboard"])
+            else:
+                fig = QtFigure(data)
+                fig.show()
+                window = fig._window
 
-            # This is needed to make sure the window opens on top of the terminal.
-            # initially the window is created with the WindowStaysOnTopHint flag set,
-            # but this is removed when the window is shown. This is done so the
-            # window doesn't stay on top when the user clicks on the window.
-            fig._window.setWindowFlags(
-                fig._window.windowFlags() | Qt.WindowStaysOnTopHint
+                # This is needed to make sure the window opens on top of the terminal.
+                # initially the window is created with the WindowStaysOnTopHint flag set,
+                # but this is removed when the window is shown. This is done so the
+                # window doesn't stay on top when the user clicks on the window.
+                window.setWindowFlags(window.windowFlags() | Qt.WindowStaysOnTopHint)
+                window.show()
+                window.setWindowFlags(window.windowFlags() & ~Qt.WindowStaysOnTopHint)
+
+            window.closing.connect(
+                lambda: active_windows.remove(window)
+                if window in active_windows
+                else None
             )
-            fig._window.show()
-            fig._window.setWindowFlags(
-                fig._window.windowFlags() & ~Qt.WindowStaysOnTopHint
-            )
-            fig._window.show()
+            window.show()
+            active_windows.append(window)
         except json.JSONDecodeError:
             self.error.emit("Invalid JSON")
             return
@@ -152,8 +167,10 @@ class BackendSocketServer(QObject):
         logger.info("Popup clicked with option: %s", message.text())
         if message.text() == "&Yes":
             logger.info("Closing all windows")
+
             for window in active_windows:
                 window.close()
+
             sys.exit(QApplication.instance().quit())
 
         logger.info("Some figures open, quitting when the last window is closed")
