@@ -107,7 +107,14 @@ def run_qt_backend():
         else:
             kwargs["preexec_fn"] = os.setsid  # pylint: disable=no-member
 
-        subprocess.Popen([sys.executable, str(QT_PATH / "app.py")], **kwargs)
+        if hasattr(sys, "real_prefix") or (
+            hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix
+        ):
+            subprocess.Popen([sys.executable, str(QT_PATH / "app.py")], **kwargs)
+        else:
+            os.environ["PYTHONPATH"] = QT_PATH.parent.parent.as_posix()
+            subprocess.Popen(["python", str(QT_PATH / "app.py")], **kwargs)
+
         return True
 
     return False
@@ -182,8 +189,6 @@ class QtBackend:
 
     def start(self):
         """Connect to qt_backend in a separate thread."""
-        if self.max_retries == 0:
-            raise PlotsBackendError
 
         thread = threading.Thread(
             target=asyncio.run, args=(self.connect(),), daemon=True
@@ -210,6 +215,9 @@ class QtBackend:
 
     def check_backend(self):
         """Check if the backend is running."""
+        if self.max_retries == 0:
+            raise PlotsBackendError
+
         if not BACKEND_RUNNING or not self.thread.is_alive():
             self.start()
 

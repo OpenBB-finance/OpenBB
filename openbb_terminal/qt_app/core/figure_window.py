@@ -123,10 +123,6 @@ class QtPlotlyFigureWindow(QMainWindow):
         self.widget_.set_figure(figure)
         self.setCentralWidget(self.widget_.view_)
         self.setMinimumSize(800, 600)
-        self.setWindowState(
-            self.windowState() & ~Qt.WindowState.WindowMinimized
-            | Qt.WindowState.WindowActive
-        )
 
         self._download_popup = QDialog(self)
         self.widget_.view_.page().profile().setDownloadPath(
@@ -161,5 +157,6 @@ class QtPlotlyFigureWindow(QMainWindow):
     def reShow(self):
         self.showMinimized()
         self.setWindowState(
-            self.windowState() and (not Qt.WindowMinimized or Qt.WindowActive)
+            self.windowState() & ~Qt.WindowState.WindowMinimized
+            | Qt.WindowState.WindowActive
         )

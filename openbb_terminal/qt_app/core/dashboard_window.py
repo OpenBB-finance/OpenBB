@@ -155,6 +155,10 @@ class VoilaRendererWidget(QWidget):
 
     def run_voila(self):
         self._view.run_voila()
+        self._window.setWindowFlags(
+            self._window.windowFlags() & ~Qt.WindowStaysOnTopHint
+        )
+        self._window.show()
         self.show()
 
 
@@ -176,6 +180,8 @@ class VoilaWindow(QMainWindow):
         else:
             self.resize(screen.width() * 0.8, screen.height() * 0.8)
 
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+
     def closeEvent(self, event):
         self.voila._view.close_renderer()
         self.closing.emit()
@@ -191,6 +197,4 @@ class VoilaWindow(QMainWindow):
 
     def reShow(self):
         self.showMinimized()
-        self.setWindowState(
-            self.windowState() and (not Qt.WindowMinimized or Qt.WindowActive)
-        )
+        self.setWindowState(self.windowState() & ~Qt.WindowMinimized | Qt.WindowActive)

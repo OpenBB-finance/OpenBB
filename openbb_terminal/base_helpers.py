@@ -110,7 +110,7 @@ else:
 class Show:
     """Monkey patch the show method to send the figure to the backend"""
 
-    def show(self) -> Union[str, None]:
+    def show(self, *args, **kwargs) -> Union[str, None]:
         """Show the figure."""
         try:
             # We send the figure to the backend to be displayed
@@ -120,14 +120,16 @@ class Show:
             # This is a very rare case, but it's better to have a fallback
             if os.environ.get("DEBUG", False):
                 console.print_exception()
-            self._show()  # type: ignore
+
+            import plotly.io as pio  # pylint: disable=import-outside-toplevel
+
+            kwargs["config"] = {"scrollZoom": True}
+            return pio.show(self, *args, **kwargs)
 
         return None
 
 
 if not JUPYTER_NOTEBOOK and sys.stdin.isatty():
-    QT_BACKEND.start()
-
     # pylint: disable=import-outside-toplevel
     import gc
 
@@ -139,5 +141,6 @@ if not JUPYTER_NOTEBOOK and sys.stdin.isatty():
     for module in list(sys.modules.values()):
         if not hasattr(module, "Figure") or not issubclass(module.Figure, Figure):
             continue
-        setattr(module.Figure, "_show", module.Figure.show)
         module.Figure.show = Show.show
+
+    QT_BACKEND.start()

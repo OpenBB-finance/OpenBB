@@ -110,21 +110,21 @@ class BackendSocketServer(QObject):
                     )
                     msg.resize(400, 100)
                     msg.buttonClicked.connect(lambda x: self.to_close.emit(x))
-                    window.setWindowState(
-                        window.windowState()
-                        and (not Qt.WindowMinimized or Qt.WindowActive)
-                    )
 
                     if hasattr(window, "_window"):
                         window._window._download_popup = msg
                     else:
                         setattr(window, "_download_popup", msg)
 
-                    window.raise_()
+                    if sys.platform == "win32":
+                        msg.setWindowFlags(msg.windowFlags() | Qt.WindowStaysOnTopHint)
+                        msg.show()
+                        msg.setWindowFlags(msg.windowFlags() & ~Qt.WindowStaysOnTopHint)
+
                     window.activateWindow()
+                    window.raise_()
                     window.reShow()
                     window.show()
-                    msg.setWindowModality(Qt.ApplicationModal)
                     msg.show()
 
                 return
@@ -137,17 +137,26 @@ class BackendSocketServer(QObject):
                 fig = QtFigure(data)
                 fig.show()
                 window = fig._window
+                if sys.platform == "win32":
+                    window.setWindowFlags(
+                        window.windowFlags() | Qt.WindowStaysOnTopHint
+                    )
+                    window.show()
+                    window.setWindowFlags(
+                        window.windowFlags() & ~Qt.WindowStaysOnTopHint
+                    )
 
             window.closing.connect(
                 lambda: active_windows.remove(window)
                 if window in active_windows
                 else None
             )
-            window.raise_()
+
             window.activateWindow()
-            window.reShow()
+            window.raise_()
             window.show()
             active_windows.append(window)
+
         except json.JSONDecodeError:
             self.error.emit("Invalid JSON")
             return
