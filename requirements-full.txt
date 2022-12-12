@@ -26,7 +26,7 @@ bandit==1.7.4; python_version >= "3.7"
 base58==2.1.1; python_version >= "3.5" and python_full_version >= "3.7.0"
 beartype==0.7.1; python_version >= "3.8" and python_version < "4.0" and python_full_version >= "3.6.0"
 beautifulsoup4==4.11.1; python_full_version >= "3.6.0" and python_version >= "3.7"
-black==22.10.0; python_version >= "3.7"
+black==22.12.0; python_version >= "3.7"
 bleach==5.0.1; python_version >= "3.7"
 blinker==1.5; python_version >= "3.7" and python_full_version < "3.0.0" or python_version >= "3.7" and python_full_version < "3.9.7" and python_full_version >= "3.5.0" or python_full_version > "3.9.7"
 bs4==0.0.1
@@ -171,7 +171,7 @@ oauthlib==3.2.2; python_version >= "3.6" and python_full_version < "3.0.0" or py
 onetimepass==1.0.1; python_full_version >= "3.7.1" and python_full_version < "4.0.0"
 openpyxl==3.0.10; python_version >= "3.6"
 osqp==0.6.2.post5; python_version >= "3.7"
-packaging==21.3; python_version >= "3.8" and python_full_version < "3.9.7" and python_full_version >= "3.7.0" or python_full_version > "3.9.7" and python_version >= "3.8" and python_full_version < "4.0.0"
+packaging==21.3; python_version >= "3.6"
 pandas-datareader==0.10.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
 pandas-market-calendars==3.2; python_full_version >= "3.7.0"
 pandas-ta==0.3.14b

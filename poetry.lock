@@ -363,7 +363,7 @@ lxml = ["lxml"]
 
 [[package]]
 name = "black"
-version = "22.10.0"
+version = "22.12.0"
 description = "The uncompromising code formatter."
 category = "dev"
 optional = false
@@ -4819,7 +4819,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "8ca9e9770f3a1000767ced3d201968914db06136cde19041d046b2ea8d2ca8c1"
+content-hash = "a026cc84ba407322256a009fb2017b188ec82cfad1a62c920c7ca06419fd3ca1"
 
 [metadata.files]
 absl-py = []
