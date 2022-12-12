@@ -107,9 +107,7 @@ def run_qt_backend():
         else:
             kwargs["preexec_fn"] = os.setsid  # pylint: disable=no-member
 
-        subprocess.Popen(
-            [sys.executable, str(QT_PATH / "app.py")], shell=True, **kwargs
-        )
+        subprocess.Popen([sys.executable, str(QT_PATH / "app.py")], **kwargs)
         return True
 
     return False
@@ -123,12 +121,13 @@ class QtBackend:
             cls.instance = super().__new__(cls)
         return cls.instance
 
-    def __init__(self):
-        self.socket_port: int = None
+    def __init__(self, max_retries: int = 5):
+        self.socket_port: Union[int, None] = None
         self.figures: List[go.Figure] = []
         self.dashboard: List[str] = []
         self.thread = None
         self.init_engine = ["init"]
+        self.max_retries = max_retries
 
     async def connect(self):
         """Connects to qt_backend and maintains the connection until the terminal is closed"""
@@ -139,7 +138,10 @@ class QtBackend:
             self.socket_port = await get_qt_backend_socket()
 
             async with connect(
-                f"ws://localhost:{self.socket_port}", open_timeout=6, timeout=1
+                f"ws://localhost:{self.socket_port}",
+                open_timeout=6,
+                timeout=1,
+                ssl=None,
             ) as websocket:
                 if self.init_engine:
                     # sends init message to qt_backend to initialize the engine
@@ -168,7 +170,11 @@ class QtBackend:
 
                     await asyncio.sleep(0.1)
 
-        except Exception:
+        except Exception as exc:
+            if self.max_retries == 0:
+                raise PlotsBackendError from exc
+
+            self.max_retries -= 1
             print("Connection to qt_backend failed. Trying again...")
             await get_qt_backend_socket()
             BACKEND_RUNNING = False
@@ -176,6 +182,9 @@ class QtBackend:
 
     def start(self):
         """Connect to qt_backend in a separate thread."""
+        if self.max_retries == 0:
+            raise PlotsBackendError
+
         thread = threading.Thread(
             target=asyncio.run, args=(self.connect(),), daemon=True
         )
