@@ -73,10 +73,6 @@ class StocksController(StockBaseController):
 
     PATH = "/stocks/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
-
-    country = financedatabase.show_options("equities", "countries")
-    sector = financedatabase.show_options("equities", "sectors")
-    industry = financedatabase.show_options("equities", "industries")
     TOB_EXCHANGES = ["BZX", "EDGX", "BYX", "EDGA"]
     CHOICES_GENERATION = True
 
@@ -144,6 +140,10 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
+        country = financedatabase.show_options("equities", "countries")
+        sector = financedatabase.show_options("equities", "sectors")
+        industry = financedatabase.show_options("equities", "industries")
+    
         """Process search command."""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -161,7 +161,7 @@ class StocksController(StockBaseController):
             nargs="+",
             help="The search term used to find company tickers",
         )
-        clean_countries = [x.lower().replace(" ", "_") for x in self.country]
+        clean_countries = [x.lower().replace(" ", "_") for x in country]
         parser.add_argument(
             "-c",
             "--country",
@@ -176,7 +176,7 @@ class StocksController(StockBaseController):
             "-s",
             "--sector",
             default="",
-            choices=stocks_helper.format_parse_choices(self.sector),
+            choices=stocks_helper.format_parse_choices(sector),
             type=str.lower,
             metavar="sector",
             dest="sector",
@@ -186,7 +186,7 @@ class StocksController(StockBaseController):
             "-i",
             "--industry",
             default="",
-            choices=stocks_helper.format_parse_choices(self.industry),
+            choices=stocks_helper.format_parse_choices(industry),
             type=str.lower,
             metavar="industry",
             dest="industry",
@@ -214,8 +214,8 @@ class StocksController(StockBaseController):
         )
         if ns_parser:
             # Mapping
-            sector = stocks_helper.map_parse_choices(self.sector)[ns_parser.sector]
-            industry = stocks_helper.map_parse_choices(self.industry)[
+            sector = stocks_helper.map_parse_choices(sector)[ns_parser.sector]
+            industry = stocks_helper.map_parse_choices(industry)[
                 ns_parser.industry
             ]
             exchange = stocks_helper.map_parse_choices(
