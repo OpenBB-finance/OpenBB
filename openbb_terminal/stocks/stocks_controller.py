@@ -143,7 +143,7 @@ class StocksController(StockBaseController):
         country = financedatabase.show_options("equities", "countries")
         sector = financedatabase.show_options("equities", "sectors")
         industry = financedatabase.show_options("equities", "industries")
-    
+
         """Process search command."""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -215,9 +215,7 @@ class StocksController(StockBaseController):
         if ns_parser:
             # Mapping
             sector = stocks_helper.map_parse_choices(sector)[ns_parser.sector]
-            industry = stocks_helper.map_parse_choices(industry)[
-                ns_parser.industry
-            ]
+            industry = stocks_helper.map_parse_choices(industry)[ns_parser.industry]
             exchange = stocks_helper.map_parse_choices(
                 list(stocks_helper.market_coverage_suffix.keys())
             )[ns_parser.exchange_country]
