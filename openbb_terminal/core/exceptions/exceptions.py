@@ -1,6 +1,8 @@
 import os
 from openbb_terminal.rich_config import console
 
+ERROR_COLOR = "red"
+
 
 def handle_exception(exception: Exception) -> None:
     """Handle exceptions
@@ -18,22 +20,22 @@ def handle_exception(exception: Exception) -> None:
     exception_name = exception.__class__.__name__
 
     if exception_name == "OpenBBUserError":
-        console.print("Error:", exception, style="red")
+        console.print("Error:", exception, style=ERROR_COLOR)
     elif os.environ.get("DEBUG_MODE") == "true":
         raise exception
     elif exception_name == "RequestException":
         console.print(
             "Error: There was an error connecting to the API. Please try again later.",
-            style="red",
+            style=ERROR_COLOR,
         )
     elif exception_name == "SSLError":
         console.print(
             "Error: There was an error connecting to the API. "
             + "Please check whether your wifi is blocking this site.",
-            style="red",
+            style=ERROR_COLOR,
         )
     else:
-        console.print("Error: An unexpected error occurred.", style="red")
+        console.print("Error: An unexpected error occurred.", style=ERROR_COLOR)
 
 
 def shout(message: str) -> None:
