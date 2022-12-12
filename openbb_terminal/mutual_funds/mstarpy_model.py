@@ -96,7 +96,7 @@ def search_funds(
     field=["SecId", "TenforeId", "LegalName"],
     country: str = "",
     pageSize=10,
-) -> pd.DataFrame:
+):
     """Search mstarpy for matching funds
 
     Parameters

@@ -76,6 +76,7 @@ class FundController(BaseController):
 
         self.country = ""
         self.data = pd.DataFrame()
+        self.funds_loaded = None
         self.fund_name = ""
         self.fund_symbol = ""
         self.TRY_RELOAD = True
@@ -626,11 +627,12 @@ class FundController(BaseController):
             other_args.insert(0, "--fund")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            self.funds_loaded = mstarpy_view.display_load(
+            funds_loaded = mstarpy_view.display_load(
                 term=ns_parser.fund, country=self.country
             )
-            self.fund_name = self.funds_loaded.name
-            self.fund_symbol = self.funds_loaded.code
+            self.funds_loaded = funds_loaded
+            self.fund_name = funds_loaded.name
+            self.fund_symbol = funds_loaded.code
             self.end_date = ns_parser.end.strftime("%Y-%m-%d")
             self.start_date = ns_parser.start.strftime("%Y-%m-%d")
         return self.queue
