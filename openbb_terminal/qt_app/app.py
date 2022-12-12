@@ -2,6 +2,7 @@
 # type: ignore
 import os
 import pickle
+import sys
 from typing import Optional
 
 from PySide6.QtGui import QIcon
@@ -74,4 +75,4 @@ if __name__ == "__main__":
     reports = ReportsFileSystemWatcher()
 
     with _maybe_allow_interrupt(qApp):
-        qApp.exec()
+        sys.exit(qApp.exec())
