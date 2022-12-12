@@ -28,7 +28,8 @@ def get_estimates_eps(ticker: str) -> pd.DataFrame:
     url = "https://seekingalpha.com/api/v3/symbol_data/estimates"
 
     querystring = {
-        "estimates_data_items": "eps_normalized_actual,eps_normalized_consensus_low,eps_normalized_consensus_mean,eps_normalized_consensus_high,eps_normalized_num_of_estimates",
+        "estimates_data_items": "eps_normalized_actual,eps_normalized_consensus_low,eps_normalized_consensus_mean,"
+        "eps_normalized_consensus_high,eps_normalized_num_of_estimates",
         "period_type": "annual",
         "relative_periods": "-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11",
     }
@@ -89,7 +90,7 @@ def get_estimates_eps(ticker: str) -> pd.DataFrame:
                 eps_estimates["actual"] = seek_object["eps_normalized_actual"][str(i)][
                     0
                 ]["dataitemvalue"]
-            except:
+            except Exception:
                 eps_estimates["actual"] = 0
             eps_estimates["consensus_low"] = seek_object[
                 "eps_normalized_consensus_low"
@@ -109,7 +110,7 @@ def get_estimates_eps(ticker: str) -> pd.DataFrame:
                             "dataitemvalue"
                         ]
                     )
-                except:
+                except Exception:
                     prev = float(
                         seek_object["eps_normalized_consensus_mean"][str(i - 1)][0][
                             "dataitemvalue"
@@ -117,8 +118,8 @@ def get_estimates_eps(ticker: str) -> pd.DataFrame:
                     )
 
                 percent = ((this / prev) - 1) * 100
-            except:
-                percent = f"{0}"
+            except Exception:
+                percent = 0
 
             eps_estimates["change %"] = percent
 
@@ -139,8 +140,8 @@ def get_estimates_eps(ticker: str) -> pd.DataFrame:
             # df append replacement
             new_row = pd.DataFrame(eps_estimates, index=[0])
             output = pd.concat([output, new_row])
-    except:
-        pass
+    except Exception:
+        return pd.DataFrame()
 
     return output
 
@@ -162,7 +163,8 @@ def get_estimates_rev(ticker: str) -> pd.DataFrame:
     url = "https://seekingalpha.com/api/v3/symbol_data/estimates"
 
     querystring = {
-        "estimates_data_items": "revenue_actual,revenue_consensus_low,revenue_consensus_mean,revenue_consensus_high,revenue_num_of_estimates",
+        "estimates_data_items": "revenue_actual,revenue_consensus_low,revenue_consensus_mean,"
+        "revenue_consensus_high,revenue_num_of_estimates",
         "period_type": "annual",
         "relative_periods": "-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11",
     }
@@ -245,7 +247,7 @@ def get_estimates_rev(ticker: str) -> pd.DataFrame:
                     prev = float(
                         seek_object["revenue_actual"][str(i - 1)][0]["dataitemvalue"]
                     )
-                except:
+                except Exception:
                     prev = float(
                         seek_object["revenue_consensus_mean"][str(i - 1)][0][
                             "dataitemvalue"
@@ -253,7 +255,7 @@ def get_estimates_rev(ticker: str) -> pd.DataFrame:
                     )
 
                 percent = ((this / prev) - 1) * 100
-            except:
+            except Exception:
                 percent = float(0)
 
             revenue_estimates["change %"] = percent
@@ -275,8 +277,8 @@ def get_estimates_rev(ticker: str) -> pd.DataFrame:
             # df append replacement
             new_row = pd.DataFrame(revenue_estimates, index=[0])
             output = pd.concat([output, new_row])
-    except:
-        pass
+    except Exception:
+        return pd.DataFrame()
 
     return output
 
@@ -325,8 +327,8 @@ def get_seekingalpha_id(ticker: str) -> str:
 
     try:
         seekingalphaID = str(response.json()["symbols"][0]["id"])
-    except:
+    except Exception:
         # for some reason no mapping possible
-        seekingalphaID = 0
+        seekingalphaID = "0"
 
     return seekingalphaID
