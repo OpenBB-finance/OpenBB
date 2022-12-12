@@ -25,8 +25,8 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-v1-linting
-          restore-keys: ${{ runner.os }}-v1-linting
+          key: ${{ runner.os }}-v2-linting
+          restore-keys: ${{ runner.os }}-v2-linting
 
       - run: pip install bandit black codespell flake8 mypy==0.982 pyupgrade safety pylint==2.15.2
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
