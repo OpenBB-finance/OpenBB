@@ -94,7 +94,7 @@ def load_holdings(loaded_funds: mstarpy.Funds, holding_type: str = "all"):
 @log_start_end(log=logger)
 def search_funds(
     term: str = "",
-    field: str = ["SecId", "TenforeId", "LegalName"],
+    field=["SecId", "TenforeId", "LegalName"],
     country: str = "",
     pageSize=10,
 ) -> pd.DataFrame:
@@ -104,7 +104,7 @@ def search_funds(
     ----------
     term : str
          String that will be searched for.  Can be name or isin
-    field : str
+    field : list
         list of field who will be displayed
     country : str
         country where the funds is hosted

@@ -78,7 +78,6 @@ class FundController(BaseController):
         self.fund_name = ""
         self.fund_symbol = ""
         self.TRY_RELOAD = True
-        self.funds_loaded = ""
         self.end_date = datetime.today()
         self.start_date = datetime.today() - timedelta(3650)
 
