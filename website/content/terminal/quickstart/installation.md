@@ -207,10 +207,14 @@ Install and run Docker Desktop as describe above in this document.
 Execute this commands:
 
 ```bash
-curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
+# pull down openbb docker image
+docker pull ghcr.io/openbb-finance/openbbterminal
 
-xhost +local:
-docker compose run openbb
+# verify docker image exist
+docker images
+
+# run openbb docker image
+docker run -it --rm ghcr.io/openbb-finance/openbbterminal
 ```
 
 Note: if you're using remote docker host, you can connect with `ssh -X <FQDN/IP>`.
