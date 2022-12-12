@@ -141,11 +141,10 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
         """Process search command."""
-        
         country = financedatabase.show_options("equities", "countries")
         sector = financedatabase.show_options("equities", "sectors")
         industry = financedatabase.show_options("equities", "industries")
-        
+
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
