@@ -76,7 +76,6 @@ class FundController(BaseController):
 
         self.country = ""
         self.data = pd.DataFrame()
-        self.funds_loaded = None
         self.fund_name = ""
         self.fund_symbol = ""
         self.TRY_RELOAD = True
