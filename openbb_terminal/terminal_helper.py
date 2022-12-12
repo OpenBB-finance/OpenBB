@@ -9,7 +9,7 @@ import logging
 import os
 import subprocess  # nosec
 import sys
-from typing import List, Union
+from typing import List
 from packaging import version
 
 # IMPORTATION THIRDPARTY
