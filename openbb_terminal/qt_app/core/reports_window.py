@@ -188,7 +188,6 @@ class ReportsWindow(QMainWindow):
     def _on_new_report(self, report_path: str):
         """Open the most recent report in the webview"""
         self._view.load(QUrl.fromLocalFile(report_path))
-        self.reShow()
         self.show()
 
     def closeEvent(self, event):
@@ -198,9 +197,7 @@ class ReportsWindow(QMainWindow):
 
     def reShow(self):
         self.showMinimized()
-        self.setWindowState(
-            self.windowState() and (not Qt.WindowMinimized or Qt.WindowActive)
-        )
+        self.setWindowState(self.windowState() & ~Qt.WindowMinimized | Qt.WindowActive)
 
 
 class ReportsFileSystemWatcher(QFileSystemWatcher):

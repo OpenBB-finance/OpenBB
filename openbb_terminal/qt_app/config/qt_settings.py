@@ -103,12 +103,9 @@ LOADING_HTML = """
         opacity: 0;
     }
 }
-
 </style>
-<div style="margin: 0 auto; margin-top: 50px; text-align: center; font-size: 20px;">
+<div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);">
     <div class="lds-ripple"><div></div><div></div></div>
-    <div style="margin-top: 20px;">Loading...</div>
-</div>
 """
 
 

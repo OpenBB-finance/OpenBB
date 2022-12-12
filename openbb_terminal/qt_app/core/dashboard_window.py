@@ -94,15 +94,9 @@ class VoilaThread(QThread):
         if os.environ.get("DEBUG"):
             kwargs = {"stdin": subprocess.PIPE}
 
-        if sys.platform == "win32":
-            kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
-        else:
-            kwargs["preexec_fn"] = os.setsid  # pylint: disable=no-member
-
         cfg.LOGGING_SUPPRESS = True
         self.voila_process = psutil.Popen(
             f"{sys.executable} -m voila --no-browser --port {self.port} {self.nbpath}",
-            shell=True,
             **kwargs,
         )
         cfg.LOGGING_SUPPRESS = True
@@ -153,10 +147,6 @@ class VoilaRendererWidget(QWidget):
 
     def run_voila(self):
         self._view.run_voila()
-        self._window.setWindowFlags(
-            self._window.windowFlags() & ~Qt.WindowStaysOnTopHint
-        )
-        self._window.show()
         self.show()
 
 
@@ -168,6 +158,7 @@ class VoilaWindow(QMainWindow):
         super().__init__(parent)
         self.notebook = notebook
         self.voila = VoilaRendererWidget(self, notebook=self.notebook)
+        self.started = False
         self.setCentralWidget(self.voila)
         self.setWindowTitle("OpenBB Dashboards")
 
@@ -177,8 +168,6 @@ class VoilaWindow(QMainWindow):
             self.resize(1920 * 0.8, 1080 * 0.8)
         else:
             self.resize(screen.width() * 0.8, screen.height() * 0.8)
-
-        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
     def closeEvent(self, event):
         self.voila._view.close_renderer()
@@ -190,9 +179,12 @@ class VoilaWindow(QMainWindow):
         event.accept()
 
     def showEvent(self, event):
-        self.voila.run_voila()
+        if not self.started:
+            self.started = True
+            self.voila.run_voila()
+
+        self.show()
         event.accept()
 
     def reShow(self):
-        self.showMinimized()
-        self.setWindowState(self.windowState() & ~Qt.WindowMinimized | Qt.WindowActive)
+        pass

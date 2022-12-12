@@ -164,20 +164,23 @@ class QtBackend:
 
                 while True:
                     if self.figures:
-                        data = self.figures.pop(0)
+                        data = json.dumps({"plotly": self.figures.pop(0).to_json()})
+
                         # Just in case the user still had windows open from a previous
                         # terminal session and closed them after starting a new session
                         # [ at terminal close we set backend to quit after last window is closed ]
                         # we append the fig json to the init_engine so that if the send fails, the engine will
                         # still have the fig data to display at the next connection
-                        self.init_engine.append(data.to_json())
+                        self.init_engine.append(data)
 
-                        await websocket.send(data.to_json())
+                        await websocket.send(data)
                         self.init_engine = ["init"]
 
                     if self.dashboard:
-                        data = self.dashboard.pop(0)
-                        await websocket.send(json.dumps({"dashboard": data}))
+                        data = json.dumps({"dashboard": self.dashboard.pop(0)})
+                        self.init_engine.append(data)
+                        await websocket.send(data)
+                        self.init_engine.remove(data)
 
                     await asyncio.sleep(0.1)
 
@@ -220,6 +223,9 @@ class QtBackend:
     def check_backend(self):
         """Check if the backend is running."""
         if self.max_retries == 0:
+            # If the backend is not running and we have tried to connect
+            # max_retries times, we raise an error as a fallback to prevent
+            # the user from not seeing any plots
             raise PlotsBackendError
 
         if not BACKEND_RUNNING or not self.thread.is_alive():

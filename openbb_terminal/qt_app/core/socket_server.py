@@ -6,8 +6,9 @@ import pickle
 import sys
 from typing import List, Union
 
-from PySide6.QtCore import QObject, Qt, Signal
+from PySide6.QtCore import QObject, Qt, QUrl, Signal
 from PySide6.QtNetwork import QHostAddress
+from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWebSockets import QWebSocketServer
 from PySide6.QtWidgets import QMessageBox
 
@@ -79,12 +80,14 @@ class BackendSocketServer(QObject):
         """Process the incoming message."""
         logger.info("Message received")
         try:
-            # If the message is "init", we create a figure and close it immediately.
+            # If the message is "init", we create a QWebEngineView and close it.
             # This is so the first plot doesn't have to wait for the QtWebEngine to initialize.
             if message == "init":
-                window = QtPlotlyFigureWindow(QtFigure())
-                window.close()
-                del window
+                logger.info("Initializing QtWebEngine")
+                webview = QWebEngineView()
+                webview.load(QUrl("about:blank"))
+                webview.close()
+                del webview
                 return
 
             if message in ["isatty", "isterminal"]:
@@ -125,26 +128,27 @@ class BackendSocketServer(QObject):
                     window.raise_()
                     window.reShow()
                     window.show()
+                    msg.activateWindow()
+                    msg.raise_()
                     msg.show()
 
                 return
 
             data = json.loads(message)
+
             if "dashboard" in data:
                 logger.info("Dashboard detected")
                 window = VoilaWindow(notebook=data["dashboard"])
-            else:
-                fig = QtFigure(data)
+
+            elif "plotly" in data:
+                fig = QtFigure(json.loads(data["plotly"]))
                 fig.show()
                 window = fig._window
-                if sys.platform == "win32":
-                    window.setWindowFlags(
-                        window.windowFlags() | Qt.WindowStaysOnTopHint
-                    )
-                    window.show()
-                    window.setWindowFlags(
-                        window.windowFlags() & ~Qt.WindowStaysOnTopHint
-                    )
+
+            if sys.platform == "win32":
+                window.setWindowFlags(window.windowFlags() | Qt.WindowStaysOnTopHint)
+                window.show()
+                window.setWindowFlags(window.windowFlags() & ~Qt.WindowStaysOnTopHint)
 
             window.closing.connect(
                 lambda: active_windows.remove(window)
