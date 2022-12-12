@@ -23,6 +23,8 @@ def handle_exception(exception: Exception) -> None:
 
     if exception_name in ignore_exception_list:
         pass
+    elif os.environ.get("DEBUG_MODE") == "true":
+        raise exception
     elif exception_name == "RequestException":
         console.print(
             "There was an error connecting to the API. Please try again later.",
@@ -34,8 +36,6 @@ def handle_exception(exception: Exception) -> None:
             + "Please check whether your wifi is blocking this site.",
             style="red",
         )
-    elif os.environ.get("DEBUG_MODE") == "true":
-        raise exception
     else:
         console.print("An unexpected error occurred.", style="red")
 
