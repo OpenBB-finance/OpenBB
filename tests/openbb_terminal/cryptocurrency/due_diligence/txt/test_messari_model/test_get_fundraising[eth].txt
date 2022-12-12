@@ -1,0 +1,9 @@
+Ethereum’s original token distribution event, managed by the <a href="https://messari.io/asset/ethereum">Ethereum Foundation</a>, sold roughly 60 million ethers (80% of the initial 72 million ETH supply) to the public. The sale took place between July 22, 2014, and September 02, 2014. However, the Ether purchased by crowdsale investors were not usable or transferable before the launch of the Genesis Block on July 31, 2015. The price of ether was initially set to a discounted price of 2000 ETH per BTC until August 05, 2019, before linearly declining to a final rate of 1337 ETH per BTC, reached on August 28, 2014. 
+3,700 BTC were raised in the first 12 hours of the sale 
+Over 25,000 BTC were raised in the first 2 weeks. 
+The sale eventually allowed the Ethereum Foundation to raise over 31,000 BTC, equivalent to $18.3 million. 
+
+The remaining 12 million ETH (20% of the initial supply) were allocated to the Foundation and early Ethereum contributors. Of the ether sent to the Foundation:
+3 million were allocated to a long-term endowment
+6 million were distributed among 85 developers who contributed prior to the crowdsale
+3 million were designed as a “developer purchase program” which gave Ethereum developers the right to purchase ether at crowdsale prices.

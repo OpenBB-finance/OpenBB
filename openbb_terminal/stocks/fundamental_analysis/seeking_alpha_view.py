@@ -36,6 +36,7 @@ def display_eps_estimates(symbol: str):
         console.print("No data found.")
         return
 
+
 @log_start_end(log=logger)
 def display_rev_estimates(symbol: str):
     """Display rev Estimates
