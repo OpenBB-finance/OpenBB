@@ -110,14 +110,14 @@ def run_qt_backend():
             kwargs["preexec_fn"] = os.setsid  # pylint: disable=no-member
             kwargs["shell"] = True
 
-        cmd_line = f"{sys.executable} {QT_PATH / 'app.py'}"
-        os.environ["PYTHONPATH"] = REPOSITORY_DIRECTORY.as_posix()
+        env = os.environ.copy()
+        env["PYTHONPATH"] = REPOSITORY_DIRECTORY.as_posix()
 
-        if "conda" in sys.executable:
-            cmd_line = f"{sys.executable} -c 'import sys; sys.path.append(\"{REPOSITORY_DIRECTORY.as_posix()}\"); from openbb_terminal.qt_app.app import main; main()'"
-            kwargs["shell"] = True
-
-        subprocess.Popen(cmd_line, **kwargs)
+        cmd_line = (
+            f'{sys.executable} -c "import sys; sys.path.append(\'{REPOSITORY_DIRECTORY.as_posix()}\'); '
+            f'from openbb_terminal.qt_app.app import main; main()"'
+        )
+        subprocess.Popen(cmd_line, **kwargs, env=env)
 
         return True
 

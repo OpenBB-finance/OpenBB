@@ -68,12 +68,12 @@ def _create_qApp() -> QApplication:
     return qApp
 
 
-if __name__ == "__main__":
+def main() -> None:
+    # pylint: disable=unused-variable
     _create_qApp()
     serverObject = QWebSocketServer("openbb", QWebSocketServer.NonSecureMode)
-    ws = BackendSocketServer(serverObject)
-    reports = ReportsFileSystemWatcher()
+    ws = BackendSocketServer(serverObject)  # noqa: F841
+    reports = ReportsFileSystemWatcher()  # noqa: F841
 
-    def main() -> None:
-        with _maybe_allow_interrupt(qApp):
-            sys.exit(qApp.exec())
+    with _maybe_allow_interrupt(qApp):
+        sys.exit(qApp.exec())
