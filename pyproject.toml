@@ -134,6 +134,7 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
+tweepy = "^4.12.1"
 
 [tool.poetry.extras]
 prediction = ["torch", "pytorch-lightning", "u8darts"]
