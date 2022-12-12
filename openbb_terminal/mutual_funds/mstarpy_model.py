@@ -93,7 +93,6 @@ def load_holdings(loaded_funds: mstarpy.Funds, holding_type: str = "all"):
 @log_start_end(log=logger)
 def search_funds(
     term: str = "",
-    field=["SecId", "TenforeId", "LegalName"],
     country: str = "",
     pageSize=10,
 ):
@@ -115,6 +114,7 @@ def search_funds(
     pd.DataFrame
         Dataframe containing matches
     """
+    field = ["SecId", "TenforeId", "LegalName"]
     try:
         return pd.DataFrame(
             mstarpy.search_funds(term, field, country=country, pageSize=pageSize)
