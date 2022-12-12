@@ -2401,14 +2401,11 @@ scipy = ">=0.13.2"
 
 [[package]]
 name = "packaging"
-version = "21.3"
+version = "22.0"
 description = "Core utilities for Python packages"
 category = "main"
 optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
+python-versions = ">=3.7"
 
 [[package]]
 name = "pandas"
@@ -4819,7 +4816,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "a026cc84ba407322256a009fb2017b188ec82cfad1a62c920c7ca06419fd3ca1"
+content-hash = "0b9e9863f2ad1c9dae3b1fdf18b7100603a989c1b0f1578a66d5ad95a46e6f9c"
 
 [metadata.files]
 absl-py = []
