@@ -19,14 +19,11 @@ try:
             "Follow instructions on creating a new conda environment with the latest "
             f"Darts version ({darts_latest}):"
         )
-        print(
-            "https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md"
-        )
+        print("https://docs.openbb.co/terminal/quickstart/installation")
 except ModuleNotFoundError:
     raise ModuleNotFoundError(
-        "Please install the forecast version of the terminal. Instructions "
-        "are here: https://github.com/OpenBB-finance/OpenBBTerminal/"
-        "blob/main/openbb_terminal/README.md#anaconda--python"
+        "Please install the forecast version of the terminal. Instructions can be found "
+        "under the python tab: https://docs.openbb.co/terminal/quickstart/installation"
     )
 
 import pandas as pd
@@ -3032,7 +3029,7 @@ class ForecastController(BaseController):
             "--layer_widths",
             dest="layer_widths",
             type=check_positive,
-            default=3,
+            default=512,
             help="The number of neurons in each layer",
         )
         parser.add_argument(
@@ -3056,7 +3053,7 @@ class ForecastController(BaseController):
             "--max_pool_1d",
             action="store_true",
             dest="maxpool1d",
-            default=False,
+            default=True,
             help="Whether to use max_pool_1d or AvgPool1d",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -3068,7 +3065,7 @@ class ForecastController(BaseController):
             target_dataset=True,
             n_days=True,
             force_reset=True,
-            model_save_name="tft_model",
+            model_save_name="nhits_model",
             train_split=True,
             dropout=0.1,
             input_chunk_length=True,

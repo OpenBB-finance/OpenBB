@@ -5,7 +5,6 @@ import logging
 import os
 import textwrap
 from typing import Optional, List, Tuple
-from datetime import datetime
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -186,7 +185,7 @@ def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame,
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def display_yield_curve(
-    date: datetime = None,
+    date: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
@@ -195,16 +194,18 @@ def display_yield_curve(
 
     Parameters
     ----------
-    date: datetime
-        Date to get yield curve for
-    external_axes: Optional[List[plt.Axes]]
-        External axes to plot data on
+    date: str
+        Date to get curve for. If None, gets most recent date (format yyyy-mm-dd)
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    raw : bool
+        Output only raw data
+    export : str
+        Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
-    rates, date_of_yield = fred_model.get_yield_curve(date)
+    rates, date_of_yield = fred_model.get_yield_curve(date, True)
     if rates.empty:
-        console.print(
-            f"[red]Yield data not found for {date_of_yield.strftime('%Y-%m-%d')}.[/red]\n"
-        )
+        console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
         return
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -218,7 +219,7 @@ def display_yield_curve(
     ax.set_ylabel("Rate (%)")
     theme.style_primary_axis(ax)
     if external_axes is None:
-        ax.set_title(f"US Yield Curve for {date_of_yield.strftime('%Y-%m-%d')} ")
+        ax.set_title(f"US Yield Curve for {date_of_yield} ")
         theme.visualize_output()
 
     if raw:
@@ -226,7 +227,7 @@ def display_yield_curve(
             rates,
             headers=list(rates.columns),
             show_index=False,
-            title=f"United States Yield Curve for {date_of_yield.strftime('%Y-%m-%d')}",
+            title=f"United States Yield Curve for {date_of_yield}",
             floatfmt=".3f",
         )
 

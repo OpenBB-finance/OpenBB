@@ -1434,38 +1434,30 @@ def get_insider_types() -> Dict:
 
 
 @log_start_end(log=logger)
-def get_print_insider_data(type_insider: str = "lcb", limit: int = 10):
+def get_print_insider_data(type_insider: str = "lcb"):
     """Print insider data
 
     Parameters
     ----------
     type_insider: str
         Insider type of data. Available types can be accessed through get_insider_types().
-    limit: int
-        Limit of data rows to display
 
     Returns
     -------
     data : pd.DataFrame
         Open insider filtered data
     """
-    response = requests.get(f"http://openinsider.com/{d_open_insider[type_insider]}")
-    soup = BeautifulSoup(response.text, "html.parser")
-    table = soup.find("table", {"class": "tinytable"})
-
-    if not table:
-        console.print("No insider information found", "\n")
+    response = requests.get(
+        f"http://openinsider.com/{d_open_insider[type_insider]}",
+        headers={"User-Agent": "Mozilla/5.0"},
+    )
+    df = (
+        pd.read_html(response.text)[-3]
+        .drop(columns=["1d", "1w", "1m", "6m"])
+        .fillna("-")
+    )
+    if df.empty:
         return pd.DataFrame()
-
-    table_rows = table.find_all("tr")
-
-    res = []
-    for tr in table_rows:
-        td = tr.find_all("td")
-        row = [tr.text.strip() for tr in td if tr.text.strip()]
-        res.append(row)
-
-    df = pd.DataFrame(res).dropna().head(n=limit)
     columns = [
         "X",
         "Filing Date",
@@ -1503,5 +1495,4 @@ def get_print_insider_data(type_insider: str = "lcb", limit: int = 10):
         df["Insider Name"] = df["Insider Name"].apply(
             lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
         )
-
     return df

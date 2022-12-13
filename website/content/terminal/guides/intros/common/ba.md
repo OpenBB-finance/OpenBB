@@ -47,7 +47,7 @@ The Behavioural Analysis menu offers the user tools for gauging the overall publ
 
 ### How to use
 
-The commands with text, representing <a href="https://openbb-finance.github.io/OpenBBTerminal/#structure-of-the-openbb-terminal" target="_blank" rel="noreferrer noopener">commands</a>, do not require a ticker, faded commands will turn light blue when there is a ticker loaded.
+The commands with text, representing <a href="https://docs.openbb.co/terminal/guides/basics" target="_blank" rel="noreferrer noopener">commands</a>, do not require a ticker, faded commands will turn light blue when there is a ticker loaded.
 
 ```
 (🦋) /stocks/ba/ $ load gme
@@ -73,11 +73,11 @@ Some data sources will require a valid API key, which can be obtained for free a
 - <a href="https://sentimentinvestor.com/" target="_blank" rel="noreferrer noopener">Sentiment
   Investor</a><br/>
 
-See the <a href="/terminal/quickstart/keys" target="_blank" rel="noreferrer noopener">Getting Started Guide</a> for help setting API keys in the Terminal.
+See the <a href="/terminal/guides/advanced/api-keys" target="_blank" rel="noreferrer noopener">Set API keys</a> for help with API keys in the Terminal.
 
 ### Examples
 
-As with every command, using the `-h` argument displays the help dialogue. Running the <a href="/terminal/reference/stocks/behavioural%20analysis/headlines/" target="_blank" rel="noreferrer noopener">headlines</a> command returns the following:
+As with every command, using the `-h` argument displays the help dialogue. Running the <a href="/terminal/reference/stocks/ba/headlines/" target="_blank" rel="noreferrer noopener">headlines</a> command returns the following:
 
 ```
 (🦋) /stocks/ba/ $ headlines
@@ -85,7 +85,7 @@ As with every command, using the `-h` argument displays the help dialogue. Runni
 
 <img alt="headlines" src="https://user-images.githubusercontent.com/46355364/170244924-ffe6cd15-8d17-4690-bf44-d2b496dbc310.png"></img>
 
-Alternatively, running the <a href="/terminal/reference/stocks/behavioural%20analysis/snews/" target="_blank" rel="noreferrer noopener">snews</a> command returns the following:
+Alternatively, running the <a href="/terminal/reference/stocks/ba/snews/" target="_blank" rel="noreferrer noopener">snews</a> command returns the following:
 
 ```
 (🦋) /stocks/ba/ $ snews
@@ -125,7 +125,7 @@ Reddit Submission
 |                |                 |       |            |          | 1 Sne            |
 ```
 
-The Behavioural Analysis menu also has the ability to scan for sentiment on multiple platforms including Twitter and Google with <a href="/terminal/reference/stocks/behavioural%20analysis/sentiment/" target="_blank" rel="noreferrer noopener">sentiment</a>, <a href="/terminal/reference/stocks/behavioural%20analysis/infer/" target="_blank" rel="noreferrer noopener">infer</a> and <a href="/terminal/reference/stocks/behavioural%20analysis/queries/" target="_blank" rel="noreferrer noopener">queries</a>.
+The Behavioural Analysis menu also has the ability to scan for sentiment on multiple platforms including Twitter and Google with <a href="/terminal/reference/stocks/ba/sentiment/" target="_blank" rel="noreferrer noopener">sentiment</a>, <a href="/terminal/reference/stocks/ba/infer/" target="_blank" rel="noreferrer noopener">infer</a> and <a href="/terminal/reference/stocks/ba/queries/" target="_blank" rel="noreferrer noopener">queries</a>.
 
 ```
 (🦋) /stocks/ba/ $ sentiment -c
@@ -165,14 +165,14 @@ Of the last 100 tweets, 19.00 % had a higher negative sentiment
 | bb              | 5%    |
 ```
 
-The <a href="/terminal/reference/stocks/behavioural%20analysis/sentiment/" target="_blank" rel="noreferrer noopener">sentiment</a> command returns the following:
+The <a href="/terminal/reference/stocks/ba/sentiment/" target="_blank" rel="noreferrer noopener">sentiment</a> command returns the following:
 
 <img alt="sentiment" src="https://user-images.githubusercontent.com/46355364/170243539-1ea3fc6a-d7ec-4991-a6bb-ed5879753328.png"></img>
 
-More advanced techniques can also be applied by using tools from <a href="https://sentimentinvestor.com" target="_blank" rel="noreferrer noopener">Sentiment Investor</a> that analyzes millions of messages to show the most talked about stocks by hour. This has the ability to show the most trending tickers with <a href="/terminal/reference/stocks/behavioural%20analysis/trend/" target="_blank" rel="noreferrer noopener">trend</a> and historical sentiment data with <a href="/terminal/reference/stocks/behavioural%20analysis/hist/" target="_blank" rel="noreferrer noopener">hist</a>.
+More advanced techniques can also be applied by using tools from <a href="https://sentimentinvestor.com" target="_blank" rel="noreferrer noopener">Sentiment Investor</a> that analyzes millions of messages to show the most talked about stocks by hour. This has the ability to show the most trending tickers with <a href="/terminal/reference/stocks/ba/trending/" target="_blank" rel="noreferrer noopener">trending</a>.
 
 ```
-(🦋) /stocks/ba/ $ trend
+(🦋) /stocks/ba/ $ trending
 
 Most trending stocks at 2022-05-23 00:00
 
@@ -188,12 +188,7 @@ Most trending stocks at 2022-05-23 00:00
 | NVAX   | 13.00 | 4.00   | 0.47 | 0.40 |
 | NVDA   | 12.00 | 11.00  | 0.45 | 0.47 |
 | DIS    | 12.00 | 1.00   | 0.69 | 0.44 |
-
-
-(🦋) /stocks/ba/ $ hist -s 2022-05-01
 ```
-
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170243719-fccf414b-3a89-4776-88de-e30f4eb34f89.png"><img alt="hist" src="https://user-images.githubusercontent.com/46355364/170243719-fccf414b-3a89-4776-88de-e30f4eb34f89.png"></img></a>
 
 Inspired by the Twitter user, <a href="https://twitter.com/CramerTracker" target="_blank" rel="noreferrer noopener">@cramertracker</a>, the final two features follow (CNBC Talking Head) Jim Cramer stock recommendations as satire that rings true.
 

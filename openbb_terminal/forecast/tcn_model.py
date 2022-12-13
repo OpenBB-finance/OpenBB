@@ -12,6 +12,7 @@ from darts import TimeSeries
 from darts.models import TCNModel
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
+from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 
 logger = logging.getLogger(__name__)
 
@@ -27,12 +28,12 @@ def get_tcn_data(
     input_chunk_length: int = 14,
     output_chunk_length: int = 5,
     dropout: float = 0.1,
-    num_filters: int = 6,
+    num_filters: int = 3,
     weight_norm: bool = True,
     dilation_base: int = 2,
-    n_epochs: int = 100,
+    n_epochs: int = 300,
     learning_rate: float = 1e-3,
-    batch_size: int = 800,
+    batch_size: int = 32,
     model_save_name: str = "tcn_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
@@ -95,7 +96,6 @@ def get_tcn_data(
         Mean average precision error,
         Best TCN Model.
     """
-
     # TODO Check if torch GPU AVAILABLE
 
     use_scalers = True
@@ -133,6 +133,8 @@ def get_tcn_data(
         save_checkpoints=save_checkpoints,
         random_state=42,
         pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator="cpu"),
+        log_tensorboard=True,
+        work_dir=USER_FORECAST_MODELS_DIRECTORY,
     )
 
     # fit model on train series for historical forecasting
@@ -145,7 +147,11 @@ def get_tcn_data(
             past_covariate_train,
             past_covariate_val,
         )
-    best_model = TCNModel.load_from_checkpoint(model_name=model_save_name, best=True)
+    best_model = TCNModel.load_from_checkpoint(
+        model_name=model_save_name, best=True, work_dir=USER_FORECAST_MODELS_DIRECTORY
+    )
+
+    helpers.print_tensorboard_logs(model_save_name, USER_FORECAST_MODELS_DIRECTORY)
 
     # Showing historical backtesting without retraining model (too slow)
     return helpers.get_prediction(

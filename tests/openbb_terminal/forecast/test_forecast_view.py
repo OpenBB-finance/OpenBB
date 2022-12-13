@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import pandas as pd
 import pytest
 
@@ -22,32 +23,30 @@ def test_show_options(tsla_csv, capsys):
 
 def test_display_plot(tsla_csv, mocker):
     mock = mocker.patch(base + "theme.visualize_output")
-    fv.display_plot(tsla_csv, "close")
+    fv.display_plot(tsla_csv, ["close"])
     mock.assert_called_once()
 
 
-def test_display_plot_multiindex(tsla_csv, mocker, capsys):
+def test_display_plot_multiindex(tsla_csv, mocker):
     mock = mocker.patch(base + "theme.visualize_output")
     tuples = [("1", x) for x in tsla_csv.index]
     index = pd.MultiIndex.from_tuples(tuples, names=["first", "second"])
     tsla_csv.index = index
-    fv.display_plot(tsla_csv, "close")
-    captured = capsys.readouterr()
-    assert "multi-index" in captured.out
-    mock.assert_not_called()
+    fv.display_plot(tsla_csv, ["close"])
+    mock.assert_called_once()
 
 
 def test_display_plot_external_axes(tsla_csv, mocker):
     mock1 = mocker.Mock()
     mock = mocker.patch(base + "theme.visualize_output")
-    fv.display_plot(tsla_csv, "close", external_axes=[mock1])
+    fv.display_plot(tsla_csv, ["close"], external_axes=[mock1])
     mock.assert_not_called()
 
 
 def test_display_plot_series(tsla_csv, mocker):
     mock1 = mocker.Mock()
     mock = mocker.patch(base + "theme.visualize_output")
-    fv.display_plot(tsla_csv, "close", external_axes=[mock1])
+    fv.display_plot(tsla_csv, ["close"], external_axes=[mock1])
     mock.assert_not_called()
 
 
@@ -65,9 +64,9 @@ def test_display_seasonality(tsla_csv, mocker):
 
 
 def test_display_corr_external_axes(tsla_csv, mocker):
-    mock1 = mocker.Mock()
+    _, ax = plt.subplots(dpi=20)
     mock = mocker.patch(base + "theme.visualize_output")
-    fv.display_corr(tsla_csv, external_axes=[mock1])
+    fv.display_corr(tsla_csv, external_axes=[ax])
     mock.assert_not_called()
 
 
