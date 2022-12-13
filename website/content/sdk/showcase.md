@@ -20,6 +20,28 @@ url="https://cryptodash.deno.dev">
 src="https://cryptodash.deno.dev/" title="Cryptodash"></iframe>
 </ShowcaseItem>
 
+<ShowcaseItem
+categories={['Commodities', 'Economy', 'Crypto', 'Stocks']}
+title="OpenBB Streamlit"
+description="Dashboard built using streamlit"
+url="https://openbb.streamlit.app/">
+
+<iframe style={{height: 400}} className="w-full rounded"
+src="https://openbb.streamlit.app/?embedded=true" title="OpenBB Streamlit"></iframe>
+</ShowcaseItem>
+
+<ShowcaseItem
+categories={['Economy', 'ETF', 'Stocks']}
+title="OpenBB Streamlit"
+description="Dashboard built using streamlit"
+url="https://github.com/kulbinderdio/streamlit_openBB">
+
+<video style={{height: 400}} className="w-full rounded" controls>
+  <source src="https://user-images.githubusercontent.com/4700433/205459912-9c9a10ac-50ce-42e3-8bf1-ad2e5a64b2a1.mp4" type="video/mp4" />
+Your browser does not support the video tag.
+</video>
+</ShowcaseItem>
+
 ---
 
 :::tip
