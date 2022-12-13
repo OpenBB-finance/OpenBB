@@ -12,7 +12,8 @@
       "open": ["Bursa"],
       "closed": ["Bursa"],
       "all": ["Bursa"],
-      "exchange": ["Bursa"]
+      "exchange": ["Bursa"],
+      "holidays":["PandasMarketCalendars"]
     },
     "options": {
       "unu": ["FDScanner"],
