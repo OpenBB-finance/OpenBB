@@ -14,14 +14,7 @@ from PySide6.QtWebEngineCore import (
     QWebEngineUrlRequestInterceptor,
 )
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (
-    QFileDialog,
-    QMainWindow,
-    QMessageBox,
-    QSizePolicy,
-    QVBoxLayout,
-    QWidget,
-)
+from PySide6.QtWidgets import QFileDialog, QMainWindow, QMessageBox, QWidget
 
 from openbb_terminal.core.config.paths import USER_REPORTS_DIRECTORY
 from openbb_terminal.qt_app.config.qt_settings import ICON_PATH, WEB_ENGINE_SETTINGS
@@ -96,10 +89,7 @@ class ReportsWebView(QWebEngineView):
         for attribute in WEB_ENGINE_SETTINGS:
             self.settings().setAttribute(*attribute)
 
-        self.setContextMenuPolicy(Qt.NoContextMenu)
         self.setMinimumSize(600, 400)
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.setAcceptDrops(False)
 
         # We set up the request interceptor to make sure links are opened in the default browser
         self.interceptor = OpenBBRequestInterceptor(self)
@@ -156,9 +146,6 @@ class ReportsWidget(QWidget):
     def __init__(self, parent: "ReportsWindow" = None):
         super().__init__(parent)
         self._view = ReportsWebView(self)
-        self._layout = QVBoxLayout(self)
-        self._layout.addWidget(self._view)
-        self._layout.setContentsMargins(0, 0, 0, 0)
         self.show()
 
     def closeEvent(self, event):
@@ -170,13 +157,15 @@ class ReportsWidget(QWidget):
 class ReportsWindow(QMainWindow):
     closing = Signal()
 
-    def __init__(self, parent=None):
+    def __init__(self, parent: QMainWindow = None):
         super().__init__(parent)
         self._widget = ReportsWidget(self)
         self.setWindowTitle("OpenBB Reports")
         self.setWindowIcon(QIcon(str(ICON_PATH)))
         self.setCentralWidget(self._widget._view)
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.NoContextMenu)
         self._view = self._widget._view
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
         # We resize the window to 80% of the screen size
         screen = QGuiApplication.primaryScreen().availableGeometry()
@@ -188,6 +177,7 @@ class ReportsWindow(QMainWindow):
     def _on_new_report(self, report_path: str):
         """Open the most recent report in the webview"""
         self._view.load(QUrl.fromLocalFile(report_path))
+        self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
         self.show()
 
     def closeEvent(self, event):
