@@ -454,7 +454,7 @@ def get_pl_kwargs(
     pl_trainer_kwargs = {
         "callbacks": [my_stopper],
         "accelerator": accelerator,
-        "logger": False,
+        # "logger": False,
         # "enable_progress_bar": False,
         "enable_model_summary": False,
     }
@@ -980,3 +980,13 @@ def check_dates(s: pd.Series) -> bool:
         except AttributeError:
             return False
     return True
+
+
+def print_tensorboard_logs(model_save_name: str, user_directory: str):
+    console.print()
+    tensorboard_logs_dir = os.path.join(user_directory, model_save_name, "logs")
+    console.print(
+        "This model supports Tensorboard logs. To view, open a new terminal windown and run:"
+    )
+    console.print("tensorboard --logdir=" + tensorboard_logs_dir)
+    console.print()
