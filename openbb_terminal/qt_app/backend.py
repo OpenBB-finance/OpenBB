@@ -77,8 +77,8 @@ def run_qt_backend():
 
     qt_backend_pid = get_qt_backend_pid()
     cmd_line = (
-        f'import sys; sys.path.append(\'{REPOSITORY_DIRECTORY.as_posix()}\'); '
-        f'from openbb_terminal.qt_app.app import main; main()'
+        f"import sys; sys.path.append('{REPOSITORY_DIRECTORY.as_posix()}'); "
+        f"from openbb_terminal.qt_app.app import main; main()"
     )
 
     def is_running(process_name):
