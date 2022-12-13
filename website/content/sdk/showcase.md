@@ -12,28 +12,28 @@ This page contains a list of projects that use the OpenBB SDK. If you have a pro
 
 <ShowcaseItem
 categories={['Crypto', 'NFTs']}
-title="AI1 Crypto"
-description="AI1 Crypto is a cryptocurrency dashboard that allows you get an overview of the current state of the cryptocurrency market."
-url="https://ai1crypto.vercel.app/">
+title="Cryptodash"
+description="Cryptodash is a cryptocurrency dashboard that allows you get an overview of the current state of the cryptocurrency market."
+url="https://cryptodash.deno.dev">
 
 <iframe style={{height: 400}} className="w-full rounded"
-src="https://ai1crypto.vercel.app/" title="AI1 Crypto"></iframe>
+src="https://cryptodash.deno.dev/" title="Cryptodash"></iframe>
 </ShowcaseItem>
 
 <ShowcaseItem
 categories={['Commodities', 'Economy', 'Crypto', 'Stocks']}
-title="OpenBB Streamlit"
-description="Dashboard built using streamlit"
+title="DirtyDefi’s Streamlit Dashboard"
+description="A dashboard built with information from OpenBB by Joseph B, also known as DirtyDefi."
 url="https://openbb.streamlit.app/">
 
 <iframe style={{height: 400}} className="w-full rounded"
-src="https://openbb.streamlit.app/?embedded=true" title="OpenBB Streamlit"></iframe>
+src="https://openbb.streamlit.app/?embedded=true" title="DirtyDefi’s Streamlit Dashboard"></iframe>
 </ShowcaseItem>
 
 <ShowcaseItem
 categories={['Economy', 'ETF', 'Stocks']}
-title="OpenBB Streamlit"
-description="Dashboard built using streamlit"
+title="Kulbinderdio’s Streamlit Dashboard"
+description="A dashboard built with information from OpenBB by Kulbinderdio."
 url="https://github.com/kulbinderdio/streamlit_openBB">
 
 <video style={{height: 400}} className="w-full rounded" controls>
