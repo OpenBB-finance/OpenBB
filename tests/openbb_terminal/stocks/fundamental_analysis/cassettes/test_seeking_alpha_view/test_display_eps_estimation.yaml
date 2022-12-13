@@ -1,0 +1,189 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Accept-Language:
+      - de,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Referer:
+      - https://seekingalpha.com/
+      Sec-Fetch-Dest:
+      - empty
+      Sec-Fetch-Mode:
+      - cors
+      Sec-Fetch-Site:
+      - same-origin
+      TE:
+      - trailers
+      User-Agent:
+      - Mozilla/5.0 (X11; Linux x86_64; rv:106.0) Gecko/20100101 Firefox/106.0
+    method: GET
+    uri: https://seekingalpha.com/api/v3/searches?filter%5Btype%5D=symbols&filter%5Blist%5D=all&page%5Bsize%5D=1&filter%5Bquery%5D=JNJ
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWKq7MTcrPKVayiq5WykxRsjI0NDbVUcpLzE1VslLy8vNS0lEqzilNB3Ky8rKA
+        nOT8vJLUvBKQZH5GXnF+noKaApQFlE2tSM5IzEsH6fWLDHYFqS8tKkrNS64EioQGuwAFMovjC0sT
+        80riixJLUkEW1sbWAgDS1n6yhwAAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '2042'
+      Allow:
+      - GET, POST, HEAD, PUT, PATCH, DELETE, OPTIONS
+      Cache-Control:
+      - max-age=3600, public
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '136'
+      Content-Security-Policy:
+      - 'default-src https: wss: data: blob: ''unsafe-inline'' ''unsafe-eval''; report-uri
+        https://seekingalpha.com/report/csp'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 13 Nov 2022 19:45:18 GMT
+      ETag:
+      - W/"cc200d9e38b2d26b2fffbef87ce15226"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains; preload
+      Vary:
+      - User-Agent, Accept-Encoding
+      X-Cache:
+      - MISS, HIT
+      X-Cache-Hits:
+      - 0, 1
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 56yPeC8_nt_3HfZ8
+      X-Runtime:
+      - '0.006611'
+      X-Served-By:
+      - cache-bfi-krnt7300038-BFI, cache-vie6328-VIE
+      X-Timer:
+      - S1668368719.580650,VS0,VE1
+      X-XSS-Protection:
+      - 1; mode=block
+      set-cookie:
+      - machine_cookie=9030003503847; expires=Sat, 13 Nov 2027 19:45:18 GMT; path=/;
+      - machine_cookie_ts=1668368718; expires=Sat, 13 Nov 2027 19:45:18 GMT; path=/;
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Accept-Language:
+      - de,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Sec-Fetch-Dest:
+      - empty
+      Sec-Fetch-Mode:
+      - cors
+      Sec-Fetch-Site:
+      - same-origin
+      User-Agent:
+      - Mozilla/5.0 (X11; Linux x86_64; rv:106.0) Gecko/20100101 Firefox/106.0
+    method: GET
+    uri: https://seekingalpha.com/api/v3/symbol_data/estimates?estimates_data_items=eps_normalized_actual%2Ceps_normalized_consensus_low%2Ceps_normalized_consensus_mean%2Ceps_normalized_consensus_high%2Ceps_normalized_num_of_estimates&period_type=annual&relative_periods=-3%2C-2%2C-1%2C0%2C1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10%2C11&ticker_ids=1135
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2a4W6bMBCA34XfwfLZYLCfg3/TFKHEWZEI6QLJ1FV5951Lu7WNkxrpVtUoUqUW
+        dCrcx3H3xfFjsrfHpm92XZ+Yx9Misf3QbOvBusMEQObut73vl91uv63b5rddL7vDdrnbLN+EqsR8
+        w8DNxq6G5mjX+C8SkwguRAqQcqhAmkwYmTHOecozw3mySDCsbga7PdbtwcUDc2fv7b7Zrd2Fx7+G
+        h3vb4HFSd92hbjFi0/Sruv15qPeD3ScmeznzYGs8xKsWiwQDbLeu96+jXs69jhuvgaH/7rlIQaQS
+        Ks7xNvFnvOd8vOd6fay71XOG3aFtT6fvi6T4WvmXgfljnCf/cnr+WCcfPH9l8sJkxdXnr6ievwrM
+        H+M8+avp+cvr+YuKa8MLA/pq/iCoAOArEfQCYJwHQDYdQHYdADaATy2APDB/jPPkn0/PXwTkD7kR
+        8noBYH3QdEAZCADjPADkdADwxQCIQAAY5wGAY2vqCOCXAXBIRVYBNwDvx8nZCMQOSVMBEAgA4zwA
+        IBjAOOVdinmF+Qk3J19NzKfxmF6sDicHqeAVL41EPs/z4XnWnsEpqeDwQDgY54HDJ8EZU1QODiqQ
+        B87F3oGmhHCwd2qD/vRORP4bHNBhcFzcORzQk+CMKQoHB5+/B86lyYrXQThQVjhW0dIEuqMzy0uV
+        Q9VYIVCtXJwHTrha4Ws1piie4GTncJyuvzXzFXq87fpDv2x3v5xAE2k5ZyXQNKVYxRyYLGgIBNaP
+        8NaPCK+fvx9NaNQcOJOahkCkcq6ZzmgARCrnWAIgaQhEqueaZUTvQKx6jmYnaEogUj/XTBGVwAz9
+        vGAqp6mOGfp5yRTNqzNHPy9xtJQ5jWRGouh3zY+7m6MTLp7fHB2Xj0ua/hupowMwmh4rYnV0YErR
+        lECkjo4lQDNGRLyOTgQgWkUviZrADBUdV9CJ+sMsFb2g+fwyU0WnkYtI/Hxr6+7m5zc/dwSI1tCB
+        5SAl0RpqrIrOWaFVTjSE4tV0IHKUWDUdv09SqiAy1XhVnWdZSTNWRbS6XpS6pPEuMUNjL5guJNX3
+        77OUdqU00LxDM/V2RbR54Uube70a3O5w3PXywU487za1883omtHUVFQ9ybtL7ZwNriIQWWxMDcm7
+        S80HR9FUTkzdyL9LzQeHqlUHbqT6jI14p9PpD2wJzVtKMwAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '1956'
+      Allow:
+      - GET, POST, HEAD, PUT, PATCH, DELETE, OPTIONS
+      Cache-Control:
+      - max-age=60, public
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '891'
+      Content-Security-Policy:
+      - 'default-src https: wss: data: blob: ''unsafe-inline'' ''unsafe-eval''; report-uri
+        https://seekingalpha.com/report/csp'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 13 Nov 2022 19:45:18 GMT
+      ETag:
+      - W/"fa3611a593042edf6a005a94c3df2e84"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains; preload
+      Vary:
+      - User-Agent, Accept-Encoding
+      X-Cache:
+      - MISS, HIT
+      X-Cache-Hits:
+      - 0, 1
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - DHRGVFfYyLSA9Aph
+      X-Runtime:
+      - '0.563933'
+      X-Served-By:
+      - cache-bfi-krnt7300119-BFI, cache-vie6383-VIE
+      X-Timer:
+      - S1668368719.647015,VS0,VE1
+      X-XSS-Protection:
+      - 1; mode=block
+      set-cookie:
+      - machine_cookie=2152441849684; expires=Sat, 13 Nov 2027 19:45:18 GMT; path=/;
+      - machine_cookie_ts=1668368718; expires=Sat, 13 Nov 2027 19:45:18 GMT; path=/;
+    status:
+      code: 200
+      message: OK
+version: 1
