@@ -535,6 +535,8 @@ def get_financial_growth(
             )
 
         df_fa = clean_metrics_df(df_fa, num=limit)
+
+        df_fa = df_fa[df_fa.columns[::-1]]
     # Invalid API Keys
     except ValueError as e:
         console.print(e)

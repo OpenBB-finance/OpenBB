@@ -127,7 +127,7 @@ def display_chains(
         title = "Call " if calls_only else "Put "
         print_rich_table(
             option_chains,
-            title=title + "Option Chain (15 min delayed) (Greeks calculated by OpenBB)",
+            title=f"{symbol} {title} Option Chain\nYahoo (15 min delayed)",
             floatfmt=[
                 ".2f",
                 ".2f",
@@ -223,9 +223,10 @@ def display_chains(
 
     print_rich_table(
         option_chains,
-        title=f"Yahoo Option Chain (15 min delayed) for {expiry} (Greeks calculated by OpenBB)",
+        title=f"{symbol} Option Chain for {expiry}\nYahoo (15 min delayed)",
         headers=[header_fmt(x) for x in option_chains.columns],
     )
+    console.print("Greeks calculated by OpenBB")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -942,7 +943,10 @@ def show_parity(
         show,
         headers=[x.title() for x in show.columns],
         show_index=False,
-        title="Warning: Low volume options may be difficult to trade.",
+        title=f"{symbol} Parity",
+    )
+    console.print(
+        "[yellow]Warning: Low volume options may be difficult to trade.[/yellow]"
     )
 
     export_data(
@@ -1289,7 +1293,7 @@ def show_greeks(
         df,
         headers=list(df.columns),
         show_index=False,
-        title="Greeks",
+        title=f"{symbol} Greeks",
         floatfmt=column_formatting,
     )
 
