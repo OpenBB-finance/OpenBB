@@ -14,7 +14,7 @@ from darts.utils.likelihood_models import QuantileRegression
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
-
+from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 
 warnings.simplefilter("ignore", ConvergenceWarning)
 
@@ -172,6 +172,8 @@ def get_tft_data(
             quantiles=quantiles
         ),  # QuantileRegression is set per default
         add_relative_index=True,  # TODO There is a bug with this. Must fix. Should be false
+        log_tensorboard=True,
+        work_dir=USER_FORECAST_MODELS_DIRECTORY,
     )
 
     # fit model on train series for historical forecasting
@@ -184,7 +186,11 @@ def get_tft_data(
             past_covariate_train,
             past_covariate_val,
         )
-    best_model = TFTModel.load_from_checkpoint(model_name=model_save_name, best=True)
+    best_model = TFTModel.load_from_checkpoint(
+        model_name=model_save_name, best=True, work_dir=USER_FORECAST_MODELS_DIRECTORY
+    )
+
+    helpers.print_tensorboard_logs(model_save_name, USER_FORECAST_MODELS_DIRECTORY)
 
     # Showing historical backtesting without retraining model (too slow)
     return helpers.get_prediction(
