@@ -126,15 +126,20 @@ TOOLBAR_TWEET_NEWS = load_env_vars(
     "OPENBB_TOOLBAR_TWEET_NEWS", strtobool, True, "featflags"
 )
 
+# Toolbar Twitter news seconds between updates being checked
 TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES = load_env_vars(
     "OPENBB_TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES", int, 300, "settings"
 )
+
+# Toolbar Twitter news accounts to track
 TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK = load_env_vars(
     "OPENBB_TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK",
     str,
     "WatcherGuru,unusual_whales,gurgavin,CBSNews",
     "settings",
 )
+
+# Toolbar Twitter news number of last tweets to read
 TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ = load_env_vars(
     "OPENBB_TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ", int, 3, "settings"
 )
@@ -166,7 +171,7 @@ try:
     else:
         raise Exception("Using git")
 except Exception:
-    version = "2.0.0"
+    version = "2.0.1"
 VERSION = str(os.getenv("OPENBB_VERSION", version))
 
 # Select the terminal translation language
