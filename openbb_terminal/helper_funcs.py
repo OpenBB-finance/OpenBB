@@ -54,7 +54,8 @@ try:
     twitter_api = tweepy.API(
         tweepy.OAuth2BearerHandler(
             cfg.API_TWITTER_BEARER_TOKEN,
-        )
+        ),
+        timeout=5,
     )
     # A test to ensure that the Twitter API key is correct,
     # otherwise we disable the Toolbar with Tweet News
