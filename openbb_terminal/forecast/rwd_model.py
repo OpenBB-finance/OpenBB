@@ -1,4 +1,4 @@
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments,E1101
 """Random Walk with Drift Model"""
 __docformat__ = "numpy"
 

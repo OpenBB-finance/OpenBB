@@ -393,7 +393,7 @@ If you are using other python distributions we highly recommend that you use som
 Requirements files that you can find in the project root:
 
 - `requirements.txt` list all the dependencies without Machine Learning libraries
-- `requirements-full.txt` list all the dependencies without Machine Learning libraries
+- `requirements-full.txt` list all the dependencies with Machine Learning libraries
 
 You can install them with with pip
 

@@ -1,4 +1,4 @@
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments,E1101
 """Automatic Comples Exponential Smoothing Model"""
 __docformat__ = "numpy"
 
