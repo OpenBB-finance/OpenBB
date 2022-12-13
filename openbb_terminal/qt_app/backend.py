@@ -9,7 +9,7 @@ import sys
 import threading
 import time
 from pathlib import Path
-from typing import List, Union
+from typing import Any, Dict, List, Union
 
 import plotly.graph_objects as go
 import psutil
@@ -102,7 +102,11 @@ def run_qt_backend():
 
     if not is_running(cmd_line):
         # if the qt_backend is not running, we run it in a subprocess
-        kwargs = {"stdin": subprocess.PIPE}
+        kwargs = {
+            "stdin": subprocess.PIPE,
+            "stdout": subprocess.PIPE,
+            "stderr": subprocess.PIPE,
+        }
 
         # if the DEBUG env variable is set to True
         # we don't want to hide the output of the subprocess
@@ -136,8 +140,7 @@ class QtBackend:
 
     def __init__(self, max_retries: int = 5):
         self.socket_port: Union[int, None] = None
-        self.figures: List[go.Figure] = []
-        self.dashboard: List[str] = []
+        self.outgoing_queue: List[Dict[str, Any]] = []
         self.thread = None
         self.init_engine = ["init"]
         self.max_retries = max_retries
@@ -165,22 +168,16 @@ class QtBackend:
                     self.init_engine = []
 
                 while True:
-                    if self.figures:
-                        data = json.dumps({"plotly": self.figures.pop(0).to_json()})
+                    if self.outgoing_queue:
+                        data = json.dumps(self.outgoing_queue.pop(0))
 
                         # Just in case the user still had windows open from a previous
                         # terminal session and closed them after starting a new session
                         # [ at terminal close we set backend to quit after last window is closed ]
-                        # we append the fig json to the init_engine so that if the send fails, the engine will
-                        # still have the fig data to display at the next connection
+                        # we append the data to the init_engine so that if the send fails, the engine will
+                        # still have the data to display at the next connection
                         self.init_engine.append(data)
 
-                        await websocket.send(data)
-                        self.init_engine = ["init"]
-
-                    if self.dashboard:
-                        data = json.dumps({"dashboard": self.dashboard.pop(0)})
-                        self.init_engine.append(data)
                         await websocket.send(data)
                         self.init_engine.remove(data)
 
@@ -213,14 +210,26 @@ class QtBackend:
             asyncio.run(asyncio.sleep(8))
 
     def send_fig(self, fig: go.Figure):
-        """Send figure to qt_backend."""
+        """Send figure to qt_backend.
+
+        Parameters
+        ----------
+        fig : go.Figure
+            Plotly figure to send to qt_backend.
+        """
         self.check_backend()
-        self.figures.append(fig)
+        self.outgoing_queue.append({"plotly": fig.to_json()})
 
     def send_dashboard(self, dashboard: Union[Path, str]):
-        """Send dashboard to qt_backend."""
+        """Send dashboard to qt_backend.
+
+        Parameters
+        ----------
+        dashboard : Union[Path, str]
+            Path to the dashboard file.
+        """
         self.check_backend()
-        self.dashboard.append(str(dashboard))
+        self.outgoing_queue.append({"dashboard": str(dashboard)})
 
     def check_backend(self):
         """Check if the backend is running."""
