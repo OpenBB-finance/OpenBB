@@ -7,12 +7,11 @@ except ImportError:
 
 
 def test_display_autoselect_forecast(tsla_csv):
-    with pytest.raises(AttributeError):
-        autoselect_view.display_autoselect_forecast(
-            tsla_csv,
-            target_column="close",
-            seasonal_periods=3,
-            n_predict=1,
-            start_window=0.5,
-            forecast_horizon=1,
-        )
+    autoselect_view.display_autoselect_forecast(
+        tsla_csv,
+        target_column="close",
+        seasonal_periods=3,
+        n_predict=1,
+        start_window=0.5,
+        forecast_horizon=1,
+    )

@@ -573,37 +573,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         #     dict(country="portugal", export="csv", raw=False),
         # ),
         (
-            "call_spread",
-            [
-                "--countries=United states, United Kingdom, France",
-                "--export=csv",
-            ],
-            "investingcom_view.display_spread_matrix",
-            [],
-            dict(
-                countries=["united states", "united kingdom", "france"],
-                maturity="10Y",
-                change=False,
-                color="openbb",
-                raw=False,
-                export="csv",
-            ),
-        ),
-        (
-            "call_spread",
-            ["--group=EZ", "--color=binary", "--maturity=5Y", "--change=True"],
-            "investingcom_view.display_spread_matrix",
-            [],
-            dict(
-                countries="EZ",
-                maturity="5Y",
-                change=True,
-                color="binary",
-                raw=False,
-                export="",
-            ),
-        ),
-        (
             "call_events",
             [
                 "--export=csv",

@@ -34,7 +34,7 @@ DISABLE_OPTIMIZATION_WARNING = load_env_vars(
     "OPENBB_DISABLE_OPTIMIZATION_WARNING", strtobool, False
 )
 try:
-    import riskfolio  # pylint: disable=W0611 # noqa: F401
+    # import riskfolio  # pylint: disable=W0611 # noqa: F401
 
     OPTIMIZATION_TOOLKIT_ENABLED = True
 except ModuleNotFoundError:

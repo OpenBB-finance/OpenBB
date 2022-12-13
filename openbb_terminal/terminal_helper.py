@@ -9,7 +9,7 @@ import logging
 import os
 import subprocess  # nosec
 import sys
-from typing import List, Union
+from typing import List
 from packaging import version
 
 # IMPORTATION THIRDPARTY
@@ -126,16 +126,16 @@ def open_openbb_documentation(
         path = "/"
         command = ""
     elif "keys" in path:
-        path = "/guides/basics/keys"
+        path = "/guides/advanced/api-keys"
         command = ""
     elif "settings" in path:
-        path = "/guides/basics/customizing_the_terminal"
+        path = "/guides/advanced/customizing-the-terminal"
         command = ""
     elif "featflags" in path:
-        path = "/guides/basics/customizing_the_terminal"
+        path = "/guides/advanced/customizing-the-terminal"
         command = ""
     elif "sources" in path:
-        path = "/guides/advanced/changing_sources"
+        path = "/guides/advanced/changing-sources"
         command = ""
     else:
         if arg_type == "command":  # user passed a command name
@@ -158,22 +158,16 @@ def open_openbb_documentation(
 
     if command:
         if "keys" == command:
-            path = "/guides/basics/keys"
+            path = "/guides/advanced/api-keys"
             command = ""
-        elif "settings" in path:
-            path = "/guides/basics/customizing_the_terminal"
-            command = ""
-        elif "featflags" in path:
-            path = "/guides/basics/customizing_the_terminal"
+        elif "settings" in path or "featflags" in path:
+            path = "/guides/advanced/customizing-the-terminal"
             command = ""
         elif "sources" in path:
-            path = "/guides/advanced/changing_sources"
+            path = "/guides/advanced/changing-sources"
             command = ""
         elif "exe" == command:
-            path = "/quickstart/scripts"
-            command = ""
-        elif command in ["settings", "featflags", "sources"]:
-            path = ""
+            path = "/guides/advanced/scripts-and-routines"
             command = ""
         elif command in ["ta", "ba", "qa"]:
             path = f"/guides/intros/common/{command}"
@@ -286,8 +280,8 @@ def check_for_updates() -> None:
 
 
 def check_valid_versions(
-    latest_version: Union[version.LegacyVersion, version.Version],
-    current_version: Union[version.LegacyVersion, version.Version],
+    latest_version: version.Version,
+    current_version: version.Version,
 ) -> bool:
     if (
         not latest_version
