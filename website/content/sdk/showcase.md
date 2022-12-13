@@ -12,12 +12,12 @@ This page contains a list of projects that use the OpenBB SDK. If you have a pro
 
 <ShowcaseItem
 categories={['Crypto', 'NFTs']}
-title="Cryptodash"
-description="Cryptodash is a cryptocurrency dashboard that allows you get an overview of the current state of the cryptocurrency market."
-url="https://cryptodash.deno.dev">
+title="Ai1Crypto"
+description="Ai1Crypto is a cryptocurrency dashboard that allows you get an overview of the current state of the cryptocurrency market."
+url="https://ai1crypto.vercel.app/">
 
 <iframe style={{height: 400}} className="w-full rounded"
-src="https://cryptodash.deno.dev/" title="Cryptodash"></iframe>
+src="https://ai1crypto.vercel.app/" title="Ai1Crypto"></iframe>
 </ShowcaseItem>
 
 <ShowcaseItem
