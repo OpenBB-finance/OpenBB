@@ -85,7 +85,7 @@ command_location = ""
 NEWS_TWEET = ""
 LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now() - timedelta(hours=1)
 
-# pylint: disable=R1702
+# pylint: disable=R1702,R0912
 
 
 # pylint: disable=global-statement
