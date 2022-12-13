@@ -26,7 +26,7 @@ def get_all_holiday_exchange_short_names() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def display_exchange_holidays(exchange_symbol: str, year: int ):
+def display_exchange_holidays(exchange_symbol: str, year: int):
     """Display current exchange holiday calendar.
 
     Parameters
