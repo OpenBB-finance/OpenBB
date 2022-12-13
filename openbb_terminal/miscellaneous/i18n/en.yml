@@ -164,6 +164,7 @@ en:
   stocks/th/closed: show closed markets
   stocks/th/all: show all markets
   stocks/th/exchange: show one exchange
+  stocks/th/holidays: show all dates on which there is a market holiday
   stocks/disc/pipo: past IPOs dates
   stocks/disc/fipo: future IPOs dates
   stocks/disc/gainers: show latest top gainers
@@ -354,6 +355,8 @@ en:
   stocks/fa/metrics: key metrics over time
   stocks/fa/ratios: in-depth ratios over time
   stocks/fa/growth: growth of financial statement items and ratios
+  stocks/fa/epsfc: Earning Estimate by Analysts - EPS
+  stocks/fa/revfc: Earning Estimate by Analysts - Revenue
   stocks/fa/dcfc: determine the (historical) discounted cash flow
   stocks/res/_ticker: Ticker
   stocks/res/macroaxis: www.macroaxis.com
@@ -497,10 +500,8 @@ en:
   crypto/ov/categories: crypto categories
   crypto/ov/hold: ethereum, bitcoin holdings overview statistics
   crypto/ov/hm: crypto heatmap
-  crypto/ov/global: global crypto market info
   crypto/ov/info: basic info about all coins available
   crypto/ov/markets: market related info about all coins available
-  crypto/ov/exchanges: list all exchanges
   crypto/ov/exmarkets: all available markets on given exchange
   crypto/ov/platforms: list blockchain platforms eg. ethereum, solana, kusama, terra
   crypto/ov/contracts: all smart contracts for given platform

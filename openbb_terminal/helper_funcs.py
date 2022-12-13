@@ -12,8 +12,8 @@ from datetime import date as d
 import types
 from collections.abc import Iterable
 import os
-import random
 import re
+import random
 import sys
 from difflib import SequenceMatcher
 import webbrowser
@@ -66,6 +66,8 @@ MENU_RESET = 2
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
 
+
+# pylint: disable=R0912
 
 # pylint: disable=global-statement
 def set_command_location(cmd_loc: str):
@@ -218,6 +220,37 @@ def similar(a: str, b: str) -> float:
     return SequenceMatcher(None, a, b).ratio()
 
 
+def return_colored_value(value: str):
+    """Return the string value with green, yellow, red or white color based on
+    whether the number is positive, negative, zero or other, respectively.
+
+    Parameters
+    ----------
+    value: str
+        string to be checked
+
+    Returns
+    -------
+    value: str
+        string with color based on value of number if it exists
+    """
+    values = re.findall(r"[-+]?(?:\d*\.\d+|\d+)", value)
+
+    # Finds exactly 1 number in the string
+    if len(values) == 1:
+        if float(values[0]) > 0:
+            return f"[green]{value}[/green]"
+
+        if float(values[0]) < 0:
+            return f"[red]{value}[/red]"
+
+        if float(values[0]) == 0:
+            return f"[yellow]{value}[/yellow]"
+
+    return f"{value}"
+
+
+# pylint: disable=too-many-arguments
 def print_rich_table(
     df: pd.DataFrame,
     show_index: bool = False,
@@ -226,6 +259,9 @@ def print_rich_table(
     headers: Union[List[str], pd.Index] = None,
     floatfmt: Union[str, List[str]] = ".2f",
     show_header: bool = True,
+    automatic_coloring: bool = False,
+    columns_to_auto_color: List[str] = None,
+    rows_to_auto_color: List[str] = None,
 ):
     """Prepare a table from df in rich.
 
@@ -245,9 +281,32 @@ def print_rich_table(
         Float number formatting specs as string or list of strings. Defaults to ".2f"
     show_header: bool
         Whether to show the header row.
+    automatic_coloring: bool
+        Automatically color a table based on positive and negative values
+    columns_to_auto_color: List[str]
+        Columns to automatically color
+    rows_to_auto_color: List[str]
+        Rows to automatically color
     """
     if obbff.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
+
+        if obbff.USE_COLOR and automatic_coloring:
+            if columns_to_auto_color:
+                for col in columns_to_auto_color:
+                    # checks whether column exists
+                    if col in df.columns:
+                        df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
+            if rows_to_auto_color:
+                for row in rows_to_auto_color:
+                    # checks whether row exists
+                    if row in df.index:
+                        df.loc[row] = df.loc[row].apply(
+                            lambda x: return_colored_value(str(x))
+                        )
+
+            if columns_to_auto_color is None and rows_to_auto_color is None:
+                df = df.applymap(lambda x: return_colored_value(str(x)))
 
         if show_index:
             table.add_column(index_name)
@@ -277,8 +336,8 @@ def print_rich_table(
 
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
             # remove hour/min/sec from timestamp index - Format: YYYY-MM-DD # make better
-            row = [str(idx)] if show_index else []
-            row += [
+            row_idx = [str(idx)] if show_index else []
+            row_idx += [
                 str(x)
                 if not isinstance(x, float) and not isinstance(x, np.float64)
                 else (
@@ -290,9 +349,27 @@ def print_rich_table(
                 )
                 for idx, x in enumerate(values)
             ]
-            table.add_row(*row)
+            table.add_row(*row_idx)
         console.print(table)
     else:
+
+        if obbff.USE_COLOR and automatic_coloring:
+            if columns_to_auto_color:
+                for col in columns_to_auto_color:
+                    # checks whether column exists
+                    if col in df.columns:
+                        df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
+            if rows_to_auto_color:
+                for row in rows_to_auto_color:
+                    # checks whether row exists
+                    if row in df.index:
+                        df.loc[row] = df.loc[row].apply(
+                            lambda x: return_colored_value(str(x))
+                        )
+
+            if columns_to_auto_color is None and rows_to_auto_color is None:
+                df = df.applymap(lambda x: return_colored_value(str(x)))
+
         console.print(df.to_string(col_space=0))
 
 
