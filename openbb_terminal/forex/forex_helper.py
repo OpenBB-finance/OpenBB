@@ -185,7 +185,7 @@ def load(
         df.index.name = "date"
         return df
 
-    shout(f"Source {source} not supported")
+    return shout(f"Source {source} not supported")
 
 
 @log_start_end(log=logger)

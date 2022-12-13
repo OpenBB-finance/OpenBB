@@ -37,4 +37,4 @@ def get_forward_rates(to_symbol: str = "USD", from_symbol: str = "EUR") -> pd.Da
         return forwards
 
     logger.info("Currency not found.")
-    shout(f"Forward rates not found for '{to_symbol}/{from_symbol}'.")
+    return shout(f"Forward rates not found for '{to_symbol}/{from_symbol}'.")
