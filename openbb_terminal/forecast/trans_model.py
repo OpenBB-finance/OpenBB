@@ -12,6 +12,7 @@ from darts import TimeSeries
 from darts.models import TransformerModel
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
+from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 
 logger = logging.getLogger(__name__)
 
@@ -142,6 +143,8 @@ def get_trans_data(
         pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator="cpu"),
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
+        log_tensorboard=True,
+        work_dir=USER_FORECAST_MODELS_DIRECTORY,
     )
 
     # fit model on train series for historical forecasting
@@ -155,8 +158,10 @@ def get_trans_data(
             past_covariate_val,
         )
     best_model = TransformerModel.load_from_checkpoint(
-        model_name=model_save_name, best=True
+        model_name=model_save_name, best=True, work_dir=USER_FORECAST_MODELS_DIRECTORY
     )
+
+    helpers.print_tensorboard_logs(model_save_name, USER_FORECAST_MODELS_DIRECTORY)
 
     # Showing historical backtesting without retraining model (too slow)
     return helpers.get_prediction(
