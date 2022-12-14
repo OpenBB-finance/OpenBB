@@ -2,8 +2,6 @@
 """Main Testing Module"""
 __docformat__ = "numpy"
 
-import contextlib
-from datetime import datetime
 from pathlib import Path
 import re
 import time
@@ -15,10 +13,7 @@ import sys
 import os
 
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.config.paths import (
-    MISCELLANEOUS_DIRECTORY,
-    REPOSITORY_DIRECTORY,
-)
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.terminal_controller import (
     insert_start_slash,
     terminal,
@@ -135,11 +130,8 @@ def collect_test_files(path_list: List[str]) -> List[Path]:
 
 def run_scripts(
     path: Path,
-    test_mode: bool = False,
     verbose: bool = False,
-    routines_args: List[str] = None,
     special_arguments: Optional[Dict[str, str]] = None,
-    output: bool = True,
 ):
     """Run given .openbb scripts.
 
@@ -147,22 +139,13 @@ def run_scripts(
     ----------
     path : str
         The location of the .openbb file
-    test_mode : bool
-        Whether the terminal is in test mode
     verbose : bool
         Whether to run tests in verbose mode
-    routines_args : List[str]
-        One or multiple inputs to be replaced in the routine and separated by commas.
-        E.g. GME,AMC,BTC-USD
     special_arguments: Optional[Dict[str, str]]
         Replace `${key=default}` with `value` for every key in the dictionary
-    output: bool
-        Whether to log tests to txt files
     """
     if not path.exists():
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
-        if not test_mode:
-            terminal()
 
     with path.open() as fp:
         raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
@@ -170,15 +153,8 @@ def run_scripts(
             raw_line.strip("\n") for raw_line in raw_lines if raw_line.strip("\n")
         ]
 
-        if routines_args:
-            lines = []
-            for rawline in raw_lines:
-                templine = rawline
-                for i, arg in enumerate(routines_args):
-                    templine = templine.replace(f"$ARGV[{i}]", arg)
-                lines.append(templine)
         # Handle new testing arguments:
-        elif special_arguments:
+        if special_arguments:
             lines = []
             for line in raw_lines:
                 new_line = re.sub(
@@ -191,7 +167,7 @@ def run_scripts(
         else:
             lines = raw_lines
 
-        if test_mode and "exit" not in lines[-1]:
+        if "exit" not in lines[-1]:
             lines.append("exit")
 
         export_folder = ""
@@ -207,24 +183,11 @@ def run_scripts(
         else:
             file_cmds = [" ".join(file_cmds)]
 
-        if not test_mode or verbose:
+        if verbose:
             terminal(file_cmds, test_mode=True)
         else:
             with suppress_stdout():
-                print(f"To ensure: {output}")
-                if output:
-                    timestamp = datetime.now().timestamp()
-                    stamp_str = str(timestamp).replace(".", "")
-                    whole_path = Path(REPOSITORY_DIRECTORY / "integration_test_output")
-                    whole_path.mkdir(parents=True, exist_ok=True)
-                    first_cmd = file_cmds[0].split("/")[1]
-                    with open(
-                        whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
-                    ) as output_file:
-                        with contextlib.redirect_stdout(output_file):
-                            terminal(file_cmds, test_mode=True)
-                else:
-                    terminal(file_cmds, test_mode=True)
+                terminal(file_cmds, test_mode=True)
 
 
 def run_test_files(
@@ -261,10 +224,8 @@ def run_test_files(
         try:
             run_scripts(
                 file,
-                test_mode=True,
                 verbose=verbose,
                 special_arguments=special_arguments,
-                output=True,
             )
             SUCCESSES += 1
         except Exception as e:
