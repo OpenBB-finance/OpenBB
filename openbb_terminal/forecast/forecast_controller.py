@@ -19,14 +19,11 @@ try:
             "Follow instructions on creating a new conda environment with the latest "
             f"Darts version ({darts_latest}):"
         )
-        print(
-            "https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md"
-        )
+        print("https://docs.openbb.co/terminal/quickstart/installation")
 except ModuleNotFoundError:
     raise ModuleNotFoundError(
-        "Please install the forecast version of the terminal. Instructions "
-        "are here: https://github.com/OpenBB-finance/OpenBBTerminal/"
-        "blob/main/openbb_terminal/README.md#anaconda--python"
+        "Please install the forecast version of the terminal. Instructions can be found "
+        "under the python tab: https://docs.openbb.co/terminal/quickstart/installation"
     )
 
 import pandas as pd

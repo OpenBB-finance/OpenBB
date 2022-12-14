@@ -629,9 +629,9 @@ With:
 
     <br>
 
-4. Consistent and clear argument naming; not `symbol` in _view and then `ticker` in `_file` -> ticker everywhere; the name should be descriptive of what information it hold (see Style Guide section below)
+4. Consistent and clear argument naming; not `symbol` in `_view` and then `ticker` in `_file` -> ticker everywhere; the name should be descriptive of what information it holds (see Style Guide section below)
 
-    - Why? You can quickly understand what the input it should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
+    - Why? You can quickly understand what the input should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
 
     <br>
 
@@ -796,7 +796,7 @@ With:
 
     - Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this `get_` → `display_` map it’s likely that i. and/or ii. fail to hold.
 
-        i. Data is processed in _model files and displayed in `_view` files
+        i. Data is processed in `_model` files and displayed in `_view` files
 
         ii. `_view` and `_model` files will have the same arguments (except for output options)
 
@@ -1307,7 +1307,7 @@ The way to interpret this file is by following the path to a data source, e.g.
 
 ### Export Data
 
-In the `_view.py` files it is common having at the end of each function `export_data` being called. This tipycally looks like:
+In the `_view.py` files it is common having at the end of each function `export_data` being called. This typically looks like:
 
 ```python
     export_data(
@@ -1512,7 +1512,7 @@ Install the pre-commit hooks by running: `pre-commit install`.
 
 ### Coding
 
-Although the Coding Guidelines section has been already explained. It is worth mentioning that if you want to be faster
+Although the Coding Guidelines section has been already explained, it is worth mentioning that if you want to be faster
 at developing a new feature, you may implement it first on a `jupyter notebook` and then carry it across to the
 terminal. This is mostly useful when the feature relies on scraping data from a website, or implementing a Neural
 Network model.
