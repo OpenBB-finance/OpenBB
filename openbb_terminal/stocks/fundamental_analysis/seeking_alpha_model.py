@@ -23,6 +23,10 @@ def get_estimates_eps(ticker: str) -> pd.DataFrame:
     -------
     pd.DataFrame
         eps estimates for the next 10yrs
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.fa.epsfc("AAPL")
     """
 
     url = "https://seekingalpha.com/api/v3/symbol_data/estimates"
@@ -158,6 +162,10 @@ def get_estimates_rev(ticker: str) -> pd.DataFrame:
     -------
     pd.DataFrame
         rev estimates for the next 10yrs
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.fa.revfc("AAPL")
     """
 
     url = "https://seekingalpha.com/api/v3/symbol_data/estimates"
