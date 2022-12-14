@@ -164,12 +164,7 @@ class DashboardsController(BaseController):
                 args += "--theme=dark"
             if ns_parser.input or response.lower() == "y":
                 cfg.LOGGING_SUPPRESS = True
-                subprocess.Popen(
-                    f"{cmd} {file} {args}",
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                    shell=True,  # nosec
-                )
+                subprocess.Popen(f"{cmd} {file} {args}", **cls.__subprocess_args())
                 cfg.LOGGING_SUPPRESS = False
             else:
                 console.print(f"Type: {cmd} voila/{file}\ninto a terminal to run.")
@@ -209,11 +204,35 @@ class DashboardsController(BaseController):
                 response = input("Would you like us to run the server for you [yn]? ")
             args = ""
             if ns_parser.input or response.lower() == "y":
-                subprocess.Popen(
-                    f"{cmd} {file} {args}",
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                    shell=True,
-                )
+                cfg.LOGGING_SUPPRESS = True
+                subprocess.Popen(f"{cmd} {file} {args}", **cls.__subprocess_args())
+                cfg.LOGGING_SUPPRESS = False
             else:
                 console.print(f"Type: {cmd} stream/{file}\ninto a terminal to run.")
+
+    @staticmethod
+    def __subprocess_args(cwd=None, **options):
+        """
+        Create appropriate kwargs for subprocess calls.
+        Based on: https://github.com/pyinstaller/pyinstaller/wiki/Recipe-subprocess
+        """
+        if hasattr(subprocess, "STARTUPINFO"):
+            si = subprocess.STARTUPINFO()
+            si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            env = os.environ
+        else:
+            si = None
+            env = None
+
+        ret = {
+            "stdin": subprocess.PIPE,
+            "stderr": subprocess.PIPE,
+            "stdout": subprocess.PIPE,
+            "startupinfo": si,
+            "env": env,
+            "cwd": cwd,
+        }
+
+        ret.update(options)
+
+        return ret

@@ -410,17 +410,11 @@ class TerminalController(BaseController):
 
     def call_dashboards(self, _):
         """Process dashboards command."""
-        if not is_packaged_application():
-            from openbb_terminal.dashboards.dashboards_controller import (
-                DashboardsController,
-            )
+        from openbb_terminal.dashboards.dashboards_controller import (
+            DashboardsController,
+        )
 
-            self.queue = self.load_class(DashboardsController, self.queue)
-        else:
-            console.print("This feature is coming soon.")
-            console.print(
-                "Use the source code and an Anaconda environment if you are familiar with Python."
-            )
+        self.queue = self.load_class(DashboardsController, self.queue)
 
     def call_alternative(self, _):
         """Process alternative command."""
