@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 from datetime import datetime
 from pathlib import Path
+import time
 from typing import List, Dict
 import traceback
 import argparse
@@ -30,6 +31,8 @@ special_arguments_values = [
     "crypto_full",
     "currency_vs",
 ]
+
+LENGTH = 90
 
 
 def build_test_path_list(path_list: List[str]) -> List[Path]:
@@ -60,10 +63,11 @@ def build_test_path_list(path_list: List[str]) -> List[Path]:
                         test_files.append(path_obj)
 
     test_files_unique = set(test_files)
-    return [Path(x) for x in test_files_unique]
+    final_path_list = [Path(x) for x in test_files_unique]
+    return final_path_list
 
 
-def format_failures(fails: dict, output: bool) -> None:
+def display_failures(fails: dict) -> None:
     """Generates the message and csv from the fails dictionary
 
     Parameters
@@ -74,55 +78,91 @@ def format_failures(fails: dict, output: bool) -> None:
         Whether or not to save output into a CSV file
     """
     if fails:
-        console.print("\n[red]Failures:[/red]\n")
+        console.print("\n" + to_title("FAILURES"))
         for file, exception in fails.items():
-            logger.error("%s: %s failed", file, exception["exception"])
-        # Write results to CSV
-        if output:
-            timestamp = datetime.now().timestamp()
-            stamp_str = str(timestamp).replace(".", "")
-            whole_path = Path(REPOSITORY_DIRECTORY / "integration_test_summary")
-            whole_path.mkdir(parents=True, exist_ok=True)
-            output_path = f"{stamp_str}_tests.csv"
-            with open(whole_path / output_path, "w") as file:  # type: ignore
-                header = ["Script File", "Type", "Error", "Stacktrace"]
-                writer = csv.DictWriter(file, fieldnames=header)  # type: ignore
-                writer.writeheader()
-                for file, exception in fails.items():
-                    clean_type = (
-                        str(type(exception["exception"]))
-                        .replace("<class '", "")
-                        .replace("'>", "")
-                    )
-                    writer.writerow(
-                        {
-                            "Script File": file,
-                            "Type": clean_type,
-                            "Error": exception["exception"],
-                            "Stacktrace": exception["traceback"],
-                        }
-                    )
+            title = f"[bold]{file}[/bold]"
+            console.print(to_title(title=title, char="-"), style="red")
 
-            console.print(f"CSV of errors saved to {whole_path / output_path}")
+            for frame in exception["traceback"]:
+                summary = repr(frame).replace("FrameSummary file", "File")
+                internal = "openbb_terminal" in summary
+                console.print(
+                    f"{summary}",
+                    style="rgb(128,128,128)" if not internal else "",
+                )
+                console.print(
+                    f"[yellow]>>[/yellow] {frame.filename}:{frame.lineno}",
+                    style="rgb(128,128,128)" if not internal else "",
+                )
+
+            console.print(
+                f"[bold red]\nException type:[/bold red] {exception['exception'].__class__.__name__}"
+            )
+            console.print(f"[bold red]Detail:[/bold red] {exception['exception']}")
+            console.print("- " * int(LENGTH / 2))
+
+
+def to_title(title: str, char: str = "=") -> str:
+    """Format title for test mode.
+
+    Parameters
+    ----------
+    title: str
+        The title to format
+
+    Returns
+    -------
+    str
+        The formatted title
+    """
+    title = " " + title + " "
+
+    STYLES = [
+        "[bold]",
+        "[/bold]",
+        "[red]",
+        "[/red]",
+        "[green]",
+        "[/green]",
+    ]
+    len_styles = 0
+    for style in STYLES:
+        if style in title:
+            len_styles += len(style)
+
+    n = int((LENGTH - len(title) + len_styles) / 2)
+    formatted_title = char * n + title + char * n
+    formatted_title = char * (LENGTH - len(formatted_title)) + formatted_title
+    return formatted_title
 
 
 def run_test_list(
     path_list: List[str], verbose: bool, special_arguments: Dict[str, str], output: bool
 ):
     """Run commands in test mode."""
+
+    # Test header
+    console.print(to_title("integration test session starts"), style="bold")
+
     os.environ["DEBUG_MODE"] = "true"
 
     if not path_list:
         path_list = [""]
     test_files = build_test_path_list(path_list)
+    length = len(test_files)
+    scripts_location = MISCELLANEOUS_DIRECTORY / "scripts"
+    console.print(f"Collecting scripts from: {scripts_location}\n")
+    console.print(f"collected {length} scripts\n", style="bold")
+
     SUCCESSES = 0
     FAILURES = 0
     fails = {}
-    length = len(test_files)
-    i = 0
-    console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
-    for file in test_files:
-        console.print(f"{((i/length)*100):.1f}%  {file}")
+    start = time.time()
+    for i, file in enumerate(test_files):
+
+        file_short_name = str(file).replace(str(MISCELLANEOUS_DIRECTORY), "")
+        file_short_name = file_short_name[1:]
+
         try:
             run_scripts(
                 file,
@@ -134,15 +174,39 @@ def run_test_list(
             SUCCESSES += 1
         except Exception as e:
             _, _, exc_traceback = sys.exc_info()
-            fails[file] = {
+            fails[file_short_name] = {
                 "exception": e,
                 "traceback": traceback.extract_tb(exc_traceback),
             }
             FAILURES += 1
-        i += 1
-    format_failures(fails, output)
+
+        # Test performance
+        percentage = f"{(i + 1)/length:.0%}"
+        percentage_with_spaces = "[" + (4 - len(percentage)) * " " + percentage + "]"
+        spacing = LENGTH - len(file_short_name) - len(percentage_with_spaces)
+        console.print(
+            f"{file_short_name}" + spacing * " " + f"{percentage_with_spaces}",
+            style="green" if not FAILURES else "red",
+        )
+    end = time.time()
+
+    # Test failures
+    display_failures(fails)
+
+    # Test summary
+    if fails:
+        console.print("\n" + to_title("integration test summary"))
+
+        for file, exception in fails.items():
+            exception_name = exception["exception"].__class__.__name__
+            console.print(f"FAILED {file}::{exception_name}")
+
+    failures = f"[bold][red]{FAILURES} failed, [/red][/bold]" if FAILURES > 0 else ""
+    successes = f"[green]{SUCCESSES} passed[/green]" if SUCCESSES > 0 else ""
+    seconds = f"{(end - start):.2f} s"
     console.print(
-        f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
+        to_title(failures + successes + " in " + seconds),
+        style="green" if not FAILURES else "red",
     )
 
 
