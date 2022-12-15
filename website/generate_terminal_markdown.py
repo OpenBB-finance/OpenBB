@@ -171,7 +171,7 @@ description: OpenBB Terminal Function
 
     # head meta https://docusaurus.io/docs/markdown-features/head-metadata
     markdown += f"# {cmd_meta['cmd_name']}\n\n{cmd_meta['description']}\n\n"
-    markdown += f"### Usage\n\n```python\n{cmd_meta['usage']}\n```\n\n"
+    markdown += f"### Usage\n\n```python wordwrap\n{cmd_meta['usage']}\n```\n\n"
 
     markdown += "---\n\n## Parameters\n\n"
     if cmd_meta["actions"]:
