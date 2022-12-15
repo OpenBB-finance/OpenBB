@@ -371,7 +371,7 @@ def run_test_files(
     return n_successes, n_failures, fails, seconds
 
 
-def display_failures(fails: dict) -> None:
+def display_failures(fails: dict):
     """Generates the failures section of the test report
 
     Parameters
@@ -410,7 +410,7 @@ def display_summary(
     n_successes: int,
     n_failures: int,
     seconds: float,
-) -> None:
+):
     """Generates the summary message
 
     Parameters
@@ -463,7 +463,7 @@ def run_test_session(
     special_arguments: Dict[str, str],
     verbose: bool = False,
     subprocesses: Optional[int] = None,
-) -> None:
+):
     """Run the integration test session
 
     Workflow:
@@ -496,8 +496,8 @@ def run_test_session(
     display_summary(fails, n_successes, n_failures, seconds)
 
 
-def list_available_scripts(path_list: List[str], skip_list: List[str]):
-    """List all available scripts
+def display_available_scripts(path_list: List[str], skip_list: List[str]):
+    """Display the available scripts
 
     Parameters
     ----------
@@ -603,7 +603,7 @@ def parse_args_and_run():
         ns_parser.subprocesses = 1
 
     if ns_parser.list_:
-        list_available_scripts(ns_parser.path, ns_parser.skip)
+        display_available_scripts(ns_parser.path, ns_parser.skip)
         return
 
     run_test_session(
