@@ -13,7 +13,7 @@ import sys
 import os
 
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.terminal_controller import (
     insert_start_slash,
     terminal,
@@ -46,9 +46,10 @@ STYLES = [
     "[bold red]",
     "[/bold red]",
 ]
+SCRIPTS_FOLDER_PATH = PACKAGE_DIRECTORY / "integration_tests" / "scripts"
 
 
-def to_title(title: str, char: str = "=") -> str:
+def to_section_title(title: str, char: str = "=") -> str:
     """Format title for test mode.
 
     Parameters
@@ -78,7 +79,18 @@ def to_title(title: str, char: str = "=") -> str:
 
 
 def build_test_path_list(path_list: List[str]) -> List[Path]:
-    """Build the paths to use in test mode."""
+    """Build the paths to use in test mode.
+
+    Parameters
+    ----------
+    path_list: List[str]
+        The list of paths to test
+
+    Returns
+    -------
+    List[Path]
+        The list of paths to test
+    """
     if path_list == "":
         console.print("Please send a path when using test mode")
         return []
@@ -86,12 +98,12 @@ def build_test_path_list(path_list: List[str]) -> List[Path]:
     test_files = []
 
     for path in path_list:
-        script_path = MISCELLANEOUS_DIRECTORY / "scripts" / path
+        script_path = SCRIPTS_FOLDER_PATH / path
 
         if script_path.exists():
             chosen_path = script_path
         else:
-            console.print(f"\n[red]Can't find the file: {script_path}[/red]\n")
+            console.print(f"\n[red]Can't find: {script_path}[/red]\n")
             continue
 
         if chosen_path.is_file() and str(chosen_path).endswith(".openbb"):
@@ -121,9 +133,8 @@ def collect_test_files(path_list: List[str]) -> List[Path]:
     if not path_list:
         path_list = [""]
     test_files = build_test_path_list(path_list)
-    scripts_location = MISCELLANEOUS_DIRECTORY / "scripts"
-    console.print(f"Collecting scripts from: {scripts_location}\n")
-    console.print(f"collected {len(test_files)} scripts\n", style="bold")
+    console.print(f"Collecting scripts from: {SCRIPTS_FOLDER_PATH}\n")
+    console.print(f"Collected {len(test_files)} script(s)\n", style="bold")
 
     return test_files
 
@@ -145,7 +156,7 @@ def run_scripts(
         Replace `${key=default}` with `value` for every key in the dictionary
     """
     if not path.exists():
-        console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
+        console.print(f"Path '{path}' doesn't exist.\n")
 
     with path.open() as fp:
         raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
@@ -212,14 +223,16 @@ def run_test_files(
 
     start = time.time()
 
+    if test_files:
+        console.print("Running script(s)...\n", style="bold")
+
     os.environ["DEBUG_MODE"] = "true"
     SUCCESSES = 0
     FAILURES = 0
     fails = {}
     for i, file in enumerate(test_files):
 
-        file_short_name = str(file).replace(str(MISCELLANEOUS_DIRECTORY), "")
-        file_short_name = file_short_name[1:]
+        file_short_name = str(file).replace(str(SCRIPTS_FOLDER_PATH), "")[1:]
 
         try:
             run_scripts(
@@ -239,9 +252,9 @@ def run_test_files(
         # Test performance
         percentage = f"{(i + 1)/len(test_files):.0%}"
         percentage_with_spaces = "[" + (4 - len(percentage)) * " " + percentage + "]"
-        spacing = LENGTH - len(file_short_name) - len(percentage_with_spaces)
+        spaces = LENGTH - len(file_short_name) - len(percentage_with_spaces)
         console.print(
-            f"{file_short_name}" + spacing * " " + f"{percentage_with_spaces}",
+            f"{file_short_name}" + spaces * " " + f"{percentage_with_spaces}",
             style="green" if not FAILURES else "red",
         )
 
@@ -262,10 +275,10 @@ def display_failures(fails: dict) -> None:
         Whether or not to save output into a CSV file
     """
     if fails:
-        console.print("\n" + to_title("FAILURES"))
+        console.print("\n" + to_section_title("FAILURES"))
         for file, exception in fails.items():
             title = f"[bold red]{file}[/bold red]"
-            console.print(to_title(title=title, char="-"), style="red")
+            console.print(to_section_title(title=title, char="-"), style="red")
 
             console.print("[bold red]\nTraceback:[/bold red]")
             formatted_tb = traceback.format_list(exception["traceback"])
@@ -308,7 +321,7 @@ def display_summary(
     """
 
     if fails:
-        console.print("\n" + to_title("integration test summary"))
+        console.print("\n" + to_section_title("integration test summary"))
 
         for file, exception in fails.items():
 
@@ -325,7 +338,7 @@ def display_summary(
     )
     successes = f"[green]{n_successes} passed[/green]" if n_successes > 0 else ""
     console.print(
-        to_title(failures + successes + " in " + f"{(seconds):.2f} s"),
+        to_section_title(failures + successes + " in " + f"{(seconds):.2f}s"),
         style="green" if not n_failures else "red",
     )
 
@@ -351,9 +364,10 @@ def run_test_list(
         The special arguments to use in the scripts
     """
 
-    console.print(to_title("integration test session starts"), style="bold")
+    console.print(to_section_title("integration test session starts"), style="bold")
 
     test_files = collect_test_files(path_list)
+
     SUCCESSES, FAILURES, fails, seconds = run_test_files(
         test_files, verbose, special_arguments
     )
@@ -372,8 +386,14 @@ def parse_args_and_run():
         "-p",
         "--path",
         help=(
-            "The path or .openbb file to run. Starts at "
-            "OpenBBTerminal/openbb_terminal/miscellaneous/scripts"
+            "The path to scripts or .openbb file to run."
+            "Scripts must be run from 'openbb_terminal/integration_tests/scripts/'."
+            " Usage examples for this flag:"
+            " (1) `... -p test_keys_.openbb`,"
+            " (2) `... -p forex/test_forex_load.openbb`,"
+            " (3) `... -p test_keys_.openbb forex`,"
+            " (4) `... -p test_keys_.openbb forex etf`."
+            " If no path is provided, all scripts will be run."
         ),
         dest="path",
         nargs="+",
@@ -398,8 +418,14 @@ def parse_args_and_run():
             default="",
         )
 
-    ns_parser, _ = parser.parse_known_args()
+    ns_parser, unknown_args = parser.parse_known_args()
+
+    # This is to allow the dev to send a path without the -p flag
+    if not ns_parser.path and unknown_args:
+        ns_parser.path = unknown_args
+
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
+
     run_test_list(
         path_list=ns_parser.path,
         verbose=ns_parser.verbose,
@@ -407,8 +433,16 @@ def parse_args_and_run():
     )
 
 
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        if "-" not in sys.argv[1][0]:
-            sys.argv.insert(1, "-p")
+def main():
+    """Run the integration tests."""
+
+    if "-t" in sys.argv:
+        sys.argv.remove("-t")
+    if "--test" in sys.argv:
+        sys.argv.remove("--test")
+
     parse_args_and_run()
+
+
+if __name__ == "__main__":
+    main()
