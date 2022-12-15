@@ -2,10 +2,15 @@
 """Main Testing Module"""
 __docformat__ = "numpy"
 
+from functools import partial
+from itertools import repeat
+from multiprocessing.pool import Pool
+from multiprocessing import cpu_count
+from tqdm import tqdm
 from pathlib import Path
 import re
 import time
-from typing import List, Dict, Optional, Tuple
+from typing import Any, List, Dict, Optional, Tuple
 import traceback
 import argparse
 import logging
@@ -234,7 +239,61 @@ def run_scripts(
 
 
 def run_test(
-    test_files: list, verbose: bool, special_arguments: dict
+    file: Path,
+    verbose: bool = False,
+    special_arguments: Optional[Dict[str, str]] = None,
+) -> Tuple[str, Optional[Dict[str, Any]]]:
+    """Run tests in a single process.
+
+    Parameters
+    ----------
+    file: Path
+        The path to the file to test
+    verbose: bool
+        Whether to run tests in verbose mode
+    special_arguments: Optional[Dict[str, str]]
+        Replace `${key=default}` with `value` for every key in the dictionary
+
+    Returns
+    -------
+    Tuple[str, Optional[Dict[str, Any]]]
+        The name of the file and the exception if any
+    """
+
+    file_short_name = str(file).replace(str(SCRIPTS_DIRECTORY), "")[1:]
+
+    try:
+        run_scripts(
+            file,
+            verbose=verbose,
+            special_arguments=special_arguments,
+        )
+        exception = None
+    except Exception as e:
+        _, _, exc_traceback = sys.exc_info()
+        exception = {
+            "exception": e,
+            "traceback": traceback.extract_tb(exc_traceback),
+        }
+
+    return file_short_name, exception
+
+
+def display_test_progress(i, test_files, n_failures, file_short_name):
+    percentage = f"{(i + 1)/len(test_files):.0%}"
+    percentage_with_spaces = "[" + (4 - len(percentage)) * " " + percentage + "]"
+    spaces = SECTION_LENGTH - len(file_short_name) - len(percentage_with_spaces)
+    console.print(
+        f"{file_short_name}" + spaces * " " + f"{percentage_with_spaces}",
+        style="green" if not n_failures else "red",
+    )
+
+
+def run_test_files(
+    test_files: list,
+    verbose: bool = False,
+    special_arguments: dict = None,
+    processes: Optional[int] = None,
 ) -> Tuple[int, int, Dict[str, Dict[str, object]], float]:
     """Runs the test scripts and returns the fails dictionary
 
@@ -246,6 +305,8 @@ def run_test(
         Whether or not to print the output of the scripts
     special_arguments: dict
         The special arguments to use in the scripts
+    processes: Optional[int]
+        The number of processes to use
 
     Returns
     -------
@@ -253,53 +314,44 @@ def run_test(
         The dictionary with failure information
     """
 
-    start = time.time()
+    os.environ["DEBUG_MODE"] = "true"
+    n_successes = 0
+    n_failures = 0
+    fails: Dict[str, Dict[str, object]] = {}
 
     if test_files:
-        console.print("* Running script(s)...\n", style="bold")
 
-        os.environ["DEBUG_MODE"] = "true"
-        n_successes = 0
-        n_failures = 0
-        fails = {}
-        for i, file in enumerate(test_files):
+        start = time.time()
 
-            file_short_name = str(file).replace(str(SCRIPTS_DIRECTORY), "")[1:]
-
-            try:
-                run_scripts(
-                    file,
-                    verbose=verbose,
-                    special_arguments=special_arguments,
+        # If we run multiple scripts with just one process as terminal caches
+        # imports and test scripts will not be independent.
+        # For example a ticker loaded in a previous test might be available
+        # in the next test, even if the test script doesn't import it.
+        console.print(
+            f"* Running script(s) in {processes} subprocess(es)...\n", style="bold"
+        )
+        with Pool(processes=processes) as pool:
+            for i, result in enumerate(
+                pool.imap(
+                    partial(
+                        run_test, verbose=verbose, special_arguments=special_arguments
+                    ),
+                    test_files,
                 )
-                n_successes += 1
-            except Exception as e:
-                _, _, exc_traceback = sys.exc_info()
-                fails[file_short_name] = {
-                    "exception": e,
-                    "traceback": traceback.extract_tb(exc_traceback),
-                }
-                n_failures += 1
-
-            # Test performance
-            percentage = f"{(i + 1)/len(test_files):.0%}"
-            percentage_with_spaces = (
-                "[" + (4 - len(percentage)) * " " + percentage + "]"
-            )
-            spaces = SECTION_LENGTH - len(file_short_name) - len(percentage_with_spaces)
-            console.print(
-                f"{file_short_name}" + spaces * " " + f"{percentage_with_spaces}",
-                style="green" if not n_failures else "red",
-            )
+            ):
+                file_short_name, exception = result
+                if exception:
+                    n_failures += 1
+                    fails[file_short_name] = exception
+                else:
+                    n_successes += 1
+                display_test_progress(i, test_files, n_failures, file_short_name)
 
         end = time.time()
         seconds = end - start
     else:
         console.print("[yellow]* No tests to run.[/yellow]\n", style="bold")
-        n_successes = 0
-        n_failures = 0
-        fails = {}
-        seconds = 0
+        seconds = 0.0
 
     return n_successes, n_failures, fails, seconds
 
@@ -393,8 +445,9 @@ def display_summary(
 def run_test_session(
     path_list: List[str],
     skip_list: List[str],
-    verbose: bool,
     special_arguments: Dict[str, str],
+    verbose: bool = False,
+    processes: Optional[int] = None,
 ) -> None:
     """Run the integration test session
 
@@ -410,17 +463,19 @@ def run_test_session(
         The list of paths to test
     skip_list: list
         The list of paths to skip
-    verbose: bool
-        Whether or not to print the output of the scripts
     special_arguments: dict
         The special arguments to use in the scripts
+    verbose: bool
+        Whether or not to print the output of the scripts
+    multiprocessing: bool
+        Whether or not to run the tests in parallel
     """
 
     console.print(to_section_title("integration test session starts"), style="bold")
 
     test_files = collect_test_files(path_list, skip_list)
-    n_successes, n_failures, fails, seconds = run_test(
-        test_files, verbose, special_arguments
+    n_successes, n_failures, fails, seconds = run_test_files(
+        test_files, verbose, special_arguments, processes
     )
     display_failures(fails)
     display_summary(fails, n_successes, n_failures, seconds)
@@ -469,14 +524,6 @@ def parse_args_and_run():
         default="",
         type=str,
     )
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        help="Whether or not to print the output of the scripts",
-        dest="verbose",
-        action="store_true",
-        default=False,
-    )
     # This is the list of special arguments a user can send
     for arg in special_arguments_values:
         parser.add_argument(
@@ -486,7 +533,21 @@ def parse_args_and_run():
             type=str,
             default="",
         )
-
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        help="Whether or not to print the output of the scripts",
+        dest="verbose",
+        action="store_true",
+        default=False,
+    )
+    parser.add_argument(
+        "--processes",
+        help="The number of processes to use to run the tests",
+        dest="processes",
+        type=int,
+        default=cpu_count(),
+    )
     ns_parser, unknown_args = parser.parse_known_args()
 
     # This is to allow the dev to send a path without the -p flag
@@ -495,11 +556,19 @@ def parse_args_and_run():
 
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
 
+    if ns_parser.verbose and ns_parser.processes > 1:
+        console.print(
+            "WARNING: verbose mode and multiprocessing are not compatible. The output of the scripts would be mixed up. Setting processes to 1...\n",
+            style="yellow",
+        )
+        ns_parser.processes = 1
+
     run_test_session(
         path_list=ns_parser.path,
         skip_list=ns_parser.skip,
-        verbose=ns_parser.verbose,
         special_arguments=special_args_dict,
+        verbose=ns_parser.verbose,
+        processes=ns_parser.processes,
     )
 
 
