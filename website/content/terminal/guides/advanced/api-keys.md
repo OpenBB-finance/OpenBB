@@ -49,7 +49,7 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | walert     | Whale Alert                              | https://docs.whale-alert.io/                                                       |
 
 ## How to obtain the API Key from each source
-This section covers all API keys listed above and include detailed instructions how to obtain each API key.
+This section covers all API keys listed above and include detailed instructions how to obtain each API key. By clicking on each name, the section will expand and instructions are provided.
 
 <details>
   <summary>AlphaVantage</summary>
