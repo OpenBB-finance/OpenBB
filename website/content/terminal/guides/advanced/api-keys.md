@@ -2,6 +2,7 @@
 title: Set API keys
 sidebar_position: 1
 ---
+## Accessing the keys menu
 Within the `keys` menu you can define your, often free, API key from various platforms like Alpha Vantage, FRED, IEX, Twitter, DeGiro, Binance and Coinglass. API keys are in essence a set of random characters that is unique to you.
 
 You can access this menu from the homepage with `keys` which will open the menu as shown below:
@@ -212,7 +213,7 @@ Press "New GitHub App". This opens up the following screen:
 
 Once the app is created you are able to obtain the API Key. Enter this API key into the OpenBB Terminal by typing `/keys/github KEY`.
 
-## Glassnode
+### Glassnode
 
 Go to https://studio.glassnode.com/. You will be greeted with the following screen:
 
