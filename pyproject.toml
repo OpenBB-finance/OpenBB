@@ -109,6 +109,7 @@ docstring-parser = {version = "^0.15", optional = true}
 grpcio = "<1.51.0"
 jupyterlab-widgets = "^3.0.3"
 packaging = ">=22.0"
+tweepy = "^4.12.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
@@ -135,7 +136,6 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-tweepy = "^4.12.1"
 
 [tool.poetry.extras]
 prediction = ["torch", "pytorch-lightning", "u8darts"]
