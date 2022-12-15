@@ -6,6 +6,7 @@ from typing import List
 import numpy as np
 import pandas as pd
 
+from openbb_terminal import rich_config
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -18,7 +19,6 @@ from openbb_terminal.stocks.insider.openinsider_model import (
     get_open_insider_link,
     get_print_insider_data,
 )
-from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
