@@ -230,7 +230,7 @@ def run_scripts(
                 terminal(file_cmds, test_mode=True)
 
 
-def start_test(
+def run_test(
     test_files: list, verbose: bool, special_arguments: dict
 ) -> Tuple[int, int, Dict[str, Dict[str, object]], float]:
     """Runs the test scripts and returns the fails dictionary
@@ -402,7 +402,7 @@ def run_test_list(
 
     test_files = collect_test_files(path_list, skip_list)
 
-    SUCCESSES, FAILURES, fails, seconds = start_test(
+    SUCCESSES, FAILURES, fails, seconds = run_test(
         test_files, verbose, special_arguments
     )
     display_failures(fails)
