@@ -231,6 +231,7 @@ class DashboardsController(BaseController):
             "startupinfo": si,
             "env": env,
             "cwd": cwd,
+            "shell": True,
         }
 
         ret.update(options)
