@@ -363,7 +363,7 @@ lxml = ["lxml"]
 
 [[package]]
 name = "black"
-version = "22.10.0"
+version = "22.12.0"
 description = "The uncompromising code formatter."
 category = "dev"
 optional = false
@@ -2409,14 +2409,11 @@ scipy = ">=0.13.2"
 
 [[package]]
 name = "packaging"
-version = "21.3"
+version = "22.0"
 description = "Core utilities for Python packages"
 category = "main"
 optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
+python-versions = ">=3.7"
 
 [[package]]
 name = "pandas"
@@ -4827,7 +4824,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "8ca9e9770f3a1000767ced3d201968914db06136cde19041d046b2ea8d2ca8c1"
+content-hash = "0b9e9863f2ad1c9dae3b1fdf18b7100603a989c1b0f1578a66d5ad95a46e6f9c"
 
 [metadata.files]
 absl-py = []
