@@ -313,7 +313,7 @@ def display_failures(fails: dict) -> None:
         The dictionary with failure information
     """
     if fails:
-        console.print("\n" + to_section_title("n_failures"))
+        console.print("\n" + to_section_title("FAILURES"))
         for file, exception in fails.items():
             title = f"[bold red]{file}[/bold red]"
             console.print(to_section_title(title=title, char="-"), style="red")
