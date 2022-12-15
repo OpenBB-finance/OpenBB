@@ -41,6 +41,9 @@ export default function CodeBlockString({
   });
   const showLineNumbers =
     showLineNumbersProp ?? containsLineNumbers(metastring);
+  
+  const shouldWordwrapByDefault = code.startsWith("openbb.")
+
   return (
     <Container
       as="div"
@@ -67,10 +70,10 @@ export default function CodeBlockString({
               className={clsx(className, styles.codeBlock, "thin-scrollbar")}
             >
               <code
-                style={{
+                style={shouldWordwrapByDefault ? {
                   whiteSpace: 'pre-wrap',
                   overflowWrap: 'anywhere'
-                }}
+                } : {}}
                 className={clsx(
                   styles.codeBlockLines,
                   showLineNumbers && styles.codeBlockLinesWithNumbering
