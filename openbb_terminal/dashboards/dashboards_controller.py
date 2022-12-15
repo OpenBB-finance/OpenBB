@@ -164,7 +164,10 @@ class DashboardsController(BaseController):
                 args += "--theme=dark"
             if ns_parser.input or response.lower() == "y":
                 cfg.LOGGING_SUPPRESS = True
-                subprocess.Popen([cmd, file, args], **cls.__subprocess_args())
+                subprocess.Popen(
+                    [cmd, file] if not args else [cmd, file, args],
+                    **cls.__subprocess_args(),
+                )
                 cfg.LOGGING_SUPPRESS = False
             else:
                 console.print(f"Type: {cmd} voila/{file}\ninto a terminal to run.")
@@ -202,10 +205,9 @@ class DashboardsController(BaseController):
                     f"Warning: opens a port on your computer to run a {cmd} server."
                 )
                 response = input("Would you like us to run the server for you [yn]? ")
-            args = ""
             if ns_parser.input or response.lower() == "y":
                 cfg.LOGGING_SUPPRESS = True
-                subprocess.Popen([cmd, file, args], **cls.__subprocess_args())
+                subprocess.Popen([cmd, file], **cls.__subprocess_args())
                 cfg.LOGGING_SUPPRESS = False
             else:
                 console.print(f"Type: {cmd} stream/{file}\ninto a terminal to run.")
