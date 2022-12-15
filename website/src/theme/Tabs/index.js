@@ -169,7 +169,7 @@ function TabsComponent(props) {
         role="tablist"
         aria-orientation="horizontal"
         className={clsx(
-          '_group-tab list-none lg:-ml-7 my-6',
+          '_group-tab list-none -ml-7 my-6 overflow-auto',
         )}>
         {values.map(({ value, label, attributes }) => (
           <li
