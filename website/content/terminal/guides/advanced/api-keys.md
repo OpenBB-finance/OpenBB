@@ -51,24 +51,27 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 ## How to obtain the API Key from each source
 This section covers all API keys listed above and include detailed instructions how to obtain each API key.
 
-### AlphaVantage
-
+<details>
+  <summary>AlphaVantage</summary>
 Go to https://www.alphavantage.co/support/#api-key. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207820936-46c2ba00-81ff-4cd3-98a4-4fa44412996f.png">
 
 Once you enter the type of investor you are, the organization you work at and your email address pressing "GET FREE API KEY" gets you the key that you can submit into the OpenBB Terminal with `/keys/av KEY`
+ </details>
 
-### Binance
 
+<details>
+  <summary>Binance</summary>
 Go to https://www.binance.com/en/support/faq/how-to-create-api-360002502072. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207839805-f71cf12a-62d2-41cb-ba19-0c35917abc40.png">
 
 These instructions should provide clear guidance how to set up an API Key. Enter this API key into the OpenBB Terminal by typing `/keys/binance -k KEY -s SECRET`.
-
-### Bitquery
-
+ </details> 
+ 
+<details>
+  <summary>Bitquery</summary>
 Go to https://bitquery.io/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207840322-5532a3f9-739f-4e28-9839-a58db932882e.png">
@@ -80,9 +83,10 @@ Click "Try GraphQL API". This opens the following screen:
 After creating an account and verifiying your email address, you will be able to access your API Key by clicking "Api Key". Enter this API key into the OpenBB Terminal by typing `/keys/bitquery KEY`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207840833-35c1b12c-9b4b-43fe-a33e-f7b92c43a011.png">
-
-### CoinMarketCap
-
+ </details> 
+  
+<details>
+  <summary>CoinMarketCap</summary>
 Go to https://coinmarketcap.com/api. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207831111-3f09ed75-740e-4121-a67e-6e1f36e8ab9a.png">
@@ -94,17 +98,19 @@ From here, click "Get Your Free API Key Now". This opens up the following screen
 Once you have created an account, you will be able to find your API key in the following screen. Enter this API key into the OpenBB Terminal by typing `/keys/cmc KEY`
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207831705-e9f95018-bba7-49a9-b057-3443bc839861.png">
-
-### Coinbase
-
+ </details> 
+  
+<details>
+  <summary>CoinBase</summary>
 Go to https://help.coinbase.com/en/exchange/managing-my-account/how-to-create-an-api-key. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207841901-647f0aef-0c74-454d-b99e-367d784259f0.png">
 
 By following these instructions you should be able to set-up an API Key. Enter this API key into the OpenBB Terminal by typing `/keys/coinbase -k KEY -s SECRET -p PASSPHRASE`.
+ </details> 
 
-### Coinglass
-
+<details>
+  <summary>Coinglass</summary>
 Go to https://www.coinglass.com/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207844601-8510687a-e54f-49b9-961f-5ef6718f58ab.png">
@@ -114,9 +120,11 @@ Click "Log in" and sign up for an account. This opens up the following screen:
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207844637-a9321889-c4d8-4d44-95fe-a6288a17ad19.png">
 
 Once you created your account, you will be able to find the API Key on your profile. Enter this API key into the OpenBB Terminal by typing `/keys/coinglass KEY`.
+ </details> 
 
-### Crypto Panic
 
+<details>
+  <summary>Crypto Panic</summary>
 Go to https://cryptopanic.com/developers/api/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207848733-27e5a804-7ae7-4ca2-88b2-848b32929b6f.png">
@@ -128,17 +136,19 @@ Click "Sign up" under "Your free API auth token". This opens up the following sc
 Once you have created your account, your API Key will be displayed under "Your free API auth token". Enter this API key into the OpenBB Terminal by typing `/keys/cpanic KEY`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207848971-3e4771b7-1faa-45fe-955f-81bd736b16b7.png">
-
-### DeGiro
-
+ </details> 
+ 
+<details>
+  <summary>DeGiro</summary>
 Go to https://www.degiro.com/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207838353-001d350c-872c-4770-a586-fb21318122eb.png">
 
 Click "Sign up" and go to the registrations process. After setting up your account you will be able to use this broker by entering your username and password in the OpenBB Terminal as follows `/keys/degiro -u USERNAME -p PASSWORD`. We also support 2FA, you can find more information about that [here](https://github.com/Chavithra/degiro-connector#35-how-to-use-2fa-).
+ </details> 
 
-### EODHD
-
+<details>
+  <summary>EODHD</summary>
 Go to https://eodhistoricaldata.com/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207849214-23763c95-7314-42ae-b97d-cb5810686498.png">
@@ -150,9 +160,10 @@ Click "Registration". This opens up the following screen:
 Once you have registered, you can find the API Key next to "API TOKEN". Enter this API key into the OpenBB Terminal by typing `/keys/cpanic KEY`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207849462-37471270-929a-45c5-a164-a84249b19231.png">
+</details>
 
-### Finnhub
-
+<details>
+  <summary>Finnhub</summary>
 Go to https://finnhub.io/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207832028-283c3321-8c05-4ee8-b4d2-41cdc940f408.png">
@@ -164,9 +175,10 @@ Press "Get free api key". This opens up the following screen:
 Once you have created an account, you will be able to find your API key in the following screen. Enter this API key into the OpenBB Terminal by typing `/keys/finnhub KEY`
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207832601-62007d95-410c-4d03-a5a3-b177d1894a4c.png">
+</details>
 
-### Financial Modelling Prep
-
+<details>
+  <summary>Financial Modelling Prep</summary>
 Go to  https://site.financialmodelingprep.com/developer/docs/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207821920-64553d05-d461-4984-b0fe-be0368c71186.png">
@@ -178,9 +190,10 @@ From here, press "Get my API KEY here". This opens up the following screen:
 If you already have an account, you can sign-in directly and obtain the API key, otherwise click "Sign Up". Once you have created an account you can access your API Key by pressing the "Dashboard" button which will show the API key. Enter this API key into the OpenBB Terminal by typing `/keys/fmp KEY`
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207823170-dd8191db-e125-44e5-b4f3-2df0e115c91d.png">
+</details>
 
-### FRED
-
+<details>
+  <summary>FRED</summary> 
 Go to https://fred.stlouisfed.org. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207827137-d143ba4c-72cb-467d-a7f4-5cc27c597aec.png">
@@ -196,9 +209,10 @@ Once you have signed up, go to "My Account" and select "API Keys". This will get
 Click on "Request API Key" and fill in information about why you wish to use FRED. Then, by pressing "Request API key" you will be able to obtain the API key. Enter this API key into the OpenBB Terminal by typing `/keys/fred KEY`
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207828032-0a32d3b8-1378-4db2-9064-aa1eb2111632.png">
+</details>
 
-### GitHub
-
+<details>
+  <summary>GitHub</summary> 
 Go to https://github.com/. You will be greeted with the following screen:
 
 <img width="500" alt="GitHub" src="https://user-images.githubusercontent.com/46355364/207846953-7feae777-3c3b-4f21-9dcf-84817c732618.png">
@@ -212,9 +226,10 @@ Press "New GitHub App". This opens up the following screen:
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207847383-d24416c6-18be-43f2-ae7c-455e8372a6ed.png">
 
 Once the app is created you are able to obtain the API Key. Enter this API key into the OpenBB Terminal by typing `/keys/github KEY`.
+</details>
 
-### Glassnode
-
+<details>
+  <summary>Glassnode</summary> 
 Go to https://studio.glassnode.com/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207843761-799078ff-fa64-4d39-a6eb-ba01d250be69.png">
@@ -226,9 +241,10 @@ Click on "Sign up". This opens up the following screen:
 After you have created your account, go to https://studio.glassnode.com/settings/api where you can create your API Key. Enter this API key into the OpenBB Terminal by typing `/keys/glassnode KEY`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207843950-5f33f37d-0203-4302-a67f-198808f18e06.png">
+</details>
 
-### IEX Cloud
-
+<details>
+  <summary>IEX Cloud</summary> 
 Go to https://iexcloud.io/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207833088-e879e9f2-3180-4e50-ba9e-f40ee958f98a.png">
@@ -244,9 +260,10 @@ Once you have signed up you are asked what kind of plan you would like. You have
 Once you have confirmed you email address, you can find your API Key under "Access & Security". Enter this API key into the OpenBB Terminal by typing `/keys/iex KEY`
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207833540-c1e25500-22e9-43c3-a89e-b05dd446f2a5.png">
+</details>
 
-### Messari
-
+<details>
+  <summary>Messari</summary> 
 Go to https://messari.io/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207848122-ec6a41e4-76b7-4620-adc3-1f1c19f4bca6.png">
@@ -258,9 +275,10 @@ Press "Sign up". This opens up the following screen:
 Once you have signed up, go to https://messari.io/account/api where you will be able to find your API Key. Enter this API key into the OpenBB Terminal by typing `/keys/messari KEY`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207848324-ade5bede-8e6b-4b87-bdec-eade3217c0d8.png">
+</details>
 
-### News API
-
+<details>
+  <summary>News API</summary> 
 Go to https://newsapi.org/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207828250-0c5bc38c-90b4-427d-a611-b43c98c8e7ab.png">
@@ -272,9 +290,10 @@ Press "Get API Key". This opens up the following screen:
 Register for an account. The next screen will provide you with the API Key. Enter this API key into the OpenBB Terminal by typing `/keys/news KEY`
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207828736-f0fce53b-f302-4456-adf9-8d50ac41fbe2.png">
+</details>
 
-### Oanda
-
+<details>
+  <summary>Oanda</summary> 
 Go to https://developer.oanda.com. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207839324-d30aa2b6-be83-41ff-9b1b-146cac566789.png">
@@ -282,9 +301,10 @@ Go to https://developer.oanda.com. You will be greeted with the following screen
 After you have created an account with Oanda, you will be able to find the API key by following the steps below. After setting up your account you will be able to use this broker by entering your username and password in the OpenBB Terminal as follows `/keys/oanda -a ACCOUNT -t TOKEN`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207839246-eb40f093-b583-4edd-b178-99fe399bfb66.png">
+</details>
 
-### Polygon
-
+<details>
+  <summary>Polygon</summary> 
 Go to https://polygon.io. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207825623-fcd7f0a3-131a-4294-808c-754c13e38e2a.png">
@@ -296,9 +316,10 @@ Press the button "Get your Free API Key". This opens up the following screen:
 Once signed up you will find the API Key at the bottom. Enter this API key into the OpenBB Terminal by typing `/keys/polygon KEY`
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207826258-b1f318fa-fd9c-41d9-bf5c-fe16722e6601.png">
-
-### Quandl
-
+</details>
+  
+<details>
+  <summary>Quandl</summary> 
 Go to https://www.quandl.com. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207823899-208a3952-f557-4b73-aee6-64ac00faedb7.png">
@@ -310,9 +331,10 @@ From here, click "Sign Up" at the top. This opens up the following screen:
 Follow the sign-up instructions and once you have signed up you will be able to retrieve your API key. Enter this API key into the OpenBB Terminal by typing `/keys/quandl KEY`
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207824664-3c82befb-9c69-42df-8a82-510d85c19a97.png">
+</details>
 
-### Reddit
-
+<details>
+  <summary>Reddit</summary> 
 Go to https://www.reddit.com/wiki/api. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207834105-665180be-c2b6-43c8-b1c9-477729905010.png">
@@ -322,17 +344,19 @@ Press "Read the full API terms and sign up for usage" and start the sign-up proc
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207834850-32a0d4c8-9990-4919-94e3-abad1487a3bd.png">
 
 Once you have filled out everything, you will receive an email when your application is approved. Once this is approved you will receive the neccesary information that needs to be entered in the OpenBB Terminal. Enter these into the OpenBB Terminal by typing `/keys/reddit -i CLIENT_ID -s CLIENT_SECRET -u USERNAME -p PASSWORD -a USER_AGENT`.
+</details>
 
-### Robinhood
-
+<details>
+  <summary>Robinhood</summary> 
 Go to https://robinhood.com/us/en/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207838058-a2311632-6459-4cfd-bc0a-639ee3931574.png">
 
 Click "Sign up" and go to the registrations process. After setting up your account you will be able to use this broker by entering your username and password in the OpenBB Terminal as follows `/keys/rb -u USERNAME -p PASSWORD`.
+</details>
 
-### Santiment
-
+<details>
+  <summary>Santiment</summary> 
 Go to https://app.santiment.net/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207849709-a5f10b03-138c-4e09-89f6-8a18cfbaf008.png">
@@ -344,9 +368,10 @@ Click "Sign up". This opens up the following screen:
 After creating an account go to https://app.santiment.net/account#api-keys and generate a key. Enter this API key into the OpenBB Terminal by typing `/keys/santiment KEY`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207849839-31d1d0a7-6936-4ebd-a7f8-1292f6317b07.png">
+</details>
 
-### ShroomDK
-
+<details>
+  <summary>ShroomDK</summary> 
 Go to https://app.santiment.net/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207850122-b8cd225e-0a65-4ea8-8069-0b40fff1600e.png">
@@ -358,9 +383,10 @@ Click "Mint Your ShroomDK API Key" and sign up for an account. This opens up the
 Once you have your account created, connect a wallet and access the API Key. Enter this API key into the OpenBB Terminal by typing `/keys/shroom KEY`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207850380-b59554af-1e65-4616-921d-e02c9ecf1aad.png">
+</details>
 
-### Stocksera
-
+<details>
+  <summary>Stocksera</summary> 
 Go to https://stocksera.pythonanywhere.com/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207853896-ee233569-26bb-4244-b115-43ac8885757a.png">
@@ -372,9 +398,10 @@ Click "Log in" and create an account. This opens up the following screen:
 Once you have created an account, go to "Developers" to access your API Key. Enter this API key into the OpenBB Terminal by typing `/keys/stocksera KEY`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207854224-e5ddace0-15d1-491c-b616-263cca0bef02.png">
+</details>
 
-### Token Terminal
-
+<details>
+  <summary>Token Terminal</summary> 
 Go to  https://tokenterminal.com/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207850735-69368b4f-6a3e-46b8-ba69-3b79d9231f15.png">
@@ -386,17 +413,19 @@ Click "Log in" and sign up for an account. This opens up the following screen:
 Once you have created an account, go to "API" to access your API Key. Enter this API key into the OpenBB Terminal by typing `/keys/tokenterminal KEY`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207851035-71ea3eff-a11f-4835-8592-c07b3aa3f800.png">
+</details>
 
-### Tradier
-
+<details>
+  <summary>Tradier</summary> 
 Go to https://documentation.tradier.com/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207829178-a8bba770-f2ea-4480-b28e-efd81cf30980.png">
 
 Click the button "Open Account" and start the sign-up process. Once you have gone through the whole process you will be able to find your API key within your account. Enter this API key into the OpenBB Terminal by typing `/keys/tradier KEY`
+</details>
 
-### Twitter
-
+<details>
+  <summary>Twitter</summary> 
 Go to https://developer.twitter.com. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207835646-bb05ac60-2685-48a5-8ffb-e08225db1156.png">
@@ -412,9 +441,10 @@ Create an account and verify your email. Then, you will be able to create an app
 This will give you the following keys. Enter these into the OpenBB Terminal by typing `/keys/twitter -k API_KEY -s API_KEY_SECRET -t BEARER_TOKEN`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207837560-1d04a5da-eba7-425d-afff-6fcc8cbe003e.png">
+</details>
 
-### Whale Alert
-
+<details>
+  <summary>Whale Alert</summary> 
 Go to https://docs.whale-alert.io/. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207842892-3f71ee7a-6cd3-48a2-82e4-fa5ec5b13807.png">
@@ -426,3 +456,4 @@ Click "sign up here". This opens up the following screen:
 Once you have created your account, click "Create" to create your own API Key. Enter this API key into the OpenBB Terminal by typing `/keys/walert KEY`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207843214-20232465-9a52-4b66-b01a-0b8cecbdd612.png">
+</details>
