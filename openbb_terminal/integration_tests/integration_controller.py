@@ -3,15 +3,13 @@
 __docformat__ = "numpy"
 
 from functools import partial
-from itertools import repeat
 from multiprocessing.pool import Pool
 from multiprocessing import cpu_count
-from tqdm import tqdm
 from pathlib import Path
 import re
 import time
-from typing import Any, List, Dict, Optional, Tuple
-import traceback
+from typing import Any, List, Dict, Optional, Tuple, Union
+from traceback import FrameSummary, format_list, extract_tb
 import argparse
 import logging
 import sys
@@ -273,7 +271,7 @@ def run_test(
         _, _, exc_traceback = sys.exc_info()
         exception = {
             "exception": e,
-            "traceback": traceback.extract_tb(exc_traceback),
+            "traceback": extract_tb(exc_traceback),
         }
 
     return file_short_name, exception
@@ -309,7 +307,7 @@ def run_test_files(
     verbose: bool = False,
     special_arguments: dict = None,
     subprocesses: Optional[int] = None,
-) -> Tuple[int, int, Dict[str, Dict[str, object]], float]:
+) -> Tuple[int, int, Dict[str, Dict[str, Any]], float]:
     """Runs the test scripts and returns the fails dictionary
 
     Parameters
@@ -325,14 +323,13 @@ def run_test_files(
 
     Returns
     -------
-    fails: dict
-        The dictionary with failure information
+    Tuple[int, int, Dict[str, Dict[str, Any]], float]
     """
 
     os.environ["DEBUG_MODE"] = "true"
     n_successes = 0
     n_failures = 0
-    fails: Dict[str, Dict[str, object]] = {}
+    fails: Dict[str, Dict[str, Any]] = {}
 
     if test_files:
 
@@ -371,12 +368,12 @@ def run_test_files(
     return n_successes, n_failures, fails, seconds
 
 
-def display_failures(fails: dict):
+def display_failures(fails: Dict[str, Dict[str, Any]]):
     """Generates the failures section of the test report
 
     Parameters
     -----------
-    fails: dict
+    fails: Dict[str, Dict[str, Any]]
         The dictionary with failure information
     """
     if fails:
@@ -386,7 +383,7 @@ def display_failures(fails: dict):
             console.print(to_section_title(title=title, char="-"), style="red")
 
             console.print("[bold red]\nTraceback:[/bold red]")
-            formatted_tb = traceback.format_list(exception["traceback"])
+            formatted_tb = format_list(exception["traceback"])
             style = ""
             for i, line in enumerate(formatted_tb):
                 if "openbb_terminal" not in line:
@@ -406,7 +403,7 @@ def display_failures(fails: dict):
 
 
 def display_summary(
-    fails: dict,
+    fails: Dict[str, Dict[str, Any]],
     n_successes: int,
     n_failures: int,
     seconds: float,
@@ -415,7 +412,7 @@ def display_summary(
 
     Parameters
     ----------
-    fails: dict
+    fails: Dict[str, Dict[str, Any]]
         The dictionary with failure information
     n_successes: int
         The number of successes
@@ -432,6 +429,7 @@ def display_summary(
 
             # Assuming the broken command is the last one called in the traceback
             broken_cmd = "unknown"
+            frame: FrameSummary
             for _, frame in reversed(list(enumerate(exception["traceback"]))):
                 if "_controller.py" in frame.filename and "call_" in frame.name:
                     broken_cmd = frame.name.split("_")[1]
@@ -597,7 +595,8 @@ def parse_args_and_run():
 
     if ns_parser.verbose and ns_parser.subprocesses > 1:
         console.print(
-            "WARNING: verbose mode and multiprocessing are not compatible. The output of the scripts would be mixed up. Setting subprocesses to 1...\n",
+            "WARNING: verbose mode and multiprocessing are not compatible. "
+            "The output of the scripts would be mixed up. Setting subprocesses to 1...\n",
             style="yellow",
         )
         ns_parser.subprocesses = 1
