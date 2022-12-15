@@ -13,7 +13,7 @@ import sys
 import os
 
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
+from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY, REPOSITORY_DIRECTORY
 from openbb_terminal.terminal_controller import (
     insert_start_slash,
     terminal,
@@ -33,9 +33,7 @@ special_arguments_values = [
     "currency_vs",
 ]
 
-LENGTH = 90
-GRAY = "rgb(128,128,128)"
-YELLOW = "yellow"
+SECTION_LENGTH = 90
 STYLES = [
     "[bold]",
     "[/bold]",
@@ -46,7 +44,7 @@ STYLES = [
     "[bold red]",
     "[/bold red]",
 ]
-SCRIPTS_FOLDER_PATH = PACKAGE_DIRECTORY / "integration_tests" / "scripts"
+SCRIPTS_DIRECTORY = PACKAGE_DIRECTORY / "integration_tests" / "scripts"
 
 
 def to_section_title(title: str, char: str = "=") -> str:
@@ -69,10 +67,10 @@ def to_section_title(title: str, char: str = "=") -> str:
         if style in title:
             len_styles += len(style)
 
-    n = int((LENGTH - len(title) + len_styles) / 2)
+    n = int((SECTION_LENGTH - len(title) + len_styles) / 2)
     formatted_title = char * n + title + char * n
     formatted_title = formatted_title + char * (
-        LENGTH - len(formatted_title) + len_styles
+        SECTION_LENGTH - len(formatted_title) + len_styles
     )
 
     return formatted_title
@@ -94,7 +92,12 @@ def convert_list_to_test_files(path_list: List[str]) -> List[Path]:
     test_files = []
 
     for path in path_list:
-        script_path = SCRIPTS_FOLDER_PATH / path
+        if "openbb_terminal/integration_tests/scripts" in path:
+            directory = REPOSITORY_DIRECTORY
+        else:
+            directory = SCRIPTS_DIRECTORY
+
+        script_path = directory / path
 
         if script_path.exists():
             chosen_path = script_path
@@ -159,7 +162,7 @@ def collect_test_files(path_list: List[str], skip_list: List[str]) -> List[Path]
         The list of paths to skip
     """
 
-    console.print(f"Collecting scripts from: {SCRIPTS_FOLDER_PATH}\n")
+    console.print(f"Collecting scripts from: {SCRIPTS_DIRECTORY}\n")
 
     if not path_list:
         path_list = [""]
@@ -261,7 +264,7 @@ def run_test(
     fails = {}
     for i, file in enumerate(test_files):
 
-        file_short_name = str(file).replace(str(SCRIPTS_FOLDER_PATH), "")[1:]
+        file_short_name = str(file).replace(str(SCRIPTS_DIRECTORY), "")[1:]
 
         try:
             run_scripts(
@@ -281,7 +284,7 @@ def run_test(
         # Test performance
         percentage = f"{(i + 1)/len(test_files):.0%}"
         percentage_with_spaces = "[" + (4 - len(percentage)) * " " + percentage + "]"
-        spaces = LENGTH - len(file_short_name) - len(percentage_with_spaces)
+        spaces = SECTION_LENGTH - len(file_short_name) - len(percentage_with_spaces)
         console.print(
             f"{file_short_name}" + spaces * " " + f"{percentage_with_spaces}",
             style="green" if not FAILURES else "red",
@@ -294,14 +297,12 @@ def run_test(
 
 
 def display_failures(fails: dict) -> None:
-    """Generates the message and csv from the fails dictionary
+    """Generates the failures section of the test report
 
     Parameters
     -----------
     fails: dict
         The dictionary with failure information
-    output: bool
-        Whether or not to save output into a CSV file
     """
     if fails:
         console.print("\n" + to_section_title("FAILURES"))
@@ -314,11 +315,11 @@ def display_failures(fails: dict) -> None:
             style = ""
             for i, line in enumerate(formatted_tb):
                 if "openbb_terminal" not in line:
-                    style = GRAY
+                    style = "rgb(128,128,128)"
                 elif i == len(formatted_tb) - 1:
-                    style = YELLOW
+                    style = "yellow"
                 elif "openbb_terminal" not in formatted_tb[i + 1]:
-                    style = YELLOW
+                    style = "yellow"
 
                 console.print(line, end="", style=style)
 
@@ -326,7 +327,7 @@ def display_failures(fails: dict) -> None:
                 f"[bold red]Exception type:[/bold red] {exception['exception'].__class__.__name__}"
             )
             console.print(f"[bold red]Detail:[/bold red] {exception['exception']}")
-            console.print("- " * int(LENGTH / 2))
+            console.print("- " * int(SECTION_LENGTH / 2))
 
 
 def display_summary(
@@ -372,13 +373,13 @@ def display_summary(
     )
 
 
-def run_test_list(
+def run_test_session(
     path_list: List[str],
     skip_list: List[str],
     verbose: bool,
     special_arguments: Dict[str, str],
 ) -> None:
-    """Run commands in test mode.
+    """Run the integration test session
 
     Workflow:
     1. Collect scripts
@@ -401,7 +402,6 @@ def run_test_list(
     console.print(to_section_title("integration test session starts"), style="bold")
 
     test_files = collect_test_files(path_list, skip_list)
-
     SUCCESSES, FAILURES, fails, seconds = run_test(
         test_files, verbose, special_arguments
     )
@@ -455,7 +455,7 @@ def parse_args_and_run():
     parser.add_argument(
         "-v",
         "--verbose",
-        help="Enable verbose output for debugging",
+        help="Whether or not to print the output of the scripts",
         dest="verbose",
         action="store_true",
         default=False,
@@ -478,7 +478,7 @@ def parse_args_and_run():
 
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
 
-    run_test_list(
+    run_test_session(
         path_list=ns_parser.path,
         skip_list=ns_parser.skip,
         verbose=ns_parser.verbose,
