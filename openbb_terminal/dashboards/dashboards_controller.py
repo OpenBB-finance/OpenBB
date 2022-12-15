@@ -164,7 +164,7 @@ class DashboardsController(BaseController):
                 args += "--theme=dark"
             if ns_parser.input or response.lower() == "y":
                 cfg.LOGGING_SUPPRESS = True
-                subprocess.Popen(f"{cmd} {file} {args}", **cls.__subprocess_args())
+                subprocess.Popen([cmd, file, args], **cls.__subprocess_args())
                 cfg.LOGGING_SUPPRESS = False
             else:
                 console.print(f"Type: {cmd} voila/{file}\ninto a terminal to run.")
@@ -205,7 +205,7 @@ class DashboardsController(BaseController):
             args = ""
             if ns_parser.input or response.lower() == "y":
                 cfg.LOGGING_SUPPRESS = True
-                subprocess.Popen(f"{cmd} {file} {args}", **cls.__subprocess_args())
+                subprocess.Popen([cmd, file, args], **cls.__subprocess_args())
                 cfg.LOGGING_SUPPRESS = False
             else:
                 console.print(f"Type: {cmd} stream/{file}\ninto a terminal to run.")
