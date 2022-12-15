@@ -102,7 +102,7 @@ def convert_list_to_test_files(path_list: List[str]) -> List[Path]:
         if script_path.exists():
             chosen_path = script_path
         else:
-            console.print(f"\n[red]Can't find: {script_path}[/red]\n")
+            console.print(f"[red]Path not found: {script_path}[/red]\n")
             continue
 
         if chosen_path.is_file() and str(chosen_path).endswith(".openbb"):
@@ -258,42 +258,50 @@ def run_test(
     if test_files:
         console.print("* Running script(s)...\n", style="bold")
 
-    os.environ["DEBUG_MODE"] = "true"
-    SUCCESSES = 0
-    FAILURES = 0
-    fails = {}
-    for i, file in enumerate(test_files):
+        os.environ["DEBUG_MODE"] = "true"
+        n_successes = 0
+        n_failures = 0
+        fails = {}
+        for i, file in enumerate(test_files):
 
-        file_short_name = str(file).replace(str(SCRIPTS_DIRECTORY), "")[1:]
+            file_short_name = str(file).replace(str(SCRIPTS_DIRECTORY), "")[1:]
 
-        try:
-            run_scripts(
-                file,
-                verbose=verbose,
-                special_arguments=special_arguments,
+            try:
+                run_scripts(
+                    file,
+                    verbose=verbose,
+                    special_arguments=special_arguments,
+                )
+                n_successes += 1
+            except Exception as e:
+                _, _, exc_traceback = sys.exc_info()
+                fails[file_short_name] = {
+                    "exception": e,
+                    "traceback": traceback.extract_tb(exc_traceback),
+                }
+                n_failures += 1
+
+            # Test performance
+            percentage = f"{(i + 1)/len(test_files):.0%}"
+            percentage_with_spaces = (
+                "[" + (4 - len(percentage)) * " " + percentage + "]"
             )
-            SUCCESSES += 1
-        except Exception as e:
-            _, _, exc_traceback = sys.exc_info()
-            fails[file_short_name] = {
-                "exception": e,
-                "traceback": traceback.extract_tb(exc_traceback),
-            }
-            FAILURES += 1
+            spaces = SECTION_LENGTH - len(file_short_name) - len(percentage_with_spaces)
+            console.print(
+                f"{file_short_name}" + spaces * " " + f"{percentage_with_spaces}",
+                style="green" if not n_failures else "red",
+            )
 
-        # Test performance
-        percentage = f"{(i + 1)/len(test_files):.0%}"
-        percentage_with_spaces = "[" + (4 - len(percentage)) * " " + percentage + "]"
-        spaces = SECTION_LENGTH - len(file_short_name) - len(percentage_with_spaces)
-        console.print(
-            f"{file_short_name}" + spaces * " " + f"{percentage_with_spaces}",
-            style="green" if not FAILURES else "red",
-        )
+        end = time.time()
+        seconds = end - start
+    else:
+        console.print("[yellow]* No tests to run.[/yellow]\n", style="bold")
+        n_successes = 0
+        n_failures = 0
+        fails = {}
+        seconds = 0
 
-    end = time.time()
-    seconds = end - start
-
-    return SUCCESSES, FAILURES, fails, seconds
+    return n_successes, n_failures, fails, seconds
 
 
 def display_failures(fails: dict) -> None:
@@ -305,7 +313,7 @@ def display_failures(fails: dict) -> None:
         The dictionary with failure information
     """
     if fails:
-        console.print("\n" + to_section_title("FAILURES"))
+        console.print("\n" + to_section_title("n_failures"))
         for file, exception in fails.items():
             title = f"[bold red]{file}[/bold red]"
             console.print(to_section_title(title=title, char="-"), style="red")
@@ -355,6 +363,7 @@ def display_summary(
 
         for file, exception in fails.items():
 
+            # Assuming the broken command is the last one called in the traceback
             broken_cmd = "unknown"
             for _, frame in reversed(list(enumerate(exception["traceback"]))):
                 if "_controller.py" in frame.filename and "call_" in frame.name:
@@ -363,14 +372,22 @@ def display_summary(
 
             console.print(f"FAILED {file} -> command: {broken_cmd}")
 
-    failures = (
-        f"[bold][red]{n_failures} failed, [/red][/bold]" if n_failures > 0 else ""
-    )
-    successes = f"[green]{n_successes} passed[/green]" if n_successes > 0 else ""
-    console.print(
-        to_section_title(failures + successes + " in " + f"{(seconds):.2f}s"),
-        style="green" if not n_failures else "red",
-    )
+    if n_successes or n_failures:
+        failures = (
+            f"[bold][red]{n_failures} failed, [/red][/bold]" if n_failures > 0 else ""
+        )
+        successes = f"[green]{n_successes} passed [/green]" if n_successes > 0 else ""
+
+        m, s = divmod(seconds, 60)
+        elapsed_time = ""
+        if m > 0:
+            elapsed_time += f"{m:.0f}m:"
+        elapsed_time += f"{s:.2f}s"
+
+        console.print(
+            to_section_title(failures + successes + "in " + elapsed_time),
+            style="green" if not n_failures else "red",
+        )
 
 
 def run_test_session(
@@ -402,11 +419,11 @@ def run_test_session(
     console.print(to_section_title("integration test session starts"), style="bold")
 
     test_files = collect_test_files(path_list, skip_list)
-    SUCCESSES, FAILURES, fails, seconds = run_test(
+    n_successes, n_failures, fails, seconds = run_test(
         test_files, verbose, special_arguments
     )
     display_failures(fails)
-    display_summary(fails, SUCCESSES, FAILURES, seconds)
+    display_summary(fails, n_successes, n_failures, seconds)
 
 
 def parse_args_and_run():
