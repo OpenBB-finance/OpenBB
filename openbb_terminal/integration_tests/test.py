@@ -78,23 +78,19 @@ def to_section_title(title: str, char: str = "=") -> str:
     return formatted_title
 
 
-def build_test_path_list(path_list: List[str]) -> List[Path]:
-    """Build the paths to use in test mode.
+def convert_list_to_test_files(path_list: List[str]) -> List[Path]:
+    """Converts a list of paths to test to a list of Path objects.
 
     Parameters
     ----------
     path_list: List[str]
-        The list of paths to test
+        The list of paths to convert
 
     Returns
     -------
     List[Path]
-        The list of paths to test
+        The list of paths as Path objects
     """
-    if path_list == "":
-        console.print("Please send a path when using test mode")
-        return []
-
     test_files = []
 
     for path in path_list:
@@ -116,25 +112,55 @@ def build_test_path_list(path_list: List[str]) -> List[Path]:
                         path_obj = f"{root}/{name}"
                         test_files.append(path_obj)
 
-    test_files_unique = set(test_files)
-    final_path_list = [Path(x) for x in test_files_unique]
-    return sorted(final_path_list)
+    return [Path(x) for x in test_files]
 
 
-def collect_test_files(path_list: List[str]) -> List[Path]:
+def build_test_path_list(path_list: List[str], skip_list: List[str]) -> List[Path]:
+    """Build the paths to use in test.
+
+    Parameters
+    ----------
+    path_list: List[str]
+        The list of paths to test
+    skip_list: List[str]
+        The list of paths to skip
+
+    Returns
+    -------
+    List[Path]
+        The list of paths to test
+    """
+    if path_list == "":
+        console.print("Please send a path when using test mode")
+        return []
+
+    valid_test_list = set(convert_list_to_test_files(path_list))
+    valid_skip_list = set(convert_list_to_test_files(skip_list))
+
+    console.print(f"* Collected {len(valid_test_list)} script(s)", style="bold")
+
+    if any(x in valid_test_list for x in valid_skip_list):
+        console.print(f"* Skipping {len(valid_skip_list)} script(s)", style="bold")
+
+    return sorted(valid_test_list - valid_skip_list)
+
+
+def collect_test_files(path_list: List[str], skip_list: List[str]) -> List[Path]:
     """Collects the test files from the scripts directory
 
     Parameters
     ----------
     path_list: List[str]
         The list of paths to test
+    skip_list: List[str]
+        The list of paths to skip
     """
+
+    console.print(f"Collecting scripts from: {SCRIPTS_FOLDER_PATH}\n")
 
     if not path_list:
         path_list = [""]
-    test_files = build_test_path_list(path_list)
-    console.print(f"Collecting scripts from: {SCRIPTS_FOLDER_PATH}\n")
-    console.print(f"Collected {len(test_files)} script(s)\n", style="bold")
+    test_files = build_test_path_list(path_list, skip_list)
 
     return test_files
 
@@ -201,7 +227,7 @@ def run_scripts(
                 terminal(file_cmds, test_mode=True)
 
 
-def run_test_files(
+def start_test(
     test_files: list, verbose: bool, special_arguments: dict
 ) -> Tuple[int, int, Dict[str, Dict[str, object]], float]:
     """Runs the test scripts and returns the fails dictionary
@@ -224,7 +250,7 @@ def run_test_files(
     start = time.time()
 
     if test_files:
-        console.print("Running script(s)...\n", style="bold")
+        console.print("* Running script(s)...\n", style="bold")
 
     os.environ["DEBUG_MODE"] = "true"
     SUCCESSES = 0
@@ -344,7 +370,10 @@ def display_summary(
 
 
 def run_test_list(
-    path_list: List[str], verbose: bool, special_arguments: Dict[str, str]
+    path_list: List[str],
+    skip_list: List[str],
+    verbose: bool,
+    special_arguments: Dict[str, str],
 ) -> None:
     """Run commands in test mode.
 
@@ -358,6 +387,8 @@ def run_test_list(
     ----------
     path_list: list
         The list of paths to test
+    skip_list: list
+        The list of paths to skip
     verbose: bool
         Whether or not to print the output of the scripts
     special_arguments: dict
@@ -366,9 +397,9 @@ def run_test_list(
 
     console.print(to_section_title("integration test session starts"), style="bold")
 
-    test_files = collect_test_files(path_list)
+    test_files = collect_test_files(path_list, skip_list)
 
-    SUCCESSES, FAILURES, fails, seconds = run_test_files(
+    SUCCESSES, FAILURES, fails, seconds = start_test(
         test_files, verbose, special_arguments
     )
     display_failures(fails)
@@ -401,6 +432,24 @@ def parse_args_and_run():
         type=str,
     )
     parser.add_argument(
+        "-s",
+        "--skip",
+        help=(
+            "The path to scripts or .openbb file to run."
+            "Scripts must be run from 'openbb_terminal/integration_tests/scripts/'."
+            " Usage examples for this flag:"
+            " (1) `... -s test_keys_.openbb`,"
+            " (2) `... -s forex/test_forex_load.openbb`,"
+            " (3) `... -s test_keys_.openbb forex`,"
+            " (4) `... -s test_keys_.openbb forex etf`."
+            " If no path is provided, all scripts will be run."
+        ),
+        dest="skip",
+        nargs="+",
+        default="",
+        type=str,
+    )
+    parser.add_argument(
         "-v",
         "--verbose",
         help="Enable verbose output for debugging",
@@ -428,6 +477,7 @@ def parse_args_and_run():
 
     run_test_list(
         path_list=ns_parser.path,
+        skip_list=ns_parser.skip,
         verbose=ns_parser.verbose,
         special_arguments=special_args_dict,
     )
