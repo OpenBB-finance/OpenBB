@@ -279,7 +279,22 @@ def run_test(
     return file_short_name, exception
 
 
-def display_test_progress(i, test_files, n_failures, file_short_name):
+def display_test_progress(
+    i: int, test_files: list, n_failures: int, file_short_name: str
+):
+    """Displays the progress of the tests
+
+    Parameters
+    ----------
+    i: int
+        The index of the test
+    test_files: list
+        The list of test files
+    n_failures: int
+        The number of failures
+    file_short_name: str
+        The name of the file
+    """
     percentage = f"{(i + 1)/len(test_files):.0%}"
     percentage_with_spaces = "[" + (4 - len(percentage)) * " " + percentage + "]"
     spaces = SECTION_LENGTH - len(file_short_name) - len(percentage_with_spaces)
@@ -293,7 +308,7 @@ def run_test_files(
     test_files: list,
     verbose: bool = False,
     special_arguments: dict = None,
-    processes: Optional[int] = None,
+    subprocesses: Optional[int] = None,
 ) -> Tuple[int, int, Dict[str, Dict[str, object]], float]:
     """Runs the test scripts and returns the fails dictionary
 
@@ -305,8 +320,8 @@ def run_test_files(
         Whether or not to print the output of the scripts
     special_arguments: dict
         The special arguments to use in the scripts
-    processes: Optional[int]
-        The number of processes to use
+    subprocesses: Optional[int]
+        The number of subprocesses to use
 
     Returns
     -------
@@ -328,9 +343,9 @@ def run_test_files(
         # For example a ticker loaded in a previous test might be available
         # in the next test, even if the test script doesn't import it.
         console.print(
-            f"* Running script(s) in {processes} subprocess(es)...\n", style="bold"
+            f"* Running script(s) in {subprocesses} subprocess(es)...\n", style="bold"
         )
-        with Pool(processes=processes) as pool:
+        with Pool(processes=subprocesses) as pool:
             for i, result in enumerate(
                 pool.imap(
                     partial(
@@ -447,7 +462,7 @@ def run_test_session(
     skip_list: List[str],
     special_arguments: Dict[str, str],
     verbose: bool = False,
-    processes: Optional[int] = None,
+    subprocesses: Optional[int] = None,
 ) -> None:
     """Run the integration test session
 
@@ -475,10 +490,26 @@ def run_test_session(
 
     test_files = collect_test_files(path_list, skip_list)
     n_successes, n_failures, fails, seconds = run_test_files(
-        test_files, verbose, special_arguments, processes
+        test_files, verbose, special_arguments, subprocesses
     )
     display_failures(fails)
     display_summary(fails, n_successes, n_failures, seconds)
+
+
+def list_available_scripts(path_list: List[str], skip_list: List[str]):
+    """List all available scripts
+
+    Parameters
+    ----------
+    path_list: List[str]
+        The list of paths to test
+    skip_list: List[str]
+        The list of paths to skip
+    """
+    test_files = collect_test_files(path_list, skip_list)
+    console.print("\nAvailable scripts:", style="yellow")
+    for i, file in enumerate(test_files):
+        console.print(f"{i}. " + str(file).replace(str(SCRIPTS_DIRECTORY), "")[1:])
 
 
 def parse_args_and_run():
@@ -511,7 +542,7 @@ def parse_args_and_run():
         "--skip",
         help=(
             "The path to scripts or .openbb file to run."
-            "Scripts must be run from 'openbb_terminal/integration_tests/scripts/'."
+            " Scripts must be run from 'openbb_terminal/integration_tests/scripts/'."
             " Usage examples for this flag:"
             " (1) `... -s test_keys_.openbb`,"
             " (2) `... -s forex/test_forex_load.openbb`,"
@@ -542,33 +573,45 @@ def parse_args_and_run():
         default=False,
     )
     parser.add_argument(
-        "--processes",
-        help="The number of processes to use to run the tests",
-        dest="processes",
+        "--subprocesses",
+        help="The number of subprocesses to use to run the tests. Default is the number of CPUs.",
+        dest="subprocesses",
         type=int,
         default=cpu_count(),
+    )
+    parser.add_argument(
+        "-l",
+        "--list",
+        help="List available scripts",
+        dest="list_",
+        action="store_true",
+        default=False,
     )
     ns_parser, unknown_args = parser.parse_known_args()
 
     # This is to allow the dev to send a path without the -p flag
     if not ns_parser.path and unknown_args:
-        ns_parser.path = unknown_args
+        ns_parser.path = [u for u in unknown_args if u[0] != "-"]
 
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
 
-    if ns_parser.verbose and ns_parser.processes > 1:
+    if ns_parser.verbose and ns_parser.subprocesses > 1:
         console.print(
-            "WARNING: verbose mode and multiprocessing are not compatible. The output of the scripts would be mixed up. Setting processes to 1...\n",
+            "WARNING: verbose mode and multiprocessing are not compatible. The output of the scripts would be mixed up. Setting subprocesses to 1...\n",
             style="yellow",
         )
-        ns_parser.processes = 1
+        ns_parser.subprocesses = 1
+
+    if ns_parser.list_:
+        list_available_scripts(ns_parser.path, ns_parser.skip)
+        return
 
     run_test_session(
         path_list=ns_parser.path,
         skip_list=ns_parser.skip,
         special_arguments=special_args_dict,
         verbose=ns_parser.verbose,
-        processes=ns_parser.processes,
+        subprocesses=ns_parser.subprocesses,
     )
 
 
