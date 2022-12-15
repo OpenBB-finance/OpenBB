@@ -1,4 +1,5 @@
 import React, { useState, cloneElement, isValidElement } from 'react';
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import clsx from 'clsx';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import { duplicates } from '@docusaurus/theme-common';
@@ -28,7 +29,7 @@ function isTabItem(comp) {
 }
 
 function getOSName() {
-  const userAgent = navigator.userAgent;
+  const userAgent = ExecutionEnvironment.canUseDOM ? navigator.userAgent : "";
   if (userAgent.indexOf('Windows') > -1) {
     return 'Windows';
   } else if (userAgent.indexOf('Mac') > -1) {
@@ -168,7 +169,7 @@ function TabsComponent(props) {
         role="tablist"
         aria-orientation="horizontal"
         className={clsx(
-          '_group-tab list-none lg:-ml-7 my-6',
+          '_group-tab list-none -ml-7 my-6 overflow-auto',
         )}>
         {values.map(({ value, label, attributes }) => (
           <li
