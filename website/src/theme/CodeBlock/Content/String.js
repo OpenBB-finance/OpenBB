@@ -42,7 +42,7 @@ export default function CodeBlockString({
   const showLineNumbers =
     showLineNumbersProp ?? containsLineNumbers(metastring);
   
-  const shouldWordwrapByDefault = code.startsWith("openbb.")
+  const shouldWordwrapByDefault = metastring?.includes("wordwrap")
 
   return (
     <Container

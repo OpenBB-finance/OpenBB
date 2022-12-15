@@ -296,7 +296,7 @@ def generate_markdown_section(meta: Dict[str, Any]):
     markdown = (
         f"{meta['description']}\n\nSource Code: [[link]({meta['source_code_url']})]\n\n"
     )
-    markdown += f"```python\n{meta['func_def']}\n```\n\n"
+    markdown += f"```python wordwrap\n{meta['func_def']}\n```\n\n"
 
     markdown += "---\n\n## Parameters\n\n"
     if meta["params"]:
