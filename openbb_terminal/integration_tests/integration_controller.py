@@ -143,16 +143,13 @@ def build_test_path_list(path_list: List[str], skip_list: List[str]) -> List[Pat
 
     valid_test_list = set(convert_list_to_test_files(path_list))
     valid_skip_list = set(convert_list_to_test_files(skip_list))
-    len_skip = (
-        len(valid_skip_list)
-        if any(x in valid_test_list for x in valid_skip_list)
-        else 0
-    )
+    final_list = sorted(valid_test_list - valid_skip_list)
+    len_skip = len(valid_test_list) - len(final_list)
 
     console.print(f"* Collected {len(valid_test_list)} script(s)...", style="bold")
     console.print(f"* Skipping {len_skip} script(s)...", style="bold")
 
-    return sorted(valid_test_list - valid_skip_list)
+    return final_list
 
 
 def collect_test_files(path_list: List[str], skip_list: List[str]) -> List[Path]:
