@@ -332,7 +332,8 @@ def run_test_files(
     if test_files:
         n = len(test_files)
 
-        subprocesses = min(n, cpu_count()) if not subprocesses else subprocesses
+        if not subprocesses:
+            subprocesses = min(n, cpu_count())
 
         console.print(
             f"* Running script(s) in {subprocesses} subprocess(es)...\n", style="bold"
