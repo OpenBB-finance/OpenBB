@@ -221,17 +221,15 @@ class DashboardsController(BaseController):
         if hasattr(subprocess, "STARTUPINFO"):
             si = subprocess.STARTUPINFO()
             si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            env = os.environ
         else:
             si = None
-            env = None
 
         ret = {
             "stdin": subprocess.PIPE,
             "stderr": subprocess.PIPE,
             "stdout": subprocess.PIPE,
             "startupinfo": si,
-            "env": env,
+            "env": os.environ,
             "cwd": cwd,
         }
 
