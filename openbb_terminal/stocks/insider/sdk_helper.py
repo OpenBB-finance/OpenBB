@@ -160,7 +160,7 @@ def blcp() -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.stocks.ins.bclp()
+    >>> openbb.stocks.ins.blcp()
     """
     return openinsider_model.get_print_insider_data("blcp")
 
