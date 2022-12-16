@@ -21,6 +21,7 @@ from openbb_terminal.terminal_controller import (
     insert_start_slash,
     terminal,
     replace_dynamic,
+    obbff,
 )
 from openbb_terminal.terminal_helper import is_reset, suppress_stdout
 
@@ -231,6 +232,7 @@ def run_scripts(
         else:
             file_cmds = [" ".join(file_cmds)]
 
+        obbff.REMEMBER_CONTEXTS = 0
         if verbose:
             terminal(file_cmds, test_mode=True)
         else:
@@ -341,12 +343,18 @@ def run_test_files(
 
         with Pool(processes=subprocesses) as pool:
 
+            # Choosing chunksize: line 477 .../lib/python3.9/multiprocessing/pool.py
+            chunksize, extra = divmod(n, subprocesses * 4)
+            if extra:
+                chunksize += 1
+
             for i, result in enumerate(
                 pool.imap(
                     partial(
                         run_test, verbose=verbose, special_arguments=special_arguments
                     ),
                     test_files,
+                    chunksize=chunksize,
                 )
             ):
                 file_short_name, exception = result
