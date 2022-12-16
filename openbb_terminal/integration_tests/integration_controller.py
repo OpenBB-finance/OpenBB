@@ -304,7 +304,7 @@ def display_test_progress(i: int, n: int, n_failures: int, file_short_name: str)
 def run_test_files(
     test_files: List[Path],
     verbose: bool = False,
-    special_arguments: dict = None,
+    special_arguments: Optional[Dict[str, str]] = None,
     subprocesses: Optional[int] = None,
 ) -> Tuple[int, int, Dict[str, Dict[str, Any]], float]:
     """Runs the test scripts and returns the fails dictionary
@@ -315,7 +315,7 @@ def run_test_files(
         The list of files to test
     verbose: bool
         Whether or not to print the output of the scripts
-    special_arguments: dict
+    special_arguments: Optional[Dict[str, str]]
         The special arguments to use in the scripts
     subprocesses: Optional[int]
         The number of subprocesses to use
@@ -452,25 +452,25 @@ def display_summary(
 def run_test_session(
     path_list: List[str],
     skip_list: List[str],
-    special_arguments: Dict[str, str],
+    special_arguments: Optional[Dict[str, str]] = None,
     verbose: bool = False,
     subprocesses: Optional[int] = None,
 ):
     """Run the integration test session
 
     Workflow:
-    1. Collect scripts
-    2. Run tests
-    3. Display failures
-    4. Display summary
+    1. Collect test scripts
+    2. Run test scripts
+    3. Display failures traceback and detail, if any
+    4. Display test summary
 
     Parameters
     ----------
-    path_list: list
+    path_list: List[str]
         The list of paths to test
-    skip_list: list
+    skip_list: List[str]
         The list of paths to skip
-    special_arguments: dict
+    special_arguments: Optional[Dict[str, str]]
         The special arguments to use in the scripts
     verbose: bool
         Whether or not to print the output of the scripts
@@ -571,7 +571,6 @@ def parse_args_and_run():
         action="store_true",
         default=False,
     )
-    # This is the list of special arguments a user can send
     for arg in special_arguments_values:
         parser.add_argument(
             f"--{arg}",
