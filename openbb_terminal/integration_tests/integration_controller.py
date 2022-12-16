@@ -8,7 +8,7 @@ from multiprocessing import cpu_count
 from pathlib import Path
 import re
 import time
-from typing import Any, List, Dict, Optional, Tuple, Union
+from typing import Any, List, Dict, Optional, Tuple
 from traceback import FrameSummary, format_list, extract_tb
 import argparse
 import logging
@@ -142,13 +142,13 @@ def build_test_path_list(path_list: List[str], skip_list: List[str]) -> List[Pat
 
     valid_test_list = set(convert_list_to_test_files(path_list))
     valid_skip_list = set(convert_list_to_test_files(skip_list))
+    len_skip = (
+        len(valid_skip_list)
+        if any(x in valid_test_list for x in valid_skip_list)
+        else 0
+    )
 
     console.print(f"* Collected {len(valid_test_list)} script(s)...", style="bold")
-
-    if any(x in valid_test_list for x in valid_skip_list):
-        len_skip = len(valid_skip_list)
-    else:
-        len_skip = 0
     console.print(f"* Skipping {len_skip} script(s)...", style="bold")
 
     return sorted(valid_test_list - valid_skip_list)
@@ -163,15 +163,17 @@ def collect_test_files(path_list: List[str], skip_list: List[str]) -> List[Path]
         The list of paths to test
     skip_list: List[str]
         The list of paths to skip
-    """
 
+    Returns
+    -------
+    List[Path]
+        The list of paths to test
+    """
     console.print(f"Collecting scripts from: {SCRIPTS_DIRECTORY}\n")
 
     if not path_list:
         path_list = [""]
-    test_files = build_test_path_list(path_list, skip_list)
-
-    return test_files
+    return build_test_path_list(path_list, skip_list)
 
 
 def run_scripts(
@@ -255,9 +257,8 @@ def run_test(
     Returns
     -------
     Tuple[str, Optional[Dict[str, Any]]]
-        The name of the file and the exception if any
+        The name of the file and the exception
     """
-
     file_short_name = str(file).replace(str(SCRIPTS_DIRECTORY), "")[1:]
 
     try:
@@ -277,23 +278,21 @@ def run_test(
     return file_short_name, exception
 
 
-def display_test_progress(
-    i: int, test_files: list, n_failures: int, file_short_name: str
-):
+def display_test_progress(i: int, n: int, n_failures: int, file_short_name: str):
     """Displays the progress of the tests
 
     Parameters
     ----------
     i: int
         The index of the test
-    test_files: list
-        The list of test files
+    n: int
+        The total number of tests
     n_failures: int
         The number of failures
     file_short_name: str
         The name of the file
     """
-    percentage = f"{(i + 1)/len(test_files):.0%}"
+    percentage = f"{(i + 1)/n:.0%}"
     percentage_with_spaces = "[" + (4 - len(percentage)) * " " + percentage + "]"
     spaces = SECTION_LENGTH - len(file_short_name) - len(percentage_with_spaces)
     console.print(
@@ -303,7 +302,7 @@ def display_test_progress(
 
 
 def run_test_files(
-    test_files: list,
+    test_files: List[Path],
     verbose: bool = False,
     special_arguments: dict = None,
     subprocesses: Optional[int] = None,
@@ -312,8 +311,8 @@ def run_test_files(
 
     Parameters
     -----------
-    test_files: list
-        The list of paths to test
+    test_files: List[Path]
+        The list of files to test
     verbose: bool
         Whether or not to print the output of the scripts
     special_arguments: dict
@@ -325,23 +324,18 @@ def run_test_files(
     -------
     Tuple[int, int, Dict[str, Dict[str, Any]], float]
     """
-
     os.environ["DEBUG_MODE"] = "true"
     n_successes = 0
     n_failures = 0
     fails: Dict[str, Dict[str, Any]] = {}
 
     if test_files:
-
-        start = time.time()
-
-        # If we run multiple scripts with just one process as terminal caches
-        # imports and test scripts will not be independent.
-        # For example a ticker loaded in a previous test might be available
-        # in the next test, even if the test script doesn't import it.
+        n = len(test_files)
         console.print(
             f"* Running script(s) in {subprocesses} subprocess(es)...\n", style="bold"
         )
+        start = time.time()
+
         with Pool(processes=subprocesses) as pool:
             for i, result in enumerate(
                 pool.imap(
@@ -357,7 +351,7 @@ def run_test_files(
                     fails[file_short_name] = exception
                 else:
                     n_successes += 1
-                display_test_progress(i, test_files, n_failures, file_short_name)
+                display_test_progress(i, n, n_failures, file_short_name)
 
         end = time.time()
         seconds = end - start
@@ -483,9 +477,7 @@ def run_test_session(
     multiprocessing: bool
         Whether or not to run the tests in parallel
     """
-
     console.print(to_section_title("integration test session starts"), style="bold")
-
     test_files = collect_test_files(path_list, skip_list)
     n_successes, n_failures, fails, seconds = run_test_files(
         test_files, verbose, special_arguments, subprocesses
@@ -508,6 +500,7 @@ def display_available_scripts(path_list: List[str], skip_list: List[str]):
     console.print("\nAvailable scripts:", style="yellow")
     for i, file in enumerate(test_files):
         console.print(f"{i}. " + str(file).replace(str(SCRIPTS_DIRECTORY), "")[1:])
+    console.print("")
 
 
 def parse_args_and_run():
@@ -553,26 +546,19 @@ def parse_args_and_run():
         default="",
         type=str,
     )
-    # This is the list of special arguments a user can send
-    for arg in special_arguments_values:
-        parser.add_argument(
-            f"--{arg}",
-            help=f"Change the default values for {arg}",
-            dest=arg,
-            type=str,
-            default="",
-        )
     parser.add_argument(
         "-v",
         "--verbose",
-        help="Whether or not to print the output of the scripts",
+        help="Whether or not to print the output of the scripts."
+        " To use it you must use just 1 subprocess.",
         dest="verbose",
         action="store_true",
         default=False,
     )
     parser.add_argument(
         "--subprocesses",
-        help="The number of subprocesses to use to run the tests. Default is the number of CPUs.",
+        help="The number of subprocesses to use to run the tests."
+        " Default is the number of CPUs.",
         dest="subprocesses",
         type=int,
         default=cpu_count(),
@@ -585,9 +571,19 @@ def parse_args_and_run():
         action="store_true",
         default=False,
     )
+    # This is the list of special arguments a user can send
+    for arg in special_arguments_values:
+        parser.add_argument(
+            f"--{arg}",
+            help=f"Change the default values for {arg}",
+            dest=arg,
+            type=str,
+            default="",
+        )
+
     ns_parser, unknown_args = parser.parse_known_args()
 
-    # This is to allow the dev to send a path without the -p flag
+    # Allow the tester to send a path without the -p flag
     if not ns_parser.path and unknown_args:
         ns_parser.path = [u for u in unknown_args if u[0] != "-"]
 
@@ -602,8 +598,7 @@ def parse_args_and_run():
         ns_parser.subprocesses = 1
 
     if ns_parser.list_:
-        display_available_scripts(ns_parser.path, ns_parser.skip)
-        return
+        return display_available_scripts(ns_parser.path, ns_parser.skip)
 
     run_test_session(
         path_list=ns_parser.path,
