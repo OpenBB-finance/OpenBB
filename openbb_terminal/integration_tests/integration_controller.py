@@ -144,6 +144,7 @@ def build_test_path_list(path_list: List[str], skip_list: List[str]) -> List[Pat
     valid_test_list = set(convert_list_to_test_files(path_list))
     valid_skip_list = set(convert_list_to_test_files(skip_list))
     final_list = sorted(valid_test_list - valid_skip_list)
+    # Just display number of skips if the skip path is in valid_test_list
     len_skip = len(valid_test_list) - len(final_list)
 
     console.print(f"* Collected {len(valid_test_list)} script(s)...", style="bold")
