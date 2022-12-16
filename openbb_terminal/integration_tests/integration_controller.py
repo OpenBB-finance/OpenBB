@@ -566,7 +566,7 @@ def parse_args_and_run():
         default=False,
     )
     parser.add_argument(
-        "--subprocesses",
+        "--subproc",
         help="The number of subprocesses to use to run the tests."
         " Default is the minimum between number of collected scripts and CPUs.",
         dest="subprocesses",
@@ -598,7 +598,7 @@ def parse_args_and_run():
 
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
 
-    if ns_parser.verbose and ns_parser.subprocesses > 1:
+    if ns_parser.verbose and ns_parser.subprocesses != 1:
         console.print(
             "WARNING: verbose mode and multiprocessing are not compatible. "
             "The output of the scripts would be mixed up. Setting subprocesses to 1...\n",
