@@ -331,12 +331,16 @@ def run_test_files(
 
     if test_files:
         n = len(test_files)
+
+        subprocesses = min(n, cpu_count()) if not subprocesses else subprocesses
+
         console.print(
             f"* Running script(s) in {subprocesses} subprocess(es)...\n", style="bold"
         )
         start = time.time()
 
         with Pool(processes=subprocesses) as pool:
+
             for i, result in enumerate(
                 pool.imap(
                     partial(
@@ -558,10 +562,10 @@ def parse_args_and_run():
     parser.add_argument(
         "--subprocesses",
         help="The number of subprocesses to use to run the tests."
-        " Default is the number of CPUs.",
+        " Default is the minimum between number of collected scripts and CPUs.",
         dest="subprocesses",
         type=int,
-        default=cpu_count(),
+        default=None,
     )
     parser.add_argument(
         "-l",
