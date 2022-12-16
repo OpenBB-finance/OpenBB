@@ -13,7 +13,6 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_REPORTS_DIRECTORY,
 )
-from openbb_terminal.helper_funcs import parse_simple_args
 from openbb_terminal.reports import reports_model
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -203,7 +202,7 @@ class ReportController(BaseController):
                 other_args.insert(
                     0, "--" + list(self.PARAMETERS_DICT[report_name].keys())[0]
                 )
-            ns_parser = parse_simple_args(parser, other_args)
+            ns_parser = self.parse_simple_args(parser, other_args)
 
             if ns_parser:
                 cfg.LOGGING_SUPPRESS = True

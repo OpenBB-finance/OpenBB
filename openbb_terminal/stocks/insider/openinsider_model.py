@@ -1,16 +1,16 @@
 import configparser
 import logging
-from pathlib import Path
 import textwrap
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, List
 
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)

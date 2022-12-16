@@ -2,7 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, List
+from datetime import datetime
+from typing import Any, Dict, List
 
 import finviz
 import pandas as pd
@@ -43,8 +44,62 @@ def get_analyst_data(symbol: str) -> pd.DataFrame:
     df_fa: DataFrame
         Analyst price targets
     """
-    d_finviz_analyst_price = finviz.get_analyst_price_targets(symbol)
+    d_finviz_analyst_price = get_analyst_price_targets_workaround(symbol)
     df_fa = pd.DataFrame.from_dict(d_finviz_analyst_price)
-    df_fa.set_index("date", inplace=True)
+    if not df_fa.empty:
+        df_fa.set_index("date", inplace=True)
 
     return df_fa
+
+
+# Patches finviz function while finviz is not updated
+def get_analyst_price_targets_workaround(
+    ticker: str, last_ratings: int = 5
+) -> List[Dict]:
+    """Patch the analyst price targets function from finviz
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker symbol
+    last_ratings: int
+        Number to get
+
+    """
+
+    analyst_price_targets = []
+
+    try:
+        finviz.main_func.get_page(ticker)
+        page_parsed = finviz.main_func.STOCK_PAGE[ticker]
+        table = page_parsed.cssselect(
+            'table[class="js-table-ratings fullview-ratings-outer"]'
+        )[0]
+
+        for row in table:
+            rating = row.xpath("td//text()")
+            rating = [
+                val.replace("→", "->").replace("$", "") for val in rating if val != "\n"
+            ]
+            rating[0] = datetime.strptime(rating[0], "%b-%d-%y").strftime("%Y-%m-%d")
+
+            data = {
+                "date": rating[0],
+                "category": rating[1],
+                "analyst": rating[2],
+                "rating": rating[3],
+            }
+            if len(rating) == 5:
+                if "->" in rating[4]:
+                    rating.extend(rating[4].replace(" ", "").split("->"))
+                    del rating[4]
+                    data["target_from"] = float(rating[4])
+                    data["target_to"] = float(rating[5])
+                else:
+                    data["target"] = float(rating[4])
+
+            analyst_price_targets.append(data)
+    except Exception:
+        pass
+
+    return analyst_price_targets[:last_ratings]

@@ -13,6 +13,7 @@ from darts.models import RNNModel
 from darts.utils.likelihood_models import GaussianLikelihood
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
+from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 
 logger = logging.getLogger(__name__)
 
@@ -117,13 +118,19 @@ def get_rnn_data(
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
         likelihood=GaussianLikelihood(),
+        log_tensorboard=True,
+        work_dir=USER_FORECAST_MODELS_DIRECTORY,
     )
 
     # fit model on train series for historical forecasting
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         helpers.fit_model(rnn_model, train, val)
-    best_model = RNNModel.load_from_checkpoint(model_name=model_save_name, best=True)
+    best_model = RNNModel.load_from_checkpoint(
+        model_name=model_save_name, best=True, work_dir=USER_FORECAST_MODELS_DIRECTORY
+    )
+
+    helpers.print_tensorboard_logs(model_save_name, USER_FORECAST_MODELS_DIRECTORY)
 
     # Showing historical backtesting without retraining model (too slow)
     return helpers.get_prediction(
