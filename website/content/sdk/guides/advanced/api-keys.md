@@ -5,7 +5,7 @@ sidebar_position: 1
 
 ## Accessing API Keys
 
-With the OpenBB SDK you can define your, often free, API key from various platforms like Alpha Vantage, FRED, IEX, Twitter, DeGiro, Binance and Coinglass. API keys are in essence a set of random characters that is unique to you. API keys can be managed directly from the SDK environment. If there is already a Terminal installation configured with API keys, they will be recognized by the SDK. Find the complete list of options below:
+With the OpenBB SDK you can define your, often free, API key from various platforms like Alpha Vantage, FRED, IEX, Twitter, DeGiro, Binance and Coinglass. An API key is a set of random characters provided to you by a third party vendor that allows you to access data via their API endpoints. API keys can be managed directly from the SDK environment. If there is already a Terminal installation configured with API keys, they will be recognized by the SDK. Find the complete list of options below:
 
 <details>
 <summary>Summary of API Key Providers</summary>
