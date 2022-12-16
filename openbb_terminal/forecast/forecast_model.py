@@ -371,9 +371,7 @@ def add_atr(
         # drop ATR1, ATR2, ATR3
         dataset = dataset.drop(["ATR1", "ATR2", "ATR3"], axis=1)
 
-        return dataset
-    else:
-        return dataset
+    return dataset
 
 
 @log_start_end(log=logger)
