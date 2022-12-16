@@ -2,13 +2,14 @@
 __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines, too-many-branches, too-many-arguments, R0904,R0902,W0707
-
+# flake8: noqa
 import argparse
 import logging
 from typing import Any, Optional, List, Dict
 
 try:
     import torch
+
     import darts
 
     darts_latest = "0.22.0"
@@ -25,10 +26,8 @@ except ModuleNotFoundError:
         "Please install the forecast version of the terminal. Instructions can be found "
         "under the python tab: https://docs.openbb.co/terminal/quickstart/installation"
     )
-
 import pandas as pd
 import psutil
-
 from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     USER_CUSTOM_IMPORTS_DIRECTORY,
@@ -45,6 +44,7 @@ from openbb_terminal.helper_funcs import (
     log_and_raise,
     valid_date,
 )
+
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
@@ -72,6 +72,7 @@ from openbb_terminal.forecast import (
     trans_view,
     nhits_view,
 )
+
 from openbb_terminal.common import common_model
 
 logger = logging.getLogger(__name__)

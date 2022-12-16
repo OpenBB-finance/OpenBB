@@ -5,9 +5,9 @@ import logging
 
 import finviz
 import pandas as pd
-from openbb_terminal.rich_config import console
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
