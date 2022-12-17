@@ -4986,7 +4986,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "20a72fd4a962faaf10ab2d1cc03bb27e1d4236c9470d850756ef982b0c35f983"
+content-hash = "86eaa41a2fc0875f08b676b43df6b3858c5d8a6c2eeb77f34cc236c3f49463f5"
 
 [metadata.files]
 absl-py = [
