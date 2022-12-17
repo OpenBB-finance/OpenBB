@@ -96,12 +96,10 @@ def convert_list_to_test_files(path_list: List[str]) -> List[Path]:
     test_files = []
 
     for path in path_list:
-        if "openbb_terminal/integration_tests/scripts" in path:
-            directory = REPOSITORY_DIRECTORY
+        if path.startswith(str(Path("openbb_terminal/integration_tests/scripts"))):
+            script_path = REPOSITORY_DIRECTORY / path
         else:
-            directory = SCRIPTS_DIRECTORY
-
-        script_path = directory / path
+            script_path = SCRIPTS_DIRECTORY / path
 
         if script_path.exists():
             chosen_path = script_path
@@ -310,7 +308,7 @@ def run_test_files(
     """Runs the test scripts and returns the fails dictionary
 
     Parameters
-    -----------
+    ----------
     test_files: List[Path]
         The list of files to test
     verbose: bool
@@ -318,7 +316,7 @@ def run_test_files(
     special_arguments: Optional[Dict[str, str]]
         The special arguments to use in the scripts
     subprocesses: Optional[int]
-        The number of subprocesses to use
+        The number of subprocesses to use to run the tests
 
     Returns
     -------
@@ -377,7 +375,7 @@ def display_failures(fails: Dict[str, Dict[str, Any]]):
     """Generates the failures section of the test report
 
     Parameters
-    -----------
+    ----------
     fails: Dict[str, Dict[str, Any]]
         The dictionary with failure information
     """
@@ -485,8 +483,8 @@ def run_test_session(
         The special arguments to use in the scripts
     verbose: bool
         Whether or not to print the output of the scripts
-    multiprocessing: bool
-        Whether or not to run the tests in parallel
+    subprocesses
+        The number of subprocesses to use to run the tests
     """
     console.print(to_section_title("integration test session starts"), style="bold")
     test_files = collect_test_files(path_list, skip_list)
