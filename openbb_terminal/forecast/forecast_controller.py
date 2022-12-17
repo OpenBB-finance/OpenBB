@@ -1556,14 +1556,14 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            check = False
-            self.datasets[ns_parser.target_dataset], check = forecast_model.add_atr(
+            self.datasets[ns_parser.target_dataset] = forecast_model.add_atr(
                 self.datasets[ns_parser.target_dataset],
                 close_column=ns_parser.close_col,
                 high_column=ns_parser.high_col,
                 low_column=ns_parser.low_col,
             )
-            if check:
+            # check if true range was added
+            if "true_range" in self.datasets[ns_parser.target_dataset].columns:
                 console.print(
                     f"Successfully added 'Average True Range' to '{ns_parser.target_dataset}' dataset"
                 )
