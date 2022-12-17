@@ -123,7 +123,7 @@ TOOLBAR_HINT = load_env_vars("OPENBB_TOOLBAR_HINT", strtobool, True, "featflags"
 
 # Toolbar Twitter news
 TOOLBAR_TWEET_NEWS = load_env_vars(
-    "OPENBB_TOOLBAR_TWEET_NEWS", strtobool, True, "featflags"
+    "OPENBB_TOOLBAR_TWEET_NEWS", strtobool, False, "featflags"
 )
 
 # Toolbar Twitter news seconds between updates being checked
