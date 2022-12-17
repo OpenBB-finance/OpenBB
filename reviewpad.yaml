@@ -1,0 +1,35 @@
+api-version: reviewpad.com/v3.x
+
+groups:
+  - name: size-labels
+    spec: '["feat XS", "feat S", "feat M", "feat L", "feat XL"]'
+  - name: ignored-patterns
+    spec: '["*.lock","*.csv","*.yaml","*.txt"]'
+
+workflows:
+  - name: label-pull-request-with-size
+    description: Label pull request based on the number of lines changed
+    always-run: true
+    if:
+        # Calculate size while ignoring patterns in the "ignored-patterns" group
+        # For more details about size follow https://docs.reviewpad.com/guides/built-ins/#size
+        - rule: $size($group("ignored-patterns")) <= 100
+          extra-actions:
+              - $removeLabels($group("size-labels"))
+              - $addLabel("feat XS")
+        - rule: $size($group("ignored-patterns")) > 100 && $size($group("ignored-patterns")) <= 300
+          extra-actions:
+              - $removeLabels($group("size-labels"))
+              - $addLabel("feat S")
+        - rule: $size($group("ignored-patterns")) > 300 && $size($group("ignored-patterns")) <= 900
+          extra-actions:
+              - $removeLabels($group("size-labels"))
+              - $addLabel("feat M")
+        - rule: $size($group("ignored-patterns")) > 900 && $size($group("ignored-patterns")) <= 1800
+          extra-actions:
+              - $removeLabels($group("size-labels"))
+              - $addLabel("feat L")
+        - rule: $size($group("ignored-patterns")) > 1800
+          extra-actions:
+              - $removeLabels($group("size-labels"))
+              - $addLabel("feat XL")
