@@ -1,6 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
 import pathlib
+import subprocess
 
 from dotenv import set_key
 
@@ -29,6 +30,14 @@ binary_to_remove = pathlib.Path(
 )
 print("Removing ARM64 Binary: _scs_direct.cpython-39-darwin.so")
 binary_to_remove.unlink(missing_ok=True)
+
+# Removing inspect hook
+destination = pathlib.Path(
+    os.path.join(pathex, "pyinstaller/hooks/rthooks", "pyi_rth_inspect.py")
+)
+print("Replacing Pyinstaller Hook: pyi_rth_inspect.py")
+source = "build/pyinstaller/hooks/pyi_rth_inspect.py"
+subprocess.run(["cp", source, str(destination)], check=True)
 
 
 # Get latest commit
@@ -87,7 +96,6 @@ hidden_imports = [
     "frozendict",
     "textwrap3",
     "pyEX",
-    "tensorflow",
     "feedparser",
     "pymongo",
     "bson",
