@@ -96,7 +96,9 @@ def convert_list_to_test_files(path_list: List[str]) -> List[Path]:
     test_files = []
 
     for path in path_list:
-        if path.startswith(str(Path("openbb_terminal/integration_tests/scripts"))):
+        if path.startswith(
+            str(Path("openbb_terminal", "integration_tests", "scripts"))
+        ):
             script_path = REPOSITORY_DIRECTORY / path
         else:
             script_path = SCRIPTS_DIRECTORY / path
