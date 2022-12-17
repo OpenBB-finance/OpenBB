@@ -278,7 +278,9 @@ def run_test(
     return file_short_name, exception
 
 
-def display_test_progress(i: int, n: int, n_failures: int, file_short_name: str):
+def display_test_progress(
+    i: int, n: int, n_failures: int, file_short_name: str, verbose: bool = False
+):
     """Displays the progress of the tests
 
     Parameters
@@ -291,14 +293,24 @@ def display_test_progress(i: int, n: int, n_failures: int, file_short_name: str)
         The number of failures
     file_short_name: str
         The name of the file
+    verbose: bool
+        Whether to run tests in verbose mode
     """
+
+    style = "red" if n_failures else "green"
+    if verbose:
+        console.print("^", style=style)
+        console.print("^", style=style)
+        console.print("^", style=style)
     percentage = f"{(i + 1)/n:.0%}"
     percentage_with_spaces = "[" + (4 - len(percentage)) * " " + percentage + "]"
     spaces = SECTION_LENGTH - len(file_short_name) - len(percentage_with_spaces)
     console.print(
         f"{file_short_name}" + spaces * " " + f"{percentage_with_spaces}",
-        style="green" if not n_failures else "red",
+        style=style,
     )
+    if verbose and i != n - 1:
+        console.print("- " * int(SECTION_LENGTH / 2), style=style)
 
 
 def run_test_files(
@@ -362,7 +374,8 @@ def run_test_files(
                     fails[file_short_name] = exception
                 else:
                     n_successes += 1
-                display_test_progress(i, n, n_failures, file_short_name)
+
+                display_test_progress(i, n, n_failures, file_short_name, verbose)
 
         end = time.time()
         seconds = end - start
