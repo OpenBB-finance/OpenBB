@@ -24,10 +24,7 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "calls_only, puts_only, min_sp, max_sp",
-    [
-        (False, False, 80.0, 90.0),
-        (True, True, -1, -1),
-    ],
+    [(False, False, 80.0, 90.0), (True, True, -1, -1)],
 )
 def test_plot_oi(calls_only, max_sp, min_sp, mocker, puts_only):
     mocker.patch(
@@ -35,6 +32,10 @@ def test_plot_oi(calls_only, max_sp, min_sp, mocker, puts_only):
     )
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
+    mocker.patch(
+        target="openbb_terminal.stocks.options.yfinance_view.get_closing_price",
+        return_value=pd.DataFrame({"Close": [100.0], "Date": ["2021-01-01"]}),
+    )
 
     yfinance_view.plot_oi(
         symbol="PM",
@@ -51,10 +52,7 @@ def test_plot_oi(calls_only, max_sp, min_sp, mocker, puts_only):
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "calls_only, puts_only, min_sp, max_sp",
-    [
-        (False, False, 80.0, 90.0),
-        (True, True, -1, -1),
-    ],
+    [(False, False, 80.0, 90.0), (True, True, -1, -1)],
 )
 def test_plot_vol(calls_only, max_sp, min_sp, mocker, puts_only):
     # MOCK CHARTS
@@ -64,6 +62,10 @@ def test_plot_vol(calls_only, max_sp, min_sp, mocker, puts_only):
 
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
+    mocker.patch(
+        target="openbb_terminal.stocks.options.yfinance_view.get_closing_price",
+        return_value=pd.DataFrame({"Close": [100.0], "Date": ["2021-01-01"]}),
+    )
 
     yfinance_view.plot_vol(
         symbol="PM",
@@ -78,13 +80,7 @@ def test_plot_vol(calls_only, max_sp, min_sp, mocker, puts_only):
 
 @pytest.mark.default_cassette("test_plot_volume_open_interest")
 @pytest.mark.vcr
-@pytest.mark.parametrize(
-    "min_sp, max_sp, min_vol",
-    [
-        (80.0, 90.0, 0.0),
-        (-1, -1, -1),
-    ],
-)
+@pytest.mark.parametrize("min_sp, max_sp, min_vol", [(80.0, 90.0, 0.0), (-1, -1, -1)])
 def test_plot_volume_open_interest(max_sp, min_sp, min_vol, mocker):
     # MOCK CHARTS
     mocker.patch(
@@ -93,6 +89,10 @@ def test_plot_volume_open_interest(max_sp, min_sp, min_vol, mocker):
 
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
+    mocker.patch(
+        target="openbb_terminal.stocks.options.yfinance_view.get_closing_price",
+        return_value=pd.DataFrame({"Close": [100.0], "Date": ["2021-01-01"]}),
+    )
 
     yfinance_view.plot_volume_open_interest(
         symbol="PM",
@@ -138,11 +138,7 @@ def test_plot_payoff(mocker):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.plot_payoff(
-        current_price=95.0,
-        options=[],
-        underlying=0,
-        symbol="PM",
-        expiry="2022-06-05",
+        current_price=95.0, options=[], underlying=0, symbol="PM", expiry="2022-06-05"
     )
 
 
