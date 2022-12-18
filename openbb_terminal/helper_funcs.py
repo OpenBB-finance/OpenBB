@@ -38,7 +38,11 @@ from screeninfo import get_monitors
 
 from openbb_terminal import config_plot as cfgPlot, feature_flags as obbff
 from openbb_terminal.core.config import paths
-from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_ENV_FILE, USER_EXPORTS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    HOME_DIRECTORY,
+    USER_ENV_FILE,
+    USER_EXPORTS_DIRECTORY,
+)
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -1458,7 +1462,7 @@ def prefill_form(ticket_type, menu, path, command, message):
     webbrowser.open(form_url + url_params)
 
 
-def get_closing_price(ticker:str, days:int) -> pd.DataFrame:
+def get_closing_price(ticker: str, days: int) -> pd.DataFrame:
     """Get historical close price for n days in past for market asset.
 
     Parameters
