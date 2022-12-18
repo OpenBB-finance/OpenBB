@@ -7,49 +7,48 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from datetime import datetime, timedelta, date
-from typing import Any, Union, Optional, Iterable, List, Dict
+from datetime import date, datetime, timedelta
+from typing import Any, Dict, Iterable, List, Optional, Union
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-from matplotlib.ticker import LogLocator, ScalarFormatter
 import mplfinance as mpf
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import pytz
 import requests
-from requests.exceptions import ReadTimeout
-
 import yfinance as yf
+from matplotlib.lines import Line2D
+from matplotlib.ticker import LogLocator, ScalarFormatter
 from plotly.subplots import make_subplots
+from requests.exceptions import ReadTimeout
 from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.helper_funcs import (
+    export_data,
+    lambda_long_number_format_y_axis,
+    plot_autoscale,
+    print_rich_table,
+)
+from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import
-from openbb_terminal.stocks.stock_statics import market_coverage_suffix
+from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import INTERVALS  # noqa: F401
 from openbb_terminal.stocks.stock_statics import SOURCES  # noqa: F401
-from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import market_coverage_suffix
 from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
-    load_stock_yf,
     load_stock_eodhd,
     load_stock_iex_cloud,
     load_stock_polygon,
+    load_stock_yf,
 )
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-    lambda_long_number_format_y_axis,
-)
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -434,7 +433,7 @@ def load(
     if verbose:
         console.print(
             f"Loading {s_intraday} data for {symbol.upper()} "
-            f"with starting period {s_start.strftime('%Y-%m-%d')}.",
+            f"with starting period {s_start.strftime('%Y-%m-%d')}."
         )
 
     return df_stock_candidate
@@ -549,7 +548,7 @@ def display_candle(
                             data["OC_High_trend"],
                             color=cfg.theme.up_color,
                             secondary_y=False,
-                        ),
+                        )
                     )
 
                 if "OC_Low_trend" in data.columns:
@@ -558,7 +557,7 @@ def display_candle(
                             data["OC_Low_trend"],
                             color=cfg.theme.down_color,
                             secondary_y=False,
-                        ),
+                        )
                     )
 
             candle_chart_kwargs = {
@@ -702,12 +701,7 @@ def display_candle(
                 for _, row in data.iterrows()
             ]
             fig.add_trace(
-                go.Bar(
-                    x=data.index,
-                    y=data.Volume,
-                    name="Volume",
-                    marker_color=colors,
-                ),
+                go.Bar(x=data.index, y=data.Volume, name="Volume", marker_color=colors),
                 row=2,
                 col=1,
             )
@@ -876,10 +870,7 @@ def find_trendline(
     for iteration in [3, 4, 5, 6, 7]:
         df_temp = df_data.copy()
         while len(df_temp) > iteration:
-            reg = stats.linregress(
-                x=df_temp["date_id"],
-                y=df_temp[y_key],
-            )
+            reg = stats.linregress(x=df_temp["date_id"], y=df_temp[y_key])
 
             if high_low == "high":
                 df_temp = df_temp.loc[
@@ -896,10 +887,7 @@ def find_trendline(
     if len(df_temp) == 1:
         return df_data
 
-    reg = stats.linregress(
-        x=df_temp["date_id"],
-        y=df_temp[y_key],
-    )
+    reg = stats.linregress(x=df_temp["date_id"], y=df_temp[y_key])
 
     df_data[f"{y_key}_trend"] = reg[0] * df_data["date_id"] + reg[1]
 
@@ -926,11 +914,12 @@ def additional_info_about_ticker(ticker: str) -> str:
         if ".US" in ticker.upper():
             ticker = ticker.rstrip(".US")
             ticker = ticker.rstrip(".us")
+
         ticker_stats = yf.Ticker(ticker).stats()
         extra_info += "\n[param]Company:  [/param]"
-        extra_info += ticker_stats.get("quoteType", {}).get("shortName")
+        extra_info += ticker_stats.get("quoteType", {}).get("shortName", "N/A")
         extra_info += "\n[param]Exchange: [/param]"
-        exchange_name = ticker_stats.get("quoteType", {}).get("exchange")
+        exchange_name = ticker_stats.get("quoteType", {}).get("exchange", "N/A")
         extra_info += (
             exchange_mappings["X" + exchange_name]
             if "X" + exchange_name in exchange_mappings
@@ -938,8 +927,7 @@ def additional_info_about_ticker(ticker: str) -> str:
         )
 
         extra_info += "\n[param]Currency: [/param]"
-        extra_info += ticker_stats.get("summaryDetail", {}).get("currency")
-
+        extra_info += ticker_stats.get("summaryDetail", {}).get("currency", "N/A")
     else:
         extra_info += "\n[param]Company: [/param]"
         extra_info += "\n[param]Exchange: [/param]"

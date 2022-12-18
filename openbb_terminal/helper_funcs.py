@@ -3,50 +3,43 @@ __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 import argparse
 import io
-import logging
-from pathlib import Path
-from typing import List, Union, Optional, Dict
-from functools import lru_cache
-from datetime import datetime, timedelta
-from datetime import date as d
-import types
-from collections.abc import Iterable
-import os
-import re
-import random
-import sys
-from difflib import SequenceMatcher
-import webbrowser
-import urllib.parse
 import json
+import logging
+import os
+import random
+import re
+import sys
+import types
+import urllib.parse
+import webbrowser
+from collections.abc import Iterable
+from datetime import date as d, datetime, timedelta
+from difflib import SequenceMatcher
+from functools import lru_cache
+from pathlib import Path
+from typing import Dict, List, Optional, Union
 
-import pytz
-import pandas as pd
-from rich.table import Table
-import iso8601
 import dotenv
+import iso8601
 import matplotlib
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import pandas.io.formats.format
+import pytz
+import requests
+import yfinance as yf
 from holidays import US as us_holidays
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
-import pandas.io.formats.format
-import requests
-from screeninfo import get_monitors
-import yfinance as yf
-import numpy as np
-
 from PIL import Image, ImageDraw
+from rich.table import Table
+from screeninfo import get_monitors
 
-from openbb_terminal.rich_config import console
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.paths import (
-    HOME_DIRECTORY,
-    USER_ENV_FILE,
-    USER_EXPORTS_DIRECTORY,
-)
+from openbb_terminal import config_plot as cfgPlot, feature_flags as obbff
 from openbb_terminal.core.config import paths
+from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_ENV_FILE, USER_EXPORTS_DIRECTORY
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -696,9 +689,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
 def us_market_holidays(years) -> list:
     """Get US market holidays."""
     if isinstance(years, int):
-        years = [
-            years,
-        ]
+        years = [years]
     # https://www.nyse.com/markets/hours-calendars
     market_holidays = [
         "Martin Luther King Jr. Day",
@@ -1467,14 +1458,14 @@ def prefill_form(ticket_type, menu, path, command, message):
     webbrowser.open(form_url + url_params)
 
 
-def get_closing_price(ticker, days):
+def get_closing_price(ticker:str, days:int) -> pd.DataFrame:
     """Get historical close price for n days in past for market asset.
 
     Parameters
     ----------
     ticker : str
         Ticker to get data for
-    days : datetime
+    days : int
         No. of days in past
 
     Returns
@@ -1483,10 +1474,7 @@ def get_closing_price(ticker, days):
         Historic close prices for ticker for given days
     """
     tick = yf.Ticker(ticker)
-    df = tick.history(
-        start=d.today() - timedelta(days=days),
-        interval="1d",
-    )["Close"]
+    df = tick.history(start=d.today() - timedelta(days=days), interval="1d")["Close"]
     df = df.to_frame().reset_index()
     df = df.rename(columns={0: "Close"})
     df.index.name = "index"
@@ -1699,9 +1687,7 @@ def search_wikipedia(expression: str) -> None:
             "summary": response_json["extract"],
         }
     else:
-        res = {
-            "title": "[red]Not Found[/red]",
-        }
+        res = {"title": "[red]Not Found[/red]"}
 
     df = pd.json_normalize(res)
 

@@ -14,7 +14,9 @@ import matplotlib.ticker as mtick
 import numpy as np
 import pandas as pd
 import seaborn as sns
-import yfinance as yf
+
+# Quick Patch till yfinance is fixed
+# import yfinance as yf
 from openpyxl import Workbook
 from scipy.stats import binom
 
@@ -26,6 +28,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     excel_columns,
     export_data,
+    get_closing_price,
     get_rf,
     is_valid_axes_count,
     plot_autoscale,
@@ -228,10 +231,7 @@ def display_chains(
     )
     console.print("Greeks calculated by OpenBB")
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "chains_yf",
-        option_chains,
+        export, os.path.dirname(os.path.abspath(__file__)), "chains_yf", option_chains
     )
 
 
@@ -271,7 +271,8 @@ def plot_oi(
     op_helpers.export_yf_options(export, options, "oi_yf")
     calls = options.calls
     puts = options.puts
-    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
+    # current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
+    current_price = get_closing_price(symbol, 7).iloc[-1]["Close"]
 
     if min_sp == -1:
         min_strike = 0.75 * current_price
@@ -305,21 +306,11 @@ def plot_oi(
 
     if not calls_only:
         put_oi.plot(
-            x="strike",
-            y="openInterest",
-            label="Puts",
-            ax=ax,
-            marker="o",
-            ls="-",
+            x="strike", y="openInterest", label="Puts", ax=ax, marker="o", ls="-"
         )
     if not puts_only:
         call_oi.plot(
-            x="strike",
-            y="openInterest",
-            label="Calls",
-            ax=ax,
-            marker="o",
-            ls="-",
+            x="strike", y="openInterest", label="Calls", ax=ax, marker="o", ls="-"
         )
     ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
     ax.axvline(max_pain, lw=3, label=f"Max Pain: {max_pain}", alpha=0.7)
@@ -370,7 +361,8 @@ def plot_vol(
     options = yfinance_model.get_vol(symbol, expiry)
     calls = options.calls
     puts = options.puts
-    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
+    # current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
+    current_price = get_closing_price(symbol, 7).iloc[-1]["Close"]
 
     if min_sp == -1:
         min_strike = 0.75 * current_price
@@ -396,23 +388,9 @@ def plot_vol(
         return
 
     if not calls_only:
-        put_v.plot(
-            x="strike",
-            y="volume",
-            label="Puts",
-            ax=ax,
-            marker="o",
-            ls="-",
-        )
+        put_v.plot(x="strike", y="volume", label="Puts", ax=ax, marker="o", ls="-")
     if not puts_only:
-        call_v.plot(
-            x="strike",
-            y="volume",
-            label="Calls",
-            ax=ax,
-            marker="o",
-            ls="-",
-        )
+        call_v.plot(x="strike", y="volume", label="Calls", ax=ax, marker="o", ls="-")
     ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Volume [1k] ")
@@ -458,7 +436,8 @@ def plot_volume_open_interest(
     options = yfinance_model.get_volume_open_interest(symbol, expiry)
     calls = options.calls
     puts = options.puts
-    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
+    # current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
+    current_price = get_closing_price(symbol, 7).iloc[-1]["Close"]
 
     # Process Calls Data
     df_calls = calls.pivot_table(
@@ -620,7 +599,7 @@ def plot_volume_open_interest(
     g.set_xticklabels(xlabels)
 
     ax.set_title(
-        f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)",
+        f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)"
     )
     ax.invert_yaxis()
 
@@ -896,12 +875,7 @@ def show_parity(
         "[yellow]Warning: Low volume options may be difficult to trade.[/yellow]"
     )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "parity",
-        show,
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "parity", show)
 
 
 @log_start_end(log=logger)
@@ -1177,12 +1151,7 @@ def display_vol_surface(
         fig.suptitle(f"{label} Surface for {symbol.upper()}")
         theme.visualize_output(force_tight_layout=False)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "vsurf",
-        data,
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "vsurf", data)
 
 
 @log_start_end(log=logger)
@@ -1223,14 +1192,7 @@ def show_greeks(
         symbol, expiry, div_cont, rf, opt_type, mini, maxi, show_all
     )
 
-    column_formatting = [
-        ".1f",
-        ".4f",
-        ".6f",
-        ".6f",
-        ".6f",
-        ".6f",
-    ]
+    column_formatting = [".1f", ".4f", ".6f", ".6f", ".6f", ".6f"]
 
     if show_all:
         additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
