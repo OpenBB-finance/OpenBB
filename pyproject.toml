@@ -99,7 +99,6 @@ ipyflex = "^0.2.4"
 setuptools = "<65.5.0"
 investiny = "^0.5.0"
 numpy = "1.23.4"
-papermill = "^2.4.0"
 stocksera = "^0.1.21"
 ipython = "8.5.0"
 protobuf = "3.20.1"
@@ -109,7 +108,8 @@ docstring-parser = {version = "^0.15", optional = true}
 grpcio = "<1.51.0"
 jupyterlab-widgets = "^3.0.3"
 packaging = ">=22.0"
-tweepy = ">=4.12.1"
+papermill = "^2.4.0"
+tweepy = "^4.12.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
