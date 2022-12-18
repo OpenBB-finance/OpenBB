@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import concurrent.futures
 import logging
 import textwrap
+from typing import List
 
 import pandas as pd
 import requests
@@ -17,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def scrape_substack(url: str) -> list:
+def scrape_substack(url: str) -> List[List[str]]:
     """Helper method to scrape newsletters from substack.
     [Source: substack.com]
 
@@ -28,23 +29,24 @@ def scrape_substack(url: str) -> list:
 
     Returns
     -------
-    list
-        list of news from given newsletter
+    List[List[str]]
+        List of lists containing:
+            - title of newsletter
+            - url to newsletter
+            - str datetime of newsletter [Format: "%Y-%m-%d %H:%M:%S"]
     """
 
     req = requests.get(url)
     soup = BeautifulSoup(req.text, features="lxml")
-    results = []
+    results: List[List[str]] = []
     posts = soup.find("div", class_="portable-archive-list").find_all(
         "div", class_="post-preview portable-archive-post has-image has-author-line"
     )
     for post in posts:
-        title, url, time = (
-            post.a.text,
-            post.a["href"],
-            post.find("time").get("datetime"),
-        )
-        results.append([title, url, time])
+        title: str = post.a.text
+        post_url: str = post.a["href"]
+        time: str = post.find("time").get("datetime")
+        results.append([title, post_url, time])
     return results
 
 

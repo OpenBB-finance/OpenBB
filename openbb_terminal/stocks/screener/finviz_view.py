@@ -250,5 +250,7 @@ def screener(
 
         return list(df_screen.head(n=limit)["Ticker"].values)
 
-    console.print("")
+    console.print(
+        "The preset selected did not return a sufficient number of tickers. Two or more tickers are needed."
+    )
     return []

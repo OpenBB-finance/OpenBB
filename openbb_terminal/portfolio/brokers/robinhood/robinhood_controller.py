@@ -26,23 +26,20 @@ logger = logging.getLogger(__name__)
 
 class RobinhoodController(BaseController):
 
-    CHOICES_COMMANDS = ["holdings", "history", "login"]
+    CHOICES_COMMANDS = ["holdings", "history"]
+    CHOICES_MENUS = ["login"]
     valid_span = ["day", "week", "month", "3month", "year", "5year", "all"]
     valid_interval = ["5minute", "10minute", "hour", "day", "week"]
     PATH = "/portfolio/bro/rh/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["history"] = {
-                "--span": {c: {} for c in self.valid_span},
-                "-s": "--span",
-                "--interval": {c: {} for c in self.valid_interval},
-                "-i": "--interval",
-            }
+            choices: dict = self.choices_default
+            self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -108,6 +105,6 @@ class RobinhoodController(BaseController):
         if ns_parser:
             robinhood_view.display_historical(
                 interval=ns_parser.interval,
-                span=ns_parser.span,
+                window=ns_parser.span,
                 export=ns_parser.export,
             )

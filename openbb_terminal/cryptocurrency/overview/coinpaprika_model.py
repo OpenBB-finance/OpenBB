@@ -69,7 +69,7 @@ CONTRACTS_FILTERS = ["id", "type", "active"]
 
 
 @log_start_end(log=logger)
-def get_global_market() -> pd.DataFrame:
+def get_global_info() -> pd.DataFrame:
     """Return data frame with most important global crypto statistics like:
     market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,
     market_cap_ath_value, market_cap_ath_date, volume_24h_ath_value, volume_24h_ath_date,
@@ -77,7 +77,7 @@ def get_global_market() -> pd.DataFrame:
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Most important global crypto statistics
         Metric, Value
     """
@@ -102,24 +102,6 @@ def get_global_market() -> pd.DataFrame:
     df = pd.Series(global_markets).to_frame().reset_index()
     df.columns = ["Metric", "Value"]
     return df
-
-
-@log_start_end(log=logger)
-def get_list_of_coins() -> pd.DataFrame:
-    """Get list of all available coins on CoinPaprika  [Source: CoinPaprika]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Available coins on CoinPaprika
-        rank, id, name, symbol, type
-    """
-
-    session = PaprikaSession()
-    coins = session.make_request(session.ENDPOINTS["coins"])
-    df = pd.DataFrame(coins)
-    df = df[df["is_active"]]
-    return df[["rank", "id", "name", "symbol", "type"]]
 
 
 @log_start_end(log=logger)
@@ -168,12 +150,12 @@ def _get_coins_info_helper(symbols: str = "USD") -> pd.DataFrame:
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         id, name, symbol, rank, circulating_supply, total_supply, max_supply, beta_value, first_data_at,
         last_updated, price, volume_24h, volume_24h_change_24h, market_cap, market_cap_change_24h,
         percent_change_15m, percent_change_30m, percent_change_1h, percent_change_6h, percent_change_12h,
-       percent_change_24h, percent_change_7d, percent_change_30d, percent_change_1y,
-       ath_price, ath_date, percent_from_price_ath
+        percent_change_24h, percent_change_7d, percent_change_30d, percent_change_1y,
+        ath_price, ath_date, percent_from_price_ath
     """
 
     session = PaprikaSession()
@@ -214,7 +196,7 @@ def get_coins_info(
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         rank, name, symbol, price, volume_24h, circulating_supply, total_supply,
         max_supply, market_cap, beta_value, ath_price,
     """
@@ -254,7 +236,7 @@ def get_coins_market_info(
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         rank, name, symbol, price, volume_24h, mcap_change_24h,
         pct_change_1h, pct_change_24h, ath_price, pct_from_ath,
     """
@@ -297,7 +279,7 @@ def get_list_of_exchanges(
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         rank, name, currencies, markets, fiats, confidence_score, reported_volume_24h,
         reported_volume_7d ,reported_volume_30d, sessions_per_month,
     """
@@ -326,18 +308,17 @@ def get_list_of_exchanges(
         "reported_volume_30d",
         "sessions_per_month",
     ]
-    df.loc[:, "fiats"] = df["fiats"].apply(lambda x: len([i["symbol"] for i in x if x]))
+    df["fiats"] = df["fiats"].apply(lambda x: len([i["symbol"] for i in x if x]))
     df = df[cols]
     df = df.applymap(
         lambda x: "\n".join(textwrap.wrap(x, width=28)) if isinstance(x, str) else x
     )
-    df.rename(
+    df = df.rename(
         columns={"adjusted_rank": "Rank", "confidence_score": "confidence"},
-        inplace=True,
     )
     df.columns = [x.replace("reported_", "") for x in df.columns]
-    if sortby == "Rank":
-        df = df.sort_values(by=sortby, ascending=not ascend)
+    if sortby.lower() == "rank":
+        df = df.sort_values(by="Rank", ascending=not ascend)
     else:
         df = df.sort_values(by=sortby, ascending=ascend)
     return df
@@ -365,7 +346,7 @@ def get_exchanges_market(
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         pair, base_currency_name, quote_currency_name, market_url,
         category, reported_volume_24h_share, trust_score,
     """
@@ -400,7 +381,7 @@ def get_all_contract_platforms() -> pd.DataFrame:
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         index, platform_id
     """
 
@@ -431,8 +412,8 @@ def get_contract_platform(
 
     Returns
     -------
-    pandas.DataFrame
-         id, type, active
+    pd.DataFrame
+        id, type, active
     """
 
     session = PaprikaSession()

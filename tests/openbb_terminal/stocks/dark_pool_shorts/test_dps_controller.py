@@ -285,7 +285,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [
                 "--limit=1",
                 "--sort=sv",
-                "--ascending",
+                "--reverse",
                 "--export=csv",
             ],
             dict(

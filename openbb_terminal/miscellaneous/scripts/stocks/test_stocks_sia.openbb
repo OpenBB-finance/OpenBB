@@ -10,7 +10,7 @@ help
 h
 ?
 clear
-load tsla
+load ${ticker=tsla}
 clear industry
 clear sector
 clear sector

@@ -19,6 +19,18 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def show_available_pairs_for_given_symbol(symbol: str = "ETH") -> Tuple[str, list]:
+    """Return all available quoted assets for given symbol. [Source: Coinbase]
+
+    Parameters
+    ----------
+    symbol: str
+        Uppercase symbol of coin e.g BTC, ETH, UNI, LUNA, DOT ...
+
+    Returns
+    -------
+    Tuple[str, list]
+        Symbol and list of available pairs
+    """
     pairs = make_coinbase_request("/products")
     df = pd.DataFrame(pairs)[["base_currency", "quote_currency"]]
 
@@ -108,9 +120,10 @@ def get_trades(
     symbol: str
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
     limit: int
-        Last <limit> of trades. Maximum is 1000.
+        Last `limit` of trades. Maximum is 1000.
     side: str
         You can chose either sell or buy side. If side is not set then all trades will be displayed.
+
     Returns
     -------
     pd.DataFrame
@@ -127,7 +140,7 @@ def get_trades(
 
 
 @log_start_end(log=logger)
-def get_candles(symbol: str, interval: str = "24h") -> pd.DataFrame:
+def get_candles(symbol: str, interval: str = "24hour") -> pd.DataFrame:
     """Get candles for chosen trading pair and time interval. [Source: Coinbase]
 
     Parameters
@@ -135,12 +148,17 @@ def get_candles(symbol: str, interval: str = "24h") -> pd.DataFrame:
     symbol: str
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
     interval: str
-        Time interval. One from 1min, 5min ,15min, 1hour, 6hour, 24hour
+        Time interval. One from 1min, 5min ,15min, 1hour, 6hour, 24hour, 1day
 
     Returns
     -------
     pd.DataFrame
         Candles for chosen trading pair.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.crypto.dd.candle(symbol="eth-usdt", interval="24hour")
     """
 
     interval_map = {

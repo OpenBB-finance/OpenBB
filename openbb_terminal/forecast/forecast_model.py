@@ -42,6 +42,18 @@ def get_default_files() -> Dict[str, Path]:
     return default_files
 
 
+def __sdk_dt_format(x) -> str:
+    """Convert any Timestamp to YYYY-MM-DD when using SDK
+    Args:
+        x: Pandas Timestamp of any length
+    Returns:
+        x: formatted string
+    """
+    x = pd.to_datetime(x)
+    x = x.strftime("%Y-%m-%d")
+    return x
+
+
 @log_start_end(log=logger)
 def get_options(
     datasets: Dict[str, pd.DataFrame], dataset_name: str = None
@@ -57,7 +69,7 @@ def get_options(
 
     Returns
     -------
-    option_tables: dict
+    option_tables: Dict[Union[str, Any], pd.DataFrame]
         A dictionary with a DataFrame for each option. With dataset_name set, only shows one
         options table.
     """
@@ -106,7 +118,7 @@ def clean(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with cleaned up data
     """
     kwargs = {}
@@ -161,7 +173,7 @@ def add_ema(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added EMA column
     """
     dataset[f"EMA_{period}"] = (
@@ -190,11 +202,17 @@ def add_sto(
     dataset : pd.DataFrame
         The dataset you wish to calculate for
     period : int
-        Span
+        Span of time to calculate over
+    close_column : str
+        The column name for the close price
+    high_column : str
+        The column name for the high price
+    low_column : str
+        The column name for the low price
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added STO K & D columns
     """
 
@@ -239,7 +257,7 @@ def add_rsi(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added RSI column
     """
 
@@ -281,7 +299,7 @@ def add_roc(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added ROC column
     """
     M = dataset[target_column].diff(period - 1)
@@ -310,7 +328,7 @@ def add_momentum(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added MOM column
     """
 
@@ -344,7 +362,7 @@ def add_atr(
     Calculate the Average True Range of a variable based on a a specific stock ticker.
     """
 
-    if "high" in dataset and "low" in dataset and "close" in dataset:
+    if close_column in dataset and high_column in dataset and low_column in dataset:
         dataset["ATR1"] = abs(dataset[high_column] - dataset[low_column])
         dataset["ATR2"] = abs(dataset[high_column] - dataset[close_column].shift())
         dataset["ATR3"] = abs(dataset[low_column] - dataset[close_column].shift())
@@ -353,9 +371,7 @@ def add_atr(
         # drop ATR1, ATR2, ATR3
         dataset = dataset.drop(["ATR1", "ATR2", "ATR3"], axis=1)
 
-        return dataset, True
-
-    return dataset, False
+    return dataset
 
 
 @log_start_end(log=logger)
@@ -375,7 +391,7 @@ def add_signal(
 
     Returns
     -------
-    pd.DataFrame:
+    pd.DataFrame
         Dataframe with added signal column
     """
 
@@ -411,10 +427,22 @@ def combine_dfs(
         A name for df2 (shows in name of new column)
 
     Returns
-    ----------
+    -------
     data: pd.DataFrame
         The new dataframe
     """
+
+    # for use with SDK
+    # check if date is index, if true, reset index
+    if df1.index.name == "date":
+        df1 = df1.reset_index()
+        # remove 00:00:00 from 2019-11-19 00:00:00
+        df1["date"] = df1["date"].apply(lambda x: __sdk_dt_format(x))
+    if df2.index.name == "date":
+        df2 = df2.reset_index()
+        # remove 00:00:00 from 2019-11-19 00:00:00
+        df2["date"] = df2["date"].apply(lambda x: __sdk_dt_format(x))
+
     if column not in df2:
         console.print(
             f"Not able to find the column {column}. Please choose one of "
@@ -440,6 +468,19 @@ def combine_dfs(
 
 @log_start_end(log=logger)
 def delete_column(data: pd.DataFrame, column: str) -> None:
+    """Delete a column from a dataframe
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        The dataframe to delete a column from
+    column : str
+        The column to delete
+
+    Returns
+    -------
+    None
+    """
     if column not in data:
         console.print(
             f"Not able to find the column {column}. Please choose one of "
@@ -463,7 +504,7 @@ def rename_column(data: pd.DataFrame, old_column: str, new_column: str) -> pd.Da
         The name to update to
 
     Returns
-    ----------
+    -------
     new_df: pd.DataFrame
         The dataframe with the renamed column
     """
@@ -486,7 +527,7 @@ def describe_df(data: pd.DataFrame) -> pd.DataFrame:
         The df to produce statistics for
 
     Returns
-    ----------
+    -------
     df: pd.DataFrame
         The df with the new data
     """
@@ -503,7 +544,7 @@ def corr_df(data: pd.DataFrame) -> pd.DataFrame:
         The df to produce statistics for
 
     Returns
-    ----------
+    -------
     df: pd.DataFrame
         The df with the new data
     """

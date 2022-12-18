@@ -83,7 +83,7 @@ def display_global_market(export: str = "") -> None:
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = paprika.get_global_market()
+    df = paprika.get_global_info()
     df_data = df.copy()
     df["Value"] = df["Value"].apply(  # pylint:disable=unsupported-assignment-operation
         lambda x: lambda_long_number_format_with_type_check(x)
@@ -192,7 +192,7 @@ def display_all_coins_info(
     cols = [col for col in df.columns if col != "rank"]
     df[cols] = df[cols].applymap(lambda x: lambda_long_number_format_with_type_check(x))
 
-    console.print(f"\nDisplaying data vs {symbol}")
+    console.print(f"Displaying data vs {symbol}")
 
     print_rich_table(
         df.head(limit),

@@ -12,7 +12,8 @@
       "open": ["Bursa"],
       "closed": ["Bursa"],
       "all": ["Bursa"],
-      "exchange": ["Bursa"]
+      "exchange": ["Bursa"],
+      "holidays":["PandasMarketCalendars"]
     },
     "options": {
       "unu": ["FDScanner"],
@@ -238,6 +239,8 @@
       "metrics": ["FinancialModelingPrep"],
       "ratios": ["FinancialModelingPrep"],
       "growth": ["FinancialModelingPrep"],
+      "revfc": ["SeekingAlpha"],
+      "epsfc": ["SeekingAlpha"],
       "warnings": ["MarketWatch"],
       "dcf": ["StockAnalysis"],
       "dcfc": ["FinancialModelingPrep"],
@@ -287,6 +290,7 @@
     }
   },
   "crypto": {
+    "price": ["Pyth"],
     "load": ["YahooFinance", "CoinGecko", "CCXT"],
     "find": ["CoinGecko", "CoinPaprika", "Binance", "Coinbase", "YahooFinance"],
     "headlines": ["FinBrain"],

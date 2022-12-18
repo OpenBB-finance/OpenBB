@@ -1,5 +1,7 @@
 from datetime import datetime
 import logging
+from typing import Optional
+from pandas import DataFrame
 
 from openbb_terminal.decorators import log_start_end
 
@@ -16,8 +18,8 @@ api_url = "https://api.glassnode.com/v1/metrics/"
 @log_start_end(log=logger)
 def get_btc_rainbow(
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
-):
+    end_date: Optional[str] = None,
+) -> DataFrame:
     """Get bitcoin price data
     [Price data from source: https://glassnode.com]
     [Inspired by: https://blockchaincenter.net]
@@ -26,9 +28,17 @@ def get_btc_rainbow(
     ----------
     start_date : str
         Initial date, format YYYY-MM-DD
-    end_date : str
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
+
+    Returns
+    -------
+    pd.DataFrame
+        price over time
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_data = get_close_price("BTC", start_date, end_date)
 

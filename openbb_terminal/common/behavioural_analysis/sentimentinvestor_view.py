@@ -30,8 +30,8 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def display_historical(
     symbol: str,
-    start_date: str = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d"),
-    end_date: str = datetime.utcnow().strftime("%Y-%m-%d"),
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     number: int = 100,
     raw: bool = False,
     limit: int = 10,
@@ -45,9 +45,9 @@ def display_historical(
     ----------
     symbol: str
         Ticker symbol to view sentiment data
-    start_date: str
+    start_date: Optional[str]
         Initial date like string or unix timestamp (e.g. 2021-12-21)
-    end_date: str
+    end_date: Optional[str]
         End date like string or unix timestamp (e.g. 2022-01-15)
     number: int
         Number of results returned by API call
@@ -61,9 +61,13 @@ def display_historical(
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    Returns
-    -------
     """
+
+    if start_date is None:
+        start_date = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.utcnow().strftime("%Y-%m-%d")
 
     supported_ticker = sentimentinvestor_model.check_supported_ticker(symbol)
 
@@ -146,7 +150,7 @@ def display_historical(
 @log_start_end(log=logger)
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def display_trending(
-    start_date: datetime = datetime.today(),
+    start_date: Optional[str] = None,
     hour: int = 0,
     number: int = 10,
     limit: int = 10,
@@ -157,8 +161,8 @@ def display_trending(
 
     Parameters
     ----------
-    start_date: datetime
-        Datetime object (e.g. datetime(2021, 12, 21)
+    start_date : Optional[str]
+        Initial date, format YYYY-MM-DD
     hour: int
         Hour of the day in 24-hour notation (e.g. 14)
     number : int
@@ -171,9 +175,8 @@ def display_trending(
         Format to export data
     """
 
-    # Force datetime format to be datetime(year, month, day, 0, 0)
-    # 0 hours and minutes to look since day starts
-    start_date = datetime(start_date.year, start_date.month, start_date.day)
+    if start_date is None:
+        start_date = datetime.today().strftime("%Y-%m-%d")
 
     df = sentimentinvestor_model.get_trending(start_date, hour, number)
 

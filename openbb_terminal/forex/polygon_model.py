@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 from datetime import datetime
+from typing import Optional
 import requests
 import pandas as pd
 from openbb_terminal.config_terminal import API_POLYGON_KEY as api_key
@@ -17,8 +18,8 @@ def get_historical(
     fx_pair: str,
     multiplier: int = 1,
     timespan: str = "day",
-    from_date: str = "2000-01-01",
-    to_date: str = datetime.now().date().strftime("%Y-%m-%d"),
+    start_date: str = "2000-01-01",
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Load historical fx data from polygon
 
@@ -30,19 +31,23 @@ def get_historical(
         Multiplier for timespan.  5 with minute timespan indicated 5min windows
     timespan: str
         Window to aggregate data.
-    from_date: str
-        Start time of data
-    to_date: str
-        End date of data
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : Optional[str]
+        Final date, format YYYY-MM-DD
 
     Returns
     -------
     pd.DataFrame
         Dataframe of historical forex prices
     """
+
+    if end_date is None:
+        end_date = datetime.now().date().strftime("%Y-%m-%d")
+
     request_url = (
         f"https://api.polygon.io/v2/aggs/ticker/C:{fx_pair}/range"
-        f"/{multiplier}/{timespan}/{from_date}/{to_date}?adjusted=true&sort=desc&limit=50000&apiKey={api_key}"
+        f"/{multiplier}/{timespan}/{start_date}/{end_date}?adjusted=true&sort=desc&limit=50000&apiKey={api_key}"
     )
     json_response = requests.get(
         request_url, headers={"User-Agent": get_user_agent()}

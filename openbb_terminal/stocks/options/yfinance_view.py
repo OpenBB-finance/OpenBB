@@ -55,7 +55,7 @@ def header_fmt(header: str) -> str:
         The string to be formatted
 
     Returns
-    ----------
+    -------
     new_header: str
         The clean string to use as a header
     """
@@ -108,7 +108,7 @@ def display_chains(
         call_bool = False
         put_bool = True
 
-    option_chains = yfinance_model.get_full_option_chain(
+    option_chains = yfinance_model.get_option_chain_expiry(
         symbol=symbol,
         expiry=expiry,
         calls=call_bool,
@@ -127,7 +127,7 @@ def display_chains(
         title = "Call " if calls_only else "Put "
         print_rich_table(
             option_chains,
-            title=title + "Option Chain (15 min delayed) (Greeks calculated by OpenBB)",
+            title=f"{symbol} {title} Option Chain\nYahoo (15 min delayed)",
             floatfmt=[
                 ".2f",
                 ".2f",
@@ -223,9 +223,10 @@ def display_chains(
 
     print_rich_table(
         option_chains,
-        title=f"Yahoo Option Chain (15 min delayed) for {expiry} (Greeks calculated by OpenBB)",
+        title=f"{symbol} Option Chain for {expiry}\nYahoo (15 min delayed)",
         headers=[header_fmt(x) for x in option_chains.columns],
     )
+    console.print("Greeks calculated by OpenBB")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -325,7 +326,7 @@ def plot_oi(
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Open Interest [1k] ")
     ax.set_xlim(min_strike, max_strike)
-    ax.legend()
+    ax.legend(fontsize="x-small")
     ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiry}")
 
     theme.style_primary_axis(ax)
@@ -416,7 +417,7 @@ def plot_vol(
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Volume [1k] ")
     ax.set_xlim(min_strike, max_strike)
-    ax.legend()
+    ax.legend(fontsize="x-small")
     ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
     theme.style_primary_axis(ax)
     if external_axes is None:
@@ -637,7 +638,7 @@ def plot_volume_open_interest(
         f"Max pain = {max_pain}",
     ]
 
-    ax.legend(handles=handles[:], labels=labels, loc="lower left")
+    ax.legend(fontsize="xx-small", handles=handles[:], labels=labels, loc="lower left")
     sns.despine(left=True, bottom=True)
     theme.style_primary_axis(ax)
 
@@ -703,8 +704,21 @@ def plot_plot(
         if y is None:
             console.print("[red]Invalid option sent for y-axis[/red]\n")
             return
-        x = convert[x]
-        y = convert[y]
+        if x in convert:
+            x = convert[x]
+        else:
+            x = "strike"
+            console.print(
+                f"[red]'{x}' is not a valid option. Defaulting to `strike`.[/red]\n"
+            )
+        if y in convert:
+            y = convert[y]
+        else:
+            y = "impliedVolatility"
+            console.print(
+                f"[red]'{y}' is not a valid option. Defaulting to `impliedVolatility`.[/red]\n"
+            )
+
     varis = op_helpers.opt_chain_cols
     chain = yfinance_model.get_option_chain(symbol, expiry)
     values = chain.puts if put else chain.calls
@@ -876,7 +890,10 @@ def show_parity(
         show,
         headers=[x.title() for x in show.columns],
         show_index=False,
-        title="Warning: Low volume options may be difficult to trade.",
+        title=f"{symbol} Parity",
+    )
+    console.print(
+        "[yellow]Warning: Low volume options may be difficult to trade.[/yellow]"
     )
 
     export_data(
@@ -1223,7 +1240,7 @@ def show_greeks(
         df,
         headers=list(df.columns),
         show_index=False,
-        title="Greeks",
+        title=f"{symbol} Greeks",
         floatfmt=column_formatting,
     )
 

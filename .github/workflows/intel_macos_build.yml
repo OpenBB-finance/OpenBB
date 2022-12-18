@@ -34,7 +34,7 @@ jobs:
           key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
       # Set up miniconda using the environment yaml file within the repo
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v2.2.0
         with:
           miniconda-version: "latest"
           auto-update-conda: true
@@ -44,24 +44,19 @@ jobs:
           environment-file: build/conda/conda-3-9-env-full.yaml
           activate-environment: build_env
           use-only-tar-bz2: true # Needed for caching some reason
-      - name: Initialize Conda and Reset Terminal
-        run: |
-          conda init
-          exec zsh -l
-          source ~/.zshrc
       - name: Run Poetry
         run: poetry install
       - name: Install Pyinstaller
         run: poetry install -E installer
-      - name: Install Prediction Modules
-        run: poetry install -E prediction
-      # Double Checking Version Number
-      - name: Check OpenBB Version
-        run: pip list | grep openbb
+      - name: Install Portfolio Optimization and Forecasting Toolkits
+        run: poetry install -E all
+      - name: Install Specific Papermill
+        run: |
+          pip uninstall papermill -y
+          pip install git+https://github.com/nteract/papermill.git@main
       # This is basically the same as build4mac.sh
       - name: Build Bundle
         run: |
-          conda remove --force sigtool -y
           pyinstaller build/pyinstaller/terminal.spec --clean
           osascript build/pyinstaller/setup_icons.applescript
           mkdir DMG
@@ -73,7 +68,7 @@ jobs:
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
           MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
           MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
-        run: | # when pushing to main, make to generate new cert, and utilize secrets to store newpassowrd, and identity
+        run: | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
           echo "Decoding"
           echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
           echo "Creating Keychain"
@@ -104,14 +99,22 @@ jobs:
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*.dylib
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*.dylib
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*.dylib
-          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/scipy/.dylibs/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/.dylibs/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/stan/lib/stan_math/lib/tbb/*.dylib
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/.dylibs/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/sklearn/.dylibs/*.dylib
+
           echo "Code Signing Other Files"
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/prophet_model.bin
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/diagnose
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/print
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/stanc
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/stansummary
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/pyarrow/plasma-store-server
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/protoc
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/protoc-3.13.0.0
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/torch_shm_manager
-          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/prophet_model.bin
           echo "Code Sign OpenBB Executable File"
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/OpenBBTerminal
       - name: Create DMG
@@ -163,9 +166,9 @@ jobs:
             ls
             cp -R OpenBB\ Terminal ~/Desktop
       - name: Unmount DMG
-        run: hdiutil detach /dev/disk3
+        run: hdiutil detach /dev/disk2
       - name: Run Integration Tests
-        run: /Users/openbb/Desktop/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Users/openbb/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/openbb_terminal/miscellaneous/scripts/*.openbb -t
+        run: /Users/openbb/Desktop/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Users/openbb/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/openbb_terminal/miscellaneous/scripts -t
       - name: Remove OpenBB Folder
         run: rm -rf /Users/openbb/Desktop/OpenBB\ Terminal
       - name: Remove OpenBB Exports Folder

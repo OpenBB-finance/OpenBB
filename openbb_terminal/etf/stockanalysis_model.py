@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from typing import List, Tuple
-import json
+import pathlib
 
 import pandas as pd
 import requests
@@ -14,6 +14,8 @@ from openbb_terminal.helper_funcs import get_user_agent
 
 logger = logging.getLogger(__name__)
 
+csv_path = pathlib.Path(__file__).parent / "etfs.csv"
+
 
 @log_start_end(log=logger)
 def get_all_names_symbols() -> Tuple[List[str], List[str]]:
@@ -21,26 +23,15 @@ def get_all_names_symbols() -> Tuple[List[str], List[str]]:
 
     Returns
     -------
-    etf_symbols: List[str]:
-        List of all available etf symbols
-    etf_names: List[str]
-        List of all available etf names
+    Tuple[List[str], List[str]]
+        List of all available etf symbols, List of all available etf names
     """
 
     etf_symbols = []
     etf_names = []
 
-    r = requests.get(
-        "https://stockanalysis.com/etf/", headers={"User-Agent": get_user_agent()}
-    )
-
-    r = requests.get(
-        "https://stockanalysis.com/etf/", headers={"User-Agent": "Mozilla/5.0"}
-    )
-    soup = BeautifulSoup(r.text, "html.parser")
-    # If thesre is an error, check the following line
-    s4 = soup.findAll("script")[4]
-    data = pd.DataFrame(json.loads(s4.text)[1]["data"]["data"])
+    # 11/25 I am hard coding the etf lists because of stockanalysis changing the format of their website
+    data = pd.read_csv(csv_path)
     etf_symbols = data.s.to_list()
     etf_names = data.n.to_list()
     return etf_symbols, etf_names
@@ -56,9 +47,14 @@ def get_etf_overview(symbol: str) -> pd.DataFrame:
         Etf symbol to get overview for
 
     Returns
-    ----------
+    -------
     df : pd.DataFrame
         Dataframe of stock overview data
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.etf.overview("SPY")
     """
     r = requests.get(
         f"https://stockanalysis.com/etf/{symbol}",
@@ -93,6 +89,11 @@ def get_etf_holdings(symbol: str) -> pd.DataFrame:
     -------
     df: pd.DataFrame
         Dataframe of holdings
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.etf.holdings("SPY")
     """
 
     link = f"https://stockanalysis.com/etf/{symbol}/holdings/"
@@ -118,9 +119,14 @@ def compare_etfs(symbols: List[str]) -> pd.DataFrame:
         ETF symbols to compare
 
     Returns
-    ----------
+    -------
     df_compare : pd.DataFrame
         Dataframe of etf comparisons
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> compare_etfs = openbb.etf.compare(["SPY", "QQQ", "IWM"])
     """
 
     df_compare = pd.DataFrame()

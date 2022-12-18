@@ -12,8 +12,8 @@ from datetime import date as d
 import types
 from collections.abc import Iterable
 import os
-import random
 import re
+import random
 import sys
 from difflib import SequenceMatcher
 import webbrowser
@@ -66,6 +66,8 @@ MENU_RESET = 2
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
 
+
+# pylint: disable=R0912
 
 # pylint: disable=global-statement
 def set_command_location(cmd_loc: str):
@@ -218,6 +220,37 @@ def similar(a: str, b: str) -> float:
     return SequenceMatcher(None, a, b).ratio()
 
 
+def return_colored_value(value: str):
+    """Return the string value with green, yellow, red or white color based on
+    whether the number is positive, negative, zero or other, respectively.
+
+    Parameters
+    ----------
+    value: str
+        string to be checked
+
+    Returns
+    -------
+    value: str
+        string with color based on value of number if it exists
+    """
+    values = re.findall(r"[-+]?(?:\d*\.\d+|\d+)", value)
+
+    # Finds exactly 1 number in the string
+    if len(values) == 1:
+        if float(values[0]) > 0:
+            return f"[green]{value}[/green]"
+
+        if float(values[0]) < 0:
+            return f"[red]{value}[/red]"
+
+        if float(values[0]) == 0:
+            return f"[yellow]{value}[/yellow]"
+
+    return f"{value}"
+
+
+# pylint: disable=too-many-arguments
 def print_rich_table(
     df: pd.DataFrame,
     show_index: bool = False,
@@ -226,6 +259,9 @@ def print_rich_table(
     headers: Union[List[str], pd.Index] = None,
     floatfmt: Union[str, List[str]] = ".2f",
     show_header: bool = True,
+    automatic_coloring: bool = False,
+    columns_to_auto_color: List[str] = None,
+    rows_to_auto_color: List[str] = None,
 ):
     """Prepare a table from df in rich.
 
@@ -245,9 +281,32 @@ def print_rich_table(
         Float number formatting specs as string or list of strings. Defaults to ".2f"
     show_header: bool
         Whether to show the header row.
+    automatic_coloring: bool
+        Automatically color a table based on positive and negative values
+    columns_to_auto_color: List[str]
+        Columns to automatically color
+    rows_to_auto_color: List[str]
+        Rows to automatically color
     """
     if obbff.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
+
+        if obbff.USE_COLOR and automatic_coloring:
+            if columns_to_auto_color:
+                for col in columns_to_auto_color:
+                    # checks whether column exists
+                    if col in df.columns:
+                        df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
+            if rows_to_auto_color:
+                for row in rows_to_auto_color:
+                    # checks whether row exists
+                    if row in df.index:
+                        df.loc[row] = df.loc[row].apply(
+                            lambda x: return_colored_value(str(x))
+                        )
+
+            if columns_to_auto_color is None and rows_to_auto_color is None:
+                df = df.applymap(lambda x: return_colored_value(str(x)))
 
         if show_index:
             table.add_column(index_name)
@@ -277,8 +336,8 @@ def print_rich_table(
 
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
             # remove hour/min/sec from timestamp index - Format: YYYY-MM-DD # make better
-            row = [str(idx)] if show_index else []
-            row += [
+            row_idx = [str(idx)] if show_index else []
+            row_idx += [
                 str(x)
                 if not isinstance(x, float) and not isinstance(x, np.float64)
                 else (
@@ -290,9 +349,27 @@ def print_rich_table(
                 )
                 for idx, x in enumerate(values)
             ]
-            table.add_row(*row)
+            table.add_row(*row_idx)
         console.print(table)
     else:
+
+        if obbff.USE_COLOR and automatic_coloring:
+            if columns_to_auto_color:
+                for col in columns_to_auto_color:
+                    # checks whether column exists
+                    if col in df.columns:
+                        df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
+            if rows_to_auto_color:
+                for row in rows_to_auto_color:
+                    # checks whether row exists
+                    if row in df.index:
+                        df.loc[row] = df.loc[row].apply(
+                            lambda x: return_colored_value(str(x))
+                        )
+
+            if columns_to_auto_color is None and rows_to_auto_color is None:
+                df = df.applymap(lambda x: return_colored_value(str(x)))
+
         console.print(df.to_string(col_space=0))
 
 
@@ -321,7 +398,7 @@ def check_int_range(mini: int, maxi: int):
             Input integer
 
         Returns
-        -------
+        ----------
         num: int
             Input number if conditions are met
 
@@ -453,7 +530,7 @@ def check_proportion_range(num) -> float:
     num: float
         Input number if conditions are met
     Raises
-    -------
+    ----------
     argparse.ArgumentTypeError
         Input number not between min and max values
     """
@@ -614,7 +691,6 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
     plt.setp(ax[1].get_xticklabels(), rotation=20, horizontalalignment="right")
 
     plt.show()
-    console.print("")
 
 
 def us_market_holidays(years) -> list:
@@ -967,47 +1043,6 @@ def patch_pandas_text_adjustment():
     pandas.io.formats.format.TextAdjustment.adjoin = text_adjustment_adjoin
 
 
-def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
-    """Parse list of arguments into the supplied parser.
-
-    Parameters
-    ----------
-    parser: argparse.ArgumentParser
-        Parser with predefined arguments
-    other_args: List[str]
-        List of arguments to parse
-
-    Returns
-    -------
-    ns_parser:
-        Namespace with parsed arguments
-    """
-    parser.add_argument(
-        "-h", "--help", action="store_true", help="show this help message"
-    )
-
-    if obbff.USE_CLEAR_AFTER_CMD:
-        system_clear()
-
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
-    except SystemExit:
-        # In case the command has required argument that isn't specified
-        console.print("")
-        return None
-
-    if ns_parser.help:
-        txt_help = parser.format_help()
-        console.print(f"[help]{txt_help}[/help]")
-        return None
-
-    if l_unknown_args:
-        console.print(f"The following args couldn't be interpreted: {l_unknown_args}")
-        console.print("")
-
-    return ns_parser
-
-
 def lambda_financials_colored_values(val: str) -> str:
     """Add a color to a value."""
     if val == "N/A" or str(val) == "nan":
@@ -1232,7 +1267,7 @@ def check_file_type_saved(valid_types: List[str] = None):
             filenames to be saved separated with comma
 
         Returns
-        -------
+        ----------
         str
             valid filenames separated with comma
         """
@@ -1244,7 +1279,8 @@ def check_file_type_saved(valid_types: List[str] = None):
                 valid_filenames.append(filename)
             else:
                 console.print(
-                    f"[red]Filename '{filename}' provided is not valid![/red]"
+                    f"[red]Filename '{filename}' provided is not valid!\nPlease use one of the following file types:"
+                    f"{','.join(valid_types)}[/red]\n"
                 )
         return ",".join(valid_filenames)
 
@@ -1312,13 +1348,32 @@ def export_data(
                 saved_path = os.path.join(export_folder, exp_type)
             # In this scenario we use the default filename
             else:
+                if ".OpenBB_openbb_terminal" in export_filename:
+                    export_filename = export_filename.replace(
+                        ".OpenBB_openbb_terminal", "OpenBBTerminal"
+                    )
                 saved_path = os.path.join(
                     export_folder, f"{export_filename}.{exp_type}"
                 )
 
+            df = df.replace(
+                {
+                    r"\[yellow\]": "",
+                    r"\[/yellow\]": "",
+                    r"\[green\]": "",
+                    r"\[/green\]": "",
+                    r"\[red\]": "",
+                    r"\[/red\]": "",
+                    r"\[magenta\]": "",
+                    r"\[/magenta\]": "",
+                },
+                regex=True,
+            )
+
             if exp_type.endswith("csv"):
                 df.to_csv(saved_path)
             elif exp_type.endswith("json"):
+                df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
                 df.to_excel(saved_path, index=True, header=True)
@@ -1331,9 +1386,9 @@ def export_data(
             elif exp_type.endswith("svg"):
                 plt.savefig(saved_path)
             else:
-                console.print("Wrong export file specified.")
+                console.print("\nWrong export file specified.")
 
-            console.print(f"Saved file: {saved_path}")
+            console.print(f"\nSaved file: {saved_path}")
 
 
 def get_rf() -> float:
@@ -1672,7 +1727,6 @@ def screenshot() -> None:
             plt.savefig(img_buf, format="png")
             shot = Image.open(img_buf)
             screenshot_to_canvas(shot, plot_exists=True)
-            console.print("")
 
         else:
             console.print("No plots found.\n")
@@ -1804,3 +1858,24 @@ def list_from_str(value: str) -> List[str]:
     if value:
         return value.split(",")
     return []
+
+
+def str_date_to_timestamp(date: str) -> int:
+    """Transform string date to timestamp
+
+    Parameters
+    ----------
+    start_date : str
+        Initial date, format YYYY-MM-DD
+
+    Returns
+    -------
+    date_ts : int
+        Initial date timestamp (e.g., 1_614_556_800)
+    """
+
+    date_ts = int(
+        datetime.strptime(date + " 00:00:00+0000", "%Y-%m-%d %H:%M:%S%z").timestamp()
+    )
+
+    return date_ts

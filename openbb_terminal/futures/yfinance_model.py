@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import os
 import sys
 import logging
-from typing import Dict, List
+from typing import List
 from datetime import datetime
 
 import yfinance as yf
@@ -76,38 +76,38 @@ def get_search_futures(
 
 
 @log_start_end(log=logger)
-def get_historical_futures(tickers: List[str], expiry: str = "") -> Dict:
+def get_historical_futures(symbols: List[str], expiry: str = "") -> pd.DataFrame:
     """Get historical futures [Source: Yahoo Finance]
 
     Parameters
     ----------
-    tickers: List[str]
-        List of future timeseries tickers to display
+    symbols: List[str]
+        List of future timeseries symbols to display
     expiry: str
         Future expiry date with format YYYY-MM
 
     Returns
-    ----------
-    Dict
+    -------
+    pd.DataFrame
         Dictionary with sector weightings allocation
     """
     if expiry:
-        tickers_with_expiry = list()
+        symbols_with_expiry = list()
 
-        for ticker in tickers:
+        for symbol in symbols:
             expiry_date = datetime.strptime(expiry, "%Y-%m")
-            exchange = FUTURES_DATA[FUTURES_DATA["Ticker"] == ticker][
+            exchange = FUTURES_DATA[FUTURES_DATA["Ticker"] == symbol][
                 "Exchange"
             ].values[0]
 
-            tickers_with_expiry.append(
-                f"{ticker}{MONTHS[expiry_date.month]}{str(expiry_date.year)[-2:]}.{exchange}"
+            symbols_with_expiry.append(
+                f"{symbol}{MONTHS[expiry_date.month]}{str(expiry_date.year)[-2:]}.{exchange}"
             )
 
-        return yf.download(tickers_with_expiry, progress=False, period="max")
+        return yf.download(symbols_with_expiry, progress=False, period="max")
 
-    df = yf.download([t + "=F" for t in tickers], progress=False, period="max")
-    if len(tickers) > 1:
+    df = yf.download([t + "=F" for t in symbols], progress=False, period="max")
+    if len(symbols) > 1:
         df.columns = pd.MultiIndex.from_tuples(
             [(tup[0], tup[1].replace("=F", "")) for tup in df.columns]
         )
@@ -116,31 +116,36 @@ def get_historical_futures(tickers: List[str], expiry: str = "") -> Dict:
 
 @log_start_end(log=logger)
 def get_curve_futures(
-    ticker: str = "",
-):
+    symbol: str = "",
+) -> pd.DataFrame:
     """Get curve futures [Source: Yahoo Finance]
 
     Parameters
     ----------
-    ticker: str
-        Ticker to get forward curve
+    symbol: str
+        symbol to get forward curve
+
+    Returns
+    -------
+    pd.DataFrame
+        Dictionary with sector weightings allocation
     """
-    if ticker not in FUTURES_DATA["Ticker"].unique().tolist():
+    if symbol not in FUTURES_DATA["Ticker"].unique().tolist():
         return pd.DataFrame()
 
-    exchange = FUTURES_DATA[FUTURES_DATA["Ticker"] == ticker]["Exchange"].values[0]
+    exchange = FUTURES_DATA[FUTURES_DATA["Ticker"] == symbol]["Exchange"].values[0]
     today = datetime.today()
 
     futures_index = list()
     futures_curve = list()
     for i in range(36):
         future = today + relativedelta(months=i)
-        future_ticker = (
-            f"{ticker}{MONTHS[future.month]}{str(future.year)[-2:]}.{exchange}"
+        future_symbol = (
+            f"{symbol}{MONTHS[future.month]}{str(future.year)[-2:]}.{exchange}"
         )
 
         with HiddenPrints():
-            data = yf.download(future_ticker, progress=False)
+            data = yf.download(future_symbol, progress=False)
 
         if not data.empty:
             futures_index.append(future.strftime("%Y-%b"))

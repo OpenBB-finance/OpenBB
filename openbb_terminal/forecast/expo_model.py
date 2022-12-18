@@ -3,10 +3,11 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Union, Optional, List, Tuple
+from typing import Union, Optional, List, Tuple
 
 import warnings
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
+from numpy import ndarray
 import pandas as pd
 from darts import TimeSeries
 from darts.models import ExponentialSmoothing
@@ -40,7 +41,13 @@ def get_expo_data(
     n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
+) -> Tuple[
+    List[TimeSeries],
+    List[TimeSeries],
+    List[TimeSeries],
+    Optional[Union[float, ndarray]],
+    ExponentialSmoothing,
+]:
 
     """Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
@@ -52,7 +59,7 @@ def get_expo_data(
     ----------
     data : Union[pd.Series, np.ndarray]
         Input data.
-    target_column (str, optional):
+    target_column: Optional[str]:
         Target column to forecast. Defaults to "close".
     trend: str
         Trend component.  One of [N, A, M]
@@ -74,15 +81,11 @@ def get_expo_data(
 
     Returns
     -------
-    list[float]
-        Adjusted Data series
-    list[float]
-        List of historical fcast values
-    list[float]
-        List of predicted fcast values
-    Optional[float]
-        precision
-    Any
+    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[Union[float, ndarray]], ExponentialSmoothing]
+        Adjusted Data series,
+        List of historical fcast values,
+        List of predicted fcast values,
+        Optional[float] - precision,
         Fit Prob. Expo model object.
     """
 

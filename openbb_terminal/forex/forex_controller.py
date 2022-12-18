@@ -10,7 +10,7 @@ from typing import List
 import pandas as pd
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
+from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex import forex_helper, fxempire_view, av_view
@@ -25,9 +25,9 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import (
     console,
     MenuText,
-    translate,
     get_ordered_list_sources,
 )
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.forex.forex_helper import parse_forex_symbol
 
@@ -46,19 +46,22 @@ class ForexController(BaseController):
     """Forex Controller class."""
 
     CHOICES_COMMANDS = [
+        "fwd",
+        "candle",
         "load",
         "quote",
-        "candle",
-        "resources",
-        "fwd",
-        "forecast",
-        "oanda",
     ]
-    CHOICES_MENUS = ["ta", "qa", "Oanda"]
+    CHOICES_MENUS = [
+        "forecast",
+        "qa",
+        "oanda",
+        "ta",
+    ]
     RESOLUTION = ["i", "d", "w", "m"]
 
     PATH = "/forex/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Construct Data."""
@@ -71,25 +74,9 @@ class ForexController(BaseController):
         self.data = pd.DataFrame()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"] = {c: {} for c in FX_TICKERS}
-            choices["load"]["--ticker"] = {c: {} for c in FX_TICKERS}
-            choices["load"]["-t"] = "--ticker"
-            choices["load"]["--resolution"] = {c: {} for c in self.RESOLUTION}
-            choices["load"]["-r"] = "--resolution"
-            choices["load"]["--interval"] = {
-                c: {} for c in SOURCES_INTERVALS["YahooFinance"]
-            }
-            choices["load"]["--start"] = None
-            choices["load"]["-s"] = "--start"
-            choices["load"]["--source"] = {c: {} for c in FOREX_SOURCES}
-            choices["quote"]["--source"] = {
-                c: {} for c in get_ordered_list_sources(f"{self.PATH}quote")
-            }
-            choices["candle"]["--ma"] = None
+            choices: dict = self.choices_default
 
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices["load"].update({c: {} for c in FX_TICKERS})
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -137,6 +124,8 @@ class ForexController(BaseController):
             dest="ticker",
             help="Currency pair to load.",
             type=parse_forex_symbol,
+            metavar="TICKER",
+            choices=FX_TICKERS,
         )
         parser.add_argument(
             "-r",
@@ -218,7 +207,7 @@ class ForexController(BaseController):
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
-        """Process quote command."""
+        """Process candle command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -226,19 +215,95 @@ class ForexController(BaseController):
             description="Show candle for loaded fx data",
         )
         parser.add_argument(
+            "-p",
+            "--plotly",
+            dest="plotly",
+            action="store_false",
+            default=True,
+            help="Flag to show interactive plotly chart",
+        )
+        parser.add_argument(
+            "--sort",
+            choices=forex_helper.CANDLE_SORT,
+            default="",
+            type=str.lower,
+            dest="sort",
+            help="Choose a column to sort by. Only works when raw data is displayed.",
+        )
+        parser.add_argument(
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Shows raw data instead of chart.",
+        )
+        parser.add_argument(
+            "-t",
+            "--trend",
+            action="store_true",
+            default=False,
+            help="Flag to add high and low trends to candle",
+            dest="trendlines",
+        )
+        parser.add_argument(
             "--ma",
             dest="mov_avg",
             type=str,
-            help=translate(
+            help=(
                 "Add moving average in number of days to plot and separate by a comma. "
                 "Value for ma (moving average) keyword needs to be greater than 1."
             ),
             default=None,
         )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        parser.add_argument(
+            "--log",
+            help="Plot with y axis on log scale",
+            action="store_true",
+            default=False,
+            dest="logy",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=20,
+        )
+
         if ns_parser:
-            mov_avgs = []
-            if not self.data.empty:
+            if not self.to_symbol:
+                console.print("No ticker loaded. First use 'load <ticker>'")
+                return
+
+            data = stocks_helper.process_candle(self.data)
+            if ns_parser.raw:
+                if ns_parser.trendlines:
+                    if (data.index[1] - data.index[0]).total_seconds() >= 86400:
+                        data = stocks_helper.find_trendline(data, "OC_High", "high")
+                        data = stocks_helper.find_trendline(data, "OC_Low", "low")
+
+                qa_view.display_raw(
+                    data=data,
+                    sortby=ns_parser.sort,
+                    ascend=ns_parser.reverse,
+                    limit=ns_parser.limit,
+                )
+
+            else:
+                mov_avgs = []
+
                 if ns_parser.mov_avg:
                     mov_list = (num for num in ns_parser.mov_avg.split(","))
 
@@ -256,15 +321,21 @@ class ForexController(BaseController):
                             )
 
                 forex_helper.display_candle(
-                    self.data, self.to_symbol, self.from_symbol, mov_avgs
+                    to_symbol=self.to_symbol,
+                    from_symbol=self.from_symbol,
+                    data=data,
+                    use_matplotlib=ns_parser.plotly,
+                    add_trend=ns_parser.trendlines,
+                    ma=mov_avgs,
+                    yscale="log" if ns_parser.logy else "linear",
                 )
-            else:
-                logger.error(
-                    "No forex historical data loaded.  Load first using <load>."
-                )
-                console.print(
-                    "[red]No forex historical data loaded.  Load first using <load>.[/red]\n"
-                )
+
+            export_data(
+                ns_parser.export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{self.fx_pair}",
+                self.data,
+            )
 
     @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):

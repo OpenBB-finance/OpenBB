@@ -629,9 +629,9 @@ With:
 
     <br>
 
-4. Consistent and clear argument naming; not `symbol` in _view and then `ticker` in `_file` -> ticker everywhere; the name should be descriptive of what information it hold (see Style Guide section below)
+4. Consistent and clear argument naming; not `symbol` in `_view` and then `ticker` in `_file` -> ticker everywhere; the name should be descriptive of what information it holds (see Style Guide section below)
 
-    - Why? You can quickly understand what the input it should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
+    - Why? You can quickly understand what the input should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
 
     <br>
 
@@ -681,7 +681,7 @@ With:
     transactions = Portfolio.read_orderbook("../../portfolio/holdings/example.csv")
     P = Portfolio(transactions)
     P.generate_portfolio_data()
-    P.load_benchmark()
+    P.set_benchmark()
 
     # SDK endpoint access
     openbb.portfolio.gaintopain(P)
@@ -695,7 +695,7 @@ With:
     <td>
 
     ```python
-    def get_gaintopain_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
+    def get_gaintopain_ratio(portfolio: PortfolioEngine) -> pd.DataFrame:
 
     """..."""
 
@@ -796,7 +796,7 @@ With:
 
     - Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this `get_` → `display_` map it’s likely that i. and/or ii. fail to hold.
 
-        i. Data is processed in _model files and displayed in `_view` files
+        i. Data is processed in `_model` files and displayed in `_view` files
 
         ii. `_view` and `_model` files will have the same arguments (except for output options)
 
@@ -1126,7 +1126,7 @@ It is important to keep a coherent UI/UX throughout the terminal. These are the 
 - There is 1 single empty line between command output and the user input.
 - The menu help has 1 empty line above text and 1 empty line below. Both still within the rectangular panel.
 - From menu help rectangular panel there's no empty line below - this makes it more clear to the user that they are inside such menu.
-  
+
 ## External API Keys
 
 ### Creating API key
@@ -1307,7 +1307,7 @@ The way to interpret this file is by following the path to a data source, e.g.
 
 ### Export Data
 
-In the `_view.py` files it is common having at the end of each function `export_data` being called. This tipycally looks like:
+In the `_view.py` files it is common having at the end of each function `export_data` being called. This typically looks like:
 
 ```python
     export_data(
@@ -1385,8 +1385,8 @@ if session and obbff.USE_PROMPT_TOOLKIT:
      "-c": "--commodity",
      "--sortby": {c: None for c in self.wsj_sortby_cols_dict.keys()},
      "-s": "--sortby",
-     "--ascend": {},
-     "-a": "--ascend",
+     "--reverse": {},
+     "-r": "--reverse",
   }
   self.choices["map"] = {
      "--period": {c: None for c in self.map_period_list},
@@ -1403,7 +1403,7 @@ Important things to note:
 - `self.choices["overview"]`: this corresponds to the list of choices that the user is allowed to select after specifying `$ overview`
 - `"--commodity": {c: None for c in self.futures_commodities}`: this allows the user to select several commodity values after `--commodity` flag
 - `"-c": "--commodity"`: this is interpreted as `-c` having the same effect as `--commodity`
-- `"--ascend": {}`: corresponds to a boolean flag (does not expect any value after)
+- `"--reverse": {}`: corresponds to a boolean flag (does not expect any value after)
 - `"--start": None`: corresponds to a flag where the values allowed are not easily discrete due to vast range
 - `self.completer = NestedCompleter.from_nested_dict(self.choices)`: from the choices create our custom completer
 
@@ -1512,7 +1512,7 @@ Install the pre-commit hooks by running: `pre-commit install`.
 
 ### Coding
 
-Although the Coding Guidelines section has been already explained. It is worth mentioning that if you want to be faster
+Although the Coding Guidelines section has been already explained, it is worth mentioning that if you want to be faster
 at developing a new feature, you may implement it first on a `jupyter notebook` and then carry it across to the
 terminal. This is mostly useful when the feature relies on scraping data from a website, or implementing a Neural
 Network model.

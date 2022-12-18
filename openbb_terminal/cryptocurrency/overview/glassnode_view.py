@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_btc_rainbow(
     start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: Optional[str] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -39,15 +39,18 @@ def display_btc_rainbow(
 
     Parameters
     ----------
-    start_date : int
+    start_date : str
         Initial date, format YYYY-MM-DD
-    end_date : int
+    end_date : Optional[str]
         Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     df_data = get_btc_rainbow(start_date, end_date)
 

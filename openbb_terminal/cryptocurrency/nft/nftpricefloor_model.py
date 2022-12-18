@@ -16,8 +16,8 @@ API_URL = "https://api-bff.nftpricefloor.com"
 def get_collection_slugs() -> List[str]:
     df = get_collections()
     if not df.empty and "slug" in df.columns:
-        return df["slug"].values
-    return pd.DataFrame()
+        return df["slug"].tolist()
+    return []
 
 
 @log_start_end(log=logger)
@@ -25,7 +25,7 @@ def get_collections() -> pd.DataFrame:
     """Get nft collections [Source: https://nftpricefloor.com/]
 
     Parameters
-    -------
+    ----------
 
     Returns
     -------
@@ -43,11 +43,11 @@ def get_collections() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_floor_price(slug) -> pd.DataFrame:
+def get_floor_price(slug: str) -> pd.DataFrame:
     """Get nft collections [Source: https://nftpricefloor.com/]
 
     Parameters
-    -------
+    ----------
     slug: str
         nft collection slug
 

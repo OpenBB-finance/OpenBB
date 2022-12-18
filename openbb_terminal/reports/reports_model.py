@@ -72,7 +72,7 @@ REPORT_CHOICES = {
         "--symbol": {c: None for c in FX_TICKERS},
     },
     "portfolio": {
-        "--orderbook": {c: None for c in PORTFOLIO_HOLDINGS_FILES},
+        "--transactions": {c: None for c in PORTFOLIO_HOLDINGS_FILES},
     },
     "economy": None,
     "equity": {
@@ -328,8 +328,8 @@ def execute_notebook(input_path, parameters, output_path):
 
     except pm.PapermillExecutionError as e:
         console.print(
-            f"[red]An error was encountered in cell [{e.cell_index}], check the notebook:[/red]\n"
-            f"{output_path}\n"
+            f"[red]\nAn error was encountered in cell [{e.exec_count}], check the notebook:[/red]\n"
+            f"{output_path}.ipynb\n"
         )
 
 

@@ -8,7 +8,7 @@ import praw
 
 
 def find_tickers(submission: praw.models.reddit.submission.Submission) -> List[str]:
-    """Extracts potential tickers from reddit submission
+    """Extracts potential tickers from reddit submission.
 
     Parameters
     ----------

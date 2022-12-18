@@ -1,5 +1,5 @@
 stocks
-load aapl
+load ${ticker=aapl}
 fa
 income -l 2 --source YahooFinance
 income -l 2 --source Polygon
@@ -42,3 +42,6 @@ earnings --source YahooFinance
 earnings --source AlphaVantage
 fraud
 dupont
+epsfc
+revfc
+exit

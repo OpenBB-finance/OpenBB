@@ -34,7 +34,6 @@ def valinvest_score(symbol: str):
     score = fmp_model.get_score(symbol)
     if score:
         console.print(f"Score: {score:.2f}".rstrip("0").rstrip(".") + " %")
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -513,7 +512,6 @@ def display_financial_statement_growth(
     growth = fmp_model.get_financial_growth(symbol, limit, quarterly)
 
     if not growth.empty:
-        growth = growth[growth.columns[::-1]]
         print_rich_table(
             growth,
             headers=list(growth.columns),

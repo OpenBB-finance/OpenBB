@@ -251,7 +251,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--query=mock_query",
                 "--limit=1",
-                "--export=''",
+                "--export=csv",
             ],
             "stocks_helper.search",
             [],
@@ -262,13 +262,13 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 sector="",
                 industry="",
                 exchange_country="",
-                export="",
+                export="csv",
             ),
         ),
         (
             "call_quote",
             [],
-            "stocks_views.display_quote",
+            "stocks_view.display_quote",
             [],
             dict(),
         ),
@@ -284,7 +284,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--plotly",
                 "--sort=Open",
-                "--descending",
+                "--reverse",
                 "--raw",
                 "--limit=1",
                 "--trend",
@@ -304,7 +304,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--plotly",
                 "--sort=Open",
-                "--descending",
+                "--reverse",
                 "--limit=1",
                 "--trend",
                 "--ma=20,30",

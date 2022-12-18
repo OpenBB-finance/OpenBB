@@ -6,7 +6,7 @@ import logging
 import os
 
 from typing import List
-
+from datetime import date
 import pandas as pd
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -25,18 +25,24 @@ from openbb_terminal.stocks.tradinghours.tradinghours_helper import (
     get_exchanges_short_names,
     get_fd_equities_list,
 )
-
+from openbb_terminal.stocks.tradinghours.pandas_market_cal_view import (
+    get_all_holiday_exchange_short_names,
+    display_exchange_holidays,
+)
 
 logger = logging.getLogger(__name__)
+
+# pylint: disable=R0902
 
 
 class TradingHoursController(BaseController):
 
     """Trading Hours Controller class."""
 
-    CHOICES_COMMANDS = ["symbol", "open", "closed", "all", "exchange"]
+    CHOICES_COMMANDS = ["symbol", "open", "closed", "all", "exchange", "holidays"]
     PATH = "/stocks/th/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+    CHOICES_GENERATION = True
 
     def __init__(self, ticker: str = "", queue: List[str] = None):
         """Construct Data."""
@@ -49,6 +55,9 @@ class TradingHoursController(BaseController):
         short_names = short_names_df["short_name"].values
         all_short_names = list(short_names) + list(short_names_index)
         self.all_exchange_short_names = sorted(list(all_short_names))
+        self.all_holiday_exchange_short_names = sorted(
+            list(get_all_holiday_exchange_short_names()["short_name"].values)
+        )
 
         self.symbol = None
         self.symbol_name = None
@@ -73,16 +82,7 @@ class TradingHoursController(BaseController):
         self.timezone = get_user_timezone_or_invalid()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            choices["exchange"] = {c: None for c in self.all_exchange_short_names}
-            choices["exchange"]["--name"] = {
-                c: {} for c in self.all_exchange_short_names
-            }
-            choices["exchange"]["-n"] = "--name"
-            choices["symbol"]["--name"] = None
-            choices["symbol"]["-n"] = "--name"
-
+            choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -99,6 +99,7 @@ class TradingHoursController(BaseController):
         mt.add_cmd("closed")
         mt.add_cmd("all")
         mt.add_cmd("exchange")
+        mt.add_cmd("holidays")
         mt.add_raw("\n")
         mt.add_cmd("symbol")
         mt.add_raw("\n")
@@ -167,6 +168,7 @@ class TradingHoursController(BaseController):
             "--name",
             help="Exchange short name",
             type=str.upper,
+            choices=self.all_exchange_short_names,
             dest="exchange",
         )
 
@@ -179,11 +181,14 @@ class TradingHoursController(BaseController):
             other_args.insert(0, "-n")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser and ns_parser.exchange:
-            bursa_view.display_exchange(ns_parser.exchange)
-        else:
-            logger.error("Select the exchange you want to know about.")
-            console.print("[red]Select the exchange you want to know about.[/red]\n")
+        if ns_parser:
+            if ns_parser.exchange:
+                bursa_view.display_exchange(ns_parser.exchange)
+            else:
+                logger.error("Select the exchange you want to know about.")
+                console.print(
+                    "[red]Select the exchange you want to know about.[/red]\n"
+                )
 
     @log_start_end(log=logger)
     def call_open(self, other_args: List[str]):
@@ -234,3 +239,56 @@ class TradingHoursController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bursa_view.display_all()
+
+    @log_start_end(log=logger)
+    def call_holidays(self, other_args: List[str]):
+        """Process 'holidays' command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="exchange",
+            description="Select the exchange and year you want see holidays for",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            help="Exchange short name",
+            dest="exchange",
+            required=True,
+            type=str.upper,
+            choices=self.all_holiday_exchange_short_names,
+            metavar="LSE",
+        )
+
+        parser.add_argument(
+            "-y",
+            "--year",
+            help="Year",
+            nargs="?",
+            type=int,
+            const=date.today().year,
+            dest="year",
+            metavar="year",
+        )
+
+        if (
+            other_args
+            and "-n" not in other_args[0]
+            and "--name" not in other_args[0]
+            and "-h" not in other_args
+        ):
+            other_args.insert(0, "-n")
+            other_args.insert(2, "-y")
+
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if ns_parser.exchange:
+                if ns_parser.year:
+                    display_exchange_holidays(ns_parser.exchange, ns_parser.year)
+                else:
+                    display_exchange_holidays(ns_parser.exchange, date.today().year)
+        else:
+            logger.error("Select the exchange and year you want holiday calendar for.")
+            console.print(
+                "[red]Select the exchange and year you want holiday calendar for.[/red]\n"
+            )

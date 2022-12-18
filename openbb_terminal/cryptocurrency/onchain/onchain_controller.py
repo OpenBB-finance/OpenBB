@@ -91,6 +91,7 @@ class OnchainController(BaseController):
     ]
 
     PATH = "/crypto/onchain/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -100,169 +101,12 @@ class OnchainController(BaseController):
         self.address_type = ""
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["whales"] = {
-                "--sort": {c: {} for c in whale_alert_model.FILTERS},
-                "-s": "--sort",
-                "--min": None,
-                "-m": "--min",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-                "--address": {},
-                "-a": {},
-            }
-            choices["hr"] = {c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
-            choices["ds"] = {c: None for c in shroom_model.DAPP_STATS_PLATFORM_CHOICES}
-            choices["hr"]["--coin"] = {
-                c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS
-            }
-            choices["hr"]["-c"] = "--coin"
-            choices["hr"]["--interval"] = {c: {} for c in INTERVALS_HASHRATE}
-            choices["hr"]["-i"] = "--interval"
-            choices["hr"]["--until"] = None
-            choices["hr"]["-u"] = "--until"
-            choices["hr"]["--since"] = None
-            choices["hr"]["-s"] = "--since"
-            choices["btccp"] = {
-                "--until": None,
-                "-u": "--until",
-                "--since": None,
-                "-s": "--since",
-            }
-            choices["btcct"] = {
-                "--until": None,
-                "-u": "--until",
-                "--since": None,
-                "-s": "--since",
-            }
+            choices: dict = self.choices_default
 
-            choices["btcblockdata"] = {
-                "--blockhash": None,
-                "-b": "--blockhash",
-                "--export": None,
-                "-e": "--export",
-            }
-            choices["baas"]["-c"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
-            choices["baas"]["--coin"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
-            choices["balance"] = {
-                "--sort": {c: None for c in ethplorer_model.BALANCE_FILTERS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["holders"] = {
-                "--sort": {c: None for c in ethplorer_model.HOLDERS_FILTERS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["hist"] = {
-                "--sort": {c: None for c in ethplorer_model.HIST_FILTERS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["top"] = {
-                "--sort": {c: None for c in ethplorer_model.TOP_FILTERS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["th"]["-s"] = {c: None for c in ethplorer_model.TH_FILTERS}
-            choices["th"] = {
-                "--sort": {c: None for c in ethplorer_model.TH_FILTERS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-                "--hash": {},
-            }
-            choices["prices"] = {
-                "--sort": {c: None for c in ethplorer_model.PRICES_FILTERS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["lt"] = {
-                "--kind": {c: {} for c in bitquery_model.LT_KIND},
-                "-k": "--kind",
-                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
-                "-vs": "--vs",
-                "--sort": {c: {} for c in bitquery_model.LT_FILTERS},
-                "-s": "--sort",
-                "--days": {str(c): {} for c in range(1, 360)},
-                "-d": "--days",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["tv"] = {
-                "--coin": None,
-                "-c": "--coin",
-                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
-                "-vs": "--vs",
-                "--sort": {c: {} for c in bitquery_model.LT_FILTERS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["ueat"] = {
-                "--sort": {c: None for c in bitquery_model.UEAT_FILTERS},
-                "-s": "--sort",
-                "--interval": {c: {} for c in bitquery_model.INTERVALS},
-                "-i": "--interval",
-                "--limit": {str(c): {} for c in range(1, 90)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["dvcp"] = {
-                "--coin": None,
-                "-c": "--coin",
-                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
-                "-vs": "--vs",
-                "--days": {str(c): {} for c in range(1, 100)},
-                "-d": "--days",
-                "--sort": {c: {} for c in bitquery_model.DVCP_FILTERS},
-                "-s": "--sort",
-                "--descend": {},
-            }
-            choices["ttcp"]["--exchanges"] = {
-                c: {} for c in bitquery_model.DECENTRALIZED_EXCHANGES
-            }
-            choices["ttcp"]["-e"] = "--exchanges"
-            choices["ttcp"]["--sort"] = {c: None for c in bitquery_model.TTCP_FILTERS}
-            choices["ttcp"]["-s"] = "--sort"
-            choices["ttcp"]["--days"] = {str(c): {} for c in range(1, 100)}
-            choices["ttcp"]["-d"] = "--days"
-            choices["ttcp"]["--limit"] = {str(c): {} for c in range(1, 100)}
-            choices["ttcp"]["-l"] = "--limit"
-            choices["ttcp"]["--descend"] = {}
-            choices["baas"] = {
-                "--coin": {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS},
-                "-c": "--coin",
-                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
-                "-vs": "--vs",
-                "--sort": {c: {} for c in bitquery_model.BAAS_FILTERS},
-                "-s": "--sort",
-                "--descend": {},
-            }
-            choices["address"] = {
-                "-a": {},
-                "-t": {},
-                "-tx": {},
-                "--address": None,
-            }
-            choices["info"]["--social"] = {}
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+            choices["hr"].update({c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS})
+            choices["ds"].update(
+                {c: None for c in shroom_model.DAPP_STATS_PLATFORM_CHOICES}
+            )
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -450,7 +294,7 @@ class OnchainController(BaseController):
             "--until",
             dest="until",
             type=valid_date,
-            help="Final date. Default: 2021-01-01",
+            help=f"Final date. Default: {(datetime.now()).strftime('%Y-%m-%d')}",
             default=(datetime.now()).strftime("%Y-%m-%d"),
         )
 
@@ -460,8 +304,8 @@ class OnchainController(BaseController):
 
         if ns_parser:
             blockchain_view.display_btc_confirmed_transactions(
-                start_date=int(datetime.timestamp(ns_parser.since)),
-                end_date=int(datetime.timestamp(ns_parser.until)),
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
             )
 
@@ -501,8 +345,8 @@ class OnchainController(BaseController):
 
         if ns_parser:
             blockchain_view.display_btc_circulating_supply(
-                start_date=int(datetime.timestamp(ns_parser.since)),
-                end_date=int(datetime.timestamp(ns_parser.until)),
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
             )
 
@@ -568,8 +412,8 @@ class OnchainController(BaseController):
             display_hashrate(
                 symbol=ns_parser.coin,
                 interval=ns_parser.interval,
-                start_date=int(datetime.timestamp(ns_parser.since)),
-                end_date=int(datetime.timestamp(ns_parser.until)),
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
             )
 
@@ -614,7 +458,6 @@ class OnchainController(BaseController):
             help="Minimum value of transactions.",
             default=1000000,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -623,7 +466,6 @@ class OnchainController(BaseController):
             help="display N number records",
             default=10,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -633,15 +475,18 @@ class OnchainController(BaseController):
             default="date",
             choices=whale_alert_model.FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         parser.add_argument(
             "-a",
             "--address",
@@ -650,7 +495,6 @@ class OnchainController(BaseController):
             help="Flag to show addresses of transaction",
             default=False,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -659,7 +503,7 @@ class OnchainController(BaseController):
                 min_value=ns_parser.min,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 show_address=ns_parser.address,
                 export=ns_parser.export,
             )
@@ -752,7 +596,6 @@ class OnchainController(BaseController):
                 [Source: Ethplorer]
             """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -761,7 +604,6 @@ class OnchainController(BaseController):
             help="display N number records",
             default=10,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -771,29 +613,32 @@ class OnchainController(BaseController):
             default="index",
             choices=ethplorer_model.BALANCE_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        if ns_parser and self.address:
-            ethplorer_view.display_address_info(
-                limit=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
-                address=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_address_info(
+                    limit=ns_parser.limit,
+                    sortby=ns_parser.sortby,
+                    ascend=ns_parser.reverse,
+                    address=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_hist(self, other_args: List[str]):
@@ -808,7 +653,6 @@ class OnchainController(BaseController):
                    [Source: Ethplorer]
                """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -817,7 +661,6 @@ class OnchainController(BaseController):
             help="display N number records",
             default=10,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -827,29 +670,32 @@ class OnchainController(BaseController):
             default="timestamp",
             choices=ethplorer_model.HIST_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        if ns_parser and self.address:
-            ethplorer_view.display_address_history(
-                limit=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
-                address=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_address_history(
+                    limit=ns_parser.limit,
+                    sortby=ns_parser.sortby,
+                    ascend=ns_parser.reverse,
+                    address=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_holders(self, other_args: List[str]):
@@ -863,7 +709,6 @@ class OnchainController(BaseController):
                 [Source: Ethplorer]
             """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -872,7 +717,6 @@ class OnchainController(BaseController):
             help="display N number records",
             default=10,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -882,29 +726,32 @@ class OnchainController(BaseController):
             default="share",
             choices=ethplorer_model.HOLDERS_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        if ns_parser and self.address:
-            ethplorer_view.display_top_token_holders(
-                limit=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
-                address=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_top_token_holders(
+                    limit=ns_parser.limit,
+                    sortby=ns_parser.sortby,
+                    ascend=ns_parser.reverse,
+                    address=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_top(self, other_args: List[str]):
@@ -918,7 +765,6 @@ class OnchainController(BaseController):
                 [Source: Ethplorer]
             """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -927,7 +773,6 @@ class OnchainController(BaseController):
             help="display N number records",
             default=10,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -937,15 +782,18 @@ class OnchainController(BaseController):
             default="rank",
             choices=ethplorer_model.TOP_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -954,7 +802,7 @@ class OnchainController(BaseController):
             ethplorer_view.display_top_tokens(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -983,14 +831,15 @@ class OnchainController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser and self.address:
-            ethplorer_view.display_token_info(
-                social=ns_parser.social,
-                address=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_token_info(
+                    social=ns_parser.social,
+                    address=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_th(self, other_args: List[str]):
@@ -1005,7 +854,6 @@ class OnchainController(BaseController):
                      [Source: Ethplorer]
                  """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1014,7 +862,6 @@ class OnchainController(BaseController):
             help="display N number records",
             default=10,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -1024,15 +871,18 @@ class OnchainController(BaseController):
             default="value",
             choices=ethplorer_model.TH_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         parser.add_argument(
             "--hash",
             action="store_false",
@@ -1040,22 +890,22 @@ class OnchainController(BaseController):
             dest="hash",
             default=True,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser and self.address:
-            ethplorer_view.display_token_history(
-                limit=ns_parser.limit,
-                hash_=ns_parser.hash,
-                sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
-                address=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_token_history(
+                    limit=ns_parser.limit,
+                    hash_=ns_parser.hash,
+                    sortby=ns_parser.sortby,
+                    ascend=ns_parser.reverse,
+                    address=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_tx(self, other_args: List[str]):
@@ -1075,13 +925,14 @@ class OnchainController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser and self.address:
-            ethplorer_view.display_tx_info(
-                tx_hash=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_tx_info(
+                    tx_hash=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_prices(self, other_args: List[str]):
@@ -1095,7 +946,6 @@ class OnchainController(BaseController):
                   [Source: Ethplorer]
               """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1104,7 +954,6 @@ class OnchainController(BaseController):
             help="display N number records",
             default=10,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -1114,29 +963,32 @@ class OnchainController(BaseController):
             default="date",
             choices=ethplorer_model.PRICES_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        if ns_parser and self.address:
-            ethplorer_view.display_token_historical_prices(
-                limit=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
-                address=self.address,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("You need to set an ethereum address\n")
+        if ns_parser:
+            if self.address:
+                ethplorer_view.display_token_historical_prices(
+                    limit=ns_parser.limit,
+                    sortby=ns_parser.sortby,
+                    ascend=ns_parser.reverse,
+                    address=self.address,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("You need to set an ethereum address\n")
 
     @log_start_end(log=logger)
     def call_lt(self, other_args: List[str]):
@@ -1150,7 +1002,6 @@ class OnchainController(BaseController):
                       [Source: https://graphql.bitquery.io/]
                   """,
         )
-
         parser.add_argument(
             "-k",
             "--kind",
@@ -1160,7 +1011,6 @@ class OnchainController(BaseController):
             default="dex",
             choices=bitquery_model.LT_KIND,
         )
-
         parser.add_argument(
             "-vs",
             "--vs",
@@ -1170,7 +1020,6 @@ class OnchainController(BaseController):
             default="USD",
             choices=bitquery_model.CURRENCIES,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1179,7 +1028,6 @@ class OnchainController(BaseController):
             help="display N number records",
             default=10,
         )
-
         parser.add_argument(
             "-d",
             "--days",
@@ -1187,8 +1035,9 @@ class OnchainController(BaseController):
             type=check_positive,
             help="Number of days to display data for.",
             default=90,
+            choices=range(1, 360),
+            metavar="DAYS",
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -1198,19 +1047,21 @@ class OnchainController(BaseController):
             default="tradeAmount",
             choices=bitquery_model.LT_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
         if ns_parser:
             bitquery_view.display_dex_trades(
                 kind=ns_parser.kind,
@@ -1218,7 +1069,7 @@ class OnchainController(BaseController):
                 limit=ns_parser.limit,
                 days=ns_parser.days,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -1234,7 +1085,6 @@ class OnchainController(BaseController):
                       [Source: https://graphql.bitquery.io/]
                   """,
         )
-
         parser.add_argument(
             "-c",
             "--coin",
@@ -1243,11 +1093,15 @@ class OnchainController(BaseController):
             help="ERC20 token symbol or address.",
             required="-h" not in other_args,
         )
-
         parser.add_argument(
-            "-vs", "--vs", dest="vs", type=str, help="Quote currency", default="USDT"
+            "-vs",
+            "--vs",
+            dest="vs",
+            type=str,
+            help="Quote currency",
+            default="USDT",
+            choices=bitquery_model.CURRENCIES,
         )
-
         parser.add_argument(
             "-d",
             "--days",
@@ -1255,8 +1109,9 @@ class OnchainController(BaseController):
             type=check_positive,
             help="Number of days to display data for.",
             default=10,
+            choices=range(1, 100),
+            metavar="DAYS",
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -1266,15 +1121,18 @@ class OnchainController(BaseController):
             default="date",
             choices=bitquery_model.DVCP_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
 
@@ -1288,7 +1146,7 @@ class OnchainController(BaseController):
                 to_symbol=ns_parser.vs,
                 limit=ns_parser.days,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -1304,7 +1162,6 @@ class OnchainController(BaseController):
                       [Source: https://graphql.bitquery.io/]
                   """,
         )
-
         parser.add_argument(
             "-c",
             "--coin",
@@ -1313,7 +1170,6 @@ class OnchainController(BaseController):
             help="ERC20 token symbol or address.",
             required="-h" not in other_args,
         )
-
         parser.add_argument(
             "-vs",
             "--vs",
@@ -1323,7 +1179,6 @@ class OnchainController(BaseController):
             default="USD",
             choices=bitquery_model.CURRENCIES,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1332,7 +1187,6 @@ class OnchainController(BaseController):
             help="display N number records",
             default=10,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -1342,13 +1196,17 @@ class OnchainController(BaseController):
             default="trades",
             choices=bitquery_model.LT_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
@@ -1363,7 +1221,7 @@ class OnchainController(BaseController):
                 trade_amount_currency=ns_parser.vs,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -1379,7 +1237,6 @@ class OnchainController(BaseController):
                       [Source: https://graphql.bitquery.io/]
                   """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1390,8 +1247,9 @@ class OnchainController(BaseController):
             "For interval: month, and number: 10, period of calculation equals to 300, "
             "but because of max days limit: 90, it will only return last 3 months (3 records). ",
             default=10,
+            choices=range(1, 90),
+            metavar="LIMIT",
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -1401,7 +1259,6 @@ class OnchainController(BaseController):
             default="date",
             choices=bitquery_model.UEAT_FILTERS,
         )
-
         parser.add_argument(
             "-i",
             "--interval",
@@ -1412,16 +1269,22 @@ class OnchainController(BaseController):
             default="day",
             choices=bitquery_model.INTERVALS,
         )
-
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
 
         if ns_parser:
@@ -1429,7 +1292,7 @@ class OnchainController(BaseController):
                 interval=ns_parser.interval,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -1445,7 +1308,6 @@ class OnchainController(BaseController):
                       [Source: https://graphql.bitquery.io/]
                   """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1454,7 +1316,6 @@ class OnchainController(BaseController):
             help="display N number records",
             default=10,
         )
-
         parser.add_argument(
             "-e",
             "--exchange",
@@ -1463,7 +1324,6 @@ class OnchainController(BaseController):
             help="Decentralized exchange name.",
             choices=bitquery_model.DECENTRALIZED_EXCHANGES,
         )
-
         parser.add_argument(
             "-d",
             "--days",
@@ -1471,8 +1331,9 @@ class OnchainController(BaseController):
             type=check_positive,
             help="Number of days to display data for.",
             default=30,
+            choices=range(1, 100),
+            metavar="DAYS",
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -1482,15 +1343,18 @@ class OnchainController(BaseController):
             default="tradeAmount",
             choices=bitquery_model.TTCP_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
 
@@ -1538,7 +1402,7 @@ class OnchainController(BaseController):
                 limit=ns_parser.limit,
                 exchange=exchange,
                 sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -1554,28 +1418,32 @@ class OnchainController(BaseController):
                       [Source: https://graphql.bitquery.io/]
                   """,
         )
-
         parser.add_argument(
             "-c",
             "--coin",
             dest="coin",
             type=str,
             help="ERC20 token symbol or address.",
+            choices=bitquery_model.POSSIBLE_CRYPTOS,
+            metavar="COIN",
         )
-
         parser.add_argument(
-            "-vs", "--vs", dest="vs", type=str, help="Quote currency", default="USDT"
+            "-vs",
+            "--vs",
+            dest="vs",
+            type=str,
+            help="Quote currency",
+            default="USDT",
+            choices=bitquery_model.CURRENCIES,
         )
-
         parser.add_argument(
-            "-d",
-            "--days",
-            dest="days",
+            "-l",
+            "--limit",
+            dest="limit",
             type=check_positive,
             help="Number of days to display data for.",
             default=10,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -1585,15 +1453,18 @@ class OnchainController(BaseController):
             default="date",
             choices=bitquery_model.BAAS_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
 
@@ -1606,9 +1477,9 @@ class OnchainController(BaseController):
                     bitquery_view.display_spread_for_crypto_pair(
                         symbol=ns_parser.coin,
                         to_symbol=ns_parser.vs,
-                        days=ns_parser.days,
+                        limit=ns_parser.limit,
                         sortby=ns_parser.sortby,
-                        ascend=not ns_parser.descend,
+                        ascend=ns_parser.reverse,
                         export=ns_parser.export,
                     )
 
@@ -1630,9 +1501,9 @@ class OnchainController(BaseController):
                                 bitquery_view.display_spread_for_crypto_pair(
                                     token=token,
                                     to_symbol=ns_parser.vs,
-                                    days=ns_parser.days,
+                                    limit=ns_parser.limit,
                                     sortby=ns_parser.sortby,
-                                    ascend=not ns_parser.descend,
+                                    ascend=ns_parser.reverse,
                                     export=ns_parser.export,
                                 )
                         except Exception:

@@ -34,7 +34,7 @@ jobs:
           key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
       # Set up miniconda using the environment yaml file within the repo
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v2.2.0
         with:
           miniconda-version: "latest"
           auto-update-conda: true
@@ -43,25 +43,21 @@ jobs:
           channel-priority: flexible
           environment-file: build/conda/conda-3-9-env-full.yaml
           activate-environment: build_env
+          auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
-      - name: Initialize Conda and Reset Terminal
-        run: |
-          conda init
-          exec zsh -l
-          source ~/.zshrc
       - name: Run Poetry
         run: poetry install
       - name: Install Pyinstaller
         run: poetry install -E installer
-      - name: Install Prediction Modules
-        run: poetry install -E prediction
-      # Double Checking Version Number
-      - name: Check OpenBB Version
-        run: pip list | grep openbb
+      - name: Poetry Install Portfolio Optimization and Forecasting Toolkits
+        run: poetry install -E all
+      - name: Install Specific Papermill
+        run: |
+          pip uninstall papermill -y
+          pip install git+https://github.com/nteract/papermill.git@main
       # This is basically the same as build4mac.sh
       - name: Build Bundle
         run: |
-          conda remove --force sigtool -y
           pyinstaller build/pyinstaller/terminal.spec --clean
           osascript build/pyinstaller/setup_icons.applescript
           mkdir DMG
@@ -91,9 +87,9 @@ jobs:
             ls
             cp -R OpenBB\ Terminal ~/Desktop
       - name: Unmount DMG
-        run: hdiutil detach /dev/disk5
+        run: hdiutil detach /dev/disk4
       - name: Run Integration Tests
-        run: /Users/openbb/Desktop/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Users/openbb/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/openbb_terminal/miscellaneous/scripts/*.openbb -t
+        run: /Users/openbb/Desktop/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Users/openbb/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/openbb_terminal/miscellaneous/scripts -t
       - name: Remove OpenBB Folder
         run: rm -rf /Users/openbb/Desktop/OpenBB\ Terminal
       - name: Remove OpenBB Exports Folder
