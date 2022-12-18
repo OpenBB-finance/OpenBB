@@ -45,6 +45,7 @@
             font-size: 1.2rem;
             color: #ffffff;
         }
+
     </style>
 </head>
 
@@ -159,12 +160,19 @@
                     ],
                 };
 
-                var font_size = graphs.layout.font;
+                var font_size = graphs.layout.font.size;
                 var old_annotations = graphs.layout.annotations;
                 window.addEventListener('resize', function () {
                     var new_annotations = [];
+                    // if font or size is not defined, set it to 18
                     if (graphs.layout.annotations != undefined) {
                         graphs.layout.annotations.forEach(function (annotation) {
+                            if (!('font' in annotation) || !('size' in annotation.font)) {
+                                annotation['font'] = {
+                                    'family': 'Fira Code, monospace, Arial Black',
+                                    'size': 18,
+                                }
+                            }
                             annotation.font.size = Math.min(CHART_DIV.clientWidth / 50, old_annotations[graphs.layout.annotations.indexOf(annotation)].font.size);
                             new_annotations.push(annotation);
                         });
@@ -191,6 +199,12 @@
 
                 if (graphs.layout.annotations != undefined) {
                     graphs.layout.annotations.forEach(function (annotation) {
+                        if (!('font' in annotation) || !('size' in annotation.font)) {
+                            annotation['font'] = {
+                                'family': 'Fira Code, monospace, Arial Black',
+                                'size': 18,
+                            }
+                        }
                         annotation.font.size = Math.min(CHART_DIV.clientWidth / 50, annotation.font.size);
                     });
                 }

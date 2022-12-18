@@ -76,16 +76,23 @@ def run_qt_backend():
         return True
 
     qt_backend_pid = get_qt_backend_pid()
-    cmd_line = (
-        f"import sys; sys.path.append('{REPOSITORY_DIRECTORY.as_posix()}'); "
-        f"from openbb_terminal.qt_app.app import main; main()"
-    )
+
+    if sys.platform == "win32":
+        script = (
+            f"import sys; sys.path.append('{REPOSITORY_DIRECTORY.as_posix()}'); "
+            f"from openbb_terminal.qt_app.app import main; main()"
+        )
+        cmd_line = f'{sys.executable} -c "{script}"'
+    else:
+        script = "openbb_terminal.qt_app.app"
+        cmd_line = f"{sys.executable} -m {script}"
 
     def is_running(process_name):
         """Checks if the qt_backend is running and if the process is the same as qt_backend_pid"""
         try:
             process = psutil.Process(qt_backend_pid)
             check = len(process.cmdline()) > 1 and process_name in process.cmdline()
+            print(process.cmdline())
 
             print(f"Checking if running = {check}")
 
@@ -100,13 +107,9 @@ def run_qt_backend():
 
         return False
 
-    if not is_running(cmd_line):
+    if not is_running(script):
         # if the qt_backend is not running, we run it in a subprocess
-        kwargs = {
-            "stdin": subprocess.PIPE,
-            "stdout": subprocess.PIPE,
-            "stderr": subprocess.PIPE,
-        }
+        kwargs = {"stdin": subprocess.PIPE}
 
         # if the DEBUG env variable is set to True
         # we don't want to hide the output of the subprocess
@@ -122,8 +125,7 @@ def run_qt_backend():
         env = os.environ.copy()
         env["PYTHONPATH"] = REPOSITORY_DIRECTORY.as_posix()
 
-        cmd_line = f'{sys.executable} -c "{cmd_line}"'
-        subprocess.Popen(cmd_line, **kwargs, env=env)
+        subprocess.Popen(cmd_line, env=env, **kwargs)
 
         return True
 

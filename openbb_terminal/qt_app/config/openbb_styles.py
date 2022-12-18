@@ -29,9 +29,17 @@ PLT_3DMESH_HOVERLABEL = dict(bgcolor="gold")
 PLT_3DMESH_STYLE_TEMPLATE = "plotly_dark"
 
 # Chart Plots Settings
-PLT_CANDLE_STYLE_TEMPLATE = "plotly_dark"
+PLT_STYLE_TEMPLATE = "plotly_dark"
 PLT_CANDLE_INCREASING = "#00ACFF"
 PLT_CANDLE_DECREASING = "#e4003a"
+PLT_CANDLESTICKS = dict(
+    increasing_line_color=dict(
+        line_color=PLT_CANDLE_INCREASING, fillcolor=PLT_CANDLE_INCREASING
+    ),
+    decreasing_line_color=dict(
+        line_color=PLT_CANDLE_DECREASING, illcolor=PLT_CANDLE_DECREASING
+    ),
+)
 PLT_CANDLE_INCREASING_GREEN = "#009600"
 PLT_CANDLE_DECREASING_RED = "#c80000"
 PLT_CANDLE_VOLUME = "#fdc708"
@@ -44,7 +52,8 @@ PLT_SCAT_DECREASING = "#e4003a"
 PLT_SCAT_PRICE = "#fdc708"
 PLT_TA_STYLE_TEMPLATE = "plotly_dark"
 PLT_FONT = dict(family="Fira Code", size=16)
-PLT_TA_COLORWAY = [
+PLOTLY_FONT = dict(family="Fira Code", size=18)
+PLT_COLORWAY = [
     "#fdc708",
     "#d81aea",
     "#00e6c3",
@@ -202,3 +211,51 @@ def de_increasing_color_list(
             for boolv in df_column.astype(str).str.contains(contains_str)
         ]
     return colorlist
+
+
+PLOTLY_THEME = dict(
+    # Layout
+    margin=dict(l=10, r=10, t=40, b=20),
+    height=762,
+    width=1400,
+    template=PLT_STYLE_TEMPLATE,
+    colorway=PLT_COLORWAY,
+    font=PLOTLY_FONT,
+    yaxis=dict(
+        zeroline=False,
+        fixedrange=True,
+        title_standoff=20,
+        nticks=10,
+        showline=False,
+        showgrid=False,
+    ),
+    yaxis2=dict(
+        zeroline=False,
+        fixedrange=False,
+        anchor="x",
+        layer="above traces",
+        overlaying="y",
+        nticks=12,
+        tick0=0.5,
+        title_standoff=20,
+        tickfont=dict(size=18),
+        showline=True,
+    ),
+    xaxis=dict(
+        showgrid=True,
+        zeroline=True,
+        rangeslider=dict(visible=False),
+        tickfont=dict(size=18),
+    ),
+    legend=dict(
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        font_size=8,
+        bgcolor="rgba(0, 0, 0, 0)",
+        x=0.01,
+    ),
+    dragmode="pan",
+    hovermode="x",
+    hoverlabel=dict(align="left"),
+)

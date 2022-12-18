@@ -26,11 +26,13 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     excel_columns,
     export_data,
+    get_closing_price,
     get_rf,
     is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
 )
+from openbb_terminal.qt_app.plotly_helper import PlotlyFigureHelper
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, yfinance_model
 from openbb_terminal.stocks.options.yfinance_model import (
@@ -228,10 +230,7 @@ def display_chains(
     )
     console.print("Greeks calculated by OpenBB")
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "chains_yf",
-        option_chains,
+        export, os.path.dirname(os.path.abspath(__file__)), "chains_yf", option_chains
     )
 
 
@@ -271,7 +270,8 @@ def plot_oi(
     op_helpers.export_yf_options(export, options, "oi_yf")
     calls = options.calls
     puts = options.puts
-    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
+    # current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
+    current_price = get_closing_price(symbol, 7).iloc[-1]["Close"]
 
     if min_sp == -1:
         min_strike = 0.75 * current_price
@@ -296,43 +296,54 @@ def plot_oi(
     )
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    # if external_axes is None:
+    #     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    # elif is_valid_axes_count(external_axes, 1):
+    #     (ax,) = external_axes
+    # else:
+    #     return
 
-    if not calls_only:
-        put_oi.plot(
-            x="strike",
-            y="openInterest",
-            label="Puts",
-            ax=ax,
-            marker="o",
-            ls="-",
-        )
-    if not puts_only:
-        call_oi.plot(
-            x="strike",
-            y="openInterest",
-            label="Calls",
-            ax=ax,
-            marker="o",
-            ls="-",
-        )
-    ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
-    ax.axvline(max_pain, lw=3, label=f"Max Pain: {max_pain}", alpha=0.7)
-    ax.set_xlabel("Strike Price")
-    ax.set_ylabel("Open Interest [1k] ")
-    ax.set_xlim(min_strike, max_strike)
-    ax.legend(fontsize="x-small")
-    ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiry}")
+    # if not calls_only:
+    #     put_oi.plot(
+    #         x="strike", y="openInterest", label="Puts", ax=ax, marker="o", ls="-"
+    #     )
+    # if not puts_only:
+    #     call_oi.plot(
+    #         x="strike", y="openInterest", label="Calls", ax=ax, marker="o", ls="-"
+    #     )
+    # ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
+    # ax.axvline(max_pain, lw=3, label=f"Max Pain: {max_pain}", alpha=0.7)
+    # ax.set_xlabel("Strike Price")
+    # ax.set_ylabel("Open Interest [1k] ")
+    # ax.set_xlim(min_strike, max_strike)
+    # ax.legend(fontsize="x-small")
+    # ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiry}")
 
-    theme.style_primary_axis(ax)
+    fig = PlotlyFigureHelper.create(
+        title=f"Open Interest for {symbol.upper()} expiring {expiry}",
+        xaxis_title="Strike Price",
+        yaxis_title="Open Interest [1k]",
+        xaxis_range=[min_strike, max_strike],
+    )
+    fig.add_scatter(
+        x=call_oi.index, y=call_oi.values, mode="lines+markers", name="Calls"
+    )
+    fig.add_scatter(x=put_oi.index, y=put_oi.values, mode="lines+markers", name="Puts")
+    fig.add_vline(x=current_price, line_dash="dash", line_width=2, name="Current Price")
+    fig.add_vline(
+        x=max_pain, line_dash="dash", line_width=3, name=f"Max Pain: {max_pain}"
+    )
 
-    if external_axes is None:
-        theme.visualize_output()
+    maxpain_y = max(put_oi.loc[max_pain], call_oi.loc[max_pain])
+    fig.add_annotation(
+        x=max_pain,
+        y=maxpain_y + (0.1 * maxpain_y),
+        text=f"Max Pain: {max_pain}",
+        xanchor="right",
+        ax=0,
+        ay=-40,
+    )
+    fig.show()
 
 
 @log_start_end(log=logger)
@@ -370,7 +381,8 @@ def plot_vol(
     options = yfinance_model.get_vol(symbol, expiry)
     calls = options.calls
     puts = options.puts
-    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
+    # current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
+    current_price = get_closing_price(symbol, 7).iloc[-1]["Close"]
 
     if min_sp == -1:
         min_strike = 0.75 * current_price
@@ -388,6 +400,7 @@ def plot_vol(
 
     call_v = calls.set_index("strike")["volume"] / 1000
     put_v = puts.set_index("strike")["volume"] / 1000
+
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
@@ -396,32 +409,26 @@ def plot_vol(
         return
 
     if not calls_only:
-        put_v.plot(
-            x="strike",
-            y="volume",
-            label="Puts",
-            ax=ax,
-            marker="o",
-            ls="-",
-        )
+        put_v.plot(x="strike", y="volume", label="Puts", ax=ax, marker="o", ls="-")
     if not puts_only:
-        call_v.plot(
-            x="strike",
-            y="volume",
-            label="Calls",
-            ax=ax,
-            marker="o",
-            ls="-",
-        )
+        call_v.plot(x="strike", y="volume", label="Calls", ax=ax, marker="o", ls="-")
     ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Volume [1k] ")
     ax.set_xlim(min_strike, max_strike)
     ax.legend(fontsize="x-small")
     ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
+
+    fig = PlotlyFigureHelper.create(
+        title=f"Volume for {symbol.upper()} expiring {expiry}",
+        xaxis_title="Strike Price",
+        yaxis_title="Volume [1k]",
+        xaxis_range=[min_strike, max_strike],
+    )
+    fig.add_scatter(x=call_v.index, y=call_v.values, mode="lines+markers", name="Calls")
+    fig.add_scatter(x=put_v.index, y=put_v.values, mode="lines+markers", name="Puts")
+    fig.add_vline(x=current_price, line_dash="dash", line_width=2, name="Current Price")
+    fig.show()
 
     op_helpers.export_yf_options(export, options, "vol_yf")
 
@@ -458,7 +465,8 @@ def plot_volume_open_interest(
     options = yfinance_model.get_volume_open_interest(symbol, expiry)
     calls = options.calls
     puts = options.puts
-    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
+    # current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
+    current_price = get_closing_price(symbol, 7).iloc[-1]["Close"]
 
     # Process Calls Data
     df_calls = calls.pivot_table(
@@ -620,7 +628,7 @@ def plot_volume_open_interest(
     g.set_xticklabels(xlabels)
 
     ax.set_title(
-        f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)",
+        f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)"
     )
     ax.invert_yaxis()
 
@@ -786,10 +794,17 @@ def plot_payoff(
     ax.legend()
     ax.xaxis.set_major_formatter("${x:.2f}")
     ax.yaxis.set_major_formatter("${x:.2f}")
-    theme.style_primary_axis(ax)
 
-    if external_axes is None:
-        theme.visualize_output()
+    plot = PlotlyFigureHelper.create(
+        title=f"Option Payoff Diagram for {symbol} on {expiry}",
+        xaxis=dict(tickformat="${x:.2f}", title="Underlying Asset Price at Expiration"),
+        yaxis=dict(tickformat="${x:.2f}", title="Profit"),
+    )
+    plot.add_scatter(x=x, y=yb, name="Payoff Before Premium")
+    if ya:
+        plot.add_scatter(x=x, y=ya, name="Payoff After Premium")
+    else:
+        plot.fig.data[0].name = "Payoff"
 
 
 @log_start_end(log=logger)
@@ -896,12 +911,7 @@ def show_parity(
         "[yellow]Warning: Low volume options may be difficult to trade.[/yellow]"
     )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "parity",
-        show,
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "parity", show)
 
 
 @log_start_end(log=logger)
@@ -1177,12 +1187,7 @@ def display_vol_surface(
         fig.suptitle(f"{label} Surface for {symbol.upper()}")
         theme.visualize_output(force_tight_layout=False)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "vsurf",
-        data,
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "vsurf", data)
 
 
 @log_start_end(log=logger)
@@ -1223,14 +1228,7 @@ def show_greeks(
         symbol, expiry, div_cont, rf, opt_type, mini, maxi, show_all
     )
 
-    column_formatting = [
-        ".1f",
-        ".4f",
-        ".6f",
-        ".6f",
-        ".6f",
-        ".6f",
-    ]
+    column_formatting = [".1f", ".4f", ".6f", ".6f", ".6f", ".6f"]
 
     if show_all:
         additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
