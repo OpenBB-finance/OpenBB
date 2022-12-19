@@ -345,9 +345,6 @@ def run_test_files(
 
         n = len(test_files)
 
-        if not subprocesses:
-            subprocesses = min(n, cpu_count())
-
         start = time.time()
 
         if verbose:
@@ -367,6 +364,9 @@ def run_test_files(
 
                 display_test_progress(i, n, n_failures, file_short_name, verbose)
         else:
+            if not subprocesses:
+                subprocesses = min(n, cpu_count())
+
             console.print(
                 f"* Running script(s) in {subprocesses} parallel subprocess(es)...\n",
                 style="bold",
@@ -633,13 +633,13 @@ def parse_args_and_run():
 
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
 
-    if ns_parser.verbose and ns_parser.subprocesses != 1:
+    if ns_parser.verbose and ns_parser.subprocesses:
         console.print(
             "WARNING: verbose mode and multiprocessing are not compatible. "
             "The output of the scripts would be mixed up. Running sequentially...\n",
             style="yellow",
         )
-        ns_parser.subprocesses = 1
+        ns_parser.subprocesses = None
 
     if ns_parser.list_:
         return display_available_scripts(ns_parser.path, ns_parser.skip)
