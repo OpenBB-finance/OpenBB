@@ -84,6 +84,13 @@ class PlotlyFigureHelper:
         )
         return cls(fig, is_subplots=True)
 
+    def update_layout(
+        self,
+        **kwargs,
+    ):
+        """Update the layout of the figure"""
+        self.fig.update_layout(**kwargs)
+
     def add_scatter(
         self,
         x: Union[List, np.ndarray],

@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.qt_app.plotly_helper import PlotlyFigureHelper
 
 logger = logging.getLogger(__name__)
 
@@ -57,24 +58,38 @@ def realtime_performance_sector(
 
     else:
 
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        # if external_axes is None:
+        #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        # elif is_valid_axes_count(external_axes, 1):
+        #     (ax,) = external_axes
+        # else:
+        #     return
 
         df_rtp.set_index("Sector", inplace=True)
         df_rtp = df_rtp.squeeze(axis=1)
         colors = [theme.up_color if x > 0 else theme.down_color for x in df_rtp.values]
-        df_rtp.plot(kind="barh", color=colors, ax=ax)
-        theme.style_primary_axis(ax)
-        ax.set_title("Real Time Performance (%) per Sector")
-        ax.tick_params(axis="x", labelrotation=90)
-        ax.xaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%.2f"))
+        # df_rtp.plot(kind="barh", color=colors, ax=ax)
+        # theme.style_primary_axis(ax)
+        # ax.set_title("Real Time Performance (%) per Sector")
+        # ax.tick_params(axis="x", labelrotation=90)
+        # ax.xaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%.2f"))
 
-        if external_axes is None:
-            theme.visualize_output()
+        # if external_axes is None:
+        #     theme.visualize_output()
+
+        fig = PlotlyFigureHelper.create(
+            title="Real Time Performance (%) per Sector", yaxis=dict(side="right")
+        )
+
+        fig.add_bar(
+            orientation="h",
+            x=df_rtp.values,
+            y=df_rtp.index,
+            name="Real Time Performance (%) per Sector",
+            marker_color=colors,
+        )
+        fig.update_layout(yaxis_title="Sector", yaxis=dict(dtick=1))
+        fig.show()
 
     export_data(
         export,

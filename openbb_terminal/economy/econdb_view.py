@@ -17,6 +17,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     export_data,
 )
+from openbb_terminal.qt_app.plotly_helper import PlotlyFigureHelper
 
 logger = logging.getLogger(__name__)
 
@@ -76,45 +77,48 @@ def show_macro_data(
         parameters, countries, transform, start_date, end_date, symbol
     )
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
+    fig = PlotlyFigureHelper.create(yaxis=dict(side="right"))
 
-    legend = []
     for column in df_rounded.columns:
         parameter_units = f"Units: {units[column[0]][column[1]]}"
         country_label = column[0].replace("_", " ")
         parameter_label = econdb_model.PARAMETERS[column[1]]["name"]
         if len(parameters) > 1 and len(countries) > 1:
-            ax.plot(df_rounded[column])
-            ax.set_title(f"Macro data{denomination}", wrap=True, fontsize=12)
-            legend.append(f"{country_label} [{parameter_label}, {parameter_units}]")
+            fig.add_scatter(
+                x=df_rounded.index,
+                y=df_rounded[column],
+                mode="lines",
+                name=country_label,
+            )
+            fig.set_title(f"Macro data{denomination}")
         elif len(parameters) > 1:
-            ax.plot(df_rounded[column])
-            ax.set_title(f"{country_label}{denomination}", wrap=True, fontsize=12)
-            legend.append(f"{parameter_label} [{parameter_units}]")
+            fig.add_scatter(
+                x=df_rounded.index,
+                y=df_rounded[column],
+                mode="lines",
+                name=country_label,
+            )
+            fig.set_title(f"{country_label}{denomination}")
         elif len(countries) > 1:
-            ax.plot(df_rounded[column])
-            ax.set_title(f"{parameter_label}{denomination}", wrap=True, fontsize=12)
-            legend.append(f"{country_label} [{parameter_units}]")
+            fig.add_scatter(
+                x=df_rounded.index,
+                y=df_rounded[column],
+                mode="lines",
+                name=country_label,
+            )
+            fig.set_title(f"{parameter_label}{denomination}")
         else:
-            ax.plot(df_rounded[column])
-            ax.set_title(
-                f"{parameter_label} of {country_label}{denomination} [{parameter_units}]",
-                wrap=True,
-                fontsize=12,
+            fig.add_scatter(
+                x=df_rounded.index,
+                y=df_rounded[column],
+                mode="lines",
+                name=country_label,
+            )
+            fig.set_title(
+                f"{parameter_label} of {country_label}{denomination} [{parameter_units}]"
             )
 
-    if len(parameters) > 1 or len(countries) > 1:
-        ax.legend(
-            [fill(label.title(), 45) for label in legend],
-            bbox_to_anchor=(0, 0.40, 1, -0.52),
-            loc="upper right",
-            mode="expand",
-            prop={"size": 9},
-            ncol=2,
-        )
+    fig.show()
 
     df_rounded.columns = ["_".join(column) for column in df_rounded.columns]
 
@@ -134,11 +138,6 @@ def show_macro_data(
             "macro_data",
             df_rounded,
         )
-
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
 
 
 @log_start_end(log=logger)
@@ -188,30 +187,30 @@ def show_treasuries(
         instruments, maturities, frequency, start_date, end_date
     )
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
+    # if external_axes is None:
+    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # else:
+    #     ax = external_axes[0]
+
+    fig = PlotlyFigureHelper.create(
+        yaxis=dict(side="right", title="Yield (%)"),
+        title=f"U.S. Treasuries",
+    )
 
     for col in treasury_data.columns:
         col_label = col.split("_")
-        ax.plot(treasury_data[col], label=f"{col_label[0]} [{col_label[1]}]")
+        fig.add_scatter(
+            x=treasury_data.index,
+            y=treasury_data[col],
+            mode="lines",
+            name=f"{col_label[0]} [{col_label[1]}]",
+        )
 
-    ax.set_title("U.S. Treasuries")
-    ax.set_ylabel("Yield (%)")
-    ax.legend(
-        bbox_to_anchor=(0, 0.40, 1, -0.52),
-        loc="upper right",
-        mode="expand",
-        borderaxespad=0,
-        prop={"size": 9},
-        ncol=3,
-    )
+    fig.show()
+    # theme.style_primary_axis(ax)
 
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    # if external_axes is None:
+    #     theme.visualize_output()
 
     if raw:
 
