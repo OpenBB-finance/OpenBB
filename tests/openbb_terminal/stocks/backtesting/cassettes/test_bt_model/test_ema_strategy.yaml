@@ -9,10 +9,10 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/PM?interval=1d&range=1d
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?interval=1d&range=1d
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"PM","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1205760600,"regularMarketTime":1671463965,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":101.355,"chartPreviousClose":100.28,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1671440400,"end":1671460200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1671460200,"end":1671483600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1671483600,"end":1671498000,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1671463965],"indicators":{"quote":[{"close":[101.3550033569336],"open":[100.62000274658203],"low":[100.38999938964844],"high":[101.44000244140625],"volume":[376269]}],"adjclose":[{"adjclose":[101.3550033569336]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1671475570,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":150.995,"chartPreviousClose":150.23,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1671460200,"start":1671440400,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1671483600,"start":1671460200,"gmtoffset":-18000},"post":{"timezone":"EST","end":1671498000,"start":1671483600,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1671475570],"indicators":{"quote":[{"high":[155.25],"close":[150.9949951171875],"open":[154.0],"volume":[100964027],"low":[145.82000732421875]}],"adjclose":[{"adjclose":[150.9949951171875]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -33,25 +33,25 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '942'
+      - '922'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 19 Dec 2022 15:33:11 GMT
+      - Mon, 19 Dec 2022 18:46:10 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-baseline-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '17'
+      - '47'
       x-request-id:
-      - 9bc612f4-660a-435f-93dc-fd7f73c4d70b
+      - 4bfa250d-98fa-4918-b91a-2d9f6418dc12
       x-yahoo-request-id:
-      - 7p6b8elhq111n
+      - cdsaumlhq1cbi
       y-rid:
-      - 7p6b8elhq111n
+      - cdsaumlhq1cbi
     status:
       code: 200
       message: OK
@@ -65,10 +65,10 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/PM?events=div%2Csplits&includePrePost=False&interval=1d&period1=1598220000&period2=1635980400
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits&includePrePost=False&interval=1d&period1=1598220000&period2=1635980400
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"PM","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1205760600,"regularMarketTime":1671463965,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":101.355,"chartPreviousClose":75.75,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1671440400,"end":1671460200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1671460200,"end":1671483600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1671483600,"end":1671498000,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1606833000],"indicators":{"quote":[{"close":[77.02999877929688],"low":[75.69000244140625],"volume":[6791700],"open":[76.0199966430664],"high":[77.12999725341797]}],"adjclose":[{"adjclose":[69.3067855834961]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1671475569,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":150.99,"chartPreviousClose":189.2,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1671440400,"end":1671460200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1671460200,"end":1671483600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1671483600,"end":1671498000,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1606833000],"indicators":{"quote":[{"open":[199.19667053222656],"volume":[120310500],"low":[190.68333435058594],"close":[194.9199981689453],"high":[199.28334045410156]}],"adjclose":[{"adjclose":[194.9199981689453]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -89,11 +89,11 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '935'
+      - '943'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 19 Dec 2022 15:33:11 GMT
+      - Mon, 19 Dec 2022 18:46:10 GMT
       server:
       - ATS
       vary:
@@ -101,13 +101,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '26'
+      - '4'
       x-request-id:
-      - 260ff10c-9e0e-429b-ac77-01d12aca5cf6
+      - 4f7cd55a-aee0-4f33-af67-270084d1f004
       x-yahoo-request-id:
-      - 5m35219hq111n
+      - 41f5l0phq1cbi
       y-rid:
-      - 5m35219hq111n
+      - 41f5l0phq1cbi
     status:
       code: 200
       message: OK
