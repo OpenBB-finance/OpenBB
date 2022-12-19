@@ -80,6 +80,31 @@ def to_section_title(title: str, char: str = "=") -> str:
     return formatted_title
 
 
+TEST_FILES = sorted(list(SCRIPTS_DIRECTORY.glob("**/*.openbb")))
+
+
+def get_test_from_index(idx: str) -> Path:
+    """Get the test from the index.
+
+    Parameters
+    ----------
+    idx: int
+        The index of the test
+
+    Returns
+    -------
+    Path
+        The path to the test
+    """
+    try:
+        return TEST_FILES[int(idx)]
+    except IndexError:
+        console.print(
+            f"[red]Index {idx} not found, must be between 0 and {len(TEST_FILES)-1}.[/red]"
+        )
+        raise
+
+
 def convert_list_to_test_files(path_list: List[str]) -> List[Path]:
     """Converts a list of paths to test to a list of Path objects.
 
@@ -96,10 +121,16 @@ def convert_list_to_test_files(path_list: List[str]) -> List[Path]:
     test_files = []
 
     for path in path_list:
+
         if path.startswith(
             str(Path("openbb_terminal", "integration_tests", "scripts"))
         ):
             script_path = REPOSITORY_DIRECTORY / path
+        elif path.isnumeric():
+            try:
+                script_path = get_test_from_index(path)
+            except IndexError:
+                continue
         else:
             script_path = SCRIPTS_DIRECTORY / path
 
@@ -147,7 +178,7 @@ def build_test_path_list(path_list: List[str], skip_list: List[str]) -> List[Pat
     # Just display number of skips if the skip path is in valid_test_list
     len_skip = len(valid_test_list) - len(final_list)
 
-    console.print(f"* Collected {len(valid_test_list)} script(s)...", style="bold")
+    console.print(f"\n* Collected {len(valid_test_list)} script(s)...", style="bold")
     console.print(f"* Skipping {len_skip} script(s)...", style="bold")
 
     return final_list
