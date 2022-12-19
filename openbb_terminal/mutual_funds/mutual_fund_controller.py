@@ -20,8 +20,6 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.mutual_funds import (
     investpy_model,
-    investpy_view,
-    yfinance_view,
     avanza_view,
     mstarpy_view,
 )
