@@ -349,7 +349,7 @@ def run_test_files(
 
         if verbose:
             console.print(
-                "* Running script(s) sequentially...\n",
+                f"* Running {n} script(s) sequentially...\n",
                 style="bold",
             )
             for i, file in enumerate(test_files):
@@ -368,7 +368,7 @@ def run_test_files(
                 subprocesses = min(n, cpu_count())
 
             console.print(
-                f"* Running script(s) in {subprocesses} parallel subprocess(es)...\n",
+                f"* Running {n} script(s) in {subprocesses} parallel subprocess(es)...\n",
                 style="bold",
             )
             with Pool(processes=subprocesses) as pool:
