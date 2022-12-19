@@ -340,9 +340,9 @@ def display_candle(
                 ax[0].ticklabel_format(style="plain", axis="y")
 
             cfg.theme.visualize_output(force_tight_layout=False)
-        elif (
-            has_volume and is_valid_axes_count(external_axes, 2)
-        ) or is_valid_axes_count(external_axes, 1):
+        elif (has_volume and is_valid_axes_count(external_axes, 2)) or (
+            not has_volume and is_valid_axes_count(external_axes, 1)
+        ):
             candle_chart_kwargs["ax"] = external_axes[0]
             if has_volume:
                 candle_chart_kwargs["volume"] = external_axes[1]
