@@ -201,7 +201,7 @@ property-cached==1.6.4; python_version >= "3.8"
 prophet==1.1.1; python_version >= "3.7"
 protobuf==3.20.1; python_version >= "3.7"
 psaw==0.0.12; python_version >= "3"
-psutil==5.9.4; python_full_version >= "3.7.0" and python_full_version < "4.0.0" and python_version >= "3.8"
+psutil==5.9.3; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.4.0")
 ptyprocess==0.7.0; sys_platform != "win32" and python_version >= "3.8" and os_name != "nt"
 pure-eval==0.2.2; python_version >= "3.8"
 py==1.11.0; python_full_version >= "3.7.0" and python_version >= "3.8" and python_full_version < "4.0.0" and implementation_name == "pypy"

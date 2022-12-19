@@ -2812,7 +2812,7 @@ requests = "*"
 
 [[package]]
 name = "psutil"
-version = "5.9.4"
+version = "5.9.3"
 description = "Cross-platform lib for process and system monitoring in Python."
 category = "main"
 optional = false
@@ -4854,7 +4854,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "f9726fa0436c705083da8a022024252ae7b79c631ce5603dde16bc4b241e52b5"
+content-hash = "df6cd2df1967b82115fbb1a50b89a5565ad63c12a7b922e3b9a4ebdbe7b1d0ad"
 
 [metadata.files]
 absl-py = []

@@ -108,6 +108,7 @@ docstring-parser = {version = "^0.15", optional = true}
 grpcio = "<1.51.0"
 jupyterlab-widgets = "^3.0.3"
 packaging = ">=22.0"
+psutil = "5.9.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
