@@ -99,6 +99,9 @@
                 }
                 `
                 document.getElementsByTagName('head')[0].appendChild(style);
+                document.body.style.backgroundColor = "#000000";
+                data.layout.template.layout.paper_bgcolor = "#000000";
+                data.layout.template.layout.plot_bgcolor = "#000000";
             }
 
             var filename = 'openbb_' + title.replace(/<b>|<\/b>/g, '').replace(/ /g, '_');
@@ -133,10 +136,10 @@
 
                 if (!('margin' in graphs.layout)) {
                     graphs.layout['margin'] = {
-                        'l': 0,
-                        'r': 0,
-                        'b': 0,
-                        't': 0,
+                        'l': 10,
+                        'r': 10,
+                        'b': 20,
+                        't': 40,
                         'pad': 2
                     }
                 }
@@ -209,9 +212,9 @@
                     });
                 }
                 graphs.layout.margin = {
-                    l: 10,
+                    l: 40,
                     r: 40,
-                    b: 15,
+                    b: 30,
                     t: 50,
                     pad: 2
                 };
