@@ -1,3 +1,37 @@
 
 The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed. 
 The selected list will be: HUSA, IMPP
+Failed to get ticker 'IMPP' reason: Can't overwrite existing cassette ('/Users/james/OpenBBTerminal/OpenBBTerminal/tests/openbb_terminal/stocks/screener/cassettes/test_yahoofinance_view/test_historical.yaml') in your current record mode ('none').
+No match for the request (<Request (GET) https://query2.finance.yahoo.com/v8/finance/chart/IMPP?range=1d&interval=1d>) was found.
+Found 1 similar requests with 1 different matcher(s) :
+
+1 - (<Request (GET) https://query2.finance.yahoo.com/v8/finance/chart/IMPP?events=div%2Csplits&includePrePost=False&interval=1d&period1=1598220000&period2=1635980400>).
+Matchers succeeded : ['method', 'scheme', 'host', 'port', 'path']
+Matchers failed :
+query - assertion failure :
+[('interval', '1d'), ('range', '1d')] != [('events', 'div,splits'), ('includePrePost', 'False'), ('interval', '1d'), ('period1', '1598220000'), ('period2', '1635980400')]
+assert [('interval',...range', '1d')] == [('events', '...'1635980400')]
+  At index 0 diff: ('interval', '1d') != ('events', 'div,splits')
+  Right contains 3 more items, first extra item: ('interval', '1d')
+  Use -v to get the full diff
+
+- IMPP: No data found for this date range, symbol may be delisted
+Failed to get ticker 'HUSA' reason: Can't overwrite existing cassette ('/Users/james/OpenBBTerminal/OpenBBTerminal/tests/openbb_terminal/stocks/screener/cassettes/test_yahoofinance_view/test_historical.yaml') in your current record mode ('none').
+No match for the request (<Request (GET) https://query2.finance.yahoo.com/v8/finance/chart/HUSA?range=1d&interval=1d>) was found.
+Found 1 similar requests with 1 different matcher(s) :
+
+1 - (<Request (GET) https://query2.finance.yahoo.com/v8/finance/chart/HUSA?events=div%2Csplits&includePrePost=False&interval=1d&period1=1598220000&period2=1635980400>).
+Matchers succeeded : ['method', 'scheme', 'host', 'port', 'path']
+Matchers failed :
+query - assertion failure :
+[('interval', '1d'), ('range', '1d')] != [('events', 'div,splits'), ('includePrePost', 'False'), ('interval', '1d'), ('period1', '1598220000'), ('period2', '1635980400')]
+assert [('interval',...range', '1d')] == [('events', '...'1635980400')]
+  At index 0 diff: ('interval', '1d') != ('events', 'div,splits')
+  Right contains 3 more items, first extra item: ('interval', '1d')
+  Use -v to get the full diff
+
+- HUSA: No data found for this date range, symbol may be delisted
+
+2 Failed downloads:
+- IMPP: No data found for this date range, symbol may be delisted
+- HUSA: No data found for this date range, symbol may be delisted

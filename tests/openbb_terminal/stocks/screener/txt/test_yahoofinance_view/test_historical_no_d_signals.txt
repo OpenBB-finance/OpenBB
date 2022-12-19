@@ -1,3 +1,37 @@
 
 The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed. 
 The selected list will be: CENN, VIEW
+Failed to get ticker 'CENN' reason: Can't overwrite existing cassette ('/Users/james/OpenBBTerminal/OpenBBTerminal/tests/openbb_terminal/stocks/screener/cassettes/test_yahoofinance_view/test_historical_no_d_signals.yaml') in your current record mode ('none').
+No match for the request (<Request (GET) https://query2.finance.yahoo.com/v8/finance/chart/CENN?range=1d&interval=1d>) was found.
+Found 1 similar requests with 1 different matcher(s) :
+
+1 - (<Request (GET) https://query2.finance.yahoo.com/v8/finance/chart/CENN?events=div%2Csplits&includePrePost=False&interval=1d&period1=1598220000&period2=1635980400>).
+Matchers succeeded : ['method', 'scheme', 'host', 'port', 'path']
+Matchers failed :
+query - assertion failure :
+[('interval', '1d'), ('range', '1d')] != [('events', 'div,splits'), ('includePrePost', 'False'), ('interval', '1d'), ('period1', '1598220000'), ('period2', '1635980400')]
+assert [('interval',...range', '1d')] == [('events', '...'1635980400')]
+  At index 0 diff: ('interval', '1d') != ('events', 'div,splits')
+  Right contains 3 more items, first extra item: ('interval', '1d')
+  Use -v to get the full diff
+
+- CENN: No data found for this date range, symbol may be delisted
+Failed to get ticker 'VIEW' reason: Can't overwrite existing cassette ('/Users/james/OpenBBTerminal/OpenBBTerminal/tests/openbb_terminal/stocks/screener/cassettes/test_yahoofinance_view/test_historical_no_d_signals.yaml') in your current record mode ('none').
+No match for the request (<Request (GET) https://query2.finance.yahoo.com/v8/finance/chart/VIEW?range=1d&interval=1d>) was found.
+Found 1 similar requests with 1 different matcher(s) :
+
+1 - (<Request (GET) https://query2.finance.yahoo.com/v8/finance/chart/VIEW?events=div%2Csplits&includePrePost=False&interval=1d&period1=1598220000&period2=1635980400>).
+Matchers succeeded : ['method', 'scheme', 'host', 'port', 'path']
+Matchers failed :
+query - assertion failure :
+[('interval', '1d'), ('range', '1d')] != [('events', 'div,splits'), ('includePrePost', 'False'), ('interval', '1d'), ('period1', '1598220000'), ('period2', '1635980400')]
+assert [('interval',...range', '1d')] == [('events', '...'1635980400')]
+  At index 0 diff: ('interval', '1d') != ('events', 'div,splits')
+  Right contains 3 more items, first extra item: ('interval', '1d')
+  Use -v to get the full diff
+
+- VIEW: No data found for this date range, symbol may be delisted
+
+2 Failed downloads:
+- CENN: No data found for this date range, symbol may be delisted
+- VIEW: No data found for this date range, symbol may be delisted
