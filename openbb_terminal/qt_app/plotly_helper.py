@@ -17,13 +17,18 @@ from openbb_terminal.qt_app.config import openbb_styles as theme
 class PlotlyFigureHelper:
     """Helper class for creating Plotly figures"""
 
-    def __init__(self, fig: go.Figure):
+    def __init__(self, fig: go.Figure, is_subplots: bool = False):
         self.fig = fig
+        self.is_subplots = is_subplots
         self._set_theme()
 
     def _set_theme(self):
         """Set theme for the figure"""
         self.fig.update_layout(**theme.PLOTLY_THEME)
+
+    def set_title(self, title: str, **kwargs):
+        """Set the title of the figure"""
+        self.fig.update_layout(title=title, **kwargs)
 
     @classmethod
     def create(
@@ -77,7 +82,7 @@ class PlotlyFigureHelper:
             specs=specs,
             **kwargs,
         )
-        return cls(fig)
+        return cls(fig, is_subplots=True)
 
     def add_scatter(
         self,
