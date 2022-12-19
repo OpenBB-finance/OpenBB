@@ -80,4 +80,85 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: '{"order_ids": [""]}'
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      CB-ACCESS-KEY:
+      - MOCK-CB-ACCESS-KEY
+      CB-ACCESS-SIGN:
+      - MOCK-CB-ACCESS-SIGN
+      CB-ACCESS-TIMESTAMP:
+      - MOCK-CB-ACCESS-TIMESTAMP
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '19'
+      User-Agent:
+      - python-requests/2.28.1
+      accept:
+      - application/json
+    method: POST
+    uri: https://coinbase.com/api/v3/brokerage/orders/batch_cancel
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwTBTQqAIBAG0Lt8607gTspFIEG/mwgRG0GQgplciXfvvQomKfkTqLNCSggkAhV9
+        FuoQfcqFyTF5eR8ojNOh7Ti4Xk+9sW4x827WDR1evolduqGAdrUfAAD//wMAjIcIuVcAAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type, Accept, Second-Factor-Proof-Token, Client-Id, Access-Token,
+        X-Cb-Project-Name, X-Cb-Is-Logged-In, X-Cb-Platform, X-Cb-Session-Uuid, X-Cb-Pagekey,
+        X-Cb-Ujs, Fingerprint-Tokens, X-Cb-Device-Id, X-Cb-Version-Name
+      Access-Control-Allow-Methods:
+      - GET,POST,DELETE,PUT
+      Access-Control-Allow-Private-Network:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ''
+      Access-Control-Max-Age:
+      - '7200'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 77c0f80d0b98c359-EWR
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 19 Dec 2022 14:53:38 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=y023iMVUbYkHu_PARAo.EkdCisa4GnHk8P9RvIfuwOk-1671461618-0-AWsgziO2GNjlR1B5gAcrNmZiKCiZjNug9mk+XSq7NcCwOSG/j43dLfU7tXLfr6spQ+ythd8bwOSh+CS5mVVl2UA=;
+        path=/; expires=Mon, 19-Dec-22 15:23:38 GMT; domain=.coinbase.com; HttpOnly;
+        Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Trace-Id:
+      - '22170036075945667'
+      - '22170036075945667'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Dns-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1
