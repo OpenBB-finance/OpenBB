@@ -79,4 +79,164 @@ interactions:
     status:
       code: 400
       message: Bad Request
+- request:
+    body: '{"order_configuration": {"": {}}, "client_order_id": "1f8deb27-f399-42d2-87c4-da55c7edf878",
+      "product_id": "", "side": ""}'
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      CB-ACCESS-KEY:
+      - MOCK-CB-ACCESS-KEY
+      CB-ACCESS-SIGN:
+      - MOCK-CB-ACCESS-SIGN
+      CB-ACCESS-TIMESTAMP:
+      - MOCK-CB-ACCESS-TIMESTAMP
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '122'
+      User-Agent:
+      - python-requests/2.28.1
+      accept:
+      - application/json
+    method: POST
+    uri: https://coinbase.com/api/v3/brokerage/orders
+  response:
+    body:
+      string: '{"error":"unknown","error_details":"unknown value \"\\\"\\\"\" for
+        enum coinbase.public_api.authed.retail_brokerage_api.OrderSide","message":"unknown
+        value \"\\\"\\\"\" for enum coinbase.public_api.authed.retail_brokerage_api.OrderSide"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type, Accept, Second-Factor-Proof-Token, Client-Id, Access-Token,
+        X-Cb-Project-Name, X-Cb-Is-Logged-In, X-Cb-Platform, X-Cb-Session-Uuid, X-Cb-Pagekey,
+        X-Cb-Ujs, Fingerprint-Tokens, X-Cb-Device-Id, X-Cb-Version-Name
+      Access-Control-Allow-Methods:
+      - GET,POST,DELETE,PUT
+      Access-Control-Allow-Private-Network:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ''
+      Access-Control-Max-Age:
+      - '7200'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 77c0f7092edf0cd1-EWR
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '237'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 19 Dec 2022 14:52:57 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=28uYOhcAhD6CyjmOWBMpBirI.VfBjgZoMo38z7fq1WI-1671461577-0-AWQU0z88ZJHF1ZwHI+ki+1yG3HSSi7y34bEowWmLS2TuUlaCJClGF/XA99lG+GJMlnD/vH8hlkMN70zmQhU1ikw=;
+        path=/; expires=Mon, 19-Dec-22 15:22:57 GMT; domain=.coinbase.com; HttpOnly;
+        Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Trace-Id:
+      - '7904966354943335458'
+      - '7904966354943335458'
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Dns-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"order_configuration": {"": {}}, "client_order_id": "e7304af5-2424-4259-b8ba-3be0b0beef23",
+      "product_id": "", "side": ""}'
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      CB-ACCESS-KEY:
+      - MOCK-CB-ACCESS-KEY
+      CB-ACCESS-SIGN:
+      - MOCK-CB-ACCESS-SIGN
+      CB-ACCESS-TIMESTAMP:
+      - MOCK-CB-ACCESS-TIMESTAMP
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '122'
+      User-Agent:
+      - python-requests/2.28.1
+      accept:
+      - application/json
+    method: POST
+    uri: https://coinbase.com/api/v3/brokerage/orders
+  response:
+    body:
+      string: '{"error":"unknown","error_details":"unknown value \"\\\"\\\"\" for
+        enum coinbase.public_api.authed.retail_brokerage_api.OrderSide","message":"unknown
+        value \"\\\"\\\"\" for enum coinbase.public_api.authed.retail_brokerage_api.OrderSide"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type, Accept, Second-Factor-Proof-Token, Client-Id, Access-Token,
+        X-Cb-Project-Name, X-Cb-Is-Logged-In, X-Cb-Platform, X-Cb-Session-Uuid, X-Cb-Pagekey,
+        X-Cb-Ujs, Fingerprint-Tokens, X-Cb-Device-Id, X-Cb-Version-Name
+      Access-Control-Allow-Methods:
+      - GET,POST,DELETE,PUT
+      Access-Control-Allow-Private-Network:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ''
+      Access-Control-Max-Age:
+      - '7200'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 77c0f7929df41993-EWR
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '237'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 19 Dec 2022 14:53:19 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=dWeY_KmFXA7CFrWRZcwBAI4JETfuJzOyl1XSmsIq2QM-1671461599-0-ATKqYy7Vw7LeFwsrY/GRj3+grN49fpVG3L9SVuBNV2iqF2XNNjBts3rjmJOF9v6nF8KoVHbpZXJEoatH8fenPsk=;
+        path=/; expires=Mon, 19-Dec-22 15:23:19 GMT; domain=.coinbase.com; HttpOnly;
+        Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Trace-Id:
+      - '226948700037152616'
+      - '226948700037152616'
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Dns-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 400
+      message: Bad Request
 version: 1
