@@ -20,13 +20,19 @@ def test_accounts():
     cbv.display_account()
 
 
-# @pytest.mark.vcr
-# @pytest.mark.record_stdout
-# def test_deposits():
-#     cbv.display_deposits(50, "id", "deposit", False)
-#
-#
-# @pytest.mark.vcr
-# @pytest.mark.record_stdout
-# def test_orders():
-#     cbv.display_orders(50, "product_id", False)
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_orders():
+    cbv.display_orders()
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_create_order():
+    cbv.display_create_order()
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_cancel_order():
+    cbv.display_cancel_order()

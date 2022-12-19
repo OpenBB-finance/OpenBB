@@ -1,9 +1,20 @@
-           name currency  available_balance                hold  BalanceValue(USD)  current_price
-0    SKL Wallet      SKL           8.428150  0.0000000000000000           0.218289        0.02590
-1    AMP Wallet      AMP         121.032814  0.0000000000000000           0.416353        0.00344
-2   DOGE Wallet     DOGE        2237.200000  0.0000000000000000         217.366352        0.09716
-3   ALGO Wallet     ALGO         691.037042  0.0000000000000000         154.446779        0.22350
-5    XLM Wallet      XLM          54.585937  0.0000000000000000           4.674740        0.08564
-23   ETH Wallet      ETH           1.060655  0.0000000000000000        1354.519834     1277.06000
-24   LTC Wallet      LTC         149.390620  0.0000000000000000       11474.693525       76.81000
-26    My Wallet      BTC           0.155065  0.0000000000000000        2664.470684    17182.90000
+                                order_id product_id                 created_time  side     status fee                 order_type   base_size limit_price stop_price              end_time          stop_direction post_only
+0   3fd74226-2b4a-4f45-85f6-4b8e0c75b392    BTC-USD  2022-12-18T21:51:11.072166Z   BUY  CANCELLED      stop_limit_stop_limit_gtd       0.001        0.01      90000  2023-01-01T10:10:00Z                     NaN       NaN
+1   9468c248-6a94-423e-8a29-93ab1580da4e    BTC-USD  2022-12-18T21:50:03.726276Z  SELL  CANCELLED      stop_limit_stop_limit_gtd       0.001       20000      19000  2023-01-01T10:10:00Z                     NaN       NaN
+2   445a12be-cf05-4875-a8d2-4d64c3ce60f6    BTC-USD  2022-12-18T21:48:26.320534Z  SELL  CANCELLED      stop_limit_stop_limit_gtc       0.001       20000      19000                   NaN  STOP_DIRECTION_STOP_UP       NaN
+3   19b7e447-8eb6-43d7-8c05-d7ba3f41475d    BTC-USD  2022-12-18T21:47:01.627884Z   BUY  CANCELLED      stop_limit_stop_limit_gtc       0.001        0.01      90000                   NaN  STOP_DIRECTION_STOP_UP       NaN
+4   cf3364aa-c6c6-41f2-a4f4-bff8f0ecba15    BTC-USD  2022-12-18T21:32:04.380752Z   BUY  CANCELLED      stop_limit_stop_limit_gtc        0.01         0.1      17000                   NaN  STOP_DIRECTION_STOP_UP       NaN
+5   1ac8869a-d3e7-45aa-9d14-97f05a990547    LTC-USD  2022-12-18T21:19:13.016750Z  SELL  CANCELLED                limit_limit_gtc        0.01        9999        NaN                   NaN                     NaN     False
+6   2aff0b5b-1c73-4cb3-94ea-ae332a06ff9d    LTC-USD  2022-12-18T21:18:30.613868Z   BUY  CANCELLED                limit_limit_gtc        0.01           9        NaN                   NaN                     NaN     False
+7   968eadde-f053-4ebe-821d-4ad344fbf4ba    LTC-USD  2022-12-18T21:16:45.923818Z   BUY  CANCELLED                limit_limit_gtd        0.01           9        NaN  2023-01-01T10:00:00Z                     NaN     False
+8   231920ae-249c-4b51-bc63-7144f75c0c8a    LTC-USD  2022-12-18T21:12:51.185466Z  SELL  CANCELLED                limit_limit_gtd        0.01       99999        NaN  2023-01-01T10:00:00Z                     NaN     False
+9   e5075339-c2c0-490a-b11b-8e049673fc6b    LTC-USD  2022-12-16T18:45:22.825122Z   BUY  CANCELLED                limit_limit_gtc           1        0.01        NaN                   NaN                     NaN     False
+10  d75aec64-9dda-4d16-9cf9-0cf54d3945e1    LTC-USD  2022-12-16T18:36:46.869298Z   BUY  CANCELLED                limit_limit_gtc           1        0.01        NaN                   NaN                     NaN     False
+11  66b77870-c3d2-4b6b-8169-6cf5a2477ef5    LTC-USD  2022-12-16T14:13:17.877900Z   BUY  CANCELLED                limit_limit_gtc           1        0.01        NaN                   NaN                     NaN     False
+12  2d7738a8-2381-45c5-9878-d95b63bc712d    LTC-USD  2022-12-16T13:49:05.761910Z   BUY  CANCELLED                limit_limit_gtc           1        0.01        NaN                   NaN                     NaN     False
+13  315857d7-4fc0-4c24-8438-8fddc54b1e9e    BTC-USD  2022-12-08T23:43:20.480012Z  SELL  CANCELLED      stop_limit_stop_limit_gtc     0.00004     2000000    1999999                   NaN  STOP_DIRECTION_STOP_UP       NaN
+14  8f1cc67d-0079-49e7-bcd1-2280c6077ea0    BTC-USD  2022-12-08T23:41:24.117564Z  SELL  CANCELLED                limit_limit_gtc       0.004      250000        NaN                   NaN                     NaN     False
+15  8ea16218-dd38-4dd1-99d6-e47fc2105800    BTC-USD  2022-08-18T23:53:40.393416Z   BUY     FILLED                limit_limit_gtc  0.00060252       23179        NaN                   NaN                     NaN     False
+16  07b2f46a-3d5b-439c-979c-496fed81971f   ALGO-USD  2022-03-05T21:17:58.868670Z   BUY     FILLED                limit_limit_gtc       628.9        0.77        NaN                   NaN                     NaN     False
+17  ff2d2211-1098-47d3-bb68-fc760f0a1844   ALGO-USD  2022-03-05T19:01:12.210522Z   BUY  CANCELLED                limit_limit_gtc       657.3       0.758        NaN                   NaN                     NaN     False
+18  50d9abd5-b274-4d27-a002-0156742991e6   ALGO-USD  2022-03-05T18:59:56.612590Z   BUY  CANCELLED                limit_limit_gtc       669.6      0.7441        NaN                   NaN                     NaN     False

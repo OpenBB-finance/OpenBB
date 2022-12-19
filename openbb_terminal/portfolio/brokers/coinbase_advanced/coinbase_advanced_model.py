@@ -2,14 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
-
+import uuid
 import pandas as pd
-
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.cryptocurrency.coinbase_advanced_helpers import (
     CoinbaseAdvAuth,
     CoinbaseAdvApiException,
     make_coinbase_adv_request,
+    get_all_orders,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -123,10 +123,13 @@ def get_accounts(
 
 @log_start_end(log=logger)
 def get_orders(
-    limit: int = 20, sortby: str = "created_time", descend: bool = False
+    limit: int = 20,
+    sortby: str = "created_time",
+    descend: bool = False,
+    status: str = "ALL",
 ) -> pd.DataFrame:
     """Get a list of orders filtered by optional query parameters (product_id, order_status, etc). [Source: Coinbase]
-
+    https://docs.cloud.coinbase.com/advanced-trade-api/reference/retailbrokerageapi_gethistoricalorders
     Example response from API:
 
     .. code-block:: json
@@ -205,7 +208,9 @@ def get_orders(
     sortby: str
         Key to sort by
     descend: bool
-        Flag to sort descending
+        Flag to sort descendin
+    status: str
+        Status of the order
 
     Returns
     -------
@@ -214,11 +219,7 @@ def get_orders(
     """
 
     try:
-        auth = CoinbaseAdvAuth(cfg.API_CB_ADV_KEY, cfg.API_CB_ADV_SECRET)
-        resp = make_coinbase_adv_request(
-            "/orders/historical/batch", params={"limit": limit}, auth=auth
-        )
-
+        df = get_all_orders(limit=limit)
     except CoinbaseAdvApiException as e:
         if "Invalid API Key" in str(e):
             console.print("[red]Invalid API Key[/red]\n")
@@ -227,156 +228,227 @@ def get_orders(
 
         return pd.DataFrame()
 
-    if not resp:
-        console.print("No orders found for your account\n")
-
-        return pd.DataFrame(
-            columns=[
-                "product_id",
-                "side",
-                "price",
-                "size",
-                "type",
-                "created_time",
-                "status",
-            ]
-        )
-
-    # Flatten response to load into df
-    flat_response = []
-    resp_dict = resp["orders"]
-    for orders in resp_dict:
-        _flat_response = {
-            "order_id": orders["order_id"],
-            "product_id": orders["product_id"],
-            "created_time": orders["created_time"],
-            "side": orders["side"],
-            "status": orders["status"],
-            "fee": orders["fee"],
-        }
-        # Handle parsing for diff ordee types
-        _order_config = orders["order_configuration"]
-
-        if "market_market_ioc" in _order_config:
-            _flat_response["type"] = "market_market_ioc"
-            _flat_response["quote_size"] = _order_config["market_market_ioc"][
-                "quote_size"
-            ]
-            _flat_response["base_size"] = _order_config["market_market_ioc"][
-                "base_size"
-            ]
-
-        if "limit_limit_gtc" in _order_config:
-            _flat_response["type"] = "limit_limit_gtc"
-            _flat_response["limit_price"] = _order_config["limit_limit_gtc"][
-                "limit_price"
-            ]
-            _flat_response["base_size"] = _order_config["limit_limit_gtc"]["base_size"]
-            _flat_response["post_only"] = _order_config["limit_limit_gtc"]["post_only"]
-
-        if "limit_limit_gtd" in _order_config:
-            _flat_response["type"] = "limit_limit_gtd"
-            _flat_response["base_size"] = _order_config["limit_limit_gtd"]["base_size"]
-            _flat_response["limit_price"] = _order_config["limit_limit_gtd"][
-                "limit_price"
-            ]
-            _flat_response["end_time"] = _order_config["limit_limit_gtd"]["end_time"]
-            _flat_response["post_only"] = _order_config["limit_limit_gtd"]["post_only"]
-
-        if "stop_limit_stop_limit_gtc" in _order_config:
-            _flat_response["type"] = "stop_limit_stop_limit_gtc"
-            _flat_response["base_size"] = _order_config[_flat_response["type"]][
-                "base_size"
-            ]
-            _flat_response["limit_price"] = _order_config[_flat_response["type"]][
-                "limit_price"
-            ]
-            _flat_response["stop_price"] = _order_config[_flat_response["type"]][
-                "stop_price"
-            ]
-            _flat_response["stop_direction"] = _order_config[_flat_response["type"]][
-                "stop_direction"
-            ]
-
-        if "stop_limit_stop_limit_gtd" in _order_config:
-            _flat_response["type"] = "stop_limit_stop_limit_gtd"
-            _flat_response["base_size"] = _order_config[_flat_response["type"]][
-                "base_size"
-            ]
-            _flat_response["limit_price"] = _order_config[_flat_response["type"]][
-                "limit_price"
-            ]
-            _flat_response["stop_price"] = _order_config[_flat_response["type"]][
-                "stop_price"
-            ]
-            _flat_response["end_time"] = _order_config[_flat_response["type"]][
-                "end_time"
-            ]
-            _flat_response["end_time"] = _order_config[_flat_response["type"]][
-                "end_time"
-            ]
-
-        flat_response.append(_flat_response)
-
-    df = pd.DataFrame(flat_response)
     if df.empty:
         return pd.DataFrame()
 
-    if df.empty:
-        return pd.DataFrame()
-
+    if status != "ALL":
+        df = df[df["status"] == status]
     df = df.sort_values(by=sortby, ascending=descend).head(limit)
 
     return df
 
 
 @log_start_end(log=logger)
-def get_deposits(
-    limit: int = 50,
-    sortby: str = "amount",
-    deposit_type: str = "deposit",
-    descend: bool = False,
+def create_order(
+    product_id: str = "",
+    side: str = "",
+    dry_run: bool = False,
+    order_type: str = "",
+    **kwargs,
 ) -> pd.DataFrame:
-    """Get a list of deposits for your account. [Source: Coinbase]
+    """
+    Place an order. [Source: Coinbase]
+    https://docs.cloud.coinbase.com/advanced-trade-api/reference/retailbrokerageapi_postorder
+    Example response from API:
 
+    .. code-block:: json
+        {
+          "success": "boolean",
+          "failure_reason": "string",
+          "order_id": "string",
+          "success_response": "object",
+          "error_response": "object",
+          "order_configuration": "object"
+        }{
+          "success": "boolean",
+          "failure_reason": "string",
+          "order_id": "string",
+          "success_response": "object",
+          "error_response": "object",
+          "order_configuration": "object"
+        }
+    .
     Parameters
     ----------
-    deposit_type: str
-        internal_deposits (transfer between portfolios) or deposit
+    dry_run: bool
+        If set to True, display order payload, but do not submit to Coinbase
+    product_id: string
+        The product this order was created for e.g. 'BTC-USD'
+    side: string
+        Possible values: [UNKNOWN_ORDER_SIDE, BUY, SELL]
+    order_type: basestring
+        Type of order : [market_market_ioc, limit_limit_gtc, limit_limit_gtd,
+        stop_limit_stop_limit_gtc, stop_limit_stop_limit_gtd ]
+    quote_size: float
+        Amount of quote currency to spend on order. Required for BUY orders.
+        Required for type: market_market_ioc
+    base_size: float
+        Amount of base currency to spend on order. Required for SELL orders.
+        Required for type: market_market_ioc
+    limit_price: float
+        Ceiling price for which the order should get filled
+        Required for type: limit_limit_gtc, limit_limit_gtd, stop_limit_stop_limit_gtc, stop_limit_stop_limit_gtd
+    end_time: int
+        Time at which the order should be cancelled if it's not filled.
+        Required for type: limit_limit_gtd, stop_limit_stop_limit_gtd
+    post_only: bool
+        Post only limit order
+        Required for type: limit_limit_gtd, limit_limit_gtc
+    stop_price: float
+        Price at which the order should trigger - if stop direction is Up, then the order
+         will trigger when the last trade price goes above this, otherwise order will
+         trigger when last trade price goes below this price.
+        Requited for type: stop_limit_stop_limit_gtc,  stop_limit_stop_limit_gtd
+    stop_direction: string
+        Possible values: [UNKNOWN_STOP_DIRECTION, STOP_DIRECTION_STOP_UP, STOP_DIRECTION_STOP_DOWN]
+        Required for type: stop_limit_stop_limit_gtd, stop_limit_stop_limit_gtc
+    dry_run: bool
+        Show payload without placing order
 
     Returns
     -------
-    pd.DataFrame
-        List of deposits
+
     """
+    quote_size = kwargs.get("quote_size", 0)
+    base_size = kwargs.get("base_size", 0)
+    limit_price = kwargs.get("limit_price", 0)
+    end_time = kwargs.get("end_time", 0)
+    post_only = kwargs.get("post_only", True)
+    stop_price = kwargs.get("stop_price", 0)
+    stop_direction = kwargs.get("stop_direction", "")
+
+    order_payload: dict = {}
+    order_payload["order_configuration"] = {}
+    type_payload = {}
+    if order_type == "market_market_ioc":
+        if side == "BUY":
+            type_payload["quote_size"] = str(quote_size)
+        if side == "SELL":
+            type_payload["base_size"] = str(base_size)
+
+    if order_type == "limit_limit_gtc":
+        type_payload["limit_price"] = str(limit_price)
+        type_payload["base_size"] = str(base_size)
+        type_payload["post_only"] = post_only
+
+    if order_type == "limit_limit_gtd":
+        type_payload["base_size"] = str(base_size)
+        type_payload["limit_price"] = str(limit_price)
+        type_payload["end_time"] = str(end_time)
+        type_payload["post_only"] = post_only
+
+    if order_type == "stop_limit_stop_limit_gtc":
+        type_payload["base_size"] = str(base_size)
+        type_payload["limit_price"] = str(limit_price)
+        type_payload["stop_price"] = str(stop_price)
+        type_payload["stop_direction"] = stop_direction
+
+    if order_type == "stop_limit_stop_limit_gtd":
+        type_payload["base_size"] = str(base_size)
+        type_payload["limit_price"] = str(limit_price)
+        type_payload["stop_price"] = str(stop_price)
+        type_payload["end_time"] = str(end_time)
+        type_payload["stop_direction"] = stop_direction
+
+    order_payload["order_configuration"][order_type] = type_payload
+    order_payload["client_order_id"] = str(uuid.uuid4())
+    order_payload["product_id"] = product_id
+    order_payload["side"] = side
+
+    response_dict = {}
+
+    if bool(dry_run):
+        response_dict["status"] = "Dry Run"
+        response_dict["order_type"] = order_type
+        response_dict["order_configuration"] = order_payload["order_configuration"]
+        response_dict["product_id"] = order_payload["product_id"]
+        response_dict["side"] = order_payload["side"]
+        return pd.DataFrame(response_dict)
+
     try:
         auth = CoinbaseAdvAuth(cfg.API_CB_ADV_KEY, cfg.API_CB_ADV_SECRET)
-        params = {"type": deposit_type}
-
-        if deposit_type not in ["internal_deposit", "deposit"]:
-            params["type"] = "deposit"
-        resp = make_coinbase_adv_request("/transfers", auth=auth, params=params)
+        resp = make_coinbase_adv_request(
+            "/orders", method="post", params=order_payload, auth=auth
+        )
 
     except CoinbaseAdvApiException as e:
         if "Invalid API Key" in str(e):
             console.print("[red]Invalid API Key[/red]\n")
         else:
             console.print(e)
-
         return pd.DataFrame()
 
-    if not resp:
-        console.print("No deposits found for your account\n")
-        return pd.DataFrame()
-
-    if isinstance(resp, tuple):
-        resp = resp[0]
-
-    # pylint:disable=no-else-return
-    if deposit_type == "deposit":
-        df = pd.json_normalize(resp)
+    response_dict["Status"] = "Success" if resp["success"] else "Failed"
+    if resp["success"]:
+        response_dict["Order"] = resp["order_id"]
+        response_dict["success_response"] = resp["success_response"]
     else:
-        df = pd.DataFrame(resp)[["type", "created_time", "amount", "currency"]]
+        response_dict["Failure"] = resp["failure_reason"]
+        response_dict["error_response"] = resp["error_response"]
 
-    df = df.sort_values(by=sortby, ascending=descend).head(limit)
+    df = pd.DataFrame(response_dict)
+    if df.empty:
+        return pd.DataFrame()
+
+    if df.empty:
+        return pd.DataFrame()
+
+    # df = df.sort_values(by=sortby, ascending=descend).head(limit)
+
+    return df
+
+
+@log_start_end(log=logger)
+def cancel_order(
+    order_id: str = "",
+) -> pd.DataFrame:
+    """
+        Place an order. [Source: Coinbase]
+        https://docs.cloud.coinbase.com/advanced-trade-api/reference/retailbrokerageapi_postorder
+        Example response from API:
+        {
+      "results": {[
+        "success": true,
+        "failure_reason": "UNKNOWN_CANCEL_FAILURE_REASON",
+        "order_id": "0000-00000"],
+      }
+    }
+        Parameters
+        ----------
+        order_id: str
+            Coinbase Advanced order_id
+        Returns
+        -------
+
+    """
+
+    order_cancel_payload = {"order_ids": [order_id]}
+
+    try:
+        auth = CoinbaseAdvAuth(cfg.API_CB_ADV_KEY, cfg.API_CB_ADV_SECRET)
+        resp = make_coinbase_adv_request(
+            "/orders/batch_cancel",
+            method="post",
+            params=order_cancel_payload,
+            auth=auth,
+        )
+
+    except CoinbaseAdvApiException as e:
+        if "Invalid API Key" in str(e):
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(e)
+        return pd.DataFrame()
+
+    response_dict = {}
+    response_dict["Status"] = "Success" if resp["results"][0]["success"] else "Failed"
+    response_dict["response"] = resp["results"]
+
+    df = pd.DataFrame(response_dict)
+    if df.empty:
+        return pd.DataFrame()
+
+    if df.empty:
+        return pd.DataFrame()
+
     return df

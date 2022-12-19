@@ -20,12 +20,12 @@ def test_accounts(recorder):
 
 
 @pytest.mark.vcr
-def test_deposits(recorder):
-    json_out = cbm.get_deposits()
+def test_market(recorder):
+    json_out = cbm.create_order()
     recorder.capture(json_out)
 
 
 @pytest.mark.vcr
 def test_orders(recorder):
-    json_out = cbm.get_deposits()
+    json_out = cbm.get_orders()
     recorder.capture(json_out)
