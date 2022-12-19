@@ -939,6 +939,14 @@ en:
   portfolio/bro/cbadv: Coinbase Advanced Menu
   portfolio/bro/cbadv/account: Coinbase Advanced account list
   portfolio/bro/cbadv/orders: Coinbase Advanced latest orders
+  portfolio/bro/cbadv/accountmanagement: Manage Account
+  portfolio/bro/cbadv/manageorders: Order Tools
+  portfolio/bro/cbadv/market: Place Market order
+  portfolio/bro/cbadv/limitgtc: Place Limit GTC order
+  portfolio/bro/cbadv/imitgtd: Place limit GTD order
+  portfolio/bro/cbadv/stopgtc: Place Stop Limit GTC order
+  portfolio/bro/cbadv/stopgtd: Place Stop Limit GTD order
+  portfolio/bro/cbadv/cancelorder: Cancel order by order id
   portfolio/bro/ally/holdings: show account holdings
   portfolio/bro/ally/history: show history of your account
   portfolio/bro/ally/balances: show balance details of account
