@@ -342,33 +342,23 @@ def run_test_files(
     fails: Dict[str, Dict[str, Any]] = {}
 
     if test_files:
+
         n = len(test_files)
 
         if not subprocesses:
             subprocesses = min(n, cpu_count())
 
-        console.print(
-            f"* Running script(s) in {subprocesses} subprocess(es)...\n", style="bold"
-        )
         start = time.time()
 
-        with Pool(processes=subprocesses) as pool:
-
-            # Choosing chunksize: line 477 .../lib/python3.9/multiprocessing/pool.py
-            chunksize, extra = divmod(n, subprocesses * 4)
-            if extra:
-                chunksize += 1
-
-            for i, result in enumerate(
-                pool.imap(
-                    partial(
-                        run_test, verbose=verbose, special_arguments=special_arguments
-                    ),
-                    test_files,
-                    chunksize=chunksize,
+        if verbose:
+            console.print(
+                "* Running script(s) sequentially...\n",
+                style="bold",
+            )
+            for i, file in enumerate(test_files):
+                file_short_name, exception = run_test(
+                    file, verbose=verbose, special_arguments=special_arguments
                 )
-            ):
-                file_short_name, exception = result
                 if exception:
                     n_failures += 1
                     fails[file_short_name] = exception
@@ -376,6 +366,37 @@ def run_test_files(
                     n_successes += 1
 
                 display_test_progress(i, n, n_failures, file_short_name, verbose)
+        else:
+            console.print(
+                f"* Running script(s) in {subprocesses} parallel subprocess(es)...\n",
+                style="bold",
+            )
+            with Pool(processes=subprocesses) as pool:
+
+                # Choosing chunksize: line 477 .../lib/python3.9/multiprocessing/pool.py
+                chunksize, extra = divmod(n, subprocesses * 4)
+                if extra:
+                    chunksize += 1
+
+                for i, result in enumerate(
+                    pool.imap(
+                        partial(
+                            run_test,
+                            verbose=verbose,
+                            special_arguments=special_arguments,
+                        ),
+                        test_files,
+                        chunksize=chunksize,
+                    )
+                ):
+                    file_short_name, exception = result
+                    if exception:
+                        n_failures += 1
+                        fails[file_short_name] = exception
+                    else:
+                        n_successes += 1
+
+                    display_test_progress(i, n, n_failures, file_short_name, verbose)
 
         end = time.time()
         seconds = end - start
@@ -615,7 +636,7 @@ def parse_args_and_run():
     if ns_parser.verbose and ns_parser.subprocesses != 1:
         console.print(
             "WARNING: verbose mode and multiprocessing are not compatible. "
-            "The output of the scripts would be mixed up. Setting subprocesses to 1...\n",
+            "The output of the scripts would be mixed up. Running sequentially...\n",
             style="yellow",
         )
         ns_parser.subprocesses = 1
