@@ -44,13 +44,12 @@ class FundController(BaseController):
         "load",
         "plot",
         "sector",
-        "equity",
-        # "alswe",
-        # "infoswe",
+        "alswe",
+        "infoswe",
         "holdings",
         "carbon_metrics",
         "exclusion_policy",
-        # 'forecast',
+        "forecast",
     ]
 
     fund_countries = list(mapping_country.keys())
@@ -112,319 +111,17 @@ class FundController(BaseController):
         mt.add_cmd("carbon_metrics", self.fund_symbol)
         mt.add_cmd("exclusion_policy", self.fund_symbol)
 
-        # if self.country == "sweden":
-        #     mt.add_cmd("alswe", self.fund_symbol)
-        #     mt.add_cmd("infoswe", self.fund_symbol)
-        #     mt.add_cmd("forecast", self.fund_symbol)
+        if self.country == "sweden":
+            mt.add_cmd("alswe", self.fund_symbol)
+            mt.add_cmd("infoswe", self.fund_symbol)
+            mt.add_cmd("forecast", self.fund_symbol)
         console.print(text=mt.menu_text, menu="Mutual Funds")
 
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.fund_symbol:
             return ["funds", f"load {self.fund_symbol}"]
-            # return ["funds", f"load {self.fund_name} --name"]
         return []
-
-    # @log_start_end(log=logger)
-    # def call_country(self, other_args: List[str]):
-    #     """Process country command"""
-    #     parser = argparse.ArgumentParser(
-    #         add_help=False,
-    #         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    #         prog="country",
-    #         description="Set a country for funds",
-    #     )
-    #     parser.add_argument(
-    #         "-n",
-    #         "--name",
-    #         type=str,
-    #         dest="name",
-    #         nargs="+",
-    #         help="country to select",
-    #     )
-    #     if other_args and "-" not in other_args[0][0]:
-    #         other_args.insert(0, "-n")
-    #     ns_parser = self.parse_known_args_and_warn(parser, other_args)
-    #     if ns_parser:
-    #         country_candidate = " ".join(ns_parser.name)
-    #         if country_candidate.lower() in self.fund_countries:
-    #             self.country = " ".join(ns_parser.name)
-    #         else:
-    #             console.print(
-    #                 f"{country_candidate.lower()} not a valid country to select."
-    #             )
-    #     return self.queue
-
-    # @log_start_end(log=logger)
-    # def call_search(self, other_args: List[str]):
-    #     """Process country command"""
-    #     parser = argparse.ArgumentParser(
-    #         add_help=False,
-    #         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    #         prog="search",
-    #         description="Search mutual funds in selected country based on selected field.",
-    #     )
-    #     parser.add_argument(
-    #         "-b",
-    #         "--by",
-    #         choices=self.search_by_choices,
-    #         default="name",
-    #         dest="by",
-    #         help="Field to search by",
-    #     )
-    #     parser.add_argument(
-    #         "--fund",
-    #         help="Fund string to search for",
-    #         dest="fund",
-    #         type=str,
-    #         nargs="+",
-    #         required="-h" not in other_args,
-    #     )
-    #     parser.add_argument(
-    #         "-s",
-    #         "--sortby",
-    #         dest="sortby",
-    #         choices=self.search_cols,
-    #         help="Column to sort by",
-    #         default="name",
-    #     )
-    #     parser.add_argument(
-    #         "-l",
-    #         "--limit",
-    #         help="Number of search results to show",
-    #         type=check_positive,
-    #         dest="limit",
-    #         default=10,
-    #     )
-    #     parser.add_argument(
-    #         "-r",
-    #         "--reverse",
-    #         action="store_true",
-    #         dest="reverse",
-    #         default=False,
-    #         help=(
-    #             "Data is sorted in descending order by default. "
-    #             "Reverse flag will sort it in an ascending way. "
-    #             "Only works when raw data is displayed."
-    #         ),
-    #     )
-    #     if other_args and "-" not in other_args[0][0]:
-    #         other_args.insert(0, "--fund")
-    #     ns_parser = self.parse_known_args_and_warn(parser, other_args)
-    #     if ns_parser:
-    #         search_string = " ".join(ns_parser.fund)
-    #         investpy_view.display_search(
-    #             by=ns_parser.by,
-    #             value=search_string,
-    #             country=self.country,
-    #             limit=ns_parser.limit,
-    #             sortby=ns_parser.sortby,
-    #             ascend=ns_parser.reverse,
-    #         )
-    #     return self.queue
-
-    @log_start_end(log=logger)
-    def call_overview(self, other_args: List[str]):
-        """Process country command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="overview",
-            description="Show overview of funds from selected country.",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            help="Number of search results to show",
-            type=check_positive,
-            dest="limit",
-            default=10,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            investpy_view.display_overview(
-                self.country, limit=ns_parser.limit, export=ns_parser.export
-            )
-        return self.queue
-
-    # def call_info(self, other_args: List[str]):
-    #     """Process country command"""
-    #     parser = argparse.ArgumentParser(
-    #         add_help=False,
-    #         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    #         prog="info",
-    #         description="Get fund information.",
-    #     )
-    #     ns_parser = self.parse_known_args_and_warn(parser, other_args)
-    #     if ns_parser:
-    #         if not self.fund_name:
-    #             console.print(
-    #                 "No fund loaded.  Please use `load` first to plot.\n", style="bold"
-    #             )
-    #             return self.queue
-    #         investpy_view.display_fund_info(self.fund_name, country=self.country)
-    #     return self.queue
-
-    #     @log_start_end(log=logger)
-    #     def call_load(self, other_args: List[str]):
-    #         """Process country command"""
-    #         parser = argparse.ArgumentParser(
-    #             add_help=False,
-    #             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    #             prog="load",
-    #             description="Get historical data.",
-    #         )
-    #         parser.add_argument(
-    #             "--fund",
-    #             help="Fund string to search for",
-    #             dest="fund",
-    #             type=str,
-    #             nargs="+",
-    #             required="-h" not in other_args,
-    #         )
-    #         parser.add_argument(
-    #             "-n",
-    #             "--name",
-    #             action="store_true",
-    #             default=False,
-    #             dest="name",
-    #             help="Flag to indicate name provided instead of symbol.",
-    #         )
-    #         # Keeping the date format constant for investpy even though it needs to be reformatted in model
-    #         parser.add_argument(
-    #             "-s",
-    #             "--start",
-    #             type=valid_date,
-    #             default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
-    #             dest="start",
-    #             help="The starting date (format YYYY-MM-DD) of the fund",
-    #         )
-    #         parser.add_argument(
-    #             "-e",
-    #             "--end",
-    #             type=valid_date,
-    #             default=datetime.now().strftime("%Y-%m-%d"),
-    #             dest="end",
-    #             help="The ending date (format YYYY-MM-DD) of the fund",
-    #         )
-    #         if other_args and "-" not in other_args[0][0]:
-    #             other_args.insert(0, "--fund")
-    #         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-    #         if ns_parser:
-    #             parsed_fund = " ".join(ns_parser.fund)
-    #             (
-    #                 self.data,
-    #                 self.fund_name,
-    #                 self.fund_symbol,
-    #                 self.country,
-    #             ) = investpy_model.get_fund_historical(
-    #                 name=parsed_fund,
-    #                 by_name=ns_parser.name,
-    #                 country=self.country,
-    #                 start_date=ns_parser.start,
-    #                 end_date=ns_parser.end,
-    #             )
-    #             if self.data.empty:
-    #                 console.print(
-    #                     """No data found.
-    # Potential errors
-    #     -- Incorrect country specified
-    #     -- ISIN supplied instead of symbol
-    #     -- Name used, but --name flag not passed"""
-    #                 )
-    #         return self.queue
-
-    # @log_start_end(log=logger)
-    # def call_plot(self, other_args: List[str]):
-    #     """Process country command"""
-    #     parser = argparse.ArgumentParser(
-    #         add_help=False,
-    #         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    #         prog="plot",
-    #         description="Plot historical data.",
-    #     )
-
-    #     ns_parser = self.parse_known_args_and_warn(
-    #         parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-    #     )
-    #     if ns_parser:
-    #         if not self.fund_symbol:
-    #             console.print(
-    #                 "No fund loaded.  Please use `load` first to plot.\n", style="bold"
-    #             )
-    #             return self.queue
-    #         investpy_view.display_historical(
-    #             self.data, name=self.fund_name, export=ns_parser.export
-    #         )
-    #     return self.queue
-
-    # @log_start_end(log=logger)
-    # def call_sector(self, other_args: List[str]):
-    #     """Process sector command"""
-    #     parser = argparse.ArgumentParser(
-    #         add_help=False,
-    #         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    #         prog="sector",
-    #         description="Show fund sector weighting.",
-    #     )
-    #     parser.add_argument(
-    #         "-m",
-    #         "--min",
-    #         type=check_non_negative_float,
-    #         dest="min",
-    #         help="Minimum positive float to display sector",
-    #         default=5,
-    #     )
-
-    #     ns_parser = self.parse_known_args_and_warn(
-    #         parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
-    #     )
-    #     if ns_parser:
-    #         if self.country != "united states":
-    #             console.print(
-    #                 "YFinance implementation currently only supports funds from united states"
-    #             )
-    #             return self.queue
-    #         if not self.fund_symbol or not self.fund_name:
-    #             console.print(
-    #                 "No fund loaded.  Please use `load` first to plot.\n", style="bold"
-    #             )
-    #             return self.queue
-    #         yfinance_view.display_sector(
-    #             self.fund_symbol,
-    #             min_pct_to_display=ns_parser.min,
-    #             export=ns_parser.export,
-    #         )
-
-    #     return self.queue
-
-    @log_start_end(log=logger)
-    def call_equity(self, other_args: List[str]):
-        """Process equity command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="equity",
-            description="Show fund equity holdings.",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if self.country != "united_states":
-                console.print(
-                    "YFinance implementation currently only supports funds from united states"
-                )
-                return self.queue
-            if not self.fund_symbol or not self.fund_name:
-                console.print(
-                    "No fund loaded.  Please use `load` first to plot.\n", style="bold"
-                )
-                return self.queue
-            yfinance_view.display_equity(self.fund_symbol)
-
-        return self.queue
 
     @log_start_end(log=logger)
     def call_alswe(self, other_args: List[str]):
@@ -648,8 +345,7 @@ class FundController(BaseController):
         )
 
         parser.add_argument(
-            "-comp",
-            "--compare",
+            "-c",
             default="",
             choices=["category", "index", "both"],
             dest="compare",
