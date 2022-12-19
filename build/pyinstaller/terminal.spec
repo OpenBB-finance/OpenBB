@@ -66,7 +66,6 @@ added_files = [
         os.path.join(pathex, "investpy", "resources"),
         os.path.join("investpy", "resources"),
     ),
-    (os.path.join(pathex, "bson"), "bson"),
     (
         os.path.join(pathex, "debugpy", "_vendored"),
         os.path.join("debugpy", "_vendored"),
@@ -93,7 +92,6 @@ hidden_imports = [
     "textwrap3",
     "pyEX",
     "feedparser",
-    "bson",
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
