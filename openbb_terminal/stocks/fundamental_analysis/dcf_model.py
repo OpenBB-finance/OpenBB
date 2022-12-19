@@ -313,8 +313,6 @@ def get_fama_coe(symbol: str) -> float:
     """
     df_f = get_fama_raw()
     df_h = get_historical_5(symbol)
-    print(df_f.head(2))
-    print(df_h.head(2))
     df = df_h.join(df_f)
     df = df.dropna()
     df["Monthly Return"] = df["Close"].pct_change()
