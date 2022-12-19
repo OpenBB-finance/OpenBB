@@ -591,6 +591,34 @@ def valid_date(s: str) -> datetime:
         raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
 
 
+def valid_datetime(
+    s: str,
+    input_format: str = "%d-%m-%Y_%H:%M_%p",
+    output_format: str = "%Y-%m-%dT%H:%M:00Z",
+) -> str:
+    """Argparse type to check date is in valid format.
+     Parameters
+    ----------
+    s: str
+        Date time string
+    input_format: str
+        Format representing the s parameter as per
+        https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior
+    output_format: str
+        Desired date output format as per
+        https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior
+
+    Returns
+    -------
+    str
+    """
+    try:
+        return datetime.strptime(s, input_format).strftime(output_format)
+    except ValueError as value_error:
+        logging.exception(str(value_error))
+        raise argparse.ArgumentTypeError(f"Not a valid datetime: {s}") from value_error
+
+
 def valid_repo(repo: str) -> str:
     """Argparse type to check github repo is in valid format."""
     result = re.search(r"^[a-zA-Z0-9-_.]+\/[a-zA-Z0-9-_.]+$", repo)  # noqa: W605

@@ -17,12 +17,47 @@ interactions:
       accept:
       - application/json
     method: GET
-    uri: https://coinbase.com/api/v3/brokerage/transfers?type=deposit
+    uri: https://coinbase.com/api/v3/brokerage/orders/historical/batch?limit=20
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6pWSi0qyi9SslIqzcvOyy/PU9KBiMSnpJYkZuYUK1kpBeWXlqQq5OWXKKTll+al
-        KOko5aYWFyemp2KRqwUAAAD//wMAGO1AKVEAAAA=
+        H4sIAAAAAAAAA+yWW2sjNxTHv8qi5zlBlyONZt6yjru4eO2Q2A9tHwZdjswUx/bOjAPdkO9eZmIb
+        hy4LLQkNIW/Suer8pR/ogW2bSE3Lyj8enpZVHVnJVIo5SmlAenSACTVYnQygt8RDrr0qJMvYrtnG
+        feiecj4vRrC8vWIZ27fHOlRoiigM+JgSaBciOFQWiih1IV3MRY4sO3QO202qV/vGdfV2w8oH1nbb
+        XbWu7+quOluuutg7vWupauvvxErGLzgXLGNPAbumDgdrbxxSj7aCc85ZxmgTq66+602SSwVcABcL
+        wUvBS85/P6bFuqHwdBx2u5hfV1eTm/FoMZnPqmG7vGaPjxlr69hX+rz8jWUsrGvadNW5mrlSUkcE
+        NEEDGq7BRUtAEbHgxCOXxdDRdfuWlWx0ORuNp9Nxr2V/yKreVGnbDAN8mc+vquVsMZlWV5eLcbWY
+        fB33TRtyHZ3PJEFIEHYhRalFKcQFz6Uwph8tbO92a+rHqnbUBNp0bjUIxjKW6vWa4klYljF3T41b
+        UXXwnNTtg6lfsYxt9neemmqbhqj2ea17t94fM3a0ifVmVQW3CbRmZXLrlnoBvw9TfttvOzpZu23n
+        1lUiOhY8hIX1vq3vaWg3OJ/FD+0qlzpqznO7pl6tqKlOKg8XeD2eXU1mX05vsPtrR0ffdPJ1smAZ
+        a+hPCl3VkGuHh3Az/nU8WlQ348vb+axazm6vx6PJL5PhulrqujXF05GOhBzrXs/PKt5R2z4p31/K
+        oMiZbdlS86mhb3tqO4qfDoo9Zs9ALdDYINGCcQUCSkVgnSygUM4LbXl0SG8eVHmA8hmponhFUm/H
+        0+kPUeVW5ZyHBElIDpi8Bk+mAG6S1UkJF417VVR5ydVFLo3MP1B9X6giaiekJwiJa0Cba3A2SsBo
+        MKhAhifz/6EaXgDVlwQxeeV04ghKxAQYQw5eFQSKe881DwGF+g8gnof9FES0pTQXSnKt8APEdwWi
+        KHxOiDlY8gZQxRxs4Bpi7p1KKDDX8c2D+LPP7Qt+XaVBZ3IjwFIhAZV1YLkioMLpJLwJIfhXxTAv
+        ubgwMrf2A8P3hWFIShl0DoIJBlAkCQ4Tgk/JJk7BO6HfFoY/ovAfEIr8xSH0AnNlZAGRowG0UoGV
+        iOC8SUUutUFl/i2EfwMAAP//7NvrbhVHDAfwJ/LK9thje78hlSJUBBWEVv1QRXNVP1TQcpHat6+W
+        JIiSSyHJCenReYFd7ax+a8/fs1+DMPGKsiRHUz4g3K9aWJp7jgI9DQPRUiA6CYRN1BKBKvY5wie3
+        jvAE1dfRi4gtNPnj9dt3x69f/f736ZJ9SW9pTUIbMeiQBkJFwFNvUKqIkzjnWnbpiWKltCBlUzx4
+        Olvlx09/evDk8XfHz55/9/D58dEvPz78XNX/ARSXObFqBWqWQFpNEDIKlJESF8xzRr+noK7WdGlx
+        khp9tgIhLUA4CpTKA1JX7qPN3my3mHxNuGRKnv2Aab8wRfZReh8wURPIqAOcqYOUnkRmnfLhQ32n
+        mPoXY7o0ucSz5PIa3ESHUpnb98UTSOEJXkZAISYrzWbtusuAkvIqugQnpwO3fatdiYKxDGCJBlKV
+        oLacwEhkmjZsfl+5nXaDNyJ3ab9Yc8ksJQFa3rJIVwhtA8ag7UmNtbWdmuNVaSFXOczv9s3cUDRN
+        KaBxQ5DAApWogg+UyJZmy/Wb94uXxo/XKGCKlpV7gk6NQAwnlO2bE8TVStQ2yq76xXxEvoquzIuz
+        Eh/CjD3D1E3LaFkgei8gnTJEmwHYpkpPITporzBVFAlLDFkMQWo3iNwqIEsTztyHjV1iSnmVvHgO
+        jkM3uGeYcq5mbggtbVPqmis45YDcphYWszF1rzCFirVtV1VkKgiNCVULQ8dodYQ1zm13mGSltJIt
+        bhZ4iAX3bWvVzZIXh23jDKJNIdwcemjNqTYj/vax4G1i6tRTdTYgTLrloAZOVoB74lwCjXzuDlNa
+        JVbUxTIFHTDtGaZE6mrdQOa2Z2os4BsCn703lUojxj07wIEoF5+luug01VmacZvnqai3OrEXUHMD
+        wYQQwwNyiLdCI1fd0QwZ/YjTKmllXMQR6bDt2q8Zsk9qLVsHRAuQGAa1dQJmx5bRbBTcPcf/Hnld
+        RFBPBV4nFqRCg1wZLKcEwlmgRAtoeYjX1MhCdkqKVpaFyDQfzkbtWYnzUSgzOfSeHKR3goieYYjN
+        xoTqeD9MYUZWPg8rkV1zoMxbrN5GhjYGguTIEJ4JCtLgVCSl5p+y+v7xzU2hf4ja06ppFVxSJKEr
+        o3bC7eHPw/p0RS4RdrY0Vyij88ooLZHVidBv5m1BVc+JRRLfwB7JgkzZJPHJhe4a4rs372/m8HNy
+        aJWn5LKdXKggKRqEbXOwyHN0pzCan5N78OTRs7s1l9mXuGCfZnY9bdhC6hgGbSYDSZyhYuvQ50zE
+        OiP9+4eXW9GWAPXDYMtW9cWzZ8NraDtbi8tK2cmiXOGMzzsTl4U13cgYLVtX7ao38CWuS4idXuUc
+        rpdPf3j67Oenx0fPHz969PD58YujB0cvX9xvYHNyZyYCwnAQ6wlqzQ6zWcaJhVzkHgBTW9JFwNSv
+        J8zrVK6WoBTc/vapuCUhA5SGGInm3HfRJp4go1hxGyAvW89wGHjdKaA7ahUVe5TaFSqbgHQ2KIgM
+        SJpNOIJGvgesciz5IlYi10wYt+NgTfo23asO4gPB2RVmjp5ZTZvW3bnyVWPVvGRijUPCuBeuft1u
+        8uf78erjq/itvD1+Nf569/Gm7f2bt6/ffChu/wAAAP//AwAo0PhgPEEAAA==
     headers:
       Access-Control-Allow-Headers:
       - Content-Type, Accept, Second-Factor-Proof-Token, Client-Id, Access-Token,
@@ -39,7 +74,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 776ed96edded8c65-EWR
+      - 77c04aef2957c329-EWR
       Cache-Control:
       - no-store
       Connection:
@@ -49,18 +84,18 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 09 Dec 2022 15:42:12 GMT
+      - Mon, 19 Dec 2022 12:55:27 GMT
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=wO2GiIdmQiz_MFdvda78FIhoiSW_9FTOdHASG8OB6m0-1670600532-0-ARlbyRpj29tXuRsY5lL2pdw5vQvFm5iKhcjGWj6F9jEZtHRWJe949sS+KR/tsc7bca+fOgz2GGl4j1xDmdCzq9s=;
-        path=/; expires=Fri, 09-Dec-22 16:12:12 GMT; domain=.coinbase.com; HttpOnly;
+      - __cf_bm=XC7J82LuGkbJW5aiZ6QGt5eNSNVPSwz_RGCYPxhVwKE-1671454527-0-AdHxNdeXQ/YhXiJeUzZO0jWaLb2b/ed9qhu45ro/xEn/x/QalpvWmYzo/DmKmgcZyIaqhrfttqd69346T5EsSpw=;
+        path=/; expires=Mon, 19-Dec-22 13:25:27 GMT; domain=.coinbase.com; HttpOnly;
         Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
       Trace-Id:
-      - '2996801797879972097'
-      - '2996801797879972097'
+      - '1129111652845196226'
+      - '1129111652845196226'
       Transfer-Encoding:
       - chunked
       Vary:
@@ -76,6 +111,6 @@ interactions:
       X-Xss-Protection:
       - 1; mode=block
     status:
-      code: 404
-      message: Not Found
+      code: 200
+      message: OK
 version: 1

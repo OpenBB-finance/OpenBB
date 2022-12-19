@@ -9,7 +9,9 @@ from typing import Optional, Any, Union
 import hmac
 import hashlib
 import time
+import json
 import requests
+import pandas as pd
 from requests.auth import AuthBase
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
@@ -88,8 +90,11 @@ def check_validity_of_product(product_id: str) -> str:
     str
         pair of coins in format COIN-COIN
     """
-
-    products = [pair["id"] for pair in make_coinbase_adv_request("/products")]
+    auth = CoinbaseAdvAuth(cfg.API_CB_ADV_KEY, cfg.API_CB_ADV_SECRET)
+    products = [
+        pair["product_id"]
+        for pair in make_coinbase_adv_request("/products", auth=auth)["products"]
+    ]
     if product_id.upper() not in products:
         raise argparse.ArgumentTypeError(
             f"You provided wrong pair of coins {product_id}. "
@@ -99,7 +104,10 @@ def check_validity_of_product(product_id: str) -> str:
 
 
 def make_coinbase_adv_request(
-    endpoint, params: Optional[dict] = None, auth: Optional[Any] = None
+    endpoint,
+    params: Optional[dict] = None,
+    auth: Optional[Any] = None,
+    method: str = "get",
 ) -> dict:
     """Request handler for Coinbase Pro Api. Prepare a request url, params and payload and call endpoint.
     [Source: Coinbase]
@@ -112,6 +120,8 @@ def make_coinbase_adv_request(
         Parameter dedicated for given endpoint
     auth: any
         Api credentials for purpose of using endpoints that needs authentication
+    method: basestring
+        Http method [post, get]
 
     Returns
     -------
@@ -120,7 +130,10 @@ def make_coinbase_adv_request(
     """
 
     url = "https://coinbase.com/api/v3/brokerage"
-    response = requests.get(url + endpoint, params=params, auth=auth)
+    if method == "get":
+        response = requests.get(url + endpoint, params=params, auth=auth)
+    else:
+        response = requests.post(url + endpoint, data=json.dumps(params), auth=auth)
 
     if not 200 <= response.status_code < 300:
         raise CoinbaseAdvApiException(f"Invalid Authentication: {response.text}")
@@ -170,3 +183,220 @@ def _check_account_validity(account: str) -> Union[str, Any]:
 
     console.print("Wrong account id or coin symbol")
     return None
+
+
+def get_all_orders(limit: int = 1000) -> pd.DataFrame:
+    """Get a list of orders filtered by optional query parameters (product_id, order_status, etc). [Source: Coinbase]
+    https://docs.cloud.coinbase.com/advanced-trade-api/reference/retailbrokerageapi_gethistoricalorders
+    Example response from API:
+
+    .. code-block:: json
+
+                {
+                  "orders": [
+                    {
+                      "order_id": "0000-000000-000000",
+                      "product_id": "BTC-USD",
+                      "user_id": "2222-000000-000000",
+                      "order_configuration": {
+                        "market_market_ioc": {
+                          "quote_size": "10.00",
+                          "base_size": "0.001"
+                        },
+                        "limit_limit_gtc": {
+                          "base_size": "0.001",
+                          "limit_price": "10000.00",
+                          "post_only": false
+                        },
+                        "limit_limit_gtd": {
+                          "base_size": "0.001",
+                          "limit_price": "10000.00",
+                          "end_time": "2021-05-31T09:59:59Z",
+                          "post_only": false
+                        },
+                        "stop_limit_stop_limit_gtc": {
+                          "base_size": "0.001",
+                          "limit_price": "10000.00",
+                          "stop_price": "20000.00",
+                          "stop_direction": "UNKNOWN_STOP_DIRECTION"
+                        },
+                        "stop_limit_stop_limit_gtd": {
+                          "base_size": 0.001,
+                          "limit_price": "10000.00",
+                          "stop_price": "20000.00",
+                          "end_time": "2021-05-31T09:59:59Z",
+                          "stop_direction": "UNKNOWN_STOP_DIRECTION"
+                        }
+                      },
+                      "side": "UNKNOWN_ORDER_SIDE",
+                      "client_order_id": "11111-000000-000000",
+                      "status": "OPEN",
+                      "time_in_force": "UNKNOWN_TIME_IN_FORCE",
+                      "created_time": "2021-05-31T09:59:59Z",
+                      "completion_percentage": "50",
+                      "filled_size": "0.001",
+                      "average_filled_price": "50",
+                      "fee": "string",
+                      "number_of_fills": "2",
+                      "filled_value": "10000",
+                      "pending_cancel": true,
+                      "size_in_quote": false,
+                      "total_fees": "5.00",
+                      "size_inclusive_of_fees": false,
+                      "total_value_after_fees": "string",
+                      "trigger_status": "UNKNOWN_TRIGGER_STATUS",
+                      "order_type": "UNKNOWN_ORDER_TYPE",
+                      "reject_reason": "REJECT_REASON_UNSPECIFIED",
+                      "settled": true,
+                      "product_type": "UNKNOWN_PRODUCT_TYPE",
+                      "reject_message": "string",
+                      "cancel_message": "string"
+                    }
+                  ],
+                  "sequence": "string",
+                  "has_next": true,
+                  "cursor": "789100"
+                }
+
+    .
+    Parameters
+    ----------
+    limit: int
+        Last `limit` of trades. Maximum is 1000.
+
+    Returns
+    -------
+    pd.DataFrame
+        All orders in your account
+    """
+
+    try:
+        auth = CoinbaseAdvAuth(cfg.API_CB_ADV_KEY, cfg.API_CB_ADV_SECRET)
+        resp = make_coinbase_adv_request(
+            "/orders/historical/batch", params={"limit": limit}, auth=auth
+        )
+
+    except CoinbaseAdvApiException as e:
+        if "Invalid API Key" in str(e):
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(e)
+
+        return pd.DataFrame()
+
+    if not resp:
+        console.print("No orders found for your account\n")
+
+        return pd.DataFrame(
+            columns=[
+                "product_id",
+                "side",
+                "price",
+                "size",
+                "order_type",
+                "created_time",
+                "status",
+            ]
+        )
+
+    # Flatten response to load into df
+    flat_response = []
+    resp_dict = resp["orders"]
+    for orders in resp_dict:
+        _flat_response = {
+            "order_id": orders["order_id"],
+            "product_id": orders["product_id"],
+            "created_time": orders["created_time"],
+            "side": orders["side"],
+            "status": orders["status"],
+            "fee": orders["fee"],
+        }
+        # Handle parsing for diff ordee types
+        _order_config = orders["order_configuration"]
+
+        if "market_market_ioc" in _order_config:
+            _flat_response["order_type"] = "market_market_ioc"
+            _flat_response["quote_size"] = _order_config["market_market_ioc"][
+                "quote_size"
+            ]
+            _flat_response["base_size"] = _order_config["market_market_ioc"][
+                "base_size"
+            ]
+
+        if "limit_limit_gtc" in _order_config:
+            _flat_response["order_type"] = "limit_limit_gtc"
+            _flat_response["limit_price"] = _order_config["limit_limit_gtc"][
+                "limit_price"
+            ]
+            _flat_response["base_size"] = _order_config["limit_limit_gtc"]["base_size"]
+            _flat_response["post_only"] = _order_config["limit_limit_gtc"]["post_only"]
+
+        if "limit_limit_gtd" in _order_config:
+            _flat_response["order_type"] = "limit_limit_gtd"
+            _flat_response["base_size"] = _order_config["limit_limit_gtd"]["base_size"]
+            _flat_response["limit_price"] = _order_config["limit_limit_gtd"][
+                "limit_price"
+            ]
+            _flat_response["end_time"] = _order_config["limit_limit_gtd"]["end_time"]
+            _flat_response["post_only"] = _order_config["limit_limit_gtd"]["post_only"]
+
+        if "stop_limit_stop_limit_gtc" in _order_config:
+            _flat_response["order_type"] = "stop_limit_stop_limit_gtc"
+            _flat_response["base_size"] = _order_config[_flat_response["order_type"]][
+                "base_size"
+            ]
+            _flat_response["limit_price"] = _order_config[_flat_response["order_type"]][
+                "limit_price"
+            ]
+            _flat_response["stop_price"] = _order_config[_flat_response["order_type"]][
+                "stop_price"
+            ]
+            _flat_response["stop_direction"] = _order_config[
+                _flat_response["order_type"]
+            ]["stop_direction"]
+
+        if "stop_limit_stop_limit_gtd" in _order_config:
+            _flat_response["order_type"] = "stop_limit_stop_limit_gtd"
+            _flat_response["base_size"] = _order_config[_flat_response["order_type"]][
+                "base_size"
+            ]
+            _flat_response["limit_price"] = _order_config[_flat_response["order_type"]][
+                "limit_price"
+            ]
+            _flat_response["stop_price"] = _order_config[_flat_response["order_type"]][
+                "stop_price"
+            ]
+            _flat_response["end_time"] = _order_config[_flat_response["order_type"]][
+                "end_time"
+            ]
+            _flat_response["end_time"] = _order_config[_flat_response["order_type"]][
+                "end_time"
+            ]
+
+        flat_response.append(_flat_response)
+
+    df = pd.DataFrame(flat_response)
+    if df.empty:
+        return pd.DataFrame()
+
+    return df
+
+
+def get_order_id_list(status="OPEN") -> list:
+    """
+    Parameters
+    ----------
+    status: str
+        Order status to filter list
+
+    Returns
+    -------
+    List of order ids matching status
+    """
+    order_list = get_all_orders()
+    df = order_list[order_list["status"] == status]
+    order_id_list = df["order_id"].to_dict()
+    return_list = []
+    for order_id in order_id_list.keys():
+        return_list.append(order_id_list[order_id])
+    return return_list
