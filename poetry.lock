@@ -1468,7 +1468,7 @@ test = ["pytest (>=4.6)", "pytest-cov", "nbval"]
 
 [[package]]
 name = "ipykernel"
-version = "6.19.2"
+version = "6.19.3"
 description = "IPython Kernel for Jupyter"
 category = "main"
 optional = false
@@ -1491,9 +1491,7 @@ traitlets = ">=5.4.0"
 [package.extras]
 cov = ["coverage", "curio", "matplotlib", "pytest-cov", "trio"]
 docs = ["myst-parser", "pydata-sphinx-theme", "sphinx", "sphinxcontrib-github-alt"]
-lint = ["black (>=22.6.0)", "mdformat (>0.7)", "ruff (>=0.0.156)"]
 test = ["flaky", "ipyparallel", "pre-commit", "pytest-asyncio", "pytest-cov", "pytest-timeout", "pytest (>=7.0)"]
-typing = ["mypy (>=0.990)"]
 
 [[package]]
 name = "ipympl"
@@ -4854,7 +4852,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "df6cd2df1967b82115fbb1a50b89a5565ad63c12a7b922e3b9a4ebdbe7b1d0ad"
+content-hash = "ae3c16ef46369efc60c399360e34437f175e49b2cfab9bc97d8a6336b72ae175"
 
 [metadata.files]
 absl-py = []
