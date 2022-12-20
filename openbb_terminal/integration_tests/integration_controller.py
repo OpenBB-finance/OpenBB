@@ -381,7 +381,7 @@ def run_test_files(
 
         start = time.time()
 
-        if verbose:
+        if verbose and not subprocesses:
             console.print(
                 f"* Running {n} script(s) sequentially...\n",
                 style="bold",
@@ -671,10 +671,9 @@ def parse_args_and_run():
     if ns_parser.verbose and ns_parser.subprocesses:
         console.print(
             "WARNING: verbose mode and multiprocessing are not compatible. "
-            "The output of the scripts would be mixed up. Running sequentially...\n",
+            "The output of the scripts is mixed up. Consider running without --subproc.\n",
             style="yellow",
         )
-        ns_parser.subprocesses = None
 
     if ns_parser.list_:
         return display_available_scripts(ns_parser.path, ns_parser.skip)
