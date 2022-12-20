@@ -24,7 +24,6 @@ from openbb_terminal.terminal_controller import (
     obbff,
 )
 from openbb_terminal.terminal_helper import (
-    is_packaged_application,
     is_reset,
     suppress_stdout,
 )
@@ -382,7 +381,7 @@ def run_test_files(
 
         start = time.time()
 
-        if verbose or is_packaged_application():
+        if verbose:
             console.print(
                 f"* Running {n} script(s) sequentially...\n",
                 style="bold",
@@ -668,13 +667,6 @@ def parse_args_and_run():
         ns_parser.path = [u for u in unknown_args if u[0] != "-"]
 
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
-
-    if is_packaged_application():
-        console.print(
-            "WARNING: packaged application and multiprocessing are still not compatible. "
-            "Running sequentially...\n",
-            style="yellow",
-        )
 
     if ns_parser.verbose and ns_parser.subprocesses:
         console.print(
