@@ -83,6 +83,7 @@ hidden_imports = [
     "sklearn.neighbors.quad_tree",
     "sklearn.tree._utils",
     "sklearn.neighbors._partition_nodes",
+    "sklearn.metrics._pairwise_distances_reduction._datasets_pair",
     "squarify",
     "linearmodels",
     "statsmodels",
