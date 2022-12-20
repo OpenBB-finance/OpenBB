@@ -54,7 +54,8 @@ PLT_TA_STYLE_TEMPLATE = "plotly_dark"
 PLT_FONT = dict(family="Fira Code", size=16)
 PLOTLY_FONT = dict(family="Fira Code", size=18)
 PLT_COLORWAY = [
-    "#fdc708",
+    "gold",
+    "#ed8e3b",
     "#d81aea",
     "#00e6c3",
     "#9467bd",
@@ -215,7 +216,7 @@ def de_increasing_color_list(
 
 PLOTLY_THEME = dict(
     # Layout
-    margin=dict(l=10, r=10, t=40, b=20),
+    margin=dict(l=40, r=40, t=40, b=20),
     height=762,
     width=1400,
     template=PLT_STYLE_TEMPLATE,
@@ -227,7 +228,9 @@ PLOTLY_THEME = dict(
         title_standoff=20,
         nticks=10,
         showline=False,
-        showgrid=False,
+        showgrid=True,
+        gridwidth=2,
+        griddash="dot",
     ),
     yaxis2=dict(
         zeroline=False,
@@ -246,12 +249,15 @@ PLOTLY_THEME = dict(
         zeroline=True,
         rangeslider=dict(visible=False),
         tickfont=dict(size=18),
+        title_standoff=20,
+        gridwidth=2,
+        griddash="dot",
     ),
     legend=dict(
         yanchor="top",
         y=0.99,
         xanchor="left",
-        font_size=8,
+        font_size=10,
         bgcolor="rgba(0, 0, 0, 0)",
         x=0.01,
     ),

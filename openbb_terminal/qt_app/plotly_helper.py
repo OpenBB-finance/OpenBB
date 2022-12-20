@@ -1,3 +1,4 @@
+import json
 from io import BytesIO
 from pathlib import Path
 from typing import List, Union
@@ -9,8 +10,42 @@ import plotly.tools as tls
 import requests
 from PIL import Image
 from plotly.subplots import make_subplots
+from pywry import PyWry
 
 from openbb_terminal.qt_app.config import openbb_styles as theme
+
+
+class Backend(PyWry):
+    """Custom backend for Plotly"""
+
+    def __new__(cls):
+        if not hasattr(cls, "instance"):
+            cls.instance = super(Backend, cls).__new__(cls)
+        return cls.instance
+
+    def __init__(self, max_retries: int = 30):
+        super().__init__(max_retries=max_retries)
+
+    def get_plotly_html(self) -> str:
+        """Get the plotly html file"""
+        html_path = Path(__file__).parent.resolve() / "plotly.html"
+        if html_path.exists():
+            return str(html_path)
+        return ""
+
+    def send_figure(self, fig: go.Figure):
+        """Send a Plotly figure to the backend
+
+        Parameters
+        ----------
+        fig : go.Figure
+            Plotly figure to send to backend.
+        """
+        self.check_backend()
+        data = json.loads(fig.to_json())
+        self.outgoing.append(
+            json.dumps({"html": self.get_plotly_html(), "plotly": data})
+        )
 
 
 # pylint: disable=R0913
@@ -25,6 +60,49 @@ class PlotlyFigureHelper:
     def _set_theme(self):
         """Set theme for the figure"""
         self.fig.update_layout(**theme.PLOTLY_THEME)
+        self.fig.update_layout(
+            newshape_line_color="gold",
+            modebar=dict(
+                orientation="v",
+                bgcolor="rgba(0,0,0,0)",
+                color="gold",
+                activecolor="#d1030d",
+            ),
+        )
+        # pylint: disable=C0415
+        from openbb_terminal.helper_funcs import command_location
+
+        if command_location:
+            self.fig.add_annotation(
+                x=0,
+                y=0.5,
+                yref="y domain",
+                xref="x domain",
+                text=command_location,
+                textangle=-90,
+                font_size=188,
+                font_color="gray",
+                opacity=0.5,
+                yanchor="middle",
+                xshift=-50,
+                showarrow=False,
+            )
+
+        self.fig.add_annotation(
+            yref="y domain",
+            xref="x domain",
+            x=1,
+            y=0,
+            text="OpenBB Terminal",
+            font_size=17,
+            font_color="gray",
+            opacity=0.5,
+            xanchor="right",
+            yanchor="bottom",
+            showarrow=False,
+            yshift=-80,
+            xshift=40,
+        )
 
     def set_title(self, title: str, **kwargs):
         """Set the title of the figure"""
@@ -51,8 +129,16 @@ class PlotlyFigureHelper:
             **kwargs,
         )
         if xaxis:
+            xaxis.update(
+                gridwidth=2,
+                griddash="dash",
+            )
             fig.update_xaxes(xaxis)
         if yaxis:
+            yaxis.update(
+                gridwidth=2,
+                griddash="dash",
+            )
             fig.update_yaxes(yaxis)
 
         return cls(fig)
@@ -95,7 +181,7 @@ class PlotlyFigureHelper:
         self,
         x: Union[List, np.ndarray],
         y: Union[List, np.ndarray],
-        name: str,
+        name: str = None,
         mode: str = "lines",
         row: int = None,
         col: int = None,
@@ -136,7 +222,7 @@ class PlotlyFigureHelper:
         self,
         x: Union[int, float],
         y: Union[int, float],
-        text: str,
+        text: str = None,
         row: int = None,
         col: int = None,
         secondary_y: bool = None,
@@ -151,13 +237,14 @@ class PlotlyFigureHelper:
         self,
         x: Union[List, np.ndarray],
         y: Union[List, np.ndarray],
-        name: str,
+        name: str = None,
         row: int = None,
         col: int = None,
         secondary_y: bool = None,
         **kwargs,
     ):
         """Add a bar trace to the figure"""
+
         self.fig.add_trace(
             go.Bar(x=x, y=y, name=name, **kwargs),
             row=row,
@@ -307,3 +394,6 @@ class PlotlyFigureHelper:
     def show(self, **kwargs):
         """Show the figure"""
         self.fig.show(**kwargs)
+
+
+BACKEND = Backend()

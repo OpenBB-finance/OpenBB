@@ -1,27 +1,26 @@
 """ EconDB View """
 __docformat__ = "numpy"
-# pylint:disable=too-many-arguments
+# pylint:disable=too-many-arguments,unused-argument
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+# from openbb_terminal.config_plot import PLOT_DPI
+# from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy.yfinance_model import (
+    INDICES,
     get_indices,
     get_search_indices,
-    INDICES,
 )
 from openbb_terminal.helper_funcs import (
-    plot_autoscale,
-    print_rich_table,
     export_data,
+    print_rich_table,
     reindex_dates,
-)
+)  # plot_autoscale,
 from openbb_terminal.qt_app.plotly_helper import PlotlyFigureHelper
 
 logger = logging.getLogger(__name__)
@@ -69,7 +68,7 @@ def show_indices(
 
     indices_data = get_indices(indices, interval, start_date, end_date, column, returns)
 
-    fig = PlotlyFigureHelper.create(title=f"Indices", yaxis=dict(side="right"))
+    fig = PlotlyFigureHelper.create(title="Indices", yaxis=dict(side="right"))
 
     for index in indices:
         if index.lower() in INDICES:

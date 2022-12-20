@@ -19,7 +19,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.qt_app.config.openbb_styles import PLT_FONT, PLT_TA_COLORWAY
+from openbb_terminal.qt_app.config.openbb_styles import PLT_COLORWAY, PLT_FONT
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
 
@@ -208,7 +208,7 @@ def short_interest_volume(
         fig.update_layout(
             margin=dict(l=10, r=0, t=60, b=50),
             template="plotly_dark",
-            colorway=PLT_TA_COLORWAY,
+            colorway=PLT_COLORWAY,
             title=f"<b>Price vs Short Volume Interest for {symbol}</b>",
             title_x=0.025,
             title_font_size=14,

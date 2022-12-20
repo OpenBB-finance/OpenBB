@@ -1,27 +1,27 @@
 """ Alpha Vantage View """
 __docformat__ = "numpy"
 
-from typing import List, Optional
 import logging
 import os
+from typing import List, Optional
 
-import matplotlib
+# import matplotlib
 import matplotlib.pyplot as plt
-from openbb_terminal.decorators import check_api_key
+
+# from openbb_terminal import config_plot as cfp
 from openbb_terminal.config_terminal import theme
-from openbb_terminal import config_plot as cfp
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import alphavantage_model
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
-)
-from openbb_terminal.rich_config import console
+)  # is_valid_axes_count,; plot_autoscale,
 from openbb_terminal.qt_app.plotly_helper import PlotlyFigureHelper
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+# pylint: disable=C0302,unused-argument
 
 
 @log_start_end(log=logger)
@@ -78,17 +78,16 @@ def realtime_performance_sector(
         #     theme.visualize_output()
 
         fig = PlotlyFigureHelper.create(
-            title="Real Time Performance (%) per Sector", yaxis=dict(side="right")
+            title="Real Time Performance (%) per Sector",
+            yaxis=dict(side="right", dtick=1, title="Sector"),
         )
 
         fig.add_bar(
             orientation="h",
             x=df_rtp.values,
             y=df_rtp.index,
-            name="Real Time Performance (%) per Sector",
             marker_color=colors,
         )
-        fig.update_layout(yaxis_title="Sector", yaxis=dict(dtick=1))
         fig.show()
 
     export_data(
@@ -131,19 +130,30 @@ def display_real_gdp(
     int_string = "Annual" if interval == "a" else "Quarterly"
     year_str = str(start_year) if interval == "a" else str(list(gdp["date"])[-1].year)
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    # if external_axes is None:
+    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    # elif is_valid_axes_count(external_axes, 1):
+    #     (ax,) = external_axes
+    # else:
+    #     return
 
-    ax.plot(gdp["date"], gdp["GDP"], marker="o")
-    ax.set_title(f"{int_string} US GDP ($B) from {year_str}")
-    ax.set_ylabel("US GDP ($B) ")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
+    # ax.plot(gdp["date"], gdp["GDP"], marker="o")
+    # ax.set_title(f"{int_string} US GDP ($B) from {year_str}")
+    # ax.set_ylabel("US GDP ($B) ")
+    # theme.style_primary_axis(ax)
+    # if external_axes is None:
+    #     theme.visualize_output()
+
+    fig = PlotlyFigureHelper.create(
+        title=f"{int_string} US GDP ($B) from {year_str}",
+        yaxis=dict(side="right", title="US GDP ($B) "),
+    )
+
+    fig.add_scatter(
+        x=gdp["date"],
+        y=gdp["GDP"],
+    )
+    fig.show()
 
     export_data(
         export,
@@ -184,19 +194,30 @@ def display_gdp_capita(
         return
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    # if not external_axes:
+    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    # elif is_valid_axes_count(external_axes, 1):
+    #     (ax,) = external_axes
+    # else:
+    #     return
 
-    ax.plot(gdp["date"], gdp["GDP"], marker="o")
-    ax.set_title(f"US GDP per Capita (Chained 2012 USD) from {start_year}")
-    ax.set_ylabel("US GDP (Chained 2012 USD) ")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
+    # ax.plot(gdp["date"], gdp["GDP"], marker="o")
+    # ax.set_title(f"US GDP per Capita (Chained 2012 USD) from {start_year}")
+    # ax.set_ylabel("US GDP (Chained 2012 USD) ")
+    # theme.style_primary_axis(ax)
+    # if external_axes is None:
+    #     theme.visualize_output()
+
+    fig = PlotlyFigureHelper.create(
+        title=f"US GDP per Capita (Chained 2012 USD) from {start_year}",
+        yaxis=dict(side="right", title="US GDP (Chained 2012 USD) "),
+    )
+
+    fig.add_scatter(
+        x=gdp["date"],
+        y=gdp["GDP"],
+    )
+    fig.show()
 
     export_data(
         export,
@@ -239,19 +260,30 @@ def display_inflation(
         console.print("Error getting data.  Check API Key")
         return
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    # if external_axes is None:
+    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    # elif is_valid_axes_count(external_axes, 1):
+    #     (ax,) = external_axes
+    # else:
+    #     return
 
-    ax.plot(inf["date"], inf["Inflation"], marker="o")
-    ax.set_title(f"US Inflation from {list(inf['date'])[-1].year}")
-    ax.set_ylabel("Inflation (%)")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
+    # ax.plot(inf["date"], inf["Inflation"], marker="o")
+    # ax.set_title(f"US Inflation from {list(inf['date'])[-1].year}")
+    # ax.set_ylabel("Inflation (%)")
+    # theme.style_primary_axis(ax)
+    # if external_axes is None:
+    #     theme.visualize_output()
+
+    fig = PlotlyFigureHelper.create(
+        title=f"US Inflation from {list(inf['date'])[-1].year}",
+        yaxis=dict(side="right", title="Inflation (%)"),
+    )
+
+    fig.add_scatter(
+        x=inf["date"],
+        y=inf["Inflation"],
+    )
+    fig.show()
 
     export_data(
         export,
@@ -300,19 +332,30 @@ def display_cpi(
     int_string = "Semi-Annual" if interval == "s" else "Monthly"
     year_str = str(list(cpi["date"])[-1].year)
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    # if external_axes is None:
+    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    # elif is_valid_axes_count(external_axes, 1):
+    #     (ax,) = external_axes
+    # else:
+    #     return
 
-    ax.plot(cpi["date"], cpi["CPI"], marker="o")
-    ax.set_title(f"{int_string} Consumer Price Index from {year_str}")
-    ax.set_ylabel("CPI")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
+    # ax.plot(cpi["date"], cpi["CPI"], marker="o")
+    # ax.set_title(f"{int_string} Consumer Price Index from {year_str}")
+    # ax.set_ylabel("CPI")
+    # theme.style_primary_axis(ax)
+    # if external_axes is None:
+    #     theme.visualize_output()
+
+    fig = PlotlyFigureHelper.create(
+        title=f"{int_string} Consumer Price Index from {year_str}",
+        yaxis=dict(side="right", title="CPI"),
+    )
+
+    fig.add_scatter(
+        x=cpi["date"],
+        y=cpi["CPI"],
+    )
+    fig.show()
 
     export_data(
         export,
@@ -359,19 +402,30 @@ def display_treasury_yield(
         console.print("Error getting data.  Check API Key")
         return
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    # if external_axes is None:
+    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    # elif is_valid_axes_count(external_axes, 1):
+    #     (ax,) = external_axes
+    # else:
+    #     return
 
-    ax.plot(yld["date"], yld["Yield"], marker="o")
-    ax.set_title(f"{d_maturity[maturity]} Treasury Yield")
-    ax.set_ylabel("Yield (%)")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
+    # ax.plot(yld["date"], yld["Yield"], marker="o")
+    # ax.set_title(f"{d_maturity[maturity]} Treasury Yield")
+    # ax.set_ylabel("Yield (%)")
+    # theme.style_primary_axis(ax)
+    # if external_axes is None:
+    #     theme.visualize_output()
+
+    fig = PlotlyFigureHelper.create(
+        title=f"{d_maturity[maturity]} Treasury Yield",
+        yaxis=dict(side="right", title="Yield (%)"),
+    )
+
+    fig.add_scatter(
+        x=yld["date"],
+        y=yld["Yield"],
+    )
+    fig.show()
 
     export_data(
         export,
@@ -416,19 +470,30 @@ def display_unemployment(
         console.print("Error getting data. Check API Key")
         return
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    # if external_axes is None:
+    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    # elif is_valid_axes_count(external_axes, 1):
+    #     (ax,) = external_axes
+    # else:
+    #     return
 
-    ax.plot(un["date"], un["unemp"], marker="o")
-    ax.set_title(f"US Unemployment from {start_year}")
-    ax.set_ylabel("US Unemployment (%)")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
+    # ax.plot(un["date"], un["unemp"], marker="o")
+    # ax.set_title(f"US Unemployment from {start_year}")
+    # ax.set_ylabel("US Unemployment (%)")
+    # theme.style_primary_axis(ax)
+    # if external_axes is None:
+    #     theme.visualize_output()
+
+    fig = PlotlyFigureHelper.create(
+        title=f"US Unemployment from {start_year}",
+        yaxis=dict(side="right", title="US Unemployment (%)"),
+    )
+
+    fig.add_scatter(
+        x=un["date"],
+        y=un["unemp"],
+    )
+    fig.show()
 
     export_data(
         export,

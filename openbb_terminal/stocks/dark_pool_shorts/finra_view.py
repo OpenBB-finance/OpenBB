@@ -18,7 +18,7 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
     plot_autoscale,
 )
-from openbb_terminal.qt_app.config.openbb_styles import PLT_FONT, PLT_TA_COLORWAY
+from openbb_terminal.qt_app.config.openbb_styles import PLT_COLORWAY, PLT_FONT
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import finra_model
 
@@ -154,7 +154,7 @@ def darkpool_ats_otc(
 
     fig.update_layout(
         margin=dict(l=0, r=0, t=10, b=50),
-        colorway=PLT_TA_COLORWAY,
+        colorway=PLT_COLORWAY,
         template="plotly_dark",
         title=f"<b>Dark Pools (ATS) vs OTC (Non-ATS) Data for {symbol}</b>",
         title_x=0.025,
@@ -192,10 +192,11 @@ def darkpool_ats_otc(
         spikedistance=1,
         hoverdistance=1,
     )
-    fig.show()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dpotc_ats", ats)
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dpotc_otc", otc)
+
+    return fig.show()
 
 
 @log_start_end(log=logger)

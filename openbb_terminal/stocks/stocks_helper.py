@@ -24,6 +24,7 @@ from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.qt_app.plotly_helper import BACKEND
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import
@@ -709,7 +710,7 @@ def display_candle(
                     rangebreaks=[dict(bounds=["sat", "mon"]), dict(values=mkt_holidays)]
                 )
 
-            fig.show()
+            BACKEND.send_figure(fig)
     else:
         return data
 

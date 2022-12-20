@@ -1,0 +1,291 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        /* latin */
+        @font-face {
+            font-family: 'Arial Black';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Arial Black'), local('Arial-Black'), url(https://fonts.gstatic.com/l/font?kit=8AttGsyyIJeeQk-K7cT5V6nUqRo&skey=f5c444da86865f17&v=v18) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+
+        html {
+            font-size: 62.5%;
+            font-family: 'Fira Code', monospace, 'Arial Black';
+        }
+
+        .plotly-graph-div {
+            width: 100%;
+            height: 100%;
+            min-width: 750px;
+            min-height: 565px;
+            font-size: 12px;
+            font-size: 1.2rem;
+            font-family: 'Fira Code', monospace, 'Arial Black';
+        }
+
+        body {
+            font-family: 'Fira Code', monospace, 'Arial Black';
+            font-size: 12px;
+            font-size: 1.2rem;
+            color: #ffffff;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div>
+        <script type="text/javascript">window.PlotlyConfig = { MathJaxConfig: 'local' };</script>
+        <div id="openbb_chart" class="plotly-graph-div"></div>
+    </div>
+
+    <script type="text/javascript">
+        CHART_DIV = document.getElementById('openbb_chart');
+
+        var plotly_figure = "{{figure_json}}";
+
+        function filename(data) {
+            if (plotly_figure) {
+                var title = 'plots';
+            }
+            if (data.layout.title != undefined) {
+                title = data.layout.title.text;
+            }
+            data.layout.dragmode = 'pan';
+
+            if (data.layout.template.layout.mapbox.style == "dark") {
+                var style = document.createElement('style');
+                style.type = 'text/css';
+                style.innerHTML = `
+                .updatemenu-item-rect {
+                    fill: #000000 !important;
+                }
+                .updatemenu-item-rect:hover {
+                    fill: #00ACFF !important;
+                    background-color: #000000 !important;
+
+                }
+                .updatemenu-item-text:hover {
+                    fill: #d1030d !important;
+                }
+                `
+                document.getElementsByTagName('head')[0].appendChild(style);
+                document.body.style.backgroundColor = "#000000";
+                data.layout.template.layout.paper_bgcolor = "#000000";
+                data.layout.template.layout.plot_bgcolor = "#000000";
+            }
+
+            var filename = 'openbb_' + title.replace(/<b>|<\/b>/g, '').replace(/ /g, '_');
+
+            var date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+            var time = new Date().toISOString().slice(11, 19).replace(/:/g, '');
+            var dateTime = date + '_' + time;
+
+            return filename + '_' + dateTime;
+        }
+
+        function main() {
+
+            if (plotly_figure) {
+                var graphs = plotly_figure;
+
+                if (!('font' in graphs.layout)) {
+                    graphs.layout['font'] = {
+                        'family': 'Fira Code, monospace, Arial Black',
+                        'size': 18,
+                    }
+                }
+                if (!('annotations' in graphs.layout)) {
+                    graphs.layout['annotations'] = []
+                }
+                if (!('height' in graphs.layout)) {
+                    graphs.layout['height'] = 586
+                }
+                if (!('width' in graphs.layout)) {
+                    graphs.layout['width'] = 800
+                }
+
+                if (!('margin' in graphs.layout)) {
+                    graphs.layout['margin'] = {
+                        'l': 0,
+                        'r': 0,
+                        'b': 0,
+                        't': 0,
+                        'pad': 2
+                    }
+                }
+                var config = {
+                    "scrollZoom": true,
+                    "responsive": true,
+                    'displaylogo': false,
+                    'toImageButtonOptions': {
+                        'format': 'png',
+                        'filename': filename(graphs),
+                        'height': CHART_DIV.clientHeight,
+                        'width': CHART_DIV.clientWidth,
+                    },
+                    'modeBarButtonsToAdd': [
+                        'drawline',
+                        'drawopenpath',
+                        'drawclosedpath',
+                        'drawcircle',
+                        'drawrect',
+                        'eraseshape',
+                        {
+                            'name': 'Add text',
+                            'icon': Plotly.Icons.pencil,
+                            'click': function (gd) {
+                                var text = prompt("Enter text, then click on the graph to add it:");
+                                var clickHandler = function (eventData) {
+                                    var x = eventData.points[0].x;
+                                    var y = eventData.points[0].y;
+                                    var annotation = {
+                                        x: x,
+                                        y: y,
+                                        text: text,
+                                        showarrow: false,
+                                        font: {
+                                            family: 'Fira Code, monospace, Arial Black',
+                                            size: 18,
+                                            color: '#ffffff'
+                                        }
+                                    };
+                                    Plotly.relayout(gd, 'annotations[' + gd.layout.annotations.length + ']', annotation);
+                                    gd.removeAllListeners('plotly_click');
+                                    Plotly.relayout(gd, 'dragmode', 'pan');
+                                };
+                                gd.on('plotly_click', clickHandler);
+                            }
+                        },
+                        {
+                            'name': 'Download data',
+                            'icon': Plotly.Icons.disk,
+                            'click': function (gd) {
+                                var data = gd.data;
+
+                                var xaxis = gd.layout.xaxis;
+                                var yaxis = gd.layout.yaxis;
+
+                                if (xaxis && xaxis.title && xaxis.title.text) {
+                                    xaxis = xaxis.title.text;
+                                } else {
+                                    xaxis = 'x';
+                                }
+
+                                if (yaxis && yaxis.title && yaxis.title.text) {
+                                    yaxis = yaxis.title.text;
+                                } else {
+                                    yaxis = 'y';
+                                }
+
+
+                                var csv = xaxis + ',' + yaxis + '\n';
+                                data.forEach(function (trace) {
+                                    trace.x.forEach(function (x, i) {
+                                        csv += x + ',' + trace.y[i] + '\n';
+                                    });
+                                });
+
+                                var filename = filename(graphs).replace('plots', 'data') + '.csv';
+                                var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                                if (navigator.msSaveBlob) {
+                                    navigator.msSaveBlob(blob, filename);
+                                } else {
+                                    var link = document.createElement("a");
+                                    if (link.download !== undefined) {
+                                        var url = URL.createObjectURL(blob);
+                                        link.setAttribute("href", url);
+                                        link.setAttribute("download", filename);
+                                        link.style.visibility = 'hidden';
+                                        document.body.appendChild(link);
+                                        link.click();
+                                        document.body.removeChild(link);
+                                    }
+                                }
+                            }
+                        },
+
+                    ],
+                };
+
+                var font_size = graphs.layout.font.size;
+                var old_annotations = graphs.layout.annotations;
+                window.addEventListener('resize', function () {
+                    var new_annotations = [];
+                    if (graphs.layout.annotations != undefined) {
+                        graphs.layout.annotations.forEach(function (annotation) {
+                            if (!('font' in annotation) || !('size' in annotation.font)) {
+                                annotation['font'] = {
+                                    'family': 'Fira Code, monospace, Arial Black',
+                                    'size': 18,
+                                }
+                            }
+                            annotation.font.size = Math.min(CHART_DIV.clientWidth / 50, old_annotations[graphs.layout.annotations.indexOf(annotation)].font.size);
+                            new_annotations.push(annotation);
+                        });
+                    }
+
+                    Plotly.relayout(CHART_DIV, {
+                        'annotations': new_annotations,
+                        'font.size': Math.min(CHART_DIV.clientWidth / 50, font_size),
+                        'height': CHART_DIV.clientHeight,
+                        'width': CHART_DIV.clientWidth,
+                    });
+
+                    config.toImageButtonOptions.height = CHART_DIV.clientHeight;
+                    config.toImageButtonOptions.width = CHART_DIV.clientWidth;
+
+                    Plotly.setPlotConfig(config);
+                    Plotly.react(CHART_DIV, graphs.data, graphs.layout, config);
+
+                });
+
+                graphs.layout.autosize = true;
+                delete graphs.layout.height;
+                delete graphs.layout.width;
+
+                if (graphs.layout.annotations != undefined) {
+                    graphs.layout.annotations.forEach(function (annotation) {
+                        if (!('font' in annotation) || !('size' in annotation.font)) {
+                            annotation['font'] = {
+                                'family': 'Fira Code, monospace, Arial Black',
+                                'size': 18,
+                            }
+                        }
+                        annotation.font.size = Math.min(CHART_DIV.clientWidth / 50, annotation.font.size);
+                    });
+                }
+                graphs.layout.margin = {
+                    l: 60,
+                    r: 110,
+                    b: 90,
+                    t: 50,
+                    pad: 20
+                };
+                graphs.layout.font.size = Math.min(CHART_DIV.clientWidth / 50, font_size);
+
+                Plotly.setPlotConfig(config);
+                Plotly.newPlot(CHART_DIV, graphs, { responsive: true });
+
+            } else {
+                CHART_DIV.innerHTML = '<h1>NO DATA</h1>';
+            }
+        }
+        main();
+
+
+    </script>
+
+
+    </div>
+</body>
+
+</html>

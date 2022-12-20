@@ -5,7 +5,8 @@ from typing import Any, Callable, Literal, Union
 
 from rich.console import Console
 
-from openbb_terminal.qt_app.backend import QT_BACKEND
+# from openbb_terminal.qt_app.backend import QT_BACKEND
+from openbb_terminal.qt_app.plotly_helper import BACKEND
 
 console = Console()
 
@@ -113,8 +114,12 @@ class Show:
     def show(self, *args, **kwargs) -> Union[str, None]:
         """Show the figure."""
         try:
+            # if in terminal pro, we just return the json
+            if os.environ.get("TERMINAL_PRO", False):
+                return self.to_json()
+
             # We send the figure to the backend to be displayed
-            QT_BACKEND.send_fig(self)
+            BACKEND.send_figure(self)
         except Exception:
             # If the backend fails, we just show the figure normally
             # This is a very rare case, but it's better to have a fallback
@@ -142,5 +147,3 @@ if not JUPYTER_NOTEBOOK and sys.stdin.isatty():
         if not hasattr(module, "Figure") or not issubclass(module.Figure, Figure):
             continue
         module.Figure.show = Show.show
-
-    QT_BACKEND.start()

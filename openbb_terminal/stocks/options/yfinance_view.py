@@ -4,7 +4,8 @@ __docformat__ = "numpy"
 import logging
 import os
 import re
-from bisect import bisect_left
+
+# from bisect import bisect_left
 from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Optional
 
@@ -13,7 +14,8 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import numpy as np
 import pandas as pd
-import seaborn as sns
+
+# import seaborn as sns
 import yfinance as yf
 from openpyxl import Workbook
 from scipy.stats import binom
@@ -26,7 +28,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     excel_columns,
     export_data,
-    get_closing_price,
     get_rf,
     is_valid_axes_count,
     plot_autoscale,
@@ -41,7 +42,7 @@ from openbb_terminal.stocks.options.yfinance_model import (
     get_price,
 )
 
-# pylint: disable=C0302
+# pylint: disable=C0302,unused-argument
 
 
 logger = logging.getLogger(__name__)
@@ -270,8 +271,7 @@ def plot_oi(
     op_helpers.export_yf_options(export, options, "oi_yf")
     calls = options.calls
     puts = options.puts
-    # current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
-    current_price = get_closing_price(symbol, 7).iloc[-1]["Close"]
+    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
 
     if min_sp == -1:
         min_strike = 0.75 * current_price
@@ -381,8 +381,7 @@ def plot_vol(
     options = yfinance_model.get_vol(symbol, expiry)
     calls = options.calls
     puts = options.puts
-    # current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
-    current_price = get_closing_price(symbol, 7).iloc[-1]["Close"]
+    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
 
     if min_sp == -1:
         min_strike = 0.75 * current_price
@@ -465,8 +464,7 @@ def plot_volume_open_interest(
     options = yfinance_model.get_volume_open_interest(symbol, expiry)
     calls = options.calls
     puts = options.puts
-    # current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
-    current_price = get_closing_price(symbol, 7).iloc[-1]["Close"]
+    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
 
     # Process Calls Data
     df_calls = calls.pivot_table(
@@ -564,94 +562,132 @@ def plot_volume_open_interest(
         )
         return
 
-    # Initialize the matplotlib figure
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    # # Initialize the matplotlib figure
+    # if external_axes is None:
+    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    # elif is_valid_axes_count(external_axes, 1):
+    #     (ax,) = external_axes
+    # else:
+    #     return
 
-    # make x axis symmetric
-    axis_origin = max(abs(max(df_puts["oi+v"])), abs(max(df_calls["oi+v"])))
-    ax.set_xlim(-axis_origin, +axis_origin)
+    # # make x axis symmetric
+    # axis_origin = max(abs(max(df_puts["oi+v"])), abs(max(df_calls["oi+v"])))
+    # ax.set_xlim(-axis_origin, +axis_origin)
 
-    g = sns.barplot(
-        x="oi+v",
-        y="strike",
-        data=df_calls,
-        label="Calls: Open Interest",
-        color="lightgreen",
-        orient="h",
+    # g = sns.barplot(
+    #     x="oi+v",
+    #     y="strike",
+    #     data=df_calls,
+    #     label="Calls: Open Interest",
+    #     color="lightgreen",
+    #     orient="h",
+    # )
+
+    # g = sns.barplot(
+    #     x="volume",
+    #     y="strike",
+    #     data=df_calls,
+    #     label="Calls: Volume",
+    #     color="green",
+    #     orient="h",
+    # )
+
+    # g = sns.barplot(
+    #     x="oi+v",
+    #     y="strike",
+    #     data=df_puts,
+    #     label="Puts: Open Interest",
+    #     color="pink",
+    #     orient="h",
+    # )
+
+    # g = sns.barplot(
+    #     x="volume",
+    #     y="strike",
+    #     data=df_puts,
+    #     label="Puts: Volume",
+    #     color="red",
+    #     orient="h",
+    # )
+
+    # # draw spot line
+    # s = [float(strike.get_text()) for strike in ax.get_yticklabels()]
+    # spot_index = bisect_left(s, current_price)  # find where the spot is on the graph
+    # spot_line = ax.axhline(spot_index, ls="--", alpha=0.3)
+
+    # # draw max pain line
+    # max_pain_index = bisect_left(s, max_pain)
+    # max_pain_line = ax.axhline(max_pain_index, ls="-", alpha=0.3, color="red")
+    # max_pain_line.set_linewidth(5)
+
+    # # format ticklabels without - for puts
+    # g.set_xticks(g.get_xticks())
+    # xlabels = [f"{x:,.0f}".replace("-", "") for x in g.get_xticks()]
+    # g.set_xticklabels(xlabels)
+
+    # ax.set_title(
+    #     f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)"
+    # )
+    # ax.invert_yaxis()
+
+    # handles, _ = ax.get_legend_handles_labels()
+    # handles.append(spot_line)
+    # handles.append(max_pain_line)
+
+    # # create legend labels + add to graph
+    # labels = [
+    #     "Calls open interest",
+    #     "Calls volume ",
+    #     "Puts open interest",
+    #     "Puts volume",
+    #     "Current stock price",
+    #     f"Max pain = {max_pain}",
+    # ]
+
+    # ax.legend(fontsize="xx-small", handles=handles[:], labels=labels, loc="lower left")
+    # sns.despine(left=True, bottom=True)
+    # theme.style_primary_axis(ax)
+
+    # if external_axes is None:
+    #     theme.visualize_output()
+
+    fig = PlotlyFigureHelper.create(
+        title=f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)",
+        xaxis_title="Volume",
+        yaxis_title="Strike Price",
     )
-
-    g = sns.barplot(
-        x="volume",
-        y="strike",
-        data=df_calls,
-        label="Calls: Volume",
-        color="green",
-        orient="h",
+    fig.add_bar(
+        x=df_calls["oi+v"],
+        y=df_calls["strike"],
+        name="Calls: Open Interest",
+        orientation="h",
+        marker_color="lightgreen",
     )
-
-    g = sns.barplot(
-        x="oi+v",
-        y="strike",
-        data=df_puts,
-        label="Puts: Open Interest",
-        color="pink",
-        orient="h",
+    fig.add_bar(
+        x=df_calls["volume"],
+        y=df_calls["strike"],
+        name="Calls: Volume",
+        orientation="h",
+        marker_color="green",
     )
-
-    g = sns.barplot(
-        x="volume",
-        y="strike",
-        data=df_puts,
-        label="Puts: Volume",
-        color="red",
-        orient="h",
+    fig.add_bar(
+        x=df_puts["oi+v"],
+        y=df_puts["strike"],
+        name="Puts: Open Interest",
+        orientation="h",
+        marker_color="pink",
     )
-
-    # draw spot line
-    s = [float(strike.get_text()) for strike in ax.get_yticklabels()]
-    spot_index = bisect_left(s, current_price)  # find where the spot is on the graph
-    spot_line = ax.axhline(spot_index, ls="--", alpha=0.3)
-
-    # draw max pain line
-    max_pain_index = bisect_left(s, max_pain)
-    max_pain_line = ax.axhline(max_pain_index, ls="-", alpha=0.3, color="red")
-    max_pain_line.set_linewidth(5)
-
-    # format ticklabels without - for puts
-    g.set_xticks(g.get_xticks())
-    xlabels = [f"{x:,.0f}".replace("-", "") for x in g.get_xticks()]
-    g.set_xticklabels(xlabels)
-
-    ax.set_title(
-        f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)"
+    fig.add_bar(
+        x=df_puts["volume"],
+        y=df_puts["strike"],
+        name="Puts: Volume",
+        orientation="h",
+        marker_color="red",
     )
-    ax.invert_yaxis()
-
-    handles, _ = ax.get_legend_handles_labels()
-    handles.append(spot_line)
-    handles.append(max_pain_line)
-
-    # create legend labels + add to graph
-    labels = [
-        "Calls open interest",
-        "Calls volume ",
-        "Puts open interest",
-        "Puts volume",
-        "Current stock price",
-        f"Max pain = {max_pain}",
-    ]
-
-    ax.legend(fontsize="xx-small", handles=handles[:], labels=labels, loc="lower left")
-    sns.despine(left=True, bottom=True)
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_hline(y=current_price, line_dash="dash", line_width=1, line_color="black")
+    fig.add_hline(y=max_pain, line_dash="solid", line_width=5, line_color="red")
+    fig.update_layout(barmode="stack")
+    fig.show()
 
     op_helpers.export_yf_options(export, options, "voi_yf")
 
@@ -758,6 +794,14 @@ def plot_plot(
     elif varis[y]["format"]:
         ax.get_yaxis().set_major_formatter(varis[y]["format"])
     theme.style_primary_axis(ax)
+
+    fig = PlotlyFigureHelper.create(
+        title=f"{varis[y]['label']} vs. {varis[x]['label']} for {symbol} {option} on {expiry}",
+        xaxis_title=varis[x]["label"],
+        yaxis_title=varis[y]["label"],
+    )
+    fig.add_scatter(x=x_data, y=y_data, mode="lines+markers")
+    fig.show()
 
     if external_axes is None:
         theme.visualize_output()
