@@ -387,8 +387,8 @@ class CoinbaseAdvController(BaseController):
             "--date_time",
             dest="end_time",
             type=valid_datetime,
-            help="Order valid until this Date-Time. Format 'DD/MM/YYYY_HH:MM_AM/PM'"
-            " important: use single quotes and no spaces (_)",
+            help="Order valid until this Date-Time. Format DD-MM-YYYY_HH:MM_AM/PM"
+            " important: no spaces (_)",
         )
 
         if other_args and other_args[0][0] != "-":
@@ -477,7 +477,7 @@ class CoinbaseAdvController(BaseController):
             "--date_time",
             dest="end_time",
             type=valid_datetime,
-            help="Order valid until this Date-Time. Format 'DD/MM/YYYY_HH:MM_AM/PM' "
+            help="Order valid until this Date-Time. Format DD-MM-YYYY_HH:MM_AM/PM "
             "important: no spaces use underscore (_)",
         )
 
