@@ -23,7 +23,11 @@ from openbb_terminal.terminal_controller import (
     replace_dynamic,
     obbff,
 )
-from openbb_terminal.terminal_helper import is_reset, suppress_stdout
+from openbb_terminal.terminal_helper import (
+    is_packaged_application,
+    is_reset,
+    suppress_stdout,
+)
 
 logger = logging.getLogger(__name__)
 special_arguments_values = [
@@ -378,7 +382,7 @@ def run_test_files(
 
         start = time.time()
 
-        if verbose:
+        if verbose or is_packaged_application():
             console.print(
                 f"* Running {n} script(s) sequentially...\n",
                 style="bold",
@@ -420,6 +424,7 @@ def run_test_files(
                         chunksize=chunksize,
                     )
                 ):
+
                     file_short_name, exception = result
                     if exception:
                         n_failures += 1
@@ -663,6 +668,13 @@ def parse_args_and_run():
         ns_parser.path = [u for u in unknown_args if u[0] != "-"]
 
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
+
+    if is_packaged_application():
+        console.print(
+            "WARNING: packaged application and multiprocessing are still not compatible. "
+            "Running sequentially...\n",
+            style="yellow",
+        )
 
     if ns_parser.verbose and ns_parser.subprocesses:
         console.print(
