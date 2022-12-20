@@ -71,6 +71,8 @@ added_files = [
         os.path.join("debugpy", "_vendored"),
     ),
     (".env", "."),
+    (os.path.join(pathex, "blib2to3", "Grammar.txt"), "blib2to3"),
+    (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
 ]
 
 # Python libraries that are explicitly pulled into the bundle
