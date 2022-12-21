@@ -1,11 +1,11 @@
                               Holder     Shares Date Reported   Stake     Value
-0         Vanguard Group, Inc. (The)  128.605 M    2022-03-30  8.30 %  11.598 B
-1                     Blackrock Inc.   96.512 M    2022-03-30  6.23 %   8.703 B
-2            Capital World Investors   80.338 M    2022-03-30  5.18 %   7.245 B
-3    Capital International Investors   75.781 M    2022-03-30  4.89 %   6.834 B
-4  Capital Research Global Investors   65.872 M    2022-03-30  4.25 %   5.940 B
-5           State Street Corporation   58.934 M    2022-03-30  3.80 %   5.315 B
-6                     Morgan Stanley   49.675 M    2022-03-30  3.20 %   4.480 B
-7                   GQG Partners LLC   29.967 M    2022-03-30  1.93 %   2.702 B
-8      Geode Capital Management, LLC   28.199 M    2022-03-30  1.82 %   2.543 B
-9          JP Morgan Chase & Company   25.222 M    2022-03-30  1.63 %   2.275 B
+0         Vanguard Group, Inc. (The)  132.481 M    2022-09-29  8.55 %  13.418 B
+1                     Blackrock Inc.  100.951 M    2022-09-29  6.51 %  10.224 B
+2            Capital World Investors   84.894 M    2022-09-29  5.48 %   8.598 B
+3    Capital International Investors   82.685 M    2022-09-29  5.33 %   8.374 B
+4  Capital Research Global Investors   63.077 M    2022-09-29  4.07 %   6.388 B
+5           State Street Corporation   57.778 M    2022-09-29  3.73 %   5.852 B
+6                     Morgan Stanley   43.101 M    2022-09-29  2.78 %   4.365 B
+7      Price (T.Rowe) Associates Inc   35.468 M    2022-09-29  2.29 %   3.592 B
+8      Geode Capital Management, LLC   29.846 M    2022-09-29  1.93 %   3.023 B
+9          JP Morgan Chase & Company   26.098 M    2022-09-29  1.68 %   2.643 B
