@@ -123,6 +123,10 @@ the tests.
     ```
 
     *This specific example runs all of the stocks integration tests. One can use this same format for different tests.*
+    
+    ```zsh
+    python terminal.py -t openbb_terminal/core/integration_tests/scripts/forex
+    ```
 
 - Run one integration test:
 
