@@ -212,3 +212,59 @@ The console report has 3 sections: progress, failures and summary.
 
 - Summary
     1. Displays tests failed with the last command called and how long they took to run
+
+- Example
+
+```zsh
+============================ integration test session starts =============================
+Collecting scripts from: /Users/diogosousa/OpenBBTerminal/openbb_terminal/core/integration_tests/scripts
+
+
+* Collected 7 script(s)...
+* Skipping 0 script(s)...
+* Running 7 script(s) in 7 parallel subprocess(es)...
+
+forex/test_forex_av.openbb                                                          [ 14%]
+forex/test_forex_base.openbb                                                        [ 29%]
+forex/test_forex_load.openbb                                                        [ 43%]
+forex/test_forex_oanda.openbb                                                       [ 57%]
+forex/test_forex_oanda_base.openbb                                                  [ 71%]
+forex/test_forex_qa.openbb                                                          [ 86%]
+forex/test_forex_ta.openbb                                                          [100%]
+
+======================================== FAILURES ========================================
+------------------------------- forex/test_forex_qa.openbb -------------------------------
+
+Traceback:
+  File "/Users/username/OpenBBTerminal/openbb_terminal/core/integration_tests/integration_controller.py", line 299, in run_test
+    run_scripts(
+  File "/Users/username/OpenBBTerminal/openbb_terminal/core/integration_tests/integration_controller.py", line 272, in run_scripts
+    terminal(file_cmds, test_mode=True)
+  File "/Users/username/OpenBBTerminal/openbb_terminal/terminal_controller.py", line 905, in terminal
+    t_controller.queue = t_controller.switch(an_input)
+  File "/Users/username/OpenBBTerminal/openbb_terminal/decorators.py", line 64, in wrapper
+    value = func(*args, **kwargs)
+  File "/Users/username/OpenBBTerminal/openbb_terminal/parent_classes.py", line 363, in switch
+    getattr(
+  File "/Users/username/OpenBBTerminal/openbb_terminal/terminal_controller.py", line 401, in call_forex
+    self.queue = self.load_class(ForexController, self.queue)
+  File "/Users/username/OpenBBTerminal/openbb_terminal/parent_classes.py", line 219, in load_class
+    return class_ins(*args, **kwargs).menu()
+  File "/Users/username/OpenBBTerminal/openbb_terminal/parent_classes.py", line 934, in menu
+    self.queue = self.switch(an_input)
+  File "/Users/username/OpenBBTerminal/openbb_terminal/decorators.py", line 64, in wrapper
+    value = func(*args, **kwargs)
+  File "/Users/username/OpenBBTerminal/openbb_terminal/parent_classes.py", line 363, in switch
+    getattr(
+  File "/Users/username/OpenBBTerminal/openbb_terminal/decorators.py", line 64, in wrapper
+    value = func(*args, **kwargs)
+  File "/Users/username/OpenBBTerminal/openbb_terminal/forex/forex_controller.py", line 434, in call_qa
+    1 / 0
+Exception type: ZeroDivisionError
+Detail: division by zero
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+================================ integration test summary ================================
+FAILED forex/test_forex_qa.openbb -> command: qa
+============================== 1 failed, 6 passed in 8.88s ===============================
+```
