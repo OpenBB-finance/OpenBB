@@ -1,22 +1,25 @@
-            shares  weight  fund direction    Close ($)  Total ($1M)
-Date                                                                
-2021-11-04   26203  0.1466  ARKK      Sell          NaN          NaN
-2021-11-03   17787  0.0961  ARKK      Sell  1213.859985    21.590928
-2021-11-02   80100  0.4262  ARKK      Sell  1172.000000    93.877200
-2021-10-28   49498  0.2489  ARKK      Sell  1077.040039    53.311328
-2021-10-27   38984  0.1915  ARKK      Sell  1037.859985    40.459934
-2021-10-26   20600  0.8118  ARKQ      Sell  1018.429993    20.979658
-2021-10-26  101200  0.4745  ARKK      Sell  1018.429993   103.065115
-2021-10-22   47484  0.1991  ARKK      Sell   909.679993    43.195245
-2021-10-22   32870  0.5366  ARKW      Sell   909.679993    29.901181
-2021-10-21   35520  0.1481  ARKK      Sell   894.000000    31.754880
-2021-10-21    4422  0.1516  ARKQ      Sell   894.000000     3.953268
-2021-10-21    6472  0.1047  ARKW      Sell   894.000000     5.785968
-2021-10-18    2977  0.1008  ARKQ      Sell   870.109985     2.590317
-2021-10-06   63135  0.2500  ARKK      Sell   782.750000    49.418921
-2021-10-04   31008  0.9799  ARKQ      Sell   781.530029    24.233683
-2021-10-04   30352  0.4704  ARKW      Sell   781.530029    23.720999
-2021-09-29   16127  0.2444  ARKW      Sell   781.309998    12.600186
-2021-09-28   27021  0.3870  ARKW      Sell   777.559998    21.010449
-2021-09-28   44045  1.3108  ARKQ      Sell   777.559998    34.247630
-2021-09-28  269552  0.9942  ARKK      Sell   777.559998   209.592852
+
+1 Failed download:
+- TSLA: No data found for this date range, symbol may be delisted
+            shares  weight  fund direction  Close ($)  Total ($1M)
+Date                                                              
+2021-11-04   26203  0.1466  ARKK      Sell        NaN          NaN
+2021-11-03   17787  0.0961  ARKK      Sell        NaN          NaN
+2021-11-02   80100  0.4262  ARKK      Sell        NaN          NaN
+2021-10-28   49498  0.2489  ARKK      Sell        NaN          NaN
+2021-10-27   38984  0.1915  ARKK      Sell        NaN          NaN
+2021-10-26  101200  0.4745  ARKK      Sell        NaN          NaN
+2021-10-26   20600  0.8118  ARKQ      Sell        NaN          NaN
+2021-10-22   32870  0.5366  ARKW      Sell        NaN          NaN
+2021-10-22   47484  0.1991  ARKK      Sell        NaN          NaN
+2021-10-21    4422  0.1516  ARKQ      Sell        NaN          NaN
+2021-10-21   35520  0.1481  ARKK      Sell        NaN          NaN
+2021-10-21    6472  0.1047  ARKW      Sell        NaN          NaN
+2021-10-18    2977  0.1008  ARKQ      Sell        NaN          NaN
+2021-10-06   63135  0.2500  ARKK      Sell        NaN          NaN
+2021-10-04   30352  0.4704  ARKW      Sell        NaN          NaN
+2021-10-04   31008  0.9799  ARKQ      Sell        NaN          NaN
+2021-09-29   16127  0.2444  ARKW      Sell        NaN          NaN
+2021-09-28  269552  0.9942  ARKK      Sell        NaN          NaN
+2021-09-28   44045  1.3108  ARKQ      Sell        NaN          NaN
+2021-09-28   27021  0.3870  ARKW      Sell        NaN          NaN
