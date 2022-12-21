@@ -172,42 +172,37 @@ the tests.
     python terminal.py -t forex --subproc 7 -v
     ```
 
-If there are any test failures a console report will be generated with detailed information on the failures.
-
 ### Installer Terminal
 
 Integration tests can also be used on installers, which is a packaged version of the conda terminal.
 More information on how to build an installer can be found [here](/build/README.md).
+To run the tests on installers you can use the same syntax as above, just substitute `python termina.py` with the full path to OpenBBTerminal executable (not the shortcut!). See the examples below.
 
 - Run all integration tests:
 
     ```zsh
-    /Full/Path/To/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Full/Path/To/OpenBBTerminal/OpenBBTerminal/scripts/*.openbb -t
+    /Full/Path/To/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t
     ```
 
 - Run some integration tests:
 
     ```zsh
-    /Full/Path/To/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Full/Path/To/OpenBBTerminal/OpenBBTerminal/scripts/test_stocks_*.openbb -t
+    /Full/Path/To/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t forex stocks
     ```
 
 - Run one integration test:
 
     ```zsh
-    /Full/Path/To/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Full/Path/To/OpenBBTerminal/OpenBBTerminal/scripts/test_alt_covid.openbb -t
+    /Full/Path/To/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t alternative/test_alt_covid.openbb
     ```
 
-The `-t` argument runs the integration tests in 'test' mode. It is effectively a 'quiet' mode where one
-doesn't see the terminal in action. If one were to remove this argument, then the terminal and subsequent
-steps will be seen running in real time.
-
-## 4. Console report
+## 4. Test report
 
 The console report has 3 sections: progress, failures and summary.
 
 - Progress
-    1. Shows the tests collected and skipped in the current session.
-    2. Informs if tests are running in parallel or sequentially.
+    1. Shows the tests collected and skipped in the current session
+    2. Informs if tests are running in parallel or sequentially
     3. Displays the result of tests already finished
 
 - Failures
