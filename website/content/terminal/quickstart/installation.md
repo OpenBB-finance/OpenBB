@@ -142,7 +142,7 @@ Execute this commands:
 ```bash
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
-docker compose run poetry
+docker compose run openbb
 ```
 
 This will download and run the file: `docker-compose.yaml`
