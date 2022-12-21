@@ -216,6 +216,7 @@ The console report has 3 sections: progress, failures and summary.
 - Example
 
 ```zsh
+(obb) % python terminal.py -t forex
 ============================ integration test session starts =============================
 Collecting scripts from: /Users/username/OpenBBTerminal/openbb_terminal/core/integration_tests/scripts
 
