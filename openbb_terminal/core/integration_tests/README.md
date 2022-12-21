@@ -217,7 +217,7 @@ The console report has 3 sections: progress, failures and summary.
 
 ```zsh
 ============================ integration test session starts =============================
-Collecting scripts from: /Users/diogosousa/OpenBBTerminal/openbb_terminal/core/integration_tests/scripts
+Collecting scripts from: /Users/username/OpenBBTerminal/openbb_terminal/core/integration_tests/scripts
 
 
 * Collected 7 script(s)...
