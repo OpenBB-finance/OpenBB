@@ -166,10 +166,10 @@ the tests.
     python terminal.py -t -v
     ```
 
-- In verbose mode the tests are run sequentially, by default. This avoids mixing the outputs from several scripts in the console. If you still want to see the outputs during a parallel run, just specify the number of subprocesses you wish to launch, it will force multiprocessing. 
+- In verbose mode the tests are run sequentially, by default. This avoids mixing the outputs from several scripts in the console. If you still want to see the outputs during a parallel run, just specify the number of subprocesses you wish to launch with verbose flag, it will force multiprocessing. 
 
     ```zsh
-    python terminal.py -t forex -v --subproc 7
+    python terminal.py -t forex --subproc 7 -v
     ```
 
 If there are any test failures a console report will be generated with detailed information on the failures.
