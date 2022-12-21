@@ -1,23 +1,23 @@
-                                                                           2022-01-28 2022-04-29
-Interest Expense Operating                                                      694 M      691 M
-Preferred Stock Dividends And Other Adjustments                                     0          0
-Income Tax Expense Benefit                                                    6.611 B    5.129 B
-Income Loss From Continuing Operations Before Tax                            41.241 B   30.139 B
-Net Income Loss Available To Common Stockholders Basic                       34.630 B   25.010 B
-Revenues                                                                    123.945 B   97.278 B
-Nonoperating Income Loss                                                       -247 M      160 M
+                                                                           2022-04-29 2022-07-29
+Income Loss From Continuing Operations After Tax                             25.010 B   19.442 B
+Costs And Expenses                                                           67.139 B   59.893 B
+Basic Earnings Per Share                                                        1.540      1.200
 Participating Securities Distributed And Undistributed Earnings Loss Basic          0          0
-Gross Profit                                                                 54.243 B   42.559 B
-Net Income Loss                                                              34.630 B   25.010 B
-Operating Expenses                                                           12.755 B   12.580 B
-Cost Of Revenue                                                              69.702 B   54.719 B
-Basic Earnings Per Share                                                        2.110      1.540
-Operating Income Loss                                                        41.488 B   29.979 B
-Net Income Loss Attributable To Parent                                       34.630 B   25.010 B
-Costs And Expenses                                                           82.704 B   67.139 B
+Net Income Loss                                                              25.010 B   19.442 B
+Gross Profit                                                                 42.559 B   35.885 B
+Net Income Loss Available To Common Stockholders Basic                       25.010 B   19.442 B
+Benefits Costs Expenses                                                      67.139 B   59.893 B
+Cost Of Revenue                                                              54.719 B   47.074 B
+Preferred Stock Dividends And Other Adjustments                                     0          0
+Operating Income Loss                                                        29.979 B   23.076 B
+Interest Expense Operating                                                      691 M      719 M
+Net Income Loss Attributable To Parent                                       25.010 B   19.442 B
+Income Loss From Continuing Operations Before Tax                            30.139 B   23.066 B
+Nonoperating Income Loss                                                        160 M      -10 M
+Operating Expenses                                                           12.580 B   12.809 B
 Net Income Loss Attributable To Noncontrolling Interest                             0          0
-Income Loss From Continuing Operations After Tax                             34.630 B   25.010 B
-Benefits Costs Expenses                                                      82.704 B   67.139 B
-Diluted Earnings Per Share                                                      2.100      1.520
-Income Tax Expense Benefit Deferred                                             682 M          -
+Revenues                                                                     97.278 B   82.959 B
+Income Tax Expense Benefit                                                    5.129 B    3.624 B
+Diluted Earnings Per Share                                                      1.520      1.200
+Income Tax Expense Benefit Deferred                                                 -          -
 Income Loss Before Equity Method Investments                                        -          -
