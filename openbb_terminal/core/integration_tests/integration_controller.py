@@ -14,6 +14,7 @@ import argparse
 import logging
 import sys
 import os
+from openbb_terminal.helper_funcs import check_positive
 
 from openbb_terminal.rich_config import console
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY, REPOSITORY_DIRECTORY
@@ -638,7 +639,7 @@ def parse_args_and_run():
         help="The number of subprocesses to use to run the tests."
         " Default is the minimum between number of collected scripts and CPUs.",
         dest="subprocesses",
-        type=int,
+        type=check_positive,
         default=None,
     )
     parser.add_argument(
