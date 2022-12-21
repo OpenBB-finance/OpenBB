@@ -156,6 +156,10 @@ the tests.
 
 - To save time, the tests are run in parallel by default. You can choose the number of subprocesses used with `--subproc`. The default number of subprocesses is the minimum between the number of scripts to run and the number of CPUs of your machine.
 
+    ```zsh
+    python terminal.py -t forex --subproc 4
+    ```
+
 - To see terminal outputs being printed during the test session, use `--verbose` or `-v`:
 
     ```zsh
