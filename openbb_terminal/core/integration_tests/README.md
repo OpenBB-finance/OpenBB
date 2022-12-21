@@ -34,7 +34,7 @@ argument MUST contain a key and a default value.
 
 ## 3. How integration tests detect bugs ?
 
-When an unhandled exception is raised during a test session, this is considered a bug. The exception is caught and we saves its traceback and other details to debug afterwards.
+When an unhandled exception is raised during a test session, this is considered a bug. The exception is caught and we save its traceback and other details to debug afterwards.
 
 ### Script examples
 
@@ -123,6 +123,10 @@ the tests.
     ```
 
     *This specific example runs all of the stocks integration tests. One can use this same format for different tests.*
+    
+    ```zsh
+    python terminal.py -t openbb_terminal/core/integration_tests/scripts/forex
+    ```
 
 - Run one integration test:
 
