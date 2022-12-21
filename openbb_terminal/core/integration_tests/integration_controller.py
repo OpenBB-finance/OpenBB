@@ -51,7 +51,7 @@ STYLES = [
     "[bold red]",
     "[/bold red]",
 ]
-SCRIPTS_DIRECTORY = PACKAGE_DIRECTORY / "integration_tests" / "scripts"
+SCRIPTS_DIRECTORY = PACKAGE_DIRECTORY / "core" / "integration_tests" / "scripts"
 
 
 def to_section_title(title: str, char: str = "=") -> str:
@@ -126,7 +126,7 @@ def convert_list_to_test_files(path_list: List[str]) -> List[Path]:
     for path in path_list:
 
         if path.startswith(
-            str(Path("openbb_terminal", "integration_tests", "scripts"))
+            str(Path("openbb_terminal", "core", "integration_tests", "scripts"))
         ):
             script_path = REPOSITORY_DIRECTORY / path
         elif path.isnumeric():
@@ -595,7 +595,6 @@ def parse_args_and_run():
         "--path",
         help=(
             "The path to scripts or .openbb file to run."
-            "Scripts must be run from 'openbb_terminal/integration_tests/scripts/'."
             " Usage examples for this flag:"
             " (1) `... -p test_keys_.openbb`,"
             " (2) `... -p forex/test_forex_load.openbb`,"
@@ -613,7 +612,6 @@ def parse_args_and_run():
         "--skip",
         help=(
             "The path to scripts or .openbb file to run."
-            " Scripts must be run from 'openbb_terminal/integration_tests/scripts/'."
             " Usage examples for this flag:"
             " (1) `... -s test_keys_.openbb`,"
             " (2) `... -s forex/test_forex_load.openbb`,"
