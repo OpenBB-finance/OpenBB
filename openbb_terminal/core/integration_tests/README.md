@@ -176,7 +176,7 @@ the tests.
 
 Integration tests can also be used on installers, which is a packaged version of the conda terminal.
 More information on how to build an installer can be found [here](/build/README.md).
-To run the tests on installers you can use the same syntax as above, just substitute `python termina.py` with the full path to OpenBBTerminal executable (not the shortcut!). See the examples below for MacOS.
+To run the tests on installers you can use the same syntax as above, just substitute `python terminal.py` by the full path to OpenBBTerminal executable (not the shortcut!). See the examples below for MacOS.
 
 - Run all integration tests:
 
