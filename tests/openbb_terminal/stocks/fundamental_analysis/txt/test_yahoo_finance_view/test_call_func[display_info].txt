@@ -10,110 +10,111 @@ Website                                          https://www.pmi.com
 Max age                                                            1
 Address                                              120 Park Avenue
 Industry                                                     Tobacco
-Ebitda margins                                                 0.442
-Profit margins                                                 0.286
-Gross margins                                                  0.672
-Operating cashflow                                          12.650 B
-Revenue growth                                                 0.021
-Operating margins                                              0.410
-Ebitda                                                      13.954 B
-Target low price                                                  95
+Ebitda margins                                                 0.431
+Profit margins                                                 0.276
+Gross margins                                                  0.659
+Operating cashflow                                          11.742 B
+Revenue growth                                                -0.011
+Operating margins                                              0.394
+Ebitda                                                      13.683 B
+Target low price                                                  86
 Recommendation key                                               buy
 Gross profits                                               21.375 B
-Free cashflow                                                9.964 B
-Target median price                                              111
-Current price                                                 90.180
-Earnings growth                                               -0.031
-Current ratio                                                  0.917
-Return on assets                                               0.199
-Number of analyst opinions                                        15
-Target mean price                                            110.310
+Free cashflow                                                8.443 B
+Target median price                                          102.500
+Current price                                                101.280
+Earnings growth                                               -0.135
+Current ratio                                                  0.916
+Return on assets                                               0.190
+Number of analyst opinions                                        16
+Target mean price                                            104.640
 Target high price                                                127
-Total cash                                                   4.622 B
-Total debt                                                  29.357 B
-Total revenue                                               31.566 B
-Total cash per share                                           2.982
+Total cash                                                   5.560 B
+Total debt                                                  27.305 B
+Total revenue                                               31.714 B
+Total cash per share                                           3.587
 Financial currency                                               USD
-Revenue per share                                             20.287
-Quick ratio                                                    0.443
-Recommendation mean                                            2.400
+Revenue per share                                             20.434
+Quick ratio                                                    0.490
+Recommendation mean                                            2.300
 Exchange                                                         NYQ
 Short name                           Philip Morris International Inc
 Long name                           Philip Morris International Inc.
 Exchange timezone name                              America/New_York
-Exchange timezone short name                                     EDT
+Exchange timezone short name                                     EST
 Is esg populated                                               False
-Gmt off set milliseconds                                   -14.400 M
+Gmt off set milliseconds                                       -18 M
 Quote type                                                    EQUITY
 Symbol                                                            PM
 Message board id                                       finmb_6569181
 Market                                                     us_market
-Enterprise to revenue                                          5.272
-Enterprise to ebitda                                          11.926
-52 week change                                                -0.079
-Forward EPS                                                    6.050
+Enterprise to revenue                                          5.642
+Enterprise to ebitda                                          13.077
+52 week change                                                 0.080
+Forward EPS                                                    5.610
 Shares outstanding                                           1.550 B
-Book value                                                    -6.514
-Shares short                                                 9.508 M
+Book value                                                    -5.894
+Shares short                                                 9.030 M
 Shares percent shares out                                      0.006
 Last fiscal year end                                         1.641 B
-Held percent institutions                                      0.763
-Net income to common                                         8.996 B
-Trailing EPS                                                   5.780
-Last dividend value                                            1.250
-Sand p52 week change                                          -0.093
+Held percent institutions                                      0.770
+Net income to common                                         8.721 B
+Trailing EPS                                                   5.620
+Last dividend value                                            1.270
+Sand p52 week change                                          -0.157
 Held percent insiders                                          0.001
 Next fiscal year end                                         1.704 B
-Most recent quarter                                          1.649 B
-Short ratio                                                    1.680
-Shares short previous month date                             1.654 B
+Most recent quarter                                          1.664 B
+Short ratio                                                    2.420
+Shares short previous month date                             1.667 B
 Float shares                                                 1.547 B
-Beta                                                           0.682
-Enterprise value                                           166.419 B
+Beta                                                           0.731
+Enterprise value                                           178.933 B
 Price hint                                                         2
-Last dividend date                                           1.657 B
-Earnings quarterly growth                                     -0.036
-Price to sales trailing 12 months                              4.428
-Date short interest                                          1.657 B
-Forward PE                                                    14.906
+Last dividend date                                           1.664 B
+Earnings quarterly growth                                     -0.140
+Price to sales trailing 12 months                              4.951
+Date short interest                                          1.670 B
+PEG ratio                                                      6.620
+Forward PE                                                    18.053
 Short percent of float                                         0.006
-Shares short prior month                                     9.341 M
+Shares short prior month                                    10.214 M
 Implied shares outstanding                                         0
-Previous close                                                89.620
-Regular market open                                           90.710
-Two hundred day average                                       98.197
-Trailing annual dividend yield                                 0.055
-Payout ratio                                                   0.856
-Regular market day high                                       91.180
-Average daily volume 10 day                                  4.799 M
-Regular market previous close                                 89.620
-Fifty day average                                            100.933
-Trailing annual dividend rate                                  4.950
-Open                                                          90.710
-Average volume 10 days                                       4.799 M
-Dividend rate                                                      5
-Ex dividend date                                             1.657 B
-Regular market day low                                        89.670
+Previous close                                               100.280
+Regular market open                                          100.620
+Two hundred day average                                       96.614
+Trailing annual dividend yield                                 0.050
+Payout ratio                                                   0.893
+Regular market day high                                      101.440
+Average daily volume 10 day                                  8.373 M
+Regular market previous close                                100.280
+Fifty day average                                             93.802
+Trailing annual dividend rate                                  5.020
+Open                                                         100.620
+Average volume 10 days                                       8.373 M
+Dividend rate                                                  5.080
+Ex dividend date                                             1.672 B
+Regular market day low                                       100.390
 Currency                                                         USD
-Trailing PE                                                   15.602
-Regular market volume                                        5.171 M
-Market cap                                                 139.789 B
-Average volume                                               5.487 M
-Day low                                                       89.670
-Ask                                                           90.970
-Ask size                                                         800
-Volume                                                       5.171 M
+Trailing PE                                                   18.021
+Regular market volume                                      395.006 K
+Market cap                                                 157.004 B
+Average volume                                               5.149 M
+Day low                                                      100.390
+Ask                                                          101.390
+Ask size                                                     1.100 K
+Volume                                                     395.006 K
 Fifty two week high                                          112.480
-Five year avg dividend yield                                   5.290
-Fifty two week low                                            85.640
-Bid                                                           90.240
+Five year avg dividend yield                                   5.420
+Fifty two week low                                            82.850
+Bid                                                          101.370
 Tradeable                                                      False
-Dividend yield                                                 0.055
-Bid size                                                         900
-Day high                                                      91.180
-Regular market price                                          90.180
-Pre market price                                              90.960
+Dividend yield                                                 0.051
+Bid size                                                         800
+Day high                                                     101.440
+Regular market price                                         101.280
+Pre market price                                             100.640
 Logo_url                           https://logo.clearbit.com/pmi.com
-Trailing peg ratio                                             3.253
+Trailing peg ratio                                             3.473
 Business Summary:
 Philip Morris International Inc. operates as a tobacco company working to delivers a smoke-free future and evolving portfolio for the long-term to include products outside of the tobacco and nicotine sector. The company's product portfolio primarily consists of cigarettes and smoke-free products, including heat-not-burn, vapor, and oral nicotine products that are sold in markets outside the United States. The company offers its smoke-free products under the HEETS, HEETS Creations, HEETS Dimensions, HEETS Marlboro, HEETS FROM MARLBORO, Marlboro Dimensions, Marlboro HeatSticks, Parliament HeatSticks, and TEREA brands, as well as the KT&G-licensed brands, Fiit, and Miix. It also sells its products under the Marlboro, Parliament, Bond Street, Chesterfield, L&M, Lark, and Philip Morris brands. In addition, the company owns various cigarette brands, such as Dji Sam Soe, Sampoerna A, and Sampoerna U in Indonesia; and Fortune and Jackpot in the Philippines. The company sells its smoke-free products in 71 markets. Philip Morris International Inc. was incorporated in 1987 and is headquartered in New York, New York.

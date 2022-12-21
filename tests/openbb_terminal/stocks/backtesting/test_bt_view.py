@@ -20,8 +20,7 @@ def vcr_config():
     }
 
 
-@pytest.mark.vcr
-@pytest.mark.record_stdout
+@pytest.mark.skip
 def test_display_simple_ema(mocker):
     yf_download = stocks_helper.yf.download
 
@@ -48,8 +47,7 @@ def test_display_simple_ema(mocker):
     )
 
 
-@pytest.mark.vcr
-@pytest.mark.record_stdout
+@pytest.mark.skip
 def test_display_emacross(mocker):
     yf_download = stocks_helper.yf.download
 
@@ -78,8 +76,7 @@ def test_display_emacross(mocker):
     )
 
 
-@pytest.mark.vcr
-@pytest.mark.record_stdout
+@pytest.mark.skip
 def test_display_rsi_strategy(mocker):
     yf_download = stocks_helper.yf.download
 
