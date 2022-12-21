@@ -67,15 +67,12 @@ added_files = [
         os.path.join("investpy", "resources"),
     ),
     (
-        os.path.join(pathex, "pymongo"),
-        "pymongo",
-    ),
-    (os.path.join(pathex, "bson"), "bson"),
-    (
         os.path.join(pathex, "debugpy", "_vendored"),
         os.path.join("debugpy", "_vendored"),
     ),
     (".env", "."),
+    (os.path.join(pathex, "blib2to3", "Grammar.txt"), "blib2to3"),
+    (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
 ]
 
 # Python libraries that are explicitly pulled into the bundle
@@ -88,6 +85,8 @@ hidden_imports = [
     "sklearn.neighbors.quad_tree",
     "sklearn.tree._utils",
     "sklearn.neighbors._partition_nodes",
+    "sklearn.metrics._pairwise_distances_reduction._datasets_pair",
+    "sklearn.metrics._pairwise_distances_reduction._middle_term_computer",
     "squarify",
     "linearmodels",
     "statsmodels",
@@ -97,8 +96,6 @@ hidden_imports = [
     "textwrap3",
     "pyEX",
     "feedparser",
-    "pymongo",
-    "bson",
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
