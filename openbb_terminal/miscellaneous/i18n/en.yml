@@ -247,7 +247,7 @@ en:
   stocks/ins/lip: latest insider purchases
   stocks/ins/blip: big latest insider purchases ($25k+)
   stocks/ins/blop: big latest officer purchases ($25k+)
-  stocks/ins/bclp: big latest CEO/CFO purchases ($25k+)
+  stocks/ins/blcp: big latest CEO/CFO purchases ($25k+)
   stocks/ins/lis: latest insider sales
   stocks/ins/blis: big latest insider sales ($100k+)
   stocks/ins/blos: big latest officer sales ($100k+)
