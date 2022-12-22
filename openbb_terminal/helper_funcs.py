@@ -1928,6 +1928,7 @@ def update_news_from_tweet_to_be_displayed() -> str:
 
         news_tweet_to_use = ""
         handle_to_use = ""
+        url = ""
         last_tweet_dt = (datetime.now() - timedelta(hours=1)).replace(
             tzinfo=timezone.utc
         )
