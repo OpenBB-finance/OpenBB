@@ -66,10 +66,7 @@ def test_get_option_chain(mocker, recorder):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    result_tuple = yfinance_model.get_option_chain(
-        symbol="PM",
-        expiry="2022-01-07",
-    )
+    result_tuple = yfinance_model.get_option_chain(symbol="AAPL", expiry="2023-07-21")
     result_tuple = (result_tuple.calls, result_tuple.puts)
 
     recorder.capture_list(result_tuple)

@@ -1,23 +1,23 @@
-                                                                           2020-10-30 2021-10-29
-Operating Income Loss                                                        66.288 B  108.949 B
-Income Tax Expense Benefit Deferred                                            -215 M   -4.774 B
-Net Income Loss Attributable To Parent                                       57.411 B   94.680 B
-Net Income Loss                                                              57.411 B   94.680 B
-Costs And Expenses                                                          207.424 B  256.610 B
-Gross Profit                                                                104.956 B  152.836 B
-Nonoperating Income Loss                                                        803 M      258 M
-Income Loss From Continuing Operations Before Tax                            67.091 B  109.207 B
-Net Income Loss Attributable To Noncontrolling Interest                             0          0
-Interest Expense Operating                                                    2.873 B    2.645 B
-Diluted Earnings Per Share                                                      3.280      5.610
-Net Income Loss Available To Common Stockholders Basic                       57.411 B   94.680 B
-Operating Expenses                                                           38.668 B   43.887 B
-Participating Securities Distributed And Undistributed Earnings Loss Basic          0          0
-Cost Of Revenue                                                             169.559 B  212.981 B
+                                                                           2021-10-29 2022-10-28
+Income Tax Expense Benefit                                                   14.527 B   19.300 B
+Diluted Earnings Per Share                                                      5.610      6.110
+Income Loss From Continuing Operations After Tax                             94.680 B   99.803 B
+Net Income Loss                                                              94.680 B   99.803 B
+Revenues                                                                    365.817 B  394.328 B
+Nonoperating Income Loss                                                        258 M     -334 M
+Cost Of Revenue                                                             212.981 B  223.546 B
+Benefits Costs Expenses                                                     256.610 B  275.225 B
+Operating Expenses                                                           43.887 B   51.345 B
+Interest Expense Operating                                                    2.645 B    2.931 B
+Gross Profit                                                                152.836 B  170.782 B
+Income Tax Expense Benefit Deferred                                          -4.774 B      895 M
+Net Income Loss Attributable To Parent                                       94.680 B   99.803 B
+Basic Earnings Per Share                                                        5.670      6.150
+Net Income Loss Available To Common Stockholders Basic                       94.680 B   99.803 B
 Preferred Stock Dividends And Other Adjustments                                     0          0
-Income Loss From Continuing Operations After Tax                             57.411 B   94.680 B
-Benefits Costs Expenses                                                     207.424 B  256.610 B
-Basic Earnings Per Share                                                        3.310      5.670
-Revenues                                                                    274.515 B  365.817 B
-Income Tax Expense Benefit                                                    9.680 B   14.527 B
+Net Income Loss Attributable To Noncontrolling Interest                             0          0
+Operating Income Loss                                                       108.949 B  119.437 B
+Income Loss From Continuing Operations Before Tax                           109.207 B  119.103 B
+Costs And Expenses                                                          256.610 B  275.225 B
+Participating Securities Distributed And Undistributed Earnings Loss Basic          0          0
 Income Loss Before Equity Method Investments                                        -          -
