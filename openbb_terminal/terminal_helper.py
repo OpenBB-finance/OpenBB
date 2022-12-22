@@ -2,24 +2,26 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
-import webbrowser
-from contextlib import contextmanager
 import hashlib
 import logging
 import os
 import subprocess  # nosec
 import sys
+import webbrowser
+from contextlib import contextmanager
 from typing import List
-from packaging import version
+
+import matplotlib.pyplot as plt
 
 # IMPORTATION THIRDPARTY
 import requests
-import matplotlib.pyplot as plt
+from packaging import version
+
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal import thought_of_the_day as thought
 
 # IMPORTATION INTERNAL
 from openbb_terminal.config_terminal import LOGGING_APP_NAME, LOGGING_COMMIT_HASH
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal import thought_of_the_day as thought
 from openbb_terminal.rich_config import console
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302

@@ -3,26 +3,26 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
+from openbb_terminal import rich_config
 from openbb_terminal.common.behavioural_analysis.finbrain_model import get_sentiment
 from openbb_terminal.common.behavioural_analysis.finbrain_view import (
     lambda_sentiment_coloring,
 )
+from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 

@@ -11,9 +11,9 @@ import pandas as pd
 import requests
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.rich_config import console
 from openbb_terminal.cryptocurrency.dataframe_helpers import create_df_index
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

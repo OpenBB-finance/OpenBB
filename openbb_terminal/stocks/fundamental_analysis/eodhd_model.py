@@ -3,8 +3,8 @@ __docformat__ = "numpy"
 
 import logging
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 import requests
 
 from openbb_terminal import config_terminal as cfg

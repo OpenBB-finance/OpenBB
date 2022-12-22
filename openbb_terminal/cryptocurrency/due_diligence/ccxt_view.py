@@ -5,8 +5,9 @@ import logging
 import os
 from typing import List, Optional
 
-from matplotlib import pyplot as plt
 import numpy as np
+from matplotlib import pyplot as plt
+
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from openbb_terminal.cryptocurrency.due_diligence import ccxt_model
 from openbb_terminal.decorators import log_start_end

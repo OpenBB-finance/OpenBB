@@ -1,8 +1,8 @@
 import logging
 import re
 
-import requests
 import pandas as pd
+import requests
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent

@@ -1,11 +1,13 @@
 import os
+from pathlib import Path
 from typing import List
 from unittest.mock import patch
-from pathlib import Path
+
 import pandas as pd
 import pytest
 
 from openbb_terminal import keys_model
+
 
 # pylint: disable=R0902,R0903,W1404,C0302
 

@@ -18,8 +18,8 @@ from openpyxl import worksheet
 from sklearn.linear_model import LinearRegression
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.stocks.fundamental_analysis import dcf_static
 from openbb_terminal.helper_funcs import compose_export_path
+from openbb_terminal.stocks.fundamental_analysis import dcf_static
 
 logger = logging.getLogger(__name__)
 

@@ -3,26 +3,26 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List, Union
-from matplotlib import ticker
+from typing import List, Optional, Union
 
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FormatStrFormatter
-from matplotlib import colors
 import numpy as np
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
+from matplotlib import colors, ticker
+from matplotlib.ticker import FormatStrFormatter
+from pandas.plotting import register_matplotlib_converters
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import investingcom_model
+from openbb_terminal.economy.economy_helpers import text_transform
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -185,9 +185,6 @@ def display_spread_matrix(
                         k += spacing
                         spacing -= 1
 
-                        text_transform = (
-                            lambda x: f"{round(float(x)/100, 3)}%"
-                        )  # flake8: noqa
                         t.set_text(text_transform(current_text))
                     else:
                         t.set_text(current_text)

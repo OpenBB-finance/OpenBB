@@ -8,8 +8,6 @@ from typing import List
 
 import yfinance as yf
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.behavioural_analysis import (
     finbrain_view,
@@ -18,7 +16,7 @@ from openbb_terminal.common.behavioural_analysis import (
     stocktwits_view,
     twitter_view,
 )
-from openbb_terminal.stocks.behavioural_analysis import finnhub_view, cramer_view
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -29,7 +27,8 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.stocks.behavioural_analysis import cramer_view, finnhub_view
 
 # pylint:disable=R0904,C0302
 

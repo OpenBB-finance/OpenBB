@@ -1,5 +1,6 @@
-from typing import Optional, List, Tuple
 from inspect import signature
+from typing import List, Optional, Tuple
+
 import pytest
 
 # Certain openbb distributions like pip do not include the docs folder,

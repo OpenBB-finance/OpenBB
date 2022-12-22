@@ -3,18 +3,18 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Tuple, Union, List, Optional
-
 import warnings
-from statsmodels.tools.sm_exceptions import ConvergenceWarning
+from typing import List, Optional, Tuple, Union
+
 import pandas as pd
 from darts import TimeSeries
 from darts.models import TFTModel
 from darts.utils.likelihood_models import QuantileRegression
+from statsmodels.tools.sm_exceptions import ConvergenceWarning
 
+from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
-from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 
 warnings.simplefilter("ignore", ConvergenceWarning)
 

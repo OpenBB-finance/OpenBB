@@ -3,17 +3,16 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, Optional, List, Tuple
-
 import warnings
-from darts import TimeSeries
+from typing import List, Optional, Tuple, Union
+
 import pandas as pd
+from darts import TimeSeries
 from statsforecast.core import StatsForecast
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console, USE_COLOR
 from openbb_terminal.forecast import helpers
-
+from openbb_terminal.rich_config import USE_COLOR, console
 
 warnings.simplefilter("ignore")
 
@@ -92,14 +91,14 @@ def get_autoselect_data(
     # check statsforecast dependency
     try:
         from statsforecast.models import (  # pylint: disable=import-outside-toplevel
-            AutoARIMA,
             ETS,
-            AutoCES,
             MSTL,
+            AutoARIMA,
+            AutoCES,
             Naive,
+            RandomWalkWithDrift,
             SeasonalNaive,
             SeasonalWindowAverage,
-            RandomWalkWithDrift,
         )
     except Exception as e:
         error = str(e)

@@ -1,4 +1,5 @@
 import pytest
+
 from openbb_terminal.stocks import cboe_model
 
 

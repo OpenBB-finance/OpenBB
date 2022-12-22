@@ -5,6 +5,7 @@
 # import pandas as pd
 
 from typing import List, Union
+
 import pytest
 
 # IMPORTATION INTERNAL

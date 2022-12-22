@@ -13,11 +13,12 @@ repos:
     rev: 22.10.0
     hooks:
       - id: black
-  - repo: https://github.com/pycqa/flake8
-    rev: 5.0.4
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    # Ruff version.
+    rev: 'v0.0.191'
     hooks:
-      - id: flake8
-        entry: flake8 --ignore=E203,W503 --max-line-length=122 --exclude ./build/pyinstaller/*
+      - id: ruff
+        args: ["--force-exclude", "--config", "pyproject.toml"]
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.2
     hooks:

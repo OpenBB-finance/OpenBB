@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+
 import numpy as np
 
 from openbb_terminal.cryptocurrency.dataframe_helpers import (

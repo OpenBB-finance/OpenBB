@@ -2,10 +2,11 @@
 __docformat__ = "numpy"
 
 import pandas as pd
-from openbb_terminal.cryptocurrency.overview import pycoingecko_model, coinpaprika_model
+
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
 )
+from openbb_terminal.cryptocurrency.overview import coinpaprika_model, pycoingecko_model
 
 
 def globe(source: str = "CoinGecko") -> pd.DataFrame:

@@ -6,10 +6,11 @@ import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
+
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.quantitative_analysis.beta_model import beta_model
-from openbb_terminal.helper_funcs import export_data
 
 logger = logging.getLogger(__name__)
 

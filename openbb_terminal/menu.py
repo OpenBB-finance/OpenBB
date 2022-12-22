@@ -1,7 +1,7 @@
-import sys
-from typing import Optional
 import logging
 import os
+import sys
+from typing import Optional
 
 from matplotlib import pyplot
 from prompt_toolkit import PromptSession

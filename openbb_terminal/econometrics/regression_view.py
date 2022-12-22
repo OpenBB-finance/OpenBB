@@ -6,8 +6,8 @@ import os
 from typing import List, Optional
 
 import pandas as pd
-from matplotlib import pyplot as plt
 import statsmodels
+from matplotlib import pyplot as plt
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme

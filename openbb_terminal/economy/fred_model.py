@@ -1,19 +1,18 @@
 """ Fred Model """
 __docformat__ = "numpy"
 
-import os
 import logging
+import os
 import textwrap
-from typing import List, Optional, Tuple
 from datetime import datetime, timedelta
-from requests import HTTPError
+from typing import List, Optional, Tuple
 
-
+import certifi
 import fred
 import pandas as pd
 import requests
 from fredapi import Fred
-import certifi
+from requests import HTTPError
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end

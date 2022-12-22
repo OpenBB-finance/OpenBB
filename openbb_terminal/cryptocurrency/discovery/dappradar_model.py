@@ -2,8 +2,8 @@
 __docformat__ = "numpy"
 
 # pylint: disable=C0301,E1137
-from typing import Optional
 import logging
+from typing import Optional
 
 import pandas as pd
 import requests

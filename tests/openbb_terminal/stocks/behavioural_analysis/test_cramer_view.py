@@ -1,7 +1,8 @@
 # IMPORTATION THIRDPARTY
 from io import StringIO
-import pytest
+
 import pandas as pd
+import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.behavioural_analysis import cramer_view

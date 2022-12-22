@@ -7,10 +7,10 @@ import re
 
 import pandas as pd
 
+from openbb_terminal import rich_config
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.discovery import fidelity_model
-from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 

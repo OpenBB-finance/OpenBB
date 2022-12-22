@@ -1,6 +1,6 @@
 # This is for helpers that do NOT import any OpenBB Modules
-from typing import Callable, Any, Literal
 import os
+from typing import Any, Callable, Literal
 
 from rich.console import Console
 

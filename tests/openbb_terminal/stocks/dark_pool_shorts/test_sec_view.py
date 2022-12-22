@@ -9,7 +9,6 @@ import pytest
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.dark_pool_shorts import sec_view
 
-
 df_fails_to_deliver = pd.DataFrame(
     data={
         "SETTLEMENT DATE": [

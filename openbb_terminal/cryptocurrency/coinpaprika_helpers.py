@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 from typing import Any, Optional
+
 import requests
 from requests.adapters import HTTPAdapter
 

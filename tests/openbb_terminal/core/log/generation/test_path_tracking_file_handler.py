@@ -1,11 +1,12 @@
 import random
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+
 import pytest
+
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
-
 
 randint = random.randint(0, 999999999)
 

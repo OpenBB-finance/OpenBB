@@ -1,15 +1,13 @@
-from unittest import mock, TestCase
 import json
 import os
-import pytest
+from unittest import TestCase, mock
 
+import pytest
 import vcr
+
+from openbb_terminal.cryptocurrency.cryptocurrency_helpers import load
 from openbb_terminal.cryptocurrency.due_diligence import (
     pycoingecko_view as dd_pycoingecko_view,
-)
-
-from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
-    load,
 )
 from tests.helpers.helpers import check_print
 

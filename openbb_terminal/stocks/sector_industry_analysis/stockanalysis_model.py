@@ -3,12 +3,12 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,unexpected-keyword-arg
 
 import logging
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
 import yfinance as yf
+from tqdm import tqdm
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console

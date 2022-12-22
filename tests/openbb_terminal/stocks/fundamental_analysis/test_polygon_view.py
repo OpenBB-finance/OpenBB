@@ -1,4 +1,5 @@
 import pytest
+
 from openbb_terminal.stocks.fundamental_analysis import polygon_view
 
 

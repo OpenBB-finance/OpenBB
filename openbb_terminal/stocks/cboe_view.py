@@ -2,9 +2,10 @@
 __docformat__ = "numpy"
 
 import pandas as pd
-from openbb_terminal.stocks import cboe_model
+
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks import cboe_model
 
 
 def display_top_of_book(symbol: str, exchange: str = "BZX"):

@@ -8,32 +8,32 @@ import logging
 import os
 import warnings
 from datetime import datetime
-from typing import Any, Optional, List
+from typing import Any, List, Optional
 
 import matplotlib
+import matplotlib.dates as mdates
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import statsmodels.api as sm
-from scipy import stats
 from detecta import detect_cusum
-from statsmodels.graphics.gofplots import qqplot
 from pandas.plotting import register_matplotlib_converters
+from scipy import stats
+from statsmodels.graphics.gofplots import qqplot
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.quantitative_analysis import qa_model
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
+    lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
     reindex_dates,
-    lambda_long_number_format,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 

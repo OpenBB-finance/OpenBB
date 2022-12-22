@@ -6,21 +6,21 @@ import argparse
 import logging
 import os
 from typing import List
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers, pyth_model, pyth_view
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers, pyth_model, pyth_view
+from openbb_terminal.cryptocurrency.crypto_views import find
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
     display_all_coins,
     plot_chart,
 )
-from openbb_terminal.cryptocurrency.crypto_views import find
 from openbb_terminal.cryptocurrency.due_diligence import (
     binance_view,
     coinpaprika_view,
     finbrain_crypto_view,
     pycoingecko_view,
 )
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -30,7 +30,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 # pylint: disable=import-outside-toplevel
 

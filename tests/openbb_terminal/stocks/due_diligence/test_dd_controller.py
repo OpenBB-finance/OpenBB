@@ -8,6 +8,7 @@ import pytest
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.due_diligence import dd_controller
 
+
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111

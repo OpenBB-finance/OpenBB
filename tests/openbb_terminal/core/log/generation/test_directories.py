@@ -1,5 +1,5 @@
-from pathlib import Path
 import logging
+from pathlib import Path
 
 from openbb_terminal.core.log.generation.directories import get_log_dir, get_log_sub_dir
 from openbb_terminal.loggers import setup_logging

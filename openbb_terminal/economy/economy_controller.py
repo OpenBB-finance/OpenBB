@@ -3,49 +3,48 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches,unnecessary-dict-index-lookup
 
 import argparse
+import itertools
 import logging
 import os
-import itertools
-from datetime import date, datetime as dt
-from typing import List, Dict, Any
+from datetime import date
+from datetime import datetime as dt
+from typing import Any, Dict, List
 
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal.decorators import check_api_key
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import (
     alphavantage_view,
+    commodity_view,
+    econdb_model,
+    econdb_view,
     economy_helpers,
     finviz_model,
     finviz_view,
+    fred_model,
+    fred_view,
+    investingcom_model,
     nasdaq_model,
     nasdaq_view,
+    plot_view,
     wsj_view,
-    econdb_view,
-    econdb_model,
-    fred_view,
-    fred_model,
     yfinance_model,
     yfinance_view,
-    investingcom_model,
-    plot_view,
-    commodity_view,
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    list_from_str,
+    parse_and_split_input,
     print_rich_table,
     valid_date,
-    parse_and_split_input,
-    list_from_str,
 )
-from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.menu import session
+from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 

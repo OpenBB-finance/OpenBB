@@ -1,6 +1,6 @@
 # IMPORTATION STANDARD
-from typing import List
 import os
+from typing import List
 
 # IMPORTATION THIRDPARTY
 import pandas as pd

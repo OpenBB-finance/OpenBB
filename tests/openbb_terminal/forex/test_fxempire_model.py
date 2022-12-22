@@ -1,4 +1,5 @@
 import pytest
+
 from openbb_terminal.forex.fxempire_model import get_forward_rates
 
 

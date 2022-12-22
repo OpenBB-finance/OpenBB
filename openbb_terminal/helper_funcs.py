@@ -3,50 +3,49 @@ __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 import argparse
 import io
-import logging
-from pathlib import Path
-from typing import List, Union, Optional, Dict
-from functools import lru_cache
-from datetime import datetime, timedelta
-from datetime import date as d
-import types
-from collections.abc import Iterable
-import os
-import re
-import random
-import sys
-from difflib import SequenceMatcher
-import webbrowser
-import urllib.parse
 import json
+import logging
+import os
+import random
+import re
+import sys
+import types
+import urllib.parse
+import webbrowser
+from collections.abc import Iterable
+from datetime import date as d
+from datetime import datetime, timedelta
+from difflib import SequenceMatcher
+from functools import lru_cache
+from pathlib import Path
+from typing import Dict, List, Optional, Union
 
-import pytz
-import pandas as pd
-from rich.table import Table
-import iso8601
 import dotenv
+import iso8601
 import matplotlib
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import pandas.io.formats.format
+import pytz
+import requests
+import yfinance as yf
 from holidays import US as us_holidays
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
-import pandas.io.formats.format
-import requests
-from screeninfo import get_monitors
-import yfinance as yf
-import numpy as np
-
 from PIL import Image, ImageDraw
+from rich.table import Table
+from screeninfo import get_monitors
 
-from openbb_terminal.rich_config import console
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config import paths
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     USER_ENV_FILE,
     USER_EXPORTS_DIRECTORY,
 )
-from openbb_terminal.core.config import paths
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

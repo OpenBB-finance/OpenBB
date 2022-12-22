@@ -3,11 +3,12 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import Any
+
 import pandas as pd
 
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
-    RISK_CHOICES,
     OPTIMIZATION_PARAMETERS,
+    RISK_CHOICES,
     TERMINAL_TEMPLATE_MAP,
 )
 from openbb_terminal.rich_config import console

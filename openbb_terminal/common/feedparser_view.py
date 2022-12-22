@@ -4,10 +4,10 @@ __docformat__ = "numpy"
 import logging
 import os
 
+from openbb_terminal.common import feedparser_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
-from openbb_terminal.common import feedparser_model
 
 logger = logging.getLogger(__name__)
 

@@ -4,9 +4,9 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+from datetime import datetime as dt
 from typing import List, Optional, Union
 
-from datetime import datetime as dt
 import pandas as pd
 import requests
 

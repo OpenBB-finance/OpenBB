@@ -9,9 +9,9 @@ import pandas as pd
 import pandas_ta as ta
 import yfinance as yf
 
+from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import is_intraday
-from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 

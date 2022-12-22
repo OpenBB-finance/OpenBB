@@ -2,64 +2,59 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import List, Optional
 import os
-
 from datetime import datetime
+from typing import List, Optional
+
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
 import seaborn as sns
+from matplotlib import pyplot as plt
 
 from openbb_terminal.common.quantitative_analysis import qa_view
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.portfolio.portfolio_model import (
     PortfolioEngine,
-    get_transactions,
+    get_assets_allocation,
+    get_calmar_ratio,
+    get_common_sense_ratio,
+    get_countries_allocation,
     get_daily_returns,
-    get_performance_vs_benchmark,
-    get_yearly_returns,
-    get_monthly_returns,
     get_distribution_returns,
-    get_holdings_value,
+    get_gaintopain_ratio,
     get_holdings_percentage,
-    get_rolling_volatility,
+    get_holdings_value,
+    get_information_ratio,
+    get_jensens_alpha,
+    get_kelly_criterion,
+    get_kurtosis,
+    get_maximum_drawdown,
+    get_maximum_drawdown_ratio,
+    get_monthly_returns,
+    get_payoff_ratio,
+    get_performance_vs_benchmark,
+    get_profit_factor,
+    get_r2_score,
+    get_regions_allocation,
+    get_rolling_beta,
     get_rolling_sharpe,
     get_rolling_sortino,
-    get_rolling_beta,
-    get_maximum_drawdown,
-    get_r2_score,
-    get_skewness,
-    get_kurtosis,
-    get_stats,
-    get_assets_allocation,
+    get_rolling_volatility,
     get_sectors_allocation,
-    get_countries_allocation,
-    get_regions_allocation,
-    get_volatility,
     get_sharpe_ratio,
+    get_skewness,
     get_sortino_ratio,
-    get_maximum_drawdown_ratio,
-    get_gaintopain_ratio,
-    get_tracking_error,
-    get_information_ratio,
-    get_tail_ratio,
-    get_common_sense_ratio,
-    get_jensens_alpha,
-    get_calmar_ratio,
-    get_kelly_criterion,
-    get_payoff_ratio,
-    get_profit_factor,
+    get_stats,
     get_summary,
+    get_tail_ratio,
+    get_tracking_error,
+    get_transactions,
+    get_volatility,
+    get_yearly_returns,
 )
-
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-)
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 # pylint: disable=C0302,redefined-outer-name

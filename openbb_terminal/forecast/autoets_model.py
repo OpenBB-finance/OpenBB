@@ -3,18 +3,17 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import List, Optional, Union, Tuple
-
 import warnings
+from typing import List, Optional, Tuple, Union
+
 import pandas as pd
 from darts import TimeSeries
-from statsforecast.models import ETS
 from statsforecast.core import StatsForecast
+from statsforecast.models import ETS
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.forecast import helpers
-
+from openbb_terminal.rich_config import console
 
 warnings.simplefilter("ignore")
 

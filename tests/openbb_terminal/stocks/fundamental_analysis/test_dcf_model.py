@@ -1,8 +1,8 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import openpyxl
 import numpy as np
+import openpyxl
 import pandas as pd
 import pytest
 

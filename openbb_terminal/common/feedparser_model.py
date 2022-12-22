@@ -4,9 +4,11 @@ __docformat__ = "numpy"
 import os
 from typing import List
 from urllib.parse import quote
+
 import certifi
 import feedparser
 import pandas as pd
+
 from openbb_terminal.rich_config import console
 
 

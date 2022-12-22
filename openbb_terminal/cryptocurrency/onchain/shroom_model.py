@@ -1,13 +1,14 @@
 """Shroom model"""
-import logging
-from typing import List
 import json
+import logging
 import time
+from typing import List
+
 import pandas as pd
 import requests
 
-from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.decorators import check_api_key, log_start_end
 
 logger = logging.getLogger(__name__)
 

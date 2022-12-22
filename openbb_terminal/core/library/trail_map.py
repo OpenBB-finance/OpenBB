@@ -8,7 +8,6 @@ from openbb_terminal.base_helpers import load_env_vars, strtobool
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY, USER_ENV_FILE
 from openbb_terminal.rich_config import console
 
-
 DISABLE_FORECASTING_WARNING = load_env_vars(
     "OPENBB_DISABLE_FORECASTING_WARNING", strtobool, False
 )

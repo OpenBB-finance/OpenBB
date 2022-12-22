@@ -11,7 +11,7 @@ from binance.client import Client
 from binance.exceptions import BinanceAPIException
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.decorators import log_start_end, check_api_key
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)

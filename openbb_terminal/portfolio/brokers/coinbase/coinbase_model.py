@@ -6,15 +6,15 @@ import logging
 import pandas as pd
 
 import openbb_terminal.config_terminal as cfg
+import openbb_terminal.cryptocurrency.due_diligence.coinbase_model as cbm
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
+    CoinbaseApiException,
     CoinbaseProAuth,
     _check_account_validity,
     make_coinbase_request,
-    CoinbaseApiException,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-import openbb_terminal.cryptocurrency.due_diligence.coinbase_model as cbm
 
 logger = logging.getLogger(__name__)
 

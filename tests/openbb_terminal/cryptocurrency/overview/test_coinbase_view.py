@@ -1,11 +1,12 @@
 import pytest
+
 from openbb_terminal.cryptocurrency.due_diligence import (
     coinbase_view as dd_coinbase_view,
 )
+from openbb_terminal.cryptocurrency.overview import coinbase_view as ov_coinbase_view
 from openbb_terminal.portfolio.brokers.coinbase import (
     coinbase_view as bro_coinbase_view,
 )
-from openbb_terminal.cryptocurrency.overview import coinbase_view as ov_coinbase_view
 from tests.helpers.helpers import check_print
 
 

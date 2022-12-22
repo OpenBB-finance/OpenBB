@@ -3,11 +3,10 @@ __docformat__ = "numpy"
 
 from typing import List
 
-
 from openbb_terminal.stocks.comparison_analysis import (
+    finnhub_model,
     finviz_compare_model,
     polygon_model,
-    finnhub_model,
     yahoo_finance_model,
 )
 

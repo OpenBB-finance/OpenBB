@@ -28,7 +28,7 @@ jobs:
           key: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
           restore-keys: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
 
-      - run: pip install bandit black codespell flake8 mypy==0.982 pyupgrade safety pylint==2.15.2 packaging==22
+      - run: pip install bandit black codespell mypy==0.982 pyupgrade safety pylint==2.15.2 packaging==22
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .

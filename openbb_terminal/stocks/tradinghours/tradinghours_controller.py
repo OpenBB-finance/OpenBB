@@ -4,30 +4,27 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-
-from typing import List
 from datetime import date
+from typing import List
+
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import get_user_timezone_or_invalid
 from openbb_terminal.menu import session
-from openbb_terminal.helper_funcs import (
-    get_user_timezone_or_invalid,
-)
-from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.tradinghours import bursa_view
 from openbb_terminal.stocks.tradinghours.bursa_model import get_open
+from openbb_terminal.stocks.tradinghours.pandas_market_cal_view import (
+    display_exchange_holidays,
+    get_all_holiday_exchange_short_names,
+)
 from openbb_terminal.stocks.tradinghours.tradinghours_helper import (
     get_exchanges_short_names,
     get_fd_equities_list,
-)
-from openbb_terminal.stocks.tradinghours.pandas_market_cal_view import (
-    get_all_holiday_exchange_short_names,
-    display_exchange_holidays,
 )
 
 logger = logging.getLogger(__name__)

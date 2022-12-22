@@ -19,15 +19,16 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_IMPORTS_DIRECTORY,
     USER_ROUTINES_DIRECTORY,
 )
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-from openbb_terminal.menu import session
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_file_type_saved,
     check_positive,
@@ -43,11 +44,10 @@ from openbb_terminal.helper_funcs import (
     system_clear,
     valid_date,
 )
+from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
-from openbb_terminal.core.completer.choices import build_controller_choice_map
 
 logger = logging.getLogger(__name__)
 

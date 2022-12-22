@@ -7,6 +7,7 @@ import pytest
 # IMPORTATION INTERNAL
 from openbb_terminal.cryptocurrency.defi import defi_controller
 
+
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111

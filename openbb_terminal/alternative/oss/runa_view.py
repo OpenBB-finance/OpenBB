@@ -1,21 +1,22 @@
 """Rekt view"""
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 from matplotlib import pyplot as plt
 from matplotlib import ticker
+
 from openbb_terminal.alternative.oss import runa_model
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
-    lambda_long_number_format,
-    print_rich_table,
     is_valid_axes_count,
+    lambda_long_number_format,
+    plot_autoscale,
+    print_rich_table,
 )
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)

@@ -17,7 +17,8 @@ from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
-from openbb_terminal import decorators, feature_flags as obbff, helper_funcs
+from openbb_terminal import decorators, helper_funcs
+from openbb_terminal import feature_flags as obbff
 from openbb_terminal.base_helpers import strtobool
 
 # pylint: disable=redefined-outer-name
@@ -326,7 +327,7 @@ def pytest_addoption(parser: Parser):
         "--autodoc",
         action="store_true",
         default=False,
-        help="run auto documantation tests",
+        help="run auto documentation tests",
     )
 
 

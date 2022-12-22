@@ -4,32 +4,31 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from typing import List
 from datetime import date
+from typing import List
 
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
-
 from openbb_terminal.menu import session
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.portfolio import (
+    attribution_model,
+    portfolio_helper,
+    portfolio_view,
+    statics,
+)
 from openbb_terminal.portfolio.portfolio_model import generate_portfolio
-from openbb_terminal.portfolio import statics
-from openbb_terminal.portfolio import portfolio_view
-from openbb_terminal.portfolio import portfolio_helper
-from openbb_terminal.portfolio import attribution_model
-
-from openbb_terminal.rich_config import console, MenuText
-from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.rich_config import MenuText, console
 
 try:
     from openbb_terminal.portfolio.portfolio_optimization import po_controller
@@ -276,9 +275,7 @@ class PortfolioController(BaseController):
     @log_start_end(log=logger)
     def call_bro(self, _):
         """Process bro command"""
-        from openbb_terminal.portfolio.brokers.bro_controller import (
-            BrokersController,
-        )
+        from openbb_terminal.portfolio.brokers.bro_controller import BrokersController
 
         self.queue = self.load_class(BrokersController, self.queue)
 

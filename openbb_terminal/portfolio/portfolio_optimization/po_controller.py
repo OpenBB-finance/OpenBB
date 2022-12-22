@@ -5,9 +5,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List, Dict, Tuple
-
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from typing import Dict, List, Tuple
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import parent_classes
@@ -16,26 +14,24 @@ from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     USER_PORTFOLIO_DATA_DIRECTORY,
 )
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    check_non_negative,
-    get_rf,
-)
+from openbb_terminal.helper_funcs import check_non_negative, get_rf
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio.portfolio_optimization import excel_model
 from openbb_terminal.portfolio.portfolio_optimization import (
+    excel_model,
     optimizer_helper,
     optimizer_model,
     optimizer_view,
     statics,
+    yahoo_finance_model,
 )
-from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 from openbb_terminal.portfolio.portfolio_optimization.parameters import (
     params_controller,
     params_view,
 )
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 

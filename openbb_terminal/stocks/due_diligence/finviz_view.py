@@ -5,11 +5,11 @@ import logging
 import os
 from typing import Any, List
 
+from openbb_terminal import rich_config
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.due_diligence import finviz_model
-from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 

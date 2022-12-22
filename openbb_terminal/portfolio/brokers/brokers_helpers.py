@@ -1,4 +1,5 @@
 import pandas as pd
+
 from openbb_terminal.rich_config import console
 
 

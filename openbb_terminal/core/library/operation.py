@@ -1,12 +1,10 @@
 import json
 from importlib import import_module
-from logging import getLogger, Logger
+from inspect import signature
+from logging import Logger, getLogger
 from typing import Any, Callable, Dict, List, Optional
 
-from inspect import signature
-
 import openbb_terminal.config_terminal as cfg
-
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
 
@@ -232,9 +230,9 @@ class OperationLogger:
 
         if func_module == "openbb_terminal.keys_model":
 
-            from openbb_terminal.core.log.generation.settings_logger import (  # pylint: disable=C0415
+            from openbb_terminal.core.log.generation.settings_logger import (
                 log_keys,
-            )
+            )  # pylint: disable=C0415
 
             # remove key if defined
             function_args.pop("key", None)

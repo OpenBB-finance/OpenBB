@@ -1,15 +1,14 @@
 """NASDAQ DataLink View"""
 __docformat__ = "numpy"
 
-from datetime import datetime
 import logging
 import os
+from datetime import datetime
 
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.discovery import nasdaq_model
-from openbb_terminal.decorators import check_api_key
 
 # pylint: disable=E1123
 

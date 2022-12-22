@@ -4,15 +4,15 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Tuple, Union, List, Optional
+from typing import List, Optional, Tuple, Union
 
 import pandas as pd
-
 from darts import TimeSeries
 from darts.models import TransformerModel
+
+from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
-from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 
 logger = logging.getLogger(__name__)
 

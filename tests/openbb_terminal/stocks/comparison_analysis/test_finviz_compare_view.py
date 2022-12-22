@@ -4,9 +4,10 @@
 import pandas as pd
 import pytest
 
+from openbb_terminal import helper_funcs
+
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.comparison_analysis import finviz_compare_view
-from openbb_terminal import helper_funcs
 
 
 @pytest.mark.skip(

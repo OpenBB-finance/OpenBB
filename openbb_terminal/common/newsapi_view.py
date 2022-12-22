@@ -1,17 +1,15 @@
 """ News View """
 __docformat__ = "numpy"
 
-import os
 import logging
+import os
 from typing import Optional
 
 import pandas as pd
 
-from openbb_terminal.decorators import check_api_key
 from openbb_terminal.common import newsapi_model
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data
-from openbb_terminal.helper_funcs import print_rich_table
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 logger = logging.getLogger(__name__)
 

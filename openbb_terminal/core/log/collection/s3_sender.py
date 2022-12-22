@@ -14,10 +14,7 @@ else:
     WITH_BOTO3 = True
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.log.constants import (
-    DEFAULT_API_URL,
-    DEFAULT_BUCKET,
-)
+from openbb_terminal.core.log.constants import DEFAULT_API_URL, DEFAULT_BUCKET
 from openbb_terminal.core.log.generation.settings import AWSSettings
 
 # DO NOT USE THE FILE LOGGER IN THIS MODULE

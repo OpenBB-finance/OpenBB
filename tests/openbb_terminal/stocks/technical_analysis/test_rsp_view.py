@@ -6,6 +6,7 @@ import pytest
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.technical_analysis import rsp_view
 
+
 # pylint: disable=E1101
 
 

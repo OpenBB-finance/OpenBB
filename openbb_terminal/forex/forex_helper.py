@@ -1,31 +1,31 @@
 """Forex helper."""
-from datetime import datetime, timedelta
-from typing import List, Optional, Dict, Iterable
-import os
 import argparse
 import logging
+import os
 import re
+from datetime import datetime, timedelta
+from typing import Dict, Iterable, List, Optional
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import mplfinance as mpf
+import numpy as np
+import pandas as pd
+import plotly.graph_objects as go
+import yfinance as yf
 from matplotlib.lines import Line2D
 from matplotlib.ticker import LogLocator, ScalarFormatter
-import mplfinance as mpf
-import yfinance as yf
-import numpy as np
-import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.forex import av_model, polygon_model
-from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import log_start_end
 import openbb_terminal.config_terminal as cfg
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.forex import av_model, polygon_model
 from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
-    plot_autoscale,
     lambda_long_number_format_y_axis,
+    plot_autoscale,
 )
+from openbb_terminal.rich_config import console
+from openbb_terminal.stocks import stocks_helper
 
 CANDLE_SORT = [
     "adjclose",

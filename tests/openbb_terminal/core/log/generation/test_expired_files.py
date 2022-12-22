@@ -1,7 +1,8 @@
 import os
+
 from openbb_terminal.core.log.generation.expired_files import (
-    get_timestamp_from_x_days,
     get_expired_file_list,
+    get_timestamp_from_x_days,
     remove_file_list,
 )
 

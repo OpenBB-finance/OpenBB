@@ -1,14 +1,15 @@
 import argparse
-from datetime import datetime, date
-from typing import Any, Dict, List
+from datetime import date, datetime
 from pathlib import Path
-from openbb_terminal.helper_funcs import log_and_raise
+from typing import Any, Dict, List
+
 from openbb_terminal.core.config import paths
-from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import log_and_raise
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
     OPTIMIZATION_PARAMETERS,
     TERMINAL_TEMPLATE_MAP,
 )
+from openbb_terminal.rich_config import console
 
 
 def check_save_file(file: str) -> str:

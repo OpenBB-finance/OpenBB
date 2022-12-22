@@ -1,8 +1,10 @@
 from typing import Tuple
+
 import pandas as pd
 import pytest
-from openbb_terminal.forecast import forecast_model as fm
+
 from openbb_terminal.common import common_model
+from openbb_terminal.forecast import forecast_model as fm
 from tests.openbb_terminal.forecast import conftest
 
 

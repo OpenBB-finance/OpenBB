@@ -2,21 +2,21 @@
 """Main Testing Module"""
 __docformat__ = "numpy"
 
+import argparse
+import csv
+import logging
+import os
+import sys
+import traceback
 from datetime import datetime
 from pathlib import Path
-from typing import List, Dict
-import traceback
-import argparse
-import logging
-import csv
-import sys
-import os
+from typing import Dict, List
 
-from openbb_terminal.rich_config import console
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
 )
+from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_controller import run_scripts
 
 logger = logging.getLogger(__name__)

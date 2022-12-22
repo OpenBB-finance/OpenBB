@@ -2,9 +2,9 @@
 __docformat__ = "numpy"
 
 import logging
+import warnings
 from datetime import datetime, timedelta
 from typing import List, Optional, Tuple
-import warnings
 
 import numpy as np
 import pandas as pd

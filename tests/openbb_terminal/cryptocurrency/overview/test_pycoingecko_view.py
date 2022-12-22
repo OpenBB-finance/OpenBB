@@ -1,4 +1,5 @@
 import pytest
+
 from openbb_terminal.cryptocurrency.overview import (
     pycoingecko_view as ov_pycoingecko_view,
 )

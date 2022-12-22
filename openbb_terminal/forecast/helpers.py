@@ -1,36 +1,34 @@
 # pylint: disable=too-many-arguments
-import os
 import argparse
-from typing import Any, Union, Optional, List, Dict, Tuple
-from datetime import timedelta, datetime, time
 import logging
-import pandas as pd
-import numpy as np
+import os
+from datetime import datetime, time, timedelta
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler, Normalizer
-from sklearn.metrics import (
-    mean_absolute_error,
-    r2_score,
-    mean_squared_error,
-)
-from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
-from darts.utils.statistics import plot_residuals_analysis
+import numpy as np
+import pandas as pd
 from darts import TimeSeries
+from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
+from darts.explainability.shap_explainer import ShapExplainer
 from darts.metrics import mape
 from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
-from darts.explainability.shap_explainer import ShapExplainer
+from darts.utils.statistics import plot_residuals_analysis
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from openbb_terminal.rich_config import console
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler, Normalizer, StandardScaler
+
+from openbb_terminal import rich_config
+from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal import rich_config
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 logging.getLogger("pytorch_lightning").setLevel(logging.CRITICAL)  # No needed for now

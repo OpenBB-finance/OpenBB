@@ -9,11 +9,11 @@ import numpy as np
 import pandas as pd
 import requests
 
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_replace_underscores_in_column_names,
 )
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import lambda_long_number_format
 
 logger = logging.getLogger(__name__)
 

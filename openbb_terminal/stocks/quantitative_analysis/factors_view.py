@@ -5,9 +5,7 @@ import logging
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.quantitative_analysis.factors_model import (
-    capm_information,
-)
+from openbb_terminal.stocks.quantitative_analysis.factors_model import capm_information
 
 logger = logging.getLogger(__name__)
 

@@ -5,15 +5,15 @@ import logging
 from typing import Tuple, Union
 
 import numpy as np
-import scipy
 import pandas as pd
+import scipy
 from sklearn.metrics import r2_score
+
 from openbb_terminal.common.quantitative_analysis import qa_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.portfolio.statics import PERIODS
-from openbb_terminal.portfolio import portfolio_helper, metrics_model
+from openbb_terminal.portfolio import metrics_model, portfolio_helper
 from openbb_terminal.portfolio.portfolio_engine import PortfolioEngine
-
+from openbb_terminal.portfolio.statics import PERIODS
 
 # pylint: disable=E1136,W0201,R0902,C0302
 # pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods, consider-using-f-string

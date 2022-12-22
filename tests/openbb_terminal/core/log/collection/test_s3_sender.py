@@ -4,10 +4,11 @@ from pathlib import Path
 # IMPORTATION THIRDPARTY
 import pytest
 
+from openbb_terminal.core.log.collection import s3_sender
+from openbb_terminal.core.log.constants import DEFAULT_API_URL
+
 # IMPORTATION INTERNAL
 from openbb_terminal.core.log.generation.settings import AWSSettings
-from openbb_terminal.core.log.constants import DEFAULT_API_URL
-from openbb_terminal.core.log.collection import s3_sender
 
 # pylint: disable=W0611
 

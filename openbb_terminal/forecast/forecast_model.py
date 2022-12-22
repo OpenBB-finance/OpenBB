@@ -4,20 +4,20 @@ __docformat__ = "numpy"
 # pylint: disable=eval-used
 
 import logging
-from pathlib import Path
-from typing import Dict, Union, Any, Optional
 from itertools import chain
+from pathlib import Path
+from typing import Any, Dict, Optional, Union
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
+from openbb_terminal.common import common_model
+from openbb_terminal.core.config.paths import (
+    USER_CUSTOM_IMPORTS_DIRECTORY,
+    USER_EXPORTS_DIRECTORY,
+)
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.config.paths import (
-    USER_EXPORTS_DIRECTORY,
-    USER_CUSTOM_IMPORTS_DIRECTORY,
-)
-from openbb_terminal.common import common_model
 
 logger = logging.getLogger(__name__)
 

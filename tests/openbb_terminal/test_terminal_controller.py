@@ -1,5 +1,7 @@
 from contextlib import contextmanager
+
 import pytest
+
 from openbb_terminal import terminal_controller
 
 

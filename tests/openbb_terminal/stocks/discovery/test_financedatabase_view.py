@@ -3,9 +3,10 @@
 # IMPORTATION THIRDPARTY
 import pytest
 
+from openbb_terminal import helper_funcs
+
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.discovery import financedatabase_view
-from openbb_terminal import helper_funcs
 
 
 @pytest.mark.default_cassette("test_show_equities")

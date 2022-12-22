@@ -2,8 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import List, Tuple
 from json import JSONDecodeError
+from typing import List, Tuple
 
 import pandas as pd
 import requests

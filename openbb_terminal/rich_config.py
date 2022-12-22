@@ -1,17 +1,19 @@
 """Rich Module"""
 __docformat__ = "numpy"
 
-import os
 import json
+import os
 from pathlib import Path
 from typing import Tuple
+
+import i18n
 from rich import panel
 from rich.console import Console, Theme
 from rich.text import Text
-import i18n
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 
 # pylint: disable=no-member,c-extension-no-member
 

@@ -1,9 +1,10 @@
 import pytest
+
 from openbb_terminal.core.log.generation.settings import (
-    Settings,
     AppSettings,
     AWSSettings,
     LogSettings,
+    Settings,
 )
 
 

@@ -6,8 +6,8 @@ import logging
 
 import financedatabase as fd
 import yfinance as yf
-from tqdm import tqdm
 from requests.exceptions import ReadTimeout
+from tqdm import tqdm
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console

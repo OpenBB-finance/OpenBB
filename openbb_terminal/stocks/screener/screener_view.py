@@ -4,8 +4,8 @@ __docformat__ = "numpy"
 import configparser
 from pathlib import Path
 
-from openbb_terminal.rich_config import console
 from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.screener import finviz_model
 
 PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "screener"

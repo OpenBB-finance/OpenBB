@@ -1,7 +1,8 @@
 import os
+
+import pandas as pd
 import pytest
 from _pytest.nodes import Node
-import pandas as pd
 
 
 def create_path(*path: str) -> str:

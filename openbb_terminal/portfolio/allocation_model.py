@@ -6,8 +6,9 @@ from typing import Dict, Tuple
 
 import pandas as pd
 import requests
-from tqdm import tqdm
 import yfinance as yf
+from tqdm import tqdm
+
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 

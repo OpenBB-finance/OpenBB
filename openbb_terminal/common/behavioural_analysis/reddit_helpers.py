@@ -1,8 +1,8 @@
 """Reddit Helpers"""
 __docformat__ = "numpy"
 
-from typing import List
 import re
+from typing import List
 
 import praw
 

@@ -1,7 +1,9 @@
-from typing import List
 import argparse
+from typing import List
+
 import pandas as pd
 import pytest
+
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 try:

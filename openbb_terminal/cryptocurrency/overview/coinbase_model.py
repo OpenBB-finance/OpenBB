@@ -2,7 +2,9 @@
 __docformat__ = "numpy"
 
 import logging
+
 import pandas as pd
+
 from openbb_terminal.cryptocurrency.coinbase_helpers import make_coinbase_request
 from openbb_terminal.decorators import log_start_end
 

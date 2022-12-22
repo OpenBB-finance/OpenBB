@@ -3,23 +3,22 @@ import logging
 import os
 from typing import List, Optional
 
+import pandas as pd
 from matplotlib import pyplot as plt
 
-import pandas as pd
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.due_diligence.tokenterminal_model import (
+    METRICS,
+    get_description,
     get_fundamental_metric_from_project,
     get_project_ids,
-    get_description,
-    METRICS,
 )
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 from openbb_terminal.rich_config import console
 

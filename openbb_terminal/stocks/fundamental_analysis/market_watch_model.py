@@ -12,8 +12,8 @@ from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
-    lambda_clean_data_values_to_float,
     get_user_agent,
+    lambda_clean_data_values_to_float,
     lambda_int_or_round_float,
 )
 

@@ -5,7 +5,6 @@ import logging
 import os
 from typing import List, Optional
 
-
 import matplotlib.pyplot as plt
 from matplotlib import ticker
 
@@ -15,12 +14,11 @@ from openbb_terminal.cryptocurrency.defi import terraengineer_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-
 
 logger = logging.getLogger(__name__)
 

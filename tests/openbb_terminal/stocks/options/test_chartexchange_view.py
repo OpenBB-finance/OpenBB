@@ -3,9 +3,10 @@
 # IMPORTATION THIRDPARTY
 import pytest
 
+from openbb_terminal import helper_funcs
+
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.options import chartexchange_view
-from openbb_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")

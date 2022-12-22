@@ -1,18 +1,18 @@
 """Yahoo Finance model"""
 __docformat__ = "numpy"
 
+import logging
 import os
 import sys
-import logging
-from typing import List
 from datetime import datetime
+from typing import List
 
-import yfinance as yf
 import pandas as pd
+import yfinance as yf
 from dateutil.relativedelta import relativedelta
 
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.decorators import log_start_end
 
 # pylint: disable=attribute-defined-outside-init
 

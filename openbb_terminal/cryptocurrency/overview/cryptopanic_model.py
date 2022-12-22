@@ -11,10 +11,10 @@ import pandas as pd
 import requests
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import prepare_all_coins_df
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.parent_classes import CRYPTO_SOURCES
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

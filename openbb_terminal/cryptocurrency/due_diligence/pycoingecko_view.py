@@ -4,7 +4,9 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import Optional
+
 from pandas.plotting import register_matplotlib_converters
+
 import openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df

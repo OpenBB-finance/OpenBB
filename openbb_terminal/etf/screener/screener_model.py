@@ -8,8 +8,8 @@ from typing import Dict
 
 import pandas as pd
 
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 

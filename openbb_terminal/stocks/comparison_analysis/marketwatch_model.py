@@ -1,8 +1,8 @@
 """ Comparison Analysis Marketwatch Model """
 __docformat__ = "numpy"
 
-from datetime import datetime
 import logging
+from datetime import datetime
 from typing import Dict, List, Tuple
 
 import pandas as pd

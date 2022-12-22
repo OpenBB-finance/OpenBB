@@ -4,13 +4,12 @@ __docformat__ = "numpy"
 import logging
 from typing import Optional
 
-import urllib3
 import pandas as pd
 import requests
+import urllib3
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent, lambda_long_number_format
-
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 

@@ -1,6 +1,6 @@
 import sys
-from openbb_terminal import terminal_controller
-from openbb_terminal import integration_testing
+
+from openbb_terminal import integration_testing, terminal_controller
 
 if __name__ == "__main__":
     sent_args = sys.argv[1:]

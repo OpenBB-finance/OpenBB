@@ -4,9 +4,10 @@
 import finviz.main_func
 import pytest
 
+from openbb_terminal import helper_funcs
+
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import finviz_view
-from openbb_terminal import helper_funcs
 
 
 @pytest.mark.vcr

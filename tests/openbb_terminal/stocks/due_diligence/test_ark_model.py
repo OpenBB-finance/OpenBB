@@ -1,9 +1,9 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import requests
 import pandas as pd
 import pytest
+import requests
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.due_diligence import ark_model

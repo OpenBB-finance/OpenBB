@@ -1,19 +1,18 @@
 """Cramer Model"""
 __docformat__ = "numpy"
 
-import os
 import logging
+import os
 import re
 
+import certifi
+import numpy as np
 import pandas as pd
 import requests
-import numpy as np
 import yfinance as yf
 from bs4 import BeautifulSoup
-import certifi
 
 from openbb_terminal.decorators import log_start_end
-
 
 logger = logging.getLogger(__name__)
 

@@ -6,9 +6,10 @@ from datetime import datetime
 import pandas as pd
 import pytest
 
+from openbb_terminal import parent_classes
+
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.behavioural_analysis import ba_controller
-from openbb_terminal import parent_classes
 
 # pylint: disable=E1101
 # pylint: disable=W0603

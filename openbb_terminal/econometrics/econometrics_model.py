@@ -6,7 +6,7 @@ __docformat__ = "numpy"
 import logging
 import warnings
 from itertools import combinations
-from typing import Any, Dict, Tuple, Optional, Union
+from typing import Any, Dict, Optional, Tuple, Union
 
 import pandas as pd
 import statsmodels.api as sm

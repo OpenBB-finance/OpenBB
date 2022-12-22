@@ -1,11 +1,12 @@
 # IMPORTATION STANDARD
 from datetime import datetime
 
+# IMPORTATION INTERNAL
+import bt
+
 # IMPORTATION THIRDPARTY
 import pytest
 
-# IMPORTATION INTERNAL
-import bt
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.backtesting import bt_model
 

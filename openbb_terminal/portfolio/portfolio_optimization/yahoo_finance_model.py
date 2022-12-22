@@ -11,7 +11,7 @@ from typing import List
 import numpy as np
 import pandas as pd
 import yfinance as yf
-from dateutil.relativedelta import relativedelta, FR
+from dateutil.relativedelta import FR, relativedelta
 
 from openbb_terminal.decorators import log_start_end
 

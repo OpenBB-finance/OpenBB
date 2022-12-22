@@ -2,13 +2,13 @@
 __docformat__ = "numpy"
 
 import os
-import pandas as pd
 
+import pandas as pd
 import plotly.express as px
 from plotly.subplots import make_subplots
 
-from openbb_terminal.stocks.discovery import finviz_model
 from openbb_terminal.helper_funcs import export_data
+from openbb_terminal.stocks.discovery import finviz_model
 
 
 def display_heatmap(timeframe: str, export: str = ""):

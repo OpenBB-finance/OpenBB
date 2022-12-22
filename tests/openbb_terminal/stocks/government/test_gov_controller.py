@@ -4,9 +4,10 @@ import os
 # IMPORTATION THIRDPARTY
 import pytest
 
+from openbb_terminal import parent_classes
+
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.government import gov_controller
-from openbb_terminal import parent_classes
 
 # pylint: disable=E1101
 # pylint: disable=W0603

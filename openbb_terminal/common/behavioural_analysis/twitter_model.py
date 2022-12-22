@@ -1,8 +1,8 @@
 """Twitter Model"""
 __docformat__ = "numpy"
 
-from datetime import datetime, timedelta
 import logging
+from datetime import datetime, timedelta
 from typing import Optional
 
 import pandas as pd
