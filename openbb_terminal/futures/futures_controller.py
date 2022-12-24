@@ -206,7 +206,7 @@ class FuturesController(BaseController):
             "-t",
             "--ticker",
             dest="ticker",
-            type=str,
+            type=lambda x: str(x).upper(),
             default="",
             help="Future curve to be selected",
             required="-h" not in other_args,

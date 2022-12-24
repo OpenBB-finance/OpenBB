@@ -132,6 +132,7 @@ def get_financials(
                         orient="index",
                     ).value
                 )
+                values.columns = [single_thing["filing_date"]]
                 cash_flows = pd.concat([cash_flows, values], axis=1)
     if statement == "balance":
         df_fa = balance_sheets
