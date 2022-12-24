@@ -166,7 +166,8 @@ def display_btc_single_block(
         df.rename(index={0: "Value"}, inplace=True)
         df_data = df.copy()
 
-        df_essentials = df[[
+        df_essentials = df[
+            [
                 "hash",
                 "ver",
                 "prev_block",
@@ -181,7 +182,8 @@ def display_btc_single_block(
                 "main_chain",
                 "height",
                 "weight",
-            ]]
+            ]
+        ]
 
         df_flipped = df_essentials.transpose()
 
