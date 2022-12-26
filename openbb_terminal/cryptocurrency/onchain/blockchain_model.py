@@ -7,8 +7,6 @@ import pandas as pd
 import requests
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
-
 
 logger = logging.getLogger(__name__)
 
@@ -133,4 +131,3 @@ def get_btc_single_block(blockhash: str) -> pd.DataFrame:
         return df
 
     return pd.DataFrame()
-

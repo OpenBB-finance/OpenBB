@@ -17,5 +17,5 @@ def test_get_btc_circulating_supply(recorder):
 
 @pytest.mark.vcr
 def test_get_btc_single_block(recorder):
-    df = blockchain_model.get_btc_single_block()
+    df = blockchain_model.get_btc_single_block("")
     recorder.capture(df)
