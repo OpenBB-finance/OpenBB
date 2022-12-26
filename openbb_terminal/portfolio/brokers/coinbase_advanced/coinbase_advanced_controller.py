@@ -13,12 +13,14 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    valid_datetime,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.brokers.coinbase_advanced import coinbase_advanced_view
-from openbb_terminal.cryptocurrency.coinbase_advanced_helpers import get_order_id_list
+from openbb_terminal.cryptocurrency.coinbase_advanced_helpers import (
+    get_order_id_list,
+    DateTimeAction,
+)
 from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
@@ -386,9 +388,10 @@ class CoinbaseAdvController(BaseController):
             "-d",
             "--date_time",
             dest="end_time",
-            type=valid_datetime,
-            help="Order valid until this Date-Time. Format DD-MM-YYYY_HH:MM_AM/PM"
-            " important: no spaces (_)",
+            type=str,
+            action=DateTimeAction,
+            help="Order valid until this Date-Time. Format 'DD/MM/YYYY_HH:MM_AM/PM'"
+            " important: use single quotes and no spaces (_)",
         )
 
         if other_args and other_args[0][0] != "-":
@@ -476,8 +479,9 @@ class CoinbaseAdvController(BaseController):
         parser.add_argument(
             "--date_time",
             dest="end_time",
-            type=valid_datetime,
-            help="Order valid until this Date-Time. Format DD-MM-YYYY_HH:MM_AM/PM "
+            type=str,
+            action=DateTimeAction,
+            help="Order valid until this Date-Time. Format 'DD/MM/YYYY_HH:MM_AM/PM' "
             "important: no spaces use underscore (_)",
         )
 

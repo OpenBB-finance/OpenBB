@@ -593,10 +593,12 @@ def valid_date(s: str) -> datetime:
 
 def valid_datetime(
     s: str,
-    input_format: str = "%d-%m-%Y_%H:%M_%p",
-    output_format: str = "%Y-%m-%dT%H:%M:00Z",
-) -> str:
-    """Argparse type to check date is in valid format.
+    input_format: str = "%d-%m-%Y_%I:%M_%p",
+) -> datetime:
+    """Function to verify datetime is valid.
+    NOTE: This function does not return an aware datetime object.
+          When using this function you need to replace the timezone
+          in the retunred value, if required by your code.
      Parameters
     ----------
     s: str
@@ -604,16 +606,13 @@ def valid_datetime(
     input_format: str
         Format representing the s parameter as per
         https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior
-    output_format: str
-        Desired date output format as per
-        https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior
 
     Returns
     -------
-    str
+    datetime
     """
     try:
-        return datetime.strptime(s, input_format).strftime(output_format)
+        return datetime.strptime(s, input_format)
     except ValueError as value_error:
         logging.exception(str(value_error))
         raise argparse.ArgumentTypeError(f"Not a valid datetime: {s}") from value_error

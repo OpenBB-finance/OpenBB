@@ -6,15 +6,19 @@ import binascii
 import logging
 
 from typing import Optional, Any, Union
+from datetime import datetime, timezone
 import hmac
 import hashlib
 import time
 import json
 import requests
+import pytz
 import pandas as pd
 from requests.auth import AuthBase
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import valid_datetime
+
 
 logger = logging.getLogger(__name__)
 
@@ -74,6 +78,23 @@ class CoinbaseAdvApiException(Exception):
 
     def __str__(self) -> str:
         return f"CoinbaseAdvApiException: {self.message}"
+
+
+class DateTimeAction(argparse.Action):
+    """Convert datetime entered by user from
+    local timezone to UTC in ISO 8601 format.
+    """
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        date_parsed = valid_datetime(
+            # "%Y-%m-%dT%I:%M:00Z"
+            values,
+            input_format="%d-%m-%Y_%I:%M_%p",
+        )
+        local_tz = datetime.now(timezone.utc).astimezone().tzinfo
+        date_with_tz = date_parsed.replace(tzinfo=local_tz)
+        date_utc = date_with_tz.astimezone(pytz.utc).isoformat()
+        setattr(namespace, self.dest, date_utc)
 
 
 def check_validity_of_product(product_id: str) -> str:
