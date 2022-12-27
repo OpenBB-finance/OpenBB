@@ -1,6 +1,7 @@
 """Option helper functions"""
 __docformat__ = "numpy"
 
+import logging
 import os
 from datetime import datetime, timedelta
 from math import e, log
@@ -10,10 +11,14 @@ import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_dte_from_expiration(date: str) -> float:
     """
     Converts a date to total days until the option would expire.
@@ -40,6 +45,7 @@ def get_dte_from_expiration(date: str) -> float:
     return time_to_now
 
 
+@log_start_end(log=logger)
 def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
     """Function to get the loss at the given expiry
 
@@ -68,6 +74,7 @@ def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
     return loss
 
 
+@log_start_end(log=logger)
 def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
     """Returns the max pain for a given call/put dataframe
 
@@ -94,6 +101,7 @@ def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
     return max_pain
 
 
+@log_start_end(log=logger)
 def convert(orig: str, to: str) -> float:
     """Convert a string to a specific type of number
     Parameters
@@ -113,6 +121,7 @@ def convert(orig: str, to: str) -> float:
     raise ValueError("Invalid to format, please use '%' or ','.")
 
 
+@log_start_end(log=logger)
 def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> float:
     """The risk neutral payoff for a stock
     Parameters
@@ -142,6 +151,7 @@ def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> flo
     return sum(df["Vals"]) / risk_free
 
 
+@log_start_end(log=logger)
 def export_yf_options(export: str, options, file_name: str):
     """Special function to assist in exporting yf options
 
@@ -398,3 +408,171 @@ class Option:
             * norm.pdf(self.d1)
             / self._sigma
         )
+
+
+def delta_at_strike(
+    strike: Union[float, pd.Series, np.ndarray],
+    underlying_price: float,
+    iv: Union[float, pd.Series, np.ndarray],
+    dte: Union[float, pd.Series, np.ndarray],
+    option: Union[str, pd.Series, np.ndarray] = "call",
+    rf_rate: float = 0.03,
+) -> Union[float, pd.Series, np.ndarray]:
+    """Gets delta at a theoretical underlying
+
+    Parameters
+    ----------
+    strike : float
+        Option strike price
+    underlying_price : float
+        Underlying price for Black-Scholes calculation
+    iv : float
+        Implied volatility for calculation
+    dte : float
+        Time to expiration in years
+    option : str, optional
+        Type of option, either "call" or "put", by default "call"
+    rf_rate : float, optional
+        Risk free rate for calculation, by default 0.03
+
+    Returns
+    -------
+    float
+        Value of delta at theoretical underlying
+    """
+
+    d1 = (np.log(underlying_price / strike) + (rf_rate + 0.5 * iv**2) * dte) / (
+        iv * np.sqrt(dte)
+    )
+    return np.where(option == "call", norm.cdf(d1), norm.cdf(d1) - 1)
+
+
+def gamma_at_strike(
+    strike: Union[float, pd.Series, np.ndarray],
+    underlying_price: float,
+    iv: Union[float, pd.Series, np.ndarray],
+    dte: Union[float, pd.Series, np.ndarray],
+    rf_rate: float = 0.03,
+) -> Union[float, pd.Series, np.ndarray]:
+    """Get gamma at a theoretical underlying
+
+    Parameters
+    ----------
+    strike : Union[float,pd.Series]
+        Option strike price
+    underlying_price : float
+        Underlying price for Black-Scholes calculation
+    iv : float
+        Implied volatility for calculation
+    dte : float
+        Time to expiration in years
+    rf_rate : float, optional
+        Risk free rate for calculation, by default 0.03
+
+    Returns
+    -------
+    float
+        Value of delta at theoretical underlying
+    """
+    d1 = (np.log(underlying_price / strike) + (rf_rate + 0.5 * iv**2) * dte) / (
+        iv * np.sqrt(dte)
+    )
+    return norm.pdf(d1) / (underlying_price * iv * np.sqrt(dte))
+
+
+@log_start_end(log=logger)
+def get_abs_market_delta(
+    underlying_price: float, df: pd.DataFrame, rf_rate: float = 0.03
+) -> float:
+    """
+    Get the total market delta across entire chain.
+    In this calculation, we find delta at a theoretical underlying and then take the sum of delta x open interest.
+    Delta neutral is the theoretical underlying where this sum is 0.  To prepare the minimization, we take the absolute
+    value of this sum.
+
+    Parameters
+    ----------
+    underlying_price : float
+        Theoretical underlying price
+    df : pd.DataFrame
+        Dataframe of option chain.  Requires the follownig columns: implied_volatility, dte, open_interest, strike, type
+    rf_rate : float, optional
+        Optional risk free rate for calculation, by default 0.03
+
+    Returns
+    -------
+    float
+        Market delta at underlying price.
+
+    Raises
+    ------
+    ValueError
+        If any of the required columns are not in the dataframe
+    """
+    for col in ["implied_volatility", "dte", "open_interest", "strike", "type"]:
+        if col not in df.columns:
+            raise ValueError(f"{col} needs to be in df")
+    df["new_delta"] = delta_at_strike(
+        df.strike.to_numpy(),
+        underlying_price,
+        df.implied_volatility.to_numpy(),
+        df.dte.to_numpy(),
+        df.type.to_numpy(),
+        rf_rate,
+    )
+    return np.abs(np.sum(df["new_delta"].to_numpy() * df["open_interest"].to_numpy()))
+
+
+@log_start_end(log=logger)
+def get_market_gamma(
+    underlying_price: float,
+    df: pd.DataFrame,
+    abs_mg: bool = True,
+    rf_rate: float = 0.03,
+):
+    """
+    Get the total market gamma across entire chain.
+    In this calculation, we find gamma at a theoretical underlying and then take the sum of delta x open interest.
+    Because gamma is positive, we define gamma for puts to be negative when taking the sum.
+    Gamma neutral is the theoretical underlying where this sum is 0.  To prepare the minimization, we take the absolute
+    value of this sum.
+    Gamma max is where the sum of the abolutele value of gamma x open interest is maximized.
+
+    Parameters
+    ----------
+    underlying_price : float
+        Theoretical underlying price
+    df : pd.DataFrame
+        Dataframe of option chain.  Requires the following columns: implied_volatility, dte, open_interest, strike, type
+    abs_mg : bool, optional
+        Flag to indicate if getting gamma neutral by default True
+    rf_rate : float, optional
+        Optional float value for risk free rate, by default 0.03
+
+    Returns
+    -------
+    float
+        Value of gamma max or gamma neutral at the underlying price
+
+    Raises
+    ------
+    ValueError
+        If any of the required columns are not in the dataframe
+    """
+    for col in ["implied_volatility", "dte", "open_interest", "strike", "type"]:
+        if col not in df.columns:
+            raise ValueError(f"{col} needs to be in df")
+    df["new_gamma"] = gamma_at_strike(
+        df.strike.to_numpy(),
+        underlying_price,
+        df.implied_volatility.to_numpy(),
+        df.dte.to_numpy(),
+        rf_rate,
+    )
+    fact = np.where(df.type == "put", -1, 1)
+    mg = np.sum(df["new_gamma"].to_numpy() * df["open_interest"].to_numpy() * fact)
+    if abs_mg:
+        # gamma neutral
+        return np.abs(np.sum(mg))
+    # Gamma max
+    return -1 * np.sum(np.abs(mg))

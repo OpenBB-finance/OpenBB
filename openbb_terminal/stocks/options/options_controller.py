@@ -28,6 +28,7 @@ from openbb_terminal.stocks.options import (
     calculator_view,
     chartexchange_view,
     fdscanner_view,
+    intrinio_model,
     nasdaq_model,
     nasdaq_view,
     op_helpers,
@@ -585,6 +586,8 @@ class OptionsController(BaseController):
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             elif ns_parser.source == "Nasdaq":
                 self.expiry_dates = nasdaq_model.get_expirations(self.ticker)
+            elif ns_parser.source == "Intrinio":
+                self.expiry_dates = intrinio_model.get_expiration_dates(self.ticker)
             else:
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
 
@@ -665,6 +668,11 @@ class OptionsController(BaseController):
                             self.ticker, self.selected_date
                         )
                         self.chain = op_helpers.Chain(df, self.source)
+                    elif self.source == "Intrinio":
+                        df = intrinio_model.get_option_chain(
+                            self.ticker, self.selected_date
+                        )
+                        self.chain = op_helpers.Chain(df)
                     else:
                         self.chain = yfinance_model.get_option_chain(
                             self.ticker, self.selected_date

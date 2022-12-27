@@ -42,6 +42,7 @@ from openbb_terminal.stocks.stocks_model import (
     load_stock_eodhd,
     load_stock_iex_cloud,
     load_stock_polygon,
+    load_stock_intrinio,
 )
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -329,6 +330,9 @@ def load(
             df_stock_candidate = load_stock_polygon(
                 symbol, start_date, end_date, weekly, monthly
             )
+
+        elif source == "Intrinio":
+            df_stock_candidate = load_stock_intrinio(symbol, start_date, end_date)
         else:
             console.print("[red]Invalid source for stock[/red]\n")
             return
@@ -372,6 +376,11 @@ def load(
                 s_start = start_date
 
             df_stock_candidate.index.name = "date"
+
+        elif source == "Intrinio":
+            console.print(
+                "[red]We currently do not support intraday data with Intrinio.[/red]\n"
+            )
 
         elif source == "Polygon":
             request_url = (

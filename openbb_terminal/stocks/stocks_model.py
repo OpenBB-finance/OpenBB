@@ -7,6 +7,7 @@ import requests
 import pandas as pd
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
+import intrinio_sdk as intrinio
 
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.rich_config import console
@@ -15,6 +16,36 @@ from openbb_terminal import config_terminal as cfg
 # pylint: disable=unsupported-assignment-operation,no-member
 
 logger = logging.getLogger(__name__)
+
+
+def load_stock_intrinio(
+    symbol: str, start_date: datetime, end_date: datetime
+) -> pd.DataFrame:
+    intrinio.ApiClient().set_api_key(cfg.API_INTRINIO_KEY)
+    api = intrinio.SecurityApi()
+    stock = api.get_security_stock_prices(
+        symbol.upper(),
+        start_date=start_date,
+        end_date=end_date,
+        frequency="daily",
+        page_size=10000,
+    )
+    df = pd.DataFrame(stock.to_dict()["stock_prices"])[
+        ["open", "high", "low", "close", "adj_close", "date", "volume"]
+    ]
+    df["date"] = pd.DatetimeIndex(df["date"])
+    df = df.set_index("date").rename(
+        columns={
+            "adj_close": "Adj Close",
+            "open": "Open",
+            "close": "Close",
+            "high": "High",
+            "low": "Low",
+            "volume": "Volume",
+        }
+    )[::-1]
+
+    return df
 
 
 def load_stock_av(

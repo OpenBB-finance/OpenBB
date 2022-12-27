@@ -1,14 +1,18 @@
 """Options Functions For OpenBB SDK"""
 
 import logging
-from typing import Union
+from typing import Optional, Union
 
+import numpy as np
 import pandas as pd
+from scipy.optimize import minimize
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks.options import (
     chartexchange_model,
+    intrinio_model,
     nasdaq_model,
+    op_helpers,
     tradier_model,
     yfinance_model,
 )
@@ -27,7 +31,7 @@ def get_full_option_chain(
     symbol : str
         Symbol to get chain for
     source : str, optional
-        Source to get data from, by default "Nasdaq"
+        Source to get data from, by default "Nasdaq".  Can be YahooFinance, Tradier, Nasdaq, or Intrinio
     expiration : Union[str, None], optional
         Date to get chain for.  By default returns all dates
 
@@ -61,6 +65,14 @@ def get_full_option_chain(
         if expiration:
             return nasdaq_model.get_chain_given_expiration(symbol, expiration)
         return nasdaq_model.get_full_option_chain(symbol)
+    if source == "Intrinio":
+        if expiration:
+            return intrinio_model.get_option_chain(symbol, expiration)
+        return (
+            intrinio_model.get_full_option_chain(symbol)
+            .sort_values(by=["expiration", "strike"])
+            .reset_index(drop=True)
+        )
     logger.info("Invalid Source")
     return pd.DataFrame()
 
@@ -93,11 +105,13 @@ def get_option_expirations(symbol: str, source: str = "Nasdaq") -> list:
         return yfinance_model.option_expirations(symbol)
     if source == "Nasdaq":
         return nasdaq_model.get_expirations(symbol)
-
+    if source == "Intrinio":
+        return intrinio_model.get_expiration_dates(symbol)
     logger.info("Invalid Source")
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def hist(
     symbol: str,
     exp: str,
@@ -139,3 +153,33 @@ def hist(
     if source.lower() == "tradier":
         return tradier_model.get_historical_options(symbol, exp, strike, not call)
     return pd.DataFrame()
+
+
+def get_delta_neutral(symbol: str, date: str, x0: Optional[float] = None) -> float:
+    """Get delta neutral price for symbol at a given close date
+
+    Parameters
+    ----------
+    symbol : str
+        Symbol to get delta neutral price for
+    date : str
+        Date to get delta neutral price for
+    x0 : float, optional
+        Optional initial guess for solver, defaults to close price of that day
+
+    Returns
+    -------
+    float
+        Delta neutral price
+    """
+    # Need an initial guess for the solver
+    x0_guess = x0 if x0 else intrinio_model.get_close_at_date(symbol, date)
+    chains = intrinio_model.get_full_chain_eod(symbol, date)
+
+    return minimize(
+        op_helpers.get_abs_market_delta,
+        x0=x0_guess,
+        args=(chains),
+        bounds=[(0.01, np.inf)],
+        method="l-bfgs-b",
+    ).x[0]

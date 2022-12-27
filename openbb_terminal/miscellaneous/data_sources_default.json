@@ -6,7 +6,7 @@
     "candle": [],
     "codes": ["Polygon"],
     "news": ["Feedparser", "NewsApi"],
-    "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+    "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD", "Intrinio"],
     "th": {
       "symbol": ["FinanceDatabase"],
       "open": ["Bursa"],
@@ -23,11 +23,11 @@
         "set": [],
         "scr": ["Syncretism"]
       },
-      "load": ["YahooFinance", "Tradier", "Nasdaq"],
-      "exp": ["YahooFinance", "Tradier", "Nasdaq"],
+      "load": ["YahooFinance", "Tradier", "Nasdaq", "Intrinio"],
+      "exp": ["YahooFinance", "Tradier", "Nasdaq", "Intrinio"],
       "pcr": ["AlphaQuery"],
       "info": ["Barchart"],
-      "chains": ["YahooFinance", "Tradier", "Nasdaq"],
+      "chains": ["YahooFinance", "Tradier", "Nasdaq", "Intrinio"],
       "oi": ["YahooFinance", "Tradier", "Nasdaq"],
       "vol": ["YahooFinance", "Tradier", "Nasdaq"],
       "voi": ["YahooFinance", "Tradier", "Nasdaq"],

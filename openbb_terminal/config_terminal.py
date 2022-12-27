@@ -192,3 +192,6 @@ API_TOKEN_TERMINAL_KEY = os.getenv("OPENBB_API_TOKEN_TERMINAL_KEY") or "REPLACE_
 
 # https://stocksera.pythonanywhere.com/accounts/developers
 API_STOCKSERA_KEY = os.getenv("OPENBB_API_STOCKSERA_KEY") or "REPLACE_ME"
+
+# https://intrinio.com/starter-plan
+API_INTRINIO_KEY = os.getenv("OPENBB_API_INTRINIO_KEY") or "REPLACE_ME"
