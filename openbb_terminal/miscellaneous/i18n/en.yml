@@ -943,7 +943,7 @@ en:
   portfolio/bro/cbadv/manageorders: Order Tools
   portfolio/bro/cbadv/market: Place Market order
   portfolio/bro/cbadv/limitgtc: Place Limit GTC order
-  portfolio/bro/cbadv/imitgtd: Place limit GTD order
+  portfolio/bro/cbadv/limitgtd: Place limit GTD order
   portfolio/bro/cbadv/stopgtc: Place Stop Limit GTC order
   portfolio/bro/cbadv/stopgtd: Place Stop Limit GTD order
   portfolio/bro/cbadv/cancelorder: Cancel order by order id
