@@ -1,6 +1,8 @@
-Loading Daily data for TSLA with starting period 2019-11-19.
+Loading Daily data for TSLA with starting period 2019-12-16.
                                    Company Rating  Price Target
 Date                                                           
+2022-12-14                   Goldman Sachs    BUY    235.000000
+2022-11-23                 Citigroup Corp.   HOLD    176.000000
 2022-10-25                  Morgan Stanley    BUY    330.000000
 2022-10-20                          Mizuho    BUY    330.000000
 2022-10-20             RBC Capital Markets    BUY    325.000000
@@ -18,12 +20,12 @@ Date
 2022-08-25                  Morgan Stanley    BUY    383.329987
 2022-08-25  Wedbush Morgan Securities Inc.    BUY    360.000000
 2022-08-02                 Citigroup Corp.   SELL    424.000000
-2022-07-21          Cowen and Company, LLC   HOLD    733.000000
-2022-07-21                          Mizuho    BUY   1175.000000
-2022-07-21                       Berenberg   HOLD    850.000000
 2022-07-21   Bank of America Merrill Lynch   HOLD    950.000000
+2022-07-21          Cowen and Company, LLC   HOLD    733.000000
 2022-07-21                Wells Fargo & Co   HOLD    830.000000
 2022-07-21                Capital Depesche    BUY    815.000000
+2022-07-21                       Berenberg   HOLD    850.000000
+2022-07-21                          Mizuho    BUY   1175.000000
 2022-07-19                   Credit Suisse    BUY   1000.000000
 2022-07-18                Barclays Capital   SELL    380.000000
 2022-07-14                  Morgan Stanley    BUY   1150.000000
@@ -59,8 +61,8 @@ Date
 2022-01-27                 Citigroup Corp.   SELL    313.000000
 2022-01-18                   Credit Suisse   HOLD   1025.000000
 2022-01-05                          Mizuho    BUY   1300.000000
-2022-01-03                   Deutsche Bank    BUY   1200.000000
 2022-01-03                     J.P. Morgan   SELL    295.000000
+2022-01-03                   Deutsche Bank    BUY   1200.000000
 2021-12-31                   Deutsche Bank    BUY   1200.000000
 2021-12-28         Argus Research Company     BUY   1313.000000
 2021-12-08             New Street Research    BUY   1580.000000
@@ -69,9 +71,9 @@ Date
 2021-10-28                   Piper Sandler    BUY   1300.000000
 2021-10-27                   Goldman Sachs    BUY   1125.000000
 2021-10-21                Wells Fargo & Co   HOLD    860.000000
-2021-10-21                Capital Depesche    BUY   1040.000000
 2021-10-21  Wedbush Morgan Securities Inc.    BUY   1100.000000
 2021-10-21                   Credit Suisse   HOLD    830.000000
+2021-10-21                Capital Depesche    BUY   1040.000000
 2021-10-21      ROTH Capital Partners, LLC   HOLD    250.000000
 2021-10-21                          Mizuho    BUY    950.000000
 2021-10-14                Barclays Capital   SELL    300.000000
@@ -96,5 +98,3 @@ Date
 2021-03-11                          Mizuho    BUY    775.000000
 2021-03-09                      New Street    BUY    900.000000
 2021-02-02                  Morgan Stanley    BUY    880.000000
-2021-02-01                   Piper Sandler    BUY   1200.000000
-2021-01-28                   Deutsche Bank    BUY    900.000000
