@@ -79,7 +79,7 @@ class OptionsController(BaseController):
         "binom",
         "vsurf",
         "greeks",
-        "eodchain",
+        # TODO: add "eodchain" when this controller is refactored,
     ]
     CHOICES_MENUS = [
         "pricing",
@@ -235,7 +235,7 @@ class OptionsController(BaseController):
         mt.add_cmd("parity", self.ticker and self.selected_date)
         mt.add_cmd("binom", self.ticker and self.selected_date)
         mt.add_cmd("greeks", self.ticker and self.selected_date)
-        mt.add_cmd("eodchain", self.ticker)
+        # TODO: add after refactored mt.add_cmd("eodchain", self.ticker)
         mt.add_raw("\n")
         mt.add_menu("pricing", self.ticker and self.selected_date)
         mt.add_menu("hedge", self.ticker and self.selected_date)

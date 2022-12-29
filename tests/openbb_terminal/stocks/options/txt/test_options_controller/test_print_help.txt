@@ -3,15 +3,15 @@
 
 >   screen             screens tickers based on preset
 
-    load               load new ticker                                                 [YahooFinance, Tradier, Nasdaq]
-[unvl]    exp                see and set expiration dates[/unvl]                                    [YahooFinance, Tradier, Nasdaq]
+    load               load new ticker                                                 [YahooFinance, Tradier, Nasdaq, Intrinio]
+[unvl]    exp                see and set expiration dates[/unvl]                                    [YahooFinance, Tradier, Nasdaq, Intrinio]
 
 Ticker: 
 Expiry: 
 
 [unvl]    pcr                display put call ratio for ticker[/unvl]                               [AlphaQuery]
 [unvl]    info               display option information (volatility, IV rank etc)[/unvl]            [Barchart]
-[unvl]    chains             display option chains with greeks[/unvl]                               [YahooFinance, Tradier, Nasdaq]
+[unvl]    chains             display option chains with greeks[/unvl]                               [YahooFinance, Tradier, Nasdaq, Intrinio]
 [unvl]    oi                 plot open interest[/unvl]                                              [YahooFinance, Tradier, Nasdaq]
 [unvl]    vol                plot volume[/unvl]                                                     [YahooFinance, Tradier, Nasdaq]
 [unvl]    voi                plot volume and open interest[/unvl]                                   [YahooFinance, Tradier, Nasdaq]
