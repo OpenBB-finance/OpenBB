@@ -1,6 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
 import pathlib
+import subprocess
 
 from dotenv import set_key
 
@@ -30,6 +31,14 @@ binary_to_remove = pathlib.Path(
 print("Removing ARM64 Binary: _scs_direct.cpython-39-darwin.so")
 binary_to_remove.unlink(missing_ok=True)
 
+# Removing inspect hook
+destination = pathlib.Path(
+    os.path.join(pathex, "pyinstaller/hooks/rthooks", "pyi_rth_inspect.py")
+)
+print("Replacing Pyinstaller Hook: pyi_rth_inspect.py")
+source = "build/pyinstaller/hooks/pyi_rth_inspect.py"
+subprocess.run(["cp", source, str(destination)], check=True)
+
 
 # Get latest commit
 commit_hash = get_commit_hash()
@@ -44,8 +53,6 @@ added_files = [
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
     (os.path.join(pathex, "prophet"), "prophet"),
-    (os.path.join(pathex, "riskfolio"), "riskfolio"),
-    (os.path.join(pathex, "astropy"), "astropy"),
     (os.path.join(pathex, "frozendict", "VERSION"), "frozendict"),
     (
         os.path.join(pathex, "linearmodels", "datasets"),
@@ -60,12 +67,12 @@ added_files = [
         os.path.join("investpy", "resources"),
     ),
     (
-        os.path.join(pathex, "pymongo"),
-        "pymongo",
+        os.path.join(pathex, "debugpy", "_vendored"),
+        os.path.join("debugpy", "_vendored"),
     ),
-    (os.path.join(pathex, "bson"), "bson"),
-    (os.path.join(pathex, "debugpy", "_vendored"), os.path.join("debugpy", "_vendored")),
     (".env", "."),
+    (os.path.join(pathex, "blib2to3", "Grammar.txt"), "blib2to3"),
+    (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
 ]
 
 # Python libraries that are explicitly pulled into the bundle
@@ -78,6 +85,8 @@ hidden_imports = [
     "sklearn.neighbors.quad_tree",
     "sklearn.tree._utils",
     "sklearn.neighbors._partition_nodes",
+    "sklearn.metrics._pairwise_distances_reduction._datasets_pair",
+    "sklearn.metrics._pairwise_distances_reduction._middle_term_computer",
     "squarify",
     "linearmodels",
     "statsmodels",
@@ -86,15 +95,10 @@ hidden_imports = [
     "frozendict",
     "textwrap3",
     "pyEX",
-    "tensorflow",
     "feedparser",
-    "pymongo",
-    "bson",
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
-    "riskfolio",
-    "astropy",
 ]
 
 
