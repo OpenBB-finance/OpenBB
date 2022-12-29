@@ -97,19 +97,19 @@ def get_option_chain(
     symbol: str,
     expiration: str,
 ) -> pd.DataFrame:
-    """_summary_
+    """Get option chain at a given expiration
 
     Parameters
     ----------
     symbol : str
-        _description_
+        Ticker to get option chain for
     expiration : str
-        _description_
+        Expiration to get chain for
 
     Returns
     -------
     pd.DataFrame
-        _description_
+        Dataframe of option chain
     """
     response = api.get_options_chain(
         symbol,
@@ -131,17 +131,17 @@ def get_option_chain(
 
 @log_start_end(log=logger)
 def get_full_option_chain(symbol: str) -> pd.DataFrame:
-    """_summary_
+    """Get option chain across all expirations
 
     Parameters
     ----------
     symbol : str
-        _description_
+        Symbol to get option chain for
 
     Returns
     -------
     pd.DataFrame
-        _description_
+        DataFrame of option chain
     """
     expirations = get_expiration_dates(symbol)
     chain = pd.DataFrame()
