@@ -175,7 +175,8 @@ def get_delta_neutral(symbol: str, date: str, x0: Optional[float] = None) -> flo
     # Need an initial guess for the solver
     x0_guess = x0 if x0 else intrinio_model.get_close_at_date(symbol, date)
     chains = intrinio_model.get_full_chain_eod(symbol, date)
-
+    if chains.empty:
+        return np.nan
     return minimize(
         op_helpers.get_abs_market_delta,
         x0=x0_guess,

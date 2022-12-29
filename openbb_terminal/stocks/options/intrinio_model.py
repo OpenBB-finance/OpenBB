@@ -209,7 +209,7 @@ def get_full_chain_eod(symbol: str, date: str) -> pd.DataFrame:
     To get the EOD chain for AAPL on Dec 23, 2022, we do the following
 
     >>> from openbb_terminal.sdk import openbb
-    >>> eod_chain = openbb.stocks.options.eodchain("AAPL", date="2022-12-23)
+    >>> eod_chain = openbb.stocks.options.eodchain("AAPL", date="2022-12-23")
 
     Note this will start a progress bar which indicates looping through all expirations
     """
@@ -224,11 +224,13 @@ def get_full_chain_eod(symbol: str, date: str) -> pd.DataFrame:
         temp = get_eod_chain_at_expiry_given_date(symbol, exp, date)
         if not temp.empty:
             full_chain = pd.concat([full_chain, temp])
+    if full_chain.empty:
+        return pd.DataFrame()
     full_chain = full_chain.sort_values(by=["expiration", "strike"]).reset_index(
         drop=True
     )
     if full_chain.empty:
-        print("Full df empty")
+        logger.info("No options found for %s on %s", symbol, date)
         return pd.DataFrame()
     return calculate_dte(full_chain)
 
