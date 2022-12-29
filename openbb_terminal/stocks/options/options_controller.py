@@ -79,6 +79,7 @@ class OptionsController(BaseController):
         "binom",
         "vsurf",
         "greeks",
+        "eodchain",
     ]
     CHOICES_MENUS = [
         "pricing",
@@ -234,6 +235,7 @@ class OptionsController(BaseController):
         mt.add_cmd("parity", self.ticker and self.selected_date)
         mt.add_cmd("binom", self.ticker and self.selected_date)
         mt.add_cmd("greeks", self.ticker and self.selected_date)
+        mt.add_cmd("eodchain", self.ticker)
         mt.add_raw("\n")
         mt.add_menu("pricing", self.ticker and self.selected_date)
         mt.add_menu("hedge", self.ticker and self.selected_date)
@@ -1471,3 +1473,31 @@ class OptionsController(BaseController):
     def call_screen(self, _):
         """Process screen command"""
         self.queue = screener_controller.ScreenerController(self.queue).menu()
+
+    @log_start_end(log=logger)
+    def call_eodchain(self, other_args: List[str]):
+        """Process greeks command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="eodchain",
+            description="Get full option chain at a given end of day.",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            type=valid_date,
+            dest="date",
+            help="Date to get option chain for.  Format YYYY-MM-DD",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            if not self.ticker:
+                console.print("No ticker loaded. First use `load <ticker>`")
+                return
+            # TODO: Make all models return self.data
+            # self.data = intrinio_model.get_full_chain_eod(
+            #     self.ticker, datetime.strftime(ns_parser.date, "%Y-%m-%d")
+            # )

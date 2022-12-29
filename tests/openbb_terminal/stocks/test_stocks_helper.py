@@ -21,6 +21,7 @@ def vcr_config():
             ("token", "MOCK_TOKEN"),
             ("apikey", "MOCK_API_KEY"),
             ("apiKey", "MOCK_API_KEY2"),
+            ("api_key", "MOCK_API_KEY3"),
         ]
     }
 
@@ -58,6 +59,7 @@ def test_search(mocker, use_tab):
     [
         (1440, "AlphaVantage"),
         (1440, "IEXCloud"),
+        (1440, "Intrinio"),
         (1440, "YahooFinance"),
         (60, "YahooFinance"),
         # (1440, "Polygon"),

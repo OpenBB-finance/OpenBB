@@ -133,6 +133,7 @@ en:
   stocks/options/parity: shows whether options are above or below expected price
   stocks/options/binom: shows the value of an option using binomial options pricing
   stocks/options/greeks: shows the greeks for a given option
+  stocks/options/eodchain: gets option chain at a specific date
   stocks/options/pricing: shows options pricing and risk neutral valuation
   stocks/options/hedge: shows portfolio weights in order to neutralise delta
   stocks/options/screen/view: view available presets (or one in particular)

@@ -71,13 +71,13 @@ def get_expiration_dates(
     start: str = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d"),
     end: str = "2100-12-30",
 ) -> List[str]:
-    """Get all expirations from a start date until a specified end date.  Defaults to 100 years out to get all possible options.
+    """Get all expirations from a start date until a specified end date.  Defaults to 100 years out to get all possible.
 
     Parameters
     ----------
     symbol : str
         Intrinio symbol to get expirations for
-    start : _type_
+    start : str
         Start date for expirations, by default T-1 so that current day is included
     end : str, optional
         End date for intrinio endpoint, by default "2100-12-30"
