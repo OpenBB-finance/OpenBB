@@ -11,6 +11,7 @@ import requests
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks import stocks_helper
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +65,8 @@ def _make_request(url: str, verbose: bool = True) -> Optional[dict]:
     response = requests.get(url, headers=headers)
     if not 200 <= response.status_code < 300:
         if verbose:
-            console.print(f"[red]dappradar api exception: {response.text}[/red]")
+            console.print(
+                f"[red]dappradar api exception: {response.text}[/red]")
         return None
     try:
         return response.json()
@@ -89,6 +91,8 @@ def get_top_nfts(sortby: str = "", limit: int = 10) -> pd.DataFrame:
     pd.DataFrame
         NFTs Columns: Name, Protocols, Floor Price [$], Avg Price [$], Market Cap [$], Volume [$]
     """
+
+    sortby = sortby.replace('_', ' ').title()
 
     response = _make_request(
         "https://nft-sales-service.dappradar.com/v2/collection/day?limit=20&p"
@@ -134,6 +138,9 @@ def get_top_dexes(sortby: str = "", limit: int = 10) -> pd.DataFrame:
     pd.DataFrame
         Top decentralized exchanges. Columns: Name, Daily Users, Daily Volume [$]
     """
+
+    sortby = sortby.replace('_', ' ').title()
+
     data = _make_request(
         "https://dappradar.com/v2/api/dapps?params=WkdGd2NISmhaR0Z5Y0dGblpUMHhKbk5uY205MWNEMXR"
         "ZWGdtWTNWeWNtVnVZM2s5VlZORUptWmxZWFIxY21Wa1BURW1jbUZ1WjJVOVpHRjVKbU5oZEdWbmIzSjVQV1Y0WTJ"
@@ -177,6 +184,9 @@ def get_top_games(sortby: str = "", limit: int = 10) -> pd.DataFrame:
     pd.DataFrame
         Top blockchain games. Columns: Name, Daily Users, Daily Volume [$]
     """
+
+    sortby = sortby.replace('_', ' ').title()
+
     data = _make_request(
         "https://dappradar.com/v2/api/dapps?params=WkdGd2NISmhaR0Z5Y0dGblpUMHhKbk5uY205MWNEMX"
         "RZWGdtWTNWeWNtVnVZM2s5VlZORUptWmxZWFIxY21Wa1BURW1jbUZ1WjJVOVpHRjVKbU5oZEdWbmIzSjVQV2R"
@@ -220,6 +230,9 @@ def get_top_dapps(sortby: str = "", limit: int = 10) -> pd.DataFrame:
         Top decentralized exchanges.
         Columns: Name, Category, Protocols, Daily Users, Daily Volume [$]
     """
+
+    sortby = sortby.replace('_', ' ').title()
+
     data = _make_request(
         "https://dappradar.com/v2/api/dapps?params=WkdGd2NISmhaR0Z5Y0dGblpUMHhKbk5uY205MWNEMX"
         "RZWGdtWTNWeWNtVnVZM2s5VlZORUptWmxZWFIxY21Wa1BURW1jbUZ1WjJVOVpHRjVKbk52Y25ROWRYTmxjaVp"
