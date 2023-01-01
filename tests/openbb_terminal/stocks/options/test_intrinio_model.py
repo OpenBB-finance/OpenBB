@@ -10,6 +10,8 @@ def vcr_config():
     return {
         "filter_query_parameters": [
             ("api_key", "MOCK_API_KEY"),
+            ("before", "MOCK_BEFORE"),
+            ("after", "MOCK_AFTER"),
         ]
     }
 
