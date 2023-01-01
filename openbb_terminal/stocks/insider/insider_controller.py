@@ -108,7 +108,7 @@ class InsiderController(StockBaseController):
         mt.add_cmd("lip")
         mt.add_cmd("blip")
         mt.add_cmd("blop")
-        mt.add_cmd("bclp")
+        mt.add_cmd("blcp")
         mt.add_cmd("lis")
         mt.add_cmd("blis")
         mt.add_cmd("blos")
