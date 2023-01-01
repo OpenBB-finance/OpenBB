@@ -11,7 +11,6 @@ import requests
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks import stocks_helper
 
 logger = logging.getLogger(__name__)
 
@@ -65,8 +64,7 @@ def _make_request(url: str, verbose: bool = True) -> Optional[dict]:
     response = requests.get(url, headers=headers)
     if not 200 <= response.status_code < 300:
         if verbose:
-            console.print(
-                f"[red]dappradar api exception: {response.text}[/red]")
+            console.print(f"[red]dappradar api exception: {response.text}[/red]")
         return None
     try:
         return response.json()
