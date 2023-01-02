@@ -3,7 +3,10 @@ import unittest
 from unittest import mock
 
 # pylint: disable=unused-import
-from tests.helpers.tools import parameterize_from_file
+from tests.helpers.tools import (  # noqa: F401
+    parameterize_from_file,
+    pytest_generate_tests,
+)
 from openbb_terminal import thought_of_the_day
 
 assertions = unittest.TestCase("__init__")
