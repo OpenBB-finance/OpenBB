@@ -874,7 +874,7 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser and self.portfolio is not None:
             if self.portfolio_name:
-                data = self.portfolio.returns[1:]
+                data = self.portfolio.portfolio_returns[1:]
                 qa_view.display_omega(
                     data,
                     ns_parser.start,

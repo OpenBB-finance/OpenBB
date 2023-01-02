@@ -718,7 +718,7 @@ With:
     vals = list()
 
     for period in portfolio_helper.PERIODS:
-           port_rets = portfolio_helper.filter_df_by_period(self.returns, period)
+           port_rets = portfolio_helper.filter_df_by_period(self.portfolio_returns, period)
            bench_rets =  portfolio_helper.filter_df_by_period(self.benchmark_returns, period)
 
     ...

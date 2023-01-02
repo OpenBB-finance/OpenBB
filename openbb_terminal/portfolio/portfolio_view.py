@@ -1756,7 +1756,7 @@ def display_var(
     """
 
     qa_view.display_var(
-        data=portfolio_engine.returns,
+        data=portfolio_engine.portfolio_returns,
         symbol="Portfolio",
         use_mean=use_mean,
         adjusted_var=adjusted_var,
@@ -1789,7 +1789,7 @@ def display_es(
     """
 
     qa_view.display_es(
-        data=portfolio_engine.returns,
+        data=portfolio_engine.portfolio_returns,
         symbol="Portfolio",
         use_mean=use_mean,
         distribution=distribution,
@@ -1818,7 +1818,7 @@ def display_omega(
     """
 
     qa_view.display_omega(
-        data=portfolio_engine.returns,
+        data=portfolio_engine.portfolio_returns,
         threshold_start=threshold_start,
         threshold_end=threshold_end,
     )

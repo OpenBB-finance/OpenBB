@@ -227,7 +227,7 @@ def get_yearly_returns(
     """
 
     portfolio_returns = portfolio_helper.filter_df_by_period(
-        portfolio_engine.returns, window
+        portfolio_engine.portfolio_returns, window
     )
     benchmark_returns = portfolio_helper.filter_df_by_period(
         portfolio_engine.benchmark_returns, window
@@ -291,7 +291,7 @@ def get_monthly_returns(
     """
 
     portfolio_returns = portfolio_helper.filter_df_by_period(
-        portfolio_engine.returns, window
+        portfolio_engine.portfolio_returns, window
     )
     benchmark_returns = portfolio_helper.filter_df_by_period(
         portfolio_engine.benchmark_returns, window
@@ -397,7 +397,7 @@ def get_daily_returns(
     """
 
     portfolio_returns = portfolio_helper.filter_df_by_period(
-        portfolio_engine.returns, window
+        portfolio_engine.portfolio_returns, window
     )
     benchmark_returns = portfolio_helper.filter_df_by_period(
         portfolio_engine.benchmark_returns, window
@@ -465,7 +465,7 @@ def get_distribution_returns(
     """
 
     portfolio_returns = portfolio_helper.filter_df_by_period(
-        portfolio_engine.returns, window
+        portfolio_engine.portfolio_returns, window
     )
     benchmark_returns = portfolio_helper.filter_df_by_period(
         portfolio_engine.benchmark_returns, window
@@ -508,7 +508,7 @@ def get_maximum_drawdown(
     >>> output = openbb.portfolio.maxdd(p)
     """
 
-    holdings: pd.Series = portfolio_engine.portfolio_value
+    holdings: pd.Series = portfolio_engine.historical_trade_data["End Value"]["Total"]
     if is_returns:
         holdings = (1 + holdings).cumprod()
 
@@ -544,7 +544,9 @@ def get_rolling_volatility(
     >>> output = openbb.portfolio.rvol(p)
     """
 
-    portfolio_rvol = metrics_model.rolling_volatility(portfolio_engine.returns, window)
+    portfolio_rvol = metrics_model.rolling_volatility(
+        portfolio_engine.portfolio_returns, window
+    )
     if portfolio_rvol.empty:
         return pd.DataFrame()
 
@@ -589,7 +591,7 @@ def get_rolling_sharpe(
     """
 
     portfolio_rsharpe = metrics_model.rolling_sharpe(
-        portfolio_engine.returns, risk_free_rate, window
+        portfolio_engine.portfolio_returns, risk_free_rate, window
     )
     if portfolio_rsharpe.empty:
         return pd.DataFrame()
@@ -637,7 +639,7 @@ def get_rolling_sortino(
     """
 
     portfolio_rsortino = metrics_model.rolling_sortino(
-        portfolio_engine.returns, risk_free_rate, window
+        portfolio_engine.portfolio_returns, risk_free_rate, window
     )
     if portfolio_rsortino.empty:
         return pd.DataFrame()
@@ -683,7 +685,7 @@ def get_rolling_beta(
     """
 
     df = metrics_model.rolling_beta(
-        portfolio_engine.returns, portfolio_engine.benchmark_returns, window
+        portfolio_engine.portfolio_returns, portfolio_engine.benchmark_returns, window
     )
 
     return df
@@ -719,7 +721,7 @@ def get_summary(
     """
 
     portfolio_returns = portfolio_helper.filter_df_by_period(
-        portfolio_engine.returns, window
+        portfolio_engine.portfolio_returns, window
     )
     benchmark_returns = portfolio_helper.filter_df_by_period(
         portfolio_engine.benchmark_returns, window
@@ -971,7 +973,7 @@ def get_r2_score(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
             round(
                 r2_score(
                     portfolio_helper.filter_df_by_period(
-                        portfolio_engine.returns, period
+                        portfolio_engine.portfolio_returns, period
                     ),
                     portfolio_helper.filter_df_by_period(
                         portfolio_engine.benchmark_returns, period
@@ -1010,7 +1012,7 @@ def get_skewness(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
                 round(
                     scipy.stats.skew(
                         portfolio_helper.filter_df_by_period(
-                            portfolio_engine.returns, period
+                            portfolio_engine.portfolio_returns, period
                         )
                     ),
                     3,
@@ -1057,7 +1059,7 @@ def get_kurtosis(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
                 round(
                     scipy.stats.kurtosis(
                         portfolio_helper.filter_df_by_period(
-                            portfolio_engine.returns, period
+                            portfolio_engine.portfolio_returns, period
                         )
                     ),
                     3,
@@ -1094,7 +1096,7 @@ def get_stats(portfolio_engine: PortfolioEngine, window: str = "all") -> pd.Data
     """
 
     df = (
-        portfolio_helper.filter_df_by_period(portfolio_engine.returns, window)
+        portfolio_helper.filter_df_by_period(portfolio_engine.portfolio_returns, window)
         .describe()
         .to_frame()
         .join(
@@ -1132,7 +1134,7 @@ def get_volatility(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     vals = list()
     for period in PERIODS:
         port_rets = portfolio_helper.filter_df_by_period(
-            portfolio_engine.returns, period
+            portfolio_engine.portfolio_returns, period
         )
         bench_rets = portfolio_helper.filter_df_by_period(
             portfolio_engine.benchmark_returns, period
@@ -1189,7 +1191,7 @@ def get_sharpe_ratio(
                 round(
                     metrics_model.sharpe_ratio(
                         portfolio_helper.filter_df_by_period(
-                            portfolio_engine.returns, period
+                            portfolio_engine.portfolio_returns, period
                         ),
                         risk_free_rate,
                     ),
@@ -1242,7 +1244,7 @@ def get_sortino_ratio(
                 round(
                     metrics_model.sortino_ratio(
                         portfolio_helper.filter_df_by_period(
-                            portfolio_engine.returns, period
+                            portfolio_engine.portfolio_returns, period
                         ),
                         risk_free_rate,
                     ),
@@ -1291,7 +1293,7 @@ def get_maximum_drawdown_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFram
                 round(
                     metrics_model.maximum_drawdown(
                         portfolio_helper.filter_df_by_period(
-                            portfolio_engine.returns, period
+                            portfolio_engine.portfolio_returns, period
                         )
                     ),
                     3,
@@ -1369,7 +1371,7 @@ def get_tracking_error(
     """
 
     trackr_period_df, trackr_rolling = metrics_model.get_tracking_error(
-        portfolio_engine.returns, portfolio_engine.benchmark_returns, window
+        portfolio_engine.portfolio_returns, portfolio_engine.benchmark_returns, window
     )
 
     return trackr_period_df, trackr_rolling
@@ -1398,7 +1400,7 @@ def get_information_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """
 
     ir_period_df = metrics_model.get_information_ratio(
-        portfolio_engine.returns,
+        portfolio_engine.portfolio_returns,
         portfolio_engine.historical_trade_data,
         portfolio_engine.benchmark_trades,
         portfolio_engine.benchmark_returns,
@@ -1438,7 +1440,7 @@ def get_tail_ratio(
     """
 
     tailr_period_df, portfolio_tr, benchmark_tr = metrics_model.get_tail_ratio(
-        portfolio_engine.returns, portfolio_engine.benchmark_returns, window
+        portfolio_engine.portfolio_returns, portfolio_engine.benchmark_returns, window
     )
 
     return tailr_period_df, portfolio_tr, benchmark_tr
@@ -1467,7 +1469,7 @@ def get_common_sense_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """
 
     csr_period_df = metrics_model.get_common_sense_ratio(
-        portfolio_engine.returns,
+        portfolio_engine.portfolio_returns,
         portfolio_engine.historical_trade_data,
         portfolio_engine.benchmark_trades,
         portfolio_engine.benchmark_returns,
@@ -1507,7 +1509,7 @@ def get_jensens_alpha(
     """
 
     ja_period_df, ja_rolling = metrics_model.jensens_alpha(
-        portfolio_engine.returns,
+        portfolio_engine.portfolio_returns,
         portfolio_engine.historical_trade_data,
         portfolio_engine.benchmark_trades,
         portfolio_engine.benchmark_returns,
@@ -1547,7 +1549,7 @@ def get_calmar_ratio(
     """
 
     cr_period_df, cr_rolling = metrics_model.get_calmar_ratio(
-        portfolio_engine.returns,
+        portfolio_engine.portfolio_returns,
         portfolio_engine.historical_trade_data,
         portfolio_engine.benchmark_trades,
         portfolio_engine.benchmark_returns,
@@ -1580,7 +1582,7 @@ def get_kelly_criterion(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """
 
     kc_period_df = metrics_model.get_kelly_criterion(
-        portfolio_engine.returns, portfolio_engine.portfolio_trades
+        portfolio_engine.portfolio_returns, portfolio_engine.portfolio_trades
     )
 
     return kc_period_df
@@ -1784,7 +1786,7 @@ def get_var(
     """
 
     return qa_model.get_var(
-        data=portfolio_engine.returns,
+        data=portfolio_engine.portfolio_returns,
         use_mean=use_mean,
         adjusted_var=adjusted_var,
         student_t=student_t,
@@ -1827,7 +1829,7 @@ def get_es(
     """
 
     return qa_model.get_es(
-        data=portfolio_engine.returns,
+        data=portfolio_engine.portfolio_returns,
         use_mean=use_mean,
         distribution=distribution,
         percentile=percentile,
@@ -1866,7 +1868,7 @@ def get_omega(
     """
 
     return qa_model.get_omega(
-        data=portfolio_engine.returns,
+        data=portfolio_engine.portfolio_returns,
         threshold_start=threshold_start,
         threshold_end=threshold_end,
     )

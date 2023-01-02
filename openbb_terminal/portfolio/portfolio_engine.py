@@ -64,10 +64,8 @@ class PortfolioEngine:
         self.tickers: Dict[Any, Any] = {}
         self.inception_date = datetime.date(1970, 1, 1)
         self.historical_trade_data = pd.DataFrame()
-        self.itemized_value = pd.DataFrame()
-        self.portfolio_value = None
         self.portfolio_historical_prices = pd.DataFrame()
-        self.returns = pd.DataFrame()
+        self.portfolio_returns = pd.DataFrame()
         self.portfolio_trades = pd.DataFrame()
         self.risk_free_rate = float(0)
         self.portfolio_assets_allocation = pd.DataFrame()
@@ -329,7 +327,7 @@ class PortfolioEngine:
             p_bar.refresh()
 
             # 12. Save transactions inception date
-            self.inception_date = self.__transactions["Date"][0]
+            self.inception_date = self.__transactions["Date"].iloc[0]
 
             p_bar.n += 1
             p_bar.refresh()
@@ -477,9 +475,9 @@ class PortfolioEngine:
         p_bar.refresh()
 
         (
-            self.returns,
+            self.portfolio_returns,
             self.benchmark_returns,
-        ) = make_equal_length(self.returns, self.benchmark_returns)
+        ) = make_equal_length(self.portfolio_returns, self.benchmark_returns)
 
         p_bar.n += 1
         p_bar.refresh()
@@ -560,10 +558,14 @@ class PortfolioEngine:
     @log_start_end(log=logger)
     def generate_portfolio_data(self):
         """Generate portfolio data from transactions"""
-
         self.load_portfolio_historical_prices()
         self.populate_historical_trade_data()
         self.calculate_value()
+        self.calculate_returns()
+
+    @log_start_end(log=logger)
+    def calculate_returns(self):
+        """Calculate returns from historical trade data"""
 
         # Determine the returns, replace inf values with NaN and then drop any missing values
         for _, data in self.tickers.items():
@@ -581,9 +583,9 @@ class PortfolioEngine:
             - 1
         )
 
-        self.returns = self.historical_trade_data["Returns"]["Total"]
-        self.returns.replace([np.inf, -np.inf], np.nan, inplace=True)
-        self.returns = self.returns.dropna()
+        self.portfolio_returns = self.historical_trade_data["Returns"]["Total"]
+        self.portfolio_returns.replace([np.inf, -np.inf], np.nan, inplace=True)
+        self.portfolio_returns = self.portfolio_returns.dropna()
 
         # Determine invested amount, relative and absolute return based on last close
         last_price = self.historical_trade_data["Close"].iloc[-1]
@@ -702,23 +704,15 @@ class PortfolioEngine:
 
         trade_data = self.historical_trade_data
 
-        # For each type [STOCK, ETF, etc] calculate value value by trade date
-        # and add it to historical_trade_data
-
-        # End Value
-        for ticker_type, data in self.tickers.items():
-            trade_data[pd.MultiIndex.from_product([["End Value"], data])] = (
-                trade_data["Quantity"][data] * trade_data["Close"][data]
-            )
+        # End Value = Quantity * Close
+        trade_data[pd.MultiIndex.from_product([["End Value"], self.tickers_list])] = (
+            trade_data["Quantity"][self.tickers_list]
+            * trade_data["Close"][self.tickers_list]
+        )
 
         trade_data.loc[:, ("End Value", "Total")] = trade_data["End Value"][
             self.tickers_list
         ].sum(axis=1)
-
-        self.portfolio_value = trade_data["End Value"]["Total"]
-
-        for ticker_type, data in self.tickers.items():
-            self.itemized_value[ticker_type] = trade_data["End Value"][data].sum(axis=1)
 
         trade_data[
             pd.MultiIndex.from_product(
