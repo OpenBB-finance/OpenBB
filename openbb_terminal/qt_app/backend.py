@@ -85,7 +85,7 @@ class Backend(PyWry):
 if not (Path(__file__).parent.resolve() / "assets" / "plotly.js").exists():
     download = requests.get("https://cdn.plot.ly/plotly-2.16.1.min.js", stream=True)
     with open(
-        Path(__file__).parent.resolve() / "assets" / "plotly.js", "wb", encoding="utf-8"
+        Path(__file__).parent.resolve() / "assets" / "plotly.js", "wb", encoding="utf-8"  # type: ignore
     ) as f:
         for chunk in download.iter_content(chunk_size=1024):
             f.write(chunk)
