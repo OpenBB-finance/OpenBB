@@ -107,7 +107,7 @@ else:
 
 
 # pylint: disable=no-member
-# mypy: disable=has-no-attr
+# type: ignore
 class Show:
     """Monkey patch the show method to send the figure to the backend"""
 
