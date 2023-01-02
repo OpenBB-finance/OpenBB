@@ -53,7 +53,8 @@ class WordCompleter(Completer):
         pattern: Optional[Pattern[str]] = None,
     ) -> None:
 
-        assert not (WORD and sentence)
+        if WORD and sentence:
+            raise ValueError("WORD and sentence cannot both be true")
 
         self.words = words
         self.ignore_case = ignore_case
@@ -177,7 +178,8 @@ class NestedCompleter(Completer):
             elif isinstance(key, str) and isinstance(value, str):
                 options[key] = options[value]
             else:
-                assert value is None
+                if value is not None:
+                    raise ValueError("Invalid value type")
                 options[key] = None
 
         for items in cls.complementary:

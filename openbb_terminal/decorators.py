@@ -27,7 +27,8 @@ def log_start_end(func=None, log=None):
     -------
         Wrapped function
     """
-    assert callable(func) or func is None  # nosec
+    if not callable(func) or func is None:
+        raise ValueError("Invalid parameters for log_start_end")
 
     def decorator(func):
         @functools.wraps(func)
