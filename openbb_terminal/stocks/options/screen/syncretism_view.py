@@ -193,9 +193,9 @@ def view_historical_greeks(
 
     fig = OpenBBFigure.create_subplots(
         shared_xaxes=True,
-        subplot_titles=(
+        subplot_titles=[
             f"{(greek).capitalize()} historical for {symbol.upper()} {strike} {['Call','Put'][put]}"
-        ),
+        ],
         specs=[[{"secondary_y": True}]],
         horizontal_spacing=0.1,
     )

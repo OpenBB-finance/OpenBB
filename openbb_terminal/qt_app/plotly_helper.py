@@ -99,7 +99,7 @@ class OpenBBFigure(go.Figure):
         shared_xaxes: bool = True,
         vertical_spacing: float = None,
         horizontal_spacing: float = None,
-        subplot_titles: tuple = None,
+        subplot_titles: Union[List[str], tuple] = None,
         row_width: List[Union[float, int]] = None,
         specs: List[List[dict]] = None,
         **kwargs,
