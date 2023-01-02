@@ -1,0 +1,139 @@
+{
+    "data": {
+        "candlestick": [
+            {
+                "decreasing": {
+                    "fillcolor": "#e4003a",
+                    "line": {
+                        "color": "#e4003a"
+                    }
+                },
+                "increasing": {
+                    "fillcolor": "#00ACFF",
+                    "line": {
+                        "color": "#00ACFF"
+                    }
+                },
+                "type": "candlestick"
+            }
+        ]
+    },
+    "layout": {
+        "colorway": [
+            "gold",
+            "#fe890b",
+            "#d81aea",
+            "#00e6c3",
+            "#bd3786",
+            "#d8576b",
+            "#ed7953",
+            "#917DB0",
+            "#DAD4E5",
+            "#66CCFF",
+            "#B47DA0",
+            "#EF6689",
+            "#CCDEEE",
+            "#d1fa3d",
+            "#FFF466",
+            "#E6D4DF",
+            "#FFFBCC",
+            "#FCE5CC",
+            "#669DCB",
+            "#F5B166",
+            "#CCEEFF",
+            "#9467bd",
+            "#FACCD8",
+            "#e250c3"
+        ],
+        "dragmode": "pan",
+        "font": {
+            "family": "Fira Code",
+            "size": 18
+        },
+        "hoverlabel": {
+            "align": "left"
+        },
+        "hovermode": "x",
+        "legend": {
+            "bgcolor": "rgba(0, 0, 0, 0)",
+            "x": 0.01,
+            "xanchor": "left",
+            "y": 0.99,
+            "yanchor": "top",
+            "font": {
+                "size": 15
+            }
+        },
+        "xaxis": {
+            "rangeslider": {
+                "visible": false
+            },
+            "showgrid": true,
+            "showline": true,
+            "tickfont": {
+                "size": 16
+            },
+            "zeroline": true,
+            "title": {
+                "standoff": 20
+            }
+        },
+        "yaxis": {
+            "fixedrange": false,
+            "nticks": 15,
+            "showgrid": true,
+            "showline": true,
+            "side": "right",
+            "title": {
+                "standoff": 20
+            }
+        },
+        "yaxis2": {
+            "anchor": "x",
+            "fixedrange": false,
+            "layer": "above traces",
+            "nticks": 6,
+            "overlaying": "y2",
+            "showline": true,
+            "tick0": 0.5,
+            "tickfont": {
+                "size": 15
+            },
+            "title": {
+                "standoff": 10
+            }
+        },
+        "yaxis3": {
+            "anchor": "x",
+            "fixedrange": false,
+            "layer": "above traces",
+            "nticks": 6,
+            "overlaying": "y3",
+            "showline": true,
+            "tick0": 0.5,
+            "tickfont": {
+                "size": 15
+            },
+            "zeroline": false,
+            "title": {
+                "standoff": 10
+            }
+        },
+        "yaxis4": {
+            "anchor": "x",
+            "fixedrange": false,
+            "layer": "above traces",
+            "nticks": 6,
+            "overlaying": "y4",
+            "showline": true,
+            "tick0": 0.5,
+            "tickfont": {
+                "size": 15
+            },
+            "zeroline": false,
+            "title": {
+                "standoff": 10
+            }
+        }
+    }
+}

@@ -1,0 +1,375 @@
+@font-face {
+    font-family: 'Arial Black';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Arial Black'), local('Arial-Black'), url(https://fonts.gstatic.com/l/font?kit=8AttGsyyIJeeQk-K7cT5V6nUqRo&skey=f5c444da86865f17&v=v18) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: 'Fira Code', monospace, 'Arial Black';
+}
+
+body {
+    font-family: 'Fira Code', monospace, 'Arial Black';
+    font-size: 12px;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background-color: #000000;
+}
+
+.plotly-graph-div {
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+    font-size: 1.2rem;
+    font-family: 'Fira Code', monospace, 'Arial Black';
+    visibility: visible;
+}
+
+#changecolor {
+    position: absolute;
+    z-index: 9;
+    text-align: center;
+    top: 0;
+    right: 50;
+    width: 100px;
+    height: 60px;
+    background-color: transparent;
+    padding: 10px;
+    box-sizing: border-box;
+    display: none;
+}
+
+#changecolor_header:hover {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    border: 1px solid gold;
+    box-shadow: 0 0 5px gold;
+}
+
+#changecolor_header {
+    padding: 10px;
+    cursor: move;
+    z-index: 10;
+    color: #fff;
+}
+
+#changecolor_header input[type="color"] {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px !important;
+    cursor: pointer;
+    border: 1px solid gold;
+    padding: 5px;
+    background-color: #000000;
+    color: #ffffff;
+    margin-right: 50px !important;
+}
+
+@keyframes popup {
+    0% {
+        -webkit-transition: all 0.3s ease-in-out;
+        transform: translate(-50%, -50%) scale(0.2);
+    }
+
+    40% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    80% {
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.popup_overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    background-color: #000000;
+    border: 2px solid gold;
+    border-radius: 5px;
+    padding: 5px 5px 15px 18px;
+    box-sizing: border-box;
+    display: none;
+    vertical-align: top;
+    font-family: 'Fira Code', monospace, 'Arial Black';
+    animation: popup 0.3s ease-in-out;
+}
+
+.popup_content {
+    position: relative;
+    background-color: transparent;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+}
+
+.popup_overlay label {
+    position: absolute;
+    display: inline-block !important;
+    vertical-align: top !important;
+    margin-right: 10px !important;
+}
+
+.popup_overlay input {
+    height: 30px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid gold;
+    border-radius: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: #000000;
+    color: #ffffff;
+    display: inline-block;
+    margin-right: 5px !important;
+    margin-top: 20px !important;
+}
+
+.popup_overlay select {
+    height: 30px;
+    margin-bottom: 5px;
+    border: 1px solid gold;
+    border-radius: 5px;
+    padding: 2px;
+    box-sizing: border-box;
+    background-color: #000000;
+    color: #ffffff;
+    display: inline-block;
+    margin-right: 5px !important;
+    margin-top: 20px !important;
+}
+
+.popup_overlay button {
+    width: 30%;
+    height: 30px;
+    margin-bottom: 10px;
+    border: 1px solid gold;
+    border-radius: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 12% 0 12%;
+}
+
+.popup_overlay button:nth-of-type(2n) {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}
+
+.popup_overlay button:hover {
+    background-color: gold;
+    color: #000000;
+}
+
+.popup_overlay button:active {
+    background-color: #000000;
+    color: gold;
+}
+
+.popup_overlay :focus {
+    outline: none;
+    border: 1px solid gold;
+    box-shadow: 0 0 5px gold;
+}
+
+.popup_overlay select:hover {
+    background-color: gold;
+    color: #000000;
+}
+
+.popup_overlay select:active {
+    background-color: #000000;
+    color: gold;
+}
+
+.popup_overlay select:focus-within {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.popup_overlay input[type="file"] {
+    display: inline-block;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid gold;
+    border-radius: 5px;
+    font-family: 'Fira Code', monospace, 'Arial Black';
+    width: 98%;
+    height: 100%;
+}
+
+.popup_overlay input[type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.popup_overlay input[type="file"]::before {
+    content: 'Select File';
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid gold;
+    border-radius: 5px;
+    outline: none;
+    white-space: nowrap;
+    cursor: pointer;
+    font-family: 'Fira Code', monospace, 'Arial Black';
+    font-size: 11px;
+    width: 100%;
+    height: 100%;
+}
+
+.popup_overlay input[type="file"]:hover::before {
+    background-color: gold;
+    color: #000000;
+}
+
+.popup_overlay input[type="color"] {
+    width: 50px;
+    height: 30px;
+    margin-top: 20px;
+    border: 1px solid gold;
+    border-radius: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: #000000;
+    color: #ffffff;
+    display: inline-block !important;
+    margin-right: 50px !important;
+    margin-top: 20px !important;
+    vertical-align: top !important;
+}
+
+.popup_overlay input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.popup_overlay input[type="color"]::-webkit-color-swatch {
+    border: none;
+}
+
+.popup_overlay input[type="color"]:nth-of-type(2n) {
+    clear: left !important;
+}
+
+.popup_overlay input[type="text"] {
+    width: 98%;
+    height: 100%;
+    margin-bottom: 10px;
+    border: 1px solid gold;
+    border-radius: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.popup_overlay input[type="number"] {
+    height: 30px;
+    margin-bottom: 10px;
+    border: 1px solid gold;
+    border-radius: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: #000000;
+    color: #ffffff;
+    width: 50px;
+    margin-right: 40px !important;
+    margin-top: 20px !important;
+    vertical-align: top !important;
+}
+
+.popup_overlay input[type="number"]::-webkit-inner-spin-button,
+.popup_overlay input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+form {
+    display: grid;
+    place-content: center;
+    min-height: 50%;
+}
+
+.popup_overlay input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 50%;
+    outline: none;
+    border: 2px solid gold;
+    background-color: #000000;
+    vertical-align: middle;
+    width: 15px !important;
+    height: 15px !important;
+    margin-top: 10px !important;
+    transform: translateY(-0.075em);
+    display: inline-grid;
+    place-content: center;
+}
+
+.popup_overlay input[type="checkbox"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    border-radius: 50%;
+    outline: none;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em gold;
+}
+
+.popup_overlay input[type="checkbox"]:checked::before {
+    transform: scale(1);
+    outline: none;
+}
+
+.popup_overlay input[type="checkbox"]:focus {
+    outline: none;
+}
+
+.popup_overlay input[type="checkbox"]:disabled {
+    --form-control-color: #959495;
+    color: #959495;
+    cursor: not-allowed;
+}
+
+.popup_overlay textarea {
+    width: 100%;
+    height: 100px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid gold;
+    border-radius: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: #000000;
+    color: #ffffff;
+    max-width: 385px;
+}
+
+.popup_warning {
+    color: #ff0000;
+    font-size: 12px;
+    font-size: 1.2rem;
+    font-family: 'Fira Code', monospace, 'Arial Black';
+    display: none;
+    font-weight: bold;
+    margin-top: -15px;
+    margin-left: 135px;
+}

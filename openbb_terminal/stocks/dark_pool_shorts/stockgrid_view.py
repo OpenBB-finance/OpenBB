@@ -7,8 +7,6 @@ from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
@@ -20,6 +18,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.qt_app.config.openbb_styles import PLT_COLORWAY, PLT_FONT
+from openbb_terminal.qt_app.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
 
@@ -151,7 +150,7 @@ def short_interest_volume(
         )
     else:
         # Output data
-        fig = make_subplots(
+        fig = OpenBBFigure.create_subplots(
             rows=2,
             cols=1,
             shared_xaxes=True,
@@ -161,44 +160,42 @@ def short_interest_volume(
             specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
         )
         # pycodestyle: disable=E501,E203
-        fig.add_trace(
-            go.Scatter(
-                name=symbol,
-                x=df["date"].values,
-                y=prices[len(prices) - len(df) :],  # pycodestyle: disable=E501,E203
-                line=dict(color="#fdc708", width=2),
-                opacity=1,
-                showlegend=False,
-            ),
+        fig.add_scatter(
+            name=symbol,
+            x=df["date"].values,
+            y=prices[len(prices) - len(df) :],  # pycodestyle: disable=E501,E203
+            line=dict(color="#fdc708", width=2),
+            opacity=1,
+            showlegend=False,
             row=1,
             col=1,
             secondary_y=False,
         )
-        fig.add_trace(
-            go.Bar(
-                x=df["date"], y=df["Total Vol. [1M]"], name="Total Volume", yaxis="y2"
-            ),
+        fig.add_bar(
+            x=df["date"],
+            y=df["Total Vol. [1M]"],
+            name="Total Volume",
+            yaxis="y2",
             row=1,
             col=1,
             secondary_y=True,
         )
-        fig.add_trace(
-            go.Bar(
-                x=df["date"], y=df["Short Vol. [1M]"], name="Short Volume", yaxis="y2"
-            ),
+        fig.add_bar(
+            x=df["date"],
+            y=df["Short Vol. [1M]"],
+            name="Short Volume",
+            yaxis="y2",
             row=1,
             col=1,
             secondary_y=True,
         )
-        fig.add_trace(
-            go.Scatter(
-                name="Short Vol. %",
-                x=df["date"].values,
-                y=df["Short Vol. %"],
-                line=dict(width=2),
-                opacity=1,
-                showlegend=False,
-            ),
+        fig.add_scatter(
+            name="Short Vol. %",
+            x=df["date"].values,
+            y=df["Short Vol. %"],
+            line=dict(width=2),
+            opacity=1,
+            showlegend=False,
             row=2,
             col=1,
             secondary_y=False,
@@ -206,7 +203,7 @@ def short_interest_volume(
 
         fig.update_traces(hovertemplate="%{y:.2f}")
         fig.update_layout(
-            margin=dict(l=10, r=0, t=60, b=50),
+            margin=dict(l=40, r=0),
             template="plotly_dark",
             colorway=PLT_COLORWAY,
             title=f"<b>Price vs Short Volume Interest for {symbol}</b>",
@@ -223,6 +220,8 @@ def short_interest_volume(
                 titlefont=dict(color="#fdc708"),
                 tickfont=dict(color="#fdc708"),
                 nticks=20,
+                title_standoff=20,
+                layer="above traces",
             ),
             yaxis2=dict(
                 side="left",
@@ -231,13 +230,15 @@ def short_interest_volume(
                 overlaying="y",
                 titlefont=dict(color="#d81aea"),
                 tickfont=dict(color="#d81aea"),
-                nticks=20,
+                nticks=10,
+                layer="below traces",
+                title_standoff=10,
             ),
             yaxis3=dict(
                 fixedrange=False,
                 titlefont=dict(color="#9467bd"),
                 tickfont=dict(color="#9467bd"),
-                nticks=20,
+                nticks=10,
             ),
             xaxis=dict(rangeslider=dict(visible=False), type="date"),
             dragmode="pan",

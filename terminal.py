@@ -1,7 +1,7 @@
 import sys
 
 from openbb_terminal import integration_testing, terminal_controller
-from openbb_terminal.qt_app.plotly_helper import BACKEND
+from openbb_terminal.qt_app.backend import BACKEND
 
 if __name__ == "__main__":
     BACKEND.start()

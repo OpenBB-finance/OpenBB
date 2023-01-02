@@ -16,7 +16,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     print_rich_table,
 )  # is_valid_axes_count,; plot_autoscale,
-from openbb_terminal.qt_app.plotly_helper import PlotlyFigureHelper
+from openbb_terminal.qt_app.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -77,7 +77,7 @@ def realtime_performance_sector(
         # if external_axes is None:
         #     theme.visualize_output()
 
-        fig = PlotlyFigureHelper.create(
+        fig = OpenBBFigure(
             title="Real Time Performance (%) per Sector",
             yaxis=dict(side="right", dtick=1, title="Sector"),
         )
@@ -144,7 +144,7 @@ def display_real_gdp(
     # if external_axes is None:
     #     theme.visualize_output()
 
-    fig = PlotlyFigureHelper.create(
+    fig = OpenBBFigure(
         title=f"{int_string} US GDP ($B) from {year_str}",
         yaxis=dict(side="right", title="US GDP ($B) "),
     )
@@ -208,7 +208,7 @@ def display_gdp_capita(
     # if external_axes is None:
     #     theme.visualize_output()
 
-    fig = PlotlyFigureHelper.create(
+    fig = OpenBBFigure(
         title=f"US GDP per Capita (Chained 2012 USD) from {start_year}",
         yaxis=dict(side="right", title="US GDP (Chained 2012 USD) "),
     )
@@ -274,7 +274,7 @@ def display_inflation(
     # if external_axes is None:
     #     theme.visualize_output()
 
-    fig = PlotlyFigureHelper.create(
+    fig = OpenBBFigure(
         title=f"US Inflation from {list(inf['date'])[-1].year}",
         yaxis=dict(side="right", title="Inflation (%)"),
     )
@@ -346,7 +346,7 @@ def display_cpi(
     # if external_axes is None:
     #     theme.visualize_output()
 
-    fig = PlotlyFigureHelper.create(
+    fig = OpenBBFigure(
         title=f"{int_string} Consumer Price Index from {year_str}",
         yaxis=dict(side="right", title="CPI"),
     )
@@ -416,7 +416,7 @@ def display_treasury_yield(
     # if external_axes is None:
     #     theme.visualize_output()
 
-    fig = PlotlyFigureHelper.create(
+    fig = OpenBBFigure(
         title=f"{d_maturity[maturity]} Treasury Yield",
         yaxis=dict(side="right", title="Yield (%)"),
     )
@@ -484,7 +484,7 @@ def display_unemployment(
     # if external_axes is None:
     #     theme.visualize_output()
 
-    fig = PlotlyFigureHelper.create(
+    fig = OpenBBFigure(
         title=f"US Unemployment from {start_year}",
         yaxis=dict(side="right", title="US Unemployment (%)"),
     )

@@ -17,7 +17,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     print_rich_table,
 )  # plot_autoscale,
-from openbb_terminal.qt_app.plotly_helper import PlotlyFigureHelper
+from openbb_terminal.qt_app.plotly_helper import OpenBBFigure
 
 logger = logging.getLogger(__name__)
 
@@ -77,7 +77,7 @@ def show_macro_data(
         parameters, countries, transform, start_date, end_date, symbol
     )
 
-    fig = PlotlyFigureHelper.create(yaxis=dict(side="right"))
+    fig = OpenBBFigure(yaxis=dict(side="right"))
 
     for column in df_rounded.columns:
         parameter_units = f"Units: {units[column[0]][column[1]]}"
@@ -192,7 +192,7 @@ def show_treasuries(
     # else:
     #     ax = external_axes[0]
 
-    fig = PlotlyFigureHelper.create(
+    fig = OpenBBFigure(
         yaxis=dict(side="right", title="Yield (%)"),
         title="U.S. Treasuries",
     )

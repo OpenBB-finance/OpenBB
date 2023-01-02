@@ -7,24 +7,22 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from typing import Any, Dict, Iterable, List, Optional, Union
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import plotly.graph_objects as go
 import pytz
 import requests
 import yfinance as yf
-from plotly.subplots import make_subplots
 from requests.exceptions import ReadTimeout
 from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.qt_app.plotly_helper import BACKEND
+from openbb_terminal.qt_app.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import
@@ -532,7 +530,7 @@ def display_candle(
 
     if not raw:
         if use_matplotlib:
-            fig = make_subplots(
+            fig = OpenBBFigure.create_subplots(
                 rows=2,
                 cols=1,
                 shared_xaxes=True,
@@ -540,70 +538,49 @@ def display_candle(
                 subplot_titles=(f"{symbol}", "Volume"),
                 row_width=[0.2, 0.7],
             )
-            fig.add_trace(
-                go.Candlestick(
-                    x=data.index,
-                    open=data.Open,
-                    high=data.High,
-                    low=data.Low,
-                    close=data.Close,
-                    name="OHLC",
-                    increasing=dict(line_color="#00ACFF", fillcolor="#00ACFF"),
-                    decreasing=dict(line_color="#e4003a", fillcolor="#e4003a"),
-                ),
+            fig.add_candlestick(
+                x=data.index,
+                open=data.Open,
+                high=data.High,
+                low=data.Low,
+                close=data.Close,
+                name="OHLC",
                 row=1,
                 col=1,
             )
             if ma:
-                plotly_colors = [
-                    "black",
-                    "teal",
-                    "blue",
-                    "purple",
-                    "orange",
-                    "gray",
-                    "deepskyblue",
-                ]
-                for idx, ma_val in enumerate(ma):
+                for ma_val in ma:
                     temp = data["Adj Close"].copy()
                     temp[f"ma{ma_val}"] = data["Adj Close"].rolling(ma_val).mean()
                     temp = temp.dropna()
-                    fig.add_trace(
-                        go.Scatter(
-                            x=temp.index,
-                            y=temp[f"ma{ma_val}"],
-                            name=f"MA{ma_val}",
-                            mode="lines",
-                            line=go.scatter.Line(
-                                color=plotly_colors[np.mod(idx, len(plotly_colors))]
-                            ),
-                        ),
+                    fig.add_scatter(
+                        x=temp.index,
+                        y=temp[f"ma{ma_val}"],
+                        name=f"MA{ma_val}",
+                        mode="lines",
+                        line=dict(width=0.8),
                         row=1,
                         col=1,
                     )
 
             if add_trend:
                 if "OC_High_trend" in data.columns:
-                    fig.add_trace(
-                        go.Scatter(
-                            x=data.index,
-                            y=data["OC_High_trend"],
-                            name="High Trend",
-                            mode="lines",
-                            line=go.scatter.Line(color="#00ACFF"),
-                        ),
+                    fig.add_scatter(
+                        x=data.index,
+                        y=data["OC_High_trend"],
+                        name="High Trend",
+                        mode="lines",
+                        line=dict(color="#00ACFF"),
                         row=1,
                         col=1,
                     )
                 if "OC_Low_trend" in data.columns:
-                    fig.add_trace(
-                        go.Scatter(
-                            x=data.index,
-                            y=data["OC_Low_trend"],
-                            name="Low Trend",
-                            mode="lines",
-                            line=go.scatter.Line(color="#e4003a"),
-                        ),
+                    fig.add_scatter(
+                        x=data.index,
+                        y=data["OC_Low_trend"],
+                        name="Low Trend",
+                        mode="lines",
+                        line=dict(color="#e4003a"),
                         row=1,
                         col=1,
                     )
@@ -612,31 +589,34 @@ def display_candle(
                 "#e4003a" if row.Open < row["Close"] else "#00ACFF"
                 for _, row in data.iterrows()
             ]
-            fig.add_trace(
-                go.Bar(x=data.index, y=data.Volume, name="Volume", marker_color=colors),
+            fig.add_bar(
+                x=data.index,
+                y=data.Volume,
+                name="Volume",
+                marker_color=colors,
+                showlegend=False,
                 row=2,
                 col=1,
             )
             fig.update_layout(
-                margin=dict(l=10, r=10, t=40, b=20),
-                template="plotly_dark",
                 yaxis_title="Stock Price ($)",
                 xaxis=dict(
+                    rangeslider=dict(visible=False),
                     rangeselector=dict(
-                        bgcolor="#111111",
+                        bgcolor="#000000",
                         bordercolor="gold",
                         font=dict(color="white"),
                         buttons=list(
                             [
                                 dict(
                                     count=1,
-                                    label="1m",
+                                    label="1M",
                                     step="month",
                                     stepmode="backward",
                                 ),
                                 dict(
                                     count=3,
-                                    label="3m",
+                                    label="3M",
                                     step="month",
                                     stepmode="backward",
                                 ),
@@ -653,29 +633,19 @@ def display_candle(
                             ]
                         ),
                     ),
-                    rangeslider=dict(visible=False),
                     type="date",
-                ),
-                legend=dict(
-                    yanchor="top",
-                    y=0.99,
-                    xanchor="left",
-                    font_size=14,
-                    bgcolor="rgba(0, 0, 0, 0)",
-                    x=0.01,
-                    orientation="h",
                 ),
             )
 
             fig.update_layout(
                 updatemenus=[
                     dict(
-                        bgcolor="#111111",
+                        bgcolor="#000000",
                         bordercolor="gold",
-                        font=dict(color="white"),
+                        font=dict(color="white", size=14),
                         buttons=[
                             dict(
-                                label="linear",
+                                label="linear   ",
                                 method="relayout",
                                 args=[{"yaxis.type": "linear"}],
                             ),
@@ -685,8 +655,10 @@ def display_candle(
                                 args=[{"yaxis.type": "log"}],
                             ),
                         ],
+                        y=1.07,
+                        x=-0.01,
                     )
-                ]
+                ],
             )
 
             if intraday:
@@ -710,7 +682,7 @@ def display_candle(
                     rangebreaks=[dict(bounds=["sat", "mon"]), dict(values=mkt_holidays)]
                 )
 
-            BACKEND.send_figure(fig)
+            fig.show()
     else:
         return data
 
@@ -971,8 +943,9 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
         "1 Month": 100 * closes.pct_change(21)[-1],
         "1 Year": 100 * closes.pct_change(252)[-1],
     }
-    if "2022-01-03" in closes.index:
-        closes_ytd = closes[closes.index > f"{date.today().year}-01-01"]
+
+    ytd = pd.Timestamp(datetime.now().year, 1, 1) + pd.offsets.BDay(1)
+    if ytd in closes.index and (closes_ytd := closes[closes.index >= ytd]).any():
         perfs["YTD"] = 100 * (closes_ytd[-1] - closes_ytd[0]) / closes_ytd[0]
     else:
         perfs["Period"] = 100 * (closes[-1] - closes[0]) / closes[0]

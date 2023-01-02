@@ -1,6 +1,10 @@
-from typing import Any, List, Optional, Tuple
+import json
+import random
+from typing import Any, List
 
 import pandas as pd
+import plotly.graph_objects as go
+import plotly.io as pio
 
 # Vsurf Plot Settings
 PLT_3DMESH_COLORSCALE = "Jet"
@@ -26,38 +30,21 @@ PLT_3DMESH_SCENE = dict(
     aspectratio=dict(x=1.2, y=1.2, z=0.8),
 )
 PLT_3DMESH_HOVERLABEL = dict(bgcolor="gold")
-PLT_3DMESH_STYLE_TEMPLATE = "plotly_dark"
 
 # Chart Plots Settings
 PLT_STYLE_TEMPLATE = "plotly_dark"
-PLT_CANDLE_INCREASING = "#00ACFF"
-PLT_CANDLE_DECREASING = "#e4003a"
+PLT_STYLE_INCREASING = "#00ACFF"
+PLT_STYLE_DECREASING = "#e4003a"
 PLT_CANDLESTICKS = dict(
-    increasing_line_color=dict(
-        line_color=PLT_CANDLE_INCREASING, fillcolor=PLT_CANDLE_INCREASING
-    ),
-    decreasing_line_color=dict(
-        line_color=PLT_CANDLE_DECREASING, illcolor=PLT_CANDLE_DECREASING
-    ),
+    increasing=dict(line_color=PLT_STYLE_INCREASING, fillcolor=PLT_STYLE_INCREASING),
+    decreasing=dict(line_color=PLT_STYLE_DECREASING, fillcolor=PLT_STYLE_DECREASING),
 )
-PLT_CANDLE_INCREASING_GREEN = "#009600"
-PLT_CANDLE_DECREASING_RED = "#c80000"
-PLT_CANDLE_VOLUME = "#fdc708"
-PLT_CANDLE_NEWS_MARKER = "rgba(255, 215, 0, 0.9)"
-PLT_CANDLE_NEWS_MARKER_LINE = "gold"
-PLT_CANDLE_YAXIS_TEXT_COLOR = "#fdc708"
-PLT_SCAT_STYLE_TEMPLATE = "plotly_dark"
-PLT_SCAT_INCREASING = "#00ACFF"
-PLT_SCAT_DECREASING = "#e4003a"
-PLT_SCAT_PRICE = "#fdc708"
-PLT_TA_STYLE_TEMPLATE = "plotly_dark"
+PLT_STYLE_INCREASING_GREEN = "#009600"
+PLT_STYLE_DECREASING_RED = "#c80000"
 PLT_FONT = dict(family="Fira Code", size=16)
 PLOTLY_FONT = dict(family="Fira Code", size=18)
-PLT_COLORWAY = [
-    "gold",
-    "#ed8e3b",
-    "#d81aea",
-    "#00e6c3",
+
+SHUFFLED_COLORWAY = [
     "#9467bd",
     "#e250c3",
     "#d1fa3d",
@@ -76,6 +63,18 @@ PLT_COLORWAY = [
     "#FFFBCC",
     "#FFF466",
 ]
+random.shuffle(SHUFFLED_COLORWAY)
+
+PLT_COLORWAY = [
+    "gold",
+    "#fe890b",
+    "#d81aea",
+    "#00e6c3",
+    "#bd3786",
+    "#d8576b",
+    "#ed7953",
+] + SHUFFLED_COLORWAY
+
 PLT_FIB_COLORWAY: List[Any] = [
     "rgba(195, 50, 69, 0.9)",  # 0
     "rgba(130, 38, 96, 0.9)",  # 0.235
@@ -88,33 +87,6 @@ PLT_FIB_COLORWAY: List[Any] = [
     dict(color="rgba(0, 230, 195, 0.9)", width=0.9, dash="dash"),  # Fib Trendline
 ]
 
-
-# Table Plots Settings
-PLT_TBL_HEADER = dict(
-    height=32,
-    fill_color="rgb(30, 30, 30)",
-    font_color="white",
-    font_size=28,
-    line_color="#6e6e6e",
-    line_width=1,
-)
-PLT_TBL_CELLS = dict(
-    height=40,
-    font_size=28,
-    fill_color="rgb(50, 50, 50)",
-    font_color="white",
-    line_color="#6e6e6e",
-    line_width=0,
-)
-PLT_TBL_FONT = dict(size=28)
-PLT_TBL_FONT_COLOR = "white"
-PLT_TBL_ROW_COLORS: Optional[Tuple[str, str]] = ("#333333", "#242424")
-PLT_TBL_INCREASING = "#00ACFF"
-PLT_TBL_DECREASING = "#FF312E"
-PLT_TBL_INCREASING_GREEN = "#009600"
-PLT_TBL_DECREASING_RED = "#FF312E"
-
-# Premium Plots Settings
 PLT_INCREASING_COLORWAY = [
     "rgba(0, 150, 255, 1)",
     "rgba(0, 170, 255, 0.92)",
@@ -177,27 +149,27 @@ PLT_DECREASING_COLORWAY_RED = [
 
 
 def de_increasing_color_list(
-    df_column: pd.DataFrame.columns = None,
+    df_column: pd.DataFrame = None,
     text: str = None,
     contains_str: str = "-",
-    increasing_color: str = PLT_TBL_INCREASING,
-    decreasing_color: str = PLT_TBL_DECREASING,
+    increasing_color: str = PLT_STYLE_INCREASING,
+    decreasing_color: str = PLT_STYLE_DECREASING,
 ) -> List[str]:
     """Makes a colorlist for decrease/increase if value in df_column
     contains "{contains_str}" default is "-"
 
     Parameters
     ----------
-    df_column : pd.DataFrame.columns, optional
+    df_column : pd.DataFrame, optional
         Dataframe column to create colorlist. by default None
     text : str, optional
         Search in a string, by default None
     contains_str : str, optional
         Decreasing String to search for in df_column. The default is "-".
     increasing_color : str, optional
-        Color to use for increasing values. The default is PLT_CANDLE_INCREASING.
+        Color to use for increasing values. The default is PLT_STYLE_INCREASING.
     decreasing_color : str, optional
-        Color to use for decreasing values. The default is PLT_CANDLE_DECREASING.
+        Color to use for decreasing values. The default is PLT_STYLE_DECREASING.
 
     Returns
     -------
@@ -216,52 +188,100 @@ def de_increasing_color_list(
 
 PLOTLY_THEME = dict(
     # Layout
-    margin=dict(l=40, r=40, t=40, b=20),
-    height=762,
-    width=1400,
-    template=PLT_STYLE_TEMPLATE,
-    colorway=PLT_COLORWAY,
-    font=PLOTLY_FONT,
-    yaxis=dict(
-        zeroline=False,
-        fixedrange=True,
-        title_standoff=20,
-        nticks=10,
-        showline=False,
-        showgrid=True,
-        gridwidth=2,
-        griddash="dot",
+    layout=dict(
+        colorway=PLT_COLORWAY,
+        font=PLOTLY_FONT,
+        yaxis=dict(
+            side="right",
+            zeroline=True,
+            fixedrange=False,
+            title_standoff=20,
+            nticks=15,
+            showline=True,
+            showgrid=True,
+        ),
+        yaxis2=dict(
+            zeroline=False,
+            fixedrange=False,
+            anchor="x",
+            layer="above traces",
+            overlaying="y2",
+            nticks=6,
+            tick0=0.5,
+            title_standoff=10,
+            tickfont=dict(size=15),
+            showline=True,
+        ),
+        yaxis3=dict(
+            zeroline=False,
+            fixedrange=False,
+            anchor="x",
+            layer="above traces",
+            overlaying="y3",
+            nticks=6,
+            tick0=0.5,
+            title_standoff=10,
+            tickfont=dict(size=15),
+            showline=True,
+        ),
+        yaxis4=dict(
+            zeroline=False,
+            fixedrange=False,
+            anchor="x",
+            layer="above traces",
+            overlaying="y4",
+            nticks=6,
+            tick0=0.5,
+            title_standoff=10,
+            tickfont=dict(size=15),
+            showline=True,
+        ),
+        xaxis=dict(
+            showgrid=True,
+            zeroline=True,
+            showline=True,
+            rangeslider=dict(visible=False),
+            tickfont=dict(size=16),
+            title_standoff=20,
+        ),
+        legend=dict(
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            font_size=15,
+            bgcolor="rgba(0, 0, 0, 0)",
+            x=0.01,
+        ),
+        dragmode="pan",
+        hovermode="x",
+        hoverlabel=dict(align="left"),
     ),
-    yaxis2=dict(
-        zeroline=False,
-        fixedrange=False,
-        anchor="x",
-        layer="above traces",
-        overlaying="y",
-        nticks=12,
-        tick0=0.5,
-        title_standoff=20,
-        tickfont=dict(size=18),
-        showline=True,
+    data=dict(
+        candlestick=[
+            dict(
+                increasing=dict(
+                    line=dict(color=PLT_STYLE_INCREASING),
+                    fillcolor=PLT_STYLE_INCREASING,
+                ),
+                decreasing=dict(
+                    line=dict(color=PLT_STYLE_DECREASING),
+                    fillcolor=PLT_STYLE_DECREASING,
+                ),
+            )
+        ]
     ),
-    xaxis=dict(
-        showgrid=True,
-        zeroline=True,
-        rangeslider=dict(visible=False),
-        tickfont=dict(size=18),
-        title_standoff=20,
-        gridwidth=2,
-        griddash="dot",
-    ),
-    legend=dict(
-        yanchor="top",
-        y=0.99,
-        xanchor="left",
-        font_size=10,
-        bgcolor="rgba(0, 0, 0, 0)",
-        x=0.01,
-    ),
-    dragmode="pan",
-    hovermode="x",
-    hoverlabel=dict(align="left"),
 )
+
+# Reads the template from a file
+with open("openbb.json", "r", encoding="utf-8") as f:
+    OPENNBB_THEME = json.load(f)
+
+
+PLOTLY_TEMPLATE = go.layout.Template(OPENNBB_THEME)
+
+
+# Register the template
+pio.templates["openbb"] = PLOTLY_TEMPLATE
+
+# Set the template as the default
+pio.templates.default = "plotly_dark+openbb"

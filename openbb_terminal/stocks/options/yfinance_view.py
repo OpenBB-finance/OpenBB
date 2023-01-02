@@ -33,7 +33,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.qt_app.plotly_helper import PlotlyFigureHelper
+from openbb_terminal.qt_app.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, yfinance_model
 from openbb_terminal.stocks.options.yfinance_model import (
@@ -319,7 +319,7 @@ def plot_oi(
     # ax.legend(fontsize="x-small")
     # ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiry}")
 
-    fig = PlotlyFigureHelper.create(
+    fig = OpenBBFigure(
         title=f"Open Interest for {symbol.upper()} expiring {expiry}",
         xaxis_title="Strike Price",
         yaxis_title="Open Interest [1k]",
@@ -418,7 +418,7 @@ def plot_vol(
     ax.legend(fontsize="x-small")
     ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
 
-    fig = PlotlyFigureHelper.create(
+    fig = OpenBBFigure(
         title=f"Volume for {symbol.upper()} expiring {expiry}",
         xaxis_title="Strike Price",
         yaxis_title="Volume [1k]",
@@ -462,36 +462,30 @@ def plot_volume_open_interest(
         External axes (1 axis is expected in the list), by default None
     """
     options = yfinance_model.get_volume_open_interest(symbol, expiry)
-    calls = options.calls
-    puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
 
-    # Process Calls Data
-    df_calls = calls.pivot_table(
-        index="strike", values=["volume", "openInterest"], aggfunc="sum"
-    ).reindex()
-    df_calls["strike"] = df_calls.index
-    df_calls["type"] = "calls"
-    df_calls["openInterest"] = df_calls["openInterest"]
-    df_calls["volume"] = df_calls["volume"]
-    df_calls["oi+v"] = df_calls["openInterest"] + df_calls["volume"]
-    df_calls["spot"] = round(current_price, 2)
+    # Process Data
+    def get_df_options(df, option_type):
+        df = df.pivot_table(
+            index="strike", values=["volume", "openInterest"], aggfunc="sum"
+        ).reindex()
+        df["strike"] = df.index
+        df["type"] = option_type
+        df["openInterest"] = df["openInterest"] * (-1 if option_type == "puts" else 1)
+        df["volume"] = df["volume"] * (-1 if option_type == "puts" else 1)
+        df["oi+v"] = df["openInterest"] + df["volume"]
+        df["spot"] = round(current_price, 2)
+        return df
 
-    df_puts = puts.pivot_table(
-        index="strike", values=["volume", "openInterest"], aggfunc="sum"
-    ).reindex()
-    df_puts["strike"] = df_puts.index
-    df_puts["type"] = "puts"
-    df_puts["openInterest"] = df_puts["openInterest"]
-    df_puts["volume"] = -df_puts["volume"]
-    df_puts["openInterest"] = -df_puts["openInterest"]
-    df_puts["oi+v"] = df_puts["openInterest"] + df_puts["volume"]
-    df_puts["spot"] = round(current_price, 2)
+    df_calls = get_df_options(options.calls, "calls")
+    df_puts = get_df_options(options.puts, "puts")
 
-    call_oi = calls.set_index("strike")["openInterest"] / 1000
-    put_oi = puts.set_index("strike")["openInterest"] / 1000
-
-    df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
+    df_opt = pd.merge(
+        options.calls.set_index("strike")["openInterest"] / 1000,
+        options.puts.set_index("strike")["openInterest"] / 1000,
+        left_index=True,
+        right_index=True,
+    )
     df_opt = df_opt.rename(
         columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
     )
@@ -651,7 +645,7 @@ def plot_volume_open_interest(
     # if external_axes is None:
     #     theme.visualize_output()
 
-    fig = PlotlyFigureHelper.create(
+    fig = OpenBBFigure(
         title=f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)",
         xaxis_title="Volume",
         yaxis_title="Strike Price",
@@ -684,9 +678,9 @@ def plot_volume_open_interest(
         orientation="h",
         marker_color="red",
     )
-    fig.add_hline(y=current_price, line_dash="dash", line_width=1, line_color="black")
+    fig.add_hline(y=current_price, line_dash="dash", line_width=0.8, line_color="white")
     fig.add_hline(y=max_pain, line_dash="solid", line_width=5, line_color="red")
-    fig.update_layout(barmode="stack")
+    fig.update_layout(barmode="stack", hovermode="y unified")
     fig.show()
 
     op_helpers.export_yf_options(export, options, "voi_yf")
@@ -795,7 +789,7 @@ def plot_plot(
         ax.get_yaxis().set_major_formatter(varis[y]["format"])
     theme.style_primary_axis(ax)
 
-    fig = PlotlyFigureHelper.create(
+    fig = OpenBBFigure(
         title=f"{varis[y]['label']} vs. {varis[x]['label']} for {symbol} {option} on {expiry}",
         xaxis_title=varis[x]["label"],
         yaxis_title=varis[y]["label"],
@@ -839,7 +833,7 @@ def plot_payoff(
     ax.xaxis.set_major_formatter("${x:.2f}")
     ax.yaxis.set_major_formatter("${x:.2f}")
 
-    plot = PlotlyFigureHelper.create(
+    plot = OpenBBFigure(
         title=f"Option Payoff Diagram for {symbol} on {expiry}",
         xaxis=dict(tickformat="${x:.2f}", title="Underlying Asset Price at Expiration"),
         yaxis=dict(tickformat="${x:.2f}", title="Profit"),
@@ -848,7 +842,9 @@ def plot_payoff(
     if ya:
         plot.add_scatter(x=x, y=ya, name="Payoff After Premium")
     else:
-        plot.fig.data[0].name = "Payoff"
+        plot.data[0].name = "Payoff"
+
+    plot.show()
 
 
 @log_start_end(log=logger)

@@ -5,8 +5,7 @@ from typing import Any, Callable, Literal, Union
 
 from rich.console import Console
 
-# from openbb_terminal.qt_app.backend import QT_BACKEND
-from openbb_terminal.qt_app.plotly_helper import BACKEND
+from openbb_terminal.qt_app.backend import BACKEND
 
 console = Console()
 
@@ -108,6 +107,7 @@ else:
 
 
 # pylint: disable=no-member
+# mypy: disable=has-no-attr
 class Show:
     """Monkey patch the show method to send the figure to the backend"""
 
@@ -117,6 +117,17 @@ class Show:
             # if in terminal pro, we just return the json
             if os.environ.get("TERMINAL_PRO", False):
                 return self.to_json()
+
+            if self.layout.template.layout.mapbox.style == "dark":
+                self.update_layout(
+                    newshape_line_color="gold",
+                    modebar=dict(
+                        orientation="v",
+                        bgcolor="rgba(0,0,0,0)",
+                        color="gold",
+                        activecolor="#d1030d",
+                    ),
+                )
 
             # We send the figure to the backend to be displayed
             BACKEND.send_figure(self)

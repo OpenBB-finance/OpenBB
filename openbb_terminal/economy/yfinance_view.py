@@ -21,7 +21,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     reindex_dates,
 )  # plot_autoscale,
-from openbb_terminal.qt_app.plotly_helper import PlotlyFigureHelper
+from openbb_terminal.qt_app.plotly_helper import OpenBBFigure
 
 logger = logging.getLogger(__name__)
 
@@ -68,7 +68,7 @@ def show_indices(
 
     indices_data = get_indices(indices, interval, start_date, end_date, column, returns)
 
-    fig = PlotlyFigureHelper.create(title="Indices", yaxis=dict(side="right"))
+    fig = OpenBBFigure(title="Indices", yaxis=dict(side="right"))
 
     for index in indices:
         if index.lower() in INDICES:
