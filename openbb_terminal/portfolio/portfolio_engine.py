@@ -46,7 +46,7 @@ class PortfolioEngine:
     generate_portfolio_data: Generates portfolio data from transactions
         load_portfolio_historical_prices: Loads historical adj close prices for tickers in list of trades
         populate_historical_trade_data: Create a new dataframe to store historical prices by ticker
-        calculate_value: Calculate value end of day from historical data
+        calculate_portfolio_returns: Calculate portfolio daily returns
 
     set_risk_free_rate: Sets risk free rate
 
@@ -559,11 +559,17 @@ class PortfolioEngine:
 
     @log_start_end(log=logger)
     def generate_portfolio_data(self):
-        """Generate portfolio data from transactions"""
+        """Generate portfolio data from transactions
+
+        Workflow:
+        1. Load historical adj close/close prices for tickers in list of trades
+        2. Record the state of the portfolio at each day since inception.
+        3. Calculate portfolio daily returns from historical trade data
+
+        """
         self.load_portfolio_historical_prices()
         self.populate_historical_trade_data()
-        self.calculate_value()
-        self.calculate_returns()
+        self.calculate_portfolio_returns()
 
     @log_start_end(log=logger)
     def load_portfolio_historical_prices(self, use_close: bool = False):
@@ -604,7 +610,15 @@ class PortfolioEngine:
 
     @log_start_end(log=logger)
     def populate_historical_trade_data(self):
-        """Create a new dataframe to store historical prices by ticker"""
+        """Record the state of the portfolio at each day since inception
+
+        The state includes the following information for each ticker and total:
+        - Quantity: Number of shares held
+        - Investment: Total investment in shares
+        - Investment delta: Change in investment since last day
+        - Close: Close price of shares
+        - End value: Total value of shares at close price
+        """
 
         trade_data = self.__transactions.pivot_table(
             index="Date",
@@ -621,7 +635,6 @@ class PortfolioEngine:
             [["Close"], self.portfolio_historical_prices.columns]
         )
 
-        # Merge with historical close prices (and fillna)
         trade_data = pd.merge(
             trade_data,
             self.portfolio_historical_prices,
@@ -633,24 +646,14 @@ class PortfolioEngine:
         trade_data["Close"] = trade_data["Close"].fillna(method="ffill")
         trade_data.fillna(0, inplace=True)
 
-        # Accumulate quantity held by trade date
         trade_data["Quantity"] = trade_data["Quantity"].cumsum()
-
         trade_data["Investment"] = trade_data["Investment"].cumsum()
-
-        trade_data.loc[:, ("Investment", "Total")] = trade_data["Investment"][
-            self.tickers_list
-        ].sum(axis=1)
-
-        self.historical_trade_data = trade_data
-
-    @log_start_end(log=logger)
-    def calculate_value(self):
-        """Calculate end of day value from historical data"""
-
-        p_bar = tqdm(range(1), desc="       Calculating returns")
-
-        trade_data = self.historical_trade_data
+        trade_data["Investment", "Total"] = trade_data["Investment"].sum(axis=1)
+        trade_data[
+            pd.MultiIndex.from_product(
+                [["Investment delta"], self.tickers_list + ["Total"]]
+            )
+        ] = (trade_data["Investment"].diff(periods=1).fillna(trade_data["Investment"]))
 
         # End Value = Quantity * Close
         trade_data[pd.MultiIndex.from_product([["End Value"], self.tickers_list])] = (
@@ -662,51 +665,103 @@ class PortfolioEngine:
             self.tickers_list
         ].sum(axis=1)
 
+        trade_data = trade_data.reindex(
+            columns=[
+                "Quantity",
+                "Investment",
+                "Investment delta",
+                "Close",
+                "End Value",
+            ],
+            level=0,
+        )
+        self.historical_trade_data = trade_data
+
+    @log_start_end(log=logger)
+    def calculate_portfolio_returns(self):
+        """Calculate portfolio daily returns from historical trade data"""
+
+        p_bar = tqdm(range(1), desc="       Calculating returns")
+
+        trade_data = self.historical_trade_data
+
+        # Helper functions to calculate cash inflow and outflow
+        def f_min(x):
+            return x.apply(lambda x: min(x, 0))
+
+        def f_max(x):
+            return x.apply(lambda x: max(x, 0))
+
         trade_data[
             pd.MultiIndex.from_product(
-                [["Initial Value"], self.tickers_list + ["Total"]]
+                [["Period cash inflow"], self.tickers_list + ["Total"]]
             )
+        ] = trade_data["Investment delta"][:].apply(lambda x: f_min(x), axis=0)
+
+        trade_data[
+            pd.MultiIndex.from_product(
+                [["Period cash outflow"], self.tickers_list + ["Total"]]
+            )
+        ] = trade_data["Investment delta"][:].apply(lambda x: f_max(x), axis=1)
+
+        trade_data[
+            pd.MultiIndex.from_product(
+                [["Period percentage return"], self.tickers_list + ["Total"]]
+            )
+        ] = (trade_data["End Value"] - trade_data["Period cash inflow"]) / (
+            trade_data["End Value"].shift(1).fillna(0)
+            + trade_data["Period cash outflow"]
+        ) - 1
+
+        trade_data["Period percentage return"].fillna(0, inplace=True)
+
+        trade_data[
+            pd.MultiIndex.from_product(
+                [["Period investment"], self.tickers_list + ["Total"]]
+            )
+        ] = (
+            trade_data["End Value"].shift(1).fillna(0)
+            + trade_data["Period cash outflow"]
+        )
+
+        trade_data[
+            pd.MultiIndex.from_product(
+                [["Period absolute return"], self.tickers_list + ["Total"]]
+            )
+        ] = (trade_data["Period investment"]) * trade_data["Period percentage return"]
+
+        trade_data[
+            pd.MultiIndex.from_product(
+                [["Cumulative absolute return"], self.tickers_list + ["Total"]]
+            )
+        ] = trade_data["Period absolute return"].cumsum()
+
+        trade_data["Cumulative absolute return"][
+            trade_data["Cumulative absolute return"] < 0.000001
         ] = 0
 
-        # Initial Value = Previous End Value + Investment changes
-        trade_data["Initial Value"] = trade_data["End Value"].shift(1) + trade_data[
-            "Investment"
-        ].diff(periods=1)
+        trade_data[
+            pd.MultiIndex.from_product(
+                [["Cumulative percentage return"], self.tickers_list + ["Total"]]
+            )
+        ] = (trade_data["Cumulative absolute return"] / trade_data["Period investment"])
 
-        # Set first day Initial Value as the Investment (NaNs break first period)
-        for t in self.tickers_list + ["Total"]:
-            trade_data.at[trade_data.index[0], ("Initial Value", t)] = trade_data.iloc[
-                0
-            ]["Investment"][t]
+        trade_data["Cumulative percentage return"].replace(
+            [np.inf, -np.inf], np.nan, inplace=True
+        )
+
+        trade_data["Cumulative percentage return"].fillna(method="ffill", inplace=True)
 
         p_bar.n += 1
         p_bar.refresh()
 
         self.historical_trade_data = trade_data
 
-    @log_start_end(log=logger)
-    def calculate_returns(self):
-        """Calculate returns from historical trade data"""
+        self.portfolio_returns = self.historical_trade_data["Period percentage return"][
+            "Total"
+        ]
 
-        # Determine the returns, replace inf values with NaN and then drop any missing values
-        for _, data in self.tickers.items():
-            self.historical_trade_data[
-                pd.MultiIndex.from_product([["Returns"], data])
-            ] = (
-                self.historical_trade_data["End Value"][data]
-                / self.historical_trade_data["Initial Value"][data]
-                - 1
-            )
-
-        self.historical_trade_data.loc[:, ("Returns", "Total")] = (
-            self.historical_trade_data["End Value"]["Total"]
-            / self.historical_trade_data["Initial Value"]["Total"]
-            - 1
-        )
-
-        self.portfolio_returns = self.historical_trade_data["Returns"]["Total"]
-        self.portfolio_returns.replace([np.inf, -np.inf], np.nan, inplace=True)
-        self.portfolio_returns = self.portfolio_returns.dropna()
+        # CHECK THIS BELOW LATER
 
         # Determine invested amount, relative and absolute return based on last close
         last_price = self.historical_trade_data["Close"].iloc[-1]
