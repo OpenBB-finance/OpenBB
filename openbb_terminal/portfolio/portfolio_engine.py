@@ -743,14 +743,17 @@ class PortfolioEngine:
         ] = trade_data["Period absolute return"].cumsum()
 
         trade_data["Cumulative absolute return"][
-            trade_data["Cumulative absolute return"] < 0.000001
+            abs(trade_data["Cumulative absolute return"]) < 0.000001
         ] = 0
 
         trade_data[
             pd.MultiIndex.from_product(
                 [["Cumulative percentage return"], self.tickers_list + ["Total"]]
             )
-        ] = (trade_data["Cumulative absolute return"] / trade_data["Cumulative cash outflow"])
+        ] = (
+            trade_data["Cumulative absolute return"]
+            / trade_data["Cumulative cash outflow"]
+        )
 
         trade_data["Cumulative percentage return"].replace(
             [np.inf, -np.inf], np.nan, inplace=True
