@@ -158,7 +158,7 @@ target-version = "py38"
 # This is an introductory addition of ruff. We should look to adding:
 # D: pydocstyle, PD: pandas-vet, I: isort
 # All options here: https://github.com/charliermarsh/ruff#supported-rules
-select = ["E", "W", "F", "Q", "W", "S", "UP"] # "D", "PD", "I"
+select = ["E", "W", "F", "Q", "W", "S", "UP"]
 ignore = ["S105", "S106", "S107"]
 
 [tool.ruff.per-file-ignores]
