@@ -13,7 +13,6 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.qt_app.backend import QT_BACKEND
 from openbb_terminal.rich_config import MenuText, console
 
 # pylint: disable=consider-using-with
@@ -165,17 +164,12 @@ class DashboardsController(BaseController):
                 args += "--theme=dark"
             if ns_parser.input or response.lower() == "y":
                 cfg.LOGGING_SUPPRESS = True
-
-                if ns_parser.jupyter:
-                    subprocess.Popen(
-                        f"{cmd} {file} {args}",
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.STDOUT,
-                        shell=True,  # nosec
-                    )
-                else:
-                    QT_BACKEND.send_dashboard(file)
-
+                subprocess.Popen(
+                    f"{cmd} {file} {args}",
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    shell=True,  # nosec
+                )
                 cfg.LOGGING_SUPPRESS = False
             else:
                 console.print(f"Type: {cmd} voila/{file}\ninto a terminal to run.")
