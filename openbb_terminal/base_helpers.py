@@ -107,7 +107,6 @@ else:
 
 
 # pylint: disable=no-member
-# type: ignore
 class Show:
     """Monkey patch the show method to send the figure to the backend"""
 
@@ -116,10 +115,10 @@ class Show:
         try:
             # if in terminal pro, we just return the json
             if os.environ.get("TERMINAL_PRO", False):
-                return self.to_json()
+                return self.to_json()  # type: ignore
 
-            if self.layout.template.layout.mapbox.style == "dark":
-                self.update_layout(
+            if self.layout.template.layout.mapbox.style == "dark":  # type: ignore
+                self.update_layout(  # type: ignore
                     newshape_line_color="gold",
                     modebar=dict(
                         orientation="v",
