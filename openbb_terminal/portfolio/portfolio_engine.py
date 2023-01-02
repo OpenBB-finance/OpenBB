@@ -721,46 +721,6 @@ class PortfolioEngine:
 
         trade_data["Period percentage return"].fillna(0, inplace=True)
 
-        trade_data[
-            pd.MultiIndex.from_product(
-                [["Period investment"], self.tickers_list + ["Total"]]
-            )
-        ] = (
-            trade_data["End Value"].shift(1).fillna(0)
-            + trade_data["Period cash outflow"]
-        )
-
-        trade_data[
-            pd.MultiIndex.from_product(
-                [["Period absolute return"], self.tickers_list + ["Total"]]
-            )
-        ] = (trade_data["Period investment"]) * trade_data["Period percentage return"]
-
-        trade_data[
-            pd.MultiIndex.from_product(
-                [["Cumulative absolute return"], self.tickers_list + ["Total"]]
-            )
-        ] = trade_data["Period absolute return"].cumsum()
-
-        trade_data["Cumulative absolute return"][
-            abs(trade_data["Cumulative absolute return"]) < 0.000001
-        ] = 0
-
-        trade_data[
-            pd.MultiIndex.from_product(
-                [["Cumulative percentage return"], self.tickers_list + ["Total"]]
-            )
-        ] = (
-            trade_data["Cumulative absolute return"]
-            / trade_data["Cumulative cash outflow"]
-        )
-
-        trade_data["Cumulative percentage return"].replace(
-            [np.inf, -np.inf], np.nan, inplace=True
-        )
-
-        trade_data["Cumulative percentage return"].fillna(method="ffill", inplace=True)
-
         p_bar.n += 1
         p_bar.refresh()
 
