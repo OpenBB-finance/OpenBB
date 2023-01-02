@@ -58,24 +58,26 @@ class PortfolioEngine:
     def __init__(self, transactions: pd.DataFrame = pd.DataFrame()):
         """Initialize PortfolioEngine class"""
 
-        # Portfolio
+        # General
         self.empty = True
+        self.risk_free_rate = float(0)
+        self.inception_date = datetime.date(1970, 1, 1)
         self.tickers_list = None
         self.tickers: Dict[Any, Any] = {}
-        self.inception_date = datetime.date(1970, 1, 1)
+        self.benchmark_ticker: str = ""
+        self.benchmark_info = None
+
+        # Portfolio
         self.historical_trade_data = pd.DataFrame()
         self.portfolio_historical_prices = pd.DataFrame()
         self.portfolio_returns = pd.DataFrame()
         self.portfolio_trades = pd.DataFrame()
-        self.risk_free_rate = float(0)
         self.portfolio_assets_allocation = pd.DataFrame()
         self.portfolio_sectors_allocation = pd.DataFrame()
         self.portfolio_regions_allocation = pd.DataFrame()
         self.portfolio_countries_allocation = pd.DataFrame()
 
         # Benchmark
-        self.benchmark_ticker: str = ""
-        self.benchmark_info = None
         self.benchmark_historical_prices = pd.DataFrame()
         self.benchmark_returns = pd.DataFrame()
         self.benchmark_trades = pd.DataFrame()
@@ -564,60 +566,6 @@ class PortfolioEngine:
         self.calculate_returns()
 
     @log_start_end(log=logger)
-    def calculate_returns(self):
-        """Calculate returns from historical trade data"""
-
-        # Determine the returns, replace inf values with NaN and then drop any missing values
-        for _, data in self.tickers.items():
-            self.historical_trade_data[
-                pd.MultiIndex.from_product([["Returns"], data])
-            ] = (
-                self.historical_trade_data["End Value"][data]
-                / self.historical_trade_data["Initial Value"][data]
-                - 1
-            )
-
-        self.historical_trade_data.loc[:, ("Returns", "Total")] = (
-            self.historical_trade_data["End Value"]["Total"]
-            / self.historical_trade_data["Initial Value"]["Total"]
-            - 1
-        )
-
-        self.portfolio_returns = self.historical_trade_data["Returns"]["Total"]
-        self.portfolio_returns.replace([np.inf, -np.inf], np.nan, inplace=True)
-        self.portfolio_returns = self.portfolio_returns.dropna()
-
-        # Determine invested amount, relative and absolute return based on last close
-        last_price = self.historical_trade_data["Close"].iloc[-1]
-
-        # Save portfolio trades to compute allocations later
-        self.portfolio_trades = self.__transactions.copy()
-        self.portfolio_trades[
-            [
-                "Portfolio Investment",
-                "Close",
-                "Portfolio Value",
-                "Portfolio % Return",
-                "Abs Portfolio Return",
-            ]
-        ] = float(0)
-
-        for index, trade in self.__transactions.iterrows():
-            self.portfolio_trades["Close"][index] = last_price[trade["Ticker"]]
-            self.portfolio_trades["Portfolio Investment"][index] = trade["Investment"]
-            self.portfolio_trades["Portfolio Value"][index] = (
-                self.portfolio_trades["Close"][index] * trade["Quantity"]
-            )
-            self.portfolio_trades["Portfolio % Return"][index] = (
-                self.portfolio_trades["Portfolio Value"][index]
-                / self.portfolio_trades["Portfolio Investment"][index]
-            ) - 1
-            self.portfolio_trades["Abs Portfolio Return"].loc[index] = (
-                self.portfolio_trades["Portfolio Value"][index]
-                - self.portfolio_trades["Portfolio Investment"][index]
-            )
-
-    @log_start_end(log=logger)
     def load_portfolio_historical_prices(self, use_close: bool = False):
         """Load historical adj close/close prices for tickers in list of trades
 
@@ -735,6 +683,60 @@ class PortfolioEngine:
         p_bar.refresh()
 
         self.historical_trade_data = trade_data
+
+    @log_start_end(log=logger)
+    def calculate_returns(self):
+        """Calculate returns from historical trade data"""
+
+        # Determine the returns, replace inf values with NaN and then drop any missing values
+        for _, data in self.tickers.items():
+            self.historical_trade_data[
+                pd.MultiIndex.from_product([["Returns"], data])
+            ] = (
+                self.historical_trade_data["End Value"][data]
+                / self.historical_trade_data["Initial Value"][data]
+                - 1
+            )
+
+        self.historical_trade_data.loc[:, ("Returns", "Total")] = (
+            self.historical_trade_data["End Value"]["Total"]
+            / self.historical_trade_data["Initial Value"]["Total"]
+            - 1
+        )
+
+        self.portfolio_returns = self.historical_trade_data["Returns"]["Total"]
+        self.portfolio_returns.replace([np.inf, -np.inf], np.nan, inplace=True)
+        self.portfolio_returns = self.portfolio_returns.dropna()
+
+        # Determine invested amount, relative and absolute return based on last close
+        last_price = self.historical_trade_data["Close"].iloc[-1]
+
+        # Save portfolio trades to compute allocations later
+        self.portfolio_trades = self.__transactions.copy()
+        self.portfolio_trades[
+            [
+                "Portfolio Investment",
+                "Close",
+                "Portfolio Value",
+                "Portfolio % Return",
+                "Abs Portfolio Return",
+            ]
+        ] = float(0)
+
+        for index, trade in self.__transactions.iterrows():
+            self.portfolio_trades["Close"][index] = last_price[trade["Ticker"]]
+            self.portfolio_trades["Portfolio Investment"][index] = trade["Investment"]
+            self.portfolio_trades["Portfolio Value"][index] = (
+                self.portfolio_trades["Close"][index] * trade["Quantity"]
+            )
+            self.portfolio_trades["Portfolio % Return"][index] = (
+                self.portfolio_trades["Portfolio Value"][index]
+                / self.portfolio_trades["Portfolio Investment"][index]
+            ) - 1
+            self.portfolio_trades["Abs Portfolio Return"].loc[index] = (
+                self.portfolio_trades["Portfolio Value"][index]
+                - self.portfolio_trades["Portfolio Investment"][index]
+            )
 
     @log_start_end(log=logger)
     def set_risk_free_rate(self, risk_free_rate: float):
