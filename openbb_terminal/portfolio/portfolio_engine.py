@@ -706,6 +706,12 @@ class PortfolioEngine:
 
         trade_data[
             pd.MultiIndex.from_product(
+                [["Cumulative cash outflow"], self.tickers_list + ["Total"]]
+            )
+        ] = trade_data["Period cash outflow"].cumsum()
+
+        trade_data[
+            pd.MultiIndex.from_product(
                 [["Period percentage return"], self.tickers_list + ["Total"]]
             )
         ] = (trade_data["End Value"] - trade_data["Period cash inflow"]) / (
@@ -744,7 +750,7 @@ class PortfolioEngine:
             pd.MultiIndex.from_product(
                 [["Cumulative percentage return"], self.tickers_list + ["Total"]]
             )
-        ] = (trade_data["Cumulative absolute return"] / trade_data["Period investment"])
+        ] = (trade_data["Cumulative absolute return"] / trade_data["Cumulative cash outflow"])
 
         trade_data["Cumulative percentage return"].replace(
             [np.inf, -np.inf], np.nan, inplace=True
