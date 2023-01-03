@@ -602,12 +602,19 @@ def display_daily_returns(
                 return
             ax = external_axes
 
+        clrs_portfolio = [
+            theme.down_color if (x < 0) else theme.up_color for x in df["portfolio"]
+        ]
+        clrs_benchmark = [
+            theme.down_color if (x < 0) else theme.up_color for x in df["benchmark"]
+        ]
+
         ax[0].set_title(f"Portfolio in period {window}")
-        ax[0].plot(df.index, df["portfolio"], label="Portfolio")
+        ax[0].bar(df.index, df["portfolio"], label="Portfolio", color=clrs_portfolio)
         ax[0].set_ylabel("Returns [%]")
         theme.style_primary_axis(ax[0])
         ax[1].set_title(f"Benchmark in period {window}")
-        ax[1].plot(df.index, df["benchmark"], label="Benchmark")
+        ax[1].bar(df.index, df["benchmark"], label="Benchmark", color=clrs_benchmark)
         ax[1].set_ylabel("Returns [%]")
         theme.style_primary_axis(ax[1])
 
