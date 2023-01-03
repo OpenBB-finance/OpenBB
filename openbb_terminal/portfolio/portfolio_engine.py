@@ -87,7 +87,7 @@ class PortfolioEngine:
 
     Methods
     -------
-    read_transactionsClass method to read transactions from file
+    read_transactions: Static method to read transactions from file
     __set_transactions:
         __preprocess_transactions: Method to preprocess, format and compute auxiliary fields
             __load_company_data: Load company data for stocks such as sector, industry and country
@@ -139,6 +139,28 @@ class PortfolioEngine:
         if not transactions.empty:
             self.__set_transactions(transactions)
 
+    @staticmethod
+    def read_transactions(path: str) -> pd.DataFrame:
+        """Static method to read transactions from file.
+
+        Parameters
+        ----------
+        path: str
+            path to transactions file
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with transactions
+        """
+        # Load transactions from file
+        if path.endswith(".xlsx"):
+            transactions = pd.read_excel(path)
+        elif path.endswith(".csv"):
+            transactions = pd.read_csv(path)
+
+        return transactions
+
     def __set_transactions(self, transactions):
         self.__transactions = transactions
         self.__preprocess_transactions()
@@ -174,28 +196,6 @@ class PortfolioEngine:
         df["Date"] = df["Date"].dt.strftime("%Y-%m-%d")
         df.sort_values(by="Date", ascending=False, inplace=True)
         return df
-
-    @staticmethod
-    def read_transactions(path: str) -> pd.DataFrame:
-        """Read static method to read transactions from file.
-
-        Parameters
-        ----------
-        path: str
-            path to transactions file
-
-        Returns
-        -------
-        pd.DataFrame
-            DataFrame with transactions
-        """
-        # Load transactions from file
-        if path.endswith(".xlsx"):
-            transactions = pd.read_excel(path)
-        elif path.endswith(".csv"):
-            transactions = pd.read_csv(path)
-
-        return transactions
 
     @log_start_end(log=logger)
     def __preprocess_transactions(self):
