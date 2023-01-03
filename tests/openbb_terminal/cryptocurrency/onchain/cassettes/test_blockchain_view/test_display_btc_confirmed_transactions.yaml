@@ -243,9 +243,9 @@ interactions:
         9e6vsBo9SWgKqLb4BlepDfwcRUFTqRrq8EXV6UkK5qiNavSkot1nevO//Nd/A0Zzs1Q3wgAA
     headers:
       CF-Cache-Status:
-      - EXPIRED
+      - MISS
       CF-RAY:
-      - 7830fec259880c93-LAX
+      - 783907f56a702b99-LAX
       CF-Rate-Limit-Action:
       - simulate
       CF-Rate-Limit-Rule-Id:
@@ -255,13 +255,13 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 02 Jan 2023 05:11:38 GMT
+      - Tue, 03 Jan 2023 04:36:01 GMT
       Expires:
-      - Mon, 02 Jan 2023 09:11:38 GMT
+      - Tue, 03 Jan 2023 08:36:01 GMT
       Last-Modified:
-      - Mon, 02 Jan 2023 05:07:06 GMT
+      - Tue, 03 Jan 2023 04:36:01 GMT
       Retry-After:
-      - '8'
+      - '36'
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -295,7 +295,7 @@ interactions:
       x-blockchain-cp-b:
       - charts-bitcoin-core
       x-blockchain-cp-f:
-      - xxx4 0.036 - 4ac4423709ac32aab342f75abdde59d4
+      - zwfd 0.034 - 93ec67be5355c28d0db504011bb09a25
       x-blockchain-language:
       - en
       x-blockchain-language-id:
@@ -311,7 +311,7 @@ interactions:
       x-original-host:
       - api.blockchain.info
       x-request-id:
-      - 4ac4423709ac32aab342f75abdde59d4
+      - 93ec67be5355c28d0db504011bb09a25
       x-xss-protection:
       - 1; mode=block
     status:

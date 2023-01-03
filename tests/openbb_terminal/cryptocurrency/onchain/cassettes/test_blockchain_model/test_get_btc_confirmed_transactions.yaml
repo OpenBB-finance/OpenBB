@@ -245,17 +245,17 @@ interactions:
       CF-Cache-Status:
       - MISS
       CF-RAY:
-      - 7830ff0b88867e3e-LAX
+      - 783907591bdc7d7d-LAX
       Connection:
       - keep-alive
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 02 Jan 2023 05:11:50 GMT
+      - Tue, 03 Jan 2023 04:35:36 GMT
       Expires:
-      - Mon, 02 Jan 2023 09:11:50 GMT
+      - Tue, 03 Jan 2023 08:35:36 GMT
       Last-Modified:
-      - Mon, 02 Jan 2023 05:11:50 GMT
+      - Tue, 03 Jan 2023 04:35:36 GMT
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -289,7 +289,7 @@ interactions:
       x-blockchain-cp-b:
       - charts-bitcoin-core
       x-blockchain-cp-f:
-      - z6tb 0.032 - bcf53d1cde68450da5f932422ac3c59c
+      - vjlw 0.050 - ef9c958578d43e588f750cf556bdc0b8
       x-blockchain-language:
       - en
       x-blockchain-language-id:
@@ -305,7 +305,7 @@ interactions:
       x-original-host:
       - api.blockchain.info
       x-request-id:
-      - bcf53d1cde68450da5f932422ac3c59c
+      - ef9c958578d43e588f750cf556bdc0b8
       x-xss-protection:
       - 1; mode=block
     status:
