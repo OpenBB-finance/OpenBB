@@ -50,8 +50,6 @@ class OpenBBFigure(go.Figure):
             self.__dict__ = fig.__dict__
 
         self._is_subplots = is_subplots
-        xaxis: dict = kwargs.pop("xaxis", None)
-        yaxis: dict = kwargs.pop("yaxis", None)
 
         if (xaxis := kwargs.pop("xaxis", None)) or (yaxis := kwargs.pop("yaxis", None)):
             self.update_xaxes(xaxis)

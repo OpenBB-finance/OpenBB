@@ -18,7 +18,7 @@ class Backend(PyWry):
 
     def __init__(self, daemon: bool = True, max_retries: int = 30):
         super().__init__(daemon=daemon, max_retries=max_retries)
-        self.plotly_html = None
+        self.plotly_html: Path = None
         self.inject_path_to_html(Path(__file__).parent.resolve() / "plotly.html")
 
     def inject_path_to_html(self, path: Path):
