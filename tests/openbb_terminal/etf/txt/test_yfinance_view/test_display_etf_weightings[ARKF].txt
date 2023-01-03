@@ -1,12 +1,12 @@
 
 Sector holdings of ARKF
                         % of holdings in the sector
-Technology                                    34.03
-Communication Services                        24.13
-Consumer Cyclical                             18.63
-Financial Services                            16.20
-Real Estate                                    4.11
-Healthcare                                     2.90
+Technology                                    59.49
+Consumer Cyclical                             16.78
+Communication Services                        10.61
+Financial Services                             9.95
+Healthcare                                     3.08
+Real Estate                                    0.00
 Basic Materials                                0.00
 Consumer Defensive                             0.00
 Utilities                                      0.00

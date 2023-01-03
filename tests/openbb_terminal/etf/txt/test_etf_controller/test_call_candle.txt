@@ -1,7 +1,24 @@
-Top holdings found:
-   Tesla, Inc.
-   Zoom Video Communications, Inc.
-   Coinbase Global, Inc.
-   Roku, Inc.
-   Block, Inc.
+
+
+Failed to get ticker 'ARKW' reason: Can't overwrite existing cassette ('/Users/james/OpenBBTerminal/OpenBBTerminal/tests/openbb_terminal/etf/cassettes/test_etf_controller/test_call_candle.yaml') in your current record mode ('none').
+No match for the request (<Request (GET) https://query2.finance.yahoo.com/v8/finance/chart/ARKW?range=1d&interval=1d>) was found.
+Found 1 similar requests with 1 different matcher(s) :
+
+1 - (<Request (GET) https://query2.finance.yahoo.com/v8/finance/chart/ARKW?events=div%2Csplits&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2>).
+Matchers succeeded : ['method', 'scheme', 'host', 'port', 'path']
+Matchers failed :
+query - assertion failure :
+[('interval', '1d'), ('range', '1d')] != [('events', 'div,splits'), ('includePrePost', 'False'), ('interval', '1d'), ('period1', 'MOCK_PERIOD_1'), ('period2', 'MOCK_PERIOD_2')]
+assert [('interval',...range', '1d')] == [('events', '...CK_PERIOD_2')]
+  At index 0 diff: ('interval', '1d') != ('events', 'div,splits')
+  Right contains 3 more items, first extra item: ('interval', '1d')
+  Use -v to get the full diff
+
+- ARKW: No data found for this date range, symbol may be delisted
+
+1 Failed download:
+- ARKW: No data found for this date range, symbol may be delisted
+ETF ticker provided does not exist!
+
+No ticker loaded. First use `load {ticker}`
 
