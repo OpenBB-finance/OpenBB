@@ -7,6 +7,8 @@ import plotly.graph_objects as go
 import requests
 from pywry import PyWry
 
+BACKEND_PATH = Path(__file__).parent.resolve()
+
 
 class Backend(PyWry):
     """Custom backend for Plotly"""
@@ -18,22 +20,21 @@ class Backend(PyWry):
 
     def __init__(self, daemon: bool = True, max_retries: int = 30):
         super().__init__(daemon=daemon, max_retries=max_retries)
-        self.plotly_html: Path = None
-        self.inject_path_to_html(Path(__file__).parent.resolve() / "plotly.html")
+        self.plotly_html: Path = BACKEND_PATH / "plotly_temp.html"
+        self.inject_path_to_html()
 
-    def inject_path_to_html(self, path: Path):
+    def inject_path_to_html(self):
         """Update the script tag in html with local path"""
-        with open(path, "r", encoding="utf-8") as file:  # type: ignore
+        with open(BACKEND_PATH / "plotly.html", "r", encoding="utf-8") as file:  # type: ignore
             html = file.read()
 
-        replace = str(path.parent.resolve().as_posix())
+        replace = str(BACKEND_PATH.as_posix())
 
         html = html.replace("{{MAIN_PATH}}", replace)
 
         # We create a temporary file to inject the path to the script tag
         # This is so we don't have to modify the original file
         # The file is deleted at program exit.
-        self.plotly_html = path.parent.resolve() / "plotly_temp.html"
         with open(self.plotly_html, "w", encoding="utf-8") as file:  # type: ignore
             file.write(html)
 
@@ -45,7 +46,7 @@ class Backend(PyWry):
 
     def get_window_icon(self) -> str:
         """Get the window icon"""
-        icon_path = Path(__file__).parent.resolve() / "assets" / "icon.png"
+        icon_path = BACKEND_PATH / "assets" / "icon.png"
         if icon_path.exists():
             return str(icon_path)
         return ""
@@ -82,10 +83,10 @@ class Backend(PyWry):
 
 
 # To avoid having plotly.js in the repo, we download it if it's not present
-if not (Path(__file__).parent.resolve() / "assets" / "plotly.js").exists():
+if not (BACKEND_PATH / "assets" / "plotly.js").exists():
     download = requests.get("https://cdn.plot.ly/plotly-2.16.1.min.js", stream=True)
     with open(
-        str(Path(__file__).parent.resolve() / "assets" / "plotly.js"),
+        str(BACKEND_PATH / "assets" / "plotly.js"),
         "wb",
         encoding="utf-8",
     ) as f:
