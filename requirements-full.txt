@@ -249,7 +249,7 @@ pytz==2022.7 ; python_version >= "3.8" and python_full_version != "3.9.7" and py
 pyupgrade==2.38.4 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pywin32==305 ; sys_platform == "win32" and platform_python_implementation != "PyPy" and python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pywinpty==2.0.10 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11" and os_name == "nt"
-pywry==0.1.3 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
+pywry==0.1.32 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pyyaml==6.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pyzmq==24.0.1 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 qdldl==0.1.5.post2 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
