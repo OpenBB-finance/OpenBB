@@ -345,10 +345,9 @@ def display_performance_vs_benchmark(
 
     Parameters
     ----------
-    portfolio_trades: pd.DataFrame
-        Object containing trades made within the portfolio.
-    benchmark_trades: pd.DataFrame
-        Object containing trades made within the benchmark.
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
     """
