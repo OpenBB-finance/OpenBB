@@ -40,6 +40,7 @@ website/functions
 website/terminaltest
 !build/docker/compose.env
 openbb_terminal/plots_core/assets/plotly.js
+openbb_terminal/plots_core/plotly_temp.html
 
 # pyinstaller artifacts
 *.pyo
