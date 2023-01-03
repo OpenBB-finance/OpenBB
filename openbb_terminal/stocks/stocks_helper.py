@@ -960,13 +960,8 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
         "1 Year": 100 * closes.pct_change(252)[-1],
     }
 
-    ytd = pd.bdate_range(
-        start=datetime(datetime.now().year, 1, 1).strftime("%Y-%m-%d"),
-        end=datetime(datetime.now().year, 1, 7).strftime("%Y-%m-%d"),
-        freq=pd.offsets.CustomBusinessDay(calendar=USFederalHolidayCalendar()),
-    ).tolist()
-
-    if ytd[0] in closes.index and (closes_ytd := closes[closes.index >= ytd[0]]).any():
+    closes_ytd = closes[closes.index.year == pd.to_datetime("today").year]
+    if not closes_ytd.empty:
         perfs["YTD"] = 100 * (closes_ytd[-1] - closes_ytd[0]) / closes_ytd[0]
     else:
         perfs["Period"] = 100 * (closes[-1] - closes[0]) / closes[0]
