@@ -62,7 +62,10 @@ function autoScaling(eventdata, graphs) {
                     }
 
                     let y_range = y_max - y_min;
-                    y_min -= y_range * 0.15;
+
+                    if (yaxis == 'yaxis' && graphs.layout.yaxis.range[0] != 0) {
+                        y_min -= y_range * 0.15;
+                    }
                     y_max += y_range * 0.15;
 
                     if (yaxis == 'yaxis' && secondary_y) {
