@@ -21,7 +21,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     reindex_dates,
 )  # plot_autoscale,
-from openbb_terminal.qt_app.plotly_helper import OpenBBFigure
+from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 
 logger = logging.getLogger(__name__)
 

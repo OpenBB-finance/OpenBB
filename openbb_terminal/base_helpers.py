@@ -5,7 +5,7 @@ from typing import Any, Callable, Literal, Union
 
 from rich.console import Console
 
-from openbb_terminal.qt_app.backend import BACKEND
+from openbb_terminal.plots_core.backend import BACKEND
 
 console = Console()
 

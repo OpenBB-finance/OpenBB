@@ -5,8 +5,8 @@ from . import (
     economy,
     etf,
     forex,
+    plots_core,
     portfolio,
-    qt_app,
     reports,
     stocks,
 )

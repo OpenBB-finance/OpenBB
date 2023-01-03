@@ -33,7 +33,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.qt_app.plotly_helper import OpenBBFigure
+from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, yfinance_model
 from openbb_terminal.stocks.options.yfinance_model import (
@@ -329,19 +329,15 @@ def plot_oi(
         x=call_oi.index, y=call_oi.values, mode="lines+markers", name="Calls"
     )
     fig.add_scatter(x=put_oi.index, y=put_oi.values, mode="lines+markers", name="Puts")
-    fig.add_vline(x=current_price, line_dash="dash", line_width=2, name="Current Price")
-    fig.add_vline(
-        x=max_pain, line_dash="dash", line_width=3, name=f"Max Pain: {max_pain}"
+    fig.add_vline_legend(
+        x=current_price,
+        name="Current Price",
+        line=dict(dash="dash", width=2, color="grey"),
     )
-
-    maxpain_y = max(put_oi.loc[max_pain], call_oi.loc[max_pain])
-    fig.add_annotation(
+    fig.add_vline_legend(
         x=max_pain,
-        y=maxpain_y + (0.1 * maxpain_y),
-        text=f"Max Pain: {max_pain}",
-        xanchor="right",
-        ax=0,
-        ay=-40,
+        name=f"Max Pain: {max_pain}",
+        line=dict(dash="dash", width=2, color="white"),
     )
     fig.show()
 

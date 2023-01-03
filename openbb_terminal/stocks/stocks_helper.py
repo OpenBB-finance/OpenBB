@@ -23,7 +23,7 @@ from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.qt_app.plotly_helper import OpenBBFigure
+from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import

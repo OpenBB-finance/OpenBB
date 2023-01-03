@@ -39,7 +39,7 @@ website/functions
 *_sdk_audit.csv
 website/terminaltest
 !build/docker/compose.env
-openbb_terminal/qt_app/assets/plotly.js
+openbb_terminal/plots_core/assets/plotly.js
 
 # pyinstaller artifacts
 *.pyo

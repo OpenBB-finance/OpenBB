@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from typing import List, Union
 
 import plotly.graph_objects as go
@@ -6,7 +7,9 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 
 # Reads the template from a file
-with open("openbb.json", encoding="utf-8") as f:
+with open(
+    str(Path(__file__).parent.resolve() / "config/openbb.json"), encoding="utf-8"
+) as f:
     OPENNBB_THEME = json.load(f)
 
 # Register the template and set it as the default
@@ -35,16 +38,16 @@ class OpenBBFigure(go.Figure):
 
     Parameters
     ----------
-    is_subplots : `bool`, optional
-        Whether the figure is a subplots figure, by default False
     fig : `go.Figure`, optional
         Figure to copy, by default None
+    is_subplots : `bool`, optional
+        Whether the figure is a subplots figure, by default False
     **kwargs
         Keyword arguments to pass to `go.Figure.update_layout`
 
     """
 
-    def __init__(self, is_subplots: bool = False, fig: go.Figure = None, **kwargs):
+    def __init__(self, fig: go.Figure = None, is_subplots: bool = False, **kwargs):
         super().__init__()
         if fig:
             self.__dict__ = fig.__dict__
@@ -116,7 +119,7 @@ class OpenBBFigure(go.Figure):
             specs=specs or [[{}] * cols] * rows,
             **kwargs,
         )
-        return cls(is_subplots=True, fig=fig)
+        return cls(fig, is_subplots=True)
 
     def _set_openbb_overlays(self):
         """Sets the overlays for Command Location and OpenBB Terminal"""

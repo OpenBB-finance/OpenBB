@@ -16,7 +16,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.qt_app.plotly_helper import OpenBBFigure
+from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
 from openbb_terminal.stocks.stocks_helper import get_holidays

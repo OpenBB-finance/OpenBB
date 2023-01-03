@@ -16,7 +16,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     print_rich_table,
 )  # is_valid_axes_count,; plot_autoscale,
-from openbb_terminal.qt_app.plotly_helper import OpenBBFigure
+from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
