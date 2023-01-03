@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def darkpool_ats_otc(
+def darkpool_ats_otc(  # pylint: disable=R1710
     symbol: str, export: str = "", external_axes: Optional[List[plt.Axes]] = None
 ):
     """Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]

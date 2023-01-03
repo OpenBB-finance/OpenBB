@@ -15,7 +15,7 @@ class Backend(PyWry):
 
     def __new__(cls):
         if not hasattr(cls, "instance"):
-            cls.instance = super(Backend, cls).__new__(cls)
+            cls.instance = super().__new__(cls)
         return cls.instance
 
     def __init__(self, daemon: bool = True, max_retries: int = 30):
@@ -25,7 +25,7 @@ class Backend(PyWry):
 
     def inject_path_to_html(self):
         """Update the script tag in html with local path"""
-        with open(BACKEND_PATH / "plotly.html", "r", encoding="utf-8") as file:  # type: ignore
+        with open(BACKEND_PATH / "plotly.html", encoding="utf-8") as file:  # type: ignore
             html = file.read()
 
         replace = str(BACKEND_PATH.as_posix())

@@ -6,7 +6,7 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 
 # Reads the template from a file
-with open("openbb.json", "r", encoding="utf-8") as f:
+with open("openbb.json", encoding="utf-8") as f:
     OPENNBB_THEME = json.load(f)
 
 # Register the template and set it as the default
