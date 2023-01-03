@@ -27,31 +27,80 @@ pd.options.mode.chained_assignment = None
 
 
 class PortfolioEngine:
-    """
-    Class for portfolio analysis in OpenBB
+    """Class for portfolio analysis in OpenBB
+
     Implements a Portfolio and related methods.
+
+    Attributes
+    ----------
+    # General
+    empty: bool
+        True if no transactions have been loaded
+    risk_free_rate: float
+        Risk free rate
+    inception_date: datetime.date
+        Inception date of the portfolio
+    tickers_list: list
+        List of tickers in the portfolio
+    tickers: Dict[Any, Any]
+        Dictionary of ticker type (e.g. ETF, STOCK, CRYPTO) as keys and ticker
+        list as values
+    benchmark_ticker: str
+        Benchmark ticker
+    benchmark_info: Any
+        Benchmark info
+    historical_trade_data: pd.DataFrame
+        DataFrame with state of the portfolio at each day since inception, including
+        trade quantity, invested amount, return, etc.
+
+    # Portfolio
+    portfolio_historical_prices: pd.DataFrame
+        DataFrame with historical prices of the ticker in the portfolio
+    portfolio_returns: pd.DataFrame
+        DataFrame with portfolio returns, i.e. the total daily return of the portfolio
+    portfolio_trades: pd.DataFrame
+        DataFrame with portfolio trades and respective performance
+    portfolio_assets_allocation: pd.DataFrame
+        DataFrame with portfolio assets allocation
+    portfolio_sectors_allocation: pd.DataFrame
+        DataFrame with portfolio sectors allocation
+    portfolio_regions_allocation: pd.DataFrame
+        DataFrame with portfolio regions allocation
+    portfolio_countries_allocation: pd.DataFrame
+        DataFrame with portfolio countries allocation
+
+    # Benchmark
+    benchmark_historical_prices: pd.DataFrame
+        DataFrame with historical prices of the benchmark ticker
+    benchmark_returns: pd.DataFrame
+        DataFrame with benchmark returns, i.e. the total daily return of the benchmark
+    benchmark_trades: pd.DataFrame
+        DataFrame with benchmark trades and respective performance
+    benchmark_assets_allocation: pd.DataFrame
+        DataFrame with benchmark assets allocation
+    benchmark_sectors_allocation: pd.DataFrame
+        DataFrame with benchmark sectors allocation
+    benchmark_regions_allocation: pd.DataFrame
+        DataFrame with benchmark regions allocation
+    benchmark_countries_allocation: pd.DataFrame
+        DataFrame with benchmark countries allocation
 
     Methods
     -------
-    read_transactions: Class method to read transactions from file
-
+    read_transactionsClass method to read transactions from file
     __set_transactions:
         __preprocess_transactions: Method to preprocess, format and compute auxiliary fields
-
+            __load_company_data: Load company data for stocks such as sector, industry and country
     get_transactions: Outputs the formatted transactions DataFrame
-
     set_benchmark: Adds benchmark ticker, info, prices and returns
-        mimic_trades_for_benchmark: Mimic trades from the transactions based on chosen benchmark assuming partial shares
-
+        __mimic_trades_for_benchmark: Mimic trades from the transactions based on chosen benchmark assuming partial shares
     generate_portfolio_data: Generates portfolio data from transactions
-        load_portfolio_historical_prices: Loads historical adj close prices for tickers in list of trades
-        populate_historical_trade_data: Create a new dataframe to store historical prices by ticker
-        calculate_portfolio_returns: Calculate portfolio daily returns
-
+        __load_portfolio_historical_prices: Loads historical adj close prices for tickers in list of trades
+        __populate_historical_trade_data: Create a new dataframe to store historical prices by ticker
+        __calculate_portfolio_returns: Calculate portfolio daily returns
+        __calculate_portfolio_performance: Calculate portfolio trades performance
     set_risk_free_rate: Sets risk free rate
-
     calculate_reserves: Takes dividends into account for returns calculation
-
     calculate_allocation: Determine allocation based on assets, sectors, countries and regions.
     """
 
@@ -66,9 +115,9 @@ class PortfolioEngine:
         self.tickers: Dict[Any, Any] = {}
         self.benchmark_ticker: str = ""
         self.benchmark_info = None
+        self.historical_trade_data = pd.DataFrame()
 
         # Portfolio
-        self.historical_trade_data = pd.DataFrame()
         self.portfolio_historical_prices = pd.DataFrame()
         self.portfolio_returns = pd.DataFrame()
         self.portfolio_trades = pd.DataFrame()
@@ -344,7 +393,7 @@ class PortfolioEngine:
                 .values.any()
             ):
                 # If any fields is empty for stocks (overwrites any info there)
-                self.load_company_data()
+                self.__load_company_data()
 
             p_bar.n += 1
             p_bar.refresh()
@@ -363,8 +412,8 @@ class PortfolioEngine:
             console.print("\nCould not preprocess transactions.")
 
     @log_start_end(log=logger)
-    def load_company_data(self):
-        """Load populate company data for stocks such as sector, industry and country"""
+    def __load_company_data(self):
+        """Load company data for stocks such as sector, industry and country"""
 
         for ticker_type, ticker_list in self.tickers.items():
             # yfinance only has sector, industry and country for stocks
@@ -455,7 +504,7 @@ class PortfolioEngine:
         p_bar.n += 1
         p_bar.refresh()
 
-        self.mimic_trades_for_benchmark(full_shares)
+        self.__mimic_trades_for_benchmark(full_shares)
 
         # Merge benchmark and portfolio dates to ensure same length
         self.benchmark_historical_prices = pd.merge(
@@ -485,7 +534,7 @@ class PortfolioEngine:
         p_bar.refresh()
 
     @log_start_end(log=logger)
-    def mimic_trades_for_benchmark(self, full_shares: bool = False):
+    def __mimic_trades_for_benchmark(self, full_shares: bool = False):
         """Mimic trades from the transactions based on chosen benchmark assuming partial shares
 
         Parameters
@@ -562,17 +611,19 @@ class PortfolioEngine:
         """Generate portfolio data from transactions
 
         Workflow:
-        1. Load historical adj close/close prices for tickers in list of trades
-        2. Record the state of the portfolio at each day since inception.
-        3. Calculate portfolio daily returns from historical trade data
+            1. Load historical adj close/close prices for tickers in list of trades
+            2. Record the state of the portfolio at each day since inception.
+            3. Calculate portfolio daily returns from historical trade data
+            4. Calculate portfolio trades performance
 
         """
-        self.load_portfolio_historical_prices()
-        self.populate_historical_trade_data()
-        self.calculate_portfolio_returns()
+        self.__load_portfolio_historical_prices()
+        self.__populate_historical_trade_data()
+        self.__calculate_portfolio_returns()
+        self.__calculate_portfolio_performance()
 
     @log_start_end(log=logger)
-    def load_portfolio_historical_prices(self, use_close: bool = False):
+    def __load_portfolio_historical_prices(self, use_close: bool = False):
         """Load historical adj close/close prices for tickers in list of trades
 
         Parameters
@@ -585,7 +636,6 @@ class PortfolioEngine:
 
         for ticker_type, data in self.tickers.items():
             if ticker_type in ["STOCK", "ETF", "CRYPTO"]:
-                # Download yfinance data
                 price_data = yf.download(
                     data, start=self.inception_date, progress=False
                 )["Close" if use_close or ticker_type == "CRYPTO" else "Adj Close"]
@@ -595,21 +645,19 @@ class PortfolioEngine:
                     price_data = pd.DataFrame(price_data)
                     price_data.columns = data
 
-                # Add to historical_prices dataframe
                 self.portfolio_historical_prices = pd.concat(
                     [self.portfolio_historical_prices, price_data], axis=1
                 )
             else:
                 console.print(f"Type {ticker_type} not supported.")
 
+            self.portfolio_historical_prices.fillna(method="ffill", inplace=True)
+
             p_bar.n += 1
             p_bar.refresh()
 
-            # Fill missing values with last known price
-            self.portfolio_historical_prices.fillna(method="ffill", inplace=True)
-
     @log_start_end(log=logger)
-    def populate_historical_trade_data(self):
+    def __populate_historical_trade_data(self):
         """Record the state of the portfolio at each day since inception
 
         The state includes the following information for each ticker and total:
@@ -678,8 +726,20 @@ class PortfolioEngine:
         self.historical_trade_data = trade_data
 
     @log_start_end(log=logger)
-    def calculate_portfolio_returns(self):
-        """Calculate portfolio daily returns from historical trade data"""
+    def __calculate_portfolio_returns(self):
+        """Calculate portfolio daily returns from historical trade data
+
+        - End value: Total value of shares at close price
+        - Investment delta: Change in investment since last day
+        - Period cash inflow: min(0, Investment delta)
+            Any negative change in investment is considered to occur after a cash inflow
+            E.g. You deposit before buying
+        - Period cash outflow: max(0, Investment delta)
+            Any positive change in investment is considered to precede a cash outflow
+            E.g. You withdraw after selling
+        - Period return: End Value(t) + Cash Inflow(t) / End Value(t - 1) + Cash Outflow(t) - 1
+            Note: since Cash Inflow is negative in our DataFrame, it is subtracted from the numerator
+        """
 
         p_bar = tqdm(range(1), desc="       Calculating returns")
 
@@ -692,6 +752,7 @@ class PortfolioEngine:
         def f_max(x):
             return x.apply(lambda x: max(x, 0))
 
+        # Calculate cash inflow and outflow
         trade_data[
             pd.MultiIndex.from_product(
                 [["Period cash inflow"], self.tickers_list + ["Total"]]
@@ -704,12 +765,7 @@ class PortfolioEngine:
             )
         ] = trade_data["Investment delta"][:].apply(lambda x: f_max(x), axis=1)
 
-        trade_data[
-            pd.MultiIndex.from_product(
-                [["Cumulative cash outflow"], self.tickers_list + ["Total"]]
-            )
-        ] = trade_data["Period cash outflow"].cumsum()
-
+        # Calculate period return
         trade_data[
             pd.MultiIndex.from_product(
                 [["Period percentage return"], self.tickers_list + ["Total"]]
@@ -721,16 +777,18 @@ class PortfolioEngine:
 
         trade_data["Period percentage return"].fillna(0, inplace=True)
 
-        p_bar.n += 1
-        p_bar.refresh()
-
         self.historical_trade_data = trade_data
 
         self.portfolio_returns = self.historical_trade_data["Period percentage return"][
             "Total"
         ]
 
-        # CHECK THIS BELOW LATER
+        p_bar.n += 1
+        p_bar.refresh()
+
+    @log_start_end(log=logger)
+    def __calculate_portfolio_performance(self):
+        """Calculate portfolio performance"""
 
         # Determine invested amount, relative and absolute return based on last close
         last_price = self.historical_trade_data["Close"].iloc[-1]
