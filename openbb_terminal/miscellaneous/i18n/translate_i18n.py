@@ -11,11 +11,11 @@ url_pattern = (
 )
 
 languages = {
-    "es": "Helsinki-NLP/opus-mt-en-es",
-    "fr": "Helsinki-NLP/opus-mt-en-fr",
-    "it": "Helsinki-NLP/opus-mt-en-it",
-    "pt": "Helsinki-NLP/opus-mt-tc-big-en-pt",
-    "zh": "Helsinki-NLP/opus-mt-en-zh",
+    # "es": "Helsinki-NLP/opus-mt-en-es",
+    # "fr": "Helsinki-NLP/opus-mt-en-fr",
+    # "it": "Helsinki-NLP/opus-mt-en-it",
+    # "pt": "Helsinki-NLP/opus-mt-tc-big-en-pt",
+    # "zh": "Helsinki-NLP/opus-mt-en-zh",
     "ja": "Helsinki-NLP/opus-tatoeba-en-ja",
     "ru": "Helsinki-NLP/opus-mt-en-ru",
     "ar": "Helsinki-NLP/opus-mt-tc-big-en-ar",
@@ -45,10 +45,16 @@ for language, url in languages.items():
             final_translations[key] = value
             continue
 
-        translated = translate_pipeline(
-            value, max_length=1024, top_k=1, top_p=1, temperature=1
-        )[0]["translation_text"]
-        final_translations[key] = translated
+        # try catch in case the translation fails
+        try:
+            translated = translate_pipeline(
+                value, max_length=1024, top_k=1, top_p=1, temperature=1
+            )[0]["translation_text"]
+            final_translations[key] = translated
+        except Exception as e:
+            print(f"Error: {e}")
+            final_translations[key] = value
+            continue
 
     with open(f"{language}.yml", "w") as outfile:
         yaml.dump(
