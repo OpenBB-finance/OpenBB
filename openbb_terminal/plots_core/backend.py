@@ -1,5 +1,6 @@
 import atexit
 import json
+import os
 import re
 from pathlib import Path
 
@@ -80,6 +81,11 @@ class Backend(PyWry):
         """Close the backend and delete the temporary html file"""
         if self.plotly_html:
             self.plotly_html.unlink(missing_ok=True)
+
+    def start(self):
+        """Starts the backend WindowManager process"""
+        if os.environ.get("TEST_MODE", "False") != "True":
+            super().start()
 
 
 # To avoid having plotly.js in the repo, we download it if it's not present

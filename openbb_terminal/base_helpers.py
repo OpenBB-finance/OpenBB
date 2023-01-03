@@ -133,7 +133,7 @@ class Show:
         except Exception:
             # If the backend fails, we just show the figure normally
             # This is a very rare case, but it's better to have a fallback
-            if os.environ.get("DEBUG", False):
+            if os.environ.get("DEBUG_MODE", False):
                 console.print_exception()
 
             import plotly.io as pio  # pylint: disable=import-outside-toplevel
@@ -144,7 +144,11 @@ class Show:
         return None
 
 
-if not JUPYTER_NOTEBOOK and sys.stdin.isatty():
+if (
+    not JUPYTER_NOTEBOOK
+    and sys.stdin.isatty()
+    and os.environ.get("TEST_MODE", "False") != "True"
+):
     # pylint: disable=import-outside-toplevel
     import gc
 

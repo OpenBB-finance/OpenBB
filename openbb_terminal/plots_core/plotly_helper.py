@@ -54,8 +54,9 @@ class OpenBBFigure(go.Figure):
 
         self._is_subplots = is_subplots
 
-        if (xaxis := kwargs.pop("xaxis", None)) or (yaxis := kwargs.pop("yaxis", None)):
+        if xaxis := kwargs.pop("xaxis", None):
             self.update_xaxes(xaxis)
+        if yaxis := kwargs.pop("yaxis", None):
             self.update_yaxes(yaxis)
 
         self.update_layout(

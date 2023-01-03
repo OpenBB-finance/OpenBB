@@ -377,6 +377,11 @@ def mock_matplotlib(mocker):
     mocker.patch("matplotlib.pyplot.show")
 
 
+@pytest.fixture(autouse=True)
+def mock_plotly(mocker):
+    mocker.patch("plotly.io.show")
+
+
 @pytest.fixture
 def default_csv_path(request: SubRequest) -> str:
     return build_path_by_extension(request=request, extension="csv", create_folder=True)
