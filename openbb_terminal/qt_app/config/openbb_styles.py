@@ -1,10 +1,7 @@
-import json
 import random
 from typing import Any, List
 
 import pandas as pd
-import plotly.graph_objects as go
-import plotly.io as pio
 
 # Vsurf Plot Settings
 PLT_3DMESH_COLORSCALE = "Jet"
@@ -271,17 +268,3 @@ PLOTLY_THEME = dict(
         ]
     ),
 )
-
-# Reads the template from a file
-with open("openbb.json", "r", encoding="utf-8") as f:
-    OPENNBB_THEME = json.load(f)
-
-
-PLOTLY_TEMPLATE = go.layout.Template(OPENNBB_THEME)
-
-
-# Register the template
-pio.templates["openbb"] = PLOTLY_TEMPLATE
-
-# Set the template as the default
-pio.templates.default = "plotly_dark+openbb"

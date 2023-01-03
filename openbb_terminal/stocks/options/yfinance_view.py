@@ -465,16 +465,32 @@ def plot_volume_open_interest(
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
 
     # Process Data
-    def get_df_options(df, option_type):
+    def get_df_options(df: pd.DataFrame, opt_type: str):
         df = df.pivot_table(
             index="strike", values=["volume", "openInterest"], aggfunc="sum"
         ).reindex()
         df["strike"] = df.index
-        df["type"] = option_type
-        df["openInterest"] = df["openInterest"] * (-1 if option_type == "puts" else 1)
-        df["volume"] = df["volume"] * (-1 if option_type == "puts" else 1)
+        df["type"] = opt_type
+        df["openInterest"] = df["openInterest"] * (-1 if opt_type == "puts" else 1)
+        df["volume"] = df["volume"] * (-1 if opt_type == "puts" else 1)
         df["oi+v"] = df["openInterest"] + df["volume"]
         df["spot"] = round(current_price, 2)
+
+        if (vol := min_vol) == -1:
+            # If no argument provided, we use the percentile 50 to get 50% of upper volume data
+            volume_percentile_threshold = 50
+            vol = np.percentile(df["oi+v"], volume_percentile_threshold)
+        if (min_strike := min_sp) == -1:
+            min_strike = 0.75 * current_price
+        if (max_strike := max_sp) == -1:
+            max_strike = 1.25 * current_price
+
+        df = df[
+            (df["strike"] >= min_strike)
+            & (df["strike"] <= max_strike)
+            & (df["oi+v"] >= vol if opt_type == "calls" else df["oi+v"] <= vol)
+        ]
+
         return df
 
     df_calls = get_df_options(options.calls, "calls")
@@ -492,63 +508,8 @@ def plot_volume_open_interest(
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
 
-    if min_vol == -1 and min_sp == -1 and max_sp == -1:
-        # If no argument provided, we use the percentile 50 to get 50% of upper volume data
-        volume_percentile_threshold = 50
-        min_vol_calls = np.percentile(df_calls["oi+v"], volume_percentile_threshold)
-        min_vol_puts = np.percentile(df_puts["oi+v"], volume_percentile_threshold)
-
-        df_calls = df_calls.loc[df_calls.index.intersection(df_puts.index)]
-        df_calls = (
-            df_calls[df_calls["oi+v"] > min_vol_calls]
-            .drop(["strike"], axis=1)
-            .reset_index()
-            .merge(
-                df_calls[df_puts["oi+v"] < min_vol_puts][
-                    ["openInterest", "volume", "type", "oi+v", "spot"]
-                ].reset_index()
-            )
-            .set_index("strike")
-        )
-        df_calls["strike"] = df_calls.index
-
-        df_puts = df_puts.loc[df_puts.index.intersection(df_calls.index)]
-
-        df_calls = df_calls[df_calls["strike"] > 0.75 * current_price]
-        df_calls = df_calls[df_calls["strike"] < 1.25 * current_price]
-        df_puts = df_puts[df_puts["strike"] > 0.75 * current_price]
-        df_puts = df_puts[df_puts["strike"] < 1.25 * current_price]
-
-    else:
-        df_calls = df_calls.loc[df_calls.index.intersection(df_puts.index)]
-        if min_vol > -1:
-            df_calls = (
-                df_calls[df_calls["oi+v"] > min_vol]
-                .drop(["strike"], axis=1)
-                .reset_index()
-                .merge(
-                    df_calls[df_puts["oi+v"] < min_vol][
-                        ["openInterest", "volume", "type", "oi+v", "spot"]
-                    ].reset_index()
-                )
-                .set_index("strike")
-            )
-            df_calls["strike"] = df_calls.index
-            df_puts = df_puts.loc[df_puts.index.intersection(df_calls.index)]
-
-    if min_sp > -1:
-        df_calls = df_calls[df_calls["strike"] > min_sp]
-        df_puts = df_puts[df_puts["strike"] > min_sp]
-    else:
-        df_calls = df_calls[df_calls["strike"] > 0.75 * current_price]
-        df_puts = df_puts[df_puts["strike"] > 0.75 * current_price]
-
-    if max_sp > -1:
-        df_calls = df_calls[df_calls["strike"] < max_sp]
-        df_puts = df_puts[df_puts["strike"] < max_sp]
-    else:
-        df_calls = df_calls[df_calls["strike"] < 1.25 * current_price]
-        df_puts = df_puts[df_puts["strike"] < 1.25 * current_price]
+    df_calls = df_calls.loc[df_calls.index.intersection(df_puts.index)]
+    df_puts = df_puts.loc[df_puts.index.intersection(df_calls.index)]
 
     if df_calls.empty and df_puts.empty:
         console.print(
@@ -678,9 +639,18 @@ def plot_volume_open_interest(
         orientation="h",
         marker_color="red",
     )
-    fig.add_hline(y=current_price, line_dash="dash", line_width=0.8, line_color="white")
-    fig.add_hline(y=max_pain, line_dash="solid", line_width=5, line_color="red")
-    fig.update_layout(barmode="stack", hovermode="y unified")
+    fig.add_hline_legend(
+        y=current_price,
+        name="Current stock price",
+        line=dict(dash="dash", width=2, color="white"),
+    )
+    fig.add_hline_legend(
+        y=max_pain,
+        name=f"Max pain = {max_pain}",
+        line=dict(dash="dash", width=2, color="red"),
+    )
+
+    fig.update_layout(barmode="relative", hovermode="y unified")
     fig.show()
 
     op_helpers.export_yf_options(export, options, "voi_yf")

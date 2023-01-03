@@ -23,7 +23,7 @@ class Backend(PyWry):
 
     def inject_path_to_html(self, path: Path):
         """Update the script tag in html with local path"""
-        with open(path, "r", encoding="utf-8") as file:
+        with open(path, "r", encoding="utf-8") as file:  # type: ignore
             html = file.read()
 
         replace = str(path.parent.resolve().as_posix())
@@ -34,7 +34,7 @@ class Backend(PyWry):
         # This is so we don't have to modify the original file
         # The file is deleted at program exit.
         self.plotly_html = path.parent.resolve() / "plotly_temp.html"
-        with open(self.plotly_html, "w", encoding="utf-8") as file:
+        with open(self.plotly_html, "w", encoding="utf-8") as file:  # type: ignore
             file.write(html)
 
     def get_plotly_html(self) -> str:

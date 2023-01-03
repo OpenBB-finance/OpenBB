@@ -17,6 +17,7 @@ import pandas as pd
 import pytz
 import requests
 import yfinance as yf
+from pandas.tseries.holiday import USFederalHolidayCalendar
 from requests.exceptions import ReadTimeout
 from scipy import stats
 
@@ -82,6 +83,24 @@ def check_datetime(
             f"Using {error_catch.strftime('%Y-%m-%d')} for {ck_date}"
         )
     return error_catch
+
+
+def get_holidays(
+    start: Optional[Union[datetime, str]] = None,
+    end: Optional[Union[datetime, str]] = None,
+) -> List[datetime]:
+    """Get holidays between start and end dates.
+
+    Parameters
+    ----------
+    start : Optional[Union[datetime, str]], optional
+        Start date, by default None
+    end : Optional[Union[datetime, str]], optional
+        End date, by default None
+    """
+    start = check_datetime(start)
+    end = check_datetime(end, start=False)
+    return USFederalHolidayCalendar().holidays(start=start, end=end)
 
 
 def search(
@@ -669,17 +688,14 @@ def display_candle(
                     ]
                 )
             else:
-                dt_unique_days = pd.bdate_range(
-                    start=data.index[0], end=data.index[-1], normalize=True
-                )
-                dt_unique = [d.strftime("%Y-%m-%d") for d in data.index]
-                mkt_holidays = [
-                    d
-                    for d in dt_unique_days.strftime("%Y-%m-%d").tolist()
-                    if d not in dt_unique
-                ]
+                mkt_holidays = get_holidays(start=data.index[0], end=data.index[-1])
                 fig.update_xaxes(
-                    rangebreaks=[dict(bounds=["sat", "mon"]), dict(values=mkt_holidays)]
+                    rangebreaks=[
+                        dict(bounds=["sat", "mon"]),
+                        dict(
+                            values=[date.strftime("%Y-%m-%d") for date in mkt_holidays],
+                        ),
+                    ]
                 )
 
             fig.show()
@@ -944,8 +960,13 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
         "1 Year": 100 * closes.pct_change(252)[-1],
     }
 
-    ytd = pd.Timestamp(datetime.now().year, 1, 1) + pd.offsets.BDay(1)
-    if ytd in closes.index and (closes_ytd := closes[closes.index >= ytd]).any():
+    ytd = pd.bdate_range(
+        start=datetime(datetime.now().year, 1, 1).strftime("%Y-%m-%d"),
+        end=datetime(datetime.now().year, 1, 7).strftime("%Y-%m-%d"),
+        freq=pd.offsets.CustomBusinessDay(calendar=USFederalHolidayCalendar()),
+    ).tolist()
+
+    if ytd[0] in closes.index and (closes_ytd := closes[closes.index >= ytd[0]]).any():
         perfs["YTD"] = 100 * (closes_ytd[-1] - closes_ytd[0]) / closes_ytd[0]
     else:
         perfs["Period"] = 100 * (closes[-1] - closes[0]) / closes[0]

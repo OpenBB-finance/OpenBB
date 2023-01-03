@@ -6,7 +6,6 @@ import os
 from typing import List, Optional
 
 import matplotlib.pyplot as plt
-import pandas as pd
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
@@ -17,10 +16,10 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.qt_app.config.openbb_styles import PLT_COLORWAY, PLT_FONT
 from openbb_terminal.qt_app.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
+from openbb_terminal.stocks.stocks_helper import get_holidays
 
 logger = logging.getLogger(__name__)
 
@@ -204,15 +203,12 @@ def short_interest_volume(
         fig.update_traces(hovertemplate="%{y:.2f}")
         fig.update_layout(
             margin=dict(l=40, r=0),
-            template="plotly_dark",
-            colorway=PLT_COLORWAY,
             title=f"<b>Price vs Short Volume Interest for {symbol}</b>",
             title_x=0.025,
             title_font_size=14,
             yaxis_title="Stock Price ($)",
             yaxis2_title="FINRA Volume [M]",
             yaxis3_title="Short Vol. %",
-            font=PLT_FONT,
             yaxis=dict(
                 side="right",
                 fixedrange=False,
@@ -241,7 +237,6 @@ def short_interest_volume(
                 nticks=10,
             ),
             xaxis=dict(rangeslider=dict(visible=False), type="date"),
-            dragmode="pan",
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
@@ -255,18 +250,17 @@ def short_interest_volume(
             spikedistance=1,
             hoverdistance=1,
         )
-        dt_unique_days = pd.bdate_range(
-            start=df["date"].iloc[-1], end=df["date"].iloc[0]
-        )
-        dt_unique = [d.strftime("%Y-%m-%d") for d in df["date"].tolist()]
-        mkt_holidays = [
-            d
-            for d in dt_unique_days.strftime("%Y-%m-%d").tolist()
-            if d not in dt_unique
-        ]
+
+        mkt_holidays = get_holidays(start=df["date"].iloc[-1], end=df["date"].iloc[0])
         fig.update_xaxes(
-            rangebreaks=[dict(bounds=["sat", "mon"]), dict(values=mkt_holidays)]
+            rangebreaks=[
+                dict(bounds=["sat", "mon"]),
+                dict(
+                    values=[date.strftime("%Y-%m-%d") for date in mkt_holidays],
+                ),
+            ]
         )
+
         fig.show()
 
     export_data(
