@@ -732,13 +732,20 @@ class PortfolioEngine:
         - End value: Total value of shares at close price
         - Investment delta: Change in investment since last day
         - Period cash inflow: min(0, Investment delta)
-            Any negative change in investment is considered to occur after a cash inflow
-            E.g. You deposit before buying
+            Any negative change in investment is occurs after a sale
         - Period cash outflow: max(0, Investment delta)
-            Any positive change in investment is considered to precede a cash outflow
-            E.g. You withdraw after selling
-        - Period return: End Value(t) + Cash Inflow(t) / End Value(t - 1) + Cash Outflow(t) - 1
-            Note: since Cash Inflow is negative in our DataFrame, it is subtracted from the numerator
+            Any positive change in investment is occurs after a purchase
+        - Period return: Value at end / Value at start - 1
+            Value at start: [End Value(t - 1) + Cash Outflow(t)]
+                We assume that at period 't' start, the portfolio value is equal to
+                the sum of the value of assets held [End Value(t - 1)] plus the value
+                of any purchases made during the period [Cash Outflow(t)]. Here, we
+                are implicitly assuming that you deposit the cash to buy the shares at
+                the start.
+            Value at end: [End Value(t) + Cash Inflow(t)]
+                We assume that at period 't' end, the portfolio value is equal to
+                the sum of the value of assets held [End Value(t)] plus the proceeds
+                from any sales during the period [Cash Inflow(t)].
         """
 
         p_bar = tqdm(range(1), desc="       Calculating returns")
@@ -757,7 +764,7 @@ class PortfolioEngine:
             pd.MultiIndex.from_product(
                 [["Period cash inflow"], self.tickers_list + ["Total"]]
             )
-        ] = trade_data["Investment delta"][:].apply(lambda x: f_min(x), axis=0)
+        ] = -1 * trade_data["Investment delta"][:].apply(lambda x: f_min(x), axis=0)
 
         trade_data[
             pd.MultiIndex.from_product(
@@ -766,11 +773,21 @@ class PortfolioEngine:
         ] = trade_data["Investment delta"][:].apply(lambda x: f_max(x), axis=1)
 
         # Calculate period return
+
+        trade_data[
+            pd.MultiIndex.from_product(
+                [["Period absolute return"], self.tickers_list + ["Total"]]
+            )
+        ] = (trade_data["End Value"] + trade_data["Period cash inflow"]) - (
+            trade_data["End Value"].shift(1).fillna(0)
+            + trade_data["Period cash outflow"]
+        )
+
         trade_data[
             pd.MultiIndex.from_product(
                 [["Period percentage return"], self.tickers_list + ["Total"]]
             )
-        ] = (trade_data["End Value"] - trade_data["Period cash inflow"]) / (
+        ] = (trade_data["End Value"] + trade_data["Period cash inflow"]) / (
             trade_data["End Value"].shift(1).fillna(0)
             + trade_data["Period cash outflow"]
         ) - 1
