@@ -602,8 +602,12 @@ def display_daily_returns(
                 return
             ax = external_axes
 
-        clrs_portfolio = [theme.down_color if (x<0) else theme.up_color for x in df['portfolio']]
-        clrs_benchmark = [theme.down_color if (x<0) else theme.up_color for x in df['benchmark']]
+        clrs_portfolio = [
+            theme.down_color if (x < 0) else theme.up_color for x in df["portfolio"]
+        ]
+        clrs_benchmark = [
+            theme.down_color if (x < 0) else theme.up_color for x in df["benchmark"]
+        ]
 
         ax[0].set_title(f"Portfolio in period {window}")
         ax[0].bar(df.index, df["portfolio"], label="Portfolio", color=clrs_portfolio)
