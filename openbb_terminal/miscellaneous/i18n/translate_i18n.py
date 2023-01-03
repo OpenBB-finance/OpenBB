@@ -4,6 +4,11 @@
 import yaml
 from transformers import pipeline
 from tqdm import tqdm
+import re
+
+url_pattern = (
+    r"^(?:www\.)([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$"
+)
 
 languages = {
     "es": "Helsinki-NLP/opus-mt-en-es",
@@ -34,6 +39,12 @@ for language, url in languages.items():
 
     # Iterate through the English content and translate each item into Spanish
     for key, value in tqdm(english_content.items()):
+        print(f"Translating: {value}")
+        # check if the value is only a website link with no other text, if so, don't translate
+        if re.match(url_pattern, value):
+            final_translations[key] = value
+            continue
+
         translated = translate_pipeline(
             value, max_length=1024, top_k=1, top_p=1, temperature=1
         )[0]["translation_text"]
