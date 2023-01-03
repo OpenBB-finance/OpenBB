@@ -45,7 +45,7 @@ def get_filings_analysis(symbol: str) -> pd.DataFrame:
             }
 
         return resultMapper
-    
+
     if len(response_dict) == 0:
         return pd.DataFrame()
 
