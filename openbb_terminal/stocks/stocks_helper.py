@@ -7,7 +7,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 from typing import Any, Union, Optional, Iterable, List, Dict
 
 import financedatabase as fd
@@ -1041,8 +1041,9 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
         "1 Month": 100 * closes.pct_change(21)[-1],
         "1 Year": 100 * closes.pct_change(252)[-1],
     }
-    if "2022-01-03" in closes.index:
-        closes_ytd = closes[closes.index > f"{date.today().year}-01-01"]
+
+    closes_ytd = closes[closes.index.year == pd.to_datetime("today").year]
+    if not closes_ytd.empty:
         perfs["YTD"] = 100 * (closes_ytd[-1] - closes_ytd[0]) / closes_ytd[0]
     else:
         perfs["Period"] = 100 * (closes[-1] - closes[0]) / closes[0]
