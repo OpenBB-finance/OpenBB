@@ -476,7 +476,15 @@ class ComparisonAnalysisController(BaseController):
             type=valid_date,
             default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
             dest="start",
-            help="The starting date (format YYYY-MM-DD) of the stock",
+            help="The starting date (format YYYY-MM-DD) of the stocks",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="end",
+            help="The end date (format YYYY-MM-DD) of the stocks",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
@@ -488,6 +496,7 @@ class ComparisonAnalysisController(BaseController):
                 yahoo_finance_view.display_historical(
                     similar=self.similar,
                     start_date=ns_parser.start.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.end.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
                     normalize=ns_parser.normalize,
                     export=ns_parser.export,

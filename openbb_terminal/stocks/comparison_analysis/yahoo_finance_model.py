@@ -52,7 +52,19 @@ def get_historical(
     Returns
     -------
     pd.DataFrame
-        Dataframe containing candle type variable for each ticker
+        Dataframe of historical prices for all comparison stocks
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+
+    Start by getting similar tickers from finviz for AAPL
+
+    >>> similar = openbb.stocks.comparison_analysis.finviz_peers("AAPL")
+    >>> hist_df = openbb.stocks.ca.hist(similar)
+
+    We can specify a start date and an end date
+    >>> hist_df_2022 = openbb.stocks.ca.hist(similar, start_date="2022-01-01", end_date="2022-12-31")
     """
 
     if start_date is None:
