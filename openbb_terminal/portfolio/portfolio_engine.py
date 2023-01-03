@@ -807,6 +807,12 @@ class PortfolioEngine:
     def __calculate_portfolio_performance(self):
         """Calculate portfolio performance"""
 
+        # TODO: saving the trade performance in portfolio_trades is wrong as it is.
+        # If we have sales we end up summing negative investments and positive investments.
+        # That leads to wrong % return calculation. This implementation does not allow
+        # performance between trade dates.
+        # We need to fix this.
+
         # Determine invested amount, relative and absolute return based on last close
         last_price = self.historical_trade_data["Close"].iloc[-1]
 
