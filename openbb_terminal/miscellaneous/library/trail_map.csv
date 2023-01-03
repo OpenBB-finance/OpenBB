@@ -1,4 +1,5 @@
 trail,model,view
+alt.hn,openbb_terminal.alternative.hackernews_model.get_stories,openbb_terminal.alternative.hackernews_view.display_stories
 alt.covid.slopes,openbb_terminal.alternative.covid.covid_model.get_case_slopes,openbb_terminal.alternative.covid.covid_view.display_case_slopes
 alt.covid.global_cases,openbb_terminal.alternative.covid.covid_model.get_global_cases,
 alt.covid.global_deaths,openbb_terminal.alternative.covid.covid_model.get_global_deaths,
