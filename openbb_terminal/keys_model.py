@@ -34,6 +34,11 @@ from openbb_terminal.cryptocurrency.coinbase_advanced_helpers import (
     make_coinbase_adv_request,
     CoinbaseAdvApiException,
 )
+from openbb_terminal.cryptocurrency.gemini_helpers import (
+    GeminiAuth,
+    GeminiFunctions,
+    GeminiApiException,
+)
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.rich_config import console
@@ -73,6 +78,7 @@ API_DICT: Dict = {
     "si": "SENTIMENT_INVESTOR",
     "coinbase": "COINBASE",
     "coinbase_advanced": "CB_ADV",
+    "gemini": "GEMINI",
     "walert": "WHALE_ALERT",
     "glassnode": "GLASSNODE",
     "coinglass": "COINGLASS",
@@ -1788,6 +1794,88 @@ def check_coinbase_advanced_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
         else:
             logger.info("Coinbase key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
+
+    if show_output:
+        console.print(status.colorize() + "\n")
+
+    return str(status)
+
+
+def set_gemini_key(
+    key: str,
+    secret: str,
+    persist: bool = False,
+    show_output: bool = False,
+) -> str:
+    """Set Gemini key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    secret: str
+        API secret
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.coinbase(
+            key="example_key",
+            secret="example_secret",
+            passphrase="example_passphrase"
+        )
+    """
+
+    set_key("OPENBB_GEMINI_KEY", key, persist)
+    set_key("OPENBB_GEMINI_SECRET", secret, persist)
+
+    return check_gemini_key(show_output)
+
+
+def check_gemini_key(show_output: bool = False) -> str:
+    """Check Gemini key
+
+    Parameters
+    ----------
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    status: str
+    """
+
+    if "REPLACE_ME" in [
+        cfg.API_GEMINI_KEY,
+        cfg.API_GEMINI_SECRET,
+    ]:
+        logger.info("Coinbase key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        auth = GeminiAuth(cfg.API_GEMINI_KEY, cfg.API_GEMINI_SECRET)
+        try:
+            resp = GeminiFunctions().make_gemini_request(
+                "account/list", {"limit_accounts": 1}, auth=auth
+            )
+        except GeminiApiException:
+            resp = None
+        if not resp:
+            logger.warning("Gemini key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+        else:
+            logger.info("Gemini key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:

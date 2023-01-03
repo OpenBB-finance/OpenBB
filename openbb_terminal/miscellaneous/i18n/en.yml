@@ -948,6 +948,19 @@ en:
   portfolio/bro/cbadv/stopgtc: Place Stop Limit GTC order
   portfolio/bro/cbadv/stopgtd: Place Stop Limit GTD order
   portfolio/bro/cbadv/cancelorder: Cancel order by order id
+  portfolio/bro/gemini/_OperationsAccount: Current operating account
+  portfolio/bro/gemini: Gemini Exchange
+  portfolio/bro/gemini/Account: Account
+  portfolio/bro/gemini/accounts: List of accounts
+  portfolio/bro/gemini/manageorders: Manage orders
+  portfolio/bro/gemini/listorders: List orders (with filter)
+  portfolio/bro/gemini/_dryrun: DRY-RUN is active. No orders placed/cancelled
+  portfolio/bro/gemini/createorder: Create order
+  portfolio/bro/gemini/cancelorders: Cancel orders
+  portfolio/bro/gemini/Settings: Settings
+  portfolio/bro/gemini/sandbox: Enable sandbox use. Requires a Sandbox API key
+  portfolio/bro/gemini/setaccount: Set account for order activity. default primary
+  portfolio/bro/gemini/dry-run: Enable dry-run mode. Displays payload without executing.
   portfolio/bro/ally/holdings: show account holdings
   portfolio/bro/ally/history: show history of your account
   portfolio/bro/ally/balances: show balance details of account

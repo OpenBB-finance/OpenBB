@@ -151,6 +151,10 @@ API_COINBASE_PASS_PHRASE = os.getenv("OPENBB_API_COINBASE_PASS_PHRASE") or "REPL
 API_CB_ADV_KEY = os.getenv("OPENBB_API_CB_ADV_KEY") or "REPLACE_ME"
 API_CB_ADV_SECRET = os.getenv("OPENBB_API_CB_ADV_SECRET") or "REPLACE_ME"
 
+# https://docs.gemini.com/rest-api/?python#private-api-invocation
+API_GEMINI_KEY = os.getenv("OPENBB_API_GEMINI_KEY") or "REPLACE_ME"
+API_GEMINI_SECRET = os.getenv("OPENBB_GEMINI_SECRET") or "REPLACE_ME"
+
 
 # https://alpaca.markets/docs/api-documentation/api-v2/
 # OPENBB_APCA_API_BASE_URL, OPENBB_APCA_API_KEY_ID and OPENBB_APCA_API_SECRET_KEY need to be set as env variable
