@@ -43,6 +43,7 @@ d_candle_types = {
 def display_historical(
     similar: List[str],
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     candle_type: str = "a",
     normalize: bool = True,
     export: str = "",
@@ -58,6 +59,8 @@ def display_historical(
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date: Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
+    end_date: Optional[str], optional
+        End date (e.g., 2023-01-01)
     candle_type: str, optional
         OHLCA column to use or R to use daily returns calculated from Adjusted Close, by default "a" for Adjusted Close
     normalize: bool, optional
@@ -67,7 +70,9 @@ def display_historical(
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_similar = yahoo_finance_model.get_historical(similar, start_date, candle_type)
+    df_similar = yahoo_finance_model.get_historical(
+        similar, start_date, end_date, candle_type
+    )
 
     # This puts everything on 0-1 scale for visualizing
     if normalize:

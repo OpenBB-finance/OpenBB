@@ -31,6 +31,7 @@ d_candle_types = {
 def get_historical(
     similar: List[str],
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     candle_type: str = "a",
 ) -> pd.DataFrame:
     """Get historical prices for all comparison stocks
@@ -43,6 +44,8 @@ def get_historical(
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date: Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
+    end_date: Optional[str], optional
+        End date (e.g., 2023-01-01). None defaults to today
     candle_type: str, optional
         Candle variable to compare, by default "a" for Adjusted Close. Possible values are: o, h, l, c, a, v, r
 
@@ -92,6 +95,8 @@ def get_historical(
 
     df_similar = df_similar.dropna(axis=1, how="all")
 
+    if end_date:
+        df_similar = df_similar[df_similar.index <= end_date]
     return df_similar
 
 
