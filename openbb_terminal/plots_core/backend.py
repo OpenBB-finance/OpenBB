@@ -88,7 +88,6 @@ if not (BACKEND_PATH / "assets" / "plotly.js").exists():
     with open(
         str(BACKEND_PATH / "assets" / "plotly.js"),
         "wb",
-        encoding="utf-8",
     ) as f:
         for chunk in download.iter_content(chunk_size=1024):
             f.write(chunk)
