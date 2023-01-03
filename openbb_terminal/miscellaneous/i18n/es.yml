@@ -1,0 +1,1158 @@
+es:
+  _configure_: Configure su propio terminal
+  _home_: Información, guías y soporte para la Terminal OpenBB
+  _main_menu_: Menú principal
+  _others_: Otros
+  about: descubrir las capacidades de la Terminal OpenBB (https://openbb.co/docs)
+  alternative: conjuntos de datos alternativos, como COVID y métricas de código abierto
+  alternative/covid: Menú COVID, casos, muertes, tasas
+  alternative/covid/_country: País
+  alternative/covid/cases: obtener casos para el país seleccionado
+  alternative/covid/country: seleccionar el país para los datos
+  alternative/covid/deaths: obtener muertes para el país seleccionado
+  alternative/covid/ov: obtener información general (casos y muertes) para el país
+    seleccionado
+  alternative/covid/rates: obtener la tasa de fallecimientos/casos para el país seleccionado
+  alternative/covid/slopes: obtener los países con mayor pendiente en los casos
+  alternative/oss: Menú de código abierto, historial de estrellas, información de
+    repos
+  alternative/oss/rossidx: las startups de código abierto de más rápido crecimiento
+  alternative/oss/rs: resumen de repo
+  alternative/oss/sh: historia de la estrella de repo
+  alternative/oss/tr: top starred repos
+  crypto: bucear en los datos de la cadena, tokenomics, suministro de circulación,
+    nfts y más
+  crypto/_exchange: Intercambio
+  crypto/_interval: Intervalo (minutos)
+  crypto/_source: Fuente
+  crypto/_symbol: Moneda
+  crypto/candle: ver un gráfico de velas para una criptomoneda específica
+  crypto/dd: due-diligencia para la moneda cargada, información sobre monedas, redes
+    sociales, estadísticas de mercado
+  crypto/dd/_activity_: Actividad y Comunidad
+  crypto/dd/_contributors_: Contribuyentes e inversores
+  crypto/dd/_market_: Mercado
+  crypto/dd/_metrics_: Métricas
+  crypto/dd/_overview_: Sinopsis
+  crypto/dd/_roadmap_: Hoja de ruta y noticias
+  crypto/dd/_source: Fuente
+  crypto/dd/_symbol: Moneda
+  crypto/dd/_tokenomics_: Tokenomics
+  crypto/dd/active: direcciones activas
+  crypto/dd/ath: todas las estadísticas relacionadas con el tiempo alta para la moneda
+    cargada
+  crypto/dd/atl: todas las estadísticas relacionadas tiempo baja para la moneda cargada
+  crypto/dd/balance: Saldo de monedas
+  crypto/dd/basic: información básica sobre la moneda cargada
+  crypto/dd/bc: enlaces a exploradores blockchain para monedas cargadas
+  crypto/dd/change: 30 d cambio de suministro mantenido en carteras de cambio
+  crypto/dd/desc: descripción sobre el proyecto - ¿por qué, cómo, qué
+  crypto/dd/dev: github, estadísticas de desarrollo de monedas de bitbucket
+  crypto/dd/eb: Saldo total mantenido en las bolsas (en porcentaje y en unidades)
+  crypto/dd/events: eventos relacionados con la moneda cargada
+  crypto/dd/ex: todas las bolsas en las que figure la moneda cargada
+  crypto/dd/fr: detalles de recaudación de fondos, por ejemplo, cuentas de tesorería,
+    rondas de ventas, asignación
+  crypto/dd/fundrate: tasa de financiación por tipo de cambio
+  crypto/dd/funot: métrica fundamental a lo largo del tiempo
+  crypto/dd/gh: github actividad con el tiempo
+  crypto/dd/gov: detalles de gobernanza
+  crypto/dd/info: información sobre la moneda cargada
+  crypto/dd/inv: inversores (individuos y organizaciones)
+  crypto/dd/links: enlaces por ejemplo, papel blanco, github, twitter, youtube, reddit,
+    telegrama
+  crypto/dd/liquidations: Estadísticas diarias de liquidación de monedas cargadas
+  crypto/dd/load: cargar una criptomoneda específica para el análisis
+  crypto/dd/market: estadísticas de mercado sobre la moneda cargada
+  crypto/dd/mcapdom: dominancia de los límites del mercado
+  crypto/dd/mkt: todos los mercados de monedas cargadas
+  crypto/dd/mt: messari timeseries e.g. seguidores de twitter, suministro de circles,
+    etc.
+  crypto/dd/news: Las noticias más recientes de la moneda cargada
+  crypto/dd/nonzero: direcciones con saldos distintos de cero
+  crypto/dd/ob: libro de pedidos
+  crypto/dd/oi: interés abierto por intercambio
+  crypto/dd/pi: información sobre proyectos, por ejemplo, detalles tecnológicos, reposiciones
+    públicas, auditorías, vulns
+  crypto/dd/ps: métricas relacionadas con el precio y el suministro de la moneda cargada
+  crypto/dd/rm: Hoja de ruta
+  crypto/dd/score: diferentes tipos de puntuaciones para la moneda cargada, p. ej.
+    puntuación del desarrollador, puntuación del sentimiento
+  crypto/dd/social: portales sociales urls para la moneda cargada, por ejemplo reddit,
+    twitter
+  crypto/dd/stats: estadísticas de monedas
+  crypto/dd/team: contribuyentes (individuos y organizaciones)
+  crypto/dd/tk: tokenomics, por ejemplo, circulación/máximo/suministro total, tipo
+    de emisión, etc.
+  crypto/dd/trades: Últimas operaciones
+  crypto/dd/twitter: tweets para la moneda cargada
+  crypto/dd/web: sitios web encontrados para la moneda cargada, por ejemplo foro,
+    página de inicio
+  crypto/defi: información financiera descentralizada, dpi, llama, tvl, préstamo,
+    préstamo, financiación
+  crypto/defi/anchor: datos de las ganancias de anclaje
+  crypto/defi/aterra: Historial de 30 días de activos especificados en dirección terra
+  crypto/defi/ayr: 30 días de historia de la reserva de rendimiento del ancla
+  crypto/defi/dpi: Protocolos de defi listados en DefiPulse
+  crypto/defi/dtvl: valor total histórico bloqueado (TVL) por dApp
+  crypto/defi/gacc: Historial de crecimiento de cuenta terra blockchain
+  crypto/defi/gdapps: superior DeFi dApps agrupadas por cadena
+  crypto/defi/govp: terra blockchain lista de propuestas de gobernanza
+  crypto/defi/lcsc: Cambios en el suministro circulante de Luna
+  crypto/defi/ldapps: listas dApps
+  crypto/defi/newsletter: Boletines de noticias recientes relacionados con DeFi
+  crypto/defi/pairs: recientemente añadido pares en Uniswap
+  crypto/defi/pools: piscinas por volumen en Uniswap
+  crypto/defi/sinfo: staking info para la dirección de cuenta terra proporcionada
+  crypto/defi/sratio: terra blockchain staking ratio history
+  crypto/defi/sreturn: terra blockchain staking devuelve historia
+  crypto/defi/stats: estadísticas básicas sobre Uniswap
+  crypto/defi/stvl: valores históricos de la suma total de TVLs de todas las dApps
+  crypto/defi/swaps: swaps recientes realizados en Uniswap
+  crypto/defi/tokens: tokens negociables en Uniswap
+  crypto/defi/validators: información sobre terra blockchain validadores
+  crypto/defi/vaults: superior DeFi Bóvedas en diferentes blockchains
+  crypto/disc: descubrir tendencias criptomonedas, ganadores, perdedores, sentimiento
+    superior
+  crypto/disc/dapps: aplicaciones descentralizadas superiores
+  crypto/disc/dex: los principales intercambios descentralizados
+  crypto/disc/gainers: Ganadores superiores
+  crypto/disc/games: blockchain superior juegos
+  crypto/disc/losers: los perdedores superiores
+  crypto/disc/nft: tokens no fungibles superiores
+  crypto/disc/search: búsqueda de monedas
+  crypto/disc/top: las monedas de la parte superior
+  crypto/disc/trending: monedas de tendencia
+  crypto/find: encontrar monedas
+  crypto/forecast: técnicas de previsión, rnn, nbeats, transformador, bloque rnn
+  crypto/headlines: cripto sentimiento de más de 15 titulares de noticias importantes
+  crypto/load: cargar una criptomoneda específica para el análisis
+  crypto/nft: tokens no fungibles, hoy cae
+  crypto/nft/collections: colecciones etéreas superiores
+  crypto/nft/fp: ventas de recogida/precio mínimo
+  crypto/nft/stats: estadísticas de recogida
+  crypto/onchain: información sobre diferentes blockchains, eth gas fees, alertas
+    de ballenas, DEXes info
+  crypto/onchain/_address: Dirección Ethereum
+  crypto/onchain/_ethereum_: Ethereum
+  crypto/onchain/_type: Tipo de dirección
+  crypto/onchain/address: cargar dirección etérea de token, cuenta o transacción
+  crypto/onchain/baas: pujar, preguntar precios, spread promedio para determinado
+    par criptográfico
+  crypto/onchain/balance: comprobar el equilibrio etéreo
+  crypto/onchain/btccp: muestra el suministro circulante BTC
+  crypto/onchain/btcct: muestra transacciones confirmadas por BTC
+  crypto/onchain/ds: Estadísticas de la plataforma eth (usuarios diarios; tasas)
+  crypto/onchain/dt: transacciones diarias de eth tokens
+  crypto/onchain/dvcp: volumen diario para el par criptográfico
+  crypto/onchain/gwei: verifique las tarifas actuales de gas
+  crypto/onchain/hist: Historial de balance etéreo (transacciones)
+  crypto/onchain/holders: titulares de fichas ERC20 superiores
+  crypto/onchain/hr: comprobar el hashrate de blockchain con el tiempo (BTC o ETH)
+  crypto/onchain/info: Información sobre el token ERC20
+  crypto/onchain/lt: Últimas operaciones por dex o mes
+  crypto/onchain/prices: Precios históricos nominales ERC20
+  crypto/onchain/th: Historial de fichas ERC20
+  crypto/onchain/top: tokens ERC20 superiores
+  crypto/onchain/ttcp: los pares de criptotipos más cotizados en un intercambio descentralizado
+    dado
+  crypto/onchain/tv: volumen token en DEXes
+  crypto/onchain/tvl: Valor total bloqueado de los tokens ERC20
+  crypto/onchain/tx: ethereum blockchain transaction info
+  crypto/onchain/ueat: direcciones etéreas únicas que hicieron una transacción
+  crypto/onchain/whales: comprobar las transacciones de cripto wales
+  crypto/ov: visión general de las criptomonedas, tapa del mercado, DeFi, las últimas
+    noticias, los principales intercambios, establos
+  crypto/ov/altindex: Índice de temporada de altcoin (75% de las 50 primeras monedas
+    tienen mejor rendimiento que BTC)
+  crypto/ov/btcrb: mostrar tabla de precios de bitcoin arco iris (regresión logarítmica)
+  crypto/ov/categories: categorías criptográficas
+  crypto/ov/ch: lista los principales hacks relacionados con criptogramas
+  crypto/ov/contracts: todos los contratos inteligentes para una plataforma determinada
+  crypto/ov/cr: criptosuministro o tipos de interés del préstamo
+  crypto/ov/defi: información global del mercado de DeFi
+  crypto/ov/derivatives: Derivados criptográficos
+  crypto/ov/ewf: comisiones generales de retiro de divisas
+  crypto/ov/exmarkets: todos los mercados disponibles en un intercambio determinado
+  crypto/ov/exrates: Tipos de cambio de las monedas
+  crypto/ov/fun: explorar proyectos basados en métricas fundamentales
+  crypto/ov/hm: crypto heatmap
+  crypto/ov/hold: Estadísticas generales de las explotaciones de bitcoin ethereum
+  crypto/ov/indexes: cripto índices
+  crypto/ov/info: Información básica sobre todas las monedas disponibles
+  crypto/ov/markets: información relacionada con el mercado sobre todas las monedas
+    disponibles
+  crypto/ov/news: noticias criptográficas recientes
+  crypto/ov/pairs: información sobre los pares de operaciones disponibles
+  crypto/ov/platforms: lista blockchain plataformas por ejemplo, ethereum, solana,
+    kusama, terra
+  crypto/ov/stables: stablecoins
+  crypto/ov/wf: Tasas globales de retirada
+  crypto/ov/wfpe: Tasas de retirada de criptogramas por intercambio
+  crypto/price: precio en tiempo real e intervalo de confianza
+  crypto/prt: rendimientos potenciales (por ejemplo, al alza si ETH alcanza el límite
+    máximo del mercado BTC)
+  crypto/qa: análisis cuantitativo descomponer, cusum, análisis de residuos
+  crypto/qa/_other_: Otros
+  crypto/qa/_plots_: Parcelas
+  crypto/qa/_rolling_metrics_: Métricas de rodadura
+  crypto/qa/_statistics_: Estadística
+  crypto/qa/_target: Columna de destino
+  crypto/qa/_ticker: Ticker
+  crypto/qa/acf: (parcial) función de autocorrelación diferenciales de precios
+  crypto/qa/bw: gráfico de la caja y el bigote
+  crypto/qa/cdf: función de distribución acumulativa
+  crypto/qa/cusum: detecta cambios bruscos usando algoritmo de suma acumulativa de
+    precios
+  crypto/qa/decompose: la descomposición en la tendencia cíclica, la estación y los
+    residuos de los precios
+  crypto/qa/hist: histograma con diagrama de densidad
+  crypto/qa/kurtosis: kurtosis móvil de la distribución de los precios
+  crypto/qa/line: parcela de línea de destino seleccionado
+  crypto/qa/load: cargar nuevo ticker
+  crypto/qa/normality: Estadísticas y pruebas de normalidad
+  crypto/qa/pick: seleccionar la columna de destino para el análisis
+  crypto/qa/qqplot: residuos frente a la curva normal estándar
+  crypto/qa/quantile: mediana móvil y cuantil de los precios
+  crypto/qa/raw: imprimir datos brutos
+  crypto/qa/rolling: media laminadora y desviación std de los precios
+  crypto/qa/skew: Sesgo evolutivo de la distribución de los precios
+  crypto/qa/spread: varianza de laminado y desviación std de los precios
+  crypto/qa/summary: breve resumen de las estadísticas de existencias cargadas
+  crypto/qa/unitroot: Prueba radicular unitaria para la estacionalidad (ADF, KPSS)
+  crypto/ta: análisis técnico para monedas cargadas, ema, macd, rsi, adx, bbands,
+    obv
+  crypto/ta/_custom_: Personalizado
+  crypto/ta/_momentum_: Momentum
+  crypto/ta/_overlap_: Superposición
+  crypto/ta/_ticker: Moneda cargada
+  crypto/ta/_trend_: Tendencia
+  crypto/ta/_volatility_: Volatilidad
+  crypto/ta/_volume_: Volumen
+  crypto/ta/ad: línea de acumulación/distribución
+  crypto/ta/adosc: oscilador de chaikin
+  crypto/ta/adx: índice medio de movimiento direccional
+  crypto/ta/aroon: indicador de aroon
+  crypto/ta/bbands: bandas de bollinger
+  crypto/ta/cci: Índice de canales de productos básicos
+  crypto/ta/cg: centro de gravedad
+  crypto/ta/donchian: canales donchian
+  crypto/ta/ema: media móvil exponencial
+  crypto/ta/fib: Retrazado de fibonacci
+  crypto/ta/fisher: transform de pescador
+  crypto/ta/hma: media móvil del casco
+  crypto/ta/kc: canales de Keltner
+  crypto/ta/macd: convergencia/divergencia media móvil
+  crypto/ta/obv: sobre el volumen del saldo
+  crypto/ta/rsi: índice de efectivos relativos
+  crypto/ta/sma: media móvil simple
+  crypto/ta/stoch: Oscilador estocástico
+  crypto/ta/tv: abrir una carta interactiva sobre
+  crypto/ta/vwap: precio medio ponderado del volumen
+  crypto/ta/wma: media móvil ponderada
+  crypto/ta/zlma: media móvil de desfase cero
+  crypto/tools: explorar diferentes herramientas apytoapr, il
+  crypto/tools/aprtoapy: convertir apr a apy
+  crypto/tools/il: calcular la pérdida impermanente
+  dashboards: tableros interactivos con cuadernos de voila y jupyter
+  dashboards/chains: análisis de la cadena de opciones
+  dashboards/correlation: correlaciones de existencias
+  dashboards/crypto: Tipos de cambio de las criptomonedas frente a los USD
+  dashboards/forecast: pronóstico de conjuntos de datos de series temporales
+  dashboards/forecasting: pronóstico de conjuntos de datos de series temporales
+  dashboards/futures: rendimiento de futuros históricos
+  dashboards/shortdata: Análisis de datos cortos de finra
+  dashboards/stocks: información histórica sobre existencias
+  dashboards/vsurf: superficie de volatilidad de las opciones
+  defined, not tested: definido, no sometido a ensayo
+  defined, test failed: definido, el ensayo falló
+  defined, test inconclusive: Definido, prueba no concluyente
+  defined, test passed: definido, prueba superada
+  econometrics: métodos estadísticos y cuantitativos para las relaciones entre conjuntos
+    de datos
+  econometrics/_data_loc: Buscando datos en
+  econometrics/_exploration_: Exploración
+  econometrics/_loaded: Archivos cargados y columnas de datos
+  econometrics/_regression_: Regresión
+  econometrics/_regression_tests_: Pruebas de regresión
+  econometrics/_tests_: Ensayos
+  econometrics/add: Añadir columnas al conjunto de datos con la opción de utilizar
+    fórmulas
+  econometrics/bgod: Pruebas de autocorrelación Breusch-Godfrey con retrasos en los
+    residuos de la regresión
+  econometrics/bpag: Prueba de heteroescedástica Breusch-Pagan sobre los residuos
+    de la regresión
+  econometrics/clean: limpiar un conjunto de datos rellenando o soltando NaNs
+  econometrics/coint: prueba de cointegración en una multitud de columnas
+  econometrics/combine: Combinar columnas de diferentes conjuntos de datos
+  econometrics/compare: comparar los resultados de todos los modelos estimados
+  econometrics/delete: Eliminar columnas del conjunto de datos
+  econometrics/desc: mostrar estadísticas descriptivas de un conjunto de datos
+  econometrics/dwat: Prueba de autocorrelación de Durbin-Watson sobre los residuos
+    de la regresión
+  econometrics/export: exportar un conjunto de datos procesado
+  econometrics/granger: Pruebas de causalidad Granger en dos columnas
+  econometrics/index: conjunto (multi) índice basado en columnas
+  econometrics/load: cargar un conjunto de datos (también funciona con conjuntos de
+    datos StatsModels)
+  econometrics/modify: combinar columnas de conjuntos de datos y eliminar o renombrar
+    columnas
+  econometrics/norm: realizar pruebas de normalidad en una columna de un conjunto
+    de datos
+  econometrics/ols: ajuste a un modelo de regresión lineal (multi)
+  econometrics/options: mostrar opciones disponibles de conjunto de datos de columna
+  econometrics/panel: modelo de estimación basado en diversas técnicas de regresión
+  econometrics/plot: datos del gráfico de un conjunto de datos
+  econometrics/remove: eliminar uno de los conjuntos de datos cargados
+  econometrics/rename: Cambiar el nombre de la columna desde el conjunto de datos
+  econometrics/root: realizar pruebas unitroot (ADF & KPSS) en una columna de un conjunto
+    de datos
+  econometrics/show: mostrar una porción de un conjunto de datos cargado
+  econometrics/type: cambiar los tipos de las columnas o mostrar sus tipos
+  economy: datos macroeconómicos mundiales, por ejemplo, futuros, rendimiento, tesorería
+  economy/_database_: Bases de datos
+  economy/_stored: Conjuntos de datos almacenados
+  economy/bigmac: The Economist Big Mac index
+  economy/edebt: mostrar estadísticas de la deuda externa de varios países
+  economy/eval: crear nuevas series realizando operaciones con datos cargados
+  economy/events: mostrar calendario económico
+  economy/forecast: técnicas de previsión; rnn, nbeats, transformador, bloque rnn
+  economy/fred: recopilar datos macro de FRED basados en un ID de serie
+  economy/futures: mostrar una visión general de futuros y materias primas
+  economy/index: encontrar y trazar cualquier (mayor) índice en el mercado
+  economy/macro: recopilar datos macro para un país o países
+  economy/map: Mapa de existencias del índice S&P500
+  economy/overview: mostrar una visión general del mercado de los índices, bonos o
+    monedas
+  economy/performance: resultados de los sectores, la industria, el país
+  economy/plot: tramar los datos de los comandos anteriores juntos
+  economy/qa: Abrir menú de análisis cuantitativo con datos almacenados
+  economy/qa/_other_: Otros
+  economy/qa/_plots_: Parcelas
+  economy/qa/_rolling_metrics_: Métricas de rodadura
+  economy/qa/_series: Serie seleccionada
+  economy/qa/_statistics_: Estadística
+  economy/qa/acf: (parcial) función de autocorrelación diferenciales de precios
+  economy/qa/bw: gráfico de la caja y el bigote
+  economy/qa/cdf: función de distribución acumulativa
+  economy/qa/cusum: detecta cambios bruscos usando algoritmo de suma acumulativa de
+    precios
+  economy/qa/decompose: la descomposición en la tendencia cíclica, la estación y los
+    residuos de los precios
+  economy/qa/hist: histograma con diagrama de densidad
+  economy/qa/kurtosis: kurtosis móvil de la distribución de los precios
+  economy/qa/line: parcela de línea de destino seleccionado
+  economy/qa/normality: Estadísticas y pruebas de normalidad
+  economy/qa/pick: elegir nuevas series de datos de economía almacenados
+  economy/qa/qqplot: residuos frente a la curva normal estándar
+  economy/qa/quantile: mediana móvil y cuantil de los precios
+  economy/qa/raw: imprimir datos brutos
+  economy/qa/rolling: media laminadora y desviación std de los precios
+  economy/qa/skew: Sesgo evolutivo de la distribución de los precios
+  economy/qa/spread: varianza de laminado y desviación std de los precios
+  economy/qa/summary: breve resumen de las estadísticas de existencias cargadas
+  economy/qa/unitroot: Prueba radicular unitaria para la estacionalidad (ADF, KPSS)
+  economy/rtps: Sectores de rendimiento en tiempo real
+  economy/spectrum: espectro de sectores, industria, país
+  economy/spread: mostrar matriz de propagación de bonos
+  economy/treasury: obtener tasas de tesorería de los EE.UU.
+  economy/valuation: valoración de sectores, industria, país
+  economy/ycrv: mostrar curvas de rendimiento soberano
+  etf: intercambio de fondos negociados. Precios históricos, comparar las tenencias
+    y la selección
+  etf/_major_holdings: Existencias importantes
+  etf/_symbol: Símbolo
+  etf/ca: análisis de comparación, obtener similares, histórico, correlación, finanzas
+  etf/candle: ver un gráfico de velas para ETF
+  etf/compare: comparar múltiples ETFs diferentes
+  etf/disc: descubrir ETFs, ganadores/declinadores/activos
+  etf/disc/active: más activo
+  etf/disc/decliners: declinantes superiores
+  etf/disc/gainers: Ganadores superiores
+  etf/holdings: las participaciones de las empresas más importantes
+  etf/load: cargar los datos ETF
+  etf/news: últimas noticias de la empresa
+  etf/overview: Obtener una visión general
+  etf/pir: crear (múltiple) informe(s) pasivo(s) excel inversor(es)
+  etf/scr: Screener ETFs, visión general/rendimiento, utilizando filtros preestablecidos
+  etf/scr/_preset: Predefinido
+  etf/scr/sbc: pantalla por categoría
+  etf/scr/screen: pantalla ETF usando preset seleccionado
+  etf/scr/set: establecer uno de los presets disponibles
+  etf/scr/view: ver los presets disponibles
+  etf/search: buscar ETF por nombre o descripción
+  etf/summary: Resumen de la descripción de la ETF
+  etf/ta: análisis técnico, ema, macd, rsi, adx, bbands, obv
+  etf/ta/_custom_: Personalizado
+  etf/ta/_momentum_: Momentum
+  etf/ta/_overlap_: Superposición
+  etf/ta/_ticker: ETF
+  etf/ta/_trend_: Tendencia
+  etf/ta/_volatility_: Volatilidad
+  etf/ta/_volume_: Volumen
+  etf/ta/ad: línea de acumulación/distribución
+  etf/ta/adosc: oscilador de chaikin
+  etf/ta/adx: índice medio de movimiento direccional
+  etf/ta/aroon: indicador de aroon
+  etf/ta/bbands: bandas de bollinger
+  etf/ta/cci: Índice de canales de productos básicos
+  etf/ta/cg: centro de gravedad
+  etf/ta/donchian: canales donchian
+  etf/ta/ema: media móvil exponencial
+  etf/ta/fib: Retrazado de fibonacci
+  etf/ta/fisher: transform de pescador
+  etf/ta/hma: media móvil del casco
+  etf/ta/kc: canales de Keltner
+  etf/ta/macd: convergencia/divergencia media móvil
+  etf/ta/obv: sobre el volumen del saldo
+  etf/ta/rsi: índice de efectivos relativos
+  etf/ta/sma: media móvil simple
+  etf/ta/stoch: Oscilador estocástico
+  etf/ta/vwap: precio medio ponderado del volumen
+  etf/ta/wma: media móvil ponderada
+  etf/ta/zlma: media móvil de desfase cero
+  etf/weights: Asignación de ponderaciones sectoriales
+  exe: ejecutar script de rutina automatizado
+  featflags: activar y desactivar las banderas de características
+  featflags/_info_: Marcas de características a través de variables de entorno
+  featflags/cls: clara consola después de cada comando
+  featflags/cmdloc: ubicación de la orden mostrada en figuras
+  featflags/color: utilizar características para colorear
+  featflags/exithelp: imprimir automáticamente ayuda al salir del menú
+  featflags/ion: modo matplotlib interactivo
+  featflags/promptkit: habilitar el kit de herramientas rápido (autocompletado e histórico)
+  featflags/rcontext: recordar contextos cargados params durante la sesión
+  featflags/reporthtml: open report como HTML notebook de otro modo
+  featflags/retryload: reintentar comandos mal deletreados con carga primero
+  featflags/rich: colorida terminal rica
+  featflags/richpanel: colorido panel de terminal rico
+  featflags/tab: tabular para imprimir fotogramas de datos
+  featflags/tbhint: muestra sugerencias de uso en una barra de herramientas inferior
+  featflags/thoughts: pensamientos del día
+  featflags/watermark: marca de agua en cifras
+  forecast: previsión de tiempos con el aprendizaje automático
+  forecast/_comingsoon_: Pronto
+  forecast/_data_loc: Buscando datos en
+  forecast/_disclaimer_: RECLAMACIÓN
+  forecast/_exploration_: Exploración
+  forecast/_feateng_: Ingeniería de Característica
+  forecast/_loaded: Archivos cargados y columnas de datos
+  forecast/_tsforecasting_: Previsión de series temporales
+  forecast/arima: Arima (non-darts)
+  forecast/atr: Añadir rango promedio verdadero
+  forecast/autoarima: Modelo automático ARIMA
+  forecast/autoces: Modelo automático de suavizado exponencial complejo
+  forecast/autoets: Modelo ETS automático (Error, Tendencia, Estacionalidad)
+  forecast/autoselect: Seleccione el mejor modelo estadístico de AutoARIMA, AutoETS,
+    AutoCES, MSTL, etc.
+  forecast/brnn: Block Recurrent Neural Network (RNN, LSTM, GRU) (feat. Covariables
+    pasadas)
+  forecast/clean: Limpie un conjunto de datos rellenando o soltando NaNs
+  forecast/combine: Combinar columnas de diferentes conjuntos de datos
+  forecast/corr: Trazar los coeficientes de correlación para las características del
+    conjunto de datos
+  forecast/delete: Eliminar columnas del conjunto de datos
+  forecast/delta: Añadir % de cambio
+  forecast/desc: Mostrar estadísticas descriptivas de un conjunto de datos
+  forecast/ema: Añadir promedio móvil ponderado exponencialmente
+  forecast/expo: Aislamiento exponencial probabilístico
+  forecast/export: Exportar un conjunto de datos procesado
+  forecast/linregr: Regresión lineal probabilística (feat. Covariables pasadas y explicabilidad)
+  forecast/load: cargar un conjunto de datos de csv
+  forecast/mom: Añadir Momentum
+  forecast/mstl: Estacionalidades y tendencias múltiples utilizando el modelo Loess
+    (MSTL)
+  forecast/nbeats: Estimación neural bayesiana (feat. Covariables pasadas)
+  forecast/nhits: Interpolación jerárquica neural (feat. Covariables pasadas)
+  forecast/plot: Trazar una columna específica de un conjunto de datos cargado
+  forecast/regr: Regresión (feat. Covariables pasadas y Explicabilidad)
+  forecast/rename: Cambiar el nombre de las columnas desde el conjunto de datos
+  forecast/rnn: Red neural recidivante probabilística (RNN, LSTM, GRU)
+  forecast/roc: Añadir tasa de cambio
+  forecast/rsi: Añádase el índice de fuerza relativa
+  forecast/rwd: Caminata aleatoria con modelo de deriva
+  forecast/season: Trazar la estacionalidad para una columna de conjunto de datos
+  forecast/seasonalnaive: Modelo naive estacional
+  forecast/show: Mostrar una porción de un conjunto de datos cargado
+  forecast/signal: Añadir señal de precio (corto frente a largo plazo)
+  forecast/sto: Añadir oscilador estocástico %K y %D
+  forecast/tcn: Red Neural Convolucional Temporal (feat. Covariables pasadas)
+  forecast/tft: Red de Transformador de Fusión Temporal (feat. Covariables pasadas)
+  forecast/theta: Método Theta
+  forecast/trans: Red de transformadores (feat. Covariables pasadas)
+  forex: divisas, cotizaciones, tipos de cambio a plazo para pares de divisas e integración
+    oanda
+  forex/_from: Desde
+  forex/_source: Fuente
+  forex/_ticker: Ticker
+  forex/_to: A
+  forex/candle: mostrar la trama de velas para el par cargado
+  forex/forecast: técnicas de previsión
+  forex/forex: Intermediaciones de divisas
+  forex/fwd: obtener tasas de avance para el par cargado
+  forex/load: obtener datos históricos
+  forex/oanda: Menú Oanda
+  forex/oanda/_from: Desde
+  forex/oanda/_loaded: Instrumento cargado
+  forex/oanda/_source: Fuente
+  forex/oanda/_to: A
+  forex/oanda/calendar: Mostrar calendario
+  forex/oanda/cancel: cancele una orden pendiente por ID -i ID de orden
+  forex/oanda/candles: Mostrar velas
+  forex/oanda/closetrade: cerrar un comercio por id
+  forex/oanda/from: seleccionar la moneda "de" en un par forex
+  forex/oanda/list: histórico de pedidos de lista
+  forex/oanda/order: lugar límite orden -u NÚMERO de unidades -p precio
+  forex/oanda/orderbook: libro de pedidos de impresión
+  forex/oanda/pending: obtener información sobre órdenes pendientes
+  forex/oanda/positionbook: imprimir el libro de posiciones
+  forex/oanda/positions: Obtener posiciones abiertas
+  forex/oanda/price: muestra el precio para el instrumento seleccionado
+  forex/oanda/summary: muestra el resumen de la cuenta
+  forex/oanda/to: seleccionar la moneda "a" en un par forex
+  forex/oanda/trades: list open tradings
+  forex/qa: análisis cuantitativo, descomposición, cusum, análisis de residuos
+  forex/qa/_other_: Otros
+  forex/qa/_pair: Pareja
+  forex/qa/_plots_: Parcelas
+  forex/qa/_rolling_metrics_: Métricas de rodadura
+  forex/qa/_statistics_: Estadística
+  forex/qa/_target: Objetivo
+  forex/qa/acf: (parcial) función de autocorrelación diferenciales de precios
+  forex/qa/bw: gráfico de la caja y el bigote
+  forex/qa/cdf: función de distribución acumulativa
+  forex/qa/cusum: detecta cambios bruscos usando algoritmo de suma acumulativa de
+    precios
+  forex/qa/decompose: la descomposición en la tendencia cíclica, la estación y los
+    residuos de los precios
+  forex/qa/hist: histograma con diagrama de densidad
+  forex/qa/kurtosis: kurtosis móvil de la distribución de los precios
+  forex/qa/line: parcela de línea de destino seleccionado
+  forex/qa/normality: Estadísticas y pruebas de normalidad
+  forex/qa/pick: seleccionar la columna de destino para el análisis
+  forex/qa/qqplot: residuos frente a la curva normal estándar
+  forex/qa/quantile: mediana móvil y cuantil de los precios
+  forex/qa/raw: imprimir datos brutos
+  forex/qa/rolling: media laminadora y desviación std de los precios
+  forex/qa/skew: Sesgo evolutivo de la distribución de los precios
+  forex/qa/spread: varianza de laminado y desviación std de los precios
+  forex/qa/summary: breve resumen de las estadísticas de existencias cargadas
+  forex/qa/unitroot: Prueba radicular unitaria para la estacionalidad (ADF, KPSS)
+  forex/quote: obtener la última cita
+  forex/ta: análisis técnico, ema, macd, rsi, adx, bbands, obv
+  forex/ta/_currency: Par de divisas cargado
+  forex/ta/_custom_: Personalizado
+  forex/ta/_momentum_: Momentum
+  forex/ta/_overlap_: Superposición
+  forex/ta/_source: Fuente
+  forex/ta/_trend_: Tendencia
+  forex/ta/_volatility_: Volatilidad
+  forex/ta/adx: índice medio de movimiento direccional
+  forex/ta/aroon: indicador de aroon
+  forex/ta/bbands: bandas de bollinger
+  forex/ta/cci: Índice de canales de productos básicos
+  forex/ta/cg: centro de gravedad
+  forex/ta/donchian: canales donchian
+  forex/ta/ema: media móvil exponencial
+  forex/ta/fib: Retrazado de fibonacci
+  forex/ta/fisher: transform de pescador
+  forex/ta/macd: convergencia/divergencia media móvil
+  forex/ta/rsi: índice de efectivos relativos
+  forex/ta/sma: media móvil simple
+  forex/ta/stoch: Oscilador estocástico
+  forex/ta/zlma: media móvil de desfase cero
+  funds: búsqueda de fondos mutuos, panorama general, participaciones y ponderaciones
+    sectoriales
+  funds/_country: País actual
+  funds/_fund: Fondo actual
+  funds/alswe: Asignación de fondos de exposición (sector, país, participaciones)
+  funds/country: establecer un país para filtrar
+  funds/equity: Tenencias de acciones
+  funds/forecast: técnicas de previsión
+  funds/info: obtener información sobre fondos
+  funds/infoswe: obtener información sobre fondos
+  funds/load: cargar datos históricos del fondo
+  funds/plot: gráfico cargado datos históricos del fondo
+  funds/search: búsqueda de fondos mutuos
+  funds/sector: ponderaciones sectoriales
+  futures: materias primas, bonos, índice, bitcoin y forex
+  futures/curve: Obtener curvas de futuros
+  futures/historical: Obtener cronologías históricas
+  futures/search: buscar un futuro basado en la categoría o el intercambio
+  intro: introducción en la Terminal OpenBB
+  keys: establecer claves de API y comprobar su validez
+  keys/_keys_: Este menú le permite configurar sus propias claves de API. Escriba
+    'about' para más información
+  keys/_status_: Situación
+  keys/mykeys: obtener las teclas definidas
+  news: mostrar artículos de noticias basados en términos y fuentes de datos
+  not defined: no definido
+  portfolio: realizar la optimización de la cartera y mirar el rendimiento y la atribución
+    de la cartera
+  portfolio/_benchmark: Parámetro de referencia
+  portfolio/_graphs_: Gráficos
+  portfolio/_loaded: Operaciones cargadas
+  portfolio/_metrics_: Métricas
+  portfolio/_risk_: Métricas de riesgo
+  portfolio/_riskfreerate: Tasa libre de riesgos
+  portfolio/alloc: Asignación sobre la base de activos, sectores, países o regiones
+  portfolio/attrib: Atribución de la cartera por sector de exposición en comparación
+    con el S&P 500
+  portfolio/bench: definir el valor de referencia
+  portfolio/bro: brókers tenencias, soportes robinhood, aliado, degiro, coinbase
+  portfolio/bro/ally: Menú Ally Invest
+  portfolio/bro/ally/_info_: Información sobre las existencias
+  portfolio/bro/ally/balances: mostrar los detalles del saldo de la cuenta
+  portfolio/bro/ally/history: mostrar el historial de su cuenta
+  portfolio/bro/ally/holdings: mostrar las tenencias de la cuenta
+  portfolio/bro/ally/movers: obtener listas clasificadas de los que se mueven
+  portfolio/bro/ally/quote: obtener cotización de acciones
+  portfolio/bro/cb: Menú Coinbase Pro
+  portfolio/bro/cb/account: mostrar el saldo de su cuenta
+  portfolio/bro/cb/deposits: mostrar todos sus depósitos o transferencias internas
+  portfolio/bro/cb/history: mostrar el historial de su cuenta
+  portfolio/bro/cb/orders: mostrar todas sus órdenes
+  portfolio/bro/degiro: Menú Degiro
+  portfolio/bro/degiro/cancel: cancele una orden usando el id
+  portfolio/bro/degiro/companynews: ver las noticias sobre una empresa con ella está
+    en
+  portfolio/bro/degiro/create: crear un orden
+  portfolio/bro/degiro/hold: ver las existencias
+  portfolio/bro/degiro/lastnews: ver las últimas noticias
+  portfolio/bro/degiro/login: conectar con el api de Degiro
+  portfolio/bro/degiro/logout: desconectar del api de Degiro
+  portfolio/bro/degiro/lookup: ver la búsqueda de un producto por nombre
+  portfolio/bro/degiro/paexport: Exportación csv para análisis de cartera
+  portfolio/bro/degiro/pending: ver órdenes pendientes
+  portfolio/bro/degiro/topnews: ver vista previa de noticias superior
+  portfolio/bro/degiro/update: actualizar un pedido
+  portfolio/bro/rh: Menú Robinhood
+  portfolio/bro/rh/history: mostrar el historial de acciones de su cuenta
+  portfolio/bro/rh/holdings: mostrar las tenencias de la cuenta en las existencias
+  portfolio/bro/rh/login: iniciar sesión a robinhood
+  portfolio/cret: rendimientos acumulados
+  portfolio/distr: distribución de los rendimientos diarios
+  portfolio/dret: Devoluciones diarias
+  portfolio/es: mostrar el déficit esperado
+  portfolio/holdp: cartera de carteras de activos (en porcentaje)
+  portfolio/holdv: Tenencias de activos (valor absoluto)
+  portfolio/load: cargar transacciones en la cartera
+  portfolio/maxdd: reducción máxima
+  portfolio/metric: métrica de cartera frente a referencia para todos los diferentes
+    períodos
+  portfolio/mret: Devoluciones mensuales
+  portfolio/om: mostrar la relación omega
+  portfolio/perf: rendimiento de la cartera frente al valor de referencia
+  portfolio/po: optimización de cartera, optimizar su cartera de pesos de manera eficiente
+  portfolio/po/_categories: Categorías
+  portfolio/po/_hierarchical_clustering_models_: Modelos jerárquicos de agrupación
+  portfolio/po/_loaded: Cartera cargada
+  portfolio/po/_mean_risk_optimization_: Optimización del riesgo medio
+  portfolio/po/_optimized_portfolio: Cartera optimizada
+  portfolio/po/_other_optimization_techniques_: Otras técnicas de optimización
+  portfolio/po/_parameter: Archivo del parámetro
+  portfolio/po/_risk_parity_optimization_: Optimización de la paridad de riesgo
+  portfolio/po/_tickers: Tickers
+  portfolio/po/blacklitterman: cartera negro camadaman
+  portfolio/po/dividend: ponderado según el rendimiento del dividendo (dividendo de
+    propiedad)
+  portfolio/po/ef: mostrar la frontera eficiente
+  portfolio/po/equal: ponderado por igual
+  portfolio/po/file: archivo que contiene parámetros de riesgo de cartera
+  portfolio/po/herc: Contribución jerárquica igual al riesgo
+  portfolio/po/hrp: Paridad jerárquica de riesgos
+  portfolio/po/load: cargar tickers y categorías de archivo .xlsx o .csv
+  portfolio/po/maxdecorr: cartera de decoraciones máxima
+  portfolio/po/maxdiv: cartera de diversificación máxima
+  portfolio/po/maxret: cartera de rendimiento máximo
+  portfolio/po/maxsharpe: cartera máxima de ratio de Sharpe (alias cartera de tangencia)
+  portfolio/po/maxutil: función de utilidad aversal de riesgo máximo, dado algún parámetro
+    de aversión al riesgo
+  portfolio/po/minrisk: cartera de riesgos mínimos
+  portfolio/po/mktcap: ponderados según el límite máximo del mercado (mercado de bienes)
+  portfolio/po/nco: Optimización de agrupamiento anidado
+  portfolio/po/params: especificar y mostrar los parámetros de riesgo de cartera
+  portfolio/po/params/_loaded: Archivo cargado
+  portfolio/po/params/_model: Modelo de interés
+  portfolio/po/params/_parameters_: Parámetros
+  portfolio/po/params/arg: establecer un valor diferente para un argumento
+  portfolio/po/params/clear: modelo claro de interés a partir de parámetros filtrados
+  portfolio/po/params/file: parámetros de riesgo de la cartera de carga
+  portfolio/po/params/load: seleccionar archivo de parámetro de cartera
+  portfolio/po/params/save: guardar los parámetros de riesgo de cartera en el archivo
+    especificado
+  portfolio/po/params/set: establecer un modelo de interés para los parámetros de
+    filtro
+  portfolio/po/plot: grafica gráficos seleccionados de la lista de carteras guardadas
+  portfolio/po/property: peso de acuerdo con la propiedad de información seleccionada
+  portfolio/po/relriskparity: Paridad de riesgo relajada utilizando el enfoque de
+    mínimos cuadrados
+  portfolio/po/riskparity: cartera de la paridad de riesgos utilizando el enfoque
+    de la presupuestación por riesgos
+  portfolio/po/rpf: eliminar carteras de la lista de carteras guardadas
+  portfolio/po/show: mostrar las carteras y categorías seleccionadas de la lista de
+    carteras guardadas
+  portfolio/rbeta: laminado beta
+  portfolio/rsharpe: punzonado de rodadura
+  portfolio/rsort: rodando sortino
+  portfolio/rvol: volatilidad móvil
+  portfolio/show: mostrar las transacciones existentes
+  portfolio/summary: todas las métricas de cartera frente a referencia para un determinado
+    período de elección
+  portfolio/var: mostrar el valor en riesgo
+  portfolio/yret: rendimientos anuales
+  record: sesión de registro para ser convertido en una rutina .openbb
+  reports: Informes de investigación personalizables a través de cuadernos de Jupyter
+  reports/_Custom_reports_: Informes personalizados
+  reports/_OpenBB_reports_: Informes de OpenBB
+  reports/_reports_: Cree y ejecute sus informes personalizados o pruebe una de nuestras
+    plantillas
+  reports/run: Ejecute un portátil Jupyter desde OpenBBUserData/reports/custom reports
+  settings: configuración de la melodía (carpeta de exportación, zona horaria, idioma,
+    tamaño de la parcela)
+  settings/_backend: Motor
+  settings/_data_source: Fuentes de datos
+  settings/_dpi: Puntos de parcela por pulgada
+  settings/_flair: Flair
+  settings/_info_: Configuración a través de variables de entorno
+  settings/_language: Idioma
+  settings/_monitor: Monitor
+  settings/_plot_height: Altura del gráfico
+  settings/_plot_height_pct: Altura del gráfico [%]
+  settings/_plot_width: Ancho de la parcela
+  settings/_plot_width_pct: Ancho del gráfico [%]
+  settings/_preferred_data_source_file: Archivo de origen de datos preferido
+  settings/_timezone: Zona horaria
+  settings/_user_data_folder: Carpeta de datos de usuario
+  settings/autoscaling: parcela autoescalado
+  settings/backend: motor de trazado (ninguno, tkAgg, MacOSX, Qt5Agg)
+  settings/colors: establecer sus propios colores de terminal
+  settings/dpi: puntos por pulgada
+  settings/dt: añadir o eliminar la hora de la fecha del estilo
+  settings/flair: establecer el estilo emoji a utilizar
+  settings/height: seleccionar la altura de la parcela
+  settings/lang: lenguaje terminal
+  settings/monitor: que monitor a mostrar (primaria 0, secundaria 1)
+  settings/pheight: seleccionar porcentaje de altura de la parcela
+  settings/pwidth: seleccionar el porcentaje de anchura de la parcela
+  settings/source: especificar archivo de origen de datos
+  settings/tz: establecer una zona horaria diferente
+  settings/userdata: establecer carpeta para almacenar datos de usuario
+  settings/width: seleccionar el ancho de la parcela
+  sources: seleccionar sus fuentes de datos preferidas
+  sources/_info_: Obtener y establecer fuentes de datos predeterminadas
+  sources/get: obtener fuentes de datos disponibles asociadas con el comando
+  sources/set: establecer la fuente de datos predeterminada para un comando
+  stocks: acceso a datos históricos sobre precios, opciones, sector e industria, y
+    diligencia debida en general
+  stocks/_ticker: Población
+  stocks/ba: análisis de comportamiento, de reddit, stocktwits, twitter, google
+  stocks/ba/_ticker: Ticker
+  stocks/ba/bullbear: estima el sentimiento rápido de los últimos 30 mensajes a bordo
+  stocks/ba/getdd: obtiene la debida diligencia de la publicación de otro usuario
+  stocks/ba/headlines: sentimiento de más de 15 grandes titulares de noticias
+  stocks/ba/hist: trazar datos históricos de RHI y AHI por hora
+  stocks/ba/infer: inferir sobre el sentimiento de las acciones de los últimos tuits
+  stocks/ba/interest: interés en el tiempo de las oraciones versus el precio de las
+    acciones
+  stocks/ba/jcdr: Recomendaciones diarias de Jim Cramer
+  stocks/ba/jctr: Recomendaciones de Jim Cramer por ticker
+  stocks/ba/load: cargar un marcador de stock específico para el análisis
+  stocks/ba/mentions: interés a lo largo del tiempo basado en las menciones de las
+    acciones
+  stocks/ba/messages: salida hasta los 30 últimos mensajes en el tablero
+  stocks/ba/popular: mostrar los tickers populares
+  stocks/ba/queries: consultas relacionadas con este stock
+  stocks/ba/redditsent: busca en reddit el ticker y encuentra el sentimiento de reddit
+  stocks/ba/regions: regiones que muestran mayor interés en stock
+  stocks/ba/rise: superior aumento de consultas relacionadas con el stock
+  stocks/ba/sentiment: Proyección profunda del sentimiento de los tuits a lo largo
+    del tiempo
+  stocks/ba/snews: precio de las acciones mostrado sobre el sentimiento de los titulares
+    de noticias
+  stocks/ba/spac: mostrar anuncios de otros usuarios spacs de otros subs
+  stocks/ba/spacc: mostrar anuncios de otros usuarios spacs de subreddit SPACs
+  stocks/ba/stalker: Últimos mensajes del usuario de stalck Stocktwits
+  stocks/ba/trending: de las poblaciones en tendencia
+  stocks/ba/watchlist: mostrar lista de vigilancia de otros usuarios
+  stocks/ba/wsb: Mostrar lo que la banda WSB está haciendo en subreddit Walltreetbets
+  stocks/bt: estrategia backtester, ema simple, ema cross, estrategias rsi
+  stocks/bt/_ticker: Ticker
+  stocks/bt/ema: comprar cuando el precio sea superior a EMA(l)
+  stocks/bt/emacross: comprar cuando EMA(corto) > EMA(largo)
+  stocks/bt/rsi: comprar cuando RSI < bajo y vender cuando RSI > alto
+  stocks/bt/whatif: ¿Y si hubieras comprado X acciones en el día Y
+  stocks/ca: análisis de comparación, obtener similares, histórico, correlación, finanzas
+  stocks/ca/_similar: Empresas similares
+  stocks/ca/_ticker: Ticker para obtener empresas similares de
+  stocks/ca/add: añadir más empresas similares
+  stocks/ca/balance: comparación de los saldos financieros
+  stocks/ca/cashflow: Comparación de la corriente de efectivo
+  stocks/ca/financial: breve comparación financiera
+  stocks/ca/get: obtener acciones similares
+  stocks/ca/hcorr: correlación histórica de precios
+  stocks/ca/historical: Comparación histórica de los datos de precios
+  stocks/ca/income: comparación de ingresos financieros
+  stocks/ca/overview: Breve comparación general
+  stocks/ca/ownership: breve comparación de la propiedad
+  stocks/ca/performance: breve comparación del rendimiento
+  stocks/ca/rmv: eliminar empresas similares individualmente o todas
+  stocks/ca/scorr: correlación de sentimientos
+  stocks/ca/sentiment: comparación de análisis de sentimientos
+  stocks/ca/set: restablecer y establecer empresas similares
+  stocks/ca/technical: breve comparación técnica
+  stocks/ca/ticker: establecer ticker para obtener empresas similares de
+  stocks/ca/tsne: ejecutar TSNE en todas las acciones de SP500 y devuelve los tickers
+    más cercanos
+  stocks/ca/valuation: breve comparación de la valoración
+  stocks/ca/volume: Comparación histórica de datos de volumen
+  stocks/candle: ver un gráfico de velas para un marcador de stock específico
+  stocks/codes: Códigos FIGI, SIK y SIC
+  stocks/dd: en-profundidad debida-diligencia, noticias, analista, cortos, interno,
+    sec
+  stocks/dd/_ticker: Ticker
+  stocks/dd/analyst: Analista de precios y calificaciones de la empresa
+  stocks/dd/arktrades: Obtener transacciones ARK para ticker
+  stocks/dd/customer: lista de clientes
+  stocks/dd/est: analistas de trimestre y año estimaciones de ingresos
+  stocks/dd/load: cargar un marcador de stock específico para el análisis
+  stocks/dd/pt: objetivos de precios a lo largo del tiempo
+  stocks/dd/rating: calificación a lo largo del tiempo (al día)
+  stocks/dd/rot: Número de calificaciones de los analistas a lo largo del tiempo (mensual)
+  stocks/dd/sec: Presentaciones de la SEC
+  stocks/dd/supplier: lista de proveedores
+  stocks/disc: descubrir stocks tendencia, mapa, sectores, interés corto alto
+  stocks/disc/active: la mayor parte de las existencias activas por volumen de comercio
+    intradíat
+  stocks/disc/arkord: órdenes de ARK Investment Management LLC
+  stocks/disc/asc: acciones de pequeños límites con tasas de crecimiento de los ingresos
+    superiores al 25%
+  stocks/disc/cnews: noticias personalizadas (compras, ipos, spacs, salud, política)
+  stocks/disc/divcal: calendario de dividendos para la fecha seleccionada
+  stocks/disc/fipo: Fechas futuras de las OPI
+  stocks/disc/gainers: mostrar las últimas ganancias superiores
+  stocks/disc/gtech: acciones de tecnología con un aumento de ingresos y ganancias
+    superior al 25%
+  stocks/disc/heatmap: mapa de calor de las tarjetas SP500
+  stocks/disc/hotpenny: acciones de hoy en día de centavo caliente
+  stocks/disc/losers: mostrar los últimos perdedores superiores
+  stocks/disc/lowfloat: bajas reservas flotantes por debajo de 10M acciones flotan
+  stocks/disc/pipo: Fechas anteriores de las OPI
+  stocks/disc/rtat: 10 acciones cotizadas al por día
+  stocks/disc/trending: noticias de tendencias
+  stocks/disc/ugs: Acciones infravaloradas con un crecimiento de ingresos y ganancias
+    superior al 25%
+  stocks/disc/ulc: Existencias de grandes límites potencialmente infravaloradas
+  stocks/disc/upcoming: próximas fechas de publicación de las ganancias
+  stocks/dps: piscina oscura y datos cortos, piscina oscura, interés corto, ftd
+  stocks/dps/_ticker: Ticker
+  stocks/dps/ctb: coste del préstamo de las existencias
+  stocks/dps/dpotc: grupos oscuros (ATS) frente a datos OTC
+  stocks/dps/ftd: datos de fallos en la entrega
+  stocks/dps/hsi: mostrar las mejores acciones de interés corto de más del 20%
+  stocks/dps/load: cargar un marcador de stock específico para el análisis
+  stocks/dps/pos: posición corta de la piscina oscura
+  stocks/dps/prom: prometedores tickers basados en la regresión de las acciones de
+    la piscina oscura
+  stocks/dps/psi: precio frente a un volumen de interés corto
+  stocks/dps/shorted: mostrar la mayoría de las poblaciones abreviadas
+  stocks/dps/sidtc: intereses cortos y días para cubrir
+  stocks/dps/spos: corto neto frente a la posición
+  stocks/fa: análisis fundamental, ingresos, saldo, efectivo, ingresos
+  stocks/fa/_ticker: Ticker
+  stocks/fa/analysis: analizar los archivos de la SEC con la ayuda del aprendizaje
+    automático
+  stocks/fa/balance: balance de la empresa
+  stocks/fa/cal: ingresos calendario y estimaciones de la empresa
+  stocks/fa/cash: Flujo de caja de la empresa
+  stocks/fa/data: datos fundamentales y técnicos de la empresa
+  stocks/fa/dcf: Excel avanzado personalizable con descuento de flujo de efectivo
+  stocks/fa/dcfc: determinar el flujo de caja (histórico) descontado
+  stocks/fa/divs: mostrar dividendos históricos para la empresa
+  stocks/fa/dupont: Desglose detallado del rendimiento del capital
+  stocks/fa/earnings: Fechas de las ganancias y EPS comunicadas
+  stocks/fa/enterprise: Valor empresarial de la empresa
+  stocks/fa/epsfc: Estimación de Ganancias por Analistas - EPS
+  stocks/fa/fraud: Coeficiente de fraudes clave
+  stocks/fa/growth: Crecimiento de las partidas y ratios de los estados financieros
+  stocks/fa/hq: la ubicación del cuartel general abierto de la empresa
+  stocks/fa/income: estados de ingresos de la empresa
+  stocks/fa/info: ámbito de información de la empresa
+  stocks/fa/key: métricas de las claves de la empresa
+  stocks/fa/load: cargar un marcador de stock específico para el análisis
+  stocks/fa/metrics: métricas clave a lo largo del tiempo
+  stocks/fa/mgmt: equipo directivo de la empresa
+  stocks/fa/mktcap: tope estimado del mercado
+  stocks/fa/overview: visión general de la empresa
+  stocks/fa/profile: Perfil de la empresa
+  stocks/fa/quote: información detallada sobre la cotización de existencias
+  stocks/fa/ratios: proporciones en profundidad a lo largo del tiempo
+  stocks/fa/revfc: Estimación de Ganancias por Analistas - Ingresos
+  stocks/fa/score: inversión puntuación de Warren Buffett y co
+  stocks/fa/shrs: accionistas (investigadores, instituciones y fondos de inversión)
+  stocks/fa/splits: Acciones divididas e inversas desde la OPI
+  stocks/fa/sust: valores de sostenibilidad (medio ambiente, social y gobernanza)
+  stocks/fa/warnings: advertencias de la compañía según Sean Seah libro
+  stocks/fa/web: navegador web abierto de la empresa
+  stocks/forecast: técnicas de previsión, rnn, nbeats, transformador, bloque rnn
+  stocks/gov: menú del gobierno, comercio de casas, contratos, cabildeo corporativo
+  stocks/gov/_explore: Explorar
+  stocks/gov/_ticker: Ticker
+  stocks/gov/contracts: mostrar los contratos gubernamentales
+  stocks/gov/gtrades: comercios del gobierno de la demostración
+  stocks/gov/histcont: contratos históricos trimestrales del gobierno
+  stocks/gov/lastcontracts: mostrar los últimos contratos gubernamentales entregados
+  stocks/gov/lasttrades: Últimas operaciones
+  stocks/gov/load: cargar un ticker específico para el análisis
+  stocks/gov/lobbying: detalles de cabildeo corporativo
+  stocks/gov/qtrcontracts: Análisis trimestral de los contratos públicos
+  stocks/gov/topbuys: mostrar la mayoría de las existencias compradas
+  stocks/gov/toplobbying: top empresas de cabildeo tickers
+  stocks/gov/topsells: mostrar la mayoría de las existencias vendidas
+  stocks/ins: Comercio de información privilegiada, últimas compras de acciones de
+    peniques, compras de altos funcionarios
+  stocks/ins/_last_insiders: Last Insiders
+  stocks/ins/_preset: Predefinido
+  stocks/ins/_ticker: Ticker
+  stocks/ins/_top_insiders: Información privilegiada superior
+  stocks/ins/act: Actividad interna con el tiempo
+  stocks/ins/blcp: grandes compras más recientes de CEO / CFO ($ 25k+)
+  stocks/ins/blcs: grandes ventas de CEO/CFO ($100k+)
+  stocks/ins/blip: grandes compras de información privilegiada ($25k+)
+  stocks/ins/blis: grandes últimas ventas de información privilegiada ($100k+)
+  stocks/ins/blop: grandes compras oficiales más recientes ($25k+)
+  stocks/ins/blos: grandes ventas oficiales más recientes ($100k+)
+  stocks/ins/filter: Filtros internos basados en preestablecidos
+  stocks/ins/lcb: las últimas compras de clusters
+  stocks/ins/lins: último intercambio de información privilegiada de la empresa
+  stocks/ins/lip: las últimas compras de información privilegiada
+  stocks/ins/lis: últimas ventas de información privilegiada
+  stocks/ins/lit: último intercambio de información privilegiada (todos los archivos)
+  stocks/ins/load: cargar un marcador de stock específico para el análisis
+  stocks/ins/lpsb: últimas compras de acciones de peniques
+  stocks/ins/set: establecer uno de los presets disponibles
+  stocks/ins/stats: Estadísticas internas de la empresa
+  stocks/ins/tippm: primeras compras de información privilegiada el mes pasado
+  stocks/ins/tippw: primeras compras de información privilegiada la semana pasada
+  stocks/ins/tipt: compra de información privilegiada superior hoy
+  stocks/ins/tispm: las mejores ventas de información privilegiada el mes pasado
+  stocks/ins/tispw: las mejores ventas de información privilegiada la semana pasada
+  stocks/ins/tist: las mejores ventas de información privilegiada hoy
+  stocks/ins/toppm: las compras de los oficiales superiores el mes pasado
+  stocks/ins/toppw: las compras de oficiales superiores la semana pasada
+  stocks/ins/topt: compras de alto oficial hoy
+  stocks/ins/view: ver los presets disponibles
+  stocks/load: cargar un marcador de stock específico e información adicional para
+    el análisis
+  stocks/news: últimas noticias de la empresa
+  stocks/options: menú de opciones, cadenas, interés abierto, Grecias, paridad
+  stocks/options/_expiry: Caducidad
+  stocks/options/_ticker: Ticker
+  stocks/options/binom: muestra el valor de una opción usando el precio de opciones
+    binomial
+  stocks/options/calc: Calculadora básica de llamada/salida PnL
+  stocks/options/chains: las cadenas de la opción de visualización con los cereales
+  stocks/options/exp: ver y fijar fechas de caducidad
+  stocks/options/greeks: muestra los Grecias para una opción dada
+  stocks/options/grhist: Historial de la opción de parcela griega
+  stocks/options/hedge: muestra las ponderaciones de cartera para neutralizar delta
+  stocks/options/hedge/_expiry: Caducidad
+  stocks/options/hedge/_ticker: Ticker
+  stocks/options/hedge/_underlying: Posición del activo subyacente
+  stocks/options/hedge/add: añadir una opción a la lista de opciones
+  stocks/options/hedge/list: mostrar los precios de huelga disponibles para las llamadas
+    y pone
+  stocks/options/hedge/pick: determinar la posición del activo subyacente
+  stocks/options/hedge/plot: mostrar el diagrama de pago de la opción
+  stocks/options/hedge/rmv: eliminar una opción de la lista de opciones
+  stocks/options/hedge/sop: mostrar opciones seleccionadas y ponderaciones neutras
+    de cartera
+  stocks/options/hist: Historial de la opción de parcela
+  stocks/options/info: información de la opción de visualización (volatilidad, rango
+    IV, etc)
+  stocks/options/load: cargar nuevo ticker
+  stocks/options/oi: trama de interés abierto
+  stocks/options/parity: muestra si las opciones están por encima o por debajo del
+    precio esperado
+  stocks/options/pcr: pantalla poner la relación de llamada para ticker
+  stocks/options/plot: variables del gráfico proporcionadas por el usuario
+  stocks/options/pricing: muestra opciones de fijación de precios y valoración neutral
+    del riesgo
+  stocks/options/pricing/_expiry: Caducidad
+  stocks/options/pricing/_ticker: Ticker
+  stocks/options/pricing/add: añadir un precio esperado a la lista
+  stocks/options/pricing/rmv: eliminar un precio esperado de la lista
+  stocks/options/pricing/rnval: valoración neutral del riesgo para una opción
+  stocks/options/pricing/show: mostrar la lista de precios esperados
+  stocks/options/screen: tickers de pantalla basados en preestablecidos
+  stocks/options/screen/_preset: Predefinido
+  stocks/options/screen/_screened_tickers: Últimos tickers analizados
+  stocks/options/screen/ca: llevar estos al menú de análisis de comparación
+  stocks/options/screen/scr: datos de pantalla de este preset
+  stocks/options/screen/set: establecer uno de los presets disponibles
+  stocks/options/screen/view: ver los presets disponibles (o uno en particular)
+  stocks/options/unu: mostrar la actividad de opciones inusuales
+  stocks/options/voi: volumen de la parcela e interés abierto
+  stocks/options/vol: volumen de la parcela
+  stocks/options/vsurf: mostrar la superficie de volatilidad 3D
+  stocks/qa: análisis cuantitativo, descomposición, cusum, análisis de residuos
+  stocks/qa/_other_: Otros
+  stocks/qa/_plots_: Parcelas
+  stocks/qa/_risk_: Riesgo
+  stocks/qa/_rolling_metrics_: Métricas de rodadura
+  stocks/qa/_statistics_: Estadística
+  stocks/qa/_target: Columna de destino
+  stocks/qa/_ticker: Ticker
+  stocks/qa/acf: (parcial) función de autocorrelación diferenciales de precios
+  stocks/qa/beta: mostrar beta w.r.t a cualquier marcador de referencia
+  stocks/qa/bw: gráfico de la caja y el bigote
+  stocks/qa/capm: Modelo de fijación de precios de los activos de capital
+  stocks/qa/cdf: función de distribución acumulativa
+  stocks/qa/cusum: detecta cambios bruscos usando algoritmo de suma acumulativa de
+    precios
+  stocks/qa/decompose: la descomposición en la tendencia cíclica, la estación y los
+    residuos de los precios
+  stocks/qa/es: mostrar el déficit esperado
+  stocks/qa/hist: histograma con diagrama de densidad
+  stocks/qa/kurtosis: kurtosis móvil de la distribución de los precios
+  stocks/qa/line: parcela de línea de destino seleccionado
+  stocks/qa/load: cargar nuevo ticker
+  stocks/qa/normality: Estadísticas y pruebas de normalidad
+  stocks/qa/om: mostrar la relación omega
+  stocks/qa/pick: seleccionar la columna de destino para el análisis
+  stocks/qa/qqplot: residuos frente a la curva normal estándar
+  stocks/qa/quantile: mediana móvil y cuantil de los precios
+  stocks/qa/raw: imprimir datos brutos
+  stocks/qa/rolling: media laminadora y desviación std de los precios
+  stocks/qa/sh: muestra la relación de ninqueo
+  stocks/qa/skew: Sesgo evolutivo de la distribución de los precios
+  stocks/qa/so: mostrar la relación sortino
+  stocks/qa/spread: varianza de laminado y desviación std de los precios
+  stocks/qa/summary: breve resumen de las estadísticas de existencias cargadas
+  stocks/qa/unitroot: Prueba radicular unitaria para la estacionalidad (ADF, KPSS)
+  stocks/qa/var: mostrar el valor en riesgo
+  stocks/quote: ver el precio actual de un marcador de acciones específico
+  stocks/res: página web de investigación, macroaxis, yahoo finanzas, tonto
+  stocks/res/_ticker: Ticker
+  stocks/res/barchart: www.barchart.com
+  stocks/res/bullrun: www.bullrun.com.br
+  stocks/res/businessinsider: www.markets.businessinider.com
+  stocks/res/fidelity: www.eresearch.fidelity.com
+  stocks/res/fintel: www.fintel.com
+  stocks/res/finviz: www.finviz.com
+  stocks/res/fmp: www.financieromodelingprep.com
+  stocks/res/fool: www.fool.com
+  stocks/res/grufity: www.grufity.com
+  stocks/res/macroaxis: www.macroaxis.com
+  stocks/res/macrotrends: www.macrotrends.net
+  stocks/res/marketchameleon: www.marketchameleon.com
+  stocks/res/marketwatch: www.marketwatch.com
+  stocks/res/newsfilter: www.newsfilter.io
+  stocks/res/stockanalysis: www.stockanalysis.com
+  stocks/res/stockrow: www.stockrow.com
+  stocks/res/tradingview: www.tradingview.com
+  stocks/res/yahoo: www.finance.yahoo.com
+  stocks/res/zacks: www.zacks.com
+  stocks/scr: existencias de pantallas, visión general/rendimiento, utilizando filtros
+    preestablecidos
+  stocks/scr/_preset: Predefinido
+  stocks/scr/_screened_tickers: Últimos tickers analizados
+  stocks/scr/ca: llevar estos al menú de análisis de comparación
+  stocks/scr/financial: financiero (por ejemplo, Dividendo, ROA, ROE, ROI, Ganancias)
+  stocks/scr/historical: ver precio histórico
+  stocks/scr/overview: visión general (por ejemplo, sector, industria, mercado, volumen)
+  stocks/scr/ownership: propiedad (por ejemplo, Float, Insider Own, Short Ratio)
+  stocks/scr/performance: rendimiento (por ejemplo, Perf Week, Perf YTD, Volatilidad
+    M)
+  stocks/scr/set: establecer uno de los presets disponibles
+  stocks/scr/technical: técnica (por ejemplo, Beta, SMA50, 52W Low, RSI, cambio)
+  stocks/scr/valuation: valoración (por ejemplo, P/E, PEG, P/S, P/B, EPS este Y)
+  stocks/scr/view: ver presets disponibles (predeterminados y aduanas)
+  stocks/search: buscar un marcador de existencias específico para el análisis
+  stocks/sia: Análisis sectorial e industrial, empresas por sector, relación rápida
+    por industria y país
+  stocks/sia/_country: País
+  stocks/sia/_exclude_exchanges: Excluir las bolsas
+  stocks/sia/_financials_: Finanzas
+  stocks/sia/_financials_loaded_: Financials - datos cargados (modo rápido)
+  stocks/sia/_industry: Industria
+  stocks/sia/_mktcap: Tapa de mercado
+  stocks/sia/_period: Período
+  stocks/sia/_returned_tickers: Tickers devueltos
+  stocks/sia/_sector: Sector
+  stocks/sia/_statistics_: Estadística
+  stocks/sia/ca: llevar estos al menú de análisis de comparación
+  stocks/sia/clear: limpiar todos o uno de los parámetros de tope de la industria,
+    el sector, el país y el mercado
+  stocks/sia/country: ver los países existentes, o establecer el país si se especifica
+    arg
+  stocks/sia/cpci: empresas por país basadas en la industria (y el mercado de tapa)
+  stocks/sia/cpcs: empresas por país basadas en el sector (y el límite de mercado)
+  stocks/sia/cpic: empresas por sector basado en el país (y el mercado de tapa)
+  stocks/sia/cpis: empresas por sector basado en el sector (y el mercado de tapa)
+  stocks/sia/cps: empresas por sector basado en el país (y la tapa del mercado)
+  stocks/sia/exchange: volver excluir los intercambios internacionales bandera
+  stocks/sia/industry: ver las industrias existentes, o establecer la industria si
+    se especifica arg
+  stocks/sia/metric: visualizar la métrica financiera entre los filtros seleccionados
+  stocks/sia/mktcap: set mktcap entre nano, micro, pequeño, medio, grande o mega
+  stocks/sia/period: período fijado entre anual, trimestral o inferior
+  stocks/sia/sector: ver los sectores existentes, o establecer el sector si se especifica
+    arg
+  stocks/sia/select: seleccionar un marcador específico y todos sus parámetros correspondientes
+  stocks/sia/vis: visualizar la métrica financiera entre los filtros seleccionados
+  stocks/ta: análisis técnico, ema, macd, rsi, adx, bbands, obv
+  stocks/ta/_custom_: Personalizado
+  stocks/ta/_momentum_: Momentum
+  stocks/ta/_overlap_: Superposición
+  stocks/ta/_ticker: Ticker
+  stocks/ta/_trend_: Tendencia
+  stocks/ta/_volatility_: Volatilidad
+  stocks/ta/_volume_: Volumen
+  stocks/ta/ad: línea de acumulación/distribución
+  stocks/ta/adosc: oscilador de chaikin
+  stocks/ta/adx: índice medio de movimiento direccional
+  stocks/ta/aroon: indicador de aroon
+  stocks/ta/atr: rango real medio
+  stocks/ta/bbands: bandas de bollinger
+  stocks/ta/cci: Índice de canales de productos básicos
+  stocks/ta/cg: centro de gravedad
+  stocks/ta/clenow: impulso ajustado de volatilidad de Clenow
+  stocks/ta/demark: Indicador secuencial de Tom Demark
+  stocks/ta/donchian: canales donchian
+  stocks/ta/ema: media móvil exponencial
+  stocks/ta/fib: Retrazado de fibonacci
+  stocks/ta/fisher: transform de pescador
+  stocks/ta/hma: media móvil del casco
+  stocks/ta/kc: canales de Keltner
+  stocks/ta/macd: convergencia/divergencia media móvil
+  stocks/ta/obv: sobre el volumen del saldo
+  stocks/ta/recom: recomendación basada en indicadores técnicos
+  stocks/ta/rsi: índice de efectivos relativos
+  stocks/ta/rsp: percentil de fuerza relativa
+  stocks/ta/sma: media móvil simple
+  stocks/ta/stoch: Oscilador estocástico
+  stocks/ta/summary: Informe resumido técnico
+  stocks/ta/tv: abrir una carta interactiva sobre
+  stocks/ta/view: ver datos históricos y tendencias
+  stocks/ta/vwap: precio medio ponderado del volumen
+  stocks/ta/wma: media móvil ponderada
+  stocks/ta/zlma: media móvil de desfase cero
+  stocks/th: horas de negociación, comprobar los mercados abiertos
+  stocks/th/_exchange: Intercambio abierto
+  stocks/th/_symbol: Símbolo
+  stocks/th/_symbol_name: Nombre de la signatura
+  stocks/th/all: mostrar todos los mercados
+  stocks/th/closed: mostrar mercados cerrados
+  stocks/th/exchange: mostrar un intercambio
+  stocks/th/holidays: mostrar todas las fechas en las que hay unas vacaciones de mercado
+  stocks/th/open: mostrar mercados abiertos
+  stocks/th/symbol: seleccionar el símbolo
+  stocks/tob: ver la parte superior del libro para el ticker cargado (sólo los intercambios
+    de EE.UU.)
+  stop: detener la grabación de la sesión
+  support: pre-poblar un ticket de soporte para que nuestro equipo evalúe
+  survey: rellenar nuestra encuesta de 2 minutos para entender mejor cómo podemos
+    mejorar la terminal
+  update: intentar actualizar el terminal automáticamente (versión GitHub)
+  wiki: búsqueda de una expresión en Wikipedia (https://www.wikipedia.org/)
