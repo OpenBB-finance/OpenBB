@@ -112,6 +112,7 @@ def display_historical(
 def display_volume(
     similar: List[str],
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -125,12 +126,14 @@ def display_volume(
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
+    end_date : Optional[str], optional
+        End date (e.g., 2023-01-01). Defaults to today
     export : str, optional
         Format to export historical prices, by default ""
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_similar = yahoo_finance_model.get_volume(similar, start_date)
+    df_similar = yahoo_finance_model.get_volume(similar, start_date, end_date)
 
     # This plot has 1 axis
     if not external_axes:
@@ -164,6 +167,7 @@ def display_volume(
 def display_correlation(
     similar: List[str],
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     candle_type: str = "a",
     display_full_matrix: bool = False,
     raw: bool = False,
@@ -182,6 +186,8 @@ def display_correlation(
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
+    end_date : Optional[str], optional
+        End date (e.g., 2023-01-01)
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
     display_full_matrix : bool, optional
@@ -198,7 +204,7 @@ def display_correlation(
         start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
     correlations, df_similar = yahoo_finance_model.get_correlation(
-        similar, start_date, candle_type
+        similar, start_date, end_date, candle_type
     )
 
     mask = None

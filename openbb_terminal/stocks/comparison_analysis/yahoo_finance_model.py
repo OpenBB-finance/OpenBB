@@ -116,6 +116,7 @@ def get_historical(
 def get_correlation(
     similar: List[str],
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     candle_type: str = "a",
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
@@ -129,6 +130,8 @@ def get_correlation(
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
+    end : Optional[str], optional
+        Initial date (e.g., 2021-10-01). Defaults to today
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
 
@@ -141,7 +144,7 @@ def get_correlation(
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
-    df_similar = get_historical(similar, start_date, candle_type)
+    df_similar = get_historical(similar, start_date, end_date, candle_type=candle_type)
 
     correlations = df_similar.corr()
 
@@ -152,6 +155,7 @@ def get_correlation(
 def get_volume(
     similar: List[str],
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Get stock volume. [Source: Yahoo Finance]
 
@@ -163,6 +167,8 @@ def get_volume(
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
+    end_date : Optional[str], optional
+        End date (e.g., 2023-01-01). None defaults to today
 
     Returns
     -------
@@ -173,7 +179,7 @@ def get_volume(
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
-    df_similar = get_historical(similar, start_date, "v")
+    df_similar = get_historical(similar, start_date, end_date, candle_type="v")
     df_similar = df_similar[df_similar.columns]
     return df_similar
 
