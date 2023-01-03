@@ -13,9 +13,9 @@ BACKEND_PATH = Path(__file__).parent.resolve()
 class Backend(PyWry):
     """Custom backend for Plotly"""
 
-    def __new__(cls):
+    def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
         if not hasattr(cls, "instance"):
-            cls.instance = super().__new__(cls)
+            cls.instance = super().__new__(cls)  # pylint: disable=E1120
         return cls.instance
 
     def __init__(self, daemon: bool = True, max_retries: int = 30):
