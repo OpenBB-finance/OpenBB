@@ -194,7 +194,6 @@ rich==12.6.0; python_full_version >= "3.6.3" and python_full_version < "4.0.0"
 robin-stocks==2.1.0; python_version >= "3"
 ruamel.yaml.clib==0.2.7; platform_python_implementation == "CPython" and python_version < "3.11" and python_version >= "3.5"
 ruamel.yaml==0.17.21; python_version >= "3"
-ruff==0.0.210; python_version >= "3.7"
 scikit-learn==1.1.2; python_version >= "3.8" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.8"
 scipy==1.9.3; python_version >= "3.8"
 screeninfo==0.6.7

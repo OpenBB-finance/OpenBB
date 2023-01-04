@@ -14,7 +14,7 @@ repos:
     hooks:
       - id: black
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.0.206'
+    rev: 'v0.0.209'
     hooks:
       - id: ruff
   - repo: https://github.com/codespell-project/codespell

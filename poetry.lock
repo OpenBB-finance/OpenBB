@@ -3628,7 +3628,7 @@ python-versions = ">=3.5"
 name = "ruff"
 version = "0.0.210"
 description = "An extremely fast Python linter, written in Rust."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 
@@ -4855,7 +4855,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "f7fd8752a1db2e38e714550d9aacd4281f6d93dc650825f1a971322e058b1e66"
+content-hash = "d1525d4fc860e5dc32d1aeab0ee32a27ef62d0d0329e29755f4317b51b315f24"
 
 [metadata.files]
 absl-py = []
