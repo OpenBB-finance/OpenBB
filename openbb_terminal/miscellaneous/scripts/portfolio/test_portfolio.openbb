@@ -1,7 +1,7 @@
 portfolio
 load -f Public_Equity_Orderbook.xlsx
 show
-bench SPDR S&P 500 ETF Trust (SPY)
+bench QQQ
 alloc assets -t -l 4
 alloc sectors -t -l 4
 alloc countries -t -l 4

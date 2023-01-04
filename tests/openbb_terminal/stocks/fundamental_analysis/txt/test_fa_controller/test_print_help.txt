@@ -15,6 +15,8 @@ Ticker: TSLA
     metrics            key metrics over time                                           [FinancialModelingPrep]
     ratios             in-depth ratios over time                                       [FinancialModelingPrep]
     growth             growth of financial statement items and ratios                  [FinancialModelingPrep]
+    revfc              Earning Estimate by Analysts - Revenue                          [SeekingAlpha]
+    epsfc              Earning Estimate by Analysts - EPS                              [SeekingAlpha]
     warnings           company warnings according to Sean Seah book                    [MarketWatch]
     dcf                advanced Excel customizable discounted cash flow                [StockAnalysis]
     dcfc               determine the (historical) discounted cash flow                 [FinancialModelingPrep]

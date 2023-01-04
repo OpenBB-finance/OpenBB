@@ -1,0 +1,6 @@
+                                                                              Title                                                                                           Url  Score   Type                Time
+0    A search engine for searching books in the Z-Library index on the IPFS network                                                                        https://zlib.zu1k.com/    109  story 2022-12-29 19:05:23
+1                                                                     Pele Has Died                                                 https://www.bbc.co.uk/sport/football/42751517     22  story 2022-12-29 20:04:57
+2                                                      Saying “sup” with `net send`                                                                 https://drew.shoes/posts/sup/    215  story 2022-12-28 04:47:07
+3  MIT researchers are discovering which parts of the brain are engaged when coding                                     https://news.mit.edu/2022/your-brain-your-brain-code-1221     60  story 2022-12-29 18:09:09
+4        Tesla driver falls asleep – Autopilot ignores police and continues driving  https://www.sueddeutsche.de/bayern/tesla-bamberg-polizei-autopilot-autobahn-strafe-1.5723593     26  story 2022-12-29 20:04:40

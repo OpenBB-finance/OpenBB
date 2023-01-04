@@ -1,4 +1,5 @@
 trail,model,view
+alt.hn,openbb_terminal.alternative.hackernews_model.get_stories,openbb_terminal.alternative.hackernews_view.display_stories
 alt.covid.slopes,openbb_terminal.alternative.covid.covid_model.get_case_slopes,openbb_terminal.alternative.covid.covid_view.display_case_slopes
 alt.covid.global_cases,openbb_terminal.alternative.covid.covid_model.get_global_cases,
 alt.covid.global_deaths,openbb_terminal.alternative.covid.covid_model.get_global_deaths,
@@ -173,6 +174,7 @@ crypto.onchain.baas,openbb_terminal.cryptocurrency.onchain.bitquery_model.get_sp
 crypto.onchain.tv,openbb_terminal.cryptocurrency.onchain.bitquery_model.get_token_volume_on_dexes,openbb_terminal.cryptocurrency.onchain.bitquery_view.display_dex_volume_for_token
 crypto.onchain.query_graph,openbb_terminal.cryptocurrency.onchain.bitquery_model.query_graph,
 crypto.onchain.btc_supply,openbb_terminal.cryptocurrency.onchain.blockchain_model.get_btc_circulating_supply,openbb_terminal.cryptocurrency.onchain.blockchain_view.display_btc_circulating_supply
+crypto.onchain.btcsingleblock,openbb_terminal.cryptocurrency.onchain.blockchain_model.get_btc_single_block,openbb_terminal.cryptocurrency.onchain.blockchain_view.display_btc_single_block
 crypto.onchain.btc_transac,openbb_terminal.cryptocurrency.onchain.blockchain_model.get_btc_confirmed_transactions,openbb_terminal.cryptocurrency.onchain.blockchain_view.display_btc_confirmed_transactions
 crypto.onchain.gwei,openbb_terminal.cryptocurrency.onchain.ethgasstation_model.get_gwei_fees,openbb_terminal.cryptocurrency.onchain.ethgasstation_view.display_gwei_fees
 crypto.onchain.hist,openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_address_history,openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_address_history
@@ -277,6 +279,7 @@ etf.overview,openbb_terminal.etf.stockanalysis_model.get_etf_overview,
 etf.etf_by_name,openbb_terminal.etf.stockanalysis_model.get_etfs_by_name,
 etf.weights,openbb_terminal.etf.yfinance_model.get_etf_sector_weightings,
 etf.summary,openbb_terminal.etf.yfinance_model.get_etf_summary_description,
+etf.compare,openbb_terminal.etf.stockanalysis_model.compare_etfs,
 forex.get_currency_list,openbb_terminal.forex.av_model.get_currency_list,
 forex.quote,openbb_terminal.forex.sdk_helpers.quote,
 forex.fwd,openbb_terminal.forex.fxempire_model.get_forward_rates,
@@ -398,7 +401,7 @@ stocks.fa.fama_raw,openbb_terminal.stocks.fundamental_analysis.dcf_model.get_fam
 stocks.fa.historical_5,openbb_terminal.stocks.fundamental_analysis.dcf_model.get_historical_5,
 stocks.fa.similar_dfs,openbb_terminal.stocks.fundamental_analysis.dcf_model.get_similar_dfs,
 stocks.fa.analysis,openbb_terminal.stocks.fundamental_analysis.eclect_us_model.get_filings_analysis,
-stocks.fa.dcf,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_dcf,
+stocks.fa.dcfc,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_dcf,
 stocks.fa.enterprise,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_enterprise,
 stocks.fa.growth,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_financial_growth,
 stocks.fa.metrics,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_key_metrics,
@@ -416,6 +419,8 @@ stocks.fa.shrs,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.g
 stocks.fa.splits,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_splits,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_splits
 stocks.fa.sust,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_sustainability,
 stocks.fa.website,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_website,
+stocks.fa.revfc,openbb_terminal.stocks.fundamental_analysis.seeking_alpha_model.get_estimates_rev,
+stocks.fa.epsfc,openbb_terminal.stocks.fundamental_analysis.seeking_alpha_model.get_estimates_eps,
 stocks.gov.qtrcontracts,openbb_terminal.stocks.government.quiverquant_model.get_qtr_contracts,openbb_terminal.stocks.government.quiverquant_view.display_qtr_contracts
 stocks.gov.government_trading,openbb_terminal.stocks.government.quiverquant_model.get_government_trading,
 stocks.gov.contracts,openbb_terminal.stocks.government.quiverquant_model.get_contracts,openbb_terminal.stocks.government.quiverquant_view.display_contracts
@@ -430,6 +435,19 @@ stocks.gov.toplobbying,openbb_terminal.stocks.government.quiverquant_model.get_t
 stocks.ins.act,openbb_terminal.stocks.insider.businessinsider_model.get_insider_activity,openbb_terminal.stocks.insider.businessinsider_view.insider_activity
 stocks.ins.lins,openbb_terminal.stocks.insider.finviz_model.get_last_insider_activity,openbb_terminal.stocks.insider.finviz_view.last_insider_activity
 stocks.ins.print_insider_data,openbb_terminal.stocks.insider.openinsider_model.get_print_insider_data,openbb_terminal.stocks.insider.openinsider_view.print_insider_data
+stocks.ins.stats,openbb_terminal.stocks.insider.sdk_helper.stats,
+stocks.ins.filter,openbb_terminal.stocks.insider.sdk_helper.insider_filter,
+stocks.ins.lcb,openbb_terminal.stocks.insider.sdk_helper.lcb,
+stocks.ins.lpsb,openbb_terminal.stocks.insider.sdk_helper.lpsb,
+stocks.ins.lit,openbb_terminal.stocks.insider.sdk_helper.lit,
+stocks.ins.lip,openbb_terminal.stocks.insider.sdk_helper.lip,
+stocks.ins.blip,openbb_terminal.stocks.insider.sdk_helper.blip,
+stocks.ins.blop,openbb_terminal.stocks.insider.sdk_helper.blop,
+stocks.ins.blcp,openbb_terminal.stocks.insider.sdk_helper.blcp,
+stocks.ins.lis,openbb_terminal.stocks.insider.sdk_helper.lis,
+stocks.ins.blis,openbb_terminal.stocks.insider.sdk_helper.blis,
+stocks.ins.blos,openbb_terminal.stocks.insider.sdk_helper.blos,
+stocks.ins.blcs,openbb_terminal.stocks.insider.sdk_helper.blcs,
 stocks.options.pcr,openbb_terminal.stocks.options.alphaquery_model.get_put_call_ratio,openbb_terminal.stocks.options.alphaquery_view.display_put_call_ratio
 stocks.options.info,openbb_terminal.stocks.options.yfinance_model.get_info,openbb_terminal.stocks.options.barchart_view.print_options_data
 stocks.options.hist_ce,openbb_terminal.stocks.options.chartexchange_model.get_option_history,openbb_terminal.stocks.options.chartexchange_view.display_raw
@@ -459,7 +477,7 @@ stocks.sia.cpis,openbb_terminal.stocks.sector_industry_analysis.financedatabase_
 stocks.sia.cps,openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_companies_per_sector_in_country,openbb_terminal.stocks.sector_industry_analysis.financedatabase_view.display_companies_per_sector_in_country
 stocks.sia.countries,openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_countries,
 stocks.sia.industries,openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_industries,
-stocks.sia.maketcap,openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_marketcap,
+stocks.sia.marketcap,openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_marketcap,
 stocks.sia.sectors,openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_sectors,
 stocks.sia.stocks_data,openbb_terminal.stocks.sector_industry_analysis.stockanalysis_model.get_stocks_data,
 stocks.ta.summary,openbb_terminal.stocks.technical_analysis.finbrain_model.get_technical_summary_report,openbb_terminal.stocks.technical_analysis.finbrain_view.technical_summary_report

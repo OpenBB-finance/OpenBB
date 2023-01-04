@@ -7,7 +7,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 from typing import Any, Union, Optional, Iterable, List, Dict
 
 import financedatabase as fd
@@ -926,22 +926,19 @@ def additional_info_about_ticker(ticker: str) -> str:
         if ".US" in ticker.upper():
             ticker = ticker.rstrip(".US")
             ticker = ticker.rstrip(".us")
-        ticker_info = yf.Ticker(ticker).info
+        ticker_stats = yf.Ticker(ticker).stats()
         extra_info += "\n[param]Company:  [/param]"
-        if "shortName" in ticker_info and ticker_info["shortName"]:
-            extra_info += ticker_info["shortName"]
+        extra_info += ticker_stats.get("quoteType", {}).get("shortName")
         extra_info += "\n[param]Exchange: [/param]"
-        if "exchange" in ticker_info and ticker_info["exchange"]:
-            exchange_name = ticker_info["exchange"]
-            extra_info += (
-                exchange_mappings["X" + exchange_name]
-                if "X" + exchange_name in exchange_mappings
-                else exchange_name
-            )
+        exchange_name = ticker_stats.get("quoteType", {}).get("exchange")
+        extra_info += (
+            exchange_mappings["X" + exchange_name]
+            if "X" + exchange_name in exchange_mappings
+            else exchange_name
+        )
 
         extra_info += "\n[param]Currency: [/param]"
-        if "currency" in ticker_info and ticker_info["currency"]:
-            extra_info += ticker_info["currency"]
+        extra_info += ticker_stats.get("summaryDetail", {}).get("currency")
 
     else:
         extra_info += "\n[param]Company: [/param]"
@@ -1044,8 +1041,9 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
         "1 Month": 100 * closes.pct_change(21)[-1],
         "1 Year": 100 * closes.pct_change(252)[-1],
     }
-    if "2022-01-03" in closes.index:
-        closes_ytd = closes[closes.index > f"{date.today().year}-01-01"]
+
+    closes_ytd = closes[closes.index.year == pd.to_datetime("today").year]
+    if not closes_ytd.empty:
         perfs["YTD"] = 100 * (closes_ytd[-1] - closes_ytd[0]) / closes_ytd[0]
     else:
         perfs["Period"] = 100 * (closes[-1] - closes[0]) / closes[0]
