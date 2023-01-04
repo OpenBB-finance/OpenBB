@@ -1,3 +1,5 @@
 >   covid              COVID menu,                 cases, deaths, rates
 >   oss                Open Source menu,           star history, repos information
 
+    hn                 Hacker News most popular stories                                [HackerNews]
+
