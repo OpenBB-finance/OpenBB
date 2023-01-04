@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
     check_non_negative,
     check_positive,
     valid_date,
+    check_start_less_than_end,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -493,6 +494,8 @@ class ComparisonAnalysisController(BaseController):
         )
         if ns_parser:
             if self.similar and len(self.similar) > 1:
+                if check_start_less_than_end(ns_parser.start, ns_parser.end):
+                    return
                 yahoo_finance_view.display_historical(
                     similar=self.similar,
                     start_date=ns_parser.start.strftime("%Y-%m-%d"),
@@ -556,6 +559,8 @@ class ComparisonAnalysisController(BaseController):
         )
         if ns_parser:
             if self.similar and len(self.similar) > 1:
+                if check_start_less_than_end(ns_parser.start, ns_parser.end):
+                    return
                 yahoo_finance_view.display_correlation(
                     similar=self.similar,
                     start_date=ns_parser.start.strftime("%Y-%m-%d"),
@@ -642,6 +647,8 @@ class ComparisonAnalysisController(BaseController):
         )
         if ns_parser:
             if self.similar and len(self.similar) > 1:
+                if check_start_less_than_end(ns_parser.start, ns_parser.end):
+                    return
                 yahoo_finance_view.display_volume(
                     similar=self.similar,
                     start_date=ns_parser.start.strftime("%Y-%m-%d"),
