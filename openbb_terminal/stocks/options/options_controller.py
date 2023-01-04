@@ -160,6 +160,20 @@ class OptionsController(BaseController):
         )
         return commands
 
+    def set_option_chain(
+        self, source: str, ticker: str, selected_date: str
+    ) -> pd.DataFrame:
+
+        if source == "Tradier":
+            df = tradier_model.get_option_chain(ticker, selected_date)
+            if isinstance(df, pd.DataFrame) and not df.empty:
+                self.chain = op_helpers.Chain(df, source)
+        elif source == "Nasdaq":
+            df = nasdaq_model.get_option_chain(ticker, selected_date)
+            self.chain = op_helpers.Chain(df, source)
+        else:
+            self.chain = yfinance_model.get_option_chain(ticker, selected_date)
+
     def update_runtime_choices(self):
         """Update runtime choices"""
         if self.expiry_dates and session and obbff.USE_PROMPT_TOOLKIT:
@@ -588,10 +602,20 @@ class OptionsController(BaseController):
             else:
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
 
+            if not self.expiry_dates:
+                console.print(
+                    f"""[red]No expiration dates found for ticker "{self.ticker}" and source "{ns_parser.source}"."""
+                )
+                console.print("Please try loading from a different source.")
+                console.print("Loading from YahooFinance now.")
+                self.expiry_dates = yfinance_model.option_expirations(self.ticker)
+
             if self.ticker and self.selected_date:
                 try:
-                    self.chain = yfinance_model.get_option_chain(
-                        self.ticker, self.selected_date
+                    self.set_option_chain(
+                        ticker=self.ticker,
+                        selected_date=self.selected_date,
+                        source=ns_parser.source if ns_parser.source else self.source,
                     )
                 except ValueError:
                     console.print(
@@ -655,23 +679,11 @@ class OptionsController(BaseController):
                     self.update_runtime_choices()
 
                 if self.selected_date:
-                    source = ns_parser.source if ns_parser.source else self.source
-
-                    if source == "Tradier":
-                        df = tradier_model.get_option_chain(
-                            self.ticker, self.selected_date
-                        )
-                        if isinstance(df, pd.DataFrame) and not df.empty:
-                            self.chain = op_helpers.Chain(df, source)
-                    elif self.source == "Nasdaq":
-                        df = nasdaq_model.get_option_chain(
-                            self.ticker, self.selected_date
-                        )
-                        self.chain = op_helpers.Chain(df, source)
-                    else:
-                        self.chain = yfinance_model.get_option_chain(
-                            self.ticker, self.selected_date
-                        )
+                    self.set_option_chain(
+                        ticker=self.ticker,
+                        selected_date=self.selected_date,
+                        source=ns_parser.source if ns_parser.source else self.source,
+                    )
                     self.update_runtime_choices()
             else:
                 console.print("Please load a ticker using `load <ticker>`.\n")
