@@ -655,16 +655,19 @@ class OptionsController(BaseController):
                     self.update_runtime_choices()
 
                 if self.selected_date:
-                    if self.source == "Tradier":
+                    source = ns_parser.source if ns_parser.source else self.source
+
+                    if source == "Tradier":
                         df = tradier_model.get_option_chain(
                             self.ticker, self.selected_date
                         )
-                        self.chain = op_helpers.Chain(df)
+                        if isinstance(df, pd.DataFrame) and not df.empty:
+                            self.chain = op_helpers.Chain(df, source)
                     elif self.source == "Nasdaq":
                         df = nasdaq_model.get_option_chain(
                             self.ticker, self.selected_date
                         )
-                        self.chain = op_helpers.Chain(df, self.source)
+                        self.chain = op_helpers.Chain(df, source)
                     else:
                         self.chain = yfinance_model.get_option_chain(
                             self.ticker, self.selected_date
@@ -814,20 +817,17 @@ class OptionsController(BaseController):
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if ns_parser.source == "Tradier" or self.source == "Tradier":
-                        if API_TRADIER_TOKEN != "REPLACE_ME":  # nosec
-                            tradier_view.display_chains(
-                                symbol=self.ticker,
-                                expiry=self.selected_date,
-                                to_display=ns_parser.to_display,
-                                min_sp=ns_parser.min_sp,
-                                max_sp=ns_parser.max_sp,
-                                calls_only=ns_parser.calls,
-                                puts_only=ns_parser.puts,
-                                export=ns_parser.export,
-                            )
-                        else:
-                            console.print("TRADIER TOKEN not supplied. \n")
+                    if ns_parser.source == "Tradier":
+                        tradier_view.display_chains(
+                            symbol=self.ticker,
+                            expiry=self.selected_date,
+                            to_display=ns_parser.to_display,
+                            min_sp=ns_parser.min_sp,
+                            max_sp=ns_parser.max_sp,
+                            calls_only=ns_parser.calls,
+                            puts_only=ns_parser.puts,
+                            export=ns_parser.export,
+                        )
                     elif ns_parser.source == "YahooFinance":
                         yfinance_view.display_chains(
                             symbol=self.ticker,
@@ -975,10 +975,7 @@ class OptionsController(BaseController):
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if (
-                        ns_parser.source == "Tradier"
-                        and API_TRADIER_TOKEN != "REPLACE_ME"  # nosec
-                    ) or self.source == "Tradier":
+                    if ns_parser.source == "Tradier":
                         tradier_view.plot_volume_open_interest(
                             symbol=self.ticker,
                             expiry=self.selected_date,
@@ -1064,10 +1061,7 @@ class OptionsController(BaseController):
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if (
-                        ns_parser.source == "Tradier"
-                        and API_TRADIER_TOKEN != "REPLACE_ME"  # nosec
-                    ) or self.source == "Tradier":
+                    if ns_parser.source == "Tradier":
                         tradier_view.plot_oi(
                             symbol=self.ticker,
                             expiry=self.selected_date,

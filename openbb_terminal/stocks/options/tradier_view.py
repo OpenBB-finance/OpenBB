@@ -188,66 +188,73 @@ def display_chains(
         to_display = tradier_model.default_columns
 
     chains_df = tradier_model.get_option_chain(symbol, expiry)
-    columns = to_display + ["strike", "option_type"]
-    chains_df = chains_df[columns].rename(columns=column_map)
 
-    min_strike, max_strike = get_strike_bounds(chains_df, 0, min_sp, max_sp)
+    if isinstance(chains_df, pd.DataFrame) and not chains_df.empty:
 
-    chains_df = chains_df[chains_df["strike"] >= min_strike]
-    chains_df = chains_df[chains_df["strike"] <= max_strike]
+        columns = to_display + ["strike", "option_type"]
+        chains_df = chains_df[columns].rename(columns=column_map)
 
-    calls_df = chains_df[chains_df.option_type == "call"].drop(columns=["option_type"])
-    puts_df = chains_df[chains_df.option_type == "put"].drop(columns=["option_type"])
+        min_strike, max_strike = get_strike_bounds(chains_df, 0, min_sp, max_sp)
 
-    df = calls_df if calls_only else puts_df
+        chains_df = chains_df[chains_df["strike"] >= min_strike]
+        chains_df = chains_df[chains_df["strike"] <= max_strike]
 
-    if calls_only or puts_only:
-        print_rich_table(
-            df,
-            headers=[x.title() for x in df.columns],
-            show_index=False,
-            title=f"The strike prices are displayed between {min_strike} and {max_strike}",
+        calls_df = chains_df[chains_df.option_type == "call"].drop(
+            columns=["option_type"]
+        )
+        puts_df = chains_df[chains_df.option_type == "put"].drop(
+            columns=["option_type"]
         )
 
-    else:
-        puts_df = puts_df[puts_df.columns[::-1]]
-        chain_table = calls_df.merge(puts_df, on="strike")
+        df = calls_df if calls_only else puts_df
 
-        if rich_config.USE_COLOR:
-            call_cols = [col for col in chain_table if col.endswith("_x")]
-            put_cols = [col for col in chain_table if col.endswith("_y")]
-            patch_pandas_text_adjustment()
-            pd.set_option("display.max_colwidth", 0)
-            pd.set_option("display.max_rows", None)
-            for cc in call_cols:
-                chain_table[cc] = (
-                    chain_table[cc].astype(str).apply(lambda_green_highlight)
-                )
-            for pc in put_cols:
-                chain_table[pc] = (
-                    chain_table[pc].astype(str).apply(lambda_red_highlight)
-                )
-        headers = [
-            col.strip("_x")
-            if col.endswith("_x")
-            else col.strip("_y")
-            if col.endswith("_y")
-            else col
-            for col in chain_table.columns
-        ]
-        print_rich_table(
-            chain_table,
-            headers=headers,
-            show_index=False,
-            title=f"{symbol} Option chain for {expiry}",
+        if calls_only or puts_only:
+            print_rich_table(
+                df,
+                headers=[x.title() for x in df.columns],
+                show_index=False,
+                title=f"The strike prices are displayed between {min_strike} and {max_strike}",
+            )
+
+        else:
+            puts_df = puts_df[puts_df.columns[::-1]]
+            chain_table = calls_df.merge(puts_df, on="strike")
+
+            if rich_config.USE_COLOR:
+                call_cols = [col for col in chain_table if col.endswith("_x")]
+                put_cols = [col for col in chain_table if col.endswith("_y")]
+                patch_pandas_text_adjustment()
+                pd.set_option("display.max_colwidth", 0)
+                pd.set_option("display.max_rows", None)
+                for cc in call_cols:
+                    chain_table[cc] = (
+                        chain_table[cc].astype(str).apply(lambda_green_highlight)
+                    )
+                for pc in put_cols:
+                    chain_table[pc] = (
+                        chain_table[pc].astype(str).apply(lambda_red_highlight)
+                    )
+            headers = [
+                col.strip("_x")
+                if col.endswith("_x")
+                else col.strip("_y")
+                if col.endswith("_y")
+                else col
+                for col in chain_table.columns
+            ]
+            print_rich_table(
+                chain_table,
+                headers=headers,
+                show_index=False,
+                title=f"{symbol} Option chain for {expiry}",
+            )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "chains",
+            chains_df,
         )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-        "chains",
-        chains_df,
-    )
 
 
 @log_start_end(log=logger)
@@ -284,61 +291,66 @@ def plot_oi(
     """
 
     options = tradier_model.get_option_chain(symbol, expiry)
-    current_price = tradier_model.last_price(symbol)
 
-    min_strike, max_strike = get_strike_bounds(options, current_price, min_sp, max_sp)
+    if isinstance(options, pd.DataFrame) and not options.empty:
 
-    if max_strike == min_strike:
-        console.print("[red]Not enough data for analysis[/red]\n")
-        return
+        current_price = tradier_model.last_price(symbol)
 
-    if calls_only and puts_only:
-        console.print("Both flags selected, please select one", "\n")
-        return
+        min_strike, max_strike = get_strike_bounds(
+            options, current_price, min_sp, max_sp
+        )
 
-    calls = options[options.option_type == "call"][["strike", "open_interest"]]
-    puts = options[options.option_type == "put"][["strike", "open_interest"]]
-    call_oi = calls.set_index("strike")["open_interest"] / 1000
-    put_oi = puts.set_index("strike")["open_interest"] / 1000
+        if max_strike == min_strike:
+            console.print("[red]Not enough data for analysis[/red]\n")
+            return
 
-    df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
-    df_opt = df_opt.rename(
-        columns={"open_interest_x": "OI_call", "open_interest_y": "OI_put"}
-    )
+        if calls_only and puts_only:
+            console.print("Both flags selected, please select one", "\n")
+            return
 
-    max_pain = op_helpers.calculate_max_pain(df_opt)
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+        calls = options[options.option_type == "call"][["strike", "open_interest"]]
+        puts = options[options.option_type == "put"][["strike", "open_interest"]]
+        call_oi = calls.set_index("strike")["open_interest"] / 1000
+        put_oi = puts.set_index("strike")["open_interest"] / 1000
 
-    if not calls_only:
-        ax.plot(put_oi.index, put_oi.values, "-o", label="Puts")
+        df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
+        df_opt = df_opt.rename(
+            columns={"open_interest_x": "OI_call", "open_interest_y": "OI_put"}
+        )
 
-    if not puts_only:
-        ax.plot(call_oi.index, call_oi.values, "-o", label="Calls")
+        max_pain = op_helpers.calculate_max_pain(df_opt)
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        elif is_valid_axes_count(external_axes, 1):
+            (ax,) = external_axes
+        else:
+            return
 
-    ax.legend(loc=0, fontsize="x-small")
-    ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
-    ax.axvline(max_pain, lw=3, label=f"Max Pain: {max_pain}", alpha=0.7)
-    ax.set_xlabel("Strike Price")
-    ax.set_ylabel("Open Interest [1k] ")
-    ax.set_xlim(min_strike, max_strike)
-    ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiry}")
+        if not calls_only:
+            ax.plot(put_oi.index, put_oi.values, "-o", label="Puts")
 
-    theme.style_primary_axis(ax)
+        if not puts_only:
+            ax.plot(call_oi.index, call_oi.values, "-o", label="Calls")
 
-    if external_axes is None:
-        theme.visualize_output()
+        ax.legend(loc=0, fontsize="x-small")
+        ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
+        ax.axvline(max_pain, lw=3, label=f"Max Pain: {max_pain}", alpha=0.7)
+        ax.set_xlabel("Strike Price")
+        ax.set_ylabel("Open Interest [1k] ")
+        ax.set_xlim(min_strike, max_strike)
+        ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiry}")
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "oi_tr",
-        options,
-    )
+        theme.style_primary_axis(ax)
+
+        if external_axes is None:
+            theme.visualize_output()
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "oi_tr",
+            options,
+        )
 
 
 @log_start_end(log=logger)
@@ -473,165 +485,173 @@ def plot_volume_open_interest(
     current_price = tradier_model.last_price(symbol)
     options = tradier_model.get_option_chain(symbol, expiry)
 
-    calls = options[options.option_type == "call"][
-        ["strike", "volume", "open_interest"]
-    ]
-    puts = options[options.option_type == "put"][["strike", "volume", "open_interest"]]
+    if isinstance(options, pd.DataFrame) and not options.empty:
 
-    # Process Calls Data
-    df_calls = calls.pivot_table(
-        index="strike", values=["volume", "open_interest"], aggfunc="sum"
-    ).reindex()
-    df_calls["strike"] = df_calls.index
-    df_calls["type"] = "calls"
-    df_calls["open_interest"] = df_calls["open_interest"]
-    df_calls["volume"] = df_calls["volume"]
-    df_calls["oi+v"] = df_calls["open_interest"] + df_calls["volume"]
-    df_calls["spot"] = round(current_price, 2)
+        calls = options[options.option_type == "call"][
+            ["strike", "volume", "open_interest"]
+        ]
+        puts = options[options.option_type == "put"][
+            ["strike", "volume", "open_interest"]
+        ]
 
-    df_puts = puts.pivot_table(
-        index="strike", values=["volume", "open_interest"], aggfunc="sum"
-    ).reindex()
-    df_puts["strike"] = df_puts.index
-    df_puts["type"] = "puts"
-    df_puts["open_interest"] = df_puts["open_interest"]
-    df_puts["volume"] = -df_puts["volume"]
-    df_puts["open_interest"] = -df_puts["open_interest"]
-    df_puts["oi+v"] = df_puts["open_interest"] + df_puts["volume"]
-    df_puts["spot"] = round(current_price, 2)
+        # Process Calls Data
+        df_calls = calls.pivot_table(
+            index="strike", values=["volume", "open_interest"], aggfunc="sum"
+        ).reindex()
+        df_calls["strike"] = df_calls.index
+        df_calls["type"] = "calls"
+        df_calls["open_interest"] = df_calls["open_interest"]
+        df_calls["volume"] = df_calls["volume"]
+        df_calls["oi+v"] = df_calls["open_interest"] + df_calls["volume"]
+        df_calls["spot"] = round(current_price, 2)
 
-    call_oi = calls.set_index("strike")["open_interest"] / 1000
-    put_oi = puts.set_index("strike")["open_interest"] / 1000
+        df_puts = puts.pivot_table(
+            index="strike", values=["volume", "open_interest"], aggfunc="sum"
+        ).reindex()
+        df_puts["strike"] = df_puts.index
+        df_puts["type"] = "puts"
+        df_puts["open_interest"] = df_puts["open_interest"]
+        df_puts["volume"] = -df_puts["volume"]
+        df_puts["open_interest"] = -df_puts["open_interest"]
+        df_puts["oi+v"] = df_puts["open_interest"] + df_puts["volume"]
+        df_puts["spot"] = round(current_price, 2)
 
-    df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
-    df_opt = df_opt.rename(
-        columns={"open_interest_x": "OI_call", "open_interest_y": "OI_put"}
-    )
+        call_oi = calls.set_index("strike")["open_interest"] / 1000
+        put_oi = puts.set_index("strike")["open_interest"] / 1000
 
-    max_pain = op_helpers.calculate_max_pain(df_opt)
-
-    if min_vol == -1 and min_sp == -1 and max_sp == -1:
-        # If no argument provided, we use the percentile 50 to get 50% of upper volume data
-        volume_percentile_threshold = 50
-        min_vol_calls = np.percentile(df_calls["oi+v"], volume_percentile_threshold)
-        min_vol_puts = np.percentile(df_puts["oi+v"], volume_percentile_threshold)
-
-        df_calls = df_calls[df_calls["oi+v"] > min_vol_calls]
-        df_puts = df_puts[df_puts["oi+v"] < min_vol_puts]
-
-    else:
-        if min_vol > -1:
-            df_calls = df_calls[df_calls["oi+v"] > min_vol]
-            df_puts = df_puts[df_puts["oi+v"] < -min_vol]
-
-        if min_sp > -1:
-            df_calls = df_calls[df_calls["strike"] > min_sp]
-            df_puts = df_puts[df_puts["strike"] > min_sp]
-
-        if max_sp > -1:
-            df_calls = df_calls[df_calls["strike"] < max_sp]
-            df_puts = df_puts[df_puts["strike"] < max_sp]
-
-    if df_calls.empty and df_puts.empty:
-        console.print(
-            "The filtering applied is too strong, there is no data available for such conditions.\n"
+        df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
+        df_opt = df_opt.rename(
+            columns={"open_interest_x": "OI_call", "open_interest_y": "OI_put"}
         )
-        return
 
-    # Initialize the matplotlib figure
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        ax = external_axes[0]
+        max_pain = op_helpers.calculate_max_pain(df_opt)
 
-    # make x axis symmetric
-    axis_origin = max(abs(max(df_puts["oi+v"])), abs(max(df_calls["oi+v"])))
-    ax.set_xlim(-axis_origin, +axis_origin)
+        if min_vol == -1 and min_sp == -1 and max_sp == -1:
+            # If no argument provided, we use the percentile 50 to get 50% of upper volume data
+            volume_percentile_threshold = 50
+            min_vol_calls = np.percentile(df_calls["oi+v"], volume_percentile_threshold)
+            min_vol_puts = np.percentile(df_puts["oi+v"], volume_percentile_threshold)
 
-    g = sns.barplot(
-        x="oi+v",
-        y="strike",
-        data=df_calls,
-        label="Calls: Open Interest",
-        color="lightgreen",
-        orient="h",
-    )
+            df_calls = df_calls[df_calls["oi+v"] > min_vol_calls]
+            df_puts = df_puts[df_puts["oi+v"] < min_vol_puts]
 
-    g = sns.barplot(
-        x="volume",
-        y="strike",
-        data=df_calls,
-        label="Calls: Volume",
-        color="green",
-        orient="h",
-    )
+        else:
+            if min_vol > -1:
+                df_calls = df_calls[df_calls["oi+v"] > min_vol]
+                df_puts = df_puts[df_puts["oi+v"] < -min_vol]
 
-    g = sns.barplot(
-        x="oi+v",
-        y="strike",
-        data=df_puts,
-        label="Puts: Open Interest",
-        color="pink",
-        orient="h",
-    )
+            if min_sp > -1:
+                df_calls = df_calls[df_calls["strike"] > min_sp]
+                df_puts = df_puts[df_puts["strike"] > min_sp]
 
-    g = sns.barplot(
-        x="volume",
-        y="strike",
-        data=df_puts,
-        label="Puts: Volume",
-        color="red",
-        orient="h",
-    )
+            if max_sp > -1:
+                df_calls = df_calls[df_calls["strike"] < max_sp]
+                df_puts = df_puts[df_puts["strike"] < max_sp]
 
-    # draw spot line
-    s = [float(strike.get_text()) for strike in ax.get_yticklabels()]
-    spot_index = bisect_left(s, current_price)  # find where the spot is on the graph
-    spot_line = ax.axhline(spot_index, ls="--", alpha=0.3)
+        if df_calls.empty and df_puts.empty:
+            console.print(
+                "The filtering applied is too strong, there is no data available for such conditions.\n"
+            )
+            return
 
-    # draw max pain line
-    max_pain_index = bisect_left(s, max_pain)
-    max_pain_line = ax.axhline(max_pain_index, ls="-", alpha=0.3, color="red")
-    max_pain_line.set_linewidth(5)
+        # Initialize the matplotlib figure
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        else:
+            ax = external_axes[0]
 
-    # format ticklabels without - for puts
-    g.set_xticks(g.get_xticks())
-    xlabels = [f"{x:,.0f}".replace("-", "") for x in g.get_xticks()]
-    g.set_xticklabels(xlabels)
+        # make x axis symmetric
+        axis_origin = max(abs(max(df_puts["oi+v"])), abs(max(df_calls["oi+v"])))
+        ax.set_xlim(-axis_origin, +axis_origin)
 
-    ax.set_title(
-        f"{symbol} volumes for {expiry}\n(open interest displayed only during market hours)"
-    )
-    ax.invert_yaxis()
+        g = sns.barplot(
+            x="oi+v",
+            y="strike",
+            data=df_calls,
+            label="Calls: Open Interest",
+            color="lightgreen",
+            orient="h",
+        )
 
-    _ = ax.legend()
-    handles, _ = ax.get_legend_handles_labels()
-    handles.append(spot_line)
-    handles.append(max_pain_line)
+        g = sns.barplot(
+            x="volume",
+            y="strike",
+            data=df_calls,
+            label="Calls: Volume",
+            color="green",
+            orient="h",
+        )
 
-    # create legend labels + add to graph
-    labels = [
-        "Calls open interest",
-        "Calls volume ",
-        "Puts open interest",
-        "Puts volume",
-        "Current stock price",
-        f"Max pain = {max_pain}",
-    ]
+        g = sns.barplot(
+            x="oi+v",
+            y="strike",
+            data=df_puts,
+            label="Puts: Open Interest",
+            color="pink",
+            orient="h",
+        )
 
-    ax.legend(fontsize="xx-small", handles=handles[:], labels=labels, loc="lower left")
-    sns.despine(left=True, bottom=True)
-    theme.style_primary_axis(ax)
+        g = sns.barplot(
+            x="volume",
+            y="strike",
+            data=df_puts,
+            label="Puts: Volume",
+            color="red",
+            orient="h",
+        )
 
-    if external_axes is None:
-        theme.visualize_output()
+        # draw spot line
+        s = [float(strike.get_text()) for strike in ax.get_yticklabels()]
+        spot_index = bisect_left(
+            s, current_price
+        )  # find where the spot is on the graph
+        spot_line = ax.axhline(spot_index, ls="--", alpha=0.3)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "voi_tr",
-        options,
-    )
+        # draw max pain line
+        max_pain_index = bisect_left(s, max_pain)
+        max_pain_line = ax.axhline(max_pain_index, ls="-", alpha=0.3, color="red")
+        max_pain_line.set_linewidth(5)
+
+        # format ticklabels without - for puts
+        g.set_xticks(g.get_xticks())
+        xlabels = [f"{x:,.0f}".replace("-", "") for x in g.get_xticks()]
+        g.set_xticklabels(xlabels)
+
+        ax.set_title(
+            f"{symbol} volumes for {expiry}\n(open interest displayed only during market hours)"
+        )
+        ax.invert_yaxis()
+
+        _ = ax.legend()
+        handles, _ = ax.get_legend_handles_labels()
+        handles.append(spot_line)
+        handles.append(max_pain_line)
+
+        # create legend labels + add to graph
+        labels = [
+            "Calls open interest",
+            "Calls volume ",
+            "Puts open interest",
+            "Puts volume",
+            "Current stock price",
+            f"Max pain = {max_pain}",
+        ]
+
+        ax.legend(
+            fontsize="xx-small", handles=handles[:], labels=labels, loc="lower left"
+        )
+        sns.despine(left=True, bottom=True)
+        theme.style_primary_axis(ax)
+
+        if external_axes is None:
+            theme.visualize_output()
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "voi_tr",
+            options,
+        )
 
 
 @log_start_end(log=logger)
