@@ -858,6 +858,7 @@ en:
   funds/alswe: display fund allocation (sector, country, holdings)
   funds/infoswe: get fund information
   funds/forecast: forecasting techniques
+  alternative/hn: Hacker News most popular stories
   alternative/covid: COVID menu,                 cases, deaths, rates
   alternative/oss: Open Source menu,           star history, repos information
   alternative/covid/slopes: get countries with highest slope in cases
