@@ -580,3 +580,20 @@ def get_greeks(
     df = pd.DataFrame(strikes, columns=columns)
 
     return df
+
+
+@log_start_end(log=logger)
+def get_last_price(symbol: str) -> float:
+    """Get the last price from nasdaq
+
+    Parameters
+    ----------
+    symbol: str
+        Symbol to get quote for
+
+    Returns
+    -------
+    float
+        Last price
+    """
+    return float(yf.Ticker(symbol).info["regularMarketPrice"])

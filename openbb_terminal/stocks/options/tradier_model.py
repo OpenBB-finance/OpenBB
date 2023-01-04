@@ -330,7 +330,7 @@ def process_chains(response: requests.models.Response) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 @check_api_key(["API_TRADIER_TOKEN"])
-def last_price(symbol: str):
+def get_last_price(symbol: str):
     """Makes api request for last price
 
     Parameters

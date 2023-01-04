@@ -294,7 +294,7 @@ def plot_oi(
 
     if isinstance(options, pd.DataFrame) and not options.empty:
 
-        current_price = tradier_model.last_price(symbol)
+        current_price = tradier_model.get_last_price(symbol)
 
         min_strike, max_strike = get_strike_bounds(
             options, current_price, min_sp, max_sp
@@ -390,7 +390,7 @@ def plot_vol(
 
     if isinstance(options, pd.DataFrame) and not options.empty:
 
-        current_price = tradier_model.last_price(symbol)
+        current_price = tradier_model.get_last_price(symbol)
 
         min_strike, max_strike = get_strike_bounds(
             options, current_price, min_sp, max_sp
@@ -482,7 +482,7 @@ def plot_volume_open_interest(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    current_price = tradier_model.last_price(symbol)
+    current_price = tradier_model.get_last_price(symbol)
     options = tradier_model.get_option_chain(symbol, expiry)
 
     if isinstance(options, pd.DataFrame) and not options.empty:

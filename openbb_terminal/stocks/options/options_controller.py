@@ -43,6 +43,7 @@ from openbb_terminal.stocks.options.screen import (
     syncretism_model,
     syncretism_view,
 )
+from openbb_terminal.stocks.options.options_view import plot_vol
 
 # pylint: disable=R1710,C0302,R0916
 
@@ -122,6 +123,7 @@ class OptionsController(BaseController):
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
         self.selected_date = ""
         self.chain: Any = None
+        self.current_price = 0.0
         # Keeps track of initial source of load so we can use correct commands later
         self.source = ""
 
@@ -161,18 +163,31 @@ class OptionsController(BaseController):
         return commands
 
     def set_option_chain(
-        self, source: str, ticker: str, selected_date: str
+        self,
+        source: str,
     ) -> pd.DataFrame:
 
         if source == "Tradier":
-            df = tradier_model.get_option_chain(ticker, selected_date)
+            df = tradier_model.get_option_chain(self.ticker, self.selected_date)
             if isinstance(df, pd.DataFrame) and not df.empty:
                 self.chain = op_helpers.Chain(df, source)
         elif source == "Nasdaq":
-            df = nasdaq_model.get_option_chain(ticker, selected_date)
+            df = nasdaq_model.get_option_chain(self.ticker, self.selected_date)
             self.chain = op_helpers.Chain(df, source)
         else:
-            self.chain = yfinance_model.get_option_chain(ticker, selected_date)
+            self.chain = yfinance_model.get_option_chain(
+                self.ticker, self.selected_date
+            )
+
+    def set_current_price(self, source: str):
+
+        if source == "Tradier":
+            last_price = tradier_model.get_last_price(self.ticker)
+            self.current_price = last_price if last_price else 0.0
+        elif source == "Nasdaq":
+            self.current_price = nasdaq_model.get_last_price(self.ticker)
+        else:
+            self.current_price = yfinance_model.get_last_price(self.ticker)
 
     def update_runtime_choices(self):
         """Update runtime choices"""
@@ -612,11 +627,9 @@ class OptionsController(BaseController):
 
             if self.ticker and self.selected_date:
                 try:
-                    self.set_option_chain(
-                        ticker=self.ticker,
-                        selected_date=self.selected_date,
-                        source=ns_parser.source if ns_parser.source else self.source,
-                    )
+                    source = ns_parser.source if ns_parser.source else self.source
+                    self.set_option_chain(source=source)
+                    self.set_current_price(source=source)
                 except ValueError:
                     console.print(
                         f"[red]{self.ticker} does not have expiration"
@@ -679,11 +692,9 @@ class OptionsController(BaseController):
                     self.update_runtime_choices()
 
                 if self.selected_date:
-                    self.set_option_chain(
-                        ticker=self.ticker,
-                        selected_date=self.selected_date,
-                        source=ns_parser.source if ns_parser.source else self.source,
-                    )
+                    source = ns_parser.source if ns_parser.source else self.source
+                    self.set_option_chain(source=source)
+                    self.set_current_price(source=source)
                     self.update_runtime_choices()
             else:
                 console.print("Please load a ticker using `load <ticker>`.\n")
@@ -941,8 +952,17 @@ class OptionsController(BaseController):
                             export=ns_parser.export,
                             raw=ns_parser.raw,
                         )
-                    else:
-                        return
+                    # plot_vol(
+                    #     chain=self.chain,
+                    #     symbol=self.ticker,
+                    #     expiry=self.selected_date,
+                    #     min_sp=ns_parser.min,
+                    #     max_sp=ns_parser.max,
+                    #     calls_only=ns_parser.calls,
+                    #     puts_only=ns_parser.puts,
+                    #     export=ns_parser.export,
+                    #     raw=ns_parser.raw,
+                    # )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:

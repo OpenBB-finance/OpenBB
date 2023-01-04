@@ -118,7 +118,7 @@ def test_get_option_chains_invalid_status(mocker):
 
 @pytest.mark.vcr
 def test_last_price(recorder):
-    result = tradier_model.last_price(symbol="AAPL")
+    result = tradier_model.get_last_price(symbol="AAPL")
     recorder.capture(result)
 
 
@@ -128,6 +128,6 @@ def test_get_historical_greeks_invalid_status(mocker):
     mock_response.status_code = 400
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
-    result = tradier_model.last_price(symbol="AAPL")
+    result = tradier_model.get_last_price(symbol="AAPL")
 
     assert result is None
