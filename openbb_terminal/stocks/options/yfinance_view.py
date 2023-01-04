@@ -387,7 +387,7 @@ def plot_vol(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    options = yfinance_model.get_vol(symbol, expiry)
+    options = yfinance_model.get_option_chain(symbol, expiry)
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
@@ -494,7 +494,7 @@ def plot_volume_open_interest(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    options = yfinance_model.get_volume_open_interest(symbol, expiry)
+    options = yfinance_model.get_option_chain(symbol, expiry)
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
