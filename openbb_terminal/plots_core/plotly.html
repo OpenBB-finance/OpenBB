@@ -98,22 +98,23 @@
             alert(request._url);
 
             request.onprogress = function() {
-                log_to_div(`Loading ${request.HEADERS_RECEIVED}`);
+                log_to_div(`Loading ${request.responseURL}`);
             };
 
             request.onload = function() {
-                log_to_div(`Loaded ${request.HEADERS_RECEIVED}`);
+                log_to_div(`Loaded ${request.responseURL}`);
                 if (request.status >= 200 && request.status < 400) {
                     var resp = request.responseText;
                     callback(resp);
                 } else {
-                    log_to_div("Error: " + request.HEADERS_RECEIVED);
+                    log_to_div("Error: " + request.responseURL);
+                    log_to_div("URL: " + request._url);
                 }
             };
 
             request.onerror = function() {
-                log_to_div(`Error: ${url}`);
-                log_to_div("Error: " + request.HEADERS_RECEIVED);
+                log_to_div("Error: " + request.responseURL);
+                log_to_div("URL: " + request._url);
             };
 
             request.send();
