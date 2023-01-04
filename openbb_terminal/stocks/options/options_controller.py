@@ -175,9 +175,8 @@ class OptionsController(BaseController):
             df = nasdaq_model.get_option_chain(self.ticker, self.selected_date)
             self.chain = op_helpers.Chain(df, source)
         else:
-            self.chain = yfinance_model.get_option_chain(
-                self.ticker, self.selected_date
-            )
+            data = yfinance_model.get_option_chain(self.ticker, self.selected_date)
+            self.chain = op_helpers.Chain(data, source)
 
     def set_current_price(self, source: str):
 
@@ -630,6 +629,7 @@ class OptionsController(BaseController):
                     source = ns_parser.source if ns_parser.source else self.source
                     self.set_option_chain(source=source)
                     self.set_current_price(source=source)
+                    console.print("Loaded option chain from source: ", source)
                 except ValueError:
                     console.print(
                         f"[red]{self.ticker} does not have expiration"
@@ -696,6 +696,7 @@ class OptionsController(BaseController):
                     self.set_option_chain(source=source)
                     self.set_current_price(source=source)
                     self.update_runtime_choices()
+                    console.print("Loaded option chain from source:", source)
             else:
                 console.print("Please load a ticker using `load <ticker>`.\n")
 
@@ -922,47 +923,18 @@ class OptionsController(BaseController):
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if ns_parser.source == "Tradier":
-                        tradier_view.plot_vol(
-                            symbol=self.ticker,
-                            expiry=self.selected_date,
-                            min_sp=ns_parser.min,
-                            max_sp=ns_parser.max,
-                            calls_only=ns_parser.calls,
-                            puts_only=ns_parser.puts,
-                            export=ns_parser.export,
-                        )
-                    elif ns_parser.source == "YahooFinance":
-                        yfinance_view.plot_vol(
-                            symbol=self.ticker,
-                            expiry=self.selected_date,
-                            min_sp=ns_parser.min,
-                            max_sp=ns_parser.max,
-                            calls_only=ns_parser.calls,
-                            puts_only=ns_parser.puts,
-                            export=ns_parser.export,
-                            raw=ns_parser.raw,
-                        )
-                    elif ns_parser.source == "Nasdaq":
-                        nasdaq_view.plot_vol(
-                            symbol=self.ticker,
-                            expiry=self.selected_date,
-                            min_sp=ns_parser.min,
-                            max_sp=ns_parser.max,
-                            export=ns_parser.export,
-                            raw=ns_parser.raw,
-                        )
-                    # plot_vol(
-                    #     chain=self.chain,
-                    #     symbol=self.ticker,
-                    #     expiry=self.selected_date,
-                    #     min_sp=ns_parser.min,
-                    #     max_sp=ns_parser.max,
-                    #     calls_only=ns_parser.calls,
-                    #     puts_only=ns_parser.puts,
-                    #     export=ns_parser.export,
-                    #     raw=ns_parser.raw,
-                    # )
+                    plot_vol(
+                        chain=self.chain,
+                        current_price=self.current_price,
+                        symbol=self.ticker,
+                        expiry=self.selected_date,
+                        min_sp=ns_parser.min,
+                        max_sp=ns_parser.max,
+                        calls_only=ns_parser.calls,
+                        puts_only=ns_parser.puts,
+                        export=ns_parser.export,
+                        raw=ns_parser.raw,
+                    )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:

@@ -74,16 +74,17 @@ def plot_vol(
         (ax,) = external_axes
     else:
         return
+
     ax.plot(
-        chain.strike,
-        chain["c_Volume"] / 1000,
+        chain.calls.strike,
+        chain.calls["volume"] / 1000,
         ls="-",
         marker="o",
         label="Calls",
     )
     ax.plot(
-        chain.strike,
-        chain["p_Volume"] / 1000,
+        chain.puts.strike,
+        chain.puts["volume"] / 1000,
         ls="-",
         marker="o",
         label="Puts",
@@ -94,20 +95,28 @@ def plot_vol(
     ax.set_ylabel("Volume (1k) ")
     ax.set_xlim(min_strike, max_strike)
     ax.legend(loc="best", fontsize="x-small")
-    ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
+    title = f"Volume for {symbol.upper()} expiring {expiry}"
+    ax.set_title(title)
 
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
 
     if raw:
-        to_print = chain[["c_Volume", "strike", "p_Volume"]]
-
-        print_rich_table(
-            to_print[(to_print.strike < max_strike) & (to_print.strike > min_strike)],
-            headers=to_print.columns,
-            title=f"Volume for {symbol} expiring on {expiry}.",
-        )
+        if not puts_only:
+            print_rich_table(
+                chain.calls,
+                headers=list(chain.calls.columns),
+                show_index=False,
+                title=f"{title} - Calls",
+            )
+        if not calls_only:
+            print_rich_table(
+                chain.puts,
+                headers=list(chain.puts.columns),
+                show_index=False,
+                title=f"{title} - Puts",
+            )
 
     export_data(
         export,

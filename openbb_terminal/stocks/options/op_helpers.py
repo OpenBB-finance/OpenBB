@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import os
 from datetime import datetime, timedelta
 from math import e, log
-from typing import Union, Tuple
+from typing import Union, Tuple, Any
 
 import numpy as np
 import pandas as pd
@@ -178,7 +178,7 @@ def raw_yf_options(options) -> Tuple[pd.DataFrame, pd.DataFrame]:
     df_puts = pd.DataFrame()
 
     df_calls = getattr(options, "calls")
-    df_puts = getattr(options, "calls")
+    df_puts = getattr(options, "puts")
 
     return df_calls, df_puts
 
@@ -196,23 +196,50 @@ opt_chain_cols = {
     "impliedVolatility": {"format": "{x:.2f}", "label": "Implied Volatility"},
 }
 
+option_chain_column_maping = {
+    "Nasdaq": {
+        "strike": "strike",
+        "c_Last": "last",
+        "c_Change": "change",
+        "c_Bid": "bid",
+        "c_Ask": "ask",
+        "c_Volume": "volume",
+        "c_Openinterest": "openInterest",
+        "p_Last": "last",
+        "p_Change": "change",
+        "p_Bid": "bid",
+        "p_Ask": "ask",
+        "p_Volume": "volume",
+        "p_Openinterest": "openInterest",
+    }
+}
+
 
 # pylint: disable=R0903
 class Chain:
-    def __init__(self, df: pd.DataFrame, source: str = "Tradier"):
+    def __init__(self, data: Any, source: str = "Tradier"):
         if source == "Tradier":
-            self.calls = df[df["option_type"] == "call"]
-            self.puts = df[df["option_type"] == "put"]
+            self.calls = data[data["option_type"] == "call"]
+            self.puts = data[data["option_type"] == "put"]
+
         elif source == "Nasdaq":
-            # These guys have different column names
             call_columns = ["expiryDate", "strike"] + [
-                col for col in df.columns if col.startswith("c_")
+                col for col in data.columns if col.startswith("c_")
             ]
             put_columns = ["expiryDate", "strike"] + [
-                col for col in df.columns if col.startswith("p_")
+                col for col in data.columns if col.startswith("p_")
             ]
-            self.calls = df[call_columns]
-            self.puts = df[put_columns]
+            self.calls = data[call_columns].rename(
+                columns=option_chain_column_maping["Nasdaq"]
+            )
+            self.puts = data[put_columns].rename(
+                columns=option_chain_column_maping["Nasdaq"]
+            )
+
+        elif source == "YahooFinance":
+            self.calls = data.calls
+            self.puts = data.puts
+
         else:
             self.calls = None
             self.puts = None

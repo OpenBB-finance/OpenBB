@@ -223,7 +223,7 @@ def get_option_chain(symbol: str, expiry: str):
         chains = yf_ticker.option_chain(expiry)
     except Exception:
         console.print(f"[red]Error: Expiration {expiry} cannot be found.[/red]")
-        chains = op_helpers.Chain(pd.DataFrame(), "yahoo")
+        chains = op_helpers.Chain(pd.DataFrame(), "YahooFinance")
 
     return chains
 
