@@ -1,4 +1,5 @@
 import React, { useState, cloneElement, isValidElement } from 'react';
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import clsx from 'clsx';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import { duplicates } from '@docusaurus/theme-common';
@@ -13,11 +14,10 @@ function getQueryVariable(query, variable) {
   // substring query 
   const vars = query.substring(1).split('&');
   for (let i = 0; i < vars.length; i++) {
-      let pair = vars[i].split('=');
-      console.log(decodeURIComponent(pair[0]), variable)
-      if (decodeURIComponent(pair[0]) == variable) {
-          return decodeURIComponent(pair[1]);
-      }
+    let pair = vars[i].split('=');
+    if (decodeURIComponent(pair[0]) == variable) {
+      return decodeURIComponent(pair[1]);
+    }
   }
   return null;
 }
@@ -27,6 +27,34 @@ function getQueryVariable(query, variable) {
 function isTabItem(comp) {
   return 'value' in comp.props;
 }
+
+function getOSName() {
+  const userAgent = ExecutionEnvironment.canUseDOM ? navigator.userAgent : "";
+  if (userAgent.indexOf('Windows') > -1) {
+    return 'Windows';
+  } else if (userAgent.indexOf('Mac') > -1) {
+    return 'Mac';
+  } else if (userAgent.indexOf('X11') > -1) {
+    return 'UNIX';
+  } else if (userAgent.indexOf('Linux') > -1) {
+    return 'Linux';
+  } else {
+    return 'Other';
+  }
+}
+
+function getInstallationTabType() {
+  const osName = getOSName();
+  if (osName === 'Windows') {
+    return 'windows';
+  } else if (osName === 'Mac') {
+    return 'mac';
+  } else if(osName === 'Linux' || osName === 'UNIX') {
+    return 'python';
+  }
+  return 'windows';
+}
+
 function TabsComponent(props) {
   const {
     lazy,
@@ -82,10 +110,11 @@ function TabsComponent(props) {
     );
   }
   const { tabGroupChoices, setTabGroupChoices } = useTabGroupChoice();
-  
+
   const { pathname, search } = useLocation()
   const value = getQueryVariable(search, 'tab')
-  const [selectedValue, setSelectedValue] = useState(value ? value : defaultValue);
+  const osTabValue = getInstallationTabType()
+  const [selectedValue, setSelectedValue] = useState(pathname.startsWith("/terminal/quickstart/installation") ?  value ? ['mac', 'windows', 'python', 'docker'].includes(value) ? value : osTabValue : osTabValue : defaultValue);
   const tabRefs = [];
   const { blockElementScrollPositionUntilNextRender } =
     useScrollPositionBlocker();
@@ -140,7 +169,7 @@ function TabsComponent(props) {
         role="tablist"
         aria-orientation="horizontal"
         className={clsx(
-          '_group-tab list-none lg:-ml-7 my-6',
+          '_group-tab list-none -ml-7 my-6 overflow-auto',
         )}>
         {values.map(({ value, label, attributes }) => (
           <li

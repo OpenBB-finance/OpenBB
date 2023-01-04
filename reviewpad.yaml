@@ -1,20 +1,56 @@
 api-version: reviewpad.com/v3.x
 
+groups:
+  - name: ignored-patterns
+    spec: '["*.lock","*.csv","*.yaml","*.txt"]'
+
+rules:
+  - name: changes-configuration
+    spec: $hasFileName("pyproject.toml") || $hasFileName("poetry.lock")
+  - name: changes-requirements
+    spec: $hasFileName("requirements.txt") && $hasFileName("requirements-full.txt")
+
 workflows:
-    - name: label-pull-request-with-size
-      if:
-          - rule: $size(["*.lock","*.csv","*.yaml","*.txt"]) <= 100
-            extra-actions:
-                - $addLabel("feat XS")
-          - rule: $size(["*.lock","*.csv","*.yaml","*.txt"]) > 100 && $size(["*.lock","*.csv","*.yaml","*.txt"]) <= 300
-            extra-actions:
-                - $addLabel("feat S")
-          - rule: $size(["*.lock","*.csv","*.yaml","*.txt"]) > 300 && $size(["*.lock","*.csv","*.yaml","*.txt"]) <= 900
-            extra-actions:
-                - $addLabel("feat M")
-          - rule: $size(["*.lock","*.csv","*.yaml","*.txt"]) > 900 && $size(["*.lock","*.csv","*.yaml","*.txt"]) <= 1800
-            extra-actions:
-                - $addLabel("feat L")
-          - rule: $size(["*.lock","*.csv","*.yaml","*.txt"]) > 1800
-            extra-actions:
-                - $addLabel("feat XL")
+  - name: label-pull-request-with-size
+    description: Label pull request based on the number of lines changed
+    always-run: true
+    if:
+        # Calculate size while ignoring patterns in the "ignored-patterns" group
+        # For more details about size follow https://docs.reviewpad.com/guides/built-ins/#size
+        - rule: $size($group("ignored-patterns")) <= 100
+          extra-actions:
+              - $removeLabels(["feat S", "feat M", "feat L", "feat XL"])
+              - $addLabel("feat XS")
+        - rule: $size($group("ignored-patterns")) > 100 && $size($group("ignored-patterns")) <= 300
+          extra-actions:
+              - $removeLabels(["feat XS", "feat M", "feat L", "feat XL"])
+              - $addLabel("feat S")
+        - rule: $size($group("ignored-patterns")) > 300 && $size($group("ignored-patterns")) <= 900
+          extra-actions:
+              - $removeLabels(["feat XS", "feat S", "feat L", "feat XL"])
+              - $addLabel("feat M")
+        - rule: $size($group("ignored-patterns")) > 900 && $size($group("ignored-patterns")) <= 1800
+          extra-actions:
+              - $removeLabels(["feat XS", "feat S", "feat M", "feat XL"])
+              - $addLabel("feat L")
+        - rule: $size($group("ignored-patterns")) > 1800
+          extra-actions:
+              - $removeLabels(["feat XS", "feat S", "feat M", "feat L"])
+              - $addLabel("feat XL")
+  - name: sanity
+    description: Verify pull request sanity
+    always-run: true
+    if:
+      - rule: $hasFileExtensions([".py"]) && $size() > 1000
+        extra-actions:
+          - $fail("This PR is very large and hard to review. Please split PR into multiple")
+      - rule: $hasBinaryFile()
+        extra-actions:
+          - $fail("Images are not allowed in the repository, please remove images from the PR")
+  - name: dependencies
+    description: Verify pull request dependency changes
+    always-run: true
+    if:
+      - rule: $rule("changes-configuration") && !$rule("changes-requirements")
+        extra-actions:
+          - $review("REQUEST_CHANGES", "The dependency tree has been changed. Please update requirements.txt and requirements-full.txt")

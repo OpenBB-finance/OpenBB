@@ -519,6 +519,11 @@ def load(
     -------
     pd.DataFrame
         Dataframe consisting of price and volume data
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.crypto.load(symbol="btc",to_symbol="usd",start_date="2019-01-01",source="YahooFinance")
     """
     if isinstance(interval, int):
         interval = str(interval)

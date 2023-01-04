@@ -13,6 +13,7 @@ from openbb_terminal.helper_funcs import export_data
 # pylint: disable=E1111
 # pylint: disable=W0621
 # pylint: disable=W0613
+# pylint: disable=R0912
 
 
 @pytest.fixture
