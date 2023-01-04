@@ -101,7 +101,7 @@ def test_option_expirations_invalid_status(mocker):
 
 @pytest.mark.vcr
 def test_get_option_chains(recorder):
-    result_df = tradier_model.get_option_chains(symbol="AAPL", expiry="2022-02-25")
+    result_df = tradier_model.get_option_chain(symbol="AAPL", expiry="2022-02-25")
     recorder.capture(result_df)
 
 
@@ -111,7 +111,7 @@ def test_get_option_chains_invalid_status(mocker):
     mock_response.status_code = 400
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
-    result_df = tradier_model.get_option_chains(symbol="AAPL", expiry="2022-02-25")
+    result_df = tradier_model.get_option_chain(symbol="AAPL", expiry="2022-02-25")
 
     assert result_df.empty
 

@@ -73,7 +73,7 @@ def get_historical_options(
     """
     if not chain_id:
         op_type = ["call", "put"][put]
-        chain = get_option_chains(symbol, expiry)
+        chain = get_option_chain(symbol, expiry)
 
         try:
             symbol = chain[(chain.strike == strike) & (chain.option_type == op_type)][
@@ -145,7 +145,7 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
     options_dfs: pd.DataFrame = []
 
     for expiry in expirations:
-        options_dfs.append(get_option_chains(symbol, expiry))
+        options_dfs.append(get_option_chain(symbol, expiry))
 
     options_df = pd.concat(options_dfs)
 
@@ -256,7 +256,7 @@ def option_expirations(symbol: str) -> List[str]:
 
 @log_start_end(log=logger)
 @check_api_key(["API_TRADIER_TOKEN"])
-def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
+def get_option_chain(symbol: str, expiry: str) -> pd.DataFrame:
     """Display option chains [Source: Tradier]"
 
     Parameters

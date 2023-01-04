@@ -656,7 +656,7 @@ class OptionsController(BaseController):
 
                 if self.selected_date:
                     if self.source == "Tradier":
-                        df = tradier_model.get_option_chains(
+                        df = tradier_model.get_option_chain(
                             self.ticker, self.selected_date
                         )
                         self.chain = op_helpers.Chain(df)

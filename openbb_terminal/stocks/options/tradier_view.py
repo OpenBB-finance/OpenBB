@@ -187,7 +187,7 @@ def display_chains(
     if to_display is None:
         to_display = tradier_model.default_columns
 
-    chains_df = tradier_model.get_option_chains(symbol, expiry)
+    chains_df = tradier_model.get_option_chain(symbol, expiry)
     columns = to_display + ["strike", "option_type"]
     chains_df = chains_df[columns].rename(columns=column_map)
 
@@ -283,7 +283,7 @@ def plot_oi(
         External axes (1 axis is expected in the list), by default None
     """
 
-    options = tradier_model.get_option_chains(symbol, expiry)
+    options = tradier_model.get_option_chain(symbol, expiry)
     current_price = tradier_model.last_price(symbol)
 
     min_strike, max_strike = get_strike_bounds(options, current_price, min_sp, max_sp)
@@ -374,7 +374,8 @@ def plot_vol(
         External axes (1 axis is expected in the list), by default None
     """
 
-    options = tradier_model.get_option_chains(symbol, expiry)
+    options = tradier_model.get_option_chain(symbol, expiry)
+
     current_price = tradier_model.last_price(symbol)
 
     min_strike, max_strike = get_strike_bounds(options, current_price, min_sp, max_sp)
@@ -464,7 +465,7 @@ def plot_volume_open_interest(
         External axes (1 axis is expected in the list), by default None
     """
     current_price = tradier_model.last_price(symbol)
-    options = tradier_model.get_option_chains(symbol, expiry)
+    options = tradier_model.get_option_chain(symbol, expiry)
 
     calls = options[options.option_type == "call"][
         ["strike", "volume", "open_interest"]
