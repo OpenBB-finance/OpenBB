@@ -82,7 +82,7 @@
     <script>
         function log_to_div(text) {
             var div = document.getElementById("openbb_chart");
-            div.innerHTML += text;
+            div.innerHTML += text + '\n';
         }
         function http_request(url, callback) {
             var request = new XMLHttpRequest();
@@ -90,16 +90,18 @@
             log_to_div("Loaded " + url);
 
             request.onload = function() {
+                log_to_div(`Loaded ${request.HEADERS_RECEIVED}`);
                 if (request.status >= 200 && request.status < 400) {
                     var resp = request.responseText;
                     callback(resp);
                 } else {
-                    log_to_div("Error: " + request.status + " " + request.responseText);
+                    log_to_div("Error: " + request.HEADERS_RECEIVED);
                 }
             };
 
             request.onerror = function() {
-                log_to_div("Error: " + request.status + " " + request.responseText);
+                log_to_div(`Error: ${url}`);
+                log_to_div("Error: " + request.HEADERS_RECEIVED);
             };
 
             request.send();
