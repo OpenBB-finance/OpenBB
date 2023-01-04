@@ -29,7 +29,7 @@ class Backend(PyWry):
         with open(BACKEND_PATH / "plotly.html", encoding="utf-8") as file:  # type: ignore
             html = file.read()
 
-        replace = str(BACKEND_PATH.as_posix())
+        replace = str(BACKEND_PATH.as_uri())
 
         html = html.replace("{{MAIN_PATH}}", replace)
 
