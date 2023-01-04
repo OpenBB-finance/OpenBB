@@ -59,7 +59,7 @@ holidays = "^0.14.2"
 degiro-connector = "^2.0.3"
 python-binance = "^1.0.15"
 python-i18n = "^0.3.9"
-thepassiveinvestor = "^1.0.10"
+thepassiveinvestor = "^1.0.11"
 pandas-ta = "^0.3.14-beta.0"
 pyrsistent = "^0.18.0"
 openpyxl = "^3.0.9"
@@ -103,7 +103,7 @@ stocksera = "^0.1.21"
 ipython = "8.5.0"
 protobuf = "3.20.1"
 pytorch-lightning = {version = "1.6.5", optional = true}
-u8darts = {extras = ["torch"], version = "0.22.0", optional = true}
+u8darts = {extras = ["torch"], version = "0.23.0", optional = true}
 docstring-parser = {version = "^0.15", optional = true}
 grpcio = "<1.51.0"
 jupyterlab-widgets = "^3.0.3"
