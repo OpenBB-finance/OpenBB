@@ -7,15 +7,15 @@ from typing import List, Optional, Any
 import matplotlib.pyplot as plt
 
 # IMPORTATION INTERNAL
-from openbb_terminal.decorators import log_start_end
 import openbb_terminal.config_plot as cfp
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
-    export_data,
     is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.stocks.options.op_helpers import export_options
 
 logger = logging.getLogger(__name__)
 
@@ -118,9 +118,4 @@ def plot_vol(
                 title=f"{title} - Puts",
             )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "vol",
-        chain,
-    )
+    export_options(export, chain, "vol")

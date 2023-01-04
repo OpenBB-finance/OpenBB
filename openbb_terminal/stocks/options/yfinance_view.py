@@ -269,7 +269,7 @@ def plot_oi(
         External axes (1 axis is expected in the list), by default None
     """
     options = yfinance_model.get_option_chain(symbol, expiry)
-    op_helpers.export_yf_options(export, options, "oi_yf")
+    op_helpers.export_options(export, options, "oi_yf")
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
@@ -335,116 +335,6 @@ def plot_oi(
 
     if external_axes is None:
         theme.visualize_output()
-
-    if raw:
-        df_calls, df_puts = op_helpers.raw_yf_options(options=options)
-        if not puts_only:
-            print_rich_table(
-                df_calls,
-                headers=list(df_calls.columns),
-                show_index=False,
-                title=f"{title} - Calls",
-            )
-        if not calls_only:
-            print_rich_table(
-                df_puts,
-                headers=list(df_puts.columns),
-                show_index=False,
-                title=f"{title} - Puts",
-            )
-
-
-@log_start_end(log=logger)
-def plot_vol(
-    symbol: str,
-    expiry: str,
-    min_sp: float = -1,
-    max_sp: float = -1,
-    calls_only: bool = False,
-    puts_only: bool = False,
-    raw: bool = False,
-    export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Plot volume
-
-    Parameters
-    ----------
-    symbol: str
-        Ticker symbol
-    expiry: str
-        expiration date for options
-    min_sp: float
-        Min strike to consider
-    max_sp: float
-        Max strike to consider
-    calls_only: bool
-        Show calls only
-    puts_only: bool
-        Show puts only
-    export: str
-        Format to export file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
-    """
-    options = yfinance_model.get_option_chain(symbol, expiry)
-    calls = options.calls
-    puts = options.puts
-    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
-
-    if min_sp == -1:
-        min_strike = 0.75 * current_price
-    else:
-        min_strike = min_sp
-
-    if max_sp == -1:
-        max_strike = 1.25 * current_price
-    else:
-        max_strike = max_sp
-
-    if calls_only and puts_only:
-        console.print("Both flags selected, please select one", "\n")
-        return
-
-    call_v = calls.set_index("strike")["volume"] / 1000
-    put_v = puts.set_index("strike")["volume"] / 1000
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    if not calls_only:
-        put_v.plot(
-            x="strike",
-            y="volume",
-            label="Puts",
-            ax=ax,
-            marker="o",
-            ls="-",
-        )
-    if not puts_only:
-        call_v.plot(
-            x="strike",
-            y="volume",
-            label="Calls",
-            ax=ax,
-            marker="o",
-            ls="-",
-        )
-    ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
-    ax.set_xlabel("Strike Price")
-    ax.set_ylabel("Volume [1k] ")
-    ax.set_xlim(min_strike, max_strike)
-    ax.legend(fontsize="x-small")
-    title = f"Volume for {symbol.upper()} expiring {expiry}"
-    ax.set_title(title)
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
-
-    op_helpers.export_yf_options(export, options, "vol_yf")
 
     if raw:
         df_calls, df_puts = op_helpers.raw_yf_options(options=options)
@@ -698,7 +588,7 @@ def plot_volume_open_interest(
             title=f"{title} - Puts",
         )
 
-    op_helpers.export_yf_options(export, options, "voi_yf")
+    op_helpers.export_options(export, options, "voi_yf")
 
 
 @log_start_end(log=logger)
