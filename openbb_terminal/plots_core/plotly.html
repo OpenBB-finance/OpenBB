@@ -107,13 +107,13 @@
                     var resp = request.responseText;
                     callback(resp);
                 } else {
-                    log_to_div("Error: " + request.responseURL);
+                    log_to_div("Error: " + request.responseText);
                     log_to_div("URL: " + request._url);
                 }
             };
 
             request.onerror = function() {
-                log_to_div("Error: " + request.responseURL);
+                log_to_div("Error: " + request.responseText);
                 log_to_div("URL: " + request._url);
             };
 
