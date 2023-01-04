@@ -87,11 +87,11 @@
         function http_request(url, callback) {
             var request = new XMLHttpRequest();
             request.open('GET', url, true);
+            log_to_div("Loaded " + url);
 
             request.onload = function() {
                 if (request.status >= 200 && request.status < 400) {
                     var resp = request.responseText;
-                    log_to_div("Loaded " + url);
                     callback(resp);
                 } else {
                     log_to_div("Error: " + request.status + " " + request.responseText);
