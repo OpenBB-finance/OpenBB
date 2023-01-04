@@ -1,0 +1,1090 @@
+hi:
+  _configure_: अपना स्वयं का टर्मिनल कॉन्फ़िगर करें
+  _home_: सूचना, ओपनडीबी टर्मिनल के लिए मार्गदर्शन और समर्थनName
+  _main_menu_: मुख्य मेनू
+  _others_: अन्य
+  about: ओपनBB टर्मिनल की क्षमताओं को ढूंढें (http:// openb.cox/ hit)
+  alternative: वैकल्पिक डेटासेट, जैसे कि CCOVD और खुला स्रोत मुझे मारने के लिए
+  alternative/covid: CVID मेन्यू, मामलों, मृत्यु, दर
+  alternative/covid/_country: देश
+  alternative/covid/cases: चुने गए देश के लिए स्थिति प्राप्त करें
+  alternative/covid/country: डाटा के लिए देश चुनें
+  alternative/covid/deaths: चुने गए देश के लिए मौतें
+  alternative/covid/ov: चुने गए देश के लिए पोस्ट- सूचना प्राप्त करें (केस तथा मृत्यु)
+  alternative/covid/rates: चुने गए देश के लिए मृत्यु/केस दर प्राप्त करें
+  alternative/covid/slopes: मामलेों में सबसे ऊँची ढाल वाले देशों को मिलता है
+  alternative/oss: स्रोत मेन्यू खोलें, तारा इतिहास खोलें, फिर से जानकारी खोलें
+  alternative/oss/rossidx: सबसे तेज ओपन-source प्रारंभ होता है
+  alternative/oss/rs: सारांश फिर से लाएँ
+  alternative/oss/sh: तारा इतिहास फिर से प्रारंभ करें
+  alternative/oss/tr: 'शीर्ष तारा नाम@ info: whatsthis'
+  crypto: डायोइन डाटा, साइन्स, वितरण आपूर्ति, निक्स और अधिक
+  crypto/_exchange: एक्जेंज
+  crypto/_interval: अंतराल (मिनुन)
+  crypto/_source: स्रोत
+  crypto/_symbol: कोइन
+  crypto/candle: एक विशिष्ट विधता के लिए मोमबज चार्ट देखें
+  crypto/dd: लोड सिक्के, सिक्के जानकारी, सामाजिक मीडिया, बाजार राज्य
+  crypto/dd/_activity_: गतिविधि और समाज
+  crypto/dd/_contributors_: सहयोगी और इंट्‌स
+  crypto/dd/_market_: बाजार
+  crypto/dd/_metrics_: मेट्रिक्स
+  crypto/dd/_overview_: ओवरव्यू
+  crypto/dd/_roadmap_: सड़कमैप और समाचार
+  crypto/dd/_source: स्रोत
+  crypto/dd/_symbol: कोइन
+  crypto/dd/_tokenomics_: कॉमिक्स
+  crypto/dd/active: सक्रिय पता
+  crypto/dd/ath: लोड सिक्के के लिए हर समय उच्च से संबंधित
+  crypto/dd/atl: लोड सिक्के के लिए सभी समय कम
+  crypto/dd/balance: सिक्के संतुलन
+  crypto/dd/basic: लोड होने वाले सिक्के के बारे में बुनियादी जानकारी
+  crypto/dd/bc: लोड सिक्के के लिए ब्लॉक ब्लॉक करने के लिए लिंक
+  crypto/dd/change: बदले में उपलब्ध बटुआ पर रखी गयी आपूर्ति के 30 परिवर्तन
+  crypto/dd/desc: परियोजना का वर्णन क्यों करें, कैसे,
+  crypto/dd/dev: म्यूब, साकेट सिक्के विकास आंकड़े
+  crypto/dd/eb: बदले में कुल राशि ( प्रतिशत तथा इकाइयों में)
+  crypto/dd/events: भार से सम्बन्धित घटनाएँ
+  crypto/dd/ex: जहाँ लोड सिक्के सूचीबद्ध है वहाँ सभी संग्रहों
+  crypto/dd/fr: जमा विवरण e.g भंडार खातों, बिक्री दौर, आवंटन
+  crypto/dd/fundrate: बदले में धन - दौलत जमा करना दर
+  crypto/dd/funot: समय - समय पर बुनियादी जानकारी
+  crypto/dd/gh: वक्‍त के गुज़रते हश्‍त की क्रिया
+  crypto/dd/gov: राज्य विवरण
+  crypto/dd/info: लोड सिक्के के बारे में जानकारी
+  crypto/dd/inv: व्यक्ति (अनुप्रयोगात्मक और संगठन)
+  crypto/dd/links: लिंक जैसे कि सफेद वालपेपर, gsctt, trut, thb, लाल, गिटार
+  crypto/dd/liquidations: लोड सिक्के के लिए दैनिक उद्‌गम
+  crypto/dd/load: विश्लेषण के लिए विशिष्ट तत्वमयता लोड करें
+  crypto/dd/market: लोड किए गए सिक्के के बारे में बाजार
+  crypto/dd/mcapdom: बाजार कैप फ़्यूट
+  crypto/dd/mkt: लोड सिक्के के लिए सभी बाजार
+  crypto/dd/mt: समाचार माध्यमों के लिए ई. वी.
+  crypto/dd/news: लोड कर रहे सिक्का की अधिकांश खबर
+  crypto/dd/nonzero: गैर शून्य संतुलन के साथ पता
+  crypto/dd/ob: क्रम से
+  crypto/dd/oi: बदले में प्रति ब्याज खोलें
+  crypto/dd/pi: परियोजना जानकारी उदाहरण के लिए
+  crypto/dd/ps: लोड सिक्के के लिए कीमत और प्रदान करने के बारे में
+  crypto/dd/rm: सड़कमैप
+  crypto/dd/score: लोड सिक्के के लिए अलग तरह का अंक, उदाहरण के लिए डेवलपर स्कोर, भावना
+    अंक
+  crypto/dd/social: लोड सिक्के के लिए सामाजिक पोर्टल यूआरएल, उदाहरण के लिए
+  crypto/dd/stats: सिक्के
+  crypto/dd/team: दान (अनुप्रयोगात्मक और संगठन)
+  crypto/dd/tk: एनएसआईडीएएस/max/ कुल आपूर्ति, उत्सर्जन क़िस्म, आदि.
+  crypto/dd/trades: अंतिम व्यवसाय
+  crypto/dd/twitter: लोड किए गए सिक्के के लिएट्स
+  crypto/dd/web: लोडेड सिक्के उदाहरण के लिए वेबसाइट मिला, घरपृष्ठ
+  crypto/defi: पैसे के बारे में दी गयी जानकारी, डीपीआई, llमा, tvl, ऋण, ऋण, पैसा उधार
+  crypto/defi/anchor: एंकर कमाई डाटा
+  crypto/defi/aterra: gowide पता में निर्दिष्ट परिसंपत्ति के 30 दिन का इतिहास
+  crypto/defi/ayr: लंगर का 30 दिन का इतिहास अतिरिक्त
+  crypto/defi/dpi: डीएफई प्रोटोकॉल जो डेपीपीपीपी पर सूचीबद्ध हैं
+  crypto/defi/dtvl: डीएपी के द्वारा इतिहास कुल मूल्य तालाबंद है (टीवीएल)
+  crypto/defi/gacc: मैदानी ब्लॉक खाता विकास इतिहास
+  crypto/defi/gdapps: ऊपर डीएफई डीएपीएपी चैन द्वारा समूहित किया गया
+  crypto/defi/govp: मैदानी ब्लॉक प्रस्ताव सूची
+  crypto/defi/lcsc: Luapa वितरण परिवर्तन
+  crypto/defi/ldapps: सूत्रों की सूची दें
+  crypto/defi/newsletter: हाल ही में डीफ़ी संबंधित समाचार - पत्र
+  crypto/defi/pairs: हाल में दो जोड़े जोड़े जोड़े गए
+  crypto/defi/pools: Umawp पर वॉल्यूम द्वारा पूल्स
+  crypto/defi/sinfo: उपजाऊ खाता पता प्रदान करने के लिए सूचना की आवश्यकता
+  crypto/defi/sratio: नौसिखित ब्लॉक अनुपात इतिहास लेने का प्रयास करता है
+  crypto/defi/sreturn: टेब्लू ब्लॉक यूपीइन इतिहास बताता है
+  crypto/defi/stats: बेस सांख्यिकी (Uswawp के बारे में)
+  crypto/defi/stvl: सभी dps से टीएल के कुल योग के ऐतिहासिक मूल्य
+  crypto/defi/swaps: अनवावा पर हाल की सूचि
+  crypto/defi/tokens: अ- धातु के व्यापार के लिए चिन्हीय
+  crypto/defi/validators: टेब्लिट ब्लॉकएटर के बारे में जानकारी
+  crypto/defi/vaults: ऊपरी देफ़ी वागल्स भिन्न ब्लॉको पर
+  crypto/disc: अनुमान लगाया गया है कि इस बीमारी का सबसे बड़ा खतरा है, कम - से - कम
+    तीन गुना ज़्यादा ।
+  crypto/disc/dapps: ऊपरी विजुअल एग्रीन
+  crypto/disc/dex: ऊपरी विसंतृप्त विनिमय
+  crypto/disc/gainers: शीर्ष गेन्स
+  crypto/disc/games: शीर्ष ब्लॉक खेल
+  crypto/disc/losers: शीर्ष घाटे में हैं.
+  crypto/disc/nft: ऊपरी गैर महत्वपूर्ण चिन्ह
+  crypto/disc/search: सिक्के के लिए ढूंढें
+  crypto/disc/top: शीर्ष सिक्के
+  crypto/disc/trending: चलन के सिक्के
+  crypto/find: सिक्के ढूंढें
+  crypto/forecast: अनुमानित तकनीकों, nan, nans, ट्रांसपरर, ब्लॉकर्न
+  crypto/headlines: 15+ मुख्य समाचार शीर्षकों से भावुक भावना
+  crypto/load: विश्लेषण के लिए विशिष्ट तत्वमयता लोड करें
+  crypto/nft: गैर-फिक्स चिह्न, आज बारिश
+  crypto/nft/collections: शीर्ष- कुदरत संग्रह
+  crypto/nft/fp: संग्रह से/fowor मूल्य
+  crypto/nft/stats: संग्रह
+  crypto/onchain: अलग ब्लॉक्स पर जानकारी, sss गैस पलटाता, व्हेल सचेत, DXses जानकारी
+  crypto/onchain/_address: ई-डाक पता
+  crypto/onchain/_ethereum_: ईनेरोक
+  crypto/onchain/_type: पता क़िस्म
+  crypto/onchain/address: टोकन, खाता या ट्रांजेक्शन का लोड
+  crypto/onchain/baas: कहें, कीमत पूछो, दिए गए तत्व के लिए औसत फैल गया
+  crypto/onchain/balance: जांचयोग्य संतुलन
+  crypto/onchain/btccp: प्रकटन बीईटी आपूर्ति
+  crypto/onchain/btcct: के- एटीई ट्रांजेक्शन प्रदर्शित करें
+  crypto/onchain/ds: मंच के बारे में (किचक उपयोक्ता, भुगतान)
+  crypto/onchain/dt: चिन्हों का दैनिक ट्रांजेक्शन
+  crypto/onchain/dvcp: क्रिप्टो जोड़े के लिए प्रतिदिन की मात्रा
+  crypto/onchain/gwei: मौजूदा गैस ट्रे्स की जाँच करें
+  crypto/onchain/hist: प्रभावी संतुलन इतिहास (प्रयोगों)
+  crypto/onchain/holders: शीर्ष- सीआरसी20 टोकन प्लगइन
+  crypto/onchain/hr: खंडो को समय से पहले चेक करें (BT या ETH)
+  crypto/onchain/info: EREC20 टोकन जानकारी
+  crypto/onchain/lt: डीएक्स या माह द्वारा अंतिम व्यापार
+  crypto/onchain/prices: एनआईएस20 चिह्न ऐतिहासिक कीमतों को सूचित करता है
+  crypto/onchain/th: EREC20 टोकन इतिहास
+  crypto/onchain/top: शीर्ष- सूचना चिह्न
+  crypto/onchain/ttcp: दिए गए ख़ैरातीशन पर शीर्ष आयामी जोड़ा
+  crypto/onchain/tv: DEXs पर चिह्न मात्रा
+  crypto/onchain/tvl: DERT20 टोकनों के कुल मूल्य तालाबंद हैं
+  crypto/onchain/tx: ईरोम ब्लॉकोलिन ट्रांजेक्शन जानकारीName
+  crypto/onchain/ueat: अद्वितीय ई-स्थम पता जिसने एक ट्रांजेक्शन बनाया
+  crypto/onchain/whales: PRACKS ट्रांजेक्शन जाँचें
+  crypto/ov: भूविज्ञानियों, बाजार टोपी, DFi, नवीनतम समाचार, शीर्ष बदले, स्थिर
+  crypto/ov/altindex: टेटेइन समय इंडेक्स (75% शीर्ष से लेकर ऊपर के 50 सिक्के बटी से
+    बेहतर कार्य करते हैं)
+  crypto/ov/btcrb: इंद्रधनुष मूल्य चार्ट प्रदर्शित करें (लॉगक्यूटिक रीग्रेसन)
+  crypto/ov/categories: हल करने वाला वर्ग
+  crypto/ov/ch: मुख्य क्रिप्टो- से जुड़ा हैक सूची दें
+  crypto/ov/contracts: दिए गए मंच के लिए सभी स्मार्ट अनुबंध
+  crypto/ov/cr: क्रिप्टो आपूर्ति या ब्याज दर उधार लें
+  crypto/ov/defi: वैश्विक DFi बाजार जानकारी
+  crypto/ov/derivatives: डेरिवेटिव डेरिवेटिव्स
+  crypto/ov/ewf: कुल मिलाकर बदले की रकम
+  crypto/ov/exmarkets: दिए गए विनिमय पर सभी उपलब्ध बाजारों को
+  crypto/ov/exrates: सिक्के की दर
+  crypto/ov/fun: बुनियादी विशेषज्ञों पर आधारित परियोजनाओं की खोज कीजिए
+  crypto/ov/hm: उन्नत गर्मीमैप
+  crypto/ov/hold: ईनेम, बिटकोटोल आंकड़े आयोजित करते हैं
+  crypto/ov/indexes: क्रिप्टो इंडेक्सेस
+  crypto/ov/info: सभी सिक्के के बारे में बुनियादी जानकारी उपलब्ध है
+  crypto/ov/markets: बाजार सभी सिक्के के बारे में संबंधित जानकारी
+  crypto/ov/news: हाल ही में आई. वी.
+  crypto/ov/pairs: उपलब्ध व्यापार जोड़े के बारे में जानकारी
+  crypto/ov/platforms: सूची ब्लॉक मंचों की सूची दें _BAR_ cum, सोला, केलामा, गॉरा
+  crypto/ov/stables: अ- धातु
+  crypto/ov/wf: कुल मिलाकर बदले में दान
+  crypto/ov/wfpe: PRERACKRANKRENKR_
+  crypto/price: वास्तविक समय मूल्य तथा भरोसे का अंतराल
+  crypto/prt: संभावित होगा (जैसे कि एटीटीटी बाजार टोपी तक पहुंचता है)
+  crypto/qa: Antutistatststats, Cassum, रीस्टलिटी विश्लेषण
+  crypto/qa/_other_: अन्य
+  crypto/qa/_plots_: प्लाट
+  crypto/qa/_rolling_metrics_: मेट्रिक्स रोल किया जा रहा है
+  crypto/qa/_statistics_: सांख्यिकी
+  crypto/qa/_target: लक्ष्य स्तम्भ
+  crypto/qa/_ticker: चेकर
+  crypto/qa/acf: (संयोगीय) कीमत के भिन्न कार्य
+  crypto/qa/bw: बॉक्स और बैलेकर प्लाट
+  crypto/qa/cdf: एकत्रित वितरण फंक्शन
+  crypto/qa/cusum: कीमत की एकत्रित योग एल्गोरिदम के प्रयोग से विभिन्न परिवर्तनों का
+    पता लगता है
+  crypto/qa/decompose: दामों का पुनर्भरण, समय, और फिर दामों का पुनर्स्थन
+  crypto/qa/hist: घनत्व प्लाट सहित हिस्टोग्राम
+  crypto/qa/kurtosis: कीमत के वितरण के लिए क्रॉटोसिस चालू किया जा रहा है
+  crypto/qa/line: चयनित लक्ष्य का प्लाट करें
+  crypto/qa/load: नया टिकर लोड करें
+  crypto/qa/normality: सामान्य आँकड़े तथा जाँच
+  crypto/qa/pick: विश्लेषण के लिए लक्ष्य स्तम्भ चुनें
+  crypto/qa/qqplot: मानक सामान्य वक्र के विरुद्ध फिर से बिगाड़ता है
+  crypto/qa/quantile: 'द न्यू यॉर्क टाइम्स्‌ (अंग्रेज़ी) रिपोर्ट करता है:'
+  crypto/qa/raw: रॉ डाटा छापें
+  crypto/qa/rolling: कीमत के पीछे भागने का मतलब है और भारी कीमत चुकाना
+  crypto/qa/skew: क़ीमतों के वितरण का सवार होना
+  crypto/qa/spread: कीमत के बीच का मतभेद तथा मानक विचलन
+  crypto/qa/summary: स्टॉक्स के संक्षिप्त सारांश आंकड़े
+  crypto/qa/unitroot: स्टेशनिटी (DF, केएसएस) के लिए इकाई रूट जाँच
+  crypto/ta: लोड सिक्के के लिए तकनीकी विश्लेषण, किमा, मैडडड, sci, adx, bbbv
+  crypto/ta/_custom_: मनपसंद
+  crypto/ta/_momentum_: डिक्लेयरम
+  crypto/ta/_overlap_: गुआडेलोप
+  crypto/ta/_ticker: कोिन लोड हो गया
+  crypto/ta/_trend_: ट्रेज
+  crypto/ta/_volatility_: फ़ॉन्ट रंग = "# D900D9
+  crypto/ta/_volume_: आवाज़
+  crypto/ta/ad: संग्रहित/ वितरण पंक्ति
+  crypto/ta/adosc: शैनिक स्टिकर
+  crypto/ta/adx: औसतन दिशा- गति इंडेक्स
+  crypto/ta/aroon: एकोना संकेतक
+  crypto/ta/bbands: बम्पर दल
+  crypto/ta/cci: चैनल सूची
+  crypto/ta/cg: गुरुत्वाकर्षण के केंद्र
+  crypto/ta/donchian: सिचियन चैनल
+  crypto/ta/ema: एक्सपोनिंग औसत
+  crypto/ta/fib: प्लोनी लौटी
+  crypto/ta/fisher: मछली रूपांतरण
+  crypto/ta/hma: पाए जा रहे प्राणों की औसत
+  crypto/ta/kc: चक्रीय चैनल
+  crypto/ta/macd: औसत फलता - फूल रहा है
+  crypto/ta/obv: संतुलन आवाज
+  crypto/ta/rsi: सापेक्ष शक्ति निर्देशिका
+  crypto/ta/sma: साधारण खिसकाना औसत
+  crypto/ta/stoch: एस. ए.
+  crypto/ta/tv: पर अंतःक्रियात्मक चार्ट खोलें
+  crypto/ta/vwap: मात्रा परिमाण औसत मूल्य
+  crypto/ta/wma: अधिकतम तीव्रता इनपुट औसत
+  crypto/ta/zlma: शून्य जो आगे बढ़ रहा है औसत
+  crypto/tools: अलग - अलग औज़ारों की खोज कीजिए
+  crypto/tools/aprtoapy: आईपी को डिफ़ॉल्ट रूप में परिवर्तित करें
+  crypto/tools/il: गणना करें कि कौन सा भिन्न नुकसान अनदेखा कर सकता है
+  dashboards: वोला और जूडी आउटलाइन्स के प्रयोग से अंतःक्रियात्मक तूफान
+  dashboards/chains: विकल्प श्रृंखला विश्लेषण
+  dashboards/correlation: संरचनायाँ
+  dashboards/crypto: यूएसD के खिलाफ PACACARICARICKARICAND की दर
+  dashboards/forecast: टाइमर डाटासेट्स के लिए पूर्वानुमान
+  dashboards/forecasting: टाइमर डाटासेट्स के लिए पूर्वानुमान
+  dashboards/futures: ऐतिहासिक भविष्य प्रदर्शन
+  dashboards/shortdata: finag थोड़े डाटा विश्लेषण
+  dashboards/stocks: इतिहास में नज़रअंदाज़ किया जा रहा है
+  dashboards/vsurf: विकल्प विएना सतह
+  defined, not tested: पारिभाषित नहीं
+  defined, test failed: पारिभाषित, जांच असफल
+  defined, test inconclusive: पारिभाषित है, जाँच
+  defined, test passed: पारिभाषित, जांच पास किया गया
+  econometrics: डाटासेटों के बीच संबंध के लिए सांख्यिकी औरques
+  econometrics/_data_loc: डाटा के लिए देख रहे हैं
+  econometrics/_exploration_: सूचना
+  econometrics/_loaded: लोड किया फाइल और डाटा स्तम्भ
+  econometrics/_regression_: रीग्रेसन
+  econometrics/_regression_tests_: रीग्रेसन जांच
+  econometrics/_tests_: परीक्षण
+  econometrics/add: सूत्रों को सूत्रों के साथ डाटासेट में स्तम्भ जोड़ें
+  econometrics/bgod: retrocution की मरम्मत पर बाद में बचे हुए लोगों की जांच
+  econometrics/bpag: arucuti-पिक-पिकहेनेस्टीनेस्टी जांच रीग्रेसन की पुनर्देशी पर परीक्षण
+  econometrics/clean: भरण या ड्रॉप करने के द्वारा डाटासेट साफ करें
+  econometrics/coint: स्तम्भों की बहुतायत में के रूप में जाँच
+  econometrics/combine: भिन्न डाटासेट से स्तम्भों को मिश्रित करें
+  econometrics/compare: सभी अनुमानित मॉडलों के परिणामों की तुलना करें
+  econometrics/delete: डाटासेट से स्तम्भ मिटाएँ
+  econometrics/desc: डाटासेट का वर्णनात्मक आंकड़े दिखाएँ
+  econometrics/dwat: रीग्रेसन के रीग्रेसन-कॉम्पर जांच के दौरान
+  econometrics/export: प्रोसेस डाटासेट निर्यात करें
+  econometrics/granger: दो स्तम्भों पर ग्रेब्रेशन जांच
+  econometrics/index: स्तम्भ पर आधारित तालिका सेट (mult)
+  econometrics/load: डाटासेट लोड करें ( स्थिति- मॉडल्स डाटासेट के साथ भी काम करता
+    है)
+  econometrics/modify: डाटासेट्स तथा नाम बदला जा रहा है
+  econometrics/norm: डाटासेट के स्तम्भ पर सामान्यता जांच करें
+  econometrics/ols: लीनियर रीग्रेसन मॉडल पर फिट (mult)
+  econometrics/options: उपलब्ध स्तम्भ- डाटासेट विकल्प दिखाएँ
+  econometrics/panel: विभिन्न रीग्रेसन तकनीकों पर आधारित संक्षिप्त मॉडल
+  econometrics/plot: डाटासेट से डाटा प्लाट करें
+  econometrics/remove: लोड डाटासेटों में से एक को मिटाएँ
+  econometrics/rename: डाटासेट से स्तम्भ नाम बदलें
+  econometrics/root: इकाई मूल जाँच (एटीएफएस) डाटासेट्स के स्तम्भ पर
+  econometrics/show: लोड आंकड़ासेट का एक भाग दिखाएँ
+  econometrics/type: स्तम्भ के प्रकार बदलें या दिखाएँ
+  economy: विश्‍वव्यापी metacudiD डाटा, उदाहरण के लिए भविष्य, उपज, भंडार
+  economy/_database_: डाटाबेस
+  economy/_stored: भंडारित डाटासेट्स
+  economy/bigmac: दी इकॉनॉमिस्ट बिग मैज निर्देशिका
+  economy/edebt: विभिन्न देशों के लिए बाहरी ऋण सांख्यिकी दिखाएँ
+  economy/eval: लोड डाटा पर ऑपरेशन द्वारा नई श्रृंखला बनाएँ
+  economy/events: आर्थिक पंचांग दिखाएँ
+  economy/forecast: अनुमान लगाया गया है; कोर्न, none, ट्रांसपरर, ब्लॉकर्न
+  economy/fred: आलेख आईडी पर आधारित एफ़ईटीसी डाटा इकट्ठा करें
+  economy/futures: भविष्य के बारे में जानकारी दिखाएँ
+  economy/index: बाजार में कोई भी पाई गई सूची देखें तथा प्लाट करें
+  economy/macro: देश या देश के लिए मेक्रो डाटा इकट्ठा करें
+  economy/map: SRP00 इंडेक्स स्टॉक्स मैप
+  economy/overview: या तो बाज़ार के बारे में जानकारी दे सकते हैं, बन्धनों या इलाज
+    के बारे में
+  economy/performance: सेक्टर्स, उद्योग, देश का प्रदर्शन
+  economy/plot: ऊपर दिए कमांड से डाटा को एक साथ प्लाट करें
+  economy/qa: भंडारित डाटा के साथ Anttipstatarystatald menu खोलें
+  economy/qa/_other_: अन्य
+  economy/qa/_plots_: प्लाट
+  economy/qa/_rolling_metrics_: मेट्रिक्स रोल किया जा रहा है
+  economy/qa/_series: चुनी गई पंक्तियां
+  economy/qa/_statistics_: सांख्यिकी
+  economy/qa/acf: (संयोगीय) कीमत के भिन्न कार्य
+  economy/qa/bw: बॉक्स और बैलेकर प्लाट
+  economy/qa/cdf: एकत्रित वितरण फंक्शन
+  economy/qa/cusum: कीमत की एकत्रित योग एल्गोरिदम के प्रयोग से विभिन्न परिवर्तनों
+    का पता लगता है
+  economy/qa/decompose: दामों का पुनर्भरण, समय, और फिर दामों का पुनर्स्थन
+  economy/qa/hist: घनत्व प्लाट सहित हिस्टोग्राम
+  economy/qa/kurtosis: कीमत के वितरण के लिए क्रॉटोसिस चालू किया जा रहा है
+  economy/qa/line: चयनित लक्ष्य का प्लाट करें
+  economy/qa/normality: सामान्य आँकड़े तथा जाँच
+  economy/qa/pick: भंडारित अर्थव्यवस्था डाटा से नई श्रृंखला लें
+  economy/qa/qqplot: मानक सामान्य वक्र के विरुद्ध फिर से बिगाड़ता है
+  economy/qa/quantile: 'द न्यू यॉर्क टाइम्स्‌ (अंग्रेज़ी) रिपोर्ट करता है:'
+  economy/qa/raw: रॉ डाटा छापें
+  economy/qa/rolling: कीमत के पीछे भागने का मतलब है और भारी कीमत चुकाना
+  economy/qa/skew: क़ीमतों के वितरण का सवार होना
+  economy/qa/spread: कीमत के बीच का मतभेद तथा मानक विचलन
+  economy/qa/summary: स्टॉक्स के संक्षिप्त सारांश आंकड़े
+  economy/qa/unitroot: स्टेशनिटी (DF, केएसएस) के लिए इकाई रूट जाँच
+  economy/rtps: वास्तविक समय प्रदर्शन सेक्टर
+  economy/spectrum: सेक्टर्स, उद्योग, देश का स्पेक्ट्रम है
+  economy/spread: फ़ॉन्ट प्रदर्शित करें
+  economy/treasury: यू.एस. भंडार की दर प्राप्त करें
+  economy/valuation: सेक्टर्स, उद्योग, देश का अनुमान
+  economy/ycrv: उप- अनुकूल वक्र दिखाएँ
+  etf: यु. पू.
+  etf/_major_holdings: मेजर होल्ड्स
+  etf/_symbol: प्रतीक
+  etf/ca: विश्‍लेषण की तुलना में, समान, ऐतिहासिक, परिष्करण, वित्तीय मिलता है
+  etf/candle: EMMM के लिए मोमबज चार्ट देखें
+  etf/compare: बहुत से भिन्न भाग- भाग में तुलना करें
+  etf/disc: ईजीएफएस खोज करें, प्राप्ति करनेवाले/ अंदाज़ा लगाएँ/ एम्बैण्ड
+  etf/disc/active: सबसे सक्रिय
+  etf/disc/decliners: शीर्ष- युक्ति (n)
+  etf/disc/gainers: शीर्ष गेन्स
+  etf/holdings: शीर्ष कंपनी होल्ड करता है
+  etf/load: एमएफएफ डाटा लोड किया जा रहा है
+  etf/news: कंपनी का नवीनतम समाचार
+  etf/overview: पोस्ट- व्यू प्राप्त करें
+  etf/pir: निर्माण (मैचक) रिपर्टीज़ रिपोर्ट (multing)
+  etf/scr: स्क्रीनर EMMFs, प्रीव्यू/ विन्यास, पूर्व- नियत फ़िल्टर के प्रयोग से
+  etf/scr/_preset: प्रीसेट
+  etf/scr/sbc: वर्ग द्वारा स्क्रीन
+  etf/scr/screen: डिफ़ॉल्ट रूप में नियत करें (D)
+  etf/scr/set: उपलब्ध प्रीसेटों में से एक सेट करें
+  etf/scr/view: उपलब्ध प्रीसेट देखें
+  etf/search: नाम या विवरण के द्वारा एमएफएफएफ को ढूंढेंName
+  etf/summary: EMMF का सारांश वर्णन
+  etf/ta: तकनीकी विश्लेषण, किमा, sci, dix, ब्ब्ब, ब्लू
+  etf/ta/_custom_: मनपसंद
+  etf/ta/_momentum_: डिक्लेयरम
+  etf/ta/_overlap_: गुआडेलोप
+  etf/ta/_ticker: एमएफएफएफ
+  etf/ta/_trend_: ट्रेज
+  etf/ta/_volatility_: फ़ॉन्ट रंग = "# D900D9
+  etf/ta/_volume_: आवाज़
+  etf/ta/ad: संग्रहित/ वितरण पंक्ति
+  etf/ta/adosc: शैनिक स्टिकर
+  etf/ta/adx: औसतन दिशा- गति इंडेक्स
+  etf/ta/aroon: एकोना संकेतक
+  etf/ta/bbands: बम्पर दल
+  etf/ta/cci: चैनल सूची
+  etf/ta/cg: गुरुत्वाकर्षण के केंद्र
+  etf/ta/donchian: सिचियन चैनल
+  etf/ta/ema: एक्सपोनिंग औसत
+  etf/ta/fib: प्लोनी लौटी
+  etf/ta/fisher: मछली रूपांतरण
+  etf/ta/hma: पाए जा रहे प्राणों की औसत
+  etf/ta/kc: चक्रीय चैनल
+  etf/ta/macd: औसत फलता - फूल रहा है
+  etf/ta/obv: संतुलन आवाज
+  etf/ta/rsi: सापेक्ष शक्ति निर्देशिका
+  etf/ta/sma: साधारण खिसकाना औसत
+  etf/ta/stoch: एस. ए.
+  etf/ta/vwap: मात्रा परिमाण औसत मूल्य
+  etf/ta/wma: अधिकतम तीव्रता इनपुट औसत
+  etf/ta/zlma: शून्य जो आगे बढ़ रहा है औसत
+  etf/weights: सेक्टर परिमाण
+  exe: रीफ्रेक्टिक स्क्रिप्ट को स्वचालित चलाएँ
+  featflags: फ्लैग सक्रिय व निष्क्रिय करें
+  featflags/_info_: वातावरण चर के माध्यम से फ्लैग्स
+  featflags/cls: प्रत्येक कमांड के बाद कंसोल साफ करें
+  featflags/cmdloc: आंकड़ा में प्रदर्शित कमांड स्थान
+  featflags/color: रंगिंग विशेषताएँ इस्तेमाल करें
+  featflags/exithelp: जब मेनू से बाहर हों तो मदद स्वचालित छापें
+  featflags/ion: अंतर्क्रियात्मक सायलोपेटो मोड
+  featflags/promptkit: प्रायोगिक औज़ार ( अकेला तथा इतिहास) सक्षम करें
+  featflags/rcontext: सत्र के दौरान भरी गई संदर्भों को याद रखें
+  featflags/reporthtml: HTML अन्यथा आउटलाइन के रूप में रिपोर्ट खोलें
+  featflags/retryload: पहले लोड करने के साथ गलत कमांड फिर कोशिश करें
+  featflags/rich: रंगीन भरपूर टर्मिनल
+  featflags/richpanel: रंगीन भरपूर टर्मिनल पटल
+  featflags/tab: डाटाफ्रेम को प्रिंट करने के लिए टैबहीन प्रयोग करें
+  featflags/tbhint: नीचे औज़ार पट्टी में उपयोग संकेत प्रदर्शित करें
+  featflags/thoughts: दिन के विचार
+  featflags/watermark: आंकड़े में जलमार्क
+  forecast: मशीन सीखने के साथ पूर्वानुमान लगाया जा रहा है
+  forecast/_comingsoon_: जल्द ही आ रहा है
+  forecast/_data_loc: डाटा के लिए देख रहे हैं
+  forecast/_disclaimer_: विश्‍व - दर्शन
+  forecast/_exploration_: सूचना
+  forecast/_feateng_: विशेषता इंजीनियरिंग
+  forecast/_loaded: लोड किया फाइल और डाटा स्तम्भ
+  forecast/_tsforecasting_: टाइमर पूर्वानुमान लगाते हैं
+  forecast/arima: अमामा (न- कलात)
+  forecast/atr: औसत सच्ची सीमा जोड़ें
+  forecast/autoarima: स्वचालित एटीएम मॉडल
+  forecast/autoces: जटिल घटक स्वचलित मृदु मॉडल
+  forecast/autoets: स्वचालित ईएसएसटी (त्रुटि, Terald) मॉडल
+  forecast/autoselect: स्वचलित, स्वचालितस, ऑटोएसएस, एमएसटील, इत्यादि से सबसे अच्छा
+    आंकड़े मॉडल चुनें.
+  forecast/brnn: ब्लॉक न्यूक्लीयल नेटवर्क (RNN, LSSSM, guU) (फ खाते हैं. Cartaks)
+  forecast/clean: भरण या ड्रॉप करने के द्वारा डाटासेट साफ करें
+  forecast/combine: भिन्न डाटासेट से स्तम्भों को मिश्रित करें
+  forecast/corr: डाटासेट गुणों के लिए यूक्शन फ्रेमवर्क प्लाट करें
+  forecast/delete: डाटासेट से स्तम्भ मिटाएँ
+  forecast/delta: '%s बदलें'
+  forecast/desc: डाटासेट का वर्णनात्मक आंकड़े दिखाएँ
+  forecast/ema: अत्यंत भारा जोड़ें औसत
+  forecast/expo: प्रोबिल्टीजमेंट हद तक चिकना
+  forecast/export: प्रक्रिया में कोई डाटासेट निर्यात करें
+  forecast/linregr: प्रोबाइसेंस लीनियर रेइन्डन (एफडी. स्टावर्स और व्याख्या)
+  forecast/load: csv से डेटा लोड करें
+  forecast/mom: परिमाण जोड़ें
+  forecast/mstl: बहुत से ऋतुओं तथा ट्रेड लोस का प्रयोग लोस (एमएसएल) मॉडल
+  forecast/nbeats: नेस्टिक खाड़ी (फ खाक)
+  forecast/nhits: न्यूक्लीयल थर्मोनिक इंटरनॅशनेशन (फ खा. कलकोटिया)
+  forecast/plot: लोड किया गया डाटासेट का विशिष्ट स्तम्भ प्लाट करें
+  forecast/regr: रेग्रेसन (फ हूक. पास कोवरेथ तथा व्याख्याता)
+  forecast/rename: डाटासेट से स्तम्भ का नाम बदलें
+  forecast/rnn: प्रोबास्टिस्टल नेटवर्क (RNN, LSSSM, gU)
+  forecast/roc: परिवर्तनों की दर जोड़ें
+  forecast/rsi: सापेक्ष शक्ति निर्देशिका जोड़ें
+  forecast/rwd: Drift मॉडल के साथ बेतरतीब चलो
+  forecast/season: डाटासेट स्तम्भ के लिए समयबद्ध कार्यक्रम को प्लाट करें
+  forecast/seasonalnaive: द्वैधानिक मॉडल
+  forecast/show: लोड डाटासेट का एक भाग दिखाएँ
+  forecast/signal: मूल्य सिग्नल जोड़ें (shorts. लंबे समय)
+  forecast/sto: Guukak Oscuter %K और %D जोड़ें
+  forecast/tcn: टेंपोरल कॉनल रिलेशनल नेटवर्क (एफडी. Carveria)
+  forecast/tft: टेंपोरल फ़ोरर नेटवर्क(फ खाते). कलवर्सेवर
+  forecast/theta: आयोटा की विधि
+  forecast/trans: ट्रांसफ़ॉर्मर नेटवर्क (फ खाते. वर्सेथ)
+  forex: विदेशी रिश्‍ते, उद्धरण, मुद्रा जोड़े और oanda एक संयोजन के लिए आगे की दरें
+  forex/_from: से
+  forex/_source: स्रोत
+  forex/_ticker: चेकर
+  forex/_to: को
+  forex/candle: लोड जोड़े के लिए दीपक की योजना दिखाएँ
+  forex/forecast: तकनीकों का अनुमान लगाएँ
+  forex/forex: केडीई४ के लिए ट्रांसफर्स
+  forex/fwd: लोड जोड़े के लिए आगे की दर प्राप्त करें
+  forex/load: ऐतिहासिक डाटा प्राप्त करें
+  forex/oanda: ओटा मेन्यू
+  forex/oanda/_from: से
+  forex/oanda/_loaded: लोड किया साधन
+  forex/oanda/_source: स्रोत
+  forex/oanda/_to: को
+  forex/oanda/calendar: पंचांग मुद्रित करें
+  forex/oanda/cancel: आईडी -i अनुक्रम आईडी द्वारा स्थगित अनुक्रम रद्द करें
+  forex/oanda/candles: मोमबतियाँ दिखाएँ
+  forex/oanda/closetrade: आईडी द्वारा व्यापार बन्द करें
+  forex/oanda/from: '"से" मुद्रा इंच aext seftad जोड़ा में चुनें'
+  forex/oanda/list: सूची इतिहास
+  forex/oanda/order: इकाइयों -p मूल्य की सीमा सीमा
+  forex/oanda/orderbook: अनुक्रम- बुक छापें
+  forex/oanda/pending: स्थगित आदेशों पर जानकारी प्राप्त करें
+  forex/oanda/positionbook: स्थान- बुक छापें
+  forex/oanda/positions: खुली स्थिति प्राप्त करें
+  forex/oanda/price: चुने गए औज़ार के लिए मूल्य दिखाएँ
+  forex/oanda/summary: खाता सारांश दिखाता है
+  forex/oanda/to: '"सें करें" को एकx जोड़े में चुनें'
+  forex/oanda/trades: खुले व्यापारों की सूची दें
+  forex/qa: Antututial विश्लेषण, statum, रीस्टिक विश्लेषण
+  forex/qa/_other_: अन्य
+  forex/qa/_pair: 'रंग: (P)'
+  forex/qa/_plots_: प्लाट
+  forex/qa/_rolling_metrics_: मेट्रिक्स रोल किया जा रहा है
+  forex/qa/_statistics_: सांख्यिकी
+  forex/qa/_target: लक्ष्य
+  forex/qa/acf: (संयोगीय) कीमत के भिन्न कार्य
+  forex/qa/bw: बॉक्स और बैलेकर प्लाट
+  forex/qa/cdf: एकत्रित वितरण फंक्शन
+  forex/qa/cusum: कीमत की एकत्रित योग एल्गोरिदम के प्रयोग से विभिन्न परिवर्तनों का
+    पता लगता है
+  forex/qa/decompose: दामों का पुनर्भरण, समय, और फिर दामों का पुनर्स्थन
+  forex/qa/hist: घनत्व प्लाट सहित हिस्टोग्राम
+  forex/qa/kurtosis: कीमत के वितरण के लिए क्रॉटोसिस चालू किया जा रहा है
+  forex/qa/line: चयनित लक्ष्य का प्लाट करें
+  forex/qa/normality: सामान्य आँकड़े तथा जाँच
+  forex/qa/pick: विश्लेषण के लिए लक्ष्य स्तम्भ चुनें
+  forex/qa/qqplot: मानक सामान्य वक्र के विरुद्ध फिर से बिगाड़ता है
+  forex/qa/quantile: 'द न्यू यॉर्क टाइम्स्‌ (अंग्रेज़ी) रिपोर्ट करता है:'
+  forex/qa/raw: रॉ डाटा छापें
+  forex/qa/rolling: कीमत के पीछे भागने का मतलब है और भारी कीमत चुकाना
+  forex/qa/skew: क़ीमतों के वितरण का सवार होना
+  forex/qa/spread: कीमत के बीच का मतभेद तथा मानक विचलन
+  forex/qa/summary: स्टॉक्स के संक्षिप्त सारांश आंकड़े
+  forex/qa/unitroot: स्टेशनिटी (DF, केएसएस) के लिए इकाई रूट जाँच
+  forex/quote: अंतिम उद्धरण प्राप्त करें
+  forex/ta: तकनीकी विश्लेषण, किमा, sci, dix, ब्ब्ब, ब्लू
+  forex/ta/_currency: मुद्रा जोड़ा लोड
+  forex/ta/_custom_: मनपसंद
+  forex/ta/_momentum_: डिक्लेयरम
+  forex/ta/_overlap_: गुआडेलोप
+  forex/ta/_source: स्रोत
+  forex/ta/_trend_: ट्रेज
+  forex/ta/_volatility_: फ़ॉन्ट रंग = "# D900D9
+  forex/ta/adx: औसतन दिशा- गति इंडेक्स
+  forex/ta/aroon: एकोना संकेतक
+  forex/ta/bbands: बम्पर दल
+  forex/ta/cci: चैनल सूची
+  forex/ta/cg: गुरुत्वाकर्षण के केंद्र
+  forex/ta/donchian: सिचियन चैनल
+  forex/ta/ema: एक्सपोनिंग औसत
+  forex/ta/fib: प्लोनी लौटी
+  forex/ta/fisher: मछली रूपांतरण
+  forex/ta/macd: औसत फलता - फूल रहा है
+  forex/ta/rsi: सापेक्ष शक्ति निर्देशिका
+  forex/ta/sma: साधारण खिसकाना औसत
+  forex/ta/stoch: एस. ए.
+  forex/ta/zlma: शून्य जो आगे बढ़ रहा है औसत
+  funds: आपसी पैसों की तलाश, दृश्य, माप तथा सेक्टर वजन रखे
+  funds/_country: मौज़ूदा देश
+  funds/_fund: मौज़ूदा निधि
+  funds/alswe: धन - दौलत के मोह को प्रदर्शित करें (या, देश, रखे)
+  funds/country: फ़िल्टर करने के लिए एक देश सेट करें
+  funds/equity: निर्णय होल्ड करता है
+  funds/forecast: तकनीकों का अनुमान लगाना
+  funds/info: धन जानकारी प्राप्त करें
+  funds/infoswe: धन जानकारी प्राप्त करें
+  funds/load: यु. पू.
+  funds/plot: लोड किए ऐतिहासिक धन डाटा का प्लाट करें
+  funds/search: सुखी परिवार का राज़
+  funds/sector: सेक्टर परिमाण
+  futures: कड़ी, वीकार्ड, इंडेक्स, बिटकोइन और forex
+  futures/curve: भविष्य वक्र प्राप्त करें
+  futures/historical: ऐतिहासिक गुणा मिलता है
+  futures/search: वर्ग या विनिमय पर आधारित भविष्य के लिए खोज
+  intro: ओपनडीबी टर्मिनल पर परिचय
+  keys: एपीआई कुंजियाँ नियत की जा रही हैं तथा उनकी वैधता जाँचें
+  keys/_keys_: यह मेन्यू आपको अपना एपीआई कुंजियों को सेट करने देता है. अधिक जानकारी
+    के लिए 'लगभग' करे
+  keys/_status_: स्थिति
+  keys/mykeys: अपना पारिभाषित कुंजी प्राप्त करें
+  news: शब्द तथा डाटा स्रोत पर आधारित समाचार आलेखों को प्रदर्शित करें
+  not defined: पारिभाषित नहीं
+  portfolio: पोर्टर प्रोफिक्स प्रदर्शन तथा विज्ञापन के प्रदर्शन तथा देखने के लिए कार्य
+    करें
+  portfolio/_benchmark: बेनचमार्क
+  portfolio/_graphs_: ग्राफ
+  portfolio/_loaded: लोड किया ट्रांजेक्शन
+  portfolio/_metrics_: मेट्रिक्स
+  portfolio/_risk_: खतरे की मार
+  portfolio/_riskfreerate: जोखिम मुक्त दर
+  portfolio/alloc: एक परिसंपत्ति, सेक्टर, देश या क्षेत्र आधार पर आवंटित
+  portfolio/attrib: पोर्टफ़ोलियो की तुलना एसएसपी 500 से करने वाले सेक्टर को प्रदर्शित
+    करें
+  portfolio/bench: स्केल्समार्क पारिभाषित करें
+  portfolio/bro: चोर पकड़े हुए हैं, ऋणी, सहयोगी, डीजीरो, सिक्के का भार उठाते हैं
+  portfolio/bro/ally: सभी इंस्टिकल मेन्यू
+  portfolio/bro/ally/_info_: स्टॉक सूचना
+  portfolio/bro/ally/balances: खाता का शेष विवरण दिखाएँ
+  portfolio/bro/ally/history: अपने खाते का इतिहास दिखाएँ
+  portfolio/bro/ally/holdings: खाता होल्डर दिखाएँ
+  portfolio/bro/ally/movers: चाल करनेवालों की रैंक सूची प्राप्त करें
+  portfolio/bro/ally/quote: स्टाक उद्धरण प्राप्त करें
+  portfolio/bro/cb: कोर प्रोग्रेज़ मेन्यू
+  portfolio/bro/cb/account: अपने खाते का संतुलन दिखाएँ
+  portfolio/bro/cb/deposits: अपने सभी जमा स्थान या आंतरिक हस्तांतरण दिखाएँ
+  portfolio/bro/cb/history: अपने खाते का इतिहास दिखाएँ
+  portfolio/bro/cb/orders: अपने सभी आदेश दिखाएँ
+  portfolio/bro/degiro: डिज़ॉरो मेन्यू
+  portfolio/bro/degiro/cancel: आईडी के उपयोग से अनुक्रम रद्द करें
+  portfolio/bro/degiro/companynews: इसके साथ एक कंपनी के बारे में खबर देखें है
+  portfolio/bro/degiro/create: एक अनुक्रम बनाया जा रहा है
+  portfolio/bro/degiro/hold: दृश्य होल्ड करता है
+  portfolio/bro/degiro/lastnews: नवीनतम समाचार देखें
+  portfolio/bro/degiro/login: डिजीरो के एकपी से कनेक्ट करें
+  portfolio/bro/degiro/logout: डिजीरो के प्रिस से डिस्कनेक्ट करें
+  portfolio/bro/degiro/lookup: एक उत्पाद के लिए खोज देखें नाम से
+  portfolio/bro/degiro/paexport: csv निर्यात विश्लेषण के लिए csv निर्यात
+  portfolio/bro/degiro/pending: स्थगित आदेश देखें
+  portfolio/bro/degiro/topnews: शीर्ष समाचार पूर्वावलोकन
+  portfolio/bro/degiro/update: अनुक्रम अद्यतन करें
+  portfolio/bro/rh: 'पादरी के रूप में कार्यान्वित करें@ info: whatsthis'
+  portfolio/bro/rh/history: अपने खाते का सही इतिहास दिखाएँ
+  portfolio/bro/rh/holdings: खाता गढ़ों में रखे हुए दिखाएं
+  portfolio/bro/rh/login: कमीशन को कम करने के लिए लॉगइन
+  portfolio/cret: RPAREN( 2) का परिणाम होगा
+  portfolio/distr: दैनिक का वितरण बताता है
+  portfolio/dret: प्रतिदिन का परिणाम होगा
+  portfolio/es: प्रदर्शक प्रत्याशित छोटा
+  portfolio/holdp: पोर्टो (% प्रतिशत में)
+  portfolio/holdv: संपत्ति होल्ड करता है (अनुप्रयोग मूल्य)
+  portfolio/load: पोर्टेज में ट्रांजेक्शन लोड करें
+  portfolio/maxdd: अधिकतम ड्राडर
+  portfolio/metric: पोर्टगो vsaptate सभी अलग अवधि के लिए मुझे पैकेजेस
+  portfolio/mret: मासिक का परिणाम होगा
+  portfolio/om: प्रदर्शक सागा अनुपात
+  portfolio/perf: गोल बन्द्टमार्क के प्रदर्शन का प्रदर्शन
+  portfolio/po: पोर्टर प्रोफिक्स, अपने पोर्टवेयर वज़न को तेजी से नापता है
+  portfolio/po/_categories: कोटियाँ
+  portfolio/po/_hierarchical_clustering_models_: लघुछविीय गुच्छिंग मॉडल
+  portfolio/po/_loaded: पोर्ट हूफ़ियो लोड किया गया
+  portfolio/po/_mean_risk_optimization_: औसत ख़तरा आक्रमण
+  portfolio/po/_optimized_portfolio: ऑप्टीमाइज़ेशन
+  portfolio/po/_other_optimization_techniques_: अन्य ऑपराजीकरण टेक्स
+  portfolio/po/_parameter: पैरामीटर फ़ाइल
+  portfolio/po/_risk_parity_optimization_: खतरे के प्रति सचेतता
+  portfolio/po/_tickers: चेकर्स
+  portfolio/po/blacklitterman: काला ब्रेकमेन पोर्ट
+  portfolio/po/dividend: अंतराल के अनुसार कम करें (सही विभाजन)
+  portfolio/po/ef: कुशल द्वारपाल को दिखाएँ
+  portfolio/po/equal: समान वजन
+  portfolio/po/file: फ़ाइल जिसमें पोर्टगो जोखिम पैरामीटर हैं
+  portfolio/po/herc: लोकतांत्रिक समान ख़तरे में
+  portfolio/po/hrp: सापेक्षिक ख़तरा
+  portfolio/po/load: .xlsx या .csv फ़ाइल से श्रेणी लोड करें
+  portfolio/po/maxdecorr: अधिकतम अववेषण पोर्ट
+  portfolio/po/maxdiv: अधिकतम योगात्मक पोर्ट
+  portfolio/po/maxret: अधिकतम रिटर्न पोर्टरेशन
+  portfolio/po/maxsharpe: अधिकतमPOWNT अनुपात पोर्ट (a.k. a)
+  portfolio/po/maxutil: अधिकतम जोखिम यूटिलिटी फ़ंक्शन, दिए गए जोखिम पैरामीटर
+  portfolio/po/minrisk: न्यूनतम जोखिम पोर्ट
+  portfolio/po/mktcap: बाजार टोपी के अनुसार वज़न (सही बाजार सेच)
+  portfolio/po/nco: घोंसला क्लैमेंट
+  portfolio/po/params: पोर्टफ़ोलियोन जोखिम पैरामीटर निर्दिष्ट करें तथा दिखाएँ
+  portfolio/po/params/_loaded: फाइल %d लोड हो रही है
+  portfolio/po/params/_model: ब्याज की मॉडल
+  portfolio/po/params/_parameters_: पैरामीटर्स
+  portfolio/po/params/arg: एक तर्क के लिए भिन्न मान सेट करें
+  portfolio/po/params/clear: फिल्टरिंग पैरामीटर से ब्याज का साफ मॉडल
+  portfolio/po/params/file: पोर्टफ़ोलियोन जोखिम पैरामीटर लोड करें
+  portfolio/po/params/load: पोर्टफ़ोलियो पैरामीटर फ़ाइल चुनें
+  portfolio/po/params/save: पोर्टफ़ोलियोपीमेंट पैरामीटरों को निर्धारित फ़ाइल में सहेजने
+    के लिए सहेजें
+  portfolio/po/params/set: फ़िल्टर पैरामीटर्स के लिए ब्याज मॉडल सेट करें
+  portfolio/po/plot: सहेजे गए पोर्टोस की सूची से चयनित चार्टों का प्लाट करें
+  portfolio/po/property: चयनित जानकारी गुण के अनुसार परिमाण
+  portfolio/po/relriskparity: कम से कम वर्ग के पास जाने का प्रयोग करते हुए श्रेणी
+    के ख़तरे को कम करें
+  portfolio/po/riskparity: ख़तरे की बात है कि बजट बनाना ख़तरे में है
+  portfolio/po/rpf: सहेजे गए पोर्टो की सूची में से पोर्टफ़ोलियो को हटा दें
+  portfolio/po/show: सहेजे गए पोर्टो की सूची में से चयनित पोर्टफ़ोलियो तथा वर्गों
+    को दिखाएं
+  portfolio/rbeta: बहता हुआ बीटा
+  portfolio/rsharpe: उछलना शिंटोasia. kgm
+  portfolio/rsort: लोटोusa. kgm
+  portfolio/rvol: घूमने की प्रवृत्ति
+  portfolio/show: मौजूदा ट्रांजेक्शन दिखाएँ
+  portfolio/summary: सभी पोर्टेज vsapaks एक निश्चित समय के लिए मुझे शिकायतें
+  portfolio/var: जोखिम पर प्रदर्शन मान
+  portfolio/yret: प्रत्येक लौटाता है
+  record: रिकार्ड सत्र को एक नए संवाद में परिवर्तित किया जाना है
+  reports: ब्लैण्डिक्स के माध्यम से मनपसंद रिसर्च रिपोर्ट
+  reports/_Custom_reports_: मनपसंद रपट
+  reports/_OpenBB_reports_: ओपनबीबी रपट
+  reports/_reports_: अपनी मनपसंद रिपोर्टों को बिल्ड करें या फिर हमारे टेम्पलेट में
+    से किसी को कोशिश करें
+  reports/run: ओपनB- पीजीपी उपयोक्ता/pips/ लोगो से एक ज्यूक नीति जीते हैं
+  settings: आवाज़ सेटिंग (एक्सपोर्ट फ़ोल्डर, समय क्षेत्र, भाषा, प्लाट आकार)
+  settings/_backend: बैकेंड
+  settings/_data_source: डाटा स्रोत
+  settings/_dpi: प्लाट बिन्दु प्रति इंच
+  settings/_flair: फ्लैगिंगर
+  settings/_info_: वातावरण चर के माध्यम से विन्यास
+  settings/_language: भाषा
+  settings/_monitor: मॉनीटर
+  settings/_plot_height: प्लाट ऊंचाई
+  settings/_plot_height_pct: प्लाट ऊंचाई [%]
+  settings/_plot_width: प्लाट चौड़ाई
+  settings/_plot_width_pct: प्लाट चौड़ाई [%]
+  settings/_preferred_data_source_file: पसंदीदा डाटा स्रोत फ़ाइल
+  settings/_timezone: समयक्षेत्र
+  settings/_user_data_folder: उपयोक्ता डाटा फ़ोल्डर
+  settings/autoscaling: स्वचालित प्लाट किया जा रहा है
+  settings/backend: प्लाट बैकएण्ड (कोई नहीं, tkag, MacSX, क्यूटी5Gg)
+  settings/colors: अपना स्वयं का टर्मिनल रंग सेट करें
+  settings/dpi: बिन्दु प्रति इंच
+  settings/dt: घड़ी का समय पास से जोड़ें या हटाये
+  settings/flair: उपयोग करने के लिए हवामोजी सेट करें
+  settings/height: प्लाट ऊंचाई चुनें
+  settings/lang: टर्मिनल भाषा
+  settings/monitor: जो मॉनीटर दिखाने के लिए करता है (प्राथमिक 0, सेकण्ड)
+  settings/pheight: प्रतिशत तेज गति का चयन करें
+  settings/pwidth: प्रतिशत प्लाट करें
+  settings/source: डाटा स्रोत फ़ाइल निर्दिष्ट करें
+  settings/tz: भिन्न समयक्षेत्र सेट करें
+  settings/userdata: उपयोक्ता डाटा स्टोर करने के लिए फ़ोल्डर सेट करें
+  settings/width: प्लाट चौड़ाई चुनें
+  sources: अपने पसंदीदा डेटा स्रोत का चयन करें
+  sources/_info_: पाएँ और तयशुदा डेटा स्रोत सेट करें
+  sources/get: कमांड के साथ जुड़ा हुआ डेटा स्रोत उपलब्ध करें
+  sources/set: कमांड के लिए तयशुदा डाटा स्रोत सेट करें
+  stocks: डाटा, विकल्पों, क्षेत्र तथा उद्योग, तथा कुल प्रयास के बारे में जानकारी
+  stocks/_ticker: स्टॉक
+  stocks/ba: व्यवहारिक विश्लेषण, लालदित, लकड़ीदार, स्टूटर, गोलल से
+  stocks/ba/_ticker: चेकर
+  stocks/ba/bullbear: बोर्ड पर अंतिम 30 संदेश से त्वरित भावना
+  stocks/ba/getdd: अन्य उपयोक्ता के पोस्ट से नियत प्रयास हो जाता है
+  stocks/ba/headlines: 15+ मुख्य समाचार शीर्षकों से भावना
+  stocks/ba/hist: यु. पू.
+  stocks/ba/infer: नवीनतम टीविड से स्टॉक के बारे में फंक
+  stocks/ba/interest: वाक्यों के समय में ब्याज
+  stocks/ba/jcdr: जिम क्रैमर के दैनिक सिफारिश
+  stocks/ba/jctr: जिम क्रैमर की सिफारिश
+  stocks/ba/load: विश्लेषण के लिए विशिष्ट शेयरक लोड करें
+  stocks/ba/mentions: स्टॉक्स के संदर्भ पर आधारित समय पर ब्याज
+  stocks/ba/messages: बोर्ड पर 30 अंतिम संदेश का आउटपुट
+  stocks/ba/popular: लोकप्रिय टिकर्स दिखाएँ
+  stocks/ba/queries: शीर्ष संबंधित इस स्टॉक के साथ
+  stocks/ba/redditsent: चेकर के लिए लाल रंग की खोज करें और लालडीडी भावना पाते हैं
+  stocks/ba/regions: स्टॉक्स में सबसे ज़्यादा दिलचस्पी रखनेवाले इलाकों में
+  stocks/ba/rise: ऊपर बढ़ती हुई आग
+  stocks/ba/sentiment: समय से घड़ी की गहराई से भावना की भविष्यवाणी
+  stocks/ba/snews: समाचार - माध्यमों की भावनाओं से ज़्यादा स्टॉक मूल्य दिखाया गया
+  stocks/ba/spac: अन्य उपयोक्ता स्पिटिस घोषणाओं को अन्य उप- उप- फ़ोल्डरों से दिखाएँ
+  stocks/ba/spacc: उपपारंकृत एसपीसी से अन्य उपयोक्ता स्पीपीएस घोषणाों को दिखाएँ
+  stocks/ba/stalker: उपयोक्ता के अंतिम संदेशों का परागित करें
+  stocks/ba/trending: धन - दौलत के पीछे भागना
+  stocks/ba/watchlist: अन्य उपयोक्ता घड़ी की सूची दिखाएँ
+  stocks/ba/wsb: दिखाएँ कि WSB गिरोह उपित दीवारों में क्या हो रहा है
+  stocks/bt: रणनीति वापस , सरल किमा, किमा पार, siciwers
+  stocks/bt/_ticker: चेकर
+  stocks/bt/ema: जब मूल्य ईएमए(l) से अधिक हो तो खरीदें
+  stocks/bt/emacross: EMMMA( कम) > EMA( गर्म))
+  stocks/bt/rsi: जब RSII < कम से कम और बेच दें जब RSIII > उच्च
+  stocks/bt/whatif: क्या होगा यदि आप दिन Y में X शेयर खरीदा था
+  stocks/ca: विश्‍लेषण की तुलना में, समान, ऐतिहासिक, परिष्करण, वित्तीय मिलता है
+  stocks/ca/_similar: समान सममितियाँ
+  stocks/ca/_ticker: से समान कंपनियों को प्राप्त करने के लिए चेक करें
+  stocks/ca/add: समान कंपनियों को जोड़ें
+  stocks/ca/balance: तराजू से तुलना करें
+  stocks/ca/cashflow: नकदीय तुलना
+  stocks/ca/financial: छोटा सा वित्तीय तुलना
+  stocks/ca/get: इसी तरह का काठ मिल जाता है
+  stocks/ca/hcorr: यु. पू.
+  stocks/ca/historical: इतिहास मूल्य डेटा तुलना
+  stocks/ca/income: पैसों की तुलना
+  stocks/ca/overview: संक्षिप्त वर्णन
+  stocks/ca/ownership: संक्षिप्त मालिक तुलना
+  stocks/ca/performance: संक्षिप्त प्रदर्शन तुलना
+  stocks/ca/rmv: समान कंपनियों को व्यक्तिगत रूप से या सभी को मिटाएँ
+  stocks/ca/scorr: भावना
+  stocks/ca/sentiment: भावना विश्लेषण तुलना
+  stocks/ca/set: समान कंपनियों को रीसेट तथा नियत करें
+  stocks/ca/technical: छोटी तकनीकी तुलना
+  stocks/ca/ticker: से समान कंपनियों को प्राप्त करने के लिए चेकर
+  stocks/ca/tsne: सभी 500-00 शेयरों पर TSERENDERSCKRS को चालू करता है और नज़दीक की
+    टिकियों को लौटाता है
+  stocks/ca/valuation: संक्षिप्त मूल्य
+  stocks/ca/volume: ऐतिहासिक वॉल्यूम डाटा तुलना
+  stocks/candle: किसी खास स्टॉकर के लिए मोमबज चार्ट देखें
+  stocks/codes: FIIIC, SIK और SIC कोड कोड कोड
+  stocks/dd: गहरेपन में, खबर, विवरण, छोटे, आंतरिक, सेक
+  stocks/dd/_ticker: चेकर
+  stocks/dd/analyst: कंपनी की क़ीमत और रेटिंग
+  stocks/dd/arktrades: टिकर के लिए एआरके व्यापार प्राप्त करें
+  stocks/dd/customer: ग्राहक की सूची
+  stocks/dd/est: अनुमान लगाया जाता है कि हर साल जितने कम - से - कम एक अनुमान हैं
+  stocks/dd/load: विश्लेषण के लिए विशिष्ट शेयरक लोड करें
+  stocks/dd/pt: समय के ऊपर लक्ष्य रखें
+  stocks/dd/rating: दरजा समय पर (da)
+  stocks/dd/rot: समय के ऊपर प्रश्नों की संख्या ( महीना)
+  stocks/dd/sec: सीआईएस- तत्व
+  stocks/dd/supplier: आपूर्ति्स की सूची
+  stocks/disc: स्टॉक्स, नक्शा, सेक्टर्स, उच्च दिलचस्पी का पता लगाना
+  stocks/disc/active: आम तौर पर इस्तेमाल किए जानेवाले व्यापार के बारे में सबसे सक्रिय
+    पदार्थ
+  stocks/disc/arkord: ARKYEAN प्रबंधन द्वारा आदेश
+  stocks/disc/asc: बढ़ोतरी की दर 25% से भी ज़्यादा है ।
+  stocks/disc/cnews: मनपसंद खबर (स्टॉक्स, आई.पी., squks, स्वास्थ्य देखभाल, राजनीति)
+  stocks/disc/divcal: चुने गए तारीख़ के लिए सामान्य पंचांग
+  stocks/disc/fipo: भविष्य
+  stocks/disc/gainers: नवीनतम शीर्ष गेनों को दिखाएँ
+  stocks/disc/gtech: व्यापार और कमाई के साथ तकनीकों का माल 25% से भी ज़्यादा है
+  stocks/disc/heatmap: सन १९५०० की गर्मी
+  stocks/disc/hotpenny: आज का गर्म पैसा शेयर
+  stocks/disc/losers: नवीनतम शीर्ष घाटे में दिखाएँ
+  stocks/disc/lowfloat: कम स्ट्रक्चर 10MMM साझेदारी फ्लोट
+  stocks/disc/pipo: पिछला आईपीएस तारीख
+  stocks/disc/rtat: ऊपर 10 भारी कीमत चुकानी पड़ती थी
+  stocks/disc/trending: चलन
+  stocks/disc/ugs: राजस्वों के साथ धन- दौलत और उत्पादन में 25% से ऊपर वृद्धि
+  stocks/disc/ulc: बड़ी टोपी के भण्डारों में संभवतः
+  stocks/disc/upcoming: भविष्य में मिली कमाई की तारीख
+  stocks/dps: अंधेरे पूल और छोटा डेटा, अंधेरे कपड़े, छोटी दिलचस्पी, ftd
+  stocks/dps/_ticker: चेकर
+  stocks/dps/ctb: स्टॉक्स से उधार लेने का खर्च
+  stocks/dps/dpotc: गहरा पूल्स (एसटी) vs OText डाटा
+  stocks/dps/ftd: असफल- से-र डाटा
+  stocks/dps/hsi: उच्च छोटे ब्याज को 20% से अधिक अनुपात से दिखाता है
+  stocks/dps/load: विश्लेषण के लिए विशिष्ट शेयरक लोड करें
+  stocks/dps/pos: गहरा पूल छोटा स्थान
+  stocks/dps/prom: अंधेरे पूल पर आधारित चेकर्स रीग्रेसन
+  stocks/dps/psi: छोटा ब्याज आवाज़ छोड़ें
+  stocks/dps/shorted: सबसे छोटा भण्डार दिखाएँ
+  stocks/dps/sidtc: कवर करने के लिए छोटे ब्याज और दिन
+  stocks/dps/spos: छोटे vs स्थिति जाल
+  stocks/fa: बुनियादी विश्लेषण, आय, संतुलन, नकद, कमाई
+  stocks/fa/_ticker: चेकर
+  stocks/fa/analysis: मशीन सीखने की मदद से SECCTEGESCGERS
+  stocks/fa/balance: कंपनी के उचित शीट
+  stocks/fa/cal: कंपनी की कमाई तथा अनुमान लगाने के लिए कैलेण्डर
+  stocks/fa/cash: कंपनी के नकदी प्रवाह
+  stocks/fa/data: कंपनी का बुनियादी और तकनीकी डाटा
+  stocks/fa/dcf: विस्तृत सम्मानित कस्टम- पेंट्ड नकदिंग
+  stocks/fa/dcfc: निर्धारित करता है कि (प्रयोगी) नकदी प्रवाह को सीमित करता है
+  stocks/fa/divs: कंपनी के लिए ऐतिहासिक ऐतिहासिक घटनाएँ दिखाइए
+  stocks/fa/dupont: सही पर वापसी के लिए विस्तृत गिरावट
+  stocks/fa/earnings: फलता - फूलता तिथि तथा ईपीएस रिपोर्ट किया गया
+  stocks/fa/enterprise: कंपनी प्रबंधन मूल्य
+  stocks/fa/epsfc: अनुमान लगाया जा रहा है
+  stocks/fa/fraud: कुंजी धोखाधड़ी अनुपात
+  stocks/fa/growth: वित्तीय कथन वस्तुओं और अनुपात का विकास
+  stocks/fa/hq: कंपनी का HQ स्थान खोलें
+  stocks/fa/income: कंपनी की आमदनी के बारे में कहा जाता है
+  stocks/fa/info: कंपनी की जानकारी स्कोप
+  stocks/fa/key: कंपनी की कुंजी मुझे डाउनलोड करने का प्रयास करें
+  stocks/fa/load: विश्लेषण के लिए विशिष्ट शेयरक लोड करें
+  stocks/fa/metrics: समय से पहले कुंजी शब्दकोशों की सहायता करें
+  stocks/fa/mgmt: कंपनी का प्रबंधन टीम
+  stocks/fa/mktcap: अनुमानित बाजार कैप
+  stocks/fa/overview: कंपनी का पूर्वावलोकन
+  stocks/fa/profile: कंपनी प्रोफ़ाइल
+  stocks/fa/quote: ढेरों भण्डार जानकारी
+  stocks/fa/ratios: समय से आगे की गहराई अनुपात
+  stocks/fa/revfc: अनुमान लगाया जा रहा है
+  stocks/fa/score: वॉरन ब्रॆट तथा कोसे से स्कोर निवेश किया जा रहा है
+  stocks/fa/shrs: साझेदारी करनेवालों (प्रयोगियों, संस्थाओं और आपसी पैसों में)
+  stocks/fa/splits: बिटवाइज विभाजन तथा बांटी हुई घटनाओं को उलट पुलट करें जब तक मैं
+    पीओ
+  stocks/fa/sust: स्थिरांक मूल्य (अनुप्रयोग, सामाजिक तथा सत्ता)
+  stocks/fa/warnings: हम सीन सीह पुस्तक के अनुसार कंपनी चेतावनी
+  stocks/fa/web: कंपनी के वेब ब्राउज़र खोलें
+  stocks/forecast: अनुमानित तकनीकों, nan, nans, ट्रांसपरर, ब्लॉकर्न
+  stocks/gov: सरकारी मेन्यू, घर के व्यापार, अनुबंध, व्यवसायिंग
+  stocks/gov/_explore: एक्सप्लोर किया जा रहा है
+  stocks/gov/_ticker: चेकर
+  stocks/gov/contracts: सरकारी अनुबंध दिखाएँ
+  stocks/gov/gtrades: सरकारी व्यापार दिखाएँ
+  stocks/gov/histcont: यु. पू.
+  stocks/gov/lastcontracts: आखिरी सरकार के अनुबंधों को दिखाएँ दिया गया
+  stocks/gov/lasttrades: अंतिम व्यवसाय
+  stocks/gov/load: विश्लेषण के लिए विशिष्ट टिकर लोड करें
+  stocks/gov/lobbying: कंपनी की जानकारी
+  stocks/gov/qtrcontracts: चौथाई सरकार अनुबंध विश्लेषण
+  stocks/gov/topbuys: बहुत से खरीदे गए स्टॉक्स दिखाएँ
+  stocks/gov/toplobbying: सबसे बड़ा कर्मचारी, खाने का सामान बनाने में कामयाब होता
+    है
+  stocks/gov/topsells: अधिकांश जमा ढेर दिखाएँ
+  stocks/ins: व्यापार के अंदर, नवीनतम पैसा पैसा खरीदता है, शीर्ष अधिकारी खरीदते हैं
+  stocks/ins/_last_insiders: अंतिम भीतरी चरण
+  stocks/ins/_preset: प्रीसेट
+  stocks/ins/_ticker: चेकर
+  stocks/ins/_top_insiders: शीर्ष भीतरी ओर
+  stocks/ins/act: समय - समय पर आंतरिक उपक्रम
+  stocks/ins/blcp: बड़ा नवीनतम सलाहकार/CO खरीदता है ($25k+)
+  stocks/ins/blcs: नया नवीनतम डेलिमिटर/CFO बिक्री ($100k+)
+  stocks/ins/blip: खरीद के भीतर बड़ी नवीनतम नवीनतम ($25k+)
+  stocks/ins/blis: बिक्री के भीतर बड़ा नवीनतम ($100k+)
+  stocks/ins/blop: बड़े नवीनतम अधिकारी खरीदते हैं ($25k+)
+  stocks/ins/blos: बड़े नवीनतम अधिकारी बिक्री ($100k+)
+  stocks/ins/filter: पूर्व-पूर्व पर आधारित भीतरी फिल्टर
+  stocks/ins/lcb: नवीनतम क्लस्टर खरीद
+  stocks/ins/lins: कंपनी का अंतिम भीतरी व्यापार
+  stocks/ins/lip: नवीनतम भीतरी खरीद
+  stocks/ins/lis: नवीनतम अंदर की बिक्री
+  stocks/ins/lit: नवीनतम भीतरी व्यापार (सभी भरने)
+  stocks/ins/load: विश्लेषण के लिए विशिष्ट शेयरक लोड करें
+  stocks/ins/lpsb: नवीनतम दीनार का पैसा खरीदता है
+  stocks/ins/set: उपलब्ध प्रीसेटों में से एक सेट करें
+  stocks/ins/stats: कंपनी के भीतर
+  stocks/ins/tippm: पिछले महीने खरीदते वक्‍त ज़्यादातर अंदर
+  stocks/ins/tippw: पिछले हफ्ते खरीदते वक्‍त ज़्यादातर अंदर
+  stocks/ins/tipt: आज खरीदते वक्‍त सबसे ऊपर
+  stocks/ins/tispm: शीर्ष अंदर की बिक्री पिछले माह
+  stocks/ins/tispw: सबसे अंदर की बिक्री पिछले सप्ताह
+  stocks/ins/tist: शीर्ष अंदर की बिक्री आज
+  stocks/ins/toppm: शीर्ष अधिकारी पिछले महीने खरीदते हैं
+  stocks/ins/toppw: मुख्य अधिकारी पिछले सप्ताह खरीदते हैं
+  stocks/ins/topt: शीर्ष अधिकारी आज खरीदते हैं
+  stocks/ins/view: उपलब्ध प्रीसेट देखें
+  stocks/load: विश्लेषण के लिए विशिष्ट स्टॉकचक तथा अतिरिक्त जानकारी लोड करें
+  stocks/news: कंपनी का नवीनतम समाचार
+  stocks/options: विकल्प
+  stocks/options/_expiry: कालातीत करें
+  stocks/options/_ticker: चेकर
+  stocks/options/binom: कनवर्टिक विकल्पों के उपयोग से एक विकल्प का मूल्य दिखाता है
+  stocks/options/calc: मूल कॉल/ एंटल गणक
+  stocks/options/chains: छवि फ़ाइल नाम प्रदर्शित करने के लिए यह विकल्प सेट करें.
+  stocks/options/exp: देखने और नियत करें
+  stocks/options/greeks: दिए गए विकल्प के लिए पथ दिखाता है
+  stocks/options/grhist: ओपन- पीजीपी इतिहास प्लाट करें
+  stocks/options/hedge: डेल्टा को न्यूट्रल करने के लिए पोर्टार दिखाएं
+  stocks/options/hedge/_expiry: कालातीत करें
+  stocks/options/hedge/_ticker: चेकर
+  stocks/options/hedge/_underlying: उड़ती स्थिति
+  stocks/options/hedge/add: विकल्प सूची में एक विकल्प जोड़ें
+  stocks/options/hedge/list: कॉल के लिए उपलब्ध हड़ताल क़ीमतों को दिखाने के लिए दिखाएँ
+  stocks/options/hedge/pick: अन्तर्निहित मूल्य स्थिति चुनें
+  stocks/options/hedge/plot: विकल्प भुगतान डायग्राम दिखाएँ
+  stocks/options/hedge/rmv: विकल्प सूची में से एक विकल्प को मिटाएँ
+  stocks/options/hedge/sop: चयनित विकल्प तथा न्यूट्रल- पोर्टवेयर भार दिखाएँ
+  stocks/options/hist: प्लाट विकल्प इतिहास
+  stocks/options/info: प्रदर्शक विकल्प जानकारी (वोलीता, आईवी बारी इत्यादि)
+  stocks/options/load: नया टिकर लोड करें
+  stocks/options/oi: ओपन- पीजीपी ब्याज प्लाट करें
+  stocks/options/parity: बताएँ कि क्या विकल्प ऊपर हैं या नीचे वांछित मूल्य
+  stocks/options/pcr: प्रदर्शक को चेक करने के लिए अनुपात
+  stocks/options/plot: उपयोक्ता द्वारा दिए गए चर का प्लाट करें
+  stocks/options/pricing: विकल्प प्राथमिकलिंग तथा तटस्थ मूल्य दिखाता है
+  stocks/options/pricing/_expiry: कालातीत करें
+  stocks/options/pricing/_ticker: चेकर
+  stocks/options/pricing/add: सूची में वांछित मूल्य जोड़ें
+  stocks/options/pricing/rmv: सूची में से वांछित मूल्य मिटाएँ
+  stocks/options/pricing/rnval: किसी विकल्प के लिए न्यूट्रल विकल्प के लिए खतरा
+  stocks/options/pricing/show: उम्मीद की गयी कीमतों की सूची दिखाएँ
+  stocks/options/screen: पूर्व- नियत पर आधारित स्क्रीन चेकर्स
+  stocks/options/screen/_preset: प्रीसेट
+  stocks/options/screen/_screened_tickers: अंतिम स्क्रीन चेक्शन
+  stocks/options/screen/ca: विश्लेषण मेन्यू की तुलना करने के लिए इन्हें लें
+  stocks/options/screen/scr: इस प्रीसेट से स्क्रीन डाटा
+  stocks/options/screen/set: उपलब्ध प्रीसेटों में से एक सेट करें
+  stocks/options/screen/view: उपलब्ध प्रीसेट्स देखें (या विशेष रूप से एक)
+  stocks/options/unu: असाधारण विकल्प क्रिया दिखाएँ
+  stocks/options/voi: आवाज प्रारंभ करें और दिलचस्पी खोलें
+  stocks/options/vol: आवाज प्लाट करें
+  stocks/options/vsurf: 3 आयामी सतह दिखाएँ
+  stocks/qa: Antututial विश्लेषण, statum, रीस्टिक विश्लेषण
+  stocks/qa/_other_: अन्य
+  stocks/qa/_plots_: प्लाट
+  stocks/qa/_risk_: ख़तरा
+  stocks/qa/_rolling_metrics_: मेट्रिक्स रोल किया जा रहा है
+  stocks/qa/_statistics_: सांख्यिकी
+  stocks/qa/_target: लक्ष्य स्तम्भ
+  stocks/qa/_ticker: चेकर
+  stocks/qa/acf: (संयोगीय) कीमत के भिन्न कार्य
+  stocks/qa/beta: किसी भी संदर्भ टिकर को प्रदर्शित करें
+  stocks/qa/bw: बॉक्स और बैलेकर प्लाट
+  stocks/qa/capm: राजधानी विशेषता मॉडल
+  stocks/qa/cdf: एकत्रित वितरण फंक्शन
+  stocks/qa/cusum: कीमत की एकत्रित योग एल्गोरिदम के प्रयोग से विभिन्न परिवर्तनों का
+    पता लगता है
+  stocks/qa/decompose: दामों का पुनर्भरण, समय, और फिर दामों का पुनर्स्थन
+  stocks/qa/es: प्रदर्शक प्रत्याशित छोटा
+  stocks/qa/hist: घनत्व प्लाट सहित हिस्टोग्राम
+  stocks/qa/kurtosis: कीमत के वितरण के लिए क्रॉटोसिस चालू किया जा रहा है
+  stocks/qa/line: चयनित लक्ष्य का प्लाट करें
+  stocks/qa/load: नया टिकर लोड करें
+  stocks/qa/normality: सामान्य आँकड़े तथा जाँच
+  stocks/qa/om: प्रदर्शक सागा अनुपात
+  stocks/qa/pick: विश्लेषण के लिए लक्ष्य स्तम्भ चुनें
+  stocks/qa/qqplot: मानक सामान्य वक्र के विरुद्ध फिर से बिगाड़ता है
+  stocks/qa/quantile: 'द न्यू यॉर्क टाइम्स्‌ (अंग्रेज़ी) रिपोर्ट करता है:'
+  stocks/qa/raw: रॉ डाटा छापें
+  stocks/qa/rolling: कीमत के पीछे भागने का मतलब है और भारी कीमत चुकाना
+  stocks/qa/sh: सुस्पष्ट अनुपात प्रदर्शित करें
+  stocks/qa/skew: क़ीमतों के वितरण का सवार होना
+  stocks/qa/so: गाइड डैश लाइन ड्रा करने में इस्तेमाल करें
+  stocks/qa/spread: कीमत के बीच का मतभेद तथा मानक विचलन
+  stocks/qa/summary: स्टॉक्स के संक्षिप्त सारांश आंकड़े
+  stocks/qa/unitroot: स्टेशनिटी (DF, केएसएस) के लिए इकाई रूट जाँच
+  stocks/qa/var: जोखिम पर प्रदर्शन मान
+  stocks/quote: विशेष स्टॉकर के लिए वर्तमान कीमत देखें
+  stocks/res: वेब पेज पर शोध पृष्ठ, मेक्रोअक्ष, फिर राका खर्च, मूर्ख
+  stocks/res/_ticker: चेकर
+  stocks/res/barchart: www.barchart.com
+  stocks/res/bullrun: www.bullrun.com.br
+  stocks/res/businessinsider: www.markets.businessinsider.com
+  stocks/res/fidelity: www.eresearch.fidelity.com
+  stocks/res/fintel: www.fintel.com
+  stocks/res/finviz: www.finviz.com
+  stocks/res/fmp: www.financialmodelingprep.com
+  stocks/res/fool: www.fool.com
+  stocks/res/grufity: www.grufity.com
+  stocks/res/macroaxis: www.macroaxis.com
+  stocks/res/macrotrends: www.macrotrends.net
+  stocks/res/marketchameleon: www.marketchameleon.com
+  stocks/res/marketwatch: www.marketwatch.com
+  stocks/res/newsfilter: www.newsfilter.io
+  stocks/res/stockanalysis: www.stockanalysis.com
+  stocks/res/stockrow: www.stockrow.com
+  stocks/res/tradingview: www.tradingview.com
+  stocks/res/yahoo: www.finance.yahoo.com
+  stocks/res/zacks: www.zacks.com
+  stocks/scr: स्क्रीन स्टॉक्स, प्री- व्यूयर, पूर्व- नियत फ़िल्टर के उपयोग से
+  stocks/scr/_preset: प्रीसेट
+  stocks/scr/_screened_tickers: अंतिम स्क्रीन चेक्शन
+  stocks/scr/ca: विश्लेषण मेन्यू की तुलना करने के लिए इन्हें लें
+  stocks/scr/financial: वित्तीय (उदा. विभाजन, ROOA, ROOE, ROOI, कान)
+  stocks/scr/historical: इतिहास मूल्य देखें
+  stocks/scr/overview: पूर्वावलोकन (जैसे कि सी. सी.
+  stocks/scr/ownership: मालिक (जैसे फ्लोट, आंतरिक अपना, छोटा अनुपात)
+  stocks/scr/performance: प्रदर्शन (जैसे कि प्रति सप्ताह, परफ YTD, असंतुलन एम)
+  stocks/scr/set: उपलब्ध प्रीसेटों में से एक सेट करें
+  stocks/scr/technical: तकनीकी (जैसे कि बी. बी. बी., सी.50, 52डबल्यू, RSI)
+  stocks/scr/valuation: दाम (जैसे कि P/E, PEG, P/S, पी/B, पीके, ईपीएस, ईपीएस, ईपी
+    इस Y)
+  stocks/scr/view: उपलब्ध प्रीसेट्स (डिफ़ॉल्ट तथा रीतियाँ) देखें
+  stocks/search: विश्लेषण के लिए विशिष्ट वस्तुओं की जाँच करें
+  stocks/sia: सेक्टर और उद्योग विश्लेषण, प्रति सेक्टर कंपनियों, तेजी से प्रति उद्योग
+    प्रति उद्योग और देश
+  stocks/sia/_country: देश
+  stocks/sia/_exclude_exchanges: एक्जेंजों को अलग करें
+  stocks/sia/_financials_: वित्तीय
+  stocks/sia/_financials_loaded_: वित्तीय - लोड डाटा (तेज मोड)
+  stocks/sia/_industry: इंदु की गेंद
+  stocks/sia/_mktcap: बाजार कैप
+  stocks/sia/_period: अवधि
+  stocks/sia/_returned_tickers: रिटर्न्ड चेकर्स
+  stocks/sia/_sector: सेक्टर
+  stocks/sia/_statistics_: सांख्यिकी
+  stocks/sia/ca: विश्लेषण मेन्यू की तुलना करने के लिए इन्हें लें
+  stocks/sia/clear: उद्योग, सेक्टर, देश और बाजार के टोपी पैरामीटर से साफ करें
+  stocks/sia/country: मौज़ूदा देशों को देखें, या फिर सेट देश को नियत करें यदि भरा
+    हुआ है
+  stocks/sia/cpci: उद्योगों प्रति देश इंदु (और बाजार कैप) पर आधारित है
+  stocks/sia/cpcs: सेक्टर (और बाजार कैप पर आधारित एक देश)
+  stocks/sia/cpic: कंपनियों प्रति देश पर आधारित (और बाजार कैप)
+  stocks/sia/cpis: टीम प्रति इंडक्टर (और बाजार कैप पर आधारित)
+  stocks/sia/cps: देश (और बाजार कैप) पर आधारित कंपनी प्रति सेप्टर ()
+  stocks/sia/exchange: कैश्ट्ट इंटरनॅशनेशन झंडा
+  stocks/sia/industry: मौज़ूदा उद्योग देखें, या फिर सेट उद्योग यदि हैंग निर्दिष्ट
+    है
+  stocks/sia/metric: चयनित फिल्टरों के पार वित्तीय बम की कल्पना करें
+  stocks/sia/mktcap: नीना, माइक्रोस्कोप, छोटे, बड़े, या मीगा के बीच सेट किया गया
+  stocks/sia/period: वार्षिक, चौथाई या ट्रेलिंग के बीच की अवधि नियत करें
+  stocks/sia/sector: यदि है तो मौज़ूदा सेक्टर्स देखें
+  stocks/sia/select: विशिष्ट टिकर चुनें तथा यह सभी सम्बन्धित पैरामीटर्स हैं
+  stocks/sia/vis: चयनित फिल्टरों के पार वित्तीय बम की कल्पना करें
+  stocks/ta: तकनीकी विश्लेषण, किमा, sci, dix, ब्ब्ब, ब्लू
+  stocks/ta/_custom_: मनपसंद
+  stocks/ta/_momentum_: डिक्लेयरम
+  stocks/ta/_overlap_: गुआडेलोप
+  stocks/ta/_ticker: चेकर
+  stocks/ta/_trend_: ट्रेज
+  stocks/ta/_volatility_: फ़ॉन्ट रंग = "# D900D9
+  stocks/ta/_volume_: आवाज़
+  stocks/ta/ad: संग्रहित/ वितरण पंक्ति
+  stocks/ta/adosc: शैनिक स्टिकर
+  stocks/ta/adx: औसतन दिशा- गति इंडेक्स
+  stocks/ta/aroon: एकोना संकेतक
+  stocks/ta/atr: औसत सही सीमा
+  stocks/ta/bbands: बम्पर दल
+  stocks/ta/cci: चैनल सूची
+  stocks/ta/cg: गुरुत्वाकर्षण के केंद्र
+  stocks/ta/clenow: अब वृद्धि में बदलाव
+  stocks/ta/demark: टॉम डेमार्क का अनुक्रम सूचक
+  stocks/ta/donchian: सिचियन चैनल
+  stocks/ta/ema: एक्सपोनिंग औसत
+  stocks/ta/fib: प्लोनी लौटी
+  stocks/ta/fisher: मछली रूपांतरण
+  stocks/ta/hma: पाए जा रहे प्राणों की औसत
+  stocks/ta/kc: चक्रीय चैनल
+  stocks/ta/macd: औसत फलता - फूल रहा है
+  stocks/ta/obv: संतुलन आवाज
+  stocks/ta/recom: तकनीकी प्रदर्शनों पर आधारित सलाह
+  stocks/ta/rsi: सापेक्ष शक्ति निर्देशिका
+  stocks/ta/rsp: सापेक्ष शक्‍ति प्रतिशत
+  stocks/ta/sma: साधारण खिसकाना औसत
+  stocks/ta/stoch: एस. ए.
+  stocks/ta/summary: तकनीकी सारांश रिपोर्ट
+  stocks/ta/tv: पर अंतःक्रियात्मक चार्ट खोलें
+  stocks/ta/view: ऐतिहासिक डेटा तथा प्रवृत्तिएँ देखें
+  stocks/ta/vwap: मात्रा परिमाण औसत मूल्य
+  stocks/ta/wma: अधिकतम तीव्रता इनपुट औसत
+  stocks/ta/zlma: शून्य जो आगे बढ़ रहा है औसत
+  stocks/th: व्यापार घंटे, खुला बाजारों की जाँच करें
+  stocks/th/_exchange: एक्सचेंज विन्यास
+  stocks/th/_symbol: प्रतीक
+  stocks/th/_symbol_name: प्रतीक नाम
+  stocks/th/all: सभी बाजारों को दिखाएँ
+  stocks/th/closed: बन्द बाजारों को दिखाएँ
+  stocks/th/exchange: एक विनिमय दिखाएँ
+  stocks/th/holidays: सभी तारीखों को दिखाएँ जिसमें बाजार छुट्टी है
+  stocks/th/open: खुले बाजारों को दिखाएँ
+  stocks/th/symbol: फाइल चयन करें
+  stocks/tob: लोड चेकर के लिए पुस्तक का शीर्ष देखें (सिर्फ विनिमय करें)
+  stop: सत्र रेकॉर्ड बन्द करें
+  support: पहले से एक समर्थन टिकट की जांच करने के लिए हमारी टीम के लिए
+  survey: हमारे 2 मिनट के सर्वेक्षण में भरें तो हम बेहतर समझते हैं कि कैसे हम टर्मिनल
+    सुधार कर सकते हैं
+  update: टर्मिनल को स्वतः अद्यतन करने की कोशिश करें (जीवीएचबी संस्करण)
+  wiki: विकिपीडिया में एक एक्सप्रेशन के लिए खोज रहा है (http://s.org.org/)

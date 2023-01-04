@@ -1,0 +1,1091 @@
+ar:
+  _configure_: اضبط الطرفية الخاصة بك
+  _home_: المعلومات والأدلة والدعم لمحطة OpenBB
+  _main_menu_: القائمة الرئيسية
+  _others_: جهات أخرى
+  about: اكتشاف قدرات محطة OpenBB (https://openbb.co/docs)
+  alternative: مجموعات البيانات البديلة ، مثل COVID ومقاييس المصدر المفتوح
+  alternative/covid: قائمة COVID ، الحالات ، الوفيات ، المعدلات
+  alternative/covid/_country: البلد
+  alternative/covid/cases: الحصول على حالات لبلد محدد
+  alternative/covid/country: اختر بلدًا للبيانات
+  alternative/covid/deaths: الحصول على وفيات في بلد محدد
+  alternative/covid/ov: الحصول على نظرة عامة (الحالات والوفيات) لبلد محدد
+  alternative/covid/rates: الحصول على معدل الوفيات / الحالات لبلد محدد
+  alternative/covid/slopes: الحصول على البلدان التي لديها أعلى منحدر في الحالات
+  alternative/oss: قائمة مفتوحة المصدر ، تاريخ النجوم ، معلومات repos
+  alternative/oss/rossidx: أسرع الشركات الناشئة مفتوحة المصدر نمواً
+  alternative/oss/rs: ملخص repo
+  alternative/oss/sh: تاريخ نجم الريبو
+  alternative/oss/tr: أعلى starred repos
+  crypto: الغوص في بيانات onchain ، tokenomics ، تداول العرض ، nfts وأكثر من ذلك
+  crypto/_exchange: تبادل
+  crypto/_interval: الفاصل (دقيقة)
+  crypto/_source: المصدر
+  crypto/_symbol: عملة معدنية
+  crypto/candle: عرض الرسم البياني شمعة لعملة معماة محددة
+  crypto/dd: العناية الواجبة للعملة المحملة ، ومعلومات العملة ، ووسائل التواصل الاجتماعي
+    ، وإحصائيات السوق
+  crypto/dd/_activity_: النشاط والمجتمع
+  crypto/dd/_contributors_: المساهمون والمستثمرون
+  crypto/dd/_market_: السوق
+  crypto/dd/_metrics_: المقاييس والمقاييس
+  crypto/dd/_overview_: استعراض عام
+  crypto/dd/_roadmap_: خارطة الطريق والأخبار
+  crypto/dd/_source: المصدر
+  crypto/dd/_symbol: عملة معدنية
+  crypto/dd/_tokenomics_: توكينوميكس
+  crypto/dd/active: عناوين نشطة
+  crypto/dd/ath: جميع احصائيات عالية الوقت ذات الصلة لعملة محملة
+  crypto/dd/atl: كل الوقت احصائيات منخفضة ذات الصلة لعملة محملة
+  crypto/dd/balance: توازن العملة المعدنية
+  crypto/dd/basic: معلومات أساسية عن العملة المحملة
+  crypto/dd/bc: روابط إلى المستكشفين blockchain لعملة محملة
+  crypto/dd/change: 30d تغيير العرض الذي عقد على محافظ الصرف
+  crypto/dd/desc: وصف المشروع - لماذا ، كيف ، ماذا
+  crypto/dd/dev: github ، إحصاءات تطوير عملة bitbucket
+  crypto/dd/eb: الرصيد الإجمالي المحتفظ به في البورصات (بالنسبة المئوية والوحدات)
+  crypto/dd/events: فيديوهات متعلقة بـ “ Loaded coin ”
+  crypto/dd/ex: جميع التبادلات حيث يتم سرد عملة محملة
+  crypto/dd/fr: تفاصيل جمع التبرعات مثل حسابات الخزينة وجولات المبيعات والتخصيص
+  crypto/dd/fundrate: سعر التمويل لكل سعر صرف
+  crypto/dd/funot: المقياس الأساسي مع مرور الوقت
+  crypto/dd/gh: نشاط github مع مرور الوقت
+  crypto/dd/gov: تفاصيل الحوكمة
+  crypto/dd/info: معلومات حول عملة محملة
+  crypto/dd/inv: المستثمرون (الأفراد والمنظمات)
+  crypto/dd/links: روابط مثل ورقة بيضاء، جيثب، تويتر، يوتيوب، ريديت، برقية
+  crypto/dd/liquidations: احصائيات التصفية اليومية للعملة المحملة
+  crypto/dd/load: تحميل عملة معماة محددة للتحليل
+  crypto/dd/market: احصائيات السوق حول عملة محملة
+  crypto/dd/mcapdom: هيمنة سقف السوق
+  crypto/dd/mkt: جميع الأسواق لعملة محملة
+  crypto/dd/mt: السلاسل الزمنية ميساري على سبيل المثال أتباع تويتر، سيرك العرض، الخ
+  crypto/dd/news: آخر أخبار العملة المحملة
+  crypto/dd/nonzero: عناوين ذات أرصدة غير صفرية
+  crypto/dd/ob: كتاب النظام
+  crypto/dd/oi: الفائدة المفتوحة لكل تبادل
+  crypto/dd/pi: معلومات المشروع على سبيل المثال تفاصيل التكنولوجيا ، repos العامة
+    ، عمليات التدقيق ، vulns
+  crypto/dd/ps: مقاييس الأسعار والعرض ذات الصلة للعملة المحملة
+  crypto/dd/rm: خارطة الطريق
+  crypto/dd/score: نوع مختلف من الدرجات للعملة المحملة ، على سبيل المثال درجة المطور
+    ، درجة المشاعر
+  crypto/dd/social: البوابات الاجتماعية عناوين المواقع لعملة محملة ، على سبيل المثال
+    reddit ، تويتر
+  crypto/dd/stats: احصائيات عملة
+  crypto/dd/team: المساهمون (الأفراد والمنظمات)
+  crypto/dd/tk: tokenomics على سبيل المثال تعميم / ماكس / إجمالي العرض ، نوع الانبعاثات
+    ، الخ
+  crypto/dd/trades: آخر الصفقات
+  crypto/dd/twitter: تويت لعملة محملة
+  crypto/dd/web: تم العثور على مواقع الويب لعملة محملة على سبيل المثال المنتدى ، الصفحة
+    الرئيسية
+  crypto/defi: المعلومات المالية اللامركزية ، dpi ، اللاما ، tvl ، الإقراض ، الاقتراض
+    ، التمويل
+  crypto/defi/anchor: مرساة بيانات الأرباح
+  crypto/defi/aterra: تاريخ 30 يوما من الأصول المحددة في عنوان تيرا
+  crypto/defi/ayr: تاريخ 30 يوما من احتياطي العائد مرساة
+  crypto/defi/dpi: بروتوكولات DeFi المدرجة في DefiPulse
+  crypto/defi/dtvl: القيمة الإجمالية التاريخية مقفل (TVL) بواسطة dApp
+  crypto/defi/gacc: سجل نمو حساب terra blockchain
+  crypto/defi/gdapps: أعلى DeFi dApps مجمعة حسب السلسلة
+  crypto/defi/govp: قائمة مقترحات حوكمة blockchain terra
+  crypto/defi/lcsc: لونا تعميم التغييرات العرض
+  crypto/defi/ldapps: قوائم dApps
+  crypto/defi/newsletter: النشرات الإخبارية الأخيرة ذات الصلة DeFi
+  crypto/defi/pairs: وأضاف مؤخرا أزواج على Uniswap
+  crypto/defi/pools: حمامات حسب الحجم على Uniswap
+  crypto/defi/sinfo: معلومات أساسية عن عنوان حساب تيرا المقدم
+  crypto/defi/sratio: terra blockchain حصة نسبة التاريخ
+  crypto/defi/sreturn: terra blockchain staking إرجاع التاريخ
+  crypto/defi/stats: إحصائيات قاعدة حول Uniswap
+  crypto/defi/stvl: القيم التاريخية للمجموع الكلي للTVLs من جميع dApps
+  crypto/defi/swaps: المقايضات الأخيرة القيام به على Uniswap
+  crypto/defi/tokens: الرموز التجارية قادرة على Uniswap
+  crypto/defi/validators: معلومات حول المدققين blockchain تيرا
+  crypto/defi/vaults: أعلى DeFi Vaults على blockchains مختلفة
+  crypto/disc: اكتشاف cryptocurrencies تتجه, الرابحين الأعلى, الخاسرين, أعلى المشاعر
+  crypto/disc/dapps: أعلى التطبيقات اللامركزية
+  crypto/disc/dex: أعلى التبادلات اللامركزية
+  crypto/disc/gainers: الرابحون الأوائل
+  crypto/disc/games: أعلى ألعاب blockchain
+  crypto/disc/losers: أكبر الخاسرين
+  crypto/disc/nft: أعلى الرموز غير قابلة للاستبدال
+  crypto/disc/search: البحث عن القطع النقدية
+  crypto/disc/top: أعلى القطع النقدية
+  crypto/disc/trending: العملات المتداولة
+  crypto/find: العثور على القطع النقدية
+  crypto/forecast: تقنيات التنبؤ, RNN, nbeats, محول, كتلة RNN
+  crypto/headlines: معنويات التشفير من 15  عناوين الأخبار الرئيسية
+  crypto/load: تحميل عملة معماة محددة للتحليل
+  crypto/nft: الرموز غير القابلة للاستبدال, اليوم قطرات
+  crypto/nft/collections: أعلى مجموعات ethereum
+  crypto/nft/fp: جمع المبيعات / سعر الكلمة
+  crypto/nft/stats: احصائيات جمع
+  crypto/onchain: معلومات عن مختلف blockchains ، رسوم الغاز eth ، تنبيهات الحوت ،
+    معلومات DEXes
+  crypto/onchain/_address: عنوان Ethereum
+  crypto/onchain/_ethereum_: إيثريوم
+  crypto/onchain/_type: نوع العنوان
+  crypto/onchain/address: تحميل عنوان ethereum من الرمز المميز أو الحساب أو المعاملة
+  crypto/onchain/baas: عرض الأسعار ، وأسعار الطلب ، ومتوسط انتشار زوج التشفير المعطى
+  crypto/onchain/balance: تحقق من رصيد الإيثريوم
+  crypto/onchain/btccp: يعرض BTC تعميم العرض
+  crypto/onchain/btcct: يعرض BTC المعاملات المؤكدة
+  crypto/onchain/ds: احصائيات منصة eth (المستخدمين اليومي ؛ الرسوم)
+  crypto/onchain/dt: المعاملات اليومية من الرموز eth
+  crypto/onchain/dvcp: حجم التداول اليومي لزوج التشفير
+  crypto/onchain/gwei: تحقق من رسوم الغاز الحالية
+  crypto/onchain/hist: تاريخ رصيد الإيثريوم (المعاملات)
+  crypto/onchain/holders: كبار أصحاب الرمز المميز ERC20
+  crypto/onchain/hr: تحقق من معدل التجزئة blockchain مع مرور الوقت (BTC أو ETH)
+  crypto/onchain/info: معلومات رمزية ERC20
+  crypto/onchain/lt: آخر الصفقات من قبل دكس أو الشهر.
+  crypto/onchain/prices: الأسعار التاريخية لرمز ERC20
+  crypto/onchain/th: تاريخ الرمز المميز ERC20
+  crypto/onchain/top: أعلى الرموز ERC20
+  crypto/onchain/ttcp: أعلى أزواج التشفير المتداولة في تبادل لامركزي معين
+  crypto/onchain/tv: حجم الرمز المميز على DEXes
+  crypto/onchain/tvl: القيمة الإجمالية مؤمن من الرموز ERC20
+  crypto/onchain/tx: معلومات معاملات blockchain ethereum
+  crypto/onchain/ueat: عناوين ethereum فريدة من نوعها التي جعلت الصفقة
+  crypto/onchain/whales: التحقق من معاملات العملات المشفرة
+  crypto/ov: نظرة عامة على cryptocurrencies ، سقف السوق ، DeFi ، آخر الأخبار ، أعلى
+    التبادلات ، اسطبلات
+  crypto/ov/altindex: مؤشر موسم العملات البديلة (75٪ من أفضل 50 عملة أداء أفضل من
+    BTC)
+  crypto/ov/btcrb: عرض مخطط سعر قوس قزح بيتكوين (الانحدار اللوغاريتمي)
+  crypto/ov/categories: فئات التشفير
+  crypto/ov/ch: قوائم الاختراقات الرئيسية المتعلقة بالعملات المشفرة
+  crypto/ov/contracts: جميع العقود الذكية لمنصة معينة
+  crypto/ov/cr: توريد التشفير أو اقتراض أسعار الفائدة
+  crypto/ov/defi: معلومات سوق DeFi العالمية
+  crypto/ov/derivatives: مشتقات التشفير
+  crypto/ov/ewf: إجمالي رسوم سحب الصرف
+  crypto/ov/exmarkets: جميع الأسواق المتاحة في تبادل معين
+  crypto/ov/exrates: أسعار صرف العملات المعدنية
+  crypto/ov/fun: استكشاف المشاريع على أساس المقاييس الأساسية
+  crypto/ov/hm: خريطة حرارة التشفير
+  crypto/ov/hold: ethereum ، bitcoin المقتنيات نظرة عامة الإحصاءات
+  crypto/ov/indexes: فهارس التشفير
+  crypto/ov/info: معلومات أساسية عن جميع العملات المتاحة
+  crypto/ov/markets: معلومات متعلقة بالسوق حول جميع العملات المتاحة
+  crypto/ov/news: أخبار التشفير الأخيرة
+  crypto/ov/pairs: معلومات حول أزواج التداول المتاحة
+  crypto/ov/platforms: قائمة منصات blockchain على سبيل المثال. ethereum ، سولانا ،
+    كوساما ، تيرا
+  crypto/ov/stables: العملات المستقرة
+  crypto/ov/wf: رسوم السحب الإجمالية
+  crypto/ov/wfpe: رسوم سحب التشفير لكل تبادل
+  crypto/price: السعر في الوقت الحقيقي وفترة الثقة
+  crypto/prt: العوائد المحتملة (على سبيل المثال الاتجاه الصعودي إذا وصلت ETH إلى سقف
+    سوق BTC)
+  crypto/qa: التحليل الكمي يتحلل ، cusum ، تحليل المخلفات
+  crypto/qa/_other_: أخرى
+  crypto/qa/_plots_: المؤامرات
+  crypto/qa/_rolling_metrics_: المتداول المقاييس المتداول
+  crypto/qa/_statistics_: الإحصاءات
+  crypto/qa/_target: العمود المستهدف
+  crypto/qa/_ticker: مبرقة كاتبة
+  crypto/qa/acf: (جزئي) وظيفة الارتباط التلقائي الفروق في الأسعار
+  crypto/qa/bw: مربع ويسكي مؤامرة
+  crypto/qa/cdf: وظيفة التوزيع التراكمي
+  crypto/qa/cusum: يكتشف التغيرات المفاجئة باستخدام خوارزمية المجموع التراكمي للأسعار
+  crypto/qa/decompose: التحلل في الاتجاه الدوري والموسم ومخلفات الأسعار
+  crypto/qa/hist: الرسم البياني مع مؤامرة الكثافة
+  crypto/qa/kurtosis: الكورتوز المتداول لتوزيع الأسعار
+  crypto/qa/line: مؤامرة خط الهدف المحدد
+  crypto/qa/load: تحميل شريط جديد
+  crypto/qa/normality: احصائيات طبيعية واختبارات
+  crypto/qa/pick: اختر العمود المستهدف للتحليل
+  crypto/qa/qqplot: بقايا ضد المنحنى العادي القياسي
+  crypto/qa/quantile: المتداول المتوسط والكمي للأسعار
+  crypto/qa/raw: طباعة البيانات الخام
+  crypto/qa/rolling: متوسط المتداول والانحراف std من الأسعار
+  crypto/qa/skew: الانحراف المتداول لتوزيع الأسعار
+  crypto/qa/spread: تباين المتداول والانحراف std من الأسعار
+  crypto/qa/summary: إحصاءات موجزة موجزة عن المخزون المحمّل
+  crypto/qa/unitroot: وحدة اختبار الجذر للstationarity (ADF ، KPSS)
+  crypto/ta: التحليل الفني للعملة المحملة ، إما ، macd ، rsi ، adx ، bbands ، obv
+  crypto/ta/_custom_: مخصص
+  crypto/ta/_momentum_: قوة الدفع
+  crypto/ta/_overlap_: التداخلية
+  crypto/ta/_ticker: عملة محملة
+  crypto/ta/_trend_: تريند
+  crypto/ta/_volatility_: التقلبية
+  crypto/ta/_volume_: حجم التداول
+  crypto/ta/ad: خط التراكم / التوزيع
+  crypto/ta/adosc: تشايكين مذبذب
+  crypto/ta/adx: متوسط مؤشر الحركة الاتجاهية
+  crypto/ta/aroon: مؤشر aroon
+  crypto/ta/bbands: bollinger العصابات
+  crypto/ta/cci: مؤشر قناة السلع
+  crypto/ta/cg: مركز الجاذبية
+  crypto/ta/donchian: قنوات دونشيان
+  crypto/ta/ema: المتوسط المتحرك الأسي
+  crypto/ta/fib: فيبوناتشي التصحيح
+  crypto/ta/fisher: تحويل صياد الأسماك
+  crypto/ta/hma: بدن تتحرك المتوسط
+  crypto/ta/kc: قنوات keltner
+  crypto/ta/macd: المتوسط المتحرك للتقارب/التباعد
+  crypto/ta/obv: على حجم الرصيد
+  crypto/ta/rsi: مؤشر القوة النسبية
+  crypto/ta/sma: المتوسط المتحرك البسيط
+  crypto/ta/stoch: مؤشر ستوكاستيك مذبذب
+  crypto/ta/tv: مخطط تفاعلي مفتوح على
+  crypto/ta/vwap: الحجم المرجح متوسط السعر
+  crypto/ta/wma: المتوسط المتحرك المرجح
+  crypto/ta/zlma: صفر تأخر المتوسط المتحرك
+  crypto/tools: استكشاف أدوات مختلفة apytoapr, il
+  crypto/tools/aprtoapy: تحويل apr إلى apy
+  crypto/tools/il: حساب الخسارة غير الدائمة
+  dashboards: لوحات تفاعلية باستخدام أجهزة الكمبيوتر المحمولة voila و jupyter
+  dashboards/chains: تحليل سلسلة الخيارات
+  dashboards/correlation: ارتباطات الأسهم
+  dashboards/crypto: أسعار صرف cryptocurrency مقابل الدولار الأمريكي
+  dashboards/forecast: التنبؤ بمجموعات بيانات السلاسل الزمنية
+  dashboards/forecasting: التنبؤ بمجموعات بيانات السلاسل الزمنية
+  dashboards/futures: أداء العقود الآجلة التاريخية
+  dashboards/shortdata: تحليل البيانات القصيرة finra shortdata
+  dashboards/stocks: معلومات تاريخية عن المخزون
+  dashboards/vsurf: خيارات تقلب السطح
+  defined, not tested: محددة ، لم يتم اختبارها
+  defined, test failed: محددة ، فشل الاختبار
+  defined, test inconclusive: محددة ، اختبار غير حاسمة
+  defined, test passed: محددة ، اختبار مرت
+  econometrics: الأساليب الإحصائية والكمية للعلاقات بين مجموعات البيانات
+  econometrics/_data_loc: البحث عن البيانات في
+  econometrics/_exploration_: الاستكشاف
+  econometrics/_loaded: الملفات المحملة وأعمدة البيانات
+  econometrics/_regression_: الانحدار
+  econometrics/_regression_tests_: اختبارات الانحدار
+  econometrics/_tests_: الاختبارات والاختبارات
+  econometrics/add: إضافة أعمدة إلى مجموعة البيانات مع خيار استخدام الصيغ
+  econometrics/bgod: اختبارات الارتباط الذاتي Breusch-Godfrey مع التأخر في بقايا الانحدار
+  econometrics/bpag: اختبار Breusch-Pagan heteroscedasticity على بقايا الانحدار
+  econometrics/clean: تنظيف مجموعة بيانات عن طريق ملء أو إسقاط NaNs
+  econometrics/coint: اختبار التكامل المشترك على العديد من الأعمدة
+  econometrics/combine: الجمع بين الأعمدة من مجموعات البيانات المختلفة
+  econometrics/compare: مقارنة نتائج جميع النماذج المقدرة
+  econometrics/delete: احذف الأعمدة من مجموعة البيانات
+  econometrics/desc: إظهار إحصائيات وصفية لمجموعة بيانات
+  econometrics/dwat: اختبار الارتباط الذاتي Durbin-Watson على بقايا الانحدار
+  econometrics/export: تصدير مجموعة بيانات معالجة
+  econometrics/granger: اختبارات السببية غرانجر على عمودين
+  econometrics/index: مجموعة (متعددة) مؤشر على أساس الأعمدة
+  econometrics/load: تحميل مجموعة بيانات (يعمل أيضًا مع مجموعات بيانات StatsModels)
+  econometrics/modify: الجمع بين أعمدة مجموعات البيانات وحذف أو إعادة تسمية الأعمدة
+  econometrics/norm: إجراء اختبارات طبيعية على عمود من مجموعة البيانات
+  econometrics/ols: تناسب نموذج الانحدار الخطي (متعدد)
+  econometrics/options: اعرض خيارات مجموعة بيانات الأعمدة المتاحة
+  econometrics/panel: نموذج تقدير يستند إلى تقنيات الانحدار المختلفة
+  econometrics/plot: بيانات مؤامرة من مجموعة بيانات
+  econometrics/remove: إزالة واحدة من مجموعات البيانات المحملة
+  econometrics/rename: أعِد تسمية العمود من مجموعة البيانات
+  econometrics/root: إجراء اختبارات unitroot (ADF & KPSS) على عمود من مجموعة البيانات
+  econometrics/show: اعرض جزء من مجموعة بيانات محمّلة
+  econometrics/type: تغيير أنواع الأعمدة أو عرض أنواعها
+  economy: بيانات الاقتصاد الكلي العالمية، مثل العقود الآجلة، العائد، الخزينة.
+  economy/_database_: قواعد البيانات
+  economy/_stored: مجموعات البيانات المخزنة
+  economy/bigmac: مؤشر The Economist Big Mac
+  economy/edebt: تظهر إحصاءات الديون الخارجية لمختلف البلدان
+  economy/eval: إنشاء سلسلة جديدة من خلال تنفيذ العمليات على البيانات المحملة
+  economy/events: إظهار التقويم الاقتصادي
+  economy/forecast: تقنيات التنبؤ؛ رن، نبيت، المحولات، كتلة رن
+  economy/fred: جمع بيانات الماكرو من FRED استنادًا إلى معرف سلسلة
+  economy/futures: عرض نظرة عامة على العقود الآجلة والسلع
+  economy/index: العثور على ورسم أي مؤشر (رئيسي) في السوق.
+  economy/macro: جمع بيانات الماكرو لبلد أو بلدان
+  economy/map: S & P500 مؤشر الأسهم خريطة
+  economy/overview: عرض نظرة عامة على السوق سواء المؤشرات أو السندات أو العملات
+  economy/performance: أداء القطاعات والصناعة والبلد
+  economy/plot: بيانات مؤامرة من الأوامر المذكورة أعلاه معا
+  economy/qa: فتح قائمة التحليل الكمي مع البيانات المخزنة
+  economy/qa/_other_: أخرى
+  economy/qa/_plots_: المؤامرات
+  economy/qa/_rolling_metrics_: المتداول المقاييس المتداول
+  economy/qa/_series: سلسلة مختارة
+  economy/qa/_statistics_: الإحصاءات
+  economy/qa/acf: (جزئي) وظيفة الارتباط التلقائي الفروق في الأسعار
+  economy/qa/bw: مربع ويسكي مؤامرة
+  economy/qa/cdf: وظيفة التوزيع التراكمي
+  economy/qa/cusum: يكتشف التغيرات المفاجئة باستخدام خوارزمية المجموع التراكمي للأسعار
+  economy/qa/decompose: التحلل في الاتجاه الدوري والموسم ومخلفات الأسعار
+  economy/qa/hist: الرسم البياني مع مؤامرة الكثافة
+  economy/qa/kurtosis: الكورتوز المتداول لتوزيع الأسعار
+  economy/qa/line: مؤامرة خط الهدف المحدد
+  economy/qa/normality: احصائيات طبيعية واختبارات
+  economy/qa/pick: اختر سلسلة جديدة من بيانات الاقتصاد المخزنة
+  economy/qa/qqplot: بقايا ضد المنحنى العادي القياسي
+  economy/qa/quantile: المتداول المتوسط والكمي للأسعار
+  economy/qa/raw: طباعة البيانات الخام
+  economy/qa/rolling: متوسط المتداول والانحراف std من الأسعار
+  economy/qa/skew: الانحراف المتداول لتوزيع الأسعار
+  economy/qa/spread: تباين المتداول والانحراف std من الأسعار
+  economy/qa/summary: إحصاءات موجزة موجزة عن المخزون المحمّل
+  economy/qa/unitroot: وحدة اختبار الجذر للstationarity (ADF ، KPSS)
+  economy/rtps: قطاعات الأداء في الوقت الحقيقي
+  economy/spectrum: الطيف من القطاعات ، الصناعة ، البلد
+  economy/spread: تظهر مصفوفة انتشار السندات
+  economy/treasury: الحصول على أسعار الخزينة الأمريكية
+  economy/valuation: تقييم القطاعات والصناعة والبلد
+  economy/ycrv: اظهار منحنيات العائد السيادي
+  etf: تبادل الأموال المتداولة. التسعير التاريخي ، مقارنة المقتنيات والفحص
+  etf/_major_holdings: الحيازات الرئيسية
+  etf/_symbol: الرمز
+  etf/ca: تحليل المقارنة ، الحصول على مماثلة ، التاريخية ، الارتباط ، المالية
+  etf/candle: عرض مخطط شمعة ل ETF
+  etf/compare: مقارنة العديد من صناديق الاستثمار المتداولة المختلفة
+  etf/disc: اكتشاف صناديق الاستثمار المتداولة، الرابحين / Decliners / نشط
+  etf/disc/active: الأكثر نشاطا
+  etf/disc/decliners: المتراجعون الأعلى
+  etf/disc/gainers: الرابحون الأوائل
+  etf/holdings: أكبر الشركات القابضة
+  etf/load: تحميل بيانات ETF
+  etf/news: آخر أخبار الشركة
+  etf/overview: الحصول على نظرة عامة
+  etf/pir: إنشاء (متعددة) تقرير المستثمر السلبي اكسل (ق) تقرير (ق)
+  etf/scr: فرز صناديق الاستثمار المتداولة، نظرة عامة / الأداء، وذلك باستخدام مرشحات
+    مسبقا
+  etf/scr/_preset: الإعداد المسبق
+  etf/scr/sbc: شاشة حسب الفئة
+  etf/scr/screen: شاشة ETF باستخدام محدد مسبقًا
+  etf/scr/set: تعيين واحدة من المسبقة المتاحة
+  etf/scr/view: عرض المسبقة المتاحة
+  etf/search: البحث ETF حسب الاسم أو الوصف
+  etf/summary: وصف موجز لـ ETF
+  etf/ta: التحليل الفني, إما, ماكد, رسي, adx, bbands, obv
+  etf/ta/_custom_: مخصص
+  etf/ta/_momentum_: قوة الدفع
+  etf/ta/_overlap_: التداخلية
+  etf/ta/_ticker: إتف
+  etf/ta/_trend_: تريند
+  etf/ta/_volatility_: التقلبية
+  etf/ta/_volume_: حجم التداول
+  etf/ta/ad: خط التراكم / التوزيع
+  etf/ta/adosc: تشايكين مذبذب
+  etf/ta/adx: متوسط مؤشر الحركة الاتجاهية
+  etf/ta/aroon: مؤشر aroon
+  etf/ta/bbands: bollinger العصابات
+  etf/ta/cci: مؤشر قناة السلع
+  etf/ta/cg: مركز الجاذبية
+  etf/ta/donchian: قنوات دونشيان
+  etf/ta/ema: المتوسط المتحرك الأسي
+  etf/ta/fib: فيبوناتشي التصحيح
+  etf/ta/fisher: تحويل صياد الأسماك
+  etf/ta/hma: بدن تتحرك المتوسط
+  etf/ta/kc: قنوات keltner
+  etf/ta/macd: المتوسط المتحرك للتقارب/التباعد
+  etf/ta/obv: على حجم الرصيد
+  etf/ta/rsi: مؤشر القوة النسبية
+  etf/ta/sma: المتوسط المتحرك البسيط
+  etf/ta/stoch: مؤشر ستوكاستيك مذبذب
+  etf/ta/vwap: الحجم المرجح متوسط السعر
+  etf/ta/wma: المتوسط المتحرك المرجح
+  etf/ta/zlma: صفر تأخر المتوسط المتحرك
+  etf/weights: توزيع أوزان القطاع
+  exe: تنفيذ البرنامج النصي الروتيني الآلي
+  featflags: تمكين وتعطيل أعلام الميزات
+  featflags/_info_: ميزة الأعلام من خلال متغيرات البيئة
+  featflags/cls: وحدة تحكم واضحة بعد كل أمر
+  featflags/cmdloc: موقع القيادة معروض بالأرقام
+  featflags/color: استخدام ميزات التلوين
+  featflags/exithelp: تلقائيا طباعة مساعدة عند الإقلاع عن القائمة
+  featflags/ion: وضع matplotlib التفاعلي
+  featflags/promptkit: تمكين مجموعة أدوات سريعة (الإكمال التلقائي والتاريخ)
+  featflags/rcontext: تذكر السياقات التي تم تحميلها خلال الجلسة
+  featflags/reporthtml: تقرير مفتوح كما HTML دفتر الملاحظات خلاف ذلك
+  featflags/retryload: أعد كتابة الأوامر التي بها أخطاء إملائية مع التحميل أولاً
+  featflags/rich: محطة غنية ملونة
+  featflags/richpanel: الملونة الغنية لوحة المحطة الطرفية
+  featflags/tab: استخدم جدولة لطباعة أطر البيانات
+  featflags/tbhint: يعرض تلميحات الاستخدام في شريط أدوات أسفل
+  featflags/thoughts: أفكار من اليوم
+  featflags/watermark: العلامة المائية في الأرقام
+  forecast: التنبؤ بالمسلسلات الزمنية مع التعلم الآلي
+  forecast/_comingsoon_: قريباً
+  forecast/_data_loc: البحث عن البيانات في
+  forecast/_disclaimer_: تنويه
+  forecast/_exploration_: الاستكشاف
+  forecast/_feateng_: هندسة الميزات
+  forecast/_loaded: الملفات المحملة وأعمدة البيانات
+  forecast/_tsforecasting_: تنبؤات TimeSeries
+  forecast/arima: أريما (غير السهام)
+  forecast/atr: إضافة متوسط المدى الحقيقي
+  forecast/autoarima: نموذج ARIMA التلقائي
+  forecast/autoces: مجمع التلقائي نموذج تجانس الأسي
+  forecast/autoets: التلقائي إتس (خطأ، الاتجاه، الموسمية) نموذج
+  forecast/autoselect: اختر أفضل نموذج إحصائي من AutoARIMA ، AutoETS ، AutoCES ، MSTL
+    ، إلخ.
+  forecast/brnn: كتلة الشبكة العصبية المتكررة (RNN ، LSTM ، GRU) (الفروة. المتغيرات
+    السابقة السابقة)
+  forecast/clean: تنظيف مجموعة بيانات عن طريق ملء أو إسقاط NaNs
+  forecast/combine: الجمع بين الأعمدة من مجموعات البيانات المختلفة
+  forecast/corr: ارسم معاملات الارتباط لميزات مجموعة البيانات
+  forecast/delete: احذف الأعمدة من مجموعة البيانات
+  forecast/delta: إضافة % تغيير
+  forecast/desc: إظهار إحصائيات وصفية لمجموعة بيانات
+  forecast/ema: إضافة المتوسط المتحرك المرجح الأسي
+  forecast/expo: تجانس الأسي الاحتمالي
+  forecast/export: تصدير مجموعة بيانات معالجة
+  forecast/linregr: الانحدار الخطي الاحتمالي (feat. covariates الماضي والتفسير)
+  forecast/load: تحميل مجموعة بيانات من csv
+  forecast/mom: إضافة الزخم
+  forecast/mstl: مواسم متعددة والاتجاه باستخدام نموذج Loess (MSTL)
+  forecast/nbeats: تقدير البايزي العصبي (متغيرات الماضي)
+  forecast/nhits: الانتربول الهرمي العصبي (الخصية. المتغيرات السابقة)
+  forecast/plot: ارسم عمودًا معينًا لمجموعة بيانات محمّلة
+  forecast/regr: الانحدار (feat. covariates الماضي والتفسير)
+  forecast/rename: أعِد تسمية الأعمدة من مجموعة البيانات
+  forecast/rnn: الشبكة العصبية المتكررة الاحتمالية (RNN، LSTM، GRU)
+  forecast/roc: إضافة معدل التغيير
+  forecast/rsi: إضافة مؤشر القوة النسبية
+  forecast/rwd: المشي العشوائي مع نموذج الانجراف
+  forecast/season: ارسم الموسمية لعمود مجموعة البيانات
+  forecast/seasonalnaive: نموذج السذاجة الموسمية
+  forecast/show: اعرض جزء من مجموعة بيانات محمّلة
+  forecast/signal: إضافة إشارة السعر (قصيرة مقابل طويلة الأجل)
+  forecast/sto: إضافة مؤشر ستوكاستيك مذبذب٪ K و٪ D
+  forecast/tcn: الشبكة العصبية الالتفافية الالتفافية الزمنية (متغيرات التغاير السابقة)
+  forecast/tft: Temporal Fusion Transformer Network(feat. covariates الماضي) شبكة
+    المحولات الانصهار الزمني
+  forecast/theta: طريقة ثيتا
+  forecast/trans: شبكة المحولات (خمر. المتغيرات السابقة)
+  forex: التبادلات الأجنبية، ونقلت، وأسعار إلى الأمام لأزواج العملات والتكامل أواندا.
+  forex/_from: من
+  forex/_source: المصدر
+  forex/_ticker: مبرقة كاتبة
+  forex/_to: إلى أقصى حد
+  forex/candle: تظهر مؤامرة شمعة لزوج تحميلها
+  forex/forecast: تقنيات التنبؤ
+  forex/forex: وساطة الفوركس
+  forex/fwd: احصل على أسعار آجلة للزوج المحمّل
+  forex/load: الحصول على البيانات التاريخية
+  forex/oanda: قائمة Oanda
+  forex/oanda/_from: من
+  forex/oanda/_loaded: أداة محملة
+  forex/oanda/_source: المصدر
+  forex/oanda/_to: إلى أقصى حد
+  forex/oanda/calendar: اعرض التقويم
+  forex/oanda/cancel: إلغاء أمر معلق بواسطة معرف -i معرف الطلب
+  forex/oanda/candles: تظهر الشموع
+  forex/oanda/closetrade: إغلاق التجارة من قبل معرف.
+  forex/oanda/from: حدد "من" العملة في زوج الفوركس
+  forex/oanda/list: تاريخ طلب القائمة
+  forex/oanda/order: مكان أمر الحد -u عدد الوحدات -p السعر
+  forex/oanda/orderbook: كتاب أوامر الطباعة
+  forex/oanda/pending: الحصول على معلومات عن الأوامر المعلقة
+  forex/oanda/positionbook: طباعة positionbook
+  forex/oanda/positions: الحصول على المراكز المفتوحة
+  forex/oanda/price: يظهر سعر الأداة المختارة
+  forex/oanda/summary: يظهر ملخص الحساب
+  forex/oanda/to: حدد العملة "إلى" في زوج الفوركس
+  forex/oanda/trades: قائمة الصفقات المفتوحة
+  forex/qa: التحليل الكمي ، التحلل ، الكم ، تحليل المخلفات
+  forex/qa/_other_: أخرى
+  forex/qa/_pair: زوج زوج
+  forex/qa/_plots_: المؤامرات
+  forex/qa/_rolling_metrics_: المتداول المقاييس المتداول
+  forex/qa/_statistics_: الإحصاءات
+  forex/qa/_target: الهدف
+  forex/qa/acf: (جزئي) وظيفة الارتباط التلقائي الفروق في الأسعار
+  forex/qa/bw: مربع ويسكي مؤامرة
+  forex/qa/cdf: وظيفة التوزيع التراكمي
+  forex/qa/cusum: يكتشف التغيرات المفاجئة باستخدام خوارزمية المجموع التراكمي للأسعار
+  forex/qa/decompose: التحلل في الاتجاه الدوري والموسم ومخلفات الأسعار
+  forex/qa/hist: الرسم البياني مع مؤامرة الكثافة
+  forex/qa/kurtosis: الكورتوز المتداول لتوزيع الأسعار
+  forex/qa/line: مؤامرة خط الهدف المحدد
+  forex/qa/normality: احصائيات طبيعية واختبارات
+  forex/qa/pick: اختر العمود المستهدف للتحليل
+  forex/qa/qqplot: بقايا ضد المنحنى العادي القياسي
+  forex/qa/quantile: المتداول المتوسط والكمي للأسعار
+  forex/qa/raw: طباعة البيانات الخام
+  forex/qa/rolling: متوسط المتداول والانحراف std من الأسعار
+  forex/qa/skew: الانحراف المتداول لتوزيع الأسعار
+  forex/qa/spread: تباين المتداول والانحراف std من الأسعار
+  forex/qa/summary: إحصاءات موجزة موجزة عن المخزون المحمّل
+  forex/qa/unitroot: وحدة اختبار الجذر للstationarity (ADF ، KPSS)
+  forex/quote: احصل على آخر اقتباس
+  forex/ta: التحليل الفني, إما, ماكد, رسي, adx, bbands, obv
+  forex/ta/_currency: زوج العملات المحملة
+  forex/ta/_custom_: مخصص
+  forex/ta/_momentum_: قوة الدفع
+  forex/ta/_overlap_: التداخلية
+  forex/ta/_source: المصدر
+  forex/ta/_trend_: تريند
+  forex/ta/_volatility_: التقلبية
+  forex/ta/adx: متوسط مؤشر الحركة الاتجاهية
+  forex/ta/aroon: مؤشر aroon
+  forex/ta/bbands: bollinger العصابات
+  forex/ta/cci: مؤشر قناة السلع
+  forex/ta/cg: مركز الجاذبية
+  forex/ta/donchian: قنوات دونشيان
+  forex/ta/ema: المتوسط المتحرك الأسي
+  forex/ta/fib: فيبوناتشي التصحيح
+  forex/ta/fisher: تحويل صياد الأسماك
+  forex/ta/macd: المتوسط المتحرك للتقارب/التباعد
+  forex/ta/rsi: مؤشر القوة النسبية
+  forex/ta/sma: المتوسط المتحرك البسيط
+  forex/ta/stoch: مؤشر ستوكاستيك مذبذب
+  forex/ta/zlma: صفر تأخر المتوسط المتحرك
+  funds: البحث عن صناديق الاستثمار المشترك ، نظرة عامة ، الحيازات والأوزان القطاعية
+  funds/_country: البلد الحالي
+  funds/_fund: الصندوق الجاري
+  funds/alswe: تخصيص أموال العرض (القطاع، البلد، الحيازات)
+  funds/country: عيّن بلدًا للتصفية
+  funds/equity: حيازات الأسهم
+  funds/forecast: تقنيات التنبؤ
+  funds/info: الحصول على معلومات الصندوق
+  funds/infoswe: الحصول على معلومات الصندوق
+  funds/load: تحميل بيانات الصندوق التاريخية
+  funds/plot: مؤامرة تحميل بيانات الصندوق التاريخية
+  funds/search: البحث عن صناديق الاستثمار المشتركة
+  funds/sector: الأوزان قطاع
+  futures: السلع والسندات والمؤشر والبيتكوين والعملات الأجنبية
+  futures/curve: الحصول على منحنيات العقود الآجلة
+  futures/historical: الحصول على السلاسل الزمنية التاريخية
+  futures/search: البحث عن مستقبل على أساس الفئة أو التبادل.
+  intro: مقدمة عن محطة OpenBB
+  keys: تعيين مفاتيح API والتحقق من صلاحيتها
+  keys/_keys_: تتيح لك هذه القائمة تعيين مفاتيح API الخاصة بك. اكتب 'حول' لمزيد من
+    المعلومات
+  keys/_status_: الحالة
+  keys/mykeys: احصل على مفاتيحك المحددة
+  news: عرض المقالات الإخبارية على أساس المدى ومصادر البيانات
+  not defined: غير معرّف
+  portfolio: تحسين أداء المحفظة والنظر في أداء المحفظة وإسنادها
+  portfolio/_benchmark: المعيار المرجعي Benchmark
+  portfolio/_graphs_: الرسوم البيانية
+  portfolio/_loaded: المعاملات المحملة
+  portfolio/_metrics_: المقاييس والمقاييس
+  portfolio/_risk_: مقاييس المخاطر
+  portfolio/_riskfreerate: معدل المخاطر الخالية من المخاطر
+  portfolio/alloc: التخصيص على أساس الأصول أو القطاع أو البلدان أو المناطق
+  portfolio/attrib: إسناد قطاع العرض للمحفظة مقارنة مع S & P 500
+  portfolio/bench: تحديد المعيار
+  portfolio/bro: حيازات السماسرة, يدعم robinhood, حليف, degiro, coinbase
+  portfolio/bro/ally: Ally Invest القائمة
+  portfolio/bro/ally/_info_: معلومات المخزون
+  portfolio/bro/ally/balances: إظهار تفاصيل رصيد الحساب
+  portfolio/bro/ally/history: إظهار سجل حسابك
+  portfolio/bro/ally/holdings: اظهار حسابات الحيازات
+  portfolio/bro/ally/movers: الحصول على قوائم مرتبة من المحرك
+  portfolio/bro/ally/quote: الحصول على اقتباس الأسهم
+  portfolio/bro/cb: Coinbase برو القائمة
+  portfolio/bro/cb/account: إظهار رصيد حسابك
+  portfolio/bro/cb/deposits: إظهار جميع الودائع الخاصة بك أو التحويلات الداخلية
+  portfolio/bro/cb/history: إظهار سجل حسابك
+  portfolio/bro/cb/orders: اعرض جميع طلباتك
+  portfolio/bro/degiro: قائمة طعام Degiro
+  portfolio/bro/degiro/cancel: إلغاء أمر باستخدام معرف
+  portfolio/bro/degiro/companynews: عرض الأخبار عن شركة مع انها isin
+  portfolio/bro/degiro/create: إنشاء أمر
+  portfolio/bro/degiro/hold: عرض المقتنيات
+  portfolio/bro/degiro/lastnews: عرض آخر الأخبار
+  portfolio/bro/degiro/login: اتصل بـ degiro's api
+  portfolio/bro/degiro/logout: قطع الاتصال من degiro's api
+  portfolio/bro/degiro/lookup: البحث عن منتج بالاسم
+  portfolio/bro/degiro/paexport: تصدير CSV لتحليل المحفظة
+  portfolio/bro/degiro/pending: عرض الأوامر المعلقة
+  portfolio/bro/degiro/topnews: عرض أعلى معاينة الأخبار
+  portfolio/bro/degiro/update: تحديث أمر
+  portfolio/bro/rh: قائمة طعام روبنهود
+  portfolio/bro/rh/history: إظهار سجل حقوق الملكية لحسابك
+  portfolio/bro/rh/holdings: اظهار حسابات الحيازات في الأسهم
+  portfolio/bro/rh/login: تسجيل الدخول إلى robinhood
+  portfolio/cret: العوائد التراكمية
+  portfolio/distr: توزيع العوائد اليومية
+  portfolio/dret: عوائد يومية
+  portfolio/es: عرض العجز المتوقع
+  portfolio/holdp: حيازات حافظة الأصول (بالنسبة المئوية)
+  portfolio/holdv: حيازات الأصول (القيمة المطلقة)
+  portfolio/load: تحميل المعاملات في المحفظة
+  portfolio/maxdd: الحد الأقصى للسحب
+  portfolio/metric: المحفظة مقابل المقياس القياسي لجميع الفترات المختلفة
+  portfolio/mret: عوائد شهرية
+  portfolio/om: عرض نسبة أوميغا
+  portfolio/perf: أداء المحفظة مقابل المعيار
+  portfolio/po: تحسين المحفظة ، وتحسين أوزان محفظتك بكفاءة
+  portfolio/po/_categories: الفئات
+  portfolio/po/_hierarchical_clustering_models_: نماذج التجميع الهرمي الهرمي
+  portfolio/po/_loaded: الحافظة المحمّلة
+  portfolio/po/_mean_risk_optimization_: متوسط المخاطر الأمثل
+  portfolio/po/_optimized_portfolio: محفظة محسّنة
+  portfolio/po/_other_optimization_techniques_: تقنيات التحسين الأخرى
+  portfolio/po/_parameter: ملف المعلمة
+  portfolio/po/_risk_parity_optimization_: تحسين تكافؤ المخاطر
+  portfolio/po/_tickers: أشرطة الفيديو
+  portfolio/po/blacklitterman: محفظة litterman الأسود
+  portfolio/po/dividend: مرجحة وفقا لعائد توزيعات الأرباح (أرباح الملكية Yield)
+  portfolio/po/ef: إظهار الحدود الفعالة
+  portfolio/po/equal: مرجحة بالتساوي
+  portfolio/po/file: ملف يحتوي على معايير مخاطر المحفظة
+  portfolio/po/herc: مساهمة مخاطر متساوية هرميًا
+  portfolio/po/hrp: تكافؤ المخاطر الهرمية
+  portfolio/po/load: تحميل المؤشرات والفئات من ملف .xlsx أو .csv
+  portfolio/po/maxdecorr: محفظة الحد الأقصى للديكور
+  portfolio/po/maxdiv: محفظة التنويع الأقصى
+  portfolio/po/maxret: محفظة العودة القصوى
+  portfolio/po/maxsharpe: الحد الأقصى لمحفظة نسبة شارب (يعرف أيضا باسم محفظة تماس)
+  portfolio/po/maxutil: الحد الأقصى للمخاطر تجنب وظيفة الأداة المساعدة ، بالنظر إلى
+    بعض المعلمات نفور المخاطر
+  portfolio/po/minrisk: محفظة الحد الأدنى من المخاطر
+  portfolio/po/mktcap: مرجحة وفقًا لرأس المال السوقي (سوق العقاراتCap)
+  portfolio/po/nco: تحسين التجميع المتداخل Nested Clustering Optimization
+  portfolio/po/params: تحديد وإظهار معايير مخاطر المحفظة
+  portfolio/po/params/_loaded: الملف المحمّل
+  portfolio/po/params/_model: نموذج الاهتمام
+  portfolio/po/params/_parameters_: معلمات
+  portfolio/po/params/arg: حدّد قيمة مختلفة للوسيطة
+  portfolio/po/params/clear: نموذج واضح للاهتمام من المعلمات المرشحة
+  portfolio/po/params/file: بارامترات مخاطر محفظة التحميل
+  portfolio/po/params/load: حدد ملف المعلمة محفظة
+  portfolio/po/params/save: احفظ معاملات مخاطر المحفظة في ملف محدد
+  portfolio/po/params/set: مجموعة نموذج من الفائدة لتصفية المعلمات
+  portfolio/po/plot: رسم مخططات مختارة من قائمة المحافظ المحفوظة
+  portfolio/po/property: الوزن وفقا لممتلكات المعلومات المحددة
+  portfolio/po/relriskparity: التكافؤ المريح للمخاطر باستخدام نهج المربعات الأقل
+  portfolio/po/riskparity: حافظة تعادل المخاطر باستخدام نهج ميزنة المخاطر
+  portfolio/po/rpf: إزالة المحافظ من قائمة المحافظ المحفوظة
+  portfolio/po/show: عرض المحافظ والفئات المختارة من قائمة المحافظ المحفوظة
+  portfolio/rbeta: المتداول بيتا
+  portfolio/rsharpe: المتداول شارب
+  portfolio/rsort: المتداول sortino
+  portfolio/rvol: تقلب المتداول
+  portfolio/show: إظهار المعاملات القائمة
+  portfolio/summary: جميع مقاييس المحفظة مقابل المقاييس القياسية لفترة معينة من الاختيار
+  portfolio/var: قيمة العرض في خطر
+  portfolio/yret: العوائد السنوية
+  record: جلسة قياسية لتحويلها إلى روتين .openbb
+  reports: تقارير بحثية قابلة للتخصيص من خلال دفاتر jupyter
+  reports/_Custom_reports_: تقارير مخصصة
+  reports/_OpenBB_reports_: تقارير OpenBB
+  reports/_reports_: بناء وتشغيل التقارير المخصصة الخاصة بك أو محاولة واحدة من القوالب
+    لدينا
+  reports/run: قم بتشغيل دفتر Jupyter من OpenBBUserData/reports/custom reports
+  settings: ضبط الإعدادات (مجلد التصدير ، المنطقة الزمنية ، اللغة ، حجم المؤامرة)
+  settings/_backend: الخلفية الخلفية
+  settings/_data_source: مصادر البيانات
+  settings/_dpi: نقاط مؤامرة لكل بوصة
+  settings/_flair: فلير
+  settings/_info_: الإعدادات من خلال متغيرات البيئة
+  settings/_language: اللغة
+  settings/_monitor: مراقب
+  settings/_plot_height: ارتفاع الأرض
+  settings/_plot_height_pct: ارتفاع الأرض [٪]
+  settings/_plot_width: عرض قطعة الأرض
+  settings/_plot_width_pct: عرض الأرض [%]
+  settings/_preferred_data_source_file: ملف مصدر البيانات المفضل
+  settings/_timezone: المنطقة الزمنية
+  settings/_user_data_folder: مجلد بيانات المستخدم
+  settings/autoscaling: مؤامرة autoscaling
+  settings/backend: التآمر الخلفية (لا شيء ، tkAgg ، MacOSX ، Qt5Agg)
+  settings/colors: تعيين الألوان الطرفية الخاصة بك
+  settings/dpi: النقاط لكل بوصة
+  settings/dt: إضافة أو إزالة datetime من الذوق
+  settings/flair: تعيين ذوق الرموز التعبيرية لاستخدامها
+  settings/height: حدد ارتفاع قطعة الأرض
+  settings/lang: لغة المحطة الطرفية
+  settings/monitor: التي رصد لعرض (الابتدائي 0، الثانوية 1)
+  settings/pheight: حدد ارتفاع النسبة المئوية للمؤامرة
+  settings/pwidth: حدد عرض النسبة المئوية للمؤامرة
+  settings/source: حدد ملف مصدر البيانات
+  settings/tz: تعيين منطقة زمنية مختلفة
+  settings/userdata: تعيين مجلد لتخزين بيانات المستخدم
+  settings/width: حدد عرض قطعة الأرض
+  sources: حدد مصادر البيانات المفضلة لديك
+  sources/_info_: الحصول على مصادر البيانات الافتراضية وتعيينها
+  sources/get: الحصول على مصادر البيانات المتاحة المرتبطة بالأمر
+  sources/set: اضبط مصدر البيانات الافتراضي لأمر
+  stocks: الوصول إلى بيانات التسعير التاريخية، والخيارات، والقطاع والصناعة، والعناية
+    الواجبة الشاملة.
+  stocks/_ticker: المخزون
+  stocks/ba: التحليل السلوكي ، من reddit ، stocktwits ، تويتر ، جوجل
+  stocks/ba/_ticker: مبرقة كاتبة
+  stocks/ba/bullbear: تقدير المشاعر السريعة من آخر 30 رسالة على متن الطائرة
+  stocks/ba/getdd: يحصل على العناية الواجبة من مشاركة مستخدم آخر
+  stocks/ba/headlines: معنويات من 15  عناوين الأخبار الرئيسية
+  stocks/ba/hist: مؤامرة البيانات التاريخية RHI و AHI حسب الساعة
+  stocks/ba/infer: الاستدلال على معنويات الأسهم من أحدث التغريدات.
+  stocks/ba/interest: الفائدة مع مرور الوقت من الجمل مقابل سعر السهم
+  stocks/ba/jcdr: توصيات جيم كريمر اليومية
+  stocks/ba/jctr: توصيات جيم كريمر بواسطة شريط
+  stocks/ba/load: تحميل مؤشر الأسهم محددة للتحليل.
+  stocks/ba/mentions: الفائدة مع مرور الوقت على أساس ذكر الأسهم.
+  stocks/ba/messages: إخراج ما يصل إلى آخر 30 رسالة على متن الطائرة
+  stocks/ba/popular: إظهار المؤشرات الشعبية
+  stocks/ba/queries: أعلى الاستفسارات ذات الصلة مع هذا المخزون
+  stocks/ba/redditsent: يبحث reddit عن شريط ويجد reddit المشاعر
+  stocks/ba/regions: المناطق التي تظهر أعلى اهتمام بالمخزون
+  stocks/ba/rise: أعلى ارتفاع الاستفسارات ذات الصلة مع الأسهم
+  stocks/ba/sentiment: توقعات المشاعر المتعمقة من التغريدات بمرور الوقت
+  stocks/ba/snews: عرض سعر السهم على معنويات عناوين الأخبار
+  stocks/ba/spac: عرض المستخدمين الآخرين إعلانات spacs من الغواصات الأخرى
+  stocks/ba/spacc: عرض إعلانات المستخدمين الآخرين من subreddit SPACs
+  stocks/ba/stalker: stalk stocktwits آخر رسائل المستخدم
+  stocks/ba/trending: الأسهم تتجه
+  stocks/ba/watchlist: عرض قائمة مراقبة المستخدمين الآخرين
+  stocks/ba/wsb: تظهر ما WSB عصابة هو ما يصل الى في subreddit wallstreetbets
+  stocks/bt: استراتيجية باكتستر، إما بسيطة، إما الصليب، استراتيجيات ريسي
+  stocks/bt/_ticker: مبرقة كاتبة
+  stocks/bt/ema: شراء عندما يتجاوز السعر EMA(l)
+  stocks/bt/emacross: شراء عندما EMA(short) > EMA(long)
+  stocks/bt/rsi: شراء عندما مؤشر القوة النسبية  منخفضة وبيع عندما مؤشر القوة النسبية
+    > عالية
+  stocks/bt/whatif: ماذا لو كنت قد اشتريت أسهم X في اليوم Y.
+  stocks/ca: تحليل المقارنة ، الحصول على مماثلة ، التاريخية ، الارتباط ، المالية
+  stocks/ca/_similar: شركات مماثلة
+  stocks/ca/_ticker: شريط للحصول على شركات مماثلة من
+  stocks/ca/add: إضافة المزيد من الشركات المماثلة
+  stocks/ca/balance: مقارنة البيانات المالية للرصيد
+  stocks/ca/cashflow: مقارنة التدفق النقدي
+  stocks/ca/financial: مقارنة مالية موجزة
+  stocks/ca/get: الحصول على أسهم مماثلة
+  stocks/ca/hcorr: ارتباط السعر التاريخي
+  stocks/ca/historical: مقارنة بيانات الأسعار التاريخية
+  stocks/ca/income: مقارنة الدخل المالي
+  stocks/ca/overview: مقارنة نظرة عامة موجزة
+  stocks/ca/ownership: مقارنة ملكية موجزة
+  stocks/ca/performance: مقارنة موجزة للأداء
+  stocks/ca/rmv: إزالة شركات مماثلة بشكل فردي أو جميع
+  stocks/ca/scorr: العلاقة العاطفية
+  stocks/ca/sentiment: مقارنة تحليل المشاعر
+  stocks/ca/set: إعادة تعيين وتعيين شركات مماثلة
+  stocks/ca/technical: مقارنة تقنية موجزة
+  stocks/ca/ticker: تعيين شريط للحصول على شركات مماثلة من
+  stocks/ca/tsne: تشغيل TSNE على جميع أسهم SP500 وعوائد أقرب المؤشرات
+  stocks/ca/valuation: مقارنة تقييم موجزة
+  stocks/ca/volume: مقارنة بيانات الحجم التاريخية
+  stocks/candle: عرض الرسم البياني شمعة لمؤشر الأسهم محددة.
+  stocks/codes: رموز FIGI و SIK و SIC
+  stocks/dd: العناية الواجبة المتعمقة ، الأخبار ، المحلل ، السراويل القصيرة ، من الداخل
+    ، ثانية
+  stocks/dd/_ticker: مبرقة كاتبة
+  stocks/dd/analyst: أسعار المحللين وتقييمات الشركة
+  stocks/dd/arktrades: احصل على صفقات ARK للمؤشر
+  stocks/dd/customer: قائمة العملاء
+  stocks/dd/est: تقديرات أرباح المحللين الفصلية والسنوية
+  stocks/dd/load: تحميل مؤشر الأسهم محددة للتحليل.
+  stocks/dd/pt: أهداف الأسعار مع مرور الوقت
+  stocks/dd/rating: التقييم مع مرور الوقت (يوميًا)
+  stocks/dd/rot: عدد تقييمات المحللين على مر الزمن (شهريا)
+  stocks/dd/sec: ملفات SEC
+  stocks/dd/supplier: قائمة الموردين
+  stocks/disc: اكتشاف الأسهم تتجه، والخريطة، والقطاعات، وارتفاع الفائدة قصيرة الأجل.
+  stocks/disc/active: الأسهم الأكثر نشاطًا حسب أحجام التداول اللحظية
+  stocks/disc/arkord: أوامر من ARK Investment Management LLC
+  stocks/disc/asc: أسهم رأس المال الصغير مع معدلات نمو الأرباح أفضل من 25٪.
+  stocks/disc/cnews: أخبار مخصصة (إعادة الشراء ، ipos ، spacs ، الرعاية الصحية ، السياسة)
+  stocks/disc/divcal: تقويم توزيعات الأرباح لتاريخ محدد
+  stocks/disc/fipo: تواريخ الاكتتابات العامة المستقبلية
+  stocks/disc/gainers: عرض أحدث الرابحين الأعلى
+  stocks/disc/gtech: أسهم التكنولوجيا مع نمو الإيرادات والأرباح أكثر من 25٪.
+  stocks/disc/heatmap: heatmap من مؤشرات SP500
+  stocks/disc/hotpenny: الأسهم الساخنة قرش اليوم
+  stocks/disc/losers: عرض أحدث الخاسرين الأعلى
+  stocks/disc/lowfloat: الأسهم منخفضة تعويم تحت 10M الأسهم تعويم
+  stocks/disc/pipo: تواريخ الاكتتابات العامة السابقة
+  stocks/disc/rtat: أعلى 10 أسهم متداولة بالتجزئة في اليوم
+  stocks/disc/trending: أخبار تتجه
+  stocks/disc/ugs: الأسهم بأقل من قيمتها مع نمو الإيرادات والأرباح فوق 25٪.
+  stocks/disc/ulc: الأسهم ذات القيمة الكبيرة التي يحتمل أن تكون أقل من قيمتها
+  stocks/disc/upcoming: تواريخ إصدار الأرباح القادمة
+  stocks/dps: تجمع الظلام والبيانات القصيرة, darkpool, الفائدة قصيرة, ftd
+  stocks/dps/_ticker: مبرقة كاتبة
+  stocks/dps/ctb: تكلفة اقتراض الأسهم
+  stocks/dps/dpotc: حمامات مظلمة (ATS) مقابل بيانات OTC
+  stocks/dps/ftd: فشل في تسليم البيانات
+  stocks/dps/hsi: تظهر أعلى ارتفاع الأسهم قصيرة الفائدة قصيرة من أكثر من 20٪ نسبة.
+  stocks/dps/load: تحميل مؤشر الأسهم محددة للتحليل.
+  stocks/dps/pos: بركة الظلام موقف قصير
+  stocks/dps/prom: مؤشرات واعدة على أساس الأسهم تجمع الظلام الانحدار
+  stocks/dps/psi: سعر الفائدة مقابل حجم الفائدة القصيرة
+  stocks/dps/shorted: إظهار الأسهم الأكثر تقصيرا
+  stocks/dps/sidtc: فوائد قصيرة وأيام لتغطية
+  stocks/dps/spos: صافي قصير مقابل موقف
+  stocks/fa: التحليل الأساسي والدخل والتوازن والنقد والأرباح
+  stocks/fa/_ticker: مبرقة كاتبة
+  stocks/fa/analysis: تحليل ملفات SEC بمساعدة التعلم الآلي
+  stocks/fa/balance: الميزانية العمومية للشركة
+  stocks/fa/cal: أرباح التقويم وتقديرات الشركة
+  stocks/fa/cash: التدفق النقدي للشركة
+  stocks/fa/data: البيانات الأساسية والتقنية للشركة
+  stocks/fa/dcf: متقدمة إكسل تخصيص مخفضة التدفق النقدي
+  stocks/fa/dcfc: تحديد التدفقات النقدية المخفضة (التاريخية)
+  stocks/fa/divs: اظهار الارباح التاريخية للشركة
+  stocks/fa/dupont: توزيع مفصل للعائد على حقوق الملكية
+  stocks/fa/earnings: تواريخ الأرباح وتواريخ EPS المبلغ عنها
+  stocks/fa/enterprise: قيمة الشركة المؤسسة
+  stocks/fa/epsfc: تقدير الأرباح من قبل المحللين - EPS
+  stocks/fa/fraud: نسب الغش الرئيسية
+  stocks/fa/growth: نمو بنود ونسب البيانات المالية
+  stocks/fa/hq: فتح موقع المقر الرئيسي للشركة
+  stocks/fa/income: بيانات الدخل للشركة
+  stocks/fa/info: نطاق معلومات الشركة
+  stocks/fa/key: مقاييس الشركة الرئيسية
+  stocks/fa/load: تحميل مؤشر الأسهم محددة للتحليل.
+  stocks/fa/metrics: المقاييس الرئيسية بمرور الوقت
+  stocks/fa/mgmt: فريق إدارة الشركة
+  stocks/fa/mktcap: القيمة السوقية المقدرة
+  stocks/fa/overview: نظرة عامة على الشركة
+  stocks/fa/profile: نبذة عن الشركة
+  stocks/fa/quote: معلومات مفصلة عن أسعار الأسهم
+  stocks/fa/ratios: نسب متعمقة مع مرور الوقت
+  stocks/fa/revfc: تقدير الأرباح من قبل المحللين - الإيرادات
+  stocks/fa/score: درجة الاستثمار من وارن بافيت وشركاه
+  stocks/fa/shrs: المساهمون (المطلعون والمؤسسات والصناديق المشتركة)
+  stocks/fa/splits: انقسام الأسهم وعكس الأحداث الانقسام منذ الاكتتاب العام
+  stocks/fa/sust: قيم الاستدامة (البيئة، الاجتماعية والحوكمة)
+  stocks/fa/warnings: تحذيرات الشركة وفقا لكتاب شون سيه
+  stocks/fa/web: متصفح الويب المفتوح للشركة
+  stocks/forecast: تقنيات التنبؤ, RNN, nbeats, محول, كتلة RNN
+  stocks/gov: قائمة الحكومة ، تجارة المنازل ، العقود ، الضغط على الشركات
+  stocks/gov/_explore: استكشف
+  stocks/gov/_ticker: مبرقة كاتبة
+  stocks/gov/contracts: عرض العقود الحكومية
+  stocks/gov/gtrades: عرض الصفقات الحكومية
+  stocks/gov/histcont: العقود الحكومية الفصلية التاريخية
+  stocks/gov/lastcontracts: عرض العقود الحكومية الأخيرة المقدمة
+  stocks/gov/lasttrades: آخر الصفقات
+  stocks/gov/load: تحميل شريط محدد للتحليل
+  stocks/gov/lobbying: تفاصيل الضغط على الشركات
+  stocks/gov/qtrcontracts: تحليل العقود الحكومية الفصلية
+  stocks/gov/topbuys: عرض معظم الأسهم المشتراة
+  stocks/gov/toplobbying: أعلى الشركات الضغط المؤشرات
+  stocks/gov/topsells: عرض معظم الأسهم المباعة
+  stocks/ins: التداول من الداخل، أحدث قرش الأسهم يشتري، كبار ضباط المشتريات.
+  stocks/ins/_last_insiders: آخر المطلعين
+  stocks/ins/_preset: الإعداد المسبق
+  stocks/ins/_ticker: مبرقة كاتبة
+  stocks/ins/_top_insiders: كبار المطلعين
+  stocks/ins/act: النشاط الداخلي مع مرور الوقت
+  stocks/ins/blcp: أحدث عمليات شراء الرئيس التنفيذي / المدير المالي ($ 25k )
+  stocks/ins/blcs: أحدث مبيعات الرئيس التنفيذي / المدير المالي ($ 100k )
+  stocks/ins/blip: أحدث عمليات الشراء الداخلية الكبيرة ($ 25k )
+  stocks/ins/blis: أحدث المبيعات الداخلية الكبيرة ($ 100k )
+  stocks/ins/blop: مشتريات كبيرة أحدث ضابط ($ 25k )
+  stocks/ins/blos: مبيعات الضباط الأخيرة الكبيرة ($ 100k )
+  stocks/ins/filter: تصفية المطلعين على أساس مسبقا
+  stocks/ins/lcb: أحدث عمليات الشراء العنقودية
+  stocks/ins/lins: آخر تداول داخلي للشركة
+  stocks/ins/lip: أحدث عمليات الشراء من الداخل
+  stocks/ins/lis: أحدث المبيعات من الداخل
+  stocks/ins/lit: أحدث التداول من الداخل (جميع الإيداعات)
+  stocks/ins/load: تحميل مؤشر الأسهم محددة للتحليل.
+  stocks/ins/lpsb: أحدث الأسهم قرش يشتري
+  stocks/ins/set: تعيين واحدة من المسبقة المتاحة
+  stocks/ins/stats: احصائيات من الداخل للشركة
+  stocks/ins/tippm: أعلى المشتريات من الداخل الشهر الماضي
+  stocks/ins/tippw: أعلى المشتريات من الداخل الأسبوع الماضي
+  stocks/ins/tipt: أعلى المشتريات من الداخل اليوم
+  stocks/ins/tispm: أعلى المبيعات من الداخل الشهر الماضي
+  stocks/ins/tispw: أعلى المبيعات من الداخل الأسبوع الماضي
+  stocks/ins/tist: أعلى المبيعات من الداخل اليوم
+  stocks/ins/toppm: مشتريات كبار الضباط الشهر الماضي
+  stocks/ins/toppw: مشتريات كبار الضباط الأسبوع الماضي
+  stocks/ins/topt: كبار ضباط المشتريات اليوم
+  stocks/ins/view: عرض المسبقة المتاحة
+  stocks/load: تحميل مؤشر الأسهم محددة ومعلومات إضافية للتحليل.
+  stocks/news: آخر أخبار الشركة
+  stocks/options: خيارات القائمة, سلاسل, الفائدة المفتوحة, اليونانيين, التكافؤ
+  stocks/options/_expiry: انتهاء الصلاحية
+  stocks/options/_ticker: مبرقة كاتبة
+  stocks/options/binom: يظهر قيمة خيار باستخدام تسعير الخيارات ذات الحدين.
+  stocks/options/calc: استدعاء الأساسية / وضع آلة حاسبة PnL
+  stocks/options/chains: سلاسل خيارات العرض مع اليونانيين
+  stocks/options/exp: انظر وتعيين تواريخ انتهاء الصلاحية
+  stocks/options/greeks: يظهر اليونانيون لخيار معين
+  stocks/options/grhist: خيار مؤامرة التاريخ اليوناني
+  stocks/options/hedge: يظهر الأوزان محفظة من أجل تحييد دلتا.
+  stocks/options/hedge/_expiry: انتهاء الصلاحية
+  stocks/options/hedge/_ticker: مبرقة كاتبة
+  stocks/options/hedge/_underlying: مركز الأصول الأساسية
+  stocks/options/hedge/add: إضافة خيار إلى قائمة الخيارات
+  stocks/options/hedge/list: إظهار أسعار الإضراب المتاحة للمكالمات ويضع.
+  stocks/options/hedge/pick: اختيار موقف الأصول الأساسية
+  stocks/options/hedge/plot: اعرض مخطط مردود الخيار
+  stocks/options/hedge/rmv: إزالة خيار من قائمة الخيارات
+  stocks/options/hedge/sop: إظهار الخيارات المحددة وأوزان المحفظة المحايدة.
+  stocks/options/hist: تاريخ الخيار plot option
+  stocks/options/info: معلومات خيار العرض (التقلب ، الرتبة الرابعة ، إلخ)
+  stocks/options/load: تحميل شريط جديد
+  stocks/options/oi: مؤامرة الفائدة المفتوحة
+  stocks/options/parity: يوضح ما إذا كانت الخيارات أعلى أو أقل من السعر المتوقع.
+  stocks/options/pcr: عرض وضع نسبة المكالمة للمؤشر
+  stocks/options/plot: المتغيرات مؤامرة المقدمة من قبل المستخدم
+  stocks/options/pricing: يظهر تسعير الخيارات وتقييم المخاطر المحايدة.
+  stocks/options/pricing/_expiry: انتهاء الصلاحية
+  stocks/options/pricing/_ticker: مبرقة كاتبة
+  stocks/options/pricing/add: إضافة السعر المتوقع إلى القائمة
+  stocks/options/pricing/rmv: إزالة السعر المتوقع من القائمة
+  stocks/options/pricing/rnval: تقييم محايد للمخاطر لخيار.
+  stocks/options/pricing/show: عرض قائمة الأسعار المتوقعة
+  stocks/options/screen: شاشات المؤشرات على أساس مسبقا
+  stocks/options/screen/_preset: الإعداد المسبق
+  stocks/options/screen/_screened_tickers: آخر شريط تم فحصه
+  stocks/options/screen/ca: خذ هذه إلى قائمة تحليل المقارنة
+  stocks/options/screen/scr: بيانات الشاشة من هذا الإعداد المسبق
+  stocks/options/screen/set: تعيين واحدة من المسبقة المتاحة
+  stocks/options/screen/view: عرض المسبقة المتاحة (أو واحد على وجه الخصوص)
+  stocks/options/unu: إظهار نشاط خيارات غير عادية.
+  stocks/options/voi: حجم المؤامرة والفائدة المفتوحة
+  stocks/options/vol: حجم المؤامرة
+  stocks/options/vsurf: تظهر سطح تقلب 3D
+  stocks/qa: التحليل الكمي ، التحلل ، الكم ، تحليل المخلفات
+  stocks/qa/_other_: أخرى
+  stocks/qa/_plots_: المؤامرات
+  stocks/qa/_risk_: المخاطر
+  stocks/qa/_rolling_metrics_: المتداول المقاييس المتداول
+  stocks/qa/_statistics_: الإحصاءات
+  stocks/qa/_target: العمود المستهدف
+  stocks/qa/_ticker: مبرقة كاتبة
+  stocks/qa/acf: (جزئي) وظيفة الارتباط التلقائي الفروق في الأسعار
+  stocks/qa/beta: عرض بيتا wr.t إلى أي مؤشر إشارة
+  stocks/qa/bw: مربع ويسكي مؤامرة
+  stocks/qa/capm: نموذج تسعير الأصول الرأسمالية
+  stocks/qa/cdf: وظيفة التوزيع التراكمي
+  stocks/qa/cusum: يكتشف التغيرات المفاجئة باستخدام خوارزمية المجموع التراكمي للأسعار
+  stocks/qa/decompose: التحلل في الاتجاه الدوري والموسم ومخلفات الأسعار
+  stocks/qa/es: عرض العجز المتوقع
+  stocks/qa/hist: الرسم البياني مع مؤامرة الكثافة
+  stocks/qa/kurtosis: الكورتوز المتداول لتوزيع الأسعار
+  stocks/qa/line: مؤامرة خط الهدف المحدد
+  stocks/qa/load: تحميل شريط جديد
+  stocks/qa/normality: احصائيات طبيعية واختبارات
+  stocks/qa/om: عرض نسبة أوميغا
+  stocks/qa/pick: اختر العمود المستهدف للتحليل
+  stocks/qa/qqplot: بقايا ضد المنحنى العادي القياسي
+  stocks/qa/quantile: المتداول المتوسط والكمي للأسعار
+  stocks/qa/raw: طباعة البيانات الخام
+  stocks/qa/rolling: متوسط المتداول والانحراف std من الأسعار
+  stocks/qa/sh: عرض نسبة شارب
+  stocks/qa/skew: الانحراف المتداول لتوزيع الأسعار
+  stocks/qa/so: عرض نسبة الفرز
+  stocks/qa/spread: تباين المتداول والانحراف std من الأسعار
+  stocks/qa/summary: إحصاءات موجزة موجزة عن المخزون المحمّل
+  stocks/qa/unitroot: وحدة اختبار الجذر للstationarity (ADF ، KPSS)
+  stocks/qa/var: قيمة العرض في خطر
+  stocks/quote: عرض السعر الحالي لمؤشر الأسهم محددة.
+  stocks/res: صفحة البحث على شبكة الإنترنت ، macroaxis ، yahoo المالية ، أحمق
+  stocks/res/_ticker: مبرقة كاتبة
+  stocks/res/barchart: www.barchart.com
+  stocks/res/bullrun: www.bullrun.com.br
+  stocks/res/businessinsider: www.markets.businessinsider.com
+  stocks/res/fidelity: www.eresearch.fidelity.com
+  stocks/res/fintel: www.fintel.com
+  stocks/res/finviz: www.finviz.com
+  stocks/res/fmp: www.financialmodelingprep.com
+  stocks/res/fool: www.fool.com
+  stocks/res/grufity: www.grufity.com
+  stocks/res/macroaxis: www.macroaxis.com
+  stocks/res/macrotrends: www.macrotrends.net
+  stocks/res/marketchameleon: www.marketchameleon.com
+  stocks/res/marketwatch: www.marketwatch.com
+  stocks/res/newsfilter: www.newsfilter.io
+  stocks/res/stockanalysis: www.stockanalysis.com
+  stocks/res/stockrow: www.stockrow.com
+  stocks/res/tradingview: www.tradingview.com
+  stocks/res/yahoo: www.finance.yahoo.com
+  stocks/res/zacks: www.zacks.com
+  stocks/scr: فرز الأسهم، نظرة عامة / الأداء، وذلك باستخدام مرشحات مسبقا
+  stocks/scr/_preset: الإعداد المسبق
+  stocks/scr/_screened_tickers: آخر شريط تم فحصه
+  stocks/scr/ca: خذ هذه إلى قائمة تحليل المقارنة
+  stocks/scr/financial: المالية (على سبيل المثال توزيعات الأرباح، العائد على الاستثمار،
+    العائد على الاستثمار، الأرباح)
+  stocks/scr/historical: عرض السعر التاريخي
+  stocks/scr/overview: نظرة عامة (على سبيل المثال القطاع ، الصناعة ، رأس المال السوقي
+    ، الحجم)
+  stocks/scr/ownership: الملكية (على سبيل المثال تعويم ، من الداخل الخاصة ، نسبة قصيرة)
+  stocks/scr/performance: الأداء (مثل Perf Week و Perf YTD و Volatility M)
+  stocks/scr/set: تعيين واحدة من المسبقة المتاحة
+  stocks/scr/technical: التقنية (على سبيل المثال بيتا ، SMA50 ، 52W منخفضة ، RSI ،
+    تغيير)
+  stocks/scr/valuation: التقييم (مثل P / E ، PEG ، P / S ، P / B ، EPS هذا Y)
+  stocks/scr/view: عرض المسبقة المتاحة (التقصير والجمارك)
+  stocks/search: البحث عن مؤشر الأسهم محددة للتحليل.
+  stocks/sia: تحليل القطاع والصناعة ، الشركات لكل قطاع ، نسبة سريعة لكل صناعة وبلد
+  stocks/sia/_country: البلد
+  stocks/sia/_exclude_exchanges: إستبعاد التبادلات
+  stocks/sia/_financials_: البيانات المالية
+  stocks/sia/_financials_loaded_: البيانات المالية - تحميل البيانات (وضع سريع)
+  stocks/sia/_industry: الصناعة
+  stocks/sia/_mktcap: رأس المال السوقي
+  stocks/sia/_period: الفترة
+  stocks/sia/_returned_tickers: المؤشرات المرتجعة
+  stocks/sia/_sector: القطاع
+  stocks/sia/_statistics_: الإحصاءات
+  stocks/sia/ca: خذ هذه إلى قائمة تحليل المقارنة
+  stocks/sia/clear: مسح كل أو واحد من الصناعة والقطاع والبلد وبارامترات سقف السوق
+  stocks/sia/country: انظر البلدان القائمة ، أو قم بتعيين البلد إذا كان arg محددًا
+  stocks/sia/cpci: الشركات لكل بلد على أساس الصناعة (ورأس المال السوقي)
+  stocks/sia/cpcs: الشركات لكل بلد على أساس القطاع (ورأس المال السوقي)
+  stocks/sia/cpic: الشركات حسب الصناعة بناءً على البلد (ورأس المال السوقي)
+  stocks/sia/cpis: الشركات حسب الصناعة على أساس القطاع (ورأس المال السوقي)
+  stocks/sia/cps: الشركات لكل قطاع على أساس البلد (ورأس المال السوقي)
+  stocks/sia/exchange: عودة استثناء التبادلات الدولية العلم
+  stocks/sia/industry: انظر الصناعات القائمة ، أو ضبط الصناعة إذا تم تحديد arg
+  stocks/sia/metric: تصور المقياس المالي عبر الفلاتر المحددة
+  stocks/sia/mktcap: تعيين mktcap بين نانو ، الصغرى ، الصغيرة ، المتوسطة ، الكبيرة
+    أو الضخمة
+  stocks/sia/period: فترة محددة بين سنوية أو ربع سنوية أو لاحقة
+  stocks/sia/sector: انظر القطاعات القائمة ، أو تعيين القطاع إذا تم تحديد arg
+  stocks/sia/select: حدد شريطًا محددًا وكل المعلمات المقابلة
+  stocks/sia/vis: تصور المقياس المالي عبر الفلاتر المحددة
+  stocks/ta: التحليل الفني, إما, ماكد, رسي, adx, bbands, obv
+  stocks/ta/_custom_: مخصص
+  stocks/ta/_momentum_: قوة الدفع
+  stocks/ta/_overlap_: التداخلية
+  stocks/ta/_ticker: مبرقة كاتبة
+  stocks/ta/_trend_: تريند
+  stocks/ta/_volatility_: التقلبية
+  stocks/ta/_volume_: حجم التداول
+  stocks/ta/ad: خط التراكم / التوزيع
+  stocks/ta/adosc: تشايكين مذبذب
+  stocks/ta/adx: متوسط مؤشر الحركة الاتجاهية
+  stocks/ta/aroon: مؤشر aroon
+  stocks/ta/atr: متوسط المدى الحقيقي
+  stocks/ta/bbands: bollinger العصابات
+  stocks/ta/cci: مؤشر قناة السلع
+  stocks/ta/cg: مركز الجاذبية
+  stocks/ta/clenow: تقلب clenow تعديل الزخم
+  stocks/ta/demark: مؤشر توم ديمارك المتسلسل
+  stocks/ta/donchian: قنوات دونشيان
+  stocks/ta/ema: المتوسط المتحرك الأسي
+  stocks/ta/fib: فيبوناتشي التصحيح
+  stocks/ta/fisher: تحويل صياد الأسماك
+  stocks/ta/hma: بدن تتحرك المتوسط
+  stocks/ta/kc: قنوات keltner
+  stocks/ta/macd: المتوسط المتحرك للتقارب/التباعد
+  stocks/ta/obv: على حجم الرصيد
+  stocks/ta/recom: توصيات مبنية على مؤشرات فنية
+  stocks/ta/rsi: مؤشر القوة النسبية
+  stocks/ta/rsp: القوة النسبية المئوية
+  stocks/ta/sma: المتوسط المتحرك البسيط
+  stocks/ta/stoch: مؤشر ستوكاستيك مذبذب
+  stocks/ta/summary: تقرير موجز تقني
+  stocks/ta/tv: مخطط تفاعلي مفتوح على
+  stocks/ta/view: عرض البيانات التاريخية وخطوط الاتجاه
+  stocks/ta/vwap: الحجم المرجح متوسط السعر
+  stocks/ta/wma: المتوسط المتحرك المرجح
+  stocks/ta/zlma: صفر تأخر المتوسط المتحرك
+  stocks/th: ساعات التداول، والتحقق من الأسواق المفتوحة
+  stocks/th/_exchange: التبادل مفتوح
+  stocks/th/_symbol: الرمز
+  stocks/th/_symbol_name: اسم الرمز
+  stocks/th/all: عرض جميع الأسواق
+  stocks/th/closed: عرض الأسواق المغلقة
+  stocks/th/exchange: عرض تبادل واحد
+  stocks/th/holidays: إظهار جميع التواريخ التي يوجد فيها عطلة السوق
+  stocks/th/open: عرض الأسواق المفتوحة
+  stocks/th/symbol: اختر الرمز
+  stocks/tob: عرض الجزء العلوي من الكتاب للمؤشر تحميلها (التبادلات الولايات المتحدة
+    فقط)
+  stop: تسجيل إيقاف الجلسة
+  support: قبل ملء تذكرة دعم لفريقنا لتقييم
+  survey: ملء استبياننا لمدة دقيقتين حتى نفهم بشكل أفضل كيف يمكننا تحسين المحطة
+  update: محاولة تحديث الجهاز تلقائيا (إصدار GitHub)
+  wiki: البحث عن تعبير في ويكيبيديا (https://www.wikipedia.org/)

@@ -1,0 +1,1079 @@
+zh:
+  _configure_: 配置您自己的终端
+  _home_: OpenBB终端的信息、指南和支助
+  _main_menu_: 主菜单
+  _others_: 其他
+  about: 发现OpenBB终端的能力(https://openbb.co/docs)
+  alternative: 替代数据集,如COVID和开放源指标
+  alternative/covid: COVID 菜单、病例、死亡、比率
+  alternative/covid/_country: 国家
+  alternative/covid/cases: 为选定国家获取案例
+  alternative/covid/country: 为数据选择国家
+  alternative/covid/deaths: 选定国家死亡
+  alternative/covid/ov: 选定国家概览(案例和死亡)
+  alternative/covid/rates: 选定国家死亡率/病例率
+  alternative/covid/slopes: 情况中达到最高坡度的国家
+  alternative/oss: 开源菜单、恒星历史、回复信息
+  alternative/oss/rossidx: 增长最快的开放源码新建企业
+  alternative/oss/rs: 折回摘要
+  alternative/oss/sh: Repo 恒星历史
+  alternative/oss/tr: 顶星顶星顶端寄件
+  crypto: 进入链上数据、象征性组学、环流供应、 nfts 等
+  crypto/_exchange: Exchange
+  crypto/_interval: 间间( 分钟)
+  crypto/_source: 来源来源来源
+  crypto/_symbol: 硬币
+  crypto/candle: 查看用于特定加密货币的蜡烛图
+  crypto/dd: 对装上硬币、硬币信息、社交媒体、市场统计的应有注意
+  crypto/dd/_activity_: 活动和社区
+  crypto/dd/_contributors_: 贡献者和投资者
+  crypto/dd/_market_: 市场市场市场
+  crypto/dd/_metrics_: 计量数
+  crypto/dd/_overview_: 概览概览概览概览概览概览概览概览
+  crypto/dd/_roadmap_: 路线图和新闻
+  crypto/dd/_source: 来源来源来源
+  crypto/dd/_symbol: 硬币
+  crypto/dd/_tokenomics_: 代数
+  crypto/dd/active: 活动地址
+  crypto/dd/ath: 装入硬币的高级相关数据
+  crypto/dd/atl: 装入硬币的所有时间低相关数据
+  crypto/dd/balance: 硬币余额
+  crypto/dd/basic: 装入硬币的基本信息
+  crypto/dd/bc: 装入硬币的链链探索器链接
+  crypto/dd/change: 外汇钱包上持有的30项供应变动
+  crypto/dd/desc: 项目说明 - 为何、如何、如何、什么
+  crypto/dd/dev: Gitthub、比特bucket硬币开发统计
+  crypto/dd/eb: 汇兑余额总额(百分比和单位)
+  crypto/dd/events: 与装入硬币相关的事件
+  crypto/dd/ex: 列出已装入硬币的所有交换点
+  crypto/dd/fr: 筹资细节,如国库账户、销售回合、分配款等
+  crypto/dd/fundrate: 每一汇率
+  crypto/dd/funot: 长期基本基本计量数
+  crypto/dd/gh: 随时间推移的刺状活动
+  crypto/dd/gov: 治理细节
+  crypto/dd/info: 关于已装入硬币的信息
+  crypto/dd/inv: 投资者(个人和组织)
+  crypto/dd/links: 白纸、刺青、推特、Youtube、重编、电报等链接
+  crypto/dd/liquidations: 装上硬币的每日清算数据
+  crypto/dd/load: 用于分析的特定加密货币值
+  crypto/dd/market: 关于已装入硬币的市场统计
+  crypto/dd/mcapdom: 市场上限支配地位
+  crypto/dd/mkt: 装上硬币的所有市场
+  crypto/dd/mt: 例如Twitter追随者、circ 供应等
+  crypto/dd/news: 已装入硬币的最新消息
+  crypto/dd/nonzero: 以非零余额处理
+  crypto/dd/ob: 命令书
+  crypto/dd/oi: 每个汇率开放的利息
+  crypto/dd/pi: 项目信息,例如技术细节、公共回收、审计、 vulns
+  crypto/dd/ps: 装上硬币的与价格和供应有关的计量标准
+  crypto/dd/rm: 路径图
+  crypto/dd/score: 装入硬币的不同分数类型,例如开发者分数、情绪分数
+  crypto/dd/social: 社会门户网站上载硬币的urls,例如,reddit、Twitter
+  crypto/dd/stats: 硬币状态
+  crypto/dd/team: 捐款者(个人和组织)
+  crypto/dd/tk: 例如循环/最大/总供应量、排放类型等
+  crypto/dd/trades: 上次交易
+  crypto/dd/twitter: 装入硬币的推文
+  crypto/dd/web: 找到已装入硬币的网站,例如论坛、主页
+  crypto/defi: 分权财务信息、 dpi、 lama、 tvl、 贷款、 借款、 融资
+  crypto/defi/anchor: 固定收益数据
+  crypto/defi/aterra: 地面地址中特定资产30天历史
+  crypto/defi/ayr: 锚定产量储备30天历史
+  crypto/defi/dpi: 在 DefiPulse 上列出的 DeFi 协议
+  crypto/defi/dtvl: dApp 的锁定历史总总值( TVL)
+  crypto/defi/gacc: 铁链连链账户增长史
+  crypto/defi/gdapps: 由链条分组的顶部 DEFI dApps
+  crypto/defi/govp: 列 列 列 电 电 电 电 链 治理 提案 列表
+  crypto/defi/lcsc: 月球循环供应变化
+  crypto/defi/ldapps: 列表 dApps
+  crypto/defi/newsletter: 最近与DeFi相关通讯
+  crypto/defi/pairs: 在 Unswap 上最近添加的配对
+  crypto/defi/pools: 依uniswap 上 的 水库量
+  crypto/defi/sinfo: 提供 terra 账户地址的 secake info
+  crypto/defi/sratio: 地铁块吸收率历史
+  crypto/defi/sreturn: 铁块链回程历史
+  crypto/defi/stats: 关于 Unswap 的基准统计
+  crypto/defi/stvl: 所有 dApps 的 TVL 总和历史值
+  crypto/defi/swaps: 最近对 Unswap 进行的互换
+  crypto/defi/tokens: 在 Unswap 上可交易的等号
+  crypto/defi/validators: 有关terra 块链验证器的信息
+  crypto/defi/vaults: 不同块链上方的 DeFi 空洞
+  crypto/disc: 发现有趋势的加密, 顶级赢家,输家,顶级情绪
+  crypto/disc/dapps: 上上上上下放应用程序
+  crypto/disc/dex: 最上层分散式交易所
+  crypto/disc/gainers: 顶上增益者
+  crypto/disc/games: 顶顶层块链游戏
+  crypto/disc/losers: 上层输者
+  crypto/disc/nft: 顶上不可替换的牌号
+  crypto/disc/search: 查找硬币
+  crypto/disc/top: 上硬硬硬硬硬币
+  crypto/disc/trending: 硬硬硬币
+  crypto/find: 查找硬币
+  crypto/forecast: 预测技术、 Rnn、 nbeats、 变压器、 block rnn
+  crypto/headlines: 15个+主要新闻头条头条的加密情绪
+  crypto/load: 用于分析的特定加密货币值
+  crypto/nft: 不可调试的符号, 今天的滴滴滴
+  crypto/nft/collections: 上表醚集集
+  crypto/nft/fp: 收货销售额/底价
+  crypto/nft/stats: 收藏状态
+  crypto/onchain: 关于不同块链、eth气费、鲸鱼警报、DEXs信息的信息
+  crypto/onchain/_address: Eetheum 地址
+  crypto/onchain/_ethereum_: Eitherum 冰
+  crypto/onchain/_type: 地址类型类型
+  crypto/onchain/address: 表示、 账户或交易的表示、 账户或交易的表示、 帐号或交易地址
+  crypto/onchain/baas: 标出、问价、给定加密对对的平均利差
+  crypto/onchain/balance: 中乙基平衡
+  crypto/onchain/btccp: 显示 BTC 循环供应
+  crypto/onchain/btcct: 显示已确认的 BTC 交易
+  crypto/onchain/ds: 道德操守平台数据(日用户;收费)
+  crypto/onchain/dt: eeth 符号天天交易
+  crypto/onchain/dvcp: 加密配对每日音量
+  crypto/onchain/gwei: 检查当前 eth 气费
+  crypto/onchain/hist: EEEum 平衡历史(交易)
+  crypto/onchain/holders: 上层 ERRC20 符号持有者
+  crypto/onchain/hr: 一段时间内(BTC 或 ETH)
+  crypto/onchain/info: ERRC20 象征性信息
+  crypto/onchain/lt: 以 dex 或月计的最近交易
+  crypto/onchain/prices: ERC20 象征性历史价格
+  crypto/onchain/th: ERC20 象征性历史
+  crypto/onchain/top: 上层 ERRC20 符号
+  crypto/onchain/ttcp: 特定分散交易交易所上顶端交易加密对对
+  crypto/onchain/tv: DEXes 上的等号音量
+  crypto/onchain/tvl: ERRC20 标牌锁定的 ERRC20 总值总值
+  crypto/onchain/tx: EEEUum 塑料链交易信息
+  crypto/onchain/ueat: 进行交易的独一醚地址
+  crypto/onchain/whales: 检查加密的 wales 交易
+  crypto/ov: 密码、市场上限、DeFi、最新消息、顶层交易所、马厩概览
+  crypto/ov/altindex: 藻类季节指数(在前50个硬币中,75%的硬币表现优于BTC)
+  crypto/ov/btcrb: 显示比特币彩虹价格图表(对数回归)
+  crypto/ov/categories: 加密分类
+  crypto/ov/ch: 列出与加密有关的主要黑客
+  crypto/ov/contracts: 给定平台的所有智能合同
+  crypto/ov/cr: 提供或借息利率
+  crypto/ov/defi: 全球 DeFi 市场信息
+  crypto/ov/derivatives: 加密衍生物
+  crypto/ov/ewf: 汇兑总提 取 费
+  crypto/ov/exmarkets: 特定交易所的所有现有市场
+  crypto/ov/exrates: 汇率汇率
+  crypto/ov/fun: 基于基本指标的探索项目
+  crypto/ov/hm: 加密热映射
+  crypto/ov/hold: 乙醚、比特币持有量概览统计
+  crypto/ov/indexes: 加密索引
+  crypto/ov/info: 关于所有可用硬币的基本信息
+  crypto/ov/markets: 有关所有现有硬币的市场相关信息
+  crypto/ov/news: 最近的加密新闻
+  crypto/ov/pairs: 关于现有贸易对对的信息
+  crypto/ov/platforms: 单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列单列图示示示示示示
+  crypto/ov/stables: 稳定硬度
+  crypto/ov/wf: 提 提 费 总额 总额
+  crypto/ov/wfpe: 每个交换所的加密提取费
+  crypto/price: 实时价格和置信间隔
+  crypto/prt: 潜在回报率(例如,如果ETH达到BTC市场上限,则倒值)
+  crypto/qa: 定量分析定量分析分解、计算、残余物分析
+  crypto/qa/_other_: 其他
+  crypto/qa/_plots_: 绘图绘图
+  crypto/qa/_rolling_metrics_: 滚动计数器
+  crypto/qa/_statistics_: 统计统计统计统计统计
+  crypto/qa/_target: 目标栏
+  crypto/qa/_ticker: 计数器
+  crypto/qa/acf: (部分)自动关系功能差价
+  crypto/qa/bw: 框中边边边的滚动地块,
+  crypto/qa/cdf: 累积分布函数
+  crypto/qa/cusum: 使用价格累计总和算法探测突变
+  crypto/qa/decompose: 周期趋势、季节和价格残余物中的分解
+  crypto/qa/hist: 带有密度绘图的直方图
+  crypto/qa/kurtosis: 价格分配的滚动轮转曲线
+  crypto/qa/line: 选定目标选定目标的线条绘图
+  crypto/qa/load: 负载新计算器
+  crypto/qa/normality: 正常度统计和测试
+  crypto/qa/pick: 选择用于分析的目标列
+  crypto/qa/qqplot: 对照标准正常曲线的残留物
+  crypto/qa/quantile: 滚动中位数和价格四分位数
+  crypto/qa/raw: 打印原始数据
+  crypto/qa/rolling: 价格滚动平均值和标准标准偏差
+  crypto/qa/skew: 价格分配的滚动扭曲
+  crypto/qa/spread: 价格的滚动差异和标准偏差
+  crypto/qa/summary: 装货库存简要简要简要统计
+  crypto/qa/unitroot: 恒定度单位单位根测试(ADF, KPSS)
+  crypto/ta: 对装入的硬币、 ema、 macd、 rsi、 adx、 bbbbands、 mobv 的装入硬币、 ema、 macd、 rsi、 adx、
+    bbbbands、 mobv 技术分析
+  crypto/ta/_custom_: 自自自
+  crypto/ta/_momentum_: 时势
+  crypto/ta/_overlap_: 重叠重叠重叠
+  crypto/ta/_ticker: 已装入的连号
+  crypto/ta/_trend_: 趋势趋势趋势
+  crypto/ta/_volatility_: 波动
+  crypto/ta/_volume_: 量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量
+  crypto/ta/ad: 累积/分配项目
+  crypto/ta/adosc: 焦皮振动器
+  crypto/ta/adx: 平均方向变动指数
+  crypto/ta/aroon: aroon 指标
+  crypto/ta/bbands: 弹带
+  crypto/ta/cci: 初级商品渠道指数
+  crypto/ta/cg: 重力中心
+  crypto/ta/donchian: 东葡语频道
+  crypto/ta/ema: 指数指数移动平均平均数
+  crypto/ta/fib: ibbonacc 回收
+  crypto/ta/fisher: 鱼变
+  crypto/ta/hma: 船体移动平均数
+  crypto/ta/kc: keltner 频道
+  crypto/ta/macd: 移动平均趋同/指数
+  crypto/ta/obv: 数额余额
+  crypto/ta/rsi: 相对数数指数
+  crypto/ta/sma: 简单移动平均平均数
+  crypto/ta/stoch: 蒸气振动器
+  crypto/ta/tv: 开开开放交互式图表
+  crypto/ta/vwap: 加权平均物价
+  crypto/ta/wma: 加权加权移动平均数
+  crypto/ta/zlma: 零时差移动平均平均数
+  crypto/tools: 探索不同工具的 pytuaapr, il
+  crypto/tools/aprtoapy: 将 apr 转换为 apy
+  crypto/tools/il: 计算非永久损失
+  dashboards: 使用voila和jupyter笔记本的交互式仪表板
+  dashboards/chains: 选项链分析
+  dashboards/correlation: 股票对应关系
+  dashboards/crypto: 以美元兑美元的 地下货币货币兑换率
+  dashboards/forecast: 预测时间序列数据集
+  dashboards/forecasting: 预测时间序列数据集
+  dashboards/futures: 历史未来未来历史 期货业绩
+  dashboards/shortdata: Finra 短数据分析
+  dashboards/stocks: 历史库存资料
+  dashboards/vsurf: 波动表面
+  defined, not tested: 定义定义,未测试
+  defined, test failed: 定义, 测试失败
+  defined, test inconclusive: 定义、测试无结果
+  defined, test passed: 定义, 测试通过
+  econometrics: 数据集之间关系的统计和定量方法
+  econometrics/_data_loc: 查找数据
+  econometrics/_exploration_: 勘探勘探
+  econometrics/_loaded: 已装入的文件和数据列
+  econometrics/_regression_: 倒退
+  econometrics/_regression_tests_: 回归测试
+  econometrics/_tests_: 测试测试
+  econometrics/add: 将列添加到数据集中, 使用公式的选项
+  econometrics/bgod: Breusch-Godfrey 与回归残余物滞后的 血压热热热血热反应试验
+  econometrics/bpag: 对回归残余物的 Breusch-Pagan 血压性测试
+  econometrics/clean: 通过填充或丢弃 NaNNs 来清理数据集
+  econometrics/coint: 对多个列列进行合并试验
+  econometrics/combine: 组合来自不同数据集的列
+  econometrics/compare: 比较所有估计模型的结果
+  econometrics/delete: 删除数据集中的列
+  econometrics/desc: 显示数据集的描述性统计
+  econometrics/dwat: Durbin-Watson 对回归残余物的回回归体的自化关系测试
+  econometrics/export: 导出已处理的数据集
+  econometrics/granger: 对两个栏目进行因果测试
+  econometrics/index: 基于列的( mix) 指数
+  econometrics/load: a 装载数据集(也与StatasModels数据集合作)
+  econometrics/modify: 合并数据集列,删除或重命名列
+  econometrics/norm: 对数据集一列进行正常度测试
+  econometrics/ols: 符合( 多) 线性回归模型
+  econometrics/options: 显示可用的列数据集选项
+  econometrics/panel: 基于各种回归技术的估计模型
+  econometrics/plot: 来自数据集的绘图数据
+  econometrics/remove: 删除一个已装入的数据集
+  econometrics/rename: 从数据集重命名列
+  econometrics/root: 在数据集一列上进行单位根测试(ADF & KPSS)
+  econometrics/show: 显示已装入数据集的一部分
+  econometrics/type: 更改栏的种类或显示其类型
+  economy: 全球宏观经济数据,例如未来、收益率、国库数据
+  economy/_database_: 数据库数据库
+  economy/_stored: 存储的数据集
+  economy/bigmac: 经济学家大麦指数
+  economy/edebt: 显示各国外债统计数据
+  economy/eval: 通过在已装入数据上执行操作创建新序列
+  economy/events: 显示经济日历
+  economy/forecast: 预报技术; rnn、 nbeats、 变压器、 block rnn
+  economy/fred: 根据一系列 ID 从 FRED 收集宏观数据
+  economy/futures: 显示期货和商品概览
+  economy/index: 并在市场上标出任何(主要)指数。
+  economy/macro: 收集一国或一国的宏观数据
+  economy/map: S&P500指数库存图
+  economy/overview: 显示指数、债券或货币的市场概览
+  economy/performance: 部门、工业、国家
+  economy/plot: 以上命令的绘图数据
+  economy/qa: 含有存储数据的开放定量分析菜单
+  economy/qa/_other_: 其他
+  economy/qa/_plots_: 绘图绘图
+  economy/qa/_rolling_metrics_: 滚动计数器
+  economy/qa/_series: 选定系列
+  economy/qa/_statistics_: 统计统计统计统计统计
+  economy/qa/acf: (部分)自动关系功能差价
+  economy/qa/bw: 框中边边边的滚动地块,
+  economy/qa/cdf: 累积分布函数
+  economy/qa/cusum: 使用价格累计总和算法探测突变
+  economy/qa/decompose: 周期趋势、季节和价格残余物中的分解
+  economy/qa/hist: 带有密度绘图的直方图
+  economy/qa/kurtosis: 价格分配的滚动轮转曲线
+  economy/qa/line: 选定目标选定目标的线条绘图
+  economy/qa/normality: 正常度统计和测试
+  economy/qa/pick: 从存储的经济数据中选择新序列
+  economy/qa/qqplot: 对照标准正常曲线的残留物
+  economy/qa/quantile: 滚动中位数和价格四分位数
+  economy/qa/raw: 打印原始数据
+  economy/qa/rolling: 价格滚动平均值和标准标准偏差
+  economy/qa/skew: 价格分配的滚动扭曲
+  economy/qa/spread: 价格的滚动差异和标准偏差
+  economy/qa/summary: 装货库存简要简要简要统计
+  economy/qa/unitroot: 恒定度单位单位根测试(ADF, KPSS)
+  economy/rtps: 实时业绩部门
+  economy/spectrum: 不同部门、工业、国家、国家
+  economy/spread: 显示债券利差矩阵
+  economy/treasury: 获得美国国库利率
+  economy/valuation: 部门、工业、国家
+  economy/ycrv: 显示主权收益曲线
+  etf: 历史定价、比较持有量和筛选
+  etf/_major_holdings: 主要持有财产
+  etf/_symbol: 符号符号符号
+  etf/ca: 比较分析,获得相似的、历史的、相互联系的、财务分析
+  etf/candle: ETF 查看蜡烛图
+  etf/compare: 比较多个不同的 ETF
+  etf/disc: 发现 ETF 、 获取者/ Decliners/ 激活
+  etf/disc/active: 最活跃
+  etf/disc/decliners: 上下下下下
+  etf/disc/gainers: 顶上增益者
+  etf/holdings: 上上层公司持有量
+  etf/load: 装载 ETF 数据
+  etf/news: 公司最新消息
+  etf/overview: 获得概览
+  etf/pir: 被动投资者优秀报告
+  etf/scr: 使用预设过滤器,概览/性能
+  etf/scr/_preset: 预设预设
+  etf/scr/sbc: 按类别划分的屏幕
+  etf/scr/screen: 使用选中的预设屏幕 ETF
+  etf/scr/set: 可用的预设设置之一
+  etf/scr/view: 可用的预设视图
+  etf/search: 根据名称或描述搜索 ETF
+  etf/summary: ETF的简要说明
+  etf/ta: 技术分析, ema, macd, rsi, adx, bbbands, mobv 技术分析, ema, macd, rsi, adx, bbbands,
+    mobv 技术分析, ema, macd, rsi, adx, bbbbands, mobv 技术分析, ema, macd, rsi, adx, bbbbands,
+    mobv 技术分析, ema macd, rx, adx, bbbbands, mobv 技术分析, ema ea 技术分析, ema macd, micd,
+    rsi, adx, bix, bbbbband, bbbb 和 mov 技术分析, 技术分析, 技术分析, ema, ema, ema, mcdd 技术分析,
+    技术分析, mcd, 技术分析, 、 mcd, 、 、 、 、 、 mcd, 、 、 rsi, 和 和 技术分析, 和
+  etf/ta/_custom_: 自自自
+  etf/ta/_momentum_: 时势
+  etf/ta/_overlap_: 重叠重叠重叠
+  etf/ta/_ticker: ETF 电子邮件
+  etf/ta/_trend_: 趋势趋势趋势
+  etf/ta/_volatility_: 波动
+  etf/ta/_volume_: 量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量
+  etf/ta/ad: 累积/分配项目
+  etf/ta/adosc: 焦皮振动器
+  etf/ta/adx: 平均方向变动指数
+  etf/ta/aroon: aroon 指标
+  etf/ta/bbands: 弹带
+  etf/ta/cci: 初级商品渠道指数
+  etf/ta/cg: 重力中心
+  etf/ta/donchian: 东葡语频道
+  etf/ta/ema: 指数指数移动平均平均数
+  etf/ta/fib: ibbonacc 回收
+  etf/ta/fisher: 鱼变
+  etf/ta/hma: 船体移动平均数
+  etf/ta/kc: keltner 频道
+  etf/ta/macd: 移动平均趋同/指数
+  etf/ta/obv: 数额余额
+  etf/ta/rsi: 相对数数指数
+  etf/ta/sma: 简单移动平均平均数
+  etf/ta/stoch: 蒸气振动器
+  etf/ta/vwap: 加权平均物价
+  etf/ta/wma: 加权加权移动平均数
+  etf/ta/zlma: 零时差移动平均平均数
+  etf/weights: 部门加权分配额
+  exe: 执行自动程序脚本
+  featflags: 启用并禁用特性标志
+  featflags/_info_: 通过环境变量的特征标志
+  featflags/cls: 每个命令之后的清晰控制台
+  featflags/cmdloc: 在图表中显示命令位置
+  featflags/color: 使用色化功能
+  featflags/exithelp: 退出菜单时自动打印帮助
+  featflags/ion: 交互式 Mattlotlib 模式
+  featflags/promptkit: 启用快速工具包( 自动和历史)
+  featflags/rcontext: 会话期间已装入的参数
+  featflags/reporthtml: 以 HTML 格式另用笔记本打开报告
+  featflags/retryload: 尝试先装入重写错误拼写命令
+  featflags/rich: 丰富多彩的发彩丰富终端
+  featflags/richpanel: 丰富多彩的终端面板
+  featflags/tab: 用于打印数据框架的列表
+  featflags/tbhint: 在底部工具栏中显示需要的提示
+  featflags/thoughts: 白昼的思维,
+  featflags/watermark: 数字中的水印
+  forecast: 用机器学习进行时间序列预测
+  forecast/_comingsoon_: 马上就要来了
+  forecast/_data_loc: 查找数据
+  forecast/_disclaimer_: 分 分 声 声 声 声
+  forecast/_exploration_: 勘探勘探
+  forecast/_feateng_: 地貌工程
+  forecast/_loaded: 已装入的文件和数据列
+  forecast/_tsforecasting_: 时间序列预测
+  forecast/arima: Arima(非艺术)
+  forecast/atr: 添加平均真实范围
+  forecast/autoarima: 自动 ARIMA 模型
+  forecast/autoces: 自动复杂指数平滑模型
+  forecast/autoets: 自动ETS(错误、趋势、季节性)模式
+  forecast/autoselect: 从AutoARIMA、AutoETS、AutoCes、MSTL等选择最佳统计模式。
+  forecast/brnn: 复元神经网络( RNN、 LSTM、 GRU) 区块( 平面, 过去共变量)
+  forecast/clean: 通过填充或丢弃 NaNN 来清理数据集
+  forecast/combine: 组合来自不同数据集的列
+  forecast/corr: 绘制数据集特征相关系数
+  forecast/delete: 删除数据集中的列
+  forecast/delta: 添加% 变化
+  forecast/desc: 显示数据集的描述性统计
+  forecast/ema: 添加指数加权移动平均数
+  forecast/expo: 概率概率指数平滑
+  forecast/export: 导出经处理的数据集
+  forecast/linregr: 概率 线性回归( 位置、 过去的共变量和可解释性)
+  forecast/load: 从 csv 装入数据集
+  forecast/mom: 添加时速
+  forecast/mstl: 使用Loess(MSTL)模型的多季节性和趋势
+  forecast/nbeats: 神经贝耶斯测算( 相对, 过去共变数)
+  forecast/nhits: 神经等级式内插( 相对, 以往的共变量)
+  forecast/plot: 绘制已装入数据集的具体列
+  forecast/regr: 回归( 相对 。 过去的共变量和可解释性)
+  forecast/rename: 从数据集重命名列
+  forecast/rnn: 经常神经网络(RNN、LSTM、GRU)
+  forecast/roc: 增 增 调 率 增 增 减 率
+  forecast/rsi: 添加相对强度指数
+  forecast/rwd: 与 Drift 模型随机漫步
+  forecast/season: 为数据集列绘制一个数据集列的季节性
+  forecast/seasonalnaive: 季节保护模型
+  forecast/show: 显示已装入数据集的一部分
+  forecast/signal: 添加价格信号(短期与长期)
+  forecast/sto: 添加存储振荡器% K 和% D
+  forecast/tcn: 时时演变神经网络( 时变神经网络, 过去共变)
+  forecast/tft: 时空融合变换器网络( feat. 以往的共变量)
+  forecast/theta: 塞塔方法
+  forecast/trans: 变换器网络( 座位, 过去的共变量)
+  forex: 外汇汇率、报价、对货币的远期汇率和陆地一体化
+  forex/_from: 发自
+  forex/_source: 来源来源来源
+  forex/_ticker: 计数器
+  forex/_to: 将 to
+  forex/candle: 显示加载配对的蜡烛绘图
+  forex/forecast: 预报技术
+  forex/forex: Forex经纪公司
+  forex/fwd: 获取加载配对的远端费率
+  forex/load: 获取历史数据
+  forex/oanda: Oanda 菜单
+  forex/oanda/_from: 发自
+  forex/oanda/_loaded: 已装入的仪器
+  forex/oanda/_source: 来源来源来源
+  forex/oanda/_to: 将 to
+  forex/oanda/calendar: 显示日历显示日历
+  forex/oanda/cancel: ID - i 命令ID 取消待发命令
+  forex/oanda/candles: 显示蜡烛
+  forex/oanda/closetrade: ID 关闭交易
+  forex/oanda/from: 以前ex 配对选择“ from” 货币
+  forex/oanda/list: 列表列表历史顺序
+  forex/oanda/order: 限量定单 - 单位数量 - p 价格
+  forex/oanda/orderbook: 打印命令手册
+  forex/oanda/pending: 获得关于待决命令的信息
+  forex/oanda/positionbook: 打印位置手册
+  forex/oanda/positions: 获得打开位置
+  forex/oanda/price: 显示选定仪器的价格
+  forex/oanda/summary: 账户摘要
+  forex/oanda/to: 以前ex 配对选择“ to” 货币
+  forex/oanda/trades: 列表开放交易
+  forex/qa: 定量分析、分解、计算、残余物分析
+  forex/qa/_other_: 其他
+  forex/qa/_pair: 对对
+  forex/qa/_plots_: 绘图绘图
+  forex/qa/_rolling_metrics_: 滚动计数器
+  forex/qa/_statistics_: 统计统计统计统计统计
+  forex/qa/_target: 具体目标具体目标具体目标具体目标
+  forex/qa/acf: (部分)自动关系功能差价
+  forex/qa/bw: 框中边边边的滚动地块,
+  forex/qa/cdf: 累积分布函数
+  forex/qa/cusum: 使用价格累计总和算法探测突变
+  forex/qa/decompose: 周期趋势、季节和价格残余物中的分解
+  forex/qa/hist: 带有密度绘图的直方图
+  forex/qa/kurtosis: 价格分配的滚动轮转曲线
+  forex/qa/line: 选定目标选定目标的线条绘图
+  forex/qa/normality: 正常度统计和测试
+  forex/qa/pick: 选择用于分析的目标列
+  forex/qa/qqplot: 对照标准正常曲线的残留物
+  forex/qa/quantile: 滚动中位数和价格四分位数
+  forex/qa/raw: 打印原始数据
+  forex/qa/rolling: 价格滚动平均值和标准标准偏差
+  forex/qa/skew: 价格分配的滚动扭曲
+  forex/qa/spread: 价格的滚动差异和标准偏差
+  forex/qa/summary: 装货库存简要简要简要统计
+  forex/qa/unitroot: 恒定度单位单位根测试(ADF, KPSS)
+  forex/quote: 最后引号
+  forex/ta: 技术分析, ema, macd, rsi, adx, bbbands, mobv 技术分析, ema, macd, rsi, adx, bbbands,
+    mobv 技术分析, ema, macd, rsi, adx, bbbbands, mobv 技术分析, ema, macd, rsi, adx, bbbbands,
+    mobv 技术分析, ema macd, rx, adx, bbbbands, mobv 技术分析, ema ea 技术分析, ema macd, micd,
+    rsi, adx, bix, bbbbband, bbbb 和 mov 技术分析, 技术分析, 技术分析, ema, ema, ema, mcdd 技术分析,
+    技术分析, mcd, 技术分析, 、 mcd, 、 、 、 、 、 mcd, 、 、 rsi, 和 和 技术分析, 和
+  forex/ta/_currency: 装满一对货币的一对货币
+  forex/ta/_custom_: 自自自
+  forex/ta/_momentum_: 时势
+  forex/ta/_overlap_: 重叠重叠重叠
+  forex/ta/_source: 来源来源来源
+  forex/ta/_trend_: 趋势趋势趋势
+  forex/ta/_volatility_: 波动
+  forex/ta/adx: 平均方向变动指数
+  forex/ta/aroon: aroon 指标
+  forex/ta/bbands: 弹带
+  forex/ta/cci: 初级商品渠道指数
+  forex/ta/cg: 重力中心
+  forex/ta/donchian: 东葡语频道
+  forex/ta/ema: 指数指数移动平均平均数
+  forex/ta/fib: ibbonacc 回收
+  forex/ta/fisher: 鱼变
+  forex/ta/macd: 移动平均趋同/指数
+  forex/ta/rsi: 相对数数指数
+  forex/ta/sma: 简单移动平均平均数
+  forex/ta/stoch: 蒸气振动器
+  forex/ta/zlma: 零时差移动平均平均数
+  funds: 查询、概览、持有量和部门加权数
+  funds/_country: 流动国家
+  funds/_fund: 流动基金
+  funds/alswe: (部门、国家、持有量)
+  funds/country: 设置用于过滤的国家
+  funds/equity: 所持股份
+  funds/forecast: 预报技术
+  funds/info: 获取基金信息
+  funds/infoswe: 获取基金信息
+  funds/load: 历史负负历史资金数据
+  funds/plot: 已经装入历史资金数据的绘图已装入历史资金数据
+  funds/search: 共同基金查询
+  funds/sector: 部门加权数
+  futures: 初级商品、债券、指数、比特币和福前
+  futures/curve: 获取期货曲线
+  futures/historical: 获取历史时间序列
+  futures/search: 根据类别或交换对未来进行搜索
+  intro: OpenBB 终端的介绍
+  keys: 设置 API 键并检查其有效性
+  keys/_keys_: 此菜单允许您设置自己的 API 密钥。 输入“ about” 以获取更多信息
+  keys/_status_: 状况状况状况状况状况状况状况状况状况状况状况状况状况状况状况状况状况状况状况状况状况状况状况状况状况
+  keys/mykeys: 获取定义键
+  news: 基于文章和数据来源的显示式新闻文章
+  not defined: 未定义定义
+  portfolio: 实施投资组合优化,并审视投资组合业绩和归属
+  portfolio/_benchmark: 基准基准基准基准基准基准基准
+  portfolio/_graphs_: 图图图图图
+  portfolio/_loaded: 已加载交易
+  portfolio/_metrics_: 计量数
+  portfolio/_risk_: 风险计量
+  portfolio/_riskfreerate: 风险无风险率
+  portfolio/alloc: 按资产、部门、国家或区域分列的分配情况
+  portfolio/attrib: 与S&P 500相比的投资组合的 部门 显示显示部门 显示 组合的属性( S&P 500)
+  portfolio/bench: 定义基准
+  portfolio/bro: 经纪人持有股份,支持抢劫、盟友、德吉罗、硬币基地
+  portfolio/bro/ally: Ally Invest 菜单
+  portfolio/bro/ally/_info_: 库存信息信息
+  portfolio/bro/ally/balances: 显示账户的余额细节
+  portfolio/bro/ally/history: 显示账户历史
+  portfolio/bro/ally/holdings: 显示账户持有量
+  portfolio/bro/ally/movers: 获取移动者排名列表
+  portfolio/bro/ally/quote: 获取股票报价
+  portfolio/bro/cb: Coinbase Pro Menu 支持菜单
+  portfolio/bro/cb/account: 您账户的显示余额
+  portfolio/bro/cb/deposits: 显示所有存款或内部转账
+  portfolio/bro/cb/history: 显示账户历史
+  portfolio/bro/cb/orders: 显示全部命令
+  portfolio/bro/degiro: 德吉罗·梅努
+  portfolio/bro/degiro/cancel: 使用 id 取消命令
+  portfolio/bro/degiro/companynews: 浏览公司新闻的Isin
+  portfolio/bro/degiro/create: 创建命令
+  portfolio/bro/degiro/hold: 查看持持量
+  portfolio/bro/degiro/lastnews: 查看最新新闻
+  portfolio/bro/degiro/login: 连接到 degiro 的 Api
+  portfolio/bro/degiro/logout: 与 degiro 的 Api 断开
+  portfolio/bro/degiro/lookup: 以名称查找产品
+  portfolio/bro/degiro/paexport: csv出口用于组合分析
+  portfolio/bro/degiro/pending: 待决命令
+  portfolio/bro/degiro/topnews: 视图顶端新闻预览
+  portfolio/bro/degiro/update: 更新顺序
+  portfolio/bro/rh: 罗宾菜单
+  portfolio/bro/rh/history: 显示账户的股本历史
+  portfolio/bro/rh/holdings: 显示账户持有量的存量
+  portfolio/bro/rh/login: 登录到 ribinky
+  portfolio/cret: 累计累积回报
+  portfolio/distr: 每日返回的分发
+  portfolio/dret: 每日返回
+  portfolio/es: 显示预期缺额
+  portfolio/holdp: 资产组合资产持有量(百分比)
+  portfolio/holdv: 资产持有数(绝对价值)
+  portfolio/load: 将交易事项装入投资组合
+  portfolio/maxdd: 最高最高缩编额
+  portfolio/metric: 所有不同时期的组合组合与基准指标
+  portfolio/mret: 月月回报月回报
+  portfolio/om: 显示 omega 比率
+  portfolio/perf: 投资组合业绩相对于基准
+  portfolio/po: 组合组合优化,高效优化组合权重
+  portfolio/po/_categories: 类别类别类别类别类别类别
+  portfolio/po/_hierarchical_clustering_models_: 等级类集模型
+  portfolio/po/_loaded: 已装入的组合组合
+  portfolio/po/_mean_risk_optimization_: 平均风险优化
+  portfolio/po/_optimized_portfolio: 优化组合组合
+  portfolio/po/_other_optimization_techniques_: 其他优化技术
+  portfolio/po/_parameter: 参数文件
+  portfolio/po/_risk_parity_optimization_: 风险均等
+  portfolio/po/_tickers: 计票者
+  portfolio/po/blacklitterman: 黑黑垃圾垃圾人投资组合
+  portfolio/po/dividend: 按股息收益(财产股息)加权
+  portfolio/po/ef: 显示高效边框
+  portfolio/po/equal: 同等加权
+  portfolio/po/file: 包含组合风险参数的文件
+  portfolio/po/herc: 平等等级平等风险因素
+  portfolio/po/hrp: 风险等级风险均等
+  portfolio/po/load: 来自.xlsx或.csv 文件的装载计数器和分类
+  portfolio/po/maxdecorr: 最大装饰关系组合
+  portfolio/po/maxdiv: 最大多样化组合
+  portfolio/po/maxret: 最大回报组合
+  portfolio/po/maxsharpe: (a.k.a. 相干组合)
+  portfolio/po/maxutil: 最大风险 最大风险 最大反向效用功能, 给某些风险反转参数
+  portfolio/po/minrisk: 最低风险组合
+  portfolio/po/mktcap: 按市场上限(财产市场资本)加权计算
+  portfolio/po/nco: 嵌套群优化
+  portfolio/po/params: 指定并显示组合风险参数
+  portfolio/po/params/_loaded: 已装入文件
+  portfolio/po/params/_model: 利益模型
+  portfolio/po/params/_parameters_: 参数参数
+  portfolio/po/params/arg: 设置一个参数的不同值
+  portfolio/po/params/clear: 过滤参数的清晰关注模式
+  portfolio/po/params/file: 负载组合组合风险参数
+  portfolio/po/params/load: 选择组合组合参数文件
+  portfolio/po/params/save: 将组合组合风险参数保存到指定文件
+  portfolio/po/params/set: 过滤参数感兴趣的设置模型
+  portfolio/po/plot: 从保存的组合列表列表中选中的绘图图图
+  portfolio/po/property: 根据选定信息属性的权数
+  portfolio/po/relriskparity: 采用最小平方法的宽松风险平等
+  portfolio/po/riskparity: 采用风险预算编制办法的投资组合
+  portfolio/po/rpf: 从保存的组合列表中删除组合
+  portfolio/po/show: 显示已保存组合列表中选定的组合和类别
+  portfolio/rbeta: 滚动贝贝贝
+  portfolio/rsharpe: 滚滚冲锋
+  portfolio/rsort: 滚动排序
+  portfolio/rvol: 滚滚滚波动
+  portfolio/show: 显示现有交易
+  portfolio/summary: 所有投资组合相对于某一选择期的基准衡量标准
+  portfolio/var: 风险中的显示显示值
+  portfolio/yret: 年回报年回报年回报
+  record: 要转换成.opepbb 常规
+  reports: 通过Jupyter笔记本进行可自定义的调查报告
+  reports/_Custom_reports_: 自定义报告
+  reports/_OpenBB_reports_: 开放BBB报告
+  reports/_reports_: 构建并运行您的自定义报告或尝试我们的模板
+  reports/run: 运行来自 OpenBBUserData/ reports/wast reports/ reports/world reports 的
+    Jupyter 笔记本
+  settings: 曲调设置( 出口文件夹、 时区、 语言、 绘图大小)
+  settings/_backend: 后端
+  settings/_data_source: 数据来源数据来源
+  settings/_dpi: 每英寸绘图点数
+  settings/_flair: 平架
+  settings/_info_: 通过环境变量设置
+  settings/_language: 语言语言语言
+  settings/_monitor: 监视监视器
+  settings/_plot_height: 绘图绘制高度
+  settings/_plot_height_pct: 绘图高度 [%]
+  settings/_plot_width: 绘图宽度
+  settings/_plot_width_pct: 绘图宽度 (%)
+  settings/_preferred_data_source_file: 首选数据源文件
+  settings/_timezone: 时区
+  settings/_user_data_folder: 用户数据文件夹
+  settings/autoscaling: 绘图绘图自动缩放
+  settings/backend: 绘图后端( 无、 tkAgg、 MacOSX、 Qt5Agg)
+  settings/colors: 设置您自己的终端端点颜色
+  settings/dpi: 每英寸点数
+  settings/dt: 添加或从天性中删除日期时间
+  settings/flair: 设置要使用的性能 emoji
+  settings/height: 选择绘图高度
+  settings/lang: 终端语言语言
+  settings/monitor: 显示显示显示的监视器( BY0, 二级 1)
+  settings/pheight: 选择绘图百分比高度
+  settings/pwidth: 选择绘图百分比宽度
+  settings/source: 指定数据源文件
+  settings/tz: 设置不同的时区
+  settings/userdata: 设置要存储用户数据的文件夹
+  settings/width: 选择绘图宽度
+  sources: 选择首选数据源
+  sources/_info_: 获取和设置默认数据源
+  sources/get: 获取与命令相关的可用数据源
+  sources/set: 设置命令的默认数据源
+  stocks: 获取历史定价数据、选项、部门和行业以及总体尽职调查
+  stocks/_ticker: 库存
+  stocks/ba: 行为分析,从重新编辑,呆子,Twitter,google
+  stocks/ba/_ticker: 计数器
+  stocks/ba/bullbear: 估计机上过去30条留言的快速情绪
+  stocks/ba/getdd: 获得另一个用户的应尽职责
+  stocks/ba/headlines: 15+主要新闻头条头条的情绪
+  stocks/ba/hist: 按小时分列的历史RHI和AHI数据
+  stocks/ba/infer: 从最新的推特推文中推断出股市的情绪
+  stocks/ba/interest: 判决期间利息利息与股价之比
+  stocks/ba/jcdr: 吉姆·克雷默的每日建议
+  stocks/ba/jctr: 吉姆·克雷默的建议
+  stocks/ba/load: 装入用于分析的特定库存取数
+  stocks/ba/mentions: 根据股票的提法,长期利息
+  stocks/ba/messages: 输出最多到棋盘上最后 30 条信息
+  stocks/ba/popular: 显示流行的刻记
+  stocks/ba/queries: 使用此存量的顶端相关查询
+  stocks/ba/redditsent: 搜索 redidi 以查找 checker 并找到 redidi 情绪
+  stocks/ba/regions: 对种群表示最高兴趣的区域
+  stocks/ba/rise: 与库存相关的上上上上上上上上上上上上上下端查询
+  stocks/ba/sentiment: 长期从推文中深入预测情绪
+  stocks/ba/snews: 在新闻头条新闻头条新闻的情绪上展示了股票价格
+  stocks/ba/spac: 显示其他用户从其他子账户中跳动通知
+  stocks/ba/spacc: 显示从子编辑 SPACs 中显示其他用户的 space 公告
+  stocks/ba/stalker: 跟踪呆子用户的最后消息
+  stocks/ba/trending: 趋势种群
+  stocks/ba/watchlist: 显示其他用户观察列表
+  stocks/ba/wsb: 显示 WSB 黑帮在小黑帮的墙壁街道中的目的
+  stocks/bt: 后期战略、简单ema、ema交叉、rsi战略
+  stocks/bt/_ticker: 计数器
+  stocks/bt/ema: 当购买价格超过EMA(l)时
+  stocks/bt/emacross: 当 EMA (short) > EMA( long) 购买时
+  stocks/bt/rsi: 当RSSI < 低价购买时,当RSSI > 高价销售时
+  stocks/bt/whatif: 假若你们在Y日购买X股票,
+  stocks/ca: 比较分析,获得相似的、历史的、相互联系的、财务分析
+  stocks/ca/_similar: 类似公司
+  stocks/ca/_ticker: 将类似的公司从
+  stocks/ca/add: 增加更类似的公司
+  stocks/ca/balance: 财务收支比较
+  stocks/ca/cashflow: 现金流量比较
+  stocks/ca/financial: 简要财务比较
+  stocks/ca/get: 获得类似库存
+  stocks/ca/hcorr: 历史物价关系
+  stocks/ca/historical: 历史价格数据比较
+  stocks/ca/income: 收支比较
+  stocks/ca/overview: 简要概览比较
+  stocks/ca/ownership: 简单自有比较
+  stocks/ca/performance: 简短业绩比较
+  stocks/ca/rmv: 单独或全部删除类似公司
+  stocks/ca/scorr: 感量相关关系
+  stocks/ca/sentiment: 情绪分析分析比较
+  stocks/ca/set: 重置和设置类似公司
+  stocks/ca/technical: 简要技术比较
+  stocks/ca/ticker: 获取类似的公司
+  stocks/ca/tsne: 在所有SP500库存上运行TSNE, 并返回最接近的滴答器
+  stocks/ca/valuation: 简要估值比较
+  stocks/ca/volume: 历史数量数据比较
+  stocks/candle: 查看用于特定鱼类的蜡烛图
+  stocks/codes: FIGI、SIK和SIC代码
+  stocks/dd: 深入的尽职调查、新闻、分析分析、短裤、内线、内部人员、秒
+  stocks/dd/_ticker: 计数器
+  stocks/dd/analyst: 公司分析价格和评级
+  stocks/dd/arktrades: 获取 ARK 交易用于计算器
+  stocks/dd/customer: 顾客名单
+  stocks/dd/est: 分析员收入估计数
+  stocks/dd/load: 装入用于分析的特定库存取数
+  stocks/dd/pt: 长期价格目标
+  stocks/dd/rating: 长期评级(每日)
+  stocks/dd/rot: 随时间推移(月)分析员评级数目(月)
+  stocks/dd/sec: SEC申报
+  stocks/dd/supplier: 供应商名单
+  stocks/disc: 发现趋势股票、地图、部门、高低利差
+  stocks/disc/active: 按日间贸易量计算最活跃的库存量
+  stocks/disc/arkord: ARK 投资管理有限公司的指令
+  stocks/disc/asc: 收入增长率高于25%的小型上限股票
+  stocks/disc/cnews: 定制新闻( 买回、 ipos、 spass、 医疗保健、 政治)
+  stocks/disc/divcal: 选定日期的股利红利日历
+  stocks/disc/fipo: 未来国际采购组织日期
+  stocks/disc/gainers: 显示最新的顶部获取者
+  stocks/disc/gtech: 收入和收入增长25%以上的技术股票
+  stocks/disc/heatmap: SP500 刻板的热图
+  stocks/disc/hotpenny: 今天的热钱股票
+  stocks/disc/losers: 显示最新上层输家
+  stocks/disc/lowfloat: 10M股票以下的低浮控种群
+  stocks/disc/pipo: 以往IPOs 日期
+  stocks/disc/rtat: 每日零售交易额最高10个
+  stocks/disc/trending: 趋势新闻
+  stocks/disc/ugs: 股票价值低估,收入和收入增长超过25%
+  stocks/disc/ulc: 可能估值过低的大型上限股票
+  stocks/disc/upcoming: 即将到来的收入释放日期
+  stocks/dps: 暗池和短数据、暗池、短利息、平方公尺
+  stocks/dps/_ticker: 计数器
+  stocks/dps/ctb: 股票借款成本
+  stocks/dps/dpotc: (ATS)相对于 OTC 数据
+  stocks/dps/ftd: 无法交付数据
+  stocks/dps/hsi: 最上层高短利率股票,比率超过20%
+  stocks/dps/load: 装入用于分析的特定库存取数
+  stocks/dps/pos: 黑池暗暗短位置
+  stocks/dps/prom: 以暗泳池股份回归为基础的大有希望的晶晶体
+  stocks/dps/psi: 相对于短利率
+  stocks/dps/shorted: 显示最短短的库存
+  stocks/dps/sidtc: 短利息和短利息
+  stocks/dps/spos: 净缺数和职位数
+  stocks/fa: 收入、结余、现金、收入
+  stocks/fa/_ticker: 计数器
+  stocks/fa/analysis: 借助机器学习分析证交会的档案
+  stocks/fa/balance: 公司资产负债表
+  stocks/fa/cal: 公司日历收入和估计
+  stocks/fa/cash: 公司现金流量
+  stocks/fa/data: 公司基础数据和技术数据
+  stocks/fa/dcf: 先进Excel定制可贴现现金流量
+  stocks/fa/dcfc: 确定(历史)贴现现金流量
+  stocks/fa/divs: 显示公司的历史红利
+  stocks/fa/dupont: 股本收益的明细细目细目
+  stocks/fa/earnings: 收入日期和报告的EPS
+  stocks/fa/enterprise: 企业价值
+  stocks/fa/epsfc: 分析员估计收入 -- -- EPS
+  stocks/fa/fraud: 关键欺诈比率
+  stocks/fa/growth: 财务报表项目和比率
+  stocks/fa/hq: 公司总部所在地
+  stocks/fa/income: 公司损益表
+  stocks/fa/info: 公司的资料范围
+  stocks/fa/key: 公司关键计量
+  stocks/fa/load: 装入用于分析的特定库存取数
+  stocks/fa/metrics: 随时间推移的关键度量
+  stocks/fa/mgmt: 公司管理团队
+  stocks/fa/mktcap: 估计市场上限
+  stocks/fa/overview: 公司概况
+  stocks/fa/profile: 公司简介公司简介
+  stocks/fa/quote: 详细库存详细报价信息
+  stocks/fa/ratios: 随时间推移的深度比率
+  stocks/fa/revfc: 分析员估计收入 -- -- 收入
+  stocks/fa/score: 沃伦·巴菲特和共同投资公司的投资得分
+  stocks/fa/shrs: 股东(内务机构、机构和互助基金)
+  stocks/fa/splits: 自国际投资促进办事处以来,股票股拆分和逆向拆分事件
+  stocks/fa/sust: (环境、社会和治理)
+  stocks/fa/warnings: 根据Sean Seah的书,公司警告
+  stocks/fa/web: 开放公司网页浏览器
+  stocks/forecast: 预测技术、 Rnn、 nbeats、 变压器、 block rnn
+  stocks/gov: 政府菜单、房屋交易、合同、公司游说
+  stocks/gov/_explore: 探索探索
+  stocks/gov/_ticker: 计数器
+  stocks/gov/contracts: 显示政府合同
+  stocks/gov/gtrades: 显示政府交易
+  stocks/gov/histcont: 具有历史历史历史的政府季度政府合同
+  stocks/gov/lastcontracts: 显示上次给予的政府合同
+  stocks/gov/lasttrades: 上次交易
+  stocks/gov/load: 装入用于分析的特定选取器
+  stocks/gov/lobbying: 公司游说游说详情
+  stocks/gov/qtrcontracts: 政府季度合同分析
+  stocks/gov/topbuys: 显示大多数已购买的库存
+  stocks/gov/toplobbying: 最高公司最高游说团
+  stocks/gov/topsells: 显示大多数已售股票
+  stocks/ins: 内线交易 最新的股票 最新的股票 高级军官采购
+  stocks/ins/_last_insiders: 最后一个内幕者
+  stocks/ins/_preset: 预设预设
+  stocks/ins/_ticker: 计数器
+  stocks/ins/_top_insiders: 顶层内幕
+  stocks/ins/act: 随时间变化的内部活动
+  stocks/ins/blcp: 最新的大型CEO/CFO采购(25k+)
+  stocks/ins/blcs: CEO/CFO最新大型销售额(100k+)
+  stocks/ins/blip: 最新大型内部采购(25k+)
+  stocks/ins/blis: 最新的内幕大销售额(100k+)
+  stocks/ins/blop: 采购新大军官(25k+)
+  stocks/ins/blos: 高级军官最新销售额(100k+)
+  stocks/ins/filter: 基于预设的过滤器内置器
+  stocks/ins/lcb: 最新组群购买
+  stocks/ins/lins: 公司最后的内幕交易
+  stocks/ins/lip: 内部采购的最新内部采购
+  stocks/ins/lis: 最新内幕销售量
+  stocks/ins/lit: 最新内幕交易(所有申报)
+  stocks/ins/load: 装入用于分析的特定库存取数
+  stocks/ins/lpsb: 最新股价购买
+  stocks/ins/set: 可用的预设设置之一
+  stocks/ins/stats: 公司内部统计
+  stocks/ins/tippm: 上个月上层内幕购买
+  stocks/ins/tippw: 上周上上层内幕购买
+  stocks/ins/tipt: 今天上层内幕购买
+  stocks/ins/tispm: 上层内幕销售 上个月
+  stocks/ins/tispw: 上一周内幕顶顶层销售额
+  stocks/ins/tist: 今天的顶层内幕销售额
+  stocks/ins/toppm: 上个月购买的顶顶顶军官
+  stocks/ins/toppw: 上星期购买的顶顶级军官
+  stocks/ins/topt: 今天买顶顶级军官
+  stocks/ins/view: 可用的预设视图
+  stocks/load: 加载特定库存取数和用于分析的附加信息
+  stocks/news: 公司最新消息
+  stocks/options: 菜单、链、开放兴趣、希腊语、对等
+  stocks/options/_expiry: 过期期满
+  stocks/options/_ticker: 计数器
+  stocks/options/binom: 显示使用二进制选项定价的选项的值
+  stocks/options/calc: 基本调用/ PnL 计算器
+  stocks/options/chains: 带有希腊语的显示链
+  stocks/options/exp: 并设定过期日期
+  stocks/options/greeks: 显示给定选项的希腊
+  stocks/options/grhist: Greek 历史
+  stocks/options/hedge: 显示组合加权数,以便中和 delta
+  stocks/options/hedge/_expiry: 过期期满
+  stocks/options/hedge/_ticker: 计数器
+  stocks/options/hedge/_underlying: 基础资产状况
+  stocks/options/hedge/add: 在选项列表中添加选项
+  stocks/options/hedge/list: 显示可调用和调用的罢工价格
+  stocks/options/hedge/pick: 选择基本资产状况
+  stocks/options/hedge/plot: 显示选项补偿图表
+  stocks/options/hedge/rmv: 从选项列表中删除一个选项
+  stocks/options/hedge/sop: 显示选中选项和中性组合权数
+  stocks/options/hist: 选项绘图绘图选项历史
+  stocks/options/info: 选项选项信息( 挥发性、 IV 级等)
+  stocks/options/load: 负载新计算器
+  stocks/options/oi: 开开放的绘图项目利息
+  stocks/options/parity: 显示选项是否高于或低于预期价格
+  stocks/options/pcr: 选择器的调用比率
+  stocks/options/plot: 用户提供的绘图绘图变量
+  stocks/options/pricing: 显示可选选项:定价和风险中度估值
+  stocks/options/pricing/_expiry: 过期期满
+  stocks/options/pricing/_ticker: 计数器
+  stocks/options/pricing/add: 将预期价格添加到列表中
+  stocks/options/pricing/rmv: 从列表中删除预期价格
+  stocks/options/pricing/rnval: 选择方案的风险中和风险估值
+  stocks/options/pricing/show: 列表中列出的预期价格
+  stocks/options/screen: 基于预设的屏幕计数器
+  stocks/options/screen/_preset: 预设预设
+  stocks/options/screen/_screened_tickers: 上次筛选的抽取器
+  stocks/options/screen/ca: 取这些来比较分析菜单
+  stocks/options/screen/scr: 此预设的屏幕数据
+  stocks/options/screen/set: 可用的预设设置之一
+  stocks/options/screen/view: 查看可用预设(或特定预设)
+  stocks/options/unu: 显示异常选项活动
+  stocks/options/voi: 绘图量和开放式利息
+  stocks/options/vol: 绘图绘图图音量
+  stocks/options/vsurf: 显示 3D 波动表面
+  stocks/qa: 定量分析、分解、计算、残余物分析
+  stocks/qa/_other_: 其他
+  stocks/qa/_plots_: 绘图绘图
+  stocks/qa/_risk_: 风险风险风险风险风险风险风险
+  stocks/qa/_rolling_metrics_: 滚动计数器
+  stocks/qa/_statistics_: 统计统计统计统计统计
+  stocks/qa/_target: 目标栏
+  stocks/qa/_ticker: 计数器
+  stocks/qa/acf: (部分)自动关系功能差价
+  stocks/qa/beta: 显示 bita w.r.t 至任何引用列表
+  stocks/qa/bw: 框中边边边的滚动地块,
+  stocks/qa/capm: 资本资产定价模式
+  stocks/qa/cdf: 累积分布函数
+  stocks/qa/cusum: 使用价格累计总和算法探测突变
+  stocks/qa/decompose: 周期趋势、季节和价格残余物中的分解
+  stocks/qa/es: 显示预期缺额
+  stocks/qa/hist: 带有密度绘图的直方图
+  stocks/qa/kurtosis: 价格分配的滚动轮转曲线
+  stocks/qa/line: 选定目标选定目标的线条绘图
+  stocks/qa/load: 负载新计算器
+  stocks/qa/normality: 正常度统计和测试
+  stocks/qa/om: 显示 omega 比率
+  stocks/qa/pick: 选择用于分析的目标列
+  stocks/qa/qqplot: 对照标准正常曲线的残留物
+  stocks/qa/quantile: 滚动中位数和价格四分位数
+  stocks/qa/raw: 打印原始数据
+  stocks/qa/rolling: 价格滚动平均值和标准标准偏差
+  stocks/qa/sh: 显示显亮比例
+  stocks/qa/skew: 价格分配的滚动扭曲
+  stocks/qa/so: 显示排序比
+  stocks/qa/spread: 价格的滚动差异和标准偏差
+  stocks/qa/summary: 装货库存简要简要简要统计
+  stocks/qa/unitroot: 恒定度单位单位根测试(ADF, KPSS)
+  stocks/qa/var: 风险中的显示显示值
+  stocks/quote: 查看特定股票切数的当前价格
+  stocks/res: 研究网页、宏观轴、雅虎金融、傻瓜
+  stocks/res/_ticker: 计数器
+  stocks/res/barchart: www.barchart.com
+  stocks/res/bullrun: www.bullrun.com.br
+  stocks/res/businessinsider: www.markets.businessinsider.com
+  stocks/res/fidelity: www.eresearch.fidelity.com
+  stocks/res/fintel: www.fintel.com
+  stocks/res/finviz: www.finviz.com
+  stocks/res/fmp: www.financialmodelingprep.com
+  stocks/res/fool: www.fool.com
+  stocks/res/grufity: www.grufity.com
+  stocks/res/macroaxis: www.macroaxis.com
+  stocks/res/macrotrends: www.macrotrends.net
+  stocks/res/marketchameleon: www.marketchameleon.com
+  stocks/res/marketwatch: www.marketwatch.com
+  stocks/res/newsfilter: www.newsfilter.io
+  stocks/res/stockanalysis: www.stockanalysis.com
+  stocks/res/stockrow: www.stockrow.com
+  stocks/res/tradingview: www.tradingview.com
+  stocks/res/yahoo: www.finance.yahoo.com
+  stocks/res/zacks: www.zacks.com
+  stocks/scr: 使用预设过滤器筛选库存、概览/性能
+  stocks/scr/_preset: 预设预设
+  stocks/scr/_screened_tickers: 上次筛选的抽取器
+  stocks/scr/ca: 取这些来比较分析菜单
+  stocks/scr/financial: 金融(如股利、ROA、ROE、ROI、收益)
+  stocks/scr/historical: 查看历史价格
+  stocks/scr/overview: 概览(如部门、工业、市场上限、卷)
+  stocks/scr/ownership: 所有权(如浮水、内部拥有、短比率)
+  stocks/scr/performance: (例如, Perf周、 Perf YTD、 挥发 M)
+  stocks/scr/set: 可用的预设设置之一
+  stocks/scr/technical: (例如,Beta, SMA50, 52W Low, RSI, Change)
+  stocks/scr/valuation: (例如P/E、PEG、P/S、P/B、EPS this Y)
+  stocks/scr/view: 查看可用的预设 (默认和习惯)
+  stocks/search: 搜索用于分析的特定库存取心器
+  stocks/sia: 部门分析和工业分析、每个部门各公司、每个行业和国家快速比率
+  stocks/sia/_country: 国家
+  stocks/sia/_exclude_exchanges: 不包括汇率
+  stocks/sia/_financials_: 财务 财务 财务 财务 财务 财务 财务 财务 财务 财务 财务 财务 财务 财务 财务 财务 财务 财务 财务
+    财务 财务
+  stocks/sia/_financials_loaded_: 财务 - 装入的数据(快速模式)
+  stocks/sia/_industry: 工业工业工业
+  stocks/sia/_mktcap: 市场上限
+  stocks/sia/_period: 期间
+  stocks/sia/_returned_tickers: 返回的滴答器
+  stocks/sia/_sector: 部门 部门
+  stocks/sia/_statistics_: 统计统计统计统计统计
+  stocks/sia/ca: 取这些来比较分析菜单
+  stocks/sia/clear: 工业、部门、国家和市场限值参数
+  stocks/sia/country: 可见现有国家,或指定参数的设定国家
+  stocks/sia/cpci: 基于工业(和市场上限)的国家
+  stocks/sia/cpcs: 按部门(和市场上限)分列的每个国家
+  stocks/sia/cpic: 按国家(和市场上限)计算的每家工业公司(和市场上限)
+  stocks/sia/cpis: 以部门(和市场上限)为基础的每家工业公司
+  stocks/sia/cps: 按国家(和市场上限)计算的每个部门每家公司
+  stocks/sia/exchange: 将国际交换旗排除在外
+  stocks/sia/industry: 可见现有行业,或指定参数的设定行业。
+  stocks/sia/metric: 所选过滤器的金融衡量度可视化
+  stocks/sia/mktcap: 纳米、微型、小型、中、大型或大型之间设置 mktcap set mktcap
+  stocks/sia/period: 年度、季度或跟踪期之间设定的时期
+  stocks/sia/sector: 显示现有部门, 如果指定参数, 则设置部门
+  stocks/sia/select: 选择一个特定的选取器, 并且所有它都是对应的参数
+  stocks/sia/vis: 所选过滤器的金融衡量度可视化
+  stocks/ta: 技术分析, ema, macd, rsi, adx, bbbands, mobv 技术分析, ema, macd, rsi, adx, bbbands,
+    mobv 技术分析, ema, macd, rsi, adx, bbbbands, mobv 技术分析, ema, macd, rsi, adx, bbbbands,
+    mobv 技术分析, ema macd, rx, adx, bbbbands, mobv 技术分析, ema ea 技术分析, ema macd, micd,
+    rsi, adx, bix, bbbbband, bbbb 和 mov 技术分析, 技术分析, 技术分析, ema, ema, ema, mcdd 技术分析,
+    技术分析, mcd, 技术分析, 、 mcd, 、 、 、 、 、 mcd, 、 、 rsi, 和 和 技术分析, 和
+  stocks/ta/_custom_: 自自自
+  stocks/ta/_momentum_: 时势
+  stocks/ta/_overlap_: 重叠重叠重叠
+  stocks/ta/_ticker: 计数器
+  stocks/ta/_trend_: 趋势趋势趋势
+  stocks/ta/_volatility_: 波动
+  stocks/ta/_volume_: 量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量量
+  stocks/ta/ad: 累积/分配项目
+  stocks/ta/adosc: 焦皮振动器
+  stocks/ta/adx: 平均方向变动指数
+  stocks/ta/aroon: aroon 指标
+  stocks/ta/atr: 平均平均真实范围
+  stocks/ta/bbands: 弹带
+  stocks/ta/cci: 初级商品渠道指数
+  stocks/ta/cg: 重力中心
+  stocks/ta/clenow: Clenow 波动波动调整势头
+  stocks/ta/demark: Tom Demart 的相继指标
+  stocks/ta/donchian: 东葡语频道
+  stocks/ta/ema: 指数指数移动平均平均数
+  stocks/ta/fib: ibbonacc 回收
+  stocks/ta/fisher: 鱼变
+  stocks/ta/hma: 船体移动平均数
+  stocks/ta/kc: keltner 频道
+  stocks/ta/macd: 移动平均趋同/指数
+  stocks/ta/obv: 数额余额
+  stocks/ta/recom: 根据技术指标提出的建议
+  stocks/ta/rsi: 相对数数指数
+  stocks/ta/rsp: 相对强数百分数
+  stocks/ta/sma: 简单移动平均平均数
+  stocks/ta/stoch: 蒸气振动器
+  stocks/ta/summary: 技术概要报告
+  stocks/ta/tv: 开开开放交互式图表
+  stocks/ta/view: 查看历史数据和趋势线
+  stocks/ta/vwap: 加权平均物价
+  stocks/ta/wma: 加权加权移动平均数
+  stocks/ta/zlma: 零时差移动平均平均数
+  stocks/th: 交易时间,检查开放市场
+  stocks/th/_exchange: 开放交易所
+  stocks/th/_symbol: 符号符号符号
+  stocks/th/_symbol_name: 文 号 名 名
+  stocks/th/all: 显示所有市场
+  stocks/th/closed: 显示已关闭的市场
+  stocks/th/exchange: 显示一个交换器
+  stocks/th/holidays: 显示市场假日的所有日期
+  stocks/th/open: 显示打开市场
+  stocks/th/symbol: 选择符号
+  stocks/tob: 书本顶部视图,用于装入的选取器(仅用美国交换器)
+  stop: 停止会话记录
+  support: 预先准备一张支持票 供我们的团队评估
+  survey: 完成我们2分钟的调查,以便更好地了解如何改进终点站
+  update: 尝试自动更新终端( GitHub 版本)
+  wiki: 维基百科中搜索表达式(https://www.wikipedia.org/)

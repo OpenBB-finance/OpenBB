@@ -1,0 +1,1153 @@
+ru:
+  _configure_: Настроить собственный терминал
+  _home_: Информация, руководства и поддержка терминала OpenBB
+  _main_menu_: Главное меню
+  _others_: Прочие
+  about: Обнаружить возможности терминала OpenBB (https://openbb.co/docs)
+  alternative: альтернативные наборы данных, такие, как COVID и метрики с открытыми
+    исходными кодами
+  alternative/covid: Меню COVID, случаи, случаи смерти, показатели
+  alternative/covid/_country: Страна
+  alternative/covid/cases: получить дела по выбранной стране
+  alternative/covid/country: выбранная страна для данных
+  alternative/covid/deaths: получения смерти в выбранной стране
+  alternative/covid/ov: получить обзор (дели и случаи смерти) по выбранной стране
+  alternative/covid/rates: коэффициент смертности/числа случаев в выбранной стране
+  alternative/covid/slopes: получить страны с самым высоким уклоном в случае
+  alternative/oss: меню Open Source, история звезд, репозиция
+  alternative/oss/rossidx: '- наиболее быстрорастущие открытые стартапы с открытыми
+    исходными кодами;'
+  alternative/oss/rs: Резюме
+  alternative/oss/sh: история репо-звезды
+  alternative/oss/tr: Верхняя звезда respos
+  crypto: погружение в цепные данные, символику, циркуляцию, нфты и т.д.
+  crypto/_exchange: Обмен
+  crypto/_interval: Интервал (мин.)
+  crypto/_source: Источник
+  crypto/_symbol: Костюм
+  crypto/candle: Посмотрите на свечную карту для конкретной криптовалюты
+  crypto/dd: ':: должная гибкость в отношении загруженной монеты, информации о монетах,
+    социальных сетей, рыночной статистики;'
+  crypto/dd/_activity_: Деятельность и сообщество
+  crypto/dd/_contributors_: Участники и инвесторы
+  crypto/dd/_market_: Рынок
+  crypto/dd/_metrics_: Метрики
+  crypto/dd/_overview_: Общий обзор
+  crypto/dd/_roadmap_: '&lt; &lt; Дорожная карта &gt; &gt; и &lt; &lt; Новости &gt;
+    &gt;'
+  crypto/dd/_source: Источник
+  crypto/dd/_symbol: Костюм
+  crypto/dd/_tokenomics_: Токеномика
+  crypto/dd/active: активные адреса
+  crypto/dd/ath: постоянно высокосопоставимые статистические данные для загруженной
+    монеты
+  crypto/dd/atl: все временные низкие соответствующие статистические данные для загруженной
+    монеты
+  crypto/dd/balance: Остаток монеты
+  crypto/dd/basic: Базовая информация о загруженной монете
+  crypto/dd/bc: ссылки на маршрутные исследователи для загруженной монеты
+  crypto/dd/change: 30(d) Изменение поставок на обменных кошельках
+  crypto/dd/desc: описание проекта - почему, каким образом, что
+  crypto/dd/dev: Статистика развития гитубовых монет &lt; &lt; битбакет &gt; &gt;
+  crypto/dd/eb: Общий остаток средств на биржах (в процентах и единицах)
+  crypto/dd/events: События, связанные с загруженной монетой
+  crypto/dd/ex: все биржи, где указана загруженная монета
+  crypto/dd/fr: Подробная информация о мобилизации средств, например казначейские
+    счета, раунды продаж, распределение
+  crypto/dd/fundrate: обменный курс на обменный курс
+  crypto/dd/funot: фундаментальный метр с течением времени
+  crypto/dd/gh: Гитубная активность с течением времени
+  crypto/dd/gov: Подробная информация по вопросам управления
+  crypto/dd/info: информация о загруженной монете
+  crypto/dd/inv: инвесторы (индивидуальные лица и организации)
+  crypto/dd/links: ссылки, например, на &quot; белую бумагу &quot; , &quot; гитуб
+    &quot; , &quot; твиттер &quot; , &quot; Youtube &quot; , &quot; красный &quot;
+    , &quot; телеграмму &quot;
+  crypto/dd/liquidations: суточные данные о ликвидации загруженной монеты
+  crypto/dd/load: загрузить конкретную шифрованную валюту для анализа
+  crypto/dd/market: Рыночные статистические данные о загруженной монете
+  crypto/dd/mcapdom: Доминирующее положение на рынке
+  crypto/dd/mkt: все рынки загруженной монеты
+  crypto/dd/mt: messari временны́е ряды, например, подписчики Твиттера, цирковые поставки
+    и т.д.
+  crypto/dd/news: Самые последние новости загруженной монеты
+  crypto/dd/nonzero: адресы с ненулевыми остатками средств
+  crypto/dd/ob: Заказная книга
+  crypto/dd/oi: открытый процент в расчете на обменный курс
+  crypto/dd/pi: Информация по проектам, например технические детали, публичные репозиции,
+    аудиторские проверки, вульны
+  crypto/dd/ps: метрики, связанные с ценой и предложением загруженной монеты
+  crypto/dd/rm: Дорожная карта
+  crypto/dd/score: различные виды баллов за загруженную монету, например, оценка разработчика,
+    оценка настроения
+  crypto/dd/social: Социальные порталы сервируют для загруженной монеты, например,
+    реддит, твиттер
+  crypto/dd/stats: СООБЩЕНИЯ О СООТВЕТСТВУЮЩЕЙ СТАТИСТИКЕ
+  crypto/dd/team: доноры (индивидуальные лица и организации)
+  crypto/dd/tk: Символомики, например циркуляция/максимальное/общее предложение, тип
+    выбросов и т.д.
+  crypto/dd/trades: последние профессии
+  crypto/dd/twitter: Твиты для загруженной монеты
+  crypto/dd/web: Обнаружены веб-сайты для загруженной монеты, например форум, страница
+  crypto/defi: Децентрализованная финансовая информация, Dpi, llama, tvl, кредитование,
+    заимствование, финансирование
+  crypto/defi/anchor: Якорные данные о доходах
+  crypto/defi/aterra: 30-дневная информация о конкретном активе в терра-адресе
+  crypto/defi/ayr: 30-дневный опыт создания якорного запаса урожайности
+  crypto/defi/dpi: Протоколы DeFi, перечисленные в DefiPulse
+  crypto/defi/dtvl: Общее значение запертое в прошлом (TVL) по dApp
+  crypto/defi/gacc: terra blockcy country browning browning byclass capacity byclusing
+    byclusing
+  crypto/defi/gdapps: DeFi dApps, сгруппированные по цепочкам
+  crypto/defi/govp: '&quot; terra blockcy management &quot; ( &lt; &lt; Перечень предложений
+    по управлению блоками &gt; &gt; )'
+  crypto/defi/lcsc: Изменения в поставках Луны
+  crypto/defi/ldapps: перечни dApps
+  crypto/defi/newsletter: недавно выпущенные информационные бюллетени по теме &quot;
+    DeFi &quot;
+  crypto/defi/pairs: недавно добавленные пары на Uniswap
+  crypto/defi/pools: пулы по объему на Uniswap
+  crypto/defi/sinfo: ':: сбор информации по указанному адресу счета &lt; &lt; Терра
+    &gt; &gt;'
+  crypto/defi/sratio: terra block цепное отношение к сцеплению
+  crypto/defi/sreturn: terra blockcycle sheve возвращает историю
+  crypto/defi/stats: базовая статистика по Uniswap
+  crypto/defi/stvl: Исторические значения общей суммы TVL из всех dApps
+  crypto/defi/swaps: Последние свопы, сделанные на Uniswap
+  crypto/defi/tokens: Символы, пригодные для торговли на Uniswap
+  crypto/defi/validators: информация о действительных терра-блокцепных устройствах
+  crypto/defi/vaults: Верхние хранилища DeFi на различных блокадных цепях
+  crypto/disc: ':: выявление тенденций в криптогенных вещах, высокопоставленных наживателей,
+    неудачников, высших эмоций;'
+  crypto/disc/dapps: Верхние децентрализованные приложения
+  crypto/disc/dex: на высшем уровне децентрализованных обменов
+  crypto/disc/gainers: Крупнейшие бенефициары
+  crypto/disc/games: Верхние блок-цепные игры
+  crypto/disc/losers: Лучшие неудачники
+  crypto/disc/nft: верхние несменные жетоны
+  crypto/disc/search: Поиск монет
+  crypto/disc/top: верхние монеты
+  crypto/disc/trending: ':: трендовые монеты'
+  crypto/find: найти монеты
+  crypto/forecast: Методы прогнозирования, Rnn, nbeats, трансформатор, блок Rn
+  crypto/headlines: крипто настроения 15+ заголовков основных новостей
+  crypto/load: загрузить конкретную шифрованную валюту для анализа
+  crypto/nft: Невозмутимые жетоны, сегодня капли
+  crypto/nft/collections: топ-эфирные коллекции
+  crypto/nft/fp: выручка от продаж/минимальные цены
+  crypto/nft/stats: сбор статистических данных
+  crypto/onchain: информация о различных блокадных цепях, сборах за газ, предупреждениях
+    о китах, информации о DEXes
+  crypto/onchain/_address: Адрес Evereum
+  crypto/onchain/_ethereum_: Эверей
+  crypto/onchain/_type: Тип адреса
+  crypto/onchain/address: Адрес символа, счета или операции
+  crypto/onchain/baas: Тендер, спроси цены, средний разброс для данной криптопарды
+  crypto/onchain/balance: проверить баланс эфира
+  crypto/onchain/btccp: показ передачи BTC
+  crypto/onchain/btcct: Показать подтвержденные операции BTC
+  crypto/onchain/ds: СТАТИСТИЧЕСКИЕ СВЕДЕНИЯ О ЕТ-платформе (ежедневные пользователи;
+    сборы)
+  crypto/onchain/dt: ежедневная транзакция этих жетонов
+  crypto/onchain/dvcp: ежедневный объем для шифровальных пар
+  crypto/onchain/gwei: проверить текущие сборы за эт-газ
+  crypto/onchain/hist: История баланса эфира (сделки)
+  crypto/onchain/holders: Верхние значки ERC20
+  crypto/onchain/hr: проверить блок-цепную хешрат с течением времени (BTC или ETH)
+  crypto/onchain/info: Информация о символе ERC20
+  crypto/onchain/lt: последние сделки по дексу или месяцу
+  crypto/onchain/prices: Символические цены за прошлые периоды ERC20
+  crypto/onchain/th: Экземплярная история ERC20
+  crypto/onchain/top: Верхние символы RRC20
+  crypto/onchain/ttcp: верхние торговые шифропарки на децентрализованной бирже
+  crypto/onchain/tv: символический объем на DEXs
+  crypto/onchain/tvl: Общее значение блокировано символами ERC20
+  crypto/onchain/tx: Информация об операциях, связанных с блокировкой эфира
+  crypto/onchain/ueat: Уникальные адреса эфира, которые заключали сделку
+  crypto/onchain/whales: Проверить операции с крипто-уэлсом
+  crypto/ov: обзор криптогенности, рыночного ограничения, DeFi, последних новостей,
+    топ-обмена, конюшни
+  crypto/ov/altindex: Индекс сезона альткоина (75% от 50 лучших монет работают лучше,
+    чем BTC)
+  crypto/ov/btcrb: Показать карту цен радуги биткоина (логарифмическая регрессия)
+  crypto/ov/categories: шифровальные категории
+  crypto/ov/ch: список крупных взломов, связанных с шифрованием
+  crypto/ov/contracts: все умные контракты для данной платформы
+  crypto/ov/cr: rypto - предложение или заимствование процентных ставок
+  crypto/ov/defi: Глобальная информация о рынке DeFi
+  crypto/ov/derivatives: шифровальные производные
+  crypto/ov/ewf: Общая сумма сборов за снятие обменных курсов
+  crypto/ov/exmarkets: все имеющиеся рынки на данной бирже
+  crypto/ov/exrates: обменных курсов
+  crypto/ov/fun: ':: изучение проектов, основанных на фундаментальных показателях;'
+  crypto/ov/hm: шифровальная тепловая карта
+  crypto/ov/hold: Статистические данные о запасах эфира, биткоинах
+  crypto/ov/indexes: индексы шифрования
+  crypto/ov/info: базовая информация о всех имеющихся монетах
+  crypto/ov/markets: Информация о всех имеющихся монетах, связанная с рынком
+  crypto/ov/news: Последние шифрованные новости
+  crypto/ov/pairs: информация об имеющихся торговых парах
+  crypto/ov/platforms: список блоковых платформ, например, эфир, солана, кусама, терра
+  crypto/ov/stables: конюшни
+  crypto/ov/wf: Общая сумма сборов за выход из системы
+  crypto/ov/wfpe: rypto сборы за выбытие в обмен на обменный курс
+  crypto/price: цена в реальном масштабе времени и интервал доверия
+  crypto/prt: потенциальная прибыль (например, в случае достижения ETH рыночного предела
+    BTC)
+  crypto/qa: Количественный анализ Разложение, сумум, остаточный анализ
+  crypto/qa/_other_: Прочее
+  crypto/qa/_plots_: Слоты
+  crypto/qa/_rolling_metrics_: Крутящиеся параметры
+  crypto/qa/_statistics_: Статистические данные
+  crypto/qa/_target: Колонка цели
+  crypto/qa/_ticker: Упаковщик
+  crypto/qa/acf: (частично)
+  crypto/qa/bw: Ящик и пирожный сюжет
+  crypto/qa/cdf: функция совокупного распределения
+  crypto/qa/cusum: обнаруживает резкие изменения с использованием алгоритма кумулятивных
+    сумм цен
+  crypto/qa/decompose: Разложение в циклических трендах, сезонах и остаточных ценах
+  crypto/qa/hist: гистограмма с сечением плотности
+  crypto/qa/kurtosis: ':: скользящий куртоз распределения цен'
+  crypto/qa/line: Строка выбранной цели
+  crypto/qa/load: Загрузка нового тикателя
+  crypto/qa/normality: статистические данные о нормальных условиях и испытаниях
+  crypto/qa/pick: Выбрать целевые столбцы для анализа
+  crypto/qa/qqplot: Остатки по стандартной обычной кривой
+  crypto/qa/quantile: скользящий медианный и квантовый цены
+  crypto/qa/raw: распечатка необработанных данных
+  crypto/qa/rolling: Среднее и скользящее отклонение цен
+  crypto/qa/skew: скользящая скейтность распределения цен
+  crypto/qa/spread: разность вращения и скользящее отклонение цен
+  crypto/qa/summary: Краткие статистические данные о погруженных запасах
+  crypto/qa/unitroot: единичное испытание корневого элемента на статическость (ADF,
+    KPSS)
+  crypto/ta: Технический анализ загруженной монеты, эмы, макда, rsi, адкса, брусков,
+    обивок
+  crypto/ta/_custom_: Обычный
+  crypto/ta/_momentum_: Момент
+  crypto/ta/_overlap_: Перекрытие
+  crypto/ta/_ticker: Загруженная клетка
+  crypto/ta/_trend_: Тенденция
+  crypto/ta/_volatility_: Износостойкость
+  crypto/ta/_volume_: Объем
+  crypto/ta/ad: накопление/распределение
+  crypto/ta/adosc: Чайкинский осциллятор
+  crypto/ta/adx: средний индекс направления движения
+  crypto/ta/aroon: аруанский индикатор
+  crypto/ta/bbands: Bollinger ленты
+  crypto/ta/cci: Индекс товарных каналов
+  crypto/ta/cg: центр тяжести
+  crypto/ta/donchian: Дончианские каналы
+  crypto/ta/ema: средняя экспоненциально движущаяся
+  crypto/ta/fib: Возвращение фибоначчи
+  crypto/ta/fisher: Преобразование рыбака
+  crypto/ta/hma: средний движущийся корпус
+  crypto/ta/kc: Каналы Keltner
+  crypto/ta/macd: средняя конвергенция/изменение
+  crypto/ta/obv: по объему баланса
+  crypto/ta/rsi: индекс относительной прочности
+  crypto/ta/sma: простое скользящее среднее
+  crypto/ta/stoch: Стохастический осциллятор
+  crypto/ta/tv: в открытом интерактивном формате
+  crypto/ta/vwap: средневзвешенная цена
+  crypto/ta/wma: средневзвешенное скользящее среднее
+  crypto/ta/zlma: нулевой отставание, скользящее среднее
+  crypto/tools: изучить различные инструменты apytoapr, il
+  crypto/tools/aprtoapy: Преобразовать apr в apy
+  crypto/tools/il: рассчитать непрерывные потери
+  dashboards: интерактивные приборные панели с использованием тетрадей вуаля и жюпитера
+  dashboards/chains: цепной анализ вариантов
+  dashboards/correlation: корреляции запасов
+  dashboards/crypto: Валютные курсы по отношению к доллару США
+  dashboards/forecast: прогнозирование для рядов временных рядов
+  dashboards/forecasting: прогнозирование для рядов временных рядов
+  dashboards/futures: Историческая фьючерсная деятельность
+  dashboards/shortdata: Анализ коротких данных финры
+  dashboards/stocks: Историческая информация о запасах
+  dashboards/vsurf: Варианты износоустойчивости поверхности
+  defined, not tested: определены, не испытаны
+  defined, test failed: испытание не прошло.
+  defined, test inconclusive: решетчатые, безрезультатные испытания
+  defined, test passed: Определено, прошло испытание
+  econometrics: статистические и количественные методы для обеспечения взаимосвязи
+    между наборами данных
+  econometrics/_data_loc: Поиск данных
+  econometrics/_exploration_: Разведка
+  econometrics/_loaded: Загруженные файлы и столбцы данных
+  econometrics/_regression_: Регрессия
+  econometrics/_regression_tests_: Испытания на регрессию
+  econometrics/_tests_: Испытания
+  econometrics/add: Добавить колонки в набор данных с опцией использовать формулы
+  econometrics/bgod: Испытания на автокоррелацию Breusch-Godfrey с запаздыванием по
+    остаткам регрессии
+  econometrics/bpag: Испытание на гетеросседастичность по остаткам регрессии
+  econometrics/clean: очистить набор данных путем наполнения или сбрасывания NaNs
+  econometrics/coint: Испытание на совместную интеграцию на множестве колонок
+  econometrics/combine: Комбинировать колонки из разных наборов данных
+  econometrics/compare: сопоставление результатов всех оценочных моделей;
+  econometrics/delete: Удалить колонки из набора данных
+  econometrics/desc: показать описательные статистические данные набора данных
+  econometrics/dwat: Испытание Durbin-Watson на автокоррелацию остатков регрессии
+  econometrics/export: экспортировать обработанный набор данных
+  econometrics/granger: Анализ причинно-следственной связи на двух колонках
+  econometrics/index: (многократный) индекс на основе колонок
+  econometrics/load: загрузить набор данных (также работает с наборами моделей статистики)
+  econometrics/modify: Объединить колонки наборов данных и удалить или переименовать
+    колонки
+  econometrics/norm: проводить испытания на нормальность в колонке набора данных
+  econometrics/ols: соответствовать (многократной) линейной регрессионной модели
+  econometrics/options: показать имеющиеся параметры набора данных для колонок
+  econometrics/panel: расчетная модель, основанная на различных методах регрессии
+  econometrics/plot: рисунок данных из набора данных
+  econometrics/remove: удалить один из загруженных наборов данных
+  econometrics/rename: Переименовать колонку из набора данных
+  econometrics/root: проводить испытания с использованием однокорпуса (ADF & KPSS)
+    в колонке набора данных
+  econometrics/show: показать часть загружаемого набора данных
+  econometrics/type: изменить типы колонок или показать их типы
+  economy: глобальных макроэкономических данных, например данных о фьючерсах, доходности,
+    казначействе
+  economy/_database_: Базы данных
+  economy/_stored: Сохраненные наборы данных
+  economy/bigmac: Индекс &lt; &lt; Экономист Биг Мак &gt; &gt;
+  economy/edebt: ':: показать статистические данные о внешней задолженности по различным
+    странам;'
+  economy/eval: создать новые ряды, выполняя операции на загруженных данных
+  economy/events: Показать экономический календарь
+  economy/forecast: методы прогнозирования; rnn, nbeats, трансформатор, блок Rn
+  economy/fred: сбор макроданных из FRED на основе ID серии
+  economy/futures: ':: обзор будущего и сырьевых товаров;'
+  economy/index: найти и запланировать любой (основной) индекс на рынке
+  economy/macro: сбор макроданных по стране или странам
+  economy/map: Карта индексных запасов S&P500
+  economy/overview: обзор рынка либо индексов, облигаций, либо валют
+  economy/performance: показатели по секторам, промышленности, странам
+  economy/plot: Схемы данных из вышеуказанных команд вместе
+  economy/qa: Открытое меню количественного анализа с хранимыми данными
+  economy/qa/_other_: Прочее
+  economy/qa/_plots_: Слоты
+  economy/qa/_rolling_metrics_: Крутящиеся параметры
+  economy/qa/_series: Отдельные серии
+  economy/qa/_statistics_: Статистические данные
+  economy/qa/acf: (частично)
+  economy/qa/bw: Ящик и пирожный сюжет
+  economy/qa/cdf: функция совокупного распределения
+  economy/qa/cusum: обнаруживает резкие изменения с использованием алгоритма кумулятивных
+    сумм цен
+  economy/qa/decompose: Разложение в циклических трендах, сезонах и остаточных ценах
+  economy/qa/hist: гистограмма с сечением плотности
+  economy/qa/kurtosis: ':: скользящий куртоз распределения цен'
+  economy/qa/line: Строка выбранной цели
+  economy/qa/normality: статистические данные о нормальных условиях и испытаниях
+  economy/qa/pick: выбрать новые ряды из хранящихся данных об экономике
+  economy/qa/qqplot: Остатки по стандартной обычной кривой
+  economy/qa/quantile: скользящий медианный и квантовый цены
+  economy/qa/raw: распечатка необработанных данных
+  economy/qa/rolling: Среднее и скользящее отклонение цен
+  economy/qa/skew: скользящая скейтность распределения цен
+  economy/qa/spread: разность вращения и скользящее отклонение цен
+  economy/qa/summary: Краткие статистические данные о погруженных запасах
+  economy/qa/unitroot: единичное испытание корневого элемента на статическость (ADF,
+    KPSS)
+  economy/rtps: сектора деятельности в режиме реального времени
+  economy/spectrum: СЕКТОРОВ, ПРОМЫШЛЕННОСТИ, СТРАН
+  economy/spread: Показать матрицу распределения облигаций
+  economy/treasury: получить казначейские ставки США
+  economy/valuation: стоимостная оценка секторов, промышленности,
+  economy/ycrv: показать кривые суверенной доходности
+  etf: Традиционное ценообразование, сопоставление авуаров и проверка
+  etf/_major_holdings: Основные запасы
+  etf/_symbol: Символ
+  etf/ca: сравнительный анализ, получение аналогичного, исторического, корреляционного,
+    финансового
+  etf/candle: Посмотрите на свечную карту для ETF
+  etf/compare: Сопоставление нескольких различных ETF
+  etf/disc: ':: выявление ETF, приобретателей/деклараторов/активных'
+  etf/disc/active: наиболее активный
+  etf/disc/decliners: верхних отрицателей
+  etf/disc/gainers: Крупнейшие бенефициары
+  etf/holdings: авуары в верхних компаниях
+  etf/load: Загрузка данных ETF
+  etf/news: Последние новости о компании
+  etf/overview: получить обзор
+  etf/pir: создание (многократного) пассивного(ых) инвестиционного(ых) доклада(ов)
+  etf/scr: Скриншоты ETF, обзор/эффективность, с использованием предварительно установленных
+    фильтров
+  etf/scr/_preset: Предварительный набор
+  etf/scr/sbc: экран в разбивке по категориям
+  etf/scr/screen: Скрыть ETF с использованием выбранного предварительного набора
+  etf/scr/set: установить один из имеющихся предварительных комплектов
+  etf/scr/view: Просмотр имеющихся предварительных комплектов
+  etf/search: Поиск ETF по имени или описанию
+  etf/summary: Краткое описание ЦГЭ
+  etf/ta: Технический анализ, эма, макд, rsi, адкс, брусья, обивка
+  etf/ta/_custom_: Обычный
+  etf/ta/_momentum_: Момент
+  etf/ta/_overlap_: Перекрытие
+  etf/ta/_ticker: ЦГЭ
+  etf/ta/_trend_: Тенденция
+  etf/ta/_volatility_: Износостойкость
+  etf/ta/_volume_: Объем
+  etf/ta/ad: накопление/распределение
+  etf/ta/adosc: Чайкинский осциллятор
+  etf/ta/adx: средний индекс направления движения
+  etf/ta/aroon: аруанский индикатор
+  etf/ta/bbands: Bollinger ленты
+  etf/ta/cci: Индекс товарных каналов
+  etf/ta/cg: центр тяжести
+  etf/ta/donchian: Дончианские каналы
+  etf/ta/ema: средняя экспоненциально движущаяся
+  etf/ta/fib: Возвращение фибоначчи
+  etf/ta/fisher: Преобразование рыбака
+  etf/ta/hma: средний движущийся корпус
+  etf/ta/kc: Каналы Keltner
+  etf/ta/macd: средняя конвергенция/изменение
+  etf/ta/obv: по объему баланса
+  etf/ta/rsi: индекс относительной прочности
+  etf/ta/sma: простое скользящее среднее
+  etf/ta/stoch: Стохастический осциллятор
+  etf/ta/vwap: средневзвешенная цена
+  etf/ta/wma: средневзвешенное скользящее среднее
+  etf/ta/zlma: нулевой отставание, скользящее среднее
+  etf/weights: Распределение секторальных весов
+  exe: Выполнять автоматизированный рутинный скрипт
+  featflags: установка и отключение флагов объектов
+  featflags/_info_: Характеристики с помощью экологических переменных
+  featflags/cls: очистить консоль после каждой команды
+  featflags/cmdloc: место расположения команды, показываемое в цифрах
+  featflags/color: использовать окраска
+  featflags/exithelp: автоматически печатать помощь при выходе из меню
+  featflags/ion: Интерактивный режим matpllotlib
+  featflags/promptkit: ':: обеспечение оперативного набора инструментальных средств
+    (аутополненный и исторический инструментарий)'
+  featflags/rcontext: запомнить контексты, загруженные парам во время сеанса
+  featflags/reporthtml: открытый отчёт как HTML записная книжка
+  featflags/retryload: Перепробовать ошибки в командах с загрузкой
+  featflags/rich: Красный богатый терминал
+  featflags/richpanel: Ярко-богатая панель терминала
+  featflags/tab: использовать табличку для распечатки данных
+  featflags/tbhint: 'Показать намеки на использование в нижней панели инструментов@
+    info: whatsthis'
+  featflags/thoughts: мысли дня
+  featflags/watermark: водяной знак в цифрах
+  forecast: Прогнозирование временных рядов с машинным обучением
+  forecast/_comingsoon_: Скоро приедет.
+  forecast/_data_loc: Поиск данных
+  forecast/_disclaimer_: ДИКСЛАЙМЕР
+  forecast/_exploration_: Разведка
+  forecast/_feateng_: Технико-конструкторские работы
+  forecast/_loaded: Загруженные файлы и столбцы данных
+  forecast/_tsforecasting_: Прогнозирование времени
+  forecast/arima: '&quot; Арима &quot; ( &quot; Неявка &quot; )'
+  forecast/atr: Добавить средний реальный диапазон
+  forecast/autoarima: Автоматическая модель ARIMA
+  forecast/autoces: Автоматическая модель экспонентного сглаживания
+  forecast/autoets: Автоматическая модель ETS (серор, тренд, сезонность)
+  forecast/autoselect: Выберите наилучшую статистическую модель из AutoARIMA, AutoETS,
+    AutoCES, MSTL и т.д.
+  forecast/brnn: Блок Neural Network (RNN, LSTM, GRU) (фет. прошлые ковариаты)
+  forecast/clean: Очистить набор данных путем заполнения или сбрасывания NaNs
+  forecast/combine: Комбинировать колонки из разных наборов данных
+  forecast/corr: Построить коэффициенты корреляции параметров набора данных
+  forecast/delete: Удалить колонки из набора данных
+  forecast/delta: Плюс % Изменение
+  forecast/desc: Показать описательную статистику набора данных
+  forecast/ema: Добавить средневзвешенный показатель движения
+  forecast/expo: Вероятность экспонентного сглаживания
+  forecast/export: Экспортировать обработанный набор данных
+  forecast/linregr: Перспективный линейный регресс (фат. прошлые ковариаты и объясняемость)
+  forecast/load: загрузить набор данных из csv
+  forecast/mom: Добавить момент
+  forecast/mstl: Множественные сезоны и тенденции с использованием модели Loess (MSTL)
+  forecast/nbeats: Невральная байезийская оценка (фат. прошлые ковариаты)
+  forecast/nhits: Невральная иерархическая Интерполизация (фет. прошлые ковариаты)
+  forecast/plot: Построить конкретную колонку комплекта загруженных данных
+  forecast/regr: Регрессия (фат. прошлые ковариаты и объясняемость)
+  forecast/rename: Переименовать колонки из набора данных
+  forecast/rnn: Перспективные периодические нейронные сети (RNN, LSTM, GRU)
+  forecast/roc: Добавить скорость изменения
+  forecast/rsi: Добавить относительный индекс прочности
+  forecast/rwd: Случайная прогулка с Drift Model
+  forecast/season: Построить сезонность для колонки набора данных
+  forecast/seasonalnaive: Сезонная навигационная модель
+  forecast/show: Показать часть загружаемого набора данных
+  forecast/signal: Добавить ценовой сигнал (краткое по сравнению с долгосрочным)
+  forecast/sto: Добавить стохастический осциллятор %K и %D
+  forecast/tcn: Временная нервная сеть (февраль, прошлые ковариаты)
+  forecast/tft: Временная трансформаторная сеть (фетка, предыдущие ковариаты)
+  forecast/theta: Тета Метод
+  forecast/trans: Трансформированная сеть (фет. прошлые ковариаты)
+  forex: обменных курсов, котировок, форвардных ставок для пар валют и интеграции
+    оанда
+  forex/_from: От
+  forex/_source: Источник
+  forex/_ticker: Упаковщик
+  forex/_to: К
+  forex/candle: Показать свечный участок для загруженных пар
+  forex/forecast: Методы прогнозирования
+  forex/forex: Предыдущие брокерские операции
+  forex/fwd: получить вперёд ставки для груженых пар
+  forex/load: получить исторические данные
+  forex/oanda: Меню Oanda
+  forex/oanda/_from: От
+  forex/oanda/_loaded: Загруженный прибор
+  forex/oanda/_source: Источник
+  forex/oanda/_to: К
+  forex/oanda/calendar: Показать календарь
+  forex/oanda/cancel: Отменить ожидающий исполнения приказ ID-i
+  forex/oanda/candles: Показать свечи
+  forex/oanda/closetrade: Закрыть торговлю ID
+  forex/oanda/from: Выбрать валюту "от" в парах форекса
+  forex/oanda/list: Список заказов
+  forex/oanda/order: u НОМЕР единиц - цена p
+  forex/oanda/orderbook: распечатать заказную книжку
+  forex/oanda/pending: получить информацию о находящихся на рассмотрении приказах
+  forex/oanda/positionbook: распечатать позиционный справочник
+  forex/oanda/positions: получить открытые позиции
+  forex/oanda/price: Показать цену выбранного инструмента
+  forex/oanda/summary: сводные данные по счетам
+  forex/oanda/to: Выбрать валюту "в" в парах форекса
+  forex/oanda/trades: список открытых торговых операций
+  forex/qa: количественный анализ, разложение, сумум, остаточный анализ
+  forex/qa/_other_: Прочее
+  forex/qa/_pair: Пара
+  forex/qa/_plots_: Слоты
+  forex/qa/_rolling_metrics_: Крутящиеся параметры
+  forex/qa/_statistics_: Статистические данные
+  forex/qa/_target: Цель
+  forex/qa/acf: (частично)
+  forex/qa/bw: Ящик и пирожный сюжет
+  forex/qa/cdf: функция совокупного распределения
+  forex/qa/cusum: обнаруживает резкие изменения с использованием алгоритма кумулятивных
+    сумм цен
+  forex/qa/decompose: Разложение в циклических трендах, сезонах и остаточных ценах
+  forex/qa/hist: гистограмма с сечением плотности
+  forex/qa/kurtosis: ':: скользящий куртоз распределения цен'
+  forex/qa/line: Строка выбранной цели
+  forex/qa/normality: статистические данные о нормальных условиях и испытаниях
+  forex/qa/pick: Выбрать целевые столбцы для анализа
+  forex/qa/qqplot: Остатки по стандартной обычной кривой
+  forex/qa/quantile: скользящий медианный и квантовый цены
+  forex/qa/raw: распечатка необработанных данных
+  forex/qa/rolling: Среднее и скользящее отклонение цен
+  forex/qa/skew: скользящая скейтность распределения цен
+  forex/qa/spread: разность вращения и скользящее отклонение цен
+  forex/qa/summary: Краткие статистические данные о погруженных запасах
+  forex/qa/unitroot: единичное испытание корневого элемента на статическость (ADF,
+    KPSS)
+  forex/quote: получить последнюю цитату
+  forex/ta: Технический анализ, эма, макд, rsi, адкс, брусья, обивка
+  forex/ta/_currency: Пара загруженных валют
+  forex/ta/_custom_: Обычный
+  forex/ta/_momentum_: Момент
+  forex/ta/_overlap_: Перекрытие
+  forex/ta/_source: Источник
+  forex/ta/_trend_: Тенденция
+  forex/ta/_volatility_: Износостойкость
+  forex/ta/adx: средний индекс направления движения
+  forex/ta/aroon: аруанский индикатор
+  forex/ta/bbands: Bollinger ленты
+  forex/ta/cci: Индекс товарных каналов
+  forex/ta/cg: центр тяжести
+  forex/ta/donchian: Дончианские каналы
+  forex/ta/ema: средняя экспоненциально движущаяся
+  forex/ta/fib: Возвращение фибоначчи
+  forex/ta/fisher: Преобразование рыбака
+  forex/ta/macd: средняя конвергенция/изменение
+  forex/ta/rsi: индекс относительной прочности
+  forex/ta/sma: простое скользящее среднее
+  forex/ta/stoch: Стохастический осциллятор
+  forex/ta/zlma: нулевой отставание, скользящее среднее
+  funds: поиск, обзор, авуары и веса секторов
+  funds/_country: Текущая страна
+  funds/_fund: Текущий фонд
+  funds/alswe: распределение средств (сектор, страна, запасы)
+  funds/country: установить страну для фильтрации
+  funds/equity: акционерные акции
+  funds/forecast: методы прогнозирования
+  funds/info: получить информацию о фондах
+  funds/infoswe: получить информацию о фондах
+  funds/load: Данные о фондах за прошлые периоды
+  funds/plot: ':: загруженные данные о фондах за прошлые периоды'
+  funds/search: поиск взаимных фондов
+  funds/sector: Весовые коэффициенты по секторам
+  futures: сырьевые товары, облигации, индекс, биткоин и форекс
+  futures/curve: получить фьючерсные кривые
+  futures/historical: получить исторические временные ряды
+  futures/search: поиск будущего на основе категории или обмена
+  intro: Введение к терминалу OpenBB
+  keys: установить ключи API и проверить их действительность
+  keys/_keys_: Это меню позволяет вам установить свои собственные ключи API. Введите
+    "около" для дополнительной информации.
+  keys/_status_: Статус
+  keys/mykeys: получить определенные ключи
+  news: Показать новостные статьи, основанные на терминах и источниках данных
+  not defined: не определен
+  portfolio: ':: оптимизация портфеля и анализ эффективности портфеля и его распределения'
+  portfolio/_benchmark: Контрольный параметр
+  portfolio/_graphs_: Графики
+  portfolio/_loaded: Загруженные операции
+  portfolio/_metrics_: Метрики
+  portfolio/_risk_: Характеристики риска
+  portfolio/_riskfreerate: Ставка без риска
+  portfolio/alloc: распределение по активам, секторам, странам или регионам
+  portfolio/attrib: Показать распределение портфеля инвестиций по секторам по сравнению
+    с СиП 500
+  portfolio/bench: определить базовый показатель
+  portfolio/bro: ':: брокеры, помощники, союзники, дегиро, монетная база'
+  portfolio/bro/ally: Меню Инвестирование Элли
+  portfolio/bro/ally/_info_: Информация о запасах
+  portfolio/bro/ally/balances: показывать данные о балансе счетов
+  portfolio/bro/ally/history: Покажите историю вашего рассказа
+  portfolio/bro/ally/holdings: показ авуаров по счетам
+  portfolio/bro/ally/movers: получить списки грузчиков по степеням
+  portfolio/bro/ally/quote: получить цитату из акций
+  portfolio/bro/cb: Меню Про Koinbase
+  portfolio/bro/cb/account: Показать остаток вашего счета
+  portfolio/bro/cb/deposits: показать все ваши депозиты или внутренние переводы
+  portfolio/bro/cb/history: Покажите историю вашего рассказа
+  portfolio/bro/cb/orders: показывайте все ваши приказы
+  portfolio/bro/degiro: Меню Дегиро
+  portfolio/bro/degiro/cancel: Отменить заказ с помощью идентификатора
+  portfolio/bro/degiro/companynews: Видеть новости о компании, с которой она есть
+  portfolio/bro/degiro/create: создать порядок
+  portfolio/bro/degiro/hold: обзор авуаров
+  portfolio/bro/degiro/lastnews: просмотр последних новостей
+  portfolio/bro/degiro/login: соединиться с апи Дегиро
+  portfolio/bro/degiro/logout: Отсоединиться от апи Дегиро
+  portfolio/bro/degiro/lookup: поиск продукта по имени
+  portfolio/bro/degiro/paexport: csv Экспорт для анализа портфеля
+  portfolio/bro/degiro/pending: неучтенные постановления
+  portfolio/bro/degiro/topnews: Просмотр сверхновостей
+  portfolio/bro/degiro/update: Обновить заказ
+  portfolio/bro/rh: Меню Робинхуд
+  portfolio/bro/rh/history: Показать историю вашего аккаунта в акционерном капитале
+  portfolio/bro/rh/holdings: показ авуаров по счетам запасов
+  portfolio/bro/rh/login: Доступ к халатности
+  portfolio/cret: кумулятивная прибыль
+  portfolio/distr: ':: распределение ежедневных возвращений'
+  portfolio/dret: ежедневное возвращение
+  portfolio/es: прогнозируемый дефицит
+  portfolio/holdp: портфельные авуары активов (в процентах)
+  portfolio/holdv: активов (абсолютная стоимость)
+  portfolio/load: операции с погрузкой в портфель
+  portfolio/maxdd: максимальное сокращение
+  portfolio/metric: Портфель по сравнению с эталонным показателем за все различные
+    периоды
+  portfolio/mret: ежемесячных возвращений
+  portfolio/om: соотношение омега
+  portfolio/perf: по сравнению с базовыми показателями
+  portfolio/po: оптимизация портфеля, оптимизация веса портфеля
+  portfolio/po/_categories: Категории
+  portfolio/po/_hierarchical_clustering_models_: Иерархические модели кластеризации
+  portfolio/po/_loaded: Портфель загружен
+  portfolio/po/_mean_risk_optimization_: Средняя оптимизация рисков
+  portfolio/po/_optimized_portfolio: Оптимизация портфеля
+  portfolio/po/_other_optimization_techniques_: Другие методы оптимизации
+  portfolio/po/_parameter: Параметровый файл
+  portfolio/po/_risk_parity_optimization_: Оптимизация паритета рисков
+  portfolio/po/_tickers: Упаковщики
+  portfolio/po/blacklitterman: Портфель чёрного мусорщика
+  portfolio/po/dividend: Взвешенные по доходности дивидендов (дивиденды собственности)
+  portfolio/po/ef: показать эффективную границу
+  portfolio/po/equal: в равной степени взвешенные
+  portfolio/po/file: файл, содержащий параметры риска для портфеля
+  portfolio/po/herc: Равноправный вклад в риск
+  portfolio/po/hrp: иерархический паритет рисков
+  portfolio/po/load: Щиты и категории нагрузки из файла .xlsx или .csv
+  portfolio/po/maxdecorr: Максимальный портфель декораций
+  portfolio/po/maxdiv: максимально диверсифицированный портфель
+  portfolio/po/maxret: Портфель максимальной доходности
+  portfolio/po/maxsharpe: Портфель с максимальным коэффициентом &quot; Шарп &quot;
+    (т.е. портфель &quot; туманность &quot; )
+  portfolio/po/maxutil: Максимальная функция неприменения риска с учетом некоторых
+    параметров неприятия риска
+  portfolio/po/minrisk: Минимальный портфель рисков
+  portfolio/po/mktcap: Взвешенные в соответствии с рыночным пределом (рынок недвижимости)
+  portfolio/po/nco: Оптимизация территориально-производственных комплексов
+  portfolio/po/params: определять и показывать параметры портфельного риска
+  portfolio/po/params/_loaded: Загруженный файл
+  portfolio/po/params/_model: Образец интереса
+  portfolio/po/params/_parameters_: Параметры
+  portfolio/po/params/arg: установить другое значение для аргумента
+  portfolio/po/params/clear: ясная модель, представляющая интерес с точки зрения отфильтрованных
+    параметров
+  portfolio/po/params/file: Параметры риска, связанного с портфелем затрат
+  portfolio/po/params/load: Выбрать файл параметров портфеля
+  portfolio/po/params/save: сохранить параметры рисков для портфеля в заданном файле
+  portfolio/po/params/set: установленная модель, представляющая интерес для параметров
+    фильтра
+  portfolio/po/plot: выбранные диаграммы из списка сохранённых портфелей
+  portfolio/po/property: вес в зависимости от выбранной информационной принадлежности
+  portfolio/po/relriskparity: Сбавленный паритет рисков с использованием подхода,
+    основанного на наименьших квадратах
+  portfolio/po/riskparity: Портфель паритета рисков с использованием подхода к составлению
+    бюджета рисков
+  portfolio/po/rpf: исключить портфели из списка сэкономленных портфелей
+  portfolio/po/show: показать отдельные портфели и категории из списка сэкономленных
+    портфелей
+  portfolio/rbeta: качание бета
+  portfolio/rsharpe: резко качаются
+  portfolio/rsort: скачивающий сортировщик
+  portfolio/rvol: волатильность при качении
+  portfolio/show: показать существующие операции
+  portfolio/summary: все портфели по сравнению с контрольными показателями за определенный
+    период выбора
+  portfolio/var: Рискованное значение дисплея
+  portfolio/yret: годовой доход
+  record: сессии, которая должна быть преобразована в .openbb
+  reports: Скорректированные исследовательские отчеты с помощью тетрадей Jupyter
+  reports/_Custom_reports_: Обычные отчеты
+  reports/_OpenBB_reports_: Отчеты об открытом БКР
+  reports/_reports_: Постройте и проверьте ваши отчеты по заказу или попробуйте один
+    из наших шаблонов.
+  reports/run: Запустить записную книжку Jupyter из OpenBBUSerData/reports/custom
+    reports
+  settings: настройки (пасть экспорта, временн*е пояса, язык, размер сюжета)
+  settings/_backend: Назад
+  settings/_data_source: Источники данных
+  settings/_dpi: Построить точки на дюйм
+  settings/_flair: Плохо.
+  settings/_info_: Параметры через экологические переменные
+  settings/_language: Язык
+  settings/_monitor: Монитор
+  settings/_plot_height: Высота полотна
+  settings/_plot_height_pct: Высота листа [%]
+  settings/_plot_width: Ширина полосы
+  settings/_plot_width_pct: Ширина полосы [%]
+  settings/_preferred_data_source_file: Предпочтительный файл источника данных
+  settings/_timezone: Временная пояса
+  settings/_user_data_folder: Папка данных пользователя
+  settings/autoscaling: Схемы автокалибрования
+  settings/backend: (Нет, tkAgg, MacOSX, Qt5Agg)
+  settings/colors: установить собственные цвета терминала
+  settings/dpi: точки на дюйм
+  settings/dt: добавить или удалить время даты из блеска
+  settings/flair: установить moji, который будет использоваться
+  settings/height: Выберите высоту сюжета
+  settings/lang: терминальный язык
+  settings/monitor: которые могут отображаться (первичная 0, средняя 1)
+  settings/pheight: Выберите процентную высоту участка
+  settings/pwidth: Выбор процентной ширины участка
+  settings/source: указать файл источника данных
+  settings/tz: установить разные временные пояса
+  settings/userdata: Установить папку для хранения данных пользователя
+  settings/width: выбрать ширину участка
+  sources: Выберите предпочтительные источники данных
+  sources/_info_: Получение и установка источников данных по умолчанию
+  sources/get: получить доступные источники данных, связанные с командованием
+  sources/set: установить источник данных по умолчанию для команды
+  stocks: доступ к историческим данным о ценах, опционам, секторам и отраслям и к
+    общей должной осмотрительности
+  stocks/_ticker: Товарно-материальные запасы
+  stocks/ba: 'Поведенческий анализ: от красного, чулки, твиттер, гугл'
+  stocks/ba/_ticker: Упаковщик
+  stocks/ba/bullbear: оценка быстрого настроения на основе последних 30 сообщений
+    на борту
+  stocks/ba/getdd: получает должную осмотрительность от другого пользователя
+  stocks/ba/headlines: 15+ заголовки основных новостей
+  stocks/ba/hist: почасовые данные RHI и AHI
+  stocks/ba/infer: вывод о настроениях акций из последних твитов
+  stocks/ba/interest: Проценты с течением времени вынесения приговоров по отношению
+    к стоимости акций
+  stocks/ba/jcdr: Ежедневные рекомендации Джима Крамера
+  stocks/ba/jctr: Рекомендации Джима Крамера
+  stocks/ba/load: загрузить тикаль конкретного запаса для анализа
+  stocks/ba/mentions: Проценты с течением времени, основанные на упоминаниях акций
+  stocks/ba/messages: выводим до 30 последних сообщений на доске
+  stocks/ba/popular: Показать популярные тикатели
+  stocks/ba/queries: вопросы, связанные с этими запасами
+  stocks/ba/redditsent: поискать реддит на тиканье и найти красноватые чувства
+  stocks/ba/regions: регионы, проявляющие наибольший интерес к запасам
+  stocks/ba/rise: ':: увеличение объема запросов, связанных с товарно-материальными
+    запасами;'
+  stocks/ba/sentiment: Углубленное прогнозирование настроений из твитов с течением
+    времени
+  stocks/ba/snews: Цена акций, показываемая в газетных заголовках
+  stocks/ba/spac: показать другим пользователям сообщения с другими подлодками
+  stocks/ba/spacc: показать другим пользователям объявления с помощью субреддитных
+    SPAC
+  stocks/ba/stalker: Последние сообщения пользователя
+  stocks/ba/trending: Тенденции в отношении запасов
+  stocks/ba/watchlist: показать список других пользователей
+  stocks/ba/wsb: показать, что задумала банда WSB в субреддитных урнтреетбетах
+  stocks/bt: Простая эма, крест эма, стратегия rsi
+  stocks/bt/_ticker: Упаковщик
+  stocks/bt/ema: Покупка, когда цена превышает EMA(l)
+  stocks/bt/emacross: купить, когда EMA (короткая) > EMA (длинная)
+  stocks/bt/rsi: Покупайте, когда RSI < низко и продавайте, когда RSI > высоко
+  stocks/bt/whatif: Что если бы вы купили X акций в день Y
+  stocks/ca: сравнительный анализ, получение аналогичного, исторического, корреляционного,
+    финансового
+  stocks/ca/_similar: Аналогичные компании
+  stocks/ca/_ticker: Удостоверься получить аналогичные компании от
+  stocks/ca/add: добавить более схожие компании
+  stocks/ca/balance: Сопоставление финансового баланса
+  stocks/ca/cashflow: Сопоставление движения денежной наличности
+  stocks/ca/financial: Краткое финансовое сопоставление
+  stocks/ca/get: получить аналогичные запасы
+  stocks/ca/hcorr: историческая корреляция цен
+  stocks/ca/historical: Сопоставление данных о ценах за прошлые периоды
+  stocks/ca/income: Сопоставление финансовых показателей поступлений
+  stocks/ca/overview: краткое общее сопоставление
+  stocks/ca/ownership: Краткое сопоставление прав собственности
+  stocks/ca/performance: Краткое сопоставление результатов работы
+  stocks/ca/rmv: исключить аналогичные компании в индивидуальном порядке или во всех
+    случаях;
+  stocks/ca/scorr: корреляция чувств
+  stocks/ca/sentiment: Сопоставление результатов анализа настроений
+  stocks/ca/set: перезапуск и создание аналогичных компаний
+  stocks/ca/technical: краткое техническое сопоставление
+  stocks/ca/ticker: установить тикаль, чтобы получить аналогичные компании от
+  stocks/ca/tsne: Запустить TSNE на всех запасах SP500 и вернуть ближайшие тикатели
+  stocks/ca/valuation: Краткое сопоставление оценок
+  stocks/ca/volume: Сопоставление данных об объеме за прошлые периоды
+  stocks/candle: Посмотрите на свечную карту для конкретного тикателя
+  stocks/codes: Коды FIGI, SIC и SIC
+  stocks/dd: Углубленная дисциплина, новости, аналитик, шорты, инсайдер, секунда
+  stocks/dd/_ticker: Упаковщик
+  stocks/dd/analyst: Цены и рейтинги компании-аналитика
+  stocks/dd/arktrades: Продажи ARK на тиканье
+  stocks/dd/customer: Список клиентов
+  stocks/dd/est: квартальные и годовые оценки доходов аналитиков
+  stocks/dd/load: загрузить тикаль конкретного запаса для анализа
+  stocks/dd/pt: ценовые целевые показатели с течением времени
+  stocks/dd/rating: оценка с течением времени (ежедневно)
+  stocks/dd/rot: Число оценок аналитиков с течением времени (ежемесячно)
+  stocks/dd/sec: Файлы КЦБ
+  stocks/dd/supplier: список поставщиков
+  stocks/disc: ':: выявление тенденций изменения запасов, карт, секторов, большого
+    интереса'
+  stocks/disc/active: большинство активных запасов в разбивке по объемам внутридневной
+    торговли
+  stocks/disc/arkord: заказы ARK Government LLC
+  stocks/disc/asc: Малые максимальные запасы с темпами роста доходов, превышающими
+    25%
+  stocks/disc/cnews: специальные новости (покупки, японцы, спаки, здравоохранение,
+    политика)
+  stocks/disc/divcal: Календарь дивидендов для выбранной даты
+  stocks/disc/fipo: Будущие даты создания МПО
+  stocks/disc/gainers: Показать самые последние победители
+  stocks/disc/gtech: Технологические запасы с увеличением доходов и доходов более
+    25%
+  stocks/disc/heatmap: '&quot; тепловая карта &quot; SP500'
+  stocks/disc/hotpenny: '"Сегодня горячие запасы пенни"'
+  stocks/disc/losers: показать самые последние неудачники
+  stocks/disc/lowfloat: Низкие поплавковые запасы, не превышающие 10 млн.
+  stocks/disc/pipo: Прошлые даты создания ИПО
+  stocks/disc/rtat: 10 крупнейших розничных товарных акций в день
+  stocks/disc/trending: Тенденции в новостях
+  stocks/disc/ugs: Занижение стоимости запасов с ростом доходов и доходов свыше 25%
+  stocks/disc/ulc: потенциально недооцененные крупные резервные запасы
+  stocks/disc/upcoming: в предстоящие сроки освобождения от заработной платы;
+  stocks/dps: тёмный пул и короткие данные, тёмный пул, короткий интерес, ftd
+  stocks/dps/_ticker: Упаковщик
+  stocks/dps/ctb: Расходы на заимствование запасов
+  stocks/dps/dpotc: Тёмные пулы (АТС) в сравнении с данными OTC
+  stocks/dps/ftd: Данные о невыполнении рекомендаций
+  stocks/dps/hsi: показана высокая доля краткосрочных процентных акций, превышающих
+    20%
+  stocks/dps/load: загрузить тикаль конкретного запаса для анализа
+  stocks/dps/pos: ':: короткое положение темного бассейна;'
+  stocks/dps/prom: перспективные тикатели, основанные на регрессии доли в тёмном пуле
+  stocks/dps/psi: цена в сравнении с коротким объемом процентов
+  stocks/dps/shorted: показать большинство коротких запасов
+  stocks/dps/sidtc: Короткие проценты и дни для покрытия
+  stocks/dps/spos: Чистая короткая по отношению к положению
+  stocks/fa: фундаментальный анализ, доход, остаток, денежная наличность, доходы
+  stocks/fa/_ticker: Упаковщик
+  stocks/fa/analysis: ':: анализ файлов КЦБ с помощью машинного обучения;'
+  stocks/fa/balance: Балансовая ведомость компании
+  stocks/fa/cal: календарь доходов и оценки компании
+  stocks/fa/cash: Движение денежной наличности компании
+  stocks/fa/data: фундаментальные и технические данные компании
+  stocks/fa/dcf: Производимая скидка на движение денежной наличности
+  stocks/fa/dcfc: определить (исторический) дисконтированный поток наличных средств
+  stocks/fa/divs: продемонстрировать исторические дивиденды для компании
+  stocks/fa/dupont: Детальная разбивка прибыли на акционерный капитал
+  stocks/fa/earnings: Даты и отчетные данные по ЭПС
+  stocks/fa/enterprise: Стоимость предприятия
+  stocks/fa/epsfc: Оценка заработка аналитиками - ЭПС
+  stocks/fa/fraud: Основные коэффициенты мошенничества
+  stocks/fa/growth: увеличение объема статей и коэффициентов финансовых ведомостей
+  stocks/fa/hq: Открытое место расположения штаб-квартиры компании
+  stocks/fa/income: Отчеты о прибылях и убытках компании
+  stocks/fa/info: Информационный охват компании
+  stocks/fa/key: метрики ключевых компаний
+  stocks/fa/load: загрузить тикаль конкретного запаса для анализа
+  stocks/fa/metrics: ключевые показатели с течением времени
+  stocks/fa/mgmt: управленческая группа компании
+  stocks/fa/mktcap: Расчетный рыночный предел
+  stocks/fa/overview: Обзор деятельности компании
+  stocks/fa/profile: профиль компании
+  stocks/fa/quote: Подробная информация о цитатах из запасов
+  stocks/fa/ratios: Углубленные коэффициенты во времени
+  stocks/fa/revfc: Оценка, проведенная аналитиками - поступления
+  stocks/fa/score: Инвестиционный балл от Уоррена Баффетта и ко.
+  stocks/fa/shrs: акционеры (внутренние, институциональные и взаимные фонды)
+  stocks/fa/splits: ':: разделение запасов и обратное разделение запасов после создания
+    IPO;'
+  stocks/fa/sust: ценности устойчивости (окружающая среда, социальная среда и управление)
+  stocks/fa/warnings: Предупреждения компании согласно книге Шона Сиха
+  stocks/fa/web: открытый веб-браузер компании
+  stocks/forecast: Методы прогнозирования, Rnn, nbeats, трансформатор, блок Rn
+  stocks/gov: Правительственное меню, торговля жильем, контракты, корпоративное лоббирование
+  stocks/gov/_explore: Изучение
+  stocks/gov/_ticker: Упаковщик
+  stocks/gov/contracts: показать правительственные контракты
+  stocks/gov/gtrades: Показать государственные торговые операции
+  stocks/gov/histcont: Ежеквартальные государственные контракты
+  stocks/gov/lastcontracts: показать последние правительственные контракты, выданные
+  stocks/gov/lasttrades: последние профессии
+  stocks/gov/load: загрузить конкретный тикаль для анализа
+  stocks/gov/lobbying: ':: подробные сведения о корпоративном лоббировании;'
+  stocks/gov/qtrcontracts: ежеквартальный анализ государственных контрактов
+  stocks/gov/topbuys: показать большинство приобретенных запасов
+  stocks/gov/toplobbying: ':: высшие корпоративные лоббисты'
+  stocks/gov/topsells: показать большинство проданных акций
+  stocks/ins: инсайдерская торговля, последние покупки акций по цене пенни, покупки
+    высшего офицера
+  stocks/ins/_last_insiders: Последние инсайдеры
+  stocks/ins/_preset: Предварительный набор
+  stocks/ins/_ticker: Упаковщик
+  stocks/ins/_top_insiders: Верхние инсайдеры
+  stocks/ins/act: инсайдерская активность с течением времени
+  stocks/ins/blcp: Крупные последние закупки ГАС/КФО (25k+)
+  stocks/ins/blcs: Крупные последние продажи ГАС/КФО (100k+)
+  stocks/ins/blip: Крупные покупки инсайдеров (25k+)
+  stocks/ins/blis: Крупные последние продажи инсайдеров (100k+)
+  stocks/ins/blop: ':: крупные закупки новых офицеров (25k+)'
+  stocks/ins/blos: Крупные продажи новейших офицеров (100 кв. долл. США+)
+  stocks/ins/filter: фильтрующие инсайдеры, основанные на предварительной установке
+  stocks/ins/lcb: Самые последние покупки кластеров
+  stocks/ins/lins: последний инсайдер компании
+  stocks/ins/lip: Последние покупки инсайдеров
+  stocks/ins/lis: Самые последние продажи
+  stocks/ins/lit: последние операции с инсайдерами (все файлы)
+  stocks/ins/load: загрузить тикаль конкретного запаса для анализа
+  stocks/ins/lpsb: Покупка последних центов
+  stocks/ins/set: установить один из имеющихся предварительных комплектов
+  stocks/ins/stats: Инкорпорированные данные компании
+  stocks/ins/tippm: Покупки лучших инсайдеров в прошлом месяце
+  stocks/ins/tippw: Покупки лучших инсайдеров на прошлой неделе
+  stocks/ins/tipt: Покупки сверху инсайдеров сегодня
+  stocks/ins/tispm: Продажи лучших инсайдеров в прошлом месяце
+  stocks/ins/tispw: Прошлая неделя была посвящена продажам лучших инсайдеров
+  stocks/ins/tist: Крупнейшие продажи сегодня
+  stocks/ins/toppm: Высший офицер покупает в прошлом месяце
+  stocks/ins/toppw: Высший офицер покупает товары на прошлой неделе
+  stocks/ins/topt: Старший офицер покупает сегодня
+  stocks/ins/view: Просмотр имеющихся предварительных комплектов
+  stocks/load: загрузить тикаль конкретного запаса и дополнительную информацию для
+    анализа
+  stocks/news: Последние новости о компании
+  stocks/options: меню вариантов, цепи, открытый интерес, греки, паритет
+  stocks/options/_expiry: Срок годности
+  stocks/options/_ticker: Упаковщик
+  stocks/options/binom: показывает стоимость опциона с использованием биномиальных
+    опционов
+  stocks/options/calc: базовый калькулятор PnL
+  stocks/options/chains: отображение опционных цепей с гриками
+  stocks/options/exp: См. и устанавливает сроки истечения срока действия
+  stocks/options/greeks: отображает грики для данного опции
+  stocks/options/grhist: греческая история опциона
+  stocks/options/hedge: показывает весовые коэффициенты портфеля в целях нейтрализации
+    дельты
+  stocks/options/hedge/_expiry: Срок годности
+  stocks/options/hedge/_ticker: Упаковщик
+  stocks/options/hedge/_underlying: Основополагающая позиция в отношении активов
+  stocks/options/hedge/add: добавить опцион в перечень вариантов
+  stocks/options/hedge/list: показать имеющиеся забастовочные цены на звонки и выписки
+  stocks/options/hedge/pick: выбор основного положения активов
+  stocks/options/hedge/plot: показать схему выплаты опционов
+  stocks/options/hedge/rmv: исключить опцион из перечня вариантов
+  stocks/options/hedge/sop: показать выбранные варианты и нейтральные весовые коэффициенты
+    портфеля
+  stocks/options/hist: история опционов
+  stocks/options/info: информация о вариантах отображения (власть, IV ранг и т.д.)
+  stocks/options/load: Загрузка нового тикателя
+  stocks/options/oi: Открытый интерес к сюжету
+  stocks/options/parity: показывает, находятся ли опционы выше или ниже ожидаемой
+    цены
+  stocks/options/pcr: 'Показать число звонков для тикателя@ info: whatsthis: whatsthis'
+  stocks/options/plot: переменные диаграммы, представленные пользователем
+  stocks/options/pricing: показ опционов ценообразование и нейтральная оценка рисков
+  stocks/options/pricing/_expiry: Срок годности
+  stocks/options/pricing/_ticker: Упаковщик
+  stocks/options/pricing/add: добавить ожидаемую цену в список
+  stocks/options/pricing/rmv: исключить ожидаемую цену из списка
+  stocks/options/pricing/rnval: Нейтральная оценка риска для варианта
+  stocks/options/pricing/show: показать перечень ожидаемых цен
+  stocks/options/screen: экраны тикающих устройств на основе предварительного отбора
+  stocks/options/screen/_preset: Предварительный набор
+  stocks/options/screen/_screened_tickers: Последнее просмотренное тикание
+  stocks/options/screen/ca: Возьмите их для сравнения меню анализа
+  stocks/options/screen/scr: экранирование данных из этого предварительного набора
+  stocks/options/screen/set: установить один из имеющихся предварительных комплектов
+  stocks/options/screen/view: Вид имеющихся предварительных наборов (или, в частности,
+    одного из них)
+  stocks/options/unu: показать необычную опционную активность
+  stocks/options/voi: объем и открытый интерес
+  stocks/options/vol: объем
+  stocks/options/vsurf: показана 3D-поверхность летучести
+  stocks/qa: количественный анализ, разложение, сумум, остаточный анализ
+  stocks/qa/_other_: Прочее
+  stocks/qa/_plots_: Слоты
+  stocks/qa/_risk_: Риск
+  stocks/qa/_rolling_metrics_: Крутящиеся параметры
+  stocks/qa/_statistics_: Статистические данные
+  stocks/qa/_target: Колонка цели
+  stocks/qa/_ticker: Упаковщик
+  stocks/qa/acf: (частично)
+  stocks/qa/beta: отображать бета-w.r.t на любой эталонный тикатель
+  stocks/qa/bw: Ящик и пирожный сюжет
+  stocks/qa/capm: Модель ценообразования на капитальные активы
+  stocks/qa/cdf: функция совокупного распределения
+  stocks/qa/cusum: обнаруживает резкие изменения с использованием алгоритма кумулятивных
+    сумм цен
+  stocks/qa/decompose: Разложение в циклических трендах, сезонах и остаточных ценах
+  stocks/qa/es: прогнозируемый дефицит
+  stocks/qa/hist: гистограмма с сечением плотности
+  stocks/qa/kurtosis: ':: скользящий куртоз распределения цен'
+  stocks/qa/line: Строка выбранной цели
+  stocks/qa/load: Загрузка нового тикателя
+  stocks/qa/normality: статистические данные о нормальных условиях и испытаниях
+  stocks/qa/om: соотношение омега
+  stocks/qa/pick: Выбрать целевые столбцы для анализа
+  stocks/qa/qqplot: Остатки по стандартной обычной кривой
+  stocks/qa/quantile: скользящий медианный и квантовый цены
+  stocks/qa/raw: распечатка необработанных данных
+  stocks/qa/rolling: Среднее и скользящее отклонение цен
+  stocks/qa/sh: соотношение резкости отображения
+  stocks/qa/skew: скользящая скейтность распределения цен
+  stocks/qa/so: Отношение сортировки к дисплею
+  stocks/qa/spread: разность вращения и скользящее отклонение цен
+  stocks/qa/summary: Краткие статистические данные о погруженных запасах
+  stocks/qa/unitroot: единичное испытание корневого элемента на статическость (ADF,
+    KPSS)
+  stocks/qa/var: Рискованное значение дисплея
+  stocks/quote: Видите текущую цену за конкретный тикаль
+  stocks/res: web-страница исследований, макроксисы, финансы Yahoo, дурак
+  stocks/res/_ticker: Упаковщик
+  stocks/res/barchart: www.barchart.com
+  stocks/res/bullrun: www.bullrun.com.br
+  stocks/res/businessinsider: www.markets.businessinsider.com
+  stocks/res/fidelity: www.eresearch.fidelity.com
+  stocks/res/fintel: www.fintel.com
+  stocks/res/finviz: www.finviz.com
+  stocks/res/fmp: www.financialmodelingprep.com
+  stocks/res/fool: www.fool.com
+  stocks/res/grufity: www.grufity.com
+  stocks/res/macroaxis: www.macroaxis.com
+  stocks/res/macrotrends: www.macrotrends.net
+  stocks/res/marketchameleon: www.marketchameleon.com
+  stocks/res/marketwatch: www.marketwatch.com
+  stocks/res/newsfilter: www.newsfilter.io
+  stocks/res/stockanalysis: www.stockanalysis.com
+  stocks/res/stockrow: www.stockrow.com
+  stocks/res/tradingview: www.tradingview.com
+  stocks/res/yahoo: www.finance.yahoo.com
+  stocks/res/zacks: www.zacks.com
+  stocks/scr: обзор/эффективность с использованием предварительно установленных фильтров
+  stocks/scr/_preset: Предварительный набор
+  stocks/scr/_screened_tickers: Последнее просмотренное тикание
+  stocks/scr/ca: Возьмите их для сравнения меню анализа
+  stocks/scr/financial: финансовые (например, дивиденды, ROA, ROE, ROI, заработок)
+  stocks/scr/historical: Видеть историческую цену
+  stocks/scr/overview: Обзор (например, сектор, промышленность, рынок, объем)
+  stocks/scr/ownership: право собственности (например, плавучее, инсайдерское, короткое
+    соотношение)
+  stocks/scr/performance: '- эффективность (например, Неделя перфа, Перф ЙТР, волатильность
+    М)'
+  stocks/scr/set: установить один из имеющихся предварительных комплектов
+  stocks/scr/technical: технические (например, Бета, SMA50, 52W Низкий, RSI, изменения)
+  stocks/scr/valuation: оценка (например, P/E, PEG, P/S, P/B, EPS y)
+  stocks/scr/view: '- просмотр имеющихся предварительных наборов (неисполнение обязательств
+    и таможенные процедуры)'
+  stocks/search: поискать конкретный тикаль для анализа
+  stocks/sia: Анализ по секторам и отраслям, компании в разбивке по секторам, быстрое
+    соотношение по отраслям и странам
+  stocks/sia/_country: Страна
+  stocks/sia/_exclude_exchanges: Исключая обменные курсы
+  stocks/sia/_financials_: Финансы
+  stocks/sia/_financials_loaded_: Финансы - загруженные данные (быстрый режим)
+  stocks/sia/_industry: Промышленность
+  stocks/sia/_mktcap: Рынок
+  stocks/sia/_period: Период
+  stocks/sia/_returned_tickers: Возвращенные тикатели
+  stocks/sia/_sector: Сектор
+  stocks/sia/_statistics_: Статистические данные
+  stocks/sia/ca: Возьмите их для сравнения меню анализа
+  stocks/sia/clear: ':: очистить все или один из параметров промышленных, секторальных,
+    страновых и рыночных ограничений;'
+  stocks/sia/country: см. существующие страны или установленную страну, если она указана
+  stocks/sia/cpci: с разбивкой по странам с разбивкой по отраслям (и рынкам)
+  stocks/sia/cpcs: с разбивкой по странам с разбивкой по секторам (и рынкам)
+  stocks/sia/cpic: Промышленность на основе страны (и рыночного капитала)
+  stocks/sia/cpis: Промышленность на основе сектора (и рыночного капитала)
+  stocks/sia/cps: на один сектор в зависимости от страны (и рынка)
+  stocks/sia/exchange: исключить международный обменной флаг
+  stocks/sia/industry: См. существующие отрасли или настраиваемые отрасли, если они
+    указаны
+  stocks/sia/metric: Представление финансовой метрики по выбранным фильтрам
+  stocks/sia/mktcap: mktchap между нано, микро, малыми, средними, большими или мега
+  stocks/sia/period: установленный период между годовыми, квартальными или контрольными
+    периодами
+  stocks/sia/sector: См. существующие секторы или установленный сектор, если арг указан
+  stocks/sia/select: Выберите конкретный тикатель и все его параметры
+  stocks/sia/vis: Представление финансовой метрики по выбранным фильтрам
+  stocks/ta: Технический анализ, эма, макд, rsi, адкс, брусья, обивка
+  stocks/ta/_custom_: Обычный
+  stocks/ta/_momentum_: Момент
+  stocks/ta/_overlap_: Перекрытие
+  stocks/ta/_ticker: Упаковщик
+  stocks/ta/_trend_: Тенденция
+  stocks/ta/_volatility_: Износостойкость
+  stocks/ta/_volume_: Объем
+  stocks/ta/ad: накопление/распределение
+  stocks/ta/adosc: Чайкинский осциллятор
+  stocks/ta/adx: средний индекс направления движения
+  stocks/ta/aroon: аруанский индикатор
+  stocks/ta/atr: средний реальный диапазон
+  stocks/ta/bbands: Bollinger ленты
+  stocks/ta/cci: Индекс товарных каналов
+  stocks/ta/cg: центр тяжести
+  stocks/ta/clenow: Скорректированный импульс волатильности дыни
+  stocks/ta/demark: Последовательный показатель Тома Демарка
+  stocks/ta/donchian: Дончианские каналы
+  stocks/ta/ema: средняя экспоненциально движущаяся
+  stocks/ta/fib: Возвращение фибоначчи
+  stocks/ta/fisher: Преобразование рыбака
+  stocks/ta/hma: средний движущийся корпус
+  stocks/ta/kc: Каналы Keltner
+  stocks/ta/macd: средняя конвергенция/изменение
+  stocks/ta/obv: по объему баланса
+  stocks/ta/recom: Рекомендация, основанная на технических показателях
+  stocks/ta/rsi: индекс относительной прочности
+  stocks/ta/rsp: относительной прочности процентиля
+  stocks/ta/sma: простое скользящее среднее
+  stocks/ta/stoch: Стохастический осциллятор
+  stocks/ta/summary: сводный технический доклад
+  stocks/ta/tv: в открытом интерактивном формате
+  stocks/ta/view: обзор исторических данных и тенденций
+  stocks/ta/vwap: средневзвешенная цена
+  stocks/ta/wma: средневзвешенное скользящее среднее
+  stocks/ta/zlma: нулевой отставание, скользящее среднее
+  stocks/th: Часы торговли, проверка открытых рынков
+  stocks/th/_exchange: Обмен открыт
+  stocks/th/_symbol: Символ
+  stocks/th/_symbol_name: Символическое имя
+  stocks/th/all: показать все рынки
+  stocks/th/closed: показать закрытые рынки
+  stocks/th/exchange: показать один обмен
+  stocks/th/holidays: показать все даты, когда существует рыночный отпуск
+  stocks/th/open: показать открытые рынки
+  stocks/th/symbol: Выберите символ
+  stocks/tob: Вид наверху книги для загруженного тикаря (только обмены США)
+  stop: остановить запись сеанса
+  support: ':: заблаговременное размещение в нашей команде вспомогательного билета
+    для оценки'
+  survey: Заполните наш двухминутный опрос, чтобы мы лучше поняли, как улучшить терминал
+  update: попытаться автоматически обновить терминал (версия GitHub)
+  wiki: поиск выражения в Википедии (https://www.wikipedia.org/)

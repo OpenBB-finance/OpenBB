@@ -1,0 +1,1075 @@
+ja:
+  _configure_: 自分用のターミナルを設定
+  _home_: OpenBB ターミナルの情報、ガイド、サポート
+  _main_menu_: メインメニュー
+  _others_: その他
+  about: OpenBB ターミナル (https://openb.co/docs) の機能を見つける
+  alternative: COVID やオープンソースの計量などの代替データセット
+  alternative/covid: COVID メニュー,ケース,死,レート
+  alternative/covid/_country: 国
+  alternative/covid/cases: 選択した国について大文字と小文字を区別する
+  alternative/covid/country: データの国を選択
+  alternative/covid/deaths: 選ば れ た 国 の ため に 死者 を 出す
+  alternative/covid/ov: 選択した国について概要 (例と死亡) を取得します
+  alternative/covid/rates: 選択した国の死亡/ケースレートを取得する
+  alternative/covid/slopes: 傾きが最も高い国を獲得します。
+  alternative/oss: ソースメニュー、スター履歴、参照情報を開く
+  alternative/oss/rossidx: 最速成長のオープンソースのスタートアップ
+  alternative/oss/rs: レポ要約
+  alternative/oss/sh: リポ 星 の 歴史
+  alternative/oss/tr: トップスターリポジトリ
+  crypto: データ、データ、トケノミクス、流通供給、nft、その他、
+  crypto/_exchange: 交換
+  crypto/_interval: 間隔 (最小値)
+  crypto/_source: ソース
+  crypto/_symbol: コイン
+  crypto/candle: 特定の暗号化のためのろうそくチャートを参照
+  crypto/dd: ロードされたコイン、コイン情報、ソーシャルメディア、市場統計について準用する.
+  crypto/dd/_activity_: 活動 と 地域 社会
+  crypto/dd/_contributors_: 登記 者 と 投資 家
+  crypto/dd/_market_: 市場
+  crypto/dd/_metrics_: メトリックス
+  crypto/dd/_overview_: 概要
+  crypto/dd/_roadmap_: ロードマップとニュース
+  crypto/dd/_source: ソース
+  crypto/dd/_symbol: コイン
+  crypto/dd/_tokenomics_: トケノミクス
+  crypto/dd/active: アクティブなアドレス
+  crypto/dd/ath: ロードされたコインに関連する高水準の統計
+  crypto/dd/atl: ロードされたコインについては、常に関連の低い統計量
+  crypto/dd/balance: コインのバランス
+  crypto/dd/basic: ロードされたコインに関する基本的な情報
+  crypto/dd/bc: ロードされたコインの探索をブロックするリンク
+  crypto/dd/change: 交換ウォレットに掲げる供給の30d変更
+  crypto/dd/desc: プロジェクトに関する説明 - なぜ、どのように、何を
+  crypto/dd/dev: Gitbu, Bitbucket コイン開発統計
+  crypto/dd/eb: 交換に伴う総均衡 (パーセンテージと単位)
+  crypto/dd/events: ロードされたコインに関連するイベント
+  crypto/dd/ex: ロードされたコインがリストされているすべての交換
+  crypto/dd/fr: 財務省会計課,販売課,移転課 財務省 (PDF) (PDF) (PDF)) 財務省 (PDF) 財務省 (PDF)
+  crypto/dd/fundrate: 為替あたりの投資率
+  crypto/dd/funot: 時間による基本メトリックス
+  crypto/dd/gh: 時間 の 経過 と 共 に ギズスブ の 活動 が 始まる
+  crypto/dd/gov: 統治の概要
+  crypto/dd/info: ロード済みのコインに関する情報
+  crypto/dd/inv: 投資家 (特定団体及び組織)
+  crypto/dd/links: Twitter、YouTube、Reddit、電報をリンクします。
+  crypto/dd/liquidations: ロードされたコインの毎日の解凍基準
+  crypto/dd/load: 特定の暗号情報を分析のために読み込みます
+  crypto/dd/market: ロードされたコインに関する市場統計
+  crypto/dd/mcapdom: マーケットキャップの優位化
+  crypto/dd/mkt: ロードされたコインのすべての市場
+  crypto/dd/mt: Twitterのフォロワー、Camrcの供給等。
+  crypto/dd/news: ロードされたコインの最新ニュース
+  crypto/dd/nonzero: 0 でないバランスのアドレス
+  crypto/dd/ob: 順序ブック
+  crypto/dd/oi: 交換ごとのオープン利率
+  crypto/dd/pi: project information e.g. technology details, public repos, audits,
+    vulns
+  crypto/dd/ps: ロードされたコインに関連する価格と供給計
+  crypto/dd/rm: ロードマップ
+  crypto/dd/score: 'ロードされたコインの異なる種類のスコア (例: 開発者スコア,感傷スコア)'
+  crypto/dd/social: ロードされたコイン、例えば Reddit、Twitterのためのソーシャルポータル
+  crypto/dd/stats: コインの統計
+  crypto/dd/team: 寄稿者 (特定団体及び組織)
+  crypto/dd/tk: TokePublics e.g. 循環/最大供給量/完全供給量,射出量の種類など
+  crypto/dd/trades: 最後の交換
+  crypto/dd/twitter: ロードされたコインのツイート
+  crypto/dd/web: ロードされたコイン (.g フォーラム), ホームページ
+  crypto/defi: 分散財務情報 dpi, ラマ, tvl,貸借,貸借,資金
+  crypto/defi/anchor: アンカー収益データ
+  crypto/defi/aterra: 有価証券のアドレスに指定した 30 日の履歴
+  crypto/defi/ayr: アンカープロダクションの30日史
+  crypto/defi/dpi: DefiPulse に登録されたプロトコルを削除
+  crypto/defi/dtvl: DApp でロックされた歴史的合計値 (TVL)
+  crypto/defi/gacc: 成長履歴のブロックチェイン
+  crypto/defi/gdapps: チェーンでグループ化されたトップ DefdUp
+  crypto/defi/govp: Column Blockcachin Public domains 一覧
+  crypto/defi/lcsc: 流通量の変更
+  crypto/defi/ldapps: DUDB 一覧
+  crypto/defi/newsletter: 最近の DeFi 関連通信社
+  crypto/defi/pairs: Unisuwap に最近ペアを追加しました
+  crypto/defi/pools: ユニスワップのプール
+  crypto/defi/sinfo: 提供されたアカウントアドレスの情報を取得
+  crypto/defi/sratio: 比率の調整履歴
+  crypto/defi/sreturn: CLOVE ブロックチェインが履歴を返します
+  crypto/defi/stats: Unisuwap のベース統計
+  crypto/defi/stvl: すべての DUDB からの TVL 全体の履歴値
+  crypto/defi/swaps: Unisuwp で行われた最近のスワップ
+  crypto/defi/tokens: ユニスワップでトークン交換可能
+  crypto/defi/validators: ブロック補正に関する情報
+  crypto/defi/vaults: 異なるブロック上のトップ Defi Vohs
+  crypto/disc: トレンドの暗号化,最高利益,敗者,最高感の発見.
+  crypto/disc/dapps: トップレベルのアプリケーション
+  crypto/disc/dex: 最高機密の交換
+  crypto/disc/gainers: トップゲイン
+  crypto/disc/games: トップブロックチェインゲーム
+  crypto/disc/losers: トップ・敗者
+  crypto/disc/nft: 上のファミコンでないトークン
+  crypto/disc/search: コインを検索
+  crypto/disc/top: 上のコイン
+  crypto/disc/trending: コインのトレンド
+  crypto/find: コインを見つける
+  crypto/forecast: 予測技術, rn, nwb, トランスフォーマー,ブロック rn
+  crypto/headlines: 15 + 主要 な ニュース 記事 から 得 られる 虚偽 の 感情
+  crypto/load: 特定の暗号情報を分析のために読み込みます
+  crypto/nft: 非ファンタジートークン、今日のドロップ
+  crypto/nft/collections: 上方のコレクション
+  crypto/nft/fp: コレクションの売上/額
+  crypto/nft/stats: コレクションの統計
+  crypto/onchain: 異なるブロックチェイン、eeeガス代、捕鯨警報、DEXIES情報に関する情報
+  crypto/onchain/_address: Enormal アドレス
+  crypto/onchain/_ethereum_: オリコン (Enorum)
+  crypto/onchain/_type: アドレスのタイプ
+  crypto/onchain/address: トークン、アカウント、トランザクションに eorgum のアドレスを読み込み
+  crypto/onchain/baas: 入札、価格、指定の暗号化ペアの平均分布
+  crypto/onchain/balance: eountium 残高をチェック
+  crypto/onchain/btccp: BTC 循環供給を表示します
+  crypto/onchain/btcct: 確認された BTC トランザクションを表示
+  crypto/onchain/ds: eth プラットフォームの統計 (標準ユーザ;費用)
+  crypto/onchain/dt: eth トークンの毎日の交換
+  crypto/onchain/dvcp: 暗号化ペアの毎日の音量
+  crypto/onchain/gwei: 現在のガス代をチェック
+  crypto/onchain/hist: Enorum 均衡履歴 (変換)
+  crypto/onchain/holders: トップ ERC20 トークン保持者
+  crypto/onchain/hr: 時間を経過してブロックチェインハッシュ (BTC または ETH) をチェックします
+  crypto/onchain/info: ERC20 トークン情報
+  crypto/onchain/lt: Dx または月による前回の取引
+  crypto/onchain/prices: ERC20 トークン歴史価額
+  crypto/onchain/th: ERC20 トークン履歴
+  crypto/onchain/top: 上 ERC20 トークン
+  crypto/onchain/ttcp: 上の取引用暗号化ペアを適度な交換に使用
+  crypto/onchain/tv: DEXes のトークン音量
+  crypto/onchain/tvl: ERC20 トークンの総値
+  crypto/onchain/tx: eborum ブロックチェイントランザクション情報
+  crypto/onchain/ueat: トランザクションを作成した固有の Enorum アドレス
+  crypto/onchain/whales: 暗号化 wulls トランザクションをチェック
+  crypto/ov: 2015年9月15日閲覧. ^ ""秘密情報"の概要". マーケットキャップ,デファイ,最新ニュース,トップ交換,馬庫.
+  crypto/ov/altindex: Altcoin シーズンインデックス (トップ 50 コイン の 75% ) は BTC より も 良い 働き を する
+  crypto/ov/btcrb: Bitcoin 虹値チャートを表示 (対数回帰)
+  crypto/ov/categories: 暗号化カテゴリ
+  crypto/ov/ch: 主な暗号化関連のハックを一覧表示します
+  crypto/ov/contracts: 与えられたプラットフォームのすべてのスマートな契約
+  crypto/ov/cr: 暗号化の供給または金利の借入
+  crypto/ov/defi: グローバル Defi 市場情報
+  crypto/ov/derivatives: 誘導体 (暗号体)
+  crypto/ov/ewf: 総引出し残高
+  crypto/ov/exmarkets: 任意の交換で利用可能なすべての市場
+  crypto/ov/exrates: コイン交換率
+  crypto/ov/fun: 基本 的 な メートル 法 に 基づい て プロジェクト を 探索 する
+  crypto/ov/hm: 熱マップを暗号化
+  crypto/ov/hold: eorgum, Bitcoin の概要統計
+  crypto/ov/indexes: インデックスを暗号化
+  crypto/ov/info: 利用可能なすべてのコインに関する基本的な情報
+  crypto/ov/markets: 利用可能なすべてのコインについて、市場関連の情報
+  crypto/ov/news: 最近の暗号化ニュース
+  crypto/ov/pairs: 利用可能な取引ペアに関する情報
+  crypto/ov/platforms: リストブロックチェインプラットフォーム. e normus, solana, kusama.
+  crypto/ov/stables: コンコリン (Characters)star name
+  crypto/ov/wf: 総引出し料
+  crypto/ov/wfpe: 交換ごとの引出し金額を暗号化する
+  crypto/price: リアルタイム価格と信頼期間
+  crypto/prt: 潜在的なリターン (ETH が BTC 市場キャップに達した場合の逆)
+  crypto/qa: 質量分析 残差分析
+  crypto/qa/_other_: その他
+  crypto/qa/_plots_: プロット
+  crypto/qa/_rolling_metrics_: ロール ・ メトリックス
+  crypto/qa/_statistics_: 統計
+  crypto/qa/_target: ターゲットの列
+  crypto/qa/_ticker: チェッカー
+  crypto/qa/acf: (Particle) 自動調整機能の価格の微分
+  crypto/qa/bw: ボックスと線のプロット
+  crypto/qa/cdf: 累積分布関数
+  crypto/qa/cusum: 価格の累積和アルゴリズムを使って急な変化を検出
+  crypto/qa/decompose: 平成三十五年度,シーズン,残高の残高で分解
+  crypto/qa/hist: 密度プロットによるヒストグラム
+  crypto/qa/kurtosis: 価格 の 急騰
+  crypto/qa/line: 選択したターゲットの線のプロット
+  crypto/qa/load: 新しいチェッカーを読み込み
+  crypto/qa/normality: 通常の統計とテスト
+  crypto/qa/pick: 解析対象列を選択
+  crypto/qa/qqplot: 標準曲線に対する残差
+  crypto/qa/quantile: 回転中央値と価格計算
+  crypto/qa/raw: 生データを印刷
+  crypto/qa/rolling: 価格の回転平均と標準偏差
+  crypto/qa/skew: 価格の分布の回転歪度
+  crypto/qa/spread: 価格の回転分散と標準偏差
+  crypto/qa/summary: ロードされた株式の簡単な要約統計
+  crypto/qa/unitroot: 残存性のための単位ルートテスト (ADF, KPSS)
+  crypto/ta: ロードされたコイン,Ema, macd, rsi, adx, bbb, obv の技術的な分析
+  crypto/ta/_custom_: カスタム
+  crypto/ta/_momentum_: 視界 (Tormus)
+  crypto/ta/_overlap_: オーバーラップ
+  crypto/ta/_ticker: コインをロードしました
+  crypto/ta/_trend_: トレンド
+  crypto/ta/_volatility_: 可逆性
+  crypto/ta/_volume_: 音量
+  crypto/ta/ad: 蓄積/分布の線
+  crypto/ta/adosc: Chikin Oscierator (Chikin Oscierator).
+  crypto/ta/adx: 平均方向移動インデックス
+  crypto/ta/aroon: 軸インジケータ
+  crypto/ta/bbands: ボリンジャーバンド
+  crypto/ta/cci: 商品チャンネルのインデックス
+  crypto/ta/cg: 重力の中心
+  crypto/ta/donchian: ドッチ語チャンネル
+  crypto/ta/ema: 指数的な移動率
+  crypto/ta/fib: フィボナッチ 接種
+  crypto/ta/fisher: Name=漁師の変換
+  crypto/ta/hma: 船舶 の 移動 速度
+  crypto/ta/kc: ケルトナーチャンネル
+  crypto/ta/macd: 移動の平均共分散/降順
+  crypto/ta/obv: 音量の調整
+  crypto/ta/rsi: 相対的な強度インデックス
+  crypto/ta/sma: シンプルな移動平均
+  crypto/ta/stoch: 確率オシレータ
+  crypto/ta/tv: インタラクティブチャートを開く
+  crypto/ta/vwap: 音量重みの平均価格
+  crypto/ta/wma: 移動率
+  crypto/ta/zlma: 移動時間ゼロ
+  crypto/tools: 様々 な 道具 を 調べ て み ましょ う
+  crypto/tools/aprtoapy: PART を Appy に変換
+  crypto/tools/il: 不規則な損失を計算します
+  dashboards: Volilla と Stephyter ノートを使ってインタラクティブなダッシュボード
+  dashboards/chains: オプションのチェーン解析
+  dashboards/correlation: 株式の相関関係
+  dashboards/crypto: USD に対抗する暗号化情報交換率
+  dashboards/forecast: タイムリーデータセットの予測
+  dashboards/forecasting: タイムリーデータセットの予測
+  dashboards/futures: 歴史 的 な 将来 の パフォーマンス
+  dashboards/shortdata: Filra ショートデータ分析
+  dashboards/stocks: 歴史的な株式情報
+  dashboards/vsurf: オプションの可変表面
+  defined, not tested: 定義済み、テストなし
+  defined, test failed: 定義済み、テスト失敗
+  defined, test inconclusive: 定義済み,不確定性テスト
+  defined, test passed: 定義によりテストが合格
+  econometrics: データセット間の関係の統計的・範囲的方法
+  econometrics/_data_loc: データを探しています
+  econometrics/_exploration_: 探索
+  econometrics/_loaded: ファイルとデータ列を読み込みました
+  econometrics/_regression_: 登録
+  econometrics/_regression_tests_: 登録試験
+  econometrics/_tests_: テスト
+  econometrics/add: 数式を使用するオプションによるデータセットに列を追加
+  econometrics/bgod: 回帰の残差の残差の遅れによる Brusch-DOfrey 自動統合テスト
+  econometrics/bpag: '回帰の残差について,Brusch-Paegan History test: 回帰の残差について.'
+  econometrics/clean: NN を入力するか、ドロップしてデータセットをクリアします
+  econometrics/coint: 複数列の共分散テスト
+  econometrics/combine: 異なるデータセットから列を結合
+  econometrics/compare: すべての推定モデルの結果を比較します
+  econometrics/delete: データセットから列を削除
+  econometrics/desc: データセットの記述統計を表示します
+  econometrics/dwat: 回帰の残差について Durbin-Watson 自動統合テスト
+  econometrics/export: 処理されたデータセットをエクスポート
+  econometrics/granger: 2 本 の 欄 に 見 られる 突然 の 因果 関係 に つい て の テスト
+  econometrics/index: set (multi) インデックスを列とする
+  econometrics/load: データセットを読み込み (StatusModels datasets も使用)
+  econometrics/modify: データセットの列を結合し、列を削除、または名前を変更
+  econometrics/norm: データセットの列の標準テストを行います
+  econometrics/ols: 線形回帰モデルを適合させる (multi)
+  econometrics/options: 利用可能な列データセットを表示
+  econometrics/panel: 様々 な 回帰 法 を 基 に し た 推定 モデル
+  econometrics/plot: データセットからデータをプロット
+  econometrics/remove: ロードされたデータセットの一つを削除
+  econometrics/rename: データセットから列の名前を変更
+  econometrics/root: 単位ルートテストを実行 (ADF & KPSS)
+  econometrics/show: ロードされたデータセットの一部を表示します
+  econometrics/type: 列の種類を変更するか、その種類を表示する
+  economy: グローバルマクロ経済データ (将来、利回り、財務省)
+  economy/_database_: データベース
+  economy/_stored: 保存されたデータセット
+  economy/bigmac: エコノミストビッグマックインデックス
+  economy/edebt: さまざまな国に外部債務統計を表示
+  economy/eval: ロードされたデータを操作することによって新しいシリーズを作成
+  economy/events: 経済カレンダーを表示
+  economy/forecast: 予測技術; rn, nwb, transcher, ブロック rn
+  economy/fred: 一連の ID をベースに FLD からマクロデータを収集します
+  economy/futures: 将来の概要を表示します
+  economy/index: 市場で任意のインデックスを検索し、プロットします
+  economy/macro: 国または国のマクロデータを収集します
+  economy/map: S&P500 インデックススワップマップ
+  economy/overview: 株式、債券、通貨の市場概要を表示します。
+  economy/performance: セクター、産業、国のパフォーマンス
+  economy/plot: 上のコマンドからデータを一緒にプロットします
+  economy/qa: 保存されたデータで列解析メニューを開く
+  economy/qa/_other_: その他
+  economy/qa/_plots_: プロット
+  economy/qa/_rolling_metrics_: ロール ・ メトリックス
+  economy/qa/_series: 選択した連続データ
+  economy/qa/_statistics_: 統計
+  economy/qa/acf: (Particle) 自動調整機能の価格の微分
+  economy/qa/bw: ボックスと線のプロット
+  economy/qa/cdf: 累積分布関数
+  economy/qa/cusum: 価格の累積和アルゴリズムを使って急な変化を検出
+  economy/qa/decompose: 平成三十五年度,シーズン,残高の残高で分解
+  economy/qa/hist: 密度プロットによるヒストグラム
+  economy/qa/kurtosis: 価格 の 急騰
+  economy/qa/line: 選択したターゲットの線のプロット
+  economy/qa/normality: 通常の統計とテスト
+  economy/qa/pick: 保存された経済データから新しいシリーズを選択
+  economy/qa/qqplot: 標準曲線に対する残差
+  economy/qa/quantile: 回転中央値と価格計算
+  economy/qa/raw: 生データを印刷
+  economy/qa/rolling: 価格の回転平均と標準偏差
+  economy/qa/skew: 価格の分布の回転歪度
+  economy/qa/spread: 価格の回転分散と標準偏差
+  economy/qa/summary: ロードされた株式の簡単な要約統計
+  economy/qa/unitroot: 残存性のための単位ルートテスト (ADF, KPSS)
+  economy/rtps: リアルタイムのパフォーマンスセクター
+  economy/spectrum: セクター・産業・国の広域化
+  economy/spread: 結合拡張行列を表示
+  economy/treasury: 米国財務省証券の取得率
+  economy/valuation: セクター・産業・国の評価
+  economy/ycrv: 主権の利回り曲線を表示
+  etf: 為替取引資金を交換します。歴史的価格設定、保持とスクリーニングを比較します。
+  etf/_major_holdings: 主要 な 所有 物
+  etf/_symbol: 記号
+  etf/ca: 比較分析,類似性,歴史的,相関関係,財務面の比較
+  etf/candle: ETF のためのろうそくチャートを参照
+  etf/compare: 複数の異なる ETF を比較
+  etf/disc: ETF,ゲイン/デクリネーター/アクティブを見つける
+  etf/disc/active: 最高
+  etf/disc/decliners: トップ減価償却
+  etf/disc/gainers: トップゲイン
+  etf/holdings: 株式会社トップランキング
+  etf/load: ETF データを読み込み
+  etf/news: (2017年9月25日). http://www.oricon.co.jp/news/news/2017/ 2017年9月26日閲覧. ^
+    "新会社ニュース". 株式会社ナターシャ.
+  etf/overview: 概要
+  etf/pir: を作成 (multiple) 受動的な出資者 優れたレポート (system)
+  etf/scr: スクリーンセーバー ETF、概要/有効性、プリセットフィルタを使用
+  etf/scr/_preset: プリセット
+  etf/scr/sbc: カテゴリで表示
+  etf/scr/screen: 選択したプリセットを使って ETF を表示
+  etf/scr/set: 利用可能なプリセットのいずれかを設定
+  etf/scr/view: 利用可能なプリセットを表示
+  etf/search: 名前または説明で ETF を検索
+  etf/summary: ETF の 要約
+  etf/ta: 技術的な分析,Ema, machd, rsi, adx, bbbb, obv
+  etf/ta/_custom_: カスタム
+  etf/ta/_momentum_: 視界 (Tormus)
+  etf/ta/_overlap_: オーバーラップ
+  etf/ta/_ticker: ETF
+  etf/ta/_trend_: トレンド
+  etf/ta/_volatility_: 可逆性
+  etf/ta/_volume_: 音量
+  etf/ta/ad: 蓄積/分布の線
+  etf/ta/adosc: Chikin Oscierator (Chikin Oscierator).
+  etf/ta/adx: 平均方向移動インデックス
+  etf/ta/aroon: 軸インジケータ
+  etf/ta/bbands: ボリンジャーバンド
+  etf/ta/cci: 商品チャンネルのインデックス
+  etf/ta/cg: 重力の中心
+  etf/ta/donchian: ドッチ語チャンネル
+  etf/ta/ema: 指数的な移動率
+  etf/ta/fib: フィボナッチ 接種
+  etf/ta/fisher: Name=漁師の変換
+  etf/ta/hma: 船舶 の 移動 速度
+  etf/ta/kc: ケルトナーチャンネル
+  etf/ta/macd: 移動の平均共分散/降順
+  etf/ta/obv: 音量の調整
+  etf/ta/rsi: 相対的な強度インデックス
+  etf/ta/sma: シンプルな移動平均
+  etf/ta/stoch: 確率オシレータ
+  etf/ta/vwap: 音量重みの平均価格
+  etf/ta/wma: 移動率
+  etf/ta/zlma: 移動時間ゼロ
+  etf/weights: セクターの重みの調整
+  exe: 自動的にルーチンスクリプトを実行する
+  featflags: 機能フラグを有効/無効にします
+  featflags/_info_: 環境変数による機能フラグ
+  featflags/cls: 各コマンドの後にコンソールをクリア
+  featflags/cmdloc: 図に表示するコマンドの場所
+  featflags/color: 色付け機能を使う
+  featflags/exithelp: メニューを終了したときに自動的にヘルプを印刷する
+  featflags/ion: インタラクティブな Mattlotlib モード
+  featflags/promptkit: ツールキットを有効にする (自動補完と履歴)
+  featflags/rcontext: セッション中にロードされた文脈を記憶します
+  featflags/reporthtml: レポートを HTML として開く
+  featflags/retryload: スペル間違いを最初にロードして再試行する
+  featflags/rich: カラフルなターミナル
+  featflags/richpanel: リッチなターミナルパネル
+  featflags/tab: データ枠の印刷にタブを使う
+  featflags/tbhint: 下のツールバーにヒントを表示する
+  featflags/thoughts: 今日 の こと を 考える
+  featflags/watermark: 数字のウォーターマーク
+  forecast: 計算機学習で予測する時間
+  forecast/_comingsoon_: 間 も なく 到来 する
+  forecast/_data_loc: データを探しています
+  forecast/_disclaimer_: キリスト 教 世界
+  forecast/_exploration_: 探索
+  forecast/_feateng_: 機能工学
+  forecast/_loaded: ファイルとデータ列を読み込みました
+  forecast/_tsforecasting_: 予告 さ れ て い た 時間 帯
+  forecast/arima: アリマ (on-details)
+  forecast/atr: 平均 真の範囲を追加
+  forecast/autoarima: 自動AIMA モデル
+  forecast/autoces: 自動 的 に 複雑 化 する 平滑 化 式 モデル
+  forecast/autoets: 自動 ETS (エラー,トレンド,季節モデル)
+  forecast/autoselect: AutoRAIMA, AutoTES, AutoCES, MSTL などから最適な統計モデルを選択します。
+  forecast/brnn: ブロックリゾートネットワーク (RN, LSTM, GUR) (feat. 過去のコラボレーション)
+  forecast/clean: NN を入力するかドロップしてデータセットをクリアします
+  forecast/combine: 異なるデータセットから列を結合
+  forecast/corr: データセット機能の相関係数をプロットします
+  forecast/delete: データセットから列を削除
+  forecast/delta: '%s 変更を追加'
+  forecast/desc: データセットの記述統計を表示
+  forecast/ema: 広範 に わたる 体重 の 移動 平均 を 加える
+  forecast/expo: 過密 性 の 指数 的 な 平滑 化
+  forecast/export: 処理されたデータセットをエクスポート
+  forecast/linregr: Public domainPublic domainPublic domainPublic domainPublic domainPublic
+    domainPublic domainPublic domainPublic domainfalsefalsefalsefalse".
+  forecast/load: csv からデータセットを読み込みます
+  forecast/mom: 瞬時に追加
+  forecast/mstl: Loes (MSTL) モデルを使って複数の季節とトレンド
+  forecast/nbeats: ニューラルベイジアンエティエンタテインメント (feat. 過去のコラボレーション)
+  forecast/nhits: Nealal Hierarcharical インターチェンジ (feat. 過去のコラボレーション)
+  forecast/plot: ロードされたデータセットの特定の列をプロットします
+  forecast/regr: レギュレーション (feat. 過去のコラボレーションと説明の有無)
+  forecast/rename: データセットから列の名前を変更
+  forecast/rnn: プロビショナルリゾートネットワーク (RN, LSTM, GRU)
+  forecast/roc: 変更率を追加
+  forecast/rsi: 相対的な強度インデックスを追加
+  forecast/rwd: フロートモデルを使ってランダムウォーク
+  forecast/season: データセットの列の季節をプロット
+  forecast/seasonalnaive: 季節 的 な ナイーブ ・ モデル
+  forecast/show: ロードされたデータセットの一部を表示
+  forecast/signal: 株価シグナルを追加 (短い vs.長期)
+  forecast/sto: Struchicle Osciliator %K と %D を追加
+  forecast/tcn: テンポラルコンボリューションネットワーク (feat. 過去のコラボレーション)
+  forecast/tft: Templay Fuision トランスフォーマーネットワーク (feat. 過去のコラボレーション)
+  forecast/theta: stat メソッド
+  forecast/trans: トランスフォーマーネットワーク (feat. 過去のコラボレーション)
+  forex: 貨幣ペアとオアダ統合の外国為替,引用符、前率
+  forex/_from: 差出人
+  forex/_source: ソース
+  forex/_ticker: チェッカー
+  forex/_to: 次へ
+  forex/candle: ロードされたペアのキャンドルプロットを表示
+  forex/forecast: 技術的な予測
+  forex/forex: Forx ブレーキ
+  forex/fwd: ロードされたペアの進捗
+  forex/load: 歴史データを取得
+  forex/oanda: ODA メニュー
+  forex/oanda/_from: 差出人
+  forex/oanda/_loaded: ロードされた楽器
+  forex/oanda/_source: ソース
+  forex/oanda/_to: 次へ
+  forex/oanda/calendar: カレンダーを表示
+  forex/oanda/cancel: ID - i 順序 ID で保留中の順序をキャンセル
+  forex/oanda/candles: ろうそくを表示
+  forex/oanda/closetrade: id による取引を閉じます
+  forex/oanda/from: 既定値から「元値」を選択します。
+  forex/oanda/list: リストの順序履歴
+  forex/oanda/order: スペース制限の順序 - 単位 - pp 価格の算出
+  forex/oanda/orderbook: 印刷順序ブック
+  forex/oanda/pending: 保留命令で情報を取得します
+  forex/oanda/positionbook: 印刷位置帳
+  forex/oanda/positions: オープン位置を取得
+  forex/oanda/price: 選択した楽器の価格を表示します
+  forex/oanda/summary: アカウントの要約を表示
+  forex/oanda/to: 前ペアの通貨を選択
+  forex/oanda/trades: リストのオープン貿易
+  forex/qa: 質量分析、分解、残差分析
+  forex/qa/_other_: その他
+  forex/qa/_pair: ペア
+  forex/qa/_plots_: プロット
+  forex/qa/_rolling_metrics_: ロール ・ メトリックス
+  forex/qa/_statistics_: 統計
+  forex/qa/_target: ターゲット
+  forex/qa/acf: (Particle) 自動調整機能の価格の微分
+  forex/qa/bw: ボックスと線のプロット
+  forex/qa/cdf: 累積分布関数
+  forex/qa/cusum: 価格の累積和アルゴリズムを使って急な変化を検出
+  forex/qa/decompose: 平成三十五年度,シーズン,残高の残高で分解
+  forex/qa/hist: 密度プロットによるヒストグラム
+  forex/qa/kurtosis: 価格 の 急騰
+  forex/qa/line: 選択したターゲットの線のプロット
+  forex/qa/normality: 通常の統計とテスト
+  forex/qa/pick: 解析対象列を選択
+  forex/qa/qqplot: 標準曲線に対する残差
+  forex/qa/quantile: 回転中央値と価格計算
+  forex/qa/raw: 生データを印刷
+  forex/qa/rolling: 価格の回転平均と標準偏差
+  forex/qa/skew: 価格の分布の回転歪度
+  forex/qa/spread: 価格の回転分散と標準偏差
+  forex/qa/summary: ロードされた株式の簡単な要約統計
+  forex/qa/unitroot: 残存性のための単位ルートテスト (ADF, KPSS)
+  forex/quote: 最後の引用符を取得
+  forex/ta: 技術的な分析,Ema, machd, rsi, adx, bbbb, obv
+  forex/ta/_currency: 通貨ペアがロードロードされました
+  forex/ta/_custom_: カスタム
+  forex/ta/_momentum_: 視界 (Tormus)
+  forex/ta/_overlap_: オーバーラップ
+  forex/ta/_source: ソース
+  forex/ta/_trend_: トレンド
+  forex/ta/_volatility_: 可逆性
+  forex/ta/adx: 平均方向移動インデックス
+  forex/ta/aroon: 軸インジケータ
+  forex/ta/bbands: ボリンジャーバンド
+  forex/ta/cci: 商品チャンネルのインデックス
+  forex/ta/cg: 重力の中心
+  forex/ta/donchian: ドッチ語チャンネル
+  forex/ta/ema: 指数的な移動率
+  forex/ta/fib: フィボナッチ 接種
+  forex/ta/fisher: Name=漁師の変換
+  forex/ta/macd: 移動の平均共分散/降順
+  forex/ta/rsi: 相対的な強度インデックス
+  forex/ta/sma: シンプルな移動平均
+  forex/ta/stoch: 確率オシレータ
+  forex/ta/zlma: 移動時間ゼロ
+  funds: 相互投資の検索、概要、保持、セクターウェイト
+  funds/_country: 現在の国
+  funds/_fund: 現在のファンド
+  funds/alswe: ディスプレイのファンド移転 (管理, 国,保持)
+  funds/country: フィルタに使用する国を設定します
+  funds/equity: 株主資本
+  funds/forecast: 予測技術
+  funds/info: 基金情報を取得
+  funds/infoswe: 基金情報を取得
+  funds/load: 歴史的資金データを読み込み
+  funds/plot: ロードされた歴史的資金データ
+  funds/search: 基金の検索
+  funds/sector: セクターの重み
+  futures: 商品,債券,索引,bitcoin, forex
+  futures/curve: 将来の曲線を取得します
+  futures/historical: 歴史 的 な 時間 表 を 得る
+  futures/search: カテゴリまたは交換に基づく未来を検索します
+  intro: OpenBB ターミナルの導入
+  keys: API キーを設定し、有効性をチェックします
+  keys/_keys_: このメニューで独自の API 鍵を設定します。詳しくは “ 約” を入力してください。
+  keys/_status_: 状態
+  keys/mykeys: 定義済みのキーを取得
+  news: 用語とデータソースに基づくニュース記事を表示します
+  not defined: 無制限
+  portfolio: ポートフォリオの最適化を実行し、ポートフォリオのパフォーマンスとアトラクションを見る
+  portfolio/_benchmark: ベンチマーク
+  portfolio/_graphs_: グラフ
+  portfolio/_loaded: ロードされたトランザクション
+  portfolio/_metrics_: メトリックス
+  portfolio/_risk_: 危険 な メス
+  portfolio/_riskfreerate: 危険 率
+  portfolio/alloc: 資産,セクター,国又は地域基盤における配置
+  portfolio/attrib: S&P500 と比較して、ポートフォリオの適用範囲を表示
+  portfolio/bench: ベンチマークを定義する
+  portfolio/bro: ブローカーは、ロビンズ、アリー、デギロ、コインベースを支えます。
+  portfolio/bro/ally: Ally 投資メニュー
+  portfolio/bro/ally/_info_: 株式情報
+  portfolio/bro/ally/balances: アカウントのバランスの詳細を表示します
+  portfolio/bro/ally/history: アカウントの履歴を表示します
+  portfolio/bro/ally/holdings: アカウントの保持を表示
+  portfolio/bro/ally/movers: 移動中の順列リストを取得します
+  portfolio/bro/ally/quote: 株式の引用を取得
+  portfolio/bro/cb: コインベースプロメニュー
+  portfolio/bro/cb/account: 口座の均衡を図る
+  portfolio/bro/cb/deposits: すべての預金または内部転送を表示
+  portfolio/bro/cb/history: アカウントの履歴を表示します
+  portfolio/bro/cb/orders: すべての順序を表示
+  portfolio/bro/degiro: Digo メニュー
+  portfolio/bro/degiro/cancel: id を使って順序を取り消します
+  portfolio/bro/degiro/companynews: 2020年1月25日閲覧. ^ a b c d e f g h i j k l e f g
+    h i j k l e f g h i j k l e f g h i j k l e f g h i
+  portfolio/bro/degiro/create: 順序を作成
+  portfolio/bro/degiro/hold: ビュー保持
+  portfolio/bro/degiro/lastnews: 最新 の ニュース を 見る
+  portfolio/bro/degiro/login: デギロのAI に接続
+  portfolio/bro/degiro/logout: Digro's api から切断
+  portfolio/bro/degiro/lookup: 商品の検索を名前で表示
+  portfolio/bro/degiro/paexport: ポートフォリオ解析のための csv エクスポート
+  portfolio/bro/degiro/pending: 保留中の順序を表示
+  portfolio/bro/degiro/topnews: トップニュースプレビューを表示
+  portfolio/bro/degiro/update: 順序を更新
+  portfolio/bro/rh: ロビンズメニュー
+  portfolio/bro/rh/history: アカウントの資本履歴を表示します
+  portfolio/bro/rh/holdings: 株の残高を表示
+  portfolio/bro/rh/login: ファミコンにログイン
+  portfolio/cret: 累積を返します。
+  portfolio/distr: 毎日のリターンの分布
+  portfolio/dret: 1 日あたりの戻り値
+  portfolio/es: ショートドロップが期待されます
+  portfolio/holdp: 資産のポートフォリオの取得 (パーセンテージ)
+  portfolio/holdv: 資産の所持 (純価)
+  portfolio/load: トランザクションをポートフォリオに読み込む
+  portfolio/maxdd: 最大描画
+  portfolio/metric: ポートフォリオ vs ベンチマーク計
+  portfolio/mret: は、月を返します。
+  portfolio/om: 彩度表示
+  portfolio/perf: ポートフォリオのパフォーマンス対ベンチマーク
+  portfolio/po: ポートフォリオ 最適化、ポートフォリオの重みを効率的に最適化
+  portfolio/po/_categories: カテゴリ
+  portfolio/po/_hierarchical_clustering_models_: 階層的なクラスターモデル
+  portfolio/po/_loaded: ポートフォリオがロードされました
+  portfolio/po/_mean_risk_optimization_: 平均 的 な 危険 最適化
+  portfolio/po/_optimized_portfolio: 最適化されたポートフォリオ
+  portfolio/po/_other_optimization_techniques_: 他 の 効果 的 な 方法
+  portfolio/po/_parameter: パラメータファイル
+  portfolio/po/_risk_parity_optimization_: 危険 な パルティオプティエンタテインメント
+  portfolio/po/_tickers: チェッカー
+  portfolio/po/blacklitterman: 黒い ごみ捨て 場 の ポートフォリオ
+  portfolio/po/dividend: 配当価額 (適正な配当額)
+  portfolio/po/ef: 有効縁取りを表示
+  portfolio/po/equal: 同じ重さ
+  portfolio/po/file: ポートフォリオの危険パラメータを含むファイル
+  portfolio/po/herc: 階層的に均等なリスクの貢献
+  portfolio/po/hrp: 階層 的 な 危険
+  portfolio/po/load: .xxlx か .csv ファイルからチェックボックスとカテゴリを読み込みます。
+  portfolio/po/maxdecorr: 最長デコリコリテクト
+  portfolio/po/maxdiv: 最大増幅性ポートフォリオ
+  portfolio/po/maxret: 最大返しポートフォリオ
+  portfolio/po/maxsharpe: 最大シャープ率ポートフォリオ (a.k.a 互換ポートレート)
+  portfolio/po/maxutil: 最大リスク低減効関数、いくつかの危険低減パラメータ
+  portfolio/po/minrisk: 最小危険ポートフォリオ
+  portfolio/po/mktcap: 2015年12月26日閲覧. ^ a b c d e f g h i j k l m c d e f g h e f
+    g h i j k l e f g h i j k l e f g h i j k l e f g h i j k l e f g h i j k l e
+    f g h i j k l e f g h i j k l e f g h i ".
+  portfolio/po/nco: 巣付きクラスタリングの最適化
+  portfolio/po/params: ポートフォリオの危険パラメータを指定して表示
+  portfolio/po/params/_loaded: ファイルを読み込みました
+  portfolio/po/params/_model: 利率のモデル
+  portfolio/po/params/_parameters_: パラメータ
+  portfolio/po/params/arg: 引数に別の値を設定
+  portfolio/po/params/clear: パラメータのフィルタリングによる利息表示のクリアモデル
+  portfolio/po/params/file: ポートフォリオの危険パラメータを読み込み
+  portfolio/po/params/load: ポートフォリオパラメータファイルを選択
+  portfolio/po/params/save: ポートフォリオの危険パラメータを指定したファイルに保存します
+  portfolio/po/params/set: パラメータをフィルタする利息のモデルを設定
+  portfolio/po/plot: 保存されたポートフォリオのリストから選択したグラフをプロットします
+  portfolio/po/property: 選択した情報のプロパティに従っての重さ
+  portfolio/po/relriskparity: 最も小さな正方形のアプローチを使って、緩やかにリスクを負担する
+  portfolio/po/riskparity: リスク予算アプローチを使って、 Paulity Paulics Paulics を開発する
+  portfolio/po/rpf: 保存されたポートフォリオのリストからポートフォリオを削除
+  portfolio/po/show: 保存されたポートフォリオのリストから選択したポートフォリオとカテゴリを表示します
+  portfolio/rbeta: 回転 さ せる ベータ
+  portfolio/rsharpe: 回転シャープ
+  portfolio/rsort: 回転スポニ
+  portfolio/rvol: 回転曲率
+  portfolio/show: 既存のトランザクションを表示
+  portfolio/summary: すべてのポートフォリオ vs ベンチマーク 特定の期間について
+  portfolio/var: 危険性を示す値
+  portfolio/yret: は、年間を返します。
+  record: openbルーチンに変換するレコードセッション
+  reports: カスタマイズ可能な研究報告書 techyter ノートスを通じて
+  reports/_Custom_reports_: カスタムレポート
+  reports/_OpenBB_reports_: OpenBB レポート
+  reports/_reports_: あなたのカスタムレポートを作成し、実行または私たちのテンプレートのいずれかを試します
+  reports/run: OpenBBUserData/Reports/casts-ports から Juiper ノートを実行
+  settings: 曲の設定 (ポートフォルダ,時間ゾーン,言語,プロットサイズ)
+  settings/_backend: バックエンド
+  settings/_data_source: データソース
+  settings/_dpi: ドットを 1 インチに描画する
+  settings/_flair: Flair (フレア)
+  settings/_info_: 環境変数による設定
+  settings/_language: 言語
+  settings/_monitor: モニタ
+  settings/_plot_height: プロットの高さ
+  settings/_plot_height_pct: プロットの高さの算出 [%]
+  settings/_plot_width: 描画の幅
+  settings/_plot_width_pct: 描画の幅の算出 [%]
+  settings/_preferred_data_source_file: 優先するデータソースファイル
+  settings/_timezone: タイムゾーン
+  settings/_user_data_folder: ユーザーデータフォルダ
+  settings/autoscaling: プロットの自動調整
+  settings/backend: プロット用バックエンド (None, tkAg, MacOSX, Qt5Ag)
+  settings/colors: ターミナル色を設定
+  settings/dpi: 1 インチあたりのドット
+  settings/dt: 日時を有効期限から追加/削除します
+  settings/flair: エミュージを使用するように設定
+  settings/height: プロットの高さを選択
+  settings/lang: ターミナル言語
+  settings/monitor: を表示するモニタ (プライマリ 0, 二次 1)
+  settings/pheight: プロットのパーセンテージ
+  settings/pwidth: プロットのパーセンテージを選択
+  settings/source: データソースファイルを指定
+  settings/tz: タイムゾーンを変更
+  settings/userdata: ユーザデータを保存するフォルダを設定
+  settings/width: プロットの幅を選択
+  sources: 選択したデータソースを選択します。
+  sources/_info_: 標準のデータソースを取得し、設定します
+  sources/get: コマンドに関連付けられた利用可能なデータソースを取得します
+  sources/set: コマンドのデフォルトのデータソースを設定
+  stocks: 歴史的な価格設定データ、オプション、セクター、産業、および全体的な適正な勤勉
+  stocks/_ticker: 株式
+  stocks/ba: Reddit,株式会社,Twitter,Googleによる行動分析
+  stocks/ba/_ticker: チェッカー
+  stocks/ba/bullbear: 最後の30件のメッセージから 迅速な感情を推測します
+  stocks/ba/getdd: 他のユーザーの投稿から適切な勤勉さを得る
+  stocks/ba/headlines: 15 + 主要 な ニュース の 見出し に 示さ れ て いる 感情
+  stocks/ba/hist: 歴史 RHI と AHI のデータを時間ごとにプロットします
+  stocks/ba/infer: 最新のツイートによる株式の感性に関するインフォメーション
+  stocks/ba/interest: 財務省証券法第四十五条第一項第一項の規定は,法第十五条第一項の規定により準用する場合において準用する.
+  stocks/ba/jcdr: ジム・クレイマーの毎日の勧告
+  stocks/ba/jctr: ジム・クレイマーの勧告は
+  stocks/ba/load: 分析のために特定の株式チェッカを読み込みます
+  stocks/ba/mentions: 株式の記載に基づく期間の利息
+  stocks/ba/messages: ボード上の最後の 30 メッセージまで出力
+  stocks/ba/popular: ポピュラーチェッカーを表示
+  stocks/ba/queries: この株式で関連した上位のクエリ
+  stocks/ba/redditsent: Kicker の Reddit を検索し、redit の感情を見つける
+  stocks/ba/regions: 株式の最高金利を示す領域
+  stocks/ba/rise: 関連したクエリを株式付きで上回ります
+  stocks/ba/sentiment: ツイートによるインプット感情予測
+  stocks/ba/snews: ニュース の 見出し に 対する 感情 に 基づい て 表示 さ れ た 株式 価格
+  stocks/ba/spac: 他のユーザに他のサブジェネレーションを表示
+  stocks/ba/spacc: サブReddit SPACS から他のユーザに Spacs 発表を表示します
+  stocks/ba/stalker: styles user の最後のメッセージ
+  stocks/ba/trending: 株のトレンド
+  stocks/ba/watchlist: 他のユーザウォッチリストを表示
+  stocks/ba/wsb: WSBギャングがサブレディットの壁のツリーレットに掲げるものを表示します。
+  stocks/bt: 戦略バックテスト,シンプルエマ,エマクロス,Rsi戦略
+  stocks/bt/_ticker: チェッカー
+  stocks/bt/ema: 価格が EMA(i) を超えたときに購入します
+  stocks/bt/emacross: EMA(短) > EMA(長) を購入
+  stocks/bt/rsi: KStars が < 低いとき、KStars > で購入
+  stocks/bt/whatif: もしYの日にX株を購入していたら、
+  stocks/ca: 比較分析,類似性,歴史的,相関関係,財務面の比較
+  stocks/ca/_similar: 似 た よう な 会社
+  stocks/ca/_ticker: 同様の会社から取得するためにチェック器
+  stocks/ca/add: 同じ会社を追加
+  stocks/ca/balance: 財務比較
+  stocks/ca/cashflow: 現金フローの比較
+  stocks/ca/financial: 短い財務比較
+  stocks/ca/get: 同様の株式を取得
+  stocks/ca/hcorr: 歴史的な価格の相関
+  stocks/ca/historical: 歴史的な価格データ比較
+  stocks/ca/income: 所得収入の比較
+  stocks/ca/overview: 簡潔な概要比較
+  stocks/ca/ownership: 短い所有者比較
+  stocks/ca/performance: 短いパフォーマンス比較
+  stocks/ca/rmv: 似たものを個別に削除します
+  stocks/ca/scorr: 感情の相関関係
+  stocks/ca/sentiment: 感情分析比較
+  stocks/ca/set: リセットして、類似値を設定
+  stocks/ca/technical: 短い技術的な比較
+  stocks/ca/ticker: 同様の会社から取得するためのチェックボックスを設定
+  stocks/ca/tsne: すべての SP500 株で TSNE を実行し、最も近いチェックボックスを返します。
+  stocks/ca/valuation: 短い比較
+  stocks/ca/volume: 歴史的な音量データ比較
+  stocks/candle: 特定の株式チェッカのためのろうそくチャートを参照
+  stocks/codes: FIGI, SIK と SIC コードコード
+  stocks/dd: 2019年10月10日閲覧. ^ """"". ニュース,アナリスト,短パン,インサイダー,秒" (日本語). 株式会社ナターシャ (2017年9月26日).
+  stocks/dd/_ticker: チェッカー
+  stocks/dd/analyst: 会社の価格と評価の分析
+  stocks/dd/arktrades: Ticker の AARK トレードを取得
+  stocks/dd/customer: 顧客一覧
+  stocks/dd/est: 四半期及び一年のアナリストの収益の見積り
+  stocks/dd/load: 分析のために特定の株式チェッカを読み込みます
+  stocks/dd/pt: 時間を経過して価格の目標
+  stocks/dd/rating: 時間による評価 (日単位)
+  stocks/dd/rot: 時間によるアナリストの評価数 (月単位)
+  stocks/dd/sec: 大文字と小文字を区別する
+  stocks/dd/supplier: 供給者の一覧
+  stocks/disc: 株式、地図、セクター、高金利の取得
+  stocks/disc/active: インタビュアー取引量で活発な株のほとんど
+  stocks/disc/arkord: AARK 投資管理LLC による命令
+  stocks/disc/asc: 収入 の 増加 率 が 25 % に も なる 小さな キャップ の 株
+  stocks/disc/cnews: カスタマイズされたニュース (Biyback, ipos, special, 医療, 政治)
+  stocks/disc/divcal: 選択した日付のカレンダーを分割
+  stocks/disc/fipo: 将来 の IPO の 年代
+  stocks/disc/gainers: 最新のトップジェネレータを表示
+  stocks/disc/gtech: 25%以上の収益と収益の増加を伴った技術株
+  stocks/disc/heatmap: SP500 チェックボックスの熱マップ
+  stocks/disc/hotpenny: 今日のホットペニー株
+  stocks/disc/losers: 最新の最上位の敗者を表示
+  stocks/disc/lowfloat: 10M 株式の低浮動量株
+  stocks/disc/pipo: IPO の過去日
+  stocks/disc/rtat: トップ 10 株 1 日 当たり の 株式
+  stocks/disc/trending: トレンドニュース
+  stocks/disc/ugs: 収益と収益の増加率が25%を超える低額株
+  stocks/disc/ulc: 価値 の 低い 大きな キャップ の 株
+  stocks/disc/upcoming: 近日中の収益リリース日
+  stocks/dps: 暗いプールと短いデータ、暗いプール、短い金利、 ftd
+  stocks/dps/_ticker: チェッカー
+  stocks/dps/ctb: 株式を借りる費用
+  stocks/dps/dpotc: ダークプール (ATS) vs OTC データ
+  stocks/dps/ftd: 失敗 To-Firefo data
+  stocks/dps/hsi: 20% を超え、最上位の短金利株を表示
+  stocks/dps/load: 分析のために特定の株式チェッカを読み込みます
+  stocks/dps/pos: 暗いプールの縮尺
+  stocks/dps/prom: ダークプール株式会社回帰に基づく、有望なチェックボックスー
+  stocks/dps/psi: 価格 vs 短利率
+  stocks/dps/shorted: 最も短い株を表示
+  stocks/dps/sidtc: 短い利息と日数
+  stocks/dps/spos: net ショート vs の位置
+  stocks/fa: 基本的な分析、収入、残高、現金、収益
+  stocks/fa/_ticker: チェッカー
+  stocks/fa/analysis: プログラミングのヘルプで計算します。 機械学習のヘルプで計算します。
+  stocks/fa/balance: 会社の貸借対照表
+  stocks/fa/cal: 会社の収益と見積り
+  stocks/fa/cash: 会社の現金の流れ
+  stocks/fa/data: 会社の基本的な技術的データ
+  stocks/fa/dcf: Excel カスタマイズ可能な現金の流れ
+  stocks/fa/dcfc: (歴史的) 割引した現金の流れを決定する
+  stocks/fa/divs: 会社に歴史的配当を表示します
+  stocks/fa/dupont: 株主資本の返還に関する詳細な説明
+  stocks/fa/earnings: EPS の収益日付と報告
+  stocks/fa/enterprise: 会社の企業価値
+  stocks/fa/epsfc: 研究 者 たち の 推定 に よる と , EPS に よる もの と 思わ れる
+  stocks/fa/fraud: 鍵による不正の比率
+  stocks/fa/growth: 財務計算書の内容と比率の増加
+  stocks/fa/hq: 会社の HQ の場所を開く
+  stocks/fa/income: 会社の所得計算書
+  stocks/fa/info: 会社の情報範囲
+  stocks/fa/key: 会社キーのメトリックス
+  stocks/fa/load: 分析のために特定の株式チェッカを読み込みます
+  stocks/fa/metrics: 時間を経過させるキーの計量
+  stocks/fa/mgmt: 会社の経営チーム
+  stocks/fa/mktcap: 推定市場キャップ
+  stocks/fa/overview: 会社の概要
+  stocks/fa/profile: 会社プロファイル
+  stocks/fa/quote: 株式の引用情報の詳細
+  stocks/fa/ratios: 時間を経過して減衰率
+  stocks/fa/revfc: 観察 に よる と , 耳 を 傾ける の は 易しい こと で は あり ませ ん。
+  stocks/fa/score: ウォーレン・バフェットとコから投資のスコア
+  stocks/fa/shrs: 株主 (従業者,機関及び相互資金)
+  stocks/fa/splits: 株式の分割と分割イベントを ITPOから
+  stocks/fa/sust: 持続可能な値 (環境,社会,行政)
+  stocks/fa/warnings: John Seh Bookによる会社警告
+  stocks/fa/web: 会社のウェブブラウザを開く
+  stocks/forecast: 予測技術, rn, nwb, トランスフォーマー,ブロック rn
+  stocks/gov: 政府のメニュー ハウス取引 契約 会社のロビー
+  stocks/gov/_explore: 探索(E)
+  stocks/gov/_ticker: チェッカー
+  stocks/gov/contracts: 政府の契約を表示
+  stocks/gov/gtrades: 政府の貿易を表示します
+  stocks/gov/histcont: 歴史 的 な 準 政府 契約
+  stocks/gov/lastcontracts: 前項に規定する政府契約を通知する(W)
+  stocks/gov/lasttrades: 最後の交換
+  stocks/gov/load: 分析のために特定のチェックボックスを読み込みます
+  stocks/gov/lobbying: 会社のロビイストの詳細
+  stocks/gov/qtrcontracts: 四半期政府契約の分析
+  stocks/gov/topbuys: 最も購入された株を表示
+  stocks/gov/toplobbying: 一流 企業 の ロビー ・ くすぶる 人
+  stocks/gov/topsells: 売却した株式のほとんどを表示します
+  stocks/ins: インサイダー取引,最新のペニー株式買取り,最高役員の購入
+  stocks/ins/_last_insiders: 最後のインタビュアー
+  stocks/ins/_preset: プリセット
+  stocks/ins/_ticker: チェッカー
+  stocks/ins/_top_insiders: トップインタビュアー
+  stocks/ins/act: 時間を経過して内部の活動
+  stocks/ins/blcp: 大手CEO/CFO購入 (2025K+)
+  stocks/ins/blcs: 大手CEO/CFO販売数 (200K+)
+  stocks/ins/blip: 大手インサイダー購入 (225k+)
+  stocks/ins/blis: 大まかなインサイダー販売 ($100k+)
+  stocks/ins/blop: big latest officer purchases ($25k+)
+  stocks/ins/blos: (2017年3月25日). http://www.oricon.co.jp/news/news/2017/2017/ 2018年9月15日閲覧.
+    ^ "大手役員の最新販売 (200k+)".
+  stocks/ins/filter: プリセットに基づく内部フィルタ
+  stocks/ins/lcb: 最新の星団購入
+  stocks/ins/lins: 会社の最後のインサイダー取引
+  stocks/ins/lip: 最新のインタビュアー購入
+  stocks/ins/lis: 最新のインタビュアー
+  stocks/ins/lit: 最新インタビュアー取引 (すべての書類)
+  stocks/ins/load: 分析のために特定の株式チェッカを読み込みます
+  stocks/ins/lpsb: 最新のペニー株式の購入
+  stocks/ins/set: 利用可能なプリセットのいずれかを設定
+  stocks/ins/stats: 株式会社の内部統計
+  stocks/ins/tippm: 前月の最上位インタビュアーの購入
+  stocks/ins/tippw: 1 週間の最上位インタビュアーの購入
+  stocks/ins/tipt: 今日の最上位インタビュアー購入
+  stocks/ins/tispm: 過去 1 か月 間 の 内閣 の 売上 高 の トップ
+  stocks/ins/tispw: 先週のインタビュアーの最高売上高
+  stocks/ins/tist: 今日のインタビュアーの売上高
+  stocks/ins/toppm: 上官は先月購入しました
+  stocks/ins/toppw: 幹部が先週購入しました
+  stocks/ins/topt: 今日 の 最高 士官 の 購入
+  stocks/ins/view: 利用可能なプリセットを表示
+  stocks/load: 特定の Socket checker と 追加情報を読み込みます
+  stocks/news: (2017年9月25日). http://www.oricon.co.jp/news/news/2017/ 2017年9月26日閲覧.
+    ^ "新会社ニュース". 株式会社ナターシャ.
+  stocks/options: オプションメニュー、チェーン、オープン利息、グルクス、パリ
+  stocks/options/_expiry: 残存価額
+  stocks/options/_ticker: チェッカー
+  stocks/options/binom: 二項オプションの価格設定を使用してオプションの値を表示します。
+  stocks/options/calc: 基本呼び出し/プッシュ PnL 計算機
+  stocks/options/chains: ドットでオプションチェーンを表示
+  stocks/options/exp: 有効期限を表示し、セットします
+  stocks/options/greeks: は、与えられたオプションの次数を表示します。
+  stocks/options/grhist: プロットオプション
+  stocks/options/hedge: 差分をニュートラル化するためにポートフォリオの重さを表示します
+  stocks/options/hedge/_expiry: 残存価額
+  stocks/options/hedge/_ticker: チェッカー
+  stocks/options/hedge/_underlying: アセット位置の下
+  stocks/options/hedge/add: オプションのリストにオプションを追加します
+  stocks/options/hedge/list: 呼び出しに使用可能なストライクの価格を表示
+  stocks/options/hedge/pick: ベースの資産の位置を選択
+  stocks/options/hedge/plot: オプションの配当図を表示
+  stocks/options/hedge/rmv: オプションのリストからオプションを削除
+  stocks/options/hedge/sop: 選択したオプションとニュートラルのポートレートを表示
+  stocks/options/hist: プロットオプションの履歴
+  stocks/options/info: 表示オプション情報 (可変,IVランクなど)
+  stocks/options/load: 新しいチェッカーを読み込み
+  stocks/options/oi: 図形描画の利回り
+  stocks/options/parity: は、オプションが期待される価格を超えるかどうかを表示します。
+  stocks/options/pcr: チェックボックスに呼び出し率を表示する
+  stocks/options/plot: ユーザによって提供されるプロット変数
+  stocks/options/pricing: オプションの価格設定と危険度設定を表示
+  stocks/options/pricing/_expiry: 残存価額
+  stocks/options/pricing/_ticker: チェッカー
+  stocks/options/pricing/add: リストに期待される価格を追加します
+  stocks/options/pricing/rmv: 期待される価格をリストから削除します
+  stocks/options/pricing/rnval: オプションのニュートラルな評価を危険にさらす
+  stocks/options/pricing/show: 期待値の一覧を表示します
+  stocks/options/screen: プリセットに基づくスクリーンセーバー
+  stocks/options/screen/_preset: プリセット
+  stocks/options/screen/_screened_tickers: 最後のチェックリスト
+  stocks/options/screen/ca: 分析メニューを比較するには、これを使ってください。
+  stocks/options/screen/scr: このプリセットによるスクリーンデータ
+  stocks/options/screen/set: 利用可能なプリセットのいずれかを設定
+  stocks/options/screen/view: 利用可能なプリセット (特に 1 つ)
+  stocks/options/unu: 異常なオプションのアクティビティを表示
+  stocks/options/voi: プロットの音量とオープンの利息
+  stocks/options/vol: プロットの音量
+  stocks/options/vsurf: 3D 可逆表面を表示
+  stocks/qa: 質量分析、分解、残差分析
+  stocks/qa/_other_: その他
+  stocks/qa/_plots_: プロット
+  stocks/qa/_risk_: 危険
+  stocks/qa/_rolling_metrics_: ロール ・ メトリックス
+  stocks/qa/_statistics_: 統計
+  stocks/qa/_target: ターゲットの列
+  stocks/qa/_ticker: チェッカー
+  stocks/qa/acf: (Particle) 自動調整機能の価格の微分
+  stocks/qa/beta: 参照チェックボックスに β w.r.t を表示します
+  stocks/qa/bw: ボックスと線のプロット
+  stocks/qa/capm: 大文字と小文字を区別するモデル
+  stocks/qa/cdf: 累積分布関数
+  stocks/qa/cusum: 価格の累積和アルゴリズムを使って急な変化を検出
+  stocks/qa/decompose: 平成三十五年度,シーズン,残高の残高で分解
+  stocks/qa/es: ショートドロップが期待されます
+  stocks/qa/hist: 密度プロットによるヒストグラム
+  stocks/qa/kurtosis: 価格 の 急騰
+  stocks/qa/line: 選択したターゲットの線のプロット
+  stocks/qa/load: 新しいチェッカーを読み込み
+  stocks/qa/normality: 通常の統計とテスト
+  stocks/qa/om: 彩度表示
+  stocks/qa/pick: 解析対象列を選択
+  stocks/qa/qqplot: 標準曲線に対する残差
+  stocks/qa/quantile: 回転中央値と価格計算
+  stocks/qa/raw: 生データを印刷
+  stocks/qa/rolling: 価格の回転平均と標準偏差
+  stocks/qa/sh: シャープ化の比率を表示
+  stocks/qa/skew: 価格の分布の回転歪度
+  stocks/qa/so: ディスプレイのソート比率
+  stocks/qa/spread: 価格の回転分散と標準偏差
+  stocks/qa/summary: ロードされた株式の簡単な要約統計
+  stocks/qa/unitroot: 残存性のための単位ルートテスト (ADF, KPSS)
+  stocks/qa/var: 危険性を示す値
+  stocks/quote: 特定の株式チェッカの現在の価格を表示
+  stocks/res: webページ,マクロ・バンク,Yahoo Foice, 愚か者の研究
+  stocks/res/_ticker: チェッカー
+  stocks/res/barchart: www.barchart.com
+  stocks/res/bullrun: www.bullrun.com.br
+  stocks/res/businessinsider: www.markets.businessinsider.com
+  stocks/res/fidelity: www.eresearch.fidelity.com
+  stocks/res/fintel: www.fintel.com
+  stocks/res/finviz: www.finviz.com
+  stocks/res/fmp: www.financialmodelingprep.com
+  stocks/res/fool: www.fool.com
+  stocks/res/grufity: www.grufity.com
+  stocks/res/macroaxis: www.macroaxis.com
+  stocks/res/macrotrends: www.macrotrends.net
+  stocks/res/marketchameleon: www.marketchameleon.com
+  stocks/res/marketwatch: www.marketwatch.com
+  stocks/res/newsfilter: www.newsfilter.io
+  stocks/res/stockanalysis: www.stockanalysis.com
+  stocks/res/stockrow: www.stockrow.com
+  stocks/res/tradingview: www.tradingview.com
+  stocks/res/yahoo: www.finance.yahoo.com
+  stocks/res/zacks: www.zacks.com
+  stocks/scr: プリセットフィルタを用いたスクリーンセーバーの負担率,概要/有効性
+  stocks/scr/_preset: プリセット
+  stocks/scr/_screened_tickers: 最後のチェックリスト
+  stocks/scr/ca: 分析メニューを比較するには、これを使ってください。
+  stocks/scr/financial: '財務 (例: 分割, 分割, ROE, ROI, 財務)'
+  stocks/scr/historical: 歴史的な価格を表示
+  stocks/scr/overview: '概要 (例: セクター, 産業, マーケットキャップ, 音量)'
+  stocks/scr/ownership: '所有者 (例: float, internal, short)'
+  stocks/scr/performance: 'パフォーマンス (例: Perf Week, Perf YTD, Voratity M)'
+  stocks/scr/set: 利用可能なプリセットのいずれかを設定
+  stocks/scr/technical: '技術的な (例: Beta, SMA50, 52W Law, RSI, 変更)'
+  stocks/scr/valuation: 評価 (e.g.p/e,PEG,P/S,P/B,EPS,この Y)
+  stocks/scr/view: 利用可能なプリセット (標準と習慣)
+  stocks/search: 特定の株式チェッカを分析のために検索
+  stocks/sia: 産業と国ごとの迅速な比率 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社
+    株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社
+    株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社 株式会社
+  stocks/sia/_country: 国
+  stocks/sia/_exclude_exchanges: 分割交換
+  stocks/sia/_financials_: 財務
+  stocks/sia/_financials_loaded_: 財務省-ロードされたデータ (高速モード)
+  stocks/sia/_industry: 産業
+  stocks/sia/_mktcap: 市町村
+  stocks/sia/_period: 期間
+  stocks/sia/_returned_tickers: 返信チェッカ
+  stocks/sia/_sector: セクター
+  stocks/sia/_statistics_: 統計
+  stocks/sia/ca: 分析メニューを比較するには、これを使ってください。
+  stocks/sia/clear: すべての産業、セクター、国、市場キャップのパラメータをクリアします
+  stocks/sia/country: arg が指定された場合、既存の国を参照するか、国を設定して下さい。
+  stocks/sia/cpci: 工業を拠点とする国ごとの企業 (および市場キャップ) ^ a b c d e f g h i "株式会社". 株式会社 (株式会社).
+  stocks/sia/cpcs: セクターに基づく国ごとの企業 (および市場キャップ) ^ a b c d e f g h i "株式会社". 株式会社 (株式会社).
+  stocks/sia/cpic: 国に基づく企業ごとの企業 (および市場キャップ)
+  stocks/sia/cpis: セクターに基づく企業ごとの企業 (および市場キャップ) ^ a b c d e f "株式会社". 株式会社 (株式会社).
+    株式会社 (株式会社).
+  stocks/sia/cps: 国に基づく企業ごとの企業 (および市場キャップ)
+  stocks/sia/exchange: 国際交換フラグを除外する
+  stocks/sia/industry: arg が指定された場合、既存の産業を参照し、あるいは設定した産業を参照します
+  stocks/sia/metric: 選択したフィルタに財務メトリックスを視覚化します
+  stocks/sia/mktcap: mktcap をナノ,マイクロ,小,大,メガの間に設定
+  stocks/sia/period: 年単位、四半期又は余分に設定する期間
+  stocks/sia/sector: arg が指定された場合、既存のセクターを参照するか、セクターを設定して下さい。
+  stocks/sia/select: 特定のチェックボックスを選択し、対応するパラメータすべてを選択します。
+  stocks/sia/vis: 選択したフィルタに財務メトリックスを視覚化します
+  stocks/ta: 技術的な分析,Ema, machd, rsi, adx, bbbb, obv
+  stocks/ta/_custom_: カスタム
+  stocks/ta/_momentum_: 視界 (Tormus)
+  stocks/ta/_overlap_: オーバーラップ
+  stocks/ta/_ticker: チェッカー
+  stocks/ta/_trend_: トレンド
+  stocks/ta/_volatility_: 可逆性
+  stocks/ta/_volume_: 音量
+  stocks/ta/ad: 蓄積/分布の線
+  stocks/ta/adosc: Chikin Oscierator (Chikin Oscierator).
+  stocks/ta/adx: 平均方向移動インデックス
+  stocks/ta/aroon: 軸インジケータ
+  stocks/ta/atr: 法線範囲の平均
+  stocks/ta/bbands: ボリンジャーバンド
+  stocks/ta/cci: 商品チャンネルのインデックス
+  stocks/ta/cg: 重力の中心
+  stocks/ta/clenow: 伸縮 性 の 調整 さ れ た 伸縮 性
+  stocks/ta/demark: トム・デマークの 標識
+  stocks/ta/donchian: ドッチ語チャンネル
+  stocks/ta/ema: 指数的な移動率
+  stocks/ta/fib: フィボナッチ 接種
+  stocks/ta/fisher: Name=漁師の変換
+  stocks/ta/hma: 船舶 の 移動 速度
+  stocks/ta/kc: ケルトナーチャンネル
+  stocks/ta/macd: 移動の平均共分散/降順
+  stocks/ta/obv: 音量の調整
+  stocks/ta/recom: 技術的インジケータに基づく勧告
+  stocks/ta/rsi: 相対的な強度インデックス
+  stocks/ta/rsp: 相対的強度 (パーセント)
+  stocks/ta/sma: シンプルな移動平均
+  stocks/ta/stoch: 確率オシレータ
+  stocks/ta/summary: 技術的な要約レポート
+  stocks/ta/tv: インタラクティブチャートを開く
+  stocks/ta/view: 履歴データとトレンド
+  stocks/ta/vwap: 音量重みの平均価格
+  stocks/ta/wma: 移動率
+  stocks/ta/zlma: 移動時間ゼロ
+  stocks/th: 営業時間、オープン市場をチェック
+  stocks/th/_exchange: 開くのを交換
+  stocks/th/_symbol: 記号
+  stocks/th/_symbol_name: 記号名
+  stocks/th/all: すべての市場を表示
+  stocks/th/closed: 閉じられた市場を表示
+  stocks/th/exchange: 1 つの交換を表示
+  stocks/th/holidays: 市場で休日があるすべての日付を表示します
+  stocks/th/open: 開いている市場を表示
+  stocks/th/symbol: を選択し、
+  stocks/tob: ロード済みのチェックボックスのブックの最上位を参照 (US 交換のみ)
+  stop: セッションの録音を停止
+  support: チームの評価のための支援チケットを 事前に公開する
+  survey: ターミナルを改善する方法を よりよく理解するために 2分間の調査に記入します
+  update: ターミナルを自動的に更新します (GitHub バージョン)
+  wiki: ウィキペディアで表現を検索 (http://www.wikipedia.org/)

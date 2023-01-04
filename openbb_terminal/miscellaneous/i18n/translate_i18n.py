@@ -11,11 +11,11 @@ url_pattern = (
 )
 
 languages = {
-    # "es": "Helsinki-NLP/opus-mt-en-es",
-    # "fr": "Helsinki-NLP/opus-mt-en-fr",
-    # "it": "Helsinki-NLP/opus-mt-en-it",
-    # "pt": "Helsinki-NLP/opus-mt-tc-big-en-pt",
-    # "zh": "Helsinki-NLP/opus-mt-en-zh",
+    "es": "Helsinki-NLP/opus-mt-en-es",
+    "fr": "Helsinki-NLP/opus-mt-en-fr",
+    "it": "Helsinki-NLP/opus-mt-en-it",
+    "pt": "Helsinki-NLP/opus-mt-tc-big-en-pt",
+    "zh": "Helsinki-NLP/opus-mt-en-zh",
     "ja": "Helsinki-NLP/opus-tatoeba-en-ja",
     "ru": "Helsinki-NLP/opus-mt-en-ru",
     "ar": "Helsinki-NLP/opus-mt-tc-big-en-ar",

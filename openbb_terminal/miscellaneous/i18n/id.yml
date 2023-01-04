@@ -1,0 +1,1101 @@
+id:
+  _configure_: Atur terminal Anda sendiri
+  _home_: Informasi, panduan dan dukungan untuk Terminal OpenBB
+  _main_menu_: Menu utama
+  _others_: Lainnya
+  about: menemukan kemampuan Terminal OpenBB (https://openbb.co/docs)
+  alternative: dataset alternatif, seperti COVID dan metrik open source
+  alternative/covid: Menu COVID, kasus, kematian, tingkat
+  alternative/covid/_country: Negara
+  alternative/covid/cases: mendapatkan kasus untuk negara yang dipilih
+  alternative/covid/country: pilih country untuk data
+  alternative/covid/deaths: mendapatkan kematian untuk negara yang dipilih
+  alternative/covid/ov: get overview (kasus dan kematian) untuk negara yang dipilih
+  alternative/covid/rates: mendapatkan tingkat kematian/kasus untuk negara yang dipilih
+  alternative/covid/slopes: mendapatkan negara dengan lereng tertinggi dalam kasus
+  alternative/oss: Menu Open Source, riwayat bintang, informasi repos
+  alternative/oss/rossidx: yang berkembang tercepat open-source startups
+  alternative/oss/rs: repo ringkasan
+  alternative/oss/sh: riwayat bintang repo
+  alternative/oss/tr: top starred repos
+  crypto: menyelam ke onchain data, tokonomis, pasokan sirkulasi, nfts dan lebih
+  crypto/_exchange: Tukar
+  crypto/_interval: Interval (min)
+  crypto/_source: Sumber
+  crypto/_symbol: Koin
+  crypto/candle: lihat sebuah tabel lilin untuk kriptocurrency tertentu
+  crypto/dd: kewajiban untuk koin yang dimuat, informasi koin, media sosial, statistik
+    pasar
+  crypto/dd/_activity_: Kegiatan dan Masyarakat
+  crypto/dd/_contributors_: Para Kontributor dan Investor
+  crypto/dd/_market_: Pasar
+  crypto/dd/_metrics_: Metrik
+  crypto/dd/_overview_: Ringkasan
+  crypto/dd/_roadmap_: Peta Jalan dan Berita
+  crypto/dd/_source: Sumber
+  crypto/dd/_symbol: Koin
+  crypto/dd/_tokenomics_: Tokonomis
+  crypto/dd/active: alamat aktif
+  crypto/dd/ath: statistik terkait tinggi sepanjang waktu untuk koin dimuat
+  crypto/dd/atl: statistik terkait semua waktu rendah untuk koin dimuat
+  crypto/dd/balance: keseimbangan koin
+  crypto/dd/basic: informasi dasar tentang koin dimuat
+  crypto/dd/bc: links untuk blockchain penjelajah untuk koin dimuat
+  crypto/dd/change: 30d perubahan pasokan dipegang pada dompet pertukaran
+  crypto/dd/desc: deskripsi pada proyek - mengapa, bagaimana, apa
+  crypto/dd/dev: github, statistik pengembangan koin bitbuck
+  crypto/dd/eb: total keseimbangan diselenggarakan pada pertukaran (dalam persentase
+    dan satuan)
+  crypto/dd/events: peristiwa yang berhubungan dengan koin dimuat
+  crypto/dd/ex: semua pertukaran dimana koin dimuat terdaftar
+  crypto/dd/fr: penggalangan dana rincian e.g. treasury akun, putaran penjualan, alokasi
+  crypto/dd/fundrate: rate pendanaan per tukar
+  crypto/dd/funot: metrik fundamental dari waktu ke waktu
+  crypto/dd/gh: aktivitas github dari waktu ke waktu
+  crypto/dd/gov: rincian pengaturan
+  crypto/dd/info: informasi tentang koin dimuat
+  crypto/dd/inv: investor (individu dan organisasi)
+  crypto/dd/links: links e.g. whitepaper, github, twitter, youtube, reddit, telegram
+  crypto/dd/liquidations: statistik likuidasi harian untuk koin yang dimuat
+  crypto/dd/load: memuat cryptocurrency tertentu untuk analisis
+  crypto/dd/market: statistik pasar tentang koin yang dimuat
+  crypto/dd/mcapdom: dominasi cap pasar
+  crypto/dd/mkt: semua pasar untuk koin dimuat
+  crypto/dd/mt: messari timeeries mis. twitter followers, circ supply, dll
+  crypto/dd/news: dimuat berita koin terbaru
+  crypto/dd/nonzero: alamat dengan bukan nol keseimbangan
+  crypto/dd/ob: buku pesanan
+  crypto/dd/oi: buka bunga per pertukaran
+  crypto/dd/pi: informasi proyek e.g. rincian teknologi, repos publik, audit, vulns
+  crypto/dd/ps: harga dan pasokan metrik terkait untuk koin dimuat
+  crypto/dd/rm: roadmap
+  crypto/dd/score: jenis skor yang berbeda untuk koin dimuat, misalnya skor pengembang,
+    skor sentimen
+  crypto/dd/social: portal sosial untuk koin yang dimuat, misalnya reddit, twitter
+  crypto/dd/stats: statistik koin
+  crypto/dd/team: kontributor (individu dan organisasi)
+  crypto/dd/tk: tokanomics mis. beredar/maks/total pasokan, tipe emisi, dll
+  crypto/dd/trades: trade terakhir
+  crypto/dd/twitter: tweets untuk koin dimuat
+  crypto/dd/web: situs web ditemukan untuk koin misalnya forum, homepage
+  crypto/defi: informasi keuangan terdesentralisasi, dpi, llama, tvl, pinjaman, pinjaman,
+    dana
+  crypto/defi/anchor: Jangkar menghasilkan data
+  crypto/defi/aterra: 30-hari sejarah aset yang ditentukan dalam alamat terra
+  crypto/defi/ayr: 30-hari sejarah jangkar menghasilkan cadangan
+  crypto/defi/dpi: Protokol deFi terdaftar di DefiPulse
+  crypto/defi/dtvl: nilai total historis terkunci (TVL) oleh dApp
+  crypto/defi/gacc: Terra blockchain akun pertumbuhan sejarah
+  crypto/defi/gdapps: top DeFi dApps dikelompokkan dengan rantai
+  crypto/defi/govp: Daftar proposal terara blockchainance
+  crypto/defi/lcsc: Luna beredar perubahan pasokan
+  crypto/defi/ldapps: daftar dApps
+  crypto/defi/newsletter: newsletter terkait DeFi baru-baru ini
+  crypto/defi/pairs: pasangan yang ditambahkan baru-baru ini pada Uniswap
+  crypto/defi/pools: kolam dengan volume pada Uniswap
+  crypto/defi/sinfo: info staking untuk menyediakan alamat akun terra
+  crypto/defi/sratio: Sejarah rasio staking rantai blok terra
+  crypto/defi/sreturn: Terra blockchain staking mengembalikan sejarah
+  crypto/defi/stats: statistik dasar tentang Uniswap
+  crypto/defi/stvl: nilai sejarah dari total jumlah TVL dari semua dApps
+  crypto/defi/swaps: swap baru-baru ini dilakukan pada Uniswap
+  crypto/defi/tokens: tokens trade-able pada Uniswap
+  crypto/defi/validators: informasi tentang terra blockchain validators
+  crypto/defi/vaults: top DeFi Vaults on different blockchains
+  crypto/disc: menemukan trending kriptocurrency, keuntungan top, pecundang, sentimen
+    top
+  crypto/disc/dapps: aplikasi terdesentralisasi atas
+  crypto/disc/dex: pertukaran terdesentralisasi atas
+  crypto/disc/gainers: peraihan atas
+  crypto/disc/games: top blockchain games
+  crypto/disc/losers: top losers
+  crypto/disc/nft: token top bukan fungible
+  crypto/disc/search: mencari koin
+  crypto/disc/top: koin atas
+  crypto/disc/trending: koin trending
+  crypto/find: menemukan koin
+  crypto/forecast: teknik prakiraan, rnn, nbeats, transformer, block rnn
+  crypto/headlines: pernyataan sentimen dari 15+ berita utama
+  crypto/load: memuat cryptocurrency tertentu untuk analisis
+  crypto/nft: token yang tidak bersulam, hari ini turun
+  crypto/nft/collections: koleksi ethereum top
+  crypto/nft/fp: koleksi penjualan/harga lantai
+  crypto/nft/stats: statistik koleksi
+  crypto/onchain: informasi pada rantai blok yang berbeda, eth biaya gas, paus waspada,
+    DEXes info
+  crypto/onchain/_address: Alamat etherum
+  crypto/onchain/_ethereum_: Ethereum
+  crypto/onchain/_type: Jenis alamat
+  crypto/onchain/address: muat alamat ethereum token, akun atau transaksi
+  crypto/onchain/baas: tawaran, meminta harga, rata-rata menyebar untuk pasangan kripto
+    diberikan
+  crypto/onchain/balance: periksa keseimbangan ethereum
+  crypto/onchain/btccp: tampilkan pasokan yang beredar BTC
+  crypto/onchain/btcct: menampilkan BTC mengkonfirmasi transaksi
+  crypto/onchain/ds: statistik dari platform eth (pengguna harian; biaya)
+  crypto/onchain/dt: transaksi harian token
+  crypto/onchain/dvcp: volume sehari-hari untuk pasangan kripto
+  crypto/onchain/gwei: Periksa biaya gas eth saat ini
+  crypto/onchain/hist: Sejarah keseimbangan ethereum (transaksi)
+  crypto/onchain/holders: pemegang token ERC20 atas
+  crypto/onchain/hr: cek blockchain hashrate over time (BTC atau ETH)
+  crypto/onchain/info: Info ERC20 token
+  crypto/onchain/lt: trade terakhir oleh dex atau bulan
+  crypto/onchain/prices: Harga sejarah ERC20 token
+  crypto/onchain/th: Riwayat ERC20 token
+  crypto/onchain/top: token ERC20 atas
+  crypto/onchain/ttcp: pasangan crypto top diperdagangkan pada pertukaran desentralisasi
+    yang diberikan
+  crypto/onchain/tv: token volume di DEXes
+  crypto/onchain/tvl: nilai total terkunci dari token ERC20
+  crypto/onchain/tx: info ethereum blockchain transaksi
+  crypto/onchain/ueat: alamat ethereum unik yang membuat transaksi
+  crypto/onchain/whales: periksa transaksi crypto wales
+  crypto/ov: Overview dari kriptocurrency, cap pasar, DeFi, berita terbaru, atas pertukaran,
+    stabil
+  crypto/ov/altindex: altcoin index musim (75% dari 50 koin teratas tampil lebih baik
+    daripada BTC)
+  crypto/ov/btcrb: tampilkan tabel harga pelangi bitcoin (regresilogis)
+  crypto/ov/categories: kategori crypto
+  crypto/ov/ch: daftar hacks kripto utama
+  crypto/ov/contracts: semua kontrak cerdas untuk platform yang diberikan
+  crypto/ov/cr: pasokan crypto atau meminjam suku bunga
+  crypto/ov/defi: info pasar DeFi global
+  crypto/ov/derivatives: turunan crypto
+  crypto/ov/ewf: seluruh biaya pertukaran penarikan
+  crypto/ov/exmarkets: semua pasar yang tersedia pada pertukaran yang diberikan
+  crypto/ov/exrates: harga tukar koin
+  crypto/ov/fun: eksplor projects based on fundamental metriks
+  crypto/ov/hm: crypto heatmap
+  crypto/ov/hold: Ethereum, bitcoin memegang statistik overview
+  crypto/ov/indexes: indek crypto
+  crypto/ov/info: info dasar tentang semua koin yang tersedia
+  crypto/ov/markets: info terkait pasar tentang semua koin yang tersedia
+  crypto/ov/news: Berita crypto baru-baru ini
+  crypto/ov/pairs: info tentang pasang trading yang tersedia
+  crypto/ov/platforms: list blockchain platforms eg. ethereum, Solana, kusama, terra
+  crypto/ov/stables: stackoin
+  crypto/ov/wf: biaya penarikan keseluruhan
+  crypto/ov/wfpe: biaya penarikan crypto per pertukaran
+  crypto/price: harga real-time dan interval kepercayaan diri
+  crypto/prt: potensial return (e.g. upside jika ETH mencapai BTC cap pasar)
+  crypto/qa: Analisa kuantitatif membusuk, cusum, analisis sisa
+  crypto/qa/_other_: Lainnya
+  crypto/qa/_plots_: Plot
+  crypto/qa/_rolling_metrics_: Metrik Rolling
+  crypto/qa/_statistics_: Statistik
+  crypto/qa/_target: Kolom Target
+  crypto/qa/_ticker: Tiker
+  crypto/qa/acf: (partial) auto-korelasi fungsi diferensial dari harga
+  crypto/qa/bw: kotak dan plot kumis
+  crypto/qa/cdf: fungsi distribusi kumulatif
+  crypto/qa/cusum: mendeteksi perubahan mendadak menggunakan algoritma jumlah kumulatif
+    harga
+  crypto/qa/decompose: dekomposisi dalam cyclic-trend, season, dan sisa-sisa harga
+  crypto/qa/hist: histogram dengan kepadatan plot
+  crypto/qa/kurtosis: guling kurtosis distribusi harga
+  crypto/qa/line: baris plot dari target yang dipilih
+  crypto/qa/load: load ticker baru
+  crypto/qa/normality: statistik normalitas dan tes
+  crypto/qa/pick: pilih kolom target untuk dianalisa
+  crypto/qa/qqplot: sisa-sisa terhadap kurva normal standar
+  crypto/qa/quantile: rolling Median dan kuantil harga
+  crypto/qa/raw: tampilkan data mentah
+  crypto/qa/rolling: rolling mean and std deviation of prices
+  crypto/qa/skew: rolling skewerness distribusi harga
+  crypto/qa/spread: variansi bergulir dan deviasi std harga
+  crypto/qa/summary: ringkasan statistik singkat dari stok yang dimuat
+  crypto/qa/unitroot: uji akar unit untuk kestasibatan (ADF, KPSS)
+  crypto/ta: analisis teknis untuk koin dimuat, ema, macd, RIS, adx, bbands, obv
+  crypto/ta/_custom_: Ubahan
+  crypto/ta/_momentum_: Momentum
+  crypto/ta/_overlap_: Overlap
+  crypto/ta/_ticker: Koin dimuat
+  crypto/ta/_trend_: Trend
+  crypto/ta/_volatility_: Kesia-siaan
+  crypto/ta/_volume_: Volume
+  crypto/ta/ad: Baris akumulasi/distribusi
+  crypto/ta/adosc: Osilator chaikin
+  crypto/ta/adx: indeks pergerakan arah rata-rata
+  crypto/ta/aroon: Indikator °O
+  crypto/ta/bbands: Band bolinger
+  crypto/ta/cci: indeks kanal komoditas
+  crypto/ta/cg: pusat gravitasi
+  crypto/ta/donchian: saluran Donchian
+  crypto/ta/ema: rata-rata perpindahan eksponensial
+  crypto/ta/fib: retracement fibonacci
+  crypto/ta/fisher: transform fisher
+  crypto/ta/hma: lambung bergerak rata-rata
+  crypto/ta/kc: kanal keltner
+  crypto/ta/macd: pindah rata-rata konvergensi/perubahan
+  crypto/ta/obv: pada volume neraca
+  crypto/ta/rsi: indeks kekuatan relatif
+  crypto/ta/sma: rata-rata pindah sederhana
+  crypto/ta/stoch: stochastic oscilator
+  crypto/ta/tv: buka bagan interaktif pada
+  crypto/ta/vwap: volume harga rata-rata
+  crypto/ta/wma: loaded moving rata-rata
+  crypto/ta/zlma: nol lag bergerak rata-rata
+  crypto/tools: jelajahi berbagai alat apytoapr, il
+  crypto/tools/aprtoapy: ubah apr ke apy
+  crypto/tools/il: kalkulasi kerugian tak berperikemanusiaan
+  dashboards: dashboard interaktif menggunakan voila dan jupyter notebook
+  dashboards/chains: option chain analysis
+  dashboards/correlation: korelasi stok
+  dashboards/crypto: cryptocurncy pertukaran tingkat terhadap USD
+  dashboards/forecast: prakiraan untuk timeeries datasets
+  dashboards/forecasting: prakiraan untuk timeeries datasets
+  dashboards/futures: kinerja masa depan sejarah
+  dashboards/shortdata: analisis findra shortdata
+  dashboards/stocks: informasi stok bersejarah
+  dashboards/vsurf: pilihan volatilitas permukaan
+  defined, not tested: didefinisikan, tidak diuji
+  defined, test failed: didefinisikan, tes gagal
+  defined, test inconclusive: didefinisikan, tes tidak meyakinkan
+  defined, test passed: didefinisikan, tes dilewatkan
+  econometrics: statistik dan metoda kuantitatif untuk hubungan antara dataset
+  econometrics/_data_loc: Mencari data di
+  econometrics/_exploration_: Eksplorasi
+  econometrics/_loaded: Berkas dan kolom data yang dimuat
+  econometrics/_regression_: Regresi
+  econometrics/_regression_tests_: Tes Regresi
+  econometrics/_tests_: Tes
+  econometrics/add: Tambahkan kolom ke dataset dengan pilihan untuk menggunakan formula
+  econometrics/bgod: Breusch-Godfrey tes autocorrelasi dengan lags pada sisa-sisa
+    regresi
+  econometrics/bpag: Breusch-Pagan heteroscedasticity test pada sisa-sisa regresi
+  econometrics/clean: membersihkan dataset dengan mengisi atau menjatuhkan NaN
+  econometrics/coint: tes co-integrasi pada banyak kolom
+  econometrics/combine: Gabungan kolom dari dataset yang berbeda
+  econometrics/compare: bandingkan hasil dari semua model perkiraan
+  econometrics/delete: Hapus kolom dari dataset
+  econometrics/desc: tampilkan statistik deskriptif dari sebuah dataset
+  econometrics/dwat: Tes autocorrelasi Durbin-Watson pada sisa-sisa regresi
+  econometrics/export: ekspor dataset yang diproses
+  econometrics/granger: Tes sebab-akibat Granger pada dua kolom
+  econometrics/index: set (multi) indeks berdasarkan kolom
+  econometrics/load: memuat dataset (juga bekerja dengan dataset StatsModels)
+  econometrics/modify: gabungkan kolom dari dataset dan hapus atau ubah nama kolom
+  econometrics/norm: melakukan tes normalitas pada kolom dari dataset
+  econometrics/ols: cocok sebuah model regresi linear (multi)
+  econometrics/options: tampilkan opsi kumpulan kolom-dataset yang tersedia
+  econometrics/panel: memperkirakan model berdasarkan berbagai teknik regresi
+  econometrics/plot: plot data dari sebuah dataset
+  econometrics/remove: hapus salah satu dari dataset yang dimuat
+  econometrics/rename: Ubah nama kolom dari dataset
+  econometrics/root: lakukan tes unitroot (ADF & KPSS) pada kolom dari sebuah dataset
+  econometrics/show: tampilkan sebagian dari dataset yang dimuat
+  econometrics/type: ubah tipe kolom atau tampilkan tipe mereka
+  economy: global data makroekonomis, misalnya masa depan, hasil, perbendaharaan
+  economy/_database_: Basis Data
+  economy/_stored: Dataset yang disimpan
+  economy/bigmac: Indeks Big Mac Economist
+  economy/edebt: tampilkan statistik utang eksternal untuk berbagai negara
+  economy/eval: buat seri baru dengan melakukan operasi pada data yang dimuat
+  economy/events: tampilkan kalender ekonomi
+  economy/forecast: teknik prakiraan; rnn, nbeats, transformer, block rnn
+  economy/fred: collect makro data dari FRED based on a series ID
+  economy/futures: tampilkan gambaran masa depan dan komoditas
+  economy/index: temukan dan plot apapun (major) indeks di pasar
+  economy/macro: collect makro data for a country or countrys
+  economy/map: Peta stok indeks S&P500
+  economy/overview: tampilkan pemeriksaan pasar baik indices, obligasi atau mata uang
+  economy/performance: kinerja sektor, industri, negara
+  economy/plot: plot data dari perintah di atas bersama-sama
+  economy/qa: Buka kuantitatif analisis menu dengan data tersimpan
+  economy/qa/_other_: Lainnya
+  economy/qa/_plots_: Plot
+  economy/qa/_rolling_metrics_: Metrik Rolling
+  economy/qa/_series: Seri yang dipilih
+  economy/qa/_statistics_: Statistik
+  economy/qa/acf: (partial) auto-korelasi fungsi diferensial dari harga
+  economy/qa/bw: kotak dan plot kumis
+  economy/qa/cdf: fungsi distribusi kumulatif
+  economy/qa/cusum: mendeteksi perubahan mendadak menggunakan algoritma jumlah kumulatif
+    harga
+  economy/qa/decompose: dekomposisi dalam cyclic-trend, season, dan sisa-sisa harga
+  economy/qa/hist: histogram dengan kepadatan plot
+  economy/qa/kurtosis: guling kurtosis distribusi harga
+  economy/qa/line: baris plot dari target yang dipilih
+  economy/qa/normality: statistik normalitas dan tes
+  economy/qa/pick: memilih seri baru dari data ekonomi yang tersimpan
+  economy/qa/qqplot: sisa-sisa terhadap kurva normal standar
+  economy/qa/quantile: rolling Median dan kuantil harga
+  economy/qa/raw: tampilkan data mentah
+  economy/qa/rolling: rolling mean and std deviation of prices
+  economy/qa/skew: rolling skewerness distribusi harga
+  economy/qa/spread: variansi bergulir dan deviasi std harga
+  economy/qa/summary: ringkasan statistik singkat dari stok yang dimuat
+  economy/qa/unitroot: uji akar unit untuk kestasibatan (ADF, KPSS)
+  economy/rtps: sektor kinerja real-time
+  economy/spectrum: spektrum sektor, industri, negara
+  economy/spread: tampilkan ikatan spread matriks
+  economy/treasury: mendapatkan tingkat perbendaharaan AS
+  economy/valuation: Penilaian sektor, industri, negara
+  economy/ycrv: Tunjukkan kurva hasil berdaulat
+  etf: Bertukar dana perdagangan, harga sejarah, bandingkan kepemilikan dan penyaringan.
+  etf/_major_holdings: Saham utama
+  etf/_symbol: Simbol
+  etf/ca: analisis perbandingan, mendapatkan sama, sejarah, korelasi, keuangan
+  etf/candle: lihat sebuah bagan lilin untuk ETF
+  etf/compare: bandingkan beberapa ETF yang berbeda
+  etf/disc: menemukan ETFs, pencari/decliners/aktif
+  etf/disc/active: paling aktif
+  etf/disc/decliners: top descenders
+  etf/disc/gainers: peraihan atas
+  etf/holdings: perusahaan atas memegang
+  etf/load: muat data ETF
+  etf/news: berita terbaru dari perusahaan
+  etf/overview: get overview
+  etf/pir: buat (multiple) investor pasif excel laporan harta karun)
+  etf/scr: layar ETFs, overview/kinerance, menggunakan penyaring preset
+  etf/scr/_preset: Prasetel
+  etf/scr/sbc: layar menurut kategori
+  etf/scr/screen: layar ETF memakai preset yang dipilih
+  etf/scr/set: set salah satu dari preset yang tersedia
+  etf/scr/view: tampilkan preset yang tersedia
+  etf/search: cari ETF dengan nama atau deskripsi
+  etf/summary: deskripsi ringkasan dari ETF
+  etf/ta: analisis teknis, ema, macd, RIS, adx, bbands, obv
+  etf/ta/_custom_: Ubahan
+  etf/ta/_momentum_: Momentum
+  etf/ta/_overlap_: Overlap
+  etf/ta/_ticker: ETF
+  etf/ta/_trend_: Trend
+  etf/ta/_volatility_: Kesia-siaan
+  etf/ta/_volume_: Volume
+  etf/ta/ad: Baris akumulasi/distribusi
+  etf/ta/adosc: Osilator chaikin
+  etf/ta/adx: indeks pergerakan arah rata-rata
+  etf/ta/aroon: Indikator °O
+  etf/ta/bbands: Band bolinger
+  etf/ta/cci: indeks kanal komoditas
+  etf/ta/cg: pusat gravitasi
+  etf/ta/donchian: saluran Donchian
+  etf/ta/ema: rata-rata perpindahan eksponensial
+  etf/ta/fib: retracement fibonacci
+  etf/ta/fisher: transform fisher
+  etf/ta/hma: lambung bergerak rata-rata
+  etf/ta/kc: kanal keltner
+  etf/ta/macd: pindah rata-rata konvergensi/perubahan
+  etf/ta/obv: pada volume neraca
+  etf/ta/rsi: indeks kekuatan relatif
+  etf/ta/sma: rata-rata pindah sederhana
+  etf/ta/stoch: stochastic oscilator
+  etf/ta/vwap: volume harga rata-rata
+  etf/ta/wma: loaded moving rata-rata
+  etf/ta/zlma: nol lag bergerak rata-rata
+  etf/weights: alokasi berat sektor
+  exe: jalankan skrip rutin otomatis
+  featflags: aktifkan dan matikan tanda fitur
+  featflags/_info_: Flag feature melalui variabel lingkungan
+  featflags/cls: bersihkan konsol setelah setiap perintah
+  featflags/cmdloc: lokasi perintah ditampilkan dalam gambar
+  featflags/color: gunakan fitur mewarnai
+  featflags/exithelp: otomatis tampilkan bantuan ketika keluar menu
+  featflags/ion: mode matplotlib interaktif
+  featflags/promptkit: aktifkan toolkit prompt (lengkap otomatis dan riwayat)
+  featflags/rcontext: ingat konteks dimuat param selama sesi
+  featflags/reporthtml: buka laporan sebagai HTML jika tidak notebook
+  featflags/retryload: coba hapus perintah dengan load pertama
+  featflags/rich: terminal berwarna-warni kaya
+  featflags/richpanel: panel terminal kaya warna
+  featflags/tab: gunakan tabulate untuk mencetak dataframes
+  featflags/tbhint: tampilkan petunjuk penggunaan dalam sebuah bilah alat bawah
+  featflags/thoughts: pikiran hari
+  featflags/watermark: watermark dalam angka
+  forecast: pementasan waktu diprakirakan dengan pembelajaran mesin
+  forecast/_comingsoon_: Segera Datang
+  forecast/_data_loc: Mencari data di
+  forecast/_disclaimer_: PENYAKIT
+  forecast/_exploration_: Eksplorasi
+  forecast/_feateng_: Teknik Fitur
+  forecast/_loaded: Berkas dan kolom data yang dimuat
+  forecast/_tsforecasting_: Pemrakiraan Waktu
+  forecast/arima: Arima (Non-darts)
+  forecast/atr: Tambahkan Rata-rata Jangkauan Sejati
+  forecast/autoarima: Model ARIMA Otomatis
+  forecast/autoces: Model Penghalusan Eksponensial Komplental Otomatis
+  forecast/autoets: ETS Otomatis (Error, Trend, Seasonality) Model
+  forecast/autoselect: Pilih model statistik terbaik dari AutoARIMA, AutoET, AutoCES,
+    MSTL, dsb.
+  forecast/brnn: Block Recurrent Neural Network (RNN, LSTM, GRU) (feat. Past covariates)
+  forecast/clean: Bersihkan dataset dengan mengisi atau menjatuhkan NaN
+  forecast/combine: Gabungan kolom dari dataset yang berbeda
+  forecast/corr: Plot koefisien korelasi untuk fitur dataset
+  forecast/delete: Hapus kolom dari dataset
+  forecast/delta: Tambah % Perubahan
+  forecast/desc: Tampilkan statistik deskriptif dari suatu dataset
+  forecast/ema: Tambahkan Rata-rata Penguatan Berat Exponensial
+  forecast/expo: Penghalusan Probabibilistik Eksponensial
+  forecast/export: Ekspor dataset yang telah diproses
+  forecast/linregr: Probabilistik Linear Regresi (feat. kovariates masa lalu dan Kejelasan)
+  forecast/load: memuat dataset dari csv
+  forecast/mom: Tambahkan Momentum
+  forecast/mstl: Multiple Seasonalities and Trend using Loess (MSTL) Model
+  forecast/nbeats: Estimasi Neural Bayesian (feat. covariates masa lalu)
+  forecast/nhits: Interpolasi Hierarkis saraf (feat. covariates masa lalu)
+  forecast/plot: Plot kolom tertentu dari suatu dataset yang dimuat
+  forecast/regr: Regresi (feat. kovariates masa lalu dan Kejelasan)
+  forecast/rename: Ubah nama kolom dari dataset
+  forecast/rnn: Probabilistik Recurrent Neural Network (RNN, LSTM, GRU)
+  forecast/roc: Tambah Rasio Perubahan
+  forecast/rsi: Tambahkan Indeks Kekuatan Relatif
+  forecast/rwd: Berjalan Acak dengan Model Drift
+  forecast/season: Plot seasonalitas untuk kolom dataset
+  forecast/seasonalnaive: Model Naif Musiman
+  forecast/show: Tampilkan sebagian dari dataset yang dimuat
+  forecast/signal: Tambah Sinyal Price (pendek vs. jangka panjang)
+  forecast/sto: Tambahkan Stochastic Oscilator %K dan %D
+  forecast/tcn: Jaringan Konfolutional Neural Temporal (feat. covariates masa lalu)
+  forecast/tft: Transformer Temporal Fusion Network Duvalfeat.
+  forecast/theta: Metode Theta
+  forecast/trans: Jaringan Transformer (feat. Kovariates masa lalu)
+  forex: pertukaran asing, kutipan, tingkat maju untuk pasangan mata uang dan integrasi
+    oanda
+  forex/_from: Dari
+  forex/_source: Sumber
+  forex/_ticker: Tiker
+  forex/_to: Untuk
+  forex/candle: tampilkan plot lilin untuk pasangan dimuat
+  forex/forecast: teknik prakiraan
+  forex/forex: Forex brokerages
+  forex/fwd: get tingkat maju untuk pasangan dimuat
+  forex/load: dapatkan data sejarah
+  forex/oanda: Menu Oanda
+  forex/oanda/_from: Dari
+  forex/oanda/_loaded: Instrumen yang dimuat
+  forex/oanda/_source: Sumber
+  forex/oanda/_to: Untuk
+  forex/oanda/calendar: tampilkan kalender
+  forex/oanda/cancel: batalkan perintah tertunda oleh ID -i order ID
+  forex/oanda/candles: tampilkan lilin
+  forex/oanda/closetrade: tutup trade by id
+  forex/oanda/from: pilih "dari" mata uang dalam sebuah pasangan forex
+  forex/oanda/list: riwayat urutan daftar
+  forex/oanda/order: batas tempat urutan -u ANGKA dari satuan -p harga
+  forex/oanda/orderbook: print orderbook
+  forex/oanda/pending: mendapatkan informasi pada perintah yang tertunda
+  forex/oanda/positionbook: cetak buku posisi
+  forex/oanda/positions: mendapatkan posisi terbuka
+  forex/oanda/price: menampilkan harga untuk instrumen yang dipilih
+  forex/oanda/summary: tampilkan ringkasan akun
+  forex/oanda/to: pilih mata uang "to" dalam sebuah pasangan forex
+  forex/oanda/trades: tampilkan open exchanges
+  forex/qa: Analisa kuantitatif, membusuk, cusum, analisis sisa
+  forex/qa/_other_: Lainnya
+  forex/qa/_pair: Pasangan
+  forex/qa/_plots_: Plot
+  forex/qa/_rolling_metrics_: Metrik Rolling
+  forex/qa/_statistics_: Statistik
+  forex/qa/_target: Target
+  forex/qa/acf: (partial) auto-korelasi fungsi diferensial dari harga
+  forex/qa/bw: kotak dan plot kumis
+  forex/qa/cdf: fungsi distribusi kumulatif
+  forex/qa/cusum: mendeteksi perubahan mendadak menggunakan algoritma jumlah kumulatif
+    harga
+  forex/qa/decompose: dekomposisi dalam cyclic-trend, season, dan sisa-sisa harga
+  forex/qa/hist: histogram dengan kepadatan plot
+  forex/qa/kurtosis: guling kurtosis distribusi harga
+  forex/qa/line: baris plot dari target yang dipilih
+  forex/qa/normality: statistik normalitas dan tes
+  forex/qa/pick: pilih kolom target untuk dianalisa
+  forex/qa/qqplot: sisa-sisa terhadap kurva normal standar
+  forex/qa/quantile: rolling Median dan kuantil harga
+  forex/qa/raw: tampilkan data mentah
+  forex/qa/rolling: rolling mean and std deviation of prices
+  forex/qa/skew: rolling skewerness distribusi harga
+  forex/qa/spread: variansi bergulir dan deviasi std harga
+  forex/qa/summary: ringkasan statistik singkat dari stok yang dimuat
+  forex/qa/unitroot: uji akar unit untuk kestasibatan (ADF, KPSS)
+  forex/quote: get kutipan terakhir
+  forex/ta: analisis teknis, ema, macd, RIS, adx, bbands, obv
+  forex/ta/_currency: Pasangan mata uang dimuat
+  forex/ta/_custom_: Ubahan
+  forex/ta/_momentum_: Momentum
+  forex/ta/_overlap_: Overlap
+  forex/ta/_source: Sumber
+  forex/ta/_trend_: Trend
+  forex/ta/_volatility_: Kesia-siaan
+  forex/ta/adx: indeks pergerakan arah rata-rata
+  forex/ta/aroon: Indikator °O
+  forex/ta/bbands: Band bolinger
+  forex/ta/cci: indeks kanal komoditas
+  forex/ta/cg: pusat gravitasi
+  forex/ta/donchian: saluran Donchian
+  forex/ta/ema: rata-rata perpindahan eksponensial
+  forex/ta/fib: retracement fibonacci
+  forex/ta/fisher: transform fisher
+  forex/ta/macd: pindah rata-rata konvergensi/perubahan
+  forex/ta/rsi: indeks kekuatan relatif
+  forex/ta/sma: rata-rata pindah sederhana
+  forex/ta/stoch: stochastic oscilator
+  forex/ta/zlma: nol lag bergerak rata-rata
+  funds: pencarian reksa dana bersama, tinjauan, kepemilikan dan berat sektor
+  funds/_country: Negara Kini
+  funds/_fund: Dana Kini
+  funds/alswe: tampilkan alokasi dana (sektor, negara, kepemilikan)
+  funds/country: mengatur sebuah negara untuk penyaringan
+  funds/equity: saham ekuitas
+  funds/forecast: teknik perkiraan
+  funds/info: dapatkan informasi dana
+  funds/infoswe: dapatkan informasi dana
+  funds/load: memuat data dana sejarah
+  funds/plot: plot dimuat data dana sejarah
+  funds/search: mencari Dana Mutual
+  funds/sector: pentimbangan sektor
+  futures: komoditas, obligasi, indeks, bitcoin dan forex
+  futures/curve: mendapatkan kurva masa depan
+  futures/historical: get history timeeries
+  futures/search: mencari masa depan berdasarkan kategori atau pertukaran
+  intro: pengenalan pada Terminal OpenBB
+  keys: atur kunci API dan periksa validitasnya
+  keys/_keys_: Menu ini memungkinkan Anda menata kunci API Anda sendiri. Ketik 'about'
+    untuk informasi lebih lanjut
+  keys/_status_: Status
+  keys/mykeys: get kunci terdefinisi Anda
+  news: tampilkan artikel berita berdasarkan istilah dan sumber data
+  not defined: tidak terdefinisi
+  portfolio: melakukan optimasi portofolio dan melihat kinerja portofolio dan atribution
+  portfolio/_benchmark: Benchmark
+  portfolio/_graphs_: Grafik
+  portfolio/_loaded: Transaksi yang dimuat
+  portfolio/_metrics_: Metrik
+  portfolio/_risk_: Metrik Risiko
+  portfolio/_riskfreerate: Tingkat Bebas Risiko
+  portfolio/alloc: alokasi pada sebuah aset, sektor, negara atau daerah dasar
+  portfolio/attrib: atribution sektor tampilan portofolio dibandingkan dengan S&P
+    500
+  portfolio/bench: definisikan benchmark
+  portfolio/bro: broker kepemilikan, mendukung robinhood, sekutu, degiro, coinbase
+  portfolio/bro/ally: Jungley Invest Menu
+  portfolio/bro/ally/_info_: Informasi Stok
+  portfolio/bro/ally/balances: tampilkan rincian keseimbangan akun
+  portfolio/bro/ally/history: tampilkan riwayat akun Anda
+  portfolio/bro/ally/holdings: tampilkan kepemilikan akun
+  portfolio/bro/ally/movers: dapatkan daftar penggerak peringkat
+  portfolio/bro/ally/quote: get quote stok
+  portfolio/bro/cb: Menu Pro Coinbase
+  portfolio/bro/cb/account: tampilkan keseimbangan akun Anda
+  portfolio/bro/cb/deposits: tampilkan semua deposito atau transfer internal
+  portfolio/bro/cb/history: tampilkan riwayat akun Anda
+  portfolio/bro/cb/orders: Tunjukkan semua perintahmu.
+  portfolio/bro/degiro: Menu Degiro
+  portfolio/bro/degiro/cancel: batalkan suatu perintah menggunakan id
+  portfolio/bro/degiro/companynews: view news about a company with it's isin
+  portfolio/bro/degiro/create: buat perintah
+  portfolio/bro/degiro/hold: view holding
+  portfolio/bro/degiro/lastnews: tampilkan berita terbaru
+  portfolio/bro/degiro/login: connect to degiro's api
+  portfolio/bro/degiro/logout: putus dari api degiro's
+  portfolio/bro/degiro/lookup: tampilkan pencarian untuk suatu produk berdasarkan
+    nama
+  portfolio/bro/degiro/paexport: expor csv untuk analisis portofolio
+  portfolio/bro/degiro/pending: tampilkan perintah yang tertunda
+  portfolio/bro/degiro/topnews: tampilkan pratinjau berita top
+  portfolio/bro/degiro/update: perbarui perintah
+  portfolio/bro/rh: Menu Robinhood
+  portfolio/bro/rh/history: tampilkan riwayat ekuitas akun anda
+  portfolio/bro/rh/holdings: tampilkan kepemilikan akun dalam saham
+  portfolio/bro/rh/login: login ke Robinhood
+  portfolio/cret: hasil kumulatif
+  portfolio/distr: distribusi harian kembali
+  portfolio/dret: kembali setiap hari
+  portfolio/es: tampilkan shortfall yang diharapkan
+  portfolio/holdp: portofolio memegang aset (dalam persentase)
+  portfolio/holdv: kepemilikan dari aset (nilai absolut)
+  portfolio/load: beban transaksi ke portofolio
+  portfolio/maxdd: drawdown maksimum
+  portfolio/metric: portofolio vs benchmark metrik untuk semua periode yang berbeda
+  portfolio/mret: Kembali bulanan
+  portfolio/om: tampilkan rasio omega
+  portfolio/perf: kinerja portofolio versus benchmark
+  portfolio/po: portofolio optimisasi, mengoptimalkan beban portofolio anda secara
+    efisien
+  portfolio/po/_categories: Kategori
+  portfolio/po/_hierarchical_clustering_models_: Model Penggubah Hierarkis
+  portfolio/po/_loaded: Portfolio dimuat
+  portfolio/po/_mean_risk_optimization_: Artinya Optimisasi Risiko
+  portfolio/po/_optimized_portfolio: Portofolio teroptimasi
+  portfolio/po/_other_optimization_techniques_: Teknik Optimasi Lainnya
+  portfolio/po/_parameter: Berkas parameter
+  portfolio/po/_risk_parity_optimization_: Optimisasi Partisi Risiko
+  portfolio/po/_tickers: Tickers
+  portfolio/po/blacklitterman: portofolio litterman hitam
+  portfolio/po/dividend: ditimbang sesuai dengan hasil dibagi (property devidendeYield)
+  portfolio/po/ef: tampilkan batas efisien
+  portfolio/po/equal: sama berat
+  portfolio/po/file: berkas yang berisi parameter risiko portofolio
+  portfolio/po/herc: hierarki sama dengan resiko kontribusi
+  portfolio/po/hrp: paritas risiko hirarkis
+  portfolio/po/load: load ticker dan kategori dari berkas .xlsx atau .csv
+  portfolio/po/maxdecorr: portofolio dekorasi maksimum
+  portfolio/po/maxdiv: portofolio diversifikasi maksimum
+  portfolio/po/maxret: portofolio pengembalian maksimum
+  portfolio/po/maxsharpe: rasio maksimal portofolio Sharpe (a.k.a portofolio Tangensi)
+  portfolio/po/maxutil: risiko maksimal fungsi utilitas terbalik, diberi beberapa
+    parameter alversi risiko
+  portfolio/po/minrisk: portofolio risiko minimum
+  portfolio/po/mktcap: ditimbang berdasarkan cap pasar (pasarCap yang tepat)
+  portfolio/po/nco: optimasi clustering bersarang
+  portfolio/po/params: spesifikasikan dan tampilkan parameter risiko portofolio
+  portfolio/po/params/_loaded: Berkas yang dimuat
+  portfolio/po/params/_model: Model yang menarik
+  portfolio/po/params/_parameters_: Parameter
+  portfolio/po/params/arg: set nilai yang berbeda untuk sebuah argumen
+  portfolio/po/params/clear: model yang jelas dari parameter yang disaring
+  portfolio/po/params/file: muat parameter risiko portofolio
+  portfolio/po/params/load: pilih berkas parameter portofolio
+  portfolio/po/params/save: simpan parameter risiko portofolio ke berkas yang dispesifikasikan
+  portfolio/po/params/set: set model bunga ke parameter filter
+  portfolio/po/plot: plot bagan yang dipilih dari daftar portofolio yang disimpan
+  portfolio/po/property: berat menurut properti info terpilih
+  portfolio/po/relriskparity: relax risiko parity menggunakan pendekatan paling sedikit
+    persegi
+  portfolio/po/riskparity: risiko parity portofolio menggunakan pendekatan anggaran
+    risiko
+  portfolio/po/rpf: hapus portofolio dari daftar portofolio yang disimpan
+  portfolio/po/show: tampilkan portofolio terpilih dan kategori dari daftar portofolio
+    yang disimpan
+  portfolio/rbeta: beta rolling
+  portfolio/rsharpe: align-reference-type
+  portfolio/rsort: sortino rolling
+  portfolio/rvol: volatilitas rolling
+  portfolio/show: tampilkan transaksi yang telah ada
+  portfolio/summary: semua portofolio vs benchmark metriks untuk periode tertentu
+    pilihan
+  portfolio/var: tampilkan nilai pada resiko
+  portfolio/yret: kembali tahunan
+  record: sesi rekaman yang akan diubah menjadi rutinitas .openbb
+  reports: Laporan riset yang dapat diubah ukurannya melalui buku catatan jupyter
+  reports/_Custom_reports_: Laporan suai
+  reports/_OpenBB_reports_: Laporan OpenBB
+  reports/_reports_: Bangun dan jalankan laporan anda atau coba salah satu templat
+    kami
+  reports/run: Jalankan buku catatan Jupyter dari laporan OpenBBUserData/reports/custom
+  settings: pengaturan tune (export folder, zona waktu, bahasa, ukuran plot)
+  settings/_backend: Backend
+  settings/_data_source: Sumber data
+  settings/_dpi: Plot titik-titik per inci
+  settings/_flair: Flair
+  settings/_info_: Pengaturan melalui variabel lingkungan
+  settings/_language: Bahasa
+  settings/_monitor: Monitor
+  settings/_plot_height: Tinggi tong
+  settings/_plot_height_pct: Tinggi plot [%]
+  settings/_plot_width: Lebar perkembangbiakan
+  settings/_plot_width_pct: Lebar plot [%]
+  settings/_preferred_data_source_file: Berkas sumber data yang disukai
+  settings/_timezone: Zona Waktu
+  settings/_user_data_folder: Folder Data Pengguna
+  settings/autoscaling: plot autoscaling
+  settings/backend: planning backend (None, tkAgg, MacOSX, Qt5Agg)
+  settings/colors: set your own terminal colors
+  settings/dpi: titik per inci
+  settings/dt: tambah atau hapus tanggal waktu dari bakat
+  settings/flair: set emoji bakat untuk digunakan
+  settings/height: pilih tinggi plot
+  settings/lang: bahasa terminal
+  settings/monitor: monitor yang akan ditampilkan (primary 0, sekunder 1)
+  settings/pheight: pilih tinggi persentase plot
+  settings/pwidth: pilih lebar persentase plot
+  settings/source: spesifikasikan berkas sumber data
+  settings/tz: set timezone berbeda
+  settings/userdata: atur folder untuk menyimpan data pengguna
+  settings/width: pilih lebar plot
+  sources: pilih sumber data yang Anda sukai
+  sources/_info_: Dapatkan dan set sumber data baku
+  sources/get: mendapatkan sumber data yang tersedia yang terkait dengan perintah
+  sources/set: set sumber data baku untuk sebuah perintah
+  stocks: akses nilai data sejarah, pilihan, sektor dan industri, dan keseluruhan
+    kerajinan karena
+  stocks/_ticker: Stok
+  stocks/ba: analisis perilaku, dari reddit, stocktwits, twitter, google
+  stocks/ba/_ticker: Tiker
+  stocks/ba/bullbear: memperkirakan sentimen cepat dari 30 pesan terakhir di papan
+  stocks/ba/getdd: mendapatkan penilaian due dari posting pengguna lain
+  stocks/ba/headlines: sentimen dari 15+ berita utama
+  stocks/ba/hist: plot data sejarah RHI dan AHI per jam
+  stocks/ba/infer: infer tentang sentimen saham dari tweet terbaru
+  stocks/ba/interest: bunga selama waktu kalimat versus harga saham
+  stocks/ba/jcdr: Saran harian Jim Cramer
+  stocks/ba/jctr: Jim Cramer rekomendasi oleh ticker
+  stocks/ba/load: memuat ticker stok tertentu untuk analisis
+  stocks/ba/mentions: bunga lebih dari waktu didasarkan pada menyebutkan saham
+  stocks/ba/messages: keluaran hingga ke 30 pesan terakhir di papan
+  stocks/ba/popular: tampilkan ticker populer
+  stocks/ba/queries: pertanyaan terkait atas dengan stok ini
+  stocks/ba/redditsent: pencarian reddit untuk ticker dan menemukan sentimen reddit
+  stocks/ba/regions: daerah yang menunjukkan minat tertinggi pada stok
+  stocks/ba/rise: top rising related queries dengan stok
+  stocks/ba/sentiment: prediksi sentimen in-depth dari tweets dari waktu ke waktu
+  stocks/ba/snews: harga saham ditampilkan atas sentimen berita utama
+  stocks/ba/spac: tampilkan pengumuman pengguna lain spac dari subs lain
+  stocks/ba/spacc: tampilkan pengumuman spac pengguna lain dari subreddit SPACs
+  stocks/ba/stalker: menguntit pesan terakhir pengguna dari Stocktwits
+  stocks/ba/trending: stok trending
+  stocks/ba/watchlist: tampilkan daftar pengawasan pengguna lainnya
+  stocks/ba/wsb: tampilkan apa yang geng WSB terserah di wallstreetbets
+  stocks/bt: stratester strategi, ema sederhana, ema cross, rsi strategi
+  stocks/bt/_ticker: Tiker
+  stocks/bt/ema: beli ketika harga melebihi EMA↑l)
+  stocks/bt/emacross: beli ketika EMA Treadwellshort) > EMA○long)
+  stocks/bt/rsi: beli ketika RSI < rendah dan jual ketika RSI > tinggi
+  stocks/bt/whatif: bagaimana jika Anda telah membeli saham X pada hari Y
+  stocks/ca: analisis perbandingan, mendapatkan sama, sejarah, korelasi, keuangan
+  stocks/ca/_similar: Perusahaan Serupa
+  stocks/ca/_ticker: Ticker untuk mendapatkan perusahaan yang sama dari
+  stocks/ca/add: tambahkan lebih banyak perusahaan serupa
+  stocks/ca/balance: menyeimbangkan perbandingan keuangan
+  stocks/ca/cashflow: perbandingan kasflow
+  stocks/ca/financial: perbandingan keuangan singkat
+  stocks/ca/get: mendapatkan saham yang sama
+  stocks/ca/hcorr: Harga sejarah berkorelasi
+  stocks/ca/historical: perbandingan data sejarah harga
+  stocks/ca/income: perbandingan keuangan
+  stocks/ca/overview: perbandingan overview singkat
+  stocks/ca/ownership: perbandingan kepemilikan singkat
+  stocks/ca/performance: perbandingan kinerja singkat
+  stocks/ca/rmv: hapus perusahaan yang sama secara individu atau semua
+  stocks/ca/scorr: ikatan sentimen
+  stocks/ca/sentiment: perbandingan analisis sentimen
+  stocks/ca/set: reset dan atur perusahaan serupa
+  stocks/ca/technical: perbandingan teknis singkat
+  stocks/ca/ticker: set ticker untuk mendapatkan perusahaan serupa dari
+  stocks/ca/tsne: jalankan TSNE pada semua saham SP500 dan mengembalikan ticker terdekat
+  stocks/ca/valuation: perbandingan penilaian singkat
+  stocks/ca/volume: sejarah perbandingan volume data
+  stocks/candle: lihat sebuah bagan lilin untuk statter stok tertentu
+  stocks/codes: FIGI, SIK dan kode SIC
+  stocks/dd: in-depth due-diligence, news, analis, shorts, insider, sec
+  stocks/dd/_ticker: Tiker
+  stocks/dd/analyst: Harga analis dan rating perusahaan
+  stocks/dd/arktrades: mendapatkan ARK tradings untuk ticker
+  stocks/dd/customer: Daftar pelanggan
+  stocks/dd/est: Perempatan dan tahun analis memperkirakan pendapatan
+  stocks/dd/load: memuat ticker stok tertentu untuk analisis
+  stocks/dd/pt: target harga dari waktu ke waktu
+  stocks/dd/rating: Rating dari waktu ke waktu (dai)
+  stocks/dd/rot: jumlah analis rating dari waktu ke waktu (bulan)
+  stocks/dd/sec: Pengarsipan SEC
+  stocks/dd/supplier: daftar pemasok
+  stocks/disc: menemukan saham trending, peta, sektor, bunga tinggi pendek
+  stocks/disc/active: saham yang paling aktif oleh volume perdagangan intraday
+  stocks/disc/arkord: orders by ARK Investment Management LLC
+  stocks/disc/asc: Saham kecil dengan tingkat pertumbuhan pendapatan lebih baik dari
+    25%
+  stocks/disc/cnews: berita yang disesuaikan (Buybacks, ipos, spacs, kesehatan, politik)
+  stocks/disc/divcal: kalender pembagi untuk tanggal yang dipilih
+  stocks/disc/fipo: tanggal IPOs masa depan
+  stocks/disc/gainers: tampilkan peraihan atas terbaru
+  stocks/disc/gtech: Saham teknologi dengan pendapatan dan pendapatan pertumbuhan
+    lebih dari 25%
+  stocks/disc/heatmap: heatmap dari SP500 tickers
+  stocks/disc/hotpenny: Saham koin panas hari ini
+  stocks/disc/losers: tampilkan pecundang top terbaru
+  stocks/disc/lowfloat: Saham float rendah di bawah saham 10M mengapung
+  stocks/disc/pipo: tanggal IPOs masa lalu
+  stocks/disc/rtat: top 10 eceran saham diperdagangkan per hari
+  stocks/disc/trending: berita tren
+  stocks/disc/ugs: saham yang kurang dihargai dengan pendapatan dan pendapatan pertumbuhan
+    di atas 25%
+  stocks/disc/ulc: saham cap besar yang berpotensi kurang dihargai
+  stocks/disc/upcoming: Pendapatan mendatang tanggal rilis
+  stocks/dps: dark pool and short data, darkpool, short interest, ftd
+  stocks/dps/_ticker: Tiker
+  stocks/dps/ctb: biaya untuk meminjam saham
+  stocks/dps/dpotc: kolam gelap (ATS) vs data OTC
+  stocks/dps/ftd: data failed-to-deliver
+  stocks/dps/hsi: menunjukkan top high short interest saham lebih dari 20% rasio
+  stocks/dps/load: memuat ticker stok tertentu untuk analisis
+  stocks/dps/pos: posisi pendek kolam gelap
+  stocks/dps/prom: tanda centang menjanjikan berdasarkan saham pool gelap regresi
+  stocks/dps/psi: harga vs volume bunga pendek
+  stocks/dps/shorted: tampilkan stok yang paling pendek
+  stocks/dps/sidtc: bunga pendek dan hari untuk menutupi
+  stocks/dps/spos: posisi net pendek vs
+  stocks/fa: analisis fundamental, pendapatan, keseimbangan, uang tunai, penghasilan
+  stocks/fa/_ticker: Tiker
+  stocks/fa/analysis: Analisa pengarsipan SEC dengan bantuan pembelajaran mesin
+  stocks/fa/balance: neraca perusahaan
+  stocks/fa/cal: Pendapatan kalender dan perkiraan perusahaan
+  stocks/fa/cash: aliran kas perusahaan
+  stocks/fa/data: fundamental dan teknis data perusahaan
+  stocks/fa/dcf: arus kas terstomisasi Excel canggih
+  stocks/fa/dcfc: menentukan aliran kas (sejarah) yang didiskon
+  stocks/fa/divs: menunjukkan perbedaan sejarah bagi perusahaan
+  stocks/fa/dupont: rincian rusak untuk kembali pada ekuitas
+  stocks/fa/earnings: pendapatan tanggal dan laporan EPS
+  stocks/fa/enterprise: nilai perusahaan
+  stocks/fa/epsfc: Diperhitungkan oleh Analis - EPS
+  stocks/fa/fraud: rasio penipuan kunci
+  stocks/fa/growth: pertumbuhan butir pernyataan keuangan dan rasio
+  stocks/fa/hq: buka lokasi HQ perusahaan
+  stocks/fa/income: laporan laba rugi perusahaan
+  stocks/fa/info: lingkup informasi perusahaan
+  stocks/fa/key: metrik kunci perusahaan
+  stocks/fa/load: memuat ticker stok tertentu untuk analisis
+  stocks/fa/metrics: metrik kunci dari waktu ke waktu
+  stocks/fa/mgmt: tim manajemen perusahaan
+  stocks/fa/mktcap: perkiraan ujung pasar
+  stocks/fa/overview: Overview perusahaan
+  stocks/fa/profile: profil perusahaan
+  stocks/fa/quote: informasi kutipan stok terrinci
+  stocks/fa/ratios: rasio in-depth dari waktu ke waktu
+  stocks/fa/revfc: Diperhitungkan oleh Analis - Pendapatan
+  stocks/fa/score: investasi skor dari Warren Buffett dan co
+  stocks/fa/shrs: pemegang saham (insiders, institusi dan dana bersama)
+  stocks/fa/splits: stare split dan reverse split kejadian sejak IPO
+  stocks/fa/sust: Nilai kesinambungan (pengalaman, sosial dan pemerintahan)
+  stocks/fa/warnings: peringatan perusahaan menurut buku Sean Seah
+  stocks/fa/web: buka peramban web perusahaan
+  stocks/forecast: teknik prakiraan, rnn, nbeats, transformer, block rnn
+  stocks/gov: menu pemerintah, perdagangan rumah, kontrak, lobi perusahaan
+  stocks/gov/_explore: Jelajahi
+  stocks/gov/_ticker: Tiker
+  stocks/gov/contracts: menunjukkan kontrak pemerintah
+  stocks/gov/gtrades: tampilkan perdagangan pemerintah
+  stocks/gov/histcont: bersejarah kontrak triwulan pemerintah
+  stocks/gov/lastcontracts: menunjukkan kontrak pemerintah terakhir yang diberikan
+  stocks/gov/lasttrades: trade terakhir
+  stocks/gov/load: load sebuah ticker spesifik untuk analisis
+  stocks/gov/lobbying: rincian lobi perusahaan
+  stocks/gov/qtrcontracts: analisis kontrak triwulan pemerintah
+  stocks/gov/topbuys: tampilkan saham yang paling dibeli
+  stocks/gov/toplobbying: top perusahaan melobi tickers
+  stocks/gov/topsells: tampilkan saham yang paling terjual
+  stocks/ins: insider trading, centlar stock buys, top officer pembelian
+  stocks/ins/_last_insiders: Insiders Terakhir
+  stocks/ins/_preset: Prasetel
+  stocks/ins/_ticker: Tiker
+  stocks/ins/_top_insiders: Insiders Atas
+  stocks/ins/act: aktivitas insider dari waktu ke waktu
+  stocks/ins/blcp: pembelian besar terbaru CEO/CFO ($25k+)
+  stocks/ins/blcs: besar terbaru CEO/CFO penjualan ($100k+)
+  stocks/ins/blip: pembelian orang dalam besar terbaru ($25k+)
+  stocks/ins/blis: penjualan besar terbaru insider ($100k+)
+  stocks/ins/blop: pembelian perwira terbaru besar ($25k+)
+  stocks/ins/blos: penjualan perwira terbaru besar ($100k+)
+  stocks/ins/filter: filter insiders berdasarkan preset
+  stocks/ins/lcb: cluster terbaru dibeli
+  stocks/ins/lins: perdagangan orang dalam terakhir perusahaan
+  stocks/ins/lip: pembelian insider terbaru
+  stocks/ins/lis: penjualan insider terbaru
+  stocks/ins/lit: trading insider terbaru (semua berkas)
+  stocks/ins/load: memuat ticker stok tertentu untuk analisis
+  stocks/ins/lpsb: pembelian saham penny terbaru
+  stocks/ins/set: set salah satu dari preset yang tersedia
+  stocks/ins/stats: statistik insider perusahaan
+  stocks/ins/tippm: pembelian top insider bulan lalu
+  stocks/ins/tippw: pembelian top insider minggu lalu
+  stocks/ins/tipt: pembelian top insider hari ini
+  stocks/ins/tispm: penjualan top insider bulan lalu
+  stocks/ins/tispw: atas penjualan orang dalam minggu lalu
+  stocks/ins/tist: penjualan top insider hari ini
+  stocks/ins/toppm: pembelian perwira tinggi bulan lalu
+  stocks/ins/toppw: pembelian perwira tinggi minggu lalu
+  stocks/ins/topt: pembelian perwira tinggi hari ini
+  stocks/ins/view: tampilkan preset yang tersedia
+  stocks/load: memuat stacker stok tertentu dan informasi tambahan untuk analisis
+  stocks/news: berita terbaru dari perusahaan
+  stocks/options: menu opsi, rantai, bunga terbuka, yunani, parity
+  stocks/options/_expiry: Kadaluarsa
+  stocks/options/_ticker: Tiker
+  stocks/options/binom: tampilkan nilai dari sebuah opsi menggunakan opsi binomial
+    pricing
+  stocks/options/calc: call/put PnL kalkulator dasar
+  stocks/options/chains: tampilkan rantai opsi dengan yunani
+  stocks/options/exp: lihat dan atur tanggal kedaluwarsa
+  stocks/options/greeks: tampilkan yunani untuk sebuah opsi yang diberikan
+  stocks/options/grhist: riwayat yunani pilihan plot
+  stocks/options/hedge: menampilkan beban portofolio untuk menetralkan delta
+  stocks/options/hedge/_expiry: Kadaluarsa
+  stocks/options/hedge/_ticker: Tiker
+  stocks/options/hedge/_underlying: Dibawah Posisi Aset
+  stocks/options/hedge/add: tambah pilihan ke daftar opsi
+  stocks/options/hedge/list: tampilkan harga strike yang tersedia untuk panggilan
+    dan menempatkan
+  stocks/options/hedge/pick: pilih posisi aset yang mendasari
+  stocks/options/hedge/plot: tampilkan pilihan keluaran diagram
+  stocks/options/hedge/rmv: hapus sebuah pilihan dari daftar opsi
+  stocks/options/hedge/sop: tampilkan pilihan yang dipilih dan beban portofolio netral
+  stocks/options/hist: riwayat opsi plot
+  stocks/options/info: tampilkan informasi opsi (volatilitas, IV rank dsb)
+  stocks/options/load: load ticker baru
+  stocks/options/oi: plot open interest
+  stocks/options/parity: menampilkan apakah opsi berada di atas atau di bawah harga
+    yang diharapkan
+  stocks/options/pcr: tampilkan tandai rasio panggilan untuk ticker
+  stocks/options/plot: variabel plot yang disediakan oleh pengguna
+  stocks/options/pricing: menampilkan opsi pricing dan risiko valuasi netral
+  stocks/options/pricing/_expiry: Kadaluarsa
+  stocks/options/pricing/_ticker: Tiker
+  stocks/options/pricing/add: tambahkan harga yang diharapkan ke daftar
+  stocks/options/pricing/rmv: hapus harga yang diharapkan dari daftar
+  stocks/options/pricing/rnval: risiko valuasi netral untuk sebuah pilihan
+  stocks/options/pricing/show: tampilkan daftar harga yang diharapkan
+  stocks/options/screen: screen tickers based on preset
+  stocks/options/screen/_preset: Prasetel
+  stocks/options/screen/_screened_tickers: Centang terakhir yang dilayari
+  stocks/options/screen/ca: mengambil ini untuk membandingkan menu analisis
+  stocks/options/screen/scr: layar data dari preset ini
+  stocks/options/screen/set: set salah satu dari preset yang tersedia
+  stocks/options/screen/view: tampilkan preset yang tersedia (atau satu pada khususnya)
+  stocks/options/unu: tampilkan aktivitas opsi yang tidak biasa
+  stocks/options/voi: plot volume dan bunga terbuka
+  stocks/options/vol: plot volume
+  stocks/options/vsurf: tampilkan permukaan volatilitas 3D
+  stocks/qa: Analisa kuantitatif, membusuk, cusum, analisis sisa
+  stocks/qa/_other_: Lainnya
+  stocks/qa/_plots_: Plot
+  stocks/qa/_risk_: Risiko
+  stocks/qa/_rolling_metrics_: Metrik Rolling
+  stocks/qa/_statistics_: Statistik
+  stocks/qa/_target: Kolom Target
+  stocks/qa/_ticker: Tiker
+  stocks/qa/acf: (partial) auto-korelasi fungsi diferensial dari harga
+  stocks/qa/beta: tampilkan beta w.r.t ke setiap referensi ticker
+  stocks/qa/bw: kotak dan plot kumis
+  stocks/qa/capm: kapital aset pricing model
+  stocks/qa/cdf: fungsi distribusi kumulatif
+  stocks/qa/cusum: mendeteksi perubahan mendadak menggunakan algoritma jumlah kumulatif
+    harga
+  stocks/qa/decompose: dekomposisi dalam cyclic-trend, season, dan sisa-sisa harga
+  stocks/qa/es: tampilkan shortfall yang diharapkan
+  stocks/qa/hist: histogram dengan kepadatan plot
+  stocks/qa/kurtosis: guling kurtosis distribusi harga
+  stocks/qa/line: baris plot dari target yang dipilih
+  stocks/qa/load: load ticker baru
+  stocks/qa/normality: statistik normalitas dan tes
+  stocks/qa/om: tampilkan rasio omega
+  stocks/qa/pick: pilih kolom target untuk dianalisa
+  stocks/qa/qqplot: sisa-sisa terhadap kurva normal standar
+  stocks/qa/quantile: rolling Median dan kuantil harga
+  stocks/qa/raw: tampilkan data mentah
+  stocks/qa/rolling: rolling mean and std deviation of prices
+  stocks/qa/sh: tampilkan rasio sharpe
+  stocks/qa/skew: rolling skewerness distribusi harga
+  stocks/qa/so: tampilkan rasio sortino
+  stocks/qa/spread: variansi bergulir dan deviasi std harga
+  stocks/qa/summary: ringkasan statistik singkat dari stok yang dimuat
+  stocks/qa/unitroot: uji akar unit untuk kestasibatan (ADF, KPSS)
+  stocks/qa/var: tampilkan nilai pada resiko
+  stocks/quote: tampilkan harga saat ini untuk sebuah stacker stok tertentu
+  stocks/res: laman web penelitian, makroaxis, yahoo keuangan, bodoh
+  stocks/res/_ticker: Tiker
+  stocks/res/barchart: www.barchart.com
+  stocks/res/bullrun: www.bullrun.com.br
+  stocks/res/businessinsider: www.markets.businessinsider.com
+  stocks/res/fidelity: www.eresearch.fidelity.com
+  stocks/res/fintel: www.fintel.com
+  stocks/res/finviz: www.finviz.com
+  stocks/res/fmp: www.financialmodelingprep.com
+  stocks/res/fool: www.fool.com
+  stocks/res/grufity: www.grufity.com
+  stocks/res/macroaxis: www.macroaxis.com
+  stocks/res/macrotrends: www.macrotrends.net
+  stocks/res/marketchameleon: www.marketchameleon.com
+  stocks/res/marketwatch: www.marketwatch.com
+  stocks/res/newsfilter: www.newsfilter.io
+  stocks/res/stockanalysis: www.stockanalysis.com
+  stocks/res/stockrow: www.stockrow.com
+  stocks/res/tradingview: www.tradingview.com
+  stocks/res/yahoo: www.finance.yahoo.com
+  stocks/res/zacks: www.zacks.com
+  stocks/scr: saham screener, overview/kinerance, menggunakan penyaring preset
+  stocks/scr/_preset: Prasetel
+  stocks/scr/_screened_tickers: Centang terakhir yang dilayari
+  stocks/scr/ca: mengambil ini untuk membandingkan menu analisis
+  stocks/scr/financial: keuangan (misal Dividen, ROA, ROE, ROI, Earings)
+  stocks/scr/historical: lihat harga sejarah
+  stocks/scr/overview: Overview (e.g. Sektor, Industri, Market Cap, Volume)
+  stocks/scr/ownership: kepemilikan (misal floating, Insider Own, Short Racio)
+  stocks/scr/performance: kinerja (misal Perf Week, Perf YTD, Volatilitas M)
+  stocks/scr/set: set salah satu dari preset yang tersedia
+  stocks/scr/technical: Teknis (e.g. Beta, SMA50, 52W Low, RSI, Change)
+  stocks/scr/valuation: valuasi (misalnya P/E, PEG, P/S, P/B, EPS ini Y)
+  stocks/scr/view: tampilkan preset yang tersedia (baku dan adat)
+  stocks/search: cari sebuah ticker stok tertentu untuk dianalisa
+  stocks/sia: analisis sektor dan industri, perusahaan per sektor, rasio cepat per
+    industri dan negara
+  stocks/sia/_country: Negara
+  stocks/sia/_exclude_exchanges: Exchanges Exchanges Explude
+  stocks/sia/_financials_: Finansial
+  stocks/sia/_financials_loaded_: Finansial - data yang dimuat (mode cepat)
+  stocks/sia/_industry: Industri
+  stocks/sia/_mktcap: Cap Market
+  stocks/sia/_period: Periode
+  stocks/sia/_returned_tickers: Centang yang dikembalikan
+  stocks/sia/_sector: Sektor
+  stocks/sia/_statistics_: Statistik
+  stocks/sia/ca: mengambil ini untuk membandingkan menu analisis
+  stocks/sia/clear: jelas semua atau salah satu industri, sektor, negara dan parameter
+    kap pasar
+  stocks/sia/country: lihat negara yang ada, atau set negara jika arg dispesifikasikan
+  stocks/sia/cpci: perusahaan per Negara berdasarkan Industri (dan Cap Pasar)
+  stocks/sia/cpcs: per perusahaan berdasarkan Sektor (dan Cap Pasar)
+  stocks/sia/cpic: Perusahaan per Industri berdasarkan Negara (dan Cap Pasar)
+  stocks/sia/cpis: perusahaan per Industri berdasarkan Sektor (dan Cap Pasar)
+  stocks/sia/cps: perusahaan per Sektor berdasarkan Negara (dan Cap Pasar)
+  stocks/sia/exchange: jangan abaikan bendera pertukaran internasional
+  stocks/sia/industry: lihat industri yang ada, atau set industri jika arg dispesifikasikan
+  stocks/sia/metric: visualisasikan metrik keuangan seluruh filter yang dipilih
+  stocks/sia/mktcap: set mktcap antara nano, mikro, kecil, tengah, besar atau mega
+  stocks/sia/period: mengatur periode antara tahunan, triwulan atau akhiran
+  stocks/sia/sector: lihat sektor yang ada, atau set sektor jika arg dispesifikasikan
+  stocks/sia/select: pilih sebuah ticker tertentu dan semua itu parameter yang sesuai
+  stocks/sia/vis: visualisasikan metrik keuangan seluruh filter yang dipilih
+  stocks/ta: analisis teknis, ema, macd, RIS, adx, bbands, obv
+  stocks/ta/_custom_: Ubahan
+  stocks/ta/_momentum_: Momentum
+  stocks/ta/_overlap_: Overlap
+  stocks/ta/_ticker: Tiker
+  stocks/ta/_trend_: Trend
+  stocks/ta/_volatility_: Kesia-siaan
+  stocks/ta/_volume_: Volume
+  stocks/ta/ad: Baris akumulasi/distribusi
+  stocks/ta/adosc: Osilator chaikin
+  stocks/ta/adx: indeks pergerakan arah rata-rata
+  stocks/ta/aroon: Indikator °O
+  stocks/ta/atr: jangkauan benar rata-rata
+  stocks/ta/bbands: Band bolinger
+  stocks/ta/cci: indeks kanal komoditas
+  stocks/ta/cg: pusat gravitasi
+  stocks/ta/clenow: volatilitas clenow disesuaikan momentum
+  stocks/ta/demark: Indikator sequential Tom Demark
+  stocks/ta/donchian: saluran Donchian
+  stocks/ta/ema: rata-rata perpindahan eksponensial
+  stocks/ta/fib: retracement fibonacci
+  stocks/ta/fisher: transform fisher
+  stocks/ta/hma: lambung bergerak rata-rata
+  stocks/ta/kc: kanal keltner
+  stocks/ta/macd: pindah rata-rata konvergensi/perubahan
+  stocks/ta/obv: pada volume neraca
+  stocks/ta/recom: rekomendasi berdasarkan indikator teknis
+  stocks/ta/rsi: indeks kekuatan relatif
+  stocks/ta/rsp: persentil kekuatan relatif
+  stocks/ta/sma: rata-rata pindah sederhana
+  stocks/ta/stoch: stochastic oscilator
+  stocks/ta/summary: Laporan ringkasan teknis
+  stocks/ta/tv: buka bagan interaktif pada
+  stocks/ta/view: view historical data and trendlines
+  stocks/ta/vwap: volume harga rata-rata
+  stocks/ta/wma: loaded moving rata-rata
+  stocks/ta/zlma: nol lag bergerak rata-rata
+  stocks/th: jam perdagangan, memeriksa pasar terbuka
+  stocks/th/_exchange: Pertukaran terbuka
+  stocks/th/_symbol: Simbol
+  stocks/th/_symbol_name: Nama simbol
+  stocks/th/all: tampilkan semua pasar
+  stocks/th/closed: tampilkan pasar tertutup
+  stocks/th/exchange: tampilkan satu pertukaran
+  stocks/th/holidays: menunjukkan semua tanggal dimana ada hari libur pasar
+  stocks/th/open: tampilkan pasar terbuka
+  stocks/th/symbol: pilih simbol
+  stocks/tob: tampilkan puncak buku untuk ticker dimuat (hanya pertukaran AS)
+  stop: Hentikan rekaman sesi
+  support: pre-populasi tiket dukungan bagi tim kami untuk mengevaluasi
+  survey: mengisi survei kami 2 menit jadi kita lebih baik memahami bagaimana kita
+    dapat meningkatkan terminal
+  update: mencoba untuk memperbarui terminal secara otomatis (versi GitHub)
+  wiki: cari sebuah ekspresi di Wikipedia (https://www.wikipedia.org/)

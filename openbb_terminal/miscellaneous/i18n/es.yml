@@ -1036,11 +1036,11 @@ es:
   stocks/res/_ticker: Ticker
   stocks/res/barchart: www.barchart.com
   stocks/res/bullrun: www.bullrun.com.br
-  stocks/res/businessinsider: www.markets.businessinider.com
+  stocks/res/businessinsider: www.markets.businessinsider.com
   stocks/res/fidelity: www.eresearch.fidelity.com
   stocks/res/fintel: www.fintel.com
   stocks/res/finviz: www.finviz.com
-  stocks/res/fmp: www.financieromodelingprep.com
+  stocks/res/fmp: www.financialmodelingprep.com
   stocks/res/fool: www.fool.com
   stocks/res/grufity: www.grufity.com
   stocks/res/macroaxis: www.macroaxis.com
