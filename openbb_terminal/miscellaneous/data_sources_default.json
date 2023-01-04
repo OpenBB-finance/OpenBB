@@ -508,6 +508,7 @@
       "rs": ["GitHub"],
       "sh": ["GitHub"],
       "tr": ["GitHub"]
-    }
+    },
+    "hn": ["HackerNews"]
   }
 }
