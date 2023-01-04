@@ -535,6 +535,8 @@ def get_financial_growth(
             )
 
         df_fa = clean_metrics_df(df_fa, num=limit)
+
+        df_fa = df_fa[df_fa.columns[::-1]]
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
@@ -564,7 +566,8 @@ def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = True) -> pd.Data
     pd.DataFrame
         Cleaned metrics data frame
     """
-
+    # iloc will fail if number is greater than number of columns
+    num = min(num, data.shape[1])
     data = data.iloc[:, 0:num]
     if mask:
         data = data.mask(data.astype(object).eq(num * ["None"])).dropna()

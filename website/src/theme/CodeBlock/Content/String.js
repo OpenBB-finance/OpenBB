@@ -28,7 +28,8 @@ export default function CodeBlockString({
   const language =
     languageProp ?? parseLanguage(blockClassName) ?? defaultLanguage;
   const prismTheme = usePrismTheme();
-  const wordWrap = useCodeWordWrap();
+  const wordWrap = useCodeWordWrap()
+
   // We still parse the metastring in case we want to support more syntax in the
   // future. Note that MDX doesn't strip quotes when parsing metastring:
   // "title=\"xyz\"" => title: "\"xyz\""
@@ -40,14 +41,17 @@ export default function CodeBlockString({
   });
   const showLineNumbers =
     showLineNumbersProp ?? containsLineNumbers(metastring);
+  
+  const shouldWordwrapByDefault = metastring?.includes("wordwrap")
+
   return (
     <Container
       as="div"
       className={clsx(
         blockClassName,
         language &&
-          !blockClassName.includes(`language-${language}`) &&
-          `language-${language}`
+        !blockClassName.includes(`language-${language}`) &&
+        `language-${language}`
       )}
     >
       {title && <div className={styles.codeBlockTitle}>{title}</div>}
@@ -66,6 +70,10 @@ export default function CodeBlockString({
               className={clsx(className, styles.codeBlock, "thin-scrollbar")}
             >
               <code
+                style={shouldWordwrapByDefault ? {
+                  whiteSpace: 'pre-wrap',
+                  overflowWrap: 'anywhere'
+                } : {}}
                 className={clsx(
                   styles.codeBlockLines,
                   showLineNumbers && styles.codeBlockLinesWithNumbering

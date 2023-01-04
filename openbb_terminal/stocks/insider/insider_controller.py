@@ -5,19 +5,21 @@ import argparse
 import configparser
 import logging
 from typing import List
+
 import pandas as pd
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.insider import (
     businessinsider_view,
     finviz_view,
-    openinsider_view,
     openinsider_model,
+    openinsider_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -106,7 +108,7 @@ class InsiderController(StockBaseController):
         mt.add_cmd("lip")
         mt.add_cmd("blip")
         mt.add_cmd("blop")
-        mt.add_cmd("bclp")
+        mt.add_cmd("blcp")
         mt.add_cmd("lis")
         mt.add_cmd("blis")
         mt.add_cmd("blos")

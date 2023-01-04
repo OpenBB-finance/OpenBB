@@ -13,14 +13,14 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_REPORTS_DIRECTORY,
 )
-from openbb_terminal.helper_funcs import parse_simple_args
 from openbb_terminal.reports import reports_model
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
-from openbb_terminal.terminal_helper import is_packaged_application
+
+# from openbb_terminal.terminal_helper import is_packaged_application
 
 logger = logging.getLogger(__name__)
 
@@ -145,9 +145,9 @@ class ReportController(BaseController):
 
     @log_start_end(log=logger)
     def call_forecast(self, other_args: List[str]):
-        if is_packaged_application():
-            console.print("This report is disabled for the installed version")
-            return
+        # if is_packaged_application():
+        #     console.print("This report is disabled for the installed version")
+        #     return
 
         try:
             import darts  # pyright: reportMissingImports=false # noqa: F401, E501 #pylint: disable=import-outside-toplevel, unused-import
@@ -202,7 +202,7 @@ class ReportController(BaseController):
                 other_args.insert(
                     0, "--" + list(self.PARAMETERS_DICT[report_name].keys())[0]
                 )
-            ns_parser = parse_simple_args(parser, other_args)
+            ns_parser = self.parse_simple_args(parser, other_args)
 
             if ns_parser:
                 cfg.LOGGING_SUPPRESS = True

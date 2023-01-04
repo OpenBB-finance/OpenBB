@@ -74,9 +74,18 @@ class StocksController(StockBaseController):
     PATH = "/stocks/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
-    country = financedatabase.show_options("equities", "countries")
-    sector = financedatabase.show_options("equities", "sectors")
-    industry = financedatabase.show_options("equities", "industries")
+    try:
+        country = financedatabase.show_options("equities", "countries")
+        sector = financedatabase.show_options("equities", "sectors")
+        industry = financedatabase.show_options("equities", "industries")
+    except Exception:
+        country, sector, industry = {}, {}, {}
+        console.print(
+            "[red]Note: Some datasets from GitHub failed to load. This means that the `search` command and "
+            "the /stocks/sia menu will not work. If other commands are failing please check your internet connection or "
+            "communicate with your IT department that certain websites are blocked.[/red] \n"
+        )
+
     TOB_EXCHANGES = ["BZX", "EDGX", "BYX", "EDGA"]
     CHOICES_GENERATION = True
 

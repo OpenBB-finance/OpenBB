@@ -95,7 +95,7 @@ def __mock_parse_known_args_and_warn(
 
 def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> None:
     """Add the arguments that would have normally added by:
-        - openbb_terminal.helper_funcs.parse_simple_args
+        - openbb_terminal.parent_classes.BaseController.parse_simple_args
 
     Parameters
     ----------
@@ -199,8 +199,9 @@ def __patch_controller_functions(controller):
     )
 
     patcher_list = [
-        patch(
-            target="openbb_terminal.parent_classes.parse_simple_args",
+        patch.object(
+            target=controller,
+            attribute="parse_simple_args",
             side_effect=__mock_parse_simple_args,
             return_value=None,
         ),
