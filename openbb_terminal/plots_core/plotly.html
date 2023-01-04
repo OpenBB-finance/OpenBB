@@ -92,9 +92,14 @@
                 this._url = url;
                 return origOpen.apply(this, arguments);
             };
+
             var request = new XMLHttpRequest();
             request.open('GET', url, true);
             alert(request._url);
+
+            request.onprogress = function() {
+                log_to_div(`Loading ${request.HEADERS_RECEIVED}`);
+            };
 
             request.onload = function() {
                 log_to_div(`Loaded ${request.HEADERS_RECEIVED}`);
