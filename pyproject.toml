@@ -165,7 +165,6 @@ ignore = ["S105", "S106", "S107"]
 "tests/*" = ["S101"]
 
 [tool.ruff.flake8-import-conventions.aliases]
-altair = "alt"
 "matplotlib.pyplot" = "plt"
 numpy = "np"
 pandas = "pd"
