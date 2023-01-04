@@ -376,62 +376,68 @@ def plot_vol(
 
     options = tradier_model.get_option_chain(symbol, expiry)
 
-    current_price = tradier_model.last_price(symbol)
+    if isinstance(options, pd.DataFrame) and not options.empty:
 
-    min_strike, max_strike = get_strike_bounds(options, current_price, min_sp, max_sp)
+        current_price = tradier_model.last_price(symbol)
 
-    if calls_only and puts_only:
-        console.print("Both flags selected, please select one", "\n")
-        return
-
-    calls = options[options.option_type == "call"][["strike", "volume"]]
-    puts = options[options.option_type == "put"][["strike", "volume"]]
-    call_v = calls.set_index("strike")["volume"] / 1000
-    put_v = puts.set_index("strike")["volume"] / 1000
-
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        ax = external_axes[0]
-
-    if not calls_only:
-        put_v.plot(
-            x="strike",
-            y="volume",
-            label="Puts",
-            ax=ax,
-            marker="o",
-            ls="-",
-            c="r",
+        min_strike, max_strike = get_strike_bounds(
+            options, current_price, min_sp, max_sp
         )
-    if not puts_only:
-        call_v.plot(
-            x="strike",
-            y="volume",
-            label="Calls",
-            ax=ax,
-            marker="o",
-            ls="-",
-            c="g",
+
+        if calls_only and puts_only:
+            console.print("Both flags selected, please select one", "\n")
+            return
+
+        calls = options[options.option_type == "call"][["strike", "volume"]]
+        puts = options[options.option_type == "put"][["strike", "volume"]]
+        call_v = calls.set_index("strike")["volume"] / 1000
+        put_v = puts.set_index("strike")["volume"] / 1000
+
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        else:
+            ax = external_axes[0]
+
+        if not calls_only:
+            put_v.plot(
+                x="strike",
+                y="volume",
+                label="Puts",
+                ax=ax,
+                marker="o",
+                ls="-",
+                c="r",
+            )
+        if not puts_only:
+            call_v.plot(
+                x="strike",
+                y="volume",
+                label="Calls",
+                ax=ax,
+                marker="o",
+                ls="-",
+                c="g",
+            )
+        ax.axvline(
+            current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7
         )
-    ax.axvline(current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7)
-    ax.grid("on")
-    ax.set_xlabel("Strike Price")
-    ax.set_ylabel("Volume [1k] ")
-    ax.set_xlim(min_strike, max_strike)
-    ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
+        ax.grid("on")
+        ax.set_xlabel("Strike Price")
+        ax.set_ylabel("Volume [1k] ")
+        ax.set_xlim(min_strike, max_strike)
+        ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
 
-    theme.style_primary_axis(ax)
+        theme.style_primary_axis(ax)
 
-    if external_axes is None:
-        theme.visualize_output()
+        if external_axes is None:
+            theme.visualize_output()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "vol_tr",
-        options,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "vol_tr",
+            options,
+        )
 
 
 @log_start_end(log=logger)

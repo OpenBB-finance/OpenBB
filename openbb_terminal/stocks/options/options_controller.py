@@ -899,10 +899,7 @@ class OptionsController(BaseController):
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if (
-                        ns_parser.source == "Tradier"
-                        and API_TRADIER_TOKEN != "REPLACE_ME"  # nosec
-                    ) or self.source == "Tradier":
+                    if ns_parser.source == "Tradier":
                         tradier_view.plot_vol(
                             symbol=self.ticker,
                             expiry=self.selected_date,
