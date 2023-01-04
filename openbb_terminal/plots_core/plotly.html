@@ -91,15 +91,15 @@
             request.onload = function() {
                 if (request.status >= 200 && request.status < 400) {
                     var resp = request.responseText;
-                    log_to_div(JSON.stringify(resp));
+                    log_to_div("Loaded " + url);
                     callback(resp);
                 } else {
-                    log_to_div("Error: " + JSON.stringify(request));
+                    log_to_div("Error: " + request.status + " " + request.responseText);
                 }
             };
 
             request.onerror = function() {
-                log_to_div("Error: " + JSON.stringify(request));
+                log_to_div("Error: " + request.status + " " + request.responseText);
             };
 
             request.send();
