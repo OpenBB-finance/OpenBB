@@ -50,7 +50,7 @@ def display_oi(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiry)
+    option_chain = nasdaq_model.get_option_chain(symbol, expiry)
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -112,7 +112,7 @@ def display_oi(
 
 
 @log_start_end(log=logger)
-def display_volume(
+def plot_vol(
     symbol: str,
     expiry: str,
     min_sp: float = -1,
@@ -140,7 +140,7 @@ def display_volume(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiry)
+    option_chain = nasdaq_model.get_option_chain(symbol, expiry)
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -230,7 +230,7 @@ def display_volume_and_oi(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiry)
+    option_chain = nasdaq_model.get_option_chain(symbol, expiry)
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -322,7 +322,7 @@ def display_chains(symbol: str, expiry: str, export: str = ""):
     export: str
         Format to export data
     """
-    option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiry)
+    option_chain = nasdaq_model.get_option_chain(symbol, expiry)
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

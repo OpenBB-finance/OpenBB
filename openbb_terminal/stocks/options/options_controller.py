@@ -661,7 +661,7 @@ class OptionsController(BaseController):
                         )
                         self.chain = op_helpers.Chain(df)
                     elif self.source == "Nasdaq":
-                        df = nasdaq_model.get_chain_given_expiration(
+                        df = nasdaq_model.get_option_chain(
                             self.ticker, self.selected_date
                         )
                         self.chain = op_helpers.Chain(df, self.source)
@@ -924,7 +924,7 @@ class OptionsController(BaseController):
                             raw=ns_parser.raw,
                         )
                     elif ns_parser.source == "Nasdaq":
-                        nasdaq_view.display_volume(
+                        nasdaq_view.plot_vol(
                             symbol=self.ticker,
                             expiry=self.selected_date,
                             min_sp=ns_parser.min,

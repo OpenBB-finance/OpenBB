@@ -111,7 +111,7 @@ def get_expirations(symbol: str) -> List[str]:
 
 
 @log_start_end(log=logger)
-def get_chain_given_expiration(symbol: str, expiration: str) -> pd.DataFrame:
+def get_option_chain(symbol: str, expiration: str) -> pd.DataFrame:
     """Get option chain for symbol at a given expiration
 
     Parameters

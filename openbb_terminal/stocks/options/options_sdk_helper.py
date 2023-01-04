@@ -59,7 +59,7 @@ def get_full_option_chain(
     if source == "Nasdaq":
         # Nasdaq handles these slightly differently
         if expiration:
-            return nasdaq_model.get_chain_given_expiration(symbol, expiration)
+            return nasdaq_model.get_option_chain(symbol, expiration)
         return nasdaq_model.get_full_option_chain(symbol)
     logger.info("Invalid Source")
     return pd.DataFrame()
