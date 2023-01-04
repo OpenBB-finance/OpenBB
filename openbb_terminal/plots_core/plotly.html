@@ -82,12 +82,19 @@
     <script>
         function log_to_div(text) {
             var div = document.getElementById("openbb_chart");
-            div.innerHTML += text + '\n';
+            div.innerHTML += text + '<br>';
         }
         function http_request(url, callback) {
+            var xhrProto = XMLHttpRequest.prototype,
+                origOpen = xhrProto.open;
+
+            xhrProto.open = function (method, url) {
+                this._url = url;
+                return origOpen.apply(this, arguments);
+            };
             var request = new XMLHttpRequest();
             request.open('GET', url, true);
-            log_to_div("Loaded " + url);
+            alert(request._url);
 
             request.onload = function() {
                 log_to_div(`Loaded ${request.HEADERS_RECEIVED}`);
