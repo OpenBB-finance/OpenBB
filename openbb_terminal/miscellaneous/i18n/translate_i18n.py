@@ -37,7 +37,6 @@ for language, url in languages.items():
 
     final_translations = {}
 
-    # Iterate through the English content and translate each item into Spanish
     for key, value in tqdm(english_content.items()):
         print(f"Translating: {value}")
         # check if the value is only a website link with no other text, if so, don't translate
@@ -45,7 +44,6 @@ for language, url in languages.items():
             final_translations[key] = value
             continue
 
-        # try catch in case the translation fails
         try:
             translated = translate_pipeline(
                 value, max_length=1024, top_k=1, top_p=1, temperature=1
@@ -53,6 +51,7 @@ for language, url in languages.items():
             final_translations[key] = translated
         except Exception as e:
             print(f"Error: {e}")
+            # If there is an error, just use the original value
             final_translations[key] = value
             continue
 
