@@ -79,6 +79,41 @@
         </script>
     </div>
 
+    <script>
+        function log_to_div(text) {
+            var div = document.getElementById("openbb_chart");
+            div.innerHTML += text;
+        }
+        function http_request(url, callback) {
+            var request = new XMLHttpRequest();
+            request.open('GET', url, true);
+
+            request.onload = function() {
+                if (request.status >= 200 && request.status < 400) {
+                    var resp = request.responseText;
+                    log_to_div(JSON.stringify(resp));
+                    callback(resp);
+                } else {
+                    log_to_div("Error: " + JSON.stringify(request));
+                }
+            };
+
+            request.onerror = function() {
+                log_to_div("Error: " + JSON.stringify(request));
+            };
+
+            request.send();
+        }
+
+        http_request("/{{MAIN_PATH}}/assets/plotly.js", function(resp) {
+            log_to_div("Loaded plotly.js");
+        });
+        http_request("/{{MAIN_PATH}}/web/helpers.js", function(resp) {
+            log_to_div("Loaded helpers.js");
+        });
+
+
+    </script>
 </body>
 
 </html>
