@@ -18,6 +18,7 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import investingcom_model
+from openbb_terminal.economy.economy_helpers import text_transform
 from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
@@ -185,9 +186,6 @@ def display_spread_matrix(
                         k += spacing
                         spacing -= 1
 
-                        text_transform = (
-                            lambda x: f"{round(float(x)/100, 3)}%"
-                        )  # flake8: noqa
                         t.set_text(text_transform(current_text))
                     else:
                         t.set_text(current_text)
