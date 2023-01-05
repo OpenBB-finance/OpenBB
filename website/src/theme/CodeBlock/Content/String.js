@@ -41,7 +41,7 @@ export default function CodeBlockString({
   });
   const showLineNumbers =
     showLineNumbersProp ?? containsLineNumbers(metastring);
-  
+
   const shouldWordwrapByDefault = metastring?.includes("wordwrap")
 
   return (
