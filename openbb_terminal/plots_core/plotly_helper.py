@@ -309,4 +309,12 @@ class OpenBBFigure(go.Figure):
     def show(self, *args, **kwargs):
         """Show the figure"""
         self._set_openbb_overlays()
+        for margin, add in zip(
+            ["l", "r", "b", "t", "pad"],
+            [80, 50, 60, 35, 10],
+        ):
+            if margin in self.layout.margin and self.layout.margin[margin] is not None :
+                self.layout.margin[margin] += add
+            else:
+                self.layout.margin[margin] = add
         super().show(*args, **kwargs)

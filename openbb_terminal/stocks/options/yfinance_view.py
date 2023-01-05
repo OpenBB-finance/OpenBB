@@ -33,14 +33,10 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
+from openbb_terminal.plots_core.plotly_helper import OpenBBFigure, go
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, yfinance_model
-from openbb_terminal.stocks.options.yfinance_model import (
-    generate_data,
-    get_option_chain,
-    get_price,
-)
+from openbb_terminal.stocks.options.yfinance_model import generate_data, get_option_chain, get_price
 
 # pylint: disable=C0302,unused-argument
 
@@ -131,18 +127,7 @@ def display_chains(
         print_rich_table(
             option_chains,
             title=f"{symbol} {title} Option Chain\nYahoo (15 min delayed)",
-            floatfmt=[
-                ".2f",
-                ".2f",
-                ".2f",
-                ".2f",
-                ".0f",
-                ".0f",
-                ".3f",
-                ".3f",
-                ".3f",
-                ".3f",
-            ],
+            floatfmt=[".2f" * 4 + ".0f" * 2 + ".3f" * 4],
             headers=[
                 "Strike",
                 "Last Price",
@@ -186,27 +171,8 @@ def display_chains(
         # In order to add color to call/put, the numbers will have to be strings.
         # So floatfmt will not work in print_rich_table, so lets format them now.
 
-        float_fmt = [
-            ".3f",
-            ".3f",
-            ".3f",
-            ".3f",
-            ".0f",
-            ".0f",
-            ".2f",
-            ".2f",
-            ".2f",
-            ".2f",
-            ".2f",
-            ".2f",
-            ".2f",
-            ".0f",
-            ".0f",
-            ".3f",
-            ".3f",
-            ".3f",
-            ".3f",
-        ]
+        float_fmt = [".3f" * 4 + ".0f" * 2 + ".2f" * 7 + ".0f" * 2 + ".3f" * 4]
+
         # pylint: disable=W0640
 
         for idx, fmt in enumerate(float_fmt):
@@ -244,7 +210,7 @@ def plot_oi(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: Optional[List[go.Figure]] = None,
 ):
     """Plot open interest
 
@@ -296,35 +262,19 @@ def plot_oi(
     )
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
-    # if external_axes is None:
-    #     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    # elif is_valid_axes_count(external_axes, 1):
-    #     (ax,) = external_axes
-    # else:
-    #     return
+    if external_axes is None:
+        fig = OpenBBFigure(
+            title=f"Open Interest for {symbol.upper()} expiring {expiry}",
+            xaxis_title="Strike Price",
+            yaxis_title="Open Interest [1k]",
+            xaxis_range=[min_strike, max_strike],
+        )
+    elif is_valid_axes_count(external_axes, 1):
+        fig = OpenBBFigure(fig=external_axes[0])
 
-    # if not calls_only:
-    #     put_oi.plot(
-    #         x="strike", y="openInterest", label="Puts", ax=ax, marker="o", ls="-"
-    #     )
-    # if not puts_only:
-    #     call_oi.plot(
-    #         x="strike", y="openInterest", label="Calls", ax=ax, marker="o", ls="-"
-    #     )
-    # ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
-    # ax.axvline(max_pain, lw=3, label=f"Max Pain: {max_pain}", alpha=0.7)
-    # ax.set_xlabel("Strike Price")
-    # ax.set_ylabel("Open Interest [1k] ")
-    # ax.set_xlim(min_strike, max_strike)
-    # ax.legend(fontsize="x-small")
-    # ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiry}")
+    else:
+        return
 
-    fig = OpenBBFigure(
-        title=f"Open Interest for {symbol.upper()} expiring {expiry}",
-        xaxis_title="Strike Price",
-        yaxis_title="Open Interest [1k]",
-        xaxis_range=[min_strike, max_strike],
-    )
     fig.add_scatter(
         x=call_oi.index, y=call_oi.values, mode="lines+markers", name="Calls"
     )
@@ -339,6 +289,10 @@ def plot_oi(
         name=f"Max Pain: {max_pain}",
         line=dict(dash="dash", width=2, color="white"),
     )
+
+    if external_axes:
+        return fig
+
     fig.show()
 
 
@@ -396,23 +350,23 @@ def plot_vol(
     call_v = calls.set_index("strike")["volume"] / 1000
     put_v = puts.set_index("strike")["volume"] / 1000
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    # if external_axes is None:
+    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    # elif is_valid_axes_count(external_axes, 1):
+    #     (ax,) = external_axes
+    # else:
+    #     return
 
-    if not calls_only:
-        put_v.plot(x="strike", y="volume", label="Puts", ax=ax, marker="o", ls="-")
-    if not puts_only:
-        call_v.plot(x="strike", y="volume", label="Calls", ax=ax, marker="o", ls="-")
-    ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
-    ax.set_xlabel("Strike Price")
-    ax.set_ylabel("Volume [1k] ")
-    ax.set_xlim(min_strike, max_strike)
-    ax.legend(fontsize="x-small")
-    ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
+    # if not calls_only:
+    #     put_v.plot(x="strike", y="volume", label="Puts", ax=ax, marker="o", ls="-")
+    # if not puts_only:
+    #     call_v.plot(x="strike", y="volume", label="Calls", ax=ax, marker="o", ls="-")
+    # ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
+    # ax.set_xlabel("Strike Price")
+    # ax.set_ylabel("Volume [1k] ")
+    # ax.set_xlim(min_strike, max_strike)
+    # ax.legend(fontsize="x-small")
+    # ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
 
     fig = OpenBBFigure(
         title=f"Volume for {symbol.upper()} expiring {expiry}",
@@ -436,7 +390,7 @@ def plot_volume_open_interest(
     max_sp: float = -1,
     min_vol: float = -1,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot volume and open interest
 
@@ -647,9 +601,13 @@ def plot_volume_open_interest(
     )
 
     fig.update_layout(barmode="relative", hovermode="y unified")
-    fig.show()
 
     op_helpers.export_yf_options(export, options, "voi_yf")
+
+    if external_axes:
+        return fig
+
+    fig.show()
 
 
 @log_start_end(log=logger)
@@ -1234,7 +1192,7 @@ def show_greeks(
         symbol, expiry, div_cont, rf, opt_type, mini, maxi, show_all
     )
 
-    column_formatting = [".1f", ".4f", ".6f", ".6f", ".6f", ".6f"]
+    column_formatting = [".1f", ".4f" + ".6f" * 4]
 
     if show_all:
         additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]

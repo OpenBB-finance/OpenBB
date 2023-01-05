@@ -184,14 +184,6 @@ function OpenBBMain(plotly_figure) {
         }
     });
 
-    let margin = graphs.layout.margin;
-    margin.l += 80;
-    margin.r += 50;
-    margin.b += 60;
-    margin.t += 35;
-    margin.pad += 10;
-
-    graphs.layout.margin = margin;
     graphs.layout.dragmode = 'pan';
     graphs.layout.font.size = Math.min(CHART_DIV.clientWidth / 50, graphs.layout.font.size);
 
