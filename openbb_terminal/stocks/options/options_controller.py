@@ -43,7 +43,7 @@ from openbb_terminal.stocks.options.screen import (
     syncretism_model,
     syncretism_view,
 )
-from openbb_terminal.stocks.options.options_view import plot_vol
+from openbb_terminal.stocks.options.options_view import plot_vol, plot_oi
 
 # pylint: disable=R1710,C0302,R0916
 
@@ -1065,36 +1065,18 @@ class OptionsController(BaseController):
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if ns_parser.source == "Tradier":
-                        tradier_view.plot_oi(
-                            symbol=self.ticker,
-                            expiry=self.selected_date,
-                            min_sp=ns_parser.min,
-                            max_sp=ns_parser.max,
-                            calls_only=ns_parser.calls,
-                            puts_only=ns_parser.puts,
-                            export=ns_parser.export,
-                        )
-                    elif ns_parser.source == "YahooFinance":
-                        yfinance_view.plot_oi(
-                            symbol=self.ticker,
-                            expiry=self.selected_date,
-                            min_sp=ns_parser.min,
-                            max_sp=ns_parser.max,
-                            calls_only=ns_parser.calls,
-                            puts_only=ns_parser.puts,
-                            export=ns_parser.export,
-                            raw=ns_parser.raw,
-                        )
-                    elif ns_parser.source == "Nasdaq":
-                        nasdaq_view.display_oi(
-                            self.ticker,
-                            expiry=self.selected_date,
-                            min_sp=ns_parser.min,
-                            max_sp=ns_parser.max,
-                            export=ns_parser.export,
-                            raw=ns_parser.raw,
-                        )
+                    plot_oi(
+                        chain=self.chain,
+                        current_price=self.current_price,
+                        symbol=self.ticker,
+                        expiry=self.selected_date,
+                        min_sp=ns_parser.min,
+                        max_sp=ns_parser.max,
+                        calls_only=ns_parser.calls,
+                        puts_only=ns_parser.puts,
+                        export=ns_parser.export,
+                        raw=ns_parser.raw,
+                    )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
