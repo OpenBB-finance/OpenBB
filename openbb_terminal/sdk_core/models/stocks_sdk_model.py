@@ -1,7 +1,7 @@
 # flake8: noqa
 # pylint: disable=C0301,R0902,R0903
-from openbb_terminal.sdk_core.sdk_helpers import Category
 import openbb_terminal.sdk_core.sdk_init as lib
+from openbb_terminal.sdk_core.sdk_helpers import Category
 
 
 class StocksRoot(Category):

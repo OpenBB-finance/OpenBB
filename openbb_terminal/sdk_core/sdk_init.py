@@ -298,8 +298,6 @@ from openbb_terminal.stocks.dark_pool_shorts import (
     finra_model as stocks_dps_finra_model,
     finra_view as stocks_dps_finra_view,
     ibkr_model as stocks_dps_ibkr_model,
-    nyse_model as stocks_dps_nyse_model,
-    nyse_view as stocks_dps_nyse_view,
     quandl_model as stocks_dps_quandl_model,
     quandl_view as stocks_dps_quandl_view,
     sec_model as stocks_dps_sec_model,
