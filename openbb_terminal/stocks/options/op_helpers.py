@@ -211,7 +211,10 @@ option_chain_column_maping = {
         "p_Ask": "ask",
         "p_Volume": "volume",
         "p_Openinterest": "openInterest",
-    }
+    },
+    "Tradier": {
+        "open_interest": "openInterest",
+    },
 }
 
 
@@ -219,6 +222,7 @@ option_chain_column_maping = {
 class Chain:
     def __init__(self, data: Any, source: str = "Tradier"):
         if source == "Tradier":
+            data = data.rename(columns=option_chain_column_maping["Tradier"])
             self.calls = data[data["option_type"] == "call"]
             self.puts = data[data["option_type"] == "put"]
 

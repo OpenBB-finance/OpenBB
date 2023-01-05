@@ -5,19 +5,15 @@ import argparse
 import logging
 import os
 import warnings
-from bisect import bisect_left
 from typing import List, Optional, Tuple
 
 import matplotlib.pyplot as plt
 import mplfinance as mpf
-import numpy as np
 import pandas as pd
-import seaborn as sns
 
-from openbb_terminal import config_plot as cfp
 from openbb_terminal import rich_config
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.decorators import log_start_end, check_api_key
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     is_valid_axes_count,
@@ -27,7 +23,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options import op_helpers, tradier_model, yfinance_model
+from openbb_terminal.stocks.options import tradier_model, yfinance_model
 
 logger = logging.getLogger(__name__)
 
@@ -254,208 +250,6 @@ def display_chains(
             os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
             "chains",
             chains_df,
-        )
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_TRADIER_TOKEN"])
-def plot_volume_open_interest(
-    symbol: str,
-    expiry: str,
-    min_sp: float = -1,
-    max_sp: float = -1,
-    min_vol: float = -1,
-    export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Plot volume and open interest
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-    expiry: str
-        Option expiration
-    min_sp: float
-        Min strike price
-    max_sp: float
-        Max strike price
-    min_vol: float
-        Min volume to consider
-    export: str
-        Format for exporting data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
-    """
-    current_price = tradier_model.get_last_price(symbol)
-    options = tradier_model.get_option_chain(symbol, expiry)
-
-    if isinstance(options, pd.DataFrame) and not options.empty:
-
-        calls = options[options.option_type == "call"][
-            ["strike", "volume", "open_interest"]
-        ]
-        puts = options[options.option_type == "put"][
-            ["strike", "volume", "open_interest"]
-        ]
-
-        # Process Calls Data
-        df_calls = calls.pivot_table(
-            index="strike", values=["volume", "open_interest"], aggfunc="sum"
-        ).reindex()
-        df_calls["strike"] = df_calls.index
-        df_calls["type"] = "calls"
-        df_calls["open_interest"] = df_calls["open_interest"]
-        df_calls["volume"] = df_calls["volume"]
-        df_calls["oi+v"] = df_calls["open_interest"] + df_calls["volume"]
-        df_calls["spot"] = round(current_price, 2)
-
-        df_puts = puts.pivot_table(
-            index="strike", values=["volume", "open_interest"], aggfunc="sum"
-        ).reindex()
-        df_puts["strike"] = df_puts.index
-        df_puts["type"] = "puts"
-        df_puts["open_interest"] = df_puts["open_interest"]
-        df_puts["volume"] = -df_puts["volume"]
-        df_puts["open_interest"] = -df_puts["open_interest"]
-        df_puts["oi+v"] = df_puts["open_interest"] + df_puts["volume"]
-        df_puts["spot"] = round(current_price, 2)
-
-        call_oi = calls.set_index("strike")["open_interest"] / 1000
-        put_oi = puts.set_index("strike")["open_interest"] / 1000
-
-        df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
-        df_opt = df_opt.rename(
-            columns={"open_interest_x": "OI_call", "open_interest_y": "OI_put"}
-        )
-
-        max_pain = op_helpers.calculate_max_pain(df_opt)
-
-        if min_vol == -1 and min_sp == -1 and max_sp == -1:
-            # If no argument provided, we use the percentile 50 to get 50% of upper volume data
-            volume_percentile_threshold = 50
-            min_vol_calls = np.percentile(df_calls["oi+v"], volume_percentile_threshold)
-            min_vol_puts = np.percentile(df_puts["oi+v"], volume_percentile_threshold)
-
-            df_calls = df_calls[df_calls["oi+v"] > min_vol_calls]
-            df_puts = df_puts[df_puts["oi+v"] < min_vol_puts]
-
-        else:
-            if min_vol > -1:
-                df_calls = df_calls[df_calls["oi+v"] > min_vol]
-                df_puts = df_puts[df_puts["oi+v"] < -min_vol]
-
-            if min_sp > -1:
-                df_calls = df_calls[df_calls["strike"] > min_sp]
-                df_puts = df_puts[df_puts["strike"] > min_sp]
-
-            if max_sp > -1:
-                df_calls = df_calls[df_calls["strike"] < max_sp]
-                df_puts = df_puts[df_puts["strike"] < max_sp]
-
-        if df_calls.empty and df_puts.empty:
-            console.print(
-                "The filtering applied is too strong, there is no data available for such conditions.\n"
-            )
-            return
-
-        # Initialize the matplotlib figure
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-        else:
-            ax = external_axes[0]
-
-        # make x axis symmetric
-        axis_origin = max(abs(max(df_puts["oi+v"])), abs(max(df_calls["oi+v"])))
-        ax.set_xlim(-axis_origin, +axis_origin)
-
-        g = sns.barplot(
-            x="oi+v",
-            y="strike",
-            data=df_calls,
-            label="Calls: Open Interest",
-            color="lightgreen",
-            orient="h",
-        )
-
-        g = sns.barplot(
-            x="volume",
-            y="strike",
-            data=df_calls,
-            label="Calls: Volume",
-            color="green",
-            orient="h",
-        )
-
-        g = sns.barplot(
-            x="oi+v",
-            y="strike",
-            data=df_puts,
-            label="Puts: Open Interest",
-            color="pink",
-            orient="h",
-        )
-
-        g = sns.barplot(
-            x="volume",
-            y="strike",
-            data=df_puts,
-            label="Puts: Volume",
-            color="red",
-            orient="h",
-        )
-
-        # draw spot line
-        s = [float(strike.get_text()) for strike in ax.get_yticklabels()]
-        spot_index = bisect_left(
-            s, current_price
-        )  # find where the spot is on the graph
-        spot_line = ax.axhline(spot_index, ls="--", alpha=0.3)
-
-        # draw max pain line
-        max_pain_index = bisect_left(s, max_pain)
-        max_pain_line = ax.axhline(max_pain_index, ls="-", alpha=0.3, color="red")
-        max_pain_line.set_linewidth(5)
-
-        # format ticklabels without - for puts
-        g.set_xticks(g.get_xticks())
-        xlabels = [f"{x:,.0f}".replace("-", "") for x in g.get_xticks()]
-        g.set_xticklabels(xlabels)
-
-        ax.set_title(
-            f"{symbol} volumes for {expiry}\n(open interest displayed only during market hours)"
-        )
-        ax.invert_yaxis()
-
-        _ = ax.legend()
-        handles, _ = ax.get_legend_handles_labels()
-        handles.append(spot_line)
-        handles.append(max_pain_line)
-
-        # create legend labels + add to graph
-        labels = [
-            "Calls open interest",
-            "Calls volume ",
-            "Puts open interest",
-            "Puts volume",
-            "Current stock price",
-            f"Max pain = {max_pain}",
-        ]
-
-        ax.legend(
-            fontsize="xx-small", handles=handles[:], labels=labels, loc="lower left"
-        )
-        sns.despine(left=True, bottom=True)
-        theme.style_primary_axis(ax)
-
-        if external_axes is None:
-            theme.visualize_output()
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "voi_tr",
-            options,
         )
 
 
