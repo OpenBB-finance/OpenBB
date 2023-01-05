@@ -1,9 +1,10 @@
 {
   "name": "docs",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
   "scripts": {
     "docusaurus": "docusaurus",
+    "dev": "docusaurus start",
     "start": "docusaurus start",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
@@ -17,6 +18,7 @@
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^0.11.0",
     "@docusaurus/core": "2.2.0",
+    "@docusaurus/plugin-client-redirects": "^2.2.0",
     "@docusaurus/plugin-content-docs": "^2.2.0",
     "@docusaurus/preset-classic": "2.2.0",
     "@mdx-js/react": "^1.6.22",

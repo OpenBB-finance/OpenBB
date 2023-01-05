@@ -236,11 +236,13 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--type=h",
                 "--no-scale",
                 "--start=2020-12-01",
+                "--end=2022-12-11",
                 "--export=csv",
             ],
             dict(
                 similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 start_date="2020-12-01",
+                end_date="2022-12-11",
                 candle_type="h",
                 normalize=False,
                 export="csv",
@@ -252,10 +254,12 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [
                 "--type=h",
                 "--start=2020-12-01",
+                "--end=2022-12-11",
             ],
             dict(
                 similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 start_date="2020-12-01",
+                end_date="2022-12-11",
                 candle_type="h",
                 export="",
                 display_full_matrix=False,
@@ -267,11 +271,13 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "yahoo_finance_view.display_volume",
             [
                 "--start=2020-12-01",
+                "--end=2022-12-11",
                 "--export=csv",
             ],
             dict(
                 similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 start_date="2020-12-01",
+                end_date="2022-12-11",
                 export="csv",
             ),
         ),

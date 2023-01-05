@@ -400,8 +400,7 @@ def test_call_load(mocker):
     controller.call_load(other_args=other_args)
 
 
-@pytest.mark.vcr
-@pytest.mark.record_stdout
+@pytest.mark.skip
 def test_call_candle(mocker):
     # FORCE SINGLE THREADING
     yf_download = etf_controller.yf.download

@@ -229,42 +229,41 @@ class DueDiligenceController(CryptoBaseController):
     def call_nonzero(self, other_args: List[str]):
         """Process nonzero command"""
 
-        if self.symbol.upper() in glassnode_model.GLASSNODE_SUPPORTED_ASSETS:
-            parser = argparse.ArgumentParser(
-                add_help=False,
-                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="nonzero",
-                description="""
-                    Display addresses with nonzero assets in a certain blockchain
-                    [Source: https://glassnode.org]
-                    Note that free api keys only allow fetching data with a 1y lag
-                """,
-            )
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="nonzero",
+            description="""
+                Display addresses with nonzero assets in a certain blockchain
+                [Source: https://glassnode.org]
+                Note that free api keys only allow fetching data with a 1y lag
+            """,
+        )
 
-            parser.add_argument(
-                "-s",
-                "--since",
-                dest="since",
-                type=valid_date,
-                help="Initial date. Default: 2 years ago",
-                default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
-            )
+        parser.add_argument(
+            "-s",
+            "--since",
+            dest="since",
+            type=valid_date,
+            help="Initial date. Default: 2 years ago",
+            default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
+        )
 
-            parser.add_argument(
-                "-u",
-                "--until",
-                dest="until",
-                type=valid_date,
-                help="Final date. Default: 1 year ago",
-                default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
-            )
+        parser.add_argument(
+            "-u",
+            "--until",
+            dest="until",
+            type=valid_date,
+            help="Final date. Default: 1 year ago",
+            default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
+        )
 
-            ns_parser = self.parse_known_args_and_warn(
-                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-            )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
 
-            if ns_parser:
-
+        if ns_parser:
+            if self.symbol.upper() in glassnode_model.GLASSNODE_SUPPORTED_ASSETS:
                 glassnode_view.display_non_zero_addresses(
                     symbol=self.symbol.upper(),
                     start_date=ns_parser.since.strftime("%Y-%m-%d"),
@@ -272,8 +271,8 @@ class DueDiligenceController(CryptoBaseController):
                     export=ns_parser.export,
                 )
 
-        else:
-            console.print("Glassnode source does not support this symbol\n")
+            else:
+                console.print(f"[red]{self.symbol} not supported on Glassnode.[/red]")
 
     @log_start_end(log=logger)
     def call_stats(self, other_args):
@@ -308,52 +307,50 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_active(self, other_args: List[str]):
         """Process active command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="active",
+            description="""
+                Display active blockchain addresses over time
+                [Source: https://glassnode.org]
+            """,
+        )
 
-        if self.symbol.upper() in glassnode_model.GLASSNODE_SUPPORTED_ASSETS:
-            parser = argparse.ArgumentParser(
-                add_help=False,
-                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="active",
-                description="""
-                    Display active blockchain addresses over time
-                    [Source: https://glassnode.org]
-                """,
-            )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            dest="interval",
+            type=str,
+            help="Frequency interval. Default: 24h",
+            default="24h",
+            choices=glassnode_model.INTERVALS_ACTIVE_ADDRESSES,
+        )
 
-            parser.add_argument(
-                "-i",
-                "--interval",
-                dest="interval",
-                type=str,
-                help="Frequency interval. Default: 24h",
-                default="24h",
-                choices=glassnode_model.INTERVALS_ACTIVE_ADDRESSES,
-            )
+        parser.add_argument(
+            "-s",
+            "--since",
+            dest="since",
+            type=valid_date,
+            help="Initial date. Default: 1 year ago",
+            default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+        )
 
-            parser.add_argument(
-                "-s",
-                "--since",
-                dest="since",
-                type=valid_date,
-                help="Initial date. Default: 1 year ago",
-                default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-            )
+        parser.add_argument(
+            "-u",
+            "--until",
+            dest="until",
+            type=valid_date,
+            help="Final date. Default: Today",
+            default=(datetime.now()).strftime("%Y-%m-%d"),
+        )
 
-            parser.add_argument(
-                "-u",
-                "--until",
-                dest="until",
-                type=valid_date,
-                help="Final date. Default: Today",
-                default=(datetime.now()).strftime("%Y-%m-%d"),
-            )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
 
-            ns_parser = self.parse_known_args_and_warn(
-                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-            )
-
-            if ns_parser:
-
+        if ns_parser:
+            if self.symbol.upper() in glassnode_model.GLASSNODE_SUPPORTED_ASSETS:
                 glassnode_view.display_active_addresses(
                     symbol=self.symbol.upper(),
                     interval=ns_parser.interval,
@@ -361,64 +358,61 @@ class DueDiligenceController(CryptoBaseController):
                     end_date=ns_parser.until.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
                 )
-
-        else:
-            console.print("Glassnode source does not support this symbol\n")
+            else:
+                console.print(f"[red]{self.symbol} not supported on Glassnode.[/red]")
 
     @log_start_end(log=logger)
     def call_change(self, other_args: List[str]):
         """Process change command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="change",
+            description="""
+                Display active blockchain addresses over time
+                [Source: https://glassnode.org]
+                Note that free api keys only allow fetching data with a 1y lag
+            """,
+        )
 
-        if self.symbol.upper() in glassnode_model.GLASSNODE_SUPPORTED_ASSETS:
-            parser = argparse.ArgumentParser(
-                add_help=False,
-                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="change",
-                description="""
-                    Display active blockchain addresses over time
-                    [Source: https://glassnode.org]
-                    Note that free api keys only allow fetching data with a 1y lag
-                """,
-            )
+        parser.add_argument(
+            "-e",
+            "--exchange",
+            dest="exchange",
+            type=str,
+            help="Exchange to check change. Default: aggregated",
+            default="aggregated",
+            choices=glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES,
+        )
 
-            parser.add_argument(
-                "-e",
-                "--exchange",
-                dest="exchange",
-                type=str,
-                help="Exchange to check change. Default: aggregated",
-                default="aggregated",
-                choices=glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES,
-            )
+        parser.add_argument(
+            "-s",
+            "--since",
+            dest="since",
+            type=valid_date,
+            help="Initial date. Default: 2 years ago",
+            default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
+        )
 
-            parser.add_argument(
-                "-s",
-                "--since",
-                dest="since",
-                type=valid_date,
-                help="Initial date. Default: 2 years ago",
-                default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
-            )
+        parser.add_argument(
+            "-u",
+            "--until",
+            dest="until",
+            type=valid_date,
+            help="Final date. Default: 1 year ago",
+            default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
+        )
 
-            parser.add_argument(
-                "-u",
-                "--until",
-                dest="until",
-                type=valid_date,
-                help="Final date. Default: 1 year ago",
-                default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
-            )
+        if other_args:
+            if not other_args[0][0] == "-":
+                other_args.insert(0, "-e")
 
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-e")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
 
-            ns_parser = self.parse_known_args_and_warn(
-                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-            )
-
-            if ns_parser:
-
+        if ns_parser:
+            if self.symbol.upper() in glassnode_model.GLASSNODE_SUPPORTED_ASSETS:
                 glassnode_view.display_exchange_net_position_change(
                     symbol=self.symbol.upper(),
                     exchange=ns_parser.exchange,
@@ -426,71 +420,70 @@ class DueDiligenceController(CryptoBaseController):
                     end_date=ns_parser.until.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
                 )
-        else:
-            console.print("Glassnode source does not support this symbol\n")
+            else:
+                console.print(f"[red]{self.symbol} not supported on Glassnode.[/red]")
 
     @log_start_end(log=logger)
     def call_eb(self, other_args: List[str]):
         """Process eb command"""
 
-        if self.symbol.upper() in glassnode_model.GLASSNODE_SUPPORTED_ASSETS:
-            parser = argparse.ArgumentParser(
-                add_help=False,
-                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="eb",
-                description="""
-                    Display active blockchain addresses over time
-                    [Source: https://glassnode.org]
-                    Note that free api keys only allow fetching data with a 1y lag
-                """,
-            )
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="eb",
+            description="""
+                Display active blockchain addresses over time
+                [Source: https://glassnode.org]
+                Note that free api keys only allow fetching data with a 1y lag
+            """,
+        )
 
-            parser.add_argument(
-                "-p",
-                "--pct",
-                dest="percentage",
-                action="store_true",
-                help="Show percentage instead of stacked value. Default: False",
-                default=False,
-            )
+        parser.add_argument(
+            "-p",
+            "--pct",
+            dest="percentage",
+            action="store_true",
+            help="Show percentage instead of stacked value. Default: False",
+            default=False,
+        )
 
-            parser.add_argument(
-                "-e",
-                "--exchange",
-                dest="exchange",
-                type=str,
-                help="Exchange to check change. Default: aggregated",
-                default="aggregated",
-                choices=glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES,
-            )
+        parser.add_argument(
+            "-e",
+            "--exchange",
+            dest="exchange",
+            type=str,
+            help="Exchange to check change. Default: aggregated",
+            default="aggregated",
+            choices=glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES,
+        )
 
-            parser.add_argument(
-                "-s",
-                "--since",
-                dest="since",
-                type=valid_date,
-                help="Initial date. Default: 2 years ago",
-                default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
-            )
+        parser.add_argument(
+            "-s",
+            "--since",
+            dest="since",
+            type=valid_date,
+            help="Initial date. Default: 2 years ago",
+            default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
+        )
 
-            parser.add_argument(
-                "-u",
-                "--until",
-                dest="until",
-                type=valid_date,
-                help="Final date. Default: 1 year ago",
-                default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
-            )
+        parser.add_argument(
+            "-u",
+            "--until",
+            dest="until",
+            type=valid_date,
+            help="Final date. Default: 1 year ago",
+            default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
+        )
 
-            if other_args and not other_args[0][0] == "-":
-                other_args.insert(0, "-e")
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-e")
 
-            ns_parser = self.parse_known_args_and_warn(
-                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-            )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
 
-            if ns_parser:
-
+        if ns_parser:
+            if self.symbol.upper() in glassnode_model.GLASSNODE_SUPPORTED_ASSETS:
                 glassnode_view.display_exchange_balances(
                     symbol=self.symbol.upper(),
                     exchange=ns_parser.exchange,
@@ -499,14 +492,13 @@ class DueDiligenceController(CryptoBaseController):
                     percentage=ns_parser.percentage,
                     export=ns_parser.export,
                 )
-
-        else:
-            console.print("Glassnode source does not support this symbol\n")
+            else:
+                console.print(f"[red]{self.symbol} not supported on Glassnode.[/red]")
 
     @log_start_end(log=logger)
     def call_oi(self, other_args):
         """Process oi command"""
-        assert isinstance(self.symbol, str)
+        assert isinstance(self.symbol, str)  # noqa: S101
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -541,7 +533,7 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_liquidations(self, other_args):
         """Process liquidations command"""
-        assert isinstance(self.symbol, str)
+        assert isinstance(self.symbol, str)  # noqa: S101
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -565,7 +557,7 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_fundrate(self, other_args):
         """Process fundrate command"""
-        assert isinstance(self.symbol, str)
+        assert isinstance(self.symbol, str)  # noqa: S101
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,

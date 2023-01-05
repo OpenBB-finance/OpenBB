@@ -49,7 +49,9 @@ def display_etf_by_name(
         title="ETFs by Total Assets",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "ln_fd", data)
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "ln_fd", table_data_sorted
+    )
 
 
 @log_start_end(log=logger)

@@ -9,7 +9,7 @@ This set of features is for checking the operating status of markets globally. T
 
 ### How to use
 
-A symbol is not required to be loaded. Once in the Trading Hours menu, the operation is simple. Choose from: <a href="/terminal/reference/stocks/trading%20hours/open" target="_blank" rel="noreferrer noopener">open</a>, <a href="/terminal/reference/stocks/trading%20hours/closed" target="_blank" rel="noreferrer noopener">closed</a>, <a href="/terminal/reference/stocks/trading%20hours/all" target="_blank" rel="noreferrer noopener">all</a> or <a href="/terminal/reference/stocks/trading%20hours/exchange" target="_blank" rel="noreferrer noopener">exchange</a>.
+A symbol is not required to be loaded. Once in the Trading Hours menu, the operation is simple. Choose from: <a href="/terminal/reference/stocks/th/open" target="_blank" rel="noreferrer noopener">open</a>, <a href="/terminal/reference/stocks/th/closed" target="_blank" rel="noreferrer noopener">closed</a>, <a href="/terminal/reference/stocks/th/all" target="_blank" rel="noreferrer noopener">all</a> or <a href="/terminal/reference/stocks/th/exchange" target="_blank" rel="noreferrer noopener">exchange</a>.
 
 Below, examples are given what these commands display, note that the tables are purposely cut off to keep the introduction compact.
 
@@ -89,12 +89,12 @@ Below, examples are given what these commands display, note that the tables are 
 ├─────┼───────────────────────────────────┼────────────┼───────┤
 <continues>
 ````
-Lastly, <a href="/terminal/reference/stocks/trading%20hours/exchange" target="_blank" rel="noreferrer noopener">exchange</a> shows the status of a single venue.
+Lastly, <a href="/terminal/reference/stocks/th/exchange" target="_blank" rel="noreferrer noopener">exchange</a> shows the status of a single venue.
 
 <img alt="Trading Hours Autocomplete" src="https://user-images.githubusercontent.com/46355364/170244354-f5ab043d-0290-46ec-ba86-87cc2dc0e47a.png"></img>
 
 ### Examples
-Below an example is given for a symbol and whether that market is open. By calling <a href="/terminal/reference/stocks/trading%20hours/exchange" target="_blank" rel="noreferrer noopener">exchange</a> you can obtain more information about the exchange (e.g. enter `BO`)
+Below an example is given for a symbol and whether that market is open. By calling <a href="/terminal/reference/stocks/th/exchange" target="_blank" rel="noreferrer noopener">exchange</a> you can obtain more information about the exchange (e.g. enter `BO`)
 ````
 (🦋) /stocks/th/ $ symbol RY.TO
 

@@ -436,6 +436,7 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
     df.replace("-", np.nan, inplace=True)
     df = df.dropna(how="all")
     df = df.replace(",", "", regex=True)
+    df = df.replace("k", "", regex=True)
     df = df.astype("float")
 
     # Data except EPS is returned in thousands, convert it

@@ -1,6 +1,7 @@
     hr                 check blockchain hashrate over time (BTC or ETH)                [Glassnode]
     btccp              displays BTC circulating supply                                 [Blockchain]
     btcct              displays BTC confirmed transactions                             [Blockchain]
+    btcblockdata       displays BTC single block data                                  [Blockchain]
     gwei               check current eth gas fees                                      [ETHGasStations]
     whales             check crypto wales transactions                                 [WhaleAlert]
     lt                 last trades by dex or month                                     [BitQuery]
