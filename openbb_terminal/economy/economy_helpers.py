@@ -8,6 +8,10 @@ import pandas as pd
 from openbb_terminal.rich_config import console
 
 
+def text_transform(raw_text: str) -> str:
+    return f"{round(float(raw_text)/100, 3)}%"
+
+
 def create_new_entry(dataset: Dict[str, pd.DataFrame], query: str) -> Dict:
     """Create a new series based off previously loaded columns
 

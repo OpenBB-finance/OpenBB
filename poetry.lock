@@ -3144,6 +3144,24 @@ python-versions = ">=3.6"
 pyobjc-core = ">=8.5.1"
 
 [[package]]
+name = "pyod"
+version = "1.0.7"
+description = "A Comprehensive and Scalable Python Library for Outlier Detection (Anomaly Detection)"
+category = "main"
+optional = true
+python-versions = "*"
+
+[package.dependencies]
+joblib = "*"
+matplotlib = "*"
+numba = ">=0.51"
+numpy = ">=1.19"
+scikit_learn = ">=0.20.0"
+scipy = ">=1.5.1"
+six = "*"
+statsmodels = "*"
+
+[[package]]
 name = "pyotp"
 version = "2.7.0"
 description = "Python One Time Password Library"
@@ -3631,6 +3649,14 @@ description = "C version of reader, parser and emitter for ruamel.yaml derived f
 category = "main"
 optional = false
 python-versions = ">=3.5"
+
+[[package]]
+name = "ruff"
+version = "0.0.210"
+description = "An extremely fast Python linter, written in Rust."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
 
 [[package]]
 name = "scikit-learn"
@@ -4206,7 +4232,7 @@ test = ["pre-commit", "pytest-timeout", "pytest (>=6.0)"]
 
 [[package]]
 name = "thepassiveinvestor"
-version = "1.0.10"
+version = "1.0.11"
 description = "Passive Investing for the Average Joe."
 category = "main"
 optional = false
@@ -4475,7 +4501,7 @@ test = ["pytest-mock (>=3.3)", "pytest (>=4.3)"]
 
 [[package]]
 name = "u8darts"
-version = "0.22.0"
+version = "0.23.0"
 description = "A python library for easy manipulation and forecasting of time series."
 category = "main"
 optional = true
@@ -4484,15 +4510,15 @@ python-versions = ">=3.7"
 [package.dependencies]
 catboost = ">=1.0.6"
 holidays = ">=0.11.1"
-ipython = ">=5.0.0"
 joblib = ">=0.16.0"
-lightgbm = ">=2.2.3"
+lightgbm = ">=3.2.0"
 matplotlib = ">=3.3.0"
 nfoursid = ">=1.0.0"
 numpy = ">=1.19.0"
 pandas = ">=1.0.5"
 pmdarima = ">=1.8.0"
 prophet = ">=1.1.1"
+pyod = ">=0.9.5"
 pytorch-lightning = {version = ">=1.5.0", optional = true, markers = "extra == \"torch\""}
 requests = ">=2.22.0"
 scikit-learn = ">=1.0.1"
@@ -4504,9 +4530,10 @@ tbats = ">=1.1.0"
 torch = {version = ">=1.8.0", optional = true, markers = "extra == \"torch\""}
 tqdm = ">=4.60.0"
 xarray = ">=0.17.0"
+xgboost = ">=1.6.0"
 
 [package.extras]
-all = ["catboost (>=1.0.6)", "holidays (>=0.11.1)", "ipython (>=5.0.0)", "joblib (>=0.16.0)", "lightgbm (>=2.2.3)", "matplotlib (>=3.3.0)", "nfoursid (>=1.0.0)", "numpy (>=1.19.0)", "pandas (>=1.0.5)", "pmdarima (>=1.8.0)", "prophet (>=1.1.1)", "requests (>=2.22.0)", "scikit-learn (>=1.0.1)", "scipy (>=1.3.2)", "statsforecast (>=1.0.0)", "statsmodels (>=0.13.0)", "tbats (>=1.1.0)", "tqdm (>=4.60.0)", "xarray (>=0.17.0)", "shap (>=0.40.0)", "pytorch-lightning (>=1.5.0)", "torch (>=1.8.0)"]
+all = ["catboost (>=1.0.6)", "holidays (>=0.11.1)", "joblib (>=0.16.0)", "lightgbm (>=3.2.0)", "matplotlib (>=3.3.0)", "nfoursid (>=1.0.0)", "numpy (>=1.19.0)", "pandas (>=1.0.5)", "pmdarima (>=1.8.0)", "prophet (>=1.1.1)", "pyod (>=0.9.5)", "requests (>=2.22.0)", "scikit-learn (>=1.0.1)", "scipy (>=1.3.2)", "shap (>=0.40.0)", "statsforecast (>=1.0.0)", "statsmodels (>=0.13.0)", "tbats (>=1.1.0)", "tqdm (>=4.60.0)", "xarray (>=0.17.0)", "xgboost (>=1.6.0)", "pytorch-lightning (>=1.5.0)", "torch (>=1.8.0)"]
 torch = ["pytorch-lightning (>=1.5.0)", "torch (>=1.8.0)"]
 
 [[package]]
@@ -4762,6 +4789,26 @@ parallel = ["dask"]
 viz = ["matplotlib", "seaborn", "nc-time-axis"]
 
 [[package]]
+name = "xgboost"
+version = "1.7.2"
+description = "XGBoost Python Package"
+category = "main"
+optional = true
+python-versions = ">=3.8"
+
+[package.dependencies]
+numpy = "*"
+scipy = "*"
+
+[package.extras]
+dask = ["dask", "pandas", "distributed"]
+datatable = ["datatable"]
+pandas = ["pandas"]
+plotting = ["graphviz", "matplotlib"]
+pyspark = ["pyspark", "scikit-learn", "cloudpickle"]
+scikit-learn = ["scikit-learn"]
+
+[[package]]
 name = "xlsxwriter"
 version = "3.0.3"
 description = "A Python module for creating Excel XLSX files."
@@ -4834,7 +4881,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "1f5804f304e3895a9e75c5e402afa478abc5ba3c0e0080e7adfe0f80dada3e4a"
+content-hash = "af48ba3cd08a6ceba8dc9a500d5bfbceee291182e0c2dfb2ca54cf32737e7774"
 
 [metadata.files]
 absl-py = []
@@ -5598,6 +5645,7 @@ pymeeus = [
 pympler = []
 pyobjc-core = []
 pyobjc-framework-cocoa = []
+pyod = []
 pyotp = []
 pyparsing = []
 pyprind = [
@@ -5854,6 +5902,7 @@ robin-stocks = [
 rsa = []
 "ruamel.yaml" = []
 "ruamel.yaml.clib" = []
+ruff = []
 scikit-learn = []
 scipy = []
 screeninfo = [
@@ -5995,10 +6044,7 @@ tensorboard-plugin-wit = [
     {file = "tensorboard_plugin_wit-1.8.1-py3-none-any.whl", hash = "sha256:ff26bdd583d155aa951ee3b152b3d0cffae8005dc697f72b44a8e8c2a77a8cbe"},
 ]
 terminado = []
-thepassiveinvestor = [
-    {file = "thepassiveinvestor-1.0.10-py3-none-any.whl", hash = "sha256:41fd07e5db0fde3587955d5ca86c52079c10c8f6e6572e3c213bded46f6969cf"},
-    {file = "thepassiveinvestor-1.0.10.tar.gz", hash = "sha256:6b325b0b9134588763c75a4d05eb2260d4111ec0cd741c27618fcb3918f0ae92"},
-]
+thepassiveinvestor = []
 threadpoolctl = [
     {file = "threadpoolctl-3.1.0-py3-none-any.whl", hash = "sha256:8b99adda265feb6773280df41eece7b2e6561b772d21ffd52e372f999024907b"},
     {file = "threadpoolctl-3.1.0.tar.gz", hash = "sha256:a335baacfaa4400ae1f0d8e3a58d6674d2f8828e3716bb2802c44955ad391380"},
@@ -6078,6 +6124,7 @@ widgetsnbextension = []
 win32-setctime = []
 wrapt = []
 xarray = []
+xgboost = []
 xlsxwriter = []
 yarl = []
 yfinance = []
