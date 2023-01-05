@@ -483,7 +483,7 @@ class ComparisonAnalysisController(BaseController):
             "-e",
             "--end",
             type=valid_date,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            default=(datetime.now()).strftime("%Y-%m-%d"),
             dest="end",
             help="The end date (format YYYY-MM-DD) of the stocks",
         )
@@ -543,7 +543,7 @@ class ComparisonAnalysisController(BaseController):
             "-e",
             "--end",
             type=valid_date,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            default=(datetime.now()).strftime("%Y-%m-%d"),
             dest="end",
             help="The end date (format YYYY-MM-DD) of the stocks",
         )
@@ -636,7 +636,7 @@ class ComparisonAnalysisController(BaseController):
             "-e",
             "--end",
             type=valid_date,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            default=(datetime.now()).strftime("%Y-%m-%d"),
             dest="end",
             help="The end date (format YYYY-MM-DD) of the stocks",
         )
