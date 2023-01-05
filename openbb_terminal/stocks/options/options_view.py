@@ -1,6 +1,5 @@
 # IMPORTATION STANDARD
 import logging
-import os
 
 # IMPORTATION THIRDPARTY
 from typing import List, Optional, Any
@@ -75,20 +74,22 @@ def plot_vol(
     else:
         return
 
-    ax.plot(
-        chain.calls.strike,
-        chain.calls["volume"] / 1000,
-        ls="-",
-        marker="o",
-        label="Calls",
-    )
-    ax.plot(
-        chain.puts.strike,
-        chain.puts["volume"] / 1000,
-        ls="-",
-        marker="o",
-        label="Puts",
-    )
+    if not puts_only:
+        ax.plot(
+            chain.calls.strike,
+            chain.calls["volume"] / 1000,
+            ls="-",
+            marker="o",
+            label="Calls",
+        )
+    if not calls_only:
+        ax.plot(
+            chain.puts.strike,
+            chain.puts["volume"] / 1000,
+            ls="-",
+            marker="o",
+            label="Puts",
+        )
 
     ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
     ax.set_xlabel("Strike Price")
