@@ -1879,3 +1879,29 @@ def str_date_to_timestamp(date: str) -> int:
     )
 
     return date_ts
+
+
+def check_start_less_than_end(start_date: str, end_date: str) -> bool:
+    """Check if start_date is equal to end_date.
+
+    Parameters
+    ----------
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
+
+    Returns
+    -------
+    bool
+        True if start_date is not equal to end_date, False otherwise
+    """
+    if start_date is None or end_date is None:
+        return False
+    if start_date == end_date:
+        console.print("[red]Start date and end date cannot be the same.[/red]")
+        return True
+    if start_date > end_date:
+        console.print("[red]Start date cannot be greater than end date.[/red]")
+        return True
+    return False
