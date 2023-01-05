@@ -2,11 +2,27 @@ import atexit
 import json
 import os
 import re
+import sys
 from pathlib import Path
 
 import plotly.graph_objects as go
 import requests
 from pywry import PyWry
+
+try:
+    from IPython import get_ipython
+
+    if "IPKernelApp" not in get_ipython().config:
+        raise ImportError("console")
+    if (
+        "parent_header"
+        in get_ipython().kernel._parent_ident  # pylint: disable=protected-access
+    ):
+        raise ImportError("notebook")
+except (ImportError, AttributeError):
+    JUPYTER_NOTEBOOK = False
+else:
+    JUPYTER_NOTEBOOK = True
 
 BACKEND_PATH = Path(__file__).parent.resolve()
 
@@ -23,6 +39,11 @@ class Backend(PyWry):
         super().__init__(daemon=daemon, max_retries=max_retries)
         self.plotly_html: Path = BACKEND_PATH / "plotly_temp.html"
         self.inject_path_to_html()
+        self.isatty = (
+            not JUPYTER_NOTEBOOK
+            and sys.stdin.isatty()
+            and os.environ.get("TEST_MODE", "False") != "True"
+        )
 
     def inject_path_to_html(self):
         """Update the script tag in html with local path"""
@@ -84,7 +105,7 @@ class Backend(PyWry):
 
     def start(self):
         """Starts the backend WindowManager process"""
-        if os.environ.get("TEST_MODE", "False") != "True":
+        if self.isatty:
             super().start()
 
 

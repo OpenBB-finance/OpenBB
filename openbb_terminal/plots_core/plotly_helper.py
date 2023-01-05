@@ -6,6 +6,8 @@ import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
 
+from openbb_terminal.plots_core.backend import BACKEND
+
 # Reads the template from a file
 with open(
     str(Path(__file__).parent.resolve() / "config/openbb.json"), encoding="utf-8"
@@ -59,12 +61,13 @@ class OpenBBFigure(go.Figure):
         if yaxis := kwargs.pop("yaxis", None):
             self.update_yaxes(yaxis)
 
-        self.update_layout(
-            margin=dict(l=20, r=60, t=40, b=20, autoexpand=True),
-            height=762,
-            width=1400,
-            **kwargs,
-        )
+        if BACKEND.isatty:
+            self.update_layout(
+                margin=dict(l=20, r=60, t=40, b=20, autoexpand=True),
+                height=762,
+                width=1400,
+                **kwargs,
+            )
 
     @property
     def is_subplots(self):
@@ -311,9 +314,9 @@ class OpenBBFigure(go.Figure):
         self._set_openbb_overlays()
         for margin, add in zip(
             ["l", "r", "b", "t", "pad"],
-            [80, 50, 60, 35, 10],
+            [110, 50, 60, 35, 10],
         ):
-            if margin in self.layout.margin and self.layout.margin[margin] is not None :
+            if margin in self.layout.margin and self.layout.margin[margin] is not None:
                 self.layout.margin[margin] += add
             else:
                 self.layout.margin[margin] = add

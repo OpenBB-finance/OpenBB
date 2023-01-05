@@ -90,22 +90,6 @@ def strtobool(val):
     return output
 
 
-try:
-    from IPython import get_ipython
-
-    if "IPKernelApp" not in get_ipython().config:
-        raise ImportError("console")
-    if (
-        "parent_header"
-        in get_ipython().kernel._parent_ident  # pylint: disable=protected-access
-    ):
-        raise ImportError("notebook")
-except (ImportError, AttributeError):
-    JUPYTER_NOTEBOOK = False
-else:
-    JUPYTER_NOTEBOOK = True
-
-
 # pylint: disable=no-member
 class Show:
     """Monkey patch the show method to send the figure to the backend"""
@@ -144,11 +128,7 @@ class Show:
         return None
 
 
-if (
-    not JUPYTER_NOTEBOOK
-    and sys.stdin.isatty()
-    and os.environ.get("TEST_MODE", "False") != "True"
-):
+if BACKEND.isatty:
     # pylint: disable=import-outside-toplevel
     import gc
 

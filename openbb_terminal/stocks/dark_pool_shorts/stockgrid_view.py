@@ -113,7 +113,7 @@ def short_interest_volume(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot price vs short interest volume. [Source: Stockgrid]
 
@@ -131,7 +131,6 @@ def short_interest_volume(
         External axes (3 axes are expected in the list), by default None
 
     """
-    del external_axes
 
     df, prices = stockgrid_model.get_short_interest_volume(symbol)
     if df.empty:
@@ -260,7 +259,8 @@ def short_interest_volume(
                 ),
             ]
         )
-
+        if external_axes:
+            return fig
         fig.show()
 
     export_data(
