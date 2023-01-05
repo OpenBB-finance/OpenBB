@@ -10,11 +10,11 @@ function get_popup(data = null, type = null) {
 
         TITLE_DIV.innerHTML = `
         <label for="title_text">Title:</label>
-        <input id="title_text" type="text" value="${title}" autofocus></input>
+        <input id="title_text" type="text" value="${title}" autofocus>
         <label for="title_xaxis">X axis:</label>
-        <input id="title_xaxis" type="text" value="${xaxis}"></input>
+        <input id="title_xaxis" type="text" value="${xaxis}">
         <label for="title_yaxis">Y axis:</label>
-        <input id="title_yaxis" type="text" value="${yaxis}"></input>
+        <input id="title_yaxis" type="text" value="${yaxis}">
 
         <button id="title_submit" onclick="on_submit('title')">Submit</button>
         <button id="title_cancel" onclick="closePopup()">Cancel</button>
@@ -57,19 +57,19 @@ function get_popup(data = null, type = null) {
 
         <div style="margin-top: 10px;">
             <label for="addtext_color"><b>Font color:</b></label>
-            <input type="color" id="addtext_color" value="${data.font.color}"></input>
+            <input type="color" id="addtext_color" value="${data.font.color}">
 
             <label for="addtext_border"><b>Border color:</b></label>
-            <input type="color" id="addtext_border" value="${data.bordercolor}"></input>
+            <input type="color" id="addtext_border" value="${data.bordercolor}">
 
             <label for="addtext_size"><b>Font size:</b></label>
-            <input style="width: 45px;" type="number" id="addtext_size" value="${data.font.size}"></input>
+            <input style="width: 45px;" type="number" id="addtext_size" value="${data.font.size}">
 
             <label><b>Position:</b></label>
             <label style="margin-left: 23px !important; margin-top: 25px !important;"
                 for="addtext_top"><b>Above</b></label>
             <input style="margin-top: 25px !important;" type="checkbox" id="addtext_top" name="check"
-                value="top" ${yanchor == 'top' ? 'checked' : ''}></input>
+                value="top" ${yanchor == 'top' ? 'checked' : ''}>
         </div><br>
         `;
 
@@ -97,7 +97,6 @@ function get_popup(data = null, type = null) {
         TEXT_DIV.querySelector('#addtext_textarea').focus();
         popup = TEXT_DIV;
     } else if (type == 'csv') {
-        closePopup();
         CSV_DIV.style.display = 'inline-block';
         popup = CSV_DIV;
         console.log('csv');
@@ -348,7 +347,7 @@ function closePopup() {
 
 function openPopup(popup_id) {
     closePopup();
-    get_popup(null, popup_id);
     var overlay = document.getElementById('popup_overlay');
     overlay.style.display = 'block';
+    get_popup(null, popup_id);
 }

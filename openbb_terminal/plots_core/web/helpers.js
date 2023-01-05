@@ -88,6 +88,8 @@ function checkFile(popup, type = false) {
 
         reader.onload = function (e) {
             let headers = e.target.result.split('\n')[0].split(',');
+            let headers_lower = headers.map((x) => x.trim().toLowerCase());
+            let candle_cols = ['open', 'high', 'low', 'close'];
 
             let options = '';
             for (let i = 0; i < headers.length; i++) {
@@ -97,10 +99,11 @@ function checkFile(popup, type = false) {
             // we try to guess the type of the data from the headers
             if (type == false) {
                 if (
-                    headers.includes('open') &&
-                    headers.includes('high') &&
-                    headers.includes('low') &&
-                    headers.includes('close')
+                    headers_lower
+                        .map(function (x) {
+                            return candle_cols.includes(x);
+                        })
+                        .includes(true)
                 ) {
                     csv_type.value = 'candlestick';
                 } else {
@@ -111,14 +114,14 @@ function checkFile(popup, type = false) {
 
             csv_columns.innerHTML = '<b>Columns:</b><br>';
             if (csv_type.value == 'candlestick') {
-                option_ids = ['csv_x', 'csv_open', 'csv_high', 'csv_low', 'csv_close'];
+                option_ids = ['x', 'open', 'high', 'low', 'close'];
 
                 for (let i = 0; i < option_ids.length; i++) {
-                    let header_name = option_ids[i].split('_')[1].replace(/\b[a-z]/g, (x) => x.toUpperCase());
+                    let header_name = option_ids[i].replace(/\b[a-z]/g, (x) => x.toUpperCase());
 
                     csv_columns.innerHTML += `
-                        <label for="${option_ids[i]}">${header_name}</label>
-                        <select id="${option_ids[i]}">
+                        <label for="csv_${option_ids[i]}">${header_name}</label>
+                        <select id="csv_${option_ids[i]}">
                             ${options}
                         </select>
                     `;
@@ -139,13 +142,12 @@ function checkFile(popup, type = false) {
                     <input type="color" id="csv_decreasing" value="#FF0000"></input>
                 `;
 
-                let header_names = ['x', 'open', 'high', 'low', 'close'];
-
-                for (let i = 0; i < header_names.length; i++) {
-                    if (headers.includes(header_names[i])) {
-                        csv_columns.querySelector('#csv_' + header_names[i]).value = header_names[i];
-                    } else if (header_names[i] == 'x' && headers.includes('date')) {
-                        csv_columns.querySelector('#csv_x').value = 'date';
+                for (let i = 0; i < option_ids.length; i++) {
+                    if (headers_lower.includes(option_ids[i])) {
+                        csv_columns.querySelector('#csv_' + option_ids[i]).value =
+                            headers[headers_lower.indexOf(option_ids[i])];
+                    } else if (option_ids[i] == 'x' && headers_lower.includes('date')) {
+                        csv_columns.querySelector('#csv_x').value = headers[headers_lower.indexOf('date')];
                     }
                 }
             } else {
@@ -164,16 +166,16 @@ function checkFile(popup, type = false) {
                     <input type="color" id="csv_color" value="#FFDD00"></input>
                 `;
 
-                if (headers.includes('x')) {
-                    csv_columns.querySelector('#csv_x').value = 'x';
-                } else if (headers.includes('date')) {
-                    csv_columns.querySelector('#csv_x').value = 'date';
+                if (headers_lower.includes('x')) {
+                    csv_columns.querySelector('#csv_x').value = headers[headers_lower.indexOf('x')];
+                } else if (headers_lower.includes('date')) {
+                    csv_columns.querySelector('#csv_x').value = headers[headers_lower.indexOf('date')];
                 }
 
-                if (headers.includes('y')) {
-                    csv_columns.querySelector('#csv_y').value = 'y';
-                } else if (headers.includes('close')) {
-                    csv_columns.querySelector('#csv_y').value = 'close';
+                if (headers_lower.includes('y')) {
+                    csv_columns.querySelector('#csv_y').value = headers[headers_lower.indexOf('y')];
+                } else if (headers_lower.includes('close')) {
+                    csv_columns.querySelector('#csv_y').value = headers[headers_lower.indexOf('close')];
                 }
             }
 

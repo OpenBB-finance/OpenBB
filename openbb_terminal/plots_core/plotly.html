@@ -79,56 +79,6 @@
         </script>
     </div>
 
-    <!-- <script>
-        function log_to_div(text) {
-            var div = document.getElementById("openbb_chart");
-            div.innerHTML += text + '<br>';
-        }
-        function http_request(url, callback) {
-            var xhrProto = XMLHttpRequest.prototype,
-                origOpen = xhrProto.open;
-
-            xhrProto.open = function (method, url) {
-                this._url = url;
-                return origOpen.apply(this, arguments);
-            };
-
-            var request = new XMLHttpRequest();
-            request.open('GET', url, true);
-            alert(request._url);
-
-            request.onprogress = function() {
-                log_to_div(`Loading ${request.responseURL}`);
-            };
-
-            request.onload = function() {
-                log_to_div(`Loaded ${request.responseURL}`);
-                if (request.status >= 200 && request.status < 400) {
-                    var resp = request.responseText;
-                    callback(resp);
-                } else {
-                    log_to_div("Error: " + request.responseText);
-                    log_to_div("URL: " + request._url);
-                }
-            };
-
-            request.onerror = function() {
-                log_to_div("Error: " + request.responseText);
-                log_to_div("URL: " + request._url);
-            };
-
-            request.send();
-        }
-
-        http_request("/{{MAIN_PATH}}/assets/plotly.js", function(resp) {
-            log_to_div("Loaded plotly.js");
-        });
-        http_request("/{{MAIN_PATH}}/web/helpers.js", function(resp) {
-            log_to_div("Loaded helpers.js");
-        });
-
-
-    </script> -->
 </body>
 
 </html>
