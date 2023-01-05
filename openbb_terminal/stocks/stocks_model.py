@@ -9,7 +9,6 @@ import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 
 from openbb_terminal.decorators import check_api_key
-from openbb_terminal.helper_funcs import is_intraday
 from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
 
