@@ -1151,7 +1151,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on .env file
     """
-    dotenv.load_dotenv(USER_ENV_FILE)
+    dotenv.load_dotenv(USER_ENV_FILE, override=True)
     user_tz = os.getenv("OPENBB_TIMEZONE")
     if user_tz:
         return user_tz
