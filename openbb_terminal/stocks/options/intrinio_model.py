@@ -52,8 +52,8 @@ def calculate_dte(chain_df: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         Dataframe with dte column added
     """
-    assert "date" in chain_df.columns
-    assert "expiration" in chain_df.columns
+    assert "date" in chain_df.columns  # noqa: S101
+    assert "expiration" in chain_df.columns  # noqa: S101
     chain_df["dte"] = chain_df.apply(
         lambda row: (
             datetime.strptime(row["expiration"], "%Y-%m-%d")
