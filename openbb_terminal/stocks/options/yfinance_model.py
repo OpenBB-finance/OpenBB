@@ -14,8 +14,7 @@ import yfinance as yf
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options import op_helpers
-from openbb_terminal.stocks.options.op_helpers import Option
+from openbb_terminal.stocks.options.op_helpers import Option, Chain
 
 logger = logging.getLogger(__name__)
 
@@ -202,7 +201,7 @@ def option_expirations(symbol: str):
 
 
 @log_start_end(log=logger)
-def get_option_chain(symbol: str, expiry: str):
+def get_option_chain(symbol: str, expiry: str) -> Chain:
     """Gets option chain from yf for given ticker and expiration
 
     Parameters
@@ -220,12 +219,12 @@ def get_option_chain(symbol: str, expiry: str):
 
     yf_ticker = yf.Ticker(symbol)
     try:
-        chains = yf_ticker.option_chain(expiry)
+        chain = yf_ticker.option_chain(expiry)
     except Exception:
         console.print(f"[red]Error: Expiration {expiry} cannot be found.[/red]")
-        chains = op_helpers.Chain(pd.DataFrame(), "YahooFinance")
+        chain = pd.DataFrame()
 
-    return chains
+    return Chain(chain, "YahooFinance")
 
 
 @log_start_end(log=logger)

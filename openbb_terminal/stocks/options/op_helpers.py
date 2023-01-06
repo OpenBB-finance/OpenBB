@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import os
 from datetime import datetime, timedelta
 from math import e, log
-from typing import Union, Tuple, Any
+from typing import Union, Any
 
 import numpy as np
 import pandas as pd
@@ -163,24 +163,6 @@ def export_options(export: str, options, file_name: str):
             f"{file_name}_{option_name}",
             option,
         )
-
-
-def raw_yf_options(options) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """Special function to assist in printing yf options
-
-    Parameters
-    ----------
-    options: Options
-        The yfinance Options object
-
-    """
-    df_calls = pd.DataFrame()
-    df_puts = pd.DataFrame()
-
-    df_calls = getattr(options, "calls")
-    df_puts = getattr(options, "puts")
-
-    return df_calls, df_puts
 
 
 opt_chain_cols = {

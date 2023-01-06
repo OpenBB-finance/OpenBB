@@ -54,7 +54,7 @@ def test_display_chains(calls_only, max_sp, min_sp, mocker, puts_only):
 
     tradier_view.display_chains(
         symbol="AAPL",
-        expiry="2022-02-25",
+        expiry="2025-01-17",
         to_display=["volume"],
         min_sp=min_sp,
         max_sp=max_sp,
@@ -82,7 +82,7 @@ def test_display_historical(mocker):
 
     tradier_view.display_historical(
         symbol="AAPL",
-        expiry="2022-02-25",
+        expiry="2025-01-17",
         strike=180.0,
         put=True,
         export="csv",

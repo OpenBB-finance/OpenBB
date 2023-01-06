@@ -11,7 +11,10 @@ import requests
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options.op_helpers import get_dte_from_expiration as get_dte
+from openbb_terminal.stocks.options.op_helpers import (
+    get_dte_from_expiration as get_dte,
+    Chain,
+)
 
 logger = logging.getLogger(__name__)
 # pylint: disable=unsupported-assignment-operation
@@ -111,7 +114,7 @@ def get_expirations(symbol: str) -> List[str]:
 
 
 @log_start_end(log=logger)
-def get_option_chain(symbol: str, expiration: str) -> pd.DataFrame:
+def get_option_chain(symbol: str, expiration: str) -> Chain:
     """Get option chain for symbol at a given expiration
 
     Parameters
@@ -169,7 +172,7 @@ def get_option_chain(symbol: str, expiration: str) -> pd.DataFrame:
                 df[key] = df[key].replace(",", "", regex=True)
 
             df = df.replace("--", 0).astype(columns_w_types)
-            return df
+            return Chain(df, "Nasdaq")
 
     console.print(f"[red]{symbol} Option Chain not found.[/red]\n")
     return pd.DataFrame()
