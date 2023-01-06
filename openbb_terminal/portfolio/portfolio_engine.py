@@ -254,10 +254,10 @@ class PortfolioEngine:
 
             # 3. Capitalize Ticker and Type [of instrument...]
             self.__transactions["Ticker"] = self.__transactions["Ticker"].map(
-                lambda x: x.upper()
+                lambda x: x.upper() if isinstance(x, str) else x
             )
             self.__transactions["Type"] = self.__transactions["Type"].map(
-                lambda x: x.upper()
+                lambda x: x.upper() if isinstance(x, str) else x
             )
 
             p_bar.n += 1
@@ -359,6 +359,15 @@ class PortfolioEngine:
             p_bar.refresh()
 
             # 10. Create tickers dictionary with structure {'Type': [Ticker]}
+            unsupported_type = self.__transactions[
+                (~self.__transactions["Type"].isin(["STOCK", "ETF", "CRYPTO"]))
+            ].index
+            if unsupported_type.any():
+                self.__transactions.drop(unsupported_type, inplace=True)
+                console.print(
+                    "[red]Unsupported transaction type detected and removed. Supported types: stock, etf or crypto.[/red]"
+                )
+
             for ticker_type in set(self.__transactions["Type"]):
                 self.tickers[ticker_type] = list(
                     set(
@@ -410,6 +419,7 @@ class PortfolioEngine:
                 )
         except Exception:
             console.print("\nCould not preprocess transactions.")
+            raise
 
     @log_start_end(log=logger)
     def __load_company_data(self):
@@ -635,21 +645,18 @@ class PortfolioEngine:
         p_bar = tqdm(range(len(self.tickers)), desc="        Loading price data")
 
         for ticker_type, data in self.tickers.items():
-            if ticker_type in ["STOCK", "ETF", "CRYPTO"]:
-                price_data = yf.download(
-                    data, start=self.inception_date, progress=False
-                )["Close" if use_close or ticker_type == "CRYPTO" else "Adj Close"]
+            price_data = yf.download(data, start=self.inception_date, progress=False)[
+                "Close" if use_close or ticker_type == "CRYPTO" else "Adj Close"
+            ]
 
-                # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
-                if len(data) == 1:
-                    price_data = pd.DataFrame(price_data)
-                    price_data.columns = data
+            # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
+            if len(data) == 1:
+                price_data = pd.DataFrame(price_data)
+                price_data.columns = data
 
-                self.portfolio_historical_prices = pd.concat(
-                    [self.portfolio_historical_prices, price_data], axis=1
-                )
-            else:
-                console.print(f"Type {ticker_type} not supported.")
+            self.portfolio_historical_prices = pd.concat(
+                [self.portfolio_historical_prices, price_data], axis=1
+            )
 
             self.portfolio_historical_prices.fillna(method="ffill", inplace=True)
 
