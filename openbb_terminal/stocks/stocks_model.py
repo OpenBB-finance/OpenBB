@@ -227,6 +227,7 @@ def load_stock_polygon(
     df_stock_candidate["Close"] = df_stock_candidate["Adj Close"]
     df_stock_candidate = df_stock_candidate.sort_values(by="date")
     df_stock_candidate = df_stock_candidate.set_index("date")
+    df_stock_candidate.index = df_stock_candidate.index.normalize()
     return df_stock_candidate
 
 
