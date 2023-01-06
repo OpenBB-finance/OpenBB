@@ -48,7 +48,8 @@ def beta_model(
             interval=interval,
             start_date=data.index[0],
             end_date=data.index[-1],
-            verbose=False,)
+            verbose=False,
+        )
         if ref_data.empty:
             raise Exception("Invalid ref_symbol ticker")
     else:
