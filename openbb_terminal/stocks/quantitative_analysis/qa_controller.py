@@ -171,7 +171,7 @@ class QaController(StockBaseController):
             choices=list(self.stock.columns),
             help="Select variable to analyze",
         )
-        if other_args and "-t" not in other_args and "-h" not in other_args:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
