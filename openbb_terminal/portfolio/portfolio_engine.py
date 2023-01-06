@@ -732,9 +732,9 @@ class PortfolioEngine:
         - End value: Total value of shares at close price
         - Investment delta: Change in investment since last day
         - Period cash inflow: min(0, Investment delta)
-            Any negative change in investment is occurs after a sale
+            Any negative change in investment, should occur after a sale
         - Period cash outflow: max(0, Investment delta)
-            Any positive change in investment is occurs after a purchase
+            Any positive change in investment, should occur after a purchase
         - Period return: Value at end / Value at start - 1
             Value at start: [End Value(t - 1) + Cash Outflow(t)]
                 We assume that at period 't' start, the portfolio value is equal to
