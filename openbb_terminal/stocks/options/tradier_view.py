@@ -23,11 +23,10 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options import tradier_model, yfinance_model
+from openbb_terminal.stocks.options import tradier_model, yfinance_model, op_helpers
 
 logger = logging.getLogger(__name__)
 
-column_map = {"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
 warnings.filterwarnings("ignore")
 
 
@@ -36,7 +35,7 @@ def get_strike_bounds(
 ) -> Tuple[float, float]:
     if min_sp == -1:
         if current_price == 0:
-            min_strike = options["strike"].iat[0]
+            min_strike = options["strike"].min()
         else:
             min_strike = 0.75 * current_price
     else:
@@ -44,7 +43,7 @@ def get_strike_bounds(
 
     if max_sp == -1:
         if current_price == 0:
-            max_strike = options["strike"].iat[-1]
+            max_strike = options["strike"].max()
         else:
             max_strike = 1.25 * current_price
     else:
@@ -183,24 +182,25 @@ def display_chains(
     if to_display is None:
         to_display = tradier_model.default_columns
 
-    chains_df = tradier_model.get_option_chain(symbol, expiry)
+    chain = tradier_model.get_option_chain(symbol, expiry)
 
-    if isinstance(chains_df, pd.DataFrame) and not chains_df.empty:
+    if isinstance(chain, op_helpers.Chain):
 
         columns = to_display + ["strike", "option_type"]
-        chains_df = chains_df[columns].rename(columns=column_map)
-
-        min_strike, max_strike = get_strike_bounds(chains_df, 0, min_sp, max_sp)
-
-        chains_df = chains_df[chains_df["strike"] >= min_strike]
-        chains_df = chains_df[chains_df["strike"] <= max_strike]
-
-        calls_df = chains_df[chains_df.option_type == "call"].drop(
-            columns=["option_type"]
+        min_strike, max_strike = get_strike_bounds(
+            pd.concat([chain.calls, chain.puts]), 0, min_sp, max_sp
         )
-        puts_df = chains_df[chains_df.option_type == "put"].drop(
-            columns=["option_type"]
-        )
+
+        for opt_type in ["calls", "puts"]:
+            opt = getattr(chain, opt_type)
+            opt = opt[columns].rename(
+                columns={"mid_iv": "iv", "openInterest": "oi", "volume": "vol"}
+            )
+            opt = opt[opt["strike"] >= min_strike]
+            opt = opt[opt["strike"] <= max_strike]
+
+        calls_df = chain.calls.drop(columns=["option_type"])
+        puts_df = chain.puts.drop(columns=["option_type"])
 
         df = calls_df if calls_only else puts_df
 
@@ -245,12 +245,7 @@ def display_chains(
                 title=f"{symbol} Option chain for {expiry}",
             )
 
-        export_data(
-            export,
-            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-            "chains",
-            chains_df,
-        )
+        op_helpers.export_options(export, chain, "chains")
 
 
 @log_start_end(log=logger)

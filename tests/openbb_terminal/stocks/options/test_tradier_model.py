@@ -3,6 +3,7 @@
 # IMPORTATION THIRDPARTY
 import pytest
 import requests
+import pandas as pd
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.options import tradier_model
@@ -19,7 +20,7 @@ def vcr_config():
 def test_get_historical_options(recorder):
     result_df = tradier_model.get_historical_options(
         symbol="AAPL",
-        expiry="2022-02-25",
+        expiry="2025-01-17",
         strike=90.0,
         put=True,
         chain_id="",
@@ -35,7 +36,7 @@ def test_get_historical_options_invalid_status(mocker):
 
     result_df = tradier_model.get_historical_options(
         symbol="AAPL",
-        expiry="2022-02-25",
+        expiry="2025-01-17",
         strike=90.0,
         put=True,
         chain_id="MOCK_CHAIN_ID",
@@ -101,7 +102,8 @@ def test_option_expirations_invalid_status(mocker):
 
 @pytest.mark.vcr
 def test_get_option_chains(recorder):
-    result_df = tradier_model.get_option_chain(symbol="AAPL", expiry="2022-02-25")
+    chain = tradier_model.get_option_chain(symbol="AAPL", expiry="2025-01-17")
+    result_df = pd.concat([chain.calls, chain.puts])
     recorder.capture(result_df)
 
 
@@ -111,7 +113,7 @@ def test_get_option_chains_invalid_status(mocker):
     mock_response.status_code = 400
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
-    result_df = tradier_model.get_option_chain(symbol="AAPL", expiry="2022-02-25")
+    result_df = tradier_model.get_option_chain(symbol="AAPL", expiry="2025-01-17")
 
     assert result_df.empty
 

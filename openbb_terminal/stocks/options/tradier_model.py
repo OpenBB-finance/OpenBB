@@ -10,6 +10,7 @@ import requests
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.options.op_helpers import Chain
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,7 @@ default_columns = [
     "gamma",
     "theta",
     "volume",
-    "open_interest",
+    "openInterest",
     "bid",
     "ask",
 ]
@@ -72,13 +73,12 @@ def get_historical_options(
         Dataframe of historical option prices
     """
     if not chain_id:
-        op_type = ["call", "put"][put]
+        op_type = ["calls", "puts"][put]
         chain = get_option_chain(symbol, expiry)
+        chain = getattr(chain, op_type)
 
         try:
-            symbol = chain[(chain.strike == strike) & (chain.option_type == op_type)][
-                "symbol"
-            ].values[0]
+            symbol = chain[(chain.strike == strike)]["symbol"].values[0]
         except IndexError:
             error = f"Strike: {strike}, Option type: {op_type} not not found"
             logging.exception(error)
@@ -145,7 +145,9 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
     options_dfs: pd.DataFrame = []
 
     for expiry in expirations:
-        options_dfs.append(get_option_chain(symbol, expiry))
+        chain = get_option_chain(symbol, expiry)
+        opts = pd.concat([chain.calls, chain.puts])
+        options_dfs.append(opts)
 
     options_df = pd.concat(options_dfs)
 
@@ -182,7 +184,7 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
             "bidsize": "Bid Size",
             "asksize": "Ask Size",
             "volume": "Volume",
-            "open_interest": "OI",
+            "openInterest": "OI",
             "delta": "Delta",
             "gamma": "Gamma",
             "theta": "Theta",
@@ -256,7 +258,7 @@ def option_expirations(symbol: str) -> List[str]:
 
 @log_start_end(log=logger)
 @check_api_key(["API_TRADIER_TOKEN"])
-def get_option_chain(symbol: str, expiry: str) -> pd.DataFrame:
+def get_option_chain(symbol: str, expiry: str) -> Chain:
     """Display option chains [Source: Tradier]"
 
     Parameters
@@ -288,7 +290,7 @@ def get_option_chain(symbol: str, expiry: str) -> pd.DataFrame:
         return pd.DataFrame()
 
     chains = process_chains(response)
-    return chains
+    return Chain(chains, "Tradier")
 
 
 @log_start_end(log=logger)

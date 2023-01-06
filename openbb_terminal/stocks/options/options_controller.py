@@ -168,15 +168,15 @@ class OptionsController(BaseController):
     ) -> pd.DataFrame:
 
         if source == "Tradier":
-            df = tradier_model.get_option_chain(self.ticker, self.selected_date)
-            if isinstance(df, pd.DataFrame) and not df.empty:
-                self.chain = op_helpers.Chain(df, source)
+            chain = tradier_model.get_option_chain(self.ticker, self.selected_date)
+            if isinstance(chain, op_helpers.Chain):
+                self.chain = chain
         elif source == "Nasdaq":
-            df = nasdaq_model.get_option_chain(self.ticker, self.selected_date)
-            self.chain = op_helpers.Chain(df, source)
+            self.chain = nasdaq_model.get_option_chain(self.ticker, self.selected_date)
         else:
-            data = yfinance_model.get_option_chain(self.ticker, self.selected_date)
-            self.chain = op_helpers.Chain(data, source)
+            self.chain = yfinance_model.get_option_chain(
+                self.ticker, self.selected_date
+            )
 
     def set_current_price(self, source: str):
 
