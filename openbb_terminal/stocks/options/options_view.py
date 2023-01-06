@@ -109,6 +109,19 @@ def plot_vol(
         Format to export file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> aapl_chain_data = openbb.stocks.options.chain("AAPL", expiration="2023-07-21", source="Nasdaq")
+    >>> aapl_price = openbb.stocks.options.price("AAPL", source="Nasdaq")
+    >>> openbb.stocks.options.vol(
+            chain=aapl_chain_data,
+            symbol="AAPL",
+            current_price=aapl_price,
+            expiry="2023-07-21",
+        )
     """
 
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)

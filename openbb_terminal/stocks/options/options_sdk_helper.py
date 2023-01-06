@@ -11,6 +11,7 @@ from openbb_terminal.stocks.options import (
     nasdaq_model,
     tradier_model,
     yfinance_model,
+    op_helpers,
 )
 
 logger = logging.getLogger(__name__)
@@ -63,6 +64,79 @@ def get_full_option_chain(
         return nasdaq_model.get_full_option_chain(symbol)
     logger.info("Invalid Source")
     return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+def get_option_chain(
+    symbol: str,
+    expiration: str,
+    source: str = "Nasdaq",
+) -> op_helpers.Chain:
+    """Get Option Chain For A Stock.  No greek data is returned
+
+    Parameters
+    ----------
+    symbol : str
+        Symbol to get chain for
+    source : str, optional
+        Source to get data from, by default "Nasdaq"
+    expiration : str
+        Date to get chain for.
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of full option chain.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> aapl_chain_data = openbb.stocks.options.chain("AAPL", expiration="2023-07-21", source="Nasdaq")
+    """
+
+    if source == "Tradier":
+        return tradier_model.get_option_chain(symbol, expiration)
+    if source == "YahooFinance":
+        return yfinance_model.get_option_chain(symbol, expiration)
+    if source == "Nasdaq":
+        return nasdaq_model.get_option_chain(symbol, expiration)
+    logger.info("Invalid Source")
+    return pd.DataFrame()
+
+
+def get_option_current_price(
+    symbol: str,
+    source: str = "Nasdaq",
+):
+    """Get Option current price for a stock.
+
+    Parameters
+    ----------
+    symbol : str
+        Symbol to get chain for
+    source : str, optional
+        Source to get data from, by default "Nasdaq"
+
+    Returns
+    -------
+    float
+        float of current price
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> aapl_price = openbb.stocks.options.price("AAPL", source="Nasdaq")
+    """
+
+    if source == "Tradier":
+        last_price = tradier_model.get_last_price(symbol)
+        return last_price if last_price else 0.0
+    if source == "Nasdaq":
+        return nasdaq_model.get_last_price(symbol)
+    if source == "YahooFinance":
+        return yfinance_model.get_last_price(symbol)
+    logger.info("Invalid Source")
+    return 0.0
 
 
 @log_start_end(log=logger)
