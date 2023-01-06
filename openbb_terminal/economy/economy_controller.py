@@ -587,12 +587,19 @@ class EconomyController(BaseController):
                 )
 
                 if not df.empty:
+
                     df.columns = ["_".join(column) for column in df.columns]
 
                     if ns_parser.transform:
                         df.columns = [df.columns[0] + f"_{ns_parser.transform}"]
 
-                    self.DATASETS["macro"] = pd.concat([self.DATASETS["macro"], df])
+                    for column in df.columns:
+                        if column in self.DATASETS["macro"].columns:
+                            self.DATASETS["macro"].drop(column, axis=1, inplace=True)
+
+                    self.DATASETS["macro"] = pd.concat(
+                        [self.DATASETS["macro"], df], axis=1
+                    )
 
                     # update units dict
                     for country, data in units.items():
@@ -851,6 +858,7 @@ class EconomyController(BaseController):
                     )
 
                     if not df.empty:
+
                         self.DATASETS["index"][index] = df
 
                         self.stored_datasets = (
@@ -961,6 +969,19 @@ class EconomyController(BaseController):
                 )
 
                 if not df.empty:
+
+                    cols = []
+                    for column in df.columns:
+                        if isinstance(column, tuple):
+                            cols.append("_".join(column))
+                        else:
+                            cols.append(column)
+                    df.columns = cols
+
+                    for column in df.columns:
+                        if column in self.DATASETS["treasury"].columns:
+                            self.DATASETS["treasury"].drop(column, axis=1, inplace=True)
+
                     self.DATASETS["treasury"] = pd.concat(
                         [
                             self.DATASETS["treasury"],
@@ -968,14 +989,6 @@ class EconomyController(BaseController):
                         ],
                         axis=1,
                     )
-
-                    cols = []
-                    for column in self.DATASETS["treasury"].columns:
-                        if isinstance(column, tuple):
-                            cols.append("_".join(column))
-                        else:
-                            cols.append(column)
-                    self.DATASETS["treasury"].columns = cols
 
                     self.stored_datasets = (
                         economy_helpers.update_stored_datasets_string(self.DATASETS)
