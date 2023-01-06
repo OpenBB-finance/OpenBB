@@ -965,7 +965,8 @@ class EconomyController(BaseController):
                         [
                             self.DATASETS["treasury"],
                             df,
-                        ]
+                        ],
+                        axis=1,
                     )
 
                     cols = []
