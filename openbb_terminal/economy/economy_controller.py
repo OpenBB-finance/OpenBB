@@ -1562,7 +1562,7 @@ class EconomyController(BaseController):
             self.stored_datasets = economy_helpers.update_stored_datasets_string(
                 self.DATASETS
             )
-        console.print()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_qa(self, _):
