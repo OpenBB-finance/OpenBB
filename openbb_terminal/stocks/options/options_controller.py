@@ -190,49 +190,25 @@ class OptionsController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        if self.expiry_dates and session and obbff.USE_PROMPT_TOOLKIT:
-            self.choices["exp"] = {str(c): {} for c in range(len(self.expiry_dates))}
-            self.choices["exp"]["--date"] = {c: {} for c in self.expiry_dates + [""]}
-            self.choices["exp"]["-d"] = "--date"
-            self.choices["exp"]["--source"] = {
-                c: {} for c in get_ordered_list_sources(f"{self.PATH}exp")
+        if session and obbff.USE_PROMPT_TOOLKIT and self.chain:
+
+            self.choices["hist"]["--strike"] = {
+                str(c): {}
+                for c in self.chain.puts["strike"] + self.chain.calls["strike"]
             }
+            self.choices["grhist"]["-s"] = "--strike"
+            self.choices["grhist"]["--strike"] = {
+                str(c): {}
+                for c in self.chain.puts["strike"] + self.chain.calls["strike"]
+            }
+            self.choices["grhist"]["-s"] = "--strike"
+            self.choices["binom"]["--strike"] = {
+                str(c): {}
+                for c in self.chain.puts["strike"] + self.chain.calls["strike"]
+            }
+            self.choices["binom"]["-s"] = "--strike"
 
-            if isinstance(self.chain, pd.DataFrame):
-                return
-            if self.chain and self.source != "Nasdaq":
-
-                self.choices["hist"] = {
-                    str(c): {}
-                    for c in self.chain.puts["strike"] + self.chain.calls["strike"]
-                }
-                self.choices["hist"]["--put"] = {}
-                self.choices["hist"]["-p"] = "--put"
-                self.choices["hist"]["--chain"] = None
-                self.choices["hist"]["-c"] = "--chain"
-                self.choices["hist"]["--raw"] = {}
-                self.choices["hist"]["--limit"] = None
-                self.choices["hist"]["-l"] = "--limit"
-                self.choices["grhist"]["--strike"] = {
-                    str(c): {}
-                    for c in self.chain.puts["strike"] + self.chain.calls["strike"]
-                }
-                self.choices["grhist"]["-s"] = "--strike"
-                self.choices["binom"] = {
-                    str(c): {}
-                    for c in self.chain.puts["strike"] + self.chain.calls["strike"]
-                }
-                self.choices["binom"]["--put"] = {}
-                self.choices["binom"]["-p"] = "--put"
-                self.choices["binom"]["--european"] = {}
-                self.choices["binom"]["-e"] = "--european"
-                self.choices["binom"]["--xlsx"] = {}
-                self.choices["binom"]["-x"] = "--xlsx"
-                self.choices["binom"]["--plot"] = {}
-                self.choices["binom"]["--volatility"] = None
-                self.choices["binom"]["-v"] = "--volatility"
-
-            self.completer = NestedCompleter.from_nested_dict(self.choices)
+        self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help."""
@@ -606,7 +582,6 @@ class OptionsController(BaseController):
         )
         if ns_parser:
             self.ticker = ns_parser.ticker.upper()
-            self.update_runtime_choices()
 
             self.source = ns_parser.source
             if ns_parser.source == "YahooFinance":
@@ -635,6 +610,8 @@ class OptionsController(BaseController):
                         f"[red]{self.ticker} does not have expiration"
                         f" {self.selected_date}.[/red]"
                     )
+
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_exp(self, other_args: List[str]):
