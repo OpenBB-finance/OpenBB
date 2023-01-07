@@ -36,7 +36,11 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.plots_core.plotly_helper import OpenBBFigure, go
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, yfinance_model
-from openbb_terminal.stocks.options.yfinance_model import generate_data, get_option_chain, get_price
+from openbb_terminal.stocks.options.yfinance_model import (
+    generate_data,
+    get_option_chain,
+    get_price,
+)
 
 # pylint: disable=C0302,unused-argument
 

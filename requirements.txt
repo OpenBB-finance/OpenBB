@@ -182,7 +182,7 @@ pytz-deprecation-shim==0.1.0.post0; python_version >= "3.7" and python_full_vers
 pytz==2022.5; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.8" and (python_version >= "3.8" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.8") and python_version < "4.0"
 pywin32==304; sys_platform == "win32" and platform_python_implementation != "PyPy" and python_version >= "3.7"
 pywinpty==2.0.8; os_name == "nt" and python_version >= "3.7"
-pywry==0.1.35 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
+pywry==0.1.391; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pyyaml==6.0; python_version >= "3.7"
 pyzmq==24.0.1; python_version >= "3.7"
 quandl==3.7.0; python_version >= "3.6"
