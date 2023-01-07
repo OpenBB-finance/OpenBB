@@ -19,19 +19,6 @@ from openbb_terminal.stocks.options.op_helpers import Option, Chain
 logger = logging.getLogger(__name__)
 
 
-option_chain_cols = [
-    "strike",
-    "lastPrice",
-    "bid",
-    "ask",
-    "volume",
-    "openInterest",
-    "impliedVolatility",
-]
-
-option_chain_dict = {"openInterest": "openinterest", "impliedVolatility": "iv"}
-
-
 def get_full_option_chain(symbol: str) -> pd.DataFrame:
     """Get all options for given ticker [Source: Yahoo Finance]
 
@@ -53,8 +40,7 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
     for _date in dates:
         calls = ticker.option_chain(_date).calls
         puts = ticker.option_chain(_date).puts
-        calls = calls[option_chain_cols].rename(columns=option_chain_dict)
-        puts = puts[option_chain_cols].rename(columns=option_chain_dict)
+
         calls.columns = [x + "_c" if x != "strike" else x for x in calls.columns]
         puts.columns = [x + "_p" if x != "strike" else x for x in puts.columns]
 

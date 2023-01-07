@@ -149,75 +149,7 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
         opts = pd.concat([chain.calls, chain.puts])
         options_dfs.append(opts)
 
-    options_df = pd.concat(options_dfs)
-
-    options_df.set_index(keys="symbol", inplace=True)
-
-    option_df_index = pd.Series(options_df.index).str.extractall(
-        r"^(?P<Ticker>\D*)(?P<Expiration>\d*)(?P<Type>\D*)(?P<Strike>\d*)"
-    )
-    option_df_index.reset_index(inplace=True)
-    option_df_index = pd.DataFrame(
-        option_df_index, columns=["Ticker", "Expiration", "Strike", "Type"]
-    )
-    option_df_index["Strike"] = options_df["strike"].values
-    option_df_index["Type"] = options_df["option_type"].values
-    option_df_index["Expiration"] = pd.DatetimeIndex(
-        data=option_df_index["Expiration"], yearfirst=True
-    ).strftime("%Y-%m-%d")
-    option_df_index["Type"] = pd.DataFrame(option_df_index["Type"]).replace(
-        to_replace=["put", "call"], value=["Put", "Call"]
-    )
-    options_df_columns = list(options_df.columns)
-    option_df_index.set_index(
-        keys=["Ticker", "Expiration", "Strike", "Type"], inplace=True
-    )
-    options_df = pd.DataFrame(
-        data=options_df.values, index=option_df_index.index, columns=options_df_columns
-    )
-
-    options_df.rename(
-        columns={
-            "bid": "Bid",
-            "ask": "Ask",
-            "strike": "Strike",
-            "bidsize": "Bid Size",
-            "asksize": "Ask Size",
-            "volume": "Volume",
-            "openInterest": "OI",
-            "delta": "Delta",
-            "gamma": "Gamma",
-            "theta": "Theta",
-            "vega": "Vega",
-            "ask_iv": "Ask IV",
-            "bid_iv": "Bid IV",
-            "mid_iv": "IV",
-        },
-        inplace=True,
-    )
-
-    options_columns = [
-        "Volume",
-        "OI",
-        "IV",
-        "Delta",
-        "Gamma",
-        "Theta",
-        "Vega",
-        "Bid Size",
-        "Bid",
-        "Ask",
-        "Ask Size",
-        "Bid IV",
-        "Ask IV",
-    ]
-
-    options = pd.DataFrame(options_df, columns=options_columns)
-    options = options.reset_index()
-    options.drop(labels=["Ticker"], inplace=True, axis=1)
-    options.rename(columns={"Expiration": "expiration"}, inplace=True)
-
-    return options
+    return pd.concat(options_dfs)
 
 
 @log_start_end(log=logger)
@@ -290,6 +222,7 @@ def get_option_chain(symbol: str, expiry: str) -> Chain:
         return pd.DataFrame()
 
     chains = process_chains(response)
+    chains["expiration"] = expiry
     return Chain(chains, "Tradier")
 
 

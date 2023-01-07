@@ -84,6 +84,11 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
             df["DTE"] = df["expirygroup"].apply(lambda t: get_dte(t))
             df = df[df.DTE > 0]
             df = df.drop(columns=["DTE"])
+
+            df["expiration"] = pd.to_datetime(
+                df["expirygroup"], format="%B %d, %Y"
+            ).dt.strftime("%Y-%m-%d")
+
             return df
 
     console.print(f"[red]{symbol} Option Chain not found.[/red]\n")
@@ -147,7 +152,7 @@ def get_option_chain(symbol: str, expiration: str) -> Chain:
                 pd.DataFrame(
                     response_json.get("data", {}).get("table", {}).get("rows", {})
                 )
-                .drop(columns=["c_colour", "p_colour", "drillDownURL", "expirygroup"])
+                .drop(columns=["c_colour", "p_colour", "drillDownURL"])
                 .fillna(np.nan)
                 .dropna(axis=0)
             )
@@ -172,6 +177,11 @@ def get_option_chain(symbol: str, expiration: str) -> Chain:
                 df[key] = df[key].replace(",", "", regex=True)
 
             df = df.replace("--", 0).astype(columns_w_types)
+
+            df["expiration"] = pd.to_datetime(
+                df["expirygroup"], format="%B %d, %Y"
+            ).dt.strftime("%Y-%m-%d")
+
             return Chain(df, "Nasdaq")
 
     console.print(f"[red]{symbol} Option Chain not found.[/red]\n")

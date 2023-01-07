@@ -165,6 +165,69 @@ def export_options(export: str, options, file_name: str):
         )
 
 
+def create_option_chain_df(data: Any, source: str = "Tradier") -> pd.DataFrame:
+    """
+    Create an option chain DataFrame from the given data.
+
+    Parameters
+    ----------
+    data: Any
+        The data to create the option chain from. The exact format of the data
+        will depend on the value of the `source` parameter.
+    source: str, optional
+        The source of the data. Valid values are "Tradier", "Nasdaq", and
+        "YahooFinance". The default value is "Tradier".
+
+    Returns
+    -------
+    pd.DataFrame
+        A DataFrame containing the option chain data, with columns as specified
+        in the `option_chain_column_mapping` mapping, and an additional column
+        "optionType" that indicates whether the option is a call or a put.
+    """
+    if source == "Tradier":
+        df = data.rename(columns=option_chain_column_mapping["Tradier"])
+
+    elif source == "Nasdaq":
+        call_columns = ["expiration", "strike"] + [
+            col for col in data.columns if col.startswith("c_")
+        ]
+        calls = data[call_columns].rename(columns=option_chain_column_mapping["Nasdaq"])
+        calls["optionType"] = "call"
+
+        put_columns = ["expiration", "strike"] + [
+            col for col in data.columns if col.startswith("p_")
+        ]
+        puts = data[put_columns].rename(columns=option_chain_column_mapping["Nasdaq"])
+        puts["optionType"] = "put"
+
+        df = pd.concat([calls, puts]).drop_duplicates()
+
+    elif source == "YahooFinance":
+        call_columns = ["expiration", "strike"] + [
+            col for col in data.columns if col.endswith("_c")
+        ]
+        calls = data[call_columns].rename(
+            columns=option_chain_column_mapping["YahooFinance"]
+        )
+        calls["optionType"] = "call"
+
+        put_columns = ["expiration", "strike"] + [
+            col for col in data.columns if col.endswith("_p")
+        ]
+        puts = data[put_columns].rename(
+            columns=option_chain_column_mapping["YahooFinance"]
+        )
+        puts["optionType"] = "put"
+
+        df = pd.concat([calls, puts]).drop_duplicates()
+
+    else:
+        df = pd.DataFrame()
+
+    return df
+
+
 opt_chain_cols = {
     "lastTradeDate": {"format": "date", "label": "Last Trade Date"},
     "strike": {"format": "${x:.2f}", "label": "Strike"},
@@ -178,7 +241,7 @@ opt_chain_cols = {
     "impliedVolatility": {"format": "{x:.2f}", "label": "Implied Volatility"},
 }
 
-option_chain_column_maping = {
+option_chain_column_mapping = {
     "Nasdaq": {
         "strike": "strike",
         "c_Last": "last",
@@ -196,6 +259,37 @@ option_chain_column_maping = {
     },
     "Tradier": {
         "open_interest": "openInterest",
+        "option_type": "optionType",
+    },
+    "YahooFinance": {
+        "contractSymbol_c": "contractSymbol",
+        "lastTradeDate_c": "lastTradeDate",
+        "strike": "strike",
+        "lastPrice_c": "lastPrice",
+        "bid_c": "bid",
+        "ask_c": "ask",
+        "change_c": "change",
+        "percentChange_c": "percentChange",
+        "volume_c": "volume",
+        "openInterest_c": "openInterest",
+        "impliedVolatility_c": "impliedVolatility",
+        "inTheMoney_c": "inTheMoney",
+        "contractSize_c": "contractSize",
+        "currency_c": "currency",
+        "contractSymbol_p": "contractSymbol",
+        "lastTradeDate_p": "lastTradeDate",
+        "lastPrice_p": "lastPrice",
+        "bid_p": "bid",
+        "ask_p": "ask",
+        "change_p": "change",
+        "percentChange_p": "percentChange",
+        "volume_p": "volume",
+        "openInterest_p": "openInterest",
+        "impliedVolatility_p": "impliedVolatility",
+        "inTheMoney_p": "inTheMoney",
+        "contractSize_p": "contractSize",
+        "currency_p": "currency",
+        "expiration": "expiration",
     },
 }
 
@@ -204,9 +298,9 @@ option_chain_column_maping = {
 class Chain:
     def __init__(self, data: Any, source: str = "Tradier"):
         if source == "Tradier":
-            data = data.rename(columns=option_chain_column_maping["Tradier"])
-            self.calls = data[data["option_type"] == "call"]
-            self.puts = data[data["option_type"] == "put"]
+            data = data.rename(columns=option_chain_column_mapping["Tradier"])
+            self.calls = data[data["optionType"] == "call"]
+            self.puts = data[data["optionType"] == "put"]
 
         elif source == "Nasdaq":
             call_columns = ["expiryDate", "strike"] + [
@@ -216,10 +310,10 @@ class Chain:
                 col for col in data.columns if col.startswith("p_")
             ]
             self.calls = data[call_columns].rename(
-                columns=option_chain_column_maping["Nasdaq"]
+                columns=option_chain_column_mapping["Nasdaq"]
             )
             self.puts = data[put_columns].rename(
-                columns=option_chain_column_maping["Nasdaq"]
+                columns=option_chain_column_mapping["Nasdaq"]
             )
 
         elif source == "YahooFinance":
