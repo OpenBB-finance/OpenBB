@@ -65,16 +65,15 @@
 
     <!-- Plotly Chart -->
     <div>
-        <script type="text/javascript">window.PlotlyConfig = { MathJaxConfig: 'local' };</script>
         <script type="text/javascript">
-            var plotly_figure = "{{figure_json}}";
+            window.PlotlyConfig = { MathJaxConfig: 'local' };
 
             var interval = setInterval(function() {
-                if (typeof OpenBBMain != 'undefined') {
+                if (typeof OpenBBMain != 'undefined' && window.plotly_figure) {
                     clearInterval(interval);
-                    OpenBBMain(plotly_figure);
+                    OpenBBMain(window.plotly_figure);
                 }
-            }, 200);
+            }, 20);
 
         </script>
     </div>

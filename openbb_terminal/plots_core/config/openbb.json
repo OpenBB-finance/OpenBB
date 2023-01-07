@@ -85,7 +85,7 @@
             "showline": true,
             "side": "right",
             "title": {
-                "standoff": 20
+                "standoff": 10
             }
         },
         "yaxis2": {

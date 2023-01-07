@@ -23,6 +23,14 @@ pio.templates.default = "plotly_dark+openbb"
 class OpenBBFigure(go.Figure):
     """Custom Figure class for OpenBB Terminal
 
+    Parameters
+    ----------
+    fig : `go.Figure`, optional
+        Figure to copy, by default None
+    is_subplots : `bool`, optional
+        Whether the figure is a subplots figure, by default False
+    **kwargs
+        Keyword arguments to pass to `go.Figure.update_layout`
 
     Class Methods
     -------------
@@ -38,14 +46,6 @@ class OpenBBFigure(go.Figure):
     add_legend_label(trace: `str`, label: `str`, mode: `str`, marker: `dict`, **kwargs)
         Adds a legend label
 
-    Parameters
-    ----------
-    fig : `go.Figure`, optional
-        Figure to copy, by default None
-    is_subplots : `bool`, optional
-        Whether the figure is a subplots figure, by default False
-    **kwargs
-        Keyword arguments to pass to `go.Figure.update_layout`
 
     """
 
@@ -63,7 +63,7 @@ class OpenBBFigure(go.Figure):
 
         if BACKEND.isatty:
             self.update_layout(
-                margin=dict(l=20, r=60, t=40, b=20, autoexpand=True),
+                margin=dict(l=0, r=0, t=0, b=0, pad=0, autoexpand=True),
                 height=762,
                 width=1400,
                 **kwargs,
@@ -83,8 +83,8 @@ class OpenBBFigure(go.Figure):
         rows: int = 1,
         cols: int = 1,
         shared_xaxes: bool = True,
-        vertical_spacing: float = None,
-        horizontal_spacing: float = None,
+        vertical_spacing: float = 0.03,
+        horizontal_spacing: float = 0.01,
         subplot_titles: Union[List[str], tuple] = None,
         row_width: List[Union[float, int]] = None,
         specs: List[List[dict]] = None,
@@ -135,7 +135,7 @@ class OpenBBFigure(go.Figure):
             yaxis2 = self.layout.yaxis2 if hasattr(self.layout, "yaxis2") else None
             xshift = -60 if yaxis.side == "right" else -80
 
-            if yaxis2 and yaxis.side == "right" and yaxis2.overlaying == "y":
+            if yaxis2 and yaxis2.overlaying == "y":
                 xshift = -110
 
             self.add_annotation(
@@ -314,7 +314,7 @@ class OpenBBFigure(go.Figure):
         self._set_openbb_overlays()
         for margin, add in zip(
             ["l", "r", "b", "t", "pad"],
-            [110, 50, 60, 35, 10],
+            [90, 90, 80, 40, 10],
         ):
             if margin in self.layout.margin and self.layout.margin[margin] is not None:
                 self.layout.margin[margin] += add

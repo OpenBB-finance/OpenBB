@@ -26,6 +26,8 @@ let check_divs = setInterval(function () {
 function OpenBBMain(plotly_figure) {
     let CHART_DIV = document.getElementById('openbb_chart');
     globals.chartDiv = CHART_DIV;
+    console.log('main.js loaded');
+    console.log('plotly_figure', plotly_figure);
     let graphs = plotly_figure;
 
     CONFIG = {

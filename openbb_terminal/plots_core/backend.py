@@ -44,6 +44,7 @@ class Backend(PyWry):
             and sys.stdin.isatty()
             and os.environ.get("TEST_MODE", "False") != "True"
         )
+        atexit.register(self.del_temp)
 
     def inject_path_to_html(self):
         """Update the script tag in html with local path"""
@@ -98,8 +99,8 @@ class Backend(PyWry):
             )
         )
 
-    def close(self):
-        """Close the backend and delete the temporary html file"""
+    def del_temp(self):
+        """Delete the temporary html file"""
         if self.plotly_html:
             self.plotly_html.unlink(missing_ok=True)
 
@@ -121,6 +122,3 @@ if not (BACKEND_PATH / "assets" / "plotly.js").exists():
 
 
 BACKEND = Backend()
-
-
-atexit.register(BACKEND.close)
