@@ -343,7 +343,7 @@ Once signed up you will find the API Key at the bottom. Enter this API key into 
 <details>
 <summary>Quandl</summary> 
 
-Go to https://www.quandl.com. You will be greeted with the following screen:
+Go to https://www.quandl.com You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207823899-208a3952-f557-4b73-aee6-64ac00faedb7.png"></img>
 
