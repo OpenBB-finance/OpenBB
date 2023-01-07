@@ -48,6 +48,7 @@ def show_plot(
     ax_2_coloring = -1
 
     dataset_yaxis_1 = dataset_yaxis_1.dropna()
+    dataset_yaxis_1.index = pd.to_datetime(dataset_yaxis_1.index)
 
     for column in dataset_yaxis_1:
         ax1.plot(
@@ -72,6 +73,7 @@ def show_plot(
         ax2 = ax1.twinx()
 
         dataset_yaxis_2 = dataset_yaxis_2.dropna()
+        dataset_yaxis_2.index = pd.to_datetime(dataset_yaxis_2.index)
 
         for column in dataset_yaxis_2:
             ax2.plot(
