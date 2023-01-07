@@ -164,29 +164,36 @@ class OptionsController(BaseController):
 
     def set_option_chain(
         self,
-        source: str,
-    ) -> pd.DataFrame:
-
-        if source == "Tradier":
+    ):
+        if self.source == "Tradier":
             chain = tradier_model.get_option_chain(self.ticker, self.selected_date)
             if isinstance(chain, op_helpers.Chain):
                 self.chain = chain
-        elif source == "Nasdaq":
+        elif self.source == "Nasdaq":
             self.chain = nasdaq_model.get_option_chain(self.ticker, self.selected_date)
         else:
             self.chain = yfinance_model.get_option_chain(
                 self.ticker, self.selected_date
             )
 
-    def set_current_price(self, source: str):
-
-        if source == "Tradier":
+    def set_current_price(
+        self,
+    ):
+        if self.source == "Tradier":
             last_price = tradier_model.get_last_price(self.ticker)
             self.current_price = last_price if last_price else 0.0
-        elif source == "Nasdaq":
+        elif self.source == "Nasdaq":
             self.current_price = nasdaq_model.get_last_price(self.ticker)
         else:
             self.current_price = yfinance_model.get_last_price(self.ticker)
+
+    def set_expiry_dates(self):
+        if self.source == "Tradier":
+            self.expiry_dates = tradier_model.option_expirations(self.ticker)
+        elif self.source == "Nasdaq":
+            self.expiry_dates = nasdaq_model.get_expirations(self.ticker)
+        else:
+            self.expiry_dates = yfinance_model.option_expirations(self.ticker)
 
     def update_runtime_choices(self):
         """Update runtime choices"""
@@ -584,12 +591,7 @@ class OptionsController(BaseController):
             self.ticker = ns_parser.ticker.upper()
 
             self.source = ns_parser.source
-            if ns_parser.source == "YahooFinance":
-                self.expiry_dates = yfinance_model.option_expirations(self.ticker)
-            elif ns_parser.source == "Nasdaq":
-                self.expiry_dates = nasdaq_model.get_expirations(self.ticker)
-            else:
-                self.expiry_dates = tradier_model.option_expirations(self.ticker)
+            self.set_expiry_dates()
 
             if not self.expiry_dates:
                 console.print(
@@ -601,10 +603,9 @@ class OptionsController(BaseController):
 
             if self.ticker and self.selected_date:
                 try:
-                    source = ns_parser.source if ns_parser.source else self.source
-                    self.set_option_chain(source=source)
-                    self.set_current_price(source=source)
-                    console.print("Loaded option chain from source: ", source)
+                    self.set_option_chain()
+                    self.set_current_price()
+                    console.print("Loaded option chain from source: ", self.source)
                 except ValueError:
                     console.print(
                         f"[red]{self.ticker} does not have expiration"
@@ -669,11 +670,11 @@ class OptionsController(BaseController):
                     self.update_runtime_choices()
 
                 if self.selected_date:
-                    source = ns_parser.source if ns_parser.source else self.source
-                    self.set_option_chain(source=source)
-                    self.set_current_price(source=source)
+                    self.source = ns_parser.source
+                    self.set_option_chain()
+                    self.set_current_price()
                     self.update_runtime_choices()
-                    console.print("Loaded option chain from source:", source)
+                    console.print("Loaded option chain from source:", self.source)
             else:
                 console.print("Please load a ticker using `load <ticker>`.\n")
 
