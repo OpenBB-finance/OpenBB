@@ -308,7 +308,7 @@ def load(
     # Daily
     if int(interval) == 1440:
         if source == "AlphaVantage":
-            df_stock_candidate = load_stock_av(symbol,int_string, start_date, end_date)
+            df_stock_candidate = load_stock_av(symbol, int_string, start_date, end_date)
 
         elif source == "YahooFinance":
             df_stock_candidate = load_stock_yf(
@@ -338,12 +338,14 @@ def load(
         s_interval = f"{interval}min"
 
     else:
-        
+
         if source == "AlphaVantage":
             s_start = start_date
             int_string = "Minute"
             s_interval = f"{interval}min"
-            df_stock_candidate = load_stock_av(symbol,int_string, start_date, end_date,s_interval)
+            df_stock_candidate = load_stock_av(
+                symbol, int_string, start_date, end_date, s_interval
+            )
 
         elif source == "YahooFinance":
             s_int = str(interval) + "m"

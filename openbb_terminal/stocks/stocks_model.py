@@ -18,7 +18,11 @@ logger = logging.getLogger(__name__)
 
 
 def load_stock_av(
-    symbol: str,interval: str, start_date: datetime, end_date: datetime, interval_min:str = "1min"
+    symbol: str,
+    interval: str,
+    start_date: datetime,
+    end_date: datetime,
+    interval_min: str = "1min",
 ) -> pd.DataFrame:
     try:
         ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
@@ -31,13 +35,9 @@ def load_stock_av(
                 symbol=symbol, outputsize="full"
             )[0]
         elif interval == "Weekly":
-            df_stock_candidate: pd.DataFrame = ts.get_weekly_adjusted(
-                symbol=symbol
-            )[0]
+            df_stock_candidate: pd.DataFrame = ts.get_weekly_adjusted(symbol=symbol)[0]
         elif interval == "Monthly":
-            df_stock_candidate: pd.DataFrame = ts.get_monthly_adjusted(
-                symbol=symbol
-            )[0]
+            df_stock_candidate: pd.DataFrame = ts.get_monthly_adjusted(symbol=symbol)[0]
         else:
             console.print("Invalid interval specified")
             return pd.DataFrame()
