@@ -1,6 +1,5 @@
 # IMPORTATION STANDARD
 import os
-from collections import namedtuple
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -78,8 +77,8 @@ PUTS = pd.DataFrame(
     }
 )
 
-Options = namedtuple("Options", ["calls", "puts"])
-CHAIN = Options(calls=CALLS, puts=PUTS)
+CHAIN = pd.merge(CALLS, PUTS, on="strike")
+CHAIN["expiration"] = "2024-01-19"
 
 
 @pytest.fixture(scope="module")
@@ -114,7 +113,7 @@ def test_menu_with_queue(expected, mocker, queue):
         return_value=EXPIRY_DATES,
     )
     mocker.patch(
-        target=f"{path_controller}.yfinance_model.get_option_chain",
+        target=f"{path_controller}.yfinance_model.get_full_option_chain",
         return_value=CHAIN,
     )
 
@@ -146,7 +145,7 @@ def test_menu_without_queue_completion(mocker):
         return_value=EXPIRY_DATES,
     )
     mocker.patch(
-        target=f"{path_controller}.yfinance_model.get_option_chain",
+        target=f"{path_controller}.yfinance_model.get_full_option_chain",
         return_value=CHAIN,
     )
 
@@ -199,7 +198,7 @@ def test_menu_without_queue_completion(mocker):
 def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "openbb_terminal.stocks.options.options_controller"
 
-    # MOCK OPTION_EXPIRATIONS + CHAIN
+    # MOCK OPTION_EXPIRATIONS + CHAIN + LAST PRICE
     mocker.patch(
         target=f"{path_controller}.yfinance_model.option_expirations",
         return_value=EXPIRY_DATES,
@@ -209,8 +208,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         return_value=EXPIRY_DATES,
     )
     mocker.patch(
-        target=f"{path_controller}.yfinance_model.get_option_chain",
+        target=f"{path_controller}.yfinance_model.get_full_option_chain",
         return_value=CHAIN,
+    )
+    mocker.patch(
+        target=f"{path_controller}.yfinance_model.get_last_price",
+        return_value=100.0,
     )
 
     # DISABLE AUTO-COMPLETION
@@ -357,7 +360,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
         return_value=EXPIRY_DATES,
     )
     mocker.patch(
-        target=f"{path_controller}.yfinance_model.get_option_chain",
+        target=f"{path_controller}.yfinance_model.get_full_option_chain",
         return_value=CHAIN,
     )
 
@@ -891,7 +894,7 @@ def test_call_func(
         return_value=EXPIRY_DATES,
     )
     mocker.patch(
-        target=f"{path_controller}.yfinance_model.get_option_chain",
+        target=f"{path_controller}.yfinance_model.get_full_option_chain",
         return_value=CHAIN,
     )
 
@@ -976,7 +979,7 @@ def test_call_func_no_selected_date(func, mocker):
         return_value=[],
     )
     mocker.patch(
-        target=f"{path_controller}.yfinance_model.get_option_chain",
+        target=f"{path_controller}.yfinance_model.get_full_option_chain",
         return_value=None,
     )
 
@@ -1014,7 +1017,7 @@ def test_call_load(mocker, other_args):
         return_value=EXPIRY_DATES,
     )
     mocker.patch(
-        target=f"{path_controller}.yfinance_model.get_option_chain",
+        target=f"{path_controller}.yfinance_model.get_full_option_chain",
         return_value=CHAIN,
     )
 
