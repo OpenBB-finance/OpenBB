@@ -14,7 +14,7 @@ import yfinance as yf
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options.op_helpers import Option, Chain
+from openbb_terminal.stocks.options.op_helpers import Option
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +49,33 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
         options = pd.concat([options, temp], axis=0).reset_index(drop=True)
 
     return options
+
+
+@log_start_end(log=logger)
+def get_option_chain(symbol: str, expiry: str):
+    """Gets option chain from yf for given ticker and expiration
+
+    Parameters
+    ----------
+    symbol: str
+        Ticker symbol to get options for
+    expiry: str
+        Date to get options for. YYYY-MM-DD
+
+    Returns
+    -------
+    chains: yf.ticker.Options
+        Options chain
+    """
+
+    yf_ticker = yf.Ticker(symbol)
+    try:
+        chain = yf_ticker.option_chain(expiry)
+    except Exception:
+        console.print(f"[red]Error: Expiration {expiry} cannot be found.[/red]")
+        chain = pd.DataFrame()
+
+    return chain
 
 
 # pylint: disable=W0640
@@ -184,33 +211,6 @@ def option_expirations(symbol: str):
     if not dates:
         console.print("No expiration dates found for ticker. \n")
     return dates
-
-
-@log_start_end(log=logger)
-def get_option_chain(symbol: str, expiry: str) -> Chain:
-    """Gets option chain from yf for given ticker and expiration
-
-    Parameters
-    ----------
-    symbol: str
-        Ticker symbol to get options for
-    expiry: str
-        Date to get options for. YYYY-MM-DD
-
-    Returns
-    -------
-    chains: yf.ticker.Options
-        Options chain
-    """
-
-    yf_ticker = yf.Ticker(symbol)
-    try:
-        chain = yf_ticker.option_chain(expiry)
-    except Exception:
-        console.print(f"[red]Error: Expiration {expiry} cannot be found.[/red]")
-        chain = pd.DataFrame()
-
-    return Chain(chain, "YahooFinance")
 
 
 @log_start_end(log=logger)

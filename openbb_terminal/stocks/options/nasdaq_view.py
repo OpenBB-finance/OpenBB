@@ -2,10 +2,13 @@
 __docformat__ = "numpy"
 
 import logging
+import os
 
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import print_rich_table
-from openbb_terminal.stocks.options import nasdaq_model, op_helpers
+from openbb_terminal.stocks.options.nasdaq_model import get_option_chain
+from openbb_terminal.stocks.options.op_helpers import process_option_chain
 
 logger = logging.getLogger(__name__)
 
@@ -23,20 +26,28 @@ def display_chains(symbol: str, expiry: str, export: str = ""):
     export: str
         Format to export data
     """
-    df = nasdaq_model.get_option_chain(symbol, expiry)
-    option_chain = op_helpers.Chain(df, "Nasdaq")
+    option_chain = get_option_chain(symbol, expiry)
+    option_chain = process_option_chain(option_chain, "Nasdaq")
 
-    op_helpers.export_options(export, option_chain, "chain_nasdaq")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "chain_nasdaq",
+        option_chain,
+    )
+
+    calls = option_chain[option_chain["optionType"] == "call"]
+    puts = option_chain[option_chain["optionType"] == "put"]
 
     print_rich_table(
-        option_chain.calls,
-        headers=list(option_chain.calls.columns),
+        calls,
+        headers=list(calls.columns),
         show_index=False,
         title="Option chain - Calls",
     )
     print_rich_table(
-        option_chain.puts,
-        headers=list(option_chain.puts.columns),
+        puts,
+        headers=list(puts.columns),
         show_index=False,
         title="Option chain - Puts",
     )

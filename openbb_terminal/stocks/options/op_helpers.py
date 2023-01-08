@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import os
 import logging
 from math import e, log
-from typing import Union, Any
+from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -275,37 +275,6 @@ option_chain_column_mapping = {
         "expiration": "expiration",
     },
 }
-
-
-# pylint: disable=R0903
-class Chain:
-    def __init__(self, data: Any, source: str = "Tradier"):
-        if source == "Tradier":
-            data = data.rename(columns=option_chain_column_mapping["Tradier"])
-            self.calls = data[data["optionType"] == "call"]
-            self.puts = data[data["optionType"] == "put"]
-
-        elif source == "Nasdaq":
-            call_columns = ["expiryDate", "strike"] + [
-                col for col in data.columns if col.startswith("c_")
-            ]
-            put_columns = ["expiryDate", "strike"] + [
-                col for col in data.columns if col.startswith("p_")
-            ]
-            self.calls = data[call_columns].rename(
-                columns=option_chain_column_mapping["Nasdaq"]
-            )
-            self.puts = data[put_columns].rename(
-                columns=option_chain_column_mapping["Nasdaq"]
-            )
-
-        elif source == "YahooFinance":
-            self.calls = data.calls
-            self.puts = data.puts
-
-        else:
-            self.calls = None
-            self.puts = None
 
 
 class Option:

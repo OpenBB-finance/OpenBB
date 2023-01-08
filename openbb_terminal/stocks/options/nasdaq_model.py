@@ -71,74 +71,12 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
                 " AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Safari/605.1.15"
             },
         ).json()
+
         if response_json["status"]["rCode"] == 200:
-            df = pd.DataFrame(response_json["data"]["table"]["rows"]).drop(
-                columns=["c_colour", "p_colour", "drillDownURL"]
-            )
-            df["expirygroup"] = (
-                df["expirygroup"].replace("", np.nan).fillna(method="ffill")
-            )
-            # Make numeric
-            columns_w_types = {
-                "c_Last": float,
-                "c_Change": float,
-                "c_Bid": float,
-                "c_Ask": float,
-                "c_Volume": int,
-                "c_Openinterest": int,
-                "strike": float,
-                "p_Last": float,
-                "p_Change": float,
-                "p_Bid": float,
-                "p_Ask": float,
-                "p_Volume": int,
-                "p_Openinterest": int,
-            }
-
-            for key, _ in columns_w_types.items():
-                df[key] = df[key].replace(",", "", regex=True)
-
-            df = (
-                df.fillna(np.nan)
-                .dropna(axis=0)
-                .replace("--", 0)
-                .astype(columns_w_types)
-            )
-            df["DTE"] = df["expirygroup"].apply(lambda t: get_dte_from_expiration(t))
-            df = df[df.DTE > 0]
-            df = df.drop(columns=["DTE"])
-
-            df["expiration"] = pd.to_datetime(
-                df["expirygroup"], format="%B %d, %Y"
-            ).dt.strftime("%Y-%m-%d")
-
-            return df
+            return process_response(response_json)
 
     console.print(f"[red]{symbol} Option Chain not found.[/red]\n")
     return pd.DataFrame()
-
-
-@log_start_end(log=logger)
-def option_expirations(symbol: str) -> List[str]:
-    """Get available expirations
-
-    Parameters
-    ----------
-    symbol : str
-        Ticker symbol to get expirations for
-
-    Returns
-    -------
-    List[str]
-        List of expiration dates
-    """
-    df = get_full_option_chain(symbol)
-    if df.empty:
-        return []
-    # get everything that is not an empty string
-    exps = [exp for exp in list(df.expirygroup.unique()) if exp]
-    # Convert 'January 11, 1993' into '1993-01-11'
-    return [datetime.strptime(exp, "%B %d, %Y").strftime("%Y-%m-%d") for exp in exps]
 
 
 @log_start_end(log=logger)
@@ -170,45 +108,72 @@ def get_option_chain(symbol: str, expiration: str) -> pd.DataFrame:
                 " AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Safari/605.1.15"
             },
         ).json()
+
         if response_json["status"]["rCode"] == 200:
-            df = (
-                pd.DataFrame(
-                    response_json.get("data", {}).get("table", {}).get("rows", {})
-                )
-                .drop(columns=["c_colour", "p_colour", "drillDownURL"])
-                .fillna(np.nan)
-                .dropna(axis=0)
-            )
-            # Make numeric
-            columns_w_types = {
-                "c_Last": float,
-                "c_Change": float,
-                "c_Bid": float,
-                "c_Ask": float,
-                "c_Volume": int,
-                "c_Openinterest": int,
-                "strike": float,
-                "p_Last": float,
-                "p_Change": float,
-                "p_Bid": float,
-                "p_Ask": float,
-                "p_Volume": int,
-                "p_Openinterest": int,
-            }
-
-            for key, _ in columns_w_types.items():
-                df[key] = df[key].replace(",", "", regex=True)
-
-            df = df.replace("--", 0).astype(columns_w_types)
-
-            df["expiration"] = pd.to_datetime(
-                df["expirygroup"], format="%B %d, %Y"
-            ).dt.strftime("%Y-%m-%d")
-
-            return df
+            return process_response(response_json)
 
     console.print(f"[red]{symbol} Option Chain not found.[/red]\n")
     return pd.DataFrame()
+
+
+def process_response(response_json):
+    df = pd.DataFrame(response_json["data"]["table"]["rows"]).drop(
+        columns=["c_colour", "p_colour", "drillDownURL"]
+    )
+    df["expirygroup"] = df["expirygroup"].replace("", np.nan).fillna(method="ffill")
+    # Make numeric
+    columns_w_types = {
+        "c_Last": float,
+        "c_Change": float,
+        "c_Bid": float,
+        "c_Ask": float,
+        "c_Volume": int,
+        "c_Openinterest": int,
+        "strike": float,
+        "p_Last": float,
+        "p_Change": float,
+        "p_Bid": float,
+        "p_Ask": float,
+        "p_Volume": int,
+        "p_Openinterest": int,
+    }
+
+    for key, _ in columns_w_types.items():
+        df[key] = df[key].replace(",", "", regex=True)
+
+    df = df.fillna(np.nan).dropna(axis=0).replace("--", 0).astype(columns_w_types)
+    df["DTE"] = df["expirygroup"].apply(lambda t: get_dte_from_expiration(t))
+    df = df[df.DTE > 0]
+    df = df.drop(columns=["DTE"])
+
+    df["expiration"] = pd.to_datetime(
+        df["expirygroup"], format="%B %d, %Y"
+    ).dt.strftime("%Y-%m-%d")
+
+    return df
+
+
+@log_start_end(log=logger)
+def option_expirations(symbol: str) -> List[str]:
+    """Get available expirations
+
+    Parameters
+    ----------
+    symbol : str
+        Ticker symbol to get expirations for
+
+    Returns
+    -------
+    List[str]
+        List of expiration dates
+    """
+    df = get_full_option_chain(symbol)
+    if df.empty:
+        return []
+    # get everything that is not an empty string
+    exps = [exp for exp in list(df.expirygroup.unique()) if exp]
+    # Convert 'January 11, 1993' into '1993-01-11'
+    return [datetime.strptime(exp, "%B %d, %Y").strftime("%Y-%m-%d") for exp in exps]
 
 
 @log_start_end(log=logger)
