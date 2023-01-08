@@ -215,6 +215,18 @@ def plot_oi(
         Format to export file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> aapl_chain_data = openbb.stocks.options.chains("AAPL", expiration="2023-07-21", source="Nasdaq")
+    >>> aapl_price = openbb.stocks.options.price("AAPL", source="Nasdaq")
+    >>> openbb.stocks.options.oi(
+            chain=aapl_chain_data,
+            symbol="AAPL",
+            current_price=aapl_price,
+            expiry="2023-07-21",
+        )
     """
     calls = chain[chain["optionType"] == "call"]
     puts = chain[chain["optionType"] == "put"]
@@ -302,6 +314,18 @@ def plot_voi(
         Format for exporting data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> aapl_chain_data = openbb.stocks.options.chains("AAPL", expiration="2023-07-21", source="Nasdaq")
+    >>> aapl_price = openbb.stocks.options.price("AAPL", source="Nasdaq")
+    >>> openbb.stocks.options.voi(
+            chain=aapl_chain_data,
+            symbol="AAPL",
+            current_price=aapl_price,
+            expiry="2023-07-21",
+        )
     """
     calls = chain[chain["optionType"] == "call"]
     puts = chain[chain["optionType"] == "put"]
