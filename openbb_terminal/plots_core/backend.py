@@ -7,11 +7,7 @@ from pathlib import Path
 
 import plotly.graph_objects as go
 import requests
-
-try:
-    from pywry import PyWry
-except ImportError:
-    PyWry = None
+from pywry import PyWry
 
 try:
     from IPython import get_ipython
