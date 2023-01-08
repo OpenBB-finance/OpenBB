@@ -194,8 +194,7 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
-            choices=stocks_helper.format_parse_choices(
-                dappradar_model.DAPPS_COLUMNS),
+            choices=stocks_helper.format_parse_choices(dappradar_model.DAPPS_COLUMNS),
             metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
@@ -237,8 +236,7 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
-            choices=stocks_helper.format_parse_choices(
-                dappradar_model.DEX_COLUMNS),
+            choices=stocks_helper.format_parse_choices(dappradar_model.DEX_COLUMNS),
             metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
@@ -280,8 +278,7 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
-            choices=stocks_helper.format_parse_choices(
-                dappradar_model.DEX_COLUMNS),
+            choices=stocks_helper.format_parse_choices(dappradar_model.DEX_COLUMNS),
             metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
@@ -323,8 +320,7 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Market Cap",
             default="Market Cap",
-            choices=stocks_helper.format_parse_choices(
-                dappradar_model.NFT_COLUMNS),
+            choices=stocks_helper.format_parse_choices(dappradar_model.NFT_COLUMNS),
             metavar="SORTBY",
         )
 
@@ -380,7 +376,8 @@ class DiscoveryController(BaseController):
             help="Sort by given column. Default: Market Cap Rank",
             default=["market_cap"],
             choices=stocks_helper.format_parse_choices(
-                pycoingecko_model.GAINERS_LOSERS_COLUMNS),
+                pycoingecko_model.GAINERS_LOSERS_COLUMNS
+            ),
             metavar="SORTBY",
         )
 
@@ -437,7 +434,8 @@ class DiscoveryController(BaseController):
             help="Sort by given column. Default: Market Cap Rank",
             default=["Market Cap"],
             choices=stocks_helper.format_parse_choices(
-                pycoingecko_model.GAINERS_LOSERS_COLUMNS),
+                pycoingecko_model.GAINERS_LOSERS_COLUMNS
+            ),
             metavar="SORTBY",
         )
 

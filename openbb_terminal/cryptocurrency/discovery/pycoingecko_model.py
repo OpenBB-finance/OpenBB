@@ -150,7 +150,7 @@ def get_coins(
         N coins
     """
 
-    sortby = sortby.replace('_', ' ').title()
+    sortby = sortby.replace("_", " ").title()
 
     client = CoinGeckoAPI()
     df = pd.DataFrame()
@@ -223,7 +223,7 @@ def get_gainers_or_losers(
         Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
     """
 
-    sortby = sortby.replace('_', ' ').title()
+    sortby = sortby.replace("_", " ").title()
 
     if interval not in API_PERIODS:
         raise ValueError(
@@ -254,8 +254,7 @@ def get_gainers_or_losers(
     if sortby in GAINERS_LOSERS_COLUMNS:
 
         sorted_df = sorted_df[
-            (sorted_df["Volume [$]"].notna()) & (
-                sorted_df["Market Cap"].notna())
+            (sorted_df["Volume [$]"].notna()) & (sorted_df["Market Cap"].notna())
         ]
         sorted_df = sorted_df.sort_values(by=sortby, ascending=True)
 
@@ -376,8 +375,7 @@ def get_coins_for_given_exchange(exchange_id: str = "binance", page: int = 1) ->
     """
 
     client = CoinGeckoAPI()
-    binance_coins = client.get_exchanges_tickers_by_id(
-        id=exchange_id, page=page)
+    binance_coins = client.get_exchanges_tickers_by_id(id=exchange_id, page=page)
     return binance_coins["tickers"]
 
 
