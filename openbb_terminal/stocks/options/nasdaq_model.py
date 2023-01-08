@@ -119,7 +119,7 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_expirations(symbol: str) -> List[str]:
+def option_expirations(symbol: str) -> List[str]:
     """Get available expirations
 
     Parameters

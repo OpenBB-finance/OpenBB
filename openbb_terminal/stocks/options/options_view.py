@@ -1,5 +1,6 @@
 # IMPORTATION STANDARD
 import logging
+import os
 
 # IMPORTATION THIRDPARTY
 from typing import List, Optional, Tuple
@@ -8,6 +9,7 @@ import pandas as pd
 
 # IMPORTATION INTERNAL
 import openbb_terminal.config_plot as cfp
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -15,11 +17,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.stocks.options.op_helpers import (
-    Chain,
-    export_options,
-    calculate_max_pain,
-)
+from openbb_terminal.stocks.options.op_helpers import calculate_max_pain
 
 logger = logging.getLogger(__name__)
 
@@ -42,9 +40,9 @@ def get_strikes(
     return min_strike, max_strike
 
 
-def get_max_pain(chain: Chain) -> float:
-    call_oi = chain.calls.set_index("strike")["openInterest"] / 1000
-    put_oi = chain.puts.set_index("strike")["openInterest"] / 1000
+def get_max_pain(calls: pd.DataFrame, puts: pd.DataFrame) -> float:
+    call_oi = calls.set_index("strike")["openInterest"] / 1000
+    put_oi = puts.set_index("strike")["openInterest"] / 1000
     df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
     df_opt = df_opt.rename(
         columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
@@ -53,19 +51,23 @@ def get_max_pain(chain: Chain) -> float:
 
 
 def print_raw(
-    chain: Chain, title: str, calls_only: bool = False, puts_only: bool = False
+    calls: pd.DataFrame,
+    puts: pd.DataFrame,
+    title: str,
+    calls_only: bool = False,
+    puts_only: bool = False,
 ):
     if not puts_only:
         print_rich_table(
-            chain.calls,
-            headers=list(chain.calls.columns),
+            calls,
+            headers=list(calls.columns),
             show_index=False,
             title=f"{title} - Calls",
         )
     if not calls_only:
         print_rich_table(
-            chain.puts,
-            headers=list(chain.puts.columns),
+            puts,
+            headers=list(puts.columns),
             show_index=False,
             title=f"{title} - Puts",
         )
@@ -73,7 +75,7 @@ def print_raw(
 
 @log_start_end(log=logger)
 def plot_vol(
-    chain: Chain,
+    chain: pd.DataFrame,
     current_price: float,
     symbol: str,
     expiry: str,
@@ -89,8 +91,8 @@ def plot_vol(
 
     Parameters
     ----------
-    chain: Chain
-        Chain object
+    chain: pd.Dataframe
+        Dataframe with options chain
     current_price: float
         Current price of selected symbol
     symbol: str
@@ -114,7 +116,7 @@ def plot_vol(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> aapl_chain_data = openbb.stocks.options.chain("AAPL", expiration="2023-07-21", source="Nasdaq")
+    >>> aapl_chain_data = openbb.stocks.options.chains("AAPL", expiration="2023-07-21", source="Nasdaq")
     >>> aapl_price = openbb.stocks.options.price("AAPL", source="Nasdaq")
     >>> openbb.stocks.options.vol(
             chain=aapl_chain_data,
@@ -123,6 +125,8 @@ def plot_vol(
             expiry="2023-07-21",
         )
     """
+    calls = chain[chain["optionType"] == "call"]
+    puts = chain[chain["optionType"] == "put"]
 
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
 
@@ -135,16 +139,16 @@ def plot_vol(
 
     if not puts_only:
         ax.plot(
-            chain.calls.strike,
-            chain.calls["volume"] / 1000,
+            calls.strike,
+            calls["volume"] / 1000,
             ls="-",
             marker="o",
             label="Calls",
         )
     if not calls_only:
         ax.plot(
-            chain.puts.strike,
-            chain.puts["volume"] / 1000,
+            puts.strike,
+            puts["volume"] / 1000,
             ls="-",
             marker="o",
             label="Puts",
@@ -163,14 +167,19 @@ def plot_vol(
         theme.visualize_output()
 
     if raw:
-        print_raw(chain, title, calls_only, puts_only)
+        print_raw(calls, puts, title, calls_only, puts_only)
 
-    export_options(export, chain, "vol")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"vol_{symbol}_{expiry}",
+        chain,
+    )
 
 
 @log_start_end(log=logger)
 def plot_oi(
-    chain: Chain,
+    chain: pd.DataFrame,
     current_price: float,
     symbol: str,
     expiry: str,
@@ -186,8 +195,8 @@ def plot_oi(
 
     Parameters
     ----------
-    chain: Chain
-        Chain object
+    chain: pd.Dataframe
+        Dataframe with options chain
     current_price: float
         Current price of selected symbol
     symbol: str
@@ -207,8 +216,11 @@ def plot_oi(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+    calls = chain[chain["optionType"] == "call"]
+    puts = chain[chain["optionType"] == "put"]
+
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
-    max_pain = get_max_pain(chain)
+    max_pain = get_max_pain(calls, puts)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
@@ -219,16 +231,16 @@ def plot_oi(
 
     if not puts_only:
         ax.plot(
-            chain.calls.strike,
-            chain.calls["openInterest"] / 1000,
+            calls.strike,
+            calls["openInterest"] / 1000,
             ls="-",
             marker="o",
             label="Calls",
         )
     if not calls_only:
         ax.plot(
-            chain.puts.strike,
-            chain.puts["openInterest"] / 1000,
+            puts.strike,
+            puts["openInterest"] / 1000,
             ls="-",
             marker="o",
             label="Puts",
@@ -248,14 +260,19 @@ def plot_oi(
         theme.visualize_output()
 
     if raw:
-        print_raw(chain, title, calls_only, puts_only)
+        print_raw(calls, puts, title, calls_only, puts_only)
 
-    export_options(export, chain, "oi")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"oi_{symbol}_{expiry}",
+        chain,
+    )
 
 
 @log_start_end(log=logger)
 def plot_voi(
-    chain: Chain,
+    chain: pd.DataFrame,
     current_price: float,
     symbol: str,
     expiry: str,
@@ -269,8 +286,8 @@ def plot_voi(
 
     Parameters
     ----------
-    chain: Chain
-        Chain object
+    chain: pd.Dataframe
+        Dataframe with options chain
     current_price: float
         Current price of selected symbol
     symbol: str
@@ -281,19 +298,20 @@ def plot_voi(
         Min strike price
     max_sp: float
         Max strike price
-    min_vol: float
-        Min volume to consider
     export: str
         Format for exporting data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+    calls = chain[chain["optionType"] == "call"]
+    puts = chain[chain["optionType"] == "put"]
+
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
-    max_pain = get_max_pain(chain)
+    max_pain = get_max_pain(calls, puts)
 
     option_chain = pd.merge(
-        chain.calls[["volume", "strike", "openInterest"]],
-        chain.puts[["volume", "strike", "openInterest"]],
+        calls[["volume", "strike", "openInterest"]],
+        puts[["volume", "strike", "openInterest"]],
         on="strike",
     )
 
@@ -362,9 +380,14 @@ def plot_voi(
         theme.visualize_output()
 
     if raw:
-        print_raw(chain, title)
+        print_raw(calls, puts, title)
 
-    export_options(export, chain, "voi")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"voi_{symbol}_{expiry}",
+        chain,
+    )
 
 
 @log_start_end(log=logger)

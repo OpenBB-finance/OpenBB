@@ -205,7 +205,7 @@ def display_chains(
                 title=f"{symbol} Option chain for {expiry}",
             )
 
-        op_helpers.export_options(export, chain, "chains")
+        op_helpers.export_options(export, chain, "chain_tradier")
 
 
 @log_start_end(log=logger)

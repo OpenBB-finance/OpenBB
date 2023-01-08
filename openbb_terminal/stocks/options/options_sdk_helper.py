@@ -11,6 +11,7 @@ from openbb_terminal.stocks.options import (
     nasdaq_model,
     tradier_model,
     yfinance_model,
+    op_helpers,
 )
 
 logger = logging.getLogger(__name__)
@@ -60,9 +61,9 @@ def get_full_option_chain(
         return pd.DataFrame()
 
     if expiration:
-        return df[df.expiration == expiration]
+        df = df[df.expiration == expiration]
 
-    return df
+    return op_helpers.process_option_chain(df, source)
 
 
 def get_option_current_price(
@@ -127,7 +128,7 @@ def get_option_expirations(symbol: str, source: str = "Nasdaq") -> list:
     if source == "YahooFinance":
         return yfinance_model.option_expirations(symbol)
     if source == "Nasdaq":
-        return nasdaq_model.get_expirations(symbol)
+        return nasdaq_model.option_expirations(symbol)
 
     logger.info("Invalid Source")
     return pd.DataFrame()

@@ -125,14 +125,14 @@ def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> flo
 
 @log_start_end(log=logger)
 def export_options(export: str, options, file_name: str):
-    """Special function to assist in exporting yf options
+    """Special function to assist in exporting options
 
     Parameters
     ----------
     export: str
         Format to export file
-    options: Options
-        The yfinance Options object
+    options: Chain
+        Chain object object
     file_name: str
         The file_name to export to
 
@@ -148,7 +148,7 @@ def export_options(export: str, options, file_name: str):
 
 
 @log_start_end(log=logger)
-def process_option_chain(data: pd.DataFrame, source: str = "Tradier") -> pd.DataFrame:
+def process_option_chain(data: pd.DataFrame, source: str) -> pd.DataFrame:
     """
     Create an option chain DataFrame from the given symbol.
     Does additional processing in order to get some homogeneous between the sources.

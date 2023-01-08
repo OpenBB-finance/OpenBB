@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from typing import Any, List
+from typing import List
 
 import pandas as pd
 
@@ -50,7 +50,7 @@ from openbb_terminal.stocks.options.options_view import (
     display_expiry_dates,
 )
 
-# pylint: disable=R1710,C0302,R0916
+# pylint: disable=R1710,C0302,R0916,R0902
 
 # TODO: HELP WANTED! This controller requires some MVC style refactoring
 #       - At the moment there's too much logic in the controller to implement an
@@ -127,18 +127,22 @@ class OptionsController(BaseController):
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
         self.selected_date = ""
-        self.chain: Any = None
+        self.chain: pd.DataFrame = pd.DataFrame()
+        self.full_chain: pd.DataFrame = pd.DataFrame()
         self.current_price = 0.0
         # Keeps track of initial source of load so we can use correct commands later
         self.source = ""
 
         if ticker:
             if API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
-                console.print("Loaded expiry dates from Yahoo Finance\n")
+                console.print("Loaded expiry dates from Yahoo Finance")
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
-                console.print("Loaded expiry dates from Tradier\n")
+                console.print("Loaded expiry dates from Tradier")
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
+
+            self.set_option_chain()
+            self.set_current_price()
         else:
             self.expiry_dates = []
 
@@ -167,60 +171,60 @@ class OptionsController(BaseController):
         )
         return commands
 
-    def set_option_chain(
-        self,
-    ):
-        if self.source == "Tradier":
-            chain = tradier_model.get_option_chain(self.ticker, self.selected_date)
-            if isinstance(chain, op_helpers.Chain):
-                self.chain = chain
-        elif self.source == "Nasdaq":
-            self.chain = nasdaq_model.get_option_chain(self.ticker, self.selected_date)
-        else:
-            self.chain = yfinance_model.get_option_chain(
-                self.ticker, self.selected_date
-            )
+    def set_option_chain(self):
+        df = pd.DataFrame()
 
-    def set_current_price(
-        self,
-    ):
         if self.source == "Tradier":
-            last_price = tradier_model.get_last_price(self.ticker)
-            self.current_price = last_price if last_price else 0.0
+            df = tradier_model.get_full_option_chain(self.ticker)
+
         elif self.source == "Nasdaq":
-            self.current_price = nasdaq_model.get_last_price(self.ticker)
+            df = nasdaq_model.get_full_option_chain(self.ticker)
+
         else:
-            self.current_price = yfinance_model.get_last_price(self.ticker)
+            self.source = "YahooFinance"
+            df = yfinance_model.get_full_option_chain(self.ticker)
+
+        if (isinstance(df, pd.DataFrame) and df.empty) or df is None:
+            console.print("[red]Error loading option chain.[/red]")
+            return
+
+        self.full_chain = op_helpers.process_option_chain(data=df, source=self.source)
+        self.chain = self.full_chain.copy(deep=True)
+
+        console.print("Loaded option chain from", self.source)
+
+    def set_current_price(self):
+        if not self.chain.empty:
+            if self.source == "Tradier":
+                last_price = tradier_model.get_last_price(self.ticker)
+                self.current_price = last_price if last_price else 0.0
+            elif self.source == "Nasdaq":
+                self.current_price = nasdaq_model.get_last_price(self.ticker)
+            else:
+                self.current_price = yfinance_model.get_last_price(self.ticker)
 
     def set_expiry_dates(self):
         if self.source == "Tradier":
             self.expiry_dates = tradier_model.option_expirations(self.ticker)
         elif self.source == "Nasdaq":
-            self.expiry_dates = nasdaq_model.get_expirations(self.ticker)
+            self.expiry_dates = nasdaq_model.option_expirations(self.ticker)
         else:
             self.expiry_dates = yfinance_model.option_expirations(self.ticker)
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        if session and obbff.USE_PROMPT_TOOLKIT and self.chain:
+        if session and obbff.USE_PROMPT_TOOLKIT and not self.chain.empty:
 
-            self.choices["hist"]["--strike"] = {
-                str(c): {}
-                for c in self.chain.puts["strike"] + self.chain.calls["strike"]
-            }
+            strike = set(self.chain["strike"])
+
+            self.choices["hist"]["--strike"] = {str(c): {} for c in strike}
             self.choices["grhist"]["-s"] = "--strike"
-            self.choices["grhist"]["--strike"] = {
-                str(c): {}
-                for c in self.chain.puts["strike"] + self.chain.calls["strike"]
-            }
+            self.choices["grhist"]["--strike"] = {str(c): {} for c in strike}
             self.choices["grhist"]["-s"] = "--strike"
-            self.choices["binom"]["--strike"] = {
-                str(c): {}
-                for c in self.chain.puts["strike"] + self.chain.calls["strike"]
-            }
+            self.choices["binom"]["--strike"] = {str(c): {} for c in strike}
             self.choices["binom"]["-s"] = "--strike"
 
-        self.completer = NestedCompleter.from_nested_dict(self.choices)
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help."""
@@ -543,12 +547,12 @@ class OptionsController(BaseController):
                         (
                             ns_parser.put
                             and ns_parser.strike
-                            in [float(strike) for strike in self.chain.puts["strike"]]
+                            in [float(strike) for strike in self.chain["strike"]]
                         )
                         or (
                             not ns_parser.put
                             and ns_parser.strike
-                            in [float(strike) for strike in self.chain.calls["strike"]]
+                            in [float(strike) for strike in self.chain["strike"]]
                         )
                     ):
                         syncretism_view.view_historical_greeks(
@@ -599,6 +603,7 @@ class OptionsController(BaseController):
             self.set_option_chain()
             self.set_current_price()
             self.set_expiry_dates()
+            self.selected_date = ""
 
             if not self.expiry_dates:
                 console.print(
@@ -608,7 +613,6 @@ class OptionsController(BaseController):
                 console.print("Loading from YahooFinance now.")
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
 
-            console.print("Loaded option chain from source:", self.source)
             self.update_runtime_choices()
 
     @log_start_end(log=logger)
@@ -653,23 +657,24 @@ class OptionsController(BaseController):
                 # Print possible expiry dates
                 if ns_parser.index == -1 and not ns_parser.date:
                     display_expiry_dates(self.expiry_dates)
+                # Set expiry date with date argument
                 elif ns_parser.date:
                     if ns_parser.date in self.expiry_dates:
                         console.print(f"Expiration set to {ns_parser.date}")
                         self.selected_date = ns_parser.date
-                        self.update_runtime_choices()
                     else:
                         console.print("Expiration not an option")
+                # Set expiry date with index argument
                 else:
                     expiry_date = self.expiry_dates[ns_parser.index]
                     console.print(f"Expiration set to {expiry_date}")
                     self.selected_date = expiry_date
-                    self.update_runtime_choices()
 
                 if self.selected_date:
                     self.source = ns_parser.source
-                    self.set_option_chain()
-                    self.set_current_price()
+                    self.chain = self.full_chain[
+                        self.full_chain["expiration"] == self.selected_date
+                    ]
                     self.update_runtime_choices()
 
             else:
@@ -725,12 +730,12 @@ class OptionsController(BaseController):
                 (
                     ns_parser.put
                     and ns_parser.strike
-                    not in [float(strike) for strike in self.chain.puts["strike"]]
+                    not in [float(strike) for strike in self.chain["strike"]]
                 )
                 or (
                     not ns_parser.put
                     and ns_parser.strike
-                    not in [float(strike) for strike in self.chain.calls["strike"]]
+                    not in [float(strike) for strike in self.chain["strike"]]
                 )
             ):
                 console.print("No correct strike input\n")
