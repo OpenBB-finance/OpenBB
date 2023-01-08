@@ -223,11 +223,12 @@ def get_futures(
         ].strip("\r\n                    var tiles = ")
     )
 
-    d_futures: dict = {}
-    for future in groups:
-        d_futures[future["label"]] = [
+    d_futures: dict = {
+        future["label"]: [
             titles[ticker["ticker"]] for ticker in future["contracts"]
         ]
+        for future in groups
+    }
     df = pd.DataFrame(d_futures[future_type])
     df = df.set_index("label")
     df = df.sort_values(by=sortby, ascending=ascend)
