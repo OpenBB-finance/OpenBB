@@ -10,7 +10,7 @@ function get_popup(data = null, type = null) {
 
         TITLE_DIV.innerHTML = `
         <label for="title_text">Title:</label>
-        <input id="title_text" type="text" value="${title}" autofocus>
+        <input id="title_text" type="text" value="${title}">
         <label for="title_xaxis">X axis:</label>
         <input id="title_xaxis" type="text" value="${xaxis}">
         <label for="title_yaxis">Y axis:</label>
@@ -53,7 +53,7 @@ function get_popup(data = null, type = null) {
         <label for="popup_textarea"><b>Text:</b>
         <div id="popup_textarea_warning" class="popup_warning">Text is required</div></label><br>
         <textarea id="addtext_textarea" rows="4" cols="50" value="${data.text}"
-            placeholder="Enter text here" autofocus>${data.text}</textarea><br>
+            placeholder="Enter text here">${data.text}</textarea><br>
 
         <div style="margin-top: 10px;">
             <label for="addtext_color"><b>Font color:</b></label>
