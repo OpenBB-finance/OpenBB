@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import os
-from datetime import datetime, timedelta
+import logging
 from math import e, log
 from typing import Union, Any
 
@@ -12,34 +12,12 @@ from scipy.stats import norm
 
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
+from openbb_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
-def get_dte_from_expiration(date: str) -> float:
-    """
-    Converts a date to total days until the option would expire.
-    This assumes that the date is in the form %B %d, %Y such as January 11, 2023
-    This calculates time from 'now' to 4 PM the date of expiration
-    This is particularly a helper for nasdaq results.
-
-    Parameters
-    ----------
-    date: str
-        Date in format %B %d, %Y
-
-    Returns
-    -------
-    float
-        Days to expiration as a decimal
-    """
-    # Get the date as a datetime and add 16 hours (4PM)
-    expiration_time = datetime.strptime(date, "%B %d, %Y") + timedelta(hours=16)
-    # Find total seconds from now
-    time_to_now = (expiration_time - datetime.now()).total_seconds()
-    # Convert to days
-    time_to_now /= 60 * 60 * 24
-    return time_to_now
-
-
+@log_start_end(log=logger)
 def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
     """Function to get the loss at the given expiry
 
@@ -68,6 +46,7 @@ def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
     return loss
 
 
+@log_start_end(log=logger)
 def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
     """Returns the max pain for a given call/put dataframe
 
@@ -94,6 +73,7 @@ def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
     return max_pain
 
 
+@log_start_end(log=logger)
 def convert(orig: str, to: str) -> float:
     """Convert a string to a specific type of number
     Parameters
@@ -113,6 +93,7 @@ def convert(orig: str, to: str) -> float:
     raise ValueError("Invalid to format, please use '%' or ','.")
 
 
+@log_start_end(log=logger)
 def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> float:
     """The risk neutral payoff for a stock
     Parameters
@@ -142,6 +123,7 @@ def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> flo
     return sum(df["Vals"]) / risk_free
 
 
+@log_start_end(log=logger)
 def export_options(export: str, options, file_name: str):
     """Special function to assist in exporting yf options
 
@@ -165,15 +147,16 @@ def export_options(export: str, options, file_name: str):
         )
 
 
-def create_option_chain_df(data: Any, source: str = "Tradier") -> pd.DataFrame:
+@log_start_end(log=logger)
+def process_option_chain(data: pd.DataFrame, source: str = "Tradier") -> pd.DataFrame:
     """
-    Create an option chain DataFrame from the given data.
+    Create an option chain DataFrame from the given symbol.
+    Does additional processing in order to get some homogeneous between the sources.
 
     Parameters
     ----------
-    data: Any
-        The data to create the option chain from. The exact format of the data
-        will depend on the value of the `source` parameter.
+    data : pd.DataFrame
+        The option chain data
     source: str, optional
         The source of the data. Valid values are "Tradier", "Nasdaq", and
         "YahooFinance". The default value is "Tradier".

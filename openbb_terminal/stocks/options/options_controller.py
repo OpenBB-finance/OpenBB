@@ -43,7 +43,12 @@ from openbb_terminal.stocks.options.screen import (
     syncretism_model,
     syncretism_view,
 )
-from openbb_terminal.stocks.options.options_view import plot_vol, plot_oi, plot_voi
+from openbb_terminal.stocks.options.options_view import (
+    plot_vol,
+    plot_oi,
+    plot_voi,
+    display_expiry_dates,
+)
 
 # pylint: disable=R1710,C0302,R0916
 
@@ -589,8 +594,10 @@ class OptionsController(BaseController):
         )
         if ns_parser:
             self.ticker = ns_parser.ticker.upper()
-
             self.source = ns_parser.source
+
+            self.set_option_chain()
+            self.set_current_price()
             self.set_expiry_dates()
 
             if not self.expiry_dates:
@@ -601,17 +608,7 @@ class OptionsController(BaseController):
                 console.print("Loading from YahooFinance now.")
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
 
-            if self.ticker and self.selected_date:
-                try:
-                    self.set_option_chain()
-                    self.set_current_price()
-                    console.print("Loaded option chain from source: ", self.source)
-                except ValueError:
-                    console.print(
-                        f"[red]{self.ticker} does not have expiration"
-                        f" {self.selected_date}.[/red]"
-                    )
-
+            console.print("Loaded option chain from source:", self.source)
             self.update_runtime_choices()
 
     @log_start_end(log=logger)
@@ -655,7 +652,7 @@ class OptionsController(BaseController):
             if self.ticker:
                 # Print possible expiry dates
                 if ns_parser.index == -1 and not ns_parser.date:
-                    tradier_view.display_expiry_dates(self.expiry_dates)
+                    display_expiry_dates(self.expiry_dates)
                 elif ns_parser.date:
                     if ns_parser.date in self.expiry_dates:
                         console.print(f"Expiration set to {ns_parser.date}")
@@ -674,7 +671,7 @@ class OptionsController(BaseController):
                     self.set_option_chain()
                     self.set_current_price()
                     self.update_runtime_choices()
-                    console.print("Loaded option chain from source:", self.source)
+
             else:
                 console.print("Please load a ticker using `load <ticker>`.\n")
 

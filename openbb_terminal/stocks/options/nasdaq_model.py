@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 
 import numpy as np
@@ -11,13 +11,36 @@ import requests
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options.op_helpers import (
-    get_dte_from_expiration as get_dte,
-    Chain,
-)
 
 logger = logging.getLogger(__name__)
 # pylint: disable=unsupported-assignment-operation
+
+
+@log_start_end(log=logger)
+def get_dte_from_expiration(date: str) -> float:
+    """
+    Converts a date to total days until the option would expire.
+    This assumes that the date is in the form %B %d, %Y such as January 11, 2023
+    This calculates time from 'now' to 4 PM the date of expiration
+    This is particularly a helper for nasdaq results.
+
+    Parameters
+    ----------
+    date: str
+        Date in format %B %d, %Y
+
+    Returns
+    -------
+    float
+        Days to expiration as a decimal
+    """
+    # Get the date as a datetime and add 16 hours (4PM)
+    expiration_time = datetime.strptime(date, "%B %d, %Y") + timedelta(hours=16)
+    # Find total seconds from now
+    time_to_now = (expiration_time - datetime.now()).total_seconds()
+    # Convert to days
+    time_to_now /= 60 * 60 * 24
+    return time_to_now
 
 
 @log_start_end(log=logger)
@@ -81,7 +104,7 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
                 .replace("--", 0)
                 .astype(columns_w_types)
             )
-            df["DTE"] = df["expirygroup"].apply(lambda t: get_dte(t))
+            df["DTE"] = df["expirygroup"].apply(lambda t: get_dte_from_expiration(t))
             df = df[df.DTE > 0]
             df = df.drop(columns=["DTE"])
 
@@ -119,7 +142,7 @@ def get_expirations(symbol: str) -> List[str]:
 
 
 @log_start_end(log=logger)
-def get_option_chain(symbol: str, expiration: str) -> Chain:
+def get_option_chain(symbol: str, expiration: str) -> pd.DataFrame:
     """Get option chain for symbol at a given expiration
 
     Parameters
@@ -182,7 +205,7 @@ def get_option_chain(symbol: str, expiration: str) -> Chain:
                 df["expirygroup"], format="%B %d, %Y"
             ).dt.strftime("%Y-%m-%d")
 
-            return Chain(df, "Nasdaq")
+            return df
 
     console.print(f"[red]{symbol} Option Chain not found.[/red]\n")
     return pd.DataFrame()

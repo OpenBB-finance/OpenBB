@@ -365,3 +365,23 @@ def plot_voi(
         print_raw(chain, title)
 
     export_options(export, chain, "voi")
+
+
+@log_start_end(log=logger)
+def display_expiry_dates(expiry_dates: list):
+    """Display expiry dates
+
+    Parameters
+    ----------
+    expiry_dates: list
+        The expiry dates of the chosen ticker.
+    """
+    expiry_dates_df = pd.DataFrame(expiry_dates, columns=["Date"])
+
+    print_rich_table(
+        expiry_dates_df,
+        headers=list(expiry_dates_df.columns),
+        title="Available expiry dates",
+        show_index=True,
+        index_name="Identifier",
+    )

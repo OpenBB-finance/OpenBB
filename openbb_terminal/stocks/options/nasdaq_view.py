@@ -23,7 +23,8 @@ def display_chains(symbol: str, expiry: str, export: str = ""):
     export: str
         Format to export data
     """
-    option_chain = nasdaq_model.get_option_chain(symbol, expiry)
+    df = nasdaq_model.get_option_chain(symbol, expiry)
+    option_chain = op_helpers.Chain(df, "Nasdaq")
 
     op_helpers.export_options(export, option_chain, "chain_nasdaq")
 
