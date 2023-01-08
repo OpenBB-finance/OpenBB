@@ -39,7 +39,7 @@ class ScreenerController(BaseController):
         super().__init__(queue)
 
         self.preset = "high_IV"
-        self.screen_tickers: List = list()
+        self.screen_tickers: List = []
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default

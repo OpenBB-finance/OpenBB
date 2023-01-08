@@ -58,7 +58,7 @@ def getFINRAweeks(tier: str = "T1", is_ats: bool = True) -> List:
         json=req_data,
     )
 
-    return response.json() if response.status_code == 200 else list()
+    return response.json() if response.status_code == 200 else []
 
 
 @log_start_end(log=logger)
@@ -206,7 +206,7 @@ def getFINRAdata(
 
     return (
         response.status_code,
-        response.json() if response.status_code == 200 else list(),
+        response.json() if response.status_code == 200 else [],
     )
 
 

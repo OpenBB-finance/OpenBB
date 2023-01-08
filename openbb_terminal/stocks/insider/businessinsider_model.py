@@ -38,7 +38,7 @@ def get_insider_activity(symbol: str) -> pd.DataFrame:
     )
 
     d_insider = dict()
-    l_insider_vals = list()
+    l_insider_vals = []
     for idx, insider_val in enumerate(
         text_soup_market_business_insider.findAll(
             "td", {"class": "table__td text-center"}
@@ -52,7 +52,7 @@ def get_insider_activity(symbol: str) -> pd.DataFrame:
             if "/" not in l_insider_vals[0]:
                 break
             d_insider[(idx + 1) // 6] = l_insider_vals
-            l_insider_vals = list()
+            l_insider_vals = []
 
     df_insider = pd.DataFrame.from_dict(
         d_insider,
@@ -64,7 +64,7 @@ def get_insider_activity(symbol: str) -> pd.DataFrame:
     df_insider = df_insider.set_index("Date")
     df_insider = df_insider.sort_index(ascending=True)
 
-    l_names = list()
+    l_names = []
     for s_name in text_soup_market_business_insider.findAll(
         "a", {"onclick": "silentTrackPI()"}
     ):

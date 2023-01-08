@@ -118,7 +118,7 @@ class TerminalController(BaseController):
         """Construct terminal controller."""
         super().__init__(jobs_cmds)
 
-        self.queue: List[str] = list()
+        self.queue: List[str] = []
 
         if jobs_cmds:
             self.queue = parse_and_split_input(
@@ -662,7 +662,7 @@ class TerminalController(BaseController):
         self.queue = []
 
         path_routine = ""
-        args = list()
+        args = []
         for idx, path_dir in enumerate(other_args_processed):
             if path_dir in ("-i", "--input"):
                 args = [path_routine[1:]] + other_args_processed[idx:]
@@ -713,7 +713,7 @@ class TerminalController(BaseController):
                         if raw_line.strip("\n")
                     ]
 
-                    lines = list()
+                    lines = []
                     for rawline in raw_lines:
                         templine = rawline
 

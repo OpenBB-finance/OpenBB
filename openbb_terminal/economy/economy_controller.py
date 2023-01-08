@@ -229,7 +229,7 @@ class EconomyController(BaseController):
                 ]
 
                 # help users to select multiple timeseries for one axis
-                economicdata = list()
+                economicdata = []
                 for L in [1, 2]:
                     for subset in itertools.combinations(options, L):
                         economicdata.append(",".join(subset))

@@ -213,7 +213,7 @@ def get_news(news_type: str = "Top-News", limit: int = 5) -> List:
         List of dict news
     """
     news_articles: Dict = get_news_html(news_type)
-    news_to_display = list()
+    news_to_display = []
 
     if "data" in news_articles:
         for idx, news in enumerate(news_articles["data"]):

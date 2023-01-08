@@ -571,7 +571,7 @@ def check_list_dates(str_dates: str) -> List[datetime]:
     list_dates: List[datetime]
         List of valid dates
     """
-    list_dates = list()
+    list_dates = []
     if str_dates:
         if "," in str_dates:
             for dt_marker in str_dates.split(","):
@@ -1273,7 +1273,7 @@ def check_file_type_saved(valid_types: List[str] = None):
         """
         if not filenames or not valid_types:
             return ""
-        valid_filenames = list()
+        valid_filenames = []
         for filename in filenames.split(","):
             if filename.endswith(tuple(valid_types)):
                 valid_filenames.append(filename)
@@ -1655,7 +1655,7 @@ def check_list_values(valid_values: List[str]):
         argparse.ArgumentTypeError
             Input number not between min and max values
         """
-        success_values = list()
+        success_values = []
 
         if "," in given_values:
             values_found = [val.strip() for val in given_values.split(",")]

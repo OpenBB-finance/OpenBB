@@ -1,4 +1,5 @@
 """Parent Classes."""
+
 __docformat__ = "numpy"
 
 # pylint: disable=C0301,C0302,R0902,global-statement
@@ -69,7 +70,7 @@ CRYPTO_SOURCES = {
 SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 
 RECORD_SESSION = False
-SESSION_RECORDED = list()
+SESSION_RECORDED = []
 SESSION_RECORDED_NAME = ""
 
 
@@ -132,7 +133,7 @@ class BaseController(metaclass=ABCMeta):
         self.queue = (
             self.parse_input(an_input="/".join(queue))
             if (queue and self.PATH != "/")
-            else list()
+            else []
         )
 
         controller_choices = self.CHOICES_COMMANDS + self.CHOICES_MENUS
@@ -676,7 +677,7 @@ class BaseController(metaclass=ABCMeta):
 
             # Clear session to be recorded again
             RECORD_SESSION = False
-            SESSION_RECORDED = list()
+            SESSION_RECORDED = []
 
     @log_start_end(log=logger)
     def call_screenshot(self, other_args: List[str]) -> None:

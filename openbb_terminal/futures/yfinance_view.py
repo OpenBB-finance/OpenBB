@@ -91,7 +91,7 @@ def display_historical(
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=3 * 365)).strftime("%Y-%m-%d")
 
-    symbols_validated = list()
+    symbols_validated = []
     for symbol in symbols:
         if symbol in yfinance_model.FUTURES_DATA["Ticker"].unique().tolist():
             symbols_validated.append(symbol)
@@ -137,7 +137,7 @@ def display_historical(
 
         colors = cycle(theme.get_colors())
         if len(symbols) > 1:
-            name = list()
+            name = []
             for tick in historicals["Adj Close"].columns.tolist():
                 if len(historicals["Adj Close"][tick].dropna()) == 1:
                     console.print(

@@ -152,8 +152,8 @@ def get_etfs_by_name(name_to_search: str) -> pd.DataFrame:
     """
     all_symbols, all_names = get_all_names_symbols()
 
-    filtered_symbols = list()
-    filtered_names = list()
+    filtered_symbols = []
+    filtered_names = []
     for symbol, name in zip(all_symbols, all_names):
         if name_to_search.lower() in name.lower():
             filtered_symbols.append(symbol)

@@ -237,7 +237,7 @@ class ForecastController(BaseController):
     def refresh_datasets_on_menu(self):
         """Refresh datasets on menu with new columns when adding new features"""
 
-        self.list_dataset_cols = list()
+        self.list_dataset_cols = []
         maxfile = max(len(file) for file in self.files)
         self.loaded_dataset_cols = "\n"
         for dataset, data in self.datasets.items():
@@ -664,7 +664,7 @@ class ForecastController(BaseController):
             self.datasets[ticker] = data
 
             # Process new datasets to be updated
-            self.list_dataset_cols = list()
+            self.list_dataset_cols = []
             maxfile = max(len(file) for file in self.files)
             self.loaded_dataset_cols = "\n"
             for dataset, x_data in self.datasets.items():

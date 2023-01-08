@@ -417,8 +417,8 @@ def display_yearly_returns(
                 return
             ax = external_axes[0]
 
-        creturns_year_idx = list()
-        breturns_year_idx = list()
+        creturns_year_idx = []
+        breturns_year_idx = []
 
         for year in df.index.values:
             creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))

@@ -92,7 +92,7 @@ def get_historical_futures(symbols: List[str], expiry: str = "") -> pd.DataFrame
         Dictionary with sector weightings allocation
     """
     if expiry:
-        symbols_with_expiry = list()
+        symbols_with_expiry = []
 
         for symbol in symbols:
             expiry_date = datetime.strptime(expiry, "%Y-%m")
@@ -136,8 +136,8 @@ def get_curve_futures(
     exchange = FUTURES_DATA[FUTURES_DATA["Ticker"] == symbol]["Exchange"].values[0]
     today = datetime.today()
 
-    futures_index = list()
-    futures_curve = list()
+    futures_index = []
+    futures_curve = []
     for i in range(36):
         future = today + relativedelta(months=i)
         future_symbol = (

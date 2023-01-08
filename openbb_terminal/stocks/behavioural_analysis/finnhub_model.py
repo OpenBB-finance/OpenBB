@@ -74,8 +74,8 @@ def process_news_headlines_sentiment(
     pd.DataFrame
         Headlines sentiment using VADER model over time
     """
-    l_datetime = list()
-    l_compound = list()
+    l_datetime = []
+    l_compound = []
 
     if articles and len(articles) > 1:
         analyzer = SentimentIntensityAnalyzer()

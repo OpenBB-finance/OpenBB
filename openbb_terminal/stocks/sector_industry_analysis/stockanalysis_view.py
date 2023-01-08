@@ -107,7 +107,7 @@ def display_plots_financials(
 
         if len(company_tickers) <= 1:
             console.print("No information is available for the selected market cap. \n")
-            return dict(), list()
+            return dict(), []
 
         stocks_data = stockanalysis_model.get_stocks_data(
             company_tickers,
@@ -124,7 +124,7 @@ def display_plots_financials(
             "It appears the entire dataset is empty. This could be due to the source being unavailable. "
             "Please check whether https://stockanalysis.com/ is accessible. \n"
         )
-        return dict(), list()
+        return dict(), []
 
     company_tickers = list(stocks_data[used_statement].keys())
 
