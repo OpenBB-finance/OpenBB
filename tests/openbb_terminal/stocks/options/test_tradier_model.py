@@ -3,7 +3,6 @@
 # IMPORTATION THIRDPARTY
 import pytest
 import requests
-import pandas as pd
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.options import tradier_model
@@ -103,8 +102,7 @@ def test_option_expirations_invalid_status(mocker):
 @pytest.mark.vcr
 def test_get_option_chains(recorder):
     chain = tradier_model.get_option_chain(symbol="AAPL", expiry="2025-01-17")
-    result_df = pd.concat([chain.calls, chain.puts])
-    recorder.capture(result_df)
+    recorder.capture(chain)
 
 
 @pytest.mark.vcr(record_mode="none")

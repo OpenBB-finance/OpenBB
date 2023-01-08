@@ -10,7 +10,6 @@ import requests
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options.op_helpers import Chain
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +34,7 @@ default_columns = [
     "gamma",
     "theta",
     "volume",
-    "openInterest",
+    "open_interest",
     "bid",
     "ask",
 ]
@@ -75,7 +74,7 @@ def get_historical_options(
     if not chain_id:
         op_type = ["calls", "puts"][put]
         chain = get_option_chain(symbol, expiry)
-        chain = getattr(chain, op_type)
+        chain = chain[chain["option_type"] == op_type]
 
         try:
             symbol = chain[(chain.strike == strike)]["symbol"].values[0]
@@ -146,8 +145,7 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
 
     for expiry in expirations:
         chain = get_option_chain(symbol, expiry)
-        opts = pd.concat([chain.calls, chain.puts])
-        options_dfs.append(opts)
+        options_dfs.append(chain)
 
     return pd.concat(options_dfs)
 
@@ -190,7 +188,7 @@ def option_expirations(symbol: str) -> List[str]:
 
 @log_start_end(log=logger)
 @check_api_key(["API_TRADIER_TOKEN"])
-def get_option_chain(symbol: str, expiry: str) -> Chain:
+def get_option_chain(symbol: str, expiry: str) -> pd.DataFrame:
     """Display option chains [Source: Tradier]"
 
     Parameters
@@ -223,7 +221,7 @@ def get_option_chain(symbol: str, expiry: str) -> Chain:
 
     chains = process_chains(response)
     chains["expiration"] = expiry
-    return Chain(chains, "Tradier")
+    return chains
 
 
 @log_start_end(log=logger)

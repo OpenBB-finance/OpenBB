@@ -23,7 +23,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options import tradier_model, op_helpers
+from openbb_terminal.stocks.options import tradier_model
 
 logger = logging.getLogger(__name__)
 
@@ -144,23 +144,19 @@ def display_chains(
 
     chain = tradier_model.get_option_chain(symbol, expiry)
 
-    if isinstance(chain, op_helpers.Chain):
+    if isinstance(chain, pd.DataFrame) and not chain.empty:
 
         columns = to_display + ["strike", "option_type"]
-        min_strike, max_strike = get_strike_bounds(
-            pd.concat([chain.calls, chain.puts]), 0, min_sp, max_sp
+        min_strike, max_strike = get_strike_bounds(chain, 0, min_sp, max_sp)
+
+        chain = chain[columns].rename(
+            columns={"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
         )
+        chain = chain[chain["strike"] >= min_strike]
+        chain = chain[chain["strike"] <= max_strike]
 
-        for opt_type in ["calls", "puts"]:
-            opt = getattr(chain, opt_type)
-            opt = opt[columns].rename(
-                columns={"mid_iv": "iv", "openInterest": "oi", "volume": "vol"}
-            )
-            opt = opt[opt["strike"] >= min_strike]
-            opt = opt[opt["strike"] <= max_strike]
-
-        calls_df = chain.calls.drop(columns=["option_type"])
-        puts_df = chain.puts.drop(columns=["option_type"])
+        calls_df = chain[chain["option_type"] == "call"]
+        puts_df = chain[chain["option_type"] == "put"]
 
         df = calls_df if calls_only else puts_df
 
@@ -205,7 +201,12 @@ def display_chains(
                 title=f"{symbol} Option chain for {expiry}",
             )
 
-        op_helpers.export_options(export, chain, "chain_tradier")
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "chain_tradier",
+            chain,
+        )
 
 
 @log_start_end(log=logger)
