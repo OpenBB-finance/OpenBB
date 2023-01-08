@@ -72,14 +72,14 @@ def get_historical_options(
         Dataframe of historical option prices
     """
     if not chain_id:
-        op_type = ["calls", "puts"][put]
+        op_type = ["call", "put"][put]
         chain = get_option_chain(symbol, expiry)
         chain = chain[chain["option_type"] == op_type]
 
         try:
             symbol = chain[(chain.strike == strike)]["symbol"].values[0]
         except IndexError:
-            error = f"Strike: {strike}, Option type: {op_type} not not found"
+            error = f"Strike: {strike}, Option type: {op_type} not found"
             logging.exception(error)
             console.print(f"{error}\n")
             return pd.DataFrame()
