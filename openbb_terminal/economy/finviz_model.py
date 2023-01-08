@@ -225,10 +225,9 @@ def get_futures(
 
     d_futures: dict = {}
     for future in groups:
-        d_futures[future["label"]] = []
-        for ticker in future["contracts"]:
-            d_futures[future["label"]].append(titles[ticker["ticker"]])
-
+        d_futures[future["label"]] = [
+            titles[ticker["ticker"]] for ticker in future["contracts"]
+        ]
     df = pd.DataFrame(d_futures[future_type])
     df = df.set_index("label")
     df = df.sort_values(by=sortby, ascending=ascend)

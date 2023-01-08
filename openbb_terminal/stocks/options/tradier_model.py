@@ -142,10 +142,9 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
     """
 
     expirations = option_expirations(symbol)
-    options_dfs: pd.DataFrame = []
-
-    for expiry in expirations:
-        options_dfs.append(get_option_chains(symbol, expiry))
+    options_dfs: pd.DataFrame = [
+        get_option_chains(symbol, expiry) for expiry in expirations
+    ]
 
     options_df = pd.concat(options_dfs)
 
