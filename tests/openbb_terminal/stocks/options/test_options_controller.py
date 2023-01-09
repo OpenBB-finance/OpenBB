@@ -1,5 +1,6 @@
 # IMPORTATION STANDARD
 import os
+import argparse
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -984,9 +985,11 @@ def test_call_func_no_selected_date(func, mocker):
     )
 
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
+    ns = argparse.Namespace()
+    ns.exp = ""  # set the exp attribute
     mocker.patch(
         "openbb_terminal.stocks.options.options_controller.OptionsController.parse_known_args_and_warn",
-        return_value=True,
+        return_value=ns,  # return the Namespace object
     )
 
     controller = options_controller.OptionsController(ticker="MOCK_TICKER")
