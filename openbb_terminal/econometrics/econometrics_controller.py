@@ -111,7 +111,7 @@ class EconometricsController(BaseController):
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
-        self.files: List[str] = list()
+        self.files: List[str] = []
         self.datasets: Dict[str, pd.DataFrame] = dict()
         self.regression: Dict[Any[Dict, Any], Any] = dict()
 
@@ -225,7 +225,7 @@ class EconometricsController(BaseController):
                 c: {} for c in self.files + list(dataset_columns.keys())
             }
 
-            pairs_timeseries = list()
+            pairs_timeseries = []
             for dataset_col in list(dataset_columns.keys()):
                 pairs_timeseries += [
                     f"{dataset_col},{dataset_col2}"
@@ -792,7 +792,7 @@ class EconometricsController(BaseController):
                 else:
                     values_found = [index]
 
-                columns = list()
+                columns = []
                 for value in values_found:
                     # check if the value is valid
                     if value in self.datasets[name].columns:

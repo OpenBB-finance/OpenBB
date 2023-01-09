@@ -132,11 +132,11 @@ class NestedCompleter(Completer):
         self, options: Dict[str, Optional[Completer]], ignore_case: bool = True
     ) -> None:
 
-        self.flags_processed: List = list()
+        self.flags_processed: List = []
         self.original_options = options
         self.options = options
         self.ignore_case = ignore_case
-        self.complementary = list()
+        self.complementary = []
 
     def __repr__(self) -> str:
         return f"NestedCompleter({self.options!r}, ignore_case={self.ignore_case!r})"
@@ -341,7 +341,6 @@ class NestedCompleter(Completer):
                     # This is a NestedCompleter
                     yield from completer.get_completions(new_document, complete_event)
 
-        # No space in the input: behave exactly like `WordCompleter`.
         else:
             # check if the prompt has been updated in the meantime
             if " " in text or "-" in text:
@@ -398,7 +397,7 @@ class NestedCompleter(Completer):
                 # The user has delete part of the first command and we need to reset options
                 if bool([val for val in self.original_options.keys() if text in val]):
                     self.options = self.original_options
-                    self.flags_processed = list()
+                    self.flags_processed = []
                 completer = WordCompleter(
                     list(self.options.keys()), ignore_case=self.ignore_case
                 )

@@ -245,7 +245,7 @@ class PortfolioOptimizationController(BaseController):
             self.tickers = list(set(tickers))
             self.tickers.sort()
         else:
-            self.tickers = list()
+            self.tickers = []
 
         if portfolios:
             self.portfolios = dict(portfolios)
@@ -257,7 +257,7 @@ class PortfolioOptimizationController(BaseController):
             self.available_categories = list(self.categories.keys())
         else:
             self.categories = dict()
-            self.available_categories = list()
+            self.available_categories = []
 
         self.count = 0
         self.current_portfolio = ""

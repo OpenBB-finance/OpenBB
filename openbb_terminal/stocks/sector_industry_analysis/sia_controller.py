@@ -178,7 +178,7 @@ class SectorIndustryAnalysisController(BaseController):
         self.ticker = ticker
 
         self.stocks_data: dict = {}
-        self.tickers: List = list()
+        self.tickers: List = []
         self.currency: str = ""
 
         if session and obbff.USE_PROMPT_TOOLKIT:

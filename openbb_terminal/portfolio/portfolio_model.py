@@ -233,8 +233,8 @@ def get_yearly_returns(
         portfolio_engine.benchmark_returns, window
     )
 
-    creturns_year_val = list()
-    breturns_year_val = list()
+    creturns_year_val = []
+    breturns_year_val = []
 
     for year in sorted(set(portfolio_returns.index.year)):
         creturns_year = portfolio_returns[portfolio_returns.index.year == year]
@@ -297,12 +297,12 @@ def get_monthly_returns(
         portfolio_engine.benchmark_returns, window
     )
 
-    creturns_month_val = list()
-    breturns_month_val = list()
+    creturns_month_val = []
+    breturns_month_val = []
 
     for year in sorted(list(set(portfolio_returns.index.year))):
         creturns_year = portfolio_returns[portfolio_returns.index.year == year]
-        creturns_val = list()
+        creturns_val = []
         for i in range(1, 13):
             creturns_year_month = creturns_year[creturns_year.index.month == i]
             creturns_year_month_val = 100 * metrics_model.cumulative_returns(
@@ -316,7 +316,7 @@ def get_monthly_returns(
         creturns_month_val.append(creturns_val)
 
         breturns_year = benchmark_returns[benchmark_returns.index.year == year]
-        breturns_val = list()
+        breturns_val = []
         for i in range(1, 13):
             breturns_year_month = breturns_year[breturns_year.index.month == i]
             breturns_year_month_val = 100 * metrics_model.cumulative_returns(
@@ -965,7 +965,7 @@ def get_r2_score(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     >>> output = openbb.portfolio.metric.rsquare(p)
     """
 
-    vals = list()
+    vals = []
     for period in PERIODS:
         vals.append(
             round(
@@ -1003,7 +1003,7 @@ def get_skewness(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     >>> output = openbb.portfolio.metric.skew(p)
     """
 
-    vals = list()
+    vals = []
     for period in PERIODS:
         vals.append(
             [
@@ -1050,7 +1050,7 @@ def get_kurtosis(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     >>> output = openbb.portfolio.metric.kurtosis(p)
     """
 
-    vals = list()
+    vals = []
     for period in PERIODS:
         vals.append(
             [
@@ -1129,7 +1129,7 @@ def get_volatility(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     >>> output = openbb.portfolio.metric.volatility(p)
     """
 
-    vals = list()
+    vals = []
     for period in PERIODS:
         port_rets = portfolio_helper.filter_df_by_period(
             portfolio_engine.returns, period
@@ -1182,7 +1182,7 @@ def get_sharpe_ratio(
     >>> output = openbb.portfolio.metric.sharpe(p)
     """
 
-    vals = list()
+    vals = []
     for period in PERIODS:
         vals.append(
             [
@@ -1235,7 +1235,7 @@ def get_sortino_ratio(
     >>> output = openbb.portfolio.metric.sortino(p)
     """
 
-    vals = list()
+    vals = []
     for period in PERIODS:
         vals.append(
             [
@@ -1284,7 +1284,7 @@ def get_maximum_drawdown_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFram
     >>> output = openbb.portfolio.metric.maxdrawdown(p)
     """
 
-    vals = list()
+    vals = []
     for period in PERIODS:
         vals.append(
             [

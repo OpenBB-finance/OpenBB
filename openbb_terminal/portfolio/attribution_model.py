@@ -371,22 +371,16 @@ def get_daily_sector_prices(start_date, end_date) -> dict:
         "S&P 500 Energy (Sector)": "^GSPE",
     }
 
-    sp500_tickers_data = {}  # to store data
-
-    for (
-        sector,
-        sector_ticker,
-    ) in sp500_tickers.items():  # iterate thru the sectors
-        # load the data required from yfinance
-        sp500_tickers_data[
-            sector
-        ] = {  # builds a dictionary entry for the sector with adj close data
+    sp500_tickers_data = {
+        sector: {  # builds a dictionary entry for the sector with adj close data
             "sector_data": yf.download(
                 sector_ticker,
                 start=start_date,
                 end=end_date,
                 progress=False,
             )["Adj Close"]
-        }  # stores the data here
+        }
+        for sector, sector_ticker in sp500_tickers.items()
+    }
 
     return sp500_tickers_data

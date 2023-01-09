@@ -32,7 +32,7 @@ def find_smallest_num_data_point(results_list: List[dict]) -> int:
     int
         Value of smallest total number of sentiment data points
     """
-    small_list = list()
+    small_list = []
     for result_json in results_list:
         if (
             "ticker" in result_json
@@ -62,8 +62,8 @@ def get_sentiments(symbols: List[str]) -> pd.DataFrame:
 
     df_sentiment = pd.DataFrame()
     dates_sentiment = []
-    symbols_to_remove = list()
-    results_list = list()
+    symbols_to_remove = []
+    results_list = []
     for ticker in symbols:
         result = requests.get(f"https://api.finbrain.tech/v0/sentiments/{ticker}")
         # Check status code, if its correct then convert to dict using .json()

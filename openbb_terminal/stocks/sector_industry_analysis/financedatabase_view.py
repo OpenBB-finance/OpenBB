@@ -105,9 +105,9 @@ def display_bars_financials(
             )
         )
 
-        company_names = list()
-        company_metrics = list()
-        company_tickers = list()
+        company_names = []
+        company_metrics = []
+        company_tickers = []
         for name, metric in metric_data.items():
             company_names.append(name)
             company_metrics.append(metric[0])
@@ -148,7 +148,7 @@ def display_bars_financials(
                 (ax,) = external_axes
             else:
                 # set returns statement to be compatible with others
-                return dict(), list()
+                return dict(), []
 
             magnitude = 0
             while max(company_metric) > 1_000 or abs(min(company_metric)) > 1_000:
@@ -231,7 +231,7 @@ def display_bars_financials(
         return stocks_data, [list(metric_data.values())[0][1]]
 
     console.print("No company found. No barchart will be depicted.\n")
-    return dict(), list()
+    return dict(), []
 
 
 @log_start_end(log=logger)

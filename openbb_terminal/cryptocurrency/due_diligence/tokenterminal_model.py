@@ -214,8 +214,8 @@ def get_fundamental_metric_from_project(
     """
     project_metrics = token_terminal.get_historical_metrics(project)
 
-    metric_date = list()
-    metric_value = list()
+    metric_date = []
+    metric_value = []
     for proj in project_metrics:
         if metric in proj:
             val = proj[metric]

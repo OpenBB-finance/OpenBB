@@ -176,7 +176,7 @@ class SourcesController(BaseController):
             num_menus = len(menus)
 
             success = True
-            valid_sources = list()
+            valid_sources = []
 
             # Update dictionary
             if num_menus == 1:

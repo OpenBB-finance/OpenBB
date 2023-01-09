@@ -65,7 +65,7 @@ def display_crypto_heatmap(
         )
         cmapred = cm.get_cmap("Reds", 100)
         cmapgreen = cm.get_cmap("Greens", 100)
-        colors = list()
+        colors = []
         for val in df.price_change_percentage_24h_in_currency / max_abs:
             if val > 0:
                 colors.append(cmapgreen(round(val * 100)))

@@ -350,7 +350,7 @@ def display_bw(
         "Nov",
         "Dec",
     ]
-    l_ticks = list()
+    l_ticks = []
     if not yearly:
         for val in box_plot.get_xticklabels():
             l_ticks.append(l_months[int(val.get_text()) - 1])

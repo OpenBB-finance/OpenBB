@@ -89,7 +89,7 @@ class ETFController(BaseController):
 
         self.etf_name = ""
         self.etf_data = ""
-        self.etf_holdings: List = list()
+        self.etf_holdings: List = []
         self.TRY_RELOAD = True
 
         if session and obbff.USE_PROMPT_TOOLKIT:

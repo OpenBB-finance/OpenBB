@@ -215,10 +215,7 @@ def __patch_controller_functions(controller):
 
     if environ.get("DEBUG_MODE", "false") != "true":
         rich.start()
-    patched_function_list = []
-    for patcher in patcher_list:
-        patched_function_list.append(patcher.start())
-
+    patched_function_list = [patcher.start() for patcher in patcher_list]
     yield patched_function_list
 
     if environ.get("DEBUG_MODE", "false") != "true":
