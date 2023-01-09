@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   code-linting:
-    name: Running General Linting Tools
+    name: General Code Linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
