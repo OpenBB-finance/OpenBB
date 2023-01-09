@@ -158,7 +158,6 @@ jobs:
 
   full-test:
     name: Full Test Suite - (${{ matrix.python-version }}, ${{ matrix.os }})
-    needs: [base-test]
     runs-on: ${{ matrix.os }}
     if: github.event.pull_request.merged == true
     strategy:
@@ -217,7 +216,6 @@ jobs:
 
   tests-conda:
     name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
-    needs: [base-test]
     runs-on: ${{ matrix.os }}-latest
     if: github.event.pull_request.merged == true
     strategy:
