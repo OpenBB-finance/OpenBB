@@ -3435,7 +3435,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "pywry"
-version = "0.1.391"
+version = "0.1.5"
 description = ""
 category = "main"
 optional = false
@@ -7300,21 +7300,15 @@ pywinpty = [
     {file = "pywinpty-2.0.8.tar.gz", hash = "sha256:a89b9021c63ef78b1e7d8e14f0fac4748c88a0c2e4f529c84f37f6e72b914280"},
 ]
 pywry = [
-    {file = "pywry-0.1.391-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:5014bce11bed04b521eb623d21c8748db1d29a5a97d3272bc417ca420aa87672"},
-    {file = "pywry-0.1.391-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:db136ef0dd24beb2af3d935596e284269f62e6f8386d483d814b3aad0ca71502"},
-    {file = "pywry-0.1.391-cp310-none-win_amd64.whl", hash = "sha256:64346a8433b34acdf6d35439dfdec4c348f58a8c3d8a6a85330a581b5b63f455"},
-    {file = "pywry-0.1.391-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:4da3a4339f8ea4b8c2a6e76c0b978a097cb7b96aa30bb2b4901619c56d6388a2"},
-    {file = "pywry-0.1.391-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:c75467ae069a71413c265a9a1e7f74327a6f5983e1097268c4c084f968e3868f"},
-    {file = "pywry-0.1.391-cp311-none-win_amd64.whl", hash = "sha256:bb3abcd1e2f312be56fb0c038e6ee508bceed3581b273045bb76a4fb3913d699"},
-    {file = "pywry-0.1.391-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:62aa1c93a53d24638c9cfc1a780ab7c95b80b3bf011585c01e4e063e2c66d498"},
-    {file = "pywry-0.1.391-cp38-cp38-manylinux_2_28_x86_64.whl", hash = "sha256:142a778415189e8f1af8ec07317a907cf6d4c060618dc7883d05c0fdf40e2e1a"},
-    {file = "pywry-0.1.391-cp38-none-win_amd64.whl", hash = "sha256:a0907bb9902246b8b9dfddbf40b9fc3ad23e1875704b78d4393d420caae15235"},
-    {file = "pywry-0.1.391-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:9fe040d5cab2052bde16b9b0bc20fc61ce43c95aee7616db0ef08c5f2362a40c"},
-    {file = "pywry-0.1.391-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:11d367f2bb300fe9b180544dff97f71569ccaa6ff098da8ba6ff9fce1bf6f895"},
-    {file = "pywry-0.1.391-cp39-none-win_amd64.whl", hash = "sha256:ab2d58847880c5fbb37d2ca2b4d9790a9df92c33f8526b39ce195fe77142dc91"},
-    {file = "pywry-0.1.391-pp38-pypy38_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:5b838a0d578fed8383d3b25931156923289e5c6a96f98a98de500632d3c4dbc3"},
-    {file = "pywry-0.1.391-pp39-pypy39_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:343ebbbbb22cedf413b8ac2a73df615259d6cf56964d3826d3a912292937a0bc"},
-    {file = "pywry-0.1.391.tar.gz", hash = "sha256:1b677a53bcc1277ccd8c640aa5180f59bc656055cbaa70cf0295f22280a9df30"},
+    {file = "pywry-0.1.5-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:1fd3b5a5fa744f381c1333d6da8a85694b99cf84b782770314f595b51d48bfcd"},
+    {file = "pywry-0.1.5-cp310-none-win_amd64.whl", hash = "sha256:36dd29cad3d4f256df9b90b4cd9e308ab1034fc4d916e00d277b2d51410e8e15"},
+    {file = "pywry-0.1.5-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:f202c9caf20169ad1efb0a5af10d1b9c88515229aa033389cb78ec05e6a36751"},
+    {file = "pywry-0.1.5-cp311-none-win_amd64.whl", hash = "sha256:3054f6fe4a7b43146dddf36bef6d31225e006eeb9fdf7c6987f21b7aa28176c4"},
+    {file = "pywry-0.1.5-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:63885f5f2e8cacce2fd90143b5786b887eb684b61466dcf28a0e2c90f2daf61d"},
+    {file = "pywry-0.1.5-cp38-none-win_amd64.whl", hash = "sha256:015e9b01f3913f2ecea4a9e7aad49e4103ca3dd655a54fa7c87adb75be92d11c"},
+    {file = "pywry-0.1.5-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:fa19d33f8fa7a1c05586cd2a5ac2612e37d31d3e990766db088f57614cc19c69"},
+    {file = "pywry-0.1.5-cp39-none-win_amd64.whl", hash = "sha256:050c368a26d9227fbaf0a6062e72d7714eafb317d8ca7ffcec462109b55a4dc8"},
+    {file = "pywry-0.1.5.tar.gz", hash = "sha256:b8b840e576f6bbb0cc9fb172c5e0d4281d7707ea3a4e21a71b044bbfef9badfb"},
 ]
 pyyaml = [
     {file = "PyYAML-6.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:d4db7c7aef085872ef65a8fd7d6d09a14ae91f691dec3e87ee5ee0539d516f53"},
