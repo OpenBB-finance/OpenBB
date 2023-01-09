@@ -605,7 +605,7 @@ class OptionsController(BaseController):
             self.set_expiry_dates()
             self.selected_date = ""
 
-            if not self.expiry_dates:
+            if not self.expiry_dates and not self.chain.empty:
                 console.print(
                     f"""[red]No expiration dates found for ticker "{self.ticker}" and source "{ns_parser.source}"."""
                 )
