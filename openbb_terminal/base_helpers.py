@@ -98,26 +98,15 @@ class Show:
         """Show the figure."""
         try:
             # if in terminal pro, we just return the json
-            if os.environ.get("TERMINAL_PRO", False):
+            if strtobool(os.environ.get("TERMINAL_PRO", False)):
                 return self.to_json()  # type: ignore
-
-            if self.layout.template.layout.mapbox.style == "dark":  # type: ignore
-                self.update_layout(  # type: ignore
-                    newshape_line_color="gold",
-                    modebar=dict(
-                        orientation="v",
-                        bgcolor="rgba(0,0,0,0)",
-                        color="gold",
-                        activecolor="#d1030d",
-                    ),
-                )
 
             # We send the figure to the backend to be displayed
             BACKEND.send_figure(self)
         except Exception:
             # If the backend fails, we just show the figure normally
             # This is a very rare case, but it's better to have a fallback
-            if os.environ.get("DEBUG_MODE", False):
+            if strtobool(os.environ.get("DEBUG_MODE", False)):
                 console.print_exception()
 
             import plotly.io as pio  # pylint: disable=import-outside-toplevel

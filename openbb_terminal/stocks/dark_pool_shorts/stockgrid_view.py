@@ -127,15 +127,14 @@ def short_interest_volume(
         Flag to print raw data instead
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     """
 
     df, prices = stockgrid_model.get_short_interest_volume(symbol)
     if df.empty:
-        console.print("[red]No data available[/red]\n")
-        return
+        return console.print("[red]No data available[/red]\n")
 
     if raw:
         df.date = df.date.dt.date
@@ -259,13 +258,12 @@ def short_interest_volume(
                 ),
             ]
         )
-        if external_axes:
-            return fig
-        fig.show()
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "shortint(stockgrid)", df
     )
+
+    return None if raw else fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)

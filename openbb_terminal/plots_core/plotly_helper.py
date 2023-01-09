@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 from typing import Any, Dict, List, Union
 
@@ -6,6 +7,7 @@ import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
 
+from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.plots_core.backend import BACKEND
 
 # Reads the template from a file
@@ -322,9 +324,8 @@ class OpenBBFigure(go.Figure):
             [90, 90, 80, 40, 10] if not self._has_secondary_y else [90, 40, 80, 40, 10]
         )
 
-        if not BACKEND.isatty:
-            self.layout.margin = dict(l=40, r=40, b=50, t=50, pad=10)
-        else:
+        # We adjust margins
+        if BACKEND.isatty:
             for margin, add in zip(
                 ["l", "r", "b", "t", "pad"],
                 margin_add,
@@ -337,8 +338,10 @@ class OpenBBFigure(go.Figure):
                 else:
                     self.layout.margin[margin] = add
 
-        kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
+        if not BACKEND.isatty:
+            self.layout.margin = dict(l=40, r=40, b=50, t=50, pad=10)
 
+        # Set legend position
         height = 600 if not self.layout.height else self.layout.height
         self.update_layout(
             legend=dict(
@@ -346,6 +349,7 @@ class OpenBBFigure(go.Figure):
             )
         )
 
+        # Set modebar style
         if self.layout.template.layout.mapbox.style == "dark":  # type: ignore
             self.update_layout(  # type: ignore
                 newshape_line_color="gold",
@@ -357,6 +361,11 @@ class OpenBBFigure(go.Figure):
                 ),
             )
 
+        # We check if in Terminal Pro to return the JSON
+        if strtobool(os.environ.get("TERMINAL_PRO", "False")):
+            return self.to_json()
+
+        kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
         super().show(*args, **kwargs)
 
     def to_subplot(

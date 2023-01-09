@@ -9,9 +9,7 @@ import re
 from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
-import matplotlib.ticker as mtick
 import numpy as np
 import pandas as pd
 
@@ -20,7 +18,6 @@ import yfinance as yf
 from openpyxl import Workbook
 from scipy.stats import binom
 
-import openbb_terminal.config_plot as cfp
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
@@ -29,11 +26,10 @@ from openbb_terminal.helper_funcs import (
     excel_columns,
     export_data,
     get_rf,
-    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.plots_core.plotly_helper import OpenBBFigure, go
+from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, yfinance_model
 from openbb_terminal.stocks.options.yfinance_model import (
@@ -214,7 +210,7 @@ def plot_oi(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
-    external_axes: Optional[List[go.Figure]] = None,
+    external_axes: bool = False,
 ):
     """Plot open interest
 
@@ -234,8 +230,8 @@ def plot_oi(
         Show puts only
     export: str
         Format to export file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     options = yfinance_model.get_option_chain(symbol, expiry)
     op_helpers.export_yf_options(export, options, "oi_yf")
@@ -254,8 +250,7 @@ def plot_oi(
         max_strike = max_sp
 
     if calls_only and puts_only:
-        console.print("Both flags selected, please select one", "\n")
-        return
+        return console.print("Both flags selected, please select one", "\n")
 
     call_oi = calls.set_index("strike")["openInterest"] / 1000
     put_oi = puts.set_index("strike")["openInterest"] / 1000
@@ -266,18 +261,13 @@ def plot_oi(
     )
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
-    if external_axes is None:
-        fig = OpenBBFigure(
-            title=f"Open Interest for {symbol.upper()} expiring {expiry}",
-            xaxis_title="Strike Price",
-            yaxis_title="Open Interest [1k]",
-            xaxis_range=[min_strike, max_strike],
-        )
-    elif is_valid_axes_count(external_axes, 1):
-        fig = OpenBBFigure(fig=external_axes[0])
 
-    else:
-        return
+    fig = OpenBBFigure(
+        title=f"Open Interest for {symbol.upper()} expiring {expiry}",
+        xaxis_title="Strike Price",
+        yaxis_title="Open Interest [1k]",
+        xaxis_range=[min_strike, max_strike],
+    )
 
     fig.add_scatter(
         x=call_oi.index, y=call_oi.values, mode="lines+markers", name="Calls"
@@ -294,10 +284,7 @@ def plot_oi(
         line=dict(dash="dash", width=2, color="white"),
     )
 
-    if external_axes:
-        return fig
-
-    fig.show()
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)
@@ -309,7 +296,7 @@ def plot_vol(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot volume
 
@@ -329,8 +316,8 @@ def plot_vol(
         Show puts only
     export: str
         Format to export file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     options = yfinance_model.get_vol(symbol, expiry)
     calls = options.calls
@@ -354,24 +341,6 @@ def plot_vol(
     call_v = calls.set_index("strike")["volume"] / 1000
     put_v = puts.set_index("strike")["volume"] / 1000
 
-    # if external_axes is None:
-    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    # elif is_valid_axes_count(external_axes, 1):
-    #     (ax,) = external_axes
-    # else:
-    #     return
-
-    # if not calls_only:
-    #     put_v.plot(x="strike", y="volume", label="Puts", ax=ax, marker="o", ls="-")
-    # if not puts_only:
-    #     call_v.plot(x="strike", y="volume", label="Calls", ax=ax, marker="o", ls="-")
-    # ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
-    # ax.set_xlabel("Strike Price")
-    # ax.set_ylabel("Volume [1k] ")
-    # ax.set_xlim(min_strike, max_strike)
-    # ax.legend(fontsize="x-small")
-    # ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
-
     fig = OpenBBFigure(
         title=f"Volume for {symbol.upper()} expiring {expiry}",
         xaxis_title="Strike Price",
@@ -381,9 +350,10 @@ def plot_vol(
     fig.add_scatter(x=call_v.index, y=call_v.values, mode="lines+markers", name="Calls")
     fig.add_scatter(x=put_v.index, y=put_v.values, mode="lines+markers", name="Puts")
     fig.add_vline(x=current_price, line_dash="dash", line_width=2, name="Current Price")
-    fig.show()
 
     op_helpers.export_yf_options(export, options, "vol_yf")
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)
@@ -412,8 +382,8 @@ def plot_volume_open_interest(
         Min volume to consider
     export: str
         Format for exporting data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     options = yfinance_model.get_volume_open_interest(symbol, expiry)
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
@@ -471,95 +441,6 @@ def plot_volume_open_interest(
         )
         return
 
-    # # Initialize the matplotlib figure
-    # if external_axes is None:
-    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    # elif is_valid_axes_count(external_axes, 1):
-    #     (ax,) = external_axes
-    # else:
-    #     return
-
-    # # make x axis symmetric
-    # axis_origin = max(abs(max(df_puts["oi+v"])), abs(max(df_calls["oi+v"])))
-    # ax.set_xlim(-axis_origin, +axis_origin)
-
-    # g = sns.barplot(
-    #     x="oi+v",
-    #     y="strike",
-    #     data=df_calls,
-    #     label="Calls: Open Interest",
-    #     color="lightgreen",
-    #     orient="h",
-    # )
-
-    # g = sns.barplot(
-    #     x="volume",
-    #     y="strike",
-    #     data=df_calls,
-    #     label="Calls: Volume",
-    #     color="green",
-    #     orient="h",
-    # )
-
-    # g = sns.barplot(
-    #     x="oi+v",
-    #     y="strike",
-    #     data=df_puts,
-    #     label="Puts: Open Interest",
-    #     color="pink",
-    #     orient="h",
-    # )
-
-    # g = sns.barplot(
-    #     x="volume",
-    #     y="strike",
-    #     data=df_puts,
-    #     label="Puts: Volume",
-    #     color="red",
-    #     orient="h",
-    # )
-
-    # # draw spot line
-    # s = [float(strike.get_text()) for strike in ax.get_yticklabels()]
-    # spot_index = bisect_left(s, current_price)  # find where the spot is on the graph
-    # spot_line = ax.axhline(spot_index, ls="--", alpha=0.3)
-
-    # # draw max pain line
-    # max_pain_index = bisect_left(s, max_pain)
-    # max_pain_line = ax.axhline(max_pain_index, ls="-", alpha=0.3, color="red")
-    # max_pain_line.set_linewidth(5)
-
-    # # format ticklabels without - for puts
-    # g.set_xticks(g.get_xticks())
-    # xlabels = [f"{x:,.0f}".replace("-", "") for x in g.get_xticks()]
-    # g.set_xticklabels(xlabels)
-
-    # ax.set_title(
-    #     f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)"
-    # )
-    # ax.invert_yaxis()
-
-    # handles, _ = ax.get_legend_handles_labels()
-    # handles.append(spot_line)
-    # handles.append(max_pain_line)
-
-    # # create legend labels + add to graph
-    # labels = [
-    #     "Calls open interest",
-    #     "Calls volume ",
-    #     "Puts open interest",
-    #     "Puts volume",
-    #     "Current stock price",
-    #     f"Max pain = {max_pain}",
-    # ]
-
-    # ax.legend(fontsize="xx-small", handles=handles[:], labels=labels, loc="lower left")
-    # sns.despine(left=True, bottom=True)
-    # theme.style_primary_axis(ax)
-
-    # if external_axes is None:
-    #     theme.visualize_output()
-
     fig = OpenBBFigure(
         title=f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)",
         xaxis_title="Volume",
@@ -608,10 +489,7 @@ def plot_volume_open_interest(
 
     op_helpers.export_yf_options(export, options, "voi_yf")
 
-    if external_axes:
-        return fig
-
-    fig.show()
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)
@@ -623,7 +501,7 @@ def plot_plot(
     y: str = "iv",
     custom: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Generate a graph custom graph based on user input
 
@@ -645,8 +523,8 @@ def plot_plot(
         put option instead of call
     export: str
         type of data to export
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     convert = {
         "ltd": "lastTradeDate",
@@ -689,33 +567,9 @@ def plot_plot(
     chain = yfinance_model.get_option_chain(symbol, expiry)
     values = chain.puts if put else chain.calls
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
     x_data = values[x]
     y_data = values[y]
-    ax.plot(x_data, y_data, "--bo")
     option = "puts" if put else "calls"
-    ax.set_title(
-        f"{varis[y]['label']} vs. {varis[x]['label']} for {symbol} {option} on {expiry}"
-    )
-    ax.set_ylabel(varis[y]["label"])
-    ax.set_xlabel(varis[x]["label"])
-    if varis[x]["format"] == "date":
-        ax.get_xaxis().set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
-        ax.get_xaxis().set_major_locator(mdates.DayLocator(interval=1))
-    elif varis[x]["format"]:
-        ax.get_xaxis().set_major_formatter(varis[x]["format"])
-    if varis[y]["format"] == "date":
-        ax.get_yaxis().set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
-        ax.get_yaxis().set_major_locator(mdates.DayLocator(interval=1))
-    elif varis[y]["format"]:
-        ax.get_yaxis().set_major_formatter(varis[y]["format"])
-    theme.style_primary_axis(ax)
 
     fig = OpenBBFigure(
         title=f"{varis[y]['label']} vs. {varis[x]['label']} for {symbol} {option} on {expiry}",
@@ -723,11 +577,10 @@ def plot_plot(
         yaxis_title=varis[y]["label"],
     )
     fig.add_scatter(x=x_data, y=y_data, mode="lines+markers")
-    fig.show()
 
-    if external_axes is None:
-        theme.visualize_output()
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "plot")
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)
@@ -737,29 +590,10 @@ def plot_payoff(
     underlying: float,
     symbol: str,
     expiry: str,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Generate a graph showing the option payoff diagram"""
     x, yb, ya = generate_data(current_price, options, underlying)
-
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    if ya:
-        ax.plot(x, yb, label="Payoff Before Premium")
-        ax.plot(x, ya, label="Payoff After Premium")
-    else:
-        ax.plot(x, yb, label="Payoff")
-    ax.set_title(f"Option Payoff Diagram for {symbol} on {expiry}")
-    ax.set_ylabel("Profit")
-    ax.set_xlabel("Underlying Asset Price at Expiration")
-    ax.legend()
-    ax.xaxis.set_major_formatter("${x:.2f}")
-    ax.yaxis.set_major_formatter("${x:.2f}")
 
     plot = OpenBBFigure(
         title=f"Option Payoff Diagram for {symbol} on {expiry}",
@@ -772,7 +606,7 @@ def plot_payoff(
     else:
         plot.data[0].name = "Payoff"
 
-    plot.show()
+    return plot.show() if not external_axes else plot
 
 
 @log_start_end(log=logger)
@@ -954,7 +788,7 @@ def plot_expected_prices(
     p: float,
     symbol: str,
     expiry: str,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plot expected prices of the underlying asset at expiration
 
@@ -968,27 +802,34 @@ def plot_expected_prices(
         The ticker symbol of the option's underlying asset
     expiry : str
         The expiration for the option
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     up_moves = list(range(len(und_vals[-1])))
     up_moves.reverse()
     probs = [100 * binom.pmf(r, len(up_moves), p) for r in up_moves]
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    ax.set_title(f"Probabilities for ending prices of {symbol} on {expiry}")
-    ax.xaxis.set_major_formatter("${x:1.2f}")
-    ax.yaxis.set_major_formatter(mtick.PercentFormatter())
-    ax.plot(und_vals[-1], probs)
-    theme.style_primary_axis(ax)
 
     if external_axes is None:
         theme.visualize_output()
+
+    fig = OpenBBFigure()
+
+    fig.add_scatter(
+        x=und_vals[-1],
+        y=probs,
+        mode="lines",
+        name="Probabilities",
+    )
+
+    fig.update_layout(
+        title=f"Probabilities for ending prices of {symbol} on {expiry}",
+        xaxis_title="Price",
+        yaxis_title="Probability",
+        xaxis_tickformat="$,.2f",
+        yaxis_tickformat=".0%",
+    )
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)
@@ -1123,8 +964,8 @@ def display_vol_surface(
         Format to export data
     z : str
         The variable for the Z axis
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     data = yfinance_model.get_iv_surface(symbol)
     if data.empty:
