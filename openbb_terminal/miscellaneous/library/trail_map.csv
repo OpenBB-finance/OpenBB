@@ -543,3 +543,6 @@ futures.search,openbb_terminal.futures.yfinance_model.get_search_futures,
 futures.historical,openbb_terminal.futures.yfinance_model.get_historical_futures,openbb_terminal.futures.yfinance_view.display_historical
 futures.curve,openbb_terminal.futures.yfinance_model.get_curve_futures,openbb_terminal.futures.yfinance_view.display_curve
 economy.get_groups,openbb_terminal.economy.finviz_model.get_groups,
+feeds.benzinga,openbb_terminal.common.benzinga_model.get_benzinga_news,
+stocks.filings,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_filings,openbb_terminal.stocks.fundamental_analysis.fmp_view.display_filings
+

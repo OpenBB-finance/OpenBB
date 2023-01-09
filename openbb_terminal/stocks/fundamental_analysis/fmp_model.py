@@ -585,3 +585,58 @@ def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = True) -> pd.Data
     )
 
     return data
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_filings(
+    pages: int = 1,
+) -> pd.DataFrame:
+    """Get SEC Filings RSS feed, disseminated by FMP
+
+    Parameters
+    ----------
+    pages: range = 1
+        The range of most-rececnt pages to get entries from (1000 per page; maximum of 30 pages)
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of results
+    """
+    df: pd.DataFrame = ()
+    temp = []
+    try:
+        for i in range(pages):
+            temp.append(
+                pd.read_json(
+                    "https://financialmodelingprep.com/api/v3/rss_feed?&page="
+                    f"{i}"
+                    "&apikey="
+                    f"{cfg.API_KEY_FINANCIALMODELINGPREP}"
+                )
+            )
+        df = pd.concat(temp)
+        df.rename(
+            columns={
+                "title": "Title",
+                "date": "Date",
+                "link": "URL",
+                "cik": "CIK",
+                "form_type": "Form Type",
+                "ticker": "Ticker",
+            },
+            inplace=True,
+        )
+        df_columns = ["Date", "Ticker", "CIK", "Form Type", "Title", "URL"]
+        df = pd.DataFrame(df, columns=df_columns).set_index(keys=["Date"]).copy()
+        df.sort_index(ascending=False, inplace=True)
+
+        # Invalid API Keys
+    except ValueError as e:
+        console.print(e)
+        # Premium feature, API plan is not authorized
+    except HTTPError as e:
+        console.print(e)
+
+    return df

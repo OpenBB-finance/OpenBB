@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 
+import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -522,6 +523,61 @@ def display_financial_statement_growth(
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "growth", growth
         )
+    else:
+        logger.error("Could not get data")
+        console.print("[red]Could not get data[/red]\n")
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def display_filings(pages: int = 1, limit: int = 5, today: bool = False) -> None:
+    """Display recent forms submitted to the SEC
+
+    Parameters
+    ----------
+
+    pages: int = 1
+        The range of most-rececnt pages to get entries from (1000 per page, max 30 pages)
+    limit: int = 5
+        Limit the number of entries to display (default: 5)
+    today: bool = False
+        Show all from today
+    """
+    filings = fmp_model.get_filings(pages)
+    if today is True:
+        now: str = datetime.datetime.now().strftime("%Y-%m-%d")
+        iso_today: int = datetime.datetime.today().isoweekday()
+        if iso_today < 6 and not filings.empty:
+            filings = filings.filter(like=now, axis=0)
+            limit = 1000
+        else:
+            console.print(
+                "[red]No filings today, displaying the most recent submissions instead[/red]"
+            )
+    else:
+        pass
+
+    if not filings.empty:
+        filings.reset_index(["Date"], inplace=True)
+        for _, row in filings.head(limit).iterrows():
+            console.print(
+                "Timestamp: ",
+                f"{row['Date']}",
+                "  US/Eastern",
+                "\n",
+                "Ticker: ",
+                f"{row['Ticker']}",
+                "\n",
+                "CIK: " f"{row['CIK']}",
+                "\n",
+                "Form Type: ",
+                f"{row['Form Type']}",
+                "\n",
+                f"{row['Title']}",
+                "\n",
+                f"{row['URL']}\n",
+                sep="",
+            )
     else:
         logger.error("Could not get data")
         console.print("[red]Could not get data[/red]\n")

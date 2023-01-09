@@ -1,5 +1,6 @@
 {
   "stocks": {
+    "filings": ["FinancialModelingPrep"],
     "search": ["FinanceDatabase"],
     "quote": ["YahooFinance"],
     "tob": ["CBOE"],
