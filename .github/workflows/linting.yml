@@ -10,8 +10,8 @@ env:
 on:
   push:
     branches:
-      - 'feature/*'
-      - 'hotfix/*'
+      - "feature/*"
+      - "hotfix/*"
       - 'release/[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?'
 
 # Cancel previous runs that are not yet completed.
@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   code-linting:
-    name: Running General Linting Tools
+    name: General Code Linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -39,8 +39,9 @@ jobs:
           key: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
           restore-keys: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
 
-      - run: pip install bandit black codespell mypy==0.982 pyupgrade safety pylint==2.15.2 packaging==22 ruff
-      - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
+      - run: |
+          pip install bandit black codespell mypy==0.982 pyupgrade safety pylint==2.15.2 packaging==22 ruff
+          pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
       - run: codespell --ignore-words-list=commun,statics,ro,zar,zlot,jewl,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel,ket,toke,certi,buidl,ot,te --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller,./website/config.toml
@@ -52,12 +53,12 @@ jobs:
           pylint terminal.py openbb_terminal tests
 
   markdown-link-check:
-      name: Markdown Linting
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-          name: Check out the code
-        - name: Lint Code Base
-          uses: docker://avtodev/markdown-lint:v1
-          with:
-            args: "./*.md ./changelogs/*.md ./openbb_terminal/**/*.md ./discordbot/**/*.md"
+    name: Markdown Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Check out the code
+      - name: Lint Code Base
+        uses: docker://avtodev/markdown-lint:v1
+        with:
+          args: "./*.md ./changelogs/*.md ./openbb_terminal/**/*.md ./discordbot/**/*.md"

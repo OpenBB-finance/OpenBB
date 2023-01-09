@@ -14,7 +14,6 @@ on:
       - main
     types: [opened, synchronize]
 
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -45,7 +44,6 @@ jobs:
             echo "python-changes=false" >> $GITHUB_OUTPUT
           fi
 
-
       - name: Show Output result for python-changes
         run: |
           echo "python-changes=${{ steps.python-changes.outputs.python-changes }}"
@@ -56,8 +54,8 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.python-changes.outputs.python-changes == 'true'
     steps:
-      - name: Show Output result for python-changes
-        run: echo "python-changes=${{ needs.python-changes.outputs.python-changes }}"
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
@@ -153,7 +151,7 @@ jobs:
         run: |
           source $VENV
           python terminal.py
-  
+
   full-test:
     name: Full Test Suite - (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: [base-test]
