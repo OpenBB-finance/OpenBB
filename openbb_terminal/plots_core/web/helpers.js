@@ -258,12 +258,10 @@ function button_pressed(title, active = false) {
     let button = globals.barButtons[title];
 
     if (!active) {
-        button.setAttribute('class', 'modebar-btn active');
         button.style.border = '1px solid rgba(255, 0, 0, 0.7)';
         button.style.borderRadius = '5px';
         button.style.boxShadow = '0 0 5px rgba(255, 0, 0, 0.7)';
     } else {
-        button.setAttribute('class', 'modebar-btn');
         button.style.border = 'transparent';
         button.style.boxShadow = 'none';
     }

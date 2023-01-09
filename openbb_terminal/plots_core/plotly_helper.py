@@ -46,7 +46,6 @@ class OpenBBFigure(go.Figure):
     add_legend_label(trace: `str`, label: `str`, mode: `str`, marker: `dict`, **kwargs)
         Adds a legend label
 
-
     """
 
     def __init__(self, fig: go.Figure = None, is_subplots: bool = False, **kwargs):
@@ -55,6 +54,7 @@ class OpenBBFigure(go.Figure):
             self.__dict__ = fig.__dict__
 
         self._is_subplots = is_subplots
+        self._has_secondary_y = kwargs.pop("has_secondary_y", False)
 
         if xaxis := kwargs.pop("xaxis", None):
             self.update_xaxes(xaxis)
@@ -83,8 +83,8 @@ class OpenBBFigure(go.Figure):
         rows: int = 1,
         cols: int = 1,
         shared_xaxes: bool = True,
-        vertical_spacing: float = 0.03,
-        horizontal_spacing: float = 0.01,
+        vertical_spacing: float = None,
+        horizontal_spacing: float = None,
         subplot_titles: Union[List[str], tuple] = None,
         row_width: List[Union[float, int]] = None,
         specs: List[List[dict]] = None,
@@ -123,7 +123,11 @@ class OpenBBFigure(go.Figure):
             specs=specs or [[{}] * cols] * rows,
             **kwargs,
         )
-        return cls(fig, is_subplots=True)
+        kwargs = {}
+        if specs and [s.get("secondary_y") for r in specs for s in r]:
+            kwargs["has_secondary_y"] = True
+
+        return cls(fig, is_subplots=True, **kwargs)
 
     def _set_openbb_overlays(self):
         """Sets the overlays for Command Location and OpenBB Terminal"""
@@ -136,10 +140,10 @@ class OpenBBFigure(go.Figure):
             xshift = -60 if yaxis.side == "right" else -80
 
             if yaxis2 and yaxis2.overlaying == "y":
-                xshift = -110
+                xshift = -110 if not yaxis2.title.text else -130
 
             self.add_annotation(
-                x=0,
+                x=-0.015,
                 y=0.5,
                 yref="paper",
                 xref="paper",
@@ -312,12 +316,74 @@ class OpenBBFigure(go.Figure):
     def show(self, *args, **kwargs):
         """Show the figure"""
         self._set_openbb_overlays()
-        for margin, add in zip(
-            ["l", "r", "b", "t", "pad"],
-            [90, 90, 80, 40, 10],
-        ):
-            if margin in self.layout.margin and self.layout.margin[margin] is not None:
-                self.layout.margin[margin] += add
-            else:
-                self.layout.margin[margin] = add
+        margin_add = (
+            [90, 90, 80, 40, 10] if not self._has_secondary_y else [90, 40, 80, 40, 10]
+        )
+
+        if not BACKEND.isatty:
+            self.layout.margin = dict(l=40, r=40, b=50, t=50, pad=10)
+        else:
+            for margin, add in zip(
+                ["l", "r", "b", "t", "pad"],
+                margin_add,
+            ):
+                if (
+                    margin in self.layout.margin
+                    and self.layout.margin[margin] is not None
+                ):
+                    self.layout.margin[margin] += add
+                else:
+                    self.layout.margin[margin] = add
+
+        kwargs.update(config=dict(scrollZoom=True))
+        self.update_layout(
+            legend=dict(
+                tracegroupgap=self.layout.height / 4.5,
+            )
+        )
+
         super().show(*args, **kwargs)
+
+    def to_subplot(
+        self,
+        subplot: go.Figure,
+        row: int,
+        col: int,
+        secondary_y: bool = False,
+        **kwargs,
+    ):
+        """Return the figure as a subplot of another figure
+
+        Parameters
+        ----------
+        subplot : `plotly.graph_objects.Figure`
+            The subplot
+        row : `int`
+            Row number
+        col : `int`
+            Column number
+
+        Returns
+        -------
+        `plotly.graph_objects.Figure`
+            The subplot with the figure added
+        """
+        for trace in self.data:
+            trace.legendgroup = f"{row}"
+            subplot.add_trace(
+                trace, row=row, col=col, secondary_y=secondary_y, **kwargs
+            )
+
+        fig_dict = self.to_dict()
+        if "layout" in fig_dict:
+            if f"xaxis{col}" in fig_dict["layout"]:
+                subplot.layout[f"xaxis{col}"] = fig_dict["layout"][f"xaxis{col}"]
+            if f"yaxis{row}" in fig_dict["layout"]:
+                subplot.layout[f"yaxis{row}"] = fig_dict["layout"][f"yaxis{row}"]
+
+        if not BACKEND.isatty:
+            subplot.update_layout(
+                margin=dict(l=30, r=30, b=50, t=50, pad=0),
+            )
+
+        return subplot

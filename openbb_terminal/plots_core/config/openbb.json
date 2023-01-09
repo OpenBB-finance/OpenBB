@@ -78,9 +78,45 @@
                 "standoff": 20
             }
         },
+        "xaxis2": {
+            "rangeslider": {
+                "visible": false
+            },
+            "showgrid": true,
+            "showline": true,
+            "tickfont": {
+                "size": 16
+            },
+            "zeroline": true,
+            "title": {
+                "standoff": 20
+            },
+            "gridcolor": "#283442",
+            "linecolor": "#506784",
+            "zerolinecolor": "#283442",
+            "zerolinewidth": 2
+        },
+        "xaxis3": {
+            "rangeslider": {
+                "visible": false
+            },
+            "showgrid": true,
+            "showline": true,
+            "tickfont": {
+                "size": 16
+            },
+            "zeroline": true,
+            "title": {
+                "standoff": 20
+            },
+            "gridcolor": "#283442",
+            "linecolor": "#506784",
+            "zerolinecolor": "#283442",
+            "zerolinewidth": 2
+        },
         "yaxis": {
             "fixedrange": false,
-            "nticks": 15,
+            "nticks": 6,
             "showgrid": true,
             "showline": true,
             "side": "right",
@@ -101,7 +137,12 @@
             },
             "title": {
                 "standoff": 10
-            }
+            },
+            "side": "right",
+            "gridcolor": "#283442",
+            "linecolor": "#506784",
+            "zerolinecolor": "#283442",
+            "zerolinewidth": 2
         },
         "yaxis3": {
             "anchor": "x",
@@ -117,7 +158,13 @@
             "zeroline": false,
             "title": {
                 "standoff": 10
-            }
+            },
+            "showgrid": true,
+            "side": "right",
+            "gridcolor": "#283442",
+            "linecolor": "#506784",
+            "zerolinecolor": "#283442",
+            "zerolinewidth": 2
         },
         "yaxis4": {
             "anchor": "x",
@@ -133,7 +180,13 @@
             "zeroline": false,
             "title": {
                 "standoff": 10
-            }
+            },
+            "showgrid": true,
+            "side": "right",
+            "gridcolor": "#283442",
+            "linecolor": "#506784",
+            "zerolinecolor": "#283442",
+            "zerolinewidth": 2
         }
     }
 }

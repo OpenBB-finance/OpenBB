@@ -3,23 +3,23 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.alternative.covid import covid_model
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
+from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
-
 
 logger = logging.getLogger(__name__)
 
@@ -75,6 +75,64 @@ def plot_covid_ov(
 
     if external_axes is None:
         theme.visualize_output()
+
+    fig = OpenBBFigure.create_subplots(
+        specs=[[{"secondary_y": True}]],
+    )
+
+    fig.add_scatter(
+        x=cases.index,
+        y=cases[country].values,
+        name="Cases",
+        opacity=0.2,
+        line_color=theme.up_color,
+        showlegend=False,
+        secondary_y=False,
+    )
+    fig.add_scatter(
+        x=cases.index,
+        y=cases[country].rolling(7).mean().values,
+        name="Cases (7d avg)",
+        line_color=theme.up_color,
+        hovertemplate="%{y:.2f}",
+        secondary_y=False,
+    )
+    fig.add_scatter(
+        x=deaths.index,
+        y=deaths[country].values,
+        name="Deaths",
+        opacity=0.2,
+        yaxis="y2",
+        line_color=theme.down_color,
+        showlegend=False,
+        secondary_y=True,
+    )
+    fig.add_scatter(
+        x=deaths.index,
+        y=deaths[country].rolling(7).mean().values,
+        name="Deaths (7d avg)",
+        yaxis="y2",
+        line_color=theme.down_color,
+        hovertemplate="%{y:.2f}",
+        secondary_y=True,
+    )
+    fig.update_layout(
+        margin=dict(l=70, t=40, b=0),
+        title=f"Overview for {country.upper()}",
+        xaxis_title="Date",
+        yaxis=dict(
+            title="Cases [1k]",
+            side="left",
+        ),
+        yaxis2=dict(
+            title="Deaths",
+            side="right",
+            overlaying="y",
+            showgrid=False,
+        ),
+        hovermode="x unified",
+    )
+    fig.show()
 
 
 def plot_covid_stat(
