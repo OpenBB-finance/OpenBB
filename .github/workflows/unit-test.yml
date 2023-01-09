@@ -13,6 +13,10 @@ on:
       - develop
       - main
     types: [opened, synchronize]
+  push:
+    branches:
+      - develop
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
