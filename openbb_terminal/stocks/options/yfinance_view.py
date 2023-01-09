@@ -335,8 +335,7 @@ def plot_vol(
         max_strike = max_sp
 
     if calls_only and puts_only:
-        console.print("Both flags selected, please select one", "\n")
-        return
+        return console.print("Both flags selected, please select one", "\n")
 
     call_v = calls.set_index("strike")["volume"] / 1000
     put_v = puts.set_index("strike")["volume"] / 1000
@@ -436,10 +435,9 @@ def plot_volume_open_interest(
     df_puts = df_puts.loc[df_puts.index.intersection(df_calls.index)]
 
     if df_calls.empty and df_puts.empty:
-        console.print(
+        return console.print(
             "The filtering applied is too strong, there is no data available for such conditions.\n"
         )
-        return
 
     fig = OpenBBFigure(
         title=f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)",
@@ -543,11 +541,9 @@ def plot_plot(
         y = "impliedVolatility"
     else:
         if x is None:
-            console.print("[red]Invalid option sent for x-axis[/red]\n")
-            return
+            return console.print("[red]Invalid option sent for x-axis[/red]\n")
         if y is None:
-            console.print("[red]Invalid option sent for y-axis[/red]\n")
-            return
+            return console.print("[red]Invalid option sent for y-axis[/red]\n")
         if x in convert:
             x = convert[x]
         else:

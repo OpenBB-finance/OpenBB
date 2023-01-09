@@ -366,7 +366,7 @@ class OpenBBFigure(go.Figure):
             return self.to_json()
 
         kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
-        super().show(*args, **kwargs)
+        return super().show(*args, **kwargs)
 
     def to_subplot(
         self,

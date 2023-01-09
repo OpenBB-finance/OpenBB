@@ -5,27 +5,15 @@ import logging
 import os
 from typing import List, Optional
 
-import matplotlib.pyplot as plt
-import mplfinance as mpf
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.technical_analysis import overlap_model
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    reindex_dates,
-    lambda_long_number_format_y_axis,
-    is_valid_axes_count,
-)
+from openbb_terminal.helper_funcs import export_data
+from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
-
-register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
@@ -36,7 +24,7 @@ def view_ma(
     ma_type: str = "EMA",
     symbol: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots MA technical indicator
 
@@ -54,8 +42,8 @@ def view_ma(
         Ticker
     export: str
         Format to export data
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------
@@ -94,32 +82,29 @@ def view_ma(
             l_legend.append(f"ZLMA {win}")
         price_df = price_df.join(df_ta)
 
-    plot_data = reindex_dates(price_df)
+    plot_data = price_df
 
-    # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure()
 
-    ax.plot(plot_data.index, plot_data.iloc[:, 1].values)
-    ax.set_xlim([plot_data.index[0], plot_data.index[-1]])
-    ax.set_ylabel(f"{symbol} Price")
-    for idx in range(2, plot_data.shape[1]):
-        ax.plot(plot_data.iloc[:, idx])
-
-    ax.set_title(f"{symbol} {ma_type.upper()}")
-    ax.legend(l_legend)
-    theme.style_primary_axis(
-        ax,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
+    fig.add_scatter(
+        x=plot_data.index,
+        y=plot_data.iloc[:, 1].values,
+        name=f"{symbol} Price",
+        line=dict(color="gold"),
     )
-
-    if external_axes is None:
-        theme.visualize_output()
+    for idx in range(2, plot_data.shape[1]):
+        fig.add_scatter(
+            x=plot_data.index,
+            y=plot_data.iloc[:, idx].values,
+            name=l_legend[idx - 1],
+        )
+    fig.update_layout(
+        title=f"{symbol} {ma_type.upper()}",
+        xaxis=dict(
+            title="Date",
+        ),
+        yaxis_title=f"{symbol} Price",
+    )
 
     export_data(
         export,
@@ -127,6 +112,8 @@ def view_ma(
         f"{ma_type.lower()}{'_'.join([str(win) for win in window])}",
         price_df,
     )
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)
@@ -138,7 +125,7 @@ def view_vwap(
     offset: int = 0,
     interval: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots VWMA technical indicator
 
@@ -158,8 +145,8 @@ def view_vwap(
         Interval of data
     export : str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     data.index = data.index.tz_localize(None)
@@ -178,55 +165,41 @@ def view_vwap(
 
     day_df = data[(start <= data.index.date) & (data.index.date <= end)]
     if len(day_df) == 0:
-        console.print(
+        return console.print(
             f"[red]No data found between {start.strftime('%Y-%m-%d')} and {end.strftime('%Y-%m-%d')}\n[/red]"
         )
-        return
 
     df_vwap = overlap_model.vwap(day_df, offset)
 
-    candle_chart_kwargs = {
-        "type": "candle",
-        "style": theme.mpf_style,
-        "volume": True,
-        "xrotation": theme.xticks_rotation,
-        "scale_padding": {"left": 0.3, "right": 1.2, "top": 0.8, "bottom": 0.8},
-        "update_width_config": {
-            "candle_linewidth": 0.6,
-            "candle_width": 0.8,
-            "volume_linewidth": 0.8,
-            "volume_width": 0.8,
-        },
-        "warn_too_much_data": 10000,
-    }
-    # This plot has 2 axes
-    if external_axes is None:
-        candle_chart_kwargs["returnfig"] = True
-        candle_chart_kwargs["figratio"] = (10, 7)
-        candle_chart_kwargs["figscale"] = 1.10
-        candle_chart_kwargs["figsize"] = plot_autoscale()
-        candle_chart_kwargs["addplot"] = mpf.make_addplot(
-            df_vwap, width=theme.line_width
-        )
-        fig, ax = mpf.plot(day_df, **candle_chart_kwargs)
-        fig.suptitle(
-            f"{symbol} {interval} VWAP",
-            x=0.055,
-            y=0.965,
-            horizontalalignment="left",
-        )
-        lambda_long_number_format_y_axis(day_df, "Volume", ax)
-        theme.visualize_output(force_tight_layout=False)
-    elif is_valid_axes_count(external_axes, 3):
-        (ax1, ax2, ax3) = external_axes
-        candle_chart_kwargs["ax"] = ax1
-        candle_chart_kwargs["volume"] = ax2
-        candle_chart_kwargs["addplot"] = mpf.make_addplot(
-            df_vwap, width=theme.line_width, ax=ax3
-        )
-        mpf.plot(day_df, **candle_chart_kwargs)
-    else:
-        return
+    fig = OpenBBFigure.create_subplots(
+        rows=1,
+        cols=1,
+        shared_xaxes=True,
+    )
+
+    fig.add_candlestick(
+        x=day_df.index,
+        open=day_df["Open"],
+        high=day_df["High"],
+        low=day_df["Low"],
+        close=day_df["Close"],
+        name="Candlestick",
+    )
+    fig.add_scatter(
+        x=day_df.index,
+        y=df_vwap["VWAP_D"],
+        name="VWAP",
+        line=dict(width=1.2),
+    )
+
+    fig.update_layout(
+        title=f"{symbol} {interval} VWAP",
+        xaxis=dict(
+            title="Date",
+            type="date",
+        ),
+        yaxis_title=f"{symbol} Price",
+    )
 
     export_data(
         export,
@@ -234,3 +207,5 @@ def view_vwap(
         "VWAP",
         df_vwap,
     )
+
+    return fig.show() if not external_axes else fig
