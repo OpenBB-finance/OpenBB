@@ -213,16 +213,23 @@ class OptionsController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        if session and obbff.USE_PROMPT_TOOLKIT and not self.chain.empty:
+        if session and obbff.USE_PROMPT_TOOLKIT:
 
-            strike = set(self.chain["strike"])
+            if not self.chain.empty:
+                strike = set(self.chain["strike"])
 
-            self.choices["hist"]["--strike"] = {str(c): {} for c in strike}
-            self.choices["grhist"]["-s"] = "--strike"
-            self.choices["grhist"]["--strike"] = {str(c): {} for c in strike}
-            self.choices["grhist"]["-s"] = "--strike"
-            self.choices["binom"]["--strike"] = {str(c): {} for c in strike}
-            self.choices["binom"]["-s"] = "--strike"
+                self.choices["hist"]["--strike"] = {str(c): {} for c in strike}
+                self.choices["grhist"]["-s"] = "--strike"
+                self.choices["grhist"]["--strike"] = {str(c): {} for c in strike}
+                self.choices["grhist"]["-s"] = "--strike"
+                self.choices["binom"]["--strike"] = {str(c): {} for c in strike}
+                self.choices["binom"]["-s"] = "--strike"
+
+            if self.expiry_dates:
+                self.choices["vol"]["--expiration"] = {
+                    str(c): {} for c in self.expiry_dates
+                }
+                self.choices["vol"]["-e"] = "--expiration"
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -894,6 +901,15 @@ class OptionsController(BaseController):
             dest="puts",
             help="Flag to plot put options only",
         )
+        parser.add_argument(
+            "-e",
+            "--expiration",
+            dest="exp",
+            type=str,
+            choices=self.expiry_dates + [""],
+            help="Select expiration date (YYYY-MM-DD)",
+            default="",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
@@ -902,6 +918,19 @@ class OptionsController(BaseController):
         )
         if ns_parser:
             if self.ticker:
+                if ns_parser.exp:
+                    if ns_parser.exp in self.expiry_dates:
+                        self.selected_date = ns_parser.exp
+                        self.chain = self.full_chain[
+                            self.full_chain["expiration"] == self.selected_date
+                        ]
+                        self.update_runtime_choices()
+                        console.print(f"Expiration set to {ns_parser.exp}")
+                    else:
+                        self.selected_date = self.expiry_dates[0]
+                        console.print(
+                            f"Expiration not an option. Expiration set to {self.selected_date}"
+                        )
                 if self.selected_date:
                     plot_vol(
                         chain=self.chain,
@@ -953,11 +982,33 @@ class OptionsController(BaseController):
             default=-1,
             help="maximum strike price to consider in the plot.",
         )
+        parser.add_argument(
+            "-e",
+            "--expiration",
+            dest="exp",
+            type=str,
+            choices=self.expiry_dates + [""],
+            help="Select expiration date (YYYY-MM-DD)",
+            default="",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
             if self.ticker:
+                if ns_parser.exp:
+                    if ns_parser.exp in self.expiry_dates:
+                        self.selected_date = ns_parser.exp
+                        self.chain = self.full_chain[
+                            self.full_chain["expiration"] == self.selected_date
+                        ]
+                        self.update_runtime_choices()
+                        console.print(f"Expiration set to {ns_parser.exp}")
+                    else:
+                        self.selected_date = self.expiry_dates[0]
+                        console.print(
+                            f"Expiration not an option. Expiration set to {self.selected_date}"
+                        )
                 if self.selected_date:
                     plot_voi(
                         chain=self.chain,
@@ -1016,6 +1067,15 @@ class OptionsController(BaseController):
             dest="puts",
             help="Flag to plot put options only",
         )
+        parser.add_argument(
+            "-e",
+            "--expiration",
+            dest="exp",
+            type=str,
+            choices=self.expiry_dates + [""],
+            help="Select expiration date (YYYY-MM-DD)",
+            default="",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
@@ -1024,6 +1084,19 @@ class OptionsController(BaseController):
         )
         if ns_parser:
             if self.ticker:
+                if ns_parser.exp:
+                    if ns_parser.exp in self.expiry_dates:
+                        self.selected_date = ns_parser.exp
+                        self.chain = self.full_chain[
+                            self.full_chain["expiration"] == self.selected_date
+                        ]
+                        self.update_runtime_choices()
+                        console.print(f"Expiration set to {ns_parser.exp}")
+                    else:
+                        self.selected_date = self.expiry_dates[0]
+                        console.print(
+                            f"Expiration not an option. Expiration set to {self.selected_date}"
+                        )
                 if self.selected_date:
                     plot_oi(
                         chain=self.chain,
