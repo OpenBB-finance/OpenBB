@@ -470,7 +470,7 @@ six = "*"
 
 [[package]]
 name = "ccxt"
-version = "1.95.43"
+version = "2.5.66"
 description = "A JavaScript / Python / PHP cryptocurrency trading library with support for 130+ exchanges"
 category = "main"
 optional = false
@@ -4909,7 +4909,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "8b186e66f8a17c59577517ca9549c86b8c4de0d8cd6176045b773b5b7aa3e7e6"
+content-hash = "7f487a7f622275eaa379143666caea8ccdb8c6534d9debd5b7f17730090703cd"
 
 [metadata.files]
 absl-py = [
@@ -5257,8 +5257,8 @@ catboost = [
     {file = "catboost-1.1.1-cp39-none-win_amd64.whl", hash = "sha256:156264dbe9e841cb0b6333383e928cb8f65df4d00429a9771eb8b06b9bcfa17c"},
 ]
 ccxt = [
-    {file = "ccxt-1.95.43-py2.py3-none-any.whl", hash = "sha256:17e1ac01e5a24e8efbdd6790cf5c73c721a7f7adceb663eeb001fbdf47002fb1"},
-    {file = "ccxt-1.95.43.tar.gz", hash = "sha256:7d89994303b1e5db57950c3cf63769a37f594d9baf63359f3d77378945c25fb0"},
+    {file = "ccxt-2.5.66-py2.py3-none-any.whl", hash = "sha256:5ece6c47fcc96dce0000814fd52eec6a087d387f2b73a5b2b1cda8bff9fbb6d6"},
+    {file = "ccxt-2.5.66.tar.gz", hash = "sha256:1c73f0db61ea8475ce628e339e1d1ab7e12c448fa39003701d0bf429eb39bb6a"},
 ]
 certifi = [
     {file = "certifi-2022.9.24-py3-none-any.whl", hash = "sha256:90c1a32f1d68f940488354e36370f6cca89f0f106db09518524c88d6ed83f382"},
