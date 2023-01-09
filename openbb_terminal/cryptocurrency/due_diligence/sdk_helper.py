@@ -89,7 +89,7 @@ def ath(symbol: str, currency: str = "USD") -> pd.DataFrame:
     >>> from openbb_terminal.sdk import openbb
     >>> btc_ath = openbb.crypto.dd.ath("btc")
     """
-    return gecko.Coin(symbol).get_all_time_high(currency=currency)
+    return gecko.Coin(symbol).get_all_time_high(currency=currency.lower())
 
 
 def atl(symbol: str, currency: str = "USD") -> pd.DataFrame:
@@ -112,4 +112,4 @@ def atl(symbol: str, currency: str = "USD") -> pd.DataFrame:
     >>> from openbb_terminal.sdk import openbb
     >>> btc_atl = openbb.crypto.dd.atl("btc")
     """
-    return gecko.Coin(symbol).get_all_time_low(currency=currency)
+    return gecko.Coin(symbol).get_all_time_low(currency=currency.lower())

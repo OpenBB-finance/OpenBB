@@ -164,7 +164,8 @@ crypto.dd.gh,openbb_terminal.cryptocurrency.due_diligence.santiment_model.get_gi
 crypto.dd.dev,openbb_terminal.cryptocurrency.due_diligence.sdk_helper.dev_stats,
 crypto.dd.score,openbb_terminal.cryptocurrency.due_diligence.sdk_helper.score,
 crypto.dd.social,openbb_terminal.cryptocurrency.due_diligence.sdk_helper.social,
-crypto.dd.ath,openbb_terminal.cryptocurrency.due_diligence.sdk_helper.ath,at
+crypto.dd.ath,openbb_terminal.cryptocurrency.due_diligence.sdk_helper.ath,
+crypto.dd.atl,openbb_terminal.cryptocurrency.due_diligence.sdk_helper.atl,
 crypto.nft.stats,openbb_terminal.cryptocurrency.nft.opensea_model.get_collection_stats,openbb_terminal.cryptocurrency.nft.opensea_view.display_collection_stats
 crypto.nft.fp,openbb_terminal.cryptocurrency.nft.nftpricefloor_model.get_floor_price,openbb_terminal.cryptocurrency.nft.nftpricefloor_view.display_floor_price
 crypto.nft.collections,openbb_terminal.cryptocurrency.nft.nftpricefloor_model.get_collections,openbb_terminal.cryptocurrency.nft.nftpricefloor_view.display_collections
