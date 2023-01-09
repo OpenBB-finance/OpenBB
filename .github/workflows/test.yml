@@ -28,6 +28,26 @@ jobs:
           key: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
           restore-keys: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
 
+      - name: Install nightly rust
+        run: curl --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly
+
+      - name: Setup sudo apt installs for ubuntu-latest
+        run: |
+          yum install -y \
+              gtk3-devel \
+              webkitgtk4-devel \
+              webkit2gtk3-devel \
+              libsoup-devel \
+              openssl-devel \
+              curl \
+              wget \
+              squashfs-tools \
+              gcc \
+              gcc-c++ \
+              make \
+              file \
+              librsvg2-devel
+
       - run: pip install bandit black codespell mypy==0.982 pyupgrade safety pylint==2.15.2 packaging==22 ruff==0.0.212
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
