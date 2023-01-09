@@ -12,7 +12,7 @@ on:
     branches:
       - develop
       - main
-    types: [opened, synchronize]
+    types: [opened, synchronize, closed]
   push:
     branches:
       - develop
