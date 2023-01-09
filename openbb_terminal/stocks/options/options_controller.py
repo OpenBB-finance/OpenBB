@@ -550,7 +550,7 @@ class OptionsController(BaseController):
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if self.chain and (
+                    if not self.chain.empty and (
                         (
                             ns_parser.put
                             and ns_parser.strike
@@ -733,7 +733,7 @@ class OptionsController(BaseController):
             if not self.selected_date:
                 console.print("No expiry loaded. First use `exp <expiry date>` \n")
                 return
-            if self.chain and (
+            if not self.chain.empty and (
                 (
                     ns_parser.put
                     and ns_parser.strike
