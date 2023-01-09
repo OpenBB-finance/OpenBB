@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import List, Union
+from typing import Any, Dict, List, Union
 
 import plotly.graph_objects as go
 import plotly.io as pio
@@ -87,7 +87,7 @@ class OpenBBFigure(go.Figure):
         horizontal_spacing: float = None,
         subplot_titles: Union[List[str], tuple] = None,
         row_width: List[Union[float, int]] = None,
-        specs: List[List[dict]] = None,
+        specs: List[List[Dict[Any, Any]]] = None,
         **kwargs,
     ) -> "OpenBBFigure":
         """Create a new Plotly figure with subplots
@@ -124,7 +124,9 @@ class OpenBBFigure(go.Figure):
             **kwargs,
         )
         kwargs = {}
-        if specs and [s.get("secondary_y") for r in specs for s in r]:
+        if specs and any(
+            spec.get("secondary_y", False) for row in specs for spec in row
+        ):
             kwargs["has_secondary_y"] = True
 
         return cls(fig, is_subplots=True, **kwargs)
@@ -335,12 +337,25 @@ class OpenBBFigure(go.Figure):
                 else:
                     self.layout.margin[margin] = add
 
-        kwargs.update(config=dict(scrollZoom=True))
+        kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
+
+        height = 600 if not self.layout.height else self.layout.height
         self.update_layout(
             legend=dict(
-                tracegroupgap=self.layout.height / 4.5,
+                tracegroupgap=height / 4.5,
             )
         )
+
+        if self.layout.template.layout.mapbox.style == "dark":  # type: ignore
+            self.update_layout(  # type: ignore
+                newshape_line_color="gold",
+                modebar=dict(
+                    orientation="v",
+                    bgcolor="#2A2A2A",
+                    color="#FFFFFF",
+                    activecolor="#d1030d",
+                ),
+            )
 
         super().show(*args, **kwargs)
 
@@ -362,6 +377,8 @@ class OpenBBFigure(go.Figure):
             Row number
         col : `int`
             Column number
+        secondary_y : `bool`, optional
+            Whether to use the secondary y axis, by default False
 
         Returns
         -------
