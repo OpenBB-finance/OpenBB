@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     is_valid_axes_count,
     str_date_to_timestamp,
+    print_rich_table,
 )
 
 logger = logging.getLogger(__name__)
@@ -144,3 +145,58 @@ def display_btc_confirmed_transactions(
         "btcct",
         df,
     )
+
+
+@log_start_end(log=logger)
+def display_btc_single_block(
+    blockhash: str,
+    export: str = "",
+) -> None:
+    """Returns BTC block data. [Source: https://api.blockchain.info/]
+    Parameters
+    ----------
+    blockhash : str
+        Hash of the block you are looking for.
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = blockchain_model.get_btc_single_block(blockhash)
+    if not df.empty:
+        df.rename(index={0: "Value"}, inplace=True)
+        df_data = df.copy()
+
+        df_essentials = df[
+            [
+                "hash",
+                "ver",
+                "prev_block",
+                "mrkl_root",
+                "bits",
+                "next_block",
+                "fee",
+                "nonce",
+                "n_tx",
+                "size",
+                "block_index",
+                "main_chain",
+                "height",
+                "weight",
+            ]
+        ]
+
+        df_flipped = df_essentials.transpose()
+
+        print_rich_table(
+            df_flipped,
+            show_index=True,
+            index_name="Metric",
+            title=f"Block {int(df['height'])}",
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "btcblockdata",
+            df_data,
+        )
