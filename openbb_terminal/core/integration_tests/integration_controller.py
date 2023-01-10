@@ -17,7 +17,10 @@ import os
 from openbb_terminal.helper_funcs import check_positive
 
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY, REPOSITORY_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    MISCELLANEOUS_DIRECTORY,
+    REPOSITORY_DIRECTORY,
+)
 from openbb_terminal.terminal_controller import (
     insert_start_slash,
     terminal,
@@ -52,7 +55,7 @@ STYLES = [
     "[bold red]",
     "[/bold red]",
 ]
-SCRIPTS_DIRECTORY = PACKAGE_DIRECTORY / "core" / "integration_tests" / "scripts"
+SCRIPTS_DIRECTORY = MISCELLANEOUS_DIRECTORY / "integration_tests_scripts"
 
 
 def to_section_title(title: str, char: str = "=") -> str:
