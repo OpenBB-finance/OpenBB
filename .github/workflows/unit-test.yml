@@ -27,9 +27,18 @@ jobs:
     outputs:
       python-changes: ${{ steps.python-changes.outputs.python-changes }}
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v1
-
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Need to fetch more than the last commit so that setuptools-scm can
+          # create the correct version string. If the number of commits since
+          # the last release is greater than this, the version still be wrong.
+          # Increase if necessary.
+          fetch-depth: 100
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
+          
       # Check for changes to Python code to avoid running tests unnecessarily
       - name: Check for changes to Python code
         id: python-changes
@@ -39,7 +48,7 @@ jobs:
           target_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
 
           # Check for changes to Python code to avoid running tests unnecessarily
-          if git diff --name-only origin/$target_branch HEAD | grep -E '\.py$'; then
+          if git diff --name-only origin/$target_branch HEAD | grep -E "\.py$""; then
             echo "python-changes=true" >> $GITHUB_OUTPUT
           else
             echo "python-changes=false" >> $GITHUB_OUTPUT
