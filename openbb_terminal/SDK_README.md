@@ -61,7 +61,7 @@ you are using conda.
 
 ### Steps
 
-#### 1. **Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)**
+#### 1. **Install [Miniconda][def]**
 
 Download the `x86_64` Miniconda for your respective system and follow along with it's installation instructions. The Miniconda architecture MUST be `x86_64` in order to use the forecasting toolkit. Follow the [instructions in this section](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md#1-install-miniconda)
 
@@ -449,3 +449,6 @@ fig.tight_layout()
 You can also do this to save output charts in a variable for later uses.
 
 ### For more examples, we'd recommend checking out our [curated Jupyter Notebook reports](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/reports). They are excellent demonstration on how to use the SDK to its fullest extent
+
+
+[def]: https://docs.conda.io/en/latest/miniconda.html
