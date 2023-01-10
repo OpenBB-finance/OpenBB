@@ -207,7 +207,8 @@ def get_region_stats(
                 prefix skos: <http://www.w3.org/2004/02/skos/core#>
                 prefix lrcommon: <http://landregistry.data.gov.uk/def/common/>
 
-                SELECT  ?month ?avgPrice ?avgPriceCash ?totalSalesVolume ?avgPriceExistingProperty ?avgPriceFirstTimeBuyer 
+                SELECT  ?month ?avgPrice ?avgPriceCash ?totalSalesVolume ?avgPriceExistingProperty 
+                ?avgPriceFirstTimeBuyer 
                 ?avgPriceDetached ?hpi  ?detachedhpi ?newbuildhpi 
                 {{
                     values ?refRegion {{<http://landregistry.data.gov.uk/id/region/{region}>}}
