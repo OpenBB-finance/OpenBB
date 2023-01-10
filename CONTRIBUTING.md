@@ -1537,6 +1537,7 @@ The accepted branch naming conventions are:
 -  `release/2.1.0` or `release/2.1.0rc0`.
 
 All `feature/feature-name` related branches can only have PRs pointing to `develop` branch. `hotfix/hotfix-name` and `release/2.1.0` or `release/2.1.0rc0` branches can only have PRs pointing to `main` branch.
+
 ## Add a Test
 
 Unit tests minimize errors in code and quickly find errors when they do arise. Integration tests are standard usage examples, which are also used to identify errors.
