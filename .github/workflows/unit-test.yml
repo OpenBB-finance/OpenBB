@@ -38,7 +38,7 @@ jobs:
           # The GitHub token is preserved by default but this job doesn't need
           # to be able to push to GitHub.
           persist-credentials: false
-          
+
       # Check for changes to Python code to avoid running tests unnecessarily
       - name: Check for changes to Python code
         id: python-changes
@@ -48,7 +48,7 @@ jobs:
           target_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
 
           # Check for changes to Python code to avoid running tests unnecessarily
-          if git diff --name-only origin/$target_branch HEAD | grep -E "\.py$""; then
+          if git diff --name-only origin/$target_branch HEAD | grep -E "\.py$"; then
             echo "python-changes=true" >> $GITHUB_OUTPUT
           else
             echo "python-changes=false" >> $GITHUB_OUTPUT
