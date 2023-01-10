@@ -23,6 +23,7 @@ jobs:
   python-changes:
     name: Check for changes to Python code
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged != true
     outputs:
       python-changes: ${{ steps.python-changes.outputs.python-changes }}
     steps:
