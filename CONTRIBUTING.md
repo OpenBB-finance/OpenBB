@@ -1530,6 +1530,7 @@ Network model.
    to go back to step 3 to add these.
 
 ### Branch Naming Conventions
+
 The accepted branch naming conventions are:
 
 -  `feature/feature-name`
