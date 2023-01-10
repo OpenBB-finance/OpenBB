@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "2.0.1"
+version = "2.1.0"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
@@ -25,7 +25,7 @@ alpha-vantage = "^2.3.1"
 finviz = "^1.3.4"
 bs4 = "^0.0.1"
 rapidfuzz = "^1.1.1"
-yfinance = "0.1.74"
+yfinance = "^0.1.94"
 psaw = "^0.0.12"
 praw = "^7.1.4"
 Quandl = "^3.6.0"
@@ -59,8 +59,7 @@ holidays = "^0.14.2"
 degiro-connector = "^2.0.3"
 python-binance = "^1.0.15"
 python-i18n = "^0.3.9"
-thepassiveinvestor = "^1.0.10"
-pymongo = "^3.11"
+thepassiveinvestor = "^1.0.11"
 pandas-ta = "^0.3.14-beta.0"
 pyrsistent = "^0.18.0"
 openpyxl = "^3.0.9"
@@ -104,7 +103,7 @@ stocksera = "^0.1.21"
 ipython = "8.5.0"
 protobuf = "3.20.1"
 pytorch-lightning = {version = "1.6.5", optional = true}
-u8darts = {extras = ["torch"], version = "0.22.0", optional = true}
+u8darts = {extras = ["torch"], version = "0.23.0", optional = true}
 docstring-parser = {version = "^0.15", optional = true}
 grpcio = "<1.51.0"
 jupyterlab-widgets = "^3.0.3"
@@ -113,7 +112,6 @@ packaging = ">=22.0"
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
 pylint = "2.15.2"
-flake8 = "^3.9.0"
 mypy = "^0.930"
 mock = "^4.0.3"
 codespell = "^2.0.0"
@@ -135,6 +133,7 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
+ruff = "^0.0.210"
 
 [tool.poetry.extras]
 prediction = ["torch", "pytorch-lightning", "u8darts"]
@@ -151,3 +150,22 @@ build-backend = "poetry.core.masonry.api"
 [tool.pydocstyle]
 convention = "numpy"
 match = '((?!test_).)*\.py'
+
+
+[tool.ruff]
+line-length = 122
+target-version = "py38"
+# This is an introductory addition of ruff. We should look to adding:
+# D: pydocstyle, PD: pandas-vet, I: isort
+# All options here: https://github.com/charliermarsh/ruff#supported-rules
+select = ["E", "W", "F", "Q", "W", "S", "UP"]
+ignore = ["S105", "S106", "S107"]
+
+[tool.ruff.per-file-ignores]
+"tests/*" = ["S101"]
+
+[tool.ruff.flake8-import-conventions.aliases]
+"matplotlib.pyplot" = "plt"
+numpy = "np"
+pandas = "pd"
+seaborn = "sns"
