@@ -31,13 +31,13 @@ def load_stock_av(
                 symbol=symbol, interval=interval_min
             )[0]
         elif interval == "Daily":
-            df_stock_candidate: pd.DataFrame = ts.get_daily_adjusted(
+            df_stock_candidate = ts.get_daily_adjusted(
                 symbol=symbol, outputsize="full"
             )[0]
         elif interval == "Weekly":
-            df_stock_candidate: pd.DataFrame = ts.get_weekly_adjusted(symbol=symbol)[0]
+            df_stock_candidate = ts.get_weekly_adjusted(symbol=symbol)[0]
         elif interval == "Monthly":
-            df_stock_candidate: pd.DataFrame = ts.get_monthly_adjusted(symbol=symbol)[0]
+            df_stock_candidate = ts.get_monthly_adjusted(symbol=symbol)[0]
         else:
             console.print("Invalid interval specified")
             return pd.DataFrame()
