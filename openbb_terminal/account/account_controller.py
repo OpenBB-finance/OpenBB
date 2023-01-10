@@ -10,7 +10,6 @@ from prompt_toolkit.completion import NestedCompleter
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import parse_simple_args
 from openbb_terminal.core.config.paths import (
     USER_ROUTINES_DIRECTORY,
     SETTINGS_DIRECTORY,
@@ -112,7 +111,7 @@ class AccountController(BaseController):
             required="-h" not in other_args,
         )
 
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             self.token = account_model.get_login(
                 ns_parser.email, ns_parser.password, self.base_url
@@ -156,7 +155,7 @@ class AccountController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             account_model.get_send(
                 self.get_token(), ns_parser.file, ns_parser.name, self.base_url
@@ -179,6 +178,6 @@ class AccountController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             account_model.get_get(self.get_token(), ns_parser.name, self.base_url)
