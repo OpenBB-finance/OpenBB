@@ -30,10 +30,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
         with:
-          # Need to fetch more than the last commit so that setuptools-scm can
-          # create the correct version string. If the number of commits since
-          # the last release is greater than this, the version still be wrong.
-          # Increase if necessary.
           fetch-depth: 100
           # The GitHub token is preserved by default but this job doesn't need
           # to be able to push to GitHub.

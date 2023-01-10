@@ -9,11 +9,9 @@ env:
   PYTHONNOUSERSITE: 1
 
 on:
-  schedule:
-    - cron: "0 0 * * *"
-  push:
-    branches:
-      - develop
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "0 0 * * *"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
