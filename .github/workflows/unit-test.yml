@@ -1,5 +1,4 @@
 name: Unit Test
-# Description: This workflow runs unit tests on the OpenBB codebase for all supported Python versions and OSes. It is triggered on pull requests to the develop branch and when a pull request is merged to the main or develop branch.
 
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
@@ -8,7 +7,6 @@ env:
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
 
-# It is triggered on pull requests is created or updated to the develop or main branch and when a pull request is merged to the main or develop branch.
 on:
   pull_request:
     branches:
@@ -25,6 +23,7 @@ jobs:
   python-changes:
     name: Check for changes to Python code
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged != true
     outputs:
       python-changes: ${{ steps.python-changes.outputs.python-changes }}
     steps:
