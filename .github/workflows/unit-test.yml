@@ -28,7 +28,7 @@ jobs:
       python-changes: ${{ steps.python-changes.outputs.python-changes }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v1
         with:
           # Need to fetch more than the last commit so that setuptools-scm can
           # create the correct version string. If the number of commits since
