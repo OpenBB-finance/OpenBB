@@ -33,7 +33,6 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     export_data,
     get_flair,
-    load_json,
     parse_and_split_input,
     prefill_form,
     screenshot,
