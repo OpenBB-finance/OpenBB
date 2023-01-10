@@ -1,4 +1,4 @@
-name: Nightly Build
+name: Nightly Build on the develop branch
 
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
@@ -9,9 +9,8 @@ env:
   PYTHONNOUSERSITE: 1
 
 on:
-  workflow_dispatch:
-  # schedule:
-  #   - cron: "0 0 * * *"
+  schedule:
+    - cron: "0 0 * * *"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -27,8 +26,12 @@ jobs:
         run: |
           Set-ItemProperty 'HKLM:\System\CurrentControlSet\Control\FileSystem' -Name 'LongPathsEnabled' -value 1
           git config --system core.longpaths true
+
       - name: Checkout
         uses: actions/checkout@v2.4.2
+        with:
+          ref: develop
+
       - name: Activate Base & Create OpenBB Environment
         run: |
           conda activate base
