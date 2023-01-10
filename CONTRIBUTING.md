@@ -1533,9 +1533,9 @@ Network model.
 
 The accepted branch naming conventions are:
 
--  `feature/feature-name`
--  `hotfix/hotfix-name`
--  `release/2.1.0` or `release/2.1.0rc0`.
+- `feature/feature-name`
+- `hotfix/hotfix-name`
+- `release/2.1.0` or `release/2.1.0rc0`.
 
 All `feature/feature-name` related branches can only have PRs pointing to `develop` branch. `hotfix/hotfix-name` and `release/2.1.0` or `release/2.1.0rc0` branches can only have PRs pointing to `main` branch.
 
