@@ -109,7 +109,7 @@ grpcio = "<1.51.0"
 jupyterlab-widgets = "^3.0.3"
 packaging = ">=22.0"
 cryptography= "^39.0.0"
-pywry = "^0.1.5"
+pywry = "^0.1.6"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
