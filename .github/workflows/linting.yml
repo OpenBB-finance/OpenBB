@@ -10,8 +10,8 @@ env:
 on:
   push:
     branches:
-      - "feature/*"
-      - "hotfix/*"
+      - 'feature/*'
+      - 'hotfix/*'
       - 'release/[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?'
 
 # Cancel previous runs that are not yet completed.
