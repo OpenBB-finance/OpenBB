@@ -610,7 +610,7 @@ def test_controller_init_market_cap(market_cap, mocker):
         "summaryProfile": VALID_SUMMARY_PROFILE,
     }
 
-    target = f"{path_controller}.financedatabase_model.yf.utils.get_json"
+    target = f"{path_controller}.financedatabase_model.get_json"
     mocker.patch(target=target, return_value=mock_get_json)
 
     # MOCK GET_COUNTRIES
@@ -771,7 +771,7 @@ def test_call_select(countries, industries, mocker, sectors, summaryProfile):
 
     # MOCK GET_JSON
     mock_get_json = {"summaryProfile": summaryProfile}
-    target = f"{path_controller}.financedatabase_model.yf.utils.get_json"
+    target = f"{path_controller}.financedatabase_model.get_json"
     mocker.patch(target=target, return_value=mock_get_json)
 
     # MOCK GET_COUNTRIES
@@ -834,7 +834,7 @@ def test_call_load_market_cap(market_cap, mocker):
         "price": {"marketCap": market_cap},
         "summaryProfile": VALID_SUMMARY_PROFILE,
     }
-    target = f"{path_controller}.financedatabase_model.yf.utils.get_json"
+    target = f"{path_controller}.financedatabase_model.get_json"
     mocker.patch(target=target, return_value=mock_get_json)
 
     # MOCK GET_COUNTRIES
