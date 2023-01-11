@@ -140,28 +140,6 @@ class PortfolioEngine:
         if not transactions.empty:
             self.__set_transactions(transactions)
 
-    @staticmethod
-    def read_transactions(path: str) -> pd.DataFrame:
-        """Static method to read transactions from file.
-
-        Parameters
-        ----------
-        path: str
-            path to transactions file
-
-        Returns
-        -------
-        pd.DataFrame
-            DataFrame with transactions
-        """
-        # Load transactions from file
-        if path.endswith(".xlsx"):
-            transactions = pd.read_excel(path)
-        elif path.endswith(".csv"):
-            transactions = pd.read_csv(path)
-
-        return transactions
-
     def __set_transactions(self, transactions):
         self.__transactions = transactions
         self.__preprocess_transactions()
