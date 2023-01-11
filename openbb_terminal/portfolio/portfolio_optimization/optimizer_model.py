@@ -1229,7 +1229,11 @@ def get_max_decorrelation_portfolio(
 
     if weights is not None:
         weights = weights.round(5)
-        weights = weights.squeeze().to_dict()
+
+        if len(weights) > 1:
+            weights = weights.squeeze().to_dict()
+        else:
+            weights = weights.to_dict()
 
     return weights, stock_returns
 

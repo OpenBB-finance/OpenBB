@@ -329,6 +329,7 @@ def get_gaintopain_ratio(
                 benchmark_values = ((1 + period_bench_return).cumprod() - 1).iloc[
                     -1
                 ] / maximum_drawdown(period_bench_return)
+
             vals.append(
                 [
                     round(
@@ -348,7 +349,9 @@ def get_gaintopain_ratio(
                             - 1
                         )
                         / maximum_drawdown(
-                            period_historical_trade_data["Returns"]["Total"]
+                            period_historical_trade_data["Period percentage return"][
+                                "Total"
+                            ]
                         ),
                         3,
                     ),

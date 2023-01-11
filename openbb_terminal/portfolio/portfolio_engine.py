@@ -747,12 +747,30 @@ class PortfolioEngine:
             self.tickers_list
         ].sum(axis=1)
 
+        # Initial Value = Previous End Value + Investment changes
+        trade_data[
+            pd.MultiIndex.from_product(
+                [["Initial Value"], self.tickers_list + ["Total"]]
+            )
+        ] = 0
+
+        trade_data["Initial Value"] = trade_data["End Value"].shift(1) + trade_data[
+            "Investment"
+        ].diff(periods=1)
+
+        # Set first day Initial Value as the Investment (NaNs break first period)
+        for t in self.tickers_list + ["Total"]:
+            trade_data.at[trade_data.index[0], ("Initial Value", t)] = trade_data.iloc[
+                0
+            ]["Investment"][t]
+
         trade_data = trade_data.reindex(
             columns=[
                 "Quantity",
                 "Investment",
                 "Investment delta",
                 "Close",
+                "Initial Value",
                 "End Value",
             ],
             level=0,
