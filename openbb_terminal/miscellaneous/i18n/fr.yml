@@ -1,92 +1,91 @@
 fr:
   _configure_: Configurez votre propre terminal
-  _home_: Informations, guides et support pour le terminal OpenBB
+  _home_: Informations, guides et support pour OpenBB Terminal
   _main_menu_: Menu principal
   _others_: Autres
-  about: découvrir les capacités du terminal OpenBB (https://openbb.co/docs)
-  alternative: ensembles de données alternatifs, tels que COVID et métriques open
+  about: découvrir les capacités d'OpenBB Terminal (https://openbb.co/docs)
+  alternative: jeux de données alternatives, tels que COVID et indicateurs open
     source
   alternative/covid: COVID menu, cas, décès, taux
   alternative/covid/_country: Pays
-  alternative/covid/cases: obtenir des cas pour un pays sélectionné
+  alternative/covid/cases: obtenir les cas pour un pays sélectionné
   alternative/covid/country: sélectionner le pays pour les données
-  alternative/covid/deaths: obtenir des décès pour un pays sélectionné
-  alternative/covid/ov: obtenir un aperçu (cas et décès) pour un pays donné
+  alternative/covid/deaths: obtenir les décès pour un pays sélectionné
+  alternative/covid/ov: obtenir une vue d'ensemble (cas et décès) pour le pays sélectionné
   alternative/covid/rates: obtenir le taux de décès/cas pour le pays sélectionné
-  alternative/covid/slopes: obtenir des pays avec la pente la plus élevée dans les
+  alternative/covid/slopes: obtenir des pays avec la pente la plus élevée pour les
     cas
-  alternative/oss: Menu Open Source, histoire des étoiles, informations de repos
+  alternative/oss: Menu Open Source, historique des étoiles, informations du repos
   alternative/oss/rossidx: les startups open-source qui connaissent la croissance
     la plus rapide
-  alternative/oss/rs: Résumé de la repo
-  alternative/oss/sh: histoire des étoiles repo
-  alternative/oss/tr: repos étoilé du haut
-  crypto: plongée dans les données onchain, tokenomics, l'approvisionnement en circulation,
+  alternative/oss/rs: Résumé du repo
+  alternative/oss/sh: historique des étoiles du repo
+  alternative/oss/tr: repos les plus étoilés
+  crypto: plongée dans les données onchain, tokenomics, offres en circulation,
     nfts et plus
-  crypto/_exchange: Échanges
+  crypto/_exchange: Marché ouvert
   crypto/_interval: Intervalle (min)
   crypto/_source: Source
-  crypto/_symbol: Pièce
-  crypto/candle: afficher un diagramme de bougies pour une crypto-monnaie spécifique
-  crypto/dd: Due-diligence pour les pièces chargées, informations sur les pièces,
+  crypto/_symbol: Crypto-crypto-monnaie
+  crypto/candle: afficher un graphique en chandeliers pour une crypto-crypto-monnaie spécifique
+  crypto/dd: Due-diligence pour les crypto-monnaies chargées, informations sur les crypto-monnaies,
     médias sociaux, statistiques de marché
   crypto/dd/_activity_: Activité et communauté
   crypto/dd/_contributors_: Contributeurs et investisseurs
   crypto/dd/_market_: Marché
   crypto/dd/_metrics_: métriques
-  crypto/dd/_overview_: Aperçu général
+  crypto/dd/_overview_: Vue globale
   crypto/dd/_roadmap_: Feuille de route et nouvelles
   crypto/dd/_source: Source
-  crypto/dd/_symbol: Pièce
+  crypto/dd/_symbol: Crypto-crypto-monnaie
   crypto/dd/_tokenomics_: Tokénomique
   crypto/dd/active: adresses actives
-  crypto/dd/ath: toutes les statistiques liées à haut temps pour la pièce chargée
-  crypto/dd/atl: statistiques relatives à tous les temps bas pour la pièce chargée
-  crypto/dd/balance: Solde des pièces
-  crypto/dd/basic: informations de base sur les pièces chargées
-  crypto/dd/bc: liens vers des explorateurs blockchain pour des pièces chargées
-  crypto/dd/change: 30e changement d'approvisionnement détenu sur les portefeuilles
+  crypto/dd/ath: statistiques liées au plus hauts historiques pour la crypto-monnaie chargée
+  crypto/dd/atl: statistiques liées au plus bas historiques pour la crypto-monnaie chargée
+  crypto/dd/balance: Solde des crypto-monnaies
+  crypto/dd/basic: informations de base sur les crypto-monnaies chargées
+  crypto/dd/bc: liens vers des explorateurs blockchain pour des crypto-monnaies chargées
+  crypto/dd/change: 30j des changement d'approvisionnement des portefeuilles
     de change
   crypto/dd/desc: description sur le projet - pourquoi, comment, quoi
-  crypto/dd/dev: github, bitbucket statistiques de développement de pièces
-  crypto/dd/eb: Solde total détenu sur les échanges (en pourcentage et en unités)
-  crypto/dd/events: événements liés à des pièces chargées
-  crypto/dd/ex: tous les échanges où la pièce chargée est répertoriée
+  crypto/dd/dev: github, bitbucket statistiques de développement de crypto-monnaies
+  crypto/dd/eb: Solde total détenu sur les marchés (en pourcentage et en unités)
+  crypto/dd/events: événements liés à la crypto-monnaies chargées
+  crypto/dd/ex: tous les marchés où la crypto-monnaie chargée est répertoriée
   crypto/dd/fr: Détails de la collecte de fonds, p. ex. comptes de trésorerie, cycles
     de vente, répartition
-  crypto/dd/fundrate: taux de financement par change
+  crypto/dd/fundrate: taux de financement par échange
   crypto/dd/funot: métrique fondamentale dans le temps
   crypto/dd/gh: activité github dans le temps
   crypto/dd/gov: détails de la gouvernance
-  crypto/dd/info: informations sur la pièce chargée
+  crypto/dd/info: informations sur la crypto-monnaie chargée
   crypto/dd/inv: investisseurs (personnes et organisations)
   crypto/dd/links: liens p.ex. papier blanc, github, twitter, youtube, reddit, télégramme
-  crypto/dd/liquidations: statistiques quotidiennes de liquidation des pièces chargées
-  crypto/dd/load: charger une cryptomonnaie spécifique pour l'analyse
-  crypto/dd/market: statistiques du marché sur les pièces chargées
-  crypto/dd/mcapdom: dominance du plafond du marché
-  crypto/dd/mkt: tous les marchés pour pièces chargées
-  crypto/dd/mt: messari timeseries p.ex. des abonnés twitter, de l'approvisionnement
-    en circ, etc.
-  crypto/dd/news: Les dernières nouvelles de la pièce chargée
+  crypto/dd/liquidations: statistiques quotidiennes de liquidation des crypto-monnaies chargées
+  crypto/dd/load: charger une cryptocrypto-monnaie spécifique pour l'analyse
+  crypto/dd/market: statistiques du marché sur les crypto-monnaies chargées
+  crypto/dd/mcapdom: dominance de la capitalisation boursière
+  crypto/dd/mkt: tous les marchés pour crypto-monnaies chargées
+  crypto/dd/mt: messari timeseries p.ex. des abonnés twitter, de l'offre en circulation, etc.
+  crypto/dd/news: Les dernières nouvelles de la crypto-monnaie chargée
   crypto/dd/nonzero: adresses avec des soldes non nuls
   crypto/dd/ob: carnet de commande
   crypto/dd/oi: intérêt ouvert par échange
   crypto/dd/pi: informations sur le projet, par exemple détails technologiques, repos
     publics, audits, vulns
-  crypto/dd/ps: métriques relatives aux prix et à l'offre pour les pièces chargées
+  crypto/dd/ps: métriques relatives aux prix et à l'offre pour les crypto-monnaies chargées
   crypto/dd/rm: Feuille de route
-  crypto/dd/score: différents types de scores pour la pièce chargée, p.ex. score développeur,
+  crypto/dd/score: différents types de scores pour la crypto-monnaie chargée, p.ex. score développeur,
     score sentimental
-  crypto/dd/social: portails sociaux urls pour des pièces chargées, p.ex. reddit,
+  crypto/dd/social: portails sociaux urls pour des crypto-monnaies chargées, p.ex. reddit,
     twitter
-  crypto/dd/stats: Statistiques des pièces de monnaie
+  crypto/dd/stats: Statistiques des crypto-monnaies de crypto-monnaie
   crypto/dd/team: contributeurs (personnes et organisations)
   crypto/dd/tk: tokénomique, p.ex. circulation/max/approvisionnement total, type d'émission,
     etc.
-  crypto/dd/trades: derniers échanges
-  crypto/dd/twitter: tweets pour pièces chargées
-  crypto/dd/web: sites trouvés pour la pièce chargée, p.ex. forum, page d'accueil
+  crypto/dd/trades: derniers marchés
+  crypto/dd/twitter: tweets pour crypto-monnaies chargées
+  crypto/dd/web: sites trouvés pour la crypto-monnaie chargée, p.ex. forum, page d'accueil
   crypto/defi: financement décentralisé information, dpi, lama, tvl, prêt, emprunt,
     financement
   crypto/defi/anchor: données sur les gains d'ancrage
@@ -94,10 +93,10 @@ fr:
   crypto/defi/ayr: Historique de 30 jours de la réserve de rendement de l'ancre
   crypto/defi/dpi: Protocoles DeFi listés sur DefiPulse
   crypto/defi/dtvl: Valeur totale historique verrouillée (TVL) par dApp
-  crypto/defi/gacc: terra blockchain historique de croissance de compte
+  crypto/defi/gacc: historique de croissance de compte terra blockchain
   crypto/defi/gdapps: haut DeFi dApps groupés par chaîne
   crypto/defi/govp: liste des propositions de gouvernance en terra blockchain
-  crypto/defi/lcsc: Changements d'alimentation en circulation Luna
+  crypto/defi/lcsc: Offre en circulation pour Luna
   crypto/defi/ldapps: listes dApps
   crypto/defi/newsletter: récentes newsletters liées à DeFi
   crypto/defi/pairs: récemment ajouté des paires sur Uniswap
@@ -112,21 +111,21 @@ fr:
   crypto/defi/tokens: jetons échangeable sur Uniswap
   crypto/defi/validators: informations sur les validateurs terra blockchain
   crypto/defi/vaults: Top DeFi Vaults sur différentes blockchains
-  crypto/disc: découvrir les cryptomonnaies tendance, les meilleurs profiteurs, les
+  crypto/disc: découvrir les cryptocrypto-monnaies tendance, les meilleurs profiteurs, les
     perdants, le meilleur sentiment
   crypto/disc/dapps: les applications les plus décentralisées
-  crypto/disc/dex: des échanges décentralisés de haut niveau
+  crypto/disc/dex: des marchés décentralisés de haut niveau
   crypto/disc/gainers: gaineurs supérieurs
   crypto/disc/games: jeux de blockchain top
   crypto/disc/losers: les meilleurs perdants
   crypto/disc/nft: top jetons non fongibles
-  crypto/disc/search: recherche de pièces
-  crypto/disc/top: les pièces de monnaie les plus importantes
-  crypto/disc/trending: des pièces tendance
-  crypto/find: trouver des pièces
+  crypto/disc/search: recherche de crypto-monnaies
+  crypto/disc/top: les crypto-monnaies de crypto-monnaie les plus importantes
+  crypto/disc/trending: des crypto-monnaies tendance
+  crypto/find: trouver des crypto-monnaies
   crypto/forecast: techniques de prévision, rnn, nbeats, transformateur, bloc rnn
   crypto/headlines: crypto sentiment de 15+ grands titres d'actualités
-  crypto/load: charger une cryptomonnaie spécifique pour l'analyse
+  crypto/load: charger une cryptocrypto-monnaie spécifique pour l'analyse
   crypto/nft: jetons non fongibles, aujourd'hui baisse
   crypto/nft/collections: des collections d'éthérées supérieures
   crypto/nft/fp: vente/prix plancher
@@ -162,9 +161,9 @@ fr:
   crypto/onchain/tx: Ethereum blockchain transaction info
   crypto/onchain/ueat: adresses éthérées uniques qui ont fait une transaction
   crypto/onchain/whales: vérifier les transactions de crypto wales
-  crypto/ov: vue d'ensemble des cryptomonnaies, plafonnement du marché, DeFi, dernières
-    nouvelles, top échanges, écuries
-  crypto/ov/altindex: Indice de la saison d'altcoin (75 % des 50 pièces les plus performantes)
+  crypto/ov: vue d'ensemble des cryptocrypto-monnaies, plafonnement du marché, DeFi, dernières
+    nouvelles, top marchés, écuries
+  crypto/ov/altindex: Indice de la saison d'altcoin (75 % des 50 crypto-monnaies les plus performantes)
   crypto/ov/btcrb: afficher le graphique des prix bitcoin arc-en-ciel (régression
     logarithmique)
   crypto/ov/categories: catégories cryptographiques
@@ -175,13 +174,13 @@ fr:
   crypto/ov/derivatives: dérivés cryptographiques
   crypto/ov/ewf: Frais généraux de retrait de change
   crypto/ov/exmarkets: tous les marchés disponibles sur une bourse donnée
-  crypto/ov/exrates: Taux de change des pièces
+  crypto/ov/exrates: Taux de change des crypto-monnaies
   crypto/ov/fun: explorer des projets basés sur des paramètres fondamentaux
   crypto/ov/hm: carte thermique cryptographique
   crypto/ov/hold: Ethereum , bitcoin avoirs statistiques de vue d'ensemble
   crypto/ov/indexes: index cryptographiques
-  crypto/ov/info: Informations de base sur toutes les pièces disponibles
-  crypto/ov/markets: informations relatives au marché sur toutes les pièces disponibles
+  crypto/ov/info: Informations de base sur toutes les crypto-monnaies disponibles
+  crypto/ov/markets: informations relatives au marché sur toutes les crypto-monnaies disponibles
   crypto/ov/news: nouvelles récentes de crypto
   crypto/ov/pairs: info sur les paires de trading disponibles
   crypto/ov/platforms: liste des plates-formes blockchain, p. ex. éthéré, solana,
@@ -220,12 +219,12 @@ fr:
   crypto/qa/spread: variance de roulement et écart de prix à court terme
   crypto/qa/summary: brèves statistiques de synthèse des stocks chargés
   crypto/qa/unitroot: test de la racine unitaire pour la stationnarité (ADF, KPSS)
-  crypto/ta: analyse technique pour pièces chargées, ema, macd, rsi, adx, bbands,
+  crypto/ta: analyse technique pour crypto-monnaies chargées, ema, macd, rsi, adx, bbands,
     obv
   crypto/ta/_custom_: Personnalisé
   crypto/ta/_momentum_: Momentum
   crypto/ta/_overlap_: Rupture
-  crypto/ta/_ticker: Pièce chargée
+  crypto/ta/_ticker: Crypto-crypto-monnaie chargée
   crypto/ta/_trend_: Tendance
   crypto/ta/_volatility_: Volatilité
   crypto/ta/_volume_: Volume
@@ -257,7 +256,7 @@ fr:
   dashboards: tableaux de bord interactifs utilisant des carnets voila et jupyter
   dashboards/chains: Analyse de la chaîne des options
   dashboards/correlation: corrélations entre les stocks
-  dashboards/crypto: taux de change de crypto-monnaie par rapport à USD
+  dashboards/crypto: taux de change de crypto-crypto-monnaie par rapport à USD
   dashboards/forecast: prévision des ensembles de données des séries chronologiques
   dashboards/forecasting: prévision des ensembles de données des séries chronologiques
   dashboards/futures: performance à terme historique
@@ -327,7 +326,7 @@ fr:
   economy/macro: recueillir des données macroéconomiques pour un ou plusieurs pays
   economy/map: Carte des stocks des indices S&P500
   economy/overview: afficher une vue d'ensemble du marché des indices, des obligations
-    ou des monnaies
+    ou des crypto-monnaies
   economy/performance: performance des secteurs, de l'industrie, du pays
   economy/plot: trace les données des commandes ci-dessus ensemble
   economy/qa: Ouvrir le menu d'analyse quantitative avec les données stockées
@@ -601,8 +600,7 @@ fr:
   portfolio/attrib: l'attribution du portefeuille par secteur d'affichage par rapport
     à la S&P 500
   portfolio/bench: définir l'indice de référence
-  portfolio/bro: les actions de courtiers, soutient le robinhood, allié, degiro, base
-    de pièces
+  portfolio/bro: les actions de courtiers, soutient le robinhood, allié, degiro, coinbase
   portfolio/bro/ally: Menu Ally Invest
   portfolio/bro/ally/_info_: Informations sur les stocks
   portfolio/bro/ally/balances: afficher les détails du solde du compte
@@ -825,7 +823,7 @@ fr:
   stocks/dd/sec: Dépôts SEC
   stocks/dd/supplier: Liste des fournisseurs
   stocks/disc: découvrir les stocks, la carte, les secteurs, l'intérêt court
-  stocks/disc/active: stocks les plus actifs par volume d'échanges intrajournaliers
+  stocks/disc/active: stocks les plus actifs par volume d'marchés intrajournaliers
     t
   stocks/disc/arkord: commandes par ARK Investment Management LLC
   stocks/disc/asc: stocks de faible capitalisation avec des taux de croissance des
@@ -907,7 +905,7 @@ fr:
   stocks/gov/gtrades: montrer les métiers du gouvernement
   stocks/gov/histcont: des marchés publics trimestriels historiques
   stocks/gov/lastcontracts: montrer les derniers contrats du gouvernement donnés
-  stocks/gov/lasttrades: derniers échanges
+  stocks/gov/lasttrades: derniers marchés
   stocks/gov/load: charger un cicker spécifique pour l'analyse
   stocks/gov/lobbying: détails de lobbying d'entreprise
   stocks/gov/qtrcontracts: Analyse trimestrielle des marchés publics
@@ -959,7 +957,7 @@ fr:
   stocks/options/chains: les chaînes d'option d'affichage avec des greeks
   stocks/options/exp: voir et définir les dates d'expiration
   stocks/options/greeks: affiche les greeks pour une option donnée
-  stocks/options/grhist: histoire grecque de l'option graphique
+  stocks/options/grhist: graphique de l'historique du greek
   stocks/options/hedge: indique les pondérations de portefeuille pour neutraliser
     le delta
   stocks/options/hedge/_expiry: Expiration
@@ -1099,7 +1097,7 @@ fr:
   stocks/sia/cpis: entreprises par industrie basées sur le secteur (et le plafond
     de marché)
   stocks/sia/cps: entreprises par secteur basées sur le pays (et le plafond de marché)
-  stocks/sia/exchange: retour à l'exclusion du drapeau des échanges internationaux
+  stocks/sia/exchange: retour à l'exclusion du drapeau des marchés internationaux
   stocks/sia/industry: voir les industries existantes, ou définir l'industrie si arg
     spécifié
   stocks/sia/metric: visualiser la mesure financière à travers les filtres sélectionnés
@@ -1155,7 +1153,7 @@ fr:
   stocks/th/holidays: Afficher toutes les dates où il y a des vacances sur le marché
   stocks/th/open: montrer des marchés ouverts
   stocks/th/symbol: sélectionnez le symbole
-  stocks/tob: voir le haut du livre pour le ticker chargé (échanges américains seulement)
+  stocks/tob: voir le haut du livre pour le ticker chargé (marchés américains seulement)
   stop: arrêt de l'enregistrement de session
   support: pré-remplir un ticket de support pour notre équipe d'évaluation
   survey: Remplissez notre enquête de 2 minutes afin que nous comprenions mieux comment
