@@ -285,21 +285,19 @@ class EconometricsController(BaseController):
 
     def update_loaded(self):
         self.list_dataset_cols = []
+        self.loaded_dataset_cols = "\n"
+
         if not self.files:
-            self.loaded_dataset_cols = "\n"
             self.list_dataset_cols.append("")
             return
 
         maxfile = max(len(file) for file in self.files)
-        self.loaded_dataset_cols = "\n"
-        for dataset, data in self.datasets.items():
-            max_files = (maxfile - len(dataset)) * " "
-            self.loaded_dataset_cols += (
-                f"\t{dataset} {max_files}: {', '.join(data.columns)}\n"
-            )
 
-            for col in data.columns:
-                self.list_dataset_cols.append(f"{dataset}.{col}")
+        for dataset, data in self.datasets.items():
+            dataset_columns = ", ".join(data.columns)
+            dataset_name = f"{dataset} {(maxfile - len(dataset)) * ' '}:"
+            self.loaded_dataset_cols += f"\t{dataset_name} {dataset_columns}\n"
+            self.list_dataset_cols.extend([f"{dataset}.{col}" for col in data.columns])
 
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
