@@ -1,0 +1,64 @@
+name: General Linting
+
+env:
+  OPENBB_ENABLE_QUICK_EXIT: true
+  OPENBB_LOG_COLLECT: false
+  OPENBB_USE_ION: false
+  OPENBB_USE_PROMPT_TOOLKIT: false
+  PIP_DEFAULT_TIMEOUT: 100
+
+on:
+  push:
+    branches:
+      - "feature/*"
+      - "hotfix/*"
+      - 'release/[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?'
+
+# Cancel previous runs that are not yet completed.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  code-linting:
+    name: General Code Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # actions/checkout v3.0.2
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+          architecture: x64
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
+
+      - run: |
+          pip install bandit black codespell mypy==0.982 pyupgrade safety pylint==2.15.2 packaging==22 ruff
+          pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
+      - run: bandit -x ./tests -r . || true
+      - run: black --diff --check .
+      - run: codespell --ignore-words-list=commun,statics,ro,zar,zlot,jewl,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel,ket,toke,certi,buidl,ot,te --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller,./website/config.toml
+      - run: ruff .
+      - run: mypy --ignore-missing-imports openbb_terminal
+      - run: shopt -s globstar && pyupgrade --py38-plus **/*.py
+      - run: safety check
+      - run: |
+          pylint terminal.py openbb_terminal tests
+
+  markdown-link-check:
+    name: Markdown Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Check out the code
+      - name: Lint Code Base
+        uses: docker://avtodev/markdown-lint:v1
+        with:
+          args: "./*.md ./changelogs/*.md ./openbb_terminal/**/*.md ./discordbot/**/*.md"
