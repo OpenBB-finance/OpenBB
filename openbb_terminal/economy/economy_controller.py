@@ -541,7 +541,7 @@ class EconomyController(BaseController):
             dest="currency",
             help="Convert the currency of the chosen country to a specified currency. To find the "
             "currency symbols use '--show countries'",
-            choices=econdb_model.COUNTRY_CURRENCIES,
+            choices=econdb_model.COUNTRY_CURRENCIES.values(),
             default=False,
         )
         if other_args and "-" not in other_args[0][0]:
