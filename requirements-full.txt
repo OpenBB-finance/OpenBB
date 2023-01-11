@@ -34,7 +34,7 @@ bs4==0.0.1
 bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 cachetools==5.2.0; python_version >= "3.7" and python_version < "4.0" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7") and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7")
 catboost==1.1.1; python_version >= "3.7"
-ccxt==2.5.67
+ccxt==2.5.80
 certifi==2022.9.24; python_version >= "3.8" and python_version < "4" and python_full_version >= "3.7.1" and python_full_version < "4.0.0" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7")
 cffi==1.15.1; implementation_name == "pypy" and python_version >= "3.7" and python_full_version >= "3.7.0" and python_full_version < "4.0.0"
 cfgv==3.3.1; python_full_version >= "3.6.1" and python_version >= "3.7"
@@ -275,7 +275,7 @@ setuptools-git==1.2; python_version >= "3.7"
 setuptools-scm==6.4.2; python_version >= "3.8"
 sgmllib3k==1.0.0; python_version >= "3.6"
 shap==0.41.0; python_version >= "3.7"
-six==1.16.0; python_full_version >= "3.7.1" and python_version >= "3.8" and python_full_version < "4.0.0" and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.7") and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0") and (python_version >= "3.7" and python_full_version < "3.0.0" or python_version >= "3.7" and python_full_version < "3.9.7" and python_full_version >= "3.3.0" or python_full_version > "3.9.7") and (python_version >= "3.8" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.8") and (python_version >= "3.7" and python_full_version < "3.9.7" and python_full_version >= "3.7.0" or python_full_version > "3.9.7" and python_version >= "3.7" and python_full_version < "4.0.0") and (python_version >= "3.8" and python_full_version < "3.0.0" or python_version >= "3.8" and python_full_version >= "3.3.0") and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7")
+six==1.16.0; python_full_version >= "3.7.1" and python_version >= "3.8" and python_full_version < "4.0.0" and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.7") and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0") and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0") and (python_version >= "3.7" and python_full_version < "3.0.0" or python_version >= "3.7" and python_full_version < "3.9.7" and python_full_version >= "3.3.0" or python_full_version > "3.9.7") and (python_version >= "3.8" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.8") and (python_version >= "3.7" and python_full_version < "3.9.7" and python_full_version >= "3.7.0" or python_full_version > "3.9.7" and python_version >= "3.7" and python_full_version < "4.0.0") and (python_version >= "3.8" and python_full_version < "3.0.0" or python_version >= "3.8" and python_full_version >= "3.3.0") and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7")
 slicer==0.0.7; python_version >= "3.7"
 smmap==5.0.0; python_version >= "3.7"
 sniffio==1.3.0; python_version >= "3.8" and python_version < "4.0" and python_full_version >= "3.6.2"
@@ -355,6 +355,6 @@ xarray==2022.11.0; python_version >= "3.8"
 xgboost==1.7.2; python_version >= "3.8"
 xlsxwriter==3.0.3; python_version >= "3.7"
 yarl==1.8.1; python_version >= "3.7" and python_full_version >= "3.7.0"
-yfinance==0.1.95
+yfinance==0.2.3
 zipp==3.10.0; python_version >= "3.7" and python_full_version < "3.9.7" and python_version < "3.10" or python_full_version > "3.9.7" and python_version >= "3.7" and python_version < "3.10"
 zope.interface==5.5.0; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5"
