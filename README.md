@@ -17,7 +17,6 @@
 [![Bugs Closed][bugs-closed-shield]][bugs-closed-url]
 
 [![Build Status](https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/OpenBB-finance/OpenBBTerminal/actions)
-[![Documentation Status](https://readthedocs.org/projects/gamestonk-terminal/badge/?version=latest)](https://gamestonk-terminal.readthedocs.io/?badge=latest)
 [![GitHub release](https://img.shields.io/github/release/OpenBB-finance/OpenBBTerminal.svg?maxAge=3600)](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![TODOs](https://badgen.net/https/api.tickgit.com/badgen/github.com/OpenBB-finance/OpenBBTerminal/main)](https://www.tickgit.com/browse?repo=github.com/OpenBB-finance/OpenBBTerminal&branch=main)
