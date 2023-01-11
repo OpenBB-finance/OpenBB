@@ -561,7 +561,7 @@ def test_controller_init_summary_profile(
 
     # MOCK GET_JSON
     mock_get_json = {"summaryProfile": summaryProfile}
-    target = f"{path_controller}.financedatabase_model.yf.utils.get_json"
+    target = f"{path_controller}.financedatabase_model.get_json"
     mocker.patch(target=target, return_value=mock_get_json)
 
     # MOCK GET_COUNTRIES
