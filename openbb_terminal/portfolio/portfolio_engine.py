@@ -1,7 +1,7 @@
 """Portfolio Engine"""
 __docformat__ = "numpy"
 
-import contextlib
+import warnings
 import logging
 from typing import Dict, Any
 import datetime
@@ -17,6 +17,7 @@ from openbb_terminal.portfolio.portfolio_helper import (
     get_info_from_ticker,
 )
 from openbb_terminal.portfolio.allocation_model import get_allocation
+from openbb_terminal.terminal_helper import suppress_stdout
 
 # pylint: disable=E1136,W0201,R0902,C0302
 # pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods, consider-using-f-string
@@ -197,6 +198,32 @@ class PortfolioEngine:
         df.sort_values(by="Date", ascending=False, inplace=True)
         return df
 
+    @staticmethod
+    def read_transactions(path: str) -> pd.DataFrame:
+        """Read static method to read transactions from file.
+
+        Parameters
+        ----------
+        path: str
+            path to transactions file
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with transactions
+        """
+
+        # Load transactions from file
+        if path.endswith(".xlsx"):
+            warnings.filterwarnings(
+                "ignore", category=UserWarning, module="openpyxl", lineno=312
+            )
+            transactions = pd.read_excel(path)
+        elif path.endswith(".csv"):
+            transactions = pd.read_csv(path)
+
+        return transactions
+
     @log_start_end(log=logger)
     def __preprocess_transactions(self):
         """Preprocess, format and compute auxiliary fields.
@@ -321,7 +348,7 @@ class PortfolioEngine:
             # If ticker from isin is empty it is not valid in yfinance, so check if user provided ticker is supported
             removed_tickers = []
             for item in empty_tickers:
-                with contextlib.redirect_stdout(None):
+                with suppress_stdout():
                     # Suppress yfinance failed download message if occurs
                     valid_ticker = not (
                         yf.download(
