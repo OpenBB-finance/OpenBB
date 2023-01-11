@@ -247,7 +247,7 @@ en:
   stocks/ins/lip: latest insider purchases
   stocks/ins/blip: big latest insider purchases ($25k+)
   stocks/ins/blop: big latest officer purchases ($25k+)
-  stocks/ins/bclp: big latest CEO/CFO purchases ($25k+)
+  stocks/ins/blcp: big latest CEO/CFO purchases ($25k+)
   stocks/ins/lis: latest insider sales
   stocks/ins/blis: big latest insider sales ($100k+)
   stocks/ins/blos: big latest officer sales ($100k+)
@@ -518,6 +518,7 @@ en:
   crypto/onchain/hr: check blockchain hashrate over time (BTC or ETH)
   crypto/onchain/btccp: displays BTC circulating supply
   crypto/onchain/btcct: displays BTC confirmed transactions
+  crypto/onchain/btcblockdata: displays BTC single block data
   crypto/onchain/gwei: check current eth gas fees
   crypto/onchain/whales: check crypto wales transactions
   crypto/onchain/lt: last trades by dex or month
@@ -858,6 +859,7 @@ en:
   funds/alswe: display fund allocation (sector, country, holdings)
   funds/infoswe: get fund information
   funds/forecast: forecasting techniques
+  alternative/hn: Hacker News most popular stories
   alternative/covid: COVID menu,                 cases, deaths, rates
   alternative/oss: Open Source menu,           star history, repos information
   alternative/covid/slopes: get countries with highest slope in cases

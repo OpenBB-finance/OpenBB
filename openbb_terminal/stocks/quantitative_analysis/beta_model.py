@@ -36,14 +36,20 @@ def beta_model(
         Stock ticker symbols close-to-close returns, Reference ticker symbols close-to-close returns, beta, alpha
     """
     if data is None:
-        data = stocks_helper.load(symbol)
+        data = stocks_helper.load(symbol=symbol)
     else:
         # TODO: When loaded in the stocks menu, the stock df columns are all
         # lowercase but when loaded via stocks_helper.load(ticker) they start
         # with an uppercase char. This should be consistent.
         data = data.rename({"close": "Close"}, axis=1)
     if ref_data is None:
-        ref_data = stocks_helper.load(ref_symbol, interval=interval)
+        ref_data = stocks_helper.load(
+            symbol=ref_symbol,
+            interval=interval,
+            start_date=data.index[0],
+            end_date=data.index[-1],
+            verbose=False,
+        )
         if ref_data.empty:
             raise Exception("Invalid ref_symbol ticker")
     else:

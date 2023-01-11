@@ -258,7 +258,9 @@ def display_candle(
         External axes (1 axis is expected in the list), by default None
     """
     # We check if there's Volume data to avoid errors and empty subplots
-    has_volume = bool(data["Volume"].sum() > 0)
+    has_volume = False
+    if "Volume" in data.columns:
+        has_volume = bool(data["Volume"].sum() > 0)
 
     if add_trend:
         if (data.index[1] - data.index[0]).total_seconds() >= 86400:

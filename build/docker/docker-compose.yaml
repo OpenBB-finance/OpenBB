@@ -7,6 +7,6 @@ services:
       - ~/OpenBBUserData:/home/python/OpenBBUserData
       - ~/.openbb_terminal:/home/python/.openbb_terminal
     platform: linux/amd64
-    image: ghcr.io/openbb-finance/openbbterminal/openbb:2.0.0
+    image: ghcr.io/openbb-finance/openbbterminal/openbb:2.1.0
     stdin_open: true # docker run -i
     tty: true # docker run -t
