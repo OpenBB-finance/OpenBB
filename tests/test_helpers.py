@@ -9,4 +9,3 @@ def no_dfs(args: list, kwargs: dict) -> bool:
         if isinstance(item, pd.DataFrame):
             return False
     return True
-    
