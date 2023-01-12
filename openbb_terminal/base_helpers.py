@@ -5,7 +5,7 @@ from typing import Any, Callable, Literal, Union
 
 from rich.console import Console
 
-from openbb_terminal.plots_core.backend import BACKEND
+from openbb_terminal.plots_core.backend import get_backend
 
 console = Console()
 
@@ -102,7 +102,7 @@ class Show:
                 return self.to_json()  # type: ignore
 
             # We send the figure to the backend to be displayed
-            BACKEND.send_figure(self)
+            get_backend().send_figure(self)
         except Exception:
             # If the backend fails, we just show the figure normally
             # This is a very rare case, but it's better to have a fallback
@@ -117,7 +117,7 @@ class Show:
         return None
 
 
-if BACKEND.isatty:
+if get_backend().isatty:
     # pylint: disable=import-outside-toplevel
     import gc
 

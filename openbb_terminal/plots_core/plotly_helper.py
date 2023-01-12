@@ -8,7 +8,7 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 
 from openbb_terminal.base_helpers import strtobool
-from openbb_terminal.plots_core.backend import BACKEND
+from openbb_terminal.plots_core.backend import get_backend
 
 # Reads the template from a file
 with open(
@@ -63,7 +63,7 @@ class OpenBBFigure(go.Figure):
         if yaxis := kwargs.pop("yaxis", None):
             self.update_yaxes(yaxis)
 
-        if BACKEND.isatty:
+        if get_backend().isatty:
             self.update_layout(
                 margin=dict(l=0, r=0, t=0, b=0, pad=0, autoexpand=True),
                 height=762,
@@ -321,11 +321,11 @@ class OpenBBFigure(go.Figure):
         """Show the figure"""
         self._set_openbb_overlays()
         margin_add = (
-            [90, 90, 80, 40, 10] if not self._has_secondary_y else [90, 40, 80, 40, 10]
+            [90, 100, 80, 40, 10] if not self._has_secondary_y else [90, 40, 80, 40, 10]
         )
 
         # We adjust margins
-        if BACKEND.isatty:
+        if get_backend().isatty:
             for margin, add in zip(
                 ["l", "r", "b", "t", "pad"],
                 margin_add,
@@ -338,7 +338,7 @@ class OpenBBFigure(go.Figure):
                 else:
                     self.layout.margin[margin] = add
 
-        if not BACKEND.isatty:
+        if not get_backend().isatty:
             self.layout.margin = dict(l=40, r=40, b=50, t=50, pad=10)
 
         # Set legend position
@@ -407,7 +407,7 @@ class OpenBBFigure(go.Figure):
             if f"yaxis{row}" in fig_dict["layout"]:
                 subplot.layout[f"yaxis{row}"] = fig_dict["layout"][f"yaxis{row}"]
 
-        if not BACKEND.isatty:
+        if not get_backend().isatty:
             subplot.update_layout(
                 margin=dict(l=30, r=30, b=50, t=50, pad=0),
             )

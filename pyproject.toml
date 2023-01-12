@@ -24,8 +24,8 @@ requests = "^2.25.1"
 alpha-vantage = "^2.3.1"
 finviz = "^1.3.4"
 bs4 = "^0.0.1"
-rapidfuzz = "^1.1.1"
-yfinance = "^0.1.94"
+rapidfuzz = "^2.1.1"
+yfinance = "^0.2.1"
 psaw = "^0.0.12"
 praw = "^7.1.4"
 Quandl = "^3.6.0"
@@ -80,7 +80,7 @@ linearmodels = "^4.25"
 ipywidgets = "^8.0.2"
 Jinja2 = "^3.0.3"
 Riskfolio-Lib = {version = "^3.1.1", optional = true}
-ccxt = "^2.0.0"
+ccxt = "^2.5.67"
 html5lib = "^1.1"
 feedparser = "^6.0.10"
 pyinstaller = {version = "^4.10", optional = true}
@@ -108,7 +108,6 @@ docstring-parser = {version = "^0.15", optional = true}
 grpcio = "<1.51.0"
 jupyterlab-widgets = "^3.0.3"
 packaging = ">=22.0"
-cryptography= "^39.0.0"
 pywry = "^0.1.6"
 
 [tool.poetry.dev-dependencies]

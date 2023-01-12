@@ -8,7 +8,6 @@ from typing import List, Optional
 import pandas as pd
 import plotly.graph_objects as go
 from matplotlib import pyplot as plt
-from plotly.subplots import make_subplots
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
@@ -18,6 +17,7 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
     plot_autoscale,
 )
+from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import finra_model
 
@@ -48,7 +48,7 @@ def darkpool_ats_otc(  # pylint: disable=R1710
     if ats.empty and otc.empty:
         console.print("No ticker data found!")
 
-    fig = make_subplots(
+    fig = OpenBBFigure.create_subplots(
         rows=2,
         cols=1,
         shared_xaxes=True,
@@ -152,6 +152,7 @@ def darkpool_ats_otc(  # pylint: disable=R1710
         )
 
     fig.update_layout(
+        margin=dict(l=40),
         title=f"<b>Dark Pools (ATS) vs OTC (Non-ATS) Data for {symbol}</b>",
         title_x=0.025,
         title_font_size=14,
@@ -170,14 +171,6 @@ def darkpool_ats_otc(  # pylint: disable=R1710
         yaxis3=dict(fixedrange=False, nticks=10),
         xaxis=dict(
             rangeslider=dict(visible=False), type="date", showspikes=True, nticks=20
-        ),
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1,
-            bgcolor="rgba(0, 0, 0, 0)",
         ),
         barmode="group",
         bargap=0.5,

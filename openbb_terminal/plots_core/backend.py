@@ -25,6 +25,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 BACKEND_PATH = Path(__file__).parent.resolve()
+BACKEND = None
 
 
 class Backend(PyWry):
@@ -104,10 +105,10 @@ class Backend(PyWry):
         if self.plotly_html:
             self.plotly_html.unlink(missing_ok=True)
 
-    def start(self):
+    def start(self, debug: bool = False):
         """Starts the backend WindowManager process"""
         if self.isatty:
-            super().start()
+            super().start(debug)
 
 
 # To avoid having plotly.js in the repo, we download it if it's not present
@@ -121,4 +122,9 @@ if not (BACKEND_PATH / "assets" / "plotly.js").exists():
             f.write(chunk)
 
 
-BACKEND = Backend()
+def get_backend() -> Backend:
+    """Get the backend"""
+    global BACKEND  # pylint: disable=W0603
+    if BACKEND is None:
+        BACKEND = Backend()
+    return BACKEND
