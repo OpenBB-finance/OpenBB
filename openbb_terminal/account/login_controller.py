@@ -69,8 +69,8 @@ class LoginController:
 
         return ns_parser
 
-    def switch(self, an_input: str) -> Action:
-        """Process and dispatch input
+    def router(self, an_input: str) -> Action:
+        """Route input to the appropriate controller method
 
         Parameters
         ----------
@@ -201,7 +201,7 @@ def main():
             completer=login_controller.completer,
             search_ignore_case=True,
         )
-        action = login_controller.switch(an_input=_input)
+        action = login_controller.router(an_input=_input)
 
     if action == Action.LAUNCH_TERMINAL:
         terminal_controller.parse_args_and_run()
