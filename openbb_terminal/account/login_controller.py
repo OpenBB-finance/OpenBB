@@ -1,12 +1,12 @@
 import argparse
 from typing import List, Optional
 import webbrowser
+from enum import Enum
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import get_flair
 from openbb_terminal.terminal_helper import print_goodbye
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal import terminal_controller
-from enum import Enum
 from openbb_terminal.menu import session
 
 
