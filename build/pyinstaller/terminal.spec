@@ -4,12 +4,11 @@ import subprocess
 import sys
 from pathlib import Path
 
-import scipy
 from dotenv import set_key
 from PyInstaller.building.api import COLLECT, EXE, PYZ
 from PyInstaller.building.build_main import Analysis
 from PyInstaller.building.splash import Splash
-from PyInstaller.compat import is_conda, is_darwin, is_win
+from PyInstaller.compat import is_darwin, is_win
 
 from openbb_terminal.loggers import get_commit_hash
 
@@ -23,7 +22,7 @@ build_type = (
 venv_path = Path(sys.executable).parent.parent.resolve()
 
 # Check if we are running in a conda environment
-if is_conda:
+if sys.prefix != sys.base_prefix and "conda" in sys.prefix:
     pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
 else:
     if "site-packages" in list(venv_path.iterdir()):
@@ -79,7 +78,7 @@ added_files = [
     (".env", "."),
     (os.path.join(pathex, "blib2to3", "Grammar.txt"), "blib2to3"),
     (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
-    (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
+    (os.path.join(pathex, "scipy.libs"), "scipy.libs/"),
 ]
 
 # Python libraries that are explicitly pulled into the bundle
