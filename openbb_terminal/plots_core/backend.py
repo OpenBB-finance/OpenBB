@@ -24,7 +24,7 @@ except (ImportError, AttributeError):
 else:
     JUPYTER_NOTEBOOK = True
 
-BACKEND_PATH = Path(__file__).parent.resolve()
+PLOTS_CORE_PATH = Path(__file__).parent.resolve()
 BACKEND = None
 
 
@@ -38,7 +38,7 @@ class Backend(PyWry):
 
     def __init__(self, daemon: bool = True, max_retries: int = 30):
         super().__init__(daemon=daemon, max_retries=max_retries)
-        self.plotly_html: Path = BACKEND_PATH / "plotly_temp.html"
+        self.plotly_html: Path = PLOTS_CORE_PATH / "plotly_temp.html"
         self.inject_path_to_html()
         self.isatty = (
             not JUPYTER_NOTEBOOK
@@ -49,10 +49,10 @@ class Backend(PyWry):
 
     def inject_path_to_html(self):
         """Update the script tag in html with local path"""
-        with open(BACKEND_PATH / "plotly.html", encoding="utf-8") as file:  # type: ignore
+        with open(PLOTS_CORE_PATH / "plotly.html", encoding="utf-8") as file:  # type: ignore
             html = file.read()
 
-        replace = str(BACKEND_PATH.as_uri())
+        replace = str(PLOTS_CORE_PATH.as_uri())
 
         html = html.replace("{{MAIN_PATH}}", replace)
 
@@ -70,7 +70,7 @@ class Backend(PyWry):
 
     def get_window_icon(self) -> str:
         """Get the window icon"""
-        icon_path = BACKEND_PATH / "assets" / "icon.png"
+        icon_path = PLOTS_CORE_PATH / "assets" / "icon.png"
         if icon_path.exists():
             return str(icon_path)
         return ""
@@ -92,7 +92,7 @@ class Backend(PyWry):
         self.outgoing.append(
             json.dumps(
                 {
-                    "html": self.get_plotly_html(),
+                    "html_path": self.get_plotly_html(),
                     "plotly": data,
                     "title": f"OpenBB - {title}",
                     "icon": self.get_window_icon(),
@@ -112,12 +112,10 @@ class Backend(PyWry):
 
 
 # To avoid having plotly.js in the repo, we download it if it's not present
-if not (BACKEND_PATH / "assets" / "plotly.js").exists():
+if not (PLOTS_CORE_PATH / "assets" / "plotly.js").exists():
     download = requests.get("https://cdn.plot.ly/plotly-2.16.1.min.js", stream=True)
-    with open(
-        str(BACKEND_PATH / "assets" / "plotly.js"),
-        "wb",
-    ) as f:
+
+    with open(str(PLOTS_CORE_PATH / "assets" / "plotly.js"), "wb") as f:
         for chunk in download.iter_content(chunk_size=1024):
             f.write(chunk)
 

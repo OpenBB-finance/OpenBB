@@ -1,17 +1,15 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
-import pathlib
 import subprocess
+import sys
+from pathlib import Path
 
+import scipy
 from dotenv import set_key
-
-from PyInstaller.compat import is_darwin, is_win
-from PyInstaller.building.api import PYZ, EXE, COLLECT
-from PyInstaller.building.splash import Splash
+from PyInstaller.building.api import COLLECT, EXE, PYZ
 from PyInstaller.building.build_main import Analysis
-
-
-# import subprocess
+from PyInstaller.building.splash import Splash
+from PyInstaller.compat import is_conda, is_darwin, is_win
 
 from openbb_terminal.loggers import get_commit_hash
 
@@ -22,21 +20,29 @@ build_type = (
 )
 
 # Local python environment packages folder
-pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
+venv_path = Path(sys.executable).parent.parent.resolve()
+
+# Check if we are running in a conda environment
+if is_conda:
+    pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
+else:
+    if "site-packages" in list(venv_path.iterdir()):
+        pathex = str(venv_path / "site-packages")
+    else:
+        pathex = str(venv_path / "lib" / "site-packages")
 
 # Removing unused ARM64 binary
-binary_to_remove = pathlib.Path(
-    os.path.join(pathex, "_scs_direct.cpython-39-darwin.so")
-)
+binary_to_remove = Path(os.path.join(pathex, "_scs_direct.cpython-39-darwin.so"))
 print("Removing ARM64 Binary: _scs_direct.cpython-39-darwin.so")
 binary_to_remove.unlink(missing_ok=True)
+build_assets_folder = os.path.join(os.getcwd(), "build", "pyinstaller")
 
 # Removing inspect hook
-destination = pathlib.Path(
+destination = Path(
     os.path.join(pathex, "pyinstaller/hooks/rthooks", "pyi_rth_inspect.py")
 )
 print("Replacing Pyinstaller Hook: pyi_rth_inspect.py")
-source = "build/pyinstaller/hooks/pyi_rth_inspect.py"
+source = os.path.join(build_assets_folder, "hooks", "pyi_rth_inspect.py")
 subprocess.run(["cp", source, str(destination)], check=True)
 
 
@@ -73,6 +79,7 @@ added_files = [
     (".env", "."),
     (os.path.join(pathex, "blib2to3", "Grammar.txt"), "blib2to3"),
     (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
+    (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
 ]
 
 # Python libraries that are explicitly pulled into the bundle
@@ -99,6 +106,7 @@ hidden_imports = [
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
+    "pywry.pywry",
 ]
 
 
@@ -120,6 +128,45 @@ analysis_kwargs = dict(
 
 a = Analysis(**analysis_kwargs)
 pyz = PYZ(a.pure, a.zipped_data, cipher=analysis_kwargs["cipher"])
+
+
+block_cipher = None
+# PyWry
+pywry_a = Analysis(
+    [os.path.join(pathex, "pywry", "backend.py")],
+    pathex=[],
+    binaries=[],
+    datas=[],
+    hiddenimports=[],
+    hookspath=[],
+    hooksconfig={},
+    runtime_hooks=[],
+    excludes=[],
+    win_no_prefer_redirects=False,
+    win_private_assemblies=False,
+    cipher=block_cipher,
+    noarchive=False,
+)
+pywry_pyz = PYZ(pywry_a.pure, pywry_a.zipped_data, cipher=block_cipher)
+
+# PyWry EXE
+pywry_exe = EXE(
+    pywry_pyz,
+    pywry_a.scripts,
+    [],
+    exclude_binaries=True,
+    name="pywry",
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    console=True,
+    disable_windowed_traceback=False,
+    target_arch="x86_64",
+    codesign_identity=None,
+    entitlements_file=None,
+)
+
 
 exe_args = [
     pyz,
@@ -178,6 +225,13 @@ if is_darwin:
     exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "openbb.icns"),)
 
 exe = EXE(*exe_args, **exe_kwargs)
+pywry_collect_args = [
+    pywry_a.binaries,
+    pywry_a.zipfiles,
+    pywry_a.datas,
+]
 
 if build_type == "folder":
-    coll = COLLECT(*([exe] + collect_args), **collect_kwargs)
+    coll = COLLECT(
+        *([exe] + collect_args + [pywry_exe] + pywry_collect_args), **collect_kwargs
+    )
