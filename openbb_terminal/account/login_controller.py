@@ -2,6 +2,7 @@ import argparse
 from typing import List, Optional
 import webbrowser
 from openbb_terminal.helper_funcs import get_flair
+from openbb_terminal.terminal_helper import print_goodbye
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal import terminal_controller
 from enum import Enum
@@ -196,26 +197,5 @@ if __name__ == "__main__":
 
     if action == Action.LAUNCH_TERMINAL:
         terminal_controller.parse_args_and_run()
-
-
-# login_controller
-# login
-# args
-# email
-# password
-# help
-# subcommands always available
-# exit/e
-# quit/q
-# help/h/?
-# register
-# subcommands always available
-# exit/e
-# quit/q
-# help/h/?
-
-
-# We might rebuild controllers with Command class
-# We are creating the command at each call
-# And then we call it
-# We could improve performance if we just create it once and then reuse it to call
+    else:
+        print_goodbye()
