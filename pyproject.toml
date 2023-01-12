@@ -105,7 +105,7 @@ protobuf = "3.20.1"
 pytorch-lightning = {version = "1.6.5", optional = true}
 u8darts = {extras = ["torch"], version = "0.23.0", optional = true}
 docstring-parser = {version = "^0.15", optional = true}
-grpcio = "<1.51.0"
+grpcio = "^1.51.1"
 jupyterlab-widgets = "^3.0.3"
 packaging = ">=22.0"
 
