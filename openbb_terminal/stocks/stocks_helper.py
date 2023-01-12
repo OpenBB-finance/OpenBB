@@ -307,18 +307,16 @@ def load(
 
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
+    int_string = "Daily"
+    if weekly:
+        int_string = "Weekly"
+    if monthly:
+        int_string = "Monthly"
 
     # Daily
     if int(interval) == 1440:
-
-        int_string = "Daily"
-        if weekly:
-            int_string = "Weekly"
-        if monthly:
-            int_string = "Monthly"
-
         if source == "AlphaVantage":
-            df_stock_candidate = load_stock_av(symbol, start_date, end_date)
+            df_stock_candidate = load_stock_av(symbol, int_string, start_date, end_date)
 
         elif source == "YahooFinance":
             df_stock_candidate = load_stock_yf(
@@ -346,11 +344,18 @@ def load(
         df_stock_candidate.index.name = "date"
         s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
-        int_string = "Daily" if interval == 1440 else "Intraday"
 
     else:
 
-        if source == "YahooFinance":
+        if source == "AlphaVantage":
+            s_start = start_date
+            int_string = "Minute"
+            s_interval = f"{interval}min"
+            df_stock_candidate = load_stock_av(
+                symbol, int_string, start_date, end_date, s_interval
+            )
+
+        elif source == "YahooFinance":
             s_int = str(interval) + "m"
             s_interval = s_int + "in"
             d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
@@ -437,7 +442,7 @@ def load(
             s_interval = f"{interval}min"
         int_string = "Intraday"
 
-    s_intraday = (f"Intraday {s_interval}", int_string)[interval == 1440]
+    s_intraday = (f"Intraday {interval}min", int_string)[interval == 1440]
 
     if verbose:
         console.print(
