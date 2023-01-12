@@ -5,7 +5,8 @@ env:
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
-on: [pull_request, push]
+
+on: [workflow_dispatch]
 
 jobs:
   linting:
@@ -28,7 +29,7 @@ jobs:
           key: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
           restore-keys: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
 
-      - run: pip install bandit black codespell mypy==0.982 pyupgrade safety pylint==2.15.2 packaging==22 ruff
+      - run: pip install bandit black codespell mypy==0.982 pyupgrade safety pylint==2.15.2 packaging==22 ruff==0.0.212
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
