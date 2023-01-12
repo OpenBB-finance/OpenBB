@@ -3,20 +3,20 @@
 [yellow]Warning[/yellow]: We noticed Jim Crammer recommendation data has not been updated for a while, and we're investigating on finding a replacement.
         
                       Company Symbol   Price  LastPrice  Change (%) Recommendation
-0          Applied Materials    AMAT   97.42      91.24       -6.77            Buy
-1    AMN Healthcare Services     AMN  103.32     101.03       -2.27            Buy
-2                    Alibaba    BABA  108.03      91.80      -17.68           Sell
-3                 Dutch Bros    BROS   34.17      34.95        2.23            Buy
-4                Chargepoint    CHPT   13.36      14.50        7.86           Sell
-5           Cleveland-Cliffs     CLF   18.05      16.81       -7.38           Sell
-6                 Ford Motor       F   12.27      15.16       19.06            Buy
-7                  Eli Lilly     LLY  292.99     301.33        2.77            Buy
-8             Meta Platforms    META  169.35     160.32       -5.63            Buy
-9   Medical Properties Trust     MPW   14.99      14.32       -4.68            Buy
-10                     Nucor     NUE  116.46     130.78       10.95            Buy
-11            Planet Fitness    PLNT   64.42      65.81        2.11            Buy
-12                  Prothena    PRTA   23.68      26.91       12.00           Sell
-13         SoFi Technologies    SOFI    5.94       5.74       -3.48            Buy
-14             Toll Brothers     TOL   44.38      43.81       -1.30            Buy
-15     Woodside Energy Group     WDS   22.11      23.02        3.95            Buy
-16                 Whirlpool     WHR  155.52     153.69       -1.19            Buy
+0          Applied Materials    AMAT   97.42     108.04        9.83            Buy
+1    AMN Healthcare Services     AMN  103.32     112.63        8.27            Buy
+2                    Alibaba    BABA  108.03     114.88        5.96           Sell
+3                 Dutch Bros    BROS   34.17      32.72       -4.43            Buy
+4                Chargepoint    CHPT   13.36      10.08      -32.54           Sell
+5           Cleveland-Cliffs     CLF   18.05      18.81        4.04           Sell
+6                 Ford Motor       F   12.27      12.84        4.44            Buy
+7                  Eli Lilly     LLY  292.99     352.75       16.94            Buy
+8             Meta Platforms    META  169.35     132.99      -27.34            Buy
+9   Medical Properties Trust     MPW   14.99      12.49      -20.02            Buy
+10                     Nucor     NUE  116.46     151.16       22.96            Buy
+11            Planet Fitness    PLNT   64.42      83.05       22.43            Buy
+12                  Prothena    PRTA   23.68      53.29       55.56           Sell
+13         SoFi Technologies    SOFI    5.94       5.12      -16.02            Buy
+14             Toll Brothers     TOL   44.38      53.91       17.68            Buy
+15     Woodside Energy Group     WDS   22.11      24.36        9.24            Buy
+16                 Whirlpool     WHR  155.52     154.70       -0.53            Buy
