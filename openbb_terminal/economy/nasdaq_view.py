@@ -25,7 +25,11 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_economic_calendar(
-    countries: List[str], start_date: str, end_date: str, limit: int = 10, export: str = ""
+    countries: List[str],
+    start_date: str,
+    end_date: str,
+    limit: int = 10,
+    export: str = "",
 ) -> None:
     """Display economic calendar for specified country between start and end dates
 
