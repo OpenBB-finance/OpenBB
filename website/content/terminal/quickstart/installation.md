@@ -7,21 +7,25 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import InstallerButton from "@site/src/components/General/InstallerButton";
 
-The OpenBB Terminal can be directly installed on your computer via our installation program. Within this section, you are guided through the installation process and how to launch the program. If you struggle with the installation process, please don’t hesitate to reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
+The OpenBB Terminal can be directly installed on your computer via our installation programs. Within this section, you are guided through the installation process and how to launch the program. If you struggle with the installation process, please don’t hesitate to reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
 
-OpenBB Terminal is available in all major platforms. With MacOS/Windows you can easily install with the installer (instructions below). It is also available to install on Linux with Docker or from source.
+OpenBB Terminal is available on all major platforms. With Windows and macOS you can make use of an installation file as found below. Furthermore, it is also possible to install the OpenBB Terminal with Docker or directly through Python which also offers support for Linux.
 
 :::info Installation Instructions
 
 <Tabs>
-  <TabItem value="windows" label="Windows">Install on Windows
+  <TabItem value="windows" label="Windows">
   <div class="gdoc-page">
+  <p>This section provides you with the installation file as well as the guide to install the OpenBB Terminal via Windows.</p>
 
 </div><p>Download the installer from the button below:</p>
 
 <InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.1.0/Windows10.OpenBB.Terminal.v2.1.0.exe" label="Windows Installer" />
 
-<p>When the file is downloaded, use the following steps to run the OpenBB Terminal:</p>
+<p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
+
+<iframe width="100%" height="450" src="https://www.youtube.com/embed/-Afp6o9YKGE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 <div class="gdoc-columns">
 
 <div class="gdoc-columns__content gdoc-markdown--nested">
@@ -48,7 +52,7 @@ OpenBB Terminal is available in all major platforms. With MacOS/Windows you can 
 </div>
 </TabItem>
 
-<TabItem value="mac" label="MacOS">Install on macOS
+<TabItem value="mac" label="MacOS">
 
 For Mac there are two installers available, one for Intel and one for Apple Silicon (M1). Please download the correct one for your machine.
 
@@ -61,7 +65,10 @@ For Mac there are two installers available, one for Intel and one for Apple Sili
 </li>
 </ul>
 
-<p>When the DMG file is downloaded, use the following steps to run the OpenBB Terminal:</p>
+<p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
+
+<iframe width="100%" height="450" src="https://www.youtube.com/embed/lqIuJLuU2e0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 <div class="gdoc-columns">
 
 <div class="gdoc-columns__content gdoc-markdown--nested">
@@ -83,11 +90,13 @@ Right-Click the app and select <code>Open</code>. You will see a message saying 
 </div>
 </TabItem>
   <TabItem value="docker" label="Docker">
-  <p>Install with Docker</p>
+  <p>Installing the OpenBB Terminal via Docker supports both Windows and Unix systems (Linux + MacOS). Installation differs a bit between operating system (Windows, macOS and Linux). Please select the section matching to your OS.
+</p>
 
-Here we will detail how to run OpenBB Terminal Docker image.
+<p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
 
-Please check the section matching to your OS.
+<iframe width="100%" height="450" src="https://www.youtube.com/embed/NjXPIfDzQMk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ## 1. Windows
 
@@ -228,7 +237,11 @@ docker run --rm -it \
 
 </TabItem>
   <TabItem value="python" label="Python">
-This installation type supports both Windows and Unix systems (Linux + MacOS).
+  <p>This section guides you a long to install the OpenBB Terminal via Python. This installation type supports both Windows and Unix systems (Linux + MacOS).</p>
+
+<p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
+
+<iframe width="100%" height="450" src="https://www.youtube.com/embed/rDYGmH-bQRk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 **NOTE for Windows users:** For Windows users who prefer to use an environment similar to what Linux and macOS users use, we recommend Windows Subsystem for Linux (WSL). WSL emulates a Linux machine inside your Windows system. If this is the case - jump to the <a href="#installing-wsl-only-for-windows-users">Installing WSL (Only for Windows users)</a> section before proceeding.
 
