@@ -10,7 +10,9 @@ help
 h
 ?
 clear
+..
 load ${ticker=tsla}
+sia
 clear industry
 clear sector
 clear sector
