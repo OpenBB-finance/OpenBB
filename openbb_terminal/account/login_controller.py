@@ -1,11 +1,13 @@
 import argparse
 from typing import List, Optional
 import webbrowser
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import get_flair
 from openbb_terminal.terminal_helper import print_goodbye
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal import terminal_controller
 from enum import Enum
+from openbb_terminal.menu import session
 
 
 class Action(Enum):
@@ -28,6 +30,7 @@ class LoginController:
         )
         self.controller_parser.exit_on_error = False  # type: ignore
         self.controller_parser.add_argument("cmd", choices=self.CHOICES)
+        self.completer = NestedCompleter.from_nested_dict({c: {} for c in self.CHOICES})
         self.call_help()
 
     @staticmethod
@@ -192,7 +195,11 @@ if __name__ == "__main__":
 
     action = Action.DISPLAY_MENU
     while action == Action.DISPLAY_MENU:
-        _input = input(f"{get_flair()} $ ")
+        _input = session.prompt(
+            f"{get_flair()} $ ",
+            completer=login_controller.completer,
+            search_ignore_case=True,
+        )
         action = login_controller.switch(an_input=_input)
 
     if action == Action.LAUNCH_TERMINAL:
