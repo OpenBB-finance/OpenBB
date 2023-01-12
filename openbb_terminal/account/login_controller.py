@@ -9,7 +9,7 @@ from enum import Enum
 
 
 class Action(Enum):
-    """Class to handle status"""
+    """Class to handle controller action"""
 
     EXIT = -1
     DISPLAY_MENU = 1
@@ -66,14 +66,6 @@ class LoginController:
 
         return ns_parser
 
-    def call_help(self) -> Action:
-        """Print help"""
-        mt = MenuText("login/", 100)
-        mt.add_cmd("login")
-        mt.add_cmd("register")
-        console.print(text=mt.menu_text, menu="Login")
-        return Action.DISPLAY_MENU
-
     def switch(self, an_input: str) -> Action:
         """Process and dispatch input
 
@@ -108,6 +100,14 @@ class LoginController:
         except Exception:
             console.print("Command not recognized!")
             return Action.DISPLAY_MENU
+
+    def call_help(self) -> Action:
+        """Print help"""
+        mt = MenuText("login/", 100)
+        mt.add_cmd("login")
+        mt.add_cmd("register")
+        console.print(text=mt.menu_text, menu="Login")
+        return Action.DISPLAY_MENU
 
     def call_register(self, cmd_args: List[str]) -> Action:
         """Call register
