@@ -1,4 +1,3 @@
-
     select             select a specific ticker and all it's corresponding parameters  [YahooFinance]
 
     clear              clear all or one of industry, sector, country and market cap parameters
