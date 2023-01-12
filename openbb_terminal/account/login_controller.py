@@ -138,7 +138,7 @@ class LoginController:
 
         return Action.DISPLAY_MENU
 
-    def call_login(self, cmd_args: List[str]):
+    def call_login(self, cmd_args: List[str]) -> Action:
         """Call login
 
         Parameters
