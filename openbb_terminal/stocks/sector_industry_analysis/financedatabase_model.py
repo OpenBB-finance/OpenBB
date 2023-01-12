@@ -162,6 +162,40 @@ def filter_stocks(
         return []
 
 
+def get_json(symbol: str) -> dict:
+    """Get json data from Yahoo Finance for a given symbol.
+    Code adapted from deprecated function `yfinance.utils.get_json`
+    in version 0.1.96 of the yfinance package.
+
+    Parameters
+    ----------
+    symbol : str
+        Symbol to get data for
+
+    Returns
+    -------
+    dict
+        Dictionary of json data
+    """
+
+    data_stores = yf.data.TickerData(symbol).get_json_data_stores()
+
+    if "QuoteSummaryStore" not in data_stores:
+        # Problem in data. Either delisted, or Yahoo spam triggered
+        return {}
+
+    data = data_stores["QuoteSummaryStore"]
+    # add data about Shares Outstanding for companies' tickers if they are available
+    try:
+        data["annualBasicAverageShares"] = data_stores["QuoteTimeSeriesStore"][
+            "timeSeries"
+        ]["annualBasicAverageShares"]
+    except Exception:
+        pass
+
+    return data
+
+
 @log_start_end(log=logger)
 def get_stocks_data(
     country: str = "United States",
@@ -193,10 +227,7 @@ def get_stocks_data(
     """
     stocks = filter_stocks(country, sector, industry, marketcap, exclude_exchanges)
 
-    stocks_data = {
-        symbol: yf.utils.get_json(f"https://finance.yahoo.com/quote/{symbol}")
-        for symbol in tqdm(stocks)
-    }
+    stocks_data = {symbol: get_json(symbol=symbol) for symbol in tqdm(stocks)}
 
     return stocks_data
 
