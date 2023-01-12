@@ -25,14 +25,14 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_economic_calendar(
-    country: str, start_date: str, end_date: str, limit: int = 10, export: str = ""
+    countries: List[str], start_date: str, end_date: str, limit: int = 10, export: str = ""
 ) -> None:
     """Display economic calendar for specified country between start and end dates
 
     Parameters
     ----------
-    country : str
-        Country to display calendar for
+    countries : List[str]
+        List of countries to include in calendar.  Empty returns all
     start_date : str
         Start date for calendar
     end_date : str
@@ -42,7 +42,7 @@ def display_economic_calendar(
     export : str
         Export data to csv or excel file
     """
-    df = nasdaq_model.get_economic_calendar(country, start_date, end_date)
+    df = nasdaq_model.get_economic_calendar(countries, start_date, end_date)
     if df.empty:
         return
     print_rich_table(

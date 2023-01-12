@@ -43,11 +43,11 @@ def get_economic_calendar(
     --------
     Get todays economic calendar for the United States
     >>> from openbb_terminal.sdk import openbb
-    >>> calendar = openbb.economy.events("United States")
+    >>> calendar = openbb.economy.events("united_states")
 
     To get multiple countries for a given date, pass the same start and end date as well as
     a list of countries
-    >>> calendars = openbb.economy.events(["United States","Canada"], start_date="2022-11-18", end_date="2022-11-18")
+    >>> calendars = openbb.economy.events(["united_states", "canada"], start_date="2022-11-18", end_date="2022-11-18")
     """
 
     if start_date is None:
@@ -60,6 +60,9 @@ def get_economic_calendar(
         countries = []
     if isinstance(countries, str):
         countries = [countries]
+
+    countries = [country.replace("_", " ").title() for country in countries]
+
     if start_date == end_date:
         dates = [start_date]
     else:
@@ -88,7 +91,14 @@ def get_economic_calendar(
         return pd.DataFrame()
 
     calendar = calendar.rename(
-        columns={"gmt": "Time (GMT)", "country": "Country", "eventName": "Event"}
+        columns={
+            "gmt": "Time (GMT)",
+            "country": "Country",
+            "eventName": "Event",
+            "actual": "Actual",
+            "consensus": "Consensus",
+            "previous": "Previous",
+        }
     )
 
     calendar = calendar.drop(columns=["description"])
@@ -97,7 +107,7 @@ def get_economic_calendar(
 
     calendar = calendar[calendar["Country"].isin(countries)].reset_index(drop=True)
     if calendar.empty:
-        console.print(f"[red]No data found for {','.join(countries)}[/red]")
+        console.print(f"[red]No data found for {', '.join(countries)}[/red]")
         return pd.DataFrame()
     return calendar
 
@@ -133,6 +143,22 @@ def get_country_codes() -> List[str]:
     file = os.path.join(os.path.dirname(__file__), "NASDAQ_CountryCodes.csv")
     codes = pd.read_csv(file, index_col=0)
     return codes
+
+
+@log_start_end(log=logger)
+def get_country_names() -> List[str]:
+    """Get available country names in Nasdaq API
+
+    Returns
+    -------
+    List[str]
+        List of country names.
+    """
+    file = os.path.join(os.path.dirname(__file__), "NASDAQ_CountryCodes.csv")
+    df = pd.read_csv(file, index_col=0)
+    countries = df["Country"]
+    countries_list = [x.lower().replace(" ", "_") for x in countries]
+    return countries_list
 
 
 @log_start_end(log=logger)

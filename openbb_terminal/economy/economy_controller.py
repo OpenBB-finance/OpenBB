@@ -30,7 +30,6 @@ from openbb_terminal.economy import (
     fred_model,
     yfinance_model,
     yfinance_view,
-    investingcom_model,
     plot_view,
     commodity_view,
 )
@@ -196,6 +195,10 @@ class EconomyController(BaseController):
                 c: {} for c in nasdaq_model.get_country_codes()["Code"].values
             }
             choices["bigmac"]["-c"] = "--countries"
+            choices["events"]["--countries"] = {
+                c: {} for c in nasdaq_model.get_country_names()
+            }
+            choices["events"]["-c"] = "--countries"
 
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -1053,15 +1056,20 @@ class EconomyController(BaseController):
         )
         parser.add_argument(
             "-c",
-            "--country",
+            "--countries",
             action="store",
-            dest="country",
-            choices=[
-                x.replace(" ", "_") for x in investingcom_model.CALENDAR_COUNTRIES
-            ],
+            dest="countries",
             type=str,
             default="",
             help="Display calendar for specific country.",
+        )
+        parser.add_argument(
+            "-n",
+            "--names",
+            help="Flag to show all available country names",
+            dest="names",
+            action="store_true",
+            default=False,
         )
         parser.add_argument(
             "-s",
@@ -1087,22 +1095,6 @@ class EconomyController(BaseController):
             help="Get a specific date for events. Overrides start and end dates.",
             default=None,
         )
-        parser.add_argument(
-            "-i",
-            "--importance",
-            action="store",
-            dest="importance",
-            choices=investingcom_model.IMPORTANCES,
-            help="Event importance classified as high, medium, low or all.",
-        )
-        parser.add_argument(
-            "--categories",
-            action="store",
-            dest="category",
-            choices=investingcom_model.CATEGORIES,
-            default=None,
-            help="[INVESTING source only] Event category.",
-        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
@@ -1112,6 +1104,11 @@ class EconomyController(BaseController):
         )
 
         if ns_parser:
+
+            if ns_parser.names:
+                for name in nasdaq_model.get_country_names():
+                    console.print(name)
+                return
 
             if ns_parser.start_date:
                 start_date = ns_parser.start_date.strftime("%Y-%m-%d")
@@ -1125,20 +1122,17 @@ class EconomyController(BaseController):
 
             # TODO: Add `Investing` to sources again when `investpy` is fixed
 
-            countries = (
-                ns_parser.country.replace("_", " ").title().split(",")
-                if ns_parser.country
-                else []
-            )
-
             if ns_parser.spec_date:
                 start_date = ns_parser.spec_date.strftime("%Y-%m-%d")
                 end_date = ns_parser.spec_date.strftime("%Y-%m-%d")
 
             else:
                 start_date, end_date = sorted([start_date, end_date])
+
+            countries = list_from_str(ns_parser.countries)
+
             nasdaq_view.display_economic_calendar(
-                country=countries,
+                countries=countries,
                 start_date=start_date,
                 end_date=end_date,
                 limit=ns_parser.limit,
