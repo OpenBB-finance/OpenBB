@@ -190,7 +190,8 @@ class LoginController:
             return Action.DISPLAY_MENU
 
 
-if __name__ == "__main__":
+def main():
+    """Main function"""
     login_controller = LoginController()
 
     action = Action.DISPLAY_MENU
@@ -206,3 +207,7 @@ if __name__ == "__main__":
         terminal_controller.parse_args_and_run()
     else:
         print_goodbye()
+
+
+if __name__ == "__main__":
+    main()
