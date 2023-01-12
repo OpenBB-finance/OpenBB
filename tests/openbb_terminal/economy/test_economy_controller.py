@@ -576,7 +576,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_events",
             [
                 "--export=csv",
-                "--country=united_states",
+                "--countries=united_states",
                 "--start=2022-10-20",
                 "--end=2022-10-21",
                 "--limit=10",
@@ -584,7 +584,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "nasdaq_view.display_economic_calendar",
             [],
             dict(
-                country=["United States"],
+                countries=["united_states"],
                 start_date="2022-10-20",
                 end_date="2022-10-21",
                 export="csv",
@@ -595,18 +595,18 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_events",
             [
                 "--export=csv",
-                "--country=united_states",
+                "--countries=united_states,canada",
                 "--date=2023-10-20",
                 "--limit=10",
             ],
             "nasdaq_view.display_economic_calendar",
             [],
             dict(
-                country=["United States"],
+                countries=["united_states", "canada"],
                 start_date="2023-10-20",
                 end_date="2023-10-20",
-                export="csv",
                 limit=10,
+                export="csv",
             ),
         ),
         (
