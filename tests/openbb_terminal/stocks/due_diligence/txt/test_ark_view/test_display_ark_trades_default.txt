@@ -1,6 +1,6 @@
 
 1 Failed download:
-- TSLA: No data found for this date range, symbol may be delisted
+- TSLA: No timezone found, symbol may be delisted
             shares  weight  fund direction  Close ($)  Total ($1M)
 Date                                                              
 2021-11-04   26203  0.1466  ARKK      Sell        NaN          NaN
