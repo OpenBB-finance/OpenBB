@@ -25,6 +25,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip(reason="yfinance is not working after website changes")
 @pytest.mark.vcr
 def test_quote():
     stocks_view.display_quote("GME")
