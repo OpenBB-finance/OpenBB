@@ -601,10 +601,16 @@ def get_filings(
 
     Returns
     -------
-    pd.DataFrame
+    df: pd.DataFrame
         Dataframe of results
+    
+    Examples
+    --------
+    df = openbb.stocks.filings()
+    
+    df = openbb.stocks.filings(pages=30)
     """
-    df: pd.DataFrame = ()
+    
     temp = []
     try:
         for i in range(pages):
@@ -617,7 +623,7 @@ def get_filings(
                 )
             )
         df = pd.concat(temp)
-        df.rename(
+        df = df.rename(
             columns={
                 "title": "Title",
                 "date": "Date",
@@ -626,11 +632,10 @@ def get_filings(
                 "form_type": "Form Type",
                 "ticker": "Ticker",
             },
-            inplace=True,
         )
         df_columns = ["Date", "Ticker", "CIK", "Form Type", "Title", "URL"]
         df = pd.DataFrame(df, columns=df_columns).set_index(keys=["Date"]).copy()
-        df.sort_index(ascending=False, inplace=True)
+        df = df.sort_index(ascending=False)
 
         # Invalid API Keys
     except ValueError as e:
