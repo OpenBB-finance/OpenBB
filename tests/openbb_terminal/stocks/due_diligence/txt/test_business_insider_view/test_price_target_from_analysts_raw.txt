@@ -1,4 +1,4 @@
-Loading Daily data for TSLA with starting period 2020-01-07.
+Loading Daily data for TSLA with starting period 2020-01-09.
                                    Company Rating  Price Target
 Date                                                           
 2023-01-05                          Mizuho    BUY    250.000000
