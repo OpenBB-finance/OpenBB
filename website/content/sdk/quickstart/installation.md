@@ -13,6 +13,10 @@ We provide a simple installation method in order to utilize the OpenBB SDK. You 
 Make sure you meet all [requirements](requirements.md) before proceeding.
 :::
 
+<p>Follow along with the instructions of the video or use the steps below to use the OpenBB SDK:</p>
+
+<iframe width="100%" height="450" src="https://www.youtube.com/embed/gQu6Paz5xN4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ### 1. **Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)**
 
    Download the `x86_64` Miniconda for your respective system and follow along

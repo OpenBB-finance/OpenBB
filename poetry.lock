@@ -1224,17 +1224,14 @@ test = ["pytest (>=7)", "pytest-mock (>=3)", "mock (>=4)", "pytest-cov", "covera
 
 [[package]]
 name = "grpcio"
-version = "1.50.0"
+version = "1.51.1"
 description = "HTTP/2-based RPC framework"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 
-[package.dependencies]
-six = ">=1.5.2"
-
 [package.extras]
-protobuf = ["grpcio-tools (>=1.50.0)"]
+protobuf = ["grpcio-tools (>=1.51.1)"]
 
 [[package]]
 name = "h11"
@@ -4859,7 +4856,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "c4ade3cab1d821896555196528bfbcce21ca7087ab4f1b8b554dd21bd8b63b5c"
+content-hash = "93af5b94272cecbbb58b50a5d271585b2217292a40007bbec5eaef5186802827"
 
 [metadata.files]
 absl-py = []
