@@ -80,7 +80,7 @@ linearmodels = "^4.25"
 ipywidgets = "^8.0.2"
 Jinja2 = "^3.0.3"
 Riskfolio-Lib = {version = "^3.1.1", optional = true}
-ccxt = "^1.91.60"
+ccxt = "^2.5.67"
 html5lib = "^1.1"
 feedparser = "^6.0.10"
 pyinstaller = {version = "^4.10", optional = true}
