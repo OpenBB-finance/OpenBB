@@ -80,12 +80,22 @@ def test_load(interval, recorder, source):
     recorder.capture(result_df)
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(record_mode="once")
 @pytest.mark.parametrize(
-    "weekly, monthly",
-    [(True, True), (True, False), (False, True)],
+    "source, weekly, monthly",
+    [
+        ("AlphaVantage", True, True),
+        ("AlphaVantage", True, False),
+        ("AlphaVantage", False, True),
+        ("YahooFinance", True, True),
+        ("YahooFinance", True, False),
+        ("YahooFinance", False, True),
+        ("Polygon", True, True),
+        ("Polygon", True, False),
+        ("Polygon", False, True),
+    ],
 )
-def test_load_week_or_month(recorder, weekly, monthly):
+def test_load_week_or_month(recorder, source, weekly, monthly):
     ticker = "AAPL"
     start = datetime.strptime("2019-12-01", "%Y-%m-%d")
     end = datetime.strptime("2021-12-02", "%Y-%m-%d")
@@ -96,7 +106,7 @@ def test_load_week_or_month(recorder, weekly, monthly):
         interval=1440,
         end_date=end,
         prepost=prepost,
-        source="YahooFinance",
+        source=source,
         weekly=weekly,
         monthly=monthly,
     )
