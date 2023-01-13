@@ -8,7 +8,7 @@ env:
   PIP_DEFAULT_TIMEOUT: 100
 
 on:
-  push:
+  pull request:
     branches:
       - 'feature/*'
       - 'hotfix/*'
