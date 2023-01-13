@@ -554,8 +554,6 @@ def display_filings(pages: int = 1, limit: int = 5, today: bool = False) -> None
             console.print(
                 "[red]No filings today, displaying the most recent submissions instead[/red]"
             )
-    else:
-        pass
 
     if not filings.empty:
         filings.reset_index(["Date"], inplace=True)
