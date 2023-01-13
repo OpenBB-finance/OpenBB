@@ -301,4 +301,4 @@ Other available yearly timeframes are: 2017, 2018, 2019, 2020, 2021
 └──────────────────────────────────────────────┴──────────┴──────────┴──────────┴──────────┴──────────┴─────────┴──────────┴───────────┴──────────┴──────────┘
 ````
 
-To run a demonstration of the commands presented here, in the OpenBB Terminal, run this command from the home menu: `exe routines/comparison_demo.openbb`
+To run the commands presented here, in the OpenBB Terminal, run this command from the home menu: `exe routines/comparison_demo.openbb`
