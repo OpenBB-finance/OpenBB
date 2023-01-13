@@ -48,7 +48,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '10'
+      - '16'
       x-request-id:
       - 9159e5e8-7882-43c1-bf54-0add3fb52788
       x-yahoo-request-id:
