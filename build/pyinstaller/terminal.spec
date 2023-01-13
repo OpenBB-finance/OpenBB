@@ -2,6 +2,7 @@
 import os
 import pathlib
 import subprocess
+import shutil
 
 from dotenv import set_key
 
@@ -9,9 +10,6 @@ from PyInstaller.compat import is_darwin, is_win
 from PyInstaller.building.api import PYZ, EXE, COLLECT
 from PyInstaller.building.splash import Splash
 from PyInstaller.building.build_main import Analysis
-
-
-# import subprocess
 
 from openbb_terminal.loggers import get_commit_hash
 
@@ -23,6 +21,9 @@ build_type = (
 
 # Local python environment packages folder
 pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
+
+# Getting the "voila.exe" path
+voila_path = shutil.which("voila")
 
 # Removing unused ARM64 binary
 binary_to_remove = pathlib.Path(
@@ -73,6 +74,7 @@ added_files = [
     (".env", "."),
     (os.path.join(pathex, "blib2to3", "Grammar.txt"), "blib2to3"),
     (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
+    (voila_path, "."),
 ]
 
 # Python libraries that are explicitly pulled into the bundle
