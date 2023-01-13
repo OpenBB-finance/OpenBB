@@ -1,12 +1,11 @@
 name: Branch Name Check
-# Description: Checks that the source branch name is valid for the target branch. This is used to ensure that PRs are only allowed to merge into the develop branch if they are from a feature, hotfix or release branch. Similarly, PRs are only allowed to merge into the main branch if they are from a hotfix or release branch.
 
 on:
   pull_request:
     branches:
       - develop
       - main
-    types: [opened, synchronize]
+    types: [opened, edited]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -25,7 +24,7 @@ jobs:
       run: |
         source_branch=$(jq -r .pull_request.head.ref "$GITHUB_EVENT_PATH")
         target_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
-    
+
         echo "Source-branch=$source_branch" >> $GITHUB_OUTPUT
         echo "target-branch=$target_branch" >> $GITHUB_OUTPUT
     
