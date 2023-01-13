@@ -603,14 +603,14 @@ def get_filings(
     -------
     df: pd.DataFrame
         Dataframe of results
-    
+
     Examples
     --------
     df = openbb.stocks.filings()
-    
+
     df = openbb.stocks.filings(pages=30)
     """
-    
+
     temp = []
     try:
         for i in range(pages):
@@ -634,7 +634,12 @@ def get_filings(
             },
         )
         df_columns = ["Date", "Ticker", "CIK", "Form Type", "Title", "URL"]
-        df = pd.DataFrame(df, columns=df_columns).set_index(keys=["Date"]).copy().sort_index(ascending=False)
+        df = (
+            pd.DataFrame(df, columns=df_columns)
+            .set_index(keys=["Date"])
+            .copy()
+            .sort_index(ascending=False)
+        )
 
         # Invalid API Keys
     except ValueError as e:
