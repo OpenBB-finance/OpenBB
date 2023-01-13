@@ -12,20 +12,21 @@ on:
     branches:
       - develop
       - main
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, synchronize, edited, closed]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # Check for changes to Python code
-  python-changes:
-    name: Check for changes to Python code
+  check-files-changed:
+    name: Check for changes to python files and the openbb_terminal folder
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged != true
     outputs:
       python-changes: ${{ steps.python-changes.outputs.python-changes }}
+      folder-changes: ${{ steps.folder-changes.outputs.folder-changes }}
+      check-changes: ${{ steps.check-changes.outputs.check-changes }}
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -35,8 +36,8 @@ jobs:
           # to be able to push to GitHub.
           persist-credentials: false
 
-      # Check for changes to Python code to avoid running tests unnecessarily
-      - name: Check for changes to Python code
+      # Check for changes to Python files to avoid running tests unnecessarily
+      - name: python file check
         id: python-changes
         run: |
           # Extract the source and target branches for the PR
@@ -50,15 +51,40 @@ jobs:
             echo "python-changes=false" >> $GITHUB_OUTPUT
           fi
 
+      # Check for changes to the openbb_terminal folder to avoid running tests unnecessarily
+      - name: Check for changes to the openbb_terminal folder
+        id: folder-changes
+        run: |
+          source_branch=$(jq -r .pull_request.head.ref "$GITHUB_EVENT_PATH")
+          target_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
+
+          if git diff --name-only origin/$target_branch HEAD | grep -E "openbb_terminal\/.*"; then
+            echo "folder-changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "folder-changes=false" >> $GITHUB_OUTPUT
+          fi
+      
+      # combine the two checks into one
+      - name: Check for changes to python files or the openbb_terminal folder
+        id: check-changes
+        run: |
+          if [ ${{ steps.python-changes.outputs.python-changes }} == 'true' ] || [ ${{ steps.folder-changes.outputs.folder-changes }} == 'true' ]; then
+            echo "check-changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "check-changes=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Show Output result for python-changes
         run: |
           echo "python-changes=${{ steps.python-changes.outputs.python-changes }}"
+          echo "folder-changes=${{ steps.folder-changes.outputs.folder-changes }}"
+          echo "check-changes=${{ steps.check-changes.outputs.check-changes }}"
 
   base-test:
     name: Base Tests - Ubuntu-latest - Python 3.9
-    needs: [python-changes]
+    needs: [check-files-changed]
     runs-on: ubuntu-latest
-    if: needs.python-changes.outputs.python-changes == 'true'
+    if: needs.check-files-changed.outputs.check-changes == 'true' && github.event.pull_request.base.ref == 'develop'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -122,9 +148,8 @@ jobs:
 
   tests-python:
     name: Vanilla Python Tests - ${{ matrix.python-version }}
-    needs: [python-changes, base-test]
+    needs: [check-files-changed, base-test]
     runs-on: ${{ matrix.os }}
-    if: needs.python-changes.outputs.python-changes == 'true' && github.event.pull_request.base.ref == 'develop' && github.event.pull_request.merged != true
     strategy:
       fail-fast: true
       matrix:
@@ -230,7 +255,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization
+          pytest tests/ --optimization --autodoc
 
       - name: Start Terminal and exit
         run: |
