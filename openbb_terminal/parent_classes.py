@@ -1,7 +1,7 @@
 """Parent Classes."""
 __docformat__ = "numpy"
 
-# pylint: disable=C0301,C0302,R0902,global-statement
+# pylint: disable=C0301,C0302,R0902,global-statement,too-many-boolean-expressions
 
 import argparse
 import difflib
@@ -1039,7 +1039,20 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             type=str,
             default="ytd",
         )
-
+        parser.add_argument(
+            "--exchange",
+            dest="exchange",
+            action="store_true",
+            default=False,
+            help="Show exchange information.",
+        )
+        parser.add_argument(
+            "--performance",
+            dest="performance",
+            action="store_true",
+            default=False,
+            help="Show performance information.",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
@@ -1088,17 +1101,20 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     return
             if not df_stock_candidate.empty:
                 self.stock = df_stock_candidate
-                self.add_info = stocks_helper.additional_info_about_ticker(
-                    ns_parser.ticker
-                )
-                console.print(self.add_info)
+                if ns_parser.exchange:
+                    self.add_info = stocks_helper.additional_info_about_ticker(
+                        ns_parser.ticker
+                    )
+                    console.print(self.add_info)
                 if (
                     ns_parser.interval == 1440
                     and not ns_parser.weekly
                     and not ns_parser.monthly
                     and ns_parser.filepath is None
                     and self.PATH == "/stocks/"
+                    and ns_parser.performance
                 ):
+                    console.print()
                     stocks_helper.show_quick_performance(self.stock, ns_parser.ticker)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
