@@ -1529,6 +1529,16 @@ Network model.
    these get linked. Note: If you installed pre-commit hooks and one of the formatters re-formats your code, you'll need
    to go back to step 3 to add these.
 
+### Branch Naming Conventions
+
+The accepted branch naming conventions are:
+
+- `feature/feature-name`
+- `hotfix/hotfix-name`
+- `release/2.1.0` or `release/2.1.0rc0`.
+
+All `feature/feature-name` related branches can only have PRs pointing to `develop` branch. `hotfix/hotfix-name` and `release/2.1.0` or `release/2.1.0rc0` branches can only have PRs pointing to `main` branch.
+
 ## Add a Test
 
 Unit tests minimize errors in code and quickly find errors when they do arise. Integration tests are standard usage examples, which are also used to identify errors.

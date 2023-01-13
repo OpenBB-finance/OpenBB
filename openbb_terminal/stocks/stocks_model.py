@@ -18,17 +18,32 @@ logger = logging.getLogger(__name__)
 
 
 def load_stock_av(
-    symbol: str, start_date: datetime, end_date: datetime
+    symbol: str,
+    interval: str,
+    start_date: datetime,
+    end_date: datetime,
+    interval_min: str = "1min",
 ) -> pd.DataFrame:
     try:
         ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
-        df_stock_candidate: pd.DataFrame = ts.get_daily_adjusted(
-            symbol=symbol, outputsize="full"
-        )[0]
+        if interval == "Minute":
+            df_stock_candidate: pd.DataFrame = ts.get_intraday(
+                symbol=symbol, interval=interval_min
+            )[0]
+        elif interval == "Daily":
+            df_stock_candidate = ts.get_daily_adjusted(
+                symbol=symbol, outputsize="full"
+            )[0]
+        elif interval == "Weekly":
+            df_stock_candidate = ts.get_weekly_adjusted(symbol=symbol)[0]
+        elif interval == "Monthly":
+            df_stock_candidate = ts.get_monthly_adjusted(symbol=symbol)[0]
+        else:
+            console.print("Invalid interval specified")
+            return pd.DataFrame()
     except Exception as e:
         console.print(e)
         return pd.DataFrame()
-
     df_stock_candidate.columns = [
         val.split(". ")[1].capitalize() for val in df_stock_candidate.columns
     ]
