@@ -242,11 +242,11 @@ class DashboardsController(BaseController):
     def __get_voila_cmd() -> str:
         """
         This function returns the command to run Voila.
-        If the application is frozen using a tool like pyinstaller, 
+        If the application is frozen using a tool like pyinstaller,
         the command will return the path to the Voila executable in the frozen app's directory.
         This assumes that the "voila.exe" file (that can be found using "which voila" on a command line)
         was properly bundled into the dist folder.
-        Otherwise, the command will simply return "voila", which assumes the Voila package is installed and 
+        Otherwise, the command will simply return "voila", which assumes the Voila package is installed and
         available in the system's PATH or in the conda environment.
         Returns:
             str: The command to run Voila.
