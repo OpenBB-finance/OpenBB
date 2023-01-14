@@ -71,6 +71,7 @@ from openbb_terminal.forecast import (
     helpers,
     trans_view,
     nhits_view,
+    qanom_view
 )
 
 from openbb_terminal.common import common_model
@@ -133,6 +134,7 @@ class ForecastController(BaseController):
         "season",
         "which",
         "nhits",
+        "qanom"
     ]
     pandas_plot_choices = [
         "line",
@@ -303,6 +305,9 @@ class ForecastController(BaseController):
         mt.add_cmd("tcn", self.files)
         mt.add_cmd("trans", self.files)
         mt.add_cmd("tft", self.files)
+        mt.add_raw("\n")
+        mt.add_info("_anomaly_")
+        mt.add_cmd("qanom", self.files)
 
         console.print(text=mt.menu_text, menu="Forecast")
 
@@ -3125,5 +3130,64 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
+
+
+    @log_start_end(log=logger)
+    def call_qanom(self, other_args: List[str]):
+        """Process QANOM command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="qanom",
+            description="""
+                Perform a Quantile Anomaly detection on a given dataset:
+                https://unit8co.github.io/darts/generated_api/darts.ad.detectors.quantile_detector.html
+            """,
+        )
+
+        # parser.add_argument(
+        #     "--low_quantile",
+        #     dest="low_quantile",
+        #     type=check_positive,
+        #     default=512,
+        #     help="The number of neurons in each layer",
+        # )
+
+
+        # if user does not put in --dataset
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--dataset")
+
+        parser = self.add_standard_args(
+            parser,
+            train_split=True,
+            target_column=True,
+            target_dataset=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            export_pred_raw=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            qanom_view.display_qanomaly_detection(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                target_column=ns_parser.target_column,
+                train_split=ns_parser.train_split,
+                export=ns_parser.export,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
                 export_pred_raw=ns_parser.export_pred_raw,
             )

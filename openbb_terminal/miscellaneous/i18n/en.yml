@@ -1063,4 +1063,6 @@ en:
   forecast/trans: Transformer Network (feat. Past covariates)
   forecast/tft: Temporal Fusion Transformer Network(feat. Past covariates)
   forecast/nhits: Neural Hierarchical Interpolation (feat. Past covariates)
+  forecast/_anomaly_: Anomaly Detection
+  forecast/qanom: Quantile Anomaly Detector
   forecast/_comingsoon_: Coming Soon
