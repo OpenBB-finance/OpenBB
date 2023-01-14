@@ -185,10 +185,13 @@ class StocksController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
             limit=5,
         )
         if ns_parser:
-            fmp_view.display_filings(ns_parser.pages, ns_parser.limit, ns_parser.today)
+            fmp_view.display_filings(
+                ns_parser.pages, ns_parser.limit, ns_parser.today, ns_parser.export
+            )
 
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):

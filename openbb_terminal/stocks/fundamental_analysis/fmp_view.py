@@ -530,7 +530,12 @@ def display_financial_statement_growth(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def display_filings(pages: int = 1, limit: int = 5, today: bool = False) -> None:
+def display_filings(
+    pages: int = 1,
+    limit: int = 5,
+    today: bool = False,
+    export: str = "",
+) -> None:
     """Display recent forms submitted to the SEC
 
     Parameters
@@ -542,6 +547,15 @@ def display_filings(pages: int = 1, limit: int = 5, today: bool = False) -> None
         Limit the number of entries to display (default: 5)
     today: bool = False
         Show all from today
+    export: str = ""
+        Export data as csv, json, or xlsx
+
+    Examples
+    --------
+
+    openbb.stocks.display_filings()
+
+    openbb.stocks.display_filings(today = True, export = "csv")
     """
     filings = fmp_model.get_filings(pages)
     if today is True:
@@ -575,6 +589,9 @@ def display_filings(pages: int = 1, limit: int = 5, today: bool = False) -> None
                 "\n",
                 f"{row['URL']}\n",
                 sep="",
+            )
+            export_data(
+                export, os.path.dirname(os.path.abspath(__file__)), "filings", filings
             )
     else:
         logger.error("Could not get data")
