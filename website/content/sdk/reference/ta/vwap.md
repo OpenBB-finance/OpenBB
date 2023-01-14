@@ -16,7 +16,7 @@ Gets volume weighted average price (VWAP)
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_model.py#L139)]
 
 ```python
-openbb.ta.vwap(data: pd.Series, offset: int = 0)
+openbb.ta.vwap(data: pd.DataFrame, offset: int = 0)
 ```
 
 ---
