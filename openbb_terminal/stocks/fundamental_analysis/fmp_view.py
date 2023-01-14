@@ -197,20 +197,13 @@ def display_income_statement(
             income_plot_data = income_plot_data.transpose()
             income_plot_data.columns = income_plot_data.columns.str.lower()
 
-            if not ratios:
-                (df_rounded, denomination) = transform_by_denomination(income_plot_data)
-                if denomination == "Units":
-                    denomination = ""
-            else:
-                df_rounded = income_plot_data
-                denomination = ""
             if rows_plot == 1:
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                df_rounded[plot[0].replace("_", "")].plot()
+                income_plot_data[plot[0].replace("_", "")].plot()
                 title = (
                     f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -218,8 +211,8 @@ def display_income_statement(
             else:
                 fig, axes = plt.subplots(rows_plot)
                 for i in range(rows_plot):
-                    axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+                    axes[i].plot(income_plot_data[plot[i].replace("_", "")])
+                    axes[i].set_title(f"{plot[i].replace('_', ' ')}")
                 theme.style_primary_axis(axes[0])
                 fig.autofmt_xdate()
         else:
@@ -283,23 +276,13 @@ def display_balance_sheet(
             balance_plot_data = balance_plot_data.transpose()
             balance_plot_data.columns = balance_plot_data.columns.str.lower()
 
-            if not ratios:
-                (df_rounded, denomination) = transform_by_denomination(
-                    balance_plot_data
-                )
-                if denomination == "Units":
-                    denomination = ""
-            else:
-                df_rounded = balance_plot_data
-                denomination = ""
-
             if rows_plot == 1:
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                df_rounded[plot[0].replace("_", "")].plot()
+                balance_plot_data[plot[0].replace("_", "")].plot()
                 title = (
                     f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -307,8 +290,8 @@ def display_balance_sheet(
             else:
                 fig, axes = plt.subplots(rows_plot)
                 for i in range(rows_plot):
-                    axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+                    axes[i].plot(balance_plot_data[plot[i].replace("_", "")])
+                    axes[i].set_title(f"{plot[i].replace('_', ' ')}")
                 theme.style_primary_axis(axes[0])
                 fig.autofmt_xdate()
         else:
@@ -370,21 +353,13 @@ def display_cash_flow(
             cash_plot_data = cash_plot_data.transpose()
             cash_plot_data.columns = cash_plot_data.columns.str.lower()
 
-            if not ratios:
-                (df_rounded, denomination) = transform_by_denomination(cash_plot_data)
-                if denomination == "Units":
-                    denomination = ""
-            else:
-                df_rounded = cash_plot_data
-                denomination = ""
-
             if rows_plot == 1:
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                df_rounded[plot[0].replace("_", "")].plot()
+                cash_plot_data[plot[0].replace("_", "")].plot()
                 title = (
                     f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -392,8 +367,8 @@ def display_cash_flow(
             else:
                 fig, axes = plt.subplots(rows_plot)
                 for i in range(rows_plot):
-                    axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+                    axes[i].plot(cash_plot_data[plot[i].replace("_", "")])
+                    axes[i].set_title(f"{plot[i].replace('_', ' ')}")
                 theme.style_primary_axis(axes[0])
                 fig.autofmt_xdate()
         else:
