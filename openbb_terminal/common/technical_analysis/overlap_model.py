@@ -136,7 +136,7 @@ def zlma(data: pd.Series, length: int = 50, offset: int = 0) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def vwap(data: pd.Series, offset: int = 0) -> pd.DataFrame:
+def vwap(data: pd.DataFrame, offset: int = 0) -> pd.DataFrame:
     """Gets volume weighted average price (VWAP)
 
     Parameters
