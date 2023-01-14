@@ -727,6 +727,13 @@ def get_summary(
         portfolio_engine.benchmark_returns, window
     )
 
+    r2_portfolio_returns = portfolio_returns.copy()
+    r2_benchmark_returns = benchmark_returns.copy()
+    if len(portfolio_returns) > len(benchmark_returns):
+        r2_portfolio_returns = r2_portfolio_returns[r2_portfolio_returns.index.isin(r2_benchmark_returns.index)]
+    elif len(portfolio_returns) < len(benchmark_returns):
+        r2_benchmark_returns = r2_benchmark_returns[r2_benchmark_returns.index.isin(r2_portfolio_returns.index)]
+
     metrics = {
         "Volatility": [portfolio_returns.std(), benchmark_returns.std()],
         "Skew": [
@@ -750,8 +757,8 @@ def get_summary(
             metrics_model.sortino_ratio(benchmark_returns, risk_free_rate),
         ],
         "R2 Score": [
-            r2_score(portfolio_returns, benchmark_returns),
-            r2_score(portfolio_returns, benchmark_returns),
+            r2_score(r2_portfolio_returns, r2_benchmark_returns),
+            r2_score(r2_portfolio_returns, r2_benchmark_returns),
         ],
     }
 
