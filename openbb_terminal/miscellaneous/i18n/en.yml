@@ -862,6 +862,7 @@ en:
   alternative/hn: Hacker News most popular stories
   alternative/covid: COVID menu,                 cases, deaths, rates
   alternative/oss: Open Source menu,           star history, repos information
+  alternative/realestate: Real Estate menu,           sold prices, HPIs
   alternative/covid/slopes: get countries with highest slope in cases
   alternative/covid/country: select country for data
   alternative/covid/_country: Country
@@ -873,6 +874,9 @@ en:
   alternative/oss/rs: repo summary
   alternative/oss/sh: repo star history
   alternative/oss/tr: top starred repos
+  alternative/realestate/sales: list UK house sales via postcode
+  alternative/realestate/townsales: list UK house sales via town
+  alternative/realestate/regionstats: retrieve UK sold house price stats by region
   econometrics/_data_loc: Looking for data in
   econometrics/load: load a dataset (also works with StatsModels datasets)
   econometrics/export: export a processed dataset
