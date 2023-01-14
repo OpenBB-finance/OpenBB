@@ -590,9 +590,12 @@ def display_filings(
                 f"{row['URL']}\n",
                 sep="",
             )
-            export_data(
-                export, os.path.dirname(os.path.abspath(__file__)), "filings", filings
-            )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "filings",
+            filings,
+        )
     else:
         logger.error("Could not get data")
         console.print("[red]Could not get data[/red]\n")
