@@ -8,10 +8,7 @@ from datetime import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from darts.ad import KMeansScorer
-from darts.ad import QuantileDetector
-
-#from openbb_terminal.forecast import qanomaly_model
+from openbb_terminal.forecast import qanom_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
 
@@ -76,40 +73,16 @@ def display_qanomaly_detection(
     )
     if not helpers.check_data(data, target_column):
         return
-    
-    # split dataset into train and val
-    train, val = data[:int(len(data) * train_split)], data[int(len(data) * train_split):]
-
-    
-    scorer = KMeansScorer(k=2, window=5)
-    scorer.fit(train)
-    anom_score = scorer.score(val)
-
-    detector = QuantileDetector(high_quantile=0.99)
-    detector.fit(scorer.score(train))
-    binary_anom = detector.detect(anom_score)    
-
-    data.plot()
-    (anom_score / 2. - 100).plot(label="computed anomaly score", c="orangered", lw=3)
-    (binary_anom * 45 - 150).plot(label="detected binary anomaly", lw=4)
-
 
     # (
     #     ticker_series,
-    #     historical_fcast,
-    #     predicted_values,
-    #     precision,
-    #     _model,
-    # ) = linregr_model.get_linear_regression_data(
-    #     data=data,
-    #     n_predict=n_predict,
-    #     target_column=target_column,
-    #     past_covariates=past_covariates,
-    #     train_split=train_split,
-    #     forecast_horizon=forecast_horizon,
-    #     output_chunk_length=output_chunk_length,
-    #     lags=lags,
-    # )
+    # ) = 
+    qanom_model.get_qanomaly_detection_data(
+        data=data,
+        target_column=target_column,
+        train_split=train_split,
+        forecast_horizon=forecast_horizon,
+    )
 
     # probabilistic = True
     # helpers.plot_forecast(
