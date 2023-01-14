@@ -184,6 +184,7 @@ def get_fails_to_deliver(
                 )
             except HTTPError:
                 continue
+
             tmp_ftds = all_ftds[all_ftds["SYMBOL"] == symbol]
             del tmp_ftds["PRICE"]
             del tmp_ftds["SYMBOL"]
