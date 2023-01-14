@@ -91,3 +91,4 @@ class AlternativeDataController(BaseController):
         )
 
         self.queue = self.load_class(RealEstateController, self.queue)
+        

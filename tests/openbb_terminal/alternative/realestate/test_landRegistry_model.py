@@ -29,3 +29,4 @@ def test_get_region_stats():
     assert (
         len(landRegistry_model.get_region_stats("KENT", "2019-01-01", "2022-01-01")) > 0
     )
+    
