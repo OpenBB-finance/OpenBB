@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 from datetime import datetime, timedelta
 from typing import Optional
+from urllib.error import HTTPError
 
 import pandas as pd
 import requests
@@ -170,16 +171,19 @@ def get_fails_to_deliver(
         ftd_urls = catching_diff_url_formats(ftd_urls)
 
         for ftd_link in ftd_urls:
-            all_ftds = pd.read_csv(
-                ftd_link,
-                compression="zip",
-                sep="|",
-                engine="python",
-                skipfooter=2,
-                usecols=[0, 2, 3, 5],
-                dtype={"QUANTITY (FAILS)": "Int64"},
-                encoding="iso8859",
-            )
+            try:
+                all_ftds = pd.read_csv(
+                    ftd_link,
+                    compression="zip",
+                    sep="|",
+                    engine="python",
+                    skipfooter=2,
+                    usecols=[0, 2, 3, 5],
+                    dtype={"QUANTITY (FAILS)": "Int64"},
+                    encoding="iso8859",
+                )
+            except HTTPError:
+                continue
             tmp_ftds = all_ftds[all_ftds["SYMBOL"] == symbol]
             del tmp_ftds["PRICE"]
             del tmp_ftds["SYMBOL"]
