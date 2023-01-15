@@ -27,7 +27,7 @@ def log_start_end(func=None, log=None):
     -------
         Wrapped function
     """
-    assert callable(func) or func is None  # nosec
+    assert callable(func) or func is None  # noqa: S101
 
     def decorator(func):
         @functools.wraps(func)

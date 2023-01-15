@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.helper_funcs import export_data
+from openbb_terminal.helper_funcs import export_data, check_start_less_than_end
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -98,3 +98,12 @@ def test_export_data_invalid_data(
 ):
     with pytest.raises(AttributeError):
         assert export_data(export_type, dir_path, func_name, data)
+
+
+def test_start_less_than_end():
+    assert check_start_less_than_end("2022-01-01", "2022-01-02") is False
+    assert check_start_less_than_end("2022-01-02", "2022-01-01") is True
+    assert check_start_less_than_end("2022-01-01", "2022-01-01") is True
+    assert check_start_less_than_end(None, "2022-01-01") is False
+    assert check_start_less_than_end("2022-01-02", None) is False
+    assert check_start_less_than_end(None, None) is False

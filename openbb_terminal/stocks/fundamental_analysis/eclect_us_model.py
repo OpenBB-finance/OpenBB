@@ -46,6 +46,9 @@ def get_filings_analysis(symbol: str) -> pd.DataFrame:
 
         return resultMapper
 
+    if len(response_dict) == 0:
+        return pd.DataFrame()
+
     risk = pd.DataFrame(
         map(resultGroupMapper("Risk factors"), response_dict[0]["rf_highlights"]),
         columns=["Group", "Good", "Sentence"],

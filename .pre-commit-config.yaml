@@ -13,11 +13,10 @@ repos:
     rev: 22.10.0
     hooks:
       - id: black
-  - repo: https://github.com/pycqa/flake8
-    rev: 5.0.4
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.0.212'
     hooks:
-      - id: flake8
-        entry: flake8 --ignore=E203,W503 --max-line-length=122 --exclude ./build/pyinstaller/*
+      - id: ruff
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.2
     hooks:
@@ -25,7 +24,7 @@ repos:
         entry: codespell
         args:
           [
-            "--ignore-words-list=te,commun,ro,zar,vie,hel,jewl,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,statics,ket,toke,certi,buidl",
+            "--ignore-words-list=te,commun,ro,zar,vie,hel,jewl,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,statics,ket,toke,certi,buidl,ot",
             "--quiet-level=2",
             "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*,./website/config.toml",
           ]

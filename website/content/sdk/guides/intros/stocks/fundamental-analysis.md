@@ -22,7 +22,7 @@ The contextual help will be activated upon entering ., after, openbb.stocks.fa. 
 | openbb.stocks.fa.cal              |                Calendar Earnings and Estimates |
 | openbb.stocks.fa.cash             |                             Company Cash Flows |
 | openbb.stocks.fa.data             |                 Fundamental and Technical Data |
-| openbb.stocks.fa.dcf              |                  Shows DCF Values for a Ticker |
+| openbb.stocks.fa.dcfc             |                  Shows DCF Values for a Ticker |
 | openbb.stocks.fa.divs             |             Historical Dividends for a Company |
 | openbb.stocks.fa.dupont           |                         Detailed ROE Breakdown |
 | openbb.stocks.fa.earnings         |                          Earnings Data and EPS |

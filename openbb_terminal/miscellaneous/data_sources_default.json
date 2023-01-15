@@ -337,6 +337,7 @@
       "hr": ["Glassnode"],
       "btccp": ["Blockchain"],
       "btcct": ["Blockchain"],
+      "btcblockdata": ["Blockchain"],
       "gwei": ["ETHGasStations"],
       "whales": ["WhaleAlert"],
       "lt": ["BitQuery"],
@@ -508,6 +509,7 @@
       "rs": ["GitHub"],
       "sh": ["GitHub"],
       "tr": ["GitHub"]
-    }
+    },
+    "hn": ["HackerNews"]
   }
 }

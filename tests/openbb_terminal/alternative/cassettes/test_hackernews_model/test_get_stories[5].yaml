@@ -1,0 +1,223 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://hacker-news.firebaseio.com/v0/topstories.json
+  response:
+    body:
+      string: '[34176479,34177231,34157636,34175768,34177221,34171406,34176488,34176601,34173761,34172205,34158071,34157808,34174729,34176854,34171863,34175811,34172240,34161081,34141615,34168284,34161044,34169039,34174356,34172989,34174183,34174806,34168867,34176208,34159022,34175639,34173712,34175759,34175466,34170379,34173006,34161221,34176692,34175558,34173996,34156778,34176740,34169951,34170868,34176480,34169967,34175491,34174935,34169051,34174765,34171618,34172506,34176887,34175538,34165950,34173830,34172728,34166193,34172092,34174977,34175209,34175055,34172416,34164493,34171762,34161997,34165791,34172649,34171421,34169393,34165522,34176668,34165014,34172101,34174657,34160801,34170584,34171751,34176056,34165960,34159868,34175954,34167216,34168467,34156227,34174867,34173319,34163413,34169554,34167962,34145002,34165882,34153883,34148502,34166930,34163231,34167099,34161410,34165295,34164312,34165838,34169710,34174593,34167965,34174793,34154254,34169106,34165853,34172596,34168542,34170525,34160793,34173757,34163624,34158689,34158318,34171502,34157363,34158633,34158160,34172798,34177061,34155783,34160356,34160097,34163748,34158933,34175299,34175288,34151708,34175999,34173740,34161822,34147937,34165560,34164684,34172823,34164546,34165830,34169725,34163559,34160672,34152369,34158798,34161180,34163084,34161129,34156896,34160353,34145672,34147465,34167586,34152137,34165789,34162001,34163505,34156631,34139048,34161272,34162118,34161214,34167322,34162515,34161628,34159699,34157907,34170953,34172662,34159631,34173237,34176094,34159062,34162002,34161085,34161528,34147934,34145934,34171404,34160509,34145799,34151382,34136381,34173151,34159118,34174580,34175873,34176607,34158486,34168061,34152100,34146145,34152306,34172648,34160824,34156140,34117429,34161954,34156780,34146212,34151880,34143119,34147366,34157142,34147825,34171781,34160611,34153648,34140206,34160107,34158033,34156189,34161225,34134473,34171092,34170167,34145680,34155009,34146493,34137751,34160424,34148082,34171576,34168326,34172580,34158895,34151951,34138028,34156869,34149239,34156844,34163475,34135593,34174758,34165145,34173858,34147243,34154778,34165418,34146794,34154406,34176035,34170672,34155875,34160267,34148402,34165958,34144707,34149340,34159260,34149804,34145665,34136331,34137381,34134905,34167966,34143197,34153404,34144479,34142965,34152333,34145216,34159341,34158111,34142602,34117875,34128776,34170039,34150097,34169761,34137065,34136729,34124726,34130726,34169242,34109771,34136666,34115747,34169892,34142138,34167252,34115109,34125958,34173926,34142932,34154896,34168126,34162312,34102868,34164067,34149528,34145811,34117471,34164375,34164712,34124991,34161533,34160508,34150530,34138863,34127683,34151299,34135219,34157024,34142168,34146425,34169152,34136879,34152978,34137709,34138188,34134109,34164404,34162735,34148802,34139850,34157235,34137182,34148455,34147977,34171189,34099641,34152118,34164575,34170448,34131337,34157866,34134565,34151107,34119879,34108434,34136870,34132866,34113978,34094497,34145972,34156683,34161170,34139921,34165285,34137703,34152082,34142407,34151173,34142030,34149793,34139995,34156525,34140080,34136956,34160189,34152379,34137990,34173058,34148153,34137104,34163242,34145540,34156887,34142868,34137974,34163315,34134935,34109349,34164095,34127804,34162763,34152981,34162700,34137185,34118562,34124203,34145691,34143101,34167658,34102363,34137463,34174997,34129745,34171098,34162601,34162184,34164278,34132484,34169837,34140063,34124920,34112745,34139380,34141922,34168917,34140574,34161352,34138031,34160594,34161661,34140096,34119688,34109734,34136065,34143279,34134545,34123025,34159917,34161311,34122072,34166801,34161259,34138737,34161077,34163186,34139285,34147090,34137264,34157244,34149083,34130585,34164922,34171719,34129778,34170309,34127243,34132917,34169419,34141810,34160654,34124491,34150040,34126239,34110423,34146283,34147802,34138630,34164462,34167068,34106762,34174724,34146128,34115340,34145854,34170107,34144566,34137925,34166206,34130492,34168416,34138594,34130767,34162668,34112008,34134490,34143272,34135640,34131668,34139357,34128133,34132152,34118595,34155987,34121380,34134866,34150158,34153548,34164697,34102419,34169855,34149510,34122719,34126450,34156277,34155032,34142852,34128944,34143278,34158563,34159144,34095830,34159276,34137693,34110784,34160452,34168479,34141912,34135118,34131436,34160250,34137966,34145483,34094627,34140551,34169615,34156988,34104204,34164200,34127524,34169579,34157096,34168945,34158063,34149716,34137794,34122477]'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4501'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 29 Dec 2022 20:24:17 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains; preload
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://hacker-news.firebaseio.com/v0/item/34176479.json
+  response:
+    body:
+      string: '{"by":"baptiste313","descendants":12,"id":34176479,"kids":[34177413,34177170,34177233,34177240,34177242,34177065],"score":109,"time":1672340723,"title":"A
+        search engine for searching books in the Z-Library index on the IPFS network","type":"story","url":"https://zlib.zu1k.com/"}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '279'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 29 Dec 2022 20:24:18 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains; preload
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://hacker-news.firebaseio.com/v0/item/34177231.json
+  response:
+    body:
+      string: '{"by":"brudgers","descendants":3,"id":34177231,"kids":[34177401,34177406],"score":22,"time":1672344297,"title":"Pele
+        Has Died","type":"story","url":"https://www.bbc.co.uk/sport/football/42751517"}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '196'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 29 Dec 2022 20:24:18 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains; preload
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://hacker-news.firebaseio.com/v0/item/34157636.json
+  response:
+    body:
+      string: "{\"by\":\"markchristian\",\"descendants\":78,\"id\":34157636,\"kids\":[34175674,34177353,34176433,34175291,34175652,34175546,34175964,34175734,34175604,34177326,34175415,34176172,34176819,34177013,34176313,34176796,34175349,34175809,34175321,34175643,34175577,34176524,34175096,34176374,34176871,34176507,34175429,34176443,34176282,34175537,34176521,34175182,34175153,34176676,34175820,34175123,34176612,34176593,34175275,34176096,34175576,34175933,34175219,34177278,34176677,34175050,34175281,34177158,34175847,34176421,34175103,34175056,34176307,34175747,34176074,34176363,34176747],\"score\":215,\"time\":1672202827,\"title\":\"Saying
+        \u201Csup\u201D with `net send`\",\"type\":\"story\",\"url\":\"https://drew.shoes/posts/sup/\"}"
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '701'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 29 Dec 2022 20:24:19 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains; preload
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://hacker-news.firebaseio.com/v0/item/34175768.json
+  response:
+    body:
+      string: '{"by":"giuliomagnifico","descendants":28,"id":34175768,"kids":[34177027,34176681,34176476,34176987,34176776,34176595,34176873,34176472,34176122,34176339,34176935,34176333],"score":60,"time":1672337349,"title":"MIT
+        researchers are discovering which parts of the brain are engaged when coding","type":"story","url":"https://news.mit.edu/2022/your-brain-your-brain-code-1221"}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '373'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 29 Dec 2022 20:24:19 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains; preload
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://hacker-news.firebaseio.com/v0/item/34177221.json
+  response:
+    body:
+      string: "{\"by\":\"theCrowing\",\"descendants\":9,\"id\":34177221,\"kids\":[34177356,34177394,34177430,34177405,34177363,34177428,34177222,34177376],\"score\":26,\"time\":1672344280,\"title\":\"Tesla
+        driver falls asleep \u2013 Autopilot ignores police and continues driving\",\"type\":\"story\",\"url\":\"https://www.sueddeutsche.de/bayern/tesla-bamberg-polizei-autopilot-autobahn-strafe-1.5723593\"}"
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '362'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 29 Dec 2022 20:24:19 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains; preload
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1174,7 +1174,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on .env file
     """
-    dotenv.load_dotenv(USER_ENV_FILE)
+    dotenv.load_dotenv(USER_ENV_FILE, override=True)
     user_tz = os.getenv("OPENBB_TIMEZONE")
     if user_tz:
         return user_tz
@@ -1976,3 +1976,29 @@ def update_news_from_tweet_to_be_displayed() -> str:
             NEWS_TWEET = f"{last_tweet_dt.hour}:{last_tweet_dt.hour} - @{handle_to_use} - {url}\n\n{news_tweet_to_use}"
 
     return NEWS_TWEET
+
+
+def check_start_less_than_end(start_date: str, end_date: str) -> bool:
+    """Check if start_date is equal to end_date.
+
+    Parameters
+    ----------
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
+
+    Returns
+    -------
+    bool
+        True if start_date is not equal to end_date, False otherwise
+    """
+    if start_date is None or end_date is None:
+        return False
+    if start_date == end_date:
+        console.print("[red]Start date and end date cannot be the same.[/red]")
+        return True
+    if start_date > end_date:
+        console.print("[red]Start date cannot be greater than end date.[/red]")
+        return True
+    return False
