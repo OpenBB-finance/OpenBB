@@ -4,8 +4,11 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-import subprocess  # nosec
+import socket
+import subprocess
 from typing import List
+
+import numpy as np
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
@@ -13,6 +16,7 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.plots_core.backend import get_backend
 from openbb_terminal.rich_config import MenuText, console
 
 # pylint: disable=consider-using-with
@@ -40,6 +44,8 @@ class DashboardsController(BaseController):
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
+        self.port = None
+        self.get_free_port()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -149,6 +155,7 @@ class DashboardsController(BaseController):
         ns_parser = cls.parse_simple_args(parser, other_args)
 
         if ns_parser:
+            port = cls.get_free_port()
             cmd = "jupyter-lab" if ns_parser.jupyter else "voila"
             base_path = os.path.join(
                 os.path.abspath(os.path.dirname(__file__)), "voila"
@@ -159,6 +166,10 @@ class DashboardsController(BaseController):
                     f"Warning: opens a port on your computer to run a {cmd} server."
                 )
                 response = input("Would you like us to run the server for you [yn]? ")
+
+            if not ns_parser.jupyter:
+                cmd += f" --no-browser --port {port}"
+
             args = ""
             if ns_parser.dark and not ns_parser.jupyter:
                 args += "--theme=dark"
@@ -168,11 +179,33 @@ class DashboardsController(BaseController):
                     f"{cmd} {file} {args}",
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
+                    stdin=subprocess.PIPE,
                     shell=True,  # nosec
+                    env=os.environ,
                 )
                 cfg.LOGGING_SUPPRESS = False
+                get_backend().send_html(
+                    f"""
+                    <script>
+                        window.location.replace("http://localhost:{port}");
+                    </script>
+                    """,
+                    title=f"{filename.title()} Dashboard",
+                )
             else:
                 console.print(f"Type: {cmd} voila/{file}\ninto a terminal to run.")
+
+    @staticmethod
+    def get_free_port():
+        """Searches for a random free port number."""
+        not_free = True
+        while not_free:
+            port = np.random.randint(7000, 7999)
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                res = sock.connect_ex(("localhost", port))
+                if res != 0:
+                    not_free = False
+        return port
 
     @classmethod
     def create_call_streamlit(

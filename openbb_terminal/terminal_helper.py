@@ -318,21 +318,25 @@ def reset(queue: List[str] = None):
     logger.info("resetting")
     plt.close("all")
     get_backend().close(reset=True)
+    debug = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 
-    if queue and len(queue) > 0:
-        completed_process = subprocess.run(  # nosec
-            f"{sys.executable} terminal.py {'/'.join(queue) if len(queue) > 0 else ''}",
-            shell=True,
-            check=False,
-        )
-    else:
-        completed_process = subprocess.run(  # nosec
-            f"{sys.executable} terminal.py", shell=True, check=False
-        )
-    if completed_process.returncode != 0:
+    # we clear all openbb_terminal modules from sys.modules
+    try:
+        for module in list(sys.modules.keys()):
+            parts = module.split(".")
+            if parts[0] == "openbb_terminal":
+                del sys.modules[module]
+
+        # pylint: disable=import-outside-toplevel
+        from openbb_terminal.terminal_controller import main
+
+        # we run the terminal again
+        main(debug, ["/".join(queue) if len(queue) > 0 else ""])
+
+    except Exception as e:
+        logger.exception("Exception: %s", str(e))
         console.print("Unfortunately, resetting wasn't possible!\n")
-
-    return completed_process.returncode
+        print_goodbye()
 
 
 @contextmanager

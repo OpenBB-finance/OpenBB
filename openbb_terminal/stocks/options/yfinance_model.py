@@ -14,23 +14,9 @@ import yfinance as yf
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options import op_helpers
 from openbb_terminal.stocks.options.op_helpers import Option
 
 logger = logging.getLogger(__name__)
-
-
-option_chain_cols = [
-    "strike",
-    "lastPrice",
-    "bid",
-    "ask",
-    "volume",
-    "openInterest",
-    "impliedVolatility",
-]
-
-option_chain_dict = {"openInterest": "openinterest", "impliedVolatility": "iv"}
 
 
 def get_full_option_chain(symbol: str) -> pd.DataFrame:
@@ -54,8 +40,7 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
     for _date in dates:
         calls = ticker.option_chain(_date).calls
         puts = ticker.option_chain(_date).puts
-        calls = calls[option_chain_cols].rename(columns=option_chain_dict)
-        puts = puts[option_chain_cols].rename(columns=option_chain_dict)
+
         calls.columns = [x + "_c" if x != "strike" else x for x in calls.columns]
         puts.columns = [x + "_p" if x != "strike" else x for x in puts.columns]
 
@@ -64,6 +49,33 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
         options = pd.concat([options, temp], axis=0).reset_index(drop=True)
 
     return options
+
+
+@log_start_end(log=logger)
+def get_option_chain(symbol: str, expiry: str):
+    """Gets option chain from yf for given ticker and expiration
+
+    Parameters
+    ----------
+    symbol: str
+        Ticker symbol to get options for
+    expiry: str
+        Date to get options for. YYYY-MM-DD
+
+    Returns
+    -------
+    chains: yf.ticker.Options
+        Options chain
+    """
+
+    yf_ticker = yf.Ticker(symbol)
+    try:
+        chain = yf_ticker.option_chain(expiry)
+    except Exception:
+        console.print(f"[red]Error: Expiration {expiry} cannot be found.[/red]")
+        chain = pd.DataFrame()
+
+    return chain
 
 
 # pylint: disable=W0640
@@ -199,33 +211,6 @@ def option_expirations(symbol: str):
     if not dates:
         console.print("No expiration dates found for ticker. \n")
     return dates
-
-
-@log_start_end(log=logger)
-def get_option_chain(symbol: str, expiry: str):
-    """Gets option chain from yf for given ticker and expiration
-
-    Parameters
-    ----------
-    symbol: str
-        Ticker symbol to get options for
-    expiry: str
-        Date to get options for. YYYY-MM-DD
-
-    Returns
-    -------
-    chains: yf.ticker.Options
-        Options chain
-    """
-
-    yf_ticker = yf.Ticker(symbol)
-    try:
-        chains = yf_ticker.option_chain(expiry)
-    except Exception:
-        console.print(f"[red]Error: Expiration {expiry} cannot be found.[/red]")
-        chains = op_helpers.Chain(pd.DataFrame(), "yahoo")
-
-    return chains
 
 
 @log_start_end(log=logger)
@@ -583,38 +568,17 @@ def get_greeks(
 
 
 @log_start_end(log=logger)
-def get_vol(
-    symbol: str,
-    expiry: str,
-) -> pd.DataFrame:
-    """Plot volume
+def get_last_price(symbol: str) -> float:
+    """Get the last price from nasdaq
 
     Parameters
     ----------
     symbol: str
-        Ticker symbol
-    expiry: str
-        expiration date for options
+        Symbol to get quote for
+
+    Returns
+    -------
+    float
+        Last price
     """
-    options = get_option_chain(symbol, expiry)
-
-    return options
-
-
-@log_start_end(log=logger)
-def get_volume_open_interest(
-    symbol: str,
-    expiry: str,
-) -> pd.DataFrame:
-    """Plot volume and open interest
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-    expiry: str
-        Option expiration
-    """
-    options = get_option_chain(symbol, expiry)
-
-    return options
+    return float(yf.Ticker(symbol).info["regularMarketPrice"])

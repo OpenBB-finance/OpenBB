@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def plot_covid_ov(
     country: str,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots historical cases and deaths by country.
 
@@ -44,37 +44,6 @@ def plot_covid_ov(
         return
     ov = pd.concat([cases, deaths], axis=1)
     ov.columns = ["Cases", "Deaths"]
-
-    # This plot has 2 axes
-    # if external_axes is None:
-    #     _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    #     ax2 = ax1.twinx()
-    # elif is_valid_axes_count(external_axes, 2):
-    #     ax1, ax2 = external_axes
-    # else:
-    #     return
-
-    # ax1.plot(cases.index, cases, color=theme.up_color, alpha=0.2)
-    # ax1.plot(cases.index, cases.rolling(7).mean(), color=theme.up_color)
-    # ax1.set_ylabel("Cases [1k]")
-    # theme.style_primary_axis(ax1)
-    # ax1.yaxis.set_label_position("left")
-
-    # ax2.plot(deaths.index, deaths, color=theme.down_color, alpha=0.2)
-    # ax2.plot(deaths.index, deaths.rolling(7).mean(), color=theme.down_color)
-    # ax2.set_title(f"Overview for {country.upper()}")
-    # ax2.set_xlabel("Date")
-    # ax2.set_ylabel("Deaths")
-    # theme.style_twin_axis(ax2)
-    # ax2.yaxis.set_label_position("right")
-
-    # ax1.set_xlim(ov.index[0], ov.index[-1])
-    # legend = ax2.legend(ov.columns)
-    # legend.legendHandles[1].set_color(theme.down_color)
-    # legend.legendHandles[0].set_color(theme.up_color)
-
-    # if external_axes is None:
-    #     theme.visualize_output()
 
     fig = OpenBBFigure.create_subplots(
         specs=[[{"secondary_y": True}]],
@@ -132,7 +101,8 @@ def plot_covid_ov(
         ),
         hovermode="x unified",
     )
-    fig.show()
+
+    return fig.show() if not external_axes else fig
 
 
 def plot_covid_stat(

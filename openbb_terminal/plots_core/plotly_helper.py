@@ -121,7 +121,7 @@ class OpenBBFigure(go.Figure):
             vertical_spacing=vertical_spacing,
             horizontal_spacing=horizontal_spacing,
             subplot_titles=subplot_titles,
-            row_width=row_width or [1],
+            row_width=row_width or [1] * rows,
             specs=specs or [[{}] * cols] * rows,
             **kwargs,
         )

@@ -1,8 +1,8 @@
 """Option helper functions"""
 __docformat__ = "numpy"
 
+import logging
 import os
-from datetime import datetime, timedelta
 from math import e, log
 from typing import Union
 
@@ -10,36 +10,14 @@ import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 
-
-def get_dte_from_expiration(date: str) -> float:
-    """
-    Converts a date to total days until the option would expire.
-    This assumes that the date is in the form %B %d, %Y such as January 11, 2023
-    This calculates time from 'now' to 4 PM the date of expiration
-    This is particularly a helper for nasdaq results.
-
-    Parameters
-    ----------
-    date: str
-        Date in format %B %d, %Y
-
-    Returns
-    -------
-    float
-        Days to expiration as a decimal
-    """
-    # Get the date as a datetime and add 16 hours (4PM)
-    expiration_time = datetime.strptime(date, "%B %d, %Y") + timedelta(hours=16)
-    # Find total seconds from now
-    time_to_now = (expiration_time - datetime.now()).total_seconds()
-    # Convert to days
-    time_to_now /= 60 * 60 * 24
-    return time_to_now
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
     """Function to get the loss at the given expiry
 
@@ -68,6 +46,7 @@ def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
     return loss
 
 
+@log_start_end(log=logger)
 def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
     """Returns the max pain for a given call/put dataframe
 
@@ -94,6 +73,7 @@ def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
     return max_pain
 
 
+@log_start_end(log=logger)
 def convert(orig: str, to: str) -> float:
     """Convert a string to a specific type of number
     Parameters
@@ -113,6 +93,7 @@ def convert(orig: str, to: str) -> float:
     raise ValueError("Invalid to format, please use '%' or ','.")
 
 
+@log_start_end(log=logger)
 def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> float:
     """The risk neutral payoff for a stock
     Parameters
@@ -142,15 +123,16 @@ def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> flo
     return sum(df["Vals"]) / risk_free
 
 
-def export_yf_options(export: str, options, file_name: str):
-    """Special function to assist in exporting yf options
+@log_start_end(log=logger)
+def export_options(export: str, options, file_name: str):
+    """Special function to assist in exporting options
 
     Parameters
     ----------
     export: str
         Format to export file
-    options: Options
-        The yfinance Options object
+    options: Chain
+        Chain object object
     file_name: str
         The file_name to export to
 
@@ -163,6 +145,70 @@ def export_yf_options(export: str, options, file_name: str):
             f"{file_name}_{option_name}",
             option,
         )
+
+
+@log_start_end(log=logger)
+def process_option_chain(data: pd.DataFrame, source: str) -> pd.DataFrame:
+    """
+    Create an option chain DataFrame from the given symbol.
+    Does additional processing in order to get some homogeneous between the sources.
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        The option chain data
+    source: str, optional
+        The source of the data. Valid values are "Tradier", "Nasdaq", and
+        "YahooFinance". The default value is "Tradier".
+
+    Returns
+    -------
+    pd.DataFrame
+        A DataFrame containing the option chain data, with columns as specified
+        in the `option_chain_column_mapping` mapping, and an additional column
+        "optionType" that indicates whether the option is a call or a put.
+    """
+    if source == "Tradier":
+        df = data.rename(columns=option_chain_column_mapping["Tradier"])
+
+    elif source == "Nasdaq":
+        call_columns = ["expiration", "strike"] + [
+            col for col in data.columns if col.startswith("c_")
+        ]
+        calls = data[call_columns].rename(columns=option_chain_column_mapping["Nasdaq"])
+        calls["optionType"] = "call"
+
+        put_columns = ["expiration", "strike"] + [
+            col for col in data.columns if col.startswith("p_")
+        ]
+        puts = data[put_columns].rename(columns=option_chain_column_mapping["Nasdaq"])
+        puts["optionType"] = "put"
+
+        df = pd.concat([calls, puts]).drop_duplicates()
+
+    elif source == "YahooFinance":
+        call_columns = ["expiration", "strike"] + [
+            col for col in data.columns if col.endswith("_c")
+        ]
+        calls = data[call_columns].rename(
+            columns=option_chain_column_mapping["YahooFinance"]
+        )
+        calls["optionType"] = "call"
+
+        put_columns = ["expiration", "strike"] + [
+            col for col in data.columns if col.endswith("_p")
+        ]
+        puts = data[put_columns].rename(
+            columns=option_chain_column_mapping["YahooFinance"]
+        )
+        puts["optionType"] = "put"
+
+        df = pd.concat([calls, puts]).drop_duplicates()
+
+    else:
+        df = pd.DataFrame()
+
+    return df
 
 
 opt_chain_cols = {
@@ -178,26 +224,57 @@ opt_chain_cols = {
     "impliedVolatility": {"format": "{x:.2f}", "label": "Implied Volatility"},
 }
 
-
-# pylint: disable=R0903
-class Chain:
-    def __init__(self, df: pd.DataFrame, source: str = "tradier"):
-        if source == "tradier":
-            self.calls = df[df["option_type"] == "call"]
-            self.puts = df[df["option_type"] == "put"]
-        elif source == "nasdaq":
-            # These guys have different column names
-            call_columns = ["expiryDate", "strike"] + [
-                col for col in df.columns if col.startswith("c_")
-            ]
-            put_columns = ["expiryDate", "strike"] + [
-                col for col in df.columns if col.startswith("p_")
-            ]
-            self.calls = df[call_columns]
-            self.puts = df[put_columns]
-        else:
-            self.calls = None
-            self.puts = None
+option_chain_column_mapping = {
+    "Nasdaq": {
+        "strike": "strike",
+        "c_Last": "last",
+        "c_Change": "change",
+        "c_Bid": "bid",
+        "c_Ask": "ask",
+        "c_Volume": "volume",
+        "c_Openinterest": "openInterest",
+        "p_Last": "last",
+        "p_Change": "change",
+        "p_Bid": "bid",
+        "p_Ask": "ask",
+        "p_Volume": "volume",
+        "p_Openinterest": "openInterest",
+    },
+    "Tradier": {
+        "open_interest": "openInterest",
+        "option_type": "optionType",
+    },
+    "YahooFinance": {
+        "contractSymbol_c": "contractSymbol",
+        "lastTradeDate_c": "lastTradeDate",
+        "strike": "strike",
+        "lastPrice_c": "lastPrice",
+        "bid_c": "bid",
+        "ask_c": "ask",
+        "change_c": "change",
+        "percentChange_c": "percentChange",
+        "volume_c": "volume",
+        "openInterest_c": "openInterest",
+        "impliedVolatility_c": "impliedVolatility",
+        "inTheMoney_c": "inTheMoney",
+        "contractSize_c": "contractSize",
+        "currency_c": "currency",
+        "contractSymbol_p": "contractSymbol",
+        "lastTradeDate_p": "lastTradeDate",
+        "lastPrice_p": "lastPrice",
+        "bid_p": "bid",
+        "ask_p": "ask",
+        "change_p": "change",
+        "percentChange_p": "percentChange",
+        "volume_p": "volume",
+        "openInterest_p": "openInterest",
+        "impliedVolatility_p": "impliedVolatility",
+        "inTheMoney_p": "inTheMoney",
+        "contractSize_p": "contractSize",
+        "currency_p": "currency",
+        "expiration": "expiration",
+    },
+}
 
 
 class Option:

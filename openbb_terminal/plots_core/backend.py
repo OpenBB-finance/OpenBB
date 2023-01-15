@@ -100,6 +100,26 @@ class Backend(PyWry):
             )
         )
 
+    def send_html(self, html: str, title: str = ""):
+        """Send html to backend.
+
+        Parameters
+        ----------
+        html : str
+            HTML to send to backend.
+        title : str, optional
+            Title to display in the window, by default ""
+        """
+        self.check_backend()
+        message = json.dumps(
+            {
+                "html_str": html,
+                "title": f"OpenBB - {title}",
+                "icon": self.get_window_icon(),
+            }
+        )
+        self.outgoing.append(message)
+
     def del_temp(self):
         """Delete the temporary html file"""
         if self.plotly_html:

@@ -2,64 +2,59 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import List, Optional
 import os
-
 from datetime import datetime
+from typing import List, Optional
+
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-import seaborn as sns
 
 from openbb_terminal.common.quantitative_analysis import qa_view
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.portfolio.portfolio_model import (
     PortfolioEngine,
-    get_transactions,
+    get_assets_allocation,
+    get_calmar_ratio,
+    get_common_sense_ratio,
+    get_countries_allocation,
     get_daily_returns,
-    get_performance_vs_benchmark,
-    get_yearly_returns,
-    get_monthly_returns,
     get_distribution_returns,
-    get_holdings_value,
+    get_gaintopain_ratio,
     get_holdings_percentage,
-    get_rolling_volatility,
+    get_holdings_value,
+    get_information_ratio,
+    get_jensens_alpha,
+    get_kelly_criterion,
+    get_kurtosis,
+    get_maximum_drawdown,
+    get_maximum_drawdown_ratio,
+    get_monthly_returns,
+    get_payoff_ratio,
+    get_performance_vs_benchmark,
+    get_profit_factor,
+    get_r2_score,
+    get_regions_allocation,
+    get_rolling_beta,
     get_rolling_sharpe,
     get_rolling_sortino,
-    get_rolling_beta,
-    get_maximum_drawdown,
-    get_r2_score,
-    get_skewness,
-    get_kurtosis,
-    get_stats,
-    get_assets_allocation,
+    get_rolling_volatility,
     get_sectors_allocation,
-    get_countries_allocation,
-    get_regions_allocation,
-    get_volatility,
     get_sharpe_ratio,
+    get_skewness,
     get_sortino_ratio,
-    get_maximum_drawdown_ratio,
-    get_gaintopain_ratio,
-    get_tracking_error,
-    get_information_ratio,
-    get_tail_ratio,
-    get_common_sense_ratio,
-    get_jensens_alpha,
-    get_calmar_ratio,
-    get_kelly_criterion,
-    get_payoff_ratio,
-    get_profit_factor,
+    get_stats,
     get_summary,
+    get_tail_ratio,
+    get_tracking_error,
+    get_transactions,
+    get_volatility,
+    get_yearly_returns,
 )
-
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-)
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 # pylint: disable=C0302,redefined-outer-name
@@ -377,7 +372,7 @@ def display_yearly_returns(
     window: str = "all",
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[plt.Axes] = None,
+    external_axes: bool = False,
 ):
     """Display yearly returns
 
@@ -407,14 +402,8 @@ def display_yearly_returns(
         )
 
     else:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of 1 axis items")
-                console.print("[red]Expected list of 1 axis items.\n[/red]")
-                return
-            ax = external_axes[0]
+
+        fig = OpenBBFigure()
 
         creturns_year_idx = list()
         breturns_year_idx = list()
@@ -423,26 +412,22 @@ def display_yearly_returns(
             creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))
             breturns_year_idx.append(datetime.strptime(f"{year}-08-15", "%Y-%m-%d"))
 
-        ax.bar(
-            creturns_year_idx,
-            df["Portfolio"],
-            width=100,
-            label="Portfolio",
+        fig.add_bar(
+            x=creturns_year_idx,
+            y=df["Portfolio"],
+            name="Portfolio",
         )
-        ax.bar(
-            breturns_year_idx,
-            df["Benchmark"],
-            width=100,
-            label="Benchmark",
+        fig.add_bar(
+            x=breturns_year_idx,
+            y=df["Benchmark"],
+            name="Benchmark",
         )
 
-        ax.legend(loc="upper left")
-        ax.set_ylabel("Yearly Returns [%]")
-        ax.set_title(f"Yearly Returns [%] in period {window}")
-        theme.style_primary_axis(ax)
-
-        if not external_axes:
-            theme.visualize_output()
+        fig.update_layout(
+            title=f"Yearly Returns [%] in period {window}",
+            xaxis=dict(title="Year", type="date"),
+            yaxis=dict(title="Yearly Returns [%]"),
+        )
 
     export_data(
         export,
@@ -450,6 +435,8 @@ def display_yearly_returns(
         "yret",
         df,
     )
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)
@@ -499,50 +486,127 @@ def display_monthly_returns(
         )
 
     else:
-        if external_axes is None:
-            _, ax = plt.subplots(
-                2,
-                1,
-                figsize=plot_autoscale(),
-                dpi=PLOT_DPI,
+        fig = OpenBBFigure.create_subplots(
+            rows=2,
+            cols=1,
+            subplot_titles=("Portfolio", "Benchmark"),
+            specs=[[{"type": "heatmap"}], [{"type": "heatmap"}]],
+            vertical_spacing=0.15,
+            shared_xaxes=False,
+            row_width=[0.8, 0.8],
+        )
+        texttemplate = "%{z:.2f}%" if show_vals else ""
+        hovertemplate = "%{x} %{y:.0f}:<br>%{z:.2f}%<extra></extra>"
+
+        try:
+            zero = 0 - float(
+                min(portfolio_returns.min().min(), benchmark_returns.min().min())
+            ) / (
+                float(max(portfolio_returns.max().max(), benchmark_returns.max().max()))
+                - float(
+                    min(portfolio_returns.min().min(), benchmark_returns.min().min())
+                )
             )
-        else:
-            if len(external_axes) != 2:
-                logger.error("Expected list of 2 axis items")
-                console.print("[red]Expected list of 2 axis items.\n[/red]")
-                return
-            ax = external_axes
+        except ZeroDivisionError:
+            zero = (
+                2
+                if float(
+                    max(portfolio_returns.max().max(), benchmark_returns.max().max())
+                )
+                < 0
+                else -2
+            )
 
-        ax[0].set_title(f"Portfolio in period {window}")
-        sns.heatmap(
-            portfolio_returns,
-            cmap="bwr_r",
-            vmax=max(portfolio_returns.max().max(), benchmark_returns.max().max()),
-            vmin=min(portfolio_returns.min().min(), benchmark_returns.min().min()),
-            center=0,
-            annot=show_vals,
-            fmt=".1f",
-            mask=portfolio_returns.applymap(lambda x: x == 0),
-            ax=ax[0],
+        increasing_color = [
+            "rgba(0, 150, 255, 1)",
+            "rgba(0, 170, 255, 0.92)",
+            "rgba(0, 170, 255, 0.90)",
+            "rgba(0, 170, 255, 0.80)",
+            "rgba(0, 170, 255, 0.70)",
+            "rgba(0, 170, 255, 0.60)",
+            "rgba(0, 170, 255, 0.50)",
+            "rgba(0, 170, 255, 0.40)",
+            "rgba(0, 170, 255, 0.34)",
+            "rgba(0, 170, 255, 0.22)",
+            "rgba(0, 170, 255, 0.10)",
+            "rgba(0, 170, 255, 0.05)",
+        ]
+
+        decreasing_color = [
+            "rgba(230, 0, 57, 1)",
+            "rgba(230, 0, 57, 0.92)",
+            "rgba(230, 0, 57, 0.90)",
+            "rgba(230, 0, 57, 0.80)",
+            "rgba(230, 0, 57, 0.70)",
+            "rgba(230, 0, 57, 0.60)",
+            "rgba(230, 0, 57, 0.50)",
+            "rgba(230, 0, 57, 0.40)",
+            "rgba(230, 0, 57, 0.34)",
+            "rgba(230, 0, 57, 0.22)",
+            "rgba(230, 0, 57, 0.10)",
+            "rgba(230, 0, 57, 0.05)",
+        ]
+        colorscale = [
+            [0.0, decreasing_color[3]],
+            [zero, decreasing_color[-3]],
+            [zero + 0.01, increasing_color[-2]],
+            [1.0, increasing_color[0]],
+        ]
+
+        if zero < 0:
+            colorscale = [
+                [0.0, increasing_color[-1]],
+                [1.0, increasing_color[4]],
+            ]
+        elif zero > 1:
+            zero = [
+                [0.0, decreasing_color[4]],
+                [1.0, decreasing_color[6]],
+            ]
+
+        row = 1
+        for df, name in zip(
+            [portfolio_returns, benchmark_returns], ["Portfolio", "Benchmark"]
+        ):
+            fig.add_heatmap(
+                z=df,
+                x=df.columns,
+                y=df.index,
+                zmin=min(portfolio_returns.min().min(), benchmark_returns.min().min()),
+                zmax=max(portfolio_returns.max().max(), benchmark_returns.max().max()),
+                zmid=zero,
+                name=name,
+                texttemplate=texttemplate,
+                hovertemplate=hovertemplate,
+                textfont=dict(color="white"),
+                text=df,
+                colorscale=colorscale,
+                colorbar=dict(
+                    thickness=10,
+                    thicknessmode="pixels",
+                    x=1.1,
+                    y=1,
+                    xanchor="right",
+                    yanchor="top",
+                    xpad=10,
+                ),
+                row=row,
+                col=1,
+            )
+            row += 1
+
+        fig.update_layout(
+            margin=dict(l=0, r=60, t=0, b=0),
+            title=f"Monthly Returns [%] in period {window}",
+            xaxis=dict(title="Month"),
+            yaxis=dict(title="Year", autorange="reversed"),
+            xaxis2=dict(title="Month"),
+            yaxis2=dict(title="Year", autorange="reversed"),
+            font=dict(size=12),
+            showlegend=False,
         )
-        theme.style_primary_axis(ax[0])
 
-        ax[1].set_title(f"Benchmark in period {window}")
-        sns.heatmap(
-            portfolio_returns,
-            cmap="bwr_r",
-            vmax=max(portfolio_returns.max().max(), benchmark_returns.max().max()),
-            vmin=min(portfolio_returns.min().min(), benchmark_returns.min().min()),
-            center=0,
-            annot=show_vals,
-            fmt=".1f",
-            mask=benchmark_returns.applymap(lambda x: x == 0),
-            ax=ax[1],
-        )
-        theme.style_primary_axis(ax[1])
-
-        if external_axes is None:
-            theme.visualize_output()
+        fig.show()
 
     export_data(
         export,
@@ -590,17 +654,6 @@ def display_daily_returns(
             show_index=True,
         )
     else:
-        if external_axes is None:
-            _, ax = plt.subplots(
-                2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI, sharex=True
-            )
-        else:
-            if len(external_axes) != 2:
-                logger.error("Expected list of 2 axis items")
-                console.print("[red]Expected list of 2 axis items.\n[/red]")
-                return
-            ax = external_axes
-
         clrs_portfolio = [
             theme.down_color if (x < 0) else theme.up_color for x in df["portfolio"]
         ]
@@ -608,17 +661,29 @@ def display_daily_returns(
             theme.down_color if (x < 0) else theme.up_color for x in df["benchmark"]
         ]
 
-        ax[0].set_title(f"Portfolio in period {window}")
-        ax[0].bar(df.index, df["portfolio"], label="Portfolio", color=clrs_portfolio)
-        ax[0].set_ylabel("Returns [%]")
-        theme.style_primary_axis(ax[0])
-        ax[1].set_title(f"Benchmark in period {window}")
-        ax[1].bar(df.index, df["benchmark"], label="Benchmark", color=clrs_benchmark)
-        ax[1].set_ylabel("Returns [%]")
-        theme.style_primary_axis(ax[1])
+        fig = OpenBBFigure()
 
-        if external_axes is None:
-            theme.visualize_output()
+        fig.add_bar(
+            x=df.index,
+            y=df["portfolio"],
+            name="Portfolio",
+            marker_color=clrs_portfolio,
+        )
+
+        fig.add_bar(
+            x=df.index,
+            y=df["benchmark"],
+            name="Benchmark",
+            marker_color=clrs_benchmark,
+        )
+
+        fig.update_layout(
+            title=f"Daily Returns [%] in period {window}",
+            xaxis=dict(title="Date"),
+            yaxis=dict(title="Returns [%]"),
+        )
+
+        fig.show()
 
     export_data(
         export,
@@ -669,43 +734,29 @@ def display_distribution_returns(
         )
 
     else:
-        if external_axes is None:
-            _, ax = plt.subplots(
-                figsize=plot_autoscale(),
-                dpi=PLOT_DPI,
-            )
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of 1 axis items")
-                console.print("[red]Expected list of 1 axis items.\n[/red]")
-                return
-            ax = external_axes[0]
+        fig = OpenBBFigure()
 
-        ax.set_title("Returns distribution")
-        ax.set_ylabel("Density")
-        ax.set_xlabel("Daily return [%]")
+        fig.add_histogram(
+            x=df_portfolio,
+            name="Portfolio",
+            histnorm="probability density",
+            marker_color=theme.up_color,
+        )
 
-        ax = sns.kdeplot(df_portfolio.values, label="portfolio")
-        kdeline = ax.lines[0]
-        mean = df_portfolio.values.mean()
-        xs = kdeline.get_xdata()
-        ys = kdeline.get_ydata()
-        height = np.interp(mean, xs, ys)
-        ax.vlines(mean, 0, height, color="yellow", ls=":")
+        fig.add_histogram(
+            x=df_benchmark,
+            name="Benchmark",
+            histnorm="probability density",
+            marker_color=theme.down_color,
+        )
 
-        ax = sns.kdeplot(df_benchmark.values, label="benchmark")
-        kdeline = ax.lines[1]
-        mean = df_benchmark.values.mean()
-        xs = kdeline.get_xdata()
-        ys = kdeline.get_ydata()
-        height = np.interp(mean, xs, ys)
-        ax.vlines(mean, 0, height, color="orange", ls=":")
+        fig.update_layout(
+            title=f"Returns distribution in period {window}",
+            xaxis=dict(title="Returns [%]"),
+            yaxis=dict(title="Density"),
+        )
 
-        theme.style_primary_axis(ax)
-        ax.legend()
-
-        if not external_axes:
-            theme.visualize_output()
+        fig.show()
 
     export_data(
         export,
@@ -722,7 +773,7 @@ def display_holdings_value(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    external_axes: Optional[plt.Axes] = None,
+    external_axes: bool = False,
 ):
     """Display holdings of assets (absolute value)
 
@@ -753,38 +804,24 @@ def display_holdings_value(
             show_index=True,
         )
     else:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of 1 axis items")
-                console.print("[red]Expected list of 1 axis items.\n[/red]")
-                return
-            ax = external_axes[0]
-
-        if not unstack:
+        if not unstack and "Total Value" in all_holdings.columns:
             all_holdings.drop(columns=["Total Value"], inplace=True)
-            ax.stackplot(
-                all_holdings.index,
-                [all_holdings[col] for col in all_holdings.columns],
-                labels=all_holdings.columns,
-            )
-            ax.set_title("Asset Holdings (value)")
-        else:
-            all_holdings.plot(ax=ax)
-            ax.set_title("Individual Asset Holdings (value)")
 
-        if len(all_holdings.columns) > 10:
-            legend_columns = round(len(all_holdings.columns) / 5)
-        elif len(all_holdings.columns) > 40:
-            legend_columns = round(len(all_holdings.columns) / 10)
-        else:
-            legend_columns = 1
-        ax.legend(loc="upper left", ncol=legend_columns)
-        ax.set_ylabel("Holdings ($)")
-        theme.style_primary_axis(ax)
-        if external_axes is None:
-            theme.visualize_output()
+        fig = OpenBBFigure()
+
+        for col in all_holdings.columns:
+            fig.add_scatter(
+                x=all_holdings.index,
+                y=all_holdings[col].values,
+                name=col,
+                stackgroup="one",
+            )
+
+        fig.update_layout(
+            title="Total Holdings (value)",
+            xaxis=dict(title="Date"),
+            yaxis=dict(title="Holdings ($)"),
+        )
 
     export_data(
         export,
@@ -792,6 +829,8 @@ def display_holdings_value(
         "holdv",
         all_holdings,
     )
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)
@@ -801,7 +840,7 @@ def display_holdings_percentage(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    external_axes: Optional[plt.Axes] = None,
+    external_axes: bool = False,
 ):
     """Display holdings of assets (in percentage)
 
@@ -838,37 +877,24 @@ def display_holdings_percentage(
         )
 
     else:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of 1 axis items")
-                console.print("[red]Expected list of 1 axis items.\n[/red]")
-                return
-            ax = external_axes[0]
+        if not unstack and "Total Value" in all_holdings.columns:
+            all_holdings.drop(columns=["Total Value"], inplace=True)
 
-        if not unstack:
-            ax.stackplot(
-                all_holdings.index,
-                all_holdings.values.T,
-                labels=all_holdings.columns,
+        fig = OpenBBFigure()
+
+        for col in all_holdings.columns:
+            fig.add_scatter(
+                x=all_holdings.index,
+                y=all_holdings[col].values,
+                name=col,
+                stackgroup="one",
             )
-            ax.set_title("Asset Holdings (percentage)")
-        else:
-            all_holdings.plot(ax=ax)
-            ax.set_title("Individual Asset Holdings (percentage)")
 
-        if len(all_holdings.columns) > 10:
-            legend_columns = round(len(all_holdings.columns) / 5)
-        elif len(all_holdings.columns) > 40:
-            legend_columns = round(len(all_holdings.columns) / 10)
-        else:
-            legend_columns = 1
-        ax.legend(loc="upper left", ncol=legend_columns)
-        ax.set_ylabel("Portfolio holdings (%)")
-        theme.style_primary_axis(ax)
-        if external_axes is None:
-            theme.visualize_output()
+        fig.update_layout(
+            title="Total Holdings (percentage)",
+            xaxis=dict(title="Date"),
+            yaxis=dict(title="Holdings (%)"),
+        )
 
     export_data(
         export,
@@ -877,13 +903,15 @@ def display_holdings_percentage(
         all_holdings,
     )
 
+    return fig.show() if not external_axes else fig
+
 
 @log_start_end(log=logger)
 def display_rolling_volatility(
     portfolio_engine: PortfolioEngine,
     window: str = "1y",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display rolling volatility
 
@@ -904,27 +932,30 @@ def display_rolling_volatility(
     if df.empty:
         return
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis items.")
-            console.print("[red]1 axes expected.\n[/red]")
-            return
-        ax = external_axes[0]
-
     df_portfolio = df["portfolio"]
     df_benchmark = df["benchmark"]
 
-    df_portfolio.plot(ax=ax)
-    df_benchmark.plot(ax=ax)
-    ax.set_title(f"Rolling {metric.title()} using {window} window")
-    ax.set_xlabel("Date")
-    ax.legend(["Portfolio", "Benchmark"], loc="upper left")
-    ax.set_xlim(df_portfolio.index[0], df_portfolio.index[-1])
+    fig = OpenBBFigure()
 
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=df_portfolio.index,
+        y=df_portfolio,
+        name="Portfolio",
+        marker_color=theme.up_color,
+    )
+
+    fig.add_scatter(
+        x=df_benchmark.index,
+        y=df_benchmark,
+        name="Benchmark",
+        marker_color=theme.down_color,
+    )
+
+    fig.update_layout(
+        title=f"Rolling {metric.title()} using {window} window",
+        xaxis=dict(title="Date"),
+        yaxis=dict(title=f"{metric.title()}"),
+    )
 
     export_data(
         export,
@@ -932,6 +963,8 @@ def display_rolling_volatility(
         metric,
         df_portfolio.to_frame().join(df_benchmark),
     )
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)

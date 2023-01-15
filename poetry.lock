@@ -3423,7 +3423,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "pywry"
-version = "0.1.8"
+version = "0.1.9"
 description = ""
 category = "main"
 optional = false
@@ -4871,7 +4871,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "e50f60ee9296aa53c9183df184a0e65ed0ef3dde2548b1ac6643966e821a8b8b"
+content-hash = "b24ac97cbac92ba2ca05aa6dede429f60b26fc63af337e0f1437f31a0436c059"
 
 [metadata.files]
 absl-py = []

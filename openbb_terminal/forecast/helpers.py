@@ -1,36 +1,30 @@
 # pylint: disable=too-many-arguments
-import os
 import argparse
-from typing import Any, Union, Optional, List, Dict, Tuple
-from datetime import timedelta, datetime, time
 import logging
-import pandas as pd
-import numpy as np
+import os
+from datetime import datetime, time, timedelta
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler, Normalizer
-from sklearn.metrics import (
-    mean_absolute_error,
-    r2_score,
-    mean_squared_error,
-)
-from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
-from darts.utils.statistics import plot_residuals_analysis
+import numpy as np
+import pandas as pd
 from darts import TimeSeries
+from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
+from darts.explainability.shap_explainer import ShapExplainer
 from darts.metrics import mape
 from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
-from darts.explainability.shap_explainer import ShapExplainer
+from darts.utils.statistics import plot_residuals_analysis
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from openbb_terminal.rich_config import console
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-    is_valid_axes_count,
-)
-from openbb_terminal.config_plot import PLOT_DPI
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler, Normalizer, StandardScaler
+
 from openbb_terminal import rich_config
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 logging.getLogger("pytorch_lightning").setLevel(logging.CRITICAL)  # No needed for now
@@ -70,7 +64,7 @@ def plot_data_predictions(
     forecast_data,
     n_loops,
     time_str: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots data predictions for the different ML techniques
     external_axes : Optional[List[plt.Axes]], optional
@@ -78,22 +72,13 @@ def plot_data_predictions(
     """
 
     # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    ax.plot(
-        data.index,
-        data.values,
-        "-o",
-        ms=2,
-        label="Real data",
+    fig = OpenBBFigure()
+    fig.add_scatter(
+        x=data.index,
+        y=data.values,
+        mode="lines+markers",
+        line=dict(color=theme.up_color),
+        name="Real data",
     )
     for i in range(len(y_valid) - 1):
 
@@ -103,26 +88,27 @@ def plot_data_predictions(
         else:
             y_pred = preds[i].ravel()
             y_act = y_valid[i].ravel()
-        ax.plot(
-            y_dates_valid[i],
-            y_pred,
-            color=theme.down_color,
+
+        fig.add_scatter(
+            x=y_dates_valid[i],
+            y=y_pred,
+            mode="lines",
+            line=dict(color=theme.down_color),
+            name="Predictions",
         )
-        ax.fill_between(
-            y_dates_valid[i],
-            y_pred,
-            y_act,
-            where=(y_pred < y_act),
-            color=theme.down_color,
-            alpha=0.2,
+        fig.add_scatter(
+            x=y_dates_valid[i],
+            y=y_act,
+            mode="lines",
+            line=dict(color=theme.up_color),
+            name="Actual",
         )
-        ax.fill_between(
-            y_dates_valid[i],
-            y_pred,
-            y_act,
-            where=(y_pred > y_act),
-            color=theme.up_color,
-            alpha=0.2,
+        fig.add_scatter(
+            x=y_dates_valid[i],
+            y=y_act,
+            mode="lines",
+            line=dict(color=theme.up_color),
+            name="Actual",
         )
 
     # Leave this out of the loop so that the legend doesn't get overpopulated with "Predictions"
@@ -132,72 +118,95 @@ def plot_data_predictions(
     else:
         final_pred = preds[-1].reshape(-1, 1).ravel()
         final_valid = y_valid[-1].reshape(-1, 1).ravel()
-    ax.plot(
-        y_dates_valid[-1],
-        final_pred,
-        color=theme.down_color,
-        label="Predictions",
+
+    fig.add_scatter(
+        x=y_dates_valid[-1],
+        y=final_pred,
+        mode="lines",
+        line=dict(color=theme.down_color),
+        name="Predictions",
     )
-    ax.fill_between(
-        y_dates_valid[-1],
-        final_pred,
-        final_valid,
-        alpha=0.2,
+    fig.add_scatter(
+        x=y_dates_valid[-1],
+        y=final_valid,
+        mode="lines",
+        line=dict(color=theme.up_color),
+        name="Actual",
     )
 
-    _, _, ymin, ymax = plt.axis()
-    ax.vlines(
-        forecast_data.index[0],
-        ymin,
-        ymax,
-        linestyle="--",
+    fig.add_vline(
+        x=forecast_data.index[0],
+        line_width=1,
+        line_dash="dash",
+        line_color="white",
     )
     if n_loops == 1:
-        ax.plot(
-            forecast_data.index,
-            forecast_data.values,
-            "-o",
-            label="Forecast",
+        fig.add_scatter(
+            x=forecast_data.index,
+            y=forecast_data.values,
+            mode="lines",
+            line=dict(color=theme.up_color),
+            name="Forecast",
         )
+
     else:
-        ax.plot(
-            forecast_data.index,
-            forecast_data.median(axis=1).values,
-            "-o",
-            label="Forecast",
+        fig.add_scatter(
+            x=forecast_data.index,
+            y=forecast_data.median(axis=1).values,
+            mode="lines",
+            line=dict(color=theme.up_color),
+            name="Forecast",
         )
-        ax.fill_between(
-            forecast_data.index,
-            forecast_data.quantile(0.25, axis=1).values,
-            forecast_data.quantile(0.75, axis=1).values,
-            alpha=0.3,
+        fig.add_scatter(
+            x=forecast_data.index,
+            y=forecast_data.quantile(0.25, axis=1).values,
+            mode="lines",
+            line=dict(color=theme.up_color),
+            name="Forecast",
         )
+
+    ymin, ymax = fig.layout.yaxis.range
     # Subtracting 1 day only for daily data.  For now if not daily, then start line on last point
     if (not time_str or time_str == "1D") and isinstance(
         forecast_data.index[0], datetime
     ):
-        ax.axvspan(
-            forecast_data.index[0] - timedelta(days=1),
-            forecast_data.index[-1],
-            alpha=0.2,
+        fig.add_shape(
+            type="rect",
+            x0=forecast_data.index[0] - timedelta(days=1),
+            y0=ymin,
+            x1=forecast_data.index[-1],
+            y1=ymax,
+            fillcolor=theme.up_color,
+            opacity=0.2,
+            layer="below",
+            line_width=0,
         )
-        ax.set_xlim(data.index[0], forecast_data.index[-1] + timedelta(days=1))
+        fig.update_xaxes(
+            range=[data.index[0], forecast_data.index[-1] + timedelta(days=1)]
+        )
 
     else:
-        ax.axvspan(
-            forecast_data.index[0],
-            forecast_data.index[-1],
-            alpha=0.2,
+        fig.add_shape(
+            type="rect",
+            x0=forecast_data.index[0],
+            y0=ymin,
+            x1=forecast_data.index[-1],
+            y1=ymax,
+            fillcolor=theme.up_color,
+            opacity=0.2,
+            layer="below",
+            line_width=0,
         )
-        ax.set_xlim(data.index[0], forecast_data.index[-1])
-    ax.set_title(title)
-    ax.legend()
-    ax.set_ylabel("Value")
+        fig.update_xaxes(range=[data.index[0], forecast_data.index[-1]])
 
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.update_layout(
+        title=title,
+        xaxis_title="Date",
+        yaxis_title="Price",
+        legend_title="Legend",
+        font=dict(family="Courier New, monospace", size=18, color="#7f7f7f"),
+    )
+    return fig.show() if not external_axes else fig
 
 
 def prepare_scale_train_valid_test(
@@ -265,40 +274,14 @@ def prepare_scale_train_valid_test(
             console.print(
                 "Cannot train enough input days to predict with loaded dataframe\n"
             )
-            return (
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                True,
-            )
+            return (None * 11, True)
     if s_start_date:
         data = data[data.index >= s_start_date]
         if n_input_days + n_predict_days > data.shape[0]:
             console.print(
                 "Cannot train enough input days to predict with loaded dataframe\n"
             )
-            return (
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                True,
-            )
+            return (None * 11, True)
 
     test_data = data.iloc[-n_input_days:]
     train_data = data.iloc[:-n_input_days]
@@ -480,27 +463,35 @@ def plot_forecast(
     forecast_only: bool = False,
     naive: bool = False,
     export_pred_raw: bool = False,
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
 ):
     quant_kwargs = {}
     if low_quantile:
         quant_kwargs["low_quantile"] = low_quantile
     if high_quantile:
         quant_kwargs["high_quantile"] = high_quantile
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
+
+    fig = OpenBBFigure()
 
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
     naive_fcast: type[TimeSeries] = ticker_series.shift(1)
     if forecast_only:
         ticker_series = ticker_series.drop_before(historical_fcast.start_time())
-    ticker_series.plot(label=target_col, ax=ax)
-    historical_fcast.plot(
-        label=f"Backtest {forecast_horizon}-Steps ahead forecast",
-        ax=ax,
-        **quant_kwargs,
+
+    fig.add_scatter(
+        y=list(ticker_series.univariate_values()),
+        x=list(ticker_series.time_index),
+        name="Actual",
+        line_color="gold",
+        mode="lines",
+    )
+
+    fig.add_scatter(
+        y=list(historical_fcast.univariate_values()),
+        x=list(historical_fcast.time_index),
+        name=f"Backtest {forecast_horizon}-Steps ahead forecast",
+        line_color="red",
+        mode="lines",
     )
 
     if naive:
@@ -508,25 +499,40 @@ def plot_forecast(
         naive_fcast = naive_fcast.drop_before(historical_fcast.start_time())
         naive_precision = mape(ticker_series, naive_fcast)
 
-        naive_fcast.plot(
-            label=f"Naive+1: {naive_precision:.2f}%",
-            ax=ax,
-            **quant_kwargs,
+        fig.add_scatter(
+            y=list(naive_fcast.univariate_values()),
+            x=list(naive_fcast.time_index),
+            name=f"Naive+1: {naive_precision:.2f}%",
+            line_color="green",
+            mode="lines",
         )
 
     pred_label = f"{name} Forecast"
     if past_covariates:
         pred_label += " w/ past covs"
-    predicted_values.plot(label=pred_label, **quant_kwargs, color="#00AAFF")
-    ax.set_title(
-        f"{name} for <{ticker_name}> for next [{n_predict}] days (MAPE={precision:.2f}%)"
-    )
-    ax.set_ylabel(target_col)
-    ax.set_xlabel("Date")
-    theme.style_primary_axis(ax)
 
-    if not external_axes:
-        theme.visualize_output()
+    fig.add_scatter(
+        y=list(predicted_values.univariate_values()),
+        x=list(predicted_values.time_index),
+        name=pred_label,
+        line_color="#00AAFF",
+        mode="lines",
+    )
+
+    fig.update_layout(
+        title={
+            "text": f"{name} for <{ticker_name}> for next [{n_predict}] days (MAPE={precision:.2f}%)",
+            "x": 0.5,
+            "xanchor": "center",
+            "yanchor": "top",
+        },
+        xaxis_title="Date",
+        yaxis_title=target_col,
+        xaxis=dict(
+            type="date",
+            tickformat="%m/%d/%Y",
+        ),
+    )
 
     if probabilistic:
         numeric_forecast = predicted_values.quantile_df()[f"{target_col}_0.5"].tail(
@@ -562,6 +568,8 @@ def plot_forecast(
             name + "_predictions",
             numeric_forecast,
         )
+
+    return fig.show() if not external_axes else fig
 
 
 def plot_explainability(

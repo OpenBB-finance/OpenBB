@@ -5,15 +5,15 @@ import logging
 from typing import Tuple, Union
 
 import numpy as np
-import scipy
 import pandas as pd
+import scipy
 from sklearn.metrics import r2_score
+
 from openbb_terminal.common.quantitative_analysis import qa_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.portfolio.statics import PERIODS
-from openbb_terminal.portfolio import portfolio_helper, metrics_model
+from openbb_terminal.portfolio import metrics_model, portfolio_helper
 from openbb_terminal.portfolio.portfolio_engine import PortfolioEngine
-
+from openbb_terminal.portfolio.statics import PERIODS
 
 # pylint: disable=E1136,W0201,R0902,C0302
 # pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods, consider-using-f-string
@@ -267,7 +267,7 @@ def get_yearly_returns(
 def get_monthly_returns(
     portfolio_engine: PortfolioEngine,
     window: str = "all",
-) -> pd.DataFrame:
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Get monthly returns
 
     Parameters
@@ -329,41 +329,29 @@ def get_monthly_returns(
                 breturns_val.append(breturns_year_month_val.values[-1])
         breturns_month_val.append(breturns_val)
 
+    columns = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+    ]
     monthly_returns = pd.DataFrame(
         creturns_month_val,
         index=sorted(list(set(portfolio_returns.index.year))),
-        columns=[
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ],
+        columns=columns,
     )
     bench_monthly_returns = pd.DataFrame(
         breturns_month_val,
         index=sorted(list(set(benchmark_returns.index.year))),
-        columns=[
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ],
+        columns=columns,
     )
 
     return monthly_returns, bench_monthly_returns
