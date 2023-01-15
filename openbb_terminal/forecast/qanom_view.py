@@ -11,6 +11,12 @@ import matplotlib.pyplot as plt
 from openbb_terminal.forecast import qanom_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
+from openbb_terminal.helper_funcs import (
+    plot_autoscale,
+)
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -19,15 +25,11 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_qanomaly_detection(
     data: Union[pd.Series, pd.DataFrame],
+    dataset_name="",
     target_column: str = "close",
-    dataset_name: str = "",
-    train_split: float = 0.85,
-    forecast_horizon: int = 5,
-    export: str = "",
-    forecast_only: bool = False,
+    train_split: float = 0.6,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
-    export_pred_raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Display Quantile Anomaly Detection
@@ -35,73 +37,56 @@ def display_qanomaly_detection(
     Parameters
     ----------
     data: Union[pd.Series, pd.DataFrame]
-        Input Data
-    dataset_name: str
-        The name of the ticker to be predicted
-    n_predict: int
-        Days to predict. Defaults to 5.
-    target_col: str
+
+    Input Data
+    ----------
+    target_column: str
         Target column to forecast. Defaults to "close".
     train_split: (float, optional)
         Train/val split. Defaults to 0.85.
-    past_covariates: str
-        Multiple secondary columns to factor in when forecasting. Defaults to None.
-    forecast_horizon: int
-        Forecast horizon when performing historical forecasting. Defaults to 5.
-    output_chunk_length: int
-        The length of the forecast of the model. Defaults to 1.
-    lags: Union[int, List[int]]
-        lagged target values to predict the next time step
-    export: str
-        Format to export data
-    residuals: bool
-        Whether to show residuals for the model. Defaults to False.
-    forecast_only: bool
-        Whether to only show dates in the forecasting range. Defaults to False.
-    start_date: Optional[datetime]
-        The starting date to perform analysis, data before this is trimmed. Defaults to None.
-    end_date: Optional[datetime]
-        The ending date to perform analysis, data after this is trimmed. Defaults to None.
-    naive: bool
-        Whether to show the naive baseline. This just assumes the closing price will be the
-        same as the previous day's closing price. Defaults to False.
-    external_axes: Optional[List[plt.axes]]
-        External axes to plot on
+    forecast_horizon: (int, optional)
+        Forecast horizon. Defaults to 5.
+    export: (str, optional)
+        Export data to csv. Defaults to "".
+    start_date: (Optional[datetime], optional)
+        Start date. Defaults to None.
+    end_date: (Optional[datetime], optional)
+        End date. Defaults to None.
+    external_axes: (Optional[List[plt.axes]], optional)
+        External axes. Defaults to None.
+
+    Returns
+    -------
+    None
     """
-    data = helpers.clean_data(
-        data, start_date, end_date, target_column
-    )
+    data = helpers.clean_data(data, start_date, end_date, target_column)
     if not helpers.check_data(data, target_column):
         return
 
-    # (
-    #     ticker_series,
-    # ) = 
-    qanom_model.get_qanomaly_detection_data(
+    (ticker_series, anom_score, binary_anom) = qanom_model.get_qanomaly_detection_data(
         data=data,
         target_column=target_column,
         train_split=train_split,
-        forecast_horizon=forecast_horizon,
     )
 
-    # probabilistic = True
-    # helpers.plot_forecast(
-    #     name="LINREGR",
-    #     target_col=target_column,
-    #     historical_fcast=historical_fcast,
-    #     predicted_values=predicted_values,
-    #     ticker_series=ticker_series,
-    #     ticker_name=dataset_name,
-    #     data=data,
-    #     n_predict=n_predict,
-    #     forecast_horizon=forecast_horizon,
-    #     past_covariates=past_covariates,
-    #     precision=precision,
-    #     probabilistic=probabilistic,
-    #     export=export,
-    #     forecast_only=forecast_only,
-    #     naive=naive,
-    #     export_pred_raw=export_pred_raw,
-    #     external_axes=external_axes,
-    # )
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
 
+    ticker_series.plot(label=target_column, ax=ax)
+    (anom_score / 2.0 - 100).plot(
+        label="computed anomaly score", c="orangered", lw=3, ax=ax
+    )
+    (binary_anom * 45 - 150).plot(label="detected binary anomaly (1=TRUE)", lw=4, ax=ax)
+
+    ax.set_title(f"Quantile Anomaly Detection for {dataset_name})")
+    ax.set_xlabel("Date")
+
+    console.print(
+        f" [green]Quantile Anomaly Detection for {dataset_name} calculated.[/green]"
+    )
+
+    theme.style_primary_axis(ax)
+    if external_axes is None:
+        theme.visualize_output()

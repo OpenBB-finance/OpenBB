@@ -71,7 +71,7 @@ from openbb_terminal.forecast import (
     helpers,
     trans_view,
     nhits_view,
-    qanom_view
+    qanom_view,
 )
 
 from openbb_terminal.common import common_model
@@ -134,7 +134,7 @@ class ForecastController(BaseController):
         "season",
         "which",
         "nhits",
-        "qanom"
+        "qanom",
     ]
     pandas_plot_choices = [
         "line",
@@ -3133,7 +3133,6 @@ class ForecastController(BaseController):
                 export_pred_raw=ns_parser.export_pred_raw,
             )
 
-
     @log_start_end(log=logger)
     def call_qanom(self, other_args: List[str]):
         """Process QANOM command"""
@@ -3147,15 +3146,6 @@ class ForecastController(BaseController):
             """,
         )
 
-        # parser.add_argument(
-        #     "--low_quantile",
-        #     dest="low_quantile",
-        #     type=check_positive,
-        #     default=512,
-        #     help="The number of neurons in each layer",
-        # )
-
-
         # if user does not put in --dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--dataset")
@@ -3168,7 +3158,6 @@ class ForecastController(BaseController):
             forecast_only=True,
             start=True,
             end=True,
-            export_pred_raw=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -3185,9 +3174,6 @@ class ForecastController(BaseController):
                 dataset_name=ns_parser.target_dataset,
                 target_column=ns_parser.target_column,
                 train_split=ns_parser.train_split,
-                export=ns_parser.export,
-                forecast_only=ns_parser.forecast_only,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
-                export_pred_raw=ns_parser.export_pred_raw,
             )
