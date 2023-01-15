@@ -157,7 +157,7 @@ def clean(
 
 @log_start_end(log=logger)
 def add_ema(
-    dataset: pd.DataFrame, target_column: str = "close", period: int = 10
+    dataset: pd.DataFrame, target_column: str = "Close", period: int = 10
 ) -> pd.DataFrame:
     """A moving average provides an indication of the trend of the price movement
     by cut down the amount of "noise" on a price chart.
@@ -186,9 +186,9 @@ def add_ema(
 @log_start_end(log=logger)
 def add_sto(
     dataset: pd.DataFrame,
-    close_column: str = "close",
-    high_column: str = "high",
-    low_column: str = "low",
+    close_column: str = "Close",
+    high_column: str = "High",
+    low_column: str = "Low",
     period: int = 10,
 ) -> pd.DataFrame:
     """Stochastic Oscillator %K and %D : A stochastic oscillator is a momentum indicator comparing a particular closing
@@ -241,7 +241,7 @@ def add_sto(
 
 @log_start_end(log=logger)
 def add_rsi(
-    dataset: pd.DataFrame, target_column: str = "close", period: int = 10
+    dataset: pd.DataFrame, target_column: str = "Close", period: int = 10
 ) -> pd.DataFrame:
     """A momentum indicator that measures the magnitude of recent price changes to evaluate
     overbought or oversold conditions in the price of a stock or other asset.
@@ -283,7 +283,7 @@ def add_rsi(
 
 @log_start_end(log=logger)
 def add_roc(
-    dataset: pd.DataFrame, target_column: str = "close", period: int = 10
+    dataset: pd.DataFrame, target_column: str = "Close", period: int = 10
 ) -> pd.DataFrame:
     """A momentum oscillator, which measures the percentage change between the current
     value and the n period past value.
@@ -312,7 +312,7 @@ def add_roc(
 
 @log_start_end(log=logger)
 def add_momentum(
-    dataset: pd.DataFrame, target_column: str = "close", period: int = 10
+    dataset: pd.DataFrame, target_column: str = "Close", period: int = 10
 ) -> pd.DataFrame:
     """A momentum oscillator, which measures the percentage change between the current
     value and the n period past value.
@@ -340,7 +340,7 @@ def add_momentum(
 @log_start_end(log=logger)
 def add_delta(
     dataset: pd.DataFrame,
-    target_column: str = "close",
+    target_column: str = "Close",
 ) -> pd.DataFrame:
     """
     Calculate the %change of a variable based on a specific column
@@ -354,9 +354,9 @@ def add_delta(
 @log_start_end(log=logger)
 def add_atr(
     dataset: pd.DataFrame,
-    close_column: str = "close",
-    high_column: str = "high",
-    low_column: str = "low",
+    close_column: str = "Close",
+    high_column: str = "High",
+    low_column: str = "Low",
 ) -> pd.DataFrame:
     """
     Calculate the Average True Range of a variable based on a a specific stock ticker.
@@ -377,7 +377,7 @@ def add_atr(
 @log_start_end(log=logger)
 def add_signal(
     dataset: pd.DataFrame,
-    target_column: str = "close",
+    target_column: str = "Close",
 ) -> pd.DataFrame:
     """A price signal based on short/long term price.
 
