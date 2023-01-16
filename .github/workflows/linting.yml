@@ -16,7 +16,7 @@ on:
   pull_request:
     branches:
       - 'develop'
-    types: [edited]
+    types: [opened, synchronize, edited]
 
 # Cancel previous runs that are not yet completed.
 concurrency:
