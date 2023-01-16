@@ -25,7 +25,7 @@ class AlternativeDataController(BaseController):
     """Alternative Controller class"""
 
     CHOICES_COMMANDS: List[str] = ["hn"]
-    CHOICES_MENUS = ["covid", "oss","realestate"]
+    CHOICES_MENUS = ["covid", "oss", "realestate"]
     PATH = "/alternative/"
     CHOICES_GENERATION = True
 
@@ -87,11 +87,7 @@ class AlternativeDataController(BaseController):
     def call_realestate(self, _):
         """Process realestate command."""
         from openbb_terminal.alternative.realestate.realestate_controller import (
-        RealEstateController,
+            RealEstateController,
         )
 
         self.queue = self.load_class(RealEstateController, self.queue)
-
-
-
-

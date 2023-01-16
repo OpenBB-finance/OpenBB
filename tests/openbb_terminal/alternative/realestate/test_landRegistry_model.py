@@ -18,7 +18,7 @@ def test_get_towns_sold_prices():
     assert (
         len(
             landRegistry_model.get_towns_sold_prices(
-            "DARTFORD", "2019-01-01", "2022-01-01"
+                "DARTFORD", "2019-01-01", "2022-01-01"
             )
         )
         > 0
@@ -29,6 +29,3 @@ def test_get_region_stats():
     assert (
         len(landRegistry_model.get_region_stats("KENT", "2019-01-01", "2022-01-01")) > 0
     )
-
-
-
