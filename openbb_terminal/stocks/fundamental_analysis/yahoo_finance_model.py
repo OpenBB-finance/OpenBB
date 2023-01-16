@@ -15,7 +15,7 @@ import yfinance as yf
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import lambda_long_number_format
+from openbb_terminal.helper_funcs import lambda_long_number_format, unlocalize_df_tz
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 from openbb_terminal.helpers_denomination import (
@@ -312,6 +312,7 @@ def get_mktcap(
     df_data = yf.download(symbol, start=start_date, progress=False, threads=False)
     if not df_data.empty:
 
+        df_data = unlocalize_df_tz(df_data)
         data = yf.Ticker(symbol).info
         if data:
             df_data["Adj Close"] = df_data["Adj Close"] * data["sharesOutstanding"]

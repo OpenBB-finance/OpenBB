@@ -9,6 +9,7 @@ import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 
 from openbb_terminal.decorators import check_api_key
+from openbb_terminal.helper_funcs import unlocalize_df_tz
 from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
 
@@ -97,6 +98,7 @@ def load_stock_yf(
     if df_stock_candidate.empty:
         return pd.DataFrame()
 
+    df_stock_candidate = unlocalize_df_tz(df_stock_candidate)
     df_stock_candidate.index.name = "date", int_string
     return df_stock_candidate
 

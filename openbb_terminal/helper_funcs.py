@@ -1907,7 +1907,7 @@ def check_start_less_than_end(start_date: str, end_date: str) -> bool:
     return False
 
 
-def unlocalize_df(df: pd.DataFrame) -> pd.DataFrame:
+def unlocalize_df_tz(df: pd.DataFrame) -> pd.DataFrame:
     """Unlocalize a dataframe date index.
 
     Parameters

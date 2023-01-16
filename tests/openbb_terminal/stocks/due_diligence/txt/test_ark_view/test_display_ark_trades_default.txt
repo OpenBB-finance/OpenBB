@@ -1,7 +1,8 @@
             shares  weight  fund direction everything.profile.companyName   Close ($)  Total ($1M)
 Date                                                                                              
-2023-01-11   69060  0.1318  ARKK       Buy                    Tesla, Inc.         NaN          NaN
-2023-01-11   22463  0.3288  ARKQ       Buy                    Tesla, Inc.         NaN          NaN
+2023-01-13  168989  0.2996  ARKK       Buy                    Tesla, Inc.         NaN          NaN
+2023-01-11   69060  0.1318  ARKK       Buy                    Tesla, Inc.  123.220001     8.509573
+2023-01-11   22463  0.3288  ARKQ       Buy                    Tesla, Inc.  123.220001     2.767891
 2023-01-10   25417  0.3621  ARKQ       Buy                    Tesla, Inc.  118.849998     3.020810
 2023-01-10   75565  0.1424  ARKK       Buy                    Tesla, Inc.  118.849998     8.980900
 2023-01-06   24506  0.0465  ARKK       Buy                    Tesla, Inc.  113.059998     2.770648
@@ -19,4 +20,3 @@ Date
 2022-12-15    5962  0.0132  ARKK       Buy                    Tesla, Inc.  157.669998     0.940029
 2022-12-14   61537  0.1375  ARKK       Buy                    Tesla, Inc.  156.800003     9.649002
 2022-12-14   10066  0.1817  ARKQ       Buy                    Tesla, Inc.  156.800003     1.578349
-2022-12-14    3259  0.0467  ARKW       Buy                    Tesla, Inc.  156.800003     0.511011
