@@ -394,6 +394,7 @@ def plot_voi(
     ax.axvline(max_pain, lw=2, ls="--", label=f"Max Pain: {max_pain:.2f}", alpha=0.7)
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Volume or OI (1k)")
+    ax.set_yticklabels([f"{x:,.0f}".replace("-", "") for x in ax.get_yticks().tolist()])
     ax.set_xlim(min_strike, max_strike)
     ax.legend(loc="best", fontsize="xx-small")
     title = f"Volume and Open Interest for {symbol.upper()} expiring {expiry}"
