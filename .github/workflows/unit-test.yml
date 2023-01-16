@@ -24,8 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged != true
     outputs:
-      python-changes: ${{ steps.python-changes.outputs.python-changes }}
-      folder-changes: ${{ steps.folder-changes.outputs.folder-changes }}
+      # python-changes: ${{ steps.python-changes.outputs.python-changes }}
+      # folder-changes: ${{ steps.folder-changes.outputs.folder-changes }}
       check-changes: ${{ steps.check-changes.outputs.check-changes }}
     steps:
       - name: Checkout
@@ -37,47 +37,47 @@ jobs:
           persist-credentials: false
 
       # Check for changes to Python files to avoid running tests unnecessarily
-      - name: python file check
-        id: python-changes
-        run: |
-          # Extract the source and target branches for the PR
-          source_branch=$(jq -r .pull_request.head.ref "$GITHUB_EVENT_PATH")
-          target_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
+      # - name: python file check
+      #   id: python-changes
+      #   run: |
+      #     # Extract the source and target branches for the PR
+      #     source_branch=$(jq -r .pull_request.head.ref "$GITHUB_EVENT_PATH")
+      #     target_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
 
-          # Check for changes to Python code to avoid running tests unnecessarily
-          if git diff --name-only origin/$target_branch HEAD | grep -E "\.py$"; then
-            echo "python-changes=true" >> $GITHUB_OUTPUT
-          else
-            echo "python-changes=false" >> $GITHUB_OUTPUT
-          fi
+      #     # Check for changes to Python code to avoid running tests unnecessarily
+      #     if git diff --name-only origin/$target_branch HEAD | grep -E "\.py$"; then
+      #       echo "python-changes=true" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "python-changes=false" >> $GITHUB_OUTPUT
+      #     fi
 
-      # Check for changes to the openbb_terminal folder to avoid running tests unnecessarily
-      - name: Check for changes to the openbb_terminal folder
-        id: folder-changes
-        run: |
-          source_branch=$(jq -r .pull_request.head.ref "$GITHUB_EVENT_PATH")
-          target_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
-
-          if git diff --name-only origin/$target_branch HEAD | grep -E "openbb_terminal\/.*"; then
-            echo "folder-changes=true" >> $GITHUB_OUTPUT
-          else
-            echo "folder-changes=false" >> $GITHUB_OUTPUT
-          fi
-      
-      # combine the two checks into one
-      - name: Check for changes to python files or the openbb_terminal folder
+      # Check for changes to python files, lockfiles and the openbb_terminal folder
+      - name: Check for changes
         id: check-changes
         run: |
-          if [ ${{ steps.python-changes.outputs.python-changes }} == 'true' ] || [ ${{ steps.folder-changes.outputs.folder-changes }} == 'true' ]; then
+          source_branch=$(jq -r .pull_request.head.ref "$GITHUB_EVENT_PATH")
+          target_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
+
+          if git diff --name-only origin/$target_branch HEAD | grep -E ".py$|openbb_terminal\/.*|pyproject.toml|poetry.lock|requirements.txt|requirements-full.txt"; then
             echo "check-changes=true" >> $GITHUB_OUTPUT
           else
             echo "check-changes=false" >> $GITHUB_OUTPUT
           fi
+      
+      # combine the two checks into one
+      # - name: Check for changes to python files or the openbb_terminal folder
+      #   id: check-changes
+      #   run: |
+      #     if [ ${{ steps.python-changes.outputs.python-changes }} == 'true' ] || [ ${{ steps.folder-changes.outputs.folder-changes }} == 'true' ]; then
+      #       echo "check-changes=true" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "check-changes=false" >> $GITHUB_OUTPUT
+      #     fi
 
       - name: Show Output result for python-changes
         run: |
-          echo "python-changes=${{ steps.python-changes.outputs.python-changes }}"
-          echo "folder-changes=${{ steps.folder-changes.outputs.folder-changes }}"
+          # echo "python-changes=${{ steps.python-changes.outputs.python-changes }}"
+          # echo "folder-changes=${{ steps.folder-changes.outputs.folder-changes }}"
           echo "check-changes=${{ steps.check-changes.outputs.check-changes }}"
 
   base-test:
