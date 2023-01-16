@@ -90,7 +90,12 @@ def load_stock_yf(
 
     # Adding a dropna for weekly and monthly because these include weird NaN columns.
     df_stock_candidate = yf.download(
-        symbol, start=start_date, end=end_date, progress=False, interval=int_
+        symbol,
+        start=start_date,
+        end=end_date,
+        progress=False,
+        interval=int_,
+        ignore_tz=True,
     ).dropna(axis=0)
 
     # Check that loading a stock was not successful
