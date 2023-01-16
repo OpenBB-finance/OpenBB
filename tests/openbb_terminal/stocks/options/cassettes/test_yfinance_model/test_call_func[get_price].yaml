@@ -13,29 +13,30 @@ interactions:
   response:
     body:
       string: !!binary |
-        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
+        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
+        2QtzTd93+JXGb+pyv/8P6xUISv0MAAA=
     headers:
       Age:
-      - '0'
+      - '2'
       Connection:
       - keep-alive
       Expect-CT:
@@ -55,11 +56,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1115'
+      - '1163'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 11 Jan 2023 10:51:22 GMT
+      - Fri, 13 Jan 2023 18:12:02 GMT
       server:
       - ATS
       vary:
@@ -67,13 +68,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '17'
+      - '25'
       x-request-id:
-      - 9d52c84f-feb3-4928-b7f9-70a707681b60
+      - dabd6166-317a-4a5c-93fd-8893f51c137c
       x-yahoo-request-id:
-      - alh7m89hrt55a
+      - 7109uk5hs37ni
       y-rid:
-      - alh7m89hrt55a
+      - 7109uk5hs37ni
     status:
       code: 200
       message: OK

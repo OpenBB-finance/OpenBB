@@ -19,6 +19,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip(reason="yfinance is not working after website changes")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
