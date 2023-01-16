@@ -18,7 +18,6 @@ jobs:
       source-branch: ${{ steps.branch-name-check.outputs.source-branch }}
       target-branch: ${{ steps.branch-name-check.outputs.target-branch }}
     steps:
-    # Extract the source and target branches for the PR
     - name: Extract branch names
       id: branch-name-check
       run: |
