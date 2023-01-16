@@ -10,7 +10,7 @@ import pandas_ta as ta
 import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import is_intraday
+from openbb_terminal.helper_funcs import is_intraday, unlocalize_df
 from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
@@ -36,9 +36,12 @@ def get_data(symbol: str, start_date: str = "2019-01-01") -> pd.DataFrame:
     close_col = ta_helpers.check_columns(data, high=False, low=False)
     if close_col is None:
         return pd.DataFrame()
-    prices = pd.DataFrame(data[close_col])
-    prices.columns = [symbol]
-    return prices
+    df = pd.DataFrame(data[close_col])
+    df.columns = [symbol]
+
+    df = unlocalize_df(df)
+
+    return df
 
 
 @log_start_end(log=logger)

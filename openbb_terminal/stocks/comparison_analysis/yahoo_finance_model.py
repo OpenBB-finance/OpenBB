@@ -14,6 +14,7 @@ from sklearn.preprocessing import normalize
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import unlocalize_df
 
 logger = logging.getLogger(__name__)
 
@@ -106,6 +107,8 @@ def get_historical(
         df_similar = df_similar.fillna(method="bfill")
 
     df_similar = df_similar.dropna(axis=1, how="all")
+
+    df_similar = unlocalize_df(df_similar)
 
     if end_date:
         df_similar = df_similar[df_similar.index <= end_date]

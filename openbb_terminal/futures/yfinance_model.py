@@ -13,6 +13,7 @@ from dateutil.relativedelta import relativedelta
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.helper_funcs import unlocalize_df
 
 # pylint: disable=attribute-defined-outside-init
 
@@ -111,6 +112,9 @@ def get_historical_futures(symbols: List[str], expiry: str = "") -> pd.DataFrame
         df.columns = pd.MultiIndex.from_tuples(
             [(tup[0], tup[1].replace("=F", "")) for tup in df.columns]
         )
+
+    df = unlocalize_df(df)
+
     return df
 
 

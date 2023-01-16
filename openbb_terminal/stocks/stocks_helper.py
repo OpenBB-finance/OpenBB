@@ -48,6 +48,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
     lambda_long_number_format_y_axis,
+    unlocalize_df,
 )
 from openbb_terminal.rich_config import console
 
@@ -816,6 +817,9 @@ def load_ticker(
     df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
 
     df_data.index = pd.to_datetime(df_data.index)
+
+    df_data = unlocalize_df(df_data)
+
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
         "timedelta64[D]"
     )
