@@ -309,7 +309,9 @@ def get_mktcap(
         start_date = (datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d")
 
     currency = ""
-    df_data = yf.download(symbol, start=start_date, progress=False, threads=False)
+    df_data = yf.download(
+        symbol, start=start_date, progress=False, threads=False, ignore_tz=True
+    )
     if not df_data.empty:
 
         data = yf.Ticker(symbol).info
