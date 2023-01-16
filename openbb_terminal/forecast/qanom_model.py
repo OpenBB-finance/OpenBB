@@ -22,12 +22,7 @@ def get_qanomaly_detection_data(
     data: Union[pd.Series, pd.DataFrame],
     target_column: str = "close",
     train_split: float = 0.6,
-) -> Tuple[
-    List[TimeSeries],
-    # List[TimeSeries],
-    # List[TimeSeries],
-    # float,
-]:
+) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries]]:
     """Get Quantile Anomaly Detection Data
 
     Parameters
@@ -47,7 +42,6 @@ def get_qanomaly_detection_data(
         List[TimeSeries],
         List[TimeSeries],
         List[TimeSeries],
-        float,
         ]
     """
     use_scalers = False
