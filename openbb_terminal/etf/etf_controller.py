@@ -228,6 +228,7 @@ class ETFController(BaseController):
             dest="end",
             help="The ending date (format YYYY-MM-DD) of the ETF",
         )
+
         parser.add_argument(
             "-l",
             "--limit",
@@ -255,12 +256,17 @@ class ETFController(BaseController):
 
             self.etf_name = ns_parser.ticker.upper()
             self.etf_data = df_etf_candidate
-            quote_type = etf_helper.get_quote_type(self.etf_name)
-            if quote_type != "ETF":
-                console.print(f"{self.etf_name} is: {quote_type.lower()}")
             holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
             if holdings.empty:
-                console.print("No company holdings found!")
+                quote_type = etf_helper.get_quote_type(self.etf_name)
+                if quote_type != "ETF":
+                    if quote_type == "N/A":
+                        console.print(
+                            "[red]Cannot determine ticker type.  Holdings only shown for ETFs\n[/red]"
+                        )
+                    else:
+                        console.print(f"{self.etf_name} is: {quote_type.lower()}")
+                    console.print("No company holdings found!")
             else:
                 self.etf_holdings.clear()
                 console.print("Top holdings found:")
