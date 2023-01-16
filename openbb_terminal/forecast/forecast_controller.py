@@ -319,7 +319,7 @@ class ForecastController(BaseController):
         mt.add_cmd("tft", self.files)
         mt.add_raw("\n")
         mt.add_info("_misc_")
-        mt.add_cmd("whisper", self.files)
+        mt.add_cmd("whisper")
 
         console.print(text=mt.menu_text, menu="Forecast")
 
@@ -3161,7 +3161,7 @@ class ForecastController(BaseController):
             "--video",
             dest="video",
             type=str,
-            default="",
+            default="https://www.youtube.com/watch?v=34VZzBWBDN0",
             help="video URLs to transcribe",
         )
         parser.add_argument(
@@ -3226,9 +3226,6 @@ class ForecastController(BaseController):
         )
 
         if ns_parser:
-            if not helpers.check_parser_input(ns_parser, self.datasets):
-                return
-
             whisper_view.transcribe_and_summarize(
                 video=ns_parser.video,
                 model_name=ns_parser.model_name,
