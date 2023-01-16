@@ -10,6 +10,7 @@ from typing import Any, Dict, List, Tuple
 import numpy as np
 import pandas as pd
 import yfinance as yf
+from tqdm import tqdm
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
@@ -37,7 +38,7 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
 
     options = pd.DataFrame()
 
-    for _date in dates:
+    for _date in tqdm(dates, desc="Getting option chains"):
         calls = ticker.option_chain(_date).calls
         puts = ticker.option_chain(_date).puts
 

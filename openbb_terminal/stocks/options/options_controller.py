@@ -184,7 +184,7 @@ class OptionsController(BaseController):
             self.source = "YahooFinance"
             df = yfinance_model.get_full_option_chain(self.ticker)
 
-        if (isinstance(df, pd.DataFrame) and df.empty) or df is None:
+        if (isinstance(df, pd.DataFrame) and df.empty) or not df:
             console.print("[red]Error loading option chain.[/red]")
             return
 
