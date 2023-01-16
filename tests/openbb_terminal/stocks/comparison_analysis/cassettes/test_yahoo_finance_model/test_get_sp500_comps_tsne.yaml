@@ -49,13 +49,13 @@ interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Date:
-      - Mon, 16 Jan 2023 12:14:06 GMT
+      - Mon, 16 Jan 2023 12:57:34 GMT
       ETag:
       - '"aba50084953f6df27f9b9a8a15faecd0ccaa2aa6d285b32940163d10a17f8e07"'
       Expires:
-      - Mon, 16 Jan 2023 12:19:06 GMT
+      - Mon, 16 Jan 2023 13:02:34 GMT
       Source-Age:
-      - '48'
+      - '0'
       Strict-Transport-Security:
       - max-age=31536000
       Vary:
@@ -69,17 +69,73 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Fastly-Request-ID:
-      - abdb7a125e2a4d648269a18015176fbeee0a6603
+      - 1eac7db685e144e6f05d169463c15d497081f45c
       X-Frame-Options:
       - deny
       X-GitHub-Request-Id:
       - B4F6:C27D:3C427B:40EDDE:63C53F5E
       X-Served-By:
-      - cache-lis1490058-LIS
+      - cache-lis1490049-LIS
       X-Timer:
-      - S1673871247.865664,VS0,VE2
+      - S1673873855.707053,VS0,VE218
       X-XSS-Protection:
       - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TOT.TO?interval=1d&range=1d
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"CAD","symbol":"TOT.TO","exchangeName":"TOR","instrumentType":"EQUITY","firstTradeDate":913732200,"regularMarketTime":1673643600,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/Toronto","regularMarketPrice":9.18,"chartPreviousClose":9.09,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1673874000,"end":1673879400,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1673879400,"end":1673902800,"gmtoffset":-18000},"post":{"timezone":"EST","start":1673902800,"end":1673906400,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1673620200],"indicators":{"quote":[{"low":[8.949999809265137],"close":[9.180000305175781],"high":[9.239999771118164],"volume":[69700],"open":[9.050000190734863]}],"adjclose":[{"adjclose":[9.180000305175781]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '935'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Mon, 16 Jan 2023 12:57:34 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '28'
+      x-request-id:
+      - 1dbd0bf6-75cf-4539-bc6b-d924322d4652
+      x-yahoo-request-id:
+      - 9cg7ejthsaidv
+      y-rid:
+      - 9cg7ejthsaidv
     status:
       code: 200
       message: OK
