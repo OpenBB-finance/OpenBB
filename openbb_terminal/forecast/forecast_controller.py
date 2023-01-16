@@ -71,6 +71,7 @@ from openbb_terminal.forecast import (
     helpers,
     trans_view,
     nhits_view,
+    whisper_view,
 )
 
 from openbb_terminal.common import common_model
@@ -133,6 +134,7 @@ class ForecastController(BaseController):
         "season",
         "which",
         "nhits",
+        "whisper",
     ]
     pandas_plot_choices = [
         "line",
@@ -303,6 +305,9 @@ class ForecastController(BaseController):
         mt.add_cmd("tcn", self.files)
         mt.add_cmd("trans", self.files)
         mt.add_cmd("tft", self.files)
+        mt.add_raw("\n")
+        mt.add_info("_misc_")
+        mt.add_cmd("whisper", self.files)
 
         console.print(text=mt.menu_text, menu="Forecast")
 
