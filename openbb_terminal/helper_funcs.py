@@ -1905,26 +1905,3 @@ def check_start_less_than_end(start_date: str, end_date: str) -> bool:
         console.print("[red]Start date cannot be greater than end date.[/red]")
         return True
     return False
-
-
-def unlocalize_df_tz(df: pd.DataFrame) -> pd.DataFrame:
-    """Unlocalize a dataframe date index.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        Dataframe to unlocalize date index
-
-    Returns
-    -------
-    pd.DataFrame
-        Unlocalized dataframe date index
-    """
-
-    # Remove timezone from index
-    df.reset_index(inplace=True)
-    if "Date" in df.columns:
-        df["Date"] = df["Date"].dt.tz_localize(None)
-        df.set_index("Date", inplace=True)
-
-    return df

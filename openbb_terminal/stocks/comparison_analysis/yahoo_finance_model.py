@@ -14,7 +14,6 @@ from sklearn.preprocessing import normalize
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.helper_funcs import unlocalize_df_tz
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +80,7 @@ def get_historical(
     # To avoid having to recursively append, just do a single yfinance call.  This will give dataframe
     # where all tickers are columns.
     similar_tickers_dataframe = yf.download(
-        similar, start=start_date, progress=False, threads=False
+        similar, start=start_date, progress=False, threads=False, ignore_tz=True
     )[d_candle_types[candle_type]]
 
     returnable = (
@@ -107,8 +106,6 @@ def get_historical(
         df_similar = df_similar.fillna(method="bfill")
 
     df_similar = df_similar.dropna(axis=1, how="all")
-
-    df_similar = unlocalize_df_tz(df_similar)
 
     if end_date:
         df_similar = df_similar[df_similar.index <= end_date]
@@ -234,9 +231,9 @@ def get_sp500_comps_tsne(
     # Adding the type makes pylint stop yelling
     close_vals: pd.DataFrame = get_1y_sp500()
     if symbol not in close_vals.columns:
-        df_symbol = yf.download(symbol, start=close_vals.index[0], progress=False)[
-            "Adj Close"
-        ].to_frame()
+        df_symbol = yf.download(
+            symbol, start=close_vals.index[0], progress=False, ignore_tz=True
+        )["Adj Close"].to_frame()
         df_symbol.columns = [symbol]
         df_symbol.index = df_symbol.index.astype(str)
         close_vals = close_vals.join(df_symbol)

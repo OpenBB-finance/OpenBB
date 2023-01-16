@@ -9,7 +9,6 @@ import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 
 from openbb_terminal.decorators import check_api_key
-from openbb_terminal.helper_funcs import unlocalize_df_tz
 from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
 
@@ -91,14 +90,18 @@ def load_stock_yf(
 
     # Adding a dropna for weekly and monthly because these include weird NaN columns.
     df_stock_candidate = yf.download(
-        symbol, start=start_date, end=end_date, progress=False, interval=int_
+        symbol,
+        start=start_date,
+        end=end_date,
+        progress=False,
+        interval=int_,
+        ignore_tz=True,
     ).dropna(axis=0)
 
     # Check that loading a stock was not successful
     if df_stock_candidate.empty:
         return pd.DataFrame()
 
-    df_stock_candidate = unlocalize_df_tz(df_stock_candidate)
     df_stock_candidate.index.name = "date", int_string
     return df_stock_candidate
 

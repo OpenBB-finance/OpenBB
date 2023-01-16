@@ -10,7 +10,7 @@ import yfinance as yf
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent, unlocalize_df_tz
+from openbb_terminal.helper_funcs import get_user_agent
 
 logger = logging.getLogger(__name__)
 
@@ -56,14 +56,13 @@ def get_ark_trades_by_ticker(symbol: str) -> pd.DataFrame:
     df_orders.rename(columns={"date": "Date"}, inplace=True)
 
     # Get yfinance price to merge.  Use Close which assumes purchased throughout day
-    df = yf.download(
+    prices = yf.download(
         symbol,
         end=df_orders.Date.iloc[0],
         start=df_orders.Date.iloc[-1],
         progress=False,
-    )
-    df = unlocalize_df_tz(df)
-    prices = df["Close"]
+        ignore_tz=True,
+    )["Close"]
 
     df_orders.set_index("Date", inplace=True)
     df_orders.index = pd.DatetimeIndex(df_orders.index)
