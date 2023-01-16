@@ -80,7 +80,7 @@ def display_qanomaly_detection(
     )
     (binary_anom * 45 - 150).plot(label="detected binary anomaly (1=TRUE)", lw=4, ax=ax)
 
-    ax.set_title(f"Quantile Anomaly Detection for {dataset_name})")
+    ax.set_title(f"Quantile Anomaly Detection for {dataset_name}")
     ax.set_xlabel("Date")
 
     console.print(
