@@ -8,6 +8,8 @@ env:
   PIP_DEFAULT_TIMEOUT: 100
 
 on:
+  pull_request:
+    types: [opened, synchronize, edited]
   push:
     branches:
       - 'feature/*'
