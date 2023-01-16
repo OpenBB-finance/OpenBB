@@ -59,4 +59,4 @@ def get_qanomaly_detection_data(
     detector.fit(scorer.score(train))
     binary_anom = detector.detect(anom_score)
 
-    return [ticker_series, anom_score, binary_anom]
+    return ticker_series, anom_score, binary_anom
