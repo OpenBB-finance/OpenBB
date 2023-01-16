@@ -5,7 +5,7 @@ on:
     branches:
       - develop
       - main
-    types: [opened, edited]
+    types: [opened, synchronize, edited]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
