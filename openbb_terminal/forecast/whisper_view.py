@@ -35,8 +35,9 @@ def get_audio(urls):
 
     ydl = yt_dlp.YoutubeDL(
         {
+            "default-search": "ytsearch",
             "quiet": True,
-            "verbose": False,
+            "verbose": True,
             "format": "bestaudio",
             "outtmpl": os.path.join(temp_dir, "%(id)s.%(ext)s"),
             "postprocessors": [
@@ -72,6 +73,7 @@ def transcribe_and_summarize(
     output_dir: str = "/Users/martinbufi/OpenBBTerminal/openbb_terminal/forecast/whisper_output",
 ):
     console.print("Transcribing and summarizing...")
+    print(f"video: {video}")
     if model_name.endswith(".en"):
         warnings.warn(
             f"{model_name} is an English-only model, forcing English detection."
@@ -79,7 +81,7 @@ def transcribe_and_summarize(
     os.makedirs(output_dir, exist_ok=True)
 
     model = whisper.load_model(model_name)
-    audios = get_audio(video)
+    audios = get_audio([video])
 
     for title, audio_path in audios.items():
         warnings.filterwarnings("ignore")

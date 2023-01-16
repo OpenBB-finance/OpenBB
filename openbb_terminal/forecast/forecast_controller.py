@@ -3420,7 +3420,7 @@ class ForecastController(BaseController):
             "--video",
             dest="video",
             type=str,
-            default="",
+            default="https://www.youtube.com/watch?v=34VZzBWBDN0",
             help="video URLs to transcribe",
         )
         parser.add_argument(
@@ -3485,9 +3485,6 @@ class ForecastController(BaseController):
         )
 
         if ns_parser:
-            if not helpers.check_parser_input(ns_parser, self.datasets):
-                return
-
             whisper_view.transcribe_and_summarize(
                 video=ns_parser.video,
                 model_name=ns_parser.model_name,
