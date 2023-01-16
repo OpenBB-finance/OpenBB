@@ -11,6 +11,7 @@ import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.common.technical_analysis import ta_helpers
+from openbb_terminal.helper_funcs import is_intraday
 
 logger = logging.getLogger(__name__)
 
