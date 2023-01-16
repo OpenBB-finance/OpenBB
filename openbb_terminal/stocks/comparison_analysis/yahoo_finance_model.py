@@ -195,10 +195,16 @@ def get_1y_sp500() -> pd.DataFrame:
     pd.DataFrame
         DataFrame containing last 1 year of closes for all SP500 stocks.
     """
-    return pd.read_csv(
+    df = pd.read_csv(
         "https://raw.githubusercontent.com/jmaslek/daily_sp_500/main/SP500_prices_1yr.csv",
         index_col=0,
     )
+    df.reset_index(inplace=True)
+    df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d", utc=True).dt.strftime(
+        "%Y-%m-%d"
+    )
+    df.set_index("Date", inplace=True)
+    return df
 
 
 # pylint:disable=E1137,E1101
@@ -230,6 +236,7 @@ def get_sp500_comps_tsne(
 
     # Adding the type makes pylint stop yelling
     close_vals: pd.DataFrame = get_1y_sp500()
+
     if symbol not in close_vals.columns:
         df_symbol = yf.download(
             symbol, start=close_vals.index[0], progress=False, ignore_tz=True
