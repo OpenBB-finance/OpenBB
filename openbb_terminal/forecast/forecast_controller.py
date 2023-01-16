@@ -26,11 +26,23 @@ except ModuleNotFoundError:
         "Please install the forecast version of the terminal. Instructions can be found "
         "under the python tab: https://docs.openbb.co/terminal/quickstart/installation"
     )
+
+try:
+    import whisper
+    from whisper.tokenizer import LANGUAGES, TO_LANGUAGE_CODE
+    from openbb_terminal.forecast.whisper_utils import str2bool
+except ModuleNotFoundError:
+    raise ModuleNotFoundError(
+        "Please install whisper model. Instructions can be found here: "
+        "https://github.com/openai/whisper"
+    )
+
 import pandas as pd
 import psutil
 from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     USER_CUSTOM_IMPORTS_DIRECTORY,
+    USER_FORECAST_WHISPER_DIRECTORY,
 )
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -3131,4 +3143,99 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+            )
+
+    @log_start_end(log=logger)
+    def call_whisper(self, other_args: List[str]):
+        """Utilize Whisper Model to transcribe a video. Currently only supports Youtube URLS"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="whisper",
+            description="""
+                Utilize Whisper Model to transcribe a video. Currently only supports Youtube URLS:
+                https://github.com/openai/whisper
+            """,
+        )
+        parser.add_argument(
+            "--video",
+            dest="video",
+            type=str,
+            default="",
+            help="video URLs to transcribe",
+        )
+        parser.add_argument(
+            "--model_name",
+            dest="model_name",
+            choices=whisper.available_models(),
+            default="small",
+            help="name of the Whisper model to use",
+        )
+        parser.add_argument(
+            "--subtitles_format",
+            dest="subtitles_format",
+            type=str,
+            choices=["vtt", "srt"],
+            help="the subtitle format to output",
+        )
+        parser.add_argument(
+            "--verbose",
+            dest="verbose",
+            type=str2bool,
+            default=False,
+            help="Whether to print out the progress and debug messages",
+        )
+        parser.add_argument(
+            "--task",
+            dest="task",
+            type=str,
+            choices=["transcribe", "translate"],
+            help="whether to perform X->X speech recognition ('transcribe') or X->English translation ('translate')",
+        )
+        parser.add_argument(
+            "--language",
+            dest="language",
+            type=str,
+            default=None,
+            choices=sorted(LANGUAGES.keys())
+            + sorted([k.title() for k in TO_LANGUAGE_CODE.keys()]),
+            help="language spoken in the audio, skip to perform language detection",
+        )
+        parser.add_argument(
+            "--breaklines",
+            dest="breaklines",
+            type=int,
+            default=0,
+            help="Whether to break lines into a bottom-heavy pyramid shape if line length exceeds N characters. 0 disables line breaking.",
+        )
+        parser.add_argument(
+            "--save",
+            dest="save",
+            type=str,
+            default=USER_FORECAST_WHISPER_DIRECTORY,
+            help="Whether to break lines into a bottom-heavy pyramid shape if line length exceeds N characters. 0 disables line breaking.",
+        )
+
+        parser = self.add_standard_args(
+            parser,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            whisper_view.transcribe_and_summarize(
+                video=ns_parser.video,
+                model_name=ns_parser.model_name,
+                subtitles_format=ns_parser.subtitles_format,
+                verbose=ns_parser.verbose,
+                task=ns_parser.task,
+                language=ns_parser.language,
+                breaklines=ns_parser.breaklines,
+                export=ns_parser.save,
             )
