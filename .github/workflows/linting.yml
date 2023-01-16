@@ -13,7 +13,10 @@ on:
       - 'feature/*'
       - 'hotfix/*'
       - 'release/[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?'
-  workflow_dispatch:
+  pull_request:
+    branches:
+      - 'develop'
+    types: [edited]
 
 # Cancel previous runs that are not yet completed.
 concurrency:
