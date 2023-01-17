@@ -484,8 +484,11 @@ def get_earnings_history(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of historical earnings if present
     """
-    earnings = yf.Ticker(symbol).earnings_history
-    return earnings
+    df = yf.Ticker(symbol).earnings_dates
+    df.reset_index(inplace=True)
+    df["Earnings Date"] = df["Earnings Date"].dt.strftime("%Y-%m-%d")
+    df.drop_duplicates(inplace=True)
+    return df
 
 
 @log_start_end(log=logger)
