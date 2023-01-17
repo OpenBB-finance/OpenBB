@@ -195,7 +195,9 @@ class PortfolioEngine:
         # Load transactions from file
         if path.endswith(".xlsx"):
             if not environ.get("DEBUG_MODE", "false") == "true":
-                warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
+                warnings.filterwarnings(
+                    "ignore", category=UserWarning, module="openpyxl"
+                )
             transactions = pd.read_excel(path)
         elif path.endswith(".csv"):
             transactions = pd.read_csv(path)
