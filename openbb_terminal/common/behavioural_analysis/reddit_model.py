@@ -39,7 +39,7 @@ l_sub_reddits = [
     "wallstreetbets",
 ]
 
-if not environ.get("DEBUG_MODE", "false") == "true":
+if environ.get("DEBUG_MODE", "false") != "true":
     warnings.filterwarnings("ignore", category=UserWarning, module="psaw")
 
 
