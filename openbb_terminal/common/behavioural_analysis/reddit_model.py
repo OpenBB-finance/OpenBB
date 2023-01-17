@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
+from os import environ
 from typing import List, Tuple
 import warnings
 
@@ -16,8 +17,11 @@ from requests import HTTPError
 from sklearn.feature_extraction import _stop_words
 from tqdm import tqdm
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from multiprocessing import Process, Queue
+import time
 
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.common.behavioural_analysis.exceptions import APITimeoutError
 from openbb_terminal.common.behavioural_analysis.reddit_helpers import find_tickers
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
@@ -34,6 +38,49 @@ l_sub_reddits = [
     "investing",
     "wallstreetbets",
 ]
+
+if not environ.get("DEBUG_MODE", "false") == "true":
+    warnings.filterwarnings("ignore", category=UserWarning, module="psaw")
+
+
+def worker(func, queue):
+    """Worker to run in parallel.
+
+    Parameters
+    ----------
+    func : function
+        Function to run
+    queue : Queue
+        Queue to put the return value in
+    """
+    ret = func()
+    queue.put(ret)
+
+
+def get_PushshiftAPI(wait: int = 5) -> PushshiftAPI:
+    """Get PushshiftAPI.
+
+    Parameters
+    ----------
+    wait : int
+        Number of seconds to wait for PushshiftAPI to respond
+
+    Returns
+    -------
+    PushshiftAPI
+        PushshiftAPI object
+    """
+
+    queue: Queue = Queue()
+    p = Process(target=worker, args=(PushshiftAPI, queue))
+    p.start()
+    time.sleep(wait)
+    if p.is_alive():
+        p.terminate()
+        p.join()
+        raise APITimeoutError
+
+    return queue.get()
 
 
 @log_start_end(log=logger)
@@ -92,7 +139,15 @@ def get_watchlists(
         console.print("[red]Wrong Reddit API keys[/red]\n")
         return [], {}, 0
 
-    psaw_api = PushshiftAPI()
+    try:
+        psaw_api = get_PushshiftAPI()
+    except APITimeoutError:
+        return [], {}, 0
+
+    if not psaw_api:
+        console.print("[red]API is not responding.[/red]\n")
+        return [], {}, 0
+
     submissions = psaw_api.search_submissions(
         subreddit=l_sub_reddits,
         q="WATCHLIST|Watchlist|watchlist",
@@ -202,7 +257,14 @@ def get_popular_tickers(
         console.print("[red]Wrong Reddit API keys[/red]\n")
         return pd.DataFrame()
 
-    psaw_api = PushshiftAPI()
+    try:
+        psaw_api = get_PushshiftAPI()
+    except APITimeoutError:
+        return pd.DataFrame()
+
+    if not psaw_api:
+        console.print("[red]API is not responding.[/red]\n")
+        return pd.DataFrame()
 
     for s_sub_reddit in sub_reddit_list:
         console.print(
@@ -518,7 +580,16 @@ def get_spac(
         "Link",
     ]
     subs = pd.DataFrame(columns=columns)
-    psaw_api = PushshiftAPI()
+
+    try:
+        psaw_api = get_PushshiftAPI()
+    except APITimeoutError:
+        return pd.DataFrame(), {}, 0
+
+    if not psaw_api:
+        console.print("[red]API is not responding.[/red]\n")
+        return pd.DataFrame(), {}, 0
+
     submissions = psaw_api.search_submissions(
         subreddit=l_sub_reddits,
         q="SPAC|Spac|spac|Spacs|spacs",
@@ -763,7 +834,14 @@ def get_due_dilligence(
         console.print("[red]Wrong Reddit API keys[/red]\n")
         return pd.DataFrame()
 
-    psaw_api = PushshiftAPI()
+    try:
+        psaw_api = get_PushshiftAPI()
+    except APITimeoutError:
+        return pd.DataFrame()
+
+    if not psaw_api:
+        console.print("[red]API is not responding.[/red]\n")
+        return pd.DataFrame()
 
     n_ts_after = int((datetime.today() - timedelta(days=n_days)).timestamp())
     l_flair_text = [

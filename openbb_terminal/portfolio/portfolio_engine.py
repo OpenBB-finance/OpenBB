@@ -1,6 +1,7 @@
 """Portfolio Engine"""
 __docformat__ = "numpy"
 
+from os import environ
 import warnings
 import logging
 from typing import Dict, Any
@@ -193,9 +194,8 @@ class PortfolioEngine:
 
         # Load transactions from file
         if path.endswith(".xlsx"):
-            warnings.filterwarnings(
-                "ignore", category=UserWarning, module="openpyxl", lineno=312
-            )
+            if not environ.get("DEBUG_MODE", "false") == "true":
+                warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
             transactions = pd.read_excel(path)
         elif path.endswith(".csv"):
             transactions = pd.read_csv(path)
