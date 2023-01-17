@@ -538,7 +538,6 @@ def test_call_func(
 # pylint: enable=W0613
 
 
-@pytest.mark.skip(reason="yfinance is not working after website changes")
 @pytest.mark.vcr
 def test_call_load(mocker):
     yf_download = parent_classes.stocks_helper.yf.download
