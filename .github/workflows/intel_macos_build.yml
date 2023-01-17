@@ -38,6 +38,7 @@ jobs:
         with:
           miniconda-version: "latest"
           auto-update-conda: true
+          python-version: 3.9.6
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
