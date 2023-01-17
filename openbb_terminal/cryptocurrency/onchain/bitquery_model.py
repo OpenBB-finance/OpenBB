@@ -317,6 +317,7 @@ def get_dex_trades_by_exchange(
     except BitQueryApiKeyException:
         logger.exception("Invalid API Key")
         console.print("[red]Invalid API Key[/red]\n")
+        return pd.DataFrame()
 
     if not data:
         return pd.DataFrame()
