@@ -77,6 +77,9 @@ added_files = [
     (voila_path, "."),
 ]
 
+if is_win and os.path.exists(os.path.join(pathex, "scipy.libs")):
+    added_files.append((os.path.join(pathex, "scipy.libs"), "scipy.libs"))
+
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
     "sklearn.utils._cython_blas",
