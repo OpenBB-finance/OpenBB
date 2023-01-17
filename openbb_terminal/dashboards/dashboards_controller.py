@@ -253,6 +253,6 @@ class DashboardsController(BaseController):
         """
         if getattr(sys, "frozen", False):
             extension = ".exe" if sys.platform == "win32" else ""
-            return f"{sys._MEIPASS}/voila{extension}"  # type: ignore
+            return f"{sys._MEIPASS}/voila{extension}"  # type: ignore # pylint: disable=W0212
 
         return "voila"
