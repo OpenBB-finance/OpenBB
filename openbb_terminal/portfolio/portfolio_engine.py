@@ -514,6 +514,7 @@ class PortfolioEngine:
             start=self.inception_date - datetime.timedelta(days=1),
             threads=False,
             progress=False,
+            ignore_tz=True,
         )["Adj Close"]
 
         p_bar.n += 1
@@ -650,9 +651,9 @@ class PortfolioEngine:
         p_bar = tqdm(range(len(self.tickers)), desc="        Loading price data")
 
         for ticker_type, data in self.tickers.items():
-            price_data = yf.download(data, start=self.inception_date, progress=False)[
-                "Close" if use_close or ticker_type == "CRYPTO" else "Adj Close"
-            ]
+            price_data = yf.download(
+                data, start=self.inception_date, progress=False, ignore_tz=True
+            )["Close" if use_close or ticker_type == "CRYPTO" else "Adj Close"]
 
             # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
             if len(data) == 1:
