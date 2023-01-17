@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 from os import environ
 from typing import List, Tuple
 import warnings
+from multiprocessing import Process, Queue
+import time
 
 import finviz
 import pandas as pd
@@ -17,8 +19,6 @@ from requests import HTTPError
 from sklearn.feature_extraction import _stop_words
 from tqdm import tqdm
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from multiprocessing import Process, Queue
-import time
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.common.behavioural_analysis.exceptions import APITimeoutError
