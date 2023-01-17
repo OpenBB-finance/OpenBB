@@ -57,7 +57,7 @@ def worker(func, queue):
     queue.put(ret)
 
 
-def get_PushshiftAPI(wait: int = 5) -> PushshiftAPI:
+def get_PushshiftAPI(wait: int = 20) -> PushshiftAPI:
     """Get PushshiftAPI.
 
     Parameters
@@ -140,6 +140,7 @@ def get_watchlists(
         return [], {}, 0
 
     try:
+        console.print("Connecting to API...")
         psaw_api = get_PushshiftAPI()
     except APITimeoutError:
         return [], {}, 0
@@ -258,6 +259,7 @@ def get_popular_tickers(
         return pd.DataFrame()
 
     try:
+        console.print("Connecting to API...")
         psaw_api = get_PushshiftAPI()
     except APITimeoutError:
         return pd.DataFrame()
@@ -582,6 +584,7 @@ def get_spac(
     subs = pd.DataFrame(columns=columns)
 
     try:
+        console.print("Connecting to API...")
         psaw_api = get_PushshiftAPI()
     except APITimeoutError:
         return pd.DataFrame(), {}, 0
@@ -835,6 +838,7 @@ def get_due_dilligence(
         return pd.DataFrame()
 
     try:
+        console.print("Connecting to API...")
         psaw_api = get_PushshiftAPI()
     except APITimeoutError:
         return pd.DataFrame()
