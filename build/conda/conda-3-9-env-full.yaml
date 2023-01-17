@@ -7,3 +7,4 @@ dependencies:
   - poetry=1.1.13
   - lightgbm=3.3.3
   - charset-normalizer=2.1.1
+  - chardet
