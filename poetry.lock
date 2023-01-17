@@ -470,7 +470,7 @@ six = "*"
 
 [[package]]
 name = "ccxt"
-version = "2.6.7"
+version = "2.5.80"
 description = "A JavaScript / Python / PHP cryptocurrency trading library with support for 130+ exchanges"
 category = "main"
 optional = false
@@ -1224,17 +1224,14 @@ test = ["pytest (>=7)", "pytest-mock (>=3)", "mock (>=4)", "pytest-cov", "covera
 
 [[package]]
 name = "grpcio"
-version = "1.50.0"
+version = "1.51.1"
 description = "HTTP/2-based RPC framework"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 
-[package.dependencies]
-six = ">=1.5.2"
-
 [package.extras]
-protobuf = ["grpcio-tools (>=1.50.0)"]
+protobuf = ["grpcio-tools (>=1.51.1)"]
 
 [[package]]
 name = "h11"
@@ -4804,7 +4801,7 @@ multidict = ">=4.0"
 
 [[package]]
 name = "yfinance"
-version = "0.1.95"
+version = "0.2.4"
 description = "Download market data from Yahoo! Finance API"
 category = "main"
 optional = false
@@ -4812,11 +4809,15 @@ python-versions = "*"
 
 [package.dependencies]
 appdirs = ">=1.4.4"
+beautifulsoup4 = ">=4.11.1"
 cryptography = ">=3.3.2"
+frozendict = ">=2.3.4"
+html5lib = ">=1.1"
 lxml = ">=4.9.1"
 multitasking = ">=0.0.7"
 numpy = ">=1.16.5"
 pandas = ">=1.3.0"
+pytz = ">=2022.5"
 requests = ">=2.26"
 
 [[package]]
@@ -4855,7 +4856,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "209bc9475e1b2e3ed38608035dd80a14176702ee682b79cb52c22b083e7c4818"
+content-hash = "77d8bec0f896363a577f4cbdcd9345705a9c9ea22395c44df71b7f3799c0618d"
 
 [metadata.files]
 absl-py = []

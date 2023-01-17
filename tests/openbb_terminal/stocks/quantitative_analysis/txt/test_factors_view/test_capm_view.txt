@@ -1,4 +1,4 @@
-Beta:			0.70
-Systematic Risk:	24.07%
-Unsystematic Risk:	75.93%
+Beta:			0.71
+Systematic Risk:	24.25%
+Unsystematic Risk:	75.75%
 
