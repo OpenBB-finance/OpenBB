@@ -185,7 +185,7 @@ def query_graph(url: str, query: str) -> dict:
     except requests.Timeout as e:
         logger.exception("BitQuery timeout")
         raise BitQueryTimeoutException(
-            f"BitQuery API didn't respond within {timeout} seconds.\n"
+            f"BitQuery API didn't respond within {timeout} seconds."
         ) from e
 
     if response.status_code == 500:
@@ -194,15 +194,15 @@ def query_graph(url: str, query: str) -> dict:
     if not 200 <= response.status_code < 300:
         raise BitQueryApiKeyException(
             f"Invalid Authentication: {response.status_code}. "
-            f"Please visit https://bitquery.io/pricing and generate you free api key\n"
+            f"Please visit https://bitquery.io/pricing and generate you free api key"
         )
     try:
         data = response.json()
         if "error" in data:
-            raise ValueError(f"Invalid Response: {data['error']}\n")
+            raise ValueError(f"Invalid Response: {data['error']}")
     except Exception as e:
         logger.exception("Invalid Response: %s", str(e))
-        raise ValueError(f"Invalid Response: {response.text}\n") from e
+        raise ValueError(f"Invalid Response: {response.text}") from e
     return data["data"]
 
 
@@ -317,6 +317,9 @@ def get_dex_trades_by_exchange(
     except BitQueryApiKeyException:
         logger.exception("Invalid API Key")
         console.print("[red]Invalid API Key[/red]\n")
+
+    if not data:
+        return pd.DataFrame()
 
     df = _extract_dex_trades(data)
     df.columns = ["trades", "tradeAmount", "exchange"]
