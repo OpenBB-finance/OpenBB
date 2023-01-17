@@ -488,6 +488,7 @@ def get_earnings_history(symbol: str) -> pd.DataFrame:
     df.reset_index(inplace=True)
     df["Earnings Date"] = df["Earnings Date"].dt.strftime("%Y-%m-%d")
     df.drop_duplicates(inplace=True)
+    df = df.fillna("-")
     return df
 
 
