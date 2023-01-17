@@ -106,11 +106,14 @@ def get_historical_futures(symbols: List[str], expiry: str = "") -> pd.DataFrame
 
         return yf.download(symbols_with_expiry, progress=False, period="max")
 
-    df = yf.download([t + "=F" for t in symbols], progress=False, period="max")
+    df = yf.download(
+        [t + "=F" for t in symbols], progress=False, period="max", ignore_tz=True
+    )
     if len(symbols) > 1:
         df.columns = pd.MultiIndex.from_tuples(
             [(tup[0], tup[1].replace("=F", "")) for tup in df.columns]
         )
+
     return df
 
 
