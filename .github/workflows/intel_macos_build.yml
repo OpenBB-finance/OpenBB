@@ -37,7 +37,6 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2.2.0
         with:
           miniconda-version: "latest"
-          python-version: 3.9
           auto-update-conda: true
           channels: conda-forge,defaults
           show-channel-urls: true
