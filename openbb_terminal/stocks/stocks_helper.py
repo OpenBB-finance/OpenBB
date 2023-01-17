@@ -737,9 +737,12 @@ def load_ticker(
     >>> from openbb_terminal.sdk import openbb
     >>> msft_df = openbb.stocks.load("MSFT")
     """
-    df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
+    df_data = yf.download(
+        ticker, start=start_date, end=end_date, progress=False, ignore_tz=True
+    )
 
     df_data.index = pd.to_datetime(df_data.index)
+
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
         "timedelta64[D]"
     )

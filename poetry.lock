@@ -3422,21 +3422,6 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
-name = "pywry"
-version = "0.1.9"
-description = ""
-category = "main"
-optional = false
-python-versions = ">=3.8"
-
-[package.dependencies]
-psutil = ">=5.8.0"
-websockets = ">=5.0.1"
-
-[package.extras]
-dev = ["maturin (==0.14.6)"]
-
-[[package]]
 name = "pyyaml"
 version = "6.0"
 description = "YAML parser and emitter for Python"
@@ -4816,7 +4801,7 @@ multidict = ">=4.0"
 
 [[package]]
 name = "yfinance"
-version = "0.2.3"
+version = "0.2.4"
 description = "Download market data from Yahoo! Finance API"
 category = "main"
 optional = false
@@ -4871,7 +4856,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "b24ac97cbac92ba2ca05aa6dede429f60b26fc63af337e0f1437f31a0436c059"
+content-hash = "77d8bec0f896363a577f4cbdcd9345705a9c9ea22395c44df71b7f3799c0618d"
 
 [metadata.files]
 absl-py = []
@@ -5136,7 +5121,6 @@ pyupgrade = []
 pywin32 = []
 pywin32-ctypes = []
 pywinpty = []
-pywry = []
 pyyaml = []
 pyzmq = []
 qdldl = []
