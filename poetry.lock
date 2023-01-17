@@ -3399,7 +3399,7 @@ tokenize-rt = "<5"
 
 [[package]]
 name = "pywin32"
-version = "304"
+version = "305"
 description = "Python for Window Extensions"
 category = "main"
 optional = false

@@ -74,7 +74,6 @@ added_files = [
     (".env", "."),
     (os.path.join(pathex, "blib2to3", "Grammar.txt"), "blib2to3"),
     (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
-    (os.path.join(pathex, "scipy.libs"), "scipy.libs"),
     (voila_path, "."),
 ]
 

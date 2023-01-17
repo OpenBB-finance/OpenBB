@@ -251,4 +251,8 @@ class DashboardsController(BaseController):
         Returns:
             str: The command to run Voila.
         """
-        return f"{sys._MEIPASS}/voila.exe" if getattr(sys, "frozen", False) else "voila"
+        if getattr(sys, "frozen", False):
+            extension = ".exe" if sys.platform == "win32" else ""
+            return f"{sys._MEIPASS}/voila{extension}"  # type: ignore
+
+        return "voila"
