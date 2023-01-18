@@ -4,8 +4,8 @@ __docformat__ = "numpy"
 import os
 import sys
 import logging
-from typing import List
-from datetime import datetime
+from typing import List, Optional
+from datetime import datetime, timedelta
 
 import yfinance as yf
 import pandas as pd
@@ -76,7 +76,11 @@ def get_search_futures(
 
 
 @log_start_end(log=logger)
-def get_historical_futures(symbols: List[str], expiry: str = "") -> pd.DataFrame:
+def get_historical_futures(
+    symbols: List[str],
+    expiry: str = "",
+    start_date: Optional[str] = None,
+) -> pd.DataFrame:
     """Get historical futures [Source: Yahoo Finance]
 
     Parameters
@@ -85,12 +89,18 @@ def get_historical_futures(symbols: List[str], expiry: str = "") -> pd.DataFrame
         List of future timeseries symbols to display
     expiry: str
         Future expiry date with format YYYY-MM
+    start_date: Optional[str]
+        Start date of the historical data with format YYYY-MM-DD
 
     Returns
     -------
     pd.DataFrame
         Dictionary with sector weightings allocation
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=3 * 365)).strftime("%Y-%m-%d")
+
     if expiry:
         symbols_with_expiry = list()
 
@@ -113,6 +123,8 @@ def get_historical_futures(symbols: List[str], expiry: str = "") -> pd.DataFrame
         df.columns = pd.MultiIndex.from_tuples(
             [(tup[0], tup[1].replace("=F", "")) for tup in df.columns]
         )
+
+    df = df[df.index > datetime.strptime(start_date, "%Y-%m-%d")]
 
     return df
 
