@@ -10,7 +10,7 @@ on: workflow_dispatch
 jobs:
   Windows-Build:
     name: Windows10 Build ENV
-    runs-on: [self-hosted, Windows, x64]
+    runs-on: windows-latest
     # Configuring -------------
     steps:
       - name: Setup Windows Git Configuration # This is under the assumption that git is already installed on the system
