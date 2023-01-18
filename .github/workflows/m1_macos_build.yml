@@ -47,9 +47,7 @@ jobs:
           use-only-tar-bz2: true # Needed for caching some reason
 
       - name: Run Poetry
-        run: |
-          poetry cache clear . --all -y
-          poetry install -vvv
+        run: poetry install -vvv
 
       - name: Install Pyinstaller
         run: poetry install -E installer
