@@ -2,13 +2,19 @@
 __docformat__ = "numpy"
 
 import argparse
+import atexit
 import logging
 import os
+import re
 import socket
-import subprocess
-from typing import List
+import threading
+import time
+from pathlib import Path
+from subprocess import PIPE, STDOUT
+from typing import List, Union
 
 import numpy as np
+import psutil
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
@@ -23,6 +29,7 @@ from openbb_terminal.rich_config import MenuText, console
 
 
 logger = logging.getLogger(__name__)
+JUPYTER_STARTED = False
 
 
 class DashboardsController(BaseController):
@@ -44,8 +51,8 @@ class DashboardsController(BaseController):
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
-        self.port = None
-        self.get_free_port()
+        self.jupyter_token = None
+        self.processes: List[psutil.Process] = []
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -116,9 +123,8 @@ class DashboardsController(BaseController):
         """Process forecasting command"""
         self.create_call_streamlit(other_args, "forecast")
 
-    @classmethod
     def create_call_voila(
-        cls, other_args: List[str], name: str, filename: str = None
+        self, other_args: List[str], name: str, filename: str = None
     ) -> None:
         filename = filename if filename else name
 
@@ -152,51 +158,105 @@ class DashboardsController(BaseController):
             dest="dark",
             help="Whether to show voila in dark mode",
         )
-        ns_parser = cls.parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            port = cls.get_free_port()
+            port = self.get_free_port()
             cmd = "jupyter-lab" if ns_parser.jupyter else "voila"
+
             base_path = os.path.join(
                 os.path.abspath(os.path.dirname(__file__)), "voila"
             )
-            file = os.path.join(base_path, f"{filename}.ipynb")
-            if not ns_parser.input:
+            file = Path(os.path.join(base_path, f"{filename}.ipynb")).absolute()
+
+            process_check = self.check_processes(ns_parser)
+
+            if not ns_parser.input and not process_check:
                 console.print(
                     f"Warning: opens a port on your computer to run a {cmd} server."
                 )
                 response = input("Would you like us to run the server for you [yn]? ")
+            else:
+                response = "y"
 
-            if not ns_parser.jupyter:
-                cmd += f" --no-browser --port {port}"
-
-            args = ""
             if ns_parser.dark and not ns_parser.jupyter:
-                args += "--theme=dark"
-            if ns_parser.input or response.lower() == "y":
+                file += " --theme=dark"
+
+            if ns_parser.input or response.lower() == "y" and not process_check:
                 cfg.LOGGING_SUPPRESS = True
-                subprocess.Popen(
-                    f"{cmd} {file} {args}",
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                    stdin=subprocess.PIPE,
-                    shell=True,  # nosec
-                    env=os.environ,
+                self.processes.append(
+                    psutil.Popen(
+                        f"{cmd} --no-browser --port {port} {file}",
+                        stdout=PIPE,
+                        stderr=STDOUT,
+                        stdin=PIPE,
+                        shell=True,  # nosec
+                        env=os.environ,
+                    )
                 )
                 cfg.LOGGING_SUPPRESS = False
-                get_backend().send_html(
-                    f"""
-                    <script>
-                        window.location.replace("http://localhost:{port}");
-                    </script>
-                    """,
+                atexit.register(self.kill_processes)
+
+                console.print(
+                    f"[green]Waiting for {cmd} to start. This may take a few seconds.[/green]"
+                )
+                if ns_parser.jupyter:
+                    time.sleep(3)
+                    self.get_jupyter_token(f"http://localhost:{port}")
+
+            elif response.lower() == "n":
+                path = file.relative_to(Path(os.getcwd())).as_posix()
+                console.print(f"Type: {cmd} {path}\ninto a terminal to run.")
+
+            if self.check_processes(ns_parser):
+                get_backend().send_url(
+                    url=self.check_processes(ns_parser, file),
                     title=f"{filename.title()} Dashboard",
                 )
-            else:
-                console.print(f"Type: {cmd} voila/{file}\ninto a terminal to run.")
+
+    def get_jupyter_token(self, url: str) -> None:
+        """Gets the url and token for current jupyter-lab session."""
+        process = psutil.Popen("jupyter-lab list", shell=True, stdout=PIPE)  # nosec
+        output = process.communicate()[0]
+
+        for line in output.decode("utf-8").splitlines():
+            if line.startswith(url):
+                url_token = line.split(" ")[0].split("/?token=")
+                self.jupyter_token = url_token[1]
+                break
+
+    def kill_processes(self) -> None:
+        """Kills all processes started by this class."""
+        for process in self.processes:
+            process.kill()
+
+    def check_processes(
+        self, ns_parser: argparse.Namespace, filepath: Path = None
+    ) -> Union[str, bool]:
+        """Checks if a process is already running, and returns the url."""
+        if not filepath:
+            filepath = Path(__file__).absolute()
+
+        for process in self.processes:
+
+            if not process.is_running():
+                self.processes.remove(process)
+                continue
+
+            cmdline = " ".join(process.cmdline())
+            port = re.findall(r"--port (\d+)", cmdline)[0]
+
+            if ns_parser.jupyter and re.findall(r"jupyter-lab --no", cmdline):
+                return f"http://localhost:{port}/lab/tree/{filepath.name}?token={self.jupyter_token}"
+
+            if not ns_parser.jupyter and re.findall(r"voila --no", cmdline):
+                path = filepath.relative_to(Path(process.cwd())).as_posix()
+                return f"http://localhost:{port}/voila/render/{path}?"
+
+        return False
 
     @staticmethod
-    def get_free_port():
+    def get_free_port() -> int:
         """Searches for a random free port number."""
         not_free = True
         while not_free:
@@ -207,9 +267,8 @@ class DashboardsController(BaseController):
                     not_free = False
         return port
 
-    @classmethod
     def create_call_streamlit(
-        cls, other_args: List[str], name: str, filename: str = None
+        self, other_args: List[str], name: str, filename: str = None
     ) -> None:
         filename = filename if filename else name
 
@@ -227,26 +286,48 @@ class DashboardsController(BaseController):
             dest="input",
             help="Skips confirmation to run server.",
         )
-        ns_parser = cls.parse_simple_args(parser, other_args)
+        ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
             cmd = "streamlit run"
-            base_path = os.path.join(
-                os.path.abspath(os.path.dirname(__file__)), "stream"
-            )
-            file = os.path.join(base_path, f"{filename}.py")
+
+            filepath = Path(__file__).parent / "stream" / f"{filename}.py"
+            file = filepath.relative_to(Path(os.getcwd())).as_posix()
+
             if not ns_parser.input:
                 console.print(
                     f"Warning: opens a port on your computer to run a {cmd} server."
                 )
                 response = input("Would you like us to run the server for you [yn]? ")
-            args = ""
+
             if ns_parser.input or response.lower() == "y":
-                subprocess.Popen(
-                    f"{cmd} {file} {args}",
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                    shell=True,
+                port = self.get_free_port()
+                self.processes.append(
+                    psutil.Popen(
+                        f"{cmd} --server.port {port} {file}",
+                        stdout=PIPE,
+                        stderr=STDOUT,
+                        stdin=PIPE,
+                        shell=True,  # nosec
+                        env=os.environ,
+                        cwd=os.getcwd(),
+                    )
                 )
+                url = f"http://localhost:{port}"
+                get_backend().send_url(url=url, title=f"{filename.title()} Dashboard")
+                thread = threading.Thread(
+                    target=non_blocking_steamlit,
+                    args=(self.processes[-1],),
+                    daemon=True,
+                )
+                thread.start()
             else:
-                console.print(f"Type: {cmd} stream/{file}\ninto a terminal to run.")
+                console.print(
+                    f"Type: {cmd} stream/{filename}.py\ninto a terminal to run."
+                )
+
+
+def non_blocking_steamlit(process: psutil.Popen) -> None:
+    """Checks if a streamlit process is still running."""
+    while process.is_running():
+        process.communicate()
