@@ -35,7 +35,6 @@ def get_audio(urls):
 
     ydl = yt_dlp.YoutubeDL(
         {
-            "default-search": "ytsearch",
             "quiet": True,
             "verbose": True,
             "format": "bestaudio",
@@ -72,6 +71,7 @@ def transcribe_and_summarize(
     breaklines: int = 0,
     output_dir: str = "/Users/martinbufi/OpenBBTerminal/openbb_terminal/forecast/whisper_output",
 ):
+
     console.print("Transcribing and summarizing...")
     print(f"video: {video}")
     if model_name.endswith(".en"):
@@ -87,11 +87,10 @@ def transcribe_and_summarize(
         warnings.filterwarnings("ignore")
 
         result = whisper.transcribe(
-            audio_path,
-            model,
-            language=language,
+            model=model,
+            audio=audio_path,
             verbose=verbose,
-            task=task,
+            decode_options={"task": task, "language": language},
         )
         warnings.filterwarnings("default")
 
