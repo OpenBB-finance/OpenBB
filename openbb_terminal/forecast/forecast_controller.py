@@ -3420,7 +3420,7 @@ class ForecastController(BaseController):
             "--video",
             dest="video",
             type=str,
-            default="https://www.youtube.com/watch?v=34VZzBWBDN0",
+            default="https://www.youtube.com/watch?v=_46bKvE2fjg",
             help="video URLs to transcribe",
         )
         parser.add_argument(
