@@ -245,7 +245,7 @@ pytrends==4.8.0
 pytz-deprecation-shim==0.1.0.post0; python_version >= "3.7" and python_full_version < "3.0.0" or python_version >= "3.7" and python_full_version < "3.9.7" and python_full_version >= "3.6.0" or python_full_version > "3.9.7" and python_version >= "3.6"
 pytz==2022.5; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.8" and (python_version >= "3.8" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.8") and python_version < "4.0"
 pyupgrade==2.38.4; python_version >= "3.7"
-pywin32==304; sys_platform == "win32" and platform_python_implementation != "PyPy" and python_version >= "3.7"
+pywin32==305; sys_platform == "win32" and platform_python_implementation != "PyPy" and python_version >= "3.7"
 pywinpty==2.0.8; os_name == "nt" and python_version >= "3.7"
 pyyaml==6.0; python_version >= "3.8"
 pyzmq==24.0.1; python_full_version >= "3.7.0" and python_full_version < "4.0.0" and python_version >= "3.7"
@@ -264,7 +264,7 @@ ruamel.yaml.clib==0.2.7; platform_python_implementation == "CPython" and python_
 ruamel.yaml==0.17.21; python_version >= "3"
 ruff==0.0.210; python_version >= "3.7"
 scikit-learn==1.1.2; python_version >= "3.8" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.8"
-scipy==1.9.3; python_version >= "3.8"
+scipy==1.10.0; python_version >= "3.8" and python_version < "3.12"
 screeninfo==0.6.7
 scs==3.2.0; python_version >= "3.7"
 seaborn==0.11.2; python_version >= "3.6"
