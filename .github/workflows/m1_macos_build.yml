@@ -48,7 +48,7 @@ jobs:
 
       - name: Run Poetry
         run: |
-          poetry cache clear . --all
+          poetry cache clear . --all -y
           poetry install -vvv
 
       - name: Install Pyinstaller
