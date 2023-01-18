@@ -45,6 +45,7 @@ from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     USER_ENV_FILE,
     USER_EXPORTS_DIRECTORY,
+    load_dotenv_with_priority,
 )
 from openbb_terminal.core.config import paths
 
@@ -1121,7 +1122,7 @@ def get_flair() -> str:
 
 def set_default_timezone() -> None:
     """Set a default (America/New_York) timezone if one doesn't exist."""
-    dotenv.load_dotenv(USER_ENV_FILE)
+    load_dotenv_with_priority()
     user_tz = os.getenv("OPENBB_TIMEZONE")
     if not user_tz:
         dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", "America/New_York")
@@ -1151,7 +1152,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on .env file
     """
-    dotenv.load_dotenv(USER_ENV_FILE, override=True)
+    load_dotenv_with_priority()
     user_tz = os.getenv("OPENBB_TIMEZONE")
     if user_tz:
         return user_tz
