@@ -46,4 +46,4 @@ jobs:
       - name: Build Terminal.spec file
         run: |
           .\venv\Scripts\activate.bat
-          python - m pyinstaller build\pyinstaller\terminal.spec --clean
+          python -m pyinstaller build\pyinstaller\terminal.spec --clean
