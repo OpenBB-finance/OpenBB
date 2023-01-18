@@ -107,6 +107,11 @@ hidden_imports = [
     "debugpy",
 ]
 
+if is_win:
+    hidden_imports.append(
+        "scipy.stats"
+    )
+
 
 analysis_kwargs = dict(
     scripts=[os.path.join(os.getcwd(), "terminal.py")],
