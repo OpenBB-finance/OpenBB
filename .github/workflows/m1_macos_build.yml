@@ -45,16 +45,23 @@ jobs:
           activate-environment: build_env
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
+
       - name: Run Poetry
-        run: poetry install -vvv
+        run: |
+          poetry cache clear . --all
+          poetry install -vvv
+
       - name: Install Pyinstaller
         run: poetry install -E installer
+  
       - name: Poetry Install Portfolio Optimization and Forecasting Toolkits
         run: poetry install -E all
+  
       - name: Install Specific Papermill
         run: |
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
+
       # This is basically the same as build4mac.sh
       - name: Build Bundle
         run: |
