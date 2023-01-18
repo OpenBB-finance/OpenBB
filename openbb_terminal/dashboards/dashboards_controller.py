@@ -186,7 +186,8 @@ class DashboardsController(BaseController):
                 cfg.LOGGING_SUPPRESS = True
                 self.processes.append(
                     psutil.Popen(
-                        f"{cmd} --no-browser --port {port} {file}",
+                        f"{cmd} --no-browser --port {port}"
+                        + (f" {file}" if ns_parser.jupyter else ""),
                         stdout=PIPE,
                         stderr=STDOUT,
                         stdin=PIPE,
@@ -200,8 +201,8 @@ class DashboardsController(BaseController):
                 console.print(
                     f"[green]Waiting for {cmd} to start. This may take a few seconds.[/green]"
                 )
+                time.sleep(3)
                 if ns_parser.jupyter:
-                    time.sleep(3)
                     self.get_jupyter_token(f"http://localhost:{port}")
 
             elif response.lower() == "n":
