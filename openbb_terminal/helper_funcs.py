@@ -1323,7 +1323,11 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
 
 
 def export_data(
-    export_type: str, dir_path: str, func_name: str, df: pd.DataFrame = pd.DataFrame()
+    export_type: str,
+    dir_path: str,
+    func_name: str,
+    df: pd.DataFrame = pd.DataFrame(),
+    sheet_name: str = None,
 ) -> None:
     """Export data to a file.
 
@@ -1337,6 +1341,8 @@ def export_data(
         Name of the command that invokes this function
     df : pd.Dataframe
         Dataframe of data to save
+    sheet_name : str
+        If provided.  The name of the sheet to save in excel file
     """
     if export_type:
         export_path = compose_export_path(func_name, dir_path)
@@ -1377,7 +1383,32 @@ def export_data(
                 df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
-                df.to_excel(saved_path, index=True, header=True)
+
+                if sheet_name is None:
+                    df.to_excel(saved_path, index=True, header=True)
+
+                else:
+
+                    if os.path.exists(saved_path):
+                        with pd.ExcelWriter(
+                            saved_path,
+                            mode="a",
+                            if_sheet_exists="new",
+                            engine="openpyxl",
+                        ) as writer:
+                            df.to_excel(
+                                writer, sheet_name=sheet_name, index=True, header=True
+                            )
+                    else:
+
+                        with pd.ExcelWriter(
+                            saved_path,
+                            engine="openpyxl",
+                        ) as writer:
+                            df.to_excel(
+                                writer, sheet_name=sheet_name, index=True, header=True
+                            )
+
             elif exp_type.endswith("png"):
                 plt.savefig(saved_path)
             elif exp_type.endswith("jpg"):

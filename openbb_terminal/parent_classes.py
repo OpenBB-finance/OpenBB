@@ -1053,6 +1053,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             default=False,
             help="Show performance information.",
         )
+        parser.add_argument("--sheet-name", dest="sheet_name", default=None, nargs="+")
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
@@ -1147,6 +1148,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     os.path.dirname(os.path.abspath(__file__)),
                     f"load_{self.ticker}",
                     self.stock.copy(),
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
 
