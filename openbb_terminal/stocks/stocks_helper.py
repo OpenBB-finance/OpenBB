@@ -813,9 +813,12 @@ def load_ticker(
     >>> from openbb_terminal.sdk import openbb
     >>> msft_df = openbb.stocks.load("MSFT")
     """
-    df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
+    df_data = yf.download(
+        ticker, start=start_date, end=end_date, progress=False, ignore_tz=True
+    )
 
     df_data.index = pd.to_datetime(df_data.index)
+
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
         "timedelta64[D]"
     )
@@ -1071,7 +1074,7 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
             str(round(np.mean(volumes[-12:-2]) / 1_000_000, 2)) + " M"
         )
 
-    perf_df["Last Price"] = str(round(closes[-1], 2))
+    perf_df["Previous Close"] = str(round(closes[-1], 2))
     print_rich_table(
         perf_df,
         show_index=False,

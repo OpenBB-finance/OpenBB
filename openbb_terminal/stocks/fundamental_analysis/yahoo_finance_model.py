@@ -309,7 +309,9 @@ def get_mktcap(
         start_date = (datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d")
 
     currency = ""
-    df_data = yf.download(symbol, start=start_date, progress=False, threads=False)
+    df_data = yf.download(
+        symbol, start=start_date, progress=False, threads=False, ignore_tz=True
+    )
     if not df_data.empty:
 
         data = yf.Ticker(symbol).info
@@ -482,8 +484,12 @@ def get_earnings_history(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of historical earnings if present
     """
-    earnings = yf.Ticker(symbol).earnings_history
-    return earnings
+    df = yf.Ticker(symbol).earnings_dates
+    df.reset_index(inplace=True)
+    df["Earnings Date"] = df["Earnings Date"].dt.strftime("%Y-%m-%d")
+    df.drop_duplicates(inplace=True)
+    df = df.fillna("-")
+    return df
 
 
 @log_start_end(log=logger)
