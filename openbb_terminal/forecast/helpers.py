@@ -721,7 +721,7 @@ def get_prediction(
     if model_name not in ["Regression", "Logistic Regression"]:
         # need to create a new pytorch trainer for historical backtesting to remove progress bar
         best_model.trainer = None
-        best_model.trainer_params["enable_progress_bar"] = False
+        best_model.trainer_params["progress_bar_refresh_rate"] = 0
 
     # Historical backtest if with covariates
     if past_covariates is not None:
