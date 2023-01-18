@@ -33,6 +33,7 @@ from openbb_terminal.core.config.paths import (
     USER_DATA_DIRECTORY,
     USER_ENV_FILE,
     USER_ROUTINES_DIRECTORY,
+    load_dotenv_with_priority,
 )
 from openbb_terminal.core.log.generation.settings_logger import log_all_settings
 from openbb_terminal.helper_funcs import (
@@ -822,8 +823,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
         t_controller.print_help()
         check_for_updates()
 
-    dotenv.load_dotenv(USER_ENV_FILE)
-    dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
+    load_dotenv_with_priority()
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:
