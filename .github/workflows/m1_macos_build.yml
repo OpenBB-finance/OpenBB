@@ -46,7 +46,7 @@ jobs:
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
       - name: Run Poetry
-        run: poetry install
+        run: poetry install -vvv
       - name: Install Pyinstaller
         run: poetry install -E installer
       - name: Poetry Install Portfolio Optimization and Forecasting Toolkits
