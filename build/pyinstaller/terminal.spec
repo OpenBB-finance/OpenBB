@@ -75,10 +75,6 @@ added_files = [
     (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
 ]
 
-
-if is_darwin and os.path.exists(os.path.join(pathex, "xgboost")):
-    added_files.append((os.path.join(pathex, "xgboost"), "xgboost"))
-
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
     "sklearn.utils._cython_blas",
@@ -103,7 +99,6 @@ hidden_imports = [
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
-    "xgboost",
 ]
 
 
