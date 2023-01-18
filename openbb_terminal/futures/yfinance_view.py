@@ -65,6 +65,7 @@ def display_historical(
     symbols: List[str],
     expiry: str = "",
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -77,8 +78,10 @@ def display_historical(
         List of future timeseries symbols to display
     expiry: str
         Future expiry date with format YYYY-MM
-    start_date : Optional[str]
-        Initial date like string (e.g., 2021-10-01)
+    start_date: Optional[str]
+        Start date of the historical data with format YYYY-MM-DD
+    end_date: Optional[str]
+        End date of the historical data with format YYYY-MM-DD
     raw: bool
         Display futures timeseries in raw format
     export: str
@@ -100,7 +103,7 @@ def display_historical(
         console.print("No symbol was provided.\n")
         return
 
-    historicals = yfinance_model.get_historical_futures(symbols, expiry, start_date)
+    historicals = yfinance_model.get_historical_futures(symbols, expiry, start_date, end_date)
 
     if historicals.empty:
         console.print(f"No data was found for the symbols: {', '.join(symbols)}\n")

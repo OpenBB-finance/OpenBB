@@ -80,6 +80,7 @@ def get_historical_futures(
     symbols: List[str],
     expiry: str = "",
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Get historical futures [Source: Yahoo Finance]
 
@@ -91,6 +92,8 @@ def get_historical_futures(
         Future expiry date with format YYYY-MM
     start_date: Optional[str]
         Start date of the historical data with format YYYY-MM-DD
+    end_date: Optional[str]
+        End date of the historical data with format YYYY-MM-DD
 
     Returns
     -------
@@ -100,6 +103,9 @@ def get_historical_futures(
 
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=3 * 365)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     if expiry:
         symbols_with_expiry = list()
@@ -114,17 +120,27 @@ def get_historical_futures(
                 f"{symbol}{MONTHS[expiry_date.month]}{str(expiry_date.year)[-2:]}.{exchange}"
             )
 
-        return yf.download(symbols_with_expiry, progress=False, period="max")
+        return yf.download(
+            symbols_with_expiry,
+            start=start_date,
+            end=end_date,
+            progress=False,
+            period="max",
+            ignore_tz=True,
+        )
 
     df = yf.download(
-        [t + "=F" for t in symbols], progress=False, period="max", ignore_tz=True
+        [t + "=F" for t in symbols],
+        start=start_date,
+        end=end_date,
+        progress=False,
+        period="max",
+        ignore_tz=True,
     )
     if len(symbols) > 1:
         df.columns = pd.MultiIndex.from_tuples(
             [(tup[0], tup[1].replace("=F", "")) for tup in df.columns]
         )
-
-    df = df[df.index > datetime.strptime(start_date, "%Y-%m-%d")]
 
     return df
 
