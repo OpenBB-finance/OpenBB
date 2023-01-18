@@ -3422,6 +3422,21 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "pywry"
+version = "0.1.9"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+psutil = ">=5.8.0"
+websockets = ">=5.0.1"
+
+[package.extras]
+dev = ["maturin (==0.14.6)"]
+
+[[package]]
 name = "pyyaml"
 version = "6.0"
 description = "YAML parser and emitter for Python"
@@ -4856,7 +4871,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "77d8bec0f896363a577f4cbdcd9345705a9c9ea22395c44df71b7f3799c0618d"
+content-hash = "4a4d82238d1b420cc1f07c682ba7d260bc7fc95b3e3c3292c9f9ab7cbf158cac"
 
 [metadata.files]
 absl-py = []
@@ -5121,6 +5136,7 @@ pyupgrade = []
 pywin32 = []
 pywin32-ctypes = []
 pywinpty = []
+pywry = []
 pyyaml = []
 pyzmq = []
 qdldl = []
