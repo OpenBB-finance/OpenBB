@@ -1,0 +1,48 @@
+name: Windows10 Build
+env:
+  OPENBB_ENABLE_QUICK_EXIT: true
+  OPENBB_LOG_COLLECT: false
+  OPENBB_USE_ION: false
+  OPENBB_USE_PROMPT_TOOLKIT: false
+  PIP_DEFAULT_TIMEOUT: 100
+  PYTHONNOUSERSITE: 1
+on: workflow_dispatch
+jobs:
+  Windows-Build:
+    name: Windows10 Build
+    runs-on: [self-hosted, Windows, x64]
+    # Configuring -------------
+    steps:
+      - name: Setup Windows Git Configuration # This is under the assumption that git is already installed on the system
+        run: |
+           Set-ItemProperty 'HKLM:\System\CurrentControlSet\Control\FileSystem' -Name 'LongPathsEnabled' -value 1
+           git config --system core.longpaths true
+      - name: Checkout
+        uses: actions/checkout@v2.4.2
+      - name: Set up Python & Create OpenBB Environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Set up Python & Create OpenBB Environment
+        run: python -m pip install --upgrade pip setuptools wheel
+
+      - name: Create and start virtual environment
+        run: |
+          python -m venv venv
+          call venv\Scripts\activate.bat
+
+      - name: Set up Python & Create OpenBB Environment
+        run: python -m pip install --upgrade pip setuptools wheel
+
+      - name: Poetry Install Installer
+        run: poetry install -E installer -E all
+
+      - name: Install Specific Papermill
+        run: |
+          pip uninstall papermill -y
+          pip install git+https://github.com/nteract/papermill.git@main
+      # Building ------------
+      - name: Build Terminal.spec file
+        run: |
+          pyinstaller build/pyinstaller/terminal.spec --clean
