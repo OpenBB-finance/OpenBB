@@ -86,13 +86,20 @@ def transcribe_and_summarize(
     for title, audio_path in audios.items():
         warnings.filterwarnings("ignore")
 
+        decode_options = {"task": task, "language": language}
         result = whisper.transcribe(
             model=model,
             audio=audio_path,
             verbose=verbose,
-            decode_options={"task": task, "language": language},
+            **decode_options,
         )
         warnings.filterwarnings("default")
+
+        all_text = ""
+        for segment in result["segments"]:
+            all_text += segment["text"]
+
+        print(all_text)
 
         if subtitles_format == "vtt":
             vtt_path = os.path.join(output_dir, f"{slugify(title)}.vtt")
