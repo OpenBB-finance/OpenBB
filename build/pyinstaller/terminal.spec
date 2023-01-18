@@ -103,7 +103,7 @@ hidden_imports = [
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
-    "scipy.stats"
+    "scipy.sparse.linalg._isolve._iterative"
 ]
 
 
