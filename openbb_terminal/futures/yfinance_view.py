@@ -6,7 +6,6 @@ from itertools import cycle
 import logging
 import os
 
-from datetime import datetime, timedelta
 from matplotlib import pyplot as plt
 
 from openbb_terminal.config_terminal import theme
