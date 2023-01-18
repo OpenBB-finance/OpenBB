@@ -4,6 +4,7 @@ import pathlib
 import subprocess
 
 from dotenv import set_key
+import scipy
 
 from PyInstaller.compat import is_darwin, is_win
 from PyInstaller.building.api import PYZ, EXE, COLLECT
@@ -76,7 +77,9 @@ added_files = [
 ]
 
 if is_win and os.path.exists(os.path.join(pathex, "scipy.libs")):
-    added_files.append((os.path.join(pathex, "scipy.libs"), "scipy.libs"))
+    added_files.append(
+        (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
+    )
 
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
