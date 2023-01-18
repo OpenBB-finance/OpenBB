@@ -11,6 +11,7 @@ import yfinance as yf
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 
+from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 
@@ -106,6 +107,10 @@ def get_historical_futures(
 
     if end_date is None:
         end_date = datetime.now().strftime("%Y-%m-%d")
+
+    if start_date >= end_date:
+        console.print("[yellow]Start date must be before end date.[/yellow]")
+        return pd.DataFrame()
 
     if expiry:
         symbols_with_expiry = list()

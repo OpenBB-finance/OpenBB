@@ -103,10 +103,11 @@ def display_historical(
         console.print("No symbol was provided.\n")
         return
 
-    historicals = yfinance_model.get_historical_futures(symbols, expiry, start_date, end_date)
+    historicals = yfinance_model.get_historical_futures(
+        symbols, expiry, start_date, end_date
+    )
 
     if historicals.empty:
-        console.print(f"No data was found for the symbols: {', '.join(symbols)}\n")
         return
 
     if raw or len(historicals) == 1:
