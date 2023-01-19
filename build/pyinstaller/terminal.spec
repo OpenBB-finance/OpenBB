@@ -2,6 +2,7 @@
 import os
 import pathlib
 import subprocess
+import scipy
 
 from dotenv import set_key
 
@@ -74,7 +75,10 @@ added_files = [
     (os.path.join(pathex, "blib2to3", "Grammar.txt"), "blib2to3"),
     (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
 ]
-
+if is_win:
+    added_files.append(
+            (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
+        )
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
     "sklearn.utils._cython_blas",
@@ -99,6 +103,7 @@ hidden_imports = [
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
+    "scipy.sparse.linalg._isolve._iterative"
 ]
 
 
