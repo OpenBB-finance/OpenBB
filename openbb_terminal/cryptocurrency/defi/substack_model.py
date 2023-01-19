@@ -39,14 +39,16 @@ def scrape_substack(url: str) -> List[List[str]]:
     req = requests.get(url)
     soup = BeautifulSoup(req.text, features="lxml")
     results: List[List[str]] = []
-    posts = soup.find("div", class_="portable-archive-list").find_all(
-        "div", class_="post-preview portable-archive-post has-image has-author-line"
-    )
-    for post in posts:
-        title: str = post.a.text
-        post_url: str = post.a["href"]
-        time: str = post.find("time").get("datetime")
-        results.append([title, post_url, time])
+    archive = soup.find("div", class_="portable-archive-list")
+    if archive:
+        posts = archive.find_all(
+            "div", class_="post-preview portable-archive-post has-image has-author-line"
+        )
+        for post in posts:
+            title: str = post.a.text
+            post_url: str = post.a["href"]
+            time: str = post.find("time").get("datetime")
+            results.append([title, post_url, time])
     return results
 
 
