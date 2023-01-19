@@ -1,3 +1,5 @@
+
+    filings            the most-recent form submissions to the SEC                     [FinancialModelingPrep]
     search             search a specific stock ticker for analysis                     [FinanceDatabase]
     load               load a specific stock ticker and additional info for analysis   [YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD]
 
