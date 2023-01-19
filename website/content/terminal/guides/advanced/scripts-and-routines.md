@@ -4,10 +4,9 @@ title: Scripts & Routines
 ---
 The `.openbb` scripts offer the ability to automatically run a set of commands in the form of a **routine**. Furthermore, the scripts can be adapted, and documented, at any moment giving the user full control over the type of analysis you wish to do (and repeat). This can fundamental research, understanding market movements, finding hidden gems and even doing advanced statistical/econometric research. 
 
-The .openbb scripts offer a vast amount of capabilities to export data from the OpenBB Terminal directly into Excel files allowing for students, professors, researchers and professionals to collect a lot of data in an instant. For example, see the GIF below demonstrates the data collection of all constituents of the S&P 500. Download this file [here](https://drive.google.com/file/d/1XqcvjO8cKdU3DD209l3FvITxYv5ddIig/view?usp=sharing) and place it in the `routines` folder as found in the `OpenBBUserData` folder. Read on to understand how to execute this file.
+The .openbb scripts offer a vast amount of capabilities to export data from the OpenBB Terminal directly into Excel files allowing students, professors, researchers and professionals to collect a a large dataset incredibly quick. For example, the GIF below demonstrates market data collection of all constituents of the S&P 500. Download the routine file [here](https://drive.google.com/file/d/1XqcvjO8cKdU3DD209l3FvITxYv5ddIig/view?usp=sharing) and place it in the `routines` folder as found in the `OpenBBUserData` folder and execute with `exe sp500.openbb`. Read on to understand in detail how to create and execute these type of files.
 
 <iframe width="100%" height="450" src="https://www.youtube.com/embed/mKdXGEkgdOM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 
 ### Create your own script
 
