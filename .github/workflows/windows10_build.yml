@@ -33,7 +33,7 @@ jobs:
           poetry install -E installer -E all
           python -m pip uninstall papermill -y
           python -m pip install git+https://github.com/nteract/papermill.git@main
-          pyinstaller build\pyinstaller\terminal.spec --clean
+          python -m pyinstaller build\pyinstaller\terminal.spec --clean
           7z a -tzip dist\OpenBBTerminal.zip dist\OpenBBTerminal
         shell: bash
 
