@@ -14,7 +14,6 @@ import webbrowser
 from typing import List, Dict, Optional
 import contextlib
 
-import dotenv
 import certifi
 from rich import panel
 
@@ -29,11 +28,11 @@ from openbb_terminal.terminal_helper import is_packaged_application
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
-    REPOSITORY_ENV_FILE,
     REPOSITORY_DIRECTORY,
     USER_DATA_DIRECTORY,
     USER_ENV_FILE,
     USER_ROUTINES_DIRECTORY,
+    load_dotenv_with_priority,
 )
 
 from openbb_terminal.helper_funcs import (
@@ -838,8 +837,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
         t_controller.print_help()
         check_for_updates()
 
-    dotenv.load_dotenv(USER_ENV_FILE)
-    dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
+    load_dotenv_with_priority()
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:
