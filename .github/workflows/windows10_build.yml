@@ -14,6 +14,8 @@ jobs:
     # Configuring -------------
     steps:
       - name: Setup Windows Git Configuration # This is under the assumption that git is already installed on the system
+        with:
+          shell: bash
         run: |
           Set-ItemProperty 'HKLM:\System\CurrentControlSet\Control\FileSystem' -Name 'LongPathsEnabled' -value 1
           git config --system core.longpaths true
@@ -24,26 +26,20 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Set up Python & Create OpenBB Environment
-        run: python -m pip install --upgrade pip setuptools wheel
-
       - name: Create and start virtual environment
         run: |
           python -m venv venv
-          .\venv\Scripts\activate.bat
-
-      - name: Set up Python & Create OpenBB Environment
-        run: python -m pip install --upgrade pip setuptools wheel poetry
-
-      - name: Poetry Install Installer
-        run: poetry install -E installer -E all
-
-      - name: Install Specific Papermill
-        run: |
+          source venv/Scripts/activate
+          pip install --upgrade pip setuptools wheel poetry
+          poetry install -E installer -E all
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
+          pyinstaller build\pyinstaller\terminal.spec --clean
+          7z a -tzip dist\OpenBBTerminal.zip dist\OpenBBTerminal
+
       # Building ------------
-      - name: Build Terminal.spec file
-        run: |
-          .\venv\Scripts\activate.bat
-          python -m pyinstaller build\pyinstaller\terminal.spec --clean
+      - name: Save Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: OpenBB-Windows10-Build
+          path: dist\OpenBBTerminal.zip
