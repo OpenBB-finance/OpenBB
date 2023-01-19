@@ -1322,6 +1322,8 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
     return full_path
 
 
+# This is a false positive on pylint and being tracked in pylint #3060
+# pylint: disable=abstract-class-instantiated
 def export_data(
     export_type: str,
     dir_path: str,
@@ -1388,7 +1390,6 @@ def export_data(
                     df.to_excel(saved_path, index=True, header=True)
 
                 else:
-
                     if os.path.exists(saved_path):
                         with pd.ExcelWriter(
                             saved_path,
@@ -1400,7 +1401,6 @@ def export_data(
                                 writer, sheet_name=sheet_name, index=True, header=True
                             )
                     else:
-
                         with pd.ExcelWriter(
                             saved_path,
                             engine="openpyxl",
@@ -1408,7 +1408,6 @@ def export_data(
                             df.to_excel(
                                 writer, sheet_name=sheet_name, index=True, header=True
                             )
-
             elif exp_type.endswith("png"):
                 plt.savefig(saved_path)
             elif exp_type.endswith("jpg"):
