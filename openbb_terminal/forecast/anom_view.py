@@ -6,6 +6,7 @@ from typing import Union, List, Optional
 from datetime import datetime
 
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
 from openbb_terminal.forecast import anom_model
@@ -75,10 +76,13 @@ def display_anomaly_detection(
         ax = external_axes[0]
 
     ticker_series.plot(label=target_column, ax=ax)
-    (anom_score / 2.0 - 100).plot(
-        label="computed anomaly score", c="orangered", lw=3, ax=ax
+
+    ticker_max = np.max(ticker_series.values())
+    (binary_anom * int(ticker_max)).plot(
+        label="detected binary anomaly", c="red", ax=ax
     )
-    (binary_anom * 45 - 150).plot(label="detected binary anomaly (1=TRUE)", lw=4, ax=ax)
+    # set min and max for y axis
+    ax.set_ylim([-1, ticker_max * 1.1])
 
     ax.set_title(f"Quantile Anomaly Detection for {dataset_name}")
     ax.set_xlabel("Date")
