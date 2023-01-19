@@ -674,6 +674,7 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser:
             if logout() == Status.LOGGED_OUT:
+                system_clear()
                 login_controller.main()
 
     @log_start_end(log=logger)
