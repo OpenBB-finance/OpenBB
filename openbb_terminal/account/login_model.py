@@ -24,23 +24,13 @@ def launch_terminal(login_info: dict):
     if token:
         decoded_info = jwt.decode(token, options={"verify_signature": False})
         User.email = decoded_info.get("sub", "")
-        username = User.email[:User.email.find("@")]
+        username = User.email[: User.email.find("@")]
         setattr(feature_flags, "USE_FLAIR", "[" + username + "] 🦋")
 
         terminal_controller.parse_args_and_run()
 
 
-def request_token(email: str, password: str, save: bool) -> dict:
-    """Request token and save it to file
-
-    Parameters
-    ----------
-    email : str
-        Email
-    password : str
-        Password
-
-    """
+def request_login_info(email: str, password: str, save: bool) -> dict:
     data = {
         "email": email,
         "password": password,

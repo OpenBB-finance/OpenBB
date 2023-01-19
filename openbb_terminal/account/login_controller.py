@@ -2,7 +2,7 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.account.login_model import (
     get_login_info,
     is_login_valid,
-    request_token,
+    request_login_info,
     launch_terminal,
 )
 
@@ -34,7 +34,7 @@ def login_prompt():
     display_welcome_message()
     while True:
         email, password, save = get_user_input()
-        login_info = request_token(email, password, save)
+        login_info = request_login_info(email, password, save)
         if login_info:
             break
 
