@@ -1,5 +1,5 @@
 # pylint: disable=too-many-arguments
-"""Linear Regression Model"""
+"""Quantile Anomaly Detection Model"""
 __docformat__ = "numpy"
 
 import logging
