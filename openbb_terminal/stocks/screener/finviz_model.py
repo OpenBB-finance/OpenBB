@@ -177,6 +177,8 @@ def get_screener_data(
             else:
                 df_screen = screen.screener_view(ascend=ascend)
 
+    df_screen.columns = [c.replace("/", "_") for c in df_screen.columns]
+
     return df_screen
 
 
