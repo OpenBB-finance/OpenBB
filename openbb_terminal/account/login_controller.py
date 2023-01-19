@@ -14,23 +14,26 @@ def display_welcome_message():
     )
 
 
+def get_user_input():
+    console.print("\nPlease enter your credentials:")
+    email = console.input("> Email: ", style="blue")
+    password = console.getpass("> Password: ", style="blue")
+
+    save_str = ""
+    while save_str not in ["y", "n"]:
+        save_str = console.input("> Keep me logged in (y/n): ", style="blue").lower()
+
+    save = False
+    if save_str == "y":
+        save = True
+
+    return email, password, save
+
+
 def login_prompt():
     display_welcome_message()
     while True:
-        console.print("\nPlease enter your credentials:")
-        email = console.input("> Email: ", style="blue")
-        password = console.getpass("> Password: ", style="blue")
-
-        save_str = ""
-        while save_str not in ["y", "n"]:
-            save_str = console.input(
-                "> Keep me logged in (y/n): ", style="blue"
-            ).lower()
-
-        save = False
-        if save_str == "y":
-            save = True
-
+        email, password, save = get_user_input()
         login_info = request_token(email, password, save)
         if login_info:
             break
