@@ -1,6 +1,7 @@
 """Rich Module"""
 __docformat__ = "numpy"
 
+import getpass
 import os
 import json
 from pathlib import Path
@@ -313,6 +314,14 @@ class ConsoleAndPanel:
                 self.console.print(*args, **kwargs)
             else:
                 print(*args, **kwargs)
+
+    def input(self, *args, **kwargs):
+        self.print(*args, **kwargs, end="")
+        return input()
+
+    def getpass(self, *args, **kwargs):
+        self.print(*args, **kwargs, end="")
+        return getpass.getpass("")
 
 
 console = ConsoleAndPanel()
