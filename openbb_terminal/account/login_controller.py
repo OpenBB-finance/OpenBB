@@ -1,3 +1,4 @@
+from typing import Tuple
 from openbb_terminal.rich_config import console
 from openbb_terminal.account.login_model import (
     Status,
@@ -14,17 +15,13 @@ def display_welcome_message():
     console.print("You need to be connected to use the installer version of OpenBB.\n")
 
 
-def get_user_input():
+def get_user_input() -> Tuple[str, str, bool]:
     """Get user input
 
     Returns
     -------
-    email : str
-        User email
-    password : str
-        User password
-    save : bool
-        Save login info
+    Tuple[str, str, bool]
+        The user email, password and save login option.
     """
     console.print("\nPlease enter your credentials:")
     email = console.input("> Email: ", style="blue")
