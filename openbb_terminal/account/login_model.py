@@ -146,7 +146,7 @@ def get_login_info() -> Union[dict, Error]:
 
     try:
         if os.path.isfile(file_path):
-            with open(file_path, "r") as file:
+            with open(file_path) as file:
                 return json.load(file)
     except Exception:
         console.print(Error.READ_ERROR.value)

@@ -12,7 +12,10 @@ from openbb_terminal.account.login_model import (
 
 def display_welcome_message():
     """Display welcome message"""
-    console.print("You need to be connected to use the installer version of OpenBB.\n")
+    console.print(
+        "You need to log in to use the installer version of OpenBB.",
+        style="info",
+    )
 
 
 def get_user_input() -> Tuple[str, str, bool]:
@@ -23,7 +26,7 @@ def get_user_input() -> Tuple[str, str, bool]:
     Tuple[str, str, bool]
         The user email, password and save login option.
     """
-    console.print("\nPlease enter your credentials:")
+    console.print("\nPlease enter your credentials:", style="info")
     email = console.input("> Email: ", style="blue")
     password = console.getpass("> Password: ", style="blue")
 
@@ -61,7 +64,7 @@ def login_prompt(welcome=True):
 def main():
     """Main function"""
     login_info = get_login_info()
-    if login_info == Error.READ_ERROR:
+    if login_info == Error.READ_ERROR or not login_info:
         login_prompt()
     else:
         status = get_login_status(login_info=login_info)
