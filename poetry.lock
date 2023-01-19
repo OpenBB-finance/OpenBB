@@ -3060,6 +3060,20 @@ optional = true
 python-versions = ">=3.7"
 
 [[package]]
+name = "pyjwt"
+version = "2.6.0"
+description = "JSON Web Token implementation in Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+crypto = ["cryptography (>=3.4.0)"]
+dev = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface", "cryptography (>=3.4.0)", "pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)", "pre-commit"]
+docs = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
+tests = ["pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)"]
+
+[[package]]
 name = "pylint"
 version = "2.15.2"
 description = "python code static checker"
@@ -4856,7 +4870,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "77d8bec0f896363a577f4cbdcd9345705a9c9ea22395c44df71b7f3799c0618d"
+content-hash = "7fd9f4ca140556f2b9b3df3ee1568b09259fd3b83fb2546c321b14b190dff36c"
 
 [metadata.files]
 absl-py = []
@@ -5092,6 +5106,7 @@ pygments = []
 pyhdfe = []
 pyinstaller = []
 pyinstaller-hooks-contrib = []
+pyjwt = []
 pylint = []
 pyluach = []
 pymeeus = []
