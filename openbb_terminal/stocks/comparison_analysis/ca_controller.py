@@ -319,19 +319,20 @@ class ComparisonAnalysisController(BaseController):
                 elif ns_parser.source == "Finnhub":
                     self.similar = finnhub_model.get_similar_companies(self.ticker)
 
-                    self.user = "Finnhub"
-
-                    if self.ticker.upper() in self.similar:
-                        self.similar.remove(self.ticker.upper())
-
-                    if len(self.similar) > ns_parser.limit:
-                        random.shuffle(self.similar)
-                        self.similar = sorted(self.similar[: ns_parser.limit])
-                        console.print(
-                            f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
-                        )
-
                     if self.similar:
+
+                        self.user = "Finnhub"
+
+                        if self.ticker.upper() in self.similar:
+                            self.similar.remove(self.ticker.upper())
+
+                        if len(self.similar) > ns_parser.limit:
+                            random.shuffle(self.similar)
+                            self.similar = sorted(self.similar[: ns_parser.limit])
+                            console.print(
+                                f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
+                            )
+
                         self.similar = [self.ticker] + self.similar
                         console.print(
                             f"[{self.user}] Similar Companies: {', '.join(self.similar)}",

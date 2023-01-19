@@ -49,7 +49,7 @@ def get_financial_comparisons(
     """
     l_timeframes, ddf_financials = prepare_comparison_financials(symbols, data, quarter)
 
-    if timeframe:
+    if timeframe and l_timeframes:
         if (timeframe == str(datetime.now().year - 1)) and quarter:
             timeframe = l_timeframes[-1]
         elif timeframe not in l_timeframes:
@@ -299,12 +299,13 @@ def prepare_comparison_financials(
         A dictionary of DataFrame with financial info from list of similar tickers
     """
 
+    if not similar:
+        console.print("[red]No similar tickers found.")
+        return [], {}
+
     financials = {}
-    for (
-        symbol
-    ) in (
-        similar.copy()
-    ):  # We need a copy since we are modifying the original potentially
+    # We need a copy since we are modifying the original potentially
+    for symbol in similar.copy():
         results = prepare_df_financials(symbol, statement, quarter)
         if results.empty:
             # If we have an empty result set, don't do further analysis on this symbol and remove it from consideration
