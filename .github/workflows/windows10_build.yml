@@ -28,7 +28,8 @@ jobs:
         run: |
           python -m venv venv
           source venv/Scripts/activate
-          python -m pip install --upgrade pip setuptools wheel poetry
+          python -m pip install --upgrade pip poetry
+          python -m pip install setuptools==64.0.2 wheel
           poetry install -E installer -E all
           python -m pip uninstall papermill -y
           python -m pip install git+https://github.com/nteract/papermill.git@main
