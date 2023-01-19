@@ -592,6 +592,10 @@ class ETFController(BaseController):
                         f"[red]Could not find the file: {ns_parser.filename}[/red]\n"
                     )
                     return
+                except Exception:
+                    console.print("[red]Failed to create report.[/red]\n")
+                    return
+
                 console.print(
                     f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
                 )

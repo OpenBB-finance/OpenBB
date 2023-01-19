@@ -48,7 +48,7 @@ def display_whatif_scenario(
     num_shares_acquired: float
         Number of shares acquired
     """
-    data = yf.download(symbol, progress=False)
+    data = yf.download(symbol, progress=False, ignore_tz=True)
 
     if not data.empty:
         data = data["Adj Close"]

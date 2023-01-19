@@ -1145,7 +1145,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 export_data(
                     ns_parser.export,
                     os.path.dirname(os.path.abspath(__file__)),
-                    "load",
+                    f"load_{self.ticker}",
                     self.stock.copy(),
                 )
 
