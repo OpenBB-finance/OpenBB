@@ -6,6 +6,9 @@ The `.openbb` scripts offer the ability to automatically run a set of commands i
 
 The .openbb scripts offer a vast amount of capabilities to export data from the OpenBB Terminal directly into Excel files allowing for students, professors, researchers and professionals to collect a lot of data in an instant. For example, see the GIF below demonstrates the data collection of all constituents of the S&P 500. Download this file [here](https://drive.google.com/file/d/1XqcvjO8cKdU3DD209l3FvITxYv5ddIig/view?usp=sharing) and place it in the `routines` folder as found in the `OpenBBUserData` folder. Read on to understand how to execute this file.
 
+<iframe width="100%" height="450" src="https://www.youtube.com/embed/mKdXGEkgdOM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+
 ### Create your own script
 
 Scripts and routines reside in the `routines` folder within the `OpenBBUserData` folder (as found [here](https://docs.openbb.co/terminal/guides/advanced/data)) and are automatically shown when you type `exe` from the home screen (`home`). To create your own, simply create a file within the `routines` folder. This can be done as follows:
