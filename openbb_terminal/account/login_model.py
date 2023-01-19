@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 import os.path
@@ -11,12 +10,15 @@ from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags
 
+from openbb_terminal.account.user import User
+
 BASE_URL = "http://127.0.0.1:8000/terminal/"
 
 
 class Status(Enum):
     VALID_LOGIN = "[green]\nLogin successful.[/green]"
     INVALID_LOGIN = "[red]\nInvalid login.[/red]"
+    LOGGED_OUT = "[green]\nLogged out.[/green]"
 
 
 class Error(Enum):
@@ -28,13 +30,6 @@ class Error(Enum):
     READ_ERROR = "[red]\nError reading login info.[/red]"
 
 
-# Will something like this for the logging
-@dataclass(frozen=True)
-class User:
-    email: str
-    uuid: str
-
-
 def launch_terminal(login_info: dict):
     """Launch the terminal.
 
@@ -43,13 +38,16 @@ def launch_terminal(login_info: dict):
     login_info : dict
         The login info.
     """
-    token = login_info.get("access_token", "")
+    User.token_type = login_info.get("token_type", "")
+    User.token = login_info.get("access_token", "")
     User.uuid = login_info.get("uuid", "")
-    if token:
-        decoded_info = jwt.decode(token, options={"verify_signature": False})
+    if User.token:
+        decoded_info = jwt.decode(User.token, options={"verify_signature": False})
         User.email = decoded_info.get("sub", "")
-        username = User.email[: User.email.find("@")]
-        setattr(feature_flags, "USE_FLAIR", "[" + username + "] 🦋")
+
+        if feature_flags.USE_FLAIR == ":openbb":
+            username = User.email[: User.email.find("@")]
+            setattr(feature_flags, "USE_FLAIR", "[" + username + "] 🦋")
 
         terminal_controller.parse_args_and_run()
 
@@ -65,8 +63,8 @@ def write_to_file(data: dict, file_path: Path):
         The file path.
     """
     try:
-        with open(file_path, "w") as outfile:
-            outfile.write(json.dumps(data))
+        with open(file_path, "w") as file:
+            file.write(json.dumps(data))
     except Exception:
         console.print(Error.SAVE_ERROR.value)
 
@@ -130,7 +128,9 @@ def request_login_info(email: str, password: str, save: bool) -> Union[dict, Err
     except requests.exceptions.ConnectionError:
         console.print(Error.CONNECTION_ERROR.value)
         return Error.CONNECTION_ERROR
-
+    except Exception:
+        console.print(Error.UNKNOWN_ERROR.value)
+        return Error.UNKNOWN_ERROR
     return process_response(response, save)
 
 
@@ -183,4 +183,34 @@ def get_login_status(login_info: dict) -> Union[Status, Error]:
         except requests.exceptions.ConnectionError:
             console.print(Error.CONNECTION_ERROR.value)
             return Error.CONNECTION_ERROR
+        except Exception:
+            console.print(Error.UNKNOWN_ERROR.value)
+            return Error.UNKNOWN_ERROR
     return Status.INVALID_LOGIN
+
+
+def logout() -> Union[Status, Error]:
+    """Logout the user.
+
+    Returns
+    -------
+    Union[Status, Error]
+        The status of the logout, or an error.
+    """
+    try:
+        # TODO: Uncomment when the server supports logout
+        # requests.post(
+        #     url=BASE_URL + "logout",
+        #     headers={"Authorization": f"{User.token_type.title()} {User.token}"},
+        # )
+        file_path = SETTINGS_DIRECTORY / "login.json"
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+        console.print(Status.LOGGED_OUT.value)
+        return Status.LOGGED_OUT
+    except requests.exceptions.ConnectionError:
+        console.print(Error.CONNECTION_ERROR.value)
+        return Error.CONNECTION_ERROR
+    except Exception:
+        console.print(Error.UNKNOWN_ERROR.value)
+        return Error.UNKNOWN_ERROR

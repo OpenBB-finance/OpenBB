@@ -18,6 +18,8 @@ import pandas as pd
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
+from openbb_terminal.account.login_model import Status, logout
+from openbb_terminal.account.user import User
 
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_IMPORTS_DIRECTORY,
@@ -47,6 +49,7 @@ from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.core.completer.choices import build_controller_choice_map
+from openbb_terminal.account import login_controller
 
 logger = logging.getLogger(__name__)
 
@@ -94,6 +97,8 @@ class BaseController(metaclass=ABCMeta):
         "record",
         "stop",
         "screenshot",
+        "logout",
+        "whoami",
     ]
 
     CHOICES_COMMANDS: List[str] = []
@@ -655,6 +660,36 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser:
             screenshot()
+
+    @log_start_end(log=logger)
+    def call_logout(self, other_args: List[str]) -> None:
+        """Process logout command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="logout",
+            description="Logout from OpenBB",
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            if logout() == Status.LOGGED_OUT:
+                login_controller.main()
+
+    @log_start_end(log=logger)
+    def call_whoami(self, other_args: List[str]) -> None:
+        """Process whoami command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="whoami",
+            description="Show current user",
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            console.print(f"[info]email:[/info] {User.email}")
+            console.print(f"[info]uuid:[/info] {User.uuid}\n")
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):

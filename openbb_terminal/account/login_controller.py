@@ -13,7 +13,7 @@ from openbb_terminal.account.login_model import (
 def display_welcome_message():
     """Display welcome message"""
     console.print(
-        "You need to log in to use the installer version of OpenBB.",
+        "\nYou must log in to use the installer version of OpenBB.",
         style="info",
     )
 
