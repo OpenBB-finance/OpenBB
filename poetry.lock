@@ -8914,4 +8914,4 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "1180f105ddef6b8a4bfe0649661ef4e4d89cc293e7ed161f6695833c3d416dfb"
+content-hash = "c0c08919ea0aef2625404fca098ed519a3f289870664f7da1a0828f6512682ec"
