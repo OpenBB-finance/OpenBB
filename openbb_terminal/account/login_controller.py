@@ -39,7 +39,7 @@ def get_user_input() -> Tuple[str, str, bool]:
 
 
 def login_prompt(welcome=True):
-    """Login prompt
+    """Login prompt and launch terminal if login is successful.
 
     Parameters
     ----------
