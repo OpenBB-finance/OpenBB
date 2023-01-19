@@ -64,7 +64,7 @@ def login_prompt(welcome=True):
 def main():
     """Main function"""
     login_info = get_login_info()
-    if login_info == Error.READ_ERROR or not login_info:
+    if login_info == Error.UNKNOWN_ERROR or not login_info:
         login_prompt()
     else:
         status = get_login_status(login_info=login_info)
