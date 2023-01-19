@@ -4,12 +4,12 @@ from pathlib import Path
 import os.path
 import json
 from typing import Union
+import jwt
 import requests
 from openbb_terminal import terminal_controller
 from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags
-import jwt
 
 BASE_URL = "http://127.0.0.1:8000/terminal/"
 
@@ -28,6 +28,7 @@ class Error(Enum):
     READ_ERROR = "[red]\nError reading login info.[/red]"
 
 
+# Will something like this for the logging
 @dataclass(frozen=True)
 class User:
     email: str
