@@ -5,7 +5,7 @@ from openbb_terminal.core.integration_tests import integration_controller
 from openbb_terminal.account import login_controller
 from openbb_terminal.terminal_helper import is_packaged_application
 
-IS_PACKAGE = True # is_packaged_application() uncomment to test in installer
+IS_PACKAGE = True  # is_packaged_application() uncomment to test in installer
 
 if __name__ == "__main__":
     multiprocessing.freeze_support()
