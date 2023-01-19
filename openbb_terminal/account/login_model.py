@@ -92,16 +92,14 @@ def process_response(response: requests.Response, save: bool) -> Union[dict, Err
         if save:
             write_to_file(login, SETTINGS_DIRECTORY / "login.json")
         return login
-
     if response.status_code == 401:
         console.print(Error.WRONG_CREDENTIALS.value)
         return Error.WRONG_CREDENTIALS
-    elif response.status_code == 403:
+    if response.status_code == 403:
         console.print(Error.UNVERIFIED_EMAIL.value)
         return Error.UNVERIFIED_EMAIL
-    else:
-        console.print(Error.UNKNOWN_ERROR.value)
-        return Error.UNKNOWN_ERROR
+    console.print(Error.UNKNOWN_ERROR.value)
+    return Error.UNKNOWN_ERROR
 
 
 def request_login_info(email: str, password: str, save: bool) -> Union[dict, Error]:

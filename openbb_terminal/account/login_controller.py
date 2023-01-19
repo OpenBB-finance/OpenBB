@@ -62,14 +62,13 @@ def main():
     """Main function"""
     login_info = get_login_info()
     if login_info == Error.READ_ERROR:
-        return login_prompt()
-
-    status = get_login_status(login_info=login_info)
-    if status == Status.VALID_LOGIN:
-        launch_terminal(login_info=login_info)
-
-    if status == Status.INVALID_LOGIN:
-        login_prompt(welcome=False)
+        login_prompt()
+    else:
+        status = get_login_status(login_info=login_info)
+        if status == Status.VALID_LOGIN:
+            launch_terminal(login_info=login_info)
+        if status == Status.INVALID_LOGIN:
+            login_prompt(welcome=False)
 
 
 if __name__ == "__main__":
