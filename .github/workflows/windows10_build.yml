@@ -14,8 +14,6 @@ jobs:
     # Configuring -------------
     steps:
       - name: Setup Windows Git Configuration # This is under the assumption that git is already installed on the system
-        with:
-          shell: bash
         run: |
           Set-ItemProperty 'HKLM:\System\CurrentControlSet\Control\FileSystem' -Name 'LongPathsEnabled' -value 1
           git config --system core.longpaths true
@@ -36,6 +34,7 @@ jobs:
           pip install git+https://github.com/nteract/papermill.git@main
           pyinstaller build\pyinstaller\terminal.spec --clean
           7z a -tzip dist\OpenBBTerminal.zip dist\OpenBBTerminal
+        shell: bash
 
       # Building ------------
       - name: Save Build Artifact
