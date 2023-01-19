@@ -57,7 +57,7 @@ interactions:
         zi09OtS5pc4tdW6pc0s7iu7KLV0ovTRdLhfL0Qvd/uLiPxvc1FeRawAA
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -81,7 +81,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 19 Jan 2023 14:48:42 GMT
+      - Thu, 19 Jan 2023 14:53:18 GMT
       server:
       - ATS
       vary:
@@ -89,13 +89,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '7'
+      - '6'
       x-request-id:
-      - fc5d5ac2-1d4f-4243-8f4b-112cfa3cecfa
+      - 6eccf127-cf3d-4c33-a9c9-3a1f06378939
       x-yahoo-request-id:
-      - 3rl5ej1hsim2b
+      - a102indhsimau
       y-rid:
-      - 3rl5ej1hsim2b
+      - a102indhsimau
     status:
       code: 200
       message: OK
