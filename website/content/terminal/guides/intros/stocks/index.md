@@ -70,7 +70,7 @@ The first step in many workflows will be to load a stock symbol with historical 
 
 The data source for each function is located on the right-side of the menu. In the image below, this is depicted by the text in [blue].
 
-![Stocks Menu](https://user-images.githubusercontent.com/85772166/205688600-afaf4663-37f7-492e-aa9b-7d5263abe27b.png "Stocks Menu")
+![Stocks Menu](https://user-images.githubusercontent.com/85772166/212164398-76e461b6-84bc-415f-891b-be9c588dd02b.png "Stocks Menu")
 
 Attaching the source argument to a command enables users to select their preferred source. The default sources can be changed from the [`/sources` menu](https://docs.openbb.co/terminal/guides/advanced/changing-sources). To select the `source` as `NewsApi`, use the block below.
 
@@ -109,12 +109,12 @@ load -h
 Prints the dialogue on the screen:
 
 ```console
-options:
+optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
   -s START, --start START
-                        The starting date (format YYYY-MM-DD) of the stock (default: 2019-11-27)
-  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2022-12-01)
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2020-01-09)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2023-01-13)
   -i {1,5,15,30,60}, --interval {1,5,15,30,60}
                         Intraday stock minutes (default: 1440)
   -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
@@ -124,6 +124,8 @@ options:
   -w, --weekly          Load weekly data (default: False)
   -r {ytd,1y,2y,5y,6m}, --iexrange {ytd,1y,2y,5y,6m}
                         Range for using the iexcloud api. Longer range requires more tokens in account (default: ytd)
+  --exchange            Show exchange information. (default: False)
+  --performance         Show performance information. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
   --source {YahooFinance,IEXCloud,AlphaVantage,Polygon,EODHD}
@@ -136,21 +138,10 @@ By default, a daily period, with three-years of OHLC+V data, from YahooFinance, 
 load SPY
 ```
 
-A message will print indicating the starting date from which the data begins along with a table summarizing its recent performance.
+A message will print indicating the starting date from which the data begins.
 
 ```console
 Loading Daily data for SPY with starting period 2019-11-27.
-
-Company:  SPDR S&P 500
-Exchange: PCX
-Currency: USD
-
-                                          SPY Performance                                           
-┏━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
-┃ 1 Day  ┃ 1 Week ┃ 1 Month ┃ 1 Year  ┃ YTD      ┃ Volatility (1Y) ┃ Volume (10D avg) ┃ Last Price ┃
-┡━━━━━━━━╇━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━┩
-│ 2.97 % │ 1.95 % │ 5.56 %  │ -9.16 % │ -13.67 % │ 24.19 %         │ 67.92 M          │ 407.68     │
-└────────┴────────┴─────────┴─────────┴──────────┴─────────────────┴──────────────────┴────────────┘
 ```
 
 A simple way to get the entire history available from a source is to use an arbitrary starting date from a long time ago, like `1900-01-01`.
@@ -187,10 +178,6 @@ The performance table will not be displayed with intraday data, and we can see t
 
 ```console
 Loading Intraday 1min data for SPY with starting period 2022-11-25.
-
-Company:  SPDR S&P 500
-Exchange: PCX
-Currency: USD
 ```
 
 This can be augmented further by adding pre/post market price candles. The `-p` flag is only applicable to YahooFinance, Polygon will automatically include the candles from 4AM-8PM US/Eastern when intraday is selected.
@@ -207,10 +194,6 @@ load spy -s 1990-01-01 -m --export spy_monthly.csv
 
 ```console
 Loading Daily data for SPY with starting period 1993-02-01.
-
-Company:  SPDR S&P 500
-Exchange: PCX
-Currency: USD
 
 Saved file: /Users/{username}/OpenBBUserData/exports/spy_monthly.csv
 ```
@@ -281,7 +264,7 @@ The output will look like:
 ```console
 135 news articles for  SPDR+S&P+500 were found since 2022-11-24
 
-              Earnings Results: Big Lots to address weak results with even lower prices: ‘We will own bargains and treasures’               
+              Earnings Results: Big Lots to address weak results with even lower prices: ‘We will own bargains and treasures’
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Content                                                                                                                                  ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
@@ -292,7 +275,7 @@ The output will look like:
 │ https://www.marketwatch.com/story/big-lots-to-address-weak-results-with-even-lower-prices-we-will-own-bargains-and-treasures-11669920117 │
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-                                     Costco's Sales Update Slams the Stock. Strong Grocery Sales Weren't Enough.                                      
+                                     Costco's Sales Update Slams the Stock. Strong Grocery Sales Weren't Enough.
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Content                                                                                                                                            ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
@@ -303,7 +286,7 @@ The output will look like:
 │ https://www.barrons.com/articles/costco-november-sales-51669916824                                                                                 │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-                                                      Investors Pull $8 Billion From Major Stock ETFs                                                      
+                                                      Investors Pull $8 Billion From Major Stock ETFs
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Content                                                                                                                                                 ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
@@ -327,7 +310,7 @@ tob
 Which displays an output like:
 
 ```console
-                SPY Top of Book                
+                SPY Top of Book
 ┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ Bid Size ┃ Bid Price ┃ Ask Price ┃ Ask Size ┃
 ┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━┩
@@ -354,7 +337,7 @@ quote
 Displays a table:
 
 ```console
-          Ticker Quote           
+          Ticker Quote
 ┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┓
 ┃                ┃ SPY          ┃
 ┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━┩
@@ -393,7 +376,7 @@ load aapl/codes
 Prints the output:
 
 ```console
-            AAPL Codes             
+            AAPL Codes
 ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┓
 ┃                  ┃              ┃
 ┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━┩
@@ -451,7 +434,7 @@ search -s technology --country india -e india --export csv
 The results returned are:
 
 ```console
-                          Companies found on an exchange in India in India within Technology                           
+                          Companies found on an exchange in India in India within Technology
 ┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃               ┃ Name                            ┃ Country ┃ Sector     ┃ Industry                        ┃ Exchange ┃
 ┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩
