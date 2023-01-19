@@ -1328,6 +1328,9 @@ def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
     Returns two values, the first is a boolean indicating if the file exists and the
     second is a boolean indicating if the user wants to overwrite the file.
     """
+    # Jeroen asked for a flag to overwrite no matter what
+    if obbff.FILE_OVERWITE:
+        return False, True
     if os.path.exists(file_path):
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
         if overwrite == "y":
