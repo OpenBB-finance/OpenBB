@@ -8,7 +8,7 @@ from datetime import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from openbb_terminal.forecast import qanom_model
+from openbb_terminal.forecast import anom_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
 from openbb_terminal.helper_funcs import (
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_qanomaly_detection(
+def display_anomaly_detection(
     data: Union[pd.Series, pd.DataFrame],
     dataset_name="",
     target_column: str = "close",
@@ -63,7 +63,7 @@ def display_qanomaly_detection(
     if not helpers.check_data(data, target_column):
         return
 
-    (ticker_series, anom_score, binary_anom) = qanom_model.get_qanomaly_detection_data(
+    (ticker_series, anom_score, binary_anom) = anom_model.get_anomaly_detection_data(
         data=data,
         target_column=target_column,
         train_split=train_split,

@@ -71,7 +71,7 @@ from openbb_terminal.forecast import (
     helpers,
     trans_view,
     nhits_view,
-    qanom_view,
+    anom_view,
 )
 
 from openbb_terminal.common import common_model
@@ -134,7 +134,7 @@ class ForecastController(BaseController):
         "season",
         "which",
         "nhits",
-        "qanom",
+        "anom",
     ]
     pandas_plot_choices = [
         "line",
@@ -307,7 +307,7 @@ class ForecastController(BaseController):
         mt.add_cmd("tft", self.files)
         mt.add_raw("\n")
         mt.add_info("_anomaly_")
-        mt.add_cmd("qanom", self.files)
+        mt.add_cmd("anom", self.files)
 
         console.print(text=mt.menu_text, menu="Forecast")
 
@@ -3134,12 +3134,12 @@ class ForecastController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_qanom(self, other_args: List[str]):
-        """Process QANOM command"""
+    def call_anom(self, other_args: List[str]):
+        """Process ANOM command"""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="qanom",
+            prog="anom",
             description="""
                 Perform a Quantile Anomaly detection on a given dataset:
                 https://unit8co.github.io/darts/generated_api/darts.ad.detectors.quantile_detector.html
@@ -3169,7 +3169,7 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            qanom_view.display_qanomaly_detection(
+            anom_view.display_anomaly_detection(
                 data=self.datasets[ns_parser.target_dataset],
                 dataset_name=ns_parser.target_dataset,
                 target_column=ns_parser.target_column,

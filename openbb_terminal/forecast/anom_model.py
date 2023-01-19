@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_qanomaly_detection_data(
+def get_anomaly_detection_data(
     data: Union[pd.Series, pd.DataFrame],
     target_column: str = "close",
     train_split: float = 0.6,
