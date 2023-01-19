@@ -5,7 +5,7 @@ import argparse
 import io
 import logging
 from pathlib import Path
-from typing import List, Union, Optional, Dict
+from typing import List, Union, Optional, Dict, Tuple
 from functools import lru_cache
 from datetime import datetime, timedelta
 from datetime import date as d
@@ -1322,6 +1322,23 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
     return full_path
 
 
+def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
+    """Helper to provide a prompt for overwriting existing files.
+
+    Returns two values, the first is a boolean indicating if the file exists and the
+    second is a boolean indicating if the user wants to overwrite the file.
+    """
+    if os.path.exists(file_path):
+        overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
+        if overwrite == "y":
+            # File exists and user wants to overwrite
+            return True, True
+        # File exists and user does not want to overwrite
+        return True, False
+    # File does not exist
+    return False, True
+
+
 # This is a false positive on pylint and being tracked in pylint #3060
 # pylint: disable=abstract-class-instantiated
 def export_data(
@@ -1380,13 +1397,22 @@ def export_data(
             )
 
             if exp_type.endswith("csv"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 df.to_csv(saved_path)
             elif exp_type.endswith("json"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
 
                 if sheet_name is None:
+                    exists, overwrite = ask_file_overwrite(saved_path)
+                    if exists and not overwrite:
+                        return
                     df.to_excel(saved_path, index=True, header=True)
 
                 else:
@@ -1409,12 +1435,24 @@ def export_data(
                                 writer, sheet_name=sheet_name, index=True, header=True
                             )
             elif exp_type.endswith("png"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             elif exp_type.endswith("jpg"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             elif exp_type.endswith("pdf"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             elif exp_type.endswith("svg"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             else:
                 console.print("\nWrong export file specified.")
