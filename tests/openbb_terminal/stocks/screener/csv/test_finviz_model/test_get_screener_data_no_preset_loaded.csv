@@ -1,4 +1,4 @@
-,Ticker,Company,Sector,Industry,Country,Market Cap,P/E,Price,Change,Volume
+,Ticker,Company,Sector,Industry,Country,Market Cap,P_E,Price,Change,Volume
 0,ADAP,Adaptimmune Therapeutics plc,Healthcare,Biotechnology,United Kingdom,325420000.0,,1.95,-0.048799999999999996,7938365.0
 1,ADN,"Advent Technologies Holdings, Inc.",Utilities,Utilities - Renewable,USA,144870000.0,,2.49,0.1636,1020737.0
 2,BHG,"Bright Health Group, Inc.",Healthcare,Healthcare Plans,USA,1190000000.0,,1.79,-0.1394,13188710.0
