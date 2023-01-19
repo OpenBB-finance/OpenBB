@@ -169,6 +169,13 @@ class FuturesController(BaseController):
         )
         parser.add_argument(
             "-e",
+            "--end",
+            dest="end",
+            type=valid_date,
+            help="Final date. Default: today",
+            default=datetime.now(),
+        )
+        parser.add_argument(
             "--expiry",
             dest="expiry",
             type=valid_expiry_date,
@@ -189,6 +196,7 @@ class FuturesController(BaseController):
                 symbols=ns_parser.ticker.upper().split(","),
                 expiry=ns_parser.expiry,
                 start_date=ns_parser.start.strftime("%Y-%m-%d"),
+                end_date=ns_parser.end.strftime("%Y-%m-%d"),
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
