@@ -2,11 +2,34 @@
 sidebar_position: 5
 title: Scripts & Routines
 ---
-The `.openbb` scripts offer the ability to automatically run a set of commands in the form of a **routine**. Furthermore, the scripts can be adapted, and documented, at any moment giving the user full control over the type of analysis you wish to do (and repeat). This can fundamental research, understanding market movements, finding hidden gems and even doing advanced statistical/econometric research.
+The `.openbb` scripts offer the ability to automatically run a set of commands in the form of a **routine**. Furthermore, the scripts can be adapted, and documented, at any moment giving the user full control over the type of analysis you wish to do (and repeat). This can fundamental research, understanding market movements, finding hidden gems and even doing advanced statistical/econometric research. 
+
+The .openbb scripts offer a vast amount of capabilities to export data from the OpenBB Terminal directly into Excel files allowing for students, professors, researchers and professionals to collect a lot of data in an instant. For example, see the GIF below demonstrates the data collection of all constituents of the S&P 500. Download this file [here](https://drive.google.com/file/d/1XqcvjO8cKdU3DD209l3FvITxYv5ddIig/view?usp=sharing) and place it in the `routines` folder as found in the `OpenBBUserData` folder. Read on to understand how to execute this file.
+
+### Create your own script
+
+Scripts and routines reside in the `routines` folder within the `OpenBBUserData` folder (as found [here](https://docs.openbb.co/terminal/guides/advanced/data)) and are automatically shown when you type `exe` from the home screen (`home`). To create your own, simply create a file within the `routines` folder. This can be done as follows:
+
+- On Windows:
+    - "Right Click" inside the `routines` folder and select "New"
+    - Select "Text Document"
+    - Rename the file to change the extension (.txt) to .openbb
+    - Now open the file with a Text Editor.
+- On MacOS
+    - Open "TextEdit" by using Spotlight
+    - Select "New Document"
+    - Go to "File" and select "Save" and save the file inside the `routines` folder.
+    - Add ".openbb" to the file and when it asked if you wish to change the extension from ".rtf" press "Use .openbb"
+    - Now open the file with a Text Editor.
+
+As long as the file remains in the `routines` folder, you will be able to find your file automatically as shown below:
+
+![Show Copy of Template OpenBB Script](https://user-images.githubusercontent.com/46355364/176903253-00a5b0f9-a6e7-49c7-a1d8-49ae819e28e3.png)
+
 
 ### Explanation of scripts
 
-The script file below is titled _stocks_demo.openbb_. This file follows the following logic:
+The script file follows the following logic:
 
 - <b>Comments</b>: any text after a `#` is referred to as a comment. This is used to explain what is happening within the script and is not taking into account when running terminal commands.
 - <b>Commands</b>: any text **without** a `#` is being ran inside the OpenBB Terminal. E.g. on the second line it says `stocks` thus within the OpenBB Terminal the script will enter `stocks` and run this for you.
@@ -52,6 +75,8 @@ sentiment
 /
 ```
 
+This file can be placed in `routines` folder of the `OpenBBUserData` folder, for more information have a look [here](https://docs.openbb.co/terminal/guides/advanced/data). Save this file as `stocks_demo.openbb` to execute the script in the "Executing a script" section.
+
 ### Executing a script
 
 By going to the main menu as depicted below (accessible with `home`), the `exe` command can be used. With this command you can run any `.openbb` script. These scripts are located where the application is located inside the routines folder.
@@ -62,7 +87,7 @@ Thus, using the earlier mentioned script, we can enter `exe stocks_demo.openbb` 
 
 ![Script Stocks Demo OpenBB](https://user-images.githubusercontent.com/46355364/176903147-720eb2af-7e5d-40df-8ec6-7363cbc08430.png)
 
-#### Custom arguments
+### Custom arguments
 
 Next to that, it is also possible to add in custom arguments to your script making the script more interactive and allow you to do the same analysis for multiple companies. This is done in the following script:
 
@@ -99,12 +124,4 @@ This script includes `$ARGV[0]`, `$ARGV[1]` and `$ARGV[2]`. This means that the 
 
 ![Example with Inputs OpenBB Script](https://user-images.githubusercontent.com/46355364/176903205-3cb55bf5-8710-4ad6-8eef-f9a99294ea3b.png)
 
-It is an incredibly simple script, but it gives an understanding what the possibilities are.
-
-### Create your own script
-
-Scripts and routines reside in the `routines` folder and are automatically shown when you type `exe` from the home screen (`home`). To create your own, you can use the `template.openbb` file as a basis but you are free to duplicate one of the demo files.
-
-Within this template, some examples are given, and you are free to change the contents and rename the file. As long as the file remains in the same folder, you will be able to find your file automatically as shown below:
-
-![Show Copy of Template OpenBB Script](https://user-images.githubusercontent.com/46355364/176903253-00a5b0f9-a6e7-49c7-a1d8-49ae819e28e3.png)
+It is an incredibly simple script, but it gives an understanding what the possibilities are. Do make sure you saved this script in the `routines` folder else you are not able to execute it.

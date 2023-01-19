@@ -134,12 +134,10 @@ class TerminalController(BaseController):
             filepath.name: filepath
             for filepath in (MISCELLANEOUS_DIRECTORY / "routines").rglob("*.openbb")
         }
-        self.ROUTINE_FILES.update(
-            {
-                filepath.name: filepath
-                for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
-            }
-        )
+        self.ROUTINE_FILES = {
+            filepath.name: filepath
+            for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
+        }
         self.ROUTINE_CHOICES = {filename: None for filename in self.ROUTINE_FILES}
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -649,7 +647,7 @@ class TerminalController(BaseController):
 
         if not other_args:
             console.print(
-                "[red]Provide a path to the routine you wish to execute.\n[/red]"
+                "[red]Provide a path to the routine you wish to execute. For examples, please type `about exe`.\n[/red]"
             )
             return
 
