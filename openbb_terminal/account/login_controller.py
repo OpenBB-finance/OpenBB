@@ -1,6 +1,7 @@
 from openbb_terminal.rich_config import console
 from openbb_terminal.account.login_model import (
-    get_saved_token_if_valid,
+    get_login_info,
+    is_login_valid,
     request_token,
     launch_terminal,
 )
@@ -17,14 +18,18 @@ def login_prompt():
     display_welcome_message()
     while True:
         console.print("\nPlease enter your credentials:")
-        email = console.input("> Email: ", style="yellow")
-        password = console.getpass("> Password: ", style="yellow")
-        save_str = console.input("> Keep me logged in? [y/n]: ").lower()
+        email = console.input("> Email: ", style="blue")
+        password = console.getpass("> Password: ", style="blue")
 
+        save_str = ""
+        while save_str not in ["y", "n"]:
+            save_str = console.input(
+                "> Keep me logged in (y/n): ", style="blue"
+            ).lower()
+
+        save = False
         if save_str == "y":
             save = True
-        elif save_str == "n":
-            save = False
 
         login_info = request_token(email, password, save)
         if login_info:
@@ -35,8 +40,8 @@ def login_prompt():
 
 def main():
     """Main function"""
-    login_info = get_saved_token_if_valid()
-    if login_info:
+    login_info = get_login_info()
+    if is_login_valid(login_info):
         return launch_terminal(login_info)
     return login_prompt()
 

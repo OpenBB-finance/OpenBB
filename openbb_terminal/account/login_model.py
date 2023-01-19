@@ -15,14 +15,17 @@ SUCCESS_MSG = "[green]\nLogin successful[/green]"
 @dataclass(frozen=True)
 class User:
     email: str
+    uuid: str
 
 
 def launch_terminal(login_info: dict):
     token = login_info.get("access_token", "")
+    User.uuid = login_info.get("uuid", "")
     if token:
         decoded_info = jwt.decode(token, options={"verify_signature": False})
         User.email = decoded_info.get("sub", "")
-        setattr(feature_flags, "USE_FLAIR", User.email)
+        username = User.email[:User.email.find("@")]
+        setattr(feature_flags, "USE_FLAIR", "[" + username + "] 🦋")
 
         terminal_controller.parse_args_and_run()
 
@@ -61,36 +64,15 @@ def request_token(email: str, password: str, save: bool) -> dict:
     return {}
 
 
-def get_saved_token_if_valid() -> dict:
-    """Try to login with saved credentials
-
-    Returns
-    -------
-    bool
-        True if login was successful, False otherwise
-    """
+def get_login_info() -> dict:
     file_path = SETTINGS_DIRECTORY / "login.json"
     if os.path.isfile(file_path):
         with open(file_path, "r") as file:
-            login_info = json.load(file)
-        if is_token_valid(login_info):
-            return login_info
+            return json.load(file)
     return {}
 
 
-def is_token_valid(login_info: dict) -> bool:
-    """Request login with saved credentials
-
-    Parameters
-    ----------
-    login_info : dict
-        Login information
-
-    Returns
-    -------
-    bool
-        True if login was successful, False otherwise
-    """
+def is_login_valid(login_info: dict) -> bool:
     if "access_token" in login_info and "token_type" in login_info:
         response = requests.get(
             url=BASE_URL + "user",
