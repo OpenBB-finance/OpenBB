@@ -26,8 +26,6 @@ class Error(Enum):
     WRONG_CREDENTIALS = "[red]\nWrong credentials.[/red]"
     UNVERIFIED_EMAIL = "[red]\nUnverified email.[/red]"
     UNKNOWN_ERROR = "[red]\nUnknown error.[/red]"
-    SAVE_ERROR = "[red]\nError saving login info.[/red]"
-    READ_ERROR = "[red]\nError reading login info.[/red]"
 
 
 def launch_terminal(login_info: dict):
@@ -66,7 +64,7 @@ def write_to_file(data: dict, file_path: Path):
         with open(file_path, "w") as file:
             file.write(json.dumps(data))
     except Exception:
-        console.print(Error.SAVE_ERROR.value)
+        console.print(Error.UNKNOWN_ERROR.value)
 
 
 def process_response(response: requests.Response, save: bool) -> Union[dict, Error]:
@@ -149,8 +147,8 @@ def get_login_info() -> Union[dict, Error]:
             with open(file_path) as file:
                 return json.load(file)
     except Exception:
-        console.print(Error.READ_ERROR.value)
-        return Error.READ_ERROR
+        console.print(Error.UNKNOWN_ERROR.value)
+        return Error.UNKNOWN_ERROR
     return {}
 
 
