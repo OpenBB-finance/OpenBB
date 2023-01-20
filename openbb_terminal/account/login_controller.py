@@ -1,11 +1,13 @@
 from typing import Tuple
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
+from openbb_terminal import terminal_controller
 from openbb_terminal.account.login_model import (
+    fetch_user_configs,
     get_login_info,
     get_login_status,
+    load_user_info,
     request_login_info,
-    launch_terminal,
 )
 from openbb_terminal.account.statics import Success, Failure
 
@@ -56,7 +58,9 @@ def login_prompt(welcome=True):
         if isinstance(login_info, dict) and login_info:
             break
 
-    launch_terminal(login_info)
+    load_user_info(login_info)
+    fetch_user_configs()
+    terminal_controller.parse_args_and_run()
 
 
 def main():
@@ -67,7 +71,8 @@ def main():
     else:
         status = get_login_status(login_info=login_info)
         if isinstance(status, Success):
-            launch_terminal(login_info=login_info)
+            load_user_info(login_info)
+            terminal_controller.parse_args_and_run()
         if isinstance(status, Failure):
             login_prompt(welcome=False)
 

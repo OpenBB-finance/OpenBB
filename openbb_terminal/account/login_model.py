@@ -4,16 +4,41 @@ import json
 from typing import Union
 import jwt
 import requests
-from openbb_terminal import terminal_controller
 from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags
 from openbb_terminal.account.statics import BASE_URL, Success, Failure
 from openbb_terminal.account.user import User
+from openbb_terminal import config_terminal as cfg
 
 
-def launch_terminal(login_info: dict):
-    """Launch the terminal.
+def fetch_user_configs() -> Union[Success, Failure]:
+    try:
+        response = requests.get(
+            url=BASE_URL + "terminal/user",
+            headers={"Authorization": f"{User.token_type.title()} {User.token}"},
+        )
+        if response.status_code == 200:
+            configs = json.loads(response.content)
+            settings = configs.get("features_settings", {})
+            keys = configs.get("features_keys", {})
+
+            for key, value in settings.items():
+                setattr(cfg, key, value)
+
+            for key, value in keys.items():
+                setattr(cfg, key, value)
+
+            return Success("[green]\nApplied user configurations.[/green]")
+        return Failure("[red]\nFailed to fetch configurations.[/red]")
+    except requests.exceptions.ConnectionError:
+        return Failure("[red]\nConnection error.[/red]")
+    except Exception:
+        return Failure("[red]\nFailed to apply configurations.[/red]")
+
+
+def load_user_info(login_info: dict):
+    """Load user info from login info.
 
     Parameters
     ----------
@@ -23,6 +48,7 @@ def launch_terminal(login_info: dict):
     User.token_type = login_info.get("token_type", "")
     User.token = login_info.get("access_token", "")
     User.uuid = login_info.get("uuid", "")
+
     if User.token:
         decoded_info = jwt.decode(User.token, options={"verify_signature": False})
         User.email = decoded_info.get("sub", "")
@@ -30,8 +56,6 @@ def launch_terminal(login_info: dict):
         if feature_flags.USE_FLAIR == ":openbb":
             username = User.email[: User.email.find("@")]
             setattr(feature_flags, "USE_FLAIR", "[" + username + "] 🦋")
-
-        terminal_controller.parse_args_and_run()
 
 
 def save_login_info(data: dict, file_path: Path):
@@ -145,16 +169,9 @@ def get_login_status(login_info: dict) -> Union[Success, Failure]:
     """
     if "access_token" in login_info and "token_type" in login_info:
         try:
-            if (
-                requests.get(
-                    url=BASE_URL + "terminal/user",
-                    headers={
-                        "Authorization": f"{login_info['token_type'].title()} {login_info['access_token']}"
-                    },
-                ).status_code
-                == 200
-            ):
-                return Success("[green]\nLogin successful.[/green]")
+            load_user_info(login_info)
+            if isinstance(fetch_user_configs(), Success):
+                return Success()
         except requests.exceptions.ConnectionError:
             return Failure("[red]\nConnection error.[/red]")
         except Exception:
