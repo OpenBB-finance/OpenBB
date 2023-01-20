@@ -13,6 +13,7 @@ import sys
 import webbrowser
 from typing import List, Dict, Optional
 import contextlib
+import time
 
 import certifi
 from rich import panel
@@ -132,13 +133,10 @@ class TerminalController(BaseController):
         """Update runtime choices."""
         self.ROUTINE_FILES = {
             filepath.name: filepath
-            for filepath in (MISCELLANEOUS_DIRECTORY / "routines").rglob("*.openbb")
-        }
-        self.ROUTINE_FILES = {
-            filepath.name: filepath
             for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
         }
         self.ROUTINE_CHOICES = {filename: None for filename in self.ROUTINE_FILES}
+
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["support"] = self.SUPPORT_CHOICES
@@ -225,7 +223,6 @@ class TerminalController(BaseController):
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""
-        import time
         import json
         import random
 
@@ -647,7 +644,8 @@ class TerminalController(BaseController):
 
         if not other_args:
             console.print(
-                "[red]Provide a path to the routine you wish to execute. For examples, please type `about exe`.\n[/red]"
+                "[red]Provide a path to the routine you wish to execute. For an example, please use "
+                "`exe --example` and for documentation type `about exe`.\n[/red]"
             )
             return
 
@@ -681,7 +679,7 @@ class TerminalController(BaseController):
             help="The path or .openbb file to run.",
             dest="path",
             default="",
-            required="-h" not in args,
+            required="-h" not in args and "-e" not in other_args,
         )
         parser_exe.add_argument(
             "-i",
@@ -690,12 +688,27 @@ class TerminalController(BaseController):
             dest="routine_args",
             type=lambda s: [str(item) for item in s.split(",")],
         )
+        parser_exe.add_argument(
+            "-e",
+            "--example",
+            help="Run an example script to understand how routines can be used.",
+            dest="example",
+            action="store_true",
+            default=False,
+        )
         if args and "-" not in args[0][0]:
             args.insert(0, "--file")
         ns_parser_exe = self.parse_simple_args(parser_exe, args)
         if ns_parser_exe:
-            if ns_parser_exe.path:
-                if ns_parser_exe.path in self.ROUTINE_CHOICES:
+            if ns_parser_exe.path or ns_parser_exe.example:
+                if ns_parser_exe.example:
+                    path = MISCELLANEOUS_DIRECTORY / "routine_example.openbb"
+                    console.print(
+                        "[green]Executing an example, please type `about exe` "
+                        "to learn how to create your own script.[/green]\n"
+                    )
+                    time.sleep(3)
+                elif ns_parser_exe.path in self.ROUTINE_CHOICES:
                     path = self.ROUTINE_FILES[ns_parser_exe.path]
                 else:
                     path = ns_parser_exe.path

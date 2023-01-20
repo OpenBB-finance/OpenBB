@@ -42,42 +42,29 @@ These scripts have a 1-to-1 relationship with how you would normally use the ter
 # Go into the stocks context
 stocks
 
-# Load a company ticker, e.g. Amazon
-load AMZN
+# Load a company ticker, e.g. Apple
+load AAPL
 
-# Show a simple plot of the ticker, adding in any basic indicator.
-candle --ma 20,30
+# Show a candle chart with a 20 day Moving Average
+candle --ma 20
 
-# Switch over to the due diligence menu
+# Switch over to the Due Diligence menu
 dd
 
-# Show the price targets of Amazon, both the graph as well as the table
+# Show analyst ratings
+analyst
+
+# Show price targets charts
 pt
-pt --raw
 
-# Show estimates of annual and quarterly earnings as well as quarterly revenue estimates
+# Show future estimations
 est
-
-# Open the comparison analysis menu (ca)
-../ca
-
-# Pick stocks that are competitors to Amazon
-add ebay,wmt,tgt,baba,jd
-
-# Determine the valuations of each company
-valuation
-
-# Show correlations between each company
-hcorr
-
-# Figure out the sentiment perceived of each company
-sentiment
 
 # Return to home
 /
 ```
 
-This file can be placed in `routines` folder of the `OpenBBUserData` folder, for more information have a look [here](https://docs.openbb.co/terminal/guides/advanced/data). Save this file as `stocks_demo.openbb` to execute the script in the "Executing a script" section.
+The above example can be executed by running `exe --example`. This file can also be placed in the `routines` folder of the `OpenBBUserData` folder, for more information have a look [here](https://docs.openbb.co/terminal/guides/advanced/data). Save this file as `openbb_demo.openbb` and use `exe openbb_demo.openbb` to execute the script as explained in detail in the "Executing a script" section.
 
 ### Executing a script
 
