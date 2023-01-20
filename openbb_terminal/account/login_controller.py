@@ -1,8 +1,8 @@
 from typing import Tuple
-from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
-from openbb_terminal.rich_config import console
 import json
 import requests
+from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
+from openbb_terminal.rich_config import console
 from openbb_terminal import terminal_controller
 from openbb_terminal.account.login_model import (
     get_login_info,
