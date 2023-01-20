@@ -64,7 +64,7 @@ def display_anomaly_detection(
     if not helpers.check_data(data, target_column):
         return
 
-    (ticker_series, anom_score, binary_anom) = anom_model.get_anomaly_detection_data(
+    (ticker_series, _, binary_anom) = anom_model.get_anomaly_detection_data(
         data=data,
         target_column=target_column,
         train_split=train_split,
