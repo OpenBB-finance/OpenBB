@@ -681,7 +681,7 @@ class BaseController(metaclass=ABCMeta):
                 f"{sys.executable} terminal.py", shell=True, check=False
             )
             if out.returncode != 0:
-                console.print("Unfortunately, resetting wasn't possible!\n")
+                raise Exception("Error while logging out.")
 
     @log_start_end(log=logger)
     def call_whoami(self, other_args: List[str]) -> None:
