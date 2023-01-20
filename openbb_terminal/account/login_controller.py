@@ -2,13 +2,12 @@ from typing import Tuple
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal.account.login_model import (
-    Status,
-    Error,
     get_login_info,
     get_login_status,
     request_login_info,
     launch_terminal,
 )
+from openbb_terminal.account.statics import Success, Failure
 
 
 def display_welcome_message():
@@ -63,13 +62,13 @@ def login_prompt(welcome=True):
 def main():
     """Main function"""
     login_info = get_login_info()
-    if login_info == Error.UNKNOWN_ERROR or not login_info:
+    if login_info == Failure.UNKNOWN_ERROR or not login_info:
         login_prompt()
     else:
         status = get_login_status(login_info=login_info)
-        if status == Status.VALID_LOGIN:
+        if status == Success.VALID_LOGIN:
             launch_terminal(login_info=login_info)
-        if status == Status.INVALID_LOGIN:
+        if status == Failure.INVALID_LOGIN:
             login_prompt(welcome=False)
 
 

@@ -1,4 +1,3 @@
-from enum import Enum
 from pathlib import Path
 import os.path
 import json
@@ -9,23 +8,8 @@ from openbb_terminal import terminal_controller
 from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags
-
+from openbb_terminal.account.statics import BASE_URL, Success, Failure
 from openbb_terminal.account.user import User
-
-BASE_URL = "http://127.0.0.1:8000/terminal/"
-
-
-class Status(Enum):
-    VALID_LOGIN = "[green]\nLogin successful.[/green]"
-    INVALID_LOGIN = "[red]\nInvalid login.[/red]"
-    LOGGED_OUT = "[green]\nLogged out.[/green]"
-
-
-class Error(Enum):
-    CONNECTION_ERROR = "[red]\nConnection error.[/red]"
-    WRONG_CREDENTIALS = "[red]\nWrong credentials.[/red]"
-    UNVERIFIED_EMAIL = "[red]\nUnverified email.[/red]"
-    UNKNOWN_ERROR = "[red]\nUnknown error.[/red]"
 
 
 def launch_terminal(login_info: dict):
@@ -50,8 +34,8 @@ def launch_terminal(login_info: dict):
         terminal_controller.parse_args_and_run()
 
 
-def write_to_file(data: dict, file_path: Path):
-    """Write data to a file.
+def save_login_info(data: dict, file_path: Path):
+    """Save the login info to a file.
 
     Parameters
     ----------
@@ -64,10 +48,10 @@ def write_to_file(data: dict, file_path: Path):
         with open(file_path, "w") as file:
             file.write(json.dumps(data))
     except Exception:
-        console.print(Error.UNKNOWN_ERROR.value)
+        console.print("Failed to save login info.", style="red")
 
 
-def process_response(response: requests.Response, save: bool) -> Union[dict, Error]:
+def process_response(response: requests.Response, save: bool) -> Union[dict, Failure]:
     """Process the response from the server.
 
     Parameters
@@ -79,26 +63,26 @@ def process_response(response: requests.Response, save: bool) -> Union[dict, Err
 
     Returns
     -------
-    Union[dict, Error]
+    Union[dict, Failure]
         The login info, or an error.
     """
     if response.status_code == 200:
-        console.print(Status.VALID_LOGIN.value)
+        console.print(Success.VALID_LOGIN.value)
         login = response.json()
         if save:
-            write_to_file(login, SETTINGS_DIRECTORY / "login.json")
+            save_login_info(login, SETTINGS_DIRECTORY / "login.json")
         return login
     if response.status_code == 401:
-        console.print(Error.WRONG_CREDENTIALS.value)
-        return Error.WRONG_CREDENTIALS
+        console.print(Failure.WRONG_CREDENTIALS.value)
+        return Failure.WRONG_CREDENTIALS
     if response.status_code == 403:
-        console.print(Error.UNVERIFIED_EMAIL.value)
-        return Error.UNVERIFIED_EMAIL
-    console.print(Error.UNKNOWN_ERROR.value)
-    return Error.UNKNOWN_ERROR
+        console.print(Failure.UNVERIFIED_EMAIL.value)
+        return Failure.UNVERIFIED_EMAIL
+    console.print("Failed to login.", style="red")
+    return Failure.UNKNOWN_ERROR
 
 
-def request_login_info(email: str, password: str, save: bool) -> Union[dict, Error]:
+def request_login_info(email: str, password: str, save: bool) -> Union[dict, Failure]:
     """Request login info from the server.
 
     Parameters
@@ -112,7 +96,7 @@ def request_login_info(email: str, password: str, save: bool) -> Union[dict, Err
 
     Returns
     -------
-    Union[dict, Error]
+    Union[dict, Failure]
         The login info, or an error.
     """
     data = {
@@ -124,15 +108,15 @@ def request_login_info(email: str, password: str, save: bool) -> Union[dict, Err
     try:
         response = requests.post(BASE_URL + "login", json=data)
     except requests.exceptions.ConnectionError:
-        console.print(Error.CONNECTION_ERROR.value)
-        return Error.CONNECTION_ERROR
+        console.print(Failure.CONNECTION_ERROR.value)
+        return Failure.CONNECTION_ERROR
     except Exception:
-        console.print(Error.UNKNOWN_ERROR.value)
-        return Error.UNKNOWN_ERROR
+        console.print("Failed to request login info.", style="red")
+        return Failure.UNKNOWN_ERROR
     return process_response(response, save)
 
 
-def get_login_info() -> Union[dict, Error]:
+def get_login_info() -> Union[dict, Failure]:
     """Get the login info from the file.
 
     Returns
@@ -147,12 +131,12 @@ def get_login_info() -> Union[dict, Error]:
             with open(file_path) as file:
                 return json.load(file)
     except Exception:
-        console.print(Error.UNKNOWN_ERROR.value)
-        return Error.UNKNOWN_ERROR
+        console.print("Failed to get login info.", style="red")
+        return Failure.UNKNOWN_ERROR
     return {}
 
 
-def get_login_status(login_info: dict) -> Union[Status, Error]:
+def get_login_status(login_info: dict) -> Union[Success, Failure]:
     """Check if the login info is valid.
 
     Parameters
@@ -162,53 +146,27 @@ def get_login_status(login_info: dict) -> Union[Status, Error]:
 
     Returns
     -------
-    Union[Status, Error]
+    Union[Success, Failure]
         The status of the login info, or an error.
     """
     if "access_token" in login_info and "token_type" in login_info:
         try:
             if (
                 requests.get(
-                    url=BASE_URL + "user",
+                    url=BASE_URL + "terminal/user",
                     headers={
                         "Authorization": f"{login_info['token_type'].title()} {login_info['access_token']}"
                     },
                 ).status_code
                 == 200
             ):
-                console.print(Status.VALID_LOGIN.value)
-                return Status.VALID_LOGIN
+                console.print(Success.VALID_LOGIN.value)
+                return Success.VALID_LOGIN
         except requests.exceptions.ConnectionError:
-            console.print(Error.CONNECTION_ERROR.value)
-            return Error.CONNECTION_ERROR
+            console.print(Failure.CONNECTION_ERROR.value)
+            return Failure.CONNECTION_ERROR
         except Exception:
-            console.print(Error.UNKNOWN_ERROR.value)
-            return Error.UNKNOWN_ERROR
-    return Status.INVALID_LOGIN
+            console.print("Failed to get login status.", style="red")
+            return Failure.UNKNOWN_ERROR
 
-
-def logout() -> Union[Status, Error]:
-    """Logout the user.
-
-    Returns
-    -------
-    Union[Status, Error]
-        The status of the logout, or an error.
-    """
-    try:
-        # TODO: Uncomment when the server supports logout
-        # requests.post(
-        #     url=BASE_URL + "logout",
-        #     headers={"Authorization": f"{User.token_type.title()} {User.token}"},
-        # )
-        file_path = SETTINGS_DIRECTORY / "login.json"
-        if os.path.isfile(file_path):
-            os.remove(file_path)
-        console.print(Status.LOGGED_OUT.value)
-        return Status.LOGGED_OUT
-    except requests.exceptions.ConnectionError:
-        console.print(Error.CONNECTION_ERROR.value)
-        return Error.CONNECTION_ERROR
-    except Exception:
-        console.print(Error.UNKNOWN_ERROR.value)
-        return Error.UNKNOWN_ERROR
+    return Failure.INVALID_LOGIN

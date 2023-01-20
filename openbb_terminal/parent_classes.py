@@ -18,7 +18,7 @@ import pandas as pd
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
-from openbb_terminal.account.login_model import Status, logout
+from openbb_terminal.account.logout_model import logout
 from openbb_terminal.account.user import User
 
 from openbb_terminal.core.config.paths import (
@@ -49,7 +49,6 @@ from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.core.completer.choices import build_controller_choice_map
-from openbb_terminal.account import login_controller
 
 logger = logging.getLogger(__name__)
 
@@ -673,9 +672,7 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            if logout() == Status.LOGGED_OUT:
-                system_clear()
-                login_controller.main()
+            logout()
 
     @log_start_end(log=logger)
     def call_whoami(self, other_args: List[str]) -> None:
