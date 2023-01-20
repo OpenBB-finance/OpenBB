@@ -41,12 +41,15 @@ def apply_configs():
                 if isinstance(getattr(obbff, k), int):
                     setattr(obbff, k, strtobool(v))
                 else:
-                    console.print("string", k, type(getattr(obbff, k)))
                     setattr(obbff, k, v)
 
         keys = user.CONFIGS.get("features_keys", {})
         for k, v in keys.items():
-            setattr(cfg, k, v)
+            if hasattr(cfg, k):
+                if isinstance(getattr(cfg, k), int):
+                    setattr(cfg, k, strtobool(v))
+                else:
+                    setattr(cfg, k, v)
 
 
 def load_user_info(login_info: dict):
