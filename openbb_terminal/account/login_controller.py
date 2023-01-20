@@ -9,7 +9,6 @@ from openbb_terminal.account.login_model import (
     load_user_info,
     request_login_info,
 )
-from openbb_terminal.account.statics import Success, Failure
 
 
 def display_welcome_message():
@@ -76,10 +75,7 @@ def main():
         if status == 200:
             apply_configs()
             terminal_controller.parse_args_and_run()
-        elif isinstance(status, Failure):
-            login_prompt(welcome=False)
         else:
-            console.print("\n[red]Invalid login.[/red]")
             login_prompt(welcome=False)
 
 
