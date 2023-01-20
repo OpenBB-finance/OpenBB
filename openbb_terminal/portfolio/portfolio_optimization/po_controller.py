@@ -6,6 +6,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from typing import List, Dict, Tuple
+import time
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
@@ -155,9 +156,6 @@ def get_valid_portfolio_categories(
 class PortfolioOptimizationController(BaseController):
     """Portfolio Optimization Controller class"""
 
-    DEFAULT_PORTFOLIO_DIRECTORY = MISCELLANEOUS_DIRECTORY / "portfolio_examples"
-    DEFAULT_ALLOCATION_DIRECTORY = DEFAULT_PORTFOLIO_DIRECTORY / "allocation"
-    DEFAULT_OPTIMIZATION_DIRECTORY = DEFAULT_PORTFOLIO_DIRECTORY / "optimization"
     FILE_TYPE_LIST = ["xlsx", "ini"]
 
     CHOICES_COMMANDS = [
@@ -196,17 +194,10 @@ class PortfolioOptimizationController(BaseController):
         allocation_file_map = {
             filepath.name: filepath
             for file_type in cls.FILE_TYPE_LIST
-            for filepath in cls.DEFAULT_ALLOCATION_DIRECTORY.rglob(f"*.{file_type}")
+            for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "allocation").rglob(
+                f"*.{file_type}"
+            )
         }
-        allocation_file_map.update(
-            {
-                filepath.name: filepath
-                for file_type in cls.FILE_TYPE_LIST
-                for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "allocation").rglob(
-                    f"*.{file_type}"
-                )
-            }
-        )
 
         return allocation_file_map
 
@@ -215,18 +206,10 @@ class PortfolioOptimizationController(BaseController):
         optimization_file_map = {
             filepath.name: filepath
             for file_type in cls.FILE_TYPE_LIST
-            for filepath in cls.DEFAULT_OPTIMIZATION_DIRECTORY.rglob(f"*.{file_type}")
+            for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "optimization").rglob(
+                f"*.{file_type}"
+            )
         }
-
-        optimization_file_map.update(
-            {
-                filepath.name: filepath
-                for file_type in cls.FILE_TYPE_LIST
-                for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "optimization").rglob(
-                    f"*.{file_type}"
-                )
-            }
-        )
 
         return optimization_file_map
 
@@ -564,13 +547,13 @@ class PortfolioOptimizationController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="file",
-            description="Select parameter file to use",
+            description="Select parameter file to use. The OpenBB Parameters Template can be "
+            "found inside the Portfolio Optimization documentation. Please type `about` to access the documentation.",
         )
 
         parser.add_argument(
             "-f",
             "--file",
-            required="-h" not in other_args,
             nargs="+",
             dest="file",
             help="Parameter file to be used",
@@ -583,14 +566,21 @@ class PortfolioOptimizationController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            self.current_file = " ".join(ns_parser.file)
-
-            if self.current_file in self.optimization_file_map:
-                file_location = self.optimization_file_map[self.current_file]
+            if not ns_parser.file:
+                console.print(
+                    "[green]The OpenBB Parameters Template can be found inside "
+                    "the Portfolio Optimization documentation. Please type `about` "
+                    "to access the documentation. [green]\n"
+                )
             else:
-                file_location = self.current_file  # type: ignore
+                self.current_file = " ".join(ns_parser.file)
 
-            self.params, self.current_model = params_view.load_file(file_location)
+                if self.current_file in self.optimization_file_map:
+                    file_location = self.optimization_file_map[self.current_file]
+                else:
+                    file_location = self.current_file  # type: ignore
+
+                self.params, self.current_model = params_view.load_file(file_location)
 
     @log_start_end(log=logger)
     def call_params(self, _):
@@ -698,20 +688,36 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-f",
             "--file",
-            required="-h" not in other_args,
             nargs="+",
             dest="file",
             help="Allocation file to be used",
             choices=self.allocation_file_map.keys(),
+        )
+        parser.add_argument(
+            "-e",
+            "--example",
+            help="Run an example allocation file to understand how the portfolio optimization menu can be used.",
+            dest="example",
+            action="store_true",
+            default=False,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--file")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            filename = " ".join(ns_parser.file)
+            if ns_parser.file:
+                filename = " ".join(ns_parser.file)
 
-            if filename in self.allocation_file_map:
+            if ns_parser.example:
+                file_location = MISCELLANEOUS_DIRECTORY / "allocation_example.xlsx"
+                filename = "OpenBB Example Portfolio"
+                console.print(
+                    "[green]Loading an example, please type `about` "
+                    "to learn how to create your own Portfolio Optimization Excel sheet.[/green]\n"
+                )
+                time.sleep(3)
+            elif filename in self.allocation_file_map:
                 file_location = self.allocation_file_map[filename]
             else:
                 file_location = filename  # type: ignore
