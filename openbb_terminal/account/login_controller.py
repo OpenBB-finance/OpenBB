@@ -1,4 +1,5 @@
 from typing import Tuple
+from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal.account.login_model import (
     Status,
@@ -12,10 +13,8 @@ from openbb_terminal.account.login_model import (
 
 def display_welcome_message():
     """Display welcome message"""
-    console.print(
-        "\nYou must log in to use the installer version of OpenBB.",
-        style="info",
-    )
+    with open(PACKAGE_DIRECTORY / "account" / "banner.txt") as f:
+        console.print(f.read(), style="blue")
 
 
 def get_user_input() -> Tuple[str, str, bool]:
