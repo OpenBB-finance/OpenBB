@@ -6,7 +6,7 @@ import jwt
 import requests
 from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
 from openbb_terminal.rich_config import console
-from openbb_terminal import feature_flags
+from openbb_terminal import feature_flags as obbff
 from openbb_terminal.account.statics import BASE_URL, Success, Failure
 from openbb_terminal.account.user import User
 from openbb_terminal import config_terminal as cfg
@@ -19,22 +19,25 @@ def fetch_user_configs() -> Union[Success, Failure]:
             headers={"Authorization": f"{User.token_type.title()} {User.token}"},
         )
         if response.status_code == 200:
-            configs = json.loads(response.content)
-            settings = configs.get("features_settings", {})
-            keys = configs.get("features_keys", {})
-
-            for key, value in settings.items():
-                setattr(cfg, key, value)
-
-            for key, value in keys.items():
-                setattr(cfg, key, value)
-
-            return Success("[green]\nApplied user configurations.[/green]")
+            User.configs = json.loads(response.content)
+            return Success("[green]\nFetched user configurations.[/green]")
         return Failure("[red]\nFailed to fetch configurations.[/red]")
     except requests.exceptions.ConnectionError:
         return Failure("[red]\nConnection error.[/red]")
     except Exception:
         return Failure("[red]\nFailed to apply configurations.[/red]")
+
+
+def apply_configs():
+    """Apply configurations."""
+    if User.configs:
+        settings = User.configs.get("features_settings", {})
+        for k, v in settings.items():
+            setattr(obbff, k, v)
+
+        keys = User.configs.get("features_keys", {})
+        for k, v in keys.items():
+            setattr(cfg, k, v)
 
 
 def load_user_info(login_info: dict):
@@ -53,9 +56,9 @@ def load_user_info(login_info: dict):
         decoded_info = jwt.decode(User.token, options={"verify_signature": False})
         User.email = decoded_info.get("sub", "")
 
-        if feature_flags.USE_FLAIR == ":openbb":
+        if obbff.USE_FLAIR == ":openbb":
             username = User.email[: User.email.find("@")]
-            setattr(feature_flags, "USE_FLAIR", "[" + username + "] 🦋")
+            setattr(obbff, "USE_FLAIR", "[" + username + "] 🦋")
 
 
 def save_login_info(data: dict, file_path: Path):
@@ -152,29 +155,3 @@ def get_login_info() -> dict:
     except Exception:
         console.print("[red]\nFailed to get login info.[/red]")
     return {}
-
-
-def get_login_status(login_info: dict) -> Union[Success, Failure]:
-    """Check if the login info is valid.
-
-    Parameters
-    ----------
-    login_info : dict
-        The login info to check.
-
-    Returns
-    -------
-    Union[Success, Failure]
-        The status of the login info, or an error.
-    """
-    if "access_token" in login_info and "token_type" in login_info:
-        try:
-            load_user_info(login_info)
-            if isinstance(fetch_user_configs(), Success):
-                return Success()
-        except requests.exceptions.ConnectionError:
-            return Failure("[red]\nConnection error.[/red]")
-        except Exception:
-            return Failure("[red]\nFailed to get login status.[/red]")
-
-    return Failure("[red]\nInvalid login.[/red]")

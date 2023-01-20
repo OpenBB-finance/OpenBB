@@ -3,9 +3,9 @@ from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal import terminal_controller
 from openbb_terminal.account.login_model import (
+    apply_configs,
     fetch_user_configs,
     get_login_info,
-    get_login_status,
     load_user_info,
     request_login_info,
 )
@@ -58,8 +58,10 @@ def login_prompt(welcome=True):
         if isinstance(login_info, dict) and login_info:
             break
 
+    # Login successful
     load_user_info(login_info)
     fetch_user_configs()
+    apply_configs()
     terminal_controller.parse_args_and_run()
 
 
@@ -69,9 +71,10 @@ def main():
     if not login_info:
         login_prompt()
     else:
-        status = get_login_status(login_info=login_info)
+        load_user_info(login_info)
+        status = fetch_user_configs()
         if isinstance(status, Success):
-            load_user_info(login_info)
+            apply_configs()
             terminal_controller.parse_args_and_run()
         if isinstance(status, Failure):
             login_prompt(welcome=False)
