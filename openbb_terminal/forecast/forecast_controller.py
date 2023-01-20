@@ -29,16 +29,28 @@ except ModuleNotFoundError:
 
 try:
     import whisper
+    from transformers import pipeline
+    import yt_dlp
     from whisper.tokenizer import LANGUAGES, TO_LANGUAGE_CODE
     from openbb_terminal.forecast.whisper_utils import str2bool
+    # if imports are successful, set flag to True
+    WHISPER_AVAILABLE = True
+
 except ModuleNotFoundError:
     raise ModuleNotFoundError(
         "Please install whisper model. Instructions can be found here: "
         "https://github.com/openai/whisper"
+        "Please install the transformers library with the following command: "
+        "pip install transformers"
+        "Please install the yt_dlp library with the following command: "
+        "pip install yt_dlp"
     )
 
 import pandas as pd
 import psutil
+
+# ignore  pylint(ungrouped-imports)
+# pylint: disable=ungrouped-imports
 from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     USER_CUSTOM_IMPORTS_DIRECTORY,
@@ -55,6 +67,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     log_and_raise,
     valid_date,
+    parse_and_split_input
 )
 
 from openbb_terminal.menu import session
@@ -239,6 +252,22 @@ class ForecastController(BaseController):
             for column in dataframe.columns
         }
 
+    def parse_input(self, an_input: str) -> List:
+        """Parse controller input
+
+        Overrides the parent class function to handle YouTube video URL conventions.
+        See `BaseController.parse_input()` for details.
+        """
+        # Filtering out YouTube video parameters like "v=" and removing the domain name
+        youtube_filter = r"(youtube\.com/watch\?v=)"
+
+        custom_filters = [youtube_filter]
+
+        commands = parse_and_split_input(
+            an_input=an_input.replace("https://", ""), custom_filters=custom_filters
+        )
+        return commands
+
     def update_runtime_choices(self):
         # Load in any newly exported files
         self.DATA_FILES = forecast_model.get_default_files()
@@ -319,7 +348,7 @@ class ForecastController(BaseController):
         mt.add_cmd("tft", self.files)
         mt.add_raw("\n")
         mt.add_info("_misc_")
-        mt.add_cmd("whisper")
+        mt.add_cmd("whisper", WHISPER_AVAILABLE)
 
         console.print(text=mt.menu_text, menu="Forecast")
 
@@ -3161,7 +3190,7 @@ class ForecastController(BaseController):
             "--video",
             dest="video",
             type=str,
-            default="https://www.youtube.com/watch?v=_46bKvE2fjg",
+            default="",
             help="video URLs to transcribe",
         )
         parser.add_argument(
