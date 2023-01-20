@@ -12,12 +12,6 @@ def vcr_config():
     }
 
 
-@pytest.mark.vcr(record_mode="none")
-def test_check_valid_option_chains_headers(recorder):
-    result = tradier_view.check_valid_option_chains_headers(headers="gamma,delta")
-    recorder.capture(result)
-
-
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_historical(mocker):

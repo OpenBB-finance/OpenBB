@@ -18,6 +18,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     parse_and_split_input,
     valid_date,
+    list_from_str,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -226,6 +227,11 @@ class OptionsController(BaseController):
                 self.choices["grhist"]["-s"] = "--strike"
                 self.choices["binom"]["--strike"] = {str(c): {} for c in strike}
                 self.choices["binom"]["-s"] = "--strike"
+
+                self.choices["chains"]["--display"] = {
+                    str(c): {} for c in self.chain.columns
+                }
+                self.choices["chains"]["-d"] = "--display"
 
             if self.expiry_dates:
                 self.choices["vol"]["--expiration"] = {
@@ -831,10 +837,9 @@ class OptionsController(BaseController):
             "-d",
             "--display",
             dest="to_display",
-            default=tradier_model.default_columns,
-            type=tradier_view.check_valid_option_chains_headers,
-            help="(tradier only) Columns to look at.  Columns can be: bid, ask, strike, bidsize, asksize, "
-            "volume, open_interest, delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv. E.g. 'bid,ask,strike' ",
+            default=self.chain.columns if not self.chain.empty else [],
+            type=str,
+            help="Columns to display",
         )
         parser.add_argument(
             "-e",
@@ -872,6 +877,7 @@ class OptionsController(BaseController):
                         max_sp=ns_parser.max_sp,
                         current_price=self.current_price,
                         export=ns_parser.export,
+                        to_display=list_from_str(ns_parser.to_display),
                     )
                 else:
                     console.print(

@@ -444,6 +444,7 @@ def display_chains(
     min_sp: float = -1,
     max_sp: float = -1,
     export: str = "",
+    to_display: list = None,
 ):
     """Display chains
 
@@ -461,7 +462,14 @@ def display_chains(
         Show puts only
     export: str
         Format for exporting data
+    to_display: list
+        List of columns to display
     """
+    if to_display:
+        to_display += ["strike", "optionType"]
+        to_display = list(set(to_display))
+        chain = chain[to_display]
+
     min_strike, max_strike = get_strikes(
         min_sp=min_sp, max_sp=max_sp, current_price=current_price
     )

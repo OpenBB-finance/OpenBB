@@ -28,29 +28,6 @@ warnings.filterwarnings("ignore")
 
 
 @log_start_end(log=logger)
-def check_valid_option_chains_headers(headers: str) -> List[str]:
-    """Check valid option chains headers
-
-    Parameters
-    ----------
-    headers : str
-        Option chains headers
-
-    Returns
-    -------
-    List[str]
-        List of columns string
-    """
-    columns = [str(item) for item in headers.split(",")]
-
-    for header in columns:
-        if header not in tradier_model.df_columns:
-            raise argparse.ArgumentTypeError("Invalid option chains header selected!")
-
-    return columns
-
-
-@log_start_end(log=logger)
 def display_historical(
     symbol: str,
     expiry: str,
