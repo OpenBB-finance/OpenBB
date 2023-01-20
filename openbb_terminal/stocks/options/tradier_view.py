@@ -5,20 +5,17 @@ import argparse
 import logging
 import os
 import warnings
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import mplfinance as mpf
-import pandas as pd
 
-from openbb_terminal import rich_config
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     is_valid_axes_count,
     lambda_long_number_format_y_axis,
-    patch_pandas_text_adjustment,
     plot_autoscale,
     print_rich_table,
 )
@@ -28,59 +25,6 @@ from openbb_terminal.stocks.options import tradier_model
 logger = logging.getLogger(__name__)
 
 warnings.filterwarnings("ignore")
-
-
-def get_strike_bounds(
-    options: pd.DataFrame, current_price: float, min_sp: float, max_sp: float
-) -> Tuple[float, float]:
-    if min_sp == -1:
-        if current_price == 0:
-            min_strike = options["strike"].min()
-        else:
-            min_strike = 0.75 * current_price
-    else:
-        min_strike = min_sp
-
-    if max_sp == -1:
-        if current_price == 0:
-            max_strike = options["strike"].max()
-        else:
-            max_strike = 1.25 * current_price
-    else:
-        max_strike = max_sp
-    return min_strike, max_strike
-
-
-def lambda_red_highlight(val) -> str:
-    """Red highlight
-
-    Parameters
-    ----------
-    val
-        dataframe values to color
-
-    Returns
-    -------
-    str
-        colored dataframes values
-    """
-    return f"[red]{val}[/red]"
-
-
-def lambda_green_highlight(val) -> str:
-    """Green highlight
-
-    Parameters
-    ----------
-    values : List[str]
-        dataframe values to color
-
-    Returns
-    -------
-    List[str]
-        colored dataframes values
-    """
-    return f"[green]{val}[/green]"
 
 
 @log_start_end(log=logger)
@@ -104,109 +48,6 @@ def check_valid_option_chains_headers(headers: str) -> List[str]:
             raise argparse.ArgumentTypeError("Invalid option chains header selected!")
 
     return columns
-
-
-@log_start_end(log=logger)
-def display_chains(
-    symbol: str,
-    expiry: str,
-    to_display: List[str] = None,
-    min_sp: float = -1,
-    max_sp: float = -1,
-    calls_only: bool = False,
-    puts_only: bool = False,
-    export: str = "",
-):
-    """Display option chain
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-    expiry: str
-        Expiration date of option
-    to_display: List[str]
-        List of columns to display
-    min_sp: float
-        Min strike price to display
-    max_sp: float
-        Max strike price to display
-    calls_only: bool
-        Only display calls
-    puts_only: bool
-        Only display puts
-    export: str
-        Format to  export file
-    """
-
-    if to_display is None:
-        to_display = tradier_model.default_columns
-
-    chain = tradier_model.get_option_chain(symbol, expiry)
-
-    if isinstance(chain, pd.DataFrame) and not chain.empty:
-
-        columns = to_display + ["strike", "option_type"]
-        min_strike, max_strike = get_strike_bounds(chain, 0, min_sp, max_sp)
-
-        chain = chain[columns].rename(
-            columns={"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
-        )
-        chain = chain[chain["strike"] >= min_strike]
-        chain = chain[chain["strike"] <= max_strike]
-
-        calls_df = chain[chain["option_type"] == "call"]
-        puts_df = chain[chain["option_type"] == "put"]
-
-        df = calls_df if calls_only else puts_df
-
-        if calls_only or puts_only:
-            print_rich_table(
-                df,
-                headers=[x.title() for x in df.columns],
-                show_index=False,
-                title=f"The strike prices are displayed between {min_strike} and {max_strike}",
-            )
-
-        else:
-            puts_df = puts_df[puts_df.columns[::-1]]
-            chain_table = calls_df.merge(puts_df, on="strike")
-
-            if rich_config.USE_COLOR:
-                call_cols = [col for col in chain_table if col.endswith("_x")]
-                put_cols = [col for col in chain_table if col.endswith("_y")]
-                patch_pandas_text_adjustment()
-                pd.set_option("display.max_colwidth", 0)
-                pd.set_option("display.max_rows", None)
-                for cc in call_cols:
-                    chain_table[cc] = (
-                        chain_table[cc].astype(str).apply(lambda_green_highlight)
-                    )
-                for pc in put_cols:
-                    chain_table[pc] = (
-                        chain_table[pc].astype(str).apply(lambda_red_highlight)
-                    )
-            headers = [
-                col.strip("_x")
-                if col.endswith("_x")
-                else col.strip("_y")
-                if col.endswith("_y")
-                else col
-                for col in chain_table.columns
-            ]
-            print_rich_table(
-                chain_table,
-                headers=headers,
-                show_index=False,
-                title=f"{symbol} Option chain for {expiry}",
-            )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "chain_tradier",
-            chain,
-        )
 
 
 @log_start_end(log=logger)

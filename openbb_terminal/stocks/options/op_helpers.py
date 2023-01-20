@@ -1,7 +1,6 @@
 """Option helper functions"""
 __docformat__ = "numpy"
 
-import os
 import logging
 from math import e, log
 from typing import Union
@@ -10,7 +9,6 @@ import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
-from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 
@@ -121,30 +119,6 @@ def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> flo
     df["Vals"] = df["Chance"] * df["Gain"]
     risk_free = (1 + rf) ** (delta / 365)
     return sum(df["Vals"]) / risk_free
-
-
-@log_start_end(log=logger)
-def export_options(export: str, options, file_name: str):
-    """Special function to assist in exporting options
-
-    Parameters
-    ----------
-    export: str
-        Format to export file
-    options: Chain
-        Chain object object
-    file_name: str
-        The file_name to export to
-
-    """
-    for option_name in ["calls", "puts"]:
-        option = getattr(options, option_name)
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            f"{file_name}_{option_name}",
-            option,
-        )
 
 
 @log_start_end(log=logger)

@@ -13,55 +13,9 @@ def vcr_config():
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_lambda_red_highlight(recorder):
-    result = tradier_view.lambda_red_highlight(val="MOCK TEXT")
-    recorder.capture(result)
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_lambda_green_highlight(recorder):
-    result = tradier_view.lambda_green_highlight(val="MOCK TEXT")
-    recorder.capture(result)
-
-
-@pytest.mark.vcr(record_mode="none")
 def test_check_valid_option_chains_headers(recorder):
     result = tradier_view.check_valid_option_chains_headers(headers="gamma,delta")
     recorder.capture(result)
-
-
-@pytest.mark.default_cassette("test_display_chains")
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "calls_only, puts_only, min_sp, max_sp",
-    [
-        (True, False, 80.0, 90.0),
-        (False, True, 80.0, 90.0),
-        (True, False, -1, -1),
-        (False, True, -1, -1),
-        (False, False, -1, -1),
-    ],
-)
-def test_display_chains(calls_only, max_sp, min_sp, mocker, puts_only):
-    # MOCK EXPORT_DATA
-    mocker.patch(target="openbb_terminal.stocks.options.tradier_view.export_data")
-
-    # MOCK USE_COLOR
-    mocker.patch.object(
-        target=tradier_view.rich_config, attribute="USE_COLOR", new=True
-    )
-
-    tradier_view.display_chains(
-        symbol="AAPL",
-        expiry="2025-01-17",
-        to_display=["volume"],
-        min_sp=min_sp,
-        max_sp=max_sp,
-        calls_only=calls_only,
-        puts_only=puts_only,
-        export="",
-    )
 
 
 @pytest.mark.vcr

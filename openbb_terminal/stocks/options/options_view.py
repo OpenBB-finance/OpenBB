@@ -472,20 +472,8 @@ def display_chains(
     calls = chain[chain["optionType"] == "call"]
     puts = chain[chain["optionType"] == "put"]
 
-    if not puts_only:
-        print_rich_table(
-            calls,
-            headers=list(calls.columns),
-            show_index=False,
-            title="Option chain - Calls",
-        )
-    if not calls_only:
-        print_rich_table(
-            puts,
-            headers=list(puts.columns),
-            show_index=False,
-            title="Option chain - Puts",
-        )
+    print_raw(calls, puts, "Option chain", calls_only, puts_only)
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
