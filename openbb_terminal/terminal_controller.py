@@ -679,7 +679,6 @@ class TerminalController(BaseController):
             help="The path or .openbb file to run.",
             dest="path",
             default="",
-            required="-h" not in args and "-e" not in other_args,
         )
         parser_exe.add_argument(
             "-i",
