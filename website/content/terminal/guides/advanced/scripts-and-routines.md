@@ -10,19 +10,15 @@ The .openbb scripts offer a vast amount of capabilities to export data from the 
 
 ### Create your own script
 
-Scripts and routines reside in the `routines` folder within the `OpenBBUserData` folder (as found [here](https://docs.openbb.co/terminal/guides/advanced/data)) and are automatically shown when you type `exe` from the home screen (`home`). To create your own, simply create a file within the `routines` folder. This can be done as follows:
+Scripts and routines reside in the `routines` folder within the `OpenBBUserData` folder (as found [here](https://docs.openbb.co/terminal/guides/advanced/data)) and are automatically shown when you type `exe` from the home screen (`home`).
 
-- On Windows:
-    - "Right Click" inside the `routines` folder and select "New"
-    - Select "Text Document"
-    - Rename the file to change the extension (.txt) to .openbb
-    - Now open the file with a Text Editor.
-- On MacOS
-    - Open "TextEdit" by using Spotlight
-    - Select "New Document"
-    - Go to "File" and select "Save" and save the file inside the `routines` folder.
-    - Add ".openbb" to the file and when it asked if you wish to change the extension from ".rtf" press "Use .openbb"
-    - Now open the file with a Text Editor.
+:::note To create your own .openbb script use the following:
+1. Download the file that can be used as a template [here](https://www.dropbox.com/s/73g9qx9xgtbb2ec/routines_template.openbb?dl=0).
+2. Move the file inside the `routines` folder within the [OpenBBUserData](https://docs.openbb.co/terminal/guides/advanced/data) folder and, optionally, adjust the name to your liking.
+3. Open the file with a Text Editor (e.g. Notepad or TextEdit) and adjust the file accordingly.
+4. Open up the OpenBB Terminal, and type `exe --file`. The file should then be one of the options.
+5. Select the file to run the routine script.
+:::
 
 As long as the file remains in the `routines` folder, you will be able to find your file automatically as shown below:
 
@@ -33,10 +29,10 @@ As long as the file remains in the `routines` folder, you will be able to find y
 
 The script file follows the following logic:
 
-- <b>Comments</b>: any text after a `#` is referred to as a comment. This is used to explain what is happening within the script and is not taking into account when running terminal commands.
-- <b>Commands</b>: any text **without** a `#` is being ran inside the OpenBB Terminal. E.g. on the second line it says `stocks` thus within the OpenBB Terminal the script will enter `stocks` and run this for you.
+- **Comments**: any text after a hashtag (`#`) is referred to as a comment. This is used to explain what is happening within the script and is not taking into account when running terminal commands.
+- **Commands**: any text *without* a hashtag is being ran inside the OpenBB Terminal. E.g. on the second line it says `stocks` thus within the OpenBB Terminal the script will enter `stocks` and run this for you.
 
-These scripts have a 1-to-1 relationship with how you would normally use the terminal. To get a better understanding of how the terminal is used, please see <a href="https://docs.openbb.co/terminal/guides/basics" target="_blank" rel="noreferrer noopener">Structure of the OpenBB Terminal</a>.
+These scripts have a 1-to-1 relationship with how you would normally use the terminal. To get a better understanding of how the terminal is used, please see <a href="https://docs.openbb.co/terminal/guides/basics" target="_blank" rel="noreferrer noopener">Structure of the OpenBB Terminal</a>. The example below can be executed by running `exe --example`.
 
 ```
 # Go into the stocks context
@@ -61,18 +57,14 @@ pt
 est
 
 # Return to home
-/
+home
 ```
-
-The above example can be executed by running `exe --example`. This file can also be placed in the `routines` folder of the `OpenBBUserData` folder, for more information have a look [here](https://docs.openbb.co/terminal/guides/advanced/data). Save this file as `openbb_demo.openbb` and use `exe openbb_demo.openbb` to execute the script as explained in detail in the "Executing a script" section.
 
 ### Executing a script
 
-By going to the main menu as depicted below (accessible with `home`), the `exe` command can be used. With this command you can run any `.openbb` script. These scripts are located where the application is located inside the routines folder.
+By going to the main menu as depicted below (accessible with `home`), the `exe` command can be used. With this command you can run any `.openbb` script. These scripts are located where the application is located inside the `routines` folder as found in the `OpenBBUserData` folder.
 
-![Routine Exe OpenBB Terminal](https://user-images.githubusercontent.com/46355364/174588513-5c52ea20-548a-4c2b-a4c1-6054e2d71786.png)
-
-Thus, using the earlier mentioned script, we can enter `exe stocks_demo.openbb` which automatically runs all commands within the script file. Thus, it will return a candle chart with moving averages, price targets from Analysts, valuations of related companies, the correlation between these companies and the market sentiment. This results in the following:
+Thus, using the earlier mentioned script, we can enter `exe --file routines_template.openbb` which automatically runs all commands within the script file. Thus, it will return a candle chart with a moving average of 20 days, expectations and price targets from analysts and estimated future performance before returning to the home window.
 
 ![Script Stocks Demo OpenBB](https://user-images.githubusercontent.com/46355364/176903147-720eb2af-7e5d-40df-8ec6-7363cbc08430.png)
 
