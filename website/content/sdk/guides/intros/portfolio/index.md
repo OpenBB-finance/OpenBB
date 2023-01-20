@@ -43,7 +43,29 @@ Many of the functions in this module will also have a companion command, `_chart
 
 ### Portfolio Files
 
-Portfolio files are spreadsheets (xlsx or csv files) containing historical trades which add up to represent a net balance in the Portfolio Engine. Users should keep their collection of holdings files in the OpenBBUserData folder, `~/OpenBBUserData/portfolio/holdings`. They are shared resources with the CLI Terminal, and sample files are included within the installation folder. See the [source code](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/portfolio_examples/holdings) on GitHub to view and download them directly. We recommend using the example files as a template when creating a new portfolio because of specific formatting requirements. The table below illustrates the required column titles:
+Portfolio files are spreadsheets (xlsx or csv files) containing historical trades which add up to represent a net balance in the Portfolio Engine. Users should keep their collection of holdings files in the OpenBBUserData folder, `~/OpenBBUserData/portfolio/holdings`.
+
+:::note If you wish to load in your own Excel holdings file, please follow the following steps:
+1. Download the Excel file that can be used as a template [here](https://www.dropbox.com/s/03wjjf1lfkqjmtn/holdings_example.xlsx?dl=0).
+2. Move the file inside the `portfolio/holdings` folder within the [OpenBBUserData](https://docs.openbb.co/terminal/guides/advanced/data) folder and, optionally, adjust the name to your liking.
+3. Open the Excel file and remove, edit or add to the values as you desire (e.g. your own orders). This is the default template that is also loaded in with `load --example`.
+4. Open up the OpenBB Terminal, go to `portfolio` and type `load --file`. Your Excel file should then be one of the options.
+:::
+
+Note that the Excel sheet requires the following columns:
+
+- **Date** - The date the trade occurred
+- **Name** - The name of the security
+- **Type** - The type of the security. Use Cash/Stock/Crypto/ETF as appropriate
+- **Price** - The price the security was added or removed at, on a per-unit
+  basis
+- **Quantity** - How much of the security in question was added or removed
+- **Side** - Whether you bought or sold. Use Buy/Deposit/1 to add to the
+  portfolio or Sell/Withdrawal/0 to remove from the portfolio a search criteria,
+  country, sector or industry.
+
+
+This is also illustrated int the table beThe table below illustrates the required column titles:
 
 | Date       | Type   | Ticker   | Side   |   Price |   Quantity |   Fees |   Investment | Currency   | Sector                 | Industry                       | Country       | Region        |
 |:-----------|:-------|:---------|:-------|--------:|-----------:|-------:|-------------:|:-----------|:-----------------------|:-------------------------------|:--------------|:--------------|
@@ -56,16 +78,7 @@ Portfolio files are spreadsheets (xlsx or csv files) containing historical trade
 | 2011-01-03 | STOCK  | TSLA     | Buy    |    1.76 |        100 |      0 |          176 | USD        | Consumer Cyclical      | Auto Manufacturers             | United States | North America |
 | 2011-01-03 | STOCK  | GOOG     | Buy    |   15.01 |        100 |      0 |         1501 | USD        | Communication Services | Internet Content & Information | United States | North America |
 
-Not every column needs to contain a value, but they must exist despite being empty. The accepted values for `Type` are currently:
-
-- Crypto
-- ETF
-- Stock
-- More Coming Soon!
-
-The table above is supplied here as a portfolio XLSX file - [example.xlsx](https://github.com/OpenBB-finance/OpenBBTerminal/files/10096861/example.xlsx) - save the file in the OpenBBUserData folder, `~/OpenBBUserData/portfolio/holdings/`
-
-Categorization will be done automatically where the information is not supplied. To manually set the asset categorization (region, sector, industry, country), use the template file, `Public_Equity_Orderbook.xlsx`.
+The template Excel file also has additional columns but these are _optional_. The OpenBB SDK can figure out by itself what industry, sector, country and region belongs to the loaded in Equity. So the field can be left blank if your holdings do not include this information.
 
 ## Examples
 
@@ -81,7 +94,7 @@ import pandas as pd
 
 ### Load
 
-Taking the downloaded `example.xlsx` file from the previous section, let's load it into the Portfolio Engine. There are a few parameters available for this function, and an object is returned.
+Taking the downloaded `holdings_example.xlsx` file from the previous section, let's load it into the Portfolio Engine. There are a few parameters available for this function, and an object is returned.
 
 ```python
 help(openbb.portfolio.load)
@@ -117,7 +130,7 @@ The syntax should resemble something like the sample below; don't forget to modi
 
 ```python
 P = openbb.portfolio.load(
-  transactions_file_path = '/Users/path_to/OpenBBUserData/portfolio/holdings/example.xlsx',
+  transactions_file_path = '/Users/path_to/OpenBBUserData/portfolio/holdings/holdings_example.xlsx',
   benchmark_symbol = 'VTI',
   full_shares = False,
   risk_free_rate = 3.0

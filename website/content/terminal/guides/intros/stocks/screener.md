@@ -11,7 +11,7 @@ The Stock sScreener menu is a diverse tool for stock discovery. There are catego
 
 The default preset is `top_gainers.ini`. Use the commands `view` and `set` to select a new one. Modify individual parameters within the different presets to get more precision from a starting point.
 
-To create your own preset please use the following steps:
+:::note To create your own preset please use the following steps:
 
 1. Download the default preset as found [here](https://www.dropbox.com/s/xqdo5m87j1krh0h/stocks_screener_template.ini?dl=0).
 2. Place the `stocks_screener_template.ini` in the [OpenBBUserData](https://docs.openbb.co/terminal/guides/advanced/data) folder under `presets/stocks/screener`.
@@ -19,6 +19,7 @@ To create your own preset please use the following steps:
 4. Open the file you just renamed (e.g. `my_own_filter.ini`), and set the parameters you want to filter.
 5. It may be useful to play with the main source ([Finviz](https://finviz.com/screener.ashx)) since you can tweak these and understand how they influence the outcome of the filtered stocks.
 6. Start the terminal, and go to the `stocks/scr` menu. In there, you load in your template with `set`.
+:::
 
 To get started, simply choose one of the categories, like `technical`.
 
