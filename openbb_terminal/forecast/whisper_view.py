@@ -17,10 +17,8 @@ import os
 import whisper
 from transformers import pipeline
 
-
 from openbb_terminal.forecast.whisper_utils import (
     slugify,
-    str2bool,
     write_srt,
     write_vtt,
 )
@@ -39,7 +37,7 @@ def get_audio(urls):
     ydl = yt_dlp.YoutubeDL(
         {
             "quiet": True,
-            "verbose": True,
+            "verbose": False,
             "format": "bestaudio",
             "outtmpl": os.path.join(temp_dir, "%(id)s.%(ext)s"),
             "external_downloader_args": ["-loglevel", "panic"],
@@ -109,18 +107,48 @@ def transcribe_and_summarize(
         for segment in result["segments"]:
             all_text += segment["text"]
 
+        # original text length
         original_text_length = len(all_text)
 
-        summary = summarizer(all_text)
+        # Set the chunk size
+        chunk_size = 500
 
-        summary_text = summary[0]["summary_text"]
+        if original_text_length > chunk_size:
+            # Split the input text into chunks
+            chunks = [
+                all_text[i : i + chunk_size]
+                for i in range(0, len(all_text), chunk_size)
+            ]
+
+            # Initialize an empty list to store the summaries
+            summaries = []
+
+            # Iterate over the chunks and summarize each one
+            for chunk in chunks:
+                summary = summarizer(chunk, max_length=chunk_size)
+                summaries.append(summary)
+
+            # Join the summaries together
+            summary_text = "".join(
+                [summary[0]["summary_text"] for summary in summaries]
+            )
+
+        else:
+            summary = summarizer(all_text, max_length=original_text_length)
+            summary_text = summary[0]["summary_text"]
+
+        # Write summary and get reduction
         summary_text_length = len(summary_text)
         percent_reduction = round(
             (1 - (summary_text_length / original_text_length)) * 100, 2
         )
+        # if there is negative reduction, set to 0
+        if percent_reduction < 0:
+            percent_reduction = 0
 
-        print(f"Summary (reduction {percent_reduction})")
-        print(summary_text)
+        console.print(f"[green] Summary (reduction {percent_reduction}) [/green]")
+        console.print("-------------------------")
+        console.print(f"[green] {summary_text} [/green]")
 
         if subtitles_format == "vtt":
             vtt_path = os.path.join(output_dir, f"{slugify(title)}.vtt")
@@ -134,3 +162,8 @@ def transcribe_and_summarize(
                 write_srt(result["segments"], file=srt, line_length=breaklines)
 
             print("Saved SRT to", os.path.abspath(srt_path))
+
+    # Save summary to file
+    summary_path = os.path.join(output_dir, f"{slugify(title)}_summary.txt")
+    with open(summary_path, "w") as f:
+        f.write(summary_text)
