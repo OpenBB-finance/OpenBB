@@ -2,6 +2,7 @@ from typing import Tuple
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
 import json
+import requests
 from openbb_terminal import terminal_controller
 from openbb_terminal.account.login_model import (
     get_login_info,
@@ -70,11 +71,14 @@ def login(login_info: dict):
     """
     load_user_info(login_info)
     response = fetch_user_configs(login_info)
-    if response.status_code == 200:
-        apply_configs(configs=json.loads(response.content))
-        terminal_controller.parse_args_and_run()
+    if isinstance(response, requests.Response):
+        if response.status_code == 200:
+            apply_configs(configs=json.loads(response.content))
+            terminal_controller.parse_args_and_run()
+        else:
+            login_prompt(welcome=False)
     else:
-        login_prompt(welcome=False)
+        login_prompt(welcome=True)
 
 
 def main():
