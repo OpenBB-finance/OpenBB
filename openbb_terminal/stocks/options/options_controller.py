@@ -232,6 +232,14 @@ class OptionsController(BaseController):
                     str(c): {} for c in self.expiry_dates
                 }
                 self.choices["vol"]["-e"] = "--expiration"
+                self.choices["voi"]["--expiration"] = {
+                    str(c): {} for c in self.expiry_dates
+                }
+                self.choices["voi"]["-e"] = "--expiration"
+                self.choices["oi"]["--expiration"] = {
+                    str(c): {} for c in self.expiry_dates
+                }
+                self.choices["oi"]["-e"] = "--expiration"
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -414,7 +422,7 @@ class OptionsController(BaseController):
         if ns_parser:
             if ns_parser.calls_only and ns_parser.puts_only:
                 console.print(
-                    "Cannot return puts only and calls only. Either use one or neither\n."
+                    "Cannot return puts only and calls only. Either use one or neither."
                 )
             else:
                 fdscanner_view.display_options(
@@ -464,7 +472,7 @@ class OptionsController(BaseController):
                     export=ns_parser.export,
                 )
             else:
-                console.print("No ticker loaded.\n")
+                console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_info(self, other_args: List[str]):
@@ -576,11 +584,11 @@ class OptionsController(BaseController):
                             export=ns_parser.export,
                         )
                     else:
-                        console.print("No correct strike input\n")
+                        console.print("No correct strike input")
                 else:
-                    console.print("No expiry loaded. First use `exp <expiry date>`\n")
+                    console.print("No expiry loaded. First use `exp <expiry date>`")
             else:
-                console.print("No ticker loaded. First use `load <ticker>` \n")
+                console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
@@ -687,7 +695,7 @@ class OptionsController(BaseController):
                     self.update_runtime_choices()
 
             else:
-                console.print("Please load a ticker using `load <ticker>`.\n")
+                console.print("Please load a ticker using `load <ticker>`.")
 
     @log_start_end(log=logger)
     def call_hist(self, other_args: List[str]):
@@ -730,10 +738,10 @@ class OptionsController(BaseController):
         )
         if ns_parser:
             if not self.ticker:
-                console.print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`")
                 return
             if not self.selected_date:
-                console.print("No expiry loaded. First use `exp <expiry date>` \n")
+                console.print("No expiry loaded. First use `exp <expiry date>`")
                 return
             if not self.chain.empty and (
                 (
@@ -747,7 +755,7 @@ class OptionsController(BaseController):
                     not in [float(strike) for strike in self.chain["strike"]]
                 )
             ):
-                console.print("No correct strike input\n")
+                console.print("No correct strike input")
                 return
             if ns_parser.source == "ChartExchange":
                 chartexchange_view.display_raw(
@@ -772,7 +780,7 @@ class OptionsController(BaseController):
                     export=ns_parser.export,
                 )
             else:
-                console.print("TRADIER TOKEN not supplied. \n")
+                console.print("TRADIER TOKEN not supplied.")
 
     @log_start_end(log=logger)
     def call_chains(self, other_args: List[str]):
@@ -858,9 +866,9 @@ class OptionsController(BaseController):
                             export=ns_parser.export,
                         )
                 else:
-                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print("No expiry loaded. First use `exp {expiry date}`")
             else:
-                console.print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_vol(self, other_args: List[str]):
@@ -947,9 +955,11 @@ class OptionsController(BaseController):
                         raw=ns_parser.raw,
                     )
                 else:
-                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print(
+                        "No expiry loaded. First use `exp {expiry date}` or specify an expiration with the `-e` flag"
+                    )
             else:
-                console.print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_voi(self, other_args: List[str]):
@@ -1023,9 +1033,11 @@ class OptionsController(BaseController):
                         export=ns_parser.export,
                     )
                 else:
-                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print(
+                        "No expiry loaded. First use `exp {expiry date}` or specify an expiration with the `-e` flag"
+                    )
             else:
-                console.print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_oi(self, other_args: List[str]):
@@ -1113,9 +1125,11 @@ class OptionsController(BaseController):
                         raw=ns_parser.raw,
                     )
                 else:
-                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print(
+                        "No expiry loaded. First use `exp {expiry date}` or specify an expiration with the `-e` flag"
+                    )
             else:
-                console.print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -1178,7 +1192,7 @@ class OptionsController(BaseController):
                         ns_parser.x is None or ns_parser.y is None
                     ) and ns_parser.custom is None:
                         console.print(
-                            "Please submit an X and Y value, or select a preset.\n"
+                            "Please submit an X and Y value, or select a preset."
                         )
                     else:
                         yfinance_view.plot_plot(
@@ -1191,9 +1205,9 @@ class OptionsController(BaseController):
                             export=ns_parser.export,
                         )
                 else:
-                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print("No expiry loaded. First use `exp {expiry date}`")
             else:
-                console.print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_vsurf(self, other_args: List[str]):
@@ -1285,9 +1299,9 @@ class OptionsController(BaseController):
         )
         if ns_parser:
             if not self.ticker:
-                console.print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`")
             elif not self.selected_date:
-                console.print("No expiry loaded. First use `exp {expiry date}`\n")
+                console.print("No expiry loaded. First use `exp {expiry date}`")
             else:
                 opt_type = -1 if ns_parser.put else 1
                 yfinance_view.show_greeks(
@@ -1358,9 +1372,9 @@ class OptionsController(BaseController):
                         ns_parser.export,
                     )
                 else:
-                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print("No expiry loaded. First use `exp {expiry date}`")
             else:
-                console.print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_binom(self, other_args: List[str]):
@@ -1435,9 +1449,9 @@ class OptionsController(BaseController):
                         ns_parser.volatility,
                     )
                 else:
-                    console.print("No expiry loaded. First use `exp {expiry date}`\n")
+                    console.print("No expiry loaded. First use `exp {expiry date}`")
             else:
-                console.print("No ticker loaded. First use `load <ticker>`\n")
+                console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_pricing(self, _):
@@ -1452,10 +1466,10 @@ class OptionsController(BaseController):
                     self.queue,
                 )
             else:
-                console.print("No expiry loaded. First use `exp {expiry date}`\n")
+                console.print("No expiry loaded. First use `exp {expiry date}`")
 
         else:
-            console.print("No ticker loaded. First use `load <ticker>`\n")
+            console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_hedge(self, _):
@@ -1469,10 +1483,10 @@ class OptionsController(BaseController):
                     self.queue,
                 )
             else:
-                console.print("No expiry loaded. First use `exp {expiry date}`\n")
+                console.print("No expiry loaded. First use `exp {expiry date}`")
 
         else:
-            console.print("No ticker loaded. First use `load <ticker>`\n")
+            console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_screen(self, _):
