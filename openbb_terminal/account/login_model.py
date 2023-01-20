@@ -76,7 +76,7 @@ def process_response(response: requests.Response, save: bool) -> Union[dict, Fai
         return Failure("[red]\nWrong credentials.[/red]")
     if response.status_code == 403:
         return Failure("[red]\nUnverified email.[/red]")
-    return Failure(("[red]\nFailed to login.[/red]"))
+    return Failure("[red]\nFailed to login.[/red]")
 
 
 def request_login_info(email: str, password: str, save: bool) -> Union[dict, Failure]:
