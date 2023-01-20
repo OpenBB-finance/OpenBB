@@ -2,7 +2,7 @@
 >   bro              brokers holdings, 		 supports: robinhood, ally, degiro, coinbase
 >   po               portfolio optimization, 	 optimize your portfolio weights efficiently
 
-    load             load data into the portfolio
+    load             load transactions into the portfolio (use 'load --example' for an example)
     show             show existing transactions
     bench            define the benchmark
 

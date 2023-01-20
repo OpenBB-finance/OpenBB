@@ -4,7 +4,7 @@ en:
   support: pre-populate a support ticket for our team to evaluate
   survey: fill in our 2-minute survey so we better understand how we can improve the terminal
   update: attempt to update the terminal automatically (GitHub version)
-  exe: execute automated routine script
+  exe: execute automated routine scripts (use 'exe --example' for an example)
   news: display news articles based on term and data sources
   settings: tune settings (export folder, timezone, language, plot size)
   featflags: enable and disable feature flags
@@ -907,7 +907,7 @@ en:
   econometrics/coint: co-integration test on a multitude of columns
   portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase
   portfolio/po: portfolio optimization,  optimize your portfolio weights efficiently
-  portfolio/load: load transactions into the portfolio
+  portfolio/load: load transactions into the portfolio (use 'load --example' for an example)
   portfolio/_loaded: Loaded transactions
   portfolio/_riskfreerate: Risk Free Rate
   portfolio/show: show existing transactions
@@ -966,7 +966,7 @@ en:
   portfolio/bro/cb/deposits: show all your deposits or internal transfers
   portfolio/bro/cb/orders: show all your orders
   portfolio/po/file: file that contains portfolio risk parameters
-  portfolio/po/load: load tickers and categories from .xlsx or .csv file
+  portfolio/po/load: load tickers and categories from .xlsx or .csv file (use 'load --example' for an example)
   portfolio/po/_loaded: Portfolio loaded
   portfolio/po/_tickers: Tickers
   portfolio/po/_categories: Categories
