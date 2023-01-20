@@ -4,13 +4,15 @@ __docformat__ = "numpy"
 import argparse
 import datetime
 import logging
-from pathlib import Path
 from typing import List
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    USER_PRESETS_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
+)
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -55,7 +57,7 @@ class ScreenerController(BaseController):
         "technical",
     ]
 
-    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
+    PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
     preset_choices = {
         filepath.name.replace(".ini", ""): filepath
         for filepath in PRESETS_PATH.iterdir()
