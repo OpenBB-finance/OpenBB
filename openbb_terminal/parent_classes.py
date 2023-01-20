@@ -49,7 +49,7 @@ from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.core.completer.choices import build_controller_choice_map
-from openbb_terminal.account import login_controller
+from openbb_terminal.account import login_wizard
 
 logger = logging.getLogger(__name__)
 
@@ -675,7 +675,7 @@ class BaseController(metaclass=ABCMeta):
         if ns_parser:
             if logout() == Status.LOGGED_OUT:
                 system_clear()
-                login_controller.main()
+                login_wizard.main()
 
     @log_start_end(log=logger)
     def call_whoami(self, other_args: List[str]) -> None:
