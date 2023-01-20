@@ -34,7 +34,7 @@ def create_query(query: str):
     )
     if r.status_code != 200:
         console.print(
-            f"[red]Error creating query, got response: {r.text} with status code: {str(r.status_code)}"
+            f"[red]Error creating query, got response: {r.text} with status code: {str(r.status_code)}[/red]"
         )
         return
 
@@ -52,7 +52,7 @@ def get_query_results(token):
     )
     if r.status_code != 200:
         console.print(
-            f"[red]Error creating query, got response: {r.text} with status code: {str(r.status_code)}"
+            f"[red]Error creating query, got response: {r.text} with status code: {str(r.status_code)}[/red]"
         )
         return
 
@@ -197,7 +197,7 @@ def get_total_value_locked(
     """
 
     if not (user_address or address_name):
-        console.print("[red]No user address or address name provided.")
+        console.print("[red]No user address or address name provided.[/red]")
         return pd.DataFrame()
     if user_address:
         extra_sql = f"user_address = '{user_address}' and"
