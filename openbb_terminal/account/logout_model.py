@@ -30,7 +30,7 @@ def remote_logout() -> Union[Success, Failure]:
     except requests.exceptions.ConnectionError:
         return Failure("[red]\nConnection error.[/red]")
     except Exception:
-        return Failure("[red]Failed to logout remotely.[/red]")
+        return Failure("[red]\nFailed to logout remotely.[/red]")
 
 
 def remove_login_file() -> Union[Success, Failure]:
@@ -48,7 +48,7 @@ def remove_login_file() -> Union[Success, Failure]:
             os.remove(file_path)
         return Success("[green]\nRemoved login info.[/green]")
     except Exception:
-        return Failure("[red]Failed to remove login file.[/red]")
+        return Failure("[red]\nFailed to remove login file.[/red]")
 
 
 def logout():
