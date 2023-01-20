@@ -11,10 +11,13 @@ import os
 import re
 from abc import ABCMeta, abstractmethod
 from datetime import datetime, timedelta
+import subprocess
+import sys
 from typing import Any, Dict, List, Union
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
@@ -673,6 +676,12 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser:
             logout()
+            plt.close("all")
+            out = subprocess.run(  # nosec
+                f"{sys.executable} terminal.py", shell=True, check=False
+            )
+            if out.returncode != 0:
+                console.print("Unfortunately, resetting wasn't possible!\n")
 
     @log_start_end(log=logger)
     def call_whoami(self, other_args: List[str]) -> None:
