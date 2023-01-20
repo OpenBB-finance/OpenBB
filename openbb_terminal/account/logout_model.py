@@ -25,16 +25,12 @@ def remote_logout() -> Union[Success, Failure]:
             ).status_code
             == 200
         ):
-            console.print(Success.REMOTE_LOGOUT.value)
-            return Success.REMOTE_LOGOUT
-        console.print("Failed to logout remotely.", style="red")
-        return Failure.UNKNOWN_ERROR
+            return Success("[green]\nLogged out remotely.[/green]")
+        return Failure("[red]\nFailed to logout remotely.[/red]")
     except requests.exceptions.ConnectionError:
-        console.print(Failure.CONNECTION_ERROR.value)
-        return Failure.CONNECTION_ERROR
+        return Failure("[red]\nConnection error.[/red]")
     except Exception:
-        console.print("Failed to logout remotely.", style="red")
-        return Failure.UNKNOWN_ERROR
+        return Failure("[red]Failed to logout remotely.[/red]")
 
 
 def remove_login_file() -> Union[Success, Failure]:
@@ -50,11 +46,9 @@ def remove_login_file() -> Union[Success, Failure]:
         file_path = SETTINGS_DIRECTORY / "login.json"
         if os.path.isfile(file_path):
             os.remove(file_path)
-        console.print(Success.LOCAL_LOGOUT.value)
-        return Success.LOCAL_LOGOUT
+        return Success("[green]\nRemoved login info.[/green]")
     except Exception:
-        console.print("Failed to remove login file.", style="red")
-        return Failure.UNKNOWN_ERROR
+        return Failure("[red]Failed to remove login file.[/red]")
 
 
 def logout():

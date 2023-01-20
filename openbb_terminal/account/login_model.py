@@ -67,19 +67,16 @@ def process_response(response: requests.Response, save: bool) -> Union[dict, Fai
         The login info, or an error.
     """
     if response.status_code == 200:
-        console.print(Success.VALID_LOGIN.value)
+        console.print("\nLogin successful.", style="green")
         login = response.json()
         if save:
             save_login_info(login, SETTINGS_DIRECTORY / "login.json")
         return login
     if response.status_code == 401:
-        console.print(Failure.WRONG_CREDENTIALS.value)
-        return Failure.WRONG_CREDENTIALS
+        return Failure("[red]\nWrong credentials.[/red]")
     if response.status_code == 403:
-        console.print(Failure.UNVERIFIED_EMAIL.value)
-        return Failure.UNVERIFIED_EMAIL
-    console.print("Failed to login.", style="red")
-    return Failure.UNKNOWN_ERROR
+        return Failure("[red]\nUnverified email.[/red]")
+    return Failure(("[red]\nFailed to login.[/red]"))
 
 
 def request_login_info(email: str, password: str, save: bool) -> Union[dict, Failure]:
@@ -108,15 +105,13 @@ def request_login_info(email: str, password: str, save: bool) -> Union[dict, Fai
     try:
         response = requests.post(BASE_URL + "login", json=data)
     except requests.exceptions.ConnectionError:
-        console.print(Failure.CONNECTION_ERROR.value)
-        return Failure.CONNECTION_ERROR
+        return Failure("[red]\nConnection error.[/red]")
     except Exception:
-        console.print("Failed to request login info.", style="red")
-        return Failure.UNKNOWN_ERROR
+        return Failure("[red]\nFailed to request login info.[/red]")
     return process_response(response, save)
 
 
-def get_login_info() -> Union[dict, Failure]:
+def get_login_info() -> dict:
     """Get the login info from the file.
 
     Returns
@@ -131,8 +126,7 @@ def get_login_info() -> Union[dict, Failure]:
             with open(file_path) as file:
                 return json.load(file)
     except Exception:
-        console.print("Failed to get login info.", style="red")
-        return Failure.UNKNOWN_ERROR
+        console.print("[red]\nFailed to get login info.[/red]")
     return {}
 
 
@@ -160,13 +154,10 @@ def get_login_status(login_info: dict) -> Union[Success, Failure]:
                 ).status_code
                 == 200
             ):
-                console.print(Success.VALID_LOGIN.value)
-                return Success.VALID_LOGIN
+                return Success("[green]\nLogin successful.[/green]")
         except requests.exceptions.ConnectionError:
-            console.print(Failure.CONNECTION_ERROR.value)
-            return Failure.CONNECTION_ERROR
+            return Failure("[red]\nConnection error.[/red]")
         except Exception:
-            console.print("Failed to get login status.", style="red")
-            return Failure.UNKNOWN_ERROR
+            return Failure("[red]\nFailed to get login status.[/red]")
 
-    return Failure.INVALID_LOGIN
+    return Failure("[red]\nInvalid login.[/red]")

@@ -62,13 +62,13 @@ def login_prompt(welcome=True):
 def main():
     """Main function"""
     login_info = get_login_info()
-    if login_info == Failure.UNKNOWN_ERROR or not login_info:
+    if not login_info:
         login_prompt()
     else:
         status = get_login_status(login_info=login_info)
-        if status == Success.VALID_LOGIN:
+        if isinstance(status, Success):
             launch_terminal(login_info=login_info)
-        if status == Failure.INVALID_LOGIN:
+        if isinstance(status, Failure):
             login_prompt(welcome=False)
 
 
