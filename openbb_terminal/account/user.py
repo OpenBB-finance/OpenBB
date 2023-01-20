@@ -1,7 +1,6 @@
-from typing import Optional
+# User information
 
 TOKEN_TYPE: str = ""
 TOKEN: str = ""
 EMAIL: str = ""
 UUID: str = ""
-CONFIGS: Optional[dict] = None

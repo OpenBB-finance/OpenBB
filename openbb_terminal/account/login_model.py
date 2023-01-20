@@ -4,52 +4,11 @@ import json
 from typing import Union
 import jwt
 import requests
-from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.account.statics import BASE_URL, Failure
 from openbb_terminal.account import user
-from openbb_terminal import config_terminal as cfg
-
-
-def fetch_user_configs() -> Union[int, Failure]:
-    try:
-        response = requests.get(
-            url=BASE_URL + "terminal/user",
-            headers={"Authorization": f"{user.TOKEN_TYPE.title()} {user.TOKEN}"},
-        )
-        if response.status_code == 200:
-            user.CONFIGS = json.loads(response.content)
-            console.print("[green]\nFetched user configurations.[/green]")
-            return response.status_code
-        console.print("[red]\nFailed to fetch configurations.[/red]")
-        return response.status_code
-    except requests.exceptions.ConnectionError:
-        return Failure("[red]\nConnection error.[/red]")
-    except Exception:
-        return Failure("[red]\nFailed to fetch configurations.[/red]")
-
-
-def apply_configs():
-    """Apply configurations."""
-    console.print(user.CONFIGS, style="red")
-    if user.CONFIGS:
-        settings = user.CONFIGS.get("features_settings", {})
-        for k, v in settings.items():
-            if hasattr(obbff, k):
-                if isinstance(getattr(obbff, k), int):
-                    setattr(obbff, k, strtobool(v))
-                else:
-                    setattr(obbff, k, v)
-
-        keys = user.CONFIGS.get("features_keys", {})
-        for k, v in keys.items():
-            if hasattr(cfg, k):
-                if isinstance(getattr(cfg, k), int):
-                    setattr(cfg, k, strtobool(v))
-                else:
-                    setattr(cfg, k, v)
 
 
 def load_user_info(login_info: dict):

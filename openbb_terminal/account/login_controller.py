@@ -1,14 +1,14 @@
 from typing import Tuple
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
+import json
 from openbb_terminal import terminal_controller
 from openbb_terminal.account.login_model import (
-    apply_configs,
-    fetch_user_configs,
     get_login_info,
     load_user_info,
     request_login_info,
 )
+from openbb_terminal.account.sync_model import fetch_user_configs, apply_configs
 
 
 def display_welcome_message():
@@ -57,11 +57,24 @@ def login_prompt(welcome=True):
         if isinstance(login_info, dict) and login_info:
             break
 
-    # Login successful
+    login(login_info)
+
+
+def login(login_info: dict):
+    """Login and launch terminal.
+
+    Parameters
+    ----------
+    login_info : dict
+        The login information.
+    """
     load_user_info(login_info)
-    fetch_user_configs()
-    apply_configs()
-    terminal_controller.parse_args_and_run()
+    response = fetch_user_configs(login_info)
+    if response.status_code == 200:
+        apply_configs(configs=json.loads(response.content))
+        terminal_controller.parse_args_and_run()
+    else:
+        login_prompt(welcome=False)
 
 
 def main():
@@ -70,13 +83,7 @@ def main():
     if not login_info:
         login_prompt()
     else:
-        load_user_info(login_info)
-        status = fetch_user_configs()
-        if status == 200:
-            apply_configs()
-            terminal_controller.parse_args_and_run()
-        else:
-            login_prompt(welcome=False)
+        login(login_info)
 
 
 if __name__ == "__main__":

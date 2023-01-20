@@ -3,9 +3,8 @@ from typing import Union
 import requests
 from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
 from openbb_terminal.helper_funcs import system_clear
-from openbb_terminal.rich_config import console
 from openbb_terminal.account.statics import BASE_URL, Success, Failure
-from openbb_terminal.account import login_controller, user
+from openbb_terminal.account import user
 
 
 def remote_logout() -> Union[Success, Failure]:
@@ -45,7 +44,7 @@ def remove_login_file() -> Union[Success, Failure]:
         file_path = SETTINGS_DIRECTORY / "login.json"
         if os.path.isfile(file_path):
             os.remove(file_path)
-        return Success("[green]\nRemoved login info.[/green]")
+            return Success("[green]\nRemoved login info.[/green]")
     except Exception:
         return Failure("[red]\nFailed to remove login file.[/red]")
 
