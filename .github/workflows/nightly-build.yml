@@ -23,7 +23,7 @@ jobs:
       - name: Trigger Windows Build
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: windows.yml
+          workflow: windows10_build.yml
   
   trigger-macos-build:
     runs-on: ubuntu-latest

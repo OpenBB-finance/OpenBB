@@ -5,6 +5,7 @@ on:
     branches:
       - main
     types: [closed]
+  workflow_dispatch:
 
 
 jobs:
