@@ -137,6 +137,9 @@ def open_openbb_documentation(
     elif "sources" in path:
         path = "/guides/advanced/changing-sources"
         command = ""
+    elif "params" in path:
+        path = "/guides/intros/portfolio/po"
+        command = ""
     else:
         if arg_type == "command":  # user passed a command name
             path = f"/reference/{path}"
