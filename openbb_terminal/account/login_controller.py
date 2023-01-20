@@ -73,10 +73,13 @@ def main():
     else:
         load_user_info(login_info)
         status = fetch_user_configs()
-        if isinstance(status, Success):
+        if status == 200:
             apply_configs()
             terminal_controller.parse_args_and_run()
-        if isinstance(status, Failure):
+        elif isinstance(status, Failure):
+            login_prompt(welcome=False)
+        else:
+            console.print("\n[red]Invalid login.[/red]")
             login_prompt(welcome=False)
 
 
