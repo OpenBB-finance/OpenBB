@@ -435,7 +435,7 @@ This table shows how the portfolio changed and how much is allocated to each sec
 (🦋) /portfolio/po/ $ plot --portfolios _HRP0 -ct SECTOR -pi
 ```
 
-<img alt="Sectors Pie Chart" src="https://user-images.githubusercontent.com/46355364/171145554-327ab405-dfb1-449e-a837-44ee03d2564f.png"></img>
+![Sectors Pie Chart](https://user-images.githubusercontent.com/46355364/213746043-58cd5d69-6e62-4ebd-b12c-724be62458ac.png)
 
 Further analysis can be done by looking at the portfolio's returns <a href="https://www.investopedia.com/terms/h/histogram.asp" target="_blank" rel="noreferrer noopener">histogram</a> which also includes a variety of risk measures as well as the portfolio's drawdowns.
 
@@ -443,14 +443,13 @@ Further analysis can be done by looking at the portfolio's returns <a href="http
 (🦋) /portfolio/po/ $ plot --portfolios _HRP0 -ct SECTOR -hi -dd
 ````
 
-<img alt="Portfokio Returns Histogram" src="https://user-images.githubusercontent.com/46355364/171145848-5a3f5333-6b7f-4d7a-a96e-0859adb1ce78.png"></img>
-<img alt="Portfolio Drawdowns" src="https://user-images.githubusercontent.com/46355364/171145983-2d2c1c2e-67d2-4839-b43a-51bd22332de8.png"></img>
+![Portfolio Returns Histogram](https://user-images.githubusercontent.com/46355364/213745938-f6f97e06-287c-4c0d-a4f1-bc23828b346e.png)
+![Portfolio Drawdowns](https://user-images.githubusercontent.com/46355364/213746000-5f7f6bc0-9f5c-4be3-a217-12551c79bcee.png)
 
 Next to that, to delve deeper in the underlying conclusions the HRP method has drawn. Here, a closer look can be given to the assets cluster map, which links certain categories to each other. The linkage process is done per asset basis but here it is grouped per sector. Based on these results, the user can identify whether the optimization techniques also logically makes sense.
 
 ````
 (🦋) /portfolio/po/ $ plot --portfolios _HRP0 -ct SECTOR -rc -he
 ````
-
-<img alt="Heatmap with Linkage Method" src="https://user-images.githubusercontent.com/46355364/171146147-1b30a5f7-c488-4fe1-93e0-8266945ca4e7.png"></img>
-<img alt="Risk Contributions" src="https://user-images.githubusercontent.com/46355364/171146286-84d268e5-ac77-4d50-bddb-9a0859ac896b.png"></img>
+![Heatmap with Linkage Method](https://user-images.githubusercontent.com/46355364/213745877-8d0ab932-7775-4c9b-be60-da614c338b8d.png)
+![Risk Contributions](https://user-images.githubusercontent.com/46355364/213745808-d4dede01-a16c-4b3f-83a7-f8b2096896e3.png)
