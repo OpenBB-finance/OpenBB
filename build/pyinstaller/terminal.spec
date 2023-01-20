@@ -3,8 +3,10 @@ import os
 import shutil
 import scipy
 import subprocess
+
 import sys
 from pathlib import Path
+
 
 from dotenv import set_key
 from PyInstaller.building.api import COLLECT, EXE, PYZ
@@ -90,7 +92,7 @@ if is_win:
         (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
     )
 
-
+        
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
     "sklearn.utils._cython_blas",
@@ -116,6 +118,7 @@ hidden_imports = [
     "prophet",
     "debugpy",
     "pywry.pywry",
+    "scipy.sparse.linalg._isolve._iterative"
 ]
 
 
