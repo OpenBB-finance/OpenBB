@@ -22,8 +22,7 @@ Scripts and routines reside in the `routines` folder within the `OpenBBUserData`
 
 As long as the file remains in the `routines` folder, you will be able to find your file automatically as shown below:
 
-![Show Copy of Template OpenBB Script](https://user-images.githubusercontent.com/46355364/176903253-00a5b0f9-a6e7-49c7-a1d8-49ae819e28e3.png)
-
+![Script Showcase](https://user-images.githubusercontent.com/46355364/213746605-53cfeb46-13f2-4550-b0fd-9de8a6d06bf1.png)
 
 ### Explanation of scripts
 
@@ -66,15 +65,15 @@ By going to the main menu as depicted below (accessible with `home`), the `exe` 
 
 Thus, using the earlier mentioned script, we can enter `exe --file routines_template.openbb` which automatically runs all commands within the script file. Thus, it will return a candle chart with a moving average of 20 days, expectations and price targets from analysts and estimated future performance before returning to the home window.
 
-![Script Stocks Demo OpenBB](https://user-images.githubusercontent.com/46355364/176903147-720eb2af-7e5d-40df-8ec6-7363cbc08430.png)
+![OpenBB Routine Script Execution](https://user-images.githubusercontent.com/46355364/213746495-6b38ab67-1d90-46b1-898f-9df1ce4063c0.png)
 
 ### Custom arguments
 
-Next to that, it is also possible to add in custom arguments to your script making the script more interactive and allow you to do the same analysis for multiple companies. This is done in the following script:
+Next to that, it is also possible to add in custom arguments to your script making the script more interactive and allow you to do the same analysis for multiple companies. This is done in the following script (and can be downloaded [here](https://www.dropbox.com/s/usooz6y29r1xldb/routines_template_with_inputs.openbb?dl=0):
 
 ```
 # This script requires you to use arguments. This can be done with the following:
-# exe example_with_inputs.openbb -i TSLA,AAPL,MSFT
+# exe --file routines_template_with_inputs.openbb -i TSLA,AAPL,MSFT
 
 # Go to the stocks menu
 stocks
@@ -92,17 +91,17 @@ fib
 ../ca
 
 # Set two extra tickers based on the arguments used. E.g. -i TSLA,AAPL,MSFT
-set $ARGV[1],$ARGV[2]
+add $ARGV[1],$ARGV[2]
 
 # Plot the historical prices
 historical
 
 # Return to home
-/
+home
 ```
 
 This script includes `$ARGV[0]`, `$ARGV[1]` and `$ARGV[2]`. This means that the script requires you to submit three arguments. In this case, they refer to <a href="https://www.investopedia.com/ask/answers/12/what-is-a-stock-ticker.asp" target="_blank" rel="noreferrer noopener">stock tickers</a>. Therefore, like the script also says, you can include these arguments with `-i` followed by three tickers (e.g. `exe example_with_inputs.openbb -i TSLA,AAPL,MSFT`). This results in the following:
 
-![Example with Inputs OpenBB Script](https://user-images.githubusercontent.com/46355364/176903205-3cb55bf5-8710-4ad6-8eef-f9a99294ea3b.png)
+![OpenBB Script with Input](https://user-images.githubusercontent.com/46355364/213747540-1907ffdb-1950-42a7-bb5b-8482777a9763.png)
 
 It is an incredibly simple script, but it gives an understanding what the possibilities are. Do make sure you saved this script in the `routines` folder else you are not able to execute it.
