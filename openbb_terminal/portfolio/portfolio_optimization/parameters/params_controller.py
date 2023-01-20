@@ -162,7 +162,7 @@ class ParametersController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="file",
             description="Select parameter file to use (ini or xlsx). The OpenBB Parameters Template can be "
-            "found inside the Portfolio Optimization documentation. Please type `about` to access the documentation."
+            "found inside the Portfolio Optimization documentation. Please type `about` to access the documentation.",
         )
 
         parser.add_argument(
