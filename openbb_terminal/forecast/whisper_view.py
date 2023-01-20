@@ -75,6 +75,9 @@ def transcribe_and_summarize(
     breaklines: int = 0,
     output_dir: str = "/Users/martinbufi/OpenBBTerminal/openbb_terminal/forecast/whisper_output",
 ):
+    if video == "":
+        console.print("[red]Please provide a video URL. [/red]")
+        return
 
     # Use the pipeline to summarize the text
     summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
