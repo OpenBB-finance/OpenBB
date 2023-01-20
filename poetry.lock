@@ -1103,7 +1103,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "fsspec"
-version = "2022.11.0"
+version = "2023.1.0"
 description = "File-system specification"
 category = "main"
 optional = true
@@ -4856,7 +4856,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "77d8bec0f896363a577f4cbdcd9345705a9c9ea22395c44df71b7f3799c0618d"
+content-hash = "43124ed7b2d9d8fd35e4071d915ff63df7c0e9547180710b3d96df7cb6d4f88e"
 
 [metadata.files]
 absl-py = []
