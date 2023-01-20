@@ -40,7 +40,9 @@ def test_get_search_futures(recorder, category):
     ],
 )
 def test_get_historical_futures(recorder, symbols):
-    result = yfinance_model.get_historical_futures(symbols)
+    result = yfinance_model.get_historical_futures(
+        symbols, start_date="2022-01-01", end_date="2023-01-01"
+    )
 
     recorder.capture(result)
 

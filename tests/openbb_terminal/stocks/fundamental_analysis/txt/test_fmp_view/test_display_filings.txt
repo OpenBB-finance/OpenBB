@@ -1,0 +1,35 @@
+Timestamp: 2023-01-13 13:32:45  US/Eastern
+Ticker: GAME
+CIK: 1714562
+Form Type: 6-K
+6-K - Engine Gaming & Media, Inc. (0001714562) (Filer)
+https://www.sec.gov/Archives/edgar/data/1714562/000149315223001382/0001493152-23-001382-index.htm
+
+Timestamp: 2023-01-13 13:25:12  US/Eastern
+Ticker: TEGY
+CIK: 1383394
+Form Type: 10-K
+10-K - TRANSACT ENERGY CORP (0001383394) (Filer)
+https://www.sec.gov/Archives/edgar/data/1383394/000139390523000016/0001393905-23-000016-index.htm
+
+Timestamp: 2023-01-13 13:21:18  US/Eastern
+Ticker: MOR
+CIK: 1340243
+Form Type: 6-K
+6-K - MorphoSys AG (0001340243) (Filer)
+https://www.sec.gov/Archives/edgar/data/1340243/000162828023001015/0001628280-23-001015-index.htm
+
+Timestamp: 2023-01-13 13:21:18  US/Eastern
+Ticker: MPSYF
+CIK: 1340243
+Form Type: 6-K
+6-K - MorphoSys AG (0001340243) (Filer)
+https://www.sec.gov/Archives/edgar/data/1340243/000162828023001015/0001628280-23-001015-index.htm
+
+Timestamp: 2023-01-13 13:19:16  US/Eastern
+Ticker: DWAY
+CIK: 1394638
+Form Type: 10-K
+10-K - Driveitaway Holdings, Inc. (0001394638) (Filer)
+https://www.sec.gov/Archives/edgar/data/1394638/000173112223000046/0001731122-23-000046-index.htm
+

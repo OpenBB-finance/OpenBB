@@ -181,7 +181,7 @@ def get_curve_futures(
         )
 
         with HiddenPrints():
-            data = yf.download(future_symbol, progress=False)
+            data = yf.download(future_symbol, progress=False, ignore_tz=True)
 
         if not data.empty:
             futures_index.append(future.strftime("%Y-%b"))
