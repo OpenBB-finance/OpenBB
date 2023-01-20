@@ -433,3 +433,62 @@ def display_expiry_dates(expiry_dates: list):
         show_index=True,
         index_name="Identifier",
     )
+
+
+@log_start_end(log=logger)
+def display_chains(
+    chain: pd.DataFrame,
+    current_price: float = 0,
+    calls_only: bool = False,
+    puts_only: bool = False,
+    min_sp: float = -1,
+    max_sp: float = -1,
+    export: str = "",
+):
+    """Display chains
+
+    chain: pd.Dataframe
+        Dataframe with options chain
+    current_price: float
+        Current price of selected symbol
+    min_sp: float
+        Min strike price
+    max_sp: float
+        Max strike price
+    calls_only: bool
+        Show calls only
+    puts_only: bool
+        Show puts only
+    export: str
+        Format for exporting data
+    """
+    min_strike, max_strike = get_strikes(
+        min_sp=min_sp, max_sp=max_sp, current_price=current_price
+    )
+
+    chain = chain[chain["strike"] >= min_strike]
+    chain = chain[chain["strike"] <= max_strike]
+
+    calls = chain[chain["optionType"] == "call"]
+    puts = chain[chain["optionType"] == "put"]
+
+    if not puts_only:
+        print_rich_table(
+            calls,
+            headers=list(calls.columns),
+            show_index=False,
+            title="Option chain - Calls",
+        )
+    if not calls_only:
+        print_rich_table(
+            puts,
+            headers=list(puts.columns),
+            show_index=False,
+            title="Option chain - Puts",
+        )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "chain",
+        chain,
+    )

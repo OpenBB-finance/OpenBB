@@ -29,7 +29,6 @@ from openbb_terminal.stocks.options import (
     chartexchange_view,
     fdscanner_view,
     nasdaq_model,
-    nasdaq_view,
     op_helpers,
     tradier_model,
     tradier_view,
@@ -48,6 +47,7 @@ from openbb_terminal.stocks.options.options_view import (
     plot_oi,
     plot_voi,
     display_expiry_dates,
+    display_chains,
 )
 
 # pylint: disable=R1710,C0302,R0916,R0902
@@ -240,6 +240,10 @@ class OptionsController(BaseController):
                     str(c): {} for c in self.expiry_dates
                 }
                 self.choices["oi"]["-e"] = "--expiration"
+                self.choices["chains"]["--expiration"] = {
+                    str(c): {} for c in self.expiry_dates
+                }
+                self.choices["chains"]["-e"] = "--expiration"
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -832,41 +836,47 @@ class OptionsController(BaseController):
             help="(tradier only) Columns to look at.  Columns can be: bid, ask, strike, bidsize, asksize, "
             "volume, open_interest, delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv. E.g. 'bid,ask,strike' ",
         )
+        parser.add_argument(
+            "-e",
+            "--expiration",
+            dest="exp",
+            type=str,
+            choices=self.expiry_dates + [""],
+            help="Select expiration date (YYYY-MM-DD)",
+            default="",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             if self.ticker:
+                if ns_parser.exp:
+                    if ns_parser.exp in self.expiry_dates:
+                        self.selected_date = ns_parser.exp
+                        self.chain = self.full_chain[
+                            self.full_chain["expiration"] == self.selected_date
+                        ]
+                        self.update_runtime_choices()
+                        console.print(f"Expiration set to {ns_parser.exp}")
+                    else:
+                        self.selected_date = self.expiry_dates[0]
+                        console.print(
+                            f"Expiration not an option. Expiration set to {self.selected_date}"
+                        )
                 if self.selected_date:
-                    if ns_parser.source == "Tradier":
-                        tradier_view.display_chains(
-                            symbol=self.ticker,
-                            expiry=self.selected_date,
-                            to_display=ns_parser.to_display,
-                            min_sp=ns_parser.min_sp,
-                            max_sp=ns_parser.max_sp,
-                            calls_only=ns_parser.calls,
-                            puts_only=ns_parser.puts,
-                            export=ns_parser.export,
-                        )
-                    elif ns_parser.source == "YahooFinance":
-                        yfinance_view.display_chains(
-                            symbol=self.ticker,
-                            expiry=self.selected_date,
-                            min_sp=ns_parser.min_sp,
-                            max_sp=ns_parser.max_sp,
-                            calls_only=ns_parser.calls,
-                            puts_only=ns_parser.puts,
-                            export=ns_parser.export,
-                        )
-                    elif ns_parser.source == "Nasdaq":
-                        nasdaq_view.display_chains(
-                            symbol=self.ticker,
-                            expiry=self.selected_date,
-                            export=ns_parser.export,
-                        )
+                    display_chains(
+                        chain=self.chain,
+                        calls_only=ns_parser.calls,
+                        puts_only=ns_parser.puts,
+                        min_sp=ns_parser.min_sp,
+                        max_sp=ns_parser.max_sp,
+                        current_price=self.current_price,
+                        export=ns_parser.export,
+                    )
                 else:
-                    console.print("No expiry loaded. First use `exp {expiry date}`")
+                    console.print(
+                        "No expiry loaded. First use `exp {expiry date}` or specify an expiration with the `-e` flag"
+                    )
             else:
                 console.print("No ticker loaded. First use `load <ticker>`")
 
