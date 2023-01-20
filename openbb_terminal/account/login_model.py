@@ -8,7 +8,7 @@ from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.account.statics import BASE_URL, Success, Failure
-from openbb_terminal.account.user import User
+from openbb_terminal.account import user
 from openbb_terminal import config_terminal as cfg
 
 
@@ -16,10 +16,10 @@ def fetch_user_configs() -> Union[Success, Failure]:
     try:
         response = requests.get(
             url=BASE_URL + "terminal/user",
-            headers={"Authorization": f"{User.token_type.title()} {User.token}"},
+            headers={"Authorization": f"{user.TOKEN_TYPE.title()} {user.TOKEN}"},
         )
         if response.status_code == 200:
-            User.configs = json.loads(response.content)
+            user.CONFIGS = json.loads(response.content)
             return Success("[green]\nFetched user configurations.[/green]")
         return Failure("[red]\nFailed to fetch configurations.[/red]")
     except requests.exceptions.ConnectionError:
@@ -30,12 +30,12 @@ def fetch_user_configs() -> Union[Success, Failure]:
 
 def apply_configs():
     """Apply configurations."""
-    if User.configs:
-        settings = User.configs.get("features_settings", {})
+    if user.CONFIGS:
+        settings = user.CONFIGS.get("features_settings", {})
         for k, v in settings.items():
             setattr(obbff, k, v)
 
-        keys = User.configs.get("features_keys", {})
+        keys = user.CONFIGS.get("features_keys", {})
         for k, v in keys.items():
             setattr(cfg, k, v)
 
@@ -48,16 +48,16 @@ def load_user_info(login_info: dict):
     login_info : dict
         The login info.
     """
-    User.token_type = login_info.get("token_type", "")
-    User.token = login_info.get("access_token", "")
-    User.uuid = login_info.get("uuid", "")
+    user.TOKEN_TYPE = login_info.get("token_type", "")
+    user.TOKEN = login_info.get("access_token", "")
+    user.UUID = login_info.get("uuid", "")
 
-    if User.token:
-        decoded_info = jwt.decode(User.token, options={"verify_signature": False})
-        User.email = decoded_info.get("sub", "")
+    if user.TOKEN:
+        decoded_info = jwt.decode(user.TOKEN, options={"verify_signature": False})
+        user.EMAIL = decoded_info.get("sub", "")
 
         if obbff.USE_FLAIR == ":openbb":
-            username = User.email[: User.email.find("@")]
+            username = user.EMAIL[: user.EMAIL.find("@")]
             setattr(obbff, "USE_FLAIR", "[" + username + "] 🦋")
 
 

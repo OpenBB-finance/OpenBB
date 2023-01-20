@@ -19,7 +19,7 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 from openbb_terminal.account.logout_model import logout
-from openbb_terminal.account.user import User
+from openbb_terminal.account import user
 
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_IMPORTS_DIRECTORY,
@@ -686,8 +686,8 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            console.print(f"[info]email:[/info] {User.email}")
-            console.print(f"[info]uuid:[/info] {User.uuid}\n")
+            console.print(f"[info]email:[/info] {user.EMAIL}")
+            console.print(f"[info]uuid:[/info] {user.UUID}\n")
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):

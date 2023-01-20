@@ -5,8 +5,7 @@ from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 from openbb_terminal.account.statics import BASE_URL, Success, Failure
-from openbb_terminal.account.user import User
-from openbb_terminal.account import login_controller
+from openbb_terminal.account import login_controller, user
 
 
 def remote_logout() -> Union[Success, Failure]:
@@ -21,7 +20,7 @@ def remote_logout() -> Union[Success, Failure]:
         if (
             requests.get(
                 url=BASE_URL + "logout-everywhere",
-                headers={"Authorization": f"{User.token_type.title()} {User.token}"},
+                headers={"Authorization": f"{user.TOKEN_TYPE.title()} {user.TOKEN}"},
             ).status_code
             == 200
         ):

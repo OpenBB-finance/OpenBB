@@ -1,9 +1,7 @@
 from typing import Optional
 
-
-class User:
-    token_type: str = ""
-    token: str = ""
-    email: str = ""
-    uuid: str = ""
-    configs: Optional[dict] = None
+TOKEN_TYPE: str = ""
+TOKEN: str = ""
+EMAIL: str = ""
+UUID: str = ""
+CONFIGS: Optional[dict] = None
