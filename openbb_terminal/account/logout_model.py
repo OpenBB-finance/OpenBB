@@ -60,6 +60,5 @@ def logout():
     """
     system_clear()
     remove_login_file()
-    remote_logout()
     console.print("")
     login_controller.login_prompt(welcome=True)
