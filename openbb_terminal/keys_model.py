@@ -35,6 +35,7 @@ from openbb_terminal.rich_config import console
 
 from openbb_terminal.terminal_helper import suppress_stdout
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
+from openbb_terminal.account.sync_model import put_user_configs
 
 logger = logging.getLogger(__name__)
 
@@ -236,6 +237,14 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
 
     # Set cfg.env_var_name = env_var_value
     setattr(cfg, env_var_name, env_var_value)
+
+    # Just for testing, replace when patch is available,
+    # this overwrites the whole config dict
+    data = {
+        "features_settings": {},
+        "features_keys": {env_var_name: env_var_value},
+    }
+    put_user_configs(data)
 
 
 def get_keys(show: bool = False) -> pd.DataFrame:

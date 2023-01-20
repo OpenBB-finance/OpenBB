@@ -36,8 +36,8 @@ def remove_login_file() -> Union[Success, Failure]:
 
     Returns
     -------
-    Success
-        The status of the local logout.
+    Union[Success, Failure]
+        The status of the file removal, or an error.
     """
 
     try:
@@ -45,6 +45,7 @@ def remove_login_file() -> Union[Success, Failure]:
         if os.path.isfile(file_path):
             os.remove(file_path)
             return Success("[green]\nRemoved login info.[/green]")
+        return Success()
     except Exception:
         return Failure("[red]\nFailed to remove login file.[/red]")
 
