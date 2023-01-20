@@ -339,7 +339,9 @@ class PortfolioController(BaseController):
 
         if ns_parser and ns_parser.file or ns_parser and ns_parser.example:
             if ns_parser.example:
-                file_location = MISCELLANEOUS_DIRECTORY / "holdings_example.xlsx"
+                file_location = (
+                    MISCELLANEOUS_DIRECTORY / "portfolio" / "holdings_example.xlsx"
+                )
                 console.print(
                     "[green]Loading an example, please type `about` "
                     "to learn how to create your own Portfolio Excel sheet.[/green]\n"

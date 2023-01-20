@@ -701,7 +701,9 @@ class TerminalController(BaseController):
         if ns_parser_exe:
             if ns_parser_exe.path or ns_parser_exe.example:
                 if ns_parser_exe.example:
-                    path = MISCELLANEOUS_DIRECTORY / "routine_example.openbb"
+                    path = (
+                        MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
+                    )
                     console.print(
                         "[green]Executing an example, please type `about exe` "
                         "to learn how to create your own script.[/green]\n"

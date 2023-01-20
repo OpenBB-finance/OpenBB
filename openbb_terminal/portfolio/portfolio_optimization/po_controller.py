@@ -710,7 +710,9 @@ class PortfolioOptimizationController(BaseController):
                 filename = " ".join(ns_parser.file)
 
             if ns_parser.example:
-                file_location = MISCELLANEOUS_DIRECTORY / "allocation_example.xlsx"
+                file_location = (
+                    MISCELLANEOUS_DIRECTORY / "portfolio" / "allocation_example.xlsx"
+                )
                 filename = "OpenBB Example Portfolio"
                 console.print(
                     "[green]Loading an example, please type `about` "
