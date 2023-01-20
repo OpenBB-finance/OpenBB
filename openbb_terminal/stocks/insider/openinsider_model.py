@@ -9,7 +9,10 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    USER_PRESETS_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
+)
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
@@ -1110,7 +1113,7 @@ def get_preset_choices() -> Dict:
     """
 
     PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "insider"
-    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
+    PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "insider"
     preset_choices = {
         filepath.name.strip(".ini"): filepath
         for filepath in PRESETS_PATH.iterdir()
