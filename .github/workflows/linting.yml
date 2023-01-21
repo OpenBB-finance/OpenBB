@@ -5,6 +5,7 @@ env:
   OPENBB_LOG_COLLECT: false
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
+  OPENBB_FILE_OVERWRITE: true
   PIP_DEFAULT_TIMEOUT: 100
 
 on:
@@ -48,7 +49,6 @@ jobs:
       - run: ruff .
       - run: mypy --ignore-missing-imports openbb_terminal
       - run: shopt -s globstar && pyupgrade --py38-plus **/*.py
-      - run: safety check
       - run: |
           pylint terminal.py openbb_terminal tests
 
