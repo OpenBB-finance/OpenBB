@@ -49,7 +49,6 @@ jobs:
       - run: ruff .
       - run: mypy --ignore-missing-imports openbb_terminal
       - run: shopt -s globstar && pyupgrade --py38-plus **/*.py
-      - run: safety check
       - run: |
           pylint terminal.py openbb_terminal tests
 
