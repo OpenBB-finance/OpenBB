@@ -1,4 +1,5 @@
 name: M1 MacOS Build
+
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
   OPENBB_LOG_COLLECT: false
@@ -6,7 +7,13 @@ env:
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
   PYTHONNOUSERSITE: 1
+
 on: workflow_dispatch
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   Build:
     name: M1 MacOS Build
@@ -45,16 +52,21 @@ jobs:
           activate-environment: build_env
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
+
       - name: Run Poetry
-        run: poetry install
+        run: poetry install -vvv
+
       - name: Install Pyinstaller
         run: poetry install -E installer
+  
       - name: Poetry Install Portfolio Optimization and Forecasting Toolkits
         run: poetry install -E all
+  
       - name: Install Specific Papermill
         run: |
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
+
       # This is basically the same as build4mac.sh
       - name: Build Bundle
         run: |

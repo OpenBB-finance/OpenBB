@@ -1,4 +1,5 @@
 name: Intel MacOS Build
+
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
   OPENBB_LOG_COLLECT: false
@@ -6,7 +7,13 @@ env:
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
   PYTHONNOUSERSITE: 1
+
 on: workflow_dispatch
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   Build:
     name: Intel MacOS Build
