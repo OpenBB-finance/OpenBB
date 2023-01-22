@@ -5,6 +5,7 @@ env:
   OPENBB_LOG_COLLECT: false
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
+  OPENBB_FILE_OVERWRITE: true
   PIP_DEFAULT_TIMEOUT: 100
   PYTHONNOUSERSITE: 1
 
@@ -58,10 +59,10 @@ jobs:
 
       - name: Install Pyinstaller
         run: poetry install -E installer
-  
+
       - name: Poetry Install Portfolio Optimization and Forecasting Toolkits
         run: poetry install -E all
-  
+
       - name: Install Specific Papermill
         run: |
           pip uninstall papermill -y

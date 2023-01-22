@@ -753,6 +753,16 @@ class BaseController(metaclass=ABCMeta):
                 help=help_export,
             )
 
+            # If excel is an option, add the sheet name
+            if export_allowed == EXPORT_ONLY_RAW_DATA_ALLOWED:
+                parser.add_argument(
+                    "--sheet-name",
+                    dest="sheet_name",
+                    default=None,
+                    nargs="+",
+                    help="Name of excel sheet to save data to. Only valid for .xlsx files.",
+                )
+
         if raw:
             parser.add_argument(
                 "--raw",
@@ -1147,6 +1157,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     os.path.dirname(os.path.abspath(__file__)),
                     f"load_{self.ticker}",
                     self.stock.copy(),
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
 
