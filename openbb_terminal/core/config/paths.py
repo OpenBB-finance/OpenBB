@@ -1,14 +1,26 @@
 # IMPORTATION STANDARD
 from pathlib import Path
 import os
-import dotenv
+from dotenv import load_dotenv
+
+
+def load_dotenv_with_priority():
+    """Loads the dotenv files in the following order:
+    1. Repository .env file
+    2. Package .env file
+    3. User .env file
+
+    This allows the user to override the package settings with their own
+    settings, and the package to override the repository settings.
+    """
+    load_dotenv(REPOSITORY_ENV_FILE, override=True)
+    load_dotenv(PACKAGE_ENV_FILE, override=True)
+    load_dotenv(USER_ENV_FILE, override=True)
 
 
 def get_user_data_directory():
-    """ "
-    Gets user data path from .env file
-    """
-    dotenv.load_dotenv(USER_ENV_FILE)
+    """Gets user data path from .env file or returns default path"""
+    load_dotenv_with_priority()
     if os.getenv("OPENBB_USER_DATA_DIRECTORY"):
         user_data_directory = Path(os.getenv("OPENBB_USER_DATA_DIRECTORY"))
     else:
