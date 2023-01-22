@@ -504,6 +504,20 @@
     "historical": ["YahooFinance"],
     "curve": ["YahooFinance"]
   },
+  "fixedincome": {
+    "estr": ["FRED", "ECB"],
+    "sofr": ["FRED", "NYFED"],
+    "sonia": ["FRED"],
+    "ameribor": ["FRED"],
+    "ffer": ["FRED"],
+    "fftr": ["FRED", "NYFED"],
+    "effr": ["FRED", "NYFED"],
+    "obfr": ["FRED", "NYFED"],
+    "iorb": ["FRED"],
+    "projection": ["FRED"],
+    "oldprojetion": ["FRED"],
+    "dwpcr": ["FRED"]
+  },
   "alternative": {
     "oss": {
       "rossidx": ["RunaCapital"],

@@ -771,6 +771,20 @@ en:
   economy/qa/raw: print raw data
   economy/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   economy/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  fixedincome/_reference_rates_: Reference rates
+  fixedincome/estr: euro short-term rate (estr)
+  fixedincome/sofr: secured overnight financing rate (sofr)
+  fixedincome/sonia: sterling overnight index average (sonia)
+  fixedincome/ameribor: american interbank offered rate (ameribor)
+  fixedincome/_other_interest_rates_: Other interest rates
+  fixedincome/ffer: federal funds effective rate
+  fixedincome/fftr: federal funds target range
+  fixedincome/effr: effective federal funds rate (effr)
+  fixedincome/obfr: overnight bank funding rate (obfr)
+  fixedincome/iorb: interest rate on reserve balances
+  fixedincome/projection: FOMC summary of economic projections for the fed funds rate
+  fixedincome/oldprojection: longer run FOMC summary of economic projections for the fed funds rate
+  fixedincome/dwpcr: discount window primary credit rate
   forex/_ticker: Ticker
   forex/_from: From
   forex/_to: To

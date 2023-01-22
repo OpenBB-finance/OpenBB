@@ -103,6 +103,7 @@ class TerminalController(BaseController):
         "sources",
         "forecast",
         "futures",
+        "fixedincome",
     ]
 
     PATH = "/"
@@ -178,6 +179,7 @@ class TerminalController(BaseController):
         mt.add_menu("economy")
         mt.add_menu("forex")
         mt.add_menu("futures")
+        mt.add_menu("fixedincome")
         mt.add_menu("alternative")
         mt.add_raw("\n")
         mt.add_info("_others_")
@@ -464,6 +466,14 @@ class TerminalController(BaseController):
         from openbb_terminal.futures.futures_controller import FuturesController
 
         self.queue = self.load_class(FuturesController, self.queue)
+
+    def call_fixedincome(self, _):
+        """Process fixedincome command."""
+        from openbb_terminal.fixedincome.fixedincome_controller import (
+            FixedIncomeController,
+        )
+
+        self.queue = self.load_class(FixedIncomeController, self.queue)
 
     def call_intro(self, _):
         """Process intro command."""
