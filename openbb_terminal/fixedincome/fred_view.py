@@ -333,7 +333,11 @@ def plot_ffer(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot Federal Funds Effective Rate
+    """Plot Federal Funds Effective Rate.
+
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
+    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
+    of Governors set the bank rate, also known as the discount rate.
 
     Parameters
     ----------
@@ -392,7 +396,11 @@ def plot_fftr(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot Federal Funds Target Range
+    """Plot Federal Funds Target Range.
+
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
+    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
+    of Governors set the bank rate, also known as the discount rate.
 
     Parameters
     ----------
@@ -449,7 +457,11 @@ def plot_effr(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot Effective Federal Funds Rate
+    """Plot Effective Federal Funds Rate.
+
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
+    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
+    of Governors set the bank rate, also known as the discount rate.
 
     Parameters
     ----------
@@ -507,7 +519,11 @@ def plot_obfr(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot Overnight Bank Funding Rate (OBFR)
+    """Plot Overnight Bank Funding Rate (OBFR).
+
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
+    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
+    of Governors set the bank rate, also known as the discount rate.
 
     Parameters
     ----------
@@ -564,7 +580,11 @@ def plot_iorb(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot Interest Rate on Reserve Balances
+    """Plot Interest Rate on Reserve Balances.
+
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
+    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
+    of Governors set the bank rate, also known as the discount rate.
 
     Parameters
     ----------
@@ -615,7 +635,11 @@ def plot_projection(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot FOMC Summary of Economic Projections for the Fed Funds Rate
+    """Plot FOMC Summary of Economic Projections for the Fed Funds Rate.
+
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
+    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
+    of Governors set the bank rate, also known as the discount rate.
 
     Parameters
     ----------
@@ -708,7 +732,11 @@ def plot_oldprojection(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot Longer Run FOMC Summary of Economic Projections for the Fed Funds Rate
+    """Plot Longer Run FOMC Summary of Economic Projections for the Fed Funds Rate.
+
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
+    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
+    of Governors set the bank rate, also known as the discount rate.
 
     Parameters
     ----------
@@ -802,7 +830,11 @@ def plot_dwpcr(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot Discount Window Primary Credit Rate
+    """Plot Discount Window Primary Credit Rate.
+
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
+    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
+    of Governors set the bank rate, also known as the discount rate.
 
     Parameters
     ----------

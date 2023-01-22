@@ -151,7 +151,7 @@ class FixedIncomeController(BaseController):
         mt.add_cmd("sonia")
         mt.add_cmd("ameribor")
         mt.add_raw("\n")
-        mt.add_info("_other_interest_rates_")
+        mt.add_info("_central_bank_rates_")
         mt.add_cmd("ffer")
         mt.add_cmd("fftr")
         mt.add_cmd("effr")
@@ -366,7 +366,10 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ffer",
-            description="Get Federal Funds Effective Rate data",
+            description="Get Federal Funds Effective Rate data\nA bank rate is the interest rate a nation's central "
+            "bank charges to its domestic banks to borrow money. The rates central banks charge are set "
+            "to stabilize the economy. In the United States, the Federal Reserve System's Board of "
+            "Governors set the bank rate, also known as the discount rate.",
         )
         parser.add_argument(
             "-p",
@@ -411,7 +414,10 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="fftr",
-            description="Get Federal Funds Target Range data",
+            description="Get Federal Funds Target Range data.\nA bank rate is the interest rate a nation's central "
+            "bank charges to its domestic banks to borrow money. The rates central banks charge are set "
+            "to stabilize the economy. In the United States, the Federal Reserve System's Board of "
+            "Governors set the bank rate, also known as the discount rate.",
         )
         parser.add_argument(
             "-s",
@@ -453,7 +459,10 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="effr",
-            description="Get Effective Federal Funds Rate data",
+            description="Get Effective Federal Funds Rate data.\nA bank rate is the interest rate a nation's central "
+            "bank charges to its domestic banks to borrow money. The rates central banks charge are set "
+            "to stabilize the economy. In the United States, the Federal Reserve System's Board of "
+            "Governors set the bank rate, also known as the discount rate.",
         )
         parser.add_argument(
             "-p",
@@ -506,7 +515,10 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="obfr",
-            description="Get Overnight Bank Funding Rate data",
+            description="Get Overnight Bank Funding Rate data.\nA bank rate is the interest rate a nation's central "
+            "bank charges to its domestic banks to borrow money. The rates central banks charge are set "
+            "to stabilize the economy. In the United States, the Federal Reserve System's Board of "
+            "Governors set the bank rate, also known as the discount rate.",
         )
         parser.add_argument(
             "-p",
@@ -559,7 +571,10 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="iorb",
-            description="Get Interest Rate on Reserve Balances data",
+            description="Get Interest Rate on Reserve Balances data\nA bank rate is the interest rate a nation's "
+            "central bank charges to its domestic banks to borrow money. The rates central banks charge "
+            "are set to stabilize the economy. In the United States, the Federal Reserve System's Board "
+            "of Governors set the bank rate, also known as the discount rate.",
         )
         parser.add_argument(
             "-s",
@@ -594,7 +609,11 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="projection",
-            description="Get FOMC Summary of Economic Projections for the Fed Funds Rate",
+            description="Get FOMC Summary of Economic Projections for the Fed Funds Rate.\nA bank rate is the "
+            "interest rate a nation's central bank charges to its domestic banks to borrow money. The "
+            "rates central banks charge are set to stabilize the economy. In the United States, "
+            "the Federal Reserve System's Board of Governors set the bank rate, also known as the "
+            "discount rate.",
         )
         parser.add_argument(
             "-s",
@@ -629,7 +648,11 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="oldprojection",
-            description="Get Longer Run FOMC Summary of Economic Projections for the Fed Funds Rate",
+            description="Get Longer Run FOMC Summary of Economic Projections for the Fed Funds Rate.\nA bank rate is "
+            "the interest rate a nation's central bank charges to its domestic banks to borrow money. The "
+            "rates central banks charge are set to stabilize the economy. In the United States, "
+            "the Federal Reserve System's Board of Governors set the bank rate, also known as the "
+            "discount rate.",
         )
         parser.add_argument(
             "-s",
@@ -664,7 +687,10 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="dwpcr",
-            description="Get Discount Window Primary Credit Rate data",
+            description="Get Discount Window Primary Credit Rate data.\nA bank rate is the interest rate a nation's "
+            "central bank charges to its domestic banks to borrow money. The rates central banks charge "
+            "are set to stabilize the economy. In the United States, the Federal Reserve System's Board "
+            "of Governors set the bank rate, also known as the discount rate.",
         )
         parser.add_argument(
             "-p",
