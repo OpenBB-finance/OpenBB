@@ -1103,7 +1103,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "fsspec"
-version = "2022.11.0"
+version = "2023.1.0"
 description = "File-system specification"
 category = "main"
 optional = true
@@ -3172,7 +3172,7 @@ python-versions = "*"
 
 [[package]]
 name = "pyrsistent"
-version = "0.18.1"
+version = "0.19.3"
 description = "Persistent/Functional/Immutable data structures"
 category = "main"
 optional = false
@@ -3422,6 +3422,21 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "pywry"
+version = "0.1.9"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+psutil = ">=5.8.0"
+websockets = ">=5.0.1"
+
+[package.extras]
+dev = ["maturin (==0.14.6)"]
+
+[[package]]
 name = "pyyaml"
 version = "6.0"
 description = "YAML parser and emitter for Python"
@@ -3472,11 +3487,11 @@ six = "*"
 
 [[package]]
 name = "rapidfuzz"
-version = "1.9.1"
+version = "2.13.7"
 description = "rapid fuzzy string matching"
 category = "main"
 optional = false
-python-versions = ">=2.7"
+python-versions = ">=3.7"
 
 [package.extras]
 full = ["numpy"]
@@ -4856,7 +4871,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "77d8bec0f896363a577f4cbdcd9345705a9c9ea22395c44df71b7f3799c0618d"
+content-hash = "c0c08919ea0aef2625404fca098ed519a3f289870664f7da1a0828f6512682ec"
 
 [metadata.files]
 absl-py = []
@@ -5121,6 +5136,7 @@ pyupgrade = []
 pywin32 = []
 pywin32-ctypes = []
 pywinpty = []
+pywry = []
 pyyaml = []
 pyzmq = []
 qdldl = []

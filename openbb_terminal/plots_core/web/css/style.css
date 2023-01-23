@@ -63,9 +63,9 @@ body {
     border-radius: 5px;
     margin-bottom: 20px !important;
     cursor: pointer;
-    border: 1px solid gold;
+    border: 1px solid #7d7d7d;
     padding: 5px;
-    background-color: #000000;
+    background-color: #131313;
     color: #ffffff;
     margin-right: 50px !important;
 }
@@ -95,8 +95,8 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 420px;
-    background-color: #000000;
-    border: 2px solid gold;
+    background-color: #131313;
+    border: 2px solid #7d7d7d;
     border-radius: 5px;
     padding: 5px 5px 15px 18px;
     box-sizing: border-box;
@@ -123,14 +123,14 @@ body {
 }
 
 .popup_overlay input {
-    height: 30px;
+    width: 48px;
+    height: 32px;
     margin-top: 5px;
     margin-bottom: 10px;
-    border: 1px solid gold;
-    border-radius: 5px;
-    padding: 5px;
+    border: 1px solid #7d7d7d;
+    border-radius: 4px;
     box-sizing: border-box;
-    background-color: #000000;
+    background-color: #131313;
     color: #ffffff;
     display: inline-block;
     margin-right: 5px !important;
@@ -140,11 +140,11 @@ body {
 .popup_overlay select {
     height: 30px;
     margin-bottom: 5px;
-    border: 1px solid gold;
-    border-radius: 5px;
+    border: 1px solid #7d7d7d;
+    border-radius: 4px;
     padding: 2px;
     box-sizing: border-box;
-    background-color: #000000;
+    background-color: #131313;
     color: #ffffff;
     display: inline-block;
     margin-right: 5px !important;
@@ -155,11 +155,11 @@ body {
     width: 30%;
     height: 30px;
     margin-bottom: 10px;
-    border: 1px solid gold;
-    border-radius: 5px;
+    border: 1px solid #5A5A5A;
+    border-radius: 4px;
     padding: 5px;
     box-sizing: border-box;
-    background-color: #000000;
+    background-color: #131313;
     color: #ffffff;
     cursor: pointer;
     display: inline-block;
@@ -173,33 +173,33 @@ body {
 }
 
 .popup_overlay button:hover {
-    background-color: gold;
-    color: #000000;
+    background-color: #7d7d7d;
+    color: #131313;
 }
 
 .popup_overlay button:active {
-    background-color: #000000;
-    color: gold;
+    background-color: #131313;
+    color: #7d7d7d;
 }
 
 .popup_overlay :focus {
     outline: none;
-    border: 1px solid gold;
-    box-shadow: 0 0 5px gold;
+    border: 1px solid #7d7d7d;
+    box-shadow: 0 0 5px #7d7d7d;
 }
 
 .popup_overlay select:hover {
-    background-color: gold;
-    color: #000000;
+    background-color: #7d7d7d;
+    color: #131313;
 }
 
 .popup_overlay select:active {
-    background-color: #000000;
-    color: gold;
+    background-color: #131313;
+    color: #7d7d7d;
 }
 
 .popup_overlay select:focus-within {
-    background-color: #000000;
+    background-color: #131313;
     color: #ffffff;
 }
 
@@ -207,9 +207,9 @@ body {
     display: inline-block;
     padding: 5px 10px;
     cursor: pointer;
-    background-color: #000000;
+    background-color: #131313;
     color: #ffffff;
-    border: 1px solid gold;
+    border: 1px solid #7d7d7d;
     border-radius: 5px;
     font-family: 'Fira Code', monospace, 'Arial Black';
     width: 98%;
@@ -222,9 +222,9 @@ body {
 
 .popup_overlay input[type="file"]::before {
     content: 'Select File';
-    background-color: #000000;
+    background-color: #131313;
     color: #ffffff;
-    border: 1px solid gold;
+    border: 1px solid #7d7d7d;
     border-radius: 5px;
     outline: none;
     white-space: nowrap;
@@ -236,24 +236,24 @@ body {
 }
 
 .popup_overlay input[type="file"]:hover::before {
-    background-color: gold;
-    color: #000000;
+    background-color: #7d7d7d;
+    color: #131313;
 }
 
 .popup_overlay input[type="color"] {
-    width: 50px;
-    height: 30px;
     margin-top: 20px;
-    border: 1px solid gold;
-    border-radius: 5px;
-    padding: 5px;
+    border: 1px solid #5A5A5A;
+    border-radius: 4px;
     box-sizing: border-box;
-    background-color: #000000;
+    background-color: #131313;
     color: #ffffff;
     display: inline-block !important;
     margin-right: 50px !important;
     margin-top: 20px !important;
     vertical-align: top !important;
+    width: 48px;
+    height: 32px;
+    gap: 10px;
 }
 
 .popup_overlay input[type="color"]::-webkit-color-swatch-wrapper {
@@ -272,22 +272,22 @@ body {
     width: 98%;
     height: 100%;
     margin-bottom: 10px;
-    border: 1px solid gold;
+    border: 1px solid #7d7d7d;
     border-radius: 5px;
     padding: 5px;
     box-sizing: border-box;
-    background-color: #000000;
+    background-color: #131313;
     color: #ffffff;
 }
 
 .popup_overlay input[type="number"] {
     height: 30px;
     margin-bottom: 10px;
-    border: 1px solid gold;
+    border: 1px solid #7d7d7d;
     border-radius: 5px;
     padding: 5px;
     box-sizing: border-box;
-    background-color: #000000;
+    background-color: #131313;
     color: #ffffff;
     width: 50px;
     margin-right: 40px !important;
@@ -312,8 +312,8 @@ form {
     appearance: none;
     border-radius: 50%;
     outline: none;
-    border: 2px solid gold;
-    background-color: #000000;
+    border: 2px solid #7d7d7d;
+    background-color: #131313;
     vertical-align: middle;
     width: 15px !important;
     height: 15px !important;
@@ -331,7 +331,7 @@ form {
     outline: none;
     transform: scale(0);
     transition: 120ms transform ease-in-out;
-    box-shadow: inset 1em 1em gold;
+    box-shadow: inset 1em 1em #7d7d7d;
 }
 
 .popup_overlay input[type="checkbox"]:checked::before {
@@ -354,11 +354,11 @@ form {
     height: 100px;
     margin-top: 5px;
     margin-bottom: 10px;
-    border: 1px solid gold;
+    border: 1px solid #7d7d7d;
     border-radius: 5px;
     padding: 5px;
     box-sizing: border-box;
-    background-color: #000000;
+    background-color: #131313;
     color: #ffffff;
     max-width: 385px;
 }
@@ -372,4 +372,29 @@ form {
     font-weight: bold;
     margin-top: -15px;
     margin-left: 135px;
+}
+
+
+.plotly-graph-div:hover .modebar--hover {
+    /* Icons menu */
+    top: 2px;
+    right: -5px !important;
+    margin-left: 10px !important;
+
+    /* Auto layout */
+    padding: 6px 6px !important;
+    gap: 8px !important;
+
+    /* Grey/800 */
+    background: #2A2A2A;
+    /* Grey/600 */
+
+    border: 2px solid #5A5A5A !important;
+    border-radius: 4px;
+
+    /* move right of plotly div */
+}
+
+.modebar-btn .icon path {
+    fill: rgba(255, 255, 255, 0.5);
 }

@@ -87,38 +87,70 @@ class Backend(PyWry):
         title = re.sub(
             r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else "Plots"
         )
-
-        data = json.loads(fig.to_json())
         self.outgoing.append(
             json.dumps(
                 {
                     "html_path": self.get_plotly_html(),
-                    "plotly": data,
-                    "title": f"OpenBB - {title}",
-                    "icon": self.get_window_icon(),
+                    "plotly": json.loads(fig.to_json()),
+                    **self.get_kwargs(title),
                 }
             )
         )
 
-    def send_html(self, html: str, title: str = ""):
+    def send_html(self, html_str: str, html_path: str = "", title: str = ""):
         """Send html to backend.
 
         Parameters
         ----------
-        html : str
-            HTML to send to backend.
+        html_str : str
+            HTML string to send to backend.
+        html_path : str, optional
+            Path to html file to send to backend, by default ""
         title : str, optional
             Title to display in the window, by default ""
         """
         self.check_backend()
         message = json.dumps(
+            {"html_str": html_str, "html_path": html_path, **self.get_kwargs(title)}
+        )
+        self.outgoing.append(message)
+
+    def send_url(self, url: str, title: str = "", width: int = 1200, height: int = 800):
+        """Send url to backend.
+
+        Parameters
+        ----------
+        url : str
+            URL to send to backend.
+        title : str, optional
+            Title to display in the window, by default ""
+        width : int, optional
+            Width of the window, by default 1200
+        height : int, optional
+            Height of the window, by default 800
+        """
+        self.check_backend()
+        script = f"""
+        <script>
+            window.location.replace("{url}");
+        </script>
+        """
+        message = json.dumps(
             {
-                "html_str": html,
-                "title": f"OpenBB - {title}",
-                "icon": self.get_window_icon(),
+                "html_str": script,
+                **self.get_kwargs(title),
+                "width": width,
+                "height": height,
             }
         )
         self.outgoing.append(message)
+
+    def get_kwargs(self, title: str = "") -> dict:
+        """Get the kwargs for the backend"""
+        return {
+            "title": f"OpenBB - {title}",
+            "icon": self.get_window_icon(),
+        }
 
     def del_temp(self):
         """Delete the temporary html file"""

@@ -11,7 +11,6 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, Iterable, List, Optional, Union
 
 import financedatabase as fd
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pytz
@@ -469,7 +468,7 @@ def display_candle(
     iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
     raw: bool = False,
     yscale: str = "linear",
 ):
@@ -493,8 +492,8 @@ def display_candle(
         Moving averages to add to the candle
     asset_type_: str
         String to include in title
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     asset_type_: str
         String to include in title
     start_date: str or datetime, optional
@@ -523,7 +522,7 @@ def display_candle(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.stocks.candle("AAPL")
     """
-    del yscale, external_axes, asset_type
+    del yscale, asset_type
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
 
@@ -569,6 +568,7 @@ def display_candle(
                 low=data.Low,
                 close=data.Close,
                 name="OHLC",
+                showlegend=False,
                 row=1,
                 col=1,
             )
@@ -659,6 +659,8 @@ def display_candle(
                     ),
                     type="date",
                 ),
+                bargap=0,
+                bargroupgap=0,
             )
 
             fig.update_layout(
@@ -703,7 +705,7 @@ def display_candle(
                     ]
                 )
 
-            fig.show()
+            return fig.show() if not external_axes else fig
     else:
         return data
 

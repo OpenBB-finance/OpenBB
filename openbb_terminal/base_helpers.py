@@ -1,11 +1,8 @@
 # This is for helpers that do NOT import any OpenBB Modules
 import os
-import sys
-from typing import Any, Callable, Literal, Union
+from typing import Any, Callable, Literal
 
 from rich.console import Console
-
-from openbb_terminal.plots_core.backend import get_backend
 
 console = Console()
 
@@ -88,45 +85,3 @@ def strtobool(val):
         raise ValueError(f"invalid truth value {val}")
 
     return output
-
-
-# pylint: disable=no-member
-class Show:
-    """Monkey patch the show method to send the figure to the backend"""
-
-    def show(self, *args, **kwargs) -> Union[str, None]:
-        """Show the figure."""
-        try:
-            # if in terminal pro, we just return the json
-            if strtobool(os.environ.get("TERMINAL_PRO", False)):
-                return self.to_json()  # type: ignore
-
-            # We send the figure to the backend to be displayed
-            get_backend().send_figure(self)
-        except Exception:
-            # If the backend fails, we just show the figure normally
-            # This is a very rare case, but it's better to have a fallback
-            if strtobool(os.environ.get("DEBUG_MODE", False)):
-                console.print_exception()
-
-            import plotly.io as pio  # pylint: disable=import-outside-toplevel
-
-            kwargs["config"] = {"scrollZoom": True}
-            return pio.show(self, *args, **kwargs)
-
-        return None
-
-
-if get_backend().isatty:
-    # pylint: disable=import-outside-toplevel
-    import gc
-
-    from plotly.graph_objs import Figure
-
-    # We need to force a garbage collection to make sure all modules are loaded
-    gc.collect()
-
-    for module in list(sys.modules.values()):
-        if not hasattr(module, "Figure") or not issubclass(module.Figure, Figure):
-            continue
-        module.Figure.show = Show.show

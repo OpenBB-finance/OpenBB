@@ -331,7 +331,7 @@ def reset(queue: List[str] = None):
         from openbb_terminal.terminal_controller import main
 
         # we run the terminal again
-        main(debug, ["/".join(queue) if len(queue) > 0 else ""])
+        main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")
 
     except Exception as e:
         logger.exception("Exception: %s", str(e))

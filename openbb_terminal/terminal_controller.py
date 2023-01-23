@@ -15,7 +15,6 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 import certifi
-import dotenv
 import pandas as pd
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
@@ -29,7 +28,6 @@ from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
-    REPOSITORY_ENV_FILE,
     USER_DATA_DIRECTORY,
     USER_ENV_FILE,
     USER_ROUTINES_DIRECTORY,
@@ -1094,7 +1092,7 @@ def main(
         One or multiple inputs to be replaced in the routine and separated by commas.
         E.g. GME,AMC,BTC-USD
     """
-    if kwargs.get("module", "") == "ipykernel_launcher":
+    if kwargs["module"] == "ipykernel_launcher":
         ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
 
     if debug:
