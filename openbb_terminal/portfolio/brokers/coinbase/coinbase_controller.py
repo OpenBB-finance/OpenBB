@@ -137,7 +137,10 @@ class CoinbaseController(BaseController):
 
         if ns_parser:
             coinbase_view.display_history(
-                ns_parser.account, ns_parser.export, ns_parser.limit
+                ns_parser.account,
+                ns_parser.export,
+                ns_parser.sheet_name,
+                ns_parser.limit,
             )
 
     @log_start_end(log=logger)

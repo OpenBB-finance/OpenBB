@@ -439,7 +439,6 @@ class EconometricsController(BaseController):
                     os.path.dirname(os.path.abspath(__file__)),
                     ns_parser.name,
                     self.datasets[ns_parser.name],
-                    ns_parser.sheet_name,
                 )
 
         console.print()

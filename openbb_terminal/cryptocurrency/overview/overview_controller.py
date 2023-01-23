@@ -244,7 +244,6 @@ class OverviewController(BaseController):
                 ascend=ns_parser.reverse,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
