@@ -39,7 +39,7 @@ plot -pf name_0,maxsharpe_1 -ct c,sector,current_invested_amount -dd
 plot -pf name_0,maxsharpe_1 -ct c,sector,current_invested_amount -rc
 plot -pf name_0,maxsharpe_1 -ct c,sector,current_invested_amount -he
 ..
-load --file market.csv
+load --example
 po
 equal
 show -pf name_0

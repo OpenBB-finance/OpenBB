@@ -23,7 +23,7 @@ plot -pf MAXSHARPE_0 -rc
 plot -pf MAXSHARPE_0 -he
 rpf NAME_6
 ..
-load --file market.csv
+load --file holdings_example.xlsx
 po
 equal
 maxsharpe -s 1995-05-07
