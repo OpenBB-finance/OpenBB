@@ -6,6 +6,7 @@ env:
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
+  OPENBB_FILE_OVERWRITE: true
   PYTHONNOUSERSITE: 1
 
 on:
@@ -35,7 +36,7 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: m1_macos_build.yml
-  
+
   trigger-intel-build:
     runs-on: ubuntu-latest
     steps:
