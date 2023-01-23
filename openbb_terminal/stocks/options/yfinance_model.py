@@ -3,11 +3,9 @@ __docformat__ = "numpy"
 
 import logging
 import math
-import warnings
 from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Tuple
 
-import numpy as np
 import pandas as pd
 import yfinance as yf
 from tqdm import tqdm
@@ -15,7 +13,6 @@ from tqdm import tqdm
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options.op_helpers import Option
 
 logger = logging.getLogger(__name__)
 
@@ -77,120 +74,6 @@ def get_option_chain(symbol: str, expiry: str):
         chain = pd.DataFrame()
 
     return chain
-
-
-# pylint: disable=W0640
-@log_start_end(log=logger)
-def get_option_chain_expiry(
-    symbol: str,
-    expiry: str,
-    min_sp: float = -1,
-    max_sp: float = -1,
-    calls: bool = True,
-    puts: bool = True,
-) -> pd.DataFrame:
-    """Get full option chains with calculated greeks
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-    expiry: str
-        Expiration date for chain in format YYY-mm-dd
-    calls: bool
-        Flag to get calls
-    puts: bool
-        Flag to get puts
-
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame of option chain.  If both calls and puts
-    """
-    try:
-        yf_ticker = yf.Ticker(symbol)
-        options = yf_ticker.option_chain(expiry)
-    except ValueError:
-        console.print(f"[red]{symbol} options for {expiry} not found.[/red]")
-        return pd.DataFrame()
-
-    last_price = yf_ticker.info["regularMarketPrice"]
-
-    # Columns we want to get
-    yf_option_cols = [
-        "strike",
-        "lastPrice",
-        "bid",
-        "ask",
-        "volume",
-        "openInterest",
-        "impliedVolatility",
-    ]
-    # Get call and put dataframes if the booleans are true
-    put_df = options.puts[yf_option_cols].copy() if puts else pd.DataFrame()
-    call_df = options.calls[yf_option_cols].copy() if calls else pd.DataFrame()
-    # so that the loop below doesn't break if only one call/put is supplied
-    df_list, option_factor = [], []
-    if puts:
-        df_list.append(put_df)
-        option_factor.append(-1)
-    if calls:
-        df_list.append(call_df)
-        option_factor.append(1)
-    df_list = [x[x["impliedVolatility"] > 0].copy() for x in df_list]
-    # Add in greeks to each df
-    # Time to expiration:
-    dt = (
-        datetime.strptime(expiry, "%Y-%m-%d") + timedelta(hours=16) - datetime.now()
-    ).total_seconds() / (60 * 60 * 24)
-    rf = get_rf()
-    # Note the way the Option class is defined, put has a -1 input and call has a +1 input
-    for df, option_type in zip(df_list, option_factor):
-        df["Delta"] = df.apply(
-            lambda x: Option(
-                last_price, x.strike, rf, 0, dt, x.impliedVolatility, option_type
-            ).Delta(),
-            axis=1,
-        )
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            df["Gamma"] = df.apply(
-                lambda x: Option(
-                    last_price, x.strike, rf, 0, dt, x.impliedVolatility, option_type
-                ).Gamma(),
-                axis=1,
-            )
-            df["Theta"] = df.apply(
-                lambda x: Option(
-                    last_price, x.strike, rf, 0, dt, x.impliedVolatility, option_type
-                ).Theta(),
-                axis=1,
-            )
-    if len(df_list) == 1:
-        options_df = df_list[0]
-    if len(df_list) == 2:
-        options_df = pd.merge(
-            left=df_list[1],
-            right=df_list[0],
-            on="strike",
-            how="outer",
-            suffixes=["_call", "_put"],
-        )
-        # If min/max strike aren't provided, just get the middle 50% of strikes
-    if min_sp == -1:
-        min_strike = np.percentile(options_df["strike"], 25)
-    else:
-        min_strike = min_sp
-
-    if max_sp == -1:
-        max_strike = np.percentile(options_df["strike"], 75)
-    else:
-        max_strike = max_sp
-
-    options_df = options_df[
-        (options_df.strike >= min_strike) & (options_df.strike <= max_strike)
-    ]
-    return options_df
 
 
 @log_start_end(log=logger)
@@ -476,96 +359,6 @@ def get_binom(
         j += 1
 
     return up, prob_up, discount, und_vals, opt_vals, days
-
-
-@log_start_end(log=logger)
-def get_greeks(
-    symbol: str,
-    expire: str,
-    div_cont: float = 0,
-    rf: float = None,
-    opt_type: int = 1,
-    mini: float = None,
-    maxi: float = None,
-    show_all: bool = False,
-) -> pd.DataFrame:
-    """
-    Gets the greeks for a given option
-
-    Parameters
-    ----------
-    symbol: str
-        The ticker symbol value of the option
-    div_cont: float
-        The dividend continuous rate
-    expire: str
-        The date of expiration
-    rf: float
-        The risk-free rate
-    opt_type: Union[1, -1]
-        The option type 1 is for call and -1 is for put
-    mini: float
-        The minimum strike price to include in the table
-    maxi: float
-        The maximum strike price to include in the table
-    show_all: bool
-        Whether to show all greeks
-    """
-
-    s = get_price(symbol)
-    chains = get_option_chain(symbol, expire)
-    chain = chains.calls if opt_type == 1 else chains.puts
-
-    if mini is None:
-        mini = chain.strike.quantile(0.25)
-    if maxi is None:
-        maxi = chain.strike.quantile(0.75)
-
-    chain = chain[chain["strike"] >= mini]
-    chain = chain[chain["strike"] <= maxi]
-
-    risk_free = rf if rf is not None else get_rf()
-    expire_dt = datetime.strptime(expire, "%Y-%m-%d")
-    dif = (expire_dt - datetime.now() + timedelta(hours=16)).total_seconds() / (
-        60 * 60 * 24
-    )
-    strikes = []
-    for _, row in chain.iterrows():
-        vol = row["impliedVolatility"]
-        opt = Option(s, row["strike"], risk_free, div_cont, dif, vol, opt_type)
-        result = [
-            row["strike"],
-            row["impliedVolatility"],
-            opt.Delta(),
-            opt.Gamma(),
-            opt.Vega(),
-            opt.Theta(),
-        ]
-        if show_all:
-            result += [
-                opt.Rho(),
-                opt.Phi(),
-                opt.Charm(),
-                opt.Vanna(0.01),
-                opt.Vomma(0.01),
-            ]
-        strikes.append(result)
-
-    columns = [
-        "Strike",
-        "Implied Vol",
-        "Delta",
-        "Gamma",
-        "Vega",
-        "Theta",
-    ]
-    if show_all:
-        additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
-        columns += additional_columns
-
-    df = pd.DataFrame(strikes, columns=columns)
-
-    return df
 
 
 @log_start_end(log=logger)

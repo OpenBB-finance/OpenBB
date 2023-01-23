@@ -837,7 +837,7 @@ class OptionsController(BaseController):
             "-d",
             "--display",
             dest="to_display",
-            default=self.chain.columns if not self.chain.empty else [],
+            default=",".join(list(self.chain)) if not self.chain.empty else [],
             type=str,
             help="Columns to display",
         )
@@ -871,6 +871,7 @@ class OptionsController(BaseController):
                 if self.selected_date:
                     display_chains(
                         chain=self.chain,
+                        expire=self.selected_date,
                         calls_only=ns_parser.calls,
                         puts_only=ns_parser.puts,
                         min_sp=ns_parser.min_sp,

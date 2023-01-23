@@ -608,9 +608,9 @@ def show_greeks(
     expiry: str,
     div_cont: float = 0,
     rf: float = None,
-    opt_type: int = 1,
-    mini: float = None,
-    maxi: float = None,
+    opt_type: int = 0,
+    mini: float = -1,
+    maxi: float = -1,
     show_all: bool = False,
 ) -> None:
     """
@@ -636,8 +636,30 @@ def show_greeks(
         Whether to show all greeks
     """
 
-    df = yfinance_model.get_greeks(
-        symbol, expiry, div_cont, rf, opt_type, mini, maxi, show_all
+    current_price = get_price(symbol)
+    chain = get_option_chain(symbol, expiry)
+
+    min_strike, max_strike = op_helpers.get_strikes(
+        min_sp=mini, max_sp=maxi, current_price=current_price
+    )
+
+    for option in ["calls", "puts"]:
+        attr = getattr(chain, option)
+        attr = attr[attr["strike"] >= min_strike]
+        attr = attr[attr["strike"] <= max_strike]
+
+    chain.puts["optionType"] = "put"
+    chain.calls["optionType"] = "call"
+
+    df = op_helpers.get_greeks(
+        current_price=current_price,
+        expire=expiry,
+        calls=chain.calls,
+        puts=chain.puts,
+        div_cont=div_cont,
+        rf=rf,
+        opt_type=opt_type,
+        show_extra_greeks=show_all,
     )
 
     column_formatting = [

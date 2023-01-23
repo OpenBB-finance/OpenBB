@@ -1,7 +1,6 @@
 """Tradier options view"""
 __docformat__ = "numpy"
 
-import argparse
 import logging
 import os
 import warnings

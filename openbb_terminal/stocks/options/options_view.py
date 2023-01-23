@@ -9,35 +9,30 @@ import pandas as pd
 
 # IMPORTATION INTERNAL
 import openbb_terminal.config_plot as cfp
-from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
+    export_data,
 )
-from openbb_terminal.stocks.options.op_helpers import calculate_max_pain
+from openbb_terminal.stocks.options.op_helpers import (
+    calculate_max_pain,
+    get_strikes,
+    get_greeks,
+)
 
 logger = logging.getLogger(__name__)
 
 # pylint: disable=C0302,R0913
 
 
-def get_strikes(
-    min_sp: float, max_sp: float, current_price: float
-) -> Tuple[float, float]:
-    if min_sp == -1:
-        min_strike = 0.75 * current_price
-    else:
-        min_strike = min_sp
-
-    if max_sp == -1:
-        max_strike = 1.25 * current_price
-    else:
-        max_strike = max_sp
-
-    return min_strike, max_strike
+def get_calls_and_puts(chain: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    calls = chain[chain["optionType"] == "call"]
+    puts = chain[chain["optionType"] == "put"]
+    return calls, puts
 
 
 def get_max_pain(calls: pd.DataFrame, puts: pd.DataFrame) -> float:
@@ -125,8 +120,7 @@ def plot_vol(
             expiry="2023-07-21",
         )
     """
-    calls = chain[chain["optionType"] == "call"]
-    puts = chain[chain["optionType"] == "put"]
+    calls, puts = get_calls_and_puts(chain)
 
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
 
@@ -228,8 +222,7 @@ def plot_oi(
             expiry="2023-07-21",
         )
     """
-    calls = chain[chain["optionType"] == "call"]
-    puts = chain[chain["optionType"] == "put"]
+    calls, puts = get_calls_and_puts(chain)
 
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
     max_pain = get_max_pain(calls, puts)
@@ -327,8 +320,7 @@ def plot_voi(
             expiry="2023-07-21",
         )
     """
-    calls = chain[chain["optionType"] == "call"]
-    puts = chain[chain["optionType"] == "put"]
+    calls, puts = get_calls_and_puts(chain)
 
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
     max_pain = get_max_pain(calls, puts)
@@ -438,6 +430,7 @@ def display_expiry_dates(expiry_dates: list):
 @log_start_end(log=logger)
 def display_chains(
     chain: pd.DataFrame,
+    expire: str,
     current_price: float = 0,
     calls_only: bool = False,
     puts_only: bool = False,
@@ -452,6 +445,8 @@ def display_chains(
         Dataframe with options chain
     current_price: float
         Current price of selected symbol
+    expire: str
+        The date of expiration
     min_sp: float
         Min strike price
     max_sp: float
@@ -476,9 +471,20 @@ def display_chains(
 
     chain = chain[chain["strike"] >= min_strike]
     chain = chain[chain["strike"] <= max_strike]
+    calls, puts = get_calls_and_puts(chain)
 
-    calls = chain[chain["optionType"] == "call"]
-    puts = chain[chain["optionType"] == "put"]
+    df = get_greeks(
+        current_price=current_price,
+        calls=calls,
+        expire=expire,
+        puts=puts,
+        show_all=True,
+    )
+
+    # if the greeks calculation went with no problems, otherwise keep the previous
+    if not df.empty:
+        calls, puts = get_calls_and_puts(df)
+        console.print("Greeks calculated by OpenBB.")
 
     print_raw(calls, puts, "Option chain", calls_only, puts_only)
 
