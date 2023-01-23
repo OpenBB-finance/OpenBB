@@ -9,7 +9,7 @@ plot
 plot -pf a,b
 plot -ct a,b
 plot -pf a,b -ct c,d
-load --file 50_30_10_10_Portfolio.xlsx
+load --example
 show -pf a,b -ct c,d
 show -pf a
 show -ct c
