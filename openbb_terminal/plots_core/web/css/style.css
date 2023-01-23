@@ -1,11 +1,13 @@
-@font-face {
-    font-family: 'Arial Black';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Arial Black'), local('Arial-Black'), url(https://fonts.gstatic.com/l/font?kit=8AttGsyyIJeeQk-K7cT5V6nUqRo&skey=f5c444da86865f17&v=v18) format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
 
+/* local Fira Code font */
+@font-face {
+    font-family: 'Fira Code';
+    src: url('fonts/FiraCode-Regular.woff2') format('woff2'),
+        url('fonts/FiraCode-Regular.woff') format('woff'),
+        url('fonts/FiraCode-Regular.ttf') format('truetype');
+    font-weight: 400 700;
+    font-style: normal;
+}
 html {
     font-size: 62.5%;
     font-family: 'Fira Code', monospace, 'Arial Black';
