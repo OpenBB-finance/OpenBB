@@ -83,7 +83,6 @@ class PortfolioController(BaseController):
     CHOICES_MENUS = [
         "bro",
         "po",
-        "pa",
     ]
     VALID_DISTRIBUTIONS = ["laplace", "student_t", "logistic", "normal"]
     AGGREGATION_METRICS = ["assets", "sectors", "countries", "regions"]
