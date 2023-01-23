@@ -1,6 +1,6 @@
 portfolio
 po
-load
+load --example
 file
 maxsharpe -s 2022-10-20
 minrisk -r 0.05
@@ -23,7 +23,7 @@ plot -pf MAXSHARPE_0 -rc
 plot -pf MAXSHARPE_0 -he
 rpf NAME_6
 ..
-load
+load --example
 po
 equal
 maxsharpe -s 1995-05-07
