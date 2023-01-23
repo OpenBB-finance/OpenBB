@@ -1,4 +1,4 @@
-,Ticker,Company,Sector,Industry,Country,Market Cap,P_E,Price,Change,Volume
+,Ticker,Company,Sector,Industry,Country,Market Cap,P/E,Price,Change,Volume
 0,TKLF,"Yoshitsu Co., Ltd",Consumer Defensive,Household & Personal Products,Japan,76680000.0,10.39,2.13,0.127,1054351.0
 1,IQMDW,Intelligent Medicine Acquisition Corp.,Financial,Shell Companies,USA,,,0.27,-0.1439,11277.0
 2,MTAC,MedTech Acquisition Corporation,Financial,Shell Companies,USA,309990000.0,,9.34,-0.0043,64261.0

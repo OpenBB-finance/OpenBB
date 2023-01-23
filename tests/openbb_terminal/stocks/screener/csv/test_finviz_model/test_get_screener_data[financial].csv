@@ -1,4 +1,4 @@
-,Ticker,Market Cap,Dividend,ROA,ROE,ROI,Curr R,Quick R,LTDebt_Eq,Debt_Eq,Gross M,Oper M,Profit M,Earnings,Price,Change,Volume
+,Ticker,Market Cap,Dividend,ROA,ROE,ROI,Curr R,Quick R,LTDebt/Eq,Debt/Eq,Gross M,Oper M,Profit M,Earnings,Price,Change,Volume
 0,HUSA,84410000.0,,-0.33399999999999996,-0.349,-0.654,45.5,45.5,0.0,0.0,0.45399999999999996,,,-,11.3,4.9474,198275571.0
 1,IMPP,70120000.0,,,,0.524,0.1,0.1,,,0.062,-0.048,-0.20199999999999999,-,7.5,1.2189,220785747.0
 2,OEG,128470000.0,,-0.384,-0.833,-0.727,0.9,0.9,0.14,0.46,0.066,-0.782,-0.644,-,1.94,0.31079999999999997,9596784.0

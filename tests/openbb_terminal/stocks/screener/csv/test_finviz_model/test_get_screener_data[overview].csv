@@ -1,4 +1,4 @@
-,Ticker,Company,Sector,Industry,Country,Market Cap,P_E,Price,Change,Volume
+,Ticker,Company,Sector,Industry,Country,Market Cap,P/E,Price,Change,Volume
 0,HUSA,Houston American Energy Corp.,Energy,Oil & Gas E&P,USA,84410000.0,,11.3,4.9474,198275571.0
 1,IMPP,Imperial Petroleum Inc.,Energy,Oil & Gas E&P,Greece,70120000.0,,7.5,1.2189,220785747.0
 2,OEG,"Orbital Energy Group, Inc.",Utilities,Utilities - Diversified,USA,128470000.0,,1.94,0.31079999999999997,9596784.0
