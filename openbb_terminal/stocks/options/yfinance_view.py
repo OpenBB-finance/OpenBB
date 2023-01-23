@@ -608,7 +608,7 @@ def show_greeks(
     expiry: str,
     div_cont: float = 0,
     rf: float = None,
-    opt_type: int = 0,
+    opt_type: int = 1,
     mini: float = -1,
     maxi: float = -1,
     show_all: bool = False,
