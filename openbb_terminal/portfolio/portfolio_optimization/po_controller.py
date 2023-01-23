@@ -709,28 +709,28 @@ class PortfolioOptimizationController(BaseController):
             if ns_parser.file:
                 filename = " ".join(ns_parser.file)
 
-            if ns_parser.example:
-                file_location = (
-                    MISCELLANEOUS_DIRECTORY / "portfolio" / "allocation_example.xlsx"
-                )
-                filename = "OpenBB Example Portfolio"
-                console.print(
-                    "[green]Loading an example, please type `about` "
-                    "to learn how to create your own Portfolio Optimization Excel sheet.[/green]\n"
-                )
-                time.sleep(3)
-            elif filename in self.allocation_file_map:
-                file_location = self.allocation_file_map[filename]
-            else:
-                file_location = filename  # type: ignore
+                if ns_parser.example:
+                    file_location = (
+                        MISCELLANEOUS_DIRECTORY / "portfolio" / "allocation_example.xlsx"
+                    )
+                    filename = "OpenBB Example Portfolio"
+                    console.print(
+                        "[green]Loading an example, please type `about` "
+                        "to learn how to create your own Portfolio Optimization Excel sheet.[/green]\n"
+                    )
+                    time.sleep(3)
+                elif filename in self.allocation_file_map:
+                    file_location = self.allocation_file_map[filename]
+                else:
+                    file_location = filename  # type: ignore
 
-            self.tickers, self.categories = excel_model.load_allocation(file_location)
-            self.available_categories = list(self.categories.keys())
-            if "CURRENT_INVESTED_AMOUNT" in self.available_categories:
-                self.available_categories.remove("CURRENT_INVESTED_AMOUNT")
-            self.portfolios = dict()
-            self.update_runtime_choices()
-            self.current_portfolio = filename
+                self.tickers, self.categories = excel_model.load_allocation(file_location)
+                self.available_categories = list(self.categories.keys())
+                if "CURRENT_INVESTED_AMOUNT" in self.available_categories:
+                    self.available_categories.remove("CURRENT_INVESTED_AMOUNT")
+                self.portfolios = dict()
+                self.update_runtime_choices()
+                self.current_portfolio = filename
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
