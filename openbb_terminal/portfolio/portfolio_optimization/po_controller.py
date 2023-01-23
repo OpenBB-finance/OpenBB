@@ -706,20 +706,22 @@ class PortfolioOptimizationController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
+            filename = ""
             if ns_parser.file:
                 filename = " ".join(ns_parser.file)
+            elif ns_parser.example:
+                file_location = (
+                    MISCELLANEOUS_DIRECTORY / "portfolio" / "allocation_example.xlsx"
+                )
+                filename = "OpenBB Example Portfolio"
+                console.print(
+                    "[green]Loading an example, please type `about` "
+                    "to learn how to create your own Portfolio Optimization Excel sheet.[/green]\n"
+                )
+                time.sleep(3)
 
-                if ns_parser.example:
-                    file_location = (
-                        MISCELLANEOUS_DIRECTORY / "portfolio" / "allocation_example.xlsx"
-                    )
-                    filename = "OpenBB Example Portfolio"
-                    console.print(
-                        "[green]Loading an example, please type `about` "
-                        "to learn how to create your own Portfolio Optimization Excel sheet.[/green]\n"
-                    )
-                    time.sleep(3)
-                elif filename in self.allocation_file_map:
+            if filename:
+                if filename in self.allocation_file_map:
                     file_location = self.allocation_file_map[filename]
                 else:
                     file_location = filename  # type: ignore
