@@ -1,19 +1,20 @@
 en:
   _home_: Information, guides and support for the OpenBB Terminal
+  intro: introduction on the OpenBB Terminal
   about: discover the capabilities of the OpenBB Terminal (https://openbb.co/docs)
   support: pre-populate a support ticket for our team to evaluate
   survey: fill in our 2-minute survey so we better understand how we can improve the terminal
   update: attempt to update the terminal automatically (GitHub version)
-  exe: execute automated routine scripts (use 'exe --example' for an example)
+  wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
   news: display news articles based on term and data sources
-  settings: tune settings (export folder, timezone, language, plot size)
+  keys: set API keys and check their validity
   featflags: enable and disable feature flags
   sources: select your preferred data sources
-  keys: set API keys and check their validity
-  wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
-  record: record session to be converted into a .openbb routine
-  stop: stop session recording
-  intro: introduction on the OpenBB Terminal
+  settings: tune settings (export folder, timezone, language, plot size)
+  _scripts_: Record and execute your own .openbb routine scripts
+  record: start recording current session
+  stop: stop session recording and convert to .openbb routine
+  exe: execute .openbb routine scripts (use 'exe --example' for an example)
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
