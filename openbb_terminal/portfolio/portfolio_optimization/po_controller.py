@@ -713,7 +713,7 @@ class PortfolioOptimizationController(BaseController):
                     file_location = self.allocation_file_map[filename]
                 else:
                     file_location = filename  # type: ignore
-            else:
+            elif ns_parser.example:
                 file_location = (
                     MISCELLANEOUS_DIRECTORY / "portfolio" / "allocation_example.xlsx"
                 )
@@ -723,6 +723,9 @@ class PortfolioOptimizationController(BaseController):
                     "to learn how to create your own Portfolio Optimization Excel sheet.[/green]\n"
                 )
                 time.sleep(3)
+
+            if not filename:
+                return
 
             self.tickers, self.categories = excel_model.load_allocation(file_location)
             self.available_categories = list(self.categories.keys())
