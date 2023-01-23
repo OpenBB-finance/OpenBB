@@ -103,6 +103,8 @@ def display_income_statement(
         Shows percentage change, by default False
     plot: list
         List of row labels to plot
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -192,6 +194,8 @@ def display_balance_sheet(
         Shows percentage change, by default False
     plot: list
         List of row labels to plot
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -283,6 +287,8 @@ def display_cash_flow(
         Shows percentage change, by default False
     plot: list
         List of row labels to plot
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -366,6 +372,8 @@ def display_earnings(
         Number of events to show
     quarterly: bool
         Flag to show quarterly instead of annual
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """

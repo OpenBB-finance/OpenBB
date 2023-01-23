@@ -306,6 +306,8 @@ def display_price_supply(
         Cryptocurrency symbol (e.g. BTC)
     to_symbol: str
         Quoted currency
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx
 
@@ -345,6 +347,8 @@ def display_basic(
     ----------
     symbol: str
         Cryptocurrency symbol (e.g. BTC)
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx
     """

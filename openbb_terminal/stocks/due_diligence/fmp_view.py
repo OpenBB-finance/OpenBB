@@ -30,6 +30,8 @@ def rating(symbol: str, limit: int = 10, export: str = "", sheet_name: str = "")
         Stock ticker symbol
     limit: int
         Number of last days ratings to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     """

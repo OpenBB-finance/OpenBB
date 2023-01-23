@@ -38,6 +38,8 @@ def show_options(
         The loaded in datasets
     dataset_name: str
         The name of the dataset you wish to show options for
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export image
     """
@@ -78,6 +80,8 @@ def display_plot(
     ----------
     data: Union[pd.Series, pd.DataFrame, Dict[str: pd.DataFrame]
         Dictionary with key being dataset.column and dataframes being values
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export image
     external_axes:Optional[List[plt.axes]]
@@ -151,6 +155,8 @@ def display_norm(
         Column for y data
     plot : bool
         Whether you wish to plot a histogram
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data.
     external_axes: Optional[List[plt.axes]]
@@ -223,6 +229,8 @@ def display_root(
         Type of regression of ADF test. Choose c, ct, ctt, or nc
     kpss_reg : str
         Type of regression for KPSS test. Choose c or ct
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data.
     """

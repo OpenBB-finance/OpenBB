@@ -119,6 +119,8 @@ def display_spectrum(group: str = "sector", export: str = "", sheet_name: str = 
     ----------
     group: str
         Group by category. Available groups can be accessed through get_groups().
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """

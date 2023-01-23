@@ -54,6 +54,8 @@ def fails_to_deliver(
         Number of latest fails-to-deliver being printed
     raw: bool
         Print raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional

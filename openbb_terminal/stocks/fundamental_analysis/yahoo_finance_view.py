@@ -61,6 +61,8 @@ def display_info(symbol: str, export: str = "", sheet_name: str = ""):
     ----------
     symbol : str
         Fundamental analysis ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -106,6 +108,8 @@ def display_shareholders(
         Fundamental analysis ticker symbol
     holder: str
         Shareholder table to get.  Can be major/institutional/mutualfund
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -141,6 +145,8 @@ def display_sustainability(symbol: str, export: str = "", sheet_name: str = ""):
     ----------
     symbol : str
         Fundamental analysis ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -180,6 +186,8 @@ def display_calendar_earnings(symbol: str, export: str = "", sheet_name: str = "
     ----------
     symbol : str
         Fundamental analysis ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -222,6 +230,8 @@ def display_dividends(
         Number to show
     plot: bool
         Plots historical data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -299,6 +309,8 @@ def display_splits(
     ----------
     symbol: str
         Stock ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -386,6 +398,8 @@ def display_mktcap(
         Stock ticker symbol
     start_date: Optional[str]
         Initial date (e.g., 2021-10-01). Defaults to 3 years back
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -452,6 +466,8 @@ def display_fundamentals(
         Shows percentage change
     plot: list
         List of row labels to plot
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -545,6 +561,8 @@ def display_earnings(symbol: str, limit: int, export: str = "", sheet_name: str 
         Stock ticker symbol
     limit: int
         Number of periods to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
 

@@ -183,6 +183,8 @@ def display_chains(
         Only display calls
     puts_only: bool
         Only display puts
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to  export file
     """
@@ -282,6 +284,8 @@ def plot_oi(
         Show calls only
     puts_only: bool
         Show puts only
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export file
     external_axes : Optional[List[plt.Axes]], optional
@@ -375,6 +379,8 @@ def plot_vol(
         Show calls only
     puts_only: bool
         Show puts only
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export file
     external_axes : Optional[List[plt.Axes]], optional
@@ -466,6 +472,8 @@ def plot_volume_open_interest(
         Max strike price
     min_vol: float
         Min volume to consider
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format for exporting data
     external_axes : Optional[List[plt.Axes]], optional
@@ -664,6 +672,8 @@ def display_historical(
         Print raw data
     chain_id: str
         OCC option symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format of export file
     external_axes : Optional[List[plt.Axes]], optional

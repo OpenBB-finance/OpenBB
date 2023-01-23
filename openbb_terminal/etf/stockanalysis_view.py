@@ -57,6 +57,8 @@ def view_holdings(symbol: str, limit: int = 10, export: str = "", sheet_name: st
         ETF symbol to show holdings for
     limit: int
         Number of holdings to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -86,6 +88,8 @@ def view_comparisons(symbols: List[str], export: str = "", sheet_name: str = "")
     ----------
     symbols: List[str]
         List of ETF symbols
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -125,6 +129,8 @@ def display_etf_by_name(
         String being matched
     limit: int
         Limit of ETFs to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export to given file type
 

@@ -48,6 +48,8 @@ def display_crypto_heatmap(
         Category (e.g., stablecoins). Empty for no category (default: )
     limit: int
         Number of top cryptocurrencies to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx
     external_axes : Optional[List[plt.Axes]], optional
@@ -149,6 +151,8 @@ def display_holdings_overview(
         Cryptocurrency: ethereum or bitcoin
     show_bar : bool
         Whether to show a bar graph for the data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx
     limit: int
@@ -448,6 +452,8 @@ def display_categories(
         Key by which to sort data
     limit: int
         Number of records to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     pie: bool

@@ -45,6 +45,8 @@ def show_options(
         The loaded in datasets
     dataset_name: str
         The name of the dataset you wish to show options for
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export image
     """
@@ -87,6 +89,8 @@ def display_plot(
         The dataframe to plot
     columns: List[str]
         The columns to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export image
     external_axes:Optional[List[plt.axes]]
@@ -139,6 +143,8 @@ def display_seasonality(
         The dataframe to plot
     column: str
         The column of the dataframe to analyze
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export image
     m: Optional[int]
@@ -189,6 +195,8 @@ def display_corr(
     ----------
     dataset : pd.DataFrame
         The dataset fore calculating correlation coefficients
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export image
     external_axes:Optional[List[plt.axes]]

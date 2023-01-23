@@ -60,6 +60,8 @@ def display_linear_regression(
         The length of the forecast of the model. Defaults to 1.
     lags: Union[int, List[int]]
         lagged target values to predict the next time step
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     residuals: bool

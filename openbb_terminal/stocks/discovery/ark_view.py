@@ -56,6 +56,8 @@ def ark_orders_view(
         Flag to sort on sells only
     fund: str
         Optional filter by fund
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     """

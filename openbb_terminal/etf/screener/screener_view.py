@@ -35,6 +35,8 @@ def view_screener(
         Column to sort by
     ascend: bool
         Ascend when sorted
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Output format of export
 

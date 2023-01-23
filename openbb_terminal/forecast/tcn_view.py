@@ -90,6 +90,8 @@ def display_tcn_forecast(
         (all checkpoints will be discarded). Defaults to True.
     save_checkpoints: bool
         Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     residuals: bool

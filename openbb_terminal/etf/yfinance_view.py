@@ -42,6 +42,8 @@ def display_etf_weightings(
         Display sector weighting allocation
     min_pct_to_display: float
         Minimum percentage to display sector
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     external_axes : Optional[List[plt.Axes]], optional

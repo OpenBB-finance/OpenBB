@@ -971,6 +971,8 @@ def display_line(
         List of dates to highlight using vertical lines
     markers_scatter: Optional[List[datetime]]
         List of dates to highlight using scatter
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional

@@ -116,6 +116,8 @@ def print_insider_data(
         Insider type of data. Available types can be accessed through get_insider_types().
     limit: int
         Limit of data rows to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export data format
     """

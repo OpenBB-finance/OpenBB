@@ -43,6 +43,8 @@ def display_ad(
         Whether to use open prices in calculation
     symbol : str
         Ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data as
     external_axes : Optional[List[plt.Axes]], optional
@@ -265,6 +267,8 @@ def display_obv(
         Dataframe of ohlc prices
     symbol : str
         Ticker
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data as
     external_axes : Optional[List[plt.Axes]], optional

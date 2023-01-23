@@ -46,6 +46,8 @@ def display_oi(
         Max strike to consider
     raw: bool
         Flag to display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export file
     external_axes : Optional[List[plt.Axes]], optional
@@ -138,6 +140,8 @@ def display_volume(
         Max strike to consider
     raw:bool
         Flag to display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export file
     external_axes : Optional[List[plt.Axes]], optional
@@ -230,6 +234,8 @@ def display_volume_and_oi(
         Max strike to consider
     raw:bool
         Flag to display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export file
     external_axes : Optional[List[plt.Axes]], optional
@@ -325,6 +331,8 @@ def display_chains(symbol: str, expiry: str, export: str = "", sheet_name: str =
         Ticker symbol
     expiry: str
         Expiry date for options
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """

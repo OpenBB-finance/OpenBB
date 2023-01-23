@@ -59,6 +59,8 @@ def insider_activity(
         Number of latest days of inside activity
     raw: bool
         Print to console
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional

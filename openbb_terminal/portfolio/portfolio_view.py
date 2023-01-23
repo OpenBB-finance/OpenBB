@@ -748,6 +748,8 @@ def display_holdings_value(
         To display raw data
     limit : int
         Number of past market days to display holdings
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export plot
     external_axes: plt.Axes
@@ -829,6 +831,8 @@ def display_holdings_percentage(
         To display raw data
     limit : int
         Number of past market days to display holdings
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export plot
     external_axes: plt.Axes
@@ -908,6 +912,8 @@ def display_rolling_volatility(
         PortfolioEngine object
     interval: str
         interval for window to consider
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export to file
     external_axes: Optional[List[plt.Axes]]
@@ -969,6 +975,8 @@ def display_rolling_sharpe(
         Value to use for risk free rate in sharpe/other calculations
     window: str
         interval for window to consider
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export to file
     external_axes: Optional[List[plt.Axes]]
@@ -1030,6 +1038,8 @@ def display_rolling_sortino(
         Value to use for risk free rate in sharpe/other calculations
     window: str
         interval for window to consider
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export to file
     external_axes: Optional[List[plt.Axes]]
@@ -1089,6 +1099,8 @@ def display_rolling_beta(
     window: str
         interval for window to consider
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export to file
     external_axes: Optional[List[plt.Axes]]
@@ -1148,6 +1160,8 @@ def display_maximum_drawdown(
     ----------
     portfolio : PortfolioEngine
         PortfolioEngine object
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: plt.Axes

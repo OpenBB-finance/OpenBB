@@ -35,6 +35,8 @@ def display_options(
         Flag to only show calls
     puts_only : bool
         Flag to show puts only
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         File type to export
     """

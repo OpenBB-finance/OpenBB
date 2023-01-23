@@ -156,6 +156,8 @@ def display_historical(
         Dataframe containing historical data
     name: str
         Fund symbol or name
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes:Optional[List[plt.Axes]]:

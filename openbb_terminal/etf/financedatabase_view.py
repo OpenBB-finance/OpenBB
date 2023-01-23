@@ -29,6 +29,8 @@ def display_etf_by_name(
         Search by name to find ETFs matching the criteria.
     limit: int
         Limit of ETFs to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """
@@ -75,6 +77,8 @@ def display_etf_by_description(
         Search by description to find ETFs matching the criteria.
     limit: int
         Limit of ETFs to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """
@@ -121,6 +125,8 @@ def display_etf_by_category(
         Search by description to find ETFs matching the criteria.
     limit: int
         Limit of ETFs to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """

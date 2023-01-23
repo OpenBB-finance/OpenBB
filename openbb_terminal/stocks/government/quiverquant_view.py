@@ -46,6 +46,8 @@ def display_last_government(
         Number of days to look back
     representative: str
         Specific representative to look at
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -102,6 +104,8 @@ def display_government_buys(
         Number of tickers to show
     raw: bool
         Display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -181,6 +185,8 @@ def display_government_sells(
         Number of tickers to show
     raw: bool
         Display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -259,6 +265,8 @@ def display_last_contracts(
         Number of contracts to show
     sum_contracts: bool
         Flag to show total amount of contracts given out.
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -375,6 +383,8 @@ def display_government_trading(
         Number of months to get transactions for
     raw: bool
         Show raw output of trades
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -428,6 +438,8 @@ def display_contracts(
         Number of days to get transactions for
     raw: bool
         Flag to display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -499,6 +511,8 @@ def display_qtr_contracts(
         Number to show
     raw: bool
         Flag to display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -602,6 +616,8 @@ def display_hist_contracts(
         Ticker symbol to get congress trading data from
     raw: bool
         Flag to display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional

@@ -21,6 +21,8 @@ def display_stories(limit: int = 10, export: str = "", sheet_name: str = "") -> 
     ----------
     limit: int
         Number of stories to return
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     """

@@ -108,6 +108,8 @@ def display_floor_price(
         Flag to display raw data
     limit: int
         Number of raw data to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional

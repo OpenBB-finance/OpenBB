@@ -25,6 +25,8 @@ def display_forward_rates(
         To currency
     from_symbol: str
         From currency
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """

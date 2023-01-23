@@ -59,6 +59,8 @@ def display_historical(
     limit: int
         Number of results display on the terminal
         Default: 10
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
@@ -175,6 +177,8 @@ def display_trending(
     limit: int
         Number of results display on the terminal
         Default: 10
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """

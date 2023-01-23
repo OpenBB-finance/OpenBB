@@ -37,6 +37,8 @@ def display_stock_price_headlines_sentiment(
     ----------
     symbol : str
         Ticker of company
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional

@@ -147,6 +147,8 @@ def export_yf_options(export: str, options, file_name: str, sheet_name: str = ""
 
     Parameters
     ----------
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export file
     options: Options

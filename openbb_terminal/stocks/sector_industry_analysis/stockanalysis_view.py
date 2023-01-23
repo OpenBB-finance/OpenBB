@@ -74,6 +74,8 @@ def display_plots_financials(
         Choose in what currency you wish to convert each company's financial statement. Default is USD (US Dollars).
     limit: int
         Limit amount of companies displayed (default is 10)
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data as
     raw: bool

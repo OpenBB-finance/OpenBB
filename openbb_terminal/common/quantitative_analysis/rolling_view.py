@@ -44,6 +44,8 @@ def display_mean_std(
         Stock ticker
     window : int
         Length of window
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
@@ -157,6 +159,8 @@ def display_spread(
         Stock ticker
     window : int
         Length of window
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
@@ -270,6 +274,8 @@ def display_quantile(
         Length of window
     quantile: float
         Quantile to get
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
@@ -365,6 +371,8 @@ def display_skew(
         Column in data to look at
     window: int
         Length of window
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
@@ -450,6 +458,8 @@ def display_kurtosis(
         Column in data to look at
     window: int
         Length of window
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional

@@ -225,6 +225,8 @@ def view_kc(
         Offset value
     symbol: str
         Ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional

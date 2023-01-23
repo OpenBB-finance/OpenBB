@@ -55,6 +55,8 @@ def view_ma(
         Type of moving average.  Either "EMA" "ZLMA" or "SMA"
     symbol: str
         Ticker
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional

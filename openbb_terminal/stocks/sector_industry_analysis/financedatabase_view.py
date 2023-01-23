@@ -62,6 +62,8 @@ def display_bars_financials(
         When you wish to include different exchanges use this boolean.
     limit: int
         Limit amount of companies displayed
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data as
     raw: bool
@@ -258,6 +260,8 @@ def display_companies_per_sector_in_country(
         Select market cap of companies to consider from Small, Mid and Large
     exclude_exchanges : bool
         Exclude international exchanges
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data as
     raw: bool
@@ -398,6 +402,8 @@ def display_companies_per_industry_in_country(
         Select market cap of companies to consider from Small, Mid and Large
     exclude_exchanges : bool
         Exclude international exchanges
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data as
     raw: bool
@@ -549,6 +555,8 @@ def display_companies_per_industry_in_sector(
         Select market cap of companies to consider from Small, Mid and Large
     exclude_exchanges : bool
         Exclude international exchanges
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data as
     raw: bool
@@ -701,6 +709,8 @@ def display_companies_per_country_in_sector(
         Select market cap of companies to consider from Small, Mid and Large
     exclude_exchanges : bool
         Exclude international exchanges
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data as
     raw: bool
@@ -846,6 +856,8 @@ def display_companies_per_country_in_industry(
         Select market cap of companies to consider from Small, Mid and Large
     exclude_exchanges : bool
         Exclude international exchanges
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data as
     raw: bool

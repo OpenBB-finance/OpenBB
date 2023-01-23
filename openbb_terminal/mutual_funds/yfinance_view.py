@@ -35,6 +35,8 @@ def display_sector(
         Fund symbol
     min_pct_to_display: float
         Minimum percentage to display sector
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """

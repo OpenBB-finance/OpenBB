@@ -436,6 +436,8 @@ def display_redditsent(
         Comma-separated list of subreddits
     display: bool
         Enable printing of raw sentiment values for each post
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]]

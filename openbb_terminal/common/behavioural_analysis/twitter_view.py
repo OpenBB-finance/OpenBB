@@ -37,6 +37,8 @@ def display_inference(
         Stock ticker symbol
     limit: int
         Number of tweets to analyze
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export tweet dataframe
     """
@@ -105,6 +107,8 @@ def display_sentiment(
         Number of days to extract tweets for
     compare: bool
         Show corresponding change in stock price
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export tweet dataframe
     external_axes: Optional[List[plt.Axes]], optional

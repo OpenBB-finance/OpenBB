@@ -71,6 +71,8 @@ def view_screener_output(
         Chosen preset
     limit: int
         Number of randomly sorted rows to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format for export file
 
@@ -139,6 +141,8 @@ def view_historical_greeks(
         Print to console
     limit: int
         Number of rows to show in raw
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional

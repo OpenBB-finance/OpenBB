@@ -53,6 +53,8 @@ def price_target_from_analysts(
         Number of latest price targets from analysts to print
     raw: bool
         Display raw data only
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional

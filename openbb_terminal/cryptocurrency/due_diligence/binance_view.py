@@ -40,6 +40,8 @@ def display_order_book(
         Limit parameter. Adjusts the weight
     to_symbol: str
         Quote currency (what to view coin vs)
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx
     external_axes : Optional[List[plt.Axes]]
@@ -74,6 +76,8 @@ def display_balance(
         Cryptocurrency
     to_symbol: str
         Cryptocurrency
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx
     """

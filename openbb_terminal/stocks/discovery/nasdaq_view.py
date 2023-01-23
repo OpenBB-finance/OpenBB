@@ -75,6 +75,8 @@ def display_dividend_calendar(
         Flag to sort in ascending order
     limit: int
         Number of results to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """

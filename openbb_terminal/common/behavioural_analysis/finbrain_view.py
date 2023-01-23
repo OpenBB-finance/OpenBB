@@ -48,6 +48,8 @@ def display_sentiment_analysis(
         Ticker symbol to get the sentiment analysis from
     raw: False
         Display raw table data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional

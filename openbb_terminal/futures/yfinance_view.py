@@ -42,6 +42,8 @@ def display_search(
         Select the exchange where the future exists
     description: str
         Select the description of the future
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """
@@ -87,6 +89,8 @@ def display_historical(
         End date of the historical data with format YYYY-MM-DD
     raw: bool
         Display futures timeseries in raw format
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -232,6 +236,8 @@ def display_curve(
         Curve future symbol to display
     raw: bool
         Display futures timeseries in raw format
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     external_axes : Optional[List[plt.Axes]], optional

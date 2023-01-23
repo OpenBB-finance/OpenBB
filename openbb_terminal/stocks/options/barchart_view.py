@@ -19,6 +19,8 @@ def print_options_data(symbol: str, export: str = "", sheet_name: str = ""):
     ----------
     symbol: str
         Ticker symbol to get options info for
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format of export file
     """

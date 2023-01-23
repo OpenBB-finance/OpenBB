@@ -43,6 +43,8 @@ def display_luna_circ_supply_change(
         Number of days
     supply_type: str
         Supply type to unpack json
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export type
     limit: int

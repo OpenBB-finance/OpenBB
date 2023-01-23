@@ -141,6 +141,8 @@ def display_aroon(
         Ticker
     scalar: int
         Scalar variable
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional

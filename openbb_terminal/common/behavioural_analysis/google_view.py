@@ -38,6 +38,8 @@ def display_mentions(
         Ticker symbol
     start_date : str
         Start date as YYYY-MM-DD string
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -108,6 +110,8 @@ def display_correlation_interest(
         Data dataframe
     words : List[str]
         Words to check for interest for
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -178,6 +182,8 @@ def display_regions(
         Ticker symbol
     limit: int
         Number of regions to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -231,6 +237,8 @@ def display_queries(
         Ticker symbol
     limit: int
         Number of regions to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
         {"csv","json","xlsx","png","jpg","pdf","svg"}
@@ -266,6 +274,8 @@ def display_rise(symbol: str, limit: int = 10, export: str = "", sheet_name: str
         Ticker symbol
     limit: int
         Number of queries to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """

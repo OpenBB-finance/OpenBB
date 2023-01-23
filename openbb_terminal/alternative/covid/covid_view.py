@@ -146,6 +146,8 @@ def display_covid_ov(
         Flag to display raw data
     limit: int
         Number of raw data to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     plot: bool
@@ -197,6 +199,8 @@ def display_covid_stat(
         Flag to display raw data
     limit: int
         Number of raw data to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     plot : bool

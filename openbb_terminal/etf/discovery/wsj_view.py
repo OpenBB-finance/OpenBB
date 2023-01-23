@@ -25,6 +25,8 @@ def show_top_mover(
         What to show. Either Gainers, Decliners or Activity
     limit: int
         Number of etfs to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
