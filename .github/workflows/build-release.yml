@@ -12,8 +12,6 @@ on:
   push:
     branches:
       - release/*
-  pull_request:
-    branches:
       - main
 
 concurrency:
@@ -55,4 +53,3 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: docker.yml
-  
