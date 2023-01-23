@@ -191,7 +191,9 @@ from openbb_terminal.stocks.dark_pool_shorts import yahoofinance_model
 logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
-def display_most_shorted(limit: int = 10, export: str = ""):
+def display_most_shorted(limit: int = 10, export: str = "",
+sheet_name: str = "",
+sheet_name: str = "",):
     """Display most shorted stocks screener. [Source: Yahoo Finance]
 
     Parameters
@@ -217,6 +219,7 @@ def display_most_shorted(limit: int = 10, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "shorted",
         df,
+        sheet_name
     )
 
 ```
@@ -284,6 +287,7 @@ def call_shorted(self, other_args: List[str]):
           yahoofinance_view.display_most_shorted(
               num_stocks=ns_parser.num,
               export=ns_parser.export,
+              sheet_name=ns_parser.sheet_name,
           )
 ```
 
@@ -567,7 +571,9 @@ With:
       top: int = 10,
       sortby: str = "timestamp",
       descend: bool = False,
-      export: str = "",) -> None:
+      export: str = "",
+sheet_name: str = "",
+sheet_name: str = "",,) -> None:
     ```
 
     </td>
@@ -858,7 +864,8 @@ def display_data(..., plot: bool = False, ...):
 Format to export data : `export` *(str), e.g. csv, json, xlsx*
 
 ```python
-def display_data(..., export: str = "", ...):
+def display_data(..., export: str = "",
+sheet_name: str = "", ...):
     ...
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "func", data)
 ```
@@ -1315,6 +1322,7 @@ In the `_view.py` files it is common having at the end of each function `export_
         os.path.dirname(os.path.abspath(__file__)),
         "contracts",
         df_contracts
+        sheet_name
     )
 ```
 
