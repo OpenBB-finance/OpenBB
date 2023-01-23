@@ -58,9 +58,7 @@ PORTFOLIO_HOLDINGS_FILES.update(
     {
         filepath.name: filepath
         for file_type in ["xlsx", "csv"]
-        for filepath in (
-            MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "holdings"
-        ).rglob(f"*.{file_type}")
+        for filepath in (MISCELLANEOUS_DIRECTORY / "portfolio").rglob(f"*.{file_type}")
     }
 )
 
