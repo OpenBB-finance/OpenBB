@@ -12,7 +12,7 @@ Last Insiders:
     lip                latest insider purchases                    [OpenInsider]
     blip               big latest insider purchases ($25k+)        [OpenInsider]
     blop               big latest officer purchases ($25k+)        [OpenInsider]
-    bclp               big latest CEO/CFO purchases ($25k+)
+    blcp               big latest CEO/CFO purchases ($25k+)        [OpenInsider]
     lis                latest insider sales                        [OpenInsider]
     blis               big latest insider sales ($100k+)           [OpenInsider]
     blos               big latest officer sales ($100k+)           [OpenInsider]

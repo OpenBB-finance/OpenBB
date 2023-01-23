@@ -1,6 +1,18 @@
-Loading Daily data for TSLA with starting period 2019-11-19.
+Loading Daily data for TSLA with starting period 2020-01-09.
                                    Company Rating  Price Target
 Date                                                           
+2023-01-05                          Mizuho    BUY    250.000000
+2023-01-03                   Goldman Sachs    BUY    205.000000
+2022-12-29                  Morgan Stanley    BUY    250.000000
+2022-12-28              Baird Patrick & Co    BUY    252.000000
+2022-12-23  Wedbush Morgan Securities Inc.    BUY    175.000000
+2022-12-22                Capital Depesche    BUY    275.000000
+2022-12-21                   Deutsche Bank    BUY    270.000000
+2022-12-20                        Evercore   HOLD    200.000000
+2022-12-20                          Mizuho    BUY    285.000000
+2022-12-20                Daiwa Securities    BUY    177.000000
+2022-12-14                   Goldman Sachs    BUY    235.000000
+2022-11-23                 Citigroup Corp.   HOLD    176.000000
 2022-10-25                  Morgan Stanley    BUY    330.000000
 2022-10-20                          Mizuho    BUY    330.000000
 2022-10-20             RBC Capital Markets    BUY    325.000000
@@ -19,11 +31,11 @@ Date
 2022-08-25  Wedbush Morgan Securities Inc.    BUY    360.000000
 2022-08-02                 Citigroup Corp.   SELL    424.000000
 2022-07-21          Cowen and Company, LLC   HOLD    733.000000
-2022-07-21                          Mizuho    BUY   1175.000000
-2022-07-21                       Berenberg   HOLD    850.000000
 2022-07-21   Bank of America Merrill Lynch   HOLD    950.000000
 2022-07-21                Wells Fargo & Co   HOLD    830.000000
 2022-07-21                Capital Depesche    BUY    815.000000
+2022-07-21                       Berenberg   HOLD    850.000000
+2022-07-21                          Mizuho    BUY   1175.000000
 2022-07-19                   Credit Suisse    BUY   1000.000000
 2022-07-18                Barclays Capital   SELL    380.000000
 2022-07-14                  Morgan Stanley    BUY   1150.000000
@@ -68,33 +80,20 @@ Date
 2021-11-19  Wedbush Morgan Securities Inc.    BUY   1400.000000
 2021-10-28                   Piper Sandler    BUY   1300.000000
 2021-10-27                   Goldman Sachs    BUY   1125.000000
-2021-10-21                Wells Fargo & Co   HOLD    860.000000
-2021-10-21                Capital Depesche    BUY   1040.000000
 2021-10-21  Wedbush Morgan Securities Inc.    BUY   1100.000000
+2021-10-21                Wells Fargo & Co   HOLD    860.000000
 2021-10-21                   Credit Suisse   HOLD    830.000000
+2021-10-21                Capital Depesche    BUY   1040.000000
 2021-10-21      ROTH Capital Partners, LLC   HOLD    250.000000
 2021-10-21                          Mizuho    BUY    950.000000
 2021-10-14                Barclays Capital   SELL    300.000000
 2021-10-08                Capital Depesche    BUY    940.000000
 2021-09-23                 Tudor Pickering   SELL    537.000000
+2021-07-27                Capital Depesche    BUY    768.000000
 2021-07-27                          Mizuho    BUY    825.000000
 2021-07-27                Wells Fargo & Co   HOLD    660.000000
 2021-07-27                   Goldman Sachs    BUY    875.000000
-2021-07-27                Capital Depesche    BUY    768.000000
 2021-07-07                     J.P. Morgan   SELL    160.000000
 2021-06-29                             UBS   HOLD    660.000000
 2021-06-14                Capital Depesche    BUY    812.000000
 2021-05-24                Wells Fargo & Co   HOLD    590.000000
-2021-04-27                   Goldman Sachs    BUY    860.000000
-2021-04-27                   Credit Suisse   HOLD    800.000000
-2021-04-27                Capital Depesche    BUY    974.000000
-2021-04-23                  Morgan Stanley    BUY    900.000000
-2021-04-20                          Mizuho    BUY    820.000000
-2021-04-12                Capital Depesche    BUY   1071.000000
-2021-04-05                     J.P. Morgan   SELL    155.000000
-2021-04-05  Wedbush Morgan Securities Inc.    BUY   1000.000000
-2021-03-11                          Mizuho    BUY    775.000000
-2021-03-09                      New Street    BUY    900.000000
-2021-02-02                  Morgan Stanley    BUY    880.000000
-2021-02-01                   Piper Sandler    BUY   1200.000000
-2021-01-28                   Deutsche Bank    BUY    900.000000

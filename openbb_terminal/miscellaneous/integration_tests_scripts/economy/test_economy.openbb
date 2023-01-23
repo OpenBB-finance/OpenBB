@@ -1,0 +1,87 @@
+economy
+overview
+overview -t indices
+overview -t usbonds
+overview -t glbonds
+overview -t currencies
+futures
+futures -c energy --source Finviz
+futures -c metals --source Finviz
+futures -c meats --source Finviz
+futures -c grains --source Finviz
+futures -c softs --source Finviz
+futures -c energy
+futures -c metals
+futures -c meats
+futures -c grains
+futures -c softs
+futures -c energy -s ticker --reverse --source Finviz
+map
+map -p 1w -t world
+bigmac
+bigmac -c USA,ESP,LVA,DEU,FRA,FIN
+ycrv
+ycrv --source FRED --date 2022-10-03 --raw
+ycrv -c united_states --source Investing
+events
+events --country united_states -s 2022-07-07 -e 2022-07-08
+events -c spain,canada
+events -n
+edebt --limit 10
+spread
+spread --group PIIGS --color binary
+spread --countries portugal,spain,italy,united states --maturity 5Y --change=True --color openbb
+rtps
+valuation
+valuation --group sector --sortby MarketCap --reverse
+performance
+performance -g basic_materials -s Month -a
+spectrum
+spectrum --group consumer_defensive
+macro
+macro -p RGDP,CPI
+macro -p URATE -c Netherlands,Germany
+macro -p URATE -c United_States  --start 2008-01-01
+macro -p GDP --countries Portugal,France,United_Kingdom,Spain,Italy,Poland --start 2000-01-10
+treasury
+treasury --maturity 20y --type nominal
+treasury --raw
+treasury --type inflation --start 2020-01-01 --limit 10
+fred T10Y2Y,DFII10 -s 2019-01-01 -e 2022-01-01
+fred -q treasury
+fred -p T10Y2Y,FII10 -s 2005-01-01
+fred T5YIEM,T10YIEM,T20YIEM,T30YIEM
+index -i nasdaq,dowjones,sp500 -s 2005-01-01
+macro -p URATE -c Netherlands,Germany -s 2005-01-01
+index -i sp500 -s 2005-01-01
+plot --y1 T10Y2Y --y2 T5YIEM
+plot --y1 T10Y2Y,T20YIEM
+rtps
+valuation
+performance
+spectrum
+fred DGS2,DGS5
+eval spread = DGS2 - DGS5
+qa
+summary
+normality
+unitroot --fuller_reg c --kps_reg ct
+line
+line --log
+hist
+hist -b 10
+cdf
+bw
+bw --yearly
+acf --lags 5
+qqplot
+rolling
+rolling -w 5
+spread -w 10
+quantile --window 5 --quantile 0.01
+skew --window 5
+kurtosis --window 9
+raw --limit 2 --reverse
+cusum --threshold 10 --drift 10
+decompose
+exit

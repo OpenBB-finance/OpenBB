@@ -45,6 +45,7 @@ from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     USER_ENV_FILE,
     USER_EXPORTS_DIRECTORY,
+    load_dotenv_with_priority,
 )
 from openbb_terminal.core.config import paths
 
@@ -1121,7 +1122,7 @@ def get_flair() -> str:
 
 def set_default_timezone() -> None:
     """Set a default (America/New_York) timezone if one doesn't exist."""
-    dotenv.load_dotenv(USER_ENV_FILE)
+    load_dotenv_with_priority()
     user_tz = os.getenv("OPENBB_TIMEZONE")
     if not user_tz:
         dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", "America/New_York")
@@ -1151,7 +1152,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on .env file
     """
-    dotenv.load_dotenv(USER_ENV_FILE)
+    load_dotenv_with_priority()
     user_tz = os.getenv("OPENBB_TIMEZONE")
     if user_tz:
         return user_tz
@@ -1879,3 +1880,29 @@ def str_date_to_timestamp(date: str) -> int:
     )
 
     return date_ts
+
+
+def check_start_less_than_end(start_date: str, end_date: str) -> bool:
+    """Check if start_date is equal to end_date.
+
+    Parameters
+    ----------
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
+
+    Returns
+    -------
+    bool
+        True if start_date is not equal to end_date, False otherwise
+    """
+    if start_date is None or end_date is None:
+        return False
+    if start_date == end_date:
+        console.print("[red]Start date and end date cannot be the same.[/red]")
+        return True
+    if start_date > end_date:
+        console.print("[red]Start date cannot be greater than end date.[/red]")
+        return True
+    return False

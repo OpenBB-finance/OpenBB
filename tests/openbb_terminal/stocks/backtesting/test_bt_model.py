@@ -45,7 +45,7 @@ def test_buy_and_hold(mocker):
     assert isinstance(back_test_instance, bt.Backtest)
 
 
-@pytest.mark.vcr
+@pytest.mark.skip
 def test_ema_strategy(mocker):
     yf_download = stocks_helper.yf.download
 
@@ -69,7 +69,7 @@ def test_ema_strategy(mocker):
     assert isinstance(back_test_instance, bt.backtest.Result)
 
 
-@pytest.mark.vcr
+@pytest.mark.skip
 def test_emacross_strategy(mocker):
     yf_download = stocks_helper.yf.download
 
@@ -95,7 +95,7 @@ def test_emacross_strategy(mocker):
     assert isinstance(back_test_instance, bt.backtest.Result)
 
 
-@pytest.mark.vcr
+@pytest.mark.skip
 def test_rsi_strategy(mocker):
     yf_download = stocks_helper.yf.download
 

@@ -87,7 +87,13 @@ def get_brnn_data(
 
     Returns
     -------
-    Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[Union[float, ndarray]], type[GlobalForecastingModel]]  # noqa: E501
+    Tuple[
+        List[TimeSeries],
+        List[TimeSeries],
+        List[TimeSeries],
+        Optional[Union[float, ndarray]],
+        type[GlobalForecastingModel]
+    ]
         Adjusted Data series,
         Historical forecast by best RNN model,
         list of Predictions,

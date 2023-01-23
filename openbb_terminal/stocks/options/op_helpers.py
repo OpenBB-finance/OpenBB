@@ -390,8 +390,11 @@ class Option:
         """
         return (
             change
-            * -(e ** (-self.div_cont * self.exp_time))
+            * np.exp(-self.div_cont * self.exp_time)
+            * self.d1
             * self.d2
-            / self.sigma
+            * np.sqrt(self.exp_time)
+            * self.price
             * norm.pdf(self.d1)
+            / self._sigma
         )

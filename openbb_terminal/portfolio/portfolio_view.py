@@ -345,10 +345,9 @@ def display_performance_vs_benchmark(
 
     Parameters
     ----------
-    portfolio_trades: pd.DataFrame
-        Object containing trades made within the portfolio.
-    benchmark_trades: pd.DataFrame
-        Object containing trades made within the benchmark.
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
     """
@@ -602,12 +601,19 @@ def display_daily_returns(
                 return
             ax = external_axes
 
+        clrs_portfolio = [
+            theme.down_color if (x < 0) else theme.up_color for x in df["portfolio"]
+        ]
+        clrs_benchmark = [
+            theme.down_color if (x < 0) else theme.up_color for x in df["benchmark"]
+        ]
+
         ax[0].set_title(f"Portfolio in period {window}")
-        ax[0].plot(df.index, df["portfolio"], label="Portfolio")
+        ax[0].bar(df.index, df["portfolio"], label="Portfolio", color=clrs_portfolio)
         ax[0].set_ylabel("Returns [%]")
         theme.style_primary_axis(ax[0])
         ax[1].set_title(f"Benchmark in period {window}")
-        ax[1].plot(df.index, df["benchmark"], label="Benchmark")
+        ax[1].bar(df.index, df["benchmark"], label="Benchmark", color=clrs_benchmark)
         ax[1].set_ylabel("Returns [%]")
         theme.style_primary_axis(ax[1])
 
@@ -1756,7 +1762,7 @@ def display_var(
     """
 
     qa_view.display_var(
-        data=portfolio_engine.returns,
+        data=portfolio_engine.portfolio_returns,
         symbol="Portfolio",
         use_mean=use_mean,
         adjusted_var=adjusted_var,
@@ -1789,7 +1795,7 @@ def display_es(
     """
 
     qa_view.display_es(
-        data=portfolio_engine.returns,
+        data=portfolio_engine.portfolio_returns,
         symbol="Portfolio",
         use_mean=use_mean,
         distribution=distribution,
@@ -1818,7 +1824,7 @@ def display_omega(
     """
 
     qa_view.display_omega(
-        data=portfolio_engine.returns,
+        data=portfolio_engine.portfolio_returns,
         threshold_start=threshold_start,
         threshold_end=threshold_end,
     )

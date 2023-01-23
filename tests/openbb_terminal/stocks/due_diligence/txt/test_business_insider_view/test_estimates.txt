@@ -1,29 +1,29 @@
-                                   2022     2023     2024     2025     2026
-YEARLY ESTIMATES                                                           
-Revenue                          86,858  116,788  144,064  157,528  107,570
-Dividend                           0.00     0.00     0.00     0.00        -
-Dividend Yield (in %)                 -        -        -        -        -
-EPS                               12.18    16.12    19.31    22.26    21.48
-P/E Ratio                         54.45    41.16    34.35    29.81    30.88
-EBIT                             15,028   20,720   26,817   30,862   34,452
-EBITDA                           20,090   27,820   36,613   44,035   37,930
-Net Profit                       13,547   17,991   22,787   26,481   27,655
-Net Profit Adjusted              13,652   18,108   22,798   26,481   27,655
-Pre-Tax Profit                   15,053   21,033   27,015   30,830   34,348
-Net Profit (Adjusted)            12,942   15,757   21,519   26,608        -
-EPS (Non-GAAP) ex. SOE            12.18    16.12    19.31    22.26    21.48
-EPS (GAAP)                        10.99    14.29    17.97    21.92    21.60
-Gross Income                     23,228   31,483   39,080   42,425   45,155
-Cash Flow from Investing         -8,023   -7,735   -8,582   -7,782        -
-Cash Flow from Operations        16,970   22,870   28,024   29,611   31,029
-Cash Flow from Financing           -910      450      150        -        -
-Cash Flow per Share               15.90    18.43    22.76    27.40        -
-Free Cash Flow                   10,793   13,025   16,064   18,913   24,121
-Free Cash Flow per Share           8.46    13.29    16.34    25.60        -
-Book Value per Share              40.96    56.09    73.54    94.75        -
-Net Debt                        -20,327  -31,529  -44,816  -64,531        -
-Research & Development Exp.       3,764    4,577    4,710    4,510    5,016
-Capital Expenditure               7,557    7,377    8,031    7,712    2,000
-Selling, General & Admin. Exp.    5,342    6,809    7,023    6,906    5,686
-Shareholder’s Equity             44,873   63,057   85,777   96,491        -
-Total Assets                     79,406  101,864  129,230  129,102        -
+                                   2023     2024     2025     2026
+YEARLY ESTIMATES                                                  
+Revenue                         112,491  148,317  197,540  182,417
+Dividend                           0.00     0.00     0.00     0.00
+Dividend Yield (in %)                 -        -        -        -
+EPS                                5.26     6.72     7.70     6.04
+P/E Ratio                         22.92    17.92    15.65    19.95
+EBIT                             20,406   27,771   32,950   26,752
+EBITDA                           24,843   33,298   40,636   37,086
+Net Profit                       17,655   23,670   27,550   22,101
+Net Profit Adjusted              17,642   23,682   27,550   22,101
+Pre-Tax Profit                   21,065   27,518   32,943   29,048
+Net Profit (Adjusted)            20,116   27,426   33,246   29,048
+EPS (Non-GAAP) ex. SOE             5.26     6.72     7.70     6.04
+EPS (GAAP)                         4.49     5.84     7.31     6.34
+Gross Income                     29,274   39,234   45,471   36,743
+Cash Flow from Investing         -8,437   -9,824  -11,913  -11,654
+Cash Flow from Operations        22,377   28,985   29,005   28,084
+Cash Flow from Financing              -        -     -133        0
+Cash Flow per Share                5.86     8.02     7.64     8.97
+Free Cash Flow                   12,723   16,325   16,928   17,738
+Free Cash Flow per Share           3.16     5.22     5.90     7.20
+Book Value per Share              18.85    24.82    27.69    29.69
+Net Debt                        -28,262  -41,452  -53,844  -24,216
+Research & Development Exp.       3,739    4,395    4,678    4,805
+Capital Expenditure               7,986    8,855    8,869    9,577
+Selling, General & Admin. Exp.    4,995    5,922    6,605    6,153
+Shareholder’s Equity             60,619   81,961   99,296   99,680
+Total Assets                    103,453  134,012  153,946  152,863

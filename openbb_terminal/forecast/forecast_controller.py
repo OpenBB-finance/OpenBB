@@ -12,7 +12,7 @@ try:
 
     import darts
 
-    darts_latest = "0.22.0"
+    darts_latest = "0.23.0"
     # check darts version
     if darts.__version__ != darts_latest:
         print(f"You are currently using Darts version {darts.__version__}")

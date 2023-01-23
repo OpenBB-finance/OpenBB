@@ -31,6 +31,7 @@ d_candle_types = {
 def get_historical(
     similar: List[str],
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     candle_type: str = "a",
 ) -> pd.DataFrame:
     """Get historical prices for all comparison stocks
@@ -43,13 +44,27 @@ def get_historical(
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date: Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
+    end_date: Optional[str], optional
+        End date (e.g., 2023-01-01). None defaults to today
     candle_type: str, optional
         Candle variable to compare, by default "a" for Adjusted Close. Possible values are: o, h, l, c, a, v, r
 
     Returns
     -------
     pd.DataFrame
-        Dataframe containing candle type variable for each ticker
+        Dataframe of historical prices for all comparison stocks
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+
+    Start by getting similar tickers from finviz for AAPL
+
+    >>> similar = openbb.stocks.comparison_analysis.finviz_peers("AAPL")
+    >>> hist_df = openbb.stocks.ca.hist(similar)
+
+    We can specify a start date and an end date
+    >>> hist_df_2022 = openbb.stocks.ca.hist(similar, start_date="2022-01-01", end_date="2022-12-31")
     """
 
     if start_date is None:
@@ -65,7 +80,7 @@ def get_historical(
     # To avoid having to recursively append, just do a single yfinance call.  This will give dataframe
     # where all tickers are columns.
     similar_tickers_dataframe = yf.download(
-        similar, start=start_date, progress=False, threads=False
+        similar, start=start_date, progress=False, threads=False, ignore_tz=True
     )[d_candle_types[candle_type]]
 
     returnable = (
@@ -92,6 +107,8 @@ def get_historical(
 
     df_similar = df_similar.dropna(axis=1, how="all")
 
+    if end_date:
+        df_similar = df_similar[df_similar.index <= end_date]
     return df_similar
 
 
@@ -99,6 +116,7 @@ def get_historical(
 def get_correlation(
     similar: List[str],
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     candle_type: str = "a",
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
@@ -112,6 +130,8 @@ def get_correlation(
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
+    end : Optional[str], optional
+        Initial date (e.g., 2021-10-01). Defaults to today
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
 
@@ -124,7 +144,7 @@ def get_correlation(
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
-    df_similar = get_historical(similar, start_date, candle_type)
+    df_similar = get_historical(similar, start_date, end_date, candle_type=candle_type)
 
     correlations = df_similar.corr()
 
@@ -135,6 +155,7 @@ def get_correlation(
 def get_volume(
     similar: List[str],
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Get stock volume. [Source: Yahoo Finance]
 
@@ -146,6 +167,8 @@ def get_volume(
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : Optional[str], optional
         Initial date (e.g., 2021-10-01). Defaults to 1 year back
+    end_date : Optional[str], optional
+        End date (e.g., 2023-01-01). None defaults to today
 
     Returns
     -------
@@ -156,7 +179,7 @@ def get_volume(
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
-    df_similar = get_historical(similar, start_date, "v")
+    df_similar = get_historical(similar, start_date, end_date, candle_type="v")
     df_similar = df_similar[df_similar.columns]
     return df_similar
 
@@ -172,10 +195,16 @@ def get_1y_sp500() -> pd.DataFrame:
     pd.DataFrame
         DataFrame containing last 1 year of closes for all SP500 stocks.
     """
-    return pd.read_csv(
+    df = pd.read_csv(
         "https://raw.githubusercontent.com/jmaslek/daily_sp_500/main/SP500_prices_1yr.csv",
         index_col=0,
     )
+    df.reset_index(inplace=True)
+    df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d", utc=True).dt.strftime(
+        "%Y-%m-%d"
+    )
+    df.set_index("Date", inplace=True)
+    return df
 
 
 # pylint:disable=E1137,E1101
@@ -207,10 +236,11 @@ def get_sp500_comps_tsne(
 
     # Adding the type makes pylint stop yelling
     close_vals: pd.DataFrame = get_1y_sp500()
+
     if symbol not in close_vals.columns:
-        df_symbol = yf.download(symbol, start=close_vals.index[0], progress=False)[
-            "Adj Close"
-        ].to_frame()
+        df_symbol = yf.download(
+            symbol, start=close_vals.index[0], progress=False, ignore_tz=True
+        )["Adj Close"].to_frame()
         df_symbol.columns = [symbol]
         df_symbol.index = df_symbol.index.astype(str)
         close_vals = close_vals.join(df_symbol)

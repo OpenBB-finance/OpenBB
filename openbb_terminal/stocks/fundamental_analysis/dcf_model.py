@@ -293,6 +293,7 @@ def get_historical_5(symbol: str) -> pd.DataFrame:
     df = df[df.index.to_series().apply(lambda x: x.day == 1)]
     df = df.drop(["Dividends", "Stock Splits"], axis=1)
     df = df.dropna()
+    df.index = [d.replace(tzinfo=None) for d in df.index]
     return df
 
 

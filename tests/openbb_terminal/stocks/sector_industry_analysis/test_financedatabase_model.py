@@ -397,7 +397,9 @@ def test_filter_stocks_marketcap(mocker):
 
 @pytest.mark.vcr
 def test_get_stocks_data(mocker, recorder):
-    target = "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.yf.utils.get_json"
+    target = (
+        "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_json"
+    )
     mocker.patch(target=target, return_value=YF_UTILS_GET_DICT)
     result = financedatabase_model.get_stocks_data(
         country="Georgia",

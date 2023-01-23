@@ -2,27 +2,27 @@
 Palm oil                        False
 Controversial weapons           False
 Gambling                        False
-Social score                     10.5
+Social score                    10.73
 Nuclear                         False
 Fur leather                     False
 Alcoholic                       False
 Gmo                             False
 Catholic                        False
 Social percentile                None
-Peer count                         92
-Governance score                 8.72
+Peer count                         88
+Governance score                 9.49
 Environment percentile           None
 Animal testing                   True
 Tobacco                          True
-Total esg                       22.87
+Total esg                       23.79
 Highest controversy                 3
 Esg performance              AVG_PERF
 Coal                            False
 Pesticides                      False
 Adult                           False
-Percentile                      34.73
+Percentile                      39.17
 Peer group              Food Products
 Small arms                      False
-Environment score                3.65
+Environment score                3.57
 Governance percentile            None
 Military contract               False

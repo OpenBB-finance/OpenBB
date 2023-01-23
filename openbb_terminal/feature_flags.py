@@ -3,27 +3,25 @@ import os
 import os.path
 
 # IMPORTATION THIRDPARTY
-from dotenv import load_dotenv
 import i18n
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
-    PACKAGE_ENV_FILE,
-    REPOSITORY_ENV_FILE,
     USER_DATA_SOURCES_DEFAULT_FILE,
-    USER_ENV_FILE,
+    load_dotenv_with_priority,
 )
 from openbb_terminal.core.config import paths_helper
-from openbb_terminal.base_helpers import load_env_vars, strtobool
+from openbb_terminal.base_helpers import (
+    load_env_vars,
+    strtobool,
+)
 
 paths_helper.init_userdata()
 
 # pylint: disable=no-member,c-extension-no-member
 
-load_dotenv(USER_ENV_FILE)
-load_dotenv(REPOSITORY_ENV_FILE, override=True)
-load_dotenv(PACKAGE_ENV_FILE, override=True)
+load_dotenv_with_priority()
 
 try:
     __import__("git")
@@ -143,11 +141,12 @@ GUESS_EASTER_EGG_FILE = str(
 try:
     if not WITH_GIT:
         import pkg_resources
+
         version = pkg_resources.get_distribution("OpenBB").version
     else:
         raise Exception("Using git")
 except Exception:
-    version = "2.0.1"
+    version = "2.2.0"
 VERSION = str(os.getenv("OPENBB_VERSION", version))
 
 # Select the terminal translation language
