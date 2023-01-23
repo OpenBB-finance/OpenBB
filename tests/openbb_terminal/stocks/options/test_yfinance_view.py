@@ -161,6 +161,7 @@ def test_show_parity(mocker):
         mini=0.0,
         maxi=100.0,
         export="csv",
+        sheet_name=None,
     )
 
 

@@ -275,6 +275,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 limit=10,
                 post_limit=5,
                 subreddits="MOCK_SUB",
+                export="",
+                sheet_name=None,
             ),
         ),
         (
@@ -315,13 +317,10 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_infer",
-            ["--limit=20"],
+            ["--limit=20", "--export=csv"],
             "twitter_view.display_inference",
             [],
-            dict(
-                symbol="MOCK_TICKER",
-                limit=20,
-            ),
+            dict(symbol="MOCK_TICKER", limit=20, export="csv", sheet_name=None),
         ),
         (
             "call_sentiment",
@@ -334,6 +333,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 n_days_past=2,
                 compare=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -345,6 +345,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 symbol="MOCK_TICKER",
                 start_date=datetime.strptime("2020-12-01", "%Y-%m-%d"),
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -352,44 +353,28 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--limit=5", "--export=csv"],
             "google_view.display_regions",
             [],
-            dict(
-                symbol="MOCK_TICKER",
-                limit=5,
-                export="csv",
-            ),
+            dict(symbol="MOCK_TICKER", limit=5, export="csv"),
         ),
         (
             "call_queries",
             ["--limit=5", "--export=csv"],
             "google_view.display_queries",
             [],
-            dict(
-                symbol="MOCK_TICKER",
-                limit=5,
-                export="csv",
-            ),
+            dict(symbol="MOCK_TICKER", limit=5, export="csv", sheet_name=None),
         ),
         (
             "call_rise",
             ["--limit=5", "--export=csv"],
             "google_view.display_rise",
             [],
-            dict(
-                symbol="MOCK_TICKER",
-                limit=5,
-                export="csv",
-            ),
+            dict(symbol="MOCK_TICKER", limit=5, export="csv", sheet_name=None),
         ),
         (
             "call_headlines",
             ["--export=csv", "--raw"],
             "finbrain_view.display_sentiment_analysis",
             [],
-            dict(
-                symbol="MOCK_TICKER",
-                raw=True,
-                export="csv",
-            ),
+            dict(symbol="MOCK_TICKER", raw=True, export="csv"),
         ),
         (
             "call_popular",
@@ -397,9 +382,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "reddit_view.display_popular_tickers",
             [],
             dict(
-                limit=2,
-                post_limit=1,
-                subreddits="MOCK_SUB",
+                limit=2, post_limit=1, subreddits="MOCK_SUB", export="", sheet_name=None
             ),
         ),
         (

@@ -20,14 +20,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//fNE7DsIwEAbhu7hmpX/Xj9jU3CAlokjhig5ZokC5OyfI1J80zTx/6Tvn
-        e1/HZz2ONdM9hcLN3SLSebtmr8jqzA4si4rsnZnjKtesYbExC9kzshpwtyzkyMjOcQ1m+K3NoiH7
-        YOa44LeaRWd2ZC/Iot/VsiNHSefrDwAA//8DALC4jk5GAwAA
+        H4sIAAAAAAAAAwAAAP//fNEhDsJAFEXRvYzmJ++/TukMmh1UEkRFFY5MgiDdO8HD1Se55t7e5bXv
+        j3Vsz3Hdxl4uxfIUypDLcfrJjnT4jJydmeOagTPcmBM5K7IWYMWUyK7IyfEUsqb/rI5L1HHJl41M
+        S9TCndnIyXE1ZliiJTwjZ2PmuGo57h8AAAD//wMAiezq50YDAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 6befefa94c8f40e1-CDG
+      - 78e14a96de660bd0-AMS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -35,11 +35,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 17 Dec 2021 11:50:51 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Mon, 23 Jan 2023 14:41:38 GMT
       FINRA-api-request-id:
-      - 079ef1d7-79bd-4ac7-8fa6-1ffc8f33eb23
+      - 0b55fa9b-1261-4d7f-8b6e-3ead8130db60
       Record-Limit:
       - '27'
       Record-Max-Limit:
@@ -47,13 +45,16 @@ interactions:
       Record-Offset:
       - '0'
       Record-Total:
-      - '256'
+      - '263'
       Response-Payload-Max-Size:
       - 3mb
       Server:
       - cloudflare
       Set-Cookie:
-      - __cfruid=04e39562a824fac04ab4978233d5d356b423fbf5-1639741851; path=/; domain=.api.finra.org;
+      - __cf_bm=VgiO7KhI4OniIB__HF_75ZROr0a2ODKTt3MqRmWtRZw-1674484898-0-AbtV9muwJh+8LwNVcpnNEVINzm6V+qGt3lakSNRN8QfO3HghCHxRe67etHhhScnLzYA7xKU2B4FExEgtriLMFAc=;
+        path=/; expires=Mon, 23-Jan-23 15:11:38 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=8c0d6c69c23575afce9adf478c42f65def49d553-1674484898; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '27'
@@ -62,19 +63,19 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-61bc799b-5c051fab76d4796d46decb99;Sampled=0
+      - Root=1-63ce9ca2-29b10a233ddce3300fcfbce6;Sampled=0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - KffwUHSHIAMFXsw=
+      - fM1pdEDhoAMFRmA=
       x-amzn-RequestId:
-      - 079ef1d7-79bd-4ac7-8fa6-1ffc8f33eb23
+      - 1c561cf0-5db2-40f2-bd5c-c22d0ad2c06f
     status:
       code: 200
       message: OK
 - request:
     body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
-      "fieldValue": "2021-11-22"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "2023-01-02"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
       "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
       "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
       "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
@@ -95,24 +96,25 @@ interactions:
     uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
   response:
     body:
-      string: '[]'
+      string: !!binary |
+        H4sIAAAAAAAAA0zKOwoCMRAA0LtMnYXdCRKSVpttBF0/hViMZMRgTCSZFEG8u62vfpcPSBaKZ+Zn
+        7MuDCu8aJQnSwU0ajcUVqv9zKOR5nVsScMagtQpCrY2X/rrlOHtOEu6BCzjYz6ctKIhU5fj2JLwh
+        YXCAI+phnAbU8L3+AAAA//8DAGcC3zeCAAAA
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 6befefad481639db-CDG
+      - 78e14a9a5d12b912-AMS
       Connection:
       - keep-alive
-      Content-Length:
-      - '2'
+      Content-Encoding:
+      - gzip
       Content-Type:
       - application/json
       Date:
-      - Fri, 17 Dec 2021 11:50:52 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Mon, 23 Jan 2023 14:41:39 GMT
       FINRA-api-request-id:
-      - 73b3b217-2276-4f61-83a4-1c7992082e41
+      - 23e0caaa-7d85-4472-aaa3-f01c37d59b3d
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -120,26 +122,2033 @@ interactions:
       Record-Offset:
       - '0'
       Record-Total:
-      - '0'
+      - '1'
       Response-Payload-Max-Size:
       - 3mb
       Server:
       - cloudflare
       Set-Cookie:
-      - __cfruid=5f21a8c9d68bfdd62848ed3f84f1de843bf0d540-1639741852; path=/; domain=.api.finra.org;
+      - __cf_bm=t.rDMhr8EMv5JBDrvvjbC7bF1FL9uLlpU6ddmn9wo78-1674484899-0-Aa0IZYCyx6TkVBrhZRLZSVYlWRergp3LBwJ7m63LgqoEKea1BEXL+3mbXk295+3QEw+OEjGPhflXFH8BETFxTSY=;
+        path=/; expires=Mon, 23-Jan-23 15:11:39 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=bc342a57e11d2f6bdb119712be5e05f58950ec98-1674484899; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
-      - ''
+      - '1'
+      Transfer-Encoding:
+      - chunked
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-61bc799c-7dd5380720b6de40604707d5;Sampled=0
+      - Root=1-63ce9ca2-58f5f4953db0b0c145e53668;Sampled=0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - KffwaH3kIAMFmVA=
+      - fM1pgEmioAMFUxA=
       x-amzn-RequestId:
-      - 73b3b217-2276-4f61-83a4-1c7992082e41
+      - 156e034b-a0b7-4089-934c-6e1b94036ad6
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-12-26"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKvQ7CIBAA4He5mSaA1EZWXbqY1PozGIcznJGI0MAxEOO7u/rN3/UDnBjDhegV
+        2vzETFPFyJ4bWKWV2ci+F//nmNHRNtXIYAdlzFqAL6XS3N73FEZHkf3DUwYLh/G8BwEBC58Wh0w7
+        ZAILWupVJ1WnBvjefgAAAP//AwAcIJgOggAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14a9d8f7c0bdb-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:40 GMT
+      FINRA-api-request-id:
+      - c90b30ec-9cb4-4604-ae51-f21ae87051dc
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=wjwbtmi_6LjCohtFVw8SkvbqpENjdR00boWJD7TH_p4-1674484900-0-AatQNODy8vr3RoS5JDD7X+uIoZih81yVRV2yCLxCb7zO+tvVdR0HsRq4UtUNSk+2Y8Uz0cu9/Dts1nU1yXxfdrc=;
+        path=/; expires=Mon, 23-Jan-23 15:11:40 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=af3cf3bcb86cd89e5ae98ac06a721c7e5609913b-1674484900; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9ca3-32837aa51d56ad2c3633c1cf;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1pnGSGIAMFZBA=
+      x-amzn-RequestId:
+      - 70cfe7a3-4b91-4894-8bed-c1e605161cb4
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-12-19"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMqxDsIgEADQf7mZJkBDG1l16WKitToYhzOckRTBwDEQ47+7+uZ3/QAn
+        xnAhWkObn5jpUDGy5wZWqV4bOSjxf04ZHW1TjQx21MYMAnwpleb2uqcwOYrsH54yWDhO5z0ICFh4
+        eTtk2iETWNBS951UndzA9/YDAAD//wMAzLW2q4IAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14aa23d29b902-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:40 GMT
+      FINRA-api-request-id:
+      - 4cc04593-c062-44e3-a75b-9d97b7de61d4
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=VNrPsjXUrwocV3vPcTuezwc8m1CtcTxCvQbnA0o8OJc-1674484900-0-AR6AAaiou3a9yBqsrNS5/xn9qdQMdv3H+MaAwZ9a2KjSwNRiE/HXniI6DTYTV9bZLmfHXq0zO2O02ZMIw78yPro=;
+        path=/; expires=Mon, 23-Jan-23 15:11:40 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=af3cf3bcb86cd89e5ae98ac06a721c7e5609913b-1674484900; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9ca4-0773dc6f4784308708c7ba86;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1pvEjmoAMFbKg=
+      x-amzn-RequestId:
+      - 3801694c-6800-4550-91e7-949b48c2b16c
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-12-12"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9CsIwEADgd7k5hfxQSrPq0kXQtjqIw0lODI2JJJchiO/u6jd/1w9w
+        YgwXoi20+YmZjhUje25glRqUGvUg/s+S0dEu1chgR9n3RoAvpdLcXvcUJkeR/cNTBgun6XwAAQEL
+        r2+HTHtkAgtaatNJ1UkD39sPAAD//wMAyRt0QIIAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14aa74c660eac-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:41 GMT
+      FINRA-api-request-id:
+      - 3c549603-be42-4b84-b7f2-72287848bcbd
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=wife6HNohLdXMK6r6gl1QERGG.lTsbFTE0En_SFMY3E-1674484901-0-AXE0ikEdvUd55/fam12nXO0ER6C92gml2Af/LquvWN8cBR/wUg/4Bb71AT7lvYkt3RP++vyQsWx/qhZr9WeGZVs=;
+        path=/; expires=Mon, 23-Jan-23 15:11:41 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=ad6c6a6ac7bd208a303df7676206d7628d3b2f83-1674484901; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9ca5-5857f24f2ff588d60b240a39;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1p3FixIAMFYhQ=
+      x-amzn-RequestId:
+      - 94c3518e-8f18-40d7-a324-f91a58cb4edb
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-12-05"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgFAbQd/lmmlQUtay6dDHR+jMYh2t6G4kIBi4DMb67q2c+1w8k
+        CvkL89PX4UGJ94WCOKmwpjWdWXfqvxwTjbyJJQismS8XRsHlXHior3v0/chB3OQ4weLQn3dQ8JTl
+        9B5JeEvCsNCt1s1MN3qF7+0HAAD//wMA9ut2yIEAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14aac9ec2b981-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:42 GMT
+      FINRA-api-request-id:
+      - e0d943b4-7c31-432c-b0c3-942f4cabdb8a
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=6aOGV65TbhtiCfi2KBIF_9NMBthMkQ5.eifi.0YKJqA-1674484902-0-AW13NZCYXTcWF/GDJ2qjp83hHlnWGAhcAibfbf3ciAIW+FqHfC+Qdxto2pHk5tw7iiG2FYEBJZ4P5y2qh3VrH1o=;
+        path=/; expires=Mon, 23-Jan-23 15:11:42 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=9f850f2494405ee4aeaee53ccd127afd8c286177-1674484902; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9ca5-762bb9e20561f58e1f32f221;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1p9FjNoAMFVog=
+      x-amzn-RequestId:
+      - e5bd2df1-abea-4924-a4ec-bdec63568acf
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-11-28"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJvQaa2DVpYuJ1p/BOJzhjKQIBo6BGN/d1W/+rh+Q
+        JBQuzEto85My7ytF8dLAjqu1xsGo/3LM5HiTahSwox7QKPClVJ7b657C5DiKf3jOYOEwnXegIFCR
+        09uR8JaEwQJqxK7Hrjfwvf0AAAD//wMAVh6BkoEAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14ab07f910a49-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:43 GMT
+      FINRA-api-request-id:
+      - f5d8460e-26ab-45c3-a9cd-91b180d40a90
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=vgMiFzKgfE28iPWCeoCwjr3BhZStLOXVzH4tm8OgAZQ-1674484903-0-AbMOyT+UEPCyBhC2vO+5OKJN0klH6OfQWVZs6ohlfHQLeuAQiU8DqNzICTkNeA9E+dLhpQrHFmp7TP9XaGAqaMI=;
+        path=/; expires=Mon, 23-Jan-23 15:11:43 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=83d69b5d04c836162e82b1692a6d7fffc6f7c07f-1674484903; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9ca6-2f6172546a0f37dd519d660e;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1qGHe0oAMFQCw=
+      x-amzn-RequestId:
+      - ba64fd09-6c51-4e5b-8a95-005c4aa97265
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-11-21"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq7CgIxEEbhd/nrCCak2bTabCPoeinEYiQjBrOJJJMiiO8u2wmn+871
+        A8lC8cL8in16UuF9oyRBOpzVgzbGqv/lWMjzJrcki2s7KIRaG099vuc4ek4SHoELHA7jeQeFSFVO
+        b0/CWxKGg1kbs9JL+N5+AAAA//8DAIbJ2UOBAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14ab63c16b932-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:44 GMT
+      FINRA-api-request-id:
+      - d47456a9-793e-421b-8f5f-56247fea7d27
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=PJ6TsZrFQO864DiOtNB.UQNWGlFfMbqxvlJ0S_mLmis-1674484904-0-AZ9r2/s2PhmCZLPWF0LYSGGQc2Np9vnQzejzfe1eYAgh6zRZIKifkCSsK/SpoFOz4zVQs2uWHvMXifS+E/FPi6g=;
+        path=/; expires=Mon, 23-Jan-23 15:11:44 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=192b62245b69cd02226afa3235ccb7988f706981-1674484904; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9ca7-2b83e10f4c79893922bd5c8f;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1qPEmmIAMFl1A=
+      x-amzn-RequestId:
+      - 8795d5a7-716e-4a51-97df-f889da247d2d
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-11-14"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMo7DgIhEADQu0zNJjgrktBqs42Jrp/CWIxhjEQEA0NBjHe39dXv8gHJ
+        QvHM/Ix9flDhXaMkQTq4lbUazaj+y6GQ53VuScAZu9SjglBr47m/bjlOnpOEe+ACDvbTaQsKIlU5
+        vj0Jb0gYHKBGHBY4aAPf6w8AAP//AwBsokklgQAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14abb69bf0eae-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:44 GMT
+      FINRA-api-request-id:
+      - a21bae2a-3be5-44ed-8fbb-d9d05943bd48
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=fKm.K0Oycv4ZiFt9fBw7ED6ym1L0BYn8ZNb3QmnS5TY-1674484904-0-AXj9RALUrcCAbQmufrhcrSkjNjvMWpqCdsp99MOgKWCEfZqLGA2gnqawKagUnXAAeexhF+X+WqyEU7RMSFnGMCM=;
+        path=/; expires=Mon, 23-Jan-23 15:11:44 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=192b62245b69cd02226afa3235ccb7988f706981-1674484904; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9ca8-71edd16a4269b72d3f6fff2c;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1qXFqioAMFQ4Q=
+      x-amzn-RequestId:
+      - 38c646a5-0dec-4bf2-8c41-ba384fe5e7a2
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-11-07"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9CsIwFAbQd/nmFppUMWbVpYug9WcQhyu5YjAmkt4MQXx3cXM+5/yG
+        JKFwYn6EOt4p87ZQFC8VVvUz1ZvFsvk/+0yOV6lEgTXz7qd+mgqP9XlNYXAcxd88Z1jshuMGDQJN
+        cng5El6TMCx0p3WrVKsNPpcvAAAA//8DAHT+8F2CAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14ac0ba7e1c96-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:45 GMT
+      FINRA-api-request-id:
+      - b3e0713f-4110-434d-9e12-e5f8c003972d
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=9PljnV_egrqJVJnX5eEbQijFtYgj09uk5slpD7eS4R0-1674484905-0-Ad4qUTBQs8LReoSz/OnH4DnWmcZfKYls2MF7HxfOvtr0KUKh7of9fUEbfcQB6IbopvSi4+99gpLa8yyzOFxHfUM=;
+        path=/; expires=Mon, 23-Jan-23 15:11:45 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=95fb02aeabbe880102be30c3572da7176a277b92-1674484905; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9ca9-327d8234186bb13215ec90dc;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1qdHDeoAMFTdQ=
+      x-amzn-RequestId:
+      - 308b9936-2663-4aa2-8682-eb113de43f94
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-10-31"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKvQ7CIBAA4He5mSZyaRth1aWLidafwTic4YykCAaOgRjf3dVv/q4fkCQULsxL
+        aPOTMu8rRfHSwA444Ngb9V+OmRxvUo0CtjdrMyrwpVSe2+uewuQ4in94zmDhMJ13oCBQkdPbkfCW
+        hMECrhA7rTvU8L39AAAA//8DAAf7GDWBAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14ac50ff40b05-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:46 GMT
+      FINRA-api-request-id:
+      - 14681393-df56-4a71-b9ce-8c4ac0acb058
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=oR2rvv6UcDwsIJqFuRHGyx_oYkjUq3vyOwQp6KXXpa8-1674484906-0-Adpt3Fv3xndTV1/+WqXcPoLdBXqfpUgMjFCeZhmVMAPsHOW/Oai1l2/DQLU9MKi7hpbR+ZpYor3U0ltWPB3CPus=;
+        path=/; expires=Mon, 23-Jan-23 15:11:46 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=1b55232319d3e622d0d3458c9ce571ace391ded6-1674484906; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9ca9-1c639c5c25cde4453e55e3ae;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1qkFKYoAMFWvA=
+      x-amzn-RequestId:
+      - 6d6905f7-6bfc-494e-b250-aad78e1a696c
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-10-24"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKvQrCMBQG0Hf55haa0EqbVZcugtafQRyu5IrBmEhyMwTx3V0987l8IFHIn5mf
+        vi4PSrwrFMRJhVnpfhxG1fyXQyLL61iCwAzTpLoGLufCS33dop8tB3F3xwkG+/m0RQNPWY5vS8Ib
+        EoaB7rRulWpVj+/1BwAA//8DAAw8m8+BAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14ac8c8bd1e71-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:47 GMT
+      FINRA-api-request-id:
+      - e465eeb4-25fa-4730-b3e5-5ba441d123c9
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=LmnUsNk7HXdI7qx4c3x.9zBDuROnqj5N2EBz5kVcGDE-1674484907-0-AbgdIYgcqE8HuGEMz590UREju3TuxnLIvRBSnJc8XRpp2QNIoOleig25oyYOYuAUdiysrxC3FR7tmklwZ+hCWOQ=;
+        path=/; expires=Mon, 23-Jan-23 15:11:47 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=3c00861bd92a86c263c08530a2173fd857d50720-1674484907; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9caa-51f339c2315790a868fa4c97;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1qtG1RoAMFTZw=
+      x-amzn-RequestId:
+      - c55fdc8c-5d33-4cf7-8486-4817be228b86
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-10-17"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKvQpCIRQA4Hc5sxf0hAiutdwlqNvPEA0nPJFkGnocJHr31r75u3xAilA6Mz/T
+        WB5UedcpS5QB3hrrVkar/3KoFHhdehbwFi06BbG1zst43UqaA2eJ98gVPOzn0xYUJGpyfAcS3pAw
+        eECNOBkzaQff6w8AAP//AwCpiVgSgQAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14acddccc0be6-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:47 GMT
+      FINRA-api-request-id:
+      - 2c882b05-f8ea-4c03-8985-756fb4805835
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=BjL9a_B.xml3tviNVq4Bpna0xVr1W52XRFlLg69WGEg-1674484907-0-AQFBHhZS2uwF2iirMqfwvIqXOEZa34Irmtl+QvJKXduV+MXgMHZ2rgqtpcgMunwF/Wmc/Px4y2UyjlvFvWOxd3w=;
+        path=/; expires=Mon, 23-Jan-23 15:11:47 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=3c00861bd92a86c263c08530a2173fd857d50720-1674484907; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cab-1e4c0adb63160cea319abc59;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1qyFiVoAMFQkw=
+      x-amzn-RequestId:
+      - c9c54d12-74d3-4bbc-96bd-165ed0b8f837
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-10-10"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMqxDsIgEADQf7mZJkCbtGXVpYuJtupgHM5wRlKEBo6BGP/d1Te/2wc4
+        Mvor0err/MJEx4KBHVcwSg6dHvUo/s+S0NIulsBg+nboegEu50JzfT+inywFdk9HCQycpssBBHjM
+        fN4sMu2RCQxoqXWjZNMq+N5/AAAA//8DAOp2tLyCAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14ad1bfa50bbc-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:48 GMT
+      FINRA-api-request-id:
+      - a7adc8c5-e074-4e66-ba22-afa52c59dfc6
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=zu8n08Jbw0SqADkeFC793cBQhQIwL_vEV.roBtSh3K4-1674484908-0-AZikSgEIZOLtw3y3ostzZKQOi7wUSj82duAz+FFQlpB6zz3WbQsvZMKwjWfXM00w/Ut75XEqBOGJq0s7HkyJpnw=;
+        path=/; expires=Mon, 23-Jan-23 15:11:48 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=77a93f1e8463b67553434075deb3830df645013c-1674484908; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cab-4a1b87b51b0ea78004e13409;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1q4FkQoAMFbIA=
+      x-amzn-RequestId:
+      - c0b1fe42-2365-4d53-b4d5-6356fe5cc2d0
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-10-03"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJnhRW1h16WKi9WcwDmc4UyKCgWMgxnd39Zu/6wck
+        CYUL8zO0aabM+0pRvDSwpu8Hjaj+yzGT402qUcCuzWowCnwplaf2uqcwOo7iH54zWDiM5x0oCFTk
+        9HYkvCVhsIAasVvoDpfwvf0AAAD//wMANnROfoEAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14ad6da11b933-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:49 GMT
+      FINRA-api-request-id:
+      - cf3b5def-03d0-4148-ad8a-9cac220192cc
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=nXQexrbYK6HDbtxJmEbnlF2Y.B08F1un1CeVWKjJfws-1674484909-0-AYsu5iHg9K2YeBx2fxm7ZgQ4h376SjX/JiTioj/9b9uR76zgTSte2a5MAvxLa393gp+5j5nv3IiFBy0z9i6Nb5k=;
+        path=/; expires=Mon, 23-Jan-23 15:11:49 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=934455a7f6cfd92369c5d4954f8385e8b0ffc9cb-1674484909; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cac-230a10ef3958310573bb3bc5;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1rDHB4IAMF9kA=
+      x-amzn-RequestId:
+      - 0d2cea98-8782-4914-8403-5cb41e451db5
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-09-26"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKvQ7CIBAA4He5mSYtLcWw6tLFpNafwTic4YxEhAaOgRjf3dVv/q4f4MjoL0Qv
+        X5cnJpoLBnZcwaheq1GN4r8cE1raxhIYzDDofiPA5Vxoqe979JOlwO7hKIGBw3TegwCPmU+rRaYd
+        MoEB2UrZdG3TafjefgAAAP//AwAvWHsEgQAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14adbf9320bdc-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:49 GMT
+      FINRA-api-request-id:
+      - 03e0b640-a99e-4007-bb1e-d38bb1bff6b0
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=DUvF7wKyMhbTmVSUX4GLSjPdwTe8t5aP5BDLSYDd.mk-1674484909-0-AT55+2+STB2bU1UmIb8tap6jCrgE7oC5TY5805CoVzc7IxnSDp6CagnvhPkqGJGRp+Rh0voyL14q/LLOV35yp2Y=;
+        path=/; expires=Mon, 23-Jan-23 15:11:49 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=934455a7f6cfd92369c5d4954f8385e8b0ffc9cb-1674484909; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cad-56d499ac62a422a72c4c2f17;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1rJEsfoAMFTsw=
+      x-amzn-RequestId:
+      - 69db9571-ee31-4674-9129-05405355f26c
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-09-19"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKOw4CIRAA0LtMzSYMRsPSarONia6fwliMYYxEBANDQYx3t/XV7/IByULxzPyM
+        fX5Q4V2jJEE6OIuI1ozqvxwKeV7nlgTcarkYrYJQa+O5v245Tp6ThHvgAg7202kLCiJVOb49CW9I
+        GBwYbcyAekAN3+sPAAD//wMAN3JQpoEAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14adf39480bb5-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:50 GMT
+      FINRA-api-request-id:
+      - 7f7e3daf-65ba-4687-b31a-677b60d109d9
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=8SdZac3Oi.Ey4ooSRab88s2Nm37fj87.ULLUakt.TUI-1674484910-0-ARzTLIvl5HlmwIb7AkVjXDxOwd1yJ1+EGZmIZrNaHTkWMuyQIZwz79C3uERSVO8z9zXc2v9407+jtBTlSJ2FpoE=;
+        path=/; expires=Mon, 23-Jan-23 15:11:50 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=bdb248d65a49a9eeff18b50b5c304a0388d5bb89-1674484910; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cae-75db6fc34a220499525a3160;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1rQFdpIAMFqZw=
+      x-amzn-RequestId:
+      - d9ad70bb-48f3-4732-81b0-2c2319e01bfb
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-09-12"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMo7DgIhEADQu0zNJjAbidJqs42Jrp/CWIxhjEQEA0NBjHe39dXv8gHJ
+        QvHM/Ix9flDhXaMkQTo4YyxaPS7U/zkU8rzOLQm4pcWVURBqbTz31y3HyXOScA9cwMF+Om1BQaQq
+        x7cn4Q0JgwPUiIPRgx7he/0BAAD//wMAtZ5LjoIAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14ae58a8828a1-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:51 GMT
+      FINRA-api-request-id:
+      - a537d8f9-b078-4f37-bf9c-5702a61a2e44
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=SFBgJun_X7pSjd2kYDK6k1fX5Wz4BiaMFqDYE_kyzGM-1674484911-0-Aa1oeVmF/wmxX23nup4pPWni95TKmZRBleqVOOGKWC/vfV7d+OYrJdKUuit5rWL4tSpjBzUibPy3qUcl+aNjM+U=;
+        path=/; expires=Mon, 23-Jan-23 15:11:51 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=5bb44bb53b2fc78718a02cd76af25d67fa505746-1674484911; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9caf-512f29c06bb8cb2e1afaff56;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1rbH9qoAMFbsA=
+      x-amzn-RequestId:
+      - cdcc6917-b567-4275-a154-c64ef76bac15
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-09-05"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJogNVFZdupho/RmMwxnOlEjBwDEQ47u7+s3f7QOc
+        GMOV6BXaNGOmQ8XInhvYlTRrLQcj/s8po6NtqpHBmn7QUoAvpdLUlkcKo6PI/ukpg4XjeNmDgICF
+        z2+HTDtkAgtKKtXJTac0fO8/AAAA//8DANoOfP+CAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14aeb1eeab7a0-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:52 GMT
+      FINRA-api-request-id:
+      - 246dcc9b-9381-4c6e-b718-cbd475ffd414
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=8aebQ6tKvYTeWY29.sWqr0V1xymKb0B5iZ7xvk62aD0-1674484912-0-AWHEbl+xl1duxiNE1N8bDkYDHBbRYYoj25TTfapF/AsipLxJ9g94FLAwexUXzCw5QyT7H9uK5hjui4OkM1Y+y+A=;
+        path=/; expires=Mon, 23-Jan-23 15:11:52 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=f51f0077081363727b404e196ae7987ec6b568d7-1674484912; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cb0-6a20f5c00375e7d46f7bb0f5;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1rjFJjoAMFuow=
+      x-amzn-RequestId:
+      - 032a8ad6-9b7b-49a0-ae2e-b8c5b85e36c7
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-08-29"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9CsIwFAbQd/nmFJJIC82qSxdB688gDldyxWBMpLkZgvjurp75XD6Q
+        LBTPzM/Y5gctvKuUJEiD6421g9HqvxwW8rzONQlcr/WwUgilVJ7b65bj5DlJuAde4LCfTlsoRCpy
+        fHsS3pAwHKy2ttNjZ0Z8rz8AAAD//wMAdNjW2YEAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14af07c5b1c82-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:53 GMT
+      FINRA-api-request-id:
+      - 0a0b6b0d-2626-48b5-9ed4-529ec5f68ac2
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=lkgvDSzG43w2TZJv_eT07_h6LxGpAKnHGQZg0FezsNI-1674484913-0-AXLDqd4n/uKOx9JpWaZU6hJLqwBXI0hqJNfYqrMDdkVyKbcZQ0tlVOz/fNVruXch6cnfjjHnfVwodVblnKAJMI0=;
+        path=/; expires=Mon, 23-Jan-23 15:11:53 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=0554ff953ae35f9c29c76c35320465a8a45e119d-1674484913; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cb0-3d75c2df60f746c1511b34bd;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1rpFnOIAMFQPA=
+      x-amzn-RequestId:
+      - 2f21ae0f-8b86-4d3d-a805-8bc9b582c357
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-08-22"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9CsIwFAbQd/nmFJoYULPq0kXQ+jOIw5VcMTQmktwMRXx3V898rh9I
+        FooX5inO45MK7xslCTLDLbW1Vlv1X46FPG9ySwJnVwujFUKtjcf5dc9x8JwkPAIXOByG8w4Kkaqc
+        3p6EtyQMB9Mb0/XrTht8bz8AAAD//wMAQrcjLYEAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14af4d8d8b902-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:53 GMT
+      FINRA-api-request-id:
+      - c041d877-868c-4821-8b84-0a2e6c40045f
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=4JMDH9FL.K0re12bIpb_SbtCFUQqo53KNJDQnRy8Xv0-1674484913-0-Ad/3Bwzpl9HCP3jXbK7LNG+L7qlCWN3clvNy8xJUJGzIvc57QvL9qFUTwTZIhOnI5vhahfOnGX8wwnoEe2W7kBs=;
+        path=/; expires=Mon, 23-Jan-23 15:11:53 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=0554ff953ae35f9c29c76c35320465a8a45e119d-1674484913; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cb1-3b1791b877d44d704c0681ca;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1rwG__oAMF-ag=
+      x-amzn-RequestId:
+      - 27f35411-eac3-4f36-a84a-b742a4a9ea26
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-08-15"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMo7DgIhEADQu0zNJuwoJNJqs42Jrp/CWIxhjEQEA0NBjHe39dXv8gHJ
+        QvHM/Ix9flDhXaMkQTo4Y41ZjKP6L4dCnte5JQFncIlWQai18dxftxwnz0nCPXABB/vptAUFkaoc
+        356ENyQMDlAjDno1aAvf6w8AAP//AwDKA4S7gQAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14af808520e70-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:54 GMT
+      FINRA-api-request-id:
+      - 3884dc35-a88b-4d73-a01a-0e0544bd6146
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=pZvf4mT0e78kHYRkkEuFG7JDJBeP1RKI_ovZZ7.CLoI-1674484914-0-AQ1uFdYD3db6Dyfcrr/dpwU9o3vDkJsrkVF+IJatkunsq1txHCdyZ/7uBnzvK2+7ZrZD6BZpZbzv+DpcxcO1PEk=;
+        path=/; expires=Mon, 23-Jan-23 15:11:54 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=acd8e7837514b539b31c3f0e21f53ed4f9bd38ab-1674484914; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cb1-6b8d3fb01b2a5bac6ebeb6d7;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1r1H_TIAMFSMw=
+      x-amzn-RequestId:
+      - b670f097-03ac-4130-88d9-3012aa197742
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-08-08"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJleMFll16WKi9WcwDmc4UyKCgWMgxnd39Zu/6wck
+        CYUL8zO0aabM+0pRvDSwPQ4DLvRS/Z9jJsebVKOANf0KjQJfSuWpve4pjI6j+IfnDBYO43kHCgIV
+        Ob0dCW9JGCxo1LpD0+k1fG8/AAAA//8DAA2sK12CAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14afbe9a21c81-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:54 GMT
+      FINRA-api-request-id:
+      - 5a4063bb-cf18-497d-8be3-f584a776611e
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=EvXRak52u1pOwGuqcY_fepwzRwEAbTJW5AkgBtDOehM-1674484914-0-AZlratUuil7+QmV4tWRaJHkFT5n4aEG2cikMFy7+WeH9OOkQb2qrMRq6baxRVvL4+RJb3p6ORVM4g7Xgk9MGZhg=;
+        path=/; expires=Mon, 23-Jan-23 15:11:54 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=acd8e7837514b539b31c3f0e21f53ed4f9bd38ab-1674484914; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cb2-5131cbe4068c5dc5056c5cd2;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1r8FoWoAMFZxA=
+      x-amzn-RequestId:
+      - 06e48a0c-d379-41b4-b9d9-b02aecb955ab
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-08-01"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKvQ7CIBAA4He5mSbNBVtk1aWLia0/g3E4wxmJCAaOgRjf3dVv/i4fkCQUzszP
+        0JYHZd5XiuKlgR1Rm9U4qP9yyOR4k2oUsNqYtVbgS6m8tNcthclxFH/3nMHCPJ12oCBQkePbkfCW
+        hMEC9ohdbzpE+F5/AAAA//8DADRAICeBAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14affdb3e0e3c-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:55 GMT
+      FINRA-api-request-id:
+      - 4c08e540-49fe-4856-a951-81db6760ca84
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=9BtN.XAEbc1VBx7DDUKxI7pHtjWnvftwf7or0bieiqQ-1674484915-0-ATR69ihr3G3wJem6hp8i99HUE/HT6bcf3ClM7DvLEGOkihF/D4Yi4MU4E5BatdSrKLPkl+6THcci9zO79jo/5eA=;
+        path=/; expires=Mon, 23-Jan-23 15:11:55 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=779964f46f74352815a6932f18f7cc7fddf8d2bb-1674484915; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cb3-32606fcc5742650d6cb3382a;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1sFFy5oAMFcKg=
+      x-amzn-RequestId:
+      - 97fe4ee3-e24a-41e2-848f-59b2de0fd2f6
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-07-25"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJhRrQ1l16WJi689gHM5wpkSEBo6BGN/d1W/+bh/g
+        yOivRC9f5wUTHQsGdlzBdEMvterFfzkltLSLJTCYbjO0WoDLudBc34/oR0uB3dNRAgPTeDmAAI+Z
+        z6tFpj0ygQEllWqkbtotfO8/AAAA//8DAPJlKkuBAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b04ec63b8be-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:56 GMT
+      FINRA-api-request-id:
+      - 7c0dd7af-3986-45dd-8b86-3539c226b4fe
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=nRQ9q9vQImV5SkLpyCgtQuZaXTPhJw5euLlx05EcYDo-1674484916-0-AaauQp815M/EbVxDRXZvXjdrLCSEYPC7oduoHGzzNYJGeXRXOR5vqKdiAf0xcyB8UeQUnSoBSkz64svhenJu4IM=;
+        path=/; expires=Mon, 23-Jan-23 15:11:56 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=5a6c56fda550bb5ca9e010dba2e9d1d804c8127f-1674484916; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cb4-175b479d03299cab66d2d226;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1sNG2moAMFb_w=
+      x-amzn-RequestId:
+      - 1cf699ec-cdae-4705-9533-6a7db27b4393
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-07-18"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJgjVUFZdupho/RmMwxnOlEjBwDEQ47u7+s3f7QOc
+        GMOV6BXaNGOmQ8XInhtYI1da6kH8l1NGR9tUI4Pd6PXQC/ClVJra8khhdBTZPz1lsHAcL3sQELDw
+        +e2QaYdMYEFJpTppOmnge/8BAAD//wMAYH6GkoEAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b0a1e130a6f-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:57 GMT
+      FINRA-api-request-id:
+      - 098a0a01-2b91-49fb-84c2-ef5d5685857b
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=yonF0TxGWMGu6v3DlPkTD.VEzlSoNKHe_RZWmp2jtIw-1674484917-0-AZ8sHL9YwQDSa7S+Gni4v8AU6+fxl2T0PhoUSCCANbS+k+i2Qj6WpMQh1z+7P7nxsPjHGfg3uVWxprdT+i4Evwk=;
+        path=/; expires=Mon, 23-Jan-23 15:11:57 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=c3e546868339d4ca6d83b0f229c602e3c6c9c67d-1674484917; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cb4-2e8f000565356e517cf9bd1b;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1sSFiKoAMFUmw=
+      x-amzn-RequestId:
+      - af1f23a8-6efa-4824-913b-640eec39b9a1
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-07-11"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9CsIwFAbQd/nmFNKIJc2qSxdB688gDldyxdCYSnozBPHdXT3zuX4g
+        s1C8ME+xjk/KvC+UJEiFs7q1plup/3LM5HkzlyRwa9v1vUJYlsJjfd3nOHhOEh6BMxwOw3kHhUiL
+        nN6ehLckDAejjWm0bXSL7+0HAAD//wMAKbumgIEAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b0de9e31c18-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:57 GMT
+      FINRA-api-request-id:
+      - 2264f6e9-a54e-4f92-8ca0-b143ae8a98d0
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=nX_5s2d2UqUFWmpAHTZLrMtNT0iz7H4h4u3EqS1USVI-1674484917-0-AdNomHje0kEF+MChxuvxuco2EJuzJOos3NfexVJqdnJ5zWApL8A4/w+Qt4imo7JIWAGCn2xz9qM+F5SaoKwN6zs=;
+        path=/; expires=Mon, 23-Jan-23 15:11:57 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=c3e546868339d4ca6d83b0f229c602e3c6c9c67d-1674484917; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cb5-57260a8b10c647f0307c7929;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1sZEULIAMFb5Q=
+      x-amzn-RequestId:
+      - d2b0df68-629d-40e7-bcfc-7ac760b3082f
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-07-04"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJvSioWXVpYuJ1p/BOJzhjKQIBo6BGN/d1W/+rh+Q
+        JBQuzEto85My7ytF8dLA9v2Ig0aj/s8xk+NNqlHADmaFowJfSuW5ve4pTI6j+IfnDBYO03kHCgIV
+        Ob0dCW9JGCygRuy06XAN39sPAAD//wMAHYLNLIIAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b114b17b92a-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:41:58 GMT
+      FINRA-api-request-id:
+      - aea8233c-d928-4601-9c2d-b5070a5b2406
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=FhoFWMkHZ1GEzkLbxxtvITQBOGmqovPSsRt8dpvJTj4-1674484918-0-AQkPkWlteb7fTR27ObHEH3u8aO0JBl4kmgM49tD55qJslwPhiyI9sThmh+5xy29UAsLArB4AxvHoXp1jszTFo54=;
+        path=/; expires=Mon, 23-Jan-23 15:11:58 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=e882aab08331a2d307dbc8111866f89e838406c3-1674484918; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cb6-79abf9057fdbdc221b160259;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1seHN1oAMFpmg=
+      x-amzn-RequestId:
+      - 94170692-6e7d-410c-88bb-36ac84cf224f
     status:
       code: 200
       message: OK
@@ -164,14 +2173,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//fNExDsIwFATRu7jmS7vfjuNQcwNKRJHCFR2KRIFyd07A1E+aZh7f8pnz
-        dT/293Hbj1muJZUOOzTKeQE2sCIXZA9mjqv9Z22RK7OQXZHVgUdUIWdFNse1MSfwGtmRvTFzXPBb
-        PXIwG9kNWfR7iWrkbMjmuFXO5w8AAP//AwCTB+Q3RgMAAA==
+        H4sIAAAAAAAAAwAAAP//fNE7DsIwFAXRvbjmSffdfOxQs4OUiCKFKzpkiQJl74gFMPWRppn7p7x7
+        f+7jeI3bMXq5FsuOdORWzguwkbUAZ7gxJ3LOyKrAiimRPSMnx1PImv6ztvCKTEt+bGRaohbemI2c
+        HFdjhiWq4QU5GzPHBb+1hiuzyvn4AgAA//8DAHdHdqdGAwAA
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 6befefb16a993b49-CDG
+      - 78e14b148fd91afc-AMS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -179,11 +2188,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 17 Dec 2021 11:50:52 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Mon, 23 Jan 2023 14:41:58 GMT
       FINRA-api-request-id:
-      - ad3096a9-c604-4694-96cb-86251e460dfc
+      - 96e15c96-62f3-49c5-b96d-899ede39b215
       Record-Limit:
       - '27'
       Record-Max-Limit:
@@ -191,13 +2198,16 @@ interactions:
       Record-Offset:
       - '0'
       Record-Total:
-      - '254'
+      - '261'
       Response-Payload-Max-Size:
       - 3mb
       Server:
       - cloudflare
       Set-Cookie:
-      - __cfruid=5f21a8c9d68bfdd62848ed3f84f1de843bf0d540-1639741852; path=/; domain=.api.finra.org;
+      - __cf_bm=ZM3lJbuEhit5NJnwCnu8SHfEoKwrpGKcUdDp7maEvSg-1674484918-0-AbmuSrFQDp1H/ucQ1tYrDXJGjkeev7hZLFQpuinFhHdTRTu3ea1eLpEioaQerbv9Q2gojC5lIGk9I6F4Iv85w2I=;
+        path=/; expires=Mon, 23-Jan-23 15:11:58 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=e882aab08331a2d307dbc8111866f89e838406c3-1674484918; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '27'
@@ -206,95 +2216,19 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-61bc799c-5ba7506544678cf44e9ef861;Sampled=0
+      - Root=1-63ce9cb6-3531f01723c991fd4f28f7ed;Sampled=0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - KffwhE7SoAMF-FQ=
+      - fM1sjFNzoAMFaPw=
       x-amzn-RequestId:
-      - ad3096a9-c604-4694-96cb-86251e460dfc
+      - 1bd2d887-306c-4016-8d30-25ca25a0d25e
     status:
       code: 200
       message: OK
 - request:
     body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
-      "fieldValue": "2021-11-08"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
-      "fieldValue": "T2"}, {"compareType": "EQUAL", "description": "", "fieldName":
-      "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
-      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
-      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
-      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
-    headers:
-      Accept:
-      - application/json
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '579'
-      Content-Type:
-      - application/json
-    method: POST
-    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TMo7CgIxEADQu0ydhWQ2gqTVZhtB108hFiMZMWxMJJkUQby7ra9+1w9I
-        FooX5iX2+UmF942SBOngcK3tSlur/s+xkOdNbknAjWhRjwpCrY3n/rrnOHlOEh6BCzg4TOcdKIhU
-        5fT2JLwlYXCAGs1gcDAjfG8/AAAA//8DALO9kf2DAAAA
-    headers:
-      CF-Cache-Status:
-      - DYNAMIC
-      CF-Ray:
-      - 6befefb56e8b3b73-CDG
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 17 Dec 2021 11:50:53 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
-      FINRA-api-request-id:
-      - 6f88eba5-a0d7-4b61-9e3c-4a4c90608426
-      Record-Limit:
-      - '5000'
-      Record-Max-Limit:
-      - '5000'
-      Record-Offset:
-      - '0'
-      Record-Total:
-      - '1'
-      Response-Payload-Max-Size:
-      - 3mb
-      Server:
-      - cloudflare
-      Set-Cookie:
-      - __cfruid=fdcc380496b13ed06be257d0395bd6e17d0753eb-1639741853; path=/; domain=.api.finra.org;
-        HttpOnly; Secure; SameSite=None
-      Total-Records-On-Page:
-      - '1'
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept-Encoding
-      X-Amzn-Trace-Id:
-      - Root=1-61bc799d-2d9ef70051d9402d1c90e90e;Sampled=0
-      X-Content-Type-Options:
-      - nosniff
-      x-amz-apigw-id:
-      - KffwoEaaIAMFWyg=
-      x-amzn-RequestId:
-      - 6f88eba5-a0d7-4b61-9e3c-4a4c90608426
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
-      "fieldValue": "2021-11-01"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "2022-12-19"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
       "fieldValue": "T2"}, {"compareType": "EQUAL", "description": "", "fieldName":
       "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
       "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
@@ -320,7 +2254,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 6befefba8ed7ee64-CDG
+      - 78e14b166863b8fc-AMS
       Connection:
       - keep-alive
       Content-Length:
@@ -328,11 +2262,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 17 Dec 2021 11:50:54 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Mon, 23 Jan 2023 14:41:59 GMT
       FINRA-api-request-id:
-      - fd5a7580-b5ef-4aa3-b1f1-9d78cfab8579
+      - 3ce87e6f-2b35-4d8c-a627-fc01eb96dc5c
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -346,20 +2278,23 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cfruid=9a2d604485576b292a52fbe059544933abb049b0-1639741854; path=/; domain=.api.finra.org;
+      - __cf_bm=B2Ldqig6oBR5Aah9Tm2KQ2R.8laq8Sm4eP3kP7RjF0o-1674484919-0-AY4lCBXRT93UqpPEs+J+XpOiOfxpGvn2EsDumBh9f+LvHmOHemsVR/qZ/lFHK95B353blumIdrugE37wtLGfMBc=;
+        path=/; expires=Mon, 23-Jan-23 15:11:59 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=9daa36afe0a32cfd1b372b0187a765af4dc88be5-1674484919; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - ''
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-61bc799e-15e5b6cc4fe994be4120dcf0;Sampled=0
+      - Root=1-63ce9cb6-7f382692299da67714eceacb;Sampled=0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - KffwvHi1oAMFzWA=
+      - fM1smH95oAMFRMQ=
       x-amzn-RequestId:
-      - fd5a7580-b5ef-4aa3-b1f1-9d78cfab8579
+      - c0113d52-8dc5-43c6-b4ad-2f96a2c583de
     status:
       code: 200
       message: OK
@@ -384,14 +2319,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//fNExDsIwFATRu7jmS7vfjuNQcwNKRJHCFR2KRIFyd07A1E+aZh7f8pnz
-        dT/293Hbj1muJZUOOzTKeQE2sCIXZA9mjqv9Z22RK7OQXZHVgUdUIWdFNse1MSfwGtmRvTFzXPBb
-        PXIwG9kNWfR7iWrkbMjmuFXO5w8AAP//AwCTB+Q3RgMAAA==
+        H4sIAAAAAAAAAwAAAP//fNE7DsIwFAXRvbjmSffdfOxQs4OUiCKFKzpkiQJl74gFMPWRppn7p7x7
+        f+7jeI3bMXq5FsuOdORWzguwkbUAZ7gxJ3LOyKrAiimRPSMnx1PImv6ztvCKTEt+bGRaohbemI2c
+        HFdjhiWq4QU5GzPHBb+1hiuzyvn4AgAA//8DAHdHdqdGAwAA
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 6befefbe9ac232ab-CDG
+      - 78e14b1959cab978-AMS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -399,11 +2334,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 17 Dec 2021 11:50:54 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Mon, 23 Jan 2023 14:41:59 GMT
       FINRA-api-request-id:
-      - 8f3bc3c7-4e48-43e3-adea-cbc47781a276
+      - b8a51ba5-7bcd-43ed-97b7-58e291463959
       Record-Limit:
       - '27'
       Record-Max-Limit:
@@ -411,13 +2344,16 @@ interactions:
       Record-Offset:
       - '0'
       Record-Total:
-      - '254'
+      - '261'
       Response-Payload-Max-Size:
       - 3mb
       Server:
       - cloudflare
       Set-Cookie:
-      - __cfruid=9a2d604485576b292a52fbe059544933abb049b0-1639741854; path=/; domain=.api.finra.org;
+      - __cf_bm=68v8379FffniITQk7sxwN7iLQ.ferrVfYWP99KUq2Os-1674484919-0-AZEClmJBTwTrsM9C4rDFyjK8vu186KH+cJzQHPwp00r1Aeijol1fgqxlmOKh1xZd6NDVLz6JHRPDp9oaphDjh4w=;
+        path=/; expires=Mon, 23-Jan-23 15:11:59 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=9daa36afe0a32cfd1b372b0187a765af4dc88be5-1674484919; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '27'
@@ -426,19 +2362,19 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-61bc799e-2627bfa1300fd75e5284f732;Sampled=0
+      - Root=1-63ce9cb7-7cb6f8735d31d35e1bf70c26;Sampled=0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - Kffw2GYAIAMF0dg=
+      - fM1srGBuoAMFiyQ=
       x-amzn-RequestId:
-      - 8f3bc3c7-4e48-43e3-adea-cbc47781a276
+      - 45b91fa9-8fde-44ed-b408-65c56bf46e3a
     status:
       code: 200
       message: OK
 - request:
     body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
-      "fieldValue": "2021-11-08"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "2022-12-19"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
       "fieldValue": "OTCE"}, {"compareType": "EQUAL", "description": "", "fieldName":
       "summaryTypeCode", "fieldValue": "ATS_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
       "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
@@ -464,7 +2400,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 6befefc23c803329-CDG
+      - 78e14b1b4bbcb819-AMS
       Connection:
       - keep-alive
       Content-Length:
@@ -472,11 +2408,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 17 Dec 2021 11:50:55 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Mon, 23 Jan 2023 14:41:59 GMT
       FINRA-api-request-id:
-      - e3e17a3d-7c39-4277-b99b-d57ff950e757
+      - fd5b3d0f-6658-41f0-a868-bc3fce70d07c
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -490,20 +2424,23 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cfruid=626053234515a025cd2f279b42347ef05289db27-1639741855; path=/; domain=.api.finra.org;
+      - __cf_bm=nk9XXa9p92a6EJQVvpvVJ49VgKNncWCT4LubKdxE2qU-1674484919-0-AcKSl3D61Bwf26HMn97PIoxEQjkxe7u4fIbyX3/R8P+bBUK46vB2c6jdN5kHhrJ29jDCICXbOiymWBEY/CPCYh4=;
+        path=/; expires=Mon, 23-Jan-23 15:11:59 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=9daa36afe0a32cfd1b372b0187a765af4dc88be5-1674484919; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - ''
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-61bc799f-165a0e6f7f7690985cd45443;Sampled=0
+      - Root=1-63ce9cb7-2ffa859b3947ab6d1cc1cf73;Sampled=0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - Kffw8H-AIAMFTTg=
+      - fM1suF_foAMFdUg=
       x-amzn-RequestId:
-      - e3e17a3d-7c39-4277-b99b-d57ff950e757
+      - de683ecf-8cba-4445-bc97-880903dfeec3
     status:
       code: 200
       message: OK
@@ -528,14 +2465,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//fNE7DsIwEAbhu7hmpX/Xj9jU3CAlokjhig5ZokC5OyfI1J80zTx/6Tvn
-        e1/HZz2ONdM9hcLN3SLSebtmr8jqzA4si4rsnZnjKtesYbExC9kzshpwtyzkyMjOcQ1m+K3NoiH7
-        YOa44LeaRWd2ZC/Iot/VsiNHSefrDwAA//8DALC4jk5GAwAA
+        H4sIAAAAAAAAAwAAAP//fNEhDsJAFEXRvYzmJ++/TukMmh1UEkRFFY5MgiDdO8HD1Se55t7e5bXv
+        j3Vsz3Hdxl4uxfIUypDLcfrJjnT4jJydmeOagTPcmBM5K7IWYMWUyK7IyfEUsqb/rI5L1HHJl41M
+        S9TCndnIyXE1ZliiJTwjZ2PmuGo57h8AAAD//wMAiezq50YDAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 6befefc62f59cda7-CDG
+      - 78e14b1e9c52b891-AMS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -543,11 +2480,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 17 Dec 2021 11:50:56 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Mon, 23 Jan 2023 14:42:00 GMT
       FINRA-api-request-id:
-      - b8cd936e-77c4-4578-a310-3711cc7e2829
+      - cd5b0fea-b14e-4cd4-b574-3ffda410f380
       Record-Limit:
       - '27'
       Record-Max-Limit:
@@ -555,13 +2490,16 @@ interactions:
       Record-Offset:
       - '0'
       Record-Total:
-      - '256'
+      - '263'
       Response-Payload-Max-Size:
       - 3mb
       Server:
       - cloudflare
       Set-Cookie:
-      - __cfruid=2350a044038da67fdc7139f2d61648d871ab8a28-1639741856; path=/; domain=.api.finra.org;
+      - __cf_bm=768W6UjTFW79XKpTK4_e0BpoDVjW7UXi0dA1o2798TQ-1674484920-0-AUTrbQm7HQbf0MNZPtBRscNkIV2qJt1eW+GsWPuprzqmoRYOZqw4lzsNj0PH7yATTvkdMemZqqtqF2HbMlQHzh0=;
+        path=/; expires=Mon, 23-Jan-23 15:12:00 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=a303fb3a58adefef434360de52541a0df4e56951-1674484920; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '27'
@@ -570,19 +2508,19 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-61bc79a0-456245f84fe25b311400a6a4;Sampled=0
+      - Root=1-63ce9cb8-651a1a5256e4a2fb5968e004;Sampled=0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - KffxDFC6IAMF84A=
+      - fM1szH4rIAMFTdQ=
       x-amzn-RequestId:
-      - b8cd936e-77c4-4578-a310-3711cc7e2829
+      - f769a570-5f91-4687-99fd-6aaa923a1801
     status:
       code: 200
       message: OK
 - request:
     body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
-      "fieldValue": "2021-11-22"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "2023-01-02"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
       "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
       "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
       "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
@@ -603,24 +2541,25 @@ interactions:
     uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
   response:
     body:
-      string: '[]'
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJsDVqKy6dDHR+jMYhzOcKRHBlGMgxnd39Zu/6wck
+        C8UL8zO2caKZ95WSBGngUC9w1a+N+j/HmTxvck0CzuASe6sglFJ5bK97joPnJOEReAYHh+G8AwWR
+        ipzenoS3JAwOrLbYadNZhO/tBwAA//8DAJ0TFv+DAAAA
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 6befefca7f9c3b2b-CDG
+      - 78e14b208d1a0e31-AMS
       Connection:
       - keep-alive
-      Content-Length:
-      - '2'
+      Content-Encoding:
+      - gzip
       Content-Type:
       - application/json
       Date:
-      - Fri, 17 Dec 2021 11:50:56 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Mon, 23 Jan 2023 14:42:00 GMT
       FINRA-api-request-id:
-      - 2f31f724-fb7a-48c0-8fda-6bda8b1acae4
+      - 60cb54b1-367d-418c-8d9a-55c845b41cfa
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -628,26 +2567,2033 @@ interactions:
       Record-Offset:
       - '0'
       Record-Total:
-      - '0'
+      - '1'
       Response-Payload-Max-Size:
       - 3mb
       Server:
       - cloudflare
       Set-Cookie:
-      - __cfruid=2350a044038da67fdc7139f2d61648d871ab8a28-1639741856; path=/; domain=.api.finra.org;
+      - __cf_bm=5xLwcGEj3EbPRScUu9hK3Sb5haCfmUvs_odjRZdQa3I-1674484920-0-AToq47mGH0QSWKsPZPKRsIzWQ+F5iUkVqaCLi1OK7ICh5PF02fBrYLEbMzHvJe3yaUuHZydpvBrX2DwcAWFDttI=;
+        path=/; expires=Mon, 23-Jan-23 15:12:00 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=a303fb3a58adefef434360de52541a0df4e56951-1674484920; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
-      - ''
+      - '1'
+      Transfer-Encoding:
+      - chunked
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-61bc79a0-71130e337f3bb2e762ab684c;Sampled=0
+      - Root=1-63ce9cb8-33da20f34b70288e67af34aa;Sampled=0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - KffxJGHHoAMF_wg=
+      - fM1s2FtgoAMFf6g=
       x-amzn-RequestId:
-      - 2f31f724-fb7a-48c0-8fda-6bda8b1acae4
+      - 65249685-ebc1-48d1-a422-6aed0523ca9b
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-12-26"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJgVMsKy6dDGx9WcwDmc4IylCA8dAjO/u6jd/tw9w
+        YgxXoiW0+YWZjhUje25g1cZoM2wH8X9OGR3tUo0MViqttBTgS6k0t/cjhdFRZP/0lMHCNF4OICBg
+        4fPqkGmPTGBB9Up3veykge/9BwAA//8DAOLk6CCDAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b23ab66b936-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:01 GMT
+      FINRA-api-request-id:
+      - 96108d71-5447-4ad2-aef0-af83ee007089
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=FJkCh046.zrQaohyK0qrkTwXUBPpr8U.8E9n6y6nqhk-1674484921-0-AfvkkRufygzu7qyfwQyfTRZzwMI4s1s5lmN5xrXm4hdMHF058Bb4b2KdsW2rbyjXvKdup/o7uKwN9vp74lfoDfw=;
+        path=/; expires=Mon, 23-Jan-23 15:12:01 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=a92a13dd95feaf603a832a52e51d7088b4245e23-1674484921; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cb8-36fc2fe43f68e2dd719bba6b;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1s7FFLoAMFeiA=
+      x-amzn-RequestId:
+      - 25d99f12-3051-4091-864f-526736077066
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-12-19"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKOw4CIRAA0LtMzSbAYhRabbYx0fVTGIsxjJGIYGAoiPHutr76XT7AmTGeiZ6x
+        zw8stGuYOHAHp+1S2ZWR4v8cCnpa55YYnDJmVAsBodZGc3/dcpw8JQ73QAUc7KfTFgRErHx8e2Ta
+        IBM40FKPg1SDtPC9/gAAAP//AwBR9Eq9gwAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b26cb46b8f4-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:01 GMT
+      FINRA-api-request-id:
+      - e41a8df3-d734-4b51-8d3b-831c605df1f1
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=PcCWzVOpXstzoETLaaXfwvalI5_5UAyHp5.G3dTmKkM-1674484921-0-ATV/l6MIs+RYH5c6+uzC2ss77B99mmz1sXZJaz4oIYVIhrcjsLzK9O1HWks21As/T2hxMjbz1C3/L23kJSgSzcA=;
+        path=/; expires=Mon, 23-Jan-23 15:12:01 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=a92a13dd95feaf603a832a52e51d7088b4245e23-1674484921; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cb9-7762a6c40566439c76a9b17a;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1tAHwsIAMFpog=
+      x-amzn-RequestId:
+      - 1fd3dfae-d392-4b2f-bb5d-857e52461fde
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-12-12"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJlBsKqy6dDHR+jMYhzOcKRHBwDEQ47u7+s3f9QOc
+        GMOF6BnavGCmfcXInhtYbfRohrUR/+eY0dEm1chg1TCulBTgS6k0t9c9hclRZP/wlMHCYTrvQEDA
+        wqe3Q6YtMoGFXva6k6qTGr63HwAAAP//AwAY33nugwAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b2aed550121-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:02 GMT
+      FINRA-api-request-id:
+      - 3533ea50-df5d-4b64-8be0-7bad2539e54f
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=L6JTT91mlv7bRj17BihzyP0Epsm66aVAqb6D5QSYOzY-1674484922-0-ATd86AdxqW53V0UAEes1P/spqhd+xC8ZRaIoqRq94l0P3spgN5SBmb9rEYv0djVGsvtfnwVnvyGcXur8ojG+sWk=;
+        path=/; expires=Mon, 23-Jan-23 15:12:02 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=bf14621b1b5e5d403cc452dd50618cd5fd657ab9-1674484922; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cba-0e6b4ab43f000b9c18053b84;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1tKH1SIAMFXaA=
+      x-amzn-RequestId:
+      - 9bf1545b-d570-4b30-a56f-8b4dd290f1ea
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-12-05"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKOwoCMRAA0LtMnYVkMETSarONoOunEIuRjBg2biSZFEG8u62vftcPSBZKF+Y5
+        9elJhfeNFonSwRtrnUbt1P85Fgq8yW0R8Ebb9copiLU2nvrrntMYeJH4iFzAw2E870BBoiqndyDh
+        LQmDB9SIg8EBHXxvPwAAAP//AwAKbc0+gwAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b304df20e44-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:03 GMT
+      FINRA-api-request-id:
+      - b6996b94-477c-43a7-a3d2-98c154692f67
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=10ep2lX9ZFLUJn1i1PiCqBu_EdLFh1Sh61hhwmEkXe4-1674484923-0-ASLlhAopHVBnSrttlCPSRjIUnbrT4X5WhXWnG9V2FeeHLRl2NIE0BA9SIGro+WnLwkZlHfq/d3NBTtHBkByX4TE=;
+        path=/; expires=Mon, 23-Jan-23 15:12:03 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=da4b6077327f5c73c7dfc4350fe8220505a57bd3-1674484923; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cba-2889b27e19dccd524c2f7656;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1tQGqYIAMFaGA=
+      x-amzn-RequestId:
+      - fe3989b0-4be8-4132-a686-f1e1ac0ea21f
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-11-28"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKvQ7CIBAA4He5mSYesdWy6tLFxNafwTic4UyJCA0cAzG+u6vf/N0+IFHIX5lf
+        vk4zJT4WCuKkgsGuRcS2U//nlMjyLpYgYLabfq0VuJwLT/X9iH6wHMQ9HScwMA6XAyjwlOW8WBLe
+        kzAY0CutG9QN9vC9/wAAAP//AwCgYhTAggAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b33be55b8ea-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:03 GMT
+      FINRA-api-request-id:
+      - c9b2ee03-d9fe-40f1-8329-b209ba90a094
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=ul0TljF_MDwqEON9nAPNUvuyBr8Xr2PShHuRfEMOF0o-1674484923-0-AZ6L1RLKAN2Fra8jZrB5qI3wggESTrzD+IZqIa1YEgP3VP4Q+YXWlIctD51cBTxiSiV+5TaEeBoxkIWUsEwjC9Q=;
+        path=/; expires=Mon, 23-Jan-23 15:12:03 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=da4b6077327f5c73c7dfc4350fe8220505a57bd3-1674484923; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cbb-186768bd36b1cf361775b931;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1tVGIDIAMFQPA=
+      x-amzn-RequestId:
+      - bef2f054-266e-43b2-84f1-ffc41cf86dc8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-11-21"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq7CgIxEAXQf7l1BDOsGNJqs42g66MQi5GMGIyJJLPFIv672AmnPOc3
+        tCink8gjTcOdq2xHzhp1gre0IOeIzP/ZVw6yKmNW+GXnbGcQWxtlmJ7XkvogWeMtSoXHrj9uYJC4
+        6eEVWGXNKvCgOdHM/uBz+QIAAP//AwAH0vb5ggAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b38cd65b980-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:04 GMT
+      FINRA-api-request-id:
+      - 73507407-e03c-4209-b0ec-d8c4f64c7562
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=D_e2W9vsWc0_DGykclizST2Uwe78TFE9rMQfZB8nzWg-1674484924-0-AQTtW3HYtBMO+vEOZLkYGPw8p1caYwQorXavK8T5x+a8MsMCQDDi+ALuoSClB3iv2v5+HnotgEoDUeBDVCqgD+E=;
+        path=/; expires=Mon, 23-Jan-23 15:12:04 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=5b757c617a2e02f177ce977c3b32b24237a553c5-1674484924; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cbc-62546fb113ee1ed937c6a2ac;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1tdGKNIAMFZxA=
+      x-amzn-RequestId:
+      - b351c7db-ac15-40f6-8931-108cd47d540e
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-11-14"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKOw4CIRAA0LtMzSYw+ElotdnGRNdPYSzGMEayCAaGghjvbuur3/UDkoXihXmO
+        fXpS4X2jJEE6ONQrq41Zq/9zLOR5k1sScEZbiwsFodbGU3/dcxw9JwmPwAUcHMbzDhREqnJ6exLe
+        kjA4QI04GBz0Er63HwAAAP//AwDLEAQVgwAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b3d3ff0b963-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:05 GMT
+      FINRA-api-request-id:
+      - 20790fe6-6157-443f-8747-b35699cdb766
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=bzkLFsBwt0wNWQCBt4nSFJb.xhlAsCNZIk_9DO5Z460-1674484925-0-AZcEVK/IuC1HS8qfAxK+wMT8U+yqcpInqAYXgrxVyNsxBWbD1OenDdqLtu7cNi4MUu957y2hgYhD13/4UCB3xU4=;
+        path=/; expires=Mon, 23-Jan-23 15:12:05 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=76bf53a27cc06fa5e400c7211c61fb9bba3d81a0-1674484925; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cbd-7e059ca733a3bb027eab3128;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1tkGy0oAMF4gA=
+      x-amzn-RequestId:
+      - 90231940-b54f-4846-bf52-e1df2e878a35
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-11-07"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKvQ7CIBAA4He5mSZwtqlh1aWLia0/g3E4wxmJCAaOgRjf3dVv/i4fkCQUzszP
+        0JYHZd5XiuKlgcURB6NRq/9zyOR4k2oUsKZfmWFU4EupvLTXLYXJcRR/95zBwjyddqAgUJHj25Hw
+        loTBAmrEzpgO1/C9/gAAAP//AwDTkU0CgwAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b410e77b8c0-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:06 GMT
+      FINRA-api-request-id:
+      - 7b70efaa-5325-441d-8226-87103bb1be8f
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=l7rdgDGn3GC31zHsBOIF2sN2PuX3AZ5fJS2fdYnQ38U-1674484926-0-ARmujS2JXFu26kjL3S8qHtPuC+u+ze9+5tOwPsIBD834T+EG4rUS3/qS4v4pfwqyVjjgOcU8vICEFzbY8EW3HQA=;
+        path=/; expires=Mon, 23-Jan-23 15:12:06 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=df74b60f45a61a2d28a24f5e53e526c2c48ccbdf-1674484926; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cbd-1c1917926136765126d93eef;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1tqHqYoAMFpEg=
+      x-amzn-RequestId:
+      - b7e2144b-7e3d-41b8-8143-8cdb4d162f11
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-10-31"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMo7DgIhEADQu0zNJjAbP0urzTYmun4KYzGGMUtEMDAUxHh3W1/9rh+Q
+        JBQuzM/Qppky7ytF8dLAmiWu+0Wv1f85ZnK8STUK2GGFelDgS6k8tdc9hdFxFP/wnMHCYTzvQEGg
+        Iqe3I+EtCYMF1IidMR0a+N5+AAAA//8DAM1xS2mCAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b4458390a67-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:06 GMT
+      FINRA-api-request-id:
+      - c285d0ea-ba87-4e69-a7af-5798dcffa9ae
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=s.yw47sJ2gfmaM5g8uDKAOLNG7HtJWgKGKSg0f8dxpw-1674484926-0-AXmvXADnCcCO5zX8VPHlViDJTmr1Nis/fpDU77Plrl/8skzdQIrfBnUlgyHn+pVxrQfin+8tKyDceiLzIEOA2Tw=;
+        path=/; expires=Mon, 23-Jan-23 15:12:06 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=df74b60f45a61a2d28a24f5e53e526c2c48ccbdf-1674484926; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cbe-69188d4b6ba9de06013946b9;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1twHf1oAMFWmQ=
+      x-amzn-RequestId:
+      - 2cf8ba8b-b6b7-440f-9cf2-393663cc4e45
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-10-24"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKvQ7CIBAA4He5mSZCS9Oy6tLFpNafwTic4YxEhAaOgRjf3dVv/q4f4MjoL0Qv
+        X5cnJpoLBnZcwch+0EM/avF/jgktbWMJDGbsdNsKcDkXWur7Hv1kKbB7OEpg4DCd9yDAY+bTapFp
+        h0xgQG2UaqRsZAff2w8AAP//AwBikfQaggAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b48c81b0e86-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:07 GMT
+      FINRA-api-request-id:
+      - 329f54a0-aea8-45a5-a9c1-0aa71926dd4d
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=XbAwIw13Ju_ovEYWskXTCycgN7MV4kAJCruUz.Ur4OQ-1674484927-0-Af6pU2CoPBG5KsUgCMxqRFQfD/VHvWSiq3z2auBN2LmQ9p3k8XhwWoeceoszWssgPSMzFEZF6F0g0sSWWjy5ECo=;
+        path=/; expires=Mon, 23-Jan-23 15:12:07 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=6e4a431fcc66c8ce3d7c2c37bb6f319e9de8a396-1674484927; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cbe-6aa305676a7dbef2264dc0fe;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1t3FRroAMFU8A=
+      x-amzn-RequestId:
+      - 99d963eb-c8d8-40c1-867d-6f1aee60dd27
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-10-17"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKvQ7CIBAA4He5mSaAqSKrLl1MbP0ZjMMZzpSI0MAxEOO7u/rN3+0DnBjDlegV
+        2jRjpmPFyJ4bWC3lut+aXvyfU0ZHu1QjgzVGq5UAX0qlqb0fKQyOIvunpwwWxuFyAAEBC58Xh0x7
+        ZAILWmrdKdXJDXzvPwAAAP//AwDiomqpggAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b4c48030eab-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:07 GMT
+      FINRA-api-request-id:
+      - 955ea7e2-20de-4743-b8a9-13d112d7a691
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=1WdXsaNr6Po1WOuQiTbPJzNb9SizADm511aof1yyYI0-1674484927-0-AfycjVe84F1oGTopKcBSghZQxUu9df3rGnOnYk5zFP1BjOt/CSBN4sS83FILtHIDRcHowhhI8KawmKVzxJoXIUc=;
+        path=/; expires=Mon, 23-Jan-23 15:12:07 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=6e4a431fcc66c8ce3d7c2c37bb6f319e9de8a396-1674484927; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cbf-236edb6c1a3631936c47c49b;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1t8FrjIAMFZpg=
+      x-amzn-RequestId:
+      - 7e43551a-6205-40a6-9db5-8f8ecf95fb8f
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-10-10"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMo7CgIxEADQu0ydhXzIimm12UbQ9VOIxUhGDBsTSSZFEO9u66vf9QOc
+        GeOFaIl9fmKhfcPEgTs4o41dj0qK/3Ms6GmTW2Jwyq7sqASEWhvN/XXPcfKUODwCFXBwmM47EBCx
+        8untkWmLTOBAS60HJQej4Hv7AQAA//8DALwpRUyDAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b4f7df0b7e5-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:08 GMT
+      FINRA-api-request-id:
+      - 4190d38f-8d77-40fd-ae52-e4b47d3cd539
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=vWlXBpygVMQ6Igu5EhKE6XSs4TVNyFQ66CGecm1RmUs-1674484928-0-AYEhi+953mZCuPmLS6gbCTpXpYi2pmgnvQUGcyWTB8wBPLLmse5umSus7LQm0Ou/TH+9AVA6Avgq5Hdlk9CH4rg=;
+        path=/; expires=Mon, 23-Jan-23 15:12:08 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=31860a03104a15b057ffb993659da59e298d190a-1674484928; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc0-261fb2bb4714013a676f6582;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1uEFZ-IAMFdeQ=
+      x-amzn-RequestId:
+      - 9f004bd5-b8a2-426f-a536-5f1886b9b67e
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-10-03"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMo7DgIhEADQu0zNJg7IxtBqs42Jrp/CWIxhjEQEA0NBjHe39dXv8gHJ
+        QvHM/Ix9flDhXaMkQTo4Y8zSaovq/xwKeV7nlgQcjtasRgWh1sZzf91ynDwnCffABRzsp9MWFESq
+        cnx7Et6QMDjQC60HxEEjfK8/AAAA//8DANwFWu+DAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b546af6b986-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:09 GMT
+      FINRA-api-request-id:
+      - 89984388-0099-4db0-aaa3-36f715dd533a
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=VF_YQ747zOeq4XjEAOzoA2SJwvxABGxIkU2E0w6ALwk-1674484929-0-AQub424W1p2IYxcBqyfdT8JjgS+6pyg1CVUtSZPwh2DHT9SB8ByKq6w+ULDk3Y/zJ0wCbLu4BO3m5E5UugyRN50=;
+        path=/; expires=Mon, 23-Jan-23 15:12:09 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=d66da185c3e1d5ac532b5e7c02623eb887dabf93-1674484929; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc0-6916f0e76a7ce7503f79cf20;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1uJE9QIAMFnSw=
+      x-amzn-RequestId:
+      - 817278be-b946-4fad-bb4c-6be02cfcb157
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-09-26"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMqxDsIgEADQf7mZJnB2aFl16WKirToYhzOckRTBwDEQ47+7+uZ3/YAk
+        oXBhXkObn5T5UCmKlwbWjEbjiIP6P0smx9tUo4A1Gvt+o8CXUnlur3sKk+Mo/uE5g4XjdN6DgkBF
+        Tm9HwjsSBguoETtjOo3wvf0AAAD//wMAErv80IMAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b581a1cb96e-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:09 GMT
+      FINRA-api-request-id:
+      - 5564ab88-df5e-476a-a738-235a8d130f1b
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=LO3nbQCMwzyqDwTeUpvqARGyYfHUjU21PvJBK1vzL.E-1674484929-0-AUfTDHlWjt4GJtTLQtfySf8vmH+MFWaeeJ79R36/WMbiTHy33l596o0Mf+QqKLN0xqS/lDLMChwMcZ1wkFUfaME=;
+        path=/; expires=Mon, 23-Jan-23 15:12:09 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=d66da185c3e1d5ac532b5e7c02623eb887dabf93-1674484929; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc1-1a93393437892a8612046e95;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1uPGF8oAMF50g=
+      x-amzn-RequestId:
+      - 7c6dc879-df89-4037-94f1-15fa80d5aa10
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-09-19"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJnCNxbDq0sVE689gHM5wRlIEU46BGN/d1W/+rh+Q
+        LBQvzHNs05MW3ldKEqSBQ7uyuO4H9X+OC3ne5JoEnOk1DlZBKKXy1F73HEfPScIj8AIODuN5Bwoi
+        FTm9PQlvSRgcoEbsjO6Mhu/tBwAA//8DANttBl2DAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b5bf8640a65-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:10 GMT
+      FINRA-api-request-id:
+      - 35d4cf55-65f4-4d9f-9328-3d57c2e92b78
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=NbYgzE1sACH7JrtVtibTnUoO08wkiE6I0gBMMMvxKHA-1674484930-0-Ac1ha4EkgxMwK1IbZoYeAEqt9WUEnrwNcete68U4pt1YCjGu2lMzG29m9pedriggm20oJ+1ExbAnz3ag5jZwo60=;
+        path=/; expires=Mon, 23-Jan-23 15:12:10 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=c7b49d78d8ef5d7efdef19f257e4441e58db0372-1674484930; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc1-033415024e4fd45b10dd9513;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1uVG2boAMFZRw=
+      x-amzn-RequestId:
+      - f75cb356-ba12-407c-8308-39eef4592311
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-09-12"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKvQ7CIBAA4He5mSaUEtqw6tLFROvPYBzOcEZSBAPHQIzv7uo3f9cPcGIMF6I1
+        tOWJmfYVI3tuYLWZzDBqLf7PMaOjTaqRwfbTaIwU4EuptLTXPYXZUWT/8JTBwmE+70BAwMKnt0Om
+        LTKBBSWV6nrZyQG+tx8AAAD//wMAgu8E9oMAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b5f496e0a6d-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:11 GMT
+      FINRA-api-request-id:
+      - 09b77a10-38eb-4fb6-8342-9d7474671de3
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=GR5Kj_W.U8UkaFRRi.4unsJB52w3_e3WAjqr5PTnlUE-1674484931-0-ASusv/HP4NY88ufT11EZTQOcpeMvEjNwhj47qbSs6J8OeosjwOLJdCBBk0a4KVF6kQT0fM0ATMBnLI5JvHQghFE=;
+        path=/; expires=Mon, 23-Jan-23 15:12:11 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=3fc790cd2f2716d33ff1763e637237b6bd69549a-1674484931; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc2-7bfc330f231bc00c4e8a4ea3;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1udHJ0IAMFcfg=
+      x-amzn-RequestId:
+      - 24594304-0b00-4946-801d-55ca99367673
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-09-05"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJvSURlh16WKi9WcwDmc4IxHBwDE0xnd39Zu/ywck
+        C8Uz8zPO04MK7xolCTKDW6JF0w9W/Z9DIc/r3JKA61cLbYyCUGvjaX7dchw9Jwn3wAUc7MfTFhRE
+        qnJ8exLekDA4QI3YadvhAN/rDwAA//8DAJKh55aDAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b64e91fb918-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:12 GMT
+      FINRA-api-request-id:
+      - f27455a9-76f0-4022-a2fb-f6079e780e30
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=7Wf.v0rNXebec3ogAK.qa2r1AykaJYBcM5iiqc2kUAI-1674484932-0-ARo6N5m+8p1LU2rv8MfS+OUF9ZzTNMT1h+M8NiwzMTeDcqereDrbSVVBqmBx1IqQ/8bf2xoRGwtAcSqK+8OkW+k=;
+        path=/; expires=Mon, 23-Jan-23 15:12:12 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=6c377ea1113686bc579cc1534afc75cbbd08eb45-1674484932; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc3-210963d6682ddded131c05e3;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1umHOPIAMF68A=
+      x-amzn-RequestId:
+      - b351df55-bc14-43b0-a835-260b524cae3a
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-08-29"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKvQ7CIBAA4He5mSYUrRZWXbo00fozGIczXCORgoFjIMZ3d/Wbv9sHODL6K9HL
+        1+mJiQ4FAzuuYNqu75TcrMT/OSW0tIslMJh+q9dagMu50FSXR/SDpcBudpTAwHG4jCDAY+bz2yLT
+        HpnAgJJKNVI3rYbv/QcAAP//AwAEofycggAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b6a1a75b96c-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:12 GMT
+      FINRA-api-request-id:
+      - d5e3d7a3-f951-4794-99d5-9d13014489b6
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=Az3bMybPxfcuC3ZkTo5rUiK9_L4JfAdZSdDk8G7kSAA-1674484932-0-AU4daz1HXeEXqJocsriPQc84Q0VVtTjYsQABQDGm8T11JAVHGTttvK7AXOs+u2ct1j5qOidpqgeUWJYwd/g0Yjw=;
+        path=/; expires=Mon, 23-Jan-23 15:12:12 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=6c377ea1113686bc579cc1534afc75cbbd08eb45-1674484932; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc4-7b24440d3c3262bd278c2e7d;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1usFWSoAMFnGw=
+      x-amzn-RequestId:
+      - 0a123521-fcb9-4a19-bfac-5352c3d44d11
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-08-22"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMqxDsIgEADQf7mZJpRqFVZduphorQ7G4QzXSEQwcAzE9N9dffO7fYEj
+        o78SvXwdn5joWDCw4wqm7Vbrjd724v+cE1raxRIYjJad7gW4nAuN9f2IfrAU2M2OEhg4DZcDCPCY
+        efpYZNojExhQUqlG6qZVsNx/AAAA//8DAM6s+46CAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b6e299d0eaf-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:13 GMT
+      FINRA-api-request-id:
+      - 5618d794-7f12-40d1-9657-610a75c93dc7
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=9ToGaFgZtMSy62UaBw4ysDlwQkCCyxStiKLp2nRBZMI-1674484933-0-AfnQbZ/jWKxeZYwadVLz1s21SwfR/pCY+K1KQV6WkFyA/UAwRQ+Z3FuD6Hs3Jq3IRXldBgTTRxFDMEIPa2Dnxio=;
+        path=/; expires=Mon, 23-Jan-23 15:12:13 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=caf9b0ed10d44934c7cbf96091e1678b2d927d71-1674484933; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc5-3bae033b1d8cad8067fa5df9;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1u1Gp5IAMFXpg=
+      x-amzn-RequestId:
+      - ff753fd7-7f82-4590-86b3-0142c226175f
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-08-15"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJhQLVlZdupho/RmMwxnOSEQwcAzE+O6ufvN3+QAn
+        xnAmeoY2PzDTrmJkzw2s0sMwLrUR/+eQ0dE61chgezPqfiHAl1Jpbq9bCpOjyP7uKYOF/XTagoCA
+        hY9vh0wbZAILSirVyVUnDXyvPwAAAP//AwCuCSKhgwAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b73ae6db948-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:14 GMT
+      FINRA-api-request-id:
+      - 0fbe5095-e1e3-4343-b1eb-cf2818177c33
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=gFMOwDV_K9LZLfjqcyM9ZBfrCBceWO33y4Qr5SYZWyg-1674484934-0-ASuTvrzBT6yzKnrPZCSaYhUXHjP8XjDi/eI1yHHVAZf1nI1TJro/hSrv6xjvwEptgbXKE4lZiyvGgMBJ8PTOkuA=;
+        path=/; expires=Mon, 23-Jan-23 15:12:14 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=f0adcd1a666a0c7e9d6a124ecc951e2b1c94405b-1674484934; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc5-16ad047e4e3a6bd73ddda37c;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1u7F11oAMF30g=
+      x-amzn-RequestId:
+      - 5809df28-105b-42fc-b447-0f839ac49984
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-08-08"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKOw4CIRAA0LtMzSY4uh9ptdnGRNdPYSzGMBuJCAaGghjvbuur3/UDEoX8hfnp
+        6/SgxPtCQZxUMKt2wK7TS/V/joksb2IJAgYXfdujApdz4am+7tGPloO42XECA4fxvAMFnrKc3paE
+        tyQMBlAjNnpocA3f2w8AAP//AwD4+lC7gwAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b76fbe00be1-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:14 GMT
+      FINRA-api-request-id:
+      - 539564f6-4a14-4c92-8569-761f0d702ff2
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=ylSGhIlCVy1Mwj3RizZ2fqMjgLzgA5gTfEYpdjSIe0g-1674484934-0-AXeR7dM+h8uktQ+gmvMDHez7ZckrDH09YvKyedBYY18imjoyl8nqxKHt4NLCwYfBbV95G8dSLfRvJy1DbxnQEY4=;
+        path=/; expires=Mon, 23-Jan-23 15:12:14 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=f0adcd1a666a0c7e9d6a124ecc951e2b1c94405b-1674484934; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc6-259489932750e2500bfb6f4c;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1vBFqkoAMFRog=
+      x-amzn-RequestId:
+      - 2f36dd26-5410-4aae-93d3-d9a274ede6aa
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-08-01"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKvQ7CIBAA4He5mSblWhNh1aWLidafwTic4YykCAaOgRjf3dVv/q4fkCQULsxL
+        aPOTMu8rRfHSwKIextWgR/V/jpkcb1KNAlZrY4xR4EupPLfXPYXJcRT/8JzBwmE670BBoCKntyPh
+        LQmDBewRu37dIcL39gMAAP//AwAlzXnOgwAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b7b5bee0e14-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:15 GMT
+      FINRA-api-request-id:
+      - bf751cbe-d752-401e-b089-a83c90616d5e
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=vZJftPrHwfHUZiRzS9SqQl4k7o9kxBf_SwLDn9nvcJM-1674484935-0-AcfS8ReEzd1P+YizBnVjUK+yf0lF+w19PEOFNujPTuoJCh2aGXWNCW/iRaVuwXhmln42aFWJnd8TFWNLusJeq70=;
+        path=/; expires=Mon, 23-Jan-23 15:12:15 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=5977a0f88ce1afeb571e6c4de8a28432646abcf8-1674484935; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc7-4f6b73a6352c19303800678e;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1vIF6NoAMFQpw=
+      x-amzn-RequestId:
+      - 858f72a3-8ba8-4d8d-980e-4b956244ed7b
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-07-25"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJldI1bLq0sVE689gHM5wRiKCgWMgxnd39Zu/ywck
+        CYUz8zO0+UGZd5WieGlg+8XS4IhG/Z9DJsfrVKOA7RGH0SjwpVSe2+uWwuQ4ir97zmBhP522oCBQ
+        kePbkfCGhMGCRq07XHX9AN/rDwAA//8DAId0ZZ2DAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b7ebda6b79d-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:15 GMT
+      FINRA-api-request-id:
+      - 3f7b1a29-d4f5-48b1-8854-7c5403297e0b
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=gzNwdf0he3lM7JpIgGDZPatdcMMChfeIsdylKPidvvw-1674484935-0-AdipPlO8S/zNw/fn9lkrUcSy4ccw2wJfrrfmm1UVYjQpTTZkbvQ6hyKB5kh7jCmXDrjx2KP3EXi2/RL6Ablgegk=;
+        path=/; expires=Mon, 23-Jan-23 15:12:15 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=5977a0f88ce1afeb571e6c4de8a28432646abcf8-1674484935; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc7-33d3055f10d9879064085a78;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1vNEITIAMFYdA=
+      x-amzn-RequestId:
+      - cdc6fdc6-b4a9-4ee8-a307-d0773df41ffe
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-07-18"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0zKuwrCMBQA0H+5cwp5tBqy6tJF0PoYxOFKrzQYE0luhiD+u6tnPtcPcGIMF6Jn
+        aNOCmfYVI3tu4IxR1qzWg/g/x4wzbVKNDE4NvZK9AF9Kpam97imMM0X2D08ZHBzG8w4EBCx8es/I
+        tEUmcKCl1p20nbTwvf0AAAD//wMAgPJw2IMAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b81d8dcb945-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:16 GMT
+      FINRA-api-request-id:
+      - 1fff3992-0419-405b-b542-ee9ad420dc25
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=4TXqULxs5EknSkHxby5OF.RUxcGWLGcV24wMXJc38b4-1674484936-0-AbRyNBOjY/0vWa51sU3Co6Y0ksm4+8to00VWQc4iNctH0t2K+0O9uElNB71AjjpoZHAk/c20oy9LcgNlrMLBB7M=;
+        path=/; expires=Mon, 23-Jan-23 15:12:16 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=e1150e419af105118a171e6ab5128034f4b4270f-1674484936; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc8-7b849df1115a70c926c2e95a;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1vSFYYIAMF1Rw=
+      x-amzn-RequestId:
+      - 340eb722-9d06-46d8-aef6-783a4ea07f6f
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-07-11"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMo7DgIhEADQu0zNJgxBs9Jqs42Jrp/CWIxhjEQEA0NBjHe39dXv8gHJ
+        QvHM/Ix9flDhXaMkQTo4g6O2Fo36P4dCnte5JQGHaBfLlYJQa+O5v245Tp6ThHvgAg7202kLCiJV
+        Ob49CW9IGBwYbcygx0EjfK8/AAAA//8DABkIs2SDAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b852a50b99a-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:17 GMT
+      FINRA-api-request-id:
+      - 6e16a1eb-45a7-4824-97e6-d1142cf3eb5a
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=YNZ4e1EZRdXCIXm.neYwrub.fYZFXcj6AGJ_eHK9HzQ-1674484937-0-AR5GKG+pXTKl21NMMY7neOZ8KqeoRZtVNGt+bz4fKFMm8vO9tvhrjFS70O+SiwqCGrqvePM5kzcF/+cA3HTbAtU=;
+        path=/; expires=Mon, 23-Jan-23 15:12:17 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=8fd5c6476ec50b17de1570be0d503bcfd8ee40a8-1674484937; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc8-2cb6b3bc11095b2a3d683f14;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1vaEwQoAMF_Kw=
+      x-amzn-RequestId:
+      - 173ac8d3-a925-4b8d-a37a-d0a96999e74c
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
+      "fieldValue": "2022-07-04"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "T1"}, {"compareType": "EQUAL", "description": "", "fieldName":
+      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
+      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
+      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
+      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '579'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJnhNK7Lq0sVE689gHM5wRiKCgWMgxnd39Zu/ywck
+        CYUz8zO0+UGZd5WieGlgez0grsal+j+HTI7XqUYBuxhGNL0CX0rlub1uKUyOo/i75wwW9tNpCwoC
+        FTm+HQlvSBgsoEbstOm0ge/1BwAA//8DAJpf4UeDAAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 78e14b89f8261c7e-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Jan 2023 14:42:17 GMT
+      FINRA-api-request-id:
+      - 344b05a7-0a83-4d15-ada5-2e6361659f09
+      Record-Limit:
+      - '5000'
+      Record-Max-Limit:
+      - '5000'
+      Record-Offset:
+      - '0'
+      Record-Total:
+      - '1'
+      Response-Payload-Max-Size:
+      - 3mb
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=RiZ2EjgQFHKypewda75VV6WWfMOTiFUo8krg4N2XGK0-1674484937-0-AYuaVYmZaRncbNAsnReOdGp2Yk0/MnoS+h58qEhuuFgf2LGMohsMTBcg/ZEcQYpjZmKM1LNQYlJMn/zN494SXlo=;
+        path=/; expires=Mon, 23-Jan-23 15:12:17 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=8fd5c6476ec50b17de1570be0d503bcfd8ee40a8-1674484937; path=/; domain=.api.finra.org;
+        HttpOnly; Secure; SameSite=None
+      Total-Records-On-Page:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Amzn-Trace-Id:
+      - Root=1-63ce9cc9-5780e1275688507f152898ab;Sampled=0
+      X-Content-Type-Options:
+      - nosniff
+      x-amz-apigw-id:
+      - fM1vfEPUIAMFT4w=
+      x-amzn-RequestId:
+      - e3983c32-0b7d-4507-a5cc-41910f964f56
     status:
       code: 200
       message: OK
@@ -672,14 +4618,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3zRMQ7CMBQE0bu45ku7347jUHMDSkSRwhUdikSBcndOwNRPmmYe3/KZ83U/9vdx
-        249ZriWVDjs0ynkBNrAiF2QPZo6r/WdtkSuzkF2R1YFHVCFnRTbHtTEn8BrZkb0xc1zwWz1yMBvZ
-        DVn0e4lq5GzI5rhVzucPAAD//wMAkwfkN0YDAAA=
+        H4sIAAAAAAAAAwAAAP//fNE7DsIwFAXRvbjmSffdfOxQs4OUiCKFKzpkiQJl74gFMPWRppn7p7x7
+        f+7jeI3bMXq5FsuOdORWzguwkbUAZ7gxJ3LOyKrAiimRPSMnx1PImv6ztvCKTEt+bGRaohbemI2c
+        HFdjhiWq4QU5GzPHBb+1hiuzyvn4AgAA//8DAHdHdqdGAwAA
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 6befefce3e5e3aab-CDG
+      - 78e14b8d3df10bba-AMS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -687,11 +4633,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 17 Dec 2021 11:50:57 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Mon, 23 Jan 2023 14:42:18 GMT
       FINRA-api-request-id:
-      - da13903f-307b-4b10-8b79-a1addfdf8770
+      - be2643bb-b0d9-4e22-804a-37f4ff64c630
       Record-Limit:
       - '27'
       Record-Max-Limit:
@@ -699,13 +4643,16 @@ interactions:
       Record-Offset:
       - '0'
       Record-Total:
-      - '254'
+      - '261'
       Response-Payload-Max-Size:
       - 3mb
       Server:
       - cloudflare
       Set-Cookie:
-      - __cfruid=9f406047121d6417360b9565fc053ca9b1cb287c-1639741857; path=/; domain=.api.finra.org;
+      - __cf_bm=sUdsts1Y_dxdZNNBe71gVYDufi3zBOzZW7nRlnWderQ-1674484938-0-AfwhyV0K0Rq+cREaSw00VIITIAZxF+9BUmZoWEzlGZ8CrhM53FoToT5Gn7B577SyvtLr6XH+aReJrc+5tqiUCok=;
+        path=/; expires=Mon, 23-Jan-23 15:12:18 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=b9694650ebd43484aa9c5b5f77aa9bb32a34da30-1674484938; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '27'
@@ -714,95 +4661,19 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-61bc79a1-633d982062963f9b5097cb8a;Sampled=0
+      - Root=1-63ce9cc9-7ca7e3d94e52b88a0675283b;Sampled=0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - KffxPGVoIAMFoQA=
+      - fM1vkFTgIAMFXPw=
       x-amzn-RequestId:
-      - da13903f-307b-4b10-8b79-a1addfdf8770
+      - 73b85c24-f869-4a8d-b548-135a1830b0e8
     status:
       code: 200
       message: OK
 - request:
     body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
-      "fieldValue": "2021-11-08"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
-      "fieldValue": "T2"}, {"compareType": "EQUAL", "description": "", "fieldName":
-      "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
-      "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
-      ["issueSymbolIdentifier", "totalWeeklyShareQuantity", "totalWeeklyTradeCount",
-      "lastUpdateDate"], "limit": 5000, "quoteValues": false, "sortFields": ["totalWeeklyShareQuantity"]}'
-    headers:
-      Accept:
-      - application/json
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '579'
-      Content-Type:
-      - application/json
-    method: POST
-    uri: https://api.finra.org/data/group/otcMarket/name/weeklySummary
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA0zKvQ7CIBAA4He5uU16EG3LqksXE60/g3E4w5kSEQwcAzG+u6vf/F0/IFHIX5if
-        vs4LJd4XCuKkglkP/ajHAZv/c0xkeRNLEDCIquv1qgGXc+G5vu7RT5aDuIfjBAYO03kHDXjKcnpb
-        Et6SMBhQncIWVYsavrcfAAAA//8DAA+iFEqEAAAA
-    headers:
-      CF-Cache-Status:
-      - DYNAMIC
-      CF-Ray:
-      - 6befefd1dc4b405b-CDG
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 17 Dec 2021 11:50:58 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
-      FINRA-api-request-id:
-      - 5d6bf58c-10ba-401d-be4f-d63c4dc26fa5
-      Record-Limit:
-      - '5000'
-      Record-Max-Limit:
-      - '5000'
-      Record-Offset:
-      - '0'
-      Record-Total:
-      - '1'
-      Response-Payload-Max-Size:
-      - 3mb
-      Server:
-      - cloudflare
-      Set-Cookie:
-      - __cfruid=1de51737b92fb81912b732a1ddb3ac664ce2fea5-1639741858; path=/; domain=.api.finra.org;
-        HttpOnly; Secure; SameSite=None
-      Total-Records-On-Page:
-      - '1'
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept-Encoding
-      X-Amzn-Trace-Id:
-      - Root=1-61bc79a1-2c4b3fb64e0d2ed73ad1e82a;Sampled=0
-      X-Content-Type-Options:
-      - nosniff
-      x-amz-apigw-id:
-      - KffxVG0gIAMFXMQ=
-      x-amzn-RequestId:
-      - 5d6bf58c-10ba-401d-be4f-d63c4dc26fa5
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
-      "fieldValue": "2021-11-01"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "2022-12-19"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
       "fieldValue": "T2"}, {"compareType": "EQUAL", "description": "", "fieldName":
       "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
       "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
@@ -828,7 +4699,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 6befefd6d97308af-CDG
+      - 78e14b8f0fc80bdc-AMS
       Connection:
       - keep-alive
       Content-Length:
@@ -836,11 +4707,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 17 Dec 2021 11:50:58 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Mon, 23 Jan 2023 14:42:18 GMT
       FINRA-api-request-id:
-      - 8eabd49e-1078-4b0a-9c7e-a702dd31964b
+      - d6fd067a-90e0-4e34-bcb1-5fb1af4fd87e
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -854,20 +4723,23 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cfruid=1de51737b92fb81912b732a1ddb3ac664ce2fea5-1639741858; path=/; domain=.api.finra.org;
+      - __cf_bm=Umq5wAnHsI5Kj0JDJlKmPUWspBL1CO4y0Z1_KG7UAZc-1674484938-0-ARydL63QLCF/EvCrQgqWFkTdW4nL8x08mpW8qQW0+Y3vYf+TcXpqaAtKlhq2PvYvmcri14z9MNCqEYImgiyuUXc=;
+        path=/; expires=Mon, 23-Jan-23 15:12:18 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=b9694650ebd43484aa9c5b5f77aa9bb32a34da30-1674484938; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - ''
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-61bc79a2-6842e1ef0de8180944ab1ca2;Sampled=0
+      - Root=1-63ce9cca-15a662da0e8498c175006af8;Sampled=0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - KffxdGHloAMFjyg=
+      - fM1vnEWxIAMFT8g=
       x-amzn-RequestId:
-      - 8eabd49e-1078-4b0a-9c7e-a702dd31964b
+      - 6a9b4a54-532b-4eac-ac73-919504873833
     status:
       code: 200
       message: OK
@@ -892,14 +4764,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//fNExDsIwFATRu7jmS7vfjuNQcwNKRJHCFR2KRIFyd07A1E+aZh7f8pnz
-        dT/293Hbj1muJZUOOzTKeQE2sCIXZA9mjqv9Z22RK7OQXZHVgUdUIWdFNse1MSfwGtmRvTFzXPBb
-        PXIwG9kNWfR7iWrkbMjmuFXO5w8AAP//AwCTB+Q3RgMAAA==
+        H4sIAAAAAAAAA3zROw7CMBQF0b245kn33XzsULODlIgihSs6ZIkCZe+IBTD1kaaZ+6e8e3/u43iN
+        2zF6uRbLjnTkVs4LsJG1AGe4MSdyzsiqwIopkT0jJ8dTyJr+s7bwikxLfmxkWqIW3piNnBxXY4Yl
+        quEFORszxwW/tYYrs8r5+AIAAP//AwB3R3anRgMAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 6befefdba8ce0810-CDG
+      - 78e14b91bff4b95c-AMS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -907,11 +4779,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 17 Dec 2021 11:50:59 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Mon, 23 Jan 2023 14:42:18 GMT
       FINRA-api-request-id:
-      - 4b07cbff-23ea-417d-b3a4-50aaaa3a3d6f
+      - 942aedf2-1e76-4fb6-8b77-9fc9ac5e3872
       Record-Limit:
       - '27'
       Record-Max-Limit:
@@ -919,13 +4789,16 @@ interactions:
       Record-Offset:
       - '0'
       Record-Total:
-      - '254'
+      - '261'
       Response-Payload-Max-Size:
       - 3mb
       Server:
       - cloudflare
       Set-Cookie:
-      - __cfruid=7ed2640a60a24f2135cf64e9487a6b4a0755fc31-1639741859; path=/; domain=.api.finra.org;
+      - __cf_bm=F4ORIZaWLzjaxqdkadxTAFZLjltXS77biiWRT2a7qaY-1674484938-0-AQkyUMhd10kC9pZnZuzR136cZBqRPbBDql0pKLaMsjmY0Z70hrEF2cFSYi7XqEQdaCKWNw7t3r2prBVJFi/6xYw=;
+        path=/; expires=Mon, 23-Jan-23 15:12:18 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=b9694650ebd43484aa9c5b5f77aa9bb32a34da30-1674484938; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '27'
@@ -934,19 +4807,19 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-61bc79a3-4ab94a09157d80513c1c0c24;Sampled=0
+      - Root=1-63ce9cca-4e3240a46eb500fb14c3e927;Sampled=0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - KffxkGVYoAMF-jg=
+      - fM1vrGS3oAMFspw=
       x-amzn-RequestId:
-      - 4b07cbff-23ea-417d-b3a4-50aaaa3a3d6f
+      - 6f771e7b-475f-47e6-9518-7668f8a2e5a0
     status:
       code: 200
       message: OK
 - request:
     body: '{"compareFilters": [{"compareType": "EQUAL", "fieldName": "weekStartDate",
-      "fieldValue": "2021-11-08"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
+      "fieldValue": "2022-12-19"}, {"compareType": "EQUAL", "fieldName": "tierIdentifier",
       "fieldValue": "OTCE"}, {"compareType": "EQUAL", "description": "", "fieldName":
       "summaryTypeCode", "fieldValue": "OTC_W_SMBL"}, {"compareType": "EQUAL", "fieldName":
       "issueSymbolIdentifier", "fieldValue": "RIVN"}], "delimiter": "|", "fields":
@@ -972,7 +4845,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 6befefdf5e1332b2-CDG
+      - 78e14b943f52b897-AMS
       Connection:
       - keep-alive
       Content-Length:
@@ -980,11 +4853,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 17 Dec 2021 11:51:00 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Mon, 23 Jan 2023 14:42:19 GMT
       FINRA-api-request-id:
-      - 627931c1-99f1-4ec2-9430-2cbd3d1bf6a8
+      - 5f43700f-c7aa-4e4b-a04a-fbdb92fbc253
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -998,20 +4869,23 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cfruid=edb7b329554494775d40d10c5799de56e613b8eb-1639741860; path=/; domain=.api.finra.org;
+      - __cf_bm=qWq0q5TQvBs1WluLOi9E0_.5KdsPLKs.GRuM.pCiPs0-1674484939-0-AX2aD3SEgh3UX/mK6riSX23Gi0O5EAJBfYvzlzrXAiPSZAnYax268Ctba3s/J1xaUrmqPNjIJ7xyCCCY0ev+kjc=;
+        path=/; expires=Mon, 23-Jan-23 15:12:19 GMT; domain=.api.finra.org; HttpOnly;
+        Secure; SameSite=None
+      - __cfruid=99d4f0218fd9812a20b5ad186ed5a41f7e844bee-1674484939; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - ''
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-61bc79a4-0ebc1d8a35bbef03117134ed;Sampled=0
+      - Root=1-63ce9cca-2e88b8042e4c762a29ae717f;Sampled=0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - KffxqHZboAMF5Jg=
+      - fM1vvFOkIAMFYYQ=
       x-amzn-RequestId:
-      - 627931c1-99f1-4ec2-9430-2cbd3d1bf6a8
+      - aa697ba9-3e6e-4a6b-8e95-fb6cdfea8a0c
     status:
       code: 200
       message: OK
