@@ -16,6 +16,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions: 
+  actions: write
+
 jobs:
   trigger-windows-build:
     runs-on: ubuntu-latest
@@ -28,7 +31,7 @@ jobs:
   trigger-macos-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Windows Build
+      - name: Trigger M1 MacOs Build
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: m1_macos_build.yml
@@ -36,7 +39,15 @@ jobs:
   trigger-intel-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Windows Build
+      - name: Trigger Intel MacOs Build
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: intel_macos_build.yml
+
+  trigger-docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger docker Build
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: docker.yml
