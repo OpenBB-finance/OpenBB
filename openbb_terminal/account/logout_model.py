@@ -7,7 +7,7 @@ from openbb_terminal.account.statics import BASE_URL, Success, Failure
 from openbb_terminal.account import user
 
 
-def remote_logout() -> Union[Success, Failure]:
+def logout_everywhere() -> Union[Success, Failure]:
     """Request a remote logout.
 
     Returns
