@@ -9,6 +9,8 @@ env:
   PIP_DEFAULT_TIMEOUT: 100
 
 on:
+  pull_request:
+    types: [opened, synchronize, edited]
   push:
     branches:
       - 'feature/*'
@@ -17,7 +19,7 @@ on:
 
 # Cancel previous runs that are not yet completed.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.event_name }}-${{ github.repository }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
