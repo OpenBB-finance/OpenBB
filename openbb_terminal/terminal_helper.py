@@ -169,8 +169,19 @@ def open_openbb_documentation(
         elif "sources" in path:
             path = "/guides/advanced/changing-sources"
             command = ""
-        elif "exe" == command:
+        elif command in ["record", "stop", "exe"]:
             path = "/guides/advanced/scripts-and-routines"
+            command = ""
+        elif command in [
+            "intro",
+            "about",
+            "support",
+            "survey",
+            "update",
+            "wiki",
+            "news",
+        ]:
+            path = ""
             command = ""
         elif command in ["ta", "ba", "qa"]:
             path = f"/guides/intros/common/{command}"
