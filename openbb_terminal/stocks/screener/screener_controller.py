@@ -95,7 +95,7 @@ class ScreenerController(BaseController):
         f0 = r"(p\/e|fwd p\/e|p\/s|p\/b|p\/c|p\/fcf)"
         f1 = r"(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)"
 
-        sort_filter = r"((\ -s |\ --sort ).*?"+r"("+f0+r"|"+f1+r")"+r"*)"
+        sort_filter = r"((\ -s |\ --sort ).*?" + r"(" + f0 + r"|" + f1 + r")" + r"*)"
 
         custom_filters = [sort_filter]
 
