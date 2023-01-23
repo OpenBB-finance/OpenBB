@@ -30,6 +30,7 @@ def display_btc_circulating_supply(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Returns BTC circulating supply [Source: https://api.blockchain.info/]
@@ -82,6 +83,7 @@ def display_btc_circulating_supply(
         os.path.dirname(os.path.abspath(__file__)),
         "btccp",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -90,6 +92,7 @@ def display_btc_confirmed_transactions(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
@@ -144,6 +147,7 @@ def display_btc_confirmed_transactions(
         os.path.dirname(os.path.abspath(__file__)),
         "btcct",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -151,6 +155,7 @@ def display_btc_confirmed_transactions(
 def display_btc_single_block(
     blockhash: str,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Returns BTC block data. [Source: https://api.blockchain.info/]
     Parameters
@@ -199,4 +204,5 @@ def display_btc_single_block(
             os.path.dirname(os.path.abspath(__file__)),
             "btcblockdata",
             df_data,
+            " ".join(sheet_name) if sheet_name else None,
         )

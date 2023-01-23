@@ -281,6 +281,7 @@ class StocksController(StockBaseController):
                 exchange_country=exchange,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -488,6 +489,7 @@ class StocksController(StockBaseController):
                     os.path.dirname(os.path.abspath(__file__)),
                     f"{self.ticker}",
                     self.stock,
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
             else:
                 console.print("No ticker loaded. First use 'load <ticker>'")
@@ -555,6 +557,7 @@ class StocksController(StockBaseController):
                         sources=ns_parser.sources,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
+                        sheet_name=ns_parser.sheet_name,
                     )
             else:
                 console.print("Use 'load <ticker>' prior to this command!")

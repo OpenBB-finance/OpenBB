@@ -112,7 +112,11 @@ class DueDiligenceController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            finviz_view.analyst(symbol=self.ticker, export=ns_parser.export)
+            finviz_view.analyst(
+                symbol=self.ticker,
+                export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
+            )
 
     @log_start_end(log=logger)
     def call_pt(self, other_args: List[str]):
@@ -151,6 +155,7 @@ class DueDiligenceController(StockBaseController):
                 limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -178,6 +183,7 @@ class DueDiligenceController(StockBaseController):
                 symbol=self.ticker,
                 estimate=ns_parser.estimate,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -218,6 +224,7 @@ class DueDiligenceController(StockBaseController):
                 limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -253,6 +260,7 @@ class DueDiligenceController(StockBaseController):
                 symbol=self.ticker,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -287,6 +295,7 @@ class DueDiligenceController(StockBaseController):
                 symbol=self.ticker,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -305,6 +314,7 @@ class DueDiligenceController(StockBaseController):
             csimarket_view.suppliers(
                 symbol=self.ticker,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -323,6 +333,7 @@ class DueDiligenceController(StockBaseController):
             csimarket_view.customers(
                 symbol=self.ticker,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -362,4 +373,5 @@ class DueDiligenceController(StockBaseController):
                 limit=ns_parser.limit,
                 show_symbol=ns_parser.show_symbol,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )

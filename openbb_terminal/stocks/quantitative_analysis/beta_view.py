@@ -22,6 +22,7 @@ def beta_view(
     ref_data: pd.DataFrame = None,
     interval: int = 1440,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Display the beta scatterplot + linear regression.
 
@@ -67,4 +68,5 @@ def beta_view(
         os.path.dirname(os.path.abspath(__file__)),
         f"beta_alpha={alpha}_beta={beta}",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )

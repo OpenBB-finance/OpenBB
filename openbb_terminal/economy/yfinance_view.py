@@ -37,6 +37,7 @@ def show_indices(
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Load (and show) the selected indices over time [Source: Yahoo Finance]
     Parameters
@@ -127,6 +128,7 @@ def show_indices(
             os.path.dirname(os.path.abspath(__file__)),
             "index_data",
             indices_data,
+            " ".join(sheet_name) if sheet_name else None,
         )
 
     return indices_data

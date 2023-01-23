@@ -196,6 +196,7 @@ class ForexController(BaseController):
                     os.path.dirname(os.path.abspath(__file__)),
                     "load",
                     self.data.copy(),
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
 
                 self.source = ns_parser.source
@@ -335,6 +336,7 @@ class ForexController(BaseController):
                 os.path.dirname(os.path.abspath(__file__)),
                 f"{self.fx_pair}",
                 self.data,
+                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
 
     @log_start_end(log=logger)

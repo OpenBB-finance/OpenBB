@@ -217,6 +217,7 @@ class QaController(CryptoBaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -234,7 +235,9 @@ class QaController(CryptoBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            qa_view.display_summary(data=self.data, export=ns_parser.export)
+            qa_view.display_summary(
+                data=self.data, export=ns_parser.export, sheet_name=ns_parser.sheet_name
+            )
 
     @log_start_end(log=logger)
     def call_line(self, other_args: List[str]):
@@ -328,6 +331,7 @@ class QaController(CryptoBaseController):
                 data=self.data,
                 target=self.target,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -389,6 +393,7 @@ class QaController(CryptoBaseController):
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -500,6 +505,7 @@ class QaController(CryptoBaseController):
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -533,6 +539,7 @@ class QaController(CryptoBaseController):
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -586,6 +593,7 @@ class QaController(CryptoBaseController):
                 window=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -625,6 +633,7 @@ class QaController(CryptoBaseController):
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -664,6 +673,7 @@ class QaController(CryptoBaseController):
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -741,4 +751,5 @@ class QaController(CryptoBaseController):
                 fuller_reg=ns_parser.fuller_reg,
                 kpss_reg=ns_parser.kpss_reg,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )

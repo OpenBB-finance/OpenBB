@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def low_float(limit: int = 5, export: str = ""):
+def low_float(limit: int = 5, export: str = "", sheet_name: str = ""):
     """Prints top N low float stocks from https://www.lowfloat.com
 
     Parameters
@@ -39,11 +39,17 @@ def low_float(limit: int = 5, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "lowfloat",
         df_low_float,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
 @log_start_end(log=logger)
-def hot_penny_stocks(limit: int = 10, export: str = "", source: str = "YahooFinance"):
+def hot_penny_stocks(
+    limit: int = 10,
+    export: str = "",
+    sheet_name: str = "",
+    source: str = "YahooFinance",
+):
     """Prints top N hot penny stocks from https://www.pennystockflow.com
     Parameters
     ----------
@@ -79,4 +85,5 @@ def hot_penny_stocks(limit: int = 10, export: str = "", source: str = "YahooFina
         os.path.dirname(os.path.abspath(__file__)),
         "hotpenny",
         df_penny_stocks,
+        " ".join(sheet_name) if sheet_name else None,
     )

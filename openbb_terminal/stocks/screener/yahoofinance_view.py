@@ -34,6 +34,7 @@ def historical(
     type_candle: str = "a",
     normalize: bool = True,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> List[str]:
     """View historical price of stocks that meet preset
@@ -102,6 +103,7 @@ def historical(
             os.path.dirname(os.path.abspath(__file__)),
             "historical",
             df_screener,
+            " ".join(sheet_name) if sheet_name else None,
         )
 
         return l_stocks

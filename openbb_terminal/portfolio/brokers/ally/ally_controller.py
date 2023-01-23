@@ -71,7 +71,9 @@ class AllyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            ally_view.display_holdings(export=ns_parser.export)
+            ally_view.display_holdings(
+                export=ns_parser.export, sheet_name=ns_parser.sheet_name
+            )
 
     @log_start_end(log=logger)
     def call_history(self, other_args: List[str]):
@@ -111,7 +113,9 @@ class AllyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            ally_view.display_balances(export=ns_parser.export)
+            ally_view.display_balances(
+                export=ns_parser.export, sheet_name=ns_parser.sheet_name
+            )
 
     @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
@@ -179,4 +183,5 @@ class AllyController(BaseController):
                 exchange=ns_parser.exchange,
                 num_to_show=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )

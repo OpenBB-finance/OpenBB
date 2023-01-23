@@ -149,6 +149,7 @@ class BacktestingController(BaseController):
                 spy_bt=ns_parser.spy,
                 no_bench=ns_parser.no_bench,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -214,6 +215,7 @@ class BacktestingController(BaseController):
                 no_bench=ns_parser.no_bench,
                 shortable=ns_parser.shortable,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -288,4 +290,5 @@ class BacktestingController(BaseController):
                 no_bench=ns_parser.no_bench,
                 shortable=ns_parser.shortable,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )

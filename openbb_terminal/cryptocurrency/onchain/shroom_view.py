@@ -32,6 +32,7 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SHROOM_KEY"])
 def display_daily_transactions(
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Get daily transactions for certain symbols in ethereum blockchain
@@ -75,6 +76,7 @@ def display_daily_transactions(
         os.path.dirname(os.path.abspath(__file__)),
         "dt",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -85,6 +87,7 @@ def display_dapp_stats(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Get daily transactions for certain symbols in ethereum blockchain
@@ -143,6 +146,7 @@ def display_dapp_stats(
         os.path.dirname(os.path.abspath(__file__)),
         "ds",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -154,6 +158,7 @@ def display_total_value_locked(
     symbol: str = "USDC",
     interval: int = 1,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
 
@@ -217,4 +222,5 @@ def display_total_value_locked(
         os.path.dirname(os.path.abspath(__file__)),
         "tvl",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )

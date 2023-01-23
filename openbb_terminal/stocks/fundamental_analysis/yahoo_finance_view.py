@@ -55,7 +55,7 @@ def open_web(symbol: str):
 
 
 @log_start_end(log=logger)
-def display_info(symbol: str, export: str = ""):
+def display_info(symbol: str, export: str = "", sheet_name: str = ""):
     """Yahoo Finance ticker info
     Parameters
     ----------
@@ -86,11 +86,19 @@ def display_info(symbol: str, export: str = ""):
         console.print("Business Summary:")
         console.print(summary)
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "info", df_info)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "info",
+        df_info,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
-def display_shareholders(symbol: str, holder: str = "institutional", export: str = ""):
+def display_shareholders(
+    symbol: str, holder: str = "institutional", export: str = "", sheet_name: str = ""
+):
     """Yahoo Finance ticker shareholders
     Parameters
     ----------
@@ -117,12 +125,16 @@ def display_shareholders(symbol: str, holder: str = "institutional", export: str
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), f"{holder}_holders", df
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"{holder}_holders",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
 @log_start_end(log=logger)
-def display_sustainability(symbol: str, export: str = ""):
+def display_sustainability(symbol: str, export: str = "", sheet_name: str = ""):
     """Yahoo Finance ticker sustainability
 
     Parameters
@@ -152,12 +164,16 @@ def display_sustainability(symbol: str, export: str = ""):
         console.print("[red]Invalid data[/red]\n")
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "sust", df_sustainability
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "sust",
+        df_sustainability,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
 @log_start_end(log=logger)
-def display_calendar_earnings(symbol: str, export: str = ""):
+def display_calendar_earnings(symbol: str, export: str = "", sheet_name: str = ""):
     """Yahoo Finance ticker calendar earnings
 
     Parameters
@@ -178,7 +194,13 @@ def display_calendar_earnings(symbol: str, export: str = ""):
         title=f"{symbol.upper()} Calendar Earnings",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "cal", df_calendar)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cal",
+        df_calendar,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
@@ -187,6 +209,7 @@ def display_dividends(
     limit: int = 12,
     plot: bool = True,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical dividends
@@ -254,13 +277,20 @@ def display_dividends(
             show_index=True,
         )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "divs", div_history)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "divs",
+        div_history,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
 def display_splits(
     symbol: str,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display splits and reverse splits events. [Source: Yahoo Finance]
@@ -331,7 +361,13 @@ def display_splits(
         show_index=True,
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "splits", df_splits)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "splits",
+        df_splits,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
@@ -339,6 +375,7 @@ def display_mktcap(
     symbol: str,
     start_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display market cap over time. [Source: Yahoo Finance]
@@ -377,7 +414,13 @@ def display_mktcap(
     if not external_axes:
         theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "mktcap", df_mktcap)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "mktcap",
+        df_mktcap,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
@@ -388,6 +431,7 @@ def display_fundamentals(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display tickers balance sheet, income statement or cash-flow
 
@@ -483,12 +527,16 @@ def display_fundamentals(
             title=f"{symbol} {title_str} Currency: {symbol_currency}",
         )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), statement, fundamentals
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        statement,
+        fundamentals,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
 @log_start_end(log=logger)
-def display_earnings(symbol: str, limit: int, export: str):
+def display_earnings(symbol: str, limit: int, export: str = "", sheet_name: str = ""):
     """
 
     Parameters
@@ -510,5 +558,9 @@ def display_earnings(symbol: str, limit: int, export: str):
         title=f"Historical Earnings for {symbol}",
     )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "earnings_yf", earnings
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "earnings_yf",
+        earnings,
+        " ".join(sheet_name) if sheet_name else None,
     )

@@ -25,7 +25,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def darkpool_ats_otc(
-    symbol: str, export: str = "", external_axes: Optional[List[plt.Axes]] = None
+    symbol: str,
+    export: str = "",
+    sheet_name: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
 
@@ -127,12 +130,14 @@ def darkpool_ats_otc(
         os.path.dirname(os.path.abspath(__file__)),
         "dpotc_ats",
         ats,
+        " ".join(sheet_name) if sheet_name else None,
     )
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "dpotc_otc",
         otc,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -190,6 +195,7 @@ def darkpool_otc(
     limit: int = 10,
     tier: str = "T1",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]
@@ -227,6 +233,7 @@ def darkpool_otc(
             os.path.dirname(os.path.abspath(__file__)),
             "prom",
             df_ats,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("[red]Could not get data[/red]\n")

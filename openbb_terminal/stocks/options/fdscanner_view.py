@@ -19,6 +19,7 @@ def display_options(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Displays the unusual options table
 
@@ -56,4 +57,5 @@ def display_options(
             os.path.dirname(os.path.abspath(__file__)),
             "unu_",
             data,
+            " ".join(sheet_name) if sheet_name else None,
         )

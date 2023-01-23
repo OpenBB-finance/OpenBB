@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def sec_filings(symbol: str, limit: int = 5, export: str = ""):
+def sec_filings(symbol: str, limit: int = 5, export: str = "", sheet_name: str = ""):
     """Display SEC filings for a given stock ticker. [Source: Market Watch]
 
     Parameters
@@ -37,4 +37,5 @@ def sec_filings(symbol: str, limit: int = 5, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "sec",
         df_financials,
+        " ".join(sheet_name) if sheet_name else None,
     )

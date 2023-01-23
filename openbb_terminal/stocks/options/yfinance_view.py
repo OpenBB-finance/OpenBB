@@ -39,8 +39,7 @@ from openbb_terminal.stocks.options.yfinance_model import (
     get_price,
 )
 
-# pylint: disable=C0302
-
+# pylint: disable=C0302,too-many-arguments
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +76,7 @@ def display_chains(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display option chains for given ticker and expiration
 
@@ -232,6 +232,7 @@ def display_chains(
         os.path.dirname(os.path.abspath(__file__)),
         "chains_yf",
         option_chains,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -244,6 +245,7 @@ def plot_oi(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot open interest
@@ -268,7 +270,7 @@ def plot_oi(
         External axes (1 axis is expected in the list), by default None
     """
     options = yfinance_model.get_option_chain(symbol, expiry)
-    op_helpers.export_yf_options(export, options, "oi_yf")
+    op_helpers.export_yf_options(export, options, "oi_yf", sheet_name)
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
@@ -344,6 +346,7 @@ def plot_vol(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume
@@ -423,7 +426,7 @@ def plot_vol(
     if external_axes is None:
         theme.visualize_output()
 
-    op_helpers.export_yf_options(export, options, "vol_yf")
+    op_helpers.export_yf_options(export, options, "vol_yf", sheet_name)
 
 
 @log_start_end(log=logger)
@@ -434,6 +437,7 @@ def plot_volume_open_interest(
     max_sp: float = -1,
     min_vol: float = -1,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume and open interest
@@ -645,7 +649,7 @@ def plot_volume_open_interest(
     if external_axes is None:
         theme.visualize_output()
 
-    op_helpers.export_yf_options(export, options, "voi_yf")
+    op_helpers.export_yf_options(export, options, "voi_yf", sheet_name)
 
 
 @log_start_end(log=logger)
@@ -657,6 +661,7 @@ def plot_plot(
     y: str = "iv",
     custom: str = "",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Generate a graph custom graph based on user input
@@ -753,7 +758,12 @@ def plot_plot(
 
     if external_axes is None:
         theme.visualize_output()
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "plot")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "plot",
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
@@ -801,6 +811,7 @@ def show_parity(
     mini: float = None,
     maxi: float = None,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Prints options and whether they are under or over priced [Source: Yahoo Finance]
 
@@ -901,6 +912,7 @@ def show_parity(
         os.path.dirname(os.path.abspath(__file__)),
         "parity",
         show,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1132,6 +1144,7 @@ def show_binom(
 def display_vol_surface(
     symbol: str,
     export: str = "",
+    sheet_name: str = "",
     z: str = "IV",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -1182,6 +1195,7 @@ def display_vol_surface(
         os.path.dirname(os.path.abspath(__file__)),
         "vsurf",
         data,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 

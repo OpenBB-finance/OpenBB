@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def print_options_data(symbol: str, export: str = ""):
+def print_options_data(symbol: str, export: str = "", sheet_name: str = ""):
     """Scrapes Barchart.com for the options information
 
     Parameters
@@ -32,4 +32,10 @@ def print_options_data(symbol: str, export: str = ""):
         title=f"{symbol} Options Information",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "info", data)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "info",
+        data,
+        " ".join(sheet_name) if sheet_name else None,
+    )

@@ -38,6 +38,7 @@ def ark_orders_view(
     sells_only: bool = False,
     fund: str = "",
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Prints a table of the last N ARK Orders
 
@@ -82,4 +83,5 @@ def ark_orders_view(
         os.path.dirname(os.path.abspath(__file__)),
         "arkord",
         df_orders,
+        " ".join(sheet_name) if sheet_name else None,
     )

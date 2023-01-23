@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_stories(limit: int = 10, export: str = "") -> None:
+def display_stories(limit: int = 10, export: str = "", sheet_name: str = "") -> None:
     """View top stories from HackerNews.
     Parameters
     ----------
@@ -28,4 +28,10 @@ def display_stories(limit: int = 10, export: str = "") -> None:
     if not df.empty:
         df.columns = [col.capitalize() for col in df.columns]
         print_rich_table(df, title="HackerNews Top Stories")
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "hn", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "hn",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
+    )

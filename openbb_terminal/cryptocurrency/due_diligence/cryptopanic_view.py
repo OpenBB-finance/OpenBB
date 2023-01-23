@@ -13,6 +13,8 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_column_nam
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=too-many-arguments
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_CRYPTO_PANIC_KEY"])
@@ -25,6 +27,7 @@ def display_news(
     limit: int = 25,
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Prints table showing recent posts from CryptoPanic news aggregator platform.
     [Source: https://cryptopanic.com/]
@@ -73,4 +76,5 @@ def display_news(
             os.path.dirname(os.path.abspath(__file__)),
             "news",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )

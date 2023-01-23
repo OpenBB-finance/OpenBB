@@ -133,6 +133,7 @@ def display_covid_ov(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
     plot: bool = True,
 ) -> None:
     """Prints table showing historical cases and deaths by country.
@@ -165,7 +166,13 @@ def display_covid_ov(
         )
 
     if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "ov", data)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "ov",
+            data,
+            " ".join(sheet_name) if sheet_name else None,
+        )
 
 
 @log_start_end(log=logger)
@@ -175,6 +182,7 @@ def display_covid_stat(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
     plot: bool = True,
 ) -> None:
     """Prints table showing historical cases and deaths by country.
@@ -213,7 +221,13 @@ def display_covid_stat(
         cols = data.columns.tolist()
         cols = cols[-1:] + cols[:-1]
         data = data[cols]
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), stat, data)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            stat,
+            data,
+            " ".join(sheet_name) if sheet_name else None,
+        )
 
 
 @log_start_end(log=logger)
@@ -223,6 +237,7 @@ def display_case_slopes(
     threshold: int = 10000,
     ascend: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Prints table showing countries with the highest case slopes.
 
@@ -253,4 +268,5 @@ def display_case_slopes(
         os.path.dirname(os.path.abspath(__file__)),
         f"slopes_{days_back}day",
         data,
+        " ".join(sheet_name) if sheet_name else None,
     )

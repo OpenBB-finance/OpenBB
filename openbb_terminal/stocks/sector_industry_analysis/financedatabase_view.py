@@ -37,6 +37,7 @@ def display_bars_financials(
     exclude_exchanges: bool = True,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
     raw: bool = False,
     already_loaded_stocks_data: Dict = None,
     external_axes: Optional[List[plt.Axes]] = None,
@@ -220,6 +221,7 @@ def display_bars_financials(
             os.path.dirname(os.path.abspath(__file__)),
             finance_metric,
             df_all,
+            " ".join(sheet_name) if sheet_name else None,
         )
 
         return stocks_data, company_tickers
@@ -240,6 +242,7 @@ def display_companies_per_sector_in_country(
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
+    sheet_name: str = "",
     raw: bool = False,
     max_sectors_to_display: int = 15,
     min_pct_to_display_sector: float = 0.015,
@@ -369,6 +372,7 @@ def display_companies_per_sector_in_country(
         os.path.dirname(os.path.abspath(__file__)),
         "cps",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -378,6 +382,7 @@ def display_companies_per_industry_in_country(
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
+    sheet_name: str = "",
     raw: bool = False,
     max_industries_to_display: int = 15,
     min_pct_to_display_industry: float = 0.015,
@@ -518,6 +523,7 @@ def display_companies_per_industry_in_country(
         os.path.dirname(os.path.abspath(__file__)),
         "cpic",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -527,6 +533,7 @@ def display_companies_per_industry_in_sector(
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
+    sheet_name: str = "",
     raw: bool = False,
     max_industries_to_display: int = 15,
     min_pct_to_display_industry: float = 0.015,
@@ -668,6 +675,7 @@ def display_companies_per_industry_in_sector(
         os.path.dirname(os.path.abspath(__file__)),
         "cpis",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -677,6 +685,7 @@ def display_companies_per_country_in_sector(
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
+    sheet_name: str = "",
     raw: bool = False,
     max_countries_to_display: int = 15,
     min_pct_to_display_country: float = 0.015,
@@ -811,6 +820,7 @@ def display_companies_per_country_in_sector(
         os.path.dirname(os.path.abspath(__file__)),
         "cpcs",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -820,6 +830,7 @@ def display_companies_per_country_in_industry(
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
+    sheet_name: str = "",
     raw: bool = False,
     max_countries_to_display: int = 15,
     min_pct_to_display_country: float = 0.015,
@@ -954,4 +965,5 @@ def display_companies_per_country_in_industry(
         os.path.dirname(os.path.abspath(__file__)),
         "cpci",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )

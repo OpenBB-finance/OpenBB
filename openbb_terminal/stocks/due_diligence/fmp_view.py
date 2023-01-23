@@ -21,7 +21,7 @@ def add_color(value: str) -> str:
 
 
 @log_start_end(log=logger)
-def rating(symbol: str, limit: int = 10, export: str = ""):
+def rating(symbol: str, limit: int = 10, export: str = "", sheet_name: str = ""):
     """Display ratings for a given ticker. [Source: Financial Modeling Prep]
 
     Parameters
@@ -56,4 +56,5 @@ def rating(symbol: str, limit: int = 10, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "rot",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )

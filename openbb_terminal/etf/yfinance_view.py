@@ -29,6 +29,7 @@ def display_etf_weightings(
     raw: bool = False,
     min_pct_to_display: float = 5,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display sector weightings allocation of ETF. [Source: Yahoo Finance]
@@ -94,7 +95,13 @@ def display_etf_weightings(
         if external_axes is None:
             theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "weights", holdings)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "weights",
+        holdings,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)

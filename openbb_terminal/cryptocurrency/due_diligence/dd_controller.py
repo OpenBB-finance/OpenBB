@@ -269,6 +269,7 @@ class DueDiligenceController(CryptoBaseController):
                     start_date=ns_parser.since.strftime("%Y-%m-%d"),
                     end_date=ns_parser.until.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
             else:
@@ -302,7 +303,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             pair = f"{coin}-{ns_parser.vs.upper()}"
-            coinbase_view.display_stats(pair, ns_parser.export)
+            coinbase_view.display_stats(pair, ns_parser.export, ns_parser.sheet_name)
 
     @log_start_end(log=logger)
     def call_active(self, other_args: List[str]):
@@ -357,6 +358,7 @@ class DueDiligenceController(CryptoBaseController):
                     start_date=ns_parser.since.strftime("%Y-%m-%d"),
                     end_date=ns_parser.until.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
             else:
                 console.print(f"[red]{self.symbol} not supported on Glassnode.[/red]")
@@ -419,6 +421,7 @@ class DueDiligenceController(CryptoBaseController):
                     start_date=ns_parser.since.strftime("%Y-%m-%d"),
                     end_date=ns_parser.until.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
             else:
                 console.print(f"[red]{self.symbol} not supported on Glassnode.[/red]")
@@ -491,6 +494,7 @@ class DueDiligenceController(CryptoBaseController):
                     end_date=ns_parser.until.strftime("%Y-%m-%d"),
                     percentage=ns_parser.percentage,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
             else:
                 console.print(f"[red]{self.symbol} not supported on Glassnode.[/red]")
@@ -528,6 +532,7 @@ class DueDiligenceController(CryptoBaseController):
                 symbol=self.symbol.upper(),
                 interval=ns_parser.interval,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -552,6 +557,7 @@ class DueDiligenceController(CryptoBaseController):
             coinglass_view.display_liquidations(
                 symbol=self.symbol.upper(),
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -576,6 +582,7 @@ class DueDiligenceController(CryptoBaseController):
             coinglass_view.display_funding_rate(
                 symbol=self.symbol.upper(),
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -600,6 +607,7 @@ class DueDiligenceController(CryptoBaseController):
                 pycoingecko_view.display_info(
                     symbol=self.symbol,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -619,7 +627,9 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             cg_id = check_cg_id(self.symbol)
             if cg_id:
-                pycoingecko_view.display_market(cg_id, ns_parser.export)
+                pycoingecko_view.display_market(
+                    cg_id, ns_parser.export, sheet_name=ns_parser.sheet_name
+                )
 
     @log_start_end(log=logger)
     def call_web(self, other_args):
@@ -641,6 +651,7 @@ class DueDiligenceController(CryptoBaseController):
                 pycoingecko_view.display_web(
                     self.symbol,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -660,7 +671,9 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             cg_id = check_cg_id(self.symbol)
             if cg_id:
-                pycoingecko_view.display_social(cg_id, export=ns_parser.export)
+                pycoingecko_view.display_social(
+                    cg_id, export=ns_parser.export, sheet_name=ns_parser.sheet_name
+                )
 
     @log_start_end(log=logger)
     def call_dev(self, other_args):
@@ -682,7 +695,9 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             cg_id = check_cg_id(self.symbol)
             if cg_id:
-                pycoingecko_view.display_dev(cg_id, ns_parser.export)
+                pycoingecko_view.display_dev(
+                    cg_id, ns_parser.export, sheet_name=ns_parser.sheet_name
+                )
 
     @log_start_end(log=logger)
     def call_ath(self, other_args):
@@ -709,7 +724,12 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             cg_id = check_cg_id(self.symbol)
             if cg_id:
-                pycoingecko_view.display_ath(cg_id, ns_parser.vs, ns_parser.export)
+                pycoingecko_view.display_ath(
+                    cg_id,
+                    ns_parser.vs,
+                    ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
+                )
 
     @log_start_end(log=logger)
     def call_atl(self, other_args):
@@ -735,7 +755,12 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             cg_id = check_cg_id(self.symbol)
             if cg_id:
-                pycoingecko_view.display_atl(cg_id, ns_parser.vs, ns_parser.export)
+                pycoingecko_view.display_atl(
+                    cg_id,
+                    ns_parser.vs,
+                    ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
+                )
 
     @log_start_end(log=logger)
     def call_score(self, other_args):
@@ -758,7 +783,9 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             cg_id = check_cg_id(self.symbol)
             if cg_id:
-                pycoingecko_view.display_score(cg_id, ns_parser.export)
+                pycoingecko_view.display_score(
+                    cg_id, ns_parser.export, sheet_name=ns_parser.sheet_name
+                )
 
     @log_start_end(log=logger)
     def call_bc(self, other_args):
@@ -779,7 +806,9 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             cg_id = check_cg_id(self.symbol)
             if cg_id:
-                pycoingecko_view.display_bc(cg_id, ns_parser.export)
+                pycoingecko_view.display_bc(
+                    cg_id, ns_parser.export, sheet_name=ns_parser.sheet_name
+                )
 
     @log_start_end(log=logger)
     def call_ob(self, other_args):
@@ -824,6 +853,7 @@ class DueDiligenceController(CryptoBaseController):
                 symbol=self.symbol,
                 to_symbol=ns_parser.vs,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -869,6 +899,7 @@ class DueDiligenceController(CryptoBaseController):
                 symbol=self.symbol,
                 to_symbol=ns_parser.vs,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
                 limit=ns_parser.limit,
             )
 
@@ -904,7 +935,10 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             binance_view.display_balance(
-                from_symbol=coin, to_symbol=ns_parser.vs, export=ns_parser.export
+                from_symbol=coin,
+                to_symbol=ns_parser.vs,
+                export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -1031,6 +1065,7 @@ class DueDiligenceController(CryptoBaseController):
                     ascend=ns_parser.reverse,
                     links=ns_parser.urls,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -1087,6 +1122,7 @@ class DueDiligenceController(CryptoBaseController):
                     sortby=ns_parser.sortby,
                     ascend=ns_parser.reverse,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -1154,6 +1190,7 @@ class DueDiligenceController(CryptoBaseController):
                     ascend=ns_parser.reverse,
                     links=ns_parser.urls,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -1211,6 +1248,7 @@ class DueDiligenceController(CryptoBaseController):
                     sortby=ns_parser.sortby,
                     ascend=ns_parser.reverse,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -1266,6 +1304,7 @@ class DueDiligenceController(CryptoBaseController):
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -1289,6 +1328,7 @@ class DueDiligenceController(CryptoBaseController):
             messari_view.display_links(
                 symbol=self.symbol.upper(),
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -1391,6 +1431,7 @@ class DueDiligenceController(CryptoBaseController):
                 symbol=self.symbol.upper(),
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -1416,6 +1457,7 @@ class DueDiligenceController(CryptoBaseController):
                 messari_view.display_tokenomics(
                     symbol=self.symbol.upper(),
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -1440,6 +1482,7 @@ class DueDiligenceController(CryptoBaseController):
             messari_view.display_project_info(
                 symbol=self.symbol.upper(),
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -1464,6 +1507,7 @@ class DueDiligenceController(CryptoBaseController):
             messari_view.display_team(
                 symbol=self.symbol.upper(),
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -1488,6 +1532,7 @@ class DueDiligenceController(CryptoBaseController):
             messari_view.display_investors(
                 symbol=self.symbol.upper(),
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -1512,6 +1557,7 @@ class DueDiligenceController(CryptoBaseController):
             messari_view.display_fundraising(
                 symbol=self.symbol.upper(),
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -1536,6 +1582,7 @@ class DueDiligenceController(CryptoBaseController):
             messari_view.display_governance(
                 symbol=self.symbol.upper(),
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -1644,6 +1691,7 @@ class DueDiligenceController(CryptoBaseController):
                     start_date=ns_parser.start,
                     end_date=ns_parser.end,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -1737,6 +1785,7 @@ class DueDiligenceController(CryptoBaseController):
                 source=None,
                 symbol=self.symbol,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
                 ascend=ns_parser.reverse,
                 post_kind=ns_parser.kind,
                 filter_=ns_parser.filter,
@@ -1780,6 +1829,7 @@ class DueDiligenceController(CryptoBaseController):
                 metric=ns_parser.metric,
                 project=ns_parser.project,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -1811,4 +1861,5 @@ class DueDiligenceController(CryptoBaseController):
                 tokenterminal_view.display_description(
                     project=ns_parser.project,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )

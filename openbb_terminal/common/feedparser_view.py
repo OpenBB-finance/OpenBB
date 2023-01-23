@@ -18,6 +18,7 @@ def display_news(
     sources: str = "",
     limit: int = 5,
     export: str = "",
+    sheet_name: str = "",
     sort: str = "published",
 ):
     """Plots news for a given term and source. [Source: Feedparser]
@@ -48,4 +49,5 @@ def display_news(
         os.path.dirname(os.path.abspath(__file__)),
         f"news_{'_'.join(term)}_{'_'.join(sources)}",
         articles,
+        " ".join(sheet_name) if sheet_name else None,
     )

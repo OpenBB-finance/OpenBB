@@ -107,7 +107,11 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
 
         if ns_parser:
-            keys_view.display_keys(show=ns_parser.show, export=ns_parser.export)
+            keys_view.display_keys(
+                show=ns_parser.show,
+                export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
+            )
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):

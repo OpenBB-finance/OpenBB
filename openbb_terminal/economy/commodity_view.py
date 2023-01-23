@@ -25,7 +25,7 @@ def format_large_numbers(num: float) -> str:
 
 
 @log_start_end(log=logger)
-def display_debt(export: str = "", limit: int = 20):
+def display_debt(export: str = "", sheet_name: str = "", limit: int = 20):
     """Displays external debt for given countries [Source: Wikipedia]
 
     Parameters
@@ -48,5 +48,9 @@ def display_debt(export: str = "", limit: int = 20):
     )
     if export:
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "cdebt", debt_df
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "cdebt",
+            debt_df,
+            " ".join(sheet_name) if sheet_name else None,
         )

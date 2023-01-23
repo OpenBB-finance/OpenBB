@@ -13,7 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def show_top_mover(sort_type: str = "gainers", limit: int = 10, export: str = ""):
+def show_top_mover(
+    sort_type: str = "gainers", limit: int = 10, export: str = "", sheet_name: str = ""
+):
     """
     Show top ETF movers from wsj.com
 
@@ -43,4 +45,5 @@ def show_top_mover(sort_type: str = "gainers", limit: int = 10, export: str = ""
         os.path.dirname(os.path.abspath(__file__)),
         sort_type,
         data,
+        " ".join(sheet_name) if sheet_name else None,
     )

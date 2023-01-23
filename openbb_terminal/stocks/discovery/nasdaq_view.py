@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
-def display_top_retail(limit: int = 3, export: str = ""):
+def display_top_retail(limit: int = 3, export: str = "", sheet_name: str = ""):
     """Display the top 10 retail traded stocks for last days
 
     Parameters
@@ -45,7 +45,13 @@ def display_top_retail(limit: int = 3, export: str = ""):
         )
         console.print("")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "rtat", retails)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rtat",
+        retails,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
@@ -55,6 +61,7 @@ def display_dividend_calendar(
     ascend: bool = False,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display NASDAQ dividend calendar
 
@@ -100,4 +107,10 @@ def display_dividend_calendar(
         headers=[x.title() for x in calendar.columns],
         title=f"[bold]Dividend Calendar for {date}[/bold]",
     )
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "divcal", calendar)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "divcal",
+        calendar,
+        " ".join(sheet_name) if sheet_name else None,
+    )

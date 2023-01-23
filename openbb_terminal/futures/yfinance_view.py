@@ -30,6 +30,7 @@ def display_search(
     exchange: str = "",
     description: str = "",
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display search futures [Source: Yahoo Finance]
 
@@ -57,6 +58,7 @@ def display_search(
         os.path.dirname(os.path.abspath(__file__)),
         "search",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -68,6 +70,7 @@ def display_historical(
     end_date: Optional[str] = None,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical futures [Source: Yahoo Finance]
@@ -209,6 +212,7 @@ def display_historical(
         os.path.dirname(os.path.abspath(__file__)),
         "historical",
         historicals,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -217,6 +221,7 @@ def display_curve(
     symbol: str,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display curve futures [Source: Yahoo Finance]
@@ -285,4 +290,5 @@ def display_curve(
             os.path.dirname(os.path.abspath(__file__)),
             "curve",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )

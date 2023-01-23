@@ -426,6 +426,7 @@ Potential errors
                 self.fund_symbol,
                 min_pct_to_display=ns_parser.min,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
         return self.queue

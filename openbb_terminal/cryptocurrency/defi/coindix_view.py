@@ -14,6 +14,8 @@ from openbb_terminal.helper_funcs import (
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=too-many-arguments
+
 
 @log_start_end(log=logger)
 def display_defi_vaults(
@@ -25,6 +27,7 @@ def display_defi_vaults(
     ascend: bool = True,
     link: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Prints table showing Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to
     maximize returns of its crypto assets. [Source: https://coindix.com/]
@@ -85,4 +88,5 @@ def display_defi_vaults(
         os.path.dirname(os.path.abspath(__file__)),
         "vaults",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )

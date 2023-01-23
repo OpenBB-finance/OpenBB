@@ -30,6 +30,7 @@ def display_ad(
     use_open: bool = False,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots AD technical indicator
@@ -134,6 +135,7 @@ def display_ad(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "ad",
         df_ta,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -145,6 +147,7 @@ def display_adosc(
     use_open: bool = False,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots AD Osc Indicator
@@ -242,6 +245,7 @@ def display_adosc(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "adosc",
         df_ta,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -250,6 +254,7 @@ def display_obv(
     data: pd.DataFrame,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots OBV technical indicator
@@ -345,4 +350,5 @@ def display_obv(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "obv",
         df_ta,
+        " ".join(sheet_name) if sheet_name else None,
     )

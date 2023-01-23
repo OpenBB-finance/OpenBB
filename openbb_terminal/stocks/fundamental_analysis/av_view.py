@@ -52,7 +52,7 @@ def display_overview(symbol: str):
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_key(symbol: str, export: str = ""):
+def display_key(symbol: str, export: str = "", sheet_name: str = ""):
     """Alpha Vantage key metrics
 
     Parameters
@@ -69,7 +69,13 @@ def display_key(symbol: str, export: str = ""):
         df_key, headers=[""], title=f"{symbol} Key Metrics", show_index=True
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "key", df_key)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "key",
+        df_key,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
@@ -81,6 +87,7 @@ def display_income_statement(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Alpha Vantage income statement
 
@@ -151,7 +158,13 @@ def display_income_statement(
             show_index=True,
         )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", df_income)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "income",
+        df_income,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
@@ -163,6 +176,7 @@ def display_balance_sheet(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Alpha Vantage balance sheet statement
 
@@ -236,7 +250,11 @@ def display_balance_sheet(
         )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "balance", df_balance
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "balance",
+        df_balance,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -249,6 +267,7 @@ def display_cash_flow(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Alpha Vantage income statement
 
@@ -319,13 +338,23 @@ def display_cash_flow(
             show_index=True,
         )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", df_cash)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cash",
+        df_cash,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_earnings(
-    symbol: str, limit: int = 5, quarterly: bool = False, export: str = ""
+    symbol: str,
+    limit: int = 5,
+    quarterly: bool = False,
+    export: str = "",
+    sheet_name: str = "",
 ):
     """Alpha Vantage earnings
 
@@ -352,7 +381,13 @@ def display_earnings(
         title=f"{symbol} Earnings",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "earnings", df_fa)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "earnings",
+        df_fa,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
@@ -360,6 +395,7 @@ def display_earnings(
 def display_fraud(
     symbol: str,
     export: str = "",
+    sheet_name: str = "",
     help_text: bool = False,
     color: bool = True,
     detail: bool = False,
@@ -409,7 +445,13 @@ A mckee less than 0.5 indicates a high risk of fraud.
 
     if help_text:
         console.print(help_message)
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dupont", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "dupont",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
+    )
     return
 
 
@@ -419,6 +461,7 @@ def display_dupont(
     symbol: str,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Shows the extended dupont ratio
@@ -457,4 +500,10 @@ def display_dupont(
     if not external_axes:
         theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dupont", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "dupont",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
+    )

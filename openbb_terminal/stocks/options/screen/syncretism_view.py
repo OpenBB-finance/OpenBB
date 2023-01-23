@@ -61,6 +61,7 @@ def view_screener_output(
     preset: str,
     limit: int = 20,
     export: str = "",
+    sheet_name: str = "",
 ) -> List:
     """Print the output of screener
 
@@ -88,6 +89,7 @@ def view_screener_output(
         os.path.dirname(os.path.abspath(__file__)),
         "scr",
         df_res,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
     if limit > 0:
@@ -114,6 +116,7 @@ def view_historical_greeks(
     raw: bool = False,
     limit: Union[int, str] = 20,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots historical greeks for a given option. [Source: Syncretism]
@@ -201,4 +204,5 @@ def view_historical_greeks(
         os.path.dirname(os.path.abspath(__file__)),
         "grhist",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )

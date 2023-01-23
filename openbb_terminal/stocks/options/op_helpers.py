@@ -142,7 +142,7 @@ def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> flo
     return sum(df["Vals"]) / risk_free
 
 
-def export_yf_options(export: str, options, file_name: str):
+def export_yf_options(export: str, options, file_name: str, sheet_name: str = ""):
     """Special function to assist in exporting yf options
 
     Parameters
@@ -162,6 +162,7 @@ def export_yf_options(export: str, options, file_name: str):
             os.path.dirname(os.path.abspath(__file__)),
             f"{file_name}_{option_name}",
             option,
+            " ".join(sheet_name) if sheet_name else None,
         )
 
 

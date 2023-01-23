@@ -121,7 +121,9 @@ class OSSController(BaseController):
         if ns_parser:
             if valid_repo(ns_parser.repo):
                 github_view.display_repo_summary(
-                    repo=ns_parser.repo, export=ns_parser.export
+                    repo=ns_parser.repo,
+                    export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -200,6 +202,7 @@ class OSSController(BaseController):
                 show_growth=ns_parser.show_growth,
                 chart_type=ns_parser.chart_type,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -244,4 +247,5 @@ class OSSController(BaseController):
                 categories=ns_parser.categories,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )

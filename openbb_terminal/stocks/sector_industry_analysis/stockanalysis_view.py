@@ -45,6 +45,7 @@ def display_plots_financials(
     currency: str = "USD",
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     already_loaded_stocks_data=None,
@@ -199,5 +200,6 @@ def display_plots_financials(
         os.path.dirname(os.path.abspath(__file__)),
         item_name,
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
     return stocks_data, company_tickers

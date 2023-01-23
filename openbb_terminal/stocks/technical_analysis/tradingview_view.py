@@ -20,6 +20,7 @@ def print_recommendation(
     exchange: str = "",
     interval: str = "",
     export: str = "",
+    sheet_name: str = "",
 ):
     """Print tradingview recommendation based on technical indicators
 
@@ -52,6 +53,7 @@ def print_recommendation(
         os.path.dirname(os.path.abspath(__file__)),
         "recom",
         recom,
+        " ".join(sheet_name) if sheet_name else None,
     )
     print_rich_table(
         recom,

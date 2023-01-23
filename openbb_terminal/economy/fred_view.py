@@ -28,6 +28,8 @@ logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
+# pylint: disable=too-many-arguments
+
 
 @log_start_end(log=logger)
 def format_units(num: int) -> str:
@@ -81,6 +83,7 @@ def display_fred_series(
     get_data: bool = False,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
@@ -160,6 +163,7 @@ def display_fred_series(
             os.path.dirname(os.path.abspath(__file__)),
             "fred",
             data,
+            " ".join(sheet_name) if sheet_name else None,
         )
 
     if get_data:
@@ -189,6 +193,7 @@ def display_yield_curve(
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display yield curve based on US Treasury rates for a specified date.
 
@@ -236,4 +241,5 @@ def display_yield_curve(
         os.path.dirname(os.path.abspath(__file__)),
         "ycrv",
         rates,
+        " ".join(sheet_name) if sheet_name else None,
     )

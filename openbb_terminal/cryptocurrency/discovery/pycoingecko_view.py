@@ -37,6 +37,7 @@ def display_coins(
     limit: int = 250,
     sortby: str = "Symbol",
     export: str = "",
+    sheet_name: str = "",
     ascend: bool = False,
 ) -> None:
     """Prints table showing top coins [Source: CoinGecko]
@@ -91,6 +92,7 @@ def display_coins(
             os.path.dirname(os.path.abspath(__file__)),
             "cgtop",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -102,6 +104,7 @@ def display_gainers(
     limit: int = 20,
     sortby: str = "market_cap_rank",
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Prints table showing Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
@@ -137,6 +140,7 @@ def display_gainers(
             os.path.dirname(os.path.abspath(__file__)),
             "gainers",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -147,6 +151,7 @@ def display_losers(
     interval: str = "1h",
     limit: int = 20,
     export: str = "",
+    sheet_name: str = "",
     sortby: str = "Market Cap Rank",
 ) -> None:
     """Prints table showing Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
@@ -183,13 +188,14 @@ def display_losers(
             os.path.dirname(os.path.abspath(__file__)),
             "cglosers",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
 @log_start_end(log=logger)
-def display_trending(export: str = "") -> None:
+def display_trending(export: str = "", sheet_name: str = "") -> None:
     """Prints table showing trending coins [Source: CoinGecko]
 
     Parameters
@@ -213,6 +219,7 @@ def display_trending(export: str = "") -> None:
             os.path.dirname(os.path.abspath(__file__)),
             "cgtrending",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")

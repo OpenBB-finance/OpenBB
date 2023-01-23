@@ -28,6 +28,7 @@ def show_options(
     datasets: Dict[str, pd.DataFrame],
     dataset_name: str = None,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Plot custom data
 
@@ -60,6 +61,7 @@ def show_options(
                 os.path.dirname(os.path.abspath(__file__)),
                 f"{dataset}_options",
                 data_values.set_index("column"),
+                " ".join(sheet_name) if sheet_name else None,
             )
 
 
@@ -67,6 +69,7 @@ def show_options(
 def display_plot(
     data: Union[pd.Series, pd.DataFrame, Dict[str, pd.DataFrame]],
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Plot data from a dataset
@@ -122,6 +125,7 @@ def display_plot(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "plot",
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -132,6 +136,7 @@ def display_norm(
     column: str = "",
     plot: bool = True,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Determine the normality of a timeseries.
@@ -188,6 +193,7 @@ def display_norm(
                 os.path.dirname(os.path.abspath(__file__)),
                 f"{column}_{dataset}_norm",
                 results,
+                " ".join(sheet_name) if sheet_name else None,
             )
         else:
             console.print()
@@ -201,6 +207,7 @@ def display_root(
     fuller_reg: str = "c",
     kpss_reg: str = "c",
     export: str = "",
+    sheet_name: str = "",
 ):
     """Determine the normality of a timeseries.
 
@@ -240,6 +247,7 @@ def display_root(
             os.path.dirname(os.path.abspath(__file__)),
             f"{dataset}_{column}_root",
             results,
+            " ".join(sheet_name) if sheet_name else None,
         )
 
 
@@ -250,6 +258,7 @@ def display_granger(
     lags: int = 3,
     confidence_level: float = 0.05,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Show granger tests
 
@@ -307,6 +316,7 @@ def display_granger(
             os.path.dirname(os.path.abspath(__file__)),
             f'{dependent_series.name.replace(".","-")}_{independent_series.name.replace(".","-")}_granger',
             granger_df,
+            " ".join(sheet_name) if sheet_name else None,
         )
 
 
@@ -316,6 +326,7 @@ def display_cointegration_test(
     significant: bool = False,
     plot: bool = True,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Estimates long-run and short-run cointegration relationship for series y and x and apply
@@ -393,4 +404,5 @@ def display_cointegration_test(
             os.path.dirname(os.path.abspath(__file__)),
             "coint",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )

@@ -29,6 +29,7 @@ def display_fundamentals(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display tickers balance sheet; income statement; cash flow statement
 
@@ -127,5 +128,9 @@ def display_fundamentals(
             title=f"{symbol} {title_str}",
         )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), statement, fundamentals
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        statement,
+        fundamentals,
+        " ".join(sheet_name) if sheet_name else None,
     )

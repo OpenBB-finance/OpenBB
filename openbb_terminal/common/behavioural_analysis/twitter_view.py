@@ -26,7 +26,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_inference(symbol: str, limit: int = 100, export: str = ""):
+def display_inference(
+    symbol: str, limit: int = 100, export: str = "", sheet_name: str = ""
+):
     """Prints Inference sentiment from past n tweets.
 
     Parameters
@@ -72,7 +74,13 @@ def display_inference(symbol: str, limit: int = 100, export: str = ""):
         f"Of the last {len(df_tweets)} tweets, {100*percent_neg:.2f} % had a higher negative sentiment"
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "infer", df_tweets)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "infer",
+        df_tweets,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
@@ -82,6 +90,7 @@ def display_sentiment(
     n_days_past: int = 2,
     compare: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots sentiments from symbol
@@ -185,5 +194,9 @@ def display_sentiment(
         theme.visualize_output()
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "sentiment", df_tweets
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "sentiment",
+        df_tweets,
+        " ".join(sheet_name) if sheet_name else None,
     )

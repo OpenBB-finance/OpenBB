@@ -21,6 +21,7 @@ def display_order_book(
     symbol: str,
     to_symbol: str,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots order book for a coin in a given exchange
@@ -56,12 +57,18 @@ def display_order_book(
         os.path.dirname(os.path.abspath(__file__)),
         "ob",
         market_book,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
 @log_start_end(log=logger)
 def display_trades(
-    exchange: str, symbol: str, to_symbol: str, limit: int = 10, export: str = ""
+    exchange: str,
+    symbol: str,
+    to_symbol: str,
+    limit: int = 10,
+    export: str = "",
+    sheet_name: str = "",
 ):
     """Prints table showing trades for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
@@ -92,4 +99,5 @@ def display_trades(
         os.path.dirname(os.path.abspath(__file__)),
         "trades",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )

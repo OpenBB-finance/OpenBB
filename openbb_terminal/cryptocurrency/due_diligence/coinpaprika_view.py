@@ -89,6 +89,7 @@ def display_twitter(
     sortby: str = "date",
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Prints table showing twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
@@ -125,6 +126,7 @@ def display_twitter(
         os.path.dirname(os.path.abspath(__file__)),
         "twitter",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -136,6 +138,7 @@ def display_events(
     ascend: bool = False,
     links: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Prints table showing all events for given coin id. [Source: CoinPaprika]
 
@@ -178,6 +181,7 @@ def display_events(
         os.path.dirname(os.path.abspath(__file__)),
         "events",
         df_data,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -188,6 +192,7 @@ def display_exchanges(
     sortby: str = "adjusted_volume_24h_share",
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Prints table showing all exchanges for given coin id. [Source: CoinPaprika]
 
@@ -223,6 +228,7 @@ def display_exchanges(
         os.path.dirname(os.path.abspath(__file__)),
         "ex",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -235,6 +241,7 @@ def display_markets(
     ascend: bool = True,
     links: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Prints table showing all markets for given coin id. [Source: CoinPaprika]
 
@@ -280,6 +287,7 @@ def display_markets(
         os.path.dirname(os.path.abspath(__file__)),
         "mkt",
         df_data,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -288,6 +296,7 @@ def display_price_supply(
     from_symbol: str = "BTC",
     to_symbol: str = "USD",
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Prints table showing ticker information for single coin [Source: CoinPaprika]
 
@@ -318,6 +327,7 @@ def display_price_supply(
         os.path.dirname(os.path.abspath(__file__)),
         "ps",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -325,6 +335,7 @@ def display_price_supply(
 def display_basic(
     symbol: str = "BTC",
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Prints table showing basic information for coin. Like:
         name, symbol, rank, type, description, platform, proof_type, contract, tags, parent.
@@ -352,4 +363,5 @@ def display_basic(
         os.path.dirname(os.path.abspath(__file__)),
         "basic",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )

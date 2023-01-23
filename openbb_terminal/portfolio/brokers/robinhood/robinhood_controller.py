@@ -70,7 +70,9 @@ class RobinhoodController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            robinhood_view.display_holdings(export=ns_parser.export)
+            robinhood_view.display_holdings(
+                export=ns_parser.export, sheet_name=ns_parser.sheet_name
+            )
 
     @log_start_end(log=logger)
     def call_history(self, other_args: List[str]):
@@ -107,4 +109,5 @@ class RobinhoodController(BaseController):
                 interval=ns_parser.interval,
                 window=ns_parser.span,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )

@@ -16,7 +16,12 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def view_screener(
-    preset: str, num_to_show: int, sortby: str, ascend: bool, export: str = ""
+    preset: str,
+    num_to_show: int,
+    sortby: str,
+    ascend: bool,
+    export: str = "",
+    sheet_name: str = "",
 ):
     """Display screener output
 
@@ -50,4 +55,5 @@ def view_screener(
         os.path.dirname(os.path.abspath(__file__)),
         "screen",
         screened_data,
+        " ".join(sheet_name) if sheet_name else None,
     )

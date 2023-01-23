@@ -35,6 +35,7 @@ def display_fundamental_metrics(
     ascend: bool = False,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display fundamental metrics [Source: Token Terminal]
@@ -136,4 +137,5 @@ def display_fundamental_metrics(
             os.path.dirname(os.path.abspath(__file__)),
             "fun",
             metric_series,
+            " ".join(sheet_name) if sheet_name else None,
         )

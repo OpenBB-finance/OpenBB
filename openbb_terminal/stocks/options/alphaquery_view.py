@@ -28,6 +28,7 @@ def display_put_call_ratio(
     window: int = 30,
     start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display put call ratio [Source: AlphaQuery.com]
@@ -69,4 +70,5 @@ def display_put_call_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "pcr",
         pcr,
+        " ".join(sheet_name) if sheet_name else None,
     )

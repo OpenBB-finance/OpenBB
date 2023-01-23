@@ -87,7 +87,11 @@ def display_quote(symbol: str):
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_enterprise(
-    symbol: str, limit: int = 5, quarterly: bool = False, export: str = ""
+    symbol: str,
+    limit: int = 5,
+    quarterly: bool = False,
+    export: str = "",
+    sheet_name: str = "",
 ):
     """Financial Modeling Prep ticker enterprise
 
@@ -128,14 +132,22 @@ def display_enterprise(
         )
 
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "enterprise", df_fa
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "enterprise",
+            df_fa,
+            " ".join(sheet_name) if sheet_name else None,
         )
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_discounted_cash_flow(
-    symbol: str, limit: int = 5, quarterly: bool = False, export: str = ""
+    symbol: str,
+    limit: int = 5,
+    quarterly: bool = False,
+    export: str = "",
+    sheet_name: str = "",
 ):
     """Financial Modeling Prep ticker discounted cash flow
 
@@ -159,7 +171,13 @@ def display_discounted_cash_flow(
     else:
         print_rich_table(dcf, title="Discounted Cash Flow", show_index=True)
 
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "dcf", dcf)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "dcf",
+            dcf,
+            " ".join(sheet_name) if sheet_name else None,
+        )
 
 
 @log_start_end(log=logger)
@@ -171,6 +189,7 @@ def display_income_statement(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Financial Modeling Prep ticker income statement
 
@@ -241,7 +260,11 @@ def display_income_statement(
             console.print(income.loc["Link"].to_frame().to_string())
             console.print()
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "income", income
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "income",
+            income,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         logger.error("Could not get data")
@@ -257,6 +280,7 @@ def display_balance_sheet(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Financial Modeling Prep ticker balance sheet
 
@@ -328,7 +352,11 @@ def display_balance_sheet(
             console.print(balance.loc["Link"].to_frame().to_string())
             console.print()
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "balance", balance
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "balance",
+            balance,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         logger.error("Could not get data")
@@ -344,6 +372,7 @@ def display_cash_flow(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Financial Modeling Prep ticker cash flow
 
@@ -412,7 +441,13 @@ def display_cash_flow(
             console.print()
             console.print(cash.loc["Link"].to_frame().to_string())
             console.print()
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", cash)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "cash",
+            cash,
+            " ".join(sheet_name) if sheet_name else None,
+        )
     else:
         logger.error("Could not get data")
         console.print("[red]Could not get data[/red]\n")
@@ -421,7 +456,11 @@ def display_cash_flow(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_key_metrics(
-    symbol: str, limit: int = 5, quarterly: bool = False, export: str = ""
+    symbol: str,
+    limit: int = 5,
+    quarterly: bool = False,
+    export: str = "",
+    sheet_name: str = "",
 ):
     """Financial Modeling Prep ticker key metrics
 
@@ -448,7 +487,11 @@ def display_key_metrics(
         )
 
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "metrics", key_metrics
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "metrics",
+            key_metrics,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         logger.error("Could not get data")
@@ -458,7 +501,11 @@ def display_key_metrics(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_financial_ratios(
-    symbol: str, limit: int = 5, quarterly: bool = False, export: str = ""
+    symbol: str,
+    limit: int = 5,
+    quarterly: bool = False,
+    export: str = "",
+    sheet_name: str = "",
 ):
     """Financial Modeling Prep ticker ratios
 
@@ -485,7 +532,11 @@ def display_financial_ratios(
         )
 
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "grratiosowth", ratios
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "grratiosowth",
+            ratios,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         logger.error("Could not get data")
@@ -495,7 +546,11 @@ def display_financial_ratios(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_financial_statement_growth(
-    symbol: str, limit: int = 5, quarterly: bool = False, export: str = ""
+    symbol: str,
+    limit: int = 5,
+    quarterly: bool = False,
+    export: str = "",
+    sheet_name: str = "",
 ):
     """Financial Modeling Prep ticker growth
 
@@ -521,7 +576,11 @@ def display_financial_statement_growth(
         )
 
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "growth", growth
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "growth",
+            growth,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         logger.error("Could not get data")
@@ -535,6 +594,7 @@ def display_filings(
     limit: int = 5,
     today: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Display recent forms submitted to the SEC
 
@@ -595,6 +655,7 @@ def display_filings(
             os.path.dirname(os.path.abspath(__file__)),
             "filings",
             filings,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         logger.error("Could not get data")

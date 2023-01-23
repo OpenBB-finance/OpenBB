@@ -389,6 +389,7 @@ class PortfolioController(BaseController):
                 show_index=False,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -1063,6 +1064,7 @@ class PortfolioController(BaseController):
                     self.portfolio,
                     window=ns_parser.period,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -1106,6 +1108,7 @@ class PortfolioController(BaseController):
                     risk_free_rate=ns_parser.risk_free_rate / 100,
                     window=ns_parser.period,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -1149,6 +1152,7 @@ class PortfolioController(BaseController):
                     risk_free_rate=ns_parser.risk_free_rate / 100,
                     window=ns_parser.period,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -1183,6 +1187,7 @@ class PortfolioController(BaseController):
                     self.portfolio,
                     window=ns_parser.period,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -1222,11 +1227,23 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 if ns_parser.metric == "skew":
-                    portfolio_view.display_skewness(self.portfolio, ns_parser.export)
+                    portfolio_view.display_skewness(
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=ns_parser.sheet_name,
+                    )
                 elif ns_parser.metric == "kurtosis":
-                    portfolio_view.display_kurtosis(self.portfolio, ns_parser.export)
+                    portfolio_view.display_kurtosis(
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=ns_parser.sheet_name,
+                    )
                 elif ns_parser.metric == "volatility":
-                    portfolio_view.display_volatility(self.portfolio, ns_parser.export)
+                    portfolio_view.display_volatility(
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=ns_parser.sheet_name,
+                    )
                 elif ns_parser.metric == "sharpe":
                     portfolio_view.display_sharpe_ratio(
                         self.portfolio, ns_parser.risk_free_rate / 100, ns_parser.export
@@ -1240,7 +1257,11 @@ class PortfolioController(BaseController):
                         self.portfolio, ns_parser.export
                     )
                 elif ns_parser.metric == "rsquare":
-                    portfolio_view.display_rsquare(self.portfolio, ns_parser.export)
+                    portfolio_view.display_rsquare(
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=ns_parser.sheet_name,
+                    )
                 elif ns_parser.metric == "gaintopain":
                     portfolio_view.display_gaintopain_ratio(
                         self.portfolio, ns_parser.export
@@ -1254,7 +1275,11 @@ class PortfolioController(BaseController):
                         self.portfolio, ns_parser.export
                     )
                 elif ns_parser.metric == "tail":
-                    portfolio_view.display_tail_ratio(self.portfolio, ns_parser.export)
+                    portfolio_view.display_tail_ratio(
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=ns_parser.sheet_name,
+                    )
                 elif ns_parser.metric == "commonsense":
                     portfolio_view.display_common_sense_ratio(
                         self.portfolio, ns_parser.export

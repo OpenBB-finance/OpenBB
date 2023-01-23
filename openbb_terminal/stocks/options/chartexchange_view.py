@@ -63,6 +63,7 @@ def display_raw(
     price: float = 90,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Return raw stock data[chartexchange]
@@ -123,6 +124,7 @@ def display_raw(
         os.path.dirname(os.path.abspath(__file__)),
         "hist",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
     print_rich_table(
         df.head(limit),

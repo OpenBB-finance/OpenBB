@@ -269,6 +269,7 @@ class InsiderController(StockBaseController):
                 limit=ns_parser.limit,
                 links=ns_parser.urls,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -310,6 +311,7 @@ class InsiderController(StockBaseController):
                     limit=ns_parser.limit,
                     links=ns_parser.urls,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
             else:
                 console.print("Please use `load <ticker>` before.\n")
@@ -904,6 +906,7 @@ class InsiderController(StockBaseController):
                     limit=ns_parser.limit,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
@@ -939,6 +942,7 @@ class InsiderController(StockBaseController):
                     symbol=self.ticker,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")

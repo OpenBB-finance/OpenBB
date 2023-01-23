@@ -104,6 +104,7 @@ def display_transactions(
     show_index=False,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display portfolio transactions
 
@@ -136,6 +137,7 @@ def display_transactions(
             os.path.dirname(os.path.abspath(__file__)),
             "transactions",
             df.set_index("Date"),
+            " ".join(sheet_name) if sheet_name else None,
         )
 
 
@@ -377,6 +379,7 @@ def display_yearly_returns(
     window: str = "all",
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display yearly returns
@@ -449,6 +452,7 @@ def display_yearly_returns(
         os.path.dirname(os.path.abspath(__file__)),
         "yret",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -459,6 +463,7 @@ def display_monthly_returns(
     raw: bool = False,
     show_vals: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display monthly returns
@@ -549,6 +554,7 @@ def display_monthly_returns(
         os.path.dirname(os.path.abspath(__file__)),
         "mret",
         portfolio_returns,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -559,6 +565,7 @@ def display_daily_returns(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display daily returns
@@ -625,6 +632,7 @@ def display_daily_returns(
         os.path.dirname(os.path.abspath(__file__)),
         "dret",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -634,6 +642,7 @@ def display_distribution_returns(
     window: str = "all",
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display daily returns
@@ -712,6 +721,7 @@ def display_distribution_returns(
         os.path.dirname(os.path.abspath(__file__)),
         "distr",
         stats,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -722,6 +732,7 @@ def display_holdings_value(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display holdings of assets (absolute value)
@@ -791,6 +802,7 @@ def display_holdings_value(
         os.path.dirname(os.path.abspath(__file__)),
         "holdv",
         all_holdings,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -801,6 +813,7 @@ def display_holdings_percentage(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display holdings of assets (in percentage)
@@ -875,6 +888,7 @@ def display_holdings_percentage(
         os.path.dirname(os.path.abspath(__file__)),
         "holdp",
         all_holdings,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -883,6 +897,7 @@ def display_rolling_volatility(
     portfolio_engine: PortfolioEngine,
     window: str = "1y",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display rolling volatility
@@ -931,6 +946,7 @@ def display_rolling_volatility(
         os.path.dirname(os.path.abspath(__file__)),
         metric,
         df_portfolio.to_frame().join(df_benchmark),
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -940,6 +956,7 @@ def display_rolling_sharpe(
     risk_free_rate: float = 0,
     window: str = "1y",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display rolling sharpe
@@ -990,6 +1007,7 @@ def display_rolling_sharpe(
         os.path.dirname(os.path.abspath(__file__)),
         metric,
         df_portfolio.to_frame().join(df_benchmark),
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -999,6 +1017,7 @@ def display_rolling_sortino(
     risk_free_rate: float = 0,
     window: str = "1y",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display rolling sortino
@@ -1049,6 +1068,7 @@ def display_rolling_sortino(
         os.path.dirname(os.path.abspath(__file__)),
         metric,
         df_portfolio.to_frame().join(df_benchmark),
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1057,6 +1077,7 @@ def display_rolling_beta(
     portfolio_engine: PortfolioEngine,
     window: str = "1y",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display rolling beta
@@ -1110,6 +1131,7 @@ def display_rolling_beta(
         os.path.dirname(os.path.abspath(__file__)),
         metric,
         rolling_beta,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1117,6 +1139,7 @@ def display_rolling_beta(
 def display_maximum_drawdown(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display maximum drawdown curve
@@ -1155,6 +1178,7 @@ def display_maximum_drawdown(
         os.path.dirname(os.path.abspath(__file__)),
         "maxdd",
         drawdown,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1162,6 +1186,7 @@ def display_maximum_drawdown(
 def display_rsquare(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display R-square
 
@@ -1188,6 +1213,7 @@ def display_rsquare(
         os.path.dirname(os.path.abspath(__file__)),
         "rsquare",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1195,6 +1221,7 @@ def display_rsquare(
 def display_skewness(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display skewness
 
@@ -1219,6 +1246,7 @@ def display_skewness(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "skew",
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1226,6 +1254,7 @@ def display_skewness(
 def display_kurtosis(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display kurtosis
 
@@ -1250,6 +1279,7 @@ def display_kurtosis(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "kurt",
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1258,6 +1288,7 @@ def display_stats(
     portfolio_engine: PortfolioEngine,
     window: str = "all",
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display stats
 
@@ -1284,6 +1315,7 @@ def display_stats(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "stats",
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1291,6 +1323,7 @@ def display_stats(
 def display_volatility(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display volatility for multiple intervals
 
@@ -1311,7 +1344,11 @@ def display_volatility(
         floatfmt=".2%",
     )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "metric_volatility", df
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_volatility",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1320,6 +1357,7 @@ def display_sharpe_ratio(
     portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display sharpe ratio for multiple intervals
 
@@ -1346,6 +1384,7 @@ def display_sharpe_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_sharpe",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1354,6 +1393,7 @@ def display_sortino_ratio(
     portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display sortino ratio for multiple intervals
 
@@ -1380,6 +1420,7 @@ def display_sortino_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_sortino",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1387,6 +1428,7 @@ def display_sortino_ratio(
 def display_maximum_drawdown_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display maximum drawdown for multiple intervals
 
@@ -1407,7 +1449,11 @@ def display_maximum_drawdown_ratio(
         floatfmt=".2f",
     )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "metric_maxdrawdown", df
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_maxdrawdown",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1415,6 +1461,7 @@ def display_maximum_drawdown_ratio(
 def display_gaintopain_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display gain-to-pain ratio for multiple intervals
 
@@ -1438,6 +1485,7 @@ def display_gaintopain_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_gaintopain_ratio",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1445,6 +1493,7 @@ def display_gaintopain_ratio(
 def display_tracking_error(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display tracking error for multiple intervals
 
@@ -1465,7 +1514,11 @@ def display_tracking_error(
         floatfmt=".2%",
     )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "metric_tracking_error", df
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_tracking_error",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1473,6 +1526,7 @@ def display_tracking_error(
 def display_information_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display information ratio for multiple intervals
 
@@ -1496,6 +1550,7 @@ def display_information_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_information_ratio",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1503,6 +1558,7 @@ def display_information_ratio(
 def display_tail_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display tail ratio for multiple intervals
 
@@ -1525,7 +1581,11 @@ def display_tail_ratio(
         floatfmt=".2f",
     )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "metric_tail_ratio", df
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_tail_ratio",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1533,6 +1593,7 @@ def display_tail_ratio(
 def display_common_sense_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display common sense ratio for multiple intervals
 
@@ -1556,6 +1617,7 @@ def display_common_sense_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_common_sense_ratio",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1564,6 +1626,7 @@ def display_jensens_alpha(
     portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display jensens alpha for multiple intervals
 
@@ -1586,7 +1649,11 @@ def display_jensens_alpha(
         floatfmt=".2%",
     )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "metric_jensens_alpha", df
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_jensens_alpha",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1594,6 +1661,7 @@ def display_jensens_alpha(
 def display_calmar_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display calmar ratio for multiple intervals
 
@@ -1614,7 +1682,11 @@ def display_calmar_ratio(
         floatfmt=".2f",
     )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "metric_calmar_ratio", df
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_calmar_ratio",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1622,6 +1694,7 @@ def display_calmar_ratio(
 def display_kelly_criterion(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display kelly criterion for multiple intervals
 
@@ -1641,13 +1714,18 @@ def display_kelly_criterion(
         floatfmt=".2%",
     )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "metric_kelly_criterion", df
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_kelly_criterion",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
 def display_payoff_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display payoff ratio for multiple intervals
 
@@ -1668,13 +1746,18 @@ def display_payoff_ratio(
         floatfmt=".2f",
     )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "metric_payoff_ratio", df
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_payoff_ratio",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
 def display_profit_factor(
     portfolio_engine: PortfolioEngine,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display profit factor for multiple intervals
 
@@ -1695,7 +1778,11 @@ def display_profit_factor(
         floatfmt=".2f",
     )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "metric_profit_factor", df
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_profit_factor",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -1705,6 +1792,7 @@ def display_summary(
     window: str = "all",
     risk_free_rate: float = 0,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display summary portfolio and benchmark returns
 
@@ -1733,6 +1821,7 @@ def display_summary(
         os.path.dirname(os.path.abspath(__file__)),
         "summary",
         summary,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 

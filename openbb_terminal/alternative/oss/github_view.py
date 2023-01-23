@@ -26,7 +26,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_star_history(
-    repo: str, export: str = "", external_axes: Optional[List[plt.Axes]] = None
+    repo: str,
+    export: str = "",
+    sheet_name: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots repo summary [Source: https://api.github.com].
 
@@ -58,7 +61,13 @@ def display_star_history(
         if external_axes is None:
             theme.visualize_output()
 
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "sh", df)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "sh",
+            df,
+            " ".join(sheet_name) if sheet_name else None,
+        )
 
 
 @log_start_end(log=logger)
@@ -67,6 +76,7 @@ def display_top_repos(
     categories: str = "",
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots repo summary [Source: https://api.github.com].
@@ -116,11 +126,17 @@ def display_top_repos(
         if external_axes is None:
             theme.visualize_output()
 
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "tr", df)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "tr",
+            df,
+            " ".join(sheet_name) if sheet_name else None,
+        )
 
 
 @log_start_end(log=logger)
-def display_repo_summary(repo: str, export: str = "") -> None:
+def display_repo_summary(repo: str, export: str = "", sheet_name: str = "") -> None:
     """Prints table showing repo summary [Source: https://api.github.com].
 
     Parameters
@@ -141,4 +157,5 @@ def display_repo_summary(repo: str, export: str = "") -> None:
             os.path.dirname(os.path.abspath(__file__)),
             "rs",
             data,
+            " ".join(sheet_name) if sheet_name else None,
         )

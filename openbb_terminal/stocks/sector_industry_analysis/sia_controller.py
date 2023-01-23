@@ -860,6 +860,7 @@ class SectorIndustryAnalysisController(BaseController):
                         exclude_exchanges=self.exclude_exchanges,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
+                        sheet_name=ns_parser.sheet_name,
                         raw=ns_parser.raw,
                         already_loaded_stocks_data=self.stocks_data,
                     )

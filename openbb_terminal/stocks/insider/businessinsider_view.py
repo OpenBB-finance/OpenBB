@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
-# pylint: disable=R0912
+# pylint: disable=R0912,too-many-arguments
 
 
 @log_start_end(log=logger)
@@ -40,6 +40,7 @@ def insider_activity(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display insider activity. [Source: Business Insider]
@@ -233,4 +234,5 @@ def insider_activity(
             os.path.dirname(os.path.abspath(__file__)),
             "act",
             df_insider,
+            " ".join(sheet_name) if sheet_name else None,
         )

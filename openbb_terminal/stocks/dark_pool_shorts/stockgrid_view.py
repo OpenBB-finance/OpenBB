@@ -29,6 +29,7 @@ def dark_pool_short_positions(
     sortby: str = "dpp_dollar",
     ascend: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Get dark pool short positions. [Source: Stockgrid]
 
@@ -79,12 +80,13 @@ def dark_pool_short_positions(
         os.path.dirname(os.path.abspath(__file__)),
         "dppos",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
 @log_start_end(log=logger)
 def short_interest_days_to_cover(
-    limit: int = 10, sortby: str = "float", export: str = ""
+    limit: int = 10, sortby: str = "float", export: str = "", sheet_name: str = ""
 ):
     """Print short interest and days to cover. [Source: Stockgrid]
 
@@ -116,6 +118,7 @@ def short_interest_days_to_cover(
         os.path.dirname(os.path.abspath(__file__)),
         "shortdtc",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -125,6 +128,7 @@ def short_interest_volume(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot price vs short interest volume. [Source: Stockgrid]
@@ -240,6 +244,7 @@ def short_interest_volume(
         os.path.dirname(os.path.abspath(__file__)),
         "shortint(stockgrid)",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -249,6 +254,7 @@ def net_short_position(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot net short position. [Source: Stockgrid]
@@ -333,4 +339,5 @@ def net_short_position(
         os.path.dirname(os.path.abspath(__file__)),
         "shortpos",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )

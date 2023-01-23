@@ -31,6 +31,8 @@ from openbb_terminal.stocks.options import op_helpers, tradier_model, yfinance_m
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=C0302,too-many-arguments
+
 column_map = {"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
 warnings.filterwarnings("ignore")
 
@@ -161,6 +163,7 @@ def display_chains(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display option chain
 
@@ -247,6 +250,7 @@ def display_chains(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
         "chains",
         chains_df,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -259,6 +263,7 @@ def plot_oi(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot open interest
@@ -338,6 +343,7 @@ def plot_oi(
         os.path.dirname(os.path.abspath(__file__)),
         "oi_tr",
         options,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -350,6 +356,7 @@ def plot_vol(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume
@@ -430,6 +437,7 @@ def plot_vol(
         os.path.dirname(os.path.abspath(__file__)),
         "vol_tr",
         options,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -441,6 +449,7 @@ def plot_volume_open_interest(
     max_sp: float = -1,
     min_vol: float = -1,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume and open interest
@@ -623,6 +632,7 @@ def plot_volume_open_interest(
         os.path.dirname(os.path.abspath(__file__)),
         "voi_tr",
         options,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -635,6 +645,7 @@ def display_historical(
     raw: bool = False,
     chain_id: str = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot historical option prices
@@ -716,4 +727,5 @@ def display_historical(
             os.path.dirname(os.path.abspath(__file__)),
             "hist",
             df_hist,
+            " ".join(sheet_name) if sheet_name else None,
         )

@@ -30,6 +30,7 @@ def display_economic_calendar(
     end_date: str,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Display economic calendar for specified country between start and end dates
 
@@ -56,7 +57,13 @@ def display_economic_calendar(
         headers=df.columns,
     )
     console.print()
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "events", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "events",
+        df,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
@@ -65,6 +72,7 @@ def display_big_mac_index(
     country_codes: List[str] = None,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display Big Mac Index for given countries
@@ -107,7 +115,11 @@ def display_big_mac_index(
             )
 
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "bigmac", big_mac
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "bigmac",
+            big_mac,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         logger.error("Unable to get big mac data")

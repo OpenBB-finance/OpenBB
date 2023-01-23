@@ -125,6 +125,7 @@ class CovidController(BaseController):
                 raw=ns_parser.raw,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -150,6 +151,7 @@ class CovidController(BaseController):
                 raw=ns_parser.raw,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -175,6 +177,7 @@ class CovidController(BaseController):
                 raw=ns_parser.raw,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -200,6 +203,7 @@ class CovidController(BaseController):
                 raw=ns_parser.raw,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)

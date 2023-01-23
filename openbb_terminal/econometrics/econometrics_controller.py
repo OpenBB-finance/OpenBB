@@ -439,6 +439,7 @@ class EconometricsController(BaseController):
                     os.path.dirname(os.path.abspath(__file__)),
                     ns_parser.name,
                     self.datasets[ns_parser.name],
+                    ns_parser.sheet_name,
                 )
 
         console.print()
@@ -597,6 +598,7 @@ class EconometricsController(BaseController):
                     os.path.dirname(os.path.abspath(__file__)),
                     f"{ns_parser.name}_show",
                     df.head(ns_parser.limit),
+                    ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -640,6 +642,7 @@ class EconometricsController(BaseController):
                     os.path.dirname(os.path.abspath(__file__)),
                     f"{dataset}_{col}_desc",
                     df,
+                    ns_parser.sheet_name,
                 )
             else:
                 df = self.datasets[ns_parser.name]
@@ -657,6 +660,7 @@ class EconometricsController(BaseController):
                         os.path.dirname(os.path.abspath(__file__)),
                         f"{ns_parser.name}_desc",
                         df,
+                        ns_parser.sheet_name,
                     )
                 else:
                     console.print("Empty dataset")
@@ -1524,7 +1528,9 @@ class EconometricsController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            regression_model.get_comparison(self.regression, ns_parser.export)
+            regression_model.get_comparison(
+                self.regression, ns_parser.export, sheet_name=ns_parser.sheet_name
+            )
             console.print()
 
     @log_start_end(log=logger)
@@ -1748,6 +1754,7 @@ class EconometricsController(BaseController):
                         significant=ns_parser.significant,
                         plot=ns_parser.plot,
                         export=ns_parser.export,
+                        sheet_name=ns_parser.sheet_name,
                     )
 
                 else:

@@ -33,6 +33,7 @@ def display_valuation(
     sortby: str = "Name",
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display group (sectors, industry or country) valuation data. [Source: Finviz]
 
@@ -64,6 +65,7 @@ def display_valuation(
         os.path.dirname(os.path.abspath(__file__)),
         "valuation",
         df_group,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -73,6 +75,7 @@ def display_performance(
     sortby: str = "Name",
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = "",
 ):
     """View group (sectors, industry or country) performance data. [Source: Finviz]
 
@@ -104,11 +107,12 @@ def display_performance(
         os.path.dirname(os.path.abspath(__file__)),
         "performance",
         df_group,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
 @log_start_end(log=logger)
-def display_spectrum(group: str = "sector", export: str = ""):
+def display_spectrum(group: str = "sector", export: str = "", sheet_name: str = ""):
     """Display finviz spectrum in system viewer [Source: Finviz]
 
     Parameters
@@ -127,6 +131,7 @@ def display_spectrum(group: str = "sector", export: str = ""):
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "spectrum",
+        " ".join(sheet_name) if sheet_name else None,
     )
 
     img.show()
@@ -138,6 +143,7 @@ def display_future(
     sortby: str = "ticker",
     ascend: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display table of a particular future type. [Source: Finviz]
 
@@ -166,4 +172,5 @@ def display_future(
         os.path.dirname(os.path.abspath(__file__)),
         future_type.lower(),
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )

@@ -157,6 +157,7 @@ class ScreenerController(BaseController):
                 preset=ns_parser.preset,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)

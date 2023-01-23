@@ -26,6 +26,8 @@ from openbb_terminal.stocks.comparison_analysis import yahoo_finance_model
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=too-many-arguments
+
 register_matplotlib_converters()
 
 d_candle_types = {
@@ -47,6 +49,7 @@ def display_historical(
     candle_type: str = "a",
     normalize: bool = True,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical stock prices. [Source: Yahoo Finance]
@@ -104,7 +107,11 @@ def display_historical(
         theme.visualize_output()
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "historical", df_similar
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "historical",
+        df_similar,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -114,6 +121,7 @@ def display_volume(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display stock volume. [Source: Yahoo Finance]
@@ -159,7 +167,11 @@ def display_volume(
         theme.visualize_output()
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "volume", df_similar
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "volume",
+        df_similar,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -173,6 +185,7 @@ def display_correlation(
     raw: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
+    sheet_name: str = "",
 ):
     """
     Correlation heatmap based on historical price comparison
@@ -244,7 +257,13 @@ def display_correlation(
     if not external_axes:
         theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "hcorr", df_similar)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "hcorr",
+        df_similar,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)

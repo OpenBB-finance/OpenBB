@@ -131,6 +131,7 @@ def screener(
     ascend: bool = False,
     sortby: str = "",
     export: str = "",
+    sheet_name: str = "",
 ) -> List[str]:
     """Screener one of the following: overview, valuation, financial, ownership, performance, technical.
 
@@ -246,6 +247,7 @@ def screener(
             os.path.dirname(os.path.abspath(__file__)),
             data_type,
             df_screen,
+            " ".join(sheet_name) if sheet_name else None,
         )
 
         return list(df_screen.head(n=limit)["Ticker"].values)

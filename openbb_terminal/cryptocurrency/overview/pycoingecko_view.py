@@ -37,6 +37,7 @@ def display_crypto_heatmap(
     category: str = "",
     limit: int = 15,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Shows cryptocurrencies heatmap [Source: CoinGecko]
@@ -128,12 +129,17 @@ def display_crypto_heatmap(
             os.path.dirname(os.path.abspath(__file__)),
             "hm",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
 
 
 @log_start_end(log=logger)
 def display_holdings_overview(
-    symbol: str, show_bar: bool = False, export: str = "", limit: int = 15
+    symbol: str,
+    show_bar: bool = False,
+    export: str = "",
+    sheet_name: str = "",
+    limit: int = 15,
 ) -> None:
     """Shows overview of public companies that holds ethereum or bitcoin. [Source: CoinGecko]
 
@@ -193,12 +199,17 @@ def display_holdings_overview(
             os.path.dirname(os.path.abspath(__file__)),
             "cghold",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
 
 
 @log_start_end(log=logger)
 def display_exchange_rates(
-    sortby: str = "Name", ascend: bool = False, limit: int = 15, export: str = ""
+    sortby: str = "Name",
+    ascend: bool = False,
+    limit: int = 15,
+    export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Shows  list of crypto, fiats, commodity exchange rates. [Source: CoinGecko]
 
@@ -229,13 +240,16 @@ def display_exchange_rates(
             os.path.dirname(os.path.abspath(__file__)),
             "exrates",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")
 
 
 @log_start_end(log=logger)
-def display_global_market_info(pie: bool = False, export: str = "") -> None:
+def display_global_market_info(
+    pie: bool = False, export: str = "", sheet_name: str = ""
+) -> None:
     """Shows global statistics about crypto. [Source: CoinGecko]
         - market cap change
         - number of markets
@@ -292,13 +306,14 @@ def display_global_market_info(pie: bool = False, export: str = "") -> None:
             os.path.dirname(os.path.abspath(__file__)),
             "cgglobal",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")
 
 
 @log_start_end(log=logger)
-def display_global_defi_info(export: str = "") -> None:
+def display_global_defi_info(export: str = "", sheet_name: str = "") -> None:
     """Shows global statistics about Decentralized Finances. [Source: CoinGecko]
 
     Parameters
@@ -322,6 +337,7 @@ def display_global_defi_info(export: str = "") -> None:
             os.path.dirname(os.path.abspath(__file__)),
             "defi",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")
@@ -331,6 +347,7 @@ def display_global_defi_info(export: str = "") -> None:
 def display_stablecoins(
     limit: int = 15,
     export: str = "",
+    sheet_name: str = "",
     sortby: str = "Market_Cap_[$]",
     ascend: bool = False,
     pie: bool = True,
@@ -407,6 +424,7 @@ def display_stablecoins(
             os.path.dirname(os.path.abspath(__file__)),
             "cgstables",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -417,6 +435,7 @@ def display_categories(
     sortby: str = "market_cap_desc",
     limit: int = 15,
     export: str = "",
+    sheet_name: str = "",
     pie: bool = False,
 ) -> None:
     """Shows top cryptocurrency categories by market capitalization
@@ -473,6 +492,7 @@ def display_categories(
             os.path.dirname(os.path.abspath(__file__)),
             "cgcategories",
             df_data,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -485,6 +505,7 @@ def display_exchanges(
     limit: int = 15,
     links: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Shows list of top exchanges from CoinGecko. [Source: CoinGecko]
 
@@ -523,6 +544,7 @@ def display_exchanges(
             os.path.dirname(os.path.abspath(__file__)),
             "exchanges",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")
@@ -530,7 +552,11 @@ def display_exchanges(
 
 @log_start_end(log=logger)
 def display_platforms(
-    sortby: str = "Name", ascend: bool = True, limit: int = 15, export: str = ""
+    sortby: str = "Name",
+    ascend: bool = True,
+    limit: int = 15,
+    export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Shows list of financial platforms. [Source: CoinGecko]
 
@@ -561,6 +587,7 @@ def display_platforms(
             os.path.dirname(os.path.abspath(__file__)),
             "platforms",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -568,7 +595,11 @@ def display_platforms(
 
 @log_start_end(log=logger)
 def display_products(
-    sortby: str = "Platform", ascend: bool = False, limit: int = 15, export: str = ""
+    sortby: str = "Platform",
+    ascend: bool = False,
+    limit: int = 15,
+    export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Shows list of financial products. [Source: CoinGecko]
 
@@ -599,6 +630,7 @@ def display_products(
             os.path.dirname(os.path.abspath(__file__)),
             "products",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")
@@ -606,7 +638,11 @@ def display_products(
 
 @log_start_end(log=logger)
 def display_indexes(
-    sortby: str = "Name", ascend: bool = True, limit: int = 15, export: str = ""
+    sortby: str = "Name",
+    ascend: bool = True,
+    limit: int = 15,
+    export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Shows list of crypto indexes. [Source: CoinGecko]
 
@@ -636,6 +672,7 @@ def display_indexes(
             os.path.dirname(os.path.abspath(__file__)),
             "indexes",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")
@@ -643,7 +680,11 @@ def display_indexes(
 
 @log_start_end(log=logger)
 def display_derivatives(
-    sortby: str = "Rank", ascend: bool = False, limit: int = 15, export: str = ""
+    sortby: str = "Rank",
+    ascend: bool = False,
+    limit: int = 15,
+    export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Shows  list of crypto derivatives. [Source: CoinGecko]
 
@@ -675,6 +716,7 @@ def display_derivatives(
             os.path.dirname(os.path.abspath(__file__)),
             "derivatives",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")

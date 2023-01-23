@@ -34,6 +34,7 @@ def display_adx(
     drift: int = 1,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots ADX indicator
@@ -114,6 +115,7 @@ def display_adx(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "adx",
         df_ta,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -124,6 +126,7 @@ def display_aroon(
     scalar: int = 100,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Aroon indicator
@@ -204,4 +207,5 @@ def display_aroon(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "aroon",
         df_ta,
+        " ".join(sheet_name) if sheet_name else None,
     )

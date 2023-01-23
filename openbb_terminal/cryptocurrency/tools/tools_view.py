@@ -14,7 +14,11 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_apy(
-    apr: float, compounding_times: int, narrative: bool = False, export: str = ""
+    apr: float,
+    compounding_times: int,
+    narrative: bool = False,
+    export: str = "",
+    sheet_name: str = "",
 ):
     """Displays APY value converted from APR
 
@@ -49,6 +53,7 @@ def display_apy(
         os.path.dirname(os.path.abspath(__file__)),
         "aprtoapy",
         apy_str,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -60,6 +65,7 @@ def display_il(
     initial_pool_value: int,
     narrative: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Displays Impermanent Loss in a custom liquidity pool
 
@@ -102,4 +108,5 @@ def display_il(
         os.path.dirname(os.path.abspath(__file__)),
         "il",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )

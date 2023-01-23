@@ -78,6 +78,7 @@ def rating_over_time(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Rating over time (monthly). [Source: Finnhub]
@@ -127,4 +128,5 @@ def rating_over_time(
         os.path.dirname(os.path.abspath(__file__)),
         "rot",
         df_rot,
+        " ".join(sheet_name) if sheet_name else None,
     )

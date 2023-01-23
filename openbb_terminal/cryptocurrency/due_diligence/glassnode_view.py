@@ -36,6 +36,7 @@ def display_active_addresses(
     end_date: Optional[str] = None,
     interval: str = "24h",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots active addresses of a certain symbol over time
@@ -89,6 +90,7 @@ def display_active_addresses(
         os.path.dirname(os.path.abspath(__file__)),
         "active",
         df_addresses,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -99,6 +101,7 @@ def display_non_zero_addresses(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots addresses with non-zero balance of a certain symbol
@@ -150,6 +153,7 @@ def display_non_zero_addresses(
         os.path.dirname(os.path.abspath(__file__)),
         "nonzero",
         df_addresses,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -161,6 +165,7 @@ def display_exchange_net_position_change(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots 30d change of the supply held in exchange wallets.
@@ -231,6 +236,7 @@ def display_exchange_net_position_change(
         os.path.dirname(os.path.abspath(__file__)),
         "change",
         df_addresses,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -243,6 +249,7 @@ def display_exchange_balances(
     end_date: Optional[str] = None,
     percentage: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots total amount of coins held on exchange addresses in units and percentage.
@@ -313,6 +320,7 @@ def display_exchange_balances(
         os.path.dirname(os.path.abspath(__file__)),
         "eb",
         df_balance,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
@@ -324,6 +332,7 @@ def display_hashrate(
     end_date: Optional[str] = None,
     interval: str = "24h",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots dataframe with mean hashrate of btc or eth blockchain and symbol price.
@@ -392,4 +401,5 @@ def display_hashrate(
         os.path.dirname(os.path.abspath(__file__)),
         "hr",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )

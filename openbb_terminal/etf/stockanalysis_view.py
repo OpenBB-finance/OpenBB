@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def view_overview(symbol: str, export: str = ""):
+def view_overview(symbol: str, export: str = "", sheet_name: str = ""):
     """Print etf overview information
 
     Parameters
@@ -38,11 +38,17 @@ def view_overview(symbol: str, export: str = ""):
         show_index=True,
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "overview",
+        data,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
-def view_holdings(symbol: str, limit: int = 10, export: str = ""):
+def view_holdings(symbol: str, limit: int = 10, export: str = "", sheet_name: str = ""):
     """
 
     Parameters
@@ -63,11 +69,17 @@ def view_holdings(symbol: str, limit: int = 10, export: str = ""):
         show_index=True,
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "holdings", data)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "holdings",
+        data,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
-def view_comparisons(symbols: List[str], export: str = ""):
+def view_comparisons(symbols: List[str], export: str = "", sheet_name: str = ""):
     """Show ETF comparisons
 
     Parameters
@@ -92,11 +104,19 @@ def view_comparisons(symbols: List[str], export: str = ""):
         data, headers=list(data.columns), title="ETF Comparisons", show_index=True
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "overview",
+        data,
+        " ".join(sheet_name) if sheet_name else None,
+    )
 
 
 @log_start_end(log=logger)
-def display_etf_by_name(name: str, limit: int = 10, export: str = ""):
+def display_etf_by_name(
+    name: str, limit: int = 10, export: str = "", sheet_name: str = ""
+):
     """Display ETFs matching search string. [Source: StockAnalysis]
 
     Parameters
@@ -122,4 +142,5 @@ def display_etf_by_name(name: str, limit: int = 10, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "ln_sa",
         matching_etfs,
+        " ".join(sheet_name) if sheet_name else None,
     )

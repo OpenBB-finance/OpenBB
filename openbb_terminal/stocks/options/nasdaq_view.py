@@ -29,6 +29,7 @@ def display_oi(
     max_sp: float = -1,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot open interest
@@ -56,6 +57,7 @@ def display_oi(
         os.path.dirname(os.path.abspath(__file__)),
         "oi_nasdaq",
         option_chain,
+        " ".join(sheet_name) if sheet_name else None,
     )
     current_price = nasdaq_model.get_last_price(symbol)
 
@@ -119,6 +121,7 @@ def display_volume(
     max_sp: float = -1,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume
@@ -146,6 +149,7 @@ def display_volume(
         os.path.dirname(os.path.abspath(__file__)),
         "oi_nasdaq",
         option_chain,
+        " ".join(sheet_name) if sheet_name else None,
     )
     current_price = nasdaq_model.get_last_price(symbol)
 
@@ -209,6 +213,7 @@ def display_volume_and_oi(
     max_sp: float = -1,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume and open interest
@@ -236,6 +241,7 @@ def display_volume_and_oi(
         os.path.dirname(os.path.abspath(__file__)),
         "voi_nasdaq",
         option_chain,
+        " ".join(sheet_name) if sheet_name else None,
     )
     current_price = nasdaq_model.get_last_price(symbol)
 
@@ -310,7 +316,7 @@ def display_volume_and_oi(
 
 
 @log_start_end(log=logger)
-def display_chains(symbol: str, expiry: str, export: str = ""):
+def display_chains(symbol: str, expiry: str, export: str = "", sheet_name: str = ""):
     """Display option chain for given expiration
 
     Parameters
@@ -328,6 +334,7 @@ def display_chains(symbol: str, expiry: str, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "chain_nasdaq",
         option_chain,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
     print_rich_table(option_chain, headers=option_chain.columns)

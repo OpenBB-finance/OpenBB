@@ -62,7 +62,12 @@ class DiscoveryController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
-            wsj_view.show_top_mover("gainers", ns_parser.limit, ns_parser.export)
+            wsj_view.show_top_mover(
+                "gainers",
+                ns_parser.limit,
+                ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
+            )
 
     @log_start_end(log=logger)
     def call_decliners(self, other_args):
@@ -81,7 +86,12 @@ class DiscoveryController(BaseController):
             limit=10,
         )
         if ns_parser:
-            wsj_view.show_top_mover("decliners", ns_parser.limit, ns_parser.export)
+            wsj_view.show_top_mover(
+                "decliners",
+                ns_parser.limit,
+                ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
+            )
 
     @log_start_end(log=logger)
     def call_active(self, other_args):
@@ -100,4 +110,9 @@ class DiscoveryController(BaseController):
             limit=10,
         )
         if ns_parser:
-            wsj_view.show_top_mover("active", ns_parser.limit, ns_parser.export)
+            wsj_view.show_top_mover(
+                "active",
+                ns_parser.limit,
+                ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
+            )

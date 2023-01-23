@@ -100,6 +100,7 @@ def short_interest(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot the short interest of a stock. This corresponds to the
@@ -162,4 +163,5 @@ def short_interest(
         os.path.dirname(os.path.abspath(__file__)),
         "psi(quandl)",
         df_short_interest,
+        " ".join(sheet_name) if sheet_name else None,
     )

@@ -229,6 +229,7 @@ class ScreenerController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -273,6 +274,7 @@ class ScreenerController(BaseController):
                     category=category,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
                 )
             else:
                 console.print(

@@ -14,7 +14,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def screener(similar: List[str], data_type: str = "overview", export: str = ""):
+def screener(
+    similar: List[str],
+    data_type: str = "overview",
+    export: str = "",
+    sheet_name: str = "",
+):
     """Screener.
 
     Parameters
@@ -43,5 +48,9 @@ def screener(similar: List[str], data_type: str = "overview", export: str = ""):
         )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), data_type, df_screen
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        data_type,
+        df_screen,
+        " ".join(sheet_name) if sheet_name else None,
     )

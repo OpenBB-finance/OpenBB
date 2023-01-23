@@ -33,6 +33,7 @@ def fibonacci_retracement(
     end_date: Optional[Union[str, None]] = None,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Calculated fibonacci retracement levels
@@ -138,4 +139,5 @@ def fibonacci_retracement(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "fib",
         df_fib,
+        " ".join(sheet_name) if sheet_name else None,
     )

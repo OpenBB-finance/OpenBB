@@ -10,6 +10,7 @@ def find(
     key: str = "symbol",
     limit: int = 10,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Find similar coin by coin name,symbol or id.
 
@@ -48,4 +49,5 @@ def find(
             os.path.dirname(os.path.abspath(__file__)),
             "find",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )

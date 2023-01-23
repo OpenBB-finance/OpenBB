@@ -26,6 +26,7 @@ def display_order_book(
     limit: int = 100,
     to_symbol: str = "USDT",
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots order book for currency. [Source: Binance]
@@ -57,12 +58,13 @@ def display_order_book(
         os.path.dirname(os.path.abspath(__file__)),
         "book",
         market_book,
+        " ".join(sheet_name) if sheet_name else None,
     )
 
 
 @log_start_end(log=logger)
 def display_balance(
-    from_symbol: str, to_symbol: str = "USDT", export: str = ""
+    from_symbol: str, to_symbol: str = "USDT", export: str = "", sheet_name: str = ""
 ) -> None:
     """Prints table showing account holdings for asset. [Source: Binance]
 
@@ -94,4 +96,5 @@ def display_balance(
         os.path.dirname(os.path.abspath(__file__)),
         "book",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )

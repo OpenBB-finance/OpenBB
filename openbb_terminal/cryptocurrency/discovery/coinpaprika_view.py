@@ -20,6 +20,7 @@ def display_search_results(
     sortby: str = "id",
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = "",
 ) -> None:
     """Prints table showing Search over CoinPaprika. [Source: CoinPaprika]
 
@@ -65,4 +66,5 @@ def display_search_results(
         os.path.dirname(os.path.abspath(__file__)),
         "search",
         df,
+        " ".join(sheet_name) if sheet_name else None,
     )
