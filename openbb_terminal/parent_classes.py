@@ -1110,9 +1110,10 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 if df_stock_candidate.empty:
                     return
             is_df = isinstance(df_stock_candidate, pd.DataFrame)
-            if not ((is_df and df_stock_candidate.empty) or (
-                not is_df and not df_stock_candidate
-            )):
+            if not (
+                (is_df and df_stock_candidate.empty)
+                or (not is_df and not df_stock_candidate)
+            ):
                 self.stock = df_stock_candidate
                 if ns_parser.exchange:
                     self.add_info = stocks_helper.additional_info_about_ticker(
