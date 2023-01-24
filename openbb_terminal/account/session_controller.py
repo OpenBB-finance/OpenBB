@@ -1,6 +1,5 @@
 from typing import Tuple
 import json
-import requests
 import openbb_terminal.account.local_model as Local
 import openbb_terminal.account.hub_model as Hub
 from openbb_terminal.account.user import User
