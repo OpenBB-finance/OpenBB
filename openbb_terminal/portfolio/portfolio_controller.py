@@ -673,6 +673,7 @@ class PortfolioController(BaseController):
                     ns_parser.raw,
                     ns_parser.limit,
                     ns_parser.export,
+                    ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
