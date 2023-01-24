@@ -3,8 +3,6 @@ name: Integration Tests
 on:
   push:
     branches:
-      - develop
-      - main
       - release/*
       - hotfix/*
   pull_request:
