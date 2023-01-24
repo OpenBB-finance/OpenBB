@@ -753,6 +753,16 @@ class BaseController(metaclass=ABCMeta):
                 help=help_export,
             )
 
+            # If excel is an option, add the sheet name
+            if export_allowed == EXPORT_ONLY_RAW_DATA_ALLOWED:
+                parser.add_argument(
+                    "--sheet-name",
+                    dest="sheet_name",
+                    default=None,
+                    nargs="+",
+                    help="Name of excel sheet to save data to. Only valid for .xlsx files.",
+                )
+
         if raw:
             parser.add_argument(
                 "--raw",
@@ -1099,7 +1109,11 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 )
                 if df_stock_candidate.empty:
                     return
-            if not df_stock_candidate.empty:
+            is_df = isinstance(df_stock_candidate, pd.DataFrame)
+            if not (
+                (is_df and df_stock_candidate.empty)
+                or (not is_df and not df_stock_candidate)
+            ):
                 self.stock = df_stock_candidate
                 if ns_parser.exchange:
                     self.add_info = stocks_helper.additional_info_about_ticker(
@@ -1145,8 +1159,11 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 export_data(
                     ns_parser.export,
                     os.path.dirname(os.path.abspath(__file__)),
-                    "load",
+                    f"load_{self.ticker}",
                     self.stock.copy(),
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
 

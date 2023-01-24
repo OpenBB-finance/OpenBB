@@ -6,6 +6,7 @@ import time
 import pandas as pd
 import requests
 
+from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal import config_terminal as cfg
 
@@ -32,9 +33,10 @@ def create_query(query: str):
         },
     )
     if r.status_code != 200:
-        raise Exception(
-            f"Error creating query, got response: {r.text} with status code: {str(r.status_code)}"
+        console.print(
+            f"[red]Error creating query, got response: {r.text} with status code: {str(r.status_code)}[/red]"
         )
+        return ""
 
     return json.loads(r.text)
 
@@ -49,9 +51,10 @@ def get_query_results(token):
         },
     )
     if r.status_code != 200:
-        raise Exception(
-            f"Error creating query, got response: {r.text} with status code: {str(r.status_code)}"
+        console.print(
+            f"[red]Error creating query, got response: {r.text} with status code: {str(r.status_code)}[/red]"
         )
+        return ""
 
     data = json.loads(r.text)
     if data["status"] == "running":
@@ -103,14 +106,17 @@ def get_dapp_stats(
     """
     data = get_shroom_data(sql)
 
-    df = pd.DataFrame(
-        data["results"], columns=["timeframe", "fees", "n_users", "volume"]
-    )
+    if data:
+        df = pd.DataFrame(
+            data["results"], columns=["timeframe", "fees", "n_users", "volume"]
+        )
 
-    df["timeframe"] = pd.to_datetime(df["timeframe"])
-    df = df.set_index("timeframe")
+        df["timeframe"] = pd.to_datetime(df["timeframe"])
+        df = df.set_index("timeframe")
 
-    return df
+        return df
+
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -149,11 +155,14 @@ def get_daily_transactions(symbols: List[str]) -> pd.DataFrame:
 
     data = get_shroom_data(sql)
 
-    df = pd.DataFrame(data["results"], columns=["timeframe"] + symbols)
-    df["timeframe"] = pd.to_datetime(df["timeframe"])
-    df.set_index("timeframe", inplace=True)
+    if data:
+        df = pd.DataFrame(data["results"], columns=["timeframe"] + symbols)
+        df["timeframe"] = pd.to_datetime(df["timeframe"])
+        df.set_index("timeframe", inplace=True)
 
-    return df
+        return df
+
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -188,7 +197,8 @@ def get_total_value_locked(
     """
 
     if not (user_address or address_name):
-        raise Exception("No user address or address name provided")
+        console.print("[red]No user address or address name provided.[/red]")
+        return pd.DataFrame()
     if user_address:
         extra_sql = f"user_address = '{user_address}' and"
     else:
@@ -211,8 +221,13 @@ def get_total_value_locked(
 
     data = get_shroom_data(sql)
 
-    df = pd.DataFrame(data["results"], columns=["metric_date", "symbol", "amount_usd"])
-    df["metric_date"] = pd.to_datetime(df["metric_date"])
-    df.set_index("metric_date", inplace=True)
+    if data:
+        df = pd.DataFrame(
+            data["results"], columns=["metric_date", "symbol", "amount_usd"]
+        )
+        df["metric_date"] = pd.to_datetime(df["metric_date"])
+        df.set_index("metric_date", inplace=True)
 
-    return df
+        return df
+
+    return pd.DataFrame()

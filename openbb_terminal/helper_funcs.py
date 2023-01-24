@@ -5,7 +5,7 @@ import argparse
 import io
 import logging
 from pathlib import Path
-from typing import List, Union, Optional, Dict
+from typing import List, Union, Optional, Dict, Tuple
 from functools import lru_cache
 from datetime import datetime, timedelta
 from datetime import date as d
@@ -45,6 +45,7 @@ from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     USER_ENV_FILE,
     USER_EXPORTS_DIRECTORY,
+    load_dotenv_with_priority,
 )
 from openbb_terminal.core.config import paths
 
@@ -1121,7 +1122,7 @@ def get_flair() -> str:
 
 def set_default_timezone() -> None:
     """Set a default (America/New_York) timezone if one doesn't exist."""
-    dotenv.load_dotenv(USER_ENV_FILE)
+    load_dotenv_with_priority()
     user_tz = os.getenv("OPENBB_TIMEZONE")
     if not user_tz:
         dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", "America/New_York")
@@ -1151,7 +1152,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on .env file
     """
-    dotenv.load_dotenv(USER_ENV_FILE, override=True)
+    load_dotenv_with_priority()
     user_tz = os.getenv("OPENBB_TIMEZONE")
     if user_tz:
         return user_tz
@@ -1321,8 +1322,34 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
     return full_path
 
 
+def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
+    """Helper to provide a prompt for overwriting existing files.
+
+    Returns two values, the first is a boolean indicating if the file exists and the
+    second is a boolean indicating if the user wants to overwrite the file.
+    """
+    # Jeroen asked for a flag to overwrite no matter what
+    if obbff.FILE_OVERWITE:
+        return False, True
+    if os.path.exists(file_path):
+        overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
+        if overwrite == "y":
+            # File exists and user wants to overwrite
+            return True, True
+        # File exists and user does not want to overwrite
+        return True, False
+    # File does not exist
+    return False, True
+
+
+# This is a false positive on pylint and being tracked in pylint #3060
+# pylint: disable=abstract-class-instantiated
 def export_data(
-    export_type: str, dir_path: str, func_name: str, df: pd.DataFrame = pd.DataFrame()
+    export_type: str,
+    dir_path: str,
+    func_name: str,
+    df: pd.DataFrame = pd.DataFrame(),
+    sheet_name: str = None,
 ) -> None:
     """Export data to a file.
 
@@ -1336,6 +1363,8 @@ def export_data(
         Name of the command that invokes this function
     df : pd.Dataframe
         Dataframe of data to save
+    sheet_name : str
+        If provided.  The name of the sheet to save in excel file
     """
     if export_type:
         export_path = compose_export_path(func_name, dir_path)
@@ -1371,19 +1400,62 @@ def export_data(
             )
 
             if exp_type.endswith("csv"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 df.to_csv(saved_path)
             elif exp_type.endswith("json"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
-                df.to_excel(saved_path, index=True, header=True)
+
+                if sheet_name is None:
+                    exists, overwrite = ask_file_overwrite(saved_path)
+                    if exists and not overwrite:
+                        return
+                    df.to_excel(saved_path, index=True, header=True)
+
+                else:
+                    if os.path.exists(saved_path):
+                        with pd.ExcelWriter(
+                            saved_path,
+                            mode="a",
+                            if_sheet_exists="new",
+                            engine="openpyxl",
+                        ) as writer:
+                            df.to_excel(
+                                writer, sheet_name=sheet_name, index=True, header=True
+                            )
+                    else:
+                        with pd.ExcelWriter(
+                            saved_path,
+                            engine="openpyxl",
+                        ) as writer:
+                            df.to_excel(
+                                writer, sheet_name=sheet_name, index=True, header=True
+                            )
             elif exp_type.endswith("png"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             elif exp_type.endswith("jpg"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             elif exp_type.endswith("pdf"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             elif exp_type.endswith("svg"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             else:
                 console.print("\nWrong export file specified.")

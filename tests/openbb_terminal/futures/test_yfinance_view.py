@@ -52,6 +52,7 @@ def test_display_historical(mocker, symbols):
     yfinance_view.display_historical(
         symbols=symbols,
         start_date="2022-10-10",
+        end_date="2023-01-01",
         raw=True,
     )
 

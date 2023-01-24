@@ -5,6 +5,7 @@ env:
   OPENBB_LOG_COLLECT: false
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
+  OPENBB_FILE_OVERWRITE: true
   PIP_DEFAULT_TIMEOUT: 100
 
 on:
@@ -13,6 +14,9 @@ on:
       - develop
       - main
     types: [opened, synchronize, edited, closed]
+  push:
+    branches:
+      - release/*
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -22,7 +26,8 @@ jobs:
   check-files-changed:
     name: Check for changes
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged != true
+    # Run this job only if the PR is not merged and the event is not a push
+    if: github.event.pull_request.merged == false && github.event_name != 'push'
     outputs:
       check-changes: ${{ steps.check-changes.outputs.check-changes }}
     steps:
@@ -100,7 +105,7 @@ jobs:
 
   tests-python:
     name: Vanilla Python Tests - ${{ matrix.python-version }}
-    needs: [check-files-changed, base-test]
+    needs: [base-test]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
@@ -149,7 +154,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization
+          pytest tests/ --optimization --autodoc
 
       - name: Start Terminal and exit
         run: |
@@ -159,7 +164,8 @@ jobs:
   full-test:
     name: Full Test Suite - (${{ matrix.python-version }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
-    if: github.event.pull_request.merged == true
+    # Run only when a PR is merged or a push to release/* branch
+    if: github.event_name == 'push' || github.event.pull_request.merged == true
     strategy:
       fail-fast: true
       matrix:
@@ -217,7 +223,7 @@ jobs:
   tests-conda:
     name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}-latest
-    if: github.event.pull_request.merged == true
+    if: github.event_name == 'push' || github.event.pull_request.merged == true
     strategy:
       fail-fast: false
       matrix:

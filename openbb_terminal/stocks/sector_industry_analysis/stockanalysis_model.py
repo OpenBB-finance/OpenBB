@@ -143,6 +143,7 @@ def get_stocks_data(
                         start=f"{symbol_statement_rounded.columns[0]}-01-01",
                         end=f"{symbol_statement_rounded.columns[-1]}-12-31",
                         progress=False,
+                        ignore_tz=True,
                     )["Adj Close"]
 
                     for year in symbol_statement_rounded:
@@ -219,6 +220,8 @@ def change_type_dataframes(data: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         Adjusted DataFrame
     """
+
+    data.replace("-", 0, inplace=True)
     dataframe = data.apply(
         lambda x: x.astype(str).str.replace(",", "").astype(float), axis=1
     )
