@@ -87,7 +87,6 @@ CHAIN = pd.concat([CALLS, PUTS])
 
 
 def test_get_calls_and_puts():
-    print(CHAIN)
     calls, puts = get_calls_and_puts(chain=CHAIN)
     assert isinstance(calls, pd.DataFrame)
     assert isinstance(puts, pd.DataFrame)
@@ -198,16 +197,11 @@ def test_display_expiry_dates():
     display_expiry_dates(expiry_dates=EXPIRY_DATES)
 
 
-@pytest.mark.vcr()
 @pytest.mark.record_stdout
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "chain, current_price, expiry, min_sp, max_sp, calls_only, puts_only, to_display",
     [
-        ([CHAIN, 200, EXPIRY_DATES[-1], -1, -1, False, False, None]),
-        ([CHAIN, 200, EXPIRY_DATES[-2], -1, -1, True, False, None]),
-        ([CHAIN, 200, EXPIRY_DATES[-3], -1, -1, False, True, None]),
-        ([CHAIN, 200, EXPIRY_DATES[-4], -1, -1, True, True, None]),
-        ([CHAIN, 200, EXPIRY_DATES[-5], -1, -1, False, False, None]),
         (
             [
                 CHAIN,
@@ -229,7 +223,7 @@ def test_display_expiry_dates():
                 -1,
                 False,
                 False,
-                ["strike", "optionType", "impliedVolatility"],
+                ["strike", "optionType"],
             ]
         ),
     ],

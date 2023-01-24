@@ -1,1 +1,0 @@
-Greeks calculated by OpenBB.

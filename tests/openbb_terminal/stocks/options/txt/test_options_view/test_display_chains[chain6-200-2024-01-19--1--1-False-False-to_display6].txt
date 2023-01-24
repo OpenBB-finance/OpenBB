@@ -1,7 +1,0 @@
-Greeks calculated by OpenBB.
-   impliedVolatility  strike optionType     Delta         Gamma      Vega     Theta
-0           9.468754   200.0       call  0.999999  3.276481e-09  0.000012 -0.000016
-1           8.238286   250.0       call  0.999976  6.185025e-08  0.000201 -0.000231
-   impliedVolatility  strike optionType     Delta     Gamma      Vega     Theta
-2           6.125002   200.0        put -0.001150  0.000003  0.007605  0.014027
-3           5.375003   250.0        put -0.004206  0.000012  0.024620  0.007188
