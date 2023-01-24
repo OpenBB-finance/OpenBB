@@ -21,7 +21,6 @@ from openbb_terminal.plots_core.config.openbb_styles import (
     PLT_COLORWAY,
     PLT_DECREASING_COLORWAY,
     PLT_INCREASING_COLORWAY,
-    PLT_TBL_ROW_COLORS,
 )
 
 
