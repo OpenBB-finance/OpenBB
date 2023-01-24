@@ -1,0 +1,115 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/avg_interest_rates?filter=security_desc:eq:Treasury%20Bills&sort=-record_date
+  response:
+    body:
+      string: !!binary |
+        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
+        YLW1AIL/k1EvggAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '3261'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 24 Jan 2023 10:37:35 GMT
+      Expires:
+      - '0'
+      Pragma:
+      - no-cache
+      Server:
+      - nginx/1.21.6
+      Set-Cookie:
+      - cookiesession1=678A3E0EF4EDBAD5ADA6290233DE4A58;Expires=Wed, 24 Jan 2024 10:37:35
+        GMT;Path=/;HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding, User-Agent
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
