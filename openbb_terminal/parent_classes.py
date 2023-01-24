@@ -11,8 +11,6 @@ import os
 import re
 from abc import ABCMeta, abstractmethod
 from datetime import datetime, timedelta
-import subprocess
-import sys
 from typing import Any, Dict, List, Union
 
 import numpy as np
@@ -21,8 +19,7 @@ import matplotlib.pyplot as plt
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
-import openbb_terminal.account.local_model as Local
-import openbb_terminal.account.hub_model as Hub
+from openbb_terminal.account.session_controller import logout
 from openbb_terminal.account.user import User
 
 from openbb_terminal.core.config.paths import (
@@ -676,15 +673,11 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            system_clear()
-            Hub.delete_session()
-            Local.remove_session_file()
-            plt.close("all")
-            out = subprocess.run(  # nosec
-                f"{sys.executable} terminal.py", shell=True, check=False
-            )
-            if out.returncode != 0:
-                raise Exception("Error while logging out.")
+            i = console.input("Are you sure you want to logout? (y/n) ", style="info")
+            console.print("")
+            if i.lower() == "y":
+                self.queue.insert(0, "y")
+                logout()
 
     @log_start_end(log=logger)
     def call_whoami(self, other_args: List[str]) -> None:

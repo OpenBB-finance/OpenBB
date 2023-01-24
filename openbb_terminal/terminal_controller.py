@@ -24,6 +24,7 @@ from prompt_toolkit.formatted_text import HTML
 import pandas as pd
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.terminal_helper import is_packaged_application
+from openbb_terminal.account import session_controller
 
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -909,11 +910,14 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
             # Check if the user wants to reset application
             # TODO: exit cmd after logout and reentering the terminal is not working
             # HELP: login -> logout -> login -> exit should leave the terminal, but it doesn't
-            if an_input in ("r", "reset", "logout") or t_controller.update_success:
+            if an_input in ("r", "reset") or t_controller.update_success:
                 ret_code = reset(t_controller.queue if t_controller.queue else [])
                 if ret_code != 0:
                     print_goodbye()
                     break
+
+            if an_input == "logout" and "y" in t_controller.queue:
+                break
 
         except SystemExit:
             logger.exception(
@@ -945,6 +949,9 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
 
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
+
+    if an_input == "logout":
+        return session_controller.main(guest_allowed=not is_packaged_application())
 
 
 def insert_start_slash(cmds: List[str]) -> List[str]:

@@ -4,6 +4,8 @@ import openbb_terminal.account.local_model as Local
 import openbb_terminal.account.hub_model as Hub
 from openbb_terminal.account.user import User
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
+from openbb_terminal.helper_funcs import system_clear
+import matplotlib.pyplot as plt
 from openbb_terminal.rich_config import console
 from openbb_terminal import terminal_controller
 
@@ -26,10 +28,7 @@ def get_user_input() -> Tuple[str, str, bool]:
     email = console.input("> Email: ", style="blue")
     password = console.getpass("> Password: ", style="blue")
 
-    save_str = ""
-    while save_str not in ["y", "n"]:
-        save_str = console.input("> Keep me logged in (y/n): ", style="blue").lower()
-
+    save_str = console.input("> Keep me logged in (y/n): ", style="blue").lower()
     save = False
     if save_str == "y":
         save = True
@@ -46,7 +45,7 @@ def create_session(email: str, password: str, save: bool) -> dict:
     return session
 
 
-def login_prompt(welcome=True):
+def login_prompt(welcome=True, guest_allowed=True):
     """Login prompt and launch terminal if login is successful.
 
     Parameters
@@ -59,6 +58,8 @@ def login_prompt(welcome=True):
 
     while True:
         email, password, save = get_user_input()
+        if not email and not password and guest_allowed:
+            return terminal_controller.parse_args_and_run()
         session = create_session(email, password, save)
         if isinstance(session, dict) and session:
             break
@@ -86,11 +87,19 @@ def login(session: dict):
         login_prompt(welcome=True)
 
 
-def main():
+def logout():
+    """Logout and clear session."""
+    system_clear()
+    Hub.delete_session()
+    Local.remove_session_file()
+    plt.close("all")
+
+
+def main(guest_allowed: bool = True):
     """Main function"""
     local_session = Local.get_session()
     if not local_session:
-        login_prompt()
+        login_prompt(guest_allowed)
     else:
         login(session=local_session)
 
