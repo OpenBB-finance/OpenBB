@@ -34,5 +34,9 @@ class User:
 
     @classmethod
     def whoami(cls):
-        console.print(f"[info]email:[/info] {User.EMAIL}")
-        console.print(f"[info]uuid:[/info] {User.UUID}\n")
+        """Display user info."""
+        if User.UUID:
+            console.print(f"[info]email:[/info] {User.EMAIL}")
+            console.print(f"[info]uuid:[/info] {User.UUID}\n")
+        else:
+            console.print("[info]Only you know...[/info]\n")
