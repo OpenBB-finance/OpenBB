@@ -36,7 +36,7 @@ def create_query(query: str):
         console.print(
             f"[red]Error creating query, got response: {r.text} with status code: {str(r.status_code)}[/red]"
         )
-        return
+        return ""
 
     return json.loads(r.text)
 
@@ -54,7 +54,7 @@ def get_query_results(token):
         console.print(
             f"[red]Error creating query, got response: {r.text} with status code: {str(r.status_code)}[/red]"
         )
-        return
+        return ""
 
     data = json.loads(r.text)
     if data["status"] == "running":
@@ -114,7 +114,7 @@ def get_dapp_stats(
         df["timeframe"] = pd.to_datetime(df["timeframe"])
         df = df.set_index("timeframe")
 
-        return
+        return df
 
     return pd.DataFrame()
 
