@@ -4,12 +4,7 @@ on:
   push:
     branches:
       - release/*
-      - hotfix/*
-  pull_request:
-    branches:
-      - develop
       - main
-    types: [closed]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
