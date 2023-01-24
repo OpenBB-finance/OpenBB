@@ -52,9 +52,7 @@ class Backend(PyWry):
         with open(PLOTS_CORE_PATH / "plotly.html", encoding="utf-8") as file:  # type: ignore
             html = file.read()
 
-        replace = str(PLOTS_CORE_PATH.as_uri())
-
-        html = html.replace("{{MAIN_PATH}}", replace)
+        html = html.replace("{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri()))
 
         # We create a temporary file to inject the path to the script tag
         # This is so we don't have to modify the original file

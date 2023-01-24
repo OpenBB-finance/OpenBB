@@ -3,16 +3,15 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List, Union
-from matplotlib import ticker
+from typing import List, Optional, Union
 
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FormatStrFormatter
-from matplotlib import colors
 import numpy as np
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
+from matplotlib import colors, ticker
+from matplotlib.ticker import FormatStrFormatter
+from pandas.plotting import register_matplotlib_converters
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
@@ -21,9 +20,9 @@ from openbb_terminal.economy import investingcom_model
 from openbb_terminal.economy.economy_helpers import text_transform
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -43,7 +42,7 @@ def display_spread_matrix(
     change: bool = False,
     color: str = "openbb",
     raw: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
     export: str = "",
 ):
     """Display spread matrix. [Source: Investing.com]
@@ -62,8 +61,8 @@ def display_spread_matrix(
         Output only raw data.
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     """
 
@@ -204,7 +203,7 @@ def display_spread_matrix(
 @log_start_end(log=logger)
 def display_yieldcurve(
     country: str = "United States",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
     raw: bool = False,
     export: str = "",
 ):

@@ -22,8 +22,8 @@ from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler, Normalizer, Standa
 from openbb_terminal import rich_config
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
-from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -67,8 +67,8 @@ def plot_data_predictions(
     external_axes: bool = False,
 ):
     """Plots data predictions for the different ML techniques
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     # This plot has 1 axis

@@ -5,28 +5,19 @@ __docformat__ = "numpy"
 import copy
 import logging
 import os
-from typing import Dict, Optional, List, Tuple
+from typing import Dict, List, Tuple
 
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-    is_valid_axes_count,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.sector_industry_analysis import stockanalysis_model
 from openbb_terminal.stocks.sector_industry_analysis.financedatabase_model import (
     filter_stocks,
-)
-from openbb_terminal.helpers_denomination import (
-    transform as transform_by_denomination,
 )
 
 logger = logging.getLogger(__name__)
@@ -45,10 +36,10 @@ def display_plots_financials(
     currency: str = "USD",
     limit: int = 10,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
     raw: bool = False,
     already_loaded_stocks_data=None,
-) -> Tuple[Dict, List]:
+) -> Tuple[Dict, List, OpenBBFigure]:
     """Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
 
     Parameters
@@ -79,8 +70,8 @@ def display_plots_financials(
         Output all raw data
     already_loaded_stocks_data: Dict
         Dictionary of filtered stocks data that has been loaded before
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
@@ -176,23 +167,14 @@ def display_plots_financials(
             title=f"{item_name} {denomination}",
         )
     else:
-        # This plot has 1 axis
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return stocks_data, company_tickers
-
+        fig = OpenBBFigure().set_title(f"{item_name} {denomination}")
         for company in df.columns:
-            ax.plot(df[company], ls="-", marker="o", label=company)
-
-        ax.set_title(f"{item_name} {denomination}")
-        ax.legend()
-        theme.style_primary_axis(ax)
-
-        if external_axes is None:
-            theme.visualize_output()
+            fig.add_scatter(
+                x=df.index,
+                y=df[company],
+                mode="lines+markers",
+                name=company,
+            )
 
     export_data(
         export,
@@ -200,4 +182,4 @@ def display_plots_financials(
         item_name,
         df,
     )
-    return stocks_data, company_tickers
+    return stocks_data, company_tickers, (fig.show() if not external_axes else fig)

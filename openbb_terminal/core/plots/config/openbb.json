@@ -73,7 +73,7 @@
             "tickfont": {
                 "size": 16
             },
-            "zeroline": true,
+            "zeroline": false,
             "title": {
                 "standoff": 20
             }
@@ -87,14 +87,12 @@
             "tickfont": {
                 "size": 16
             },
-            "zeroline": true,
+            "zeroline": false,
             "title": {
                 "standoff": 20
             },
             "gridcolor": "#283442",
-            "linecolor": "#506784",
-            "zerolinecolor": "#283442",
-            "zerolinewidth": 2
+            "linecolor": "#506784"
         },
         "xaxis3": {
             "rangeslider": {
@@ -105,18 +103,17 @@
             "tickfont": {
                 "size": 16
             },
-            "zeroline": true,
+            "zeroline": false,
             "title": {
                 "standoff": 20
             },
             "gridcolor": "#283442",
-            "linecolor": "#506784",
-            "zerolinecolor": "#283442",
-            "zerolinewidth": 2
+            "linecolor": "#506784"
         },
         "yaxis": {
             "fixedrange": false,
             "nticks": 6,
+            "zeroline": false,
             "showgrid": true,
             "showline": true,
             "side": "right",
@@ -131,6 +128,7 @@
             "nticks": 6,
             "overlaying": "y2",
             "showline": true,
+            "zeroline": false,
             "tick0": 0.5,
             "tickfont": {
                 "size": 15
@@ -140,9 +138,7 @@
             },
             "side": "right",
             "gridcolor": "#283442",
-            "linecolor": "#506784",
-            "zerolinecolor": "#283442",
-            "zerolinewidth": 2
+            "linecolor": "#506784"
         },
         "yaxis3": {
             "anchor": "x",
@@ -162,9 +158,7 @@
             "showgrid": true,
             "side": "right",
             "gridcolor": "#283442",
-            "linecolor": "#506784",
-            "zerolinecolor": "#283442",
-            "zerolinewidth": 2
+            "linecolor": "#506784"
         },
         "yaxis4": {
             "anchor": "x",
@@ -184,9 +178,7 @@
             "showgrid": true,
             "side": "right",
             "gridcolor": "#283442",
-            "linecolor": "#506784",
-            "zerolinecolor": "#283442",
-            "zerolinewidth": 2
+            "linecolor": "#506784"
         }
     }
 }

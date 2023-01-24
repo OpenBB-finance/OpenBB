@@ -4,9 +4,9 @@
 import difflib
 import json
 import logging
-from typing import Union, Optional, List
 import os
 from datetime import datetime, timedelta
+from typing import List, Optional, Union
 
 import ccxt
 import matplotlib.pyplot as plt
@@ -849,8 +849,8 @@ def plot_candles(  # pylint: disable=too-many-arguments
         Y-label of the graph, by default ""
     title: str
         Title of graph, by default ""
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     yscale : str
         Scaling for y axis.  Either linear or log
 
@@ -951,8 +951,8 @@ def plot_order_book(
         array of asks with columns: price, size, cumulative size
     coin : str
         Coin being plotted
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     # This plot has 1 axis
     if external_axes is None:

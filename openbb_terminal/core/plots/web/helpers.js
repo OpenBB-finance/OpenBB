@@ -77,7 +77,7 @@ function add_annotation(data, yshift, popup_data, current_text = null) {
 function checkFile(popup, type = false) {
     console.log('checkFile');
     let csv_file = popup.querySelector('#csv_file');
-    let csv_type = popup.querySelector('#csv_type');
+    let csv_type = popup.querySelector('#csv_trace_type');
     let csv_columns = popup.querySelector('#csv_columns');
     let csv_colors = popup.querySelector('#csv_colors');
 
@@ -88,6 +88,7 @@ function checkFile(popup, type = false) {
 
         reader.onload = function (e) {
             let headers = e.target.result.split('\n')[0].split(',');
+            headers = headers.map((x) => x.replace(/\r/g, ''));
             let headers_lower = headers.map((x) => x.trim().toLowerCase());
             let candle_cols = ['open', 'high', 'low', 'close'];
 
@@ -203,6 +204,12 @@ function openbbFilename(data, csv = false) {
 }
 
 function plot_text(data, popup_data, current_text = null) {
+    // Plots text on the chart based on the popup_data
+    // If current_text is not null, it will be replaced with the new text
+    // If current_text is null, a new annotation will be added
+    // popup_data is the data from the popup
+    // data is the data from the chart
+
     console.log('plot_text');
     let gd = globals.chartDiv;
     let annotations = undefined;
@@ -213,7 +220,7 @@ function plot_text(data, popup_data, current_text = null) {
     }
     let yshift = (yrange[1] - yrange[0]) * 0.2;
 
-    if (popup_data.yanchor == 'bottom') {
+    if (popup_data.yanchor == 'below') {
         yshift = -yshift;
     }
 
@@ -240,6 +247,8 @@ function plot_text(data, popup_data, current_text = null) {
 }
 
 function update_color() {
+    // updates the color of the last added shape
+    // this function is called when the color picker is used
     let color = globals.color_picker.querySelector('#picked_color').value;
     let gd = globals.chartDiv;
 
@@ -255,6 +264,10 @@ function update_color() {
 }
 
 function button_pressed(title, active = false) {
+    // changes the style of the button when it is pressed
+    // title is the title of the button
+    // active is true if the button is active, false otherwise
+
     let button = globals.barButtons[title];
 
     if (!active) {

@@ -158,6 +158,7 @@ function downloadData(gd) {
     let csv = undefined;
 
     data.forEach(function (trace) {
+        // check if candlestick
         if (trace.type == 'candlestick') {
             candlestick = true;
             return;
@@ -175,7 +176,7 @@ function downloadData(gd) {
             : 'y';
 
     if (candlestick) {
-        csv = 'Date,Open,High,Low,Close\n';
+        csv = 'Date,Open,High,Low,Close\r';
         data.forEach(function (trace) {
             if (trace.type == 'candlestick') {
                 let x = trace.x;
@@ -185,7 +186,7 @@ function downloadData(gd) {
                 let close = trace.close;
 
                 for (let i = 0; i < x.length; i++) {
-                    csv += `${x[i]},${open[i]},${high[i]},${low[i]},${close[i]}\n`;
+                    csv += `${x[i]},${open[i]},${high[i]},${low[i]},${close[i]}\r`;
                 }
             }
         });
@@ -198,14 +199,14 @@ function downloadData(gd) {
         });
 
         if (traces == 1) {
-            csv = `${xaxis},${yaxis}\n`;
+            csv = `${xaxis},${yaxis}\r`;
             data.forEach(function (trace) {
                 if (trace.type == 'scatter') {
                     let x = trace.x;
                     let y = trace.y;
 
                     for (let i = 0; i < x.length; i++) {
-                        csv += `${x[i]},${y[i]}\n`;
+                        csv += `${x[i]},${y[i]}\r`;
                     }
                 }
             });
@@ -216,7 +217,7 @@ function downloadData(gd) {
                     csv += `${trace.name},`;
                 }
             });
-            csv += '\n';
+            csv += '\r';
 
             let x = data[0].x;
             for (let i = 0; i < x.length; i++) {
@@ -226,7 +227,7 @@ function downloadData(gd) {
                         csv += `${trace.y[i]},`;
                     }
                 });
-                csv += '\n';
+                csv += '\r';
             }
         } else {
             return;

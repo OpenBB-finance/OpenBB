@@ -5,9 +5,9 @@ import logging
 import os
 
 # from textwrap import fill
-from typing import List, Optional
+from typing import Optional, Union
 
-from matplotlib import pyplot as plt
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 
 # from openbb_terminal.config_plot import PLOT_DPI
 # from openbb_terminal.config_terminal import theme
@@ -17,7 +17,6 @@ from openbb_terminal.helper_funcs import (
     export_data,
     print_rich_table,
 )  # plot_autoscale,
-from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 
 logger = logging.getLogger(__name__)
 
@@ -31,9 +30,9 @@ def show_macro_data(
     end_date: Optional[str] = None,
     symbol: str = "",
     raw: bool = False,
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
     export: str = "",
-):
+) -> Union[OpenBBFigure, None]:
     """Show the received macro data about a company [Source: EconDB]
 
     Parameters
@@ -88,7 +87,7 @@ def show_macro_data(
                 x=df_rounded.index,
                 y=df_rounded[column],
                 mode="lines",
-                name=country_label,
+                name=country_label + " " + parameter_label,
             )
             fig.set_title(f"Macro data{denomination}")
         elif len(parameters) > 1:
@@ -96,7 +95,7 @@ def show_macro_data(
                 x=df_rounded.index,
                 y=df_rounded[column],
                 mode="lines",
-                name=country_label,
+                name=country_label + " " + parameter_label,
             )
             fig.set_title(f"{country_label}{denomination}")
         elif len(countries) > 1:
@@ -104,7 +103,7 @@ def show_macro_data(
                 x=df_rounded.index,
                 y=df_rounded[column],
                 mode="lines",
-                name=country_label,
+                name=country_label + " " + parameter_label,
             )
             fig.set_title(f"{parameter_label}{denomination}")
         else:
@@ -112,13 +111,11 @@ def show_macro_data(
                 x=df_rounded.index,
                 y=df_rounded[column],
                 mode="lines",
-                name=country_label,
+                name=country_label + " " + parameter_label,
             )
             fig.set_title(
                 f"{parameter_label} of {country_label}{denomination} [{parameter_units}]"
             )
-
-    fig.show()
 
     df_rounded.columns = ["_".join(column) for column in df_rounded.columns]
 
@@ -139,6 +136,8 @@ def show_macro_data(
             df_rounded,
         )
 
+    return fig.show() if not external_axes else fig
+
 
 @log_start_end(log=logger)
 def show_treasuries(
@@ -148,9 +147,9 @@ def show_treasuries(
     start_date: str = "1900-01-01",
     end_date: Optional[str] = None,
     raw: bool = False,
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
     export: str = "",
-):
+) -> Union[None, OpenBBFigure]:
     """Display U.S. Treasury rates [Source: EconDB]
 
     Parameters
@@ -186,12 +185,6 @@ def show_treasuries(
     treasury_data = econdb_model.get_treasuries(
         instruments, maturities, frequency, start_date, end_date
     )
-
-    # if external_axes is None:
-    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    # else:
-    #     ax = external_axes[0]
-
     fig = OpenBBFigure(
         yaxis=dict(side="right", title="Yield (%)"),
         title="U.S. Treasuries",
@@ -205,12 +198,6 @@ def show_treasuries(
             mode="lines",
             name=f"{col_label[0]} [{col_label[1]}]",
         )
-
-    fig.show()
-    # theme.style_primary_axis(ax)
-
-    # if external_axes is None:
-    #     theme.visualize_output()
 
     if raw:
 
@@ -228,6 +215,8 @@ def show_treasuries(
             "treasuries_data",
             treasury_data,
         )
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)

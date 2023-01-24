@@ -3,12 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
 import matplotlib.pyplot as plt
 
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -16,10 +15,8 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
-from openbb_terminal.stocks.stocks_helper import get_holidays
 
 logger = logging.getLogger(__name__)
 
@@ -159,38 +156,41 @@ def short_interest_volume(
         # pycodestyle: disable=E501,E203
         fig.add_scatter(
             name=symbol,
-            x=df["date"].values,
+            x=df["date"],
             y=prices[len(prices) - len(df) :],  # pycodestyle: disable=E501,E203
             line=dict(color="#fdc708", width=2),
+            connectgaps=True,
+            yaxis="y2",
             opacity=1,
             showlegend=False,
+            row=1,
+            col=1,
+            secondary_y=True,
+        )
+        fig.add_bar(
+            x=df["date"],
+            y=df["Total Vol. [1M]"],
+            name="Total Volume",
+            marker_color=theme.up_color,
             row=1,
             col=1,
             secondary_y=False,
         )
         fig.add_bar(
             x=df["date"],
-            y=df["Total Vol. [1M]"],
-            name="Total Volume",
-            yaxis="y2",
-            row=1,
-            col=1,
-            secondary_y=True,
-        )
-        fig.add_bar(
-            x=df["date"],
             y=df["Short Vol. [1M]"],
             name="Short Volume",
-            yaxis="y2",
+            marker_color=theme.down_color,
             row=1,
             col=1,
-            secondary_y=True,
+            secondary_y=False,
         )
         fig.add_scatter(
             name="Short Vol. %",
-            x=df["date"].values,
+            x=df["date"],
             y=df["Short Vol. %"],
             line=dict(width=2),
+            connectgaps=True,
             opacity=1,
             showlegend=False,
             row=2,
@@ -204,26 +204,26 @@ def short_interest_volume(
             title=f"<b>Price vs Short Volume Interest for {symbol}</b>",
             title_x=0.025,
             title_font_size=14,
-            yaxis_title="Stock Price ($)",
-            yaxis2_title="FINRA Volume [M]",
+            yaxis2_title="Stock Price ($)",
+            yaxis_title="FINRA Volume [M]",
             yaxis3_title="Short Vol. %",
             yaxis=dict(
-                side="right",
+                side="left",
                 fixedrange=False,
                 showgrid=False,
-                titlefont=dict(color="#fdc708"),
-                tickfont=dict(color="#fdc708"),
+                titlefont=dict(color="#d81aea"),
+                tickfont=dict(color="#d81aea"),
                 nticks=20,
                 title_standoff=20,
                 layer="above traces",
             ),
             yaxis2=dict(
-                side="left",
+                side="right",
                 fixedrange=False,
                 anchor="x",
                 overlaying="y",
-                titlefont=dict(color="#d81aea"),
-                tickfont=dict(color="#d81aea"),
+                titlefont=dict(color="#fdc708"),
+                tickfont=dict(color="#fdc708"),
                 nticks=10,
                 layer="below traces",
                 title_standoff=10,
@@ -234,30 +234,12 @@ def short_interest_volume(
                 tickfont=dict(color="#9467bd"),
                 nticks=10,
             ),
-            xaxis=dict(rangeslider=dict(visible=False), type="date"),
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1,
-                font=dict(size=14, family="Fire Code"),
-                bgcolor="rgba(0, 0, 0, 0)",
-            ),
             hovermode="x unified",
             spikedistance=1,
             hoverdistance=1,
         )
 
-        mkt_holidays = get_holidays(start=df["date"].iloc[-1], end=df["date"].iloc[0])
-        fig.update_xaxes(
-            rangebreaks=[
-                dict(bounds=["sat", "mon"]),
-                dict(
-                    values=[date.strftime("%Y-%m-%d") for date in mkt_holidays],
-                ),
-            ]
-        )
+        fig.hide_holidays(df["date"])
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "shortint(stockgrid)", df
@@ -272,7 +254,7 @@ def net_short_position(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot net short position. [Source: Stockgrid]
 
@@ -286,8 +268,8 @@ def net_short_position(
         Flag to print raw data instead
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     """
 
@@ -345,9 +327,9 @@ def net_short_position(
 
         ax1.set_title(f"Net Short Vol. vs Position for {symbol}")
 
-        theme.style_twin_axes(ax1, ax2)
+        # theme.style_twin_axes(ax1, ax2)
 
-        if not external_axes:
-            theme.visualize_output()
+        # if not external_axes:
+        #     theme.visualize_output()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "shortpos", df)

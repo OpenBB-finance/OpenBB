@@ -13,13 +13,13 @@ import seaborn as sns
 from pandas.plotting import register_matplotlib_converters
 from sklearn.preprocessing import MinMaxScaler
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.stocks.comparison_analysis import yahoo_finance_model
@@ -47,7 +47,7 @@ def display_historical(
     candle_type: str = "a",
     normalize: bool = True,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display historical stock prices. [Source: Yahoo Finance]
 
@@ -67,8 +67,8 @@ def display_historical(
         Boolean to normalize all stock prices using MinMax defaults True
     export: str, optional
         Format to export historical prices, by default ""
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_similar = yahoo_finance_model.get_historical(
         similar, start_date, end_date, candle_type
@@ -114,7 +114,7 @@ def display_volume(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display stock volume. [Source: Yahoo Finance]
 
@@ -130,8 +130,8 @@ def display_volume(
         End date (e.g., 2023-01-01). Defaults to today
     export : str, optional
         Format to export historical prices, by default ""
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_similar = yahoo_finance_model.get_volume(similar, start_date, end_date)
 
@@ -171,7 +171,7 @@ def display_correlation(
     candle_type: str = "a",
     display_full_matrix: bool = False,
     raw: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
     export: str = "",
 ):
     """
@@ -194,8 +194,8 @@ def display_correlation(
         Optionally display all values in the matrix, rather than masking off half, by default False
     raw: bool, optional
         Whether to display raw data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     export : str, optional
         Format to export correlation prices, by default ""
     """
@@ -253,7 +253,7 @@ def display_sp500_comps_tsne(
     lr: int = 200,
     no_plot: bool = False,
     limit: int = 10,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> List[str]:
     """Runs TSNE on SP500 tickers (along with ticker if not in SP500).
     TSNE is a method of visualing higher dimensional data
@@ -270,8 +270,8 @@ def display_sp500_comps_tsne(
         Flag to hold off on plotting
     limit: int
         Number of tickers to return
-    external_axes : Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------

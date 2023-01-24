@@ -13,9 +13,9 @@ from matplotlib import pyplot as plt
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
-from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.portfolio.portfolio_model import (
     PortfolioEngine,
     get_assets_allocation,
@@ -973,7 +973,7 @@ def display_rolling_sharpe(
     risk_free_rate: float = 0,
     window: str = "1y",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display rolling sharpe
 
@@ -1032,7 +1032,7 @@ def display_rolling_sortino(
     risk_free_rate: float = 0,
     window: str = "1y",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display rolling sortino
 
@@ -1090,7 +1090,7 @@ def display_rolling_beta(
     portfolio_engine: PortfolioEngine,
     window: str = "1y",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display rolling beta
 
@@ -1150,7 +1150,7 @@ def display_rolling_beta(
 def display_maximum_drawdown(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display maximum drawdown curve
 

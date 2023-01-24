@@ -1,25 +1,25 @@
 """Yahoo Finance view"""
 __docformat__ = "numpy"
 
-from typing import Optional, List
-from itertools import cycle
 import logging
 import os
+from itertools import cycle
+from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.futures import yfinance_model
+from openbb_terminal.futures.futures_helper import make_white
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.futures.futures_helper import make_white
 
 logger = logging.getLogger(__name__)
 
@@ -68,7 +68,7 @@ def display_historical(
     end_date: Optional[str] = None,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display historical futures [Source: Yahoo Finance]
 
@@ -86,8 +86,8 @@ def display_historical(
         Display futures timeseries in raw format
     export: str
         Type of format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     symbols_validated = list()
@@ -217,7 +217,7 @@ def display_curve(
     symbol: str,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display curve futures [Source: Yahoo Finance]
 
@@ -229,8 +229,8 @@ def display_curve(
         Display futures timeseries in raw format
     export: str
         Type of format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     if symbol not in yfinance_model.FUTURES_DATA["Ticker"].unique().tolist():
         console.print(f"[red]'{symbol}' is not a valid symbol[/red]")

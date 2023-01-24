@@ -3,21 +3,21 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 from datetime import datetime, timedelta
+from typing import List, Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt
 
+from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    print_rich_table,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
+    print_rich_table,
 )
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.dark_pool_shorts import sec_model
 
@@ -33,7 +33,7 @@ def fails_to_deliver(
     limit: int = 0,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display fails-to-deliver data for a given ticker. [Source: SEC]
 

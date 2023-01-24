@@ -4,19 +4,17 @@ from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.decorators import check_api_key
 from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.due_diligence.santiment_model import (
     get_github_activity,
 )
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
-
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +28,7 @@ def display_github_activity(
     end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Returns a list of github activity for a given coin and time interval.
 
@@ -50,8 +48,8 @@ def display_github_activity(
         Interval frequency (some possible values are: 1h, 1d, 1w)
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df = get_github_activity(

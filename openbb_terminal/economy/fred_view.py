@@ -4,24 +4,16 @@ __docformat__ = "numpy"
 import logging
 import os
 import textwrap
-from typing import Optional, List, Tuple
+from typing import List, Optional, Tuple, Union
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import fred_model
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-    is_valid_axes_count,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -81,8 +73,8 @@ def display_fred_series(
     get_data: bool = False,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure, Tuple[pd.DataFrame, dict]]:
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 
     Parameters
@@ -99,8 +91,8 @@ def display_fred_series(
         Output only raw data
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     data, detail = fred_model.get_aggregated_series_data(
@@ -113,37 +105,19 @@ def display_fred_series(
     else:
         # Try to get everything onto the same 0-10 scale.
         # To do so, think in scientific notation.  Divide the data by whatever the E would be
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return None
 
+        fig = OpenBBFigure()
         for s_id, sub_dict in detail.items():
 
             data_to_plot, title = format_data_to_plot(data[s_id], sub_dict)
 
-            ax.plot(
-                data_to_plot.index,
-                data_to_plot,
-                label="\n".join(textwrap.wrap(title, 80))
+            fig.add_scatter(
+                x=data_to_plot.index,
+                y=data_to_plot,
+                name="\n".join(textwrap.wrap(title, 80))
                 if len(series_ids) < 5
                 else title,
             )
-
-        ax.legend(
-            bbox_to_anchor=(0, 0.40, 1, -0.52),
-            loc="upper right",
-            mode="expand",
-            borderaxespad=0,
-            prop={"size": 9},
-        )
-
-        ax.set_xlim(data.index[0], data.index[-1])
-        theme.style_primary_axis(ax)
-        if external_axes is None:
-            theme.visualize_output()
 
         data.index = [x.strftime("%Y-%m-%d") for x in data.index]
 
@@ -165,7 +139,7 @@ def display_fred_series(
     if get_data:
         return data, detail
 
-    return None
+    return fig.show() if not external_axes else fig
 
 
 def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame, str]:
@@ -186,18 +160,18 @@ def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame,
 @check_api_key(["API_FRED_KEY"])
 def display_yield_curve(
     date: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
     raw: bool = False,
     export: str = "",
-):
+) -> Union[OpenBBFigure, None]:
     """Display yield curve based on US Treasury rates for a specified date.
 
     Parameters
     ----------
     date: str
         Date to get curve for. If None, gets most recent date (format yyyy-mm-dd)
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     raw : bool
         Output only raw data
     export : str
@@ -207,20 +181,20 @@ def display_yield_curve(
     if rates.empty:
         console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
         return
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
 
-    ax.plot(rates["Maturity"], rates["Rate"], "-o")
-    ax.set_xlabel("Maturity")
-    ax.set_ylabel("Rate (%)")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        ax.set_title(f"US Yield Curve for {date_of_yield} ")
-        theme.visualize_output()
+    fig = OpenBBFigure()
+
+    fig.add_scatter(
+        x=rates["Maturity"].values,
+        y=rates["Rate"].values,
+        mode="lines+markers",
+        name="Rates",
+    )
+    fig.update_layout(
+        title=f"US Yield Curve for {date_of_yield}",
+        xaxis_title="Maturity (Years)",
+        yaxis_title="Rate (%)",
+    )
 
     if raw:
         print_rich_table(
@@ -237,3 +211,5 @@ def display_yield_curve(
         "ycrv",
         rates,
     )
+
+    return fig.show() if not external_axes else fig

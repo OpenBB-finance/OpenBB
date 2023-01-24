@@ -3,23 +3,22 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.common.technical_analysis import volume_model
+from openbb_terminal.common.technical_analysis import ta_helpers, volume_model
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     reindex_dates,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +29,7 @@ def display_ad(
     use_open: bool = False,
     symbol: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots AD technical indicator
 
@@ -44,8 +43,8 @@ def display_ad(
         Ticker symbol
     export: str
         Format to export data as
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     divisor = 1_000_000
     df_vol = data["Volume"] / divisor
@@ -145,7 +144,7 @@ def display_adosc(
     use_open: bool = False,
     symbol: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots AD Osc Indicator
 
@@ -163,8 +162,8 @@ def display_adosc(
         Stock ticker
     export : str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     divisor = 1_000_000
     df_vol = data["Volume"] / divisor
@@ -250,7 +249,7 @@ def display_obv(
     data: pd.DataFrame,
     symbol: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots OBV technical indicator
 
@@ -262,8 +261,8 @@ def display_obv(
         Ticker
     export: str
         Format to export data as
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     divisor = 1_000_000
     df_vol = data["Volume"] / divisor

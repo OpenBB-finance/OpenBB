@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.io as pio
+from pandas.tseries.holiday import USFederalHolidayCalendar
 from plotly.figure_factory import create_distplot
 from plotly.subplots import make_subplots
 
@@ -16,8 +17,8 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_DATA_DIRECTORY,
 )
-from openbb_terminal.plots_core.backend import get_backend
-from openbb_terminal.plots_core.config.openbb_styles import (
+from openbb_terminal.core.plots.backend import get_backend
+from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_COLORWAY,
     PLT_DECREASING_COLORWAY,
     PLT_INCREASING_COLORWAY,
@@ -291,12 +292,12 @@ class OpenBBFigure(go.Figure):
         name: Union[str, List[str]] = None,
         colors: List[str] = None,
         bins: Union[int, str] = "auto",
-        show_curve: str = "kde",
-        show_rug: bool = False,
+        show_curve: bool = True,
+        show_rug: bool = True,
         show_hist: bool = True,
-        row: int = 1,
-        col: int = 1,
-        secondary_y: bool = False,
+        row: int = None,
+        col: int = None,
+        secondary_y: bool = None,
     ) -> None:
         """Add a histogram plot to the figure
 
@@ -317,11 +318,11 @@ class OpenBBFigure(go.Figure):
         show_hist : `bool`, optional
             Whether to show the histogram, by default True
         row : `int`, optional
-            Row of the subplot, by default 1
+            Row of the subplot, by default None
         col : `int`, optional
-            Column of the subplot, by default 1
+            Column of the subplot, by default None
         secondary_y : `bool`, optional
-            Whether to plot on the secondary y axis, by default False
+            Whether to plot on the secondary y axis, by default None
         """
 
         fig = create_distplot(
@@ -332,16 +333,17 @@ class OpenBBFigure(go.Figure):
             show_rug=show_rug,
             show_hist=show_hist,
             show_curve=show_curve,
+            histnorm="probability",
+            curve_type="kde",
         )
 
         for trace in fig.select_traces():
-            kwargs = {}
-            if self.has_subplots:
-                kwargs.update(row=row, col=col, secondary_y=secondary_y)
-            self.add_trace(trace, **kwargs)
+            if trace.type == "scatter":
+                trace.showlegend = False
+            self.add_trace(trace, row=row, col=col, secondary_y=secondary_y)
 
-    def set_title(self, title: str, **kwargs) -> None:
-        """Set the title of the figure
+    def set_title(self, title: str, **kwargs) -> "OpenBBFigure":
+        """Sets the main title of the figure
 
         Parameters
         ----------
@@ -349,11 +351,12 @@ class OpenBBFigure(go.Figure):
             Title of the figure
         """
         self.update_layout(title=title, **kwargs)
+        return self
 
     def set_xaxis_title(
         self, title: str, row: int = None, col: int = None, **kwargs
-    ) -> None:
-        """Set the x axis title of the figure
+    ) -> "OpenBBFigure":
+        """Set the x axis title of the figure or subplot (if row and col are specified)
 
         Parameters
         ----------
@@ -365,11 +368,12 @@ class OpenBBFigure(go.Figure):
             Column number, by default None
         """
         self.update_xaxes(title=title, row=row, col=col, **kwargs)
+        return self
 
     def set_yaxis_title(
         self, title: str, row: int = None, col: int = None, **kwargs
-    ) -> None:
-        """Set the y axis title of the figure
+    ) -> "OpenBBFigure":
+        """Set the y axis title of the figure or subplot (if row and col are specified)
 
         Parameters
         ----------
@@ -381,11 +385,12 @@ class OpenBBFigure(go.Figure):
             Column number, by default None
         """
         self.update_yaxes(title=title, row=row, col=col, **kwargs)
+        return self
 
     def xaxis_type(
         self, xaxis_type: str = "category", row: int = None, col: int = None
     ) -> None:
-        """Set the xaxis type
+        """Set the xaxis type of the figure or subplot (if row and col are specified)
 
         Parameters
         ----------
@@ -570,19 +575,20 @@ class OpenBBFigure(go.Figure):
 
     def show(self, *args, **kwargs) -> None:
         """Show the figure"""
-        self._adjust_margins()
+        if kwargs.pop("margin", True):
+            self._adjust_margins()
         self._apply_feature_flags()
 
-        height = 600 if not self.layout.height else self.layout.height
-        self.update_layout(
-            legend=dict(
-                tracegroupgap=height / 4.5,
-                groupclick="toggleitem",
-            ),
-            barmode="overlay",
-            bargap=0,
-            bargroupgap=0,
-        )
+        # height = 600 if not self.layout.height else self.layout.height
+        # self.update_layout(
+        #     legend=dict(
+        #         tracegroupgap=height / 4.5,
+        #         groupclick="toggleitem",
+        #     ),
+        #     barmode="overlay",
+        #     bargap=0,
+        #     bargroupgap=0,
+        # )
         self.update_traces(marker_line_width=0.0001, selector=dict(type="bar"))
 
         # Set modebar style
@@ -690,6 +696,38 @@ class OpenBBFigure(go.Figure):
             color_list.append(PLT_TBL_ROW_COLORS[0])
 
         return color_list
+
+    def hide_holidays(
+        self, dateindex: Union[pd.DatetimeIndex, pd.Series, pd.Index]
+    ) -> None:
+        """Add rangebreaks to hide holidays on the xaxis
+
+        Parameters
+        ----------
+        dateindex : `pandas.DatetimeIndex`
+            The date index
+        """
+        if not isinstance(dateindex, pd.DatetimeIndex):
+            dateindex = pd.DatetimeIndex(dateindex)
+
+        mkt_holidays = USFederalHolidayCalendar().holidays(
+            start=dateindex.min(), end=dateindex.max()
+        )
+        rangebreaks = [
+            dict(values=[date.strftime("%Y-%m-%d") for date in mkt_holidays]),
+            dict(bounds=["sat", "mon"]),
+        ]
+
+        # We add a rangebreak if the first and last time are not the same
+        # since daily data will have the same time (00:00)
+        if dateindex[0].time() != dateindex[-1].time():
+            print("Adding rangebreak")
+            rangebreaks.append(dict(bounds=[15.99, 9.50], pattern="hour"))
+
+        self.update_xaxes(
+            rangebreaks=rangebreaks,
+            type="date",
+        )
 
     @staticmethod
     def _tbl_values(df: pd.DataFrame, print_index: bool) -> Tuple[List[str], List]:
@@ -803,7 +841,7 @@ class OpenBBFigure(go.Figure):
     def _adjust_margins(self) -> None:
         """Adjust the margins of the figure"""
         margin_add = (
-            [90, 110, 80, 40, 0] if not self._has_secondary_y else [90, 50, 80, 40, 0]
+            [90, 90, 80, 40, 0] if not self._has_secondary_y else [90, 50, 80, 40, 0]
         )
 
         # We adjust margins
@@ -818,7 +856,7 @@ class OpenBBFigure(go.Figure):
                     self.layout.margin[key] = add
 
         if not get_backend().isatty:
-            self.layout.margin = dict(l=80, r=30, b=50, t=50, pad=0)
+            self.layout.margin = dict(l=30, r=40, b=80, t=50, pad=0)
 
     def _set_watermark(self) -> None:
         """Sets the watermark for OpenBB Terminal"""
@@ -849,7 +887,7 @@ class OpenBBFigure(go.Figure):
             xshift = -60 if yaxis.side == "right" else -80
 
             if yaxis2 and yaxis2.overlaying == "y":
-                xshift = -110 if not yaxis2.title.text else -130
+                xshift = -110 if not yaxis2.title.text else -120
 
             self.add_annotation(
                 x=-0.015,

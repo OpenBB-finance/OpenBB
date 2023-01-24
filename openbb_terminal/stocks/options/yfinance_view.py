@@ -7,7 +7,7 @@ import re
 
 # from bisect import bisect_left
 from datetime import date, datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -21,6 +21,7 @@ from scipy.stats import binom
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     excel_columns,
@@ -29,7 +30,6 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, yfinance_model
 from openbb_terminal.stocks.options.yfinance_model import (
@@ -948,7 +948,7 @@ def display_vol_surface(
     symbol: str,
     export: str = "",
     z: str = "IV",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display vol surface
 

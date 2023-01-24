@@ -3,22 +3,14 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.alternative.covid import covid_model
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
-from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -108,7 +100,7 @@ def plot_covid_ov(
 def plot_covid_stat(
     country: str,
     stat: str = "cases",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots historical stat by country.
 
@@ -119,40 +111,46 @@ def plot_covid_stat(
     external_axis: Optional[List[plt.Axes]]
         List of external axes to include in plot
     """
-    # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+
+    fig = OpenBBFigure(title=f"{country} COVID {stat}", xaxis_title="Date")
 
     if stat == "cases":
         data = covid_model.get_global_cases(country) / 1_000
-        ax.set_ylabel(stat.title() + " [1k]")
+        fig.set_yaxis_title(f"{stat.title()} [1k]")
         color = theme.up_color
     elif stat == "deaths":
         data = covid_model.get_global_deaths(country)
-        ax.set_ylabel(stat.title())
+        fig.set_yaxis_title(stat.title())
         color = theme.down_color
     elif stat == "rates":
         cases = covid_model.get_global_cases(country)
         deaths = covid_model.get_global_deaths(country)
         data = (deaths / cases).fillna(0) * 100
-        ax.set_ylabel(stat.title() + " (Deaths/Cases)")
         color = theme.get_colors(reverse=True)[0]
+        fig.set_yaxis_title(f"{stat.title()} (Deaths/Cases)")
     else:
         console.print("Invalid stat selected.\n")
         return
 
-    ax.plot(data.index, data, color=color, alpha=0.2)
-    ax.plot(data.index, data.rolling(7).mean(), color=color)
-    ax.set_title(f"{country} COVID {stat}")
-    ax.set_xlim(data.index[0], data.index[-1])
-    theme.style_primary_axis(ax)
+    fig.add_scatter(
+        x=data.index,
+        y=data.values,
+        name=stat.title(),
+        opacity=0.2,
+        line_color=color,
+        showlegend=False,
+    )
+    fig.add_scatter(
+        x=data.index,
+        y=data.rolling(7).mean().values,
+        name=f"{stat.title()} (7d avg)",
+        line_color=color,
+        hovertemplate="%{y:.2f}",
+    )
 
-    if external_axes is None:
-        theme.visualize_output()
+    fig.update_layout(hovermode="x unified")
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)

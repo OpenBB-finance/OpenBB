@@ -9,16 +9,15 @@ import matplotlib.ticker
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    lambda_long_number_format,
-    print_rich_table,
-    plot_autoscale,
     is_valid_axes_count,
+    lambda_long_number_format,
+    plot_autoscale,
+    print_rich_table,
 )
 from openbb_terminal.stocks.dark_pool_shorts import quandl_model
 
@@ -31,7 +30,7 @@ def plot_short_interest(
     symbol: str,
     data: pd.DataFrame,
     nyse: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been
@@ -45,8 +44,8 @@ def plot_short_interest(
         Short interest dataframe
     nyse : bool
         data from NYSE if true, otherwise NASDAQ
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     # This plot has 2 axes
@@ -100,7 +99,7 @@ def short_interest(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been
@@ -118,8 +117,8 @@ def short_interest(
         Flag to print raw data instead
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_short_interest = quandl_model.get_short_interest(symbol, nyse)
 

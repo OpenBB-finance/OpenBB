@@ -3,21 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
+from typing import List
 
-import matplotlib.pyplot as plt
-
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import nasdaq_model
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-    is_valid_axes_count,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -65,7 +56,7 @@ def display_big_mac_index(
     country_codes: List[str] = None,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display Big Mac Index for given countries
 
@@ -77,26 +68,20 @@ def display_big_mac_index(
         Flag to display raw data, by default False
     export : str, optional
         Format data, by default ""
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     big_mac = nasdaq_model.get_big_mac_indices(country_codes)
 
     if not big_mac.empty:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
-
-        big_mac.plot(ax=ax, marker="o")
-        ax.legend()
-        ax.set_title("Big Mac Index (USD)")
-        ax.set_ylabel("Price of Big Mac in USD")
-        theme.style_primary_axis(ax)
-        if external_axes is None:
-            theme.visualize_output()
+        fig = OpenBBFigure(title="Big Mac Index", yaxis_title="Price of Big Mac in USD")
+        for country in big_mac.columns:
+            fig.add_scatter(
+                x=big_mac.index,
+                y=big_mac[country],
+                mode="lines+markers",
+                name=country,
+            )
 
         if raw:
             print_rich_table(
@@ -109,6 +94,8 @@ def display_big_mac_index(
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "bigmac", big_mac
         )
+
+        return fig.show() if not external_axes else fig
     else:
         logger.error("Unable to get big mac data")
         console.print("[red]Unable to get big mac data[/red]\n")

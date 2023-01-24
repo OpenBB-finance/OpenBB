@@ -11,14 +11,14 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.comparison_analysis import finbrain_model
@@ -33,7 +33,7 @@ def display_sentiment_compare(
     similar: List[str],
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display sentiment for all ticker. [Source: FinBrain].
 
@@ -47,8 +47,8 @@ def display_sentiment_compare(
         Output raw values, by default False
     export : str, optional
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_sentiment = finbrain_model.get_sentiments(similar)
     if df_sentiment.empty:
@@ -122,7 +122,7 @@ def display_sentiment_correlation(
     similar: List[str],
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot correlation sentiments heatmap across similar companies. [Source: FinBrain].
 
@@ -136,8 +136,8 @@ def display_sentiment_correlation(
         Output raw values, by default False
     export : str, optional
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     corrs, df_sentiment = finbrain_model.get_sentiment_correlation(similar)
 

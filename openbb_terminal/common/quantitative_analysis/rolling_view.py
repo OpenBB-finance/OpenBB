@@ -3,20 +3,20 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.quantitative_analysis import rolling_model
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     reindex_dates,
-    is_valid_axes_count,
 )
 
 logger = logging.getLogger(__name__)
@@ -29,7 +29,7 @@ def display_mean_std(
     symbol: str = "",
     window: int = 14,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots mean std deviation
 
@@ -66,22 +66,19 @@ def display_mean_std(
         right_index=True,
         suffixes=("", "_std"),
     )
-    plot_data = reindex_dates(plot_data)
 
     # This plot has 2 axes
-    if external_axes is None:
-        _, axes = plt.subplots(
-            2,
-            1,
-            sharex=True,
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-        ax1, ax2 = axes
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, axes = plt.subplots(
+        2,
+        1,
+        sharex=True,
+        figsize=plot_autoscale(),
+        dpi=PLOT_DPI,
+    )
+    ax1, ax2 = axes
+
+    plot_data2 = plot_data.copy()
+    plot_data = reindex_dates(plot_data)
 
     ax1.plot(
         plot_data.index,
@@ -123,6 +120,46 @@ def display_mean_std(
     if external_axes is None:
         theme.visualize_output()
 
+    fig = OpenBBFigure.create_subplots(
+        2,
+        1,
+        shared_xaxes=True,
+        subplot_titles=[
+            f"Rolling mean and std (window {str(window)}) of {symbol} {target}",
+            f"{target} Std Deviation",
+        ],
+        vertical_spacing=0.1,
+    )
+    fig.add_scatter(
+        x=plot_data2.index,
+        y=plot_data2[target].values,
+        name="Real Values",
+        row=1,
+        col=1,
+    )
+    fig.add_scatter(
+        x=plot_data2.index,
+        y=plot_data2[target + "_mean"].values,
+        name="Rolling Mean",
+        row=1,
+        col=1,
+    )
+    fig.add_scatter(
+        x=plot_data2.index,
+        y=plot_data2[target + "_std"].values,
+        name="Rolling Std",
+        row=2,
+        col=1,
+    )
+    fig.update_layout(
+        yaxis=dict(title="Values"),
+        yaxis2=dict(title=f"{target} Std Deviation"),
+        xaxis=dict(type="date"),
+        xaxis2=dict(type="date"),
+    )
+
+    fig.show()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -138,7 +175,7 @@ def display_spread(
     symbol: str = "",
     window: int = 14,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots rolling spread
 
@@ -249,7 +286,7 @@ def display_quantile(
     window: int = 14,
     quantile: float = 0.5,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots rolling quantile
 
@@ -267,8 +304,8 @@ def display_quantile(
         Quantile to get
     export: str
         Format to export data
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
     """
     data = data[target]
     df_med, df_quantile = rolling_model.get_quantile(data, window, quantile)
@@ -344,7 +381,7 @@ def display_skew(
     target: str,
     window: int = 14,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots rolling skew
 
@@ -427,7 +464,7 @@ def display_kurtosis(
     target: str,
     window: int = 14,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots rolling kurtosis
 

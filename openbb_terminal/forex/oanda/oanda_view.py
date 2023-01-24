@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, Union, Optional, List
+from typing import Dict, List, Optional, Union
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -11,10 +11,9 @@ import pandas as pd
 import pandas_ta as ta
 import seaborn as sns
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.forex.oanda.oanda_model import (
     account_summary_request,
     cancel_pending_order_request,
@@ -30,7 +29,7 @@ from openbb_terminal.forex.oanda.oanda_model import (
     pending_orders_request,
     positionbook_plot_data_request,
 )
-from openbb_terminal.helper_funcs import plot_autoscale, is_valid_axes_count
+from openbb_terminal.helper_funcs import is_valid_axes_count, plot_autoscale
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -80,7 +79,7 @@ def get_account_summary(accountID: str):
 def get_order_book(
     accountID: str,
     instrument: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """
     Plot the orderbook for the instrument if Oanda provides one.
@@ -91,8 +90,8 @@ def get_order_book(
         Oanda user account ID
     instrument : str
         The loaded currency pair
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_orderbook_data = orderbook_plot_data_request(
         accountID=accountID, instrument=instrument
@@ -115,7 +114,7 @@ def get_order_book(
 @log_start_end(log=logger)
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def get_position_book(
-    accountID: str, instrument: str = "", external_axes: Optional[List[plt.Axes]] = None
+    accountID: str, instrument: str = "", external_axes: bool = False
 ):
     """Plot a position book for an instrument if Oanda provides one.
 
@@ -125,8 +124,8 @@ def get_position_book(
         Oanda user account ID
     instrument : str
         The loaded currency pair
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_positionbook_data = positionbook_plot_data_request(
         accountID=accountID, instrument=instrument
@@ -297,7 +296,7 @@ def show_candles(
     granularity: str = "D",
     candlecount: int = 180,
     additional_charts: Optional[Dict[str, bool]] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Show candle chart.
 
@@ -315,8 +314,8 @@ def show_candles(
         Limit for the number of data points
     additional_charts : Dict[str, bool]
         A dictionary of flags to include additional charts
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_candles = get_candles_dataframe(instrument, granularity, candlecount)
     if (
@@ -487,7 +486,7 @@ def book_plot(
     df: pd.DataFrame,
     instrument: str,
     book_type: str,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot the order book for a given instrument.
 
@@ -499,8 +498,8 @@ def book_plot(
         The loaded currency pair
     book_type : str
         Order book type
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = df.apply(pd.to_numeric)
     df["shortCountPercent"] = df["shortCountPercent"] * -1

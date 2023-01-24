@@ -28,7 +28,7 @@ def display_put_call_ratio(
     window: int = 30,
     start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display put call ratio [Source: AlphaQuery.com]
 
@@ -42,8 +42,8 @@ def display_put_call_ratio(
         Starting date for data, by default (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
     export : str, optional
         Format to export data, by default ""
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     pcr = alphaquery_model.get_put_call_ratio(symbol, window, start_date)
     if pcr.empty:

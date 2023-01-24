@@ -24,8 +24,8 @@
             <div id="popup_csv" class="popup_content">
                 <input type="file" id="csv_file" accept=".csv, .txt"></input>
 
-                <label for="csv_type">Choose a type</label>
-                <select id="csv_type" value="scatter">
+                <label for="csv_trace_type">Choose how to display the data</label>
+                <select id="csv_trace_type" value="scatter">
                     <option value="scatter">Scatter</option>
                     <option value="candlestick">Candlestick</option>
                 </select>
@@ -34,7 +34,7 @@
                 <div id="csv_columns"><!-- Empty --></div>
                 <div id="csv_colors"><!-- Empty --></div>
 
-                <label for="csv_name">Name of trace</label>
+                <label for="csv_name">Name of the trace</label>
                 <input type="text" id="csv_name" value=""></input>
 
                 <button id="csv_submit" onclick="on_submit('csv')">Submit</button>
@@ -65,6 +65,8 @@
             window.PlotlyConfig = { MathJaxConfig: 'local' };
 
             var interval = setInterval(function() {
+                // Waits for OpenBBMain and plotly_figure to be defined before
+                // calling OpenBBMain to avoid errors
                 if (typeof OpenBBMain != 'undefined' && window.plotly_figure) {
                     clearInterval(interval);
                     OpenBBMain(window.plotly_figure);

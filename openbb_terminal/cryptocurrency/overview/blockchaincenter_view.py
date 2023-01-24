@@ -1,13 +1,13 @@
 """Blockchain Center View"""
 import logging
 import os
-from typing import List, Optional
 from datetime import datetime
+from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.overview.blockchaincenter_model import (
     DAYS,
     get_altcoin_index,
@@ -15,8 +15,8 @@ from openbb_terminal.cryptocurrency.overview.blockchaincenter_model import (
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 from openbb_terminal.rich_config import console
 
@@ -29,7 +29,7 @@ def display_altcoin_index(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Displays altcoin index overtime
      [Source: https://blockchaincenter.net]
@@ -46,8 +46,8 @@ def display_altcoin_index(
         30 will check monthly performance (30 days).
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     if end_date is None:

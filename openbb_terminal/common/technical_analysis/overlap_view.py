@@ -8,9 +8,9 @@ from typing import List, Optional
 import pandas as pd
 
 from openbb_terminal.common.technical_analysis import overlap_model
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
-from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)

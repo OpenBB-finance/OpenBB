@@ -5,6 +5,7 @@ TEXT_DIV = undefined;
 CSV_DIV = undefined;
 
 let check_divs = setInterval(function () {
+    // Wait for the popup divs to be loaded before assigning them to variables
     let div_ids = ['popup_title', 'popup_text', 'popup_csv'];
     let divs = div_ids.map(function (id) {
         return document.getElementById(id);
@@ -24,12 +25,14 @@ let check_divs = setInterval(function () {
 }, 100);
 
 function OpenBBMain(plotly_figure) {
+    // Main function that plots the graphs and initializes the bar menus
     let CHART_DIV = document.getElementById('openbb_chart');
     globals.chartDiv = CHART_DIV;
     console.log('main.js loaded');
     console.log('plotly_figure', plotly_figure);
     let graphs = plotly_figure;
 
+    // Sets the config with the custom buttons
     CONFIG = {
         scrollZoom: true,
         responsive: true,
@@ -42,22 +45,6 @@ function OpenBBMain(plotly_figure) {
         },
         modeBarButtonsToRemove: ['lasso2d', 'select2d'],
         modeBarButtons: [
-            [
-                'drawline',
-                'drawopenpath',
-                'drawcircle',
-                'drawrect',
-                'eraseshape',
-                {
-                    name: 'Download Data (Ctrl+S)',
-                    icon: Plotly.Icons.disk,
-                    click: function (gd) {
-                        downloadData(gd);
-                    },
-                },
-                'toImage',
-            ],
-            ['zoomIn2d', 'zoomOut2d', 'resetScale2d', 'zoom2d', 'pan2d'],
             [
                 {
                     name: 'Add Text (Ctrl+T)',
@@ -77,6 +64,8 @@ function OpenBBMain(plotly_figure) {
                     name: 'Plot CSV (Ctrl+Shift+C)',
                     icon: ICONS.plotCsv,
                     click: function () {
+                        // We make sure to close any other popup that might be open
+                        // before opening the CSV popup
                         closePopup();
                         openPopup('popup_csv');
                     },
@@ -85,12 +74,14 @@ function OpenBBMain(plotly_figure) {
                     name: 'Edit Color (Ctrl+E)',
                     icon: ICONS.changeColor,
                     click: function () {
+                        // We need to check if the button is active or not
                         let title = 'Edit Color (Ctrl+E)';
                         let button = globals.barButtons[title];
                         let active = true;
                         if (button.style.border == 'transparent') {
                             active = false;
                         }
+                        // We call the function that changes the border color
                         button_pressed(title, active);
                         changeColor();
                     },
@@ -99,15 +90,20 @@ function OpenBBMain(plotly_figure) {
                     name: 'Auto Scale (Ctrl+Shift+A)',
                     icon: Plotly.Icons.autoscale,
                     click: function () {
+                        // We need to check if the button is active or not
                         let title = 'Auto Scale (Ctrl+Shift+A)';
                         let button = globals.barButtons[title];
                         let active = true;
                         if (button.style.border == 'transparent') {
                             active = false;
+                            // We add the listener to the plotly_relayout event
+                            // to autoscale the graphs
                             CHART_DIV.on('plotly_relayout', function (eventdata) {
                                 autoScaling(eventdata, graphs);
                             });
                         } else {
+                            // If the button is active, we remove the listener so
+                            // the graphs don't autoscale anymore
                             CHART_DIV.removeAllListeners('plotly_relayout');
                         }
                         button_pressed(title, active);
@@ -117,9 +113,26 @@ function OpenBBMain(plotly_figure) {
                 'hoverCompareCartesian',
                 'toggleSpikelines',
             ],
+            ['zoomIn2d', 'zoomOut2d', 'resetScale2d', 'zoom2d', 'pan2d'],
+            [
+                'drawline',
+                'drawopenpath',
+                'drawcircle',
+                'drawrect',
+                'eraseshape',
+                {
+                    name: 'Download Data (Ctrl+S)',
+                    icon: Plotly.Icons.disk,
+                    click: function (gd) {
+                        downloadData(gd);
+                    },
+                },
+                'toImage',
+            ],
         ],
     };
 
+    // We make sure to fill in any missing layout properties with default values
     if (!('font' in graphs.layout)) {
         graphs.layout['font'] = {
             family: 'Fira Code, monospace, Arial Black',
@@ -127,8 +140,6 @@ function OpenBBMain(plotly_figure) {
         };
     }
     graphs.layout.annotations = !graphs.layout.annotations ? [] : graphs.layout.annotations;
-    graphs.layout.height = !graphs.layout.height ? 586 : graphs.layout.height;
-    graphs.layout.width = !graphs.layout.width ? 800 : graphs.layout.width;
 
     if (!('margin' in graphs.layout)) {
         graphs.layout['margin'] = {
@@ -142,19 +153,19 @@ function OpenBBMain(plotly_figure) {
 
     // We setup keyboard shortcuts custom to OpenBB
     window.document.addEventListener('keydown', function (e) {
-        if (e.ctrlKey && (e.key == 't' || e.key == 'T')) {
+        if (e.ctrlKey && e.key.toLowerCase() == 't') {
             openPopup('popup_text');
         }
-        if (e.ctrlKey && (e.key == 'e' || e.key == 'E')) {
+        if (e.ctrlKey && e.key.toLowerCase() == 'e') {
             changeColor();
         }
-        if (e.ctrlKey && e.shiftKey && (e.key == 't' || e.key == 'T')) {
+        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == 't') {
             openPopup('popup_title');
         }
-        if (e.ctrlKey && (e.key == 's' || e.key == 'S')) {
+        if (e.ctrlKey && e.key.toLowerCase() == 's') {
             downloadData(CHART_DIV);
         }
-        if (e.ctrlKey && e.shiftKey && (e.key == 'c' || e.key == 'C')) {
+        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == 'c') {
             openPopup('popup_csv');
         }
         if (e.key == 'Escape') {
@@ -163,11 +174,16 @@ function OpenBBMain(plotly_figure) {
     });
 
     graphs.layout.autosize = true;
+    // We set the height and width to undefined, so that plotly.js can
+    // automatically resize the chart to fit the PyWry window
     delete graphs.layout.height;
     delete graphs.layout.width;
 
     if (graphs.layout.annotations != undefined) {
         graphs.layout.annotations.forEach(function (annotation) {
+            // We make sure to fill in any missing annotation properties with default values
+            // We also make sure to set the font size to a reasonable value based on the
+            // width of the client window
             if (!('font' in annotation) || !('size' in annotation.font)) {
                 annotation['font'] = {
                     family: 'Fira Code, monospace, Arial Black',
@@ -186,11 +202,14 @@ function OpenBBMain(plotly_figure) {
         }
     });
 
+    // Set the default dragmode to pan and set the font size to a reasonable value
     graphs.layout.dragmode = 'pan';
     graphs.layout.font.size = Math.min(CHART_DIV.clientWidth / 50, graphs.layout.font.size);
 
     // We check for the dark mode
     if (graphs.layout.template.layout.mapbox.style == 'dark') {
+        // We add a style tag to the head of the document
+        // to change the color of the update menu
         let style = document.createElement('style');
         style.innerHTML = `
         .updatemenu-item-rect {
@@ -211,6 +230,7 @@ function OpenBBMain(plotly_figure) {
         graphs.layout.template.layout.plot_bgcolor = '#000000';
     }
 
+    // We set the plot config and plot the chart
     Plotly.setPlotConfig(CONFIG);
     Plotly.newPlot(CHART_DIV, graphs, { responsive: true });
 
@@ -220,12 +240,15 @@ function OpenBBMain(plotly_figure) {
     globals.barButtons = {};
 
     for (let i = 0; i < modebar_buttons.length; i++) {
+        // We add the buttons to the global variable for later use
+        // and set the border to transparent so we can change the
+        // color of the buttons when they are pressed
         let button = modebar_buttons[i];
         button.style.border = 'transparent';
         globals.barButtons[button.getAttribute('data-title')] = button;
     }
 
-    // send a relayout event to trigger the initial zoom
+    // send a relayout event to trigger the initial zoom/bars-resize
     Plotly.relayout(CHART_DIV, {
         'xaxis.range[0]': graphs.layout.xaxis.range[0],
         'xaxis.range[1]': graphs.layout.xaxis.range[1],
@@ -235,7 +258,7 @@ function OpenBBMain(plotly_figure) {
     CSV_DIV.querySelector('#csv_file').addEventListener('change', function () {
         checkFile(CSV_DIV);
     });
-    CSV_DIV.querySelector('#csv_type').addEventListener('change', function () {
+    CSV_DIV.querySelector('#csv_trace_type').addEventListener('change', function () {
         console.log('type changed');
         checkFile(CSV_DIV, true);
     });

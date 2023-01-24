@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
 import matplotlib.pyplot as plt
 
@@ -29,7 +28,7 @@ def display_oi(
     max_sp: float = -1,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot open interest
 
@@ -47,8 +46,8 @@ def display_oi(
         Flag to display raw data
     export: str
         Format to export file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiry)
     export_data(
@@ -119,7 +118,7 @@ def display_volume(
     max_sp: float = -1,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot volume
 
@@ -137,8 +136,8 @@ def display_volume(
         Flag to display raw data
     export: str
         Format to export file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiry)
     export_data(
@@ -209,7 +208,7 @@ def display_volume_and_oi(
     max_sp: float = -1,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot volume and open interest
 
@@ -227,8 +226,8 @@ def display_volume_and_oi(
         Flag to display raw data
     export: str
         Format to export file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiry)
     export_data(

@@ -3,27 +3,26 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
 
 import matplotlib.pyplot as plt
+import mplfinance as mpf
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-import mplfinance as mpf
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.common.technical_analysis import momentum_model
+from openbb_terminal.common.technical_analysis import momentum_model, ta_helpers
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
-    reindex_dates,
     is_valid_axes_count,
+    plot_autoscale,
     print_rich_table,
+    reindex_dates,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +36,7 @@ def display_cci(
     scalar: float = 0.0015,
     symbol: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots CCI Indicator
 
@@ -54,8 +53,8 @@ def display_cci(
         Stock ticker
     export : str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df_ta = momentum_model.cci(data, window, scalar)
@@ -63,15 +62,8 @@ def display_cci(
     plot_data = reindex_dates(plot_data)
 
     # This plot has 2 axes
-    if external_axes is None:
-        _, axes = plt.subplots(
-            2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI
-        )
-        (ax1, ax2) = axes
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, axes = plt.subplots(2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI)
+    (ax1, ax2) = axes
 
     close_col = ta_helpers.check_columns(data)
     if close_col is None:
@@ -130,7 +122,7 @@ def display_macd(
     n_signal: int = 9,
     symbol: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots MACD signal
 
@@ -148,23 +140,15 @@ def display_macd(
         Stock ticker
     export : str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_ta = momentum_model.macd(data, n_fast, n_slow, n_signal)
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
-    # This plot has 2 axes
-    if external_axes is None:
-        _, axes = plt.subplots(
-            2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI
-        )
-        (ax1, ax2) = axes
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, axes = plt.subplots(2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI)
+    (ax1, ax2) = axes
 
     ax1.set_title(f"{symbol} MACD")
     ax1.plot(plot_data.index, plot_data.iloc[:, 1].values)
@@ -223,7 +207,7 @@ def display_rsi(
     drift: int = 1,
     symbol: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots RSI Indicator
 
@@ -241,8 +225,8 @@ def display_rsi(
         Stock ticker
     export : str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     if isinstance(data, pd.DataFrame):
         console.print("[red]Please send a series and not a dataframe[/red]\n")
@@ -250,15 +234,8 @@ def display_rsi(
     df_ta = momentum_model.rsi(data, window, scalar, drift)
 
     # This plot has 2 axes
-    if external_axes is None:
-        _, axes = plt.subplots(
-            2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI
-        )
-        (ax1, ax2) = axes
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, axes = plt.subplots(2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI)
+    (ax1, ax2) = axes
 
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
@@ -311,7 +288,7 @@ def display_stoch(
     slowkperiod: int = 3,
     symbol: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots stochastic oscillator signal
 
@@ -329,8 +306,8 @@ def display_stoch(
         Stock ticker symbol
     export : str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     close_col = ta_helpers.check_columns(data)
     if close_col is None:
@@ -341,17 +318,10 @@ def display_stoch(
         slowdperiod,
         slowkperiod,
     )
-    # This plot has 3 axes
-    if not external_axes:
-        _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
-        )
-        ax1, ax2 = axes
-        ax3 = ax2.twinx()
-    elif is_valid_axes_count(external_axes, 3):
-        (ax1, ax2, ax3) = external_axes
-    else:
-        return
+
+    _, axes = plt.subplots(2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    ax1, ax2 = axes
+    ax3 = ax2.twinx()
 
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
@@ -408,7 +378,7 @@ def display_fisher(
     window: int = 14,
     symbol: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots Fisher Indicator
 
@@ -422,8 +392,8 @@ def display_fisher(
         Ticker string
     export : str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_ta = momentum_model.fisher(data, window)
     if df_ta.empty:
@@ -432,16 +402,9 @@ def display_fisher(
     plot_data = reindex_dates(plot_data)
 
     # This plot has 3 axes
-    if not external_axes:
-        _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
-        )
-        ax1, ax2 = axes
-        ax3 = ax2.twinx()
-    elif is_valid_axes_count(external_axes, 3):
-        (ax1, ax2, ax3) = external_axes
-    else:
-        return
+    _, axes = plt.subplots(2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    ax1, ax2 = axes
+    ax3 = ax2.twinx()
 
     ax1.set_title(f"{symbol} Fisher Transform")
     close_col = ta_helpers.check_columns(data)
@@ -501,7 +464,7 @@ def display_cg(
     window: int = 14,
     symbol: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots center of gravity Indicator
 
@@ -515,49 +478,65 @@ def display_cg(
         Stock ticker
     export : str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_ta = momentum_model.cg(data, window)
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
-    plot_data = reindex_dates(plot_data)
 
-    # This plot has 2 axes
-    if external_axes is None:
-        _, axes = plt.subplots(
-            2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI
-        )
-        (ax1, ax2) = axes
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, axes = plt.subplots(2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI)
+    (ax1, ax2) = axes
 
     ax1.set_title(f"{symbol} Centre of Gravity")
     ax1.plot(plot_data.index, plot_data[data.name].values)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Share Price ($)")
-    theme.style_primary_axis(
-        ax1,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
-    )
 
     ax2.plot(plot_data.index, plot_data[df_ta.columns[0]].values, label="CG")
-    # shift cg 1 bar forward for signal
-    signal = np.roll(plot_data[df_ta.columns[0]].values, 1)
-    ax2.plot(plot_data.index, signal, label="Signal")
+    # # shift cg 1 bar forward for signal
+    signal = plot_data[df_ta.columns[0]].shift(1)
+    print(np.roll(plot_data[df_ta.columns[0]].values, 1) == signal.values)
+    ax2.plot(
+        plot_data.index, np.roll(plot_data[df_ta.columns[0]].values, 1), label="Signal"
+    )
     ax2.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax2.legend()
-    theme.style_primary_axis(
-        ax2,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
-    )
 
     if external_axes is None:
         theme.visualize_output()
-
+    fig = OpenBBFigure.create_subplots(2, 1, shared_xaxes=True)
+    fig.add_scatter(
+        x=plot_data.index,
+        y=plot_data[data.name].values,
+        name="Share Price ($)",
+        mode="lines",
+        row=1,
+        col=1,
+    )
+    fig.add_scatter(
+        x=plot_data.index,
+        y=plot_data[df_ta.columns[0]].values,
+        name="CG",
+        mode="lines",
+        row=2,
+        col=1,
+    )
+    fig.add_scatter(
+        x=plot_data.index,
+        y=signal,
+        name="Signal",
+        mode="lines",
+        row=2,
+        col=1,
+    )
+    fig.update_layout(
+        title=f"{symbol} Centre of Gravity",
+        xaxis_title="Date",
+        yaxis_title="Share Price ($)",
+        xaxis_range=[plot_data.index[0], plot_data.index[-1]],
+        hovermode="x unified",
+    )
+    fig.show()
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -572,7 +551,7 @@ def display_clenow_momentum(
     symbol: str = "",
     window: int = 90,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Prints table and plots clenow momentum
 
@@ -586,8 +565,8 @@ def display_clenow_momentum(
         Length of window
     export : str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------
@@ -614,13 +593,7 @@ def display_clenow_momentum(
     )
 
     # This plot has 2 axes
-    if external_axes is None:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-    elif is_valid_axes_count(external_axes, 1):
-        ax1 = external_axes
-    else:
-        return
+    _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     ax1.plot(data.index, np.log(data.values))
     ax1.plot(data.index[-window:], fit_data, linewidth=2)
@@ -646,7 +619,7 @@ def display_demark(
     symbol: str = "",
     min_to_show: int = 5,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot demark sequential indicator
 
@@ -660,8 +633,8 @@ def display_demark(
         Minimum value to show
     export : str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------
@@ -724,29 +697,20 @@ def display_demark(
         },
         "warn_too_much_data": 10000,
     }
-    if external_axes is None:
-        candle_chart_kwargs["returnfig"] = True
-        candle_chart_kwargs["figratio"] = (10, 7)
-        candle_chart_kwargs["figscale"] = 1.10
-        candle_chart_kwargs["figsize"] = plot_autoscale()
-        candle_chart_kwargs["warn_too_much_data"] = 100_000
+    candle_chart_kwargs["returnfig"] = True
+    candle_chart_kwargs["figratio"] = (10, 7)
+    candle_chart_kwargs["figscale"] = 1.10
+    candle_chart_kwargs["figsize"] = plot_autoscale()
+    candle_chart_kwargs["warn_too_much_data"] = 100_000
 
-        fig, _ = mpf.plot(stock_data, **candle_chart_kwargs)
-        fig.suptitle(
-            f"{symbol} Demark Sequential",
-            x=0.055,
-            y=0.965,
-            horizontalalignment="left",
-        )
-        theme.visualize_output(force_tight_layout=False)
-
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-        ax1 = external_axes
-        candle_chart_kwargs["ax"] = ax1
-        mpf.plot(stock_data, **candle_chart_kwargs)
+    fig, _ = mpf.plot(stock_data, **candle_chart_kwargs)
+    fig.suptitle(
+        f"{symbol} Demark Sequential",
+        x=0.055,
+        y=0.965,
+        horizontalalignment="left",
+    )
+    theme.visualize_output(force_tight_layout=False)
 
     export_data(
         export,

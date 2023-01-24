@@ -3,23 +3,22 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.common.technical_analysis import trend_indicators_model
+from openbb_terminal.common.technical_analysis import ta_helpers, trend_indicators_model
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     reindex_dates,
-    is_valid_axes_count,
 )
-from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +33,7 @@ def display_adx(
     drift: int = 1,
     symbol: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots ADX indicator
 
@@ -52,8 +51,8 @@ def display_adx(
         Ticker
     export : str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_ta = trend_indicators_model.adx(
         data=data,
@@ -124,7 +123,7 @@ def display_aroon(
     scalar: int = 100,
     symbol: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots Aroon indicator
 

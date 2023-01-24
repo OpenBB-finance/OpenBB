@@ -11,17 +11,17 @@ from matplotlib import ticker
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
-    prettify_column_names,
     lambda_very_long_number_formatter,
+    prettify_column_names,
 )
 from openbb_terminal.cryptocurrency.defi import terramoney_fcd_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -141,7 +141,7 @@ def display_account_growth(
     cumulative: bool = False,
     limit: int = 90,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]
 
@@ -155,8 +155,8 @@ def display_account_growth(
         Flag to show cumulative or discrete values. For active accounts only discrete value are available.
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df = terramoney_fcd_model.get_account_growth(cumulative)
@@ -207,7 +207,7 @@ def display_account_growth(
 def display_staking_ratio_history(
     limit: int = 90,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots terra blockchain staking ratio history [Source: https://fcd.terra.dev/v1]
 
@@ -217,8 +217,8 @@ def display_staking_ratio_history(
         Number of records to display
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df = terramoney_fcd_model.get_staking_ratio_history(limit)
@@ -254,7 +254,7 @@ def display_staking_ratio_history(
 def display_staking_returns_history(
     limit: int = 90,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots terra blockchain staking returns history [Source: https://fcd.terra.dev/swagger]
 
@@ -264,8 +264,8 @@ def display_staking_returns_history(
         Number of records to display
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     """
     # This plot has 1 axis

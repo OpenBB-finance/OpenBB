@@ -3,16 +3,16 @@ import logging
 import os
 
 # IMPORTATION THIRDPARTY
-from typing import List, Optional, Tuple
+from typing import Tuple
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 
 # IMPORTATION INTERNAL
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options.op_helpers import calculate_max_pain
 
@@ -82,7 +82,7 @@ def plot_vol(
     puts_only: bool = False,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot volume
 
@@ -106,8 +106,8 @@ def plot_vol(
         Show puts only
     export: str
         Format to export file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
 
     Examples
@@ -172,7 +172,7 @@ def plot_oi(
     puts_only: bool = False,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot open interest
 
@@ -196,8 +196,8 @@ def plot_oi(
         Show puts only
     export: str
         Format to export file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------
@@ -269,7 +269,7 @@ def plot_voi(
     max_sp: float = -1,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot volume and open interest
 
@@ -289,8 +289,8 @@ def plot_voi(
         Max strike price
     export: str
         Format for exporting data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------

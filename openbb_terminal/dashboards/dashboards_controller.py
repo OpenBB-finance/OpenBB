@@ -18,11 +18,11 @@ import psutil
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.plots.backend import get_backend
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.plots_core.backend import get_backend
 from openbb_terminal.rich_config import MenuText, console
 
 # pylint: disable=consider-using-with
@@ -303,6 +303,7 @@ class DashboardsController(BaseController):
 
             if ns_parser.input or response.lower() == "y":
                 port = self.get_free_port()
+                os.environ["PYTHONPATH"] = os.getcwd()
                 self.processes.append(
                     psutil.Popen(
                         f"{cmd} --server.port {port} {file}",
@@ -316,19 +317,18 @@ class DashboardsController(BaseController):
                 )
                 url = f"http://localhost:{port}"
                 get_backend().send_url(url=url, title=f"{filename.title()} Dashboard")
+
                 thread = threading.Thread(
-                    target=non_blocking_steamlit,
+                    target=non_blocking_streamlit,
                     args=(self.processes[-1],),
                     daemon=True,
                 )
                 thread.start()
             else:
-                console.print(
-                    f"Type: {cmd} stream/{filename}.py\ninto a terminal to run."
-                )
+                console.print(f"Type: {cmd} {file}\ninto a terminal to run.")
 
 
-def non_blocking_steamlit(process: psutil.Popen) -> None:
-    """Checks if a streamlit process is still running."""
+def non_blocking_streamlit(process: psutil.Popen) -> None:
+    """We need this or else streamlit engine will not run the modules."""
     while process.is_running():
         process.communicate()

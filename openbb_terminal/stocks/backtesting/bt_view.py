@@ -12,14 +12,14 @@ import pandas as pd
 import yfinance as yf
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     is_intraday,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.backtesting import bt_model
@@ -122,7 +122,7 @@ def display_simple_ema(
     spy_bt: bool = True,
     no_bench: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Strategy where stock is bought when Price > EMA(l)
 
@@ -140,8 +140,8 @@ def display_simple_ema(
         Boolean to not show buy and hold comparison
     export : bool
         Format to export backtest results
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     # TODO: Help Wanted!
     # Implement support for backtesting on intraday data
@@ -186,7 +186,7 @@ def display_emacross(
     no_bench: bool = False,
     shortable: bool = True,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):  # pylint: disable=R0913
     """Strategy where we go long/short when EMA(short) is greater than/less than EMA(short)
 
@@ -208,8 +208,8 @@ def display_emacross(
         Boolean to allow for selling of the stock at cross
     export : str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     # TODO: Help Wanted!
     # Implement support for backtesting on intraday data
@@ -255,7 +255,7 @@ def display_rsi_strategy(
     no_bench: bool = False,
     shortable: bool = True,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Strategy that buys when the stock is less than a threshold and shorts when it exceeds a threshold.
 
@@ -279,8 +279,8 @@ def display_rsi_strategy(
         Boolean to allow for selling of the stock at cross
     export : str
         Format to export backtest results
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     # TODO: Help Wanted!
     # Implement support for backtesting on intraday data

@@ -5,7 +5,6 @@ import logging
 import os
 from typing import List, Optional
 
-
 import matplotlib.pyplot as plt
 from matplotlib import ticker
 
@@ -15,12 +14,11 @@ from openbb_terminal.cryptocurrency.defi import terraengineer_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +28,7 @@ def display_terra_asset_history(
     asset: str = "",
     address: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots the 30-day history of specified asset in terra address
     [Source: https://terra.engineer/]
@@ -43,8 +41,8 @@ def display_terra_asset_history(
         Terra address. Valid terra addresses start with 'terra'
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df = terraengineer_model.get_history_asset_from_terra_address(
@@ -82,9 +80,7 @@ def display_terra_asset_history(
 
 
 @log_start_end(log=logger)
-def display_anchor_yield_reserve(
-    export: str = "", external_axes: Optional[List[plt.Axes]] = None
-) -> None:
+def display_anchor_yield_reserve(export: str = "", external_axes: bool = False) -> None:
     """Plots the 30-day history of the Anchor Yield Reserve.
     [Source: https://terra.engineer/]
 
@@ -92,8 +88,8 @@ def display_anchor_yield_reserve(
     ----------
     export : str
         Export dataframe data to csv,json,xlsx file, by default False
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df = terraengineer_model.get_anchor_yield_reserve()

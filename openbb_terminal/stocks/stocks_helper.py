@@ -21,8 +21,8 @@ from requests.exceptions import ReadTimeout
 from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import
@@ -376,7 +376,11 @@ def load(
             if df_stock_candidate.empty:
                 return pd.DataFrame()
 
-            df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+            df_stock_candidate.index = (
+                pd.to_datetime(df_stock_candidate.index, utc=True)
+                .tz_convert(pytz.timezone("America/New_York"))
+                .tz_localize(None)
+            )
 
             if s_start_dt > start_date:
                 s_start = pytz.utc.localize(s_start_dt)
@@ -456,7 +460,6 @@ def display_candle(
     symbol: str,
     data: pd.DataFrame = None,
     use_matplotlib: bool = True,
-    intraday: bool = False,
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = "",
@@ -657,7 +660,6 @@ def display_candle(
                             ]
                         ),
                     ),
-                    type="date",
                 ),
                 bargap=0,
                 bargroupgap=0,
@@ -687,23 +689,7 @@ def display_candle(
                 ],
             )
 
-            if intraday:
-                fig.update_xaxes(
-                    rangebreaks=[
-                        dict(bounds=["sat", "mon"]),
-                        dict(bounds=[20, 9], pattern="hour"),
-                    ]
-                )
-            else:
-                mkt_holidays = get_holidays(start=data.index[0], end=data.index[-1])
-                fig.update_xaxes(
-                    rangebreaks=[
-                        dict(bounds=["sat", "mon"]),
-                        dict(
-                            values=[date.strftime("%Y-%m-%d") for date in mkt_holidays],
-                        ),
-                    ]
-                )
+            fig.hide_holidays(data.index)
 
             return fig.show() if not external_axes else fig
     else:

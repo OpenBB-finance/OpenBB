@@ -8,13 +8,13 @@ from typing import List, Optional
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.screener import yahoofinance_model
@@ -34,7 +34,7 @@ def historical(
     type_candle: str = "a",
     normalize: bool = True,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> List[str]:
     """View historical price of stocks that meet preset
 
@@ -52,8 +52,8 @@ def historical(
         Boolean to normalize all stock prices using MinMax
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------

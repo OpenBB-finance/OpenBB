@@ -3,9 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
-import matplotlib.pyplot as plt
 import numpy as np
 
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
@@ -26,7 +24,7 @@ def display_order_book(
     limit: int = 100,
     to_symbol: str = "USDT",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots order book for currency. [Source: Binance]
 
@@ -41,8 +39,8 @@ def display_order_book(
         Quote currency (what to view coin vs)
     export: str
         Export dataframe data to csv,json,xlsx
-    external_axes : Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     market_book = get_order_book(from_symbol, limit, to_symbol)

@@ -3,9 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
-import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pandas as pd
 
@@ -30,7 +28,7 @@ def plot_chart(
     candle_chart_kwargs: dict,
     option_type: str,
     symbol: str,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     if not external_axes:
         candle_chart_kwargs["returnfig"] = True
@@ -63,7 +61,7 @@ def display_raw(
     price: float = 90,
     limit: int = 10,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Return raw stock data[chartexchange]
 

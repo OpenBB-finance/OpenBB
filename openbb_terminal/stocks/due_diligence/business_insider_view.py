@@ -10,14 +10,14 @@ import matplotlib.pyplot as plt
 from pandas.core.frame import DataFrame
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.due_diligence import business_insider_model
@@ -36,7 +36,7 @@ def price_target_from_analysts(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display analysts' price targets for a given stock. [Source: Business Insider]
 
@@ -54,8 +54,8 @@ def price_target_from_analysts(
         Display raw data only
     export: str
         Export dataframe data to csv,json,xlsx file
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------

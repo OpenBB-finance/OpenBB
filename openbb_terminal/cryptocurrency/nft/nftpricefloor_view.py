@@ -6,7 +6,9 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional
+
 from matplotlib import pyplot as plt
+
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
@@ -89,7 +91,7 @@ def display_floor_price(
     slug: str,
     limit: int = 10,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
     raw: bool = False,
 ):
     """Display NFT collection floor price over time. [Source: https://nftpricefloor.com/]
@@ -104,8 +106,8 @@ def display_floor_price(
         Number of raw data to show
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = nftpricefloor_model.get_floor_price(slug)
     if df.empty:

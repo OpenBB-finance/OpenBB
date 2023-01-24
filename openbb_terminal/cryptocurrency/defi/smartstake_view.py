@@ -1,24 +1,22 @@
 """SentimentInvestor View"""
 __docformat__ = "numpy"
 
-import os
 import logging
-from typing import Optional, List
+import os
+from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal.decorators import check_api_key
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.defi import smartstake_model
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import log_start_end
-
 
 # pylint: disable=E1101
 
@@ -32,7 +30,7 @@ def display_luna_circ_supply_change(
     export: str = "",
     supply_type: str = "lunaSupplyChallengeStats",
     limit: int = 5,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots and prints table showing Luna circulating supply stats
 
@@ -47,8 +45,8 @@ def display_luna_circ_supply_change(
     limit: int
         Number of results display on the terminal
         Default: 5
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df = smartstake_model.get_luna_supply_stats(supply_type, days)

@@ -3,21 +3,19 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.stocks.due_diligence import finnhub_model
 
@@ -30,7 +28,7 @@ register_matplotlib_converters()
 def plot_rating_over_time(
     data: pd.DataFrame,
     symbol: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot rating over time
 
@@ -40,8 +38,8 @@ def plot_rating_over_time(
         Rating over time
     symbol: str
         Ticker symbol associated with ratings
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
     """
     # This plot has 1 axis
     if not external_axes:
@@ -78,7 +76,7 @@ def rating_over_time(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Rating over time (monthly). [Source: Finnhub]
 
@@ -92,8 +90,8 @@ def rating_over_time(
         Display raw data only
     export: str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_rot = finnhub_model.get_rating_over_time(symbol)
 

@@ -2,23 +2,23 @@
 __docformat__ = "numpy"
 
 import logging
-
 import os
-from typing import Optional, List
+from typing import List, Optional
+
 import numpy as np
 import pandas as pd
 import yfinance as yf
 from matplotlib import pyplot as plt
-from openbb_terminal.stocks.behavioural_analysis import finnhub_model
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.config_terminal import theme
+
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
-from openbb_terminal.decorators import check_api_key
+from openbb_terminal.stocks.behavioural_analysis import finnhub_model
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 def display_stock_price_headlines_sentiment(
     symbol: str,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]
 
@@ -38,8 +38,8 @@ def display_stock_price_headlines_sentiment(
         Ticker of company
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     sentiment = finnhub_model.get_headlines_sentiment(symbol)
 

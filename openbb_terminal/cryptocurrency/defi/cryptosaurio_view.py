@@ -4,19 +4,20 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional
+
 import matplotlib.pyplot as plt
+
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.defi import cryptosaurio_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +27,7 @@ def display_anchor_data(
     address: str = "",
     export: str = "",
     show_transactions: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots anchor protocol earnings data of a certain terra address
     [Source: https://cryptosaurio.com/]
@@ -41,8 +42,8 @@ def display_anchor_data(
         Flag to show history of transactions in Anchor protocol for address. Default False
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df, df_deposits, stats_str = cryptosaurio_model.get_anchor_data(address=address)

@@ -4,14 +4,13 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional
+
 import squarify
-from matplotlib import pyplot as plt
-from matplotlib import ticker
-from matplotlib import cm
+from matplotlib import cm, pyplot as plt, ticker
 from pandas.plotting import register_matplotlib_converters
-from openbb_terminal import config_terminal as cfg
+
 import openbb_terminal.cryptocurrency.overview.pycoingecko_model as gecko
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import config_terminal as cfg, feature_flags as obbff
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
@@ -19,9 +18,9 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -37,7 +36,7 @@ def display_crypto_heatmap(
     category: str = "",
     limit: int = 15,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Shows cryptocurrencies heatmap [Source: CoinGecko]
 
@@ -49,8 +48,8 @@ def display_crypto_heatmap(
         Number of top cryptocurrencies to display
     export: str
         Export dataframe data to csv,json,xlsx
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = gecko.get_coins(limit, category)
     if df.empty:

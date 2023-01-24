@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, List, Optional
+from typing import Dict
 
 from matplotlib import pyplot as plt
 
@@ -19,7 +19,7 @@ def view_calculator(
     premium: float = 1,
     put: bool = False,
     sell: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
     **kwargs: Dict[str, int],
 ):
     """
@@ -34,8 +34,8 @@ def view_calculator(
         Whether option is put
     sell:
         Whether selling option
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     kwargs: Dict[str,int]
     """
 

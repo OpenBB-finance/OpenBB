@@ -3,23 +3,22 @@ import logging
 import os
 from typing import List, Optional
 
+import pandas as pd
 from matplotlib import pyplot as plt
 
-import pandas as pd
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.due_diligence.tokenterminal_model import (
+    METRICS,
+    get_description,
     get_fundamental_metric_from_project,
     get_project_ids,
-    get_description,
-    METRICS,
 )
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 from openbb_terminal.rich_config import console
 
@@ -32,7 +31,7 @@ def display_fundamental_metric_from_project_over_time(
     metric: str,
     project: str,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots fundamental metric from a project over time [Source: Token Terminal]
 
@@ -44,8 +43,8 @@ def display_fundamental_metric_from_project_over_time(
         The project of interest. See `get_project_ids()` for available categories.
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     if project not in get_project_ids():
         console.print(

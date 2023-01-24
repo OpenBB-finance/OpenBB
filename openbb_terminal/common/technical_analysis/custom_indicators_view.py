@@ -3,24 +3,26 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, Union, List
+from typing import Optional, Union
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.common.technical_analysis import custom_indicators_model
+from openbb_terminal.common.technical_analysis import (
+    custom_indicators_model,
+    ta_helpers,
+)
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_intraday,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
     reindex_dates,
-    is_intraday,
-    is_valid_axes_count,
 )
-from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +35,7 @@ def fibonacci_retracement(
     end_date: Optional[Union[str, None]] = None,
     symbol: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots Calculated fibonacci retracement levels
 
@@ -51,8 +53,8 @@ def fibonacci_retracement(
         Ticker symbol
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------

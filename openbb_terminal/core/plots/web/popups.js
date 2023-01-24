@@ -1,8 +1,8 @@
-function get_popup(data = null, type = null) {
+function get_popup(data = null, popup_id = null) {
     let popup = null;
-    type = type.replace('popup_', '');
+    popup_id = popup_id.replace('popup_', '');
 
-    if (type == 'title') {
+    if (popup_id == 'title') {
         data = globals.chartDiv.layout;
         let title = 'title' in data && 'text' in data.title ? data.title.text : '';
         let xaxis = 'title' in data.xaxis && 'text' in data.xaxis.title ? data.xaxis.title.text : '';
@@ -24,16 +24,16 @@ function get_popup(data = null, type = null) {
         TITLE_DIV.style.display = 'inline-block';
         TITLE_DIV.querySelector('#title_text').focus();
         popup = TITLE_DIV;
-    } else if (type == 'text') {
+    } else if (popup_id == 'text') {
         let has_annotation = false;
         if (data == undefined) {
             data = {
                 text: '',
                 font: {
-                    color: '#ffffff',
+                    color: '#0088CC',
                     size: 18,
                 },
-                bordercolor: '#ffffff',
+                bordercolor: '#822661',
             };
         } else {
             has_annotation = true;
@@ -43,11 +43,11 @@ function get_popup(data = null, type = null) {
         data.text = data.text.replace(/<br>/g, '\n');
 
         let yanchor =
-            TEXT_DIV.querySelector('#addtext_top') == null
-                ? 'top'
-                : TEXT_DIV.querySelector('#addtext_top').checked
-                ? 'top'
-                : 'bottom';
+            TEXT_DIV.querySelector('#addtext_above') == null
+                ? 'above'
+                : TEXT_DIV.querySelector('#addtext_above').checked
+                ? 'above'
+                : 'below';
 
         TEXT_DIV.innerHTML = `
         <label for="popup_textarea"><b>Text:</b>
@@ -67,9 +67,9 @@ function get_popup(data = null, type = null) {
 
             <label><b>Position:</b></label>
             <label style="margin-left: 23px !important; margin-top: 25px !important;"
-                for="addtext_top"><b>Above</b></label>
-            <input style="margin-top: 25px !important;" type="checkbox" id="addtext_top" name="check"
-                value="top" ${yanchor == 'top' ? 'checked' : ''}>
+                for="addtext_above"><b>Above</b></label>
+            <input style="margin-top: 25px !important;" type="checkbox" id="addtext_above" name="check"
+                value="above" ${yanchor == 'above' ? 'checked' : ''}>
         </div><br>
         `;
 
@@ -96,7 +96,7 @@ function get_popup(data = null, type = null) {
         TEXT_DIV.style.display = 'inline-block';
         TEXT_DIV.querySelector('#addtext_textarea').focus();
         popup = TEXT_DIV;
-    } else if (type == 'csv') {
+    } else if (popup_id == 'csv') {
         CSV_DIV.style.display = 'inline-block';
         popup = CSV_DIV;
         console.log('csv');
@@ -112,33 +112,35 @@ function get_popup(data = null, type = null) {
     return popup;
 }
 
-function get_popup_data(type = null) {
+function get_popup_data(popup_id = null) {
+    // popup_id is either 'title', 'text', or 'csv' (for now)
+    // and is used to determine which popup to get data from
     let data = null;
 
-    if (type == 'title') {
+    if (popup_id == 'title') {
         data = {
             title: TITLE_DIV.querySelector('#title_text').value,
             xaxis: TITLE_DIV.querySelector('#title_xaxis').value,
             yaxis: TITLE_DIV.querySelector('#title_yaxis').value,
         };
-    } else if (type == 'text') {
+    } else if (popup_id == 'text') {
         data = {
             text: TEXT_DIV.querySelector('#addtext_textarea').value,
             color: TEXT_DIV.querySelector('#addtext_color').value,
             size: TEXT_DIV.querySelector('#addtext_size').value,
-            yanchor: TEXT_DIV.querySelector('#addtext_top').checked ? 'top' : 'bottom',
+            yanchor: TEXT_DIV.querySelector('#addtext_above').checked ? 'above' : 'below',
             bordercolor: TEXT_DIV.querySelector('#addtext_border').value,
         };
         if (TEXT_DIV.querySelector('#addtext_annotation') != null) {
-            data['annotation'] = JSON.parse(TEXT_DIV.querySelector('#addtext_annotation').value);
+            data.annotation = JSON.parse(TEXT_DIV.querySelector('#addtext_annotation').value);
         }
 
         // we replace \n with <br> so that line breaks are displayed properly on the graph
         data.text = data.text.replace(/\n/g, '<br>');
         console.log(data);
-    } else if (type == 'csv') {
-        let popup_type = CSV_DIV.querySelector('#csv_type').value;
-        if (popup_type == 'candlestick') {
+    } else if (popup_id == 'csv') {
+        let trace_type = CSV_DIV.querySelector('#csv_trace_type').value;
+        if (trace_type == 'candlestick') {
             data = {
                 x: CSV_DIV.querySelector('#csv_x').value,
                 open: CSV_DIV.querySelector('#csv_open').value,
@@ -156,19 +158,21 @@ function get_popup_data(type = null) {
             };
             console.log(data);
         }
-        data['name'] = CSV_DIV.querySelector('#csv_name').value;
-        data['file'] = CSV_DIV.querySelector('#csv_file');
-        data['type'] = popup_type;
+        data.name = CSV_DIV.querySelector('#csv_name').value;
+        data.file = CSV_DIV.querySelector('#csv_file');
+        data.trace_type = trace_type;
     }
     return data;
 }
 
-function on_submit(type, on_annotation = null) {
-    let popup_data = get_popup_data(type);
+function on_submit(popup_id, on_annotation = null) {
+    // popup_id is either 'title', 'text', or 'csv' (for now)
+    // and is used to determine which popup to get data from
+    let popup_data = get_popup_data(popup_id);
     let gd = globals.chartDiv;
     Plotly.relayout(gd, 'hovermode', 'closest');
 
-    if (type == 'text') {
+    if (popup_id == 'text') {
         if (!popup_data.text == '') {
             if ('annotation' in popup_data) {
                 let current_text = popup_data.annotation.text;
@@ -184,7 +188,7 @@ function on_submit(type, on_annotation = null) {
             gd.on('plotly_clickannotation', function (eventData) {
                 let annotation = eventData.annotation;
                 openPopup('popup_text');
-                get_popup(annotation, (type = 'text'));
+                get_popup(annotation, (popup_id = 'text'));
 
                 if (on_annotation != null) {
                     let data = {
@@ -207,7 +211,7 @@ function on_submit(type, on_annotation = null) {
                 if (eventData.points[0].y != undefined) {
                     y = eventData.points[0].y;
                 } else if (eventData.points[0].low != undefined) {
-                    if (popup_data.yanchor == 'bottom') {
+                    if (popup_data.yanchor == 'below') {
                         y = eventData.points[0].low;
                     } else {
                         y = eventData.points[0].high;
@@ -233,14 +237,14 @@ function on_submit(type, on_annotation = null) {
             TEXT_DIV.style.display = 'inline-block';
             return;
         }
-    } else if (type == 'title') {
+    } else if (popup_id == 'title') {
         Plotly.relayout(gd, {
             title: popup_data.title,
             'xaxis.title': popup_data.xaxis,
             'yaxis.title': popup_data.yaxis,
             'yaxis.type': 'linear',
         });
-    } else if (type == 'csv') {
+    } else if (popup_id == 'csv') {
         console.log('got popup file');
         let popup_file = popup_data.file;
 
@@ -250,7 +254,7 @@ function on_submit(type, on_annotation = null) {
             let file = popup_file.files[0];
             let popup_file_reader = new FileReader();
             popup_file_reader.onload = function (e) {
-                let lines = e.target.result.split('\n');
+                let lines = e.target.result.split('\n').map((x) => x.replace(/\r/g, ''));
                 let data = [];
                 let headers = lines[0].split(',');
                 let trace = {};
@@ -263,8 +267,10 @@ function on_submit(type, on_annotation = null) {
                     }
                     data.push(obj);
                 }
+                // We get main plotly trace to get the x/y axis
+                let main_trace = gd.data[0];
 
-                if (popup_data.type == 'candlestick') {
+                if (popup_data.trace_type == 'candlestick') {
                     trace = {
                         x: data.map(function (row) {
                             return row[popup_data.x];
@@ -281,7 +287,7 @@ function on_submit(type, on_annotation = null) {
                         close: data.map(function (row) {
                             return row[popup_data.close];
                         }),
-                        type: popup_data.type,
+                        type: popup_data.trace_type,
                         name: popup_data.name,
                         increasing: { line: { color: popup_data.increasing } },
                         decreasing: { line: { color: popup_data.decreasing } },
@@ -294,12 +300,12 @@ function on_submit(type, on_annotation = null) {
                         y: data.map(function (row) {
                             return row[popup_data.y];
                         }),
-                        type: popup_data.type,
+                        type: popup_data.trace_type,
                         mode: 'lines',
                         name: popup_data.name,
                         line: { color: popup_data.color },
-                        xaxis: 'x',
-                        yaxis: 'y',
+                        xaxis: main_trace.xaxis,
+                        yaxis: main_trace.yaxis,
                     };
                 }
 
@@ -322,14 +328,15 @@ function on_submit(type, on_annotation = null) {
 }
 
 function on_cancel() {
+    // We close any popup that is open
     closePopup();
 }
 
-function on_delete(type) {
+function on_delete(popup_id) {
     let gd = globals.chartDiv;
     closePopup();
 
-    if (type == 'text') {
+    if (popup_id == 'text') {
         let annotation = JSON.parse(TEXT_DIV.querySelector('#addtext_annotation').value);
         gd.layout.annotations.splice(gd.layout.annotations.indexOf(annotation), 1);
 
@@ -341,13 +348,16 @@ function on_delete(type) {
 }
 
 function closePopup() {
+    // We set the display to none to hide the popup overlay
     var popup = document.getElementById('popup_overlay');
     popup.style.display = 'none';
 }
 
 function openPopup(popup_id) {
+    // We make sure to close the incase there is a popup already open
     closePopup();
     var overlay = document.getElementById('popup_overlay');
+    // We get the popup div and set the display to block to show the popup
     overlay.style.display = 'block';
     get_popup(null, popup_id);
 }

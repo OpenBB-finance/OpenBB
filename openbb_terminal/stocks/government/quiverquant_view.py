@@ -5,19 +5,19 @@ import logging
 import os
 from typing import List, Optional
 
+import matplotlib
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-import matplotlib
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.government import quiverquant_model
@@ -82,7 +82,7 @@ def display_government_buys(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Top buy government trading [Source: quiverquant.com]
 
@@ -98,8 +98,8 @@ def display_government_buys(
         Display raw data
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     """
     df_gov = quiverquant_model.get_government_buys(gov_type, past_transactions_months)
@@ -154,7 +154,7 @@ def display_government_sells(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Top sell government trading [Source: quiverquant.com]
 
@@ -170,8 +170,8 @@ def display_government_sells(
         Display raw data
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_gov = quiverquant_model.get_government_sells(gov_type, past_transactions_months)
 
@@ -227,7 +227,7 @@ def display_last_contracts(
     limit: int = 20,
     sum_contracts: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Last government contracts [Source: quiverquant.com]
 
@@ -241,8 +241,8 @@ def display_last_contracts(
         Flag to show total amount of contracts given out.
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = quiverquant_model.get_last_contracts(past_transaction_days)
 
@@ -283,7 +283,7 @@ def plot_government(
     government: pd.DataFrame,
     symbol: str,
     gov_type: str,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Helper for plotting government trading
 
@@ -295,8 +295,8 @@ def plot_government(
         Ticker symbol to plot government trading
     gov_type: str
         Type of government data between: congress, senate and house
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     # This plot has 1 axis
     if not external_axes:
@@ -334,7 +334,7 @@ def display_government_trading(
     past_transactions_months: int = 6,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Government trading for specific ticker [Source: quiverquant.com]
 
@@ -350,8 +350,8 @@ def display_government_trading(
         Show raw output of trades
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_gov = quiverquant_model.get_cleaned_government_trading(
         symbol=symbol,
@@ -382,7 +382,7 @@ def display_contracts(
     past_transaction_days: int = 10,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Show government contracts for ticker [Source: quiverquant.com]
 
@@ -396,8 +396,8 @@ def display_contracts(
         Flag to display raw data
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_contracts = quiverquant_model.get_contracts(symbol, past_transaction_days)
 
@@ -448,7 +448,7 @@ def display_qtr_contracts(
     limit: int = 5,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Quarterly contracts [Source: quiverquant.com]
 
@@ -462,8 +462,8 @@ def display_qtr_contracts(
         Flag to display raw data
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     symbols = quiverquant_model.get_qtr_contracts(analysis, limit)
@@ -548,7 +548,7 @@ def display_hist_contracts(
     symbol: str,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Show historical quarterly government contracts [Source: quiverquant.com]
 
@@ -560,8 +560,8 @@ def display_hist_contracts(
         Flag to display raw data
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_contracts = quiverquant_model.get_hist_contracts(symbol)
 
@@ -623,7 +623,7 @@ def display_top_lobbying(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Top lobbying tickers based on total spent
 
@@ -635,8 +635,8 @@ def display_top_lobbying(
         Show raw data
     export:
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     """
     df_lobbying = quiverquant_model.get_top_lobbying()

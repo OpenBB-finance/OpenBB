@@ -3,21 +3,21 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
-
-# import matplotlib
-import matplotlib.pyplot as plt
+from typing import Union
 
 # from openbb_terminal import config_plot as cfp
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import alphavantage_model
 from openbb_terminal.helper_funcs import (
     export_data,
     print_rich_table,
 )  # is_valid_axes_count,; plot_autoscale,
-from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
+
+# import matplotlib
+
 
 logger = logging.getLogger(__name__)
 
@@ -29,8 +29,8 @@ logger = logging.getLogger(__name__)
 def realtime_performance_sector(
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Display Real-Time Performance sector. [Source: AlphaVantage]
 
     Parameters
@@ -39,8 +39,8 @@ def realtime_performance_sector(
         Output only raw data
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_rtp = alphavantage_model.get_sector_data()
 
@@ -57,38 +57,23 @@ def realtime_performance_sector(
         )
 
     else:
-
-        # if external_axes is None:
-        #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-        # elif is_valid_axes_count(external_axes, 1):
-        #     (ax,) = external_axes
-        # else:
-        #     return
-
         df_rtp.set_index("Sector", inplace=True)
         df_rtp = df_rtp.squeeze(axis=1)
         colors = [theme.up_color if x > 0 else theme.down_color for x in df_rtp.values]
-        # df_rtp.plot(kind="barh", color=colors, ax=ax)
-        # theme.style_primary_axis(ax)
-        # ax.set_title("Real Time Performance (%) per Sector")
-        # ax.tick_params(axis="x", labelrotation=90)
-        # ax.xaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%.2f"))
-
-        # if external_axes is None:
-        #     theme.visualize_output()
 
         fig = OpenBBFigure(
             title="Real Time Performance (%) per Sector",
             yaxis=dict(side="right", dtick=1, title="Sector"),
         )
-
         fig.add_bar(
             orientation="h",
             x=df_rtp.values,
             y=df_rtp.index,
+            name="Performance (%)",
             marker_color=colors,
+            showlegend=False,
         )
-        fig.show()
+        fig.update_layout(xaxis=dict(nticks=10))
 
     export_data(
         export,
@@ -96,6 +81,8 @@ def realtime_performance_sector(
         "rtps",
         df_rtp,
     )
+
+    return fig.show() if not external_axes else fig if not raw else None
 
 
 @log_start_end(log=logger)
@@ -105,8 +92,8 @@ def display_real_gdp(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Display US GDP from AlphaVantage
 
     Parameters
@@ -119,8 +106,8 @@ def display_real_gdp(
         Flag to show raw data, by default False
     export : str, optional
         Format to export data, by default ""
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     gdp = alphavantage_model.get_real_gdp(interval, start_year)
 
@@ -129,20 +116,6 @@ def display_real_gdp(
 
     int_string = "Annual" if interval == "a" else "Quarterly"
     year_str = str(start_year) if interval == "a" else str(list(gdp["date"])[-1].year)
-
-    # if external_axes is None:
-    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    # elif is_valid_axes_count(external_axes, 1):
-    #     (ax,) = external_axes
-    # else:
-    #     return
-
-    # ax.plot(gdp["date"], gdp["GDP"], marker="o")
-    # ax.set_title(f"{int_string} US GDP ($B) from {year_str}")
-    # ax.set_ylabel("US GDP ($B) ")
-    # theme.style_primary_axis(ax)
-    # if external_axes is None:
-    #     theme.visualize_output()
 
     fig = OpenBBFigure(
         title=f"{int_string} US GDP ($B) from {year_str}",
@@ -153,7 +126,6 @@ def display_real_gdp(
         x=gdp["date"],
         y=gdp["GDP"],
     )
-    fig.show()
 
     export_data(
         export,
@@ -166,6 +138,8 @@ def display_real_gdp(
             gdp.head(20), headers=["Date", "GDP"], show_index=False, title="US GDP"
         )
 
+    return fig.show() if not external_axes else fig
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
@@ -173,8 +147,8 @@ def display_gdp_capita(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Display US GDP per Capita from AlphaVantage
 
     Parameters
@@ -185,28 +159,13 @@ def display_gdp_capita(
         Flag to show raw data, by default False
     export : str, optional
         Format to export data, by default
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     gdp = alphavantage_model.get_gdp_capita(start_year)
     if gdp.empty:
         console.print("Error getting data.  Check API Key")
         return
-
-    # This plot has 1 axis
-    # if not external_axes:
-    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    # elif is_valid_axes_count(external_axes, 1):
-    #     (ax,) = external_axes
-    # else:
-    #     return
-
-    # ax.plot(gdp["date"], gdp["GDP"], marker="o")
-    # ax.set_title(f"US GDP per Capita (Chained 2012 USD) from {start_year}")
-    # ax.set_ylabel("US GDP (Chained 2012 USD) ")
-    # theme.style_primary_axis(ax)
-    # if external_axes is None:
-    #     theme.visualize_output()
 
     fig = OpenBBFigure(
         title=f"US GDP per Capita (Chained 2012 USD) from {start_year}",
@@ -217,7 +176,6 @@ def display_gdp_capita(
         x=gdp["date"],
         y=gdp["GDP"],
     )
-    fig.show()
 
     export_data(
         export,
@@ -233,6 +191,8 @@ def display_gdp_capita(
             title="US GDP Per Capita",
         )
 
+    return fig.show() if not external_axes else fig
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
@@ -240,8 +200,8 @@ def display_inflation(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Display US Inflation from AlphaVantage
 
     Parameters
@@ -252,27 +212,13 @@ def display_inflation(
         Flag to show raw data, by default False
     export : str, optional
         Format to export data, by default ""
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     inf = alphavantage_model.get_inflation(start_year)
     if inf.empty:
         console.print("Error getting data.  Check API Key")
         return
-
-    # if external_axes is None:
-    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    # elif is_valid_axes_count(external_axes, 1):
-    #     (ax,) = external_axes
-    # else:
-    #     return
-
-    # ax.plot(inf["date"], inf["Inflation"], marker="o")
-    # ax.set_title(f"US Inflation from {list(inf['date'])[-1].year}")
-    # ax.set_ylabel("Inflation (%)")
-    # theme.style_primary_axis(ax)
-    # if external_axes is None:
-    #     theme.visualize_output()
 
     fig = OpenBBFigure(
         title=f"US Inflation from {list(inf['date'])[-1].year}",
@@ -283,7 +229,6 @@ def display_inflation(
         x=inf["date"],
         y=inf["Inflation"],
     )
-    fig.show()
 
     export_data(
         export,
@@ -299,6 +244,8 @@ def display_inflation(
             title="US Inflation",
         )
 
+    return fig.show() if not external_axes else fig
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
@@ -307,8 +254,8 @@ def display_cpi(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Display US consumer price index (CPI) from AlphaVantage
 
     Parameters
@@ -321,8 +268,8 @@ def display_cpi(
         Flag to show raw data, by default False
     export : str, optional
         Format to export data, by default ""
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     cpi = alphavantage_model.get_cpi(interval, start_year)
     if cpi.empty:
@@ -331,20 +278,6 @@ def display_cpi(
 
     int_string = "Semi-Annual" if interval == "s" else "Monthly"
     year_str = str(list(cpi["date"])[-1].year)
-
-    # if external_axes is None:
-    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    # elif is_valid_axes_count(external_axes, 1):
-    #     (ax,) = external_axes
-    # else:
-    #     return
-
-    # ax.plot(cpi["date"], cpi["CPI"], marker="o")
-    # ax.set_title(f"{int_string} Consumer Price Index from {year_str}")
-    # ax.set_ylabel("CPI")
-    # theme.style_primary_axis(ax)
-    # if external_axes is None:
-    #     theme.visualize_output()
 
     fig = OpenBBFigure(
         title=f"{int_string} Consumer Price Index from {year_str}",
@@ -355,7 +288,6 @@ def display_cpi(
         x=cpi["date"],
         y=cpi["CPI"],
     )
-    fig.show()
 
     export_data(
         export,
@@ -368,6 +300,8 @@ def display_cpi(
             cpi.head(20), headers=["Date", "CPI"], show_index=False, title="US CPI"
         )
 
+    return fig.show() if not external_axes else fig
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
@@ -377,8 +311,8 @@ def display_treasury_yield(
     start_date: str = "2010-01-01",
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Display historical treasury yield for given maturity
 
     Parameters
@@ -393,28 +327,14 @@ def display_treasury_yield(
         Flag to display raw data, by default False
     export : str, optional
         Format to export data, by default ""
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     d_maturity = {"3m": "3month", "5y": "5year", "10y": "10year", "30y": "30year"}
     yld = alphavantage_model.get_treasury_yield(interval, maturity, start_date)
     if yld.empty:
         console.print("Error getting data.  Check API Key")
         return
-
-    # if external_axes is None:
-    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    # elif is_valid_axes_count(external_axes, 1):
-    #     (ax,) = external_axes
-    # else:
-    #     return
-
-    # ax.plot(yld["date"], yld["Yield"], marker="o")
-    # ax.set_title(f"{d_maturity[maturity]} Treasury Yield")
-    # ax.set_ylabel("Yield (%)")
-    # theme.style_primary_axis(ax)
-    # if external_axes is None:
-    #     theme.visualize_output()
 
     fig = OpenBBFigure(
         title=f"{d_maturity[maturity]} Treasury Yield",
@@ -425,7 +345,6 @@ def display_treasury_yield(
         x=yld["date"],
         y=yld["Yield"],
     )
-    fig.show()
 
     export_data(
         export,
@@ -441,6 +360,8 @@ def display_treasury_yield(
             show_index=False,
         )
 
+    return fig.show() if not external_axes else fig
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
@@ -448,8 +369,8 @@ def display_unemployment(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Display US unemployment AlphaVantage
 
     Parameters
@@ -460,8 +381,8 @@ def display_unemployment(
         Flag to show raw data, by default False
     export : str, optional
         Format to export data, by default ""
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     un = alphavantage_model.get_unemployment(start_year)
@@ -469,20 +390,6 @@ def display_unemployment(
     if un.empty:
         console.print("Error getting data. Check API Key")
         return
-
-    # if external_axes is None:
-    #     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    # elif is_valid_axes_count(external_axes, 1):
-    #     (ax,) = external_axes
-    # else:
-    #     return
-
-    # ax.plot(un["date"], un["unemp"], marker="o")
-    # ax.set_title(f"US Unemployment from {start_year}")
-    # ax.set_ylabel("US Unemployment (%)")
-    # theme.style_primary_axis(ax)
-    # if external_axes is None:
-    #     theme.visualize_output()
 
     fig = OpenBBFigure(
         title=f"US Unemployment from {start_year}",
@@ -493,7 +400,6 @@ def display_unemployment(
         x=un["date"],
         y=un["unemp"],
     )
-    fig.show()
 
     export_data(
         export,
@@ -509,3 +415,5 @@ def display_unemployment(
             title="US Unemployment",
             show_index=False,
         )
+
+    return fig.show() if not external_axes else fig

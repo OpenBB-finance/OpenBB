@@ -1,22 +1,22 @@
 """Yahoo Finance view"""
 __docformat__ = "numpy"
 
-from typing import Optional, List
 import logging
 import os
+from typing import List, Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import yfinance_model
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -29,7 +29,7 @@ def display_etf_weightings(
     raw: bool = False,
     min_pct_to_display: float = 5,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display sector weightings allocation of ETF. [Source: Yahoo Finance]
 
@@ -43,8 +43,8 @@ def display_etf_weightings(
         Minimum percentage to display sector
     export: str
         Type of format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     sectors = yfinance_model.get_etf_sector_weightings(name)
     if not sectors:

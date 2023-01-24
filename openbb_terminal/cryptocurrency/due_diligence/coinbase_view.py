@@ -3,11 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
+import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-import matplotlib.pyplot as plt
 
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from openbb_terminal.cryptocurrency.due_diligence import coinbase_model
@@ -23,7 +23,7 @@ register_matplotlib_converters()
 def display_order_book(
     symbol: str,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots a list of available currency pairs for trading. [Source: Coinbase]
 
@@ -33,8 +33,8 @@ def display_order_book(
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     bids, asks, pair, market_book = coinbase_model.get_order_book(symbol)
     plot_order_book(bids, asks, pair, external_axes)

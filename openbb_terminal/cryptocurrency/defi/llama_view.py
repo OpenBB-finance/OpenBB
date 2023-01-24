@@ -15,10 +15,10 @@ from openbb_terminal.cryptocurrency.defi import llama_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 
 logger = logging.getLogger(__name__)
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_grouped_defi_protocols(
-    limit: int = 50, export: str = "", external_axes: Optional[List[plt.Axes]] = None
+    limit: int = 50, export: str = "", external_axes: bool = False
 ) -> None:
     """Plots top dApps (in terms of TVL) grouped by chain.
     [Source: https://docs.llama.fi/api]
@@ -37,8 +37,8 @@ def display_grouped_defi_protocols(
         Number of top dApps to display
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df = llama_model.get_defi_protocols(limit, drop_chain=False)
@@ -131,7 +131,7 @@ def display_defi_protocols(
 def display_historical_tvl(
     dapps: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots historical TVL of different dApps
     [Source: https://docs.llama.fi/api]
@@ -142,8 +142,8 @@ def display_historical_tvl(
         dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     # This plot has 1 axis
@@ -188,7 +188,7 @@ def display_historical_tvl(
 def display_defi_tvl(
     limit: int = 5,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots historical values of the total sum of TVLs from all listed protocols.
     [Source: https://docs.llama.fi/api]
@@ -199,8 +199,8 @@ def display_defi_tvl(
         Number of records to display, by default 5
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     # This plot has 1 axis

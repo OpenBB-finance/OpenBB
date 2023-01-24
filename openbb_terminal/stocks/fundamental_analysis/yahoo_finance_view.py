@@ -4,30 +4,27 @@ __docformat__ = "numpy"
 import logging
 import os
 import webbrowser
-from typing import List, Optional
 from fractions import Fraction
+from typing import List, Optional
 
-import yfinance as yf
-import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
 import pandas as pd
+import yfinance as yf
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
-    print_rich_table,
     is_valid_axes_count,
     lambda_long_number_format,
+    plot_autoscale,
+    print_rich_table,
 )
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
-from openbb_terminal.helpers_denomination import (
-    transform as transform_by_denomination,
-)
-
 
 logger = logging.getLogger(__name__)
 
@@ -187,7 +184,7 @@ def display_dividends(
     limit: int = 12,
     plot: bool = True,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display historical dividends
 
@@ -201,8 +198,8 @@ def display_dividends(
         Plots historical data
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------
@@ -261,7 +258,7 @@ def display_dividends(
 def display_splits(
     symbol: str,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display splits and reverse splits events. [Source: Yahoo Finance]
 
@@ -271,8 +268,8 @@ def display_splits(
         Stock ticker symbol
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_splits = yahoo_finance_model.get_splits(symbol)
     if df_splits.empty:
@@ -339,7 +336,7 @@ def display_mktcap(
     symbol: str,
     start_date: Optional[str] = None,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display market cap over time. [Source: Yahoo Finance]
 
@@ -351,8 +348,8 @@ def display_mktcap(
         Initial date (e.g., 2021-10-01). Defaults to 3 years back
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df_mktcap, currency = yahoo_finance_model.get_mktcap(symbol, start_date)

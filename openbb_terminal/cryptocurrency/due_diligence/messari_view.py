@@ -7,17 +7,15 @@ import logging
 import os
 from datetime import datetime, timedelta
 from typing import List, Optional
-import pandas as pd
-import numpy as np
-from matplotlib import pyplot as plt
-from matplotlib import ticker
-from matplotlib import dates as mdates
 
+import numpy as np
+import pandas as pd
+from matplotlib import dates as mdates, pyplot as plt, ticker
+
+from openbb_terminal import config_plot as cfgPlot, feature_flags as obbff
 from openbb_terminal.config_terminal import theme
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_paragraph
 from openbb_terminal.cryptocurrency.due_diligence.messari_model import (
     get_available_timeseries,
     get_fundraising,
@@ -31,16 +29,15 @@ from openbb_terminal.cryptocurrency.due_diligence.messari_model import (
     get_team,
     get_tokenomics,
 )
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_paragraph
 
 logger = logging.getLogger(__name__)
 
@@ -108,7 +105,7 @@ def display_messari_timeseries(
     end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots messari timeseries
     [Source: https://messari.io/]
@@ -127,8 +124,8 @@ def display_messari_timeseries(
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     if start_date is None:
@@ -185,7 +182,7 @@ def display_marketcap_dominance(
     end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots market dominance of a coin over time
     [Source: https://messari.io/]
@@ -202,8 +199,8 @@ def display_marketcap_dominance(
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     if start_date is None:
@@ -257,8 +254,8 @@ def display_links(symbol: str, export: str = "") -> None:
         Crypto symbol to check links
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df = get_links(symbol)
@@ -287,7 +284,7 @@ def display_roadmap(
     ascend: bool = True,
     limit: int = 5,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots coin roadmap
     [Source: https://messari.io/]
@@ -302,8 +299,8 @@ def display_roadmap(
         number to show
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = get_roadmap(symbol, ascend)
 
@@ -387,7 +384,7 @@ def display_roadmap(
 def display_tokenomics(
     symbol: str,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots coin tokenomics
     [Source: https://messari.io/]
@@ -398,8 +395,8 @@ def display_tokenomics(
         Crypto symbol to check tokenomics
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     coingecko_id = cryptocurrency_helpers.get_coingecko_id(symbol)
     df, circ_df = get_tokenomics(symbol, coingecko_id)
@@ -640,7 +637,7 @@ def display_governance(
 def display_fundraising(
     symbol: str,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ) -> None:
     """Display coin fundraising
     [Source: https://messari.io/]
@@ -651,8 +648,8 @@ def display_fundraising(
         Crypto symbol to check coin fundraising
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     (summary, df_sales_rounds, df_treasury_accs, df_details) = get_fundraising(symbol)
     if summary:

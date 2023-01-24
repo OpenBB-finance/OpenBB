@@ -3,21 +3,15 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List
+
 import pandas as pd
 
-import matplotlib.pyplot as plt
-
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.common.behavioural_analysis import google_model
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-    is_valid_axes_count,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +21,7 @@ def display_mentions(
     symbol: str,
     start_date: str = "",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].
 
@@ -39,8 +33,8 @@ def display_mentions(
         Start date as YYYY-MM-DD string
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df_interest = google_model.get_mentions(symbol)
@@ -48,40 +42,33 @@ def display_mentions(
     if df_interest.empty:
         return
 
-    # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    ax.set_title(f"Interest over time on {symbol}")
+    fig = OpenBBFigure(
+        title=f"Interest over time on {symbol}",
+        xaxis_title="Date",
+        yaxis_title="Interest [%]",
+    )
     if start_date:
         df_interest = df_interest[start_date:]  # type: ignore
-        ax.bar(df_interest.index, df_interest[symbol], width=2)
-        ax.bar(
-            df_interest.index[-1],
-            df_interest[symbol].values[-1],
-            width=theme.volume_bar_width,
-        )
-    else:
-        ax.bar(df_interest.index, df_interest[symbol], width=1)
-        ax.bar(
-            df_interest.index[-1],
-            df_interest[symbol].values[-1],
-            width=theme.volume_bar_width,
-        )
-    ax.set_ylabel("Interest [%]")
-    ax.set_xlim(df_interest.index[0], df_interest.index[-1])
-    theme.style_primary_axis(ax)
 
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_bar(
+        x=df_interest.index[:-1],
+        y=df_interest[symbol].values[:-1],
+        name=symbol,
+        showlegend=False,
+    )
+    fig.add_bar(
+        x=[df_interest.index[-1]],
+        y=[df_interest[symbol].values[-1]],
+        name=symbol,
+        showlegend=False,
+    )
+    fig.update_layout(xaxis=dict(type="date"))
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "mentions", df_interest
     )
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)
@@ -90,7 +77,7 @@ def display_correlation_interest(
     data: pd.DataFrame,
     words: List[str],
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots interest over time of words/sentences versus stock price. [Source: Google].
 
@@ -104,60 +91,47 @@ def display_correlation_interest(
         Words to check for interest for
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
-
-    # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-            nrows=2,
-            ncols=1,
-            sharex=True,
-            gridspec_kw={"height_ratios": [1, 2]},
-        )
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-    ax[0].set_title(
-        f"{symbol.upper()} stock price and interest over time on {','.join(words)}"
+    fig = OpenBBFigure.create_subplots(
+        rows=2,
+        cols=1,
+        shared_xaxes=True,
+        vertical_spacing=0.08,
+        subplot_titles=(
+            f"{symbol.upper()} stock price and interest over time on {','.join(words)}",
+            "Interest",
+        ),
     )
-    ax[0].plot(
-        data.index,
-        data["Adj Close"].values,
-        c="#FCED00",
+    fig.add_scatter(
+        x=data.index,
+        y=data["Adj Close"].values,
+        name="Stock Price",
+        row=1,
+        col=1,
     )
-    ax[0].set_ylabel("Stock Price")
-    ax[0].set_xlim(data.index[0], data.index[-1])
-
-    colors = theme.get_colors()[1:]
-    for idx, word in enumerate(words):
+    for word in words:
         df_interest = google_model.get_mentions(word)
-        ax[1].plot(df_interest.index, df_interest[word], "-", color=colors[idx])
-
-    ax[1].set_ylabel("Interest [%]")
-    ax[1].set_xlim(data.index[0], data.index[-1])
-    ax[1].legend(words)
-    theme.style_primary_axis(ax[0])
-    theme.style_primary_axis(ax[1])
-
-    if external_axes is None:
-        theme.visualize_output()
+        fig.add_scatter(
+            x=df_interest.index,
+            y=df_interest[word],
+            name=word,
+            row=2,
+            col=1,
+        )
+    fig.update_layout(xaxis=dict(type="date"))
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "interest", df_interest
     )
 
+    return fig.show() if not external_axes else fig
+
 
 @log_start_end(log=logger)
 def display_regions(
-    symbol: str,
-    limit: int = 5,
-    export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    symbol: str, limit: int = 5, export: str = "", external_axes: bool = False
 ):
     """Plots bars of regions based on stock's interest. [Source: Google].
 
@@ -169,37 +143,35 @@ def display_regions(
         Number of regions to show
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_interest_region = google_model.get_regions(symbol)
 
     if df_interest_region.empty:
         return
 
-    # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
     df_interest_region = df_interest_region.head(limit)
     df = df_interest_region.sort_values([symbol], ascending=True)
 
-    ax.set_title(f"Regions with highest interest in {symbol}")
-    ax.barh(
-        y=df.index, width=df[symbol], color=theme.get_colors(reverse=True), zorder=3
+    fig = OpenBBFigure(
+        title=f"Regions with highest interest in {symbol}",
+        yaxis_title="Region",
+        xaxis_title="Interest [%]",
     )
-    ax.set_xlabel("Interest [%]")
-    ax.set_ylabel("Region")
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_bar(
+        x=df[symbol],
+        y=df.index,
+        orientation="h",
+        name=symbol,
+        showlegend=False,
+        marker_color=theme.get_colors(reverse=True),
+    )
+    fig.update_layout(yaxis=dict(type="category"))
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "regions", df)
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)

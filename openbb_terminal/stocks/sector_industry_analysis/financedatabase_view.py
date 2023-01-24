@@ -5,20 +5,20 @@ __docformat__ = "numpy"
 import logging
 import os
 from collections import OrderedDict
-from typing import Dict, Optional, List
+from typing import Dict, List, Optional
 
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.sector_industry_analysis import financedatabase_model
@@ -39,7 +39,7 @@ def display_bars_financials(
     export: str = "",
     raw: bool = False,
     already_loaded_stocks_data: Dict = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
 
@@ -67,8 +67,8 @@ def display_bars_financials(
         Output all raw data
     already_loaded_stocks_data: Dict
         Dictionary of filtered stocks data that has been loaded before
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
@@ -243,7 +243,7 @@ def display_companies_per_sector_in_country(
     raw: bool = False,
     max_sectors_to_display: int = 15,
     min_pct_to_display_sector: float = 0.015,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display number of companies per sector in a specific country (and market cap). [Source: Finance Database]
 
@@ -263,8 +263,8 @@ def display_companies_per_sector_in_country(
         Maximum number of sectors to display
     min_pct_to_display_sector: float
         Minimum percentage to display sector
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     companies_per_sector = financedatabase_model.get_companies_per_sector_in_country(
         country, mktcap, exclude_exchanges
@@ -381,7 +381,7 @@ def display_companies_per_industry_in_country(
     raw: bool = False,
     max_industries_to_display: int = 15,
     min_pct_to_display_industry: float = 0.015,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display number of companies per industry in a specific country. [Source: Finance Database]
 
@@ -401,8 +401,8 @@ def display_companies_per_industry_in_country(
         Maximum number of industries to display
     min_pct_to_display_industry: float
         Minimum percentage to display industry
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     """
     companies_per_industry = (
@@ -530,7 +530,7 @@ def display_companies_per_industry_in_sector(
     raw: bool = False,
     max_industries_to_display: int = 15,
     min_pct_to_display_industry: float = 0.015,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display number of companies per industry in a specific sector. [Source: Finance Database]
 
@@ -550,8 +550,8 @@ def display_companies_per_industry_in_sector(
         Maximum number of industries to display
     min_pct_to_display_industry: float
         Minimum percentage to display industry
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     companies_per_industry = financedatabase_model.get_companies_per_industry_in_sector(
         sector, mktcap, exclude_exchanges
@@ -680,7 +680,7 @@ def display_companies_per_country_in_sector(
     raw: bool = False,
     max_countries_to_display: int = 15,
     min_pct_to_display_country: float = 0.015,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display number of companies per country in a specific sector. [Source: Finance Database]
 
@@ -700,8 +700,8 @@ def display_companies_per_country_in_sector(
         Maximum number of countries to display
     min_pct_to_display_country: float
         Minimum percentage to display country
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     companies_per_country = financedatabase_model.get_companies_per_country_in_sector(
         sector, mktcap, exclude_exchanges
@@ -823,7 +823,7 @@ def display_companies_per_country_in_industry(
     raw: bool = False,
     max_countries_to_display: int = 15,
     min_pct_to_display_country: float = 0.015,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display number of companies per country in a specific industry. [Source: Finance Database]
 
@@ -843,8 +843,8 @@ def display_companies_per_country_in_industry(
         Maximum number of countries to display
     min_pct_to_display_country: float
         Minimum percentage to display country
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     companies_per_country = financedatabase_model.get_companies_per_country_in_industry(
         industry, mktcap, exclude_exchanges

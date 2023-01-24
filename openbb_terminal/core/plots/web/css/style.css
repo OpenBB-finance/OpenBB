@@ -2,12 +2,11 @@
 /* local Fira Code font */
 @font-face {
     font-family: 'Fira Code';
-    src: url('fonts/FiraCode-Regular.woff2') format('woff2'),
-        url('fonts/FiraCode-Regular.woff') format('woff'),
-        url('fonts/FiraCode-Regular.ttf') format('truetype');
+    src: url('fonts/FiraCode-Regular.ttf') format('truetype');
     font-weight: 400 700;
     font-style: normal;
 }
+
 html {
     font-size: 62.5%;
     font-family: 'Fira Code', monospace, 'Arial Black';

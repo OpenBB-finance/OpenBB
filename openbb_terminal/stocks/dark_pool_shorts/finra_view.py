@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
+from typing import List
 
 import pandas as pd
 import plotly.graph_objects as go
@@ -11,13 +11,13 @@ from matplotlib import pyplot as plt
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     is_valid_axes_count,
     plot_autoscale,
 )
-from openbb_terminal.plots_core.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import finra_model
 
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def darkpool_ats_otc(  # pylint: disable=R1710
-    symbol: str, export: str = "", external_axes: Optional[List[plt.Axes]] = None
+    symbol: str, export: str = "", external_axes: bool = False
 ):
     """Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
 
@@ -36,8 +36,8 @@ def darkpool_ats_otc(  # pylint: disable=R1710
         Stock ticker
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     del external_axes
     ats, otc = finra_model.getTickerFINRAdata(symbol)
@@ -187,9 +187,7 @@ def darkpool_ats_otc(  # pylint: disable=R1710
 
 
 @log_start_end(log=logger)
-def plot_dark_pools_ats(
-    data: pd.DataFrame, symbols: List, external_axes: Optional[List[plt.Axes]] = None
-):
+def plot_dark_pools_ats(data: pd.DataFrame, symbols: List, external_axes: bool = False):
     """Plots promising tickers based on growing ATS data
 
     Parameters
@@ -198,8 +196,8 @@ def plot_dark_pools_ats(
         Dark Pools (ATS) Data
     symbols: List
         List of tickers from most promising with better linear regression slope
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     """
 
@@ -238,7 +236,7 @@ def darkpool_otc(
     limit: int = 10,
     tier: str = "T1",
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]
 
@@ -254,8 +252,8 @@ def darkpool_otc(
         Tier to process data from: T1, T2 or OTCE
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     # TODO: Improve command logic to be faster and more useful
     df_ats, d_ats_reg = finra_model.getATSdata(input_limit, tier)

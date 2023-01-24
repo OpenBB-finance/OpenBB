@@ -5,7 +5,7 @@ import logging
 import os
 import warnings
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Dict
 
 import finviz
 import matplotlib.pyplot as plt
@@ -14,15 +14,15 @@ import praw
 import seaborn as sns
 
 from openbb_terminal.common.behavioural_analysis import reddit_model
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -408,7 +408,7 @@ def display_redditsent(
     subreddits: str = "all",
     display: bool = False,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots Reddit sentiment about a search term. Prints table showing if display is True.
 
@@ -461,6 +461,12 @@ def display_redditsent(
 
         if not external_axes:
             theme.visualize_output()
+
+        fig = OpenBBFigure(
+            title=f"Sentiment Score of {symbol}", xaxis_title="Sentiment Score"
+        )
+        fig.add_bar(x=polarity_scores)
+        fig.show()
 
     console.print(f"Sentiment Analysis for {symbol} is {avg_polarity}\n")
 
