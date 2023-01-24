@@ -21,8 +21,9 @@ import matplotlib.pyplot as plt
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
-from openbb_terminal.account.logout_model import logout
-from openbb_terminal.account import user
+import openbb_terminal.account.local_model as Local
+import openbb_terminal.account.hub_model as Hub
+from openbb_terminal.account.user import User
 
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_IMPORTS_DIRECTORY,
@@ -675,7 +676,9 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            logout()
+            system_clear()
+            Hub.delete_session()
+            Local.remove_session_file()
             plt.close("all")
             out = subprocess.run(  # nosec
                 f"{sys.executable} terminal.py", shell=True, check=False
@@ -695,8 +698,7 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            console.print(f"[info]email:[/info] {user.EMAIL}")
-            console.print(f"[info]uuid:[/info] {user.UUID}\n")
+            User.whoami()
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):

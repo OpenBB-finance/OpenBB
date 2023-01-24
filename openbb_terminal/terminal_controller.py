@@ -901,15 +901,15 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
         try:
             # Process the input command
             t_controller.queue = t_controller.switch(an_input)
-            if an_input == "logout":
-                break
 
             if an_input in ("q", "quit", "..", "exit", "e"):
                 print_goodbye()
                 break
 
             # Check if the user wants to reset application
-            if an_input in ("r", "reset") or t_controller.update_success:
+            # TODO: exit cmd after logout and reentering the terminal is not working
+            # HELP: login -> logout -> login -> exit should leave the terminal, but it doesn't
+            if an_input in ("r", "reset", "logout") or t_controller.update_success:
                 ret_code = reset(t_controller.queue if t_controller.queue else [])
                 if ret_code != 0:
                     print_goodbye()

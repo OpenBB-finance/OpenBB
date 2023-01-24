@@ -1,15 +1,12 @@
 from typing import Tuple
 import json
 import requests
+import openbb_terminal.account.local_model as Local
+import openbb_terminal.account.hub_model as Hub
+from openbb_terminal.account.user import User
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal import terminal_controller
-from openbb_terminal.account.login_model import (
-    get_login_info,
-    load_user_info,
-    request_login_info,
-)
-from openbb_terminal.account.sync_model import fetch_user_configs, apply_configs
 
 
 def display_welcome_message():
@@ -41,6 +38,15 @@ def get_user_input() -> Tuple[str, str, bool]:
     return email, password, save
 
 
+def create_session(email: str, password: str, save: bool) -> dict:
+    """Create a session."""
+
+    session = Hub.get_session(email, password)
+    if session and save:
+        Local.save_session(session)
+    return session
+
+
 def login_prompt(welcome=True):
     """Login prompt and launch terminal if login is successful.
 
@@ -54,26 +60,26 @@ def login_prompt(welcome=True):
 
     while True:
         email, password, save = get_user_input()
-        login_info = request_login_info(email, password, save)
-        if isinstance(login_info, dict) and login_info:
+        session = create_session(email, password, save)
+        if isinstance(session, dict) and session:
             break
 
-    login(login_info)
+    login(session=session)
 
 
-def login(login_info: dict):
+def login(session: dict):
     """Login and launch terminal.
 
     Parameters
     ----------
-    login_info : dict
-        The login information.
+    session : dict
+        The session info.
     """
-    load_user_info(login_info)
-    response = fetch_user_configs(login_info)
-    if isinstance(response, requests.Response):
+    User.load_user_info(session)
+    response = Hub.fetch_user_configs(session)
+    if response:
         if response.status_code == 200:
-            apply_configs(configs=json.loads(response.content))
+            Local.apply_configs(configs=json.loads(response.content))
             terminal_controller.parse_args_and_run()
         else:
             login_prompt(welcome=False)
@@ -83,11 +89,11 @@ def login(login_info: dict):
 
 def main():
     """Main function"""
-    login_info = get_login_info()
-    if not login_info:
+    local_session = Local.get_session()
+    if not local_session:
         login_prompt()
     else:
-        login(login_info)
+        login(session=local_session)
 
 
 if __name__ == "__main__":

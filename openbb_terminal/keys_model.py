@@ -35,7 +35,7 @@ from openbb_terminal.rich_config import console
 
 from openbb_terminal.terminal_helper import suppress_stdout
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
-from openbb_terminal.account.sync_model import put_user_configs
+from openbb_terminal.account.hub_model import put_user_configs
 
 logger = logging.getLogger(__name__)
 
