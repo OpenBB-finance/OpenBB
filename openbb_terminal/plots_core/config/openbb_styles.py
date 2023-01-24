@@ -41,6 +41,24 @@ PLT_STYLE_DECREASING_RED = "#c80000"
 PLT_FONT = dict(family="Fira Code", size=16)
 PLOTLY_FONT = dict(family="Fira Code", size=18)
 
+
+# Table Plots Settings
+PLT_TBL_HEADER = dict(
+    fill_color="rgb(30, 30, 30)",
+    font_color="white",
+    line_color="#6e6e6e",
+    line_width=1,
+)
+PLT_TBL_CELLS = dict(
+    font_color="white",
+    line_color="#6e6e6e",
+    line_width=0,
+)
+PLT_TBL_ROW_COLORS = (
+    "#333333",
+    "#242424",
+)
+
 SHUFFLED_COLORWAY = [
     "#9467bd",
     "#e250c3",
