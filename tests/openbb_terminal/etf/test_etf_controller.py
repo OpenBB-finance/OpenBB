@@ -288,7 +288,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             "stockanalysis_view.view_overview",
             [],
-            dict(symbol="MOCK_ETF_NAME", export=""),
+            dict(symbol="MOCK_ETF_NAME", export="", sheet_name=None),
         ),
         (
             "call_holdings",
