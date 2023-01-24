@@ -330,7 +330,8 @@ class ComparisonAnalysisController(BaseController):
                             random.shuffle(self.similar)
                             self.similar = sorted(self.similar[: ns_parser.limit])
                             console.print(
-                                f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
+                                f"The limit of stocks to compare are {ns_parser.limit}."
+                                " The subsample will occur randomly.\n",
                             )
 
                         self.similar = [self.ticker] + self.similar
