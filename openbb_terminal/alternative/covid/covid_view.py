@@ -168,6 +168,7 @@ def display_covid_ov(
         )
 
     if export:
+        data = covid_model.get_covid_ov(country, limit)
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),

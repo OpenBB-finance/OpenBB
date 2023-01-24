@@ -255,4 +255,6 @@ class CovidController(BaseController):
                 limit=ns_parser.limit,
                 ascend=ns_parser.reverse,
                 threshold=ns_parser.threshold,
+                export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )

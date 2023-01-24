@@ -20,6 +20,8 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=too-many-arguments
+
 
 @log_start_end(log=logger)
 def display_rossindex(
@@ -129,4 +131,5 @@ def display_rossindex(
             os.path.dirname(os.path.abspath(__file__)),
             "runaidx",
             df,
+            " ".join(sheet_name) if sheet_name else None,
         )

@@ -310,7 +310,9 @@ class ETFController(BaseController):
 
         if ns_parser:
             stockanalysis_view.view_overview(
-                symbol=self.etf_name, export=ns_parser.export
+                symbol=self.etf_name,
+                export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)

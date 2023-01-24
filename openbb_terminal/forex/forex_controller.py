@@ -393,7 +393,10 @@ class ForexController(BaseController):
         if ns_parser:
             if self.fx_pair:
                 fxempire_view.display_forward_rates(
-                    self.to_symbol, self.from_symbol, ns_parser.export
+                    self.to_symbol,
+                    self.from_symbol,
+                    ns_parser.export,
+                    ns_parser.sheet_name,
                 )
             else:
                 logger.error("Make sure ba currency pair is loaded.")
