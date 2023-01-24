@@ -1,0 +1,4 @@
+Greeks calculated by OpenBB.
+        contractSymbol       lastTradeDate  strike  lastPrice    bid    ask     change  percentChange  volume  openInterest  impliedVolatility  inTheMoney contractSize currency optionType     Delta         Gamma      Vega     Theta
+0  TSLA211231C00200000 2021-12-29 15:01:33   200.0     878.02  884.5  887.0 -11.849976      -1.331652    30.0            36           9.468754        True      REGULAR      USD       call  0.999926  1.958854e-07  0.000476 -0.000964
+1  TSLA211231C00250000 2021-12-10 15:09:36   250.0     744.20  834.5  837.0   0.000000       0.000000    11.0            12           8.238286        True      REGULAR      USD       call  0.999461  1.443913e-06  0.003053 -0.005381

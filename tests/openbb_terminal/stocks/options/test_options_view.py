@@ -203,18 +203,18 @@ def test_display_expiry_dates():
 @pytest.mark.parametrize(
     "chain, current_price, expiry, min_sp, max_sp, calls_only, puts_only, to_display",
     [
-        ([CHAIN, 1000, EXPIRY_DATES[-1], 0, 0, False, False, None]),
-        ([CHAIN, 2000, EXPIRY_DATES[-2], 999, 999, True, False, None]),
-        ([CHAIN, 3000, EXPIRY_DATES[-3], -999, -999, False, True, None]),
-        ([CHAIN, 4000, EXPIRY_DATES[-4], -1, -1, True, True, None]),
-        ([CHAIN, 5000, EXPIRY_DATES[-5], 1, 1, False, False, None]),
+        ([CHAIN, 200, EXPIRY_DATES[-1], -1, -1, False, False, None]),
+        ([CHAIN, 200, EXPIRY_DATES[-2], -1, -1, True, False, None]),
+        ([CHAIN, 200, EXPIRY_DATES[-3], -1, -1, False, True, None]),
+        ([CHAIN, 200, EXPIRY_DATES[-4], -1, -1, True, True, None]),
+        ([CHAIN, 200, EXPIRY_DATES[-5], -1, -1, False, False, None]),
         (
             [
                 CHAIN,
-                6000,
-                EXPIRY_DATES[-6],
-                0,
-                0,
+                200,
+                EXPIRY_DATES[-1],
+                -1,
+                -1,
                 False,
                 False,
                 ["strike", "optionType"],
@@ -223,10 +223,10 @@ def test_display_expiry_dates():
         (
             [
                 CHAIN,
-                6000,
-                EXPIRY_DATES[-6],
-                0,
-                0,
+                200,
+                EXPIRY_DATES[-1],
+                -1,
+                -1,
                 False,
                 False,
                 ["strike", "optionType", "impliedVolatility"],
