@@ -677,6 +677,7 @@ class BaseController(metaclass=ABCMeta):
             console.print("")
             if i.lower() == "y":
                 self.queue.insert(0, "y")
+                # TODO: this command is not working properly inside menus
                 logout()
 
     @log_start_end(log=logger)
