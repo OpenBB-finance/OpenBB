@@ -24,14 +24,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA0zKsQrCMBAA0H+5OYU0lqTNJroILpKKgzic5MTQ2EhyGYL4766++V0/wIkxXoiW
-        2NwTM50qrhy4gdWTnHozbsT/mTN62qW6Mth+1IMZpIBQSiXXXvcUD55WDo9AGSzM7rgFARELn98e
-        mfbIBBaUVKqTppMavrcfAAAA//8DAPg4sq+EAAAA
+        H4sIAAAAAAAAAwAAAP//TMqxCsIwEADQf7k5hTSWpM0muggukoqDOJzkxNDYSHIZgvjvrr75XT/A
+        iTFeiJbY3BMznSquHLiB1ZOcejNuxP+ZM3rapboy2H7UgxmkgFBKJdde9xQPnlYOj0AZLMzuuAUB
+        EQuf3x6Z9sgEFpRUqpOmkxq+tx8AAAD//wMA+Diyr4QAAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 78e7e8241847b734-AMS
+      - 78e8336fec4bb8fc-AMS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -39,9 +39,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 24 Jan 2023 09:57:46 GMT
+      - Tue, 24 Jan 2023 10:49:10 GMT
       FINRA-api-request-id:
-      - 979be879-809f-4dda-b43c-b01db8bfdd2f
+      - 699f5b21-409c-4a35-abdf-30e50ac9e1c8
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -55,10 +55,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=.5L93AQ8sJ2jHq_aeQyLfYqdN64JE8Kv7jKZN0B_MgY-1674554266-0-AVxpTyOQ1CPpNpZWLKCwD5UqUzN7DKp7zUpDKWinfXVNSxM/q8qvQC/8pMBb+1INNWzk91tyKOrisUEolBhfipI=;
-        path=/; expires=Tue, 24-Jan-23 10:27:46 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=yoHsPOY08HhYp3X8sla.3YRt7Agbu9joA.wcGdkI5K4-1674557350-0-ARhy/4yrxy1GijojVhs+xnNKWy+BXFq8PjL13fejvo9vFz7VhgpLxzDvzcSrhS7pb+y6gzbmFjT2gGPJB74uQj4=;
+        path=/; expires=Tue, 24-Jan-23 11:19:10 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=0b2d391ebf2aaf18cdd9585554b2f6241894bec8-1674554266; path=/; domain=.api.finra.org;
+      - __cfruid=998dd842ea54b1663df30bc5fc78a3c0080fc1ad-1674557350; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -67,13 +67,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-63cfab9a-282df2c92580f55717cf64f0;Sampled=0
+      - Root=1-63cfb7a6-2583dde92280e64a1d378054;Sampled=0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - fPfALEwyIAMFQ2Q=
+      - fPmiCE7ZIAMFvZA=
       x-amzn-RequestId:
-      - 251c1c67-ff97-4adb-aa75-5e5e2ec2d569
+      - 2cb1dd2a-93dd-44d3-851c-681422a02281
     status:
       code: 200
       message: OK
