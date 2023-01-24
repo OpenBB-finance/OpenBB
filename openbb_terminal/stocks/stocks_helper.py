@@ -330,8 +330,11 @@ def load(
         else:
             console.print("[red]Invalid source for stock[/red]\n")
             return
-        if df_stock_candidate.empty:
-            return df_stock_candidate
+        is_df = isinstance(df_stock_candidate, pd.DataFrame)
+        if (is_df and df_stock_candidate.empty) or (
+            not is_df and not df_stock_candidate
+        ):
+            return pd.DataFrame()
 
         df_stock_candidate.index.name = "date"
         s_start = df_stock_candidate.index[0]
