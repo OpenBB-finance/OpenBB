@@ -117,11 +117,11 @@ def test_print_raw(calls, puts, title, calls_only, puts_only):
 @pytest.mark.parametrize(
     "chain, current_price, symbol, expiry, min_sp, max_sp, calls_only, puts_only, raw",
     [
-        ([CHAIN, 1000, "TSLA", EXPIRY_DATES[-1], 0, 0, False, False, False]),
-        ([CHAIN, 2000, "TSLA", EXPIRY_DATES[-2], 999, 999, True, False, False]),
-        ([CHAIN, 3000, "TSLA", EXPIRY_DATES[-3], -999, -999, False, True, False]),
-        ([CHAIN, 4000, "TSLA", EXPIRY_DATES[-4], -1, -1, True, True, False]),
-        ([CHAIN, 5000, "TSLA", EXPIRY_DATES[-5], 1, 1, False, False, True]),
+        ([CHAIN, 100, "TSLA", EXPIRY_DATES[-1], 0, 0, False, False, True]),
+        ([CHAIN, 100, "TSLA", EXPIRY_DATES[-2], 999, 999, True, False, True]),
+        ([CHAIN, 100, "TSLA", EXPIRY_DATES[-3], -999, -999, False, True, True]),
+        ([CHAIN, 100, "TSLA", EXPIRY_DATES[-4], -1, -1, True, True, True]),
+        ([CHAIN, 100, "TSLA", EXPIRY_DATES[-5], 1, 1, False, False, True]),
     ],
 )
 def test_plot_vol(
