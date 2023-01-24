@@ -592,13 +592,14 @@ class PortfolioOptimizationController(BaseController):
             self.params,
             self.current_model,
         )
-        self.current_file = parent_classes.controllers[
-            "/portfolio/po/params/"
-        ].current_file
-        self.current_model = parent_classes.controllers[
-            "/portfolio/po/params/"
-        ].current_model
-        self.params = parent_classes.controllers["/portfolio/po/params/"].params
+        if "/portfolio/po/params/" in parent_classes.controllers:
+            self.current_file = parent_classes.controllers[
+                "/portfolio/po/params/"
+            ].current_file
+            self.current_model = parent_classes.controllers[
+                "/portfolio/po/params/"
+            ].current_model
+            self.params = parent_classes.controllers["/portfolio/po/params/"].params
 
     @log_start_end(log=logger)
     def call_show(self, other_args: List[str]):
