@@ -136,6 +136,8 @@ def display_correlation_interest(
     colors = theme.get_colors()[1:]
     for idx, word in enumerate(words):
         df_interest = google_model.get_mentions(word)
+        if df_interest.empty:
+            continue
         ax[1].plot(df_interest.index, df_interest[word], "-", color=colors[idx])
 
     ax[1].set_ylabel("Interest [%]")
