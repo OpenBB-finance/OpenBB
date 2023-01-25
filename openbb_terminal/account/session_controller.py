@@ -99,7 +99,7 @@ def main(guest_allowed: bool = True):
     """Main function"""
     local_session = Local.get_session()
     if not local_session:
-        login_prompt(guest_allowed)
+        login_prompt(guest_allowed=guest_allowed)
     else:
         login(session=local_session)
 
