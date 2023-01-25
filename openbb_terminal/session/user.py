@@ -35,6 +35,11 @@ class User:
                 setattr(obbff, "USE_FLAIR", "[" + username[:MAX_FLAIR_LEN] + "] 🦋")
 
     @classmethod
+    def is_logged_in(cls):
+        """Check if user is logged in."""
+        return bool(User.UUID)
+
+    @classmethod
     def whoami(cls):
         """Display user info."""
         if User.UUID:
@@ -44,13 +49,8 @@ class User:
             console.print("[info]Only you know...[/info]\n")
 
     @classmethod
-    def is_logged_in(cls):
-        """Check if user is logged in."""
-        return bool(User.UUID)
-
-    @classmethod
-    def logout(cls):
-        """Logout."""
+    def clear(cls):
+        """Clear user info."""
         User.TOKEN_TYPE = ""
         User.TOKEN = ""
         User.EMAIL = ""

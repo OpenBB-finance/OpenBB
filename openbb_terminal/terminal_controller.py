@@ -24,7 +24,7 @@ from prompt_toolkit.formatted_text import HTML
 import pandas as pd
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.terminal_helper import is_packaged_application
-from openbb_terminal.account import session_controller
+from openbb_terminal.session import session_controller
 
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,

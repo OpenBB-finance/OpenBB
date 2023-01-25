@@ -19,8 +19,8 @@ import matplotlib.pyplot as plt
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
-from openbb_terminal.account.session_controller import logout
-from openbb_terminal.account.user import User
+from openbb_terminal.session.session_controller import logout
+from openbb_terminal.session.user import User
 
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_IMPORTS_DIRECTORY,
