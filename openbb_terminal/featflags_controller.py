@@ -95,7 +95,6 @@ class FeatureFlagsController(BaseController):
         value = not value
 
         if User.is_guest():
-            print(f"Setting {name} to {str(value)}")
             set_key(str(USER_ENV_FILE), name, str(value))
 
         # Remove "OPENBB_" prefix from env_var
@@ -107,7 +106,11 @@ class FeatureFlagsController(BaseController):
 
         # Send feature flag to server
         if not User.is_guest():
-            patch_user_configs(key=name, value=str(value), type_="settings")
+            patch_user_configs(
+                key=name,
+                value="openbb_terminal.feature_flags:" + str(value),
+                type_="settings",
+            )
 
     def call_overwrite(self, _):
         """Process overwrite command"""

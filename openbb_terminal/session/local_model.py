@@ -1,3 +1,4 @@
+import importlib
 import os
 from pathlib import Path
 import json
@@ -82,7 +83,6 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-
     if configs:
         keys = configs.get("features_keys", {})
         if keys:
@@ -93,11 +93,16 @@ def apply_configs(configs: dict):
                     else:
                         setattr(cfg, k, v)
 
+        # Since settings come from different files we use the format {var_name: "path:value"}
         settings = configs.get("features_settings", {})
         if settings:
-            for k, v in settings.items():
-                if hasattr(obbff, k):
-                    if isinstance(getattr(obbff, k), int):
-                        setattr(obbff, k, strtobool(v))
-                    else:
-                        setattr(obbff, k, v)
+            for var_name, v in settings.items():
+                if v.find(":") > 0:
+                    path, value = v.split(":")
+
+                    module = importlib.import_module(path)
+                    if hasattr(module, var_name):
+                        if isinstance(getattr(module, var_name), int):
+                            setattr(module, var_name, strtobool(value))
+                        else:
+                            setattr(module, var_name, value)
