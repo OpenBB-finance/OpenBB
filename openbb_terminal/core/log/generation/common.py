@@ -14,6 +14,5 @@ def do_rollover():
     """RollOver the log file."""
 
     for handler in logging.getLogger().handlers:
-        print(handler)
         if isinstance(handler, PathTrackingFileHandler):
             handler.doRollover()
