@@ -1,11 +1,9 @@
 from typing import Tuple
 import json
-import matplotlib.pyplot as plt
 import openbb_terminal.session.local_model as Local
 import openbb_terminal.session.hub_model as Hub
 from openbb_terminal.session.user import User
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
-from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 from openbb_terminal import terminal_controller
 
@@ -84,15 +82,6 @@ def login(session: dict):
             login_prompt(welcome=False)
     else:
         login_prompt(welcome=True)
-
-
-def logout():
-    """Logout and clear session."""
-    system_clear()
-    User.clear()
-    Hub.delete_session()
-    Local.remove_session_file()
-    plt.close("all")
 
 
 def main(guest_allowed: bool = True):

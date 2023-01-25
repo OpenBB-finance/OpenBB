@@ -32,6 +32,7 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import User
 
 from openbb_terminal.terminal_helper import suppress_stdout
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
@@ -226,7 +227,7 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
         If True, api key change will be global, i.e. it will affect terminal environment variables.
         By default, False.
     """
-    if persist:
+    if persist and User.is_guest():
         os.environ[env_var_name] = env_var_value
         dotenv.set_key(str(USER_ENV_FILE), env_var_name, env_var_value)
 

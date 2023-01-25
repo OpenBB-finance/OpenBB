@@ -15,11 +15,10 @@ from typing import Any, Dict, List, Union
 
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
-from openbb_terminal.session.session_controller import logout
+from openbb_terminal.session.session_model import logout
 from openbb_terminal.session.user import User
 
 from openbb_terminal.core.config.paths import (
