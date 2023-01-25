@@ -99,7 +99,7 @@ def logout():
         if v.startswith("OPENBB"):
             os.environ.pop(v)
 
-    # Reload all openbb modules
+    # Reload all openbb modules to clear memorized variables
     modules = sys.modules.copy()
     for module in modules:
         if module.startswith("openbb"):

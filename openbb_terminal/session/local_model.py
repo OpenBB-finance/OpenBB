@@ -5,8 +5,8 @@ from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
 from openbb_terminal.rich_config import console
 
 # from openbb_terminal import feature_flags as obbff
-# from openbb_terminal import config_terminal as cfg
-# from openbb_terminal.base_helpers import strtobool
+from openbb_terminal import config_terminal as cfg
+from openbb_terminal.base_helpers import strtobool
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
@@ -77,6 +77,16 @@ def remove_session_file(file_path: Path = SESSION_FILE_PATH) -> bool:
 def apply_configs(configs: dict):
     """Apply configurations."""
     console.print(f"Will apply this: {configs}", style="red")
+
+    keys = configs.get("features_keys", {})
+    if keys:
+        for k, v in keys.items():
+            if hasattr(cfg, k):
+                if isinstance(getattr(cfg, k), int):
+                    setattr(cfg, k, strtobool(v))
+                else:
+                    setattr(cfg, k, v)
+
     # TODO: Apply configs when uploading is implemented
     # if configs:
     #     settings = configs.get("features_settings", {})
@@ -87,12 +97,3 @@ def apply_configs(configs: dict):
     #                     setattr(obbff, k, strtobool(v))
     #                 else:
     #                     setattr(obbff, k, v)
-
-    #     keys = configs.get("features_keys", {})
-    #     if keys:
-    #         for k, v in keys.items():
-    #             if hasattr(cfg, k):
-    #                 if isinstance(getattr(cfg, k), int):
-    #                     setattr(cfg, k, strtobool(v))
-    #                 else:
-    #                     setattr(cfg, k, v)
