@@ -3,13 +3,14 @@
 import pandas as pd
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
-from openbb_terminal.core.plots.plotly_ta.base import indicator
+from openbb_terminal.core.plots.plotly_ta.base import PltTA, indicator
 from openbb_terminal.core.plots.plotly_ta.data_classes import columns_regex
-from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 
 
-class Trend(PlotlyTA):
+class Trend(PltTA):
     """Trend technical indicators"""
+
+    __subplots__ = ["adx", "aroon"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -66,8 +67,9 @@ class Trend(PlotlyTA):
             text="<b>D+</b>",
             x=0,
             xanchor="right",
-            xshift=-14,
-            y=0.79,
+            xshift=-24,
+            y=0.97,
+            yshift=-20,
             font_size=16,
             font_color="#9467bd",
             showarrow=False,
@@ -78,8 +80,9 @@ class Trend(PlotlyTA):
             text="<b>D-</b>",
             x=0,
             xanchor="right",
-            xshift=-8,
-            y=0.79,
+            xshift=-6,
+            y=0.97,
+            yshift=-20,
             font_size=16,
             font_color="#e250c3",
             showarrow=False,
@@ -94,6 +97,7 @@ class Trend(PlotlyTA):
             row=subplot_row,
             col=1,
         )
+        fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
 
         return fig, subplot_row + 1
 
@@ -180,5 +184,6 @@ class Trend(PlotlyTA):
             row=subplot_row,
             col=1,
         )
+        fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
 
         return fig, subplot_row + 1

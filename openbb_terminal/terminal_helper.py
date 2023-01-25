@@ -22,7 +22,7 @@ from openbb_terminal import feature_flags as obbff, thought_of_the_day as though
 
 # IMPORTATION INTERNAL
 from openbb_terminal.config_terminal import LOGGING_APP_NAME, LOGGING_COMMIT_HASH
-from openbb_terminal.core.plots.backend import get_backend
+from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.rich_config import console
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
@@ -317,7 +317,7 @@ def reset(queue: List[str] = None):
     console.print("resetting...")
     logger.info("resetting")
     plt.close("all")
-    get_backend().close(reset=True)
+    plots_backend().close(reset=True)
     debug = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 
     # we clear all openbb_terminal modules from sys.modules

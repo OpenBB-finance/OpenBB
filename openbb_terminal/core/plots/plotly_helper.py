@@ -17,7 +17,7 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_DATA_DIRECTORY,
 )
-from openbb_terminal.core.plots.backend import get_backend
+from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_COLORWAY,
     PLT_DECREASING_COLORWAY,
@@ -220,7 +220,7 @@ class OpenBBFigure(go.Figure):
         if yaxis := kwargs.pop("yaxis", None):
             self.update_yaxes(yaxis)
 
-        if get_backend().isatty:
+        if plots_backend().isatty:
             self.update_layout(
                 margin=dict(l=0, r=0, t=0, b=0, pad=0, autoexpand=True),
                 height=762,
@@ -607,10 +607,10 @@ class OpenBBFigure(go.Figure):
             return self.to_json()
 
         kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
-        if get_backend().isatty:
+        if plots_backend().isatty:
             try:
                 # We send the figure to the backend to be displayed
-                return get_backend().send_figure(self)
+                return plots_backend().send_figure(self)
             except Exception:
                 # If the backend fails, we just show the figure normally
                 # This is a very rare case, but it's better to have a fallback
@@ -665,7 +665,7 @@ class OpenBBFigure(go.Figure):
                 full_html=False,
             )
         )
-        if not get_backend().isatty and self.data[0].type != "table":
+        if not plots_backend().isatty and self.data[0].type != "table":
             self.layout.margin = dict(l=30, r=30, b=50, t=50, pad=0)
 
         return super().to_html(*args, **kwargs)
@@ -721,7 +721,6 @@ class OpenBBFigure(go.Figure):
         # We add a rangebreak if the first and last time are not the same
         # since daily data will have the same time (00:00)
         if dateindex[0].time() != dateindex[-1].time():
-            print("Adding rangebreak")
             rangebreaks.append(dict(bounds=[15.99, 9.50], pattern="hour"))
 
         self.update_xaxes(
@@ -845,7 +844,7 @@ class OpenBBFigure(go.Figure):
         )
 
         # We adjust margins
-        if get_backend().isatty:
+        if plots_backend().isatty:
             for key, add in zip(
                 ["l", "r", "b", "t", "pad"],
                 margin_add,
@@ -855,7 +854,7 @@ class OpenBBFigure(go.Figure):
                 else:
                     self.layout.margin[key] = add
 
-        if not get_backend().isatty:
+        if not plots_backend().isatty:
             self.layout.margin = dict(l=30, r=40, b=80, t=50, pad=0)
 
     def _set_watermark(self) -> None:
@@ -913,3 +912,66 @@ class OpenBBFigure(go.Figure):
             self._add_cmd_source()
         if obbff.USE_WATERMARK:
             self._set_watermark()
+
+    def add_logscale_menus(self) -> None:
+        """Sets the menus for the figure"""
+        self.update_layout(
+            xaxis=dict(
+                rangeslider=dict(visible=False),
+                rangeselector=dict(
+                    bgcolor="#000000",
+                    bordercolor="gold",
+                    font=dict(color="white"),
+                    buttons=list(
+                        [
+                            dict(
+                                count=1,
+                                label="1M",
+                                step="month",
+                                stepmode="backward",
+                            ),
+                            dict(
+                                count=3,
+                                label="3M",
+                                step="month",
+                                stepmode="backward",
+                            ),
+                            dict(count=1, label="YTD", step="year", stepmode="todate"),
+                            dict(
+                                count=1,
+                                label="1y",
+                                step="year",
+                                stepmode="backward",
+                            ),
+                            dict(step="all"),
+                        ]
+                    ),
+                ),
+            ),
+            bargap=0,
+            bargroupgap=0,
+        )
+
+        self.update_layout(
+            updatemenus=[
+                dict(
+                    bgcolor="#000000",
+                    bordercolor="gold",
+                    font=dict(color="white", size=14),
+                    buttons=[
+                        dict(
+                            label="linear   ",
+                            method="relayout",
+                            args=[{"yaxis.type": "linear"}],
+                        ),
+                        dict(
+                            label="log",
+                            method="relayout",
+                            args=[{"yaxis.type": "log"}],
+                        ),
+                    ],
+                    y=1.07,
+                    x=-0.01,
+                )
+            ],
+        )

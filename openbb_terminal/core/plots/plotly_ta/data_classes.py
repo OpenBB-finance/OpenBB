@@ -1,5 +1,6 @@
 # pylint: disable=C0302,R0915,R0914,R0913,R0903,R0904
 
+import logging
 import sys
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Union
@@ -7,8 +8,11 @@ from typing import Any, Dict, List, Optional, Union
 import pandas as pd
 import pandas_ta as ta
 
+from openbb_terminal.base_helpers import console
 from openbb_terminal.common.technical_analysis import ta_helpers
+from openbb_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
 datacls_kwargs = {"slots": True} if sys.version_info >= (3, 10) else {}
 
 
@@ -23,6 +27,10 @@ def columns_regex(df_ta: pd.DataFrame, name: str) -> List[str]:
 class Arguments:
     label: str
     values: Any
+
+    def __post_init__(self):
+        if isinstance(self.values, list) and len(self.values) == 1:
+            self.values = self.values[0]
 
 
 @dataclass(**datacls_kwargs)
@@ -85,7 +93,7 @@ class ChartIndicators:
         """Return active indicators and their arguments"""
         return self.indicators
 
-    def get_args(self) -> Dict[str, TAIndicator]:
+    def get_params(self) -> Dict[str, TAIndicator]:
         """Return dictionary of active indicators and their arguments"""
         output = {indicator.name: indicator for indicator in self.indicators}
         return output
@@ -117,6 +125,9 @@ class ChartIndicators:
 
 
 class ProcessTA_Data:
+    """Process technical analysis data"""
+
+    @log_start_end(log=logger)
     def __init__(self, df_ta: pd.DataFrame, indicators: ChartIndicators):
         self.df_ta = df_ta
         self.indicators = indicators
@@ -136,7 +147,6 @@ class ProcessTA_Data:
             "donchian": ["High", "Low"],
         }
 
-    # Process all user selected indicators
     def get_indicator_data(self, indicator: TAIndicator, **args) -> pd.DataFrame:
         """Returns dataframe with indicator data"""
         output = None
@@ -202,7 +212,9 @@ class ProcessTA_Data:
                         else {},
                     )
                 except Exception as e:
-                    print(f"Error: {e} - {indicator.name}")
+                    console.print(
+                        f"[red]Error processing indicator {indicator.name}: {e}[/red]"
+                    )
                     indicator_data = None
 
                 if indicator_data is not None:

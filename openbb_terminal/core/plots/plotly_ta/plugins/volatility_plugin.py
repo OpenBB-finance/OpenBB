@@ -1,15 +1,14 @@
-# pylint: disable=C0302,R0915,R0914,R0913,R0903,R0904
-
 import pandas as pd
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure, theme
-from openbb_terminal.core.plots.plotly_ta.base import indicator
+from openbb_terminal.core.plots.plotly_ta.base import PltTA, indicator
 from openbb_terminal.core.plots.plotly_ta.data_classes import columns_regex
-from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 
 
-class Volatility(PlotlyTA):
+class Volatility(PltTA):
     """Volatility technical indicators"""
+
+    __inchart__ = ["bbands", "donchian"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -61,8 +60,8 @@ class Volatility(PlotlyTA):
             xref="paper",
             yref="paper",
             text=(
-                f"<b>BB{self.args['bbands'].get_argument_values('length') or ''},"
-                f"{self.args['bbands'].get_argument_values('std') or ''}</b>"
+                f"<b>BB{self.params['bbands'].get_argument_values('length') or ''},"
+                f"{self.params['bbands'].get_argument_values('std') or ''}</b>"
             ),
             x=0,
             xanchor="left",
@@ -116,8 +115,8 @@ class Volatility(PlotlyTA):
             xref="paper",
             yref="paper",
             text=(
-                f"<b>DC{self.args['donchian'].get_argument_values('upper_length') or ''},"
-                f"{self.args['donchian'].get_argument_values('lower_length') or ''}</b>"
+                f"<b>DC{self.params['donchian'].get_argument_values('upper_length') or ''},"
+                f"{self.params['donchian'].get_argument_values('lower_length') or ''}</b>"
             ),
             x=0,
             xanchor="left",

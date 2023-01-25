@@ -1,5 +1,3 @@
-# pylint: disable=C0302,R0915,R0914,R0913,R0903,R0904
-
 from datetime import datetime, timedelta
 
 import numpy as np
@@ -10,11 +8,10 @@ from openbb_terminal.common.technical_analysis.custom_indicators_model import (
 )
 from openbb_terminal.core.plots.config.openbb_styles import PLT_FIB_COLORWAY
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
-from openbb_terminal.core.plots.plotly_ta.base import indicator
-from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+from openbb_terminal.core.plots.plotly_ta.base import PltTA, indicator
 
 
-class Custom(PlotlyTA):
+class Custom(PltTA):
     """Volatility technical indicators"""
 
     def __init__(self, *args, **kwargs):

@@ -1,6 +1,8 @@
-from typing import Any, Callable, Iterator, List
+from typing import Any, Callable, Dict, Iterator, List
 
 import pandas as pd
+
+from .data_classes import ChartIndicators, TAIndicator
 
 
 def columns_regex(df_ta: pd.DataFrame, name: str) -> List[str]:
@@ -32,10 +34,18 @@ class PluginMeta(type):
 
     __indicators__: List[Indicator] = []
     __static_methods__: list = []
+    __ma_mode__: list = []
+    __inchart__: list = []
+    __subplots__: list = []
 
     def __new__(mcs: type["PluginMeta"], *args: Any, **kwargs: Any) -> "PluginMeta":
         name, bases, attrs = args
         indicators = {}
+        cls_attrs = {
+            "__ma_mode__": [],
+            "__inchart__": [],
+            "__subplots__": [],
+        }
         new_cls = super().__new__(mcs, name, bases, attrs, **kwargs)
         for base in reversed(new_cls.__mro__):
             for elem, value in base.__dict__.items():
@@ -55,8 +65,14 @@ class PluginMeta(type):
                     if elem not in new_cls.__static_methods__:
                         new_cls.__static_methods__.append(elem)
 
+                if elem in ["__ma_mode__", "__inchart__", "__subplots__"]:
+                    cls_attrs[elem].extend(value)
+
         new_cls.__indicators__ = list(indicators.values())
         new_cls.__static_methods__ = list(set(new_cls.__static_methods__))
+        new_cls.__ma_mode__ = list(set(cls_attrs["__ma_mode__"]))
+        new_cls.__inchart__ = list(set(cls_attrs["__inchart__"]))
+        new_cls.__subplots__ = list(set(cls_attrs["__subplots__"]))
 
         return new_cls
 
@@ -71,8 +87,18 @@ class PluginMeta(type):
 class PltTA(metaclass=PluginMeta):
     """The base class that all Plotly plugins must inherit from."""
 
+    indicators: ChartIndicators = None
+    intraday: bool = False
+    df_stock: pd.DataFrame = None
+    params: Dict[str, TAIndicator] = None
+    ma_mode: List[str] = []
+    inchart_colors: List[str] = []
+
     __static_methods__: list = []
     __indicators__: List[Indicator] = []
+    __ma_mode__: list = []
+    __inchart__: list = []
+    __subplots__: list = []
 
     # pylint: disable=unused-argument
     def __new__(cls, *args: Any, **kwargs: Any) -> "PltTA":
@@ -92,6 +118,11 @@ class PltTA(metaclass=PluginMeta):
             if not hasattr(self, static_method):
                 setattr(self, static_method, staticmethod(getattr(self, static_method)))
 
+        for attr, value in cls.__dict__.items():
+            if attr in ["__ma_mode__", "__inchart__", "__subplots__"]:
+                if value not in getattr(self, attr):
+                    getattr(self, attr).extend(value)
+
         return self
 
     def add_plugins(self, plugins: List["PltTA"]) -> None:
@@ -104,10 +135,13 @@ class PltTA(metaclass=PluginMeta):
 
             for static_method in plugin.__static_methods__:
                 if not hasattr(self, static_method):
-                    print(static_method)
                     setattr(
                         self, static_method, staticmethod(getattr(self, static_method))
                     )
+            for attr, value in plugin.__dict__.items():
+                if attr in ["__ma_mode__", "__inchart__", "__subplots__"]:
+                    if value not in getattr(self, attr):
+                        getattr(self, attr).extend(value)
 
     def remove_plugins(self, plugins: List["PltTA"]) -> None:
         """Remove plugins from current instance"""
@@ -120,6 +154,14 @@ class PltTA(metaclass=PluginMeta):
 
     def __iter__(self) -> Iterator[Indicator]:
         return iter(self.__indicators__)
+
+    def get_float_precision(self) -> str:
+        """Returns f-string precision format"""
+        price = self.df_stock.Close.tail(1).values[0]
+        float_precision = (
+            ",.2f" if price > 1.10 else "" if len(str(price)) < 8 else ".6f"
+        )
+        return float_precision
 
 
 def indicator(

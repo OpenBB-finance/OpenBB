@@ -254,12 +254,19 @@ function OpenBBMain(plotly_figure) {
         'xaxis.range[1]': graphs.layout.xaxis.range[1],
     });
 
-    // We add the event listeners for csv file/type changes
-    CSV_DIV.querySelector('#csv_file').addEventListener('change', function () {
-        checkFile(CSV_DIV);
-    });
-    CSV_DIV.querySelector('#csv_trace_type').addEventListener('change', function () {
-        console.log('type changed');
-        checkFile(CSV_DIV, true);
-    });
+    // Just in case the CSV_DIV is undefined, we check for it every 100ms
+    let check_csv = setInterval(function () {
+        if (CSV_DIV != undefined) {
+            console.log('CSV_DIV is defined');
+            // We add the event listeners for csv file/type changes
+            CSV_DIV.querySelector('#csv_file').addEventListener('change', function () {
+                checkFile(CSV_DIV);
+            });
+            CSV_DIV.querySelector('#csv_trace_type').addEventListener('change', function () {
+                console.log('type changed');
+                checkFile(CSV_DIV, true);
+            });
+            clearInterval(check_csv);
+        }
+    }, 100);
 }

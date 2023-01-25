@@ -1,18 +1,18 @@
-# pylint: disable=C0302,R0915,R0914,R0913,R0903,R0904
-
 import numpy as np
 import pandas as pd
 import pandas_ta as ta
 
 from openbb_terminal.common.technical_analysis.momentum_model import clenow_momentum
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure, theme
-from openbb_terminal.core.plots.plotly_ta.base import indicator
+from openbb_terminal.core.plots.plotly_ta.base import PltTA, indicator
 from openbb_terminal.core.plots.plotly_ta.data_classes import columns_regex
-from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 
 
-class Momentum(PlotlyTA):
+class Momentum(PltTA):
     """Momentum technical indicators"""
+
+    __subplots__ = ["rsi", "macd", "stoch", "cci", "fisher", "cg"]
+    __inchart__ = ["clenow", "denmark"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -85,6 +85,8 @@ class Momentum(PlotlyTA):
             font_color="#e0b700",
             showarrow=False,
         )
+        fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
+
         return fig, subplot_row + 1
 
     @indicator()
@@ -130,7 +132,8 @@ class Momentum(PlotlyTA):
             x=0,
             xanchor="right",
             xshift=-8,
-            y=0.79,
+            y=0.97,
+            yshift=-20,
             font_size=16,
             font_color="#ef7d00",
             showarrow=False,
@@ -142,7 +145,7 @@ class Momentum(PlotlyTA):
     @indicator()
     def plot_clenow(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Adds current close price to plotly figure"""
-        window = self.args["clenow"].get_argument_values("window") or 90
+        window = self.params["clenow"].get_argument_values("window") or 90
         _, _, fit_data = clenow_momentum(df_ta["Close"], window=window)
 
         fig.add_scatter(
@@ -173,7 +176,7 @@ class Momentum(PlotlyTA):
     @indicator()
     def plot_denmark(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Adds denmark to plotly figure"""
-        min_val = self.args["denmark"].get_argument_values("min_val") or 5
+        min_val = self.params["denmark"].get_argument_values("min_val") or 5
 
         denmark = ta.td_seq(df_ta["Close"], asint=True)
         denmark.set_index(df_ta.index, inplace=True)
@@ -226,6 +229,7 @@ class Momentum(PlotlyTA):
             showarrow=False,
             opacity=1,
         )
+
         return fig, inchart_index + 1
 
     @indicator()
@@ -318,6 +322,8 @@ class Momentum(PlotlyTA):
             row=subplot_row,
             col=1,
         )
+        fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
+
         return fig, subplot_row + 1
 
     @indicator()
@@ -328,7 +334,7 @@ class Momentum(PlotlyTA):
             name="MACD Histogram",
             x=df_ta.index,
             y=df_ta[columns_regex(df_ta, "MACDh")[0]].values,
-            opacity=self.bar_opacity,
+            opacity=0.9,
             marker_color="#1a97ea",
             row=subplot_row,
             col=1,
@@ -487,6 +493,6 @@ class Momentum(PlotlyTA):
             font_color="#e0b700",
             showarrow=False,
         )
-        fig["layout"][f"yaxis{subplot_row}"].update(autorange=True)
+        fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
 
         return fig, subplot_row + 1

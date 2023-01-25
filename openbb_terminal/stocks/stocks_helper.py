@@ -453,6 +453,8 @@ def load(
             f"with starting period {s_start.strftime('%Y-%m-%d')}."
         )
 
+    df_stock_candidate.name = symbol.upper()
+
     return df_stock_candidate
 
 
@@ -625,70 +627,8 @@ def display_candle(
                 row=2,
                 col=1,
             )
-            fig.update_layout(
-                yaxis_title="Stock Price ($)",
-                xaxis=dict(
-                    rangeslider=dict(visible=False),
-                    rangeselector=dict(
-                        bgcolor="#000000",
-                        bordercolor="gold",
-                        font=dict(color="white"),
-                        buttons=list(
-                            [
-                                dict(
-                                    count=1,
-                                    label="1M",
-                                    step="month",
-                                    stepmode="backward",
-                                ),
-                                dict(
-                                    count=3,
-                                    label="3M",
-                                    step="month",
-                                    stepmode="backward",
-                                ),
-                                dict(
-                                    count=1, label="YTD", step="year", stepmode="todate"
-                                ),
-                                dict(
-                                    count=1,
-                                    label="1y",
-                                    step="year",
-                                    stepmode="backward",
-                                ),
-                                dict(step="all"),
-                            ]
-                        ),
-                    ),
-                ),
-                bargap=0,
-                bargroupgap=0,
-            )
-
-            fig.update_layout(
-                updatemenus=[
-                    dict(
-                        bgcolor="#000000",
-                        bordercolor="gold",
-                        font=dict(color="white", size=14),
-                        buttons=[
-                            dict(
-                                label="linear   ",
-                                method="relayout",
-                                args=[{"yaxis.type": "linear"}],
-                            ),
-                            dict(
-                                label="log",
-                                method="relayout",
-                                args=[{"yaxis.type": "log"}],
-                            ),
-                        ],
-                        y=1.07,
-                        x=-0.01,
-                    )
-                ],
-            )
-
+            fig.update_layout(yaxis_title="Stock Price ($)", bargap=0, bargroupgap=0)
+            fig.add_logscale_menus()
             fig.hide_holidays(data.index)
 
             return fig.show() if not external_axes else fig

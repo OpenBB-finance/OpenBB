@@ -85,6 +85,8 @@ added_files = [
     (os.path.join(pathex, "blib2to3", "Grammar.txt"), "blib2to3"),
     (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
     (shutil.which("voila"), "."),
+    (shutil.which("jupyter-lab"), "."),
+    (shutil.which("streamlit"), "."),
 ]
 if is_win:
     print("Adding scipy.libs to bundle")

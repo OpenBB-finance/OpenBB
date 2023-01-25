@@ -3,13 +3,15 @@
 import pandas as pd
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
-from openbb_terminal.core.plots.plotly_ta.base import indicator
+from openbb_terminal.core.plots.plotly_ta.base import PltTA, indicator
 from openbb_terminal.core.plots.plotly_ta.data_classes import columns_regex
-from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 
 
-class Overlap(PlotlyTA):
+class Overlap(PltTA):
     """Overlap technical indicators"""
+
+    __inchart__ = ["vwap"]
+    __ma_mode__ = ["sma", "ema", "wma", "hma", "zlma"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -18,8 +20,9 @@ class Overlap(PlotlyTA):
     def plot_ma(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Adds moving average to plotly figure"""
         active_mas = []
-        if self.check_ma != []:
-            for ma in self.check_ma:
+        check_ma = [ma for ma in self.ma_mode if ma in self.indicators.get_active_ids()]
+        if check_ma:
+            for ma in check_ma:
                 column_names = columns_regex(df_ta, ma.upper())
                 try:
                     for column in column_names:

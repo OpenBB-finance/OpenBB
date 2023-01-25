@@ -4,7 +4,7 @@ import dotenv
 
 from openbb_terminal.base_helpers import load_env_vars, strtobool
 from openbb_terminal.core.config.paths import REPOSITORY_ENV_FILE, USER_ENV_FILE
-from openbb_terminal.core.plots.backend import get_backend
+from openbb_terminal.core.plots.backend import plots_backend
 
 dotenv.load_dotenv(USER_ENV_FILE)
 dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
@@ -12,7 +12,7 @@ dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 PLOT_DPI = load_env_vars("OPENBB_PLOT_DPI", int, 100, "settings")
 
 # Backend to use for plotting
-get_backend().start(load_env_vars("DEBUG_MODE", strtobool, False))
+plots_backend().start(load_env_vars("DEBUG_MODE", strtobool, False))
 BACKEND = os.getenv("OPENBB_BACKEND", "None")
 if BACKEND == "None":
     BACKEND = None  # type: ignore

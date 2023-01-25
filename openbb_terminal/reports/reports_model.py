@@ -22,7 +22,7 @@ from openbb_terminal.core.config.paths import (
     USER_PORTFOLIO_DATA_DIRECTORY,
     USER_REPORTS_DIRECTORY,
 )
-from openbb_terminal.core.plots.backend import get_backend
+from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex.forex_controller import FX_TICKERS
 from openbb_terminal.rich_config import console
@@ -322,7 +322,7 @@ def execute_notebook(input_path, parameters, output_path):
                 )
                 report_output_path = Path(report_output_path)
 
-                get_backend().send_url(
+                plots_backend().send_url(
                     url=f"/{report_output_path.as_uri()}", title="Reports"
                 )
                 console.print(f"\n[green]Report:[/green] {report_output_path}\n")

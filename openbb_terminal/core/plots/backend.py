@@ -170,7 +170,7 @@ if not (PLOTS_CORE_PATH / "assets" / "plotly.js").exists():
             f.write(chunk)
 
 
-def get_backend() -> Backend:
+def plots_backend() -> Backend:
     """Get the backend"""
     global BACKEND  # pylint: disable=W0603
     if BACKEND is None:
