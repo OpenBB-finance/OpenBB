@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - release/*
-  pull_request:
-    branches:
-      - develop
       - main
 
 concurrency:
@@ -16,10 +13,14 @@ concurrency:
 jobs:
   integration-tests:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event.pull_request.merged == true
     steps:
     - name: Checkout code
+      if: github.event_name == 'push'
       uses: actions/checkout@v3
+
+    - name: Checkout specific ref
+      if: github.event_name == 'pull_request'
+      run: git fetch origin ${{ github.event.pull_request.head.ref }} && git checkout FETCH_HEAD
 
     - name: Setup Python 3.9
       uses: actions/setup-python@v4
@@ -48,4 +49,4 @@ jobs:
     - name: Run integration tests
       run: |
         source $VENV
-        python terminal.py /home/runner/work/OpenBBTerminal_fork/OpenBBTerminal_fork/openbb_terminal/miscellaneous/integration_tests_scripts -t
+        python terminal.py /home/runner/work/OpenBBTerminal/OpenBBTerminal/openbb_terminal/miscellaneous/integration_tests_scripts -t
