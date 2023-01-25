@@ -9,29 +9,30 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/PM?events=div%2Csplits&includePrePost=False&interval=1d&range=1mo
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/PM?events=div%2Csplits%2CcapitalGains&includePrePost=False&interval=1d&range=1mo
   response:
     body:
       string: !!binary |
-        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
+        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
     headers:
       Age:
       - '0'
@@ -54,25 +55,25 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1069'
+      - '1121'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 19 Dec 2022 16:32:45 GMT
+      - Mon, 16 Jan 2023 11:20:21 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '30'
+      - '28'
       x-request-id:
-      - 6f460184-d331-42e2-afe9-91ccd79e97ac
+      - d1fa7bfb-6627-4b38-9678-7e58eece3232
       x-yahoo-request-id:
-      - c7dr7tphq14hd
+      - 9dthc8hhsacnl
       y-rid:
-      - c7dr7tphq14hd
+      - 9dthc8hhsacnl
     status:
       code: 200
       message: OK

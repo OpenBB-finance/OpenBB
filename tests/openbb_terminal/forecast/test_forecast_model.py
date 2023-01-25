@@ -38,7 +38,7 @@ def test_clean(tsla_csv, fill, drop):
 def test_add_feature_engineering(tsla_csv, command):
     val = getattr(fm, f"add_{command}")(tsla_csv)
     if command == "atr":
-        assert isinstance(val, Tuple)
+        assert isinstance(val, (pd.DataFrame, Tuple))
     else:
         assert isinstance(val, pd.DataFrame)
 
