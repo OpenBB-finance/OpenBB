@@ -90,6 +90,7 @@ def login(session: dict):
 def logout():
     """Logout and clear session."""
     system_clear()
+    User.logout()
     Hub.delete_session()
     Local.remove_session_file()
     plt.close("all")

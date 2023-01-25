@@ -42,3 +42,12 @@ class User:
             console.print(f"[info]uuid:[/info] {User.UUID}\n")
         else:
             console.print("[info]Only you know...[/info]\n")
+
+    @classmethod
+    def logout(cls):
+        """Logout."""
+        User.TOKEN_TYPE = ""
+        User.TOKEN = ""
+        User.EMAIL = ""
+        User.UUID = ""
+        obbff.USE_FLAIR = ":openbb"
