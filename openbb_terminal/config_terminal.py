@@ -94,8 +94,6 @@ API_REDDIT_PASSWORD = os.getenv("OPENBB_API_REDDIT_PASSWORD") or "REPLACE_ME"
 API_POLYGON_KEY = os.getenv("OPENBB_API_POLYGON_KEY") or "REPLACE_ME"
 
 # https://developer.twitter.com
-API_TWITTER_KEY = os.getenv("OPENBB_API_TWITTER_KEY") or "REPLACE_ME"
-API_TWITTER_SECRET_KEY = os.getenv("OPENBB_API_TWITTER_SECRET_KEY") or "REPLACE_ME"
 API_TWITTER_BEARER_TOKEN = os.getenv("OPENBB_API_TWITTER_BEARER_TOKEN") or "REPLACE_ME"
 
 # https://fred.stlouisfed.org/docs/api/api_key.html
@@ -202,3 +200,6 @@ OPENBB_PERSONAL_ACCESS_TOKEN = (
 
 # https://intrinio.com/starter-plan
 API_INTRINIO_KEY = os.getenv("OPENBB_API_INTRINIO_KEY") or "REPLACE_ME"
+
+# https://databento.com/
+API_DATABENTO_KEY = os.getenv("OPENBB_API_DATABENTO_KEY") or "REPLACE_ME"

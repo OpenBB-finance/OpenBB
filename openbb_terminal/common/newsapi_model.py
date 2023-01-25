@@ -71,11 +71,11 @@ def get_news(
             f" {query} were found since {start_date}\n",
         )
 
-        if show_newest:
-            articles = response_json["articles"]
-
-        else:
-            articles = response_json["articles"][::-1]
+        articles = (
+            response_json["articles"]
+            if show_newest
+            else response_json["articles"][::-1]
+        )
 
     elif response.status_code == 426:
         console.print(f"Error in request: {response.json()['message']}", "\n")

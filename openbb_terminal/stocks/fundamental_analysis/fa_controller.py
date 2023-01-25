@@ -886,7 +886,7 @@ class FundamentalAnalysisController(StockBaseController):
             "--plot",
             action="store",
             metavar="column",
-            choices=stocks_helper.INCOME_PLOT[self.default_income],
+            choices=stocks_helper.INCOME_PLOT_CHOICES,
             type=str,
             default=None,
             dest="plot",
@@ -910,6 +910,10 @@ class FundamentalAnalysisController(StockBaseController):
                     "[red]Quarterly data currently unavailable for yfinance"
                     ", showing yearly.[/red]\n"
                 )
+            if stocks_helper.verify_plot_options(
+                "income", ns_parser.source, ns_parser.plot
+            ):
+                return
             if ns_parser.source == "AlphaVantage":
                 av_view.display_income_statement(
                     symbol=self.ticker,
@@ -1024,7 +1028,7 @@ class FundamentalAnalysisController(StockBaseController):
             "-p",
             "--plot",
             action="store",
-            choices=stocks_helper.BALANCE_PLOT[self.default_balance],
+            choices=stocks_helper.BALANCE_PLOT_CHOICES,
             type=str,
             metavar="column",
             default=None,
@@ -1047,6 +1051,10 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.source == "YahooFinance" and ns_parser.b_quarter:
                 text = "Quarterly data currently unavailable for yfinance"
                 console.print(f"[red]{text}, showing yearly.[/red]\n")
+            if stocks_helper.verify_plot_options(
+                "balance", ns_parser.source, ns_parser.plot
+            ):
+                return
             if ns_parser.source == "AlphaVantage":
                 av_view.display_balance_sheet(
                     symbol=self.ticker,
@@ -1169,7 +1177,7 @@ class FundamentalAnalysisController(StockBaseController):
             "--plot",
             action="store",
             type=str,
-            choices=stocks_helper.CASH_PLOT[self.default_cash],
+            choices=stocks_helper.CASH_PLOT_CHOICES,
             metavar="column",
             default=None,
             dest="plot",
@@ -1190,6 +1198,10 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.source == "YahooFinance" and ns_parser.b_quarter:
                 text = "Quarterly data currently unavailable for yfinance"
                 console.print(f"[red]{text}, showing yearly.[/red]\n")
+            if stocks_helper.verify_plot_options(
+                "cash", ns_parser.source, ns_parser.plot
+            ):
+                return
             if ns_parser.source == "AlphaVantage":
                 av_view.display_cash_flow(
                     symbol=self.ticker,
@@ -1508,8 +1520,16 @@ class FundamentalAnalysisController(StockBaseController):
             "--similar",
             type=int,
             dest="similar",
-            default=6,
+            default=0,
             help="Number of similar companies to generate ratios for.",
+        )
+        parser.add_argument(
+            "-b",
+            "--beta",
+            type=float,
+            dest="beta",
+            default=1,
+            help="The beta you'd like to use for the calculation.",
         )
         parser.add_argument(
             "-g",
@@ -1528,15 +1548,19 @@ class FundamentalAnalysisController(StockBaseController):
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
 
-            dcf = dcf_view.CreateExcelFA(
-                symbol=self.ticker,
-                audit=ns_parser.audit,
-                ratios=ns_parser.ratios,
-                len_pred=ns_parser.prediction,
-                max_similars=ns_parser.similar,
-                growth=ns_parser.growth,
-            )
-            dcf.create_workbook()
+            if self.ticker:
+                dcf = dcf_view.CreateExcelFA(
+                    symbol=self.ticker,
+                    beta=ns_parser.beta,
+                    audit=ns_parser.audit,
+                    ratios=ns_parser.ratios,
+                    len_pred=ns_parser.prediction,
+                    max_similars=ns_parser.similar,
+                    growth=ns_parser.growth,
+                )
+                dcf.create_workbook()
+            else:
+                console.print("Please use --ticker or load a ticker first.")
 
     @log_start_end(log=logger)
     def call_dcfc(self, other_args: List[str]):

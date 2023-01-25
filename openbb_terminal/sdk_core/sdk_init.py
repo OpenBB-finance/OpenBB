@@ -20,8 +20,6 @@ import openbb_terminal.cryptocurrency.cryptocurrency_helpers as crypto_helpers
 # ETF
 import openbb_terminal.etf.discovery.wsj_model as etf_disc_wsj_model
 import openbb_terminal.etf.discovery.wsj_view as etf_disc_wsj_view
-import openbb_terminal.etf.screener.screener_model as etf_scr_model
-import openbb_terminal.etf.screener.screener_view as etf_scr_view
 
 # Forex Helpers
 import openbb_terminal.forex.forex_helper as forex_helper
@@ -211,6 +209,14 @@ from openbb_terminal.econometrics import (
     regression_view as econometrics_regression_view,
 )
 
+# Fixedincome
+from openbb_terminal.fixedincome import (
+    fred_model as fixedincome_fred_model,
+    ecb_model as fixedincome_ecb_model,
+    oecd_model as fixedincome_oecd_model,
+)
+
+
 # Economy
 from openbb_terminal.economy import (
     alphavantage_model as economy_alphavantage_model,
@@ -252,6 +258,7 @@ from openbb_terminal.forex import (
 from openbb_terminal.futures import (
     yfinance_model as futures_yfinance_model,
     yfinance_view as futures_yfinance_view,
+    sdk_helper as futures_sdk_model,
 )
 
 # Stocks Helpers
@@ -387,14 +394,6 @@ from openbb_terminal.stocks.screener import (
     yahoofinance_view as stocks_screener_yahoofinance_view,
     ark_model as stocks_screener_ark_model,
     ark_view as stocks_screener_ark_view,
-)
-
-# Stocks - Sector Industry Analysis
-from openbb_terminal.stocks.sector_industry_analysis import (
-    financedatabase_model as stocks_sia_financedatabase_model,
-    financedatabase_view as stocks_sia_financedatabase_view,
-    stockanalysis_model as stocks_sia_stockanalysis_model,
-    stockanalysis_view as stocks_sia_stockanalysis_view,
 )
 
 # Stocks - Technical Analysis

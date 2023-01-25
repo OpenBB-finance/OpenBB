@@ -9,13 +9,13 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/ARKW?events=div%2Csplits%2CcapitalGains&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/ARKW?interval=1d&range=1d
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ARKW","exchangeName":"PCX","instrumentType":"ETF","firstTradeDate":1412083800,"regularMarketTime":1675956010,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":53.06,"chartPreviousClose":120.66,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1675953000,"start":1675933200,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1675976400,"start":1675953000,"gmtoffset":-18000},"post":{"timezone":"EST","end":1675990800,"start":1675976400,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639578600,1639665000,1639751400],"indicators":{"quote":[{"volume":[1503000,1292600,1459900],"open":[119.62999725341797,123.26000213623047,116.5],"close":[121.55999755859375,117.88999938964844,121.55000305175781],"high":[122.19999694824219,123.47000122070312,122.33999633789062],"low":[115.37000274658203,116.48999786376953,114.55000305175781]}],"adjclose":[{"adjclose":[118.27759552001953,114.70669555664062,118.26786804199219]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ARKW","exchangeName":"PCX","instrumentType":"ETF","firstTradeDate":1412083800,"regularMarketTime":1677164095,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":50.73,"chartPreviousClose":51.05,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1677162600,"start":1677142800,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1677186000,"start":1677162600,"gmtoffset":-18000},"post":{"timezone":"EST","end":1677200400,"start":1677186000,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1677164095],"indicators":{"quote":[{"low":[50.480098724365234],"volume":[114113],"open":[51.90999984741211],"high":[51.856998443603516],"close":[50.72999954223633]}],"adjclose":[{"adjclose":[50.72999954223633]}]}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '37'
       Connection:
       - keep-alive
       Expect-CT:
@@ -23,7 +23,63 @@ interactions:
       Referrer-Policy:
       - no-referrer-when-downgrade
       Strict-Transport-Security:
-      - max-age=15552000
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '937'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 23 Feb 2023 14:56:04 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '8'
+      x-request-id:
+      - 770d8976-9e2d-40ba-83ff-6fc87040d1d2
+      x-yahoo-request-id:
+      - 0jaehfthvevl9
+      y-rid:
+      - 0jaehfthvevl9
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/ARKW?events=div%2Csplits%2CcapitalGains&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ARKW","exchangeName":"PCX","instrumentType":"ETF","firstTradeDate":1412083800,"regularMarketTime":1677164095,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":50.73,"chartPreviousClose":120.66,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1677162600,"start":1677142800,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1677186000,"start":1677162600,"gmtoffset":-18000},"post":{"timezone":"EST","end":1677200400,"start":1677186000,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639578600,1639665000,1639751400],"indicators":{"quote":[{"open":[119.62999725341797,123.26000213623047,116.5],"high":[122.19999694824219,123.47000122070312,122.33999633789062],"close":[121.55999755859375,117.88999938964844,121.55000305175781],"low":[115.37000274658203,116.48999786376953,114.55000305175781],"volume":[1503000,1292600,1459900]}],"adjclose":[{"adjclose":[118.27759552001953,114.70669555664062,118.26786804199219]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '2'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -37,7 +93,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 09 Feb 2023 15:20:30 GMT
+      - Thu, 23 Feb 2023 14:56:04 GMT
       server:
       - ATS
       vary:
@@ -45,13 +101,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '10'
+      - '15'
       x-request-id:
-      - 51f4d93a-701f-4b16-bb38-53aec538923d
+      - 258114c6-4291-4d07-8142-7bfd259dc1ec
       x-yahoo-request-id:
-      - 83vhql1hua3pu
+      - 4cer9d9hvevk4
       y-rid:
-      - 83vhql1hua3pu
+      - 4cer9d9hvevk4
     status:
       code: 200
       message: OK

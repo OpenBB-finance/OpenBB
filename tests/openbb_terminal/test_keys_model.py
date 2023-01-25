@@ -8,8 +8,9 @@ import pytest
 
 from openbb_terminal import keys_model
 
-
 # pylint: disable=R0902,R0903,W1404,C0302
+TEST_PATH = Path(__file__).parent.resolve()
+proc_id = os.getpid()
 
 
 # Test persist
@@ -20,7 +21,7 @@ from openbb_terminal import keys_model
 )
 def test_set_key(env_var_name: str, env_var_value: str, persist: bool):
     # Route .env file location
-    keys_model.USER_ENV_FILE = Path(os.path.dirname(__file__), ".tmp")
+    keys_model.USER_ENV_FILE = (TEST_PATH / f"{env_var_name}{proc_id}.tmp").resolve()
 
     # Test
     keys_model.set_key(env_var_name, env_var_value, persist)
@@ -32,7 +33,7 @@ def test_set_key(env_var_name: str, env_var_value: str, persist: bool):
 
     # Remove temp .env
     if keys_model.USER_ENV_FILE.is_file():
-        os.remove(keys_model.USER_ENV_FILE)
+        keys_model.USER_ENV_FILE.unlink(missing_ok=True)
 
     # Get key from patched os.environ
     os_key = os.getenv(env_var_name)
@@ -54,7 +55,8 @@ def test_get_keys():
 
 
 def set_naive_environment(env_var_name_list: List[str]) -> None:
-    tmp_env = Path(os.path.dirname(__file__), ".tmp")
+    temp_name = "_".join(env_var_name_list).replace("OPENBB_", "").replace("API_", "")
+    tmp_env = (TEST_PATH / f"{temp_name}{proc_id}.tmp").resolve()
 
     # Remove keys from patched os.environ
     for env_var_name in env_var_name_list:
@@ -63,8 +65,7 @@ def set_naive_environment(env_var_name_list: List[str]) -> None:
 
     # Remove .tmp content
     if tmp_env.is_file():
-        with open(tmp_env, "w") as f:
-            f.close()
+        tmp_env.unlink(missing_ok=True)
 
     # Set new temporary .env
     keys_model.USER_ENV_FILE = tmp_env
@@ -649,28 +650,28 @@ def test_set_bitquery_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "access_token, persist, show_output, expected",
     [
         (
-            ["test_key", "test_secret", "test_access_token"],
+            "test_access_token",
             False,
             True,
             keys_model.KeyStatus.DEFINED_TEST_FAILED,
         ),
         (
-            ["test_key", "test_secret", "test_access_token"],
+            "test_access_token",
             False,
             False,
             keys_model.KeyStatus.DEFINED_TEST_FAILED,
         ),
         (
-            ["test_key", "test_secret", "test_access_token"],
+            "test_access_token",
             True,
             True,
             keys_model.KeyStatus.DEFINED_TEST_FAILED,
         ),
         (
-            ["REPLACE_ME", "REPLACE_ME", "REPLACE_ME"],
+            "REPLACE_ME",
             False,
             True,
             keys_model.KeyStatus.NOT_DEFINED,
@@ -678,25 +679,21 @@ def test_set_bitquery_key(
     ],
 )
 def test_set_twitter_key(
-    args: List[str], persist: bool, show_output: bool, expected: str
+    access_token: str, persist: bool, show_output: bool, expected: str
 ):
     env_var_name_list = [
-        "OPENBB_API_TWITTER_KEY",
-        "OPENBB_API_TWITTER_SECRET_KEY",
         "OPENBB_API_TWITTER_BEARER_TOKEN",
     ]
 
     set_naive_environment(env_var_name_list)
 
     status = keys_model.set_twitter_key(
-        key=args[0],
-        secret=args[1],
-        access_token=args[2],
+        access_token=access_token,
         persist=persist,
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status([access_token], persist, expected, env_var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -1613,3 +1610,16 @@ def test_set_openbb_key(
     )
 
     assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+
+
+def delete_tmp_files():
+    tmp_files = TEST_PATH.glob(f"*{proc_id}.tmp")
+    for file in tmp_files:
+        file.unlink(missing_ok=True)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def delete_tmp_files_session():
+    delete_tmp_files()
+    yield
+    delete_tmp_files()

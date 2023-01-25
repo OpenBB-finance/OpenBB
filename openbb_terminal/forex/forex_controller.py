@@ -37,7 +37,8 @@ logger = logging.getLogger(__name__)
 forex_data_path = os.path.join(
     os.path.dirname(__file__), os.path.join("data", "polygon_tickers.csv")
 )
-FX_TICKERS = pd.read_csv(forex_data_path).iloc[:, 0].to_list()
+tickers = pd.read_csv(forex_data_path).iloc[:, 0].to_list()
+FX_TICKERS = list(set(tickers + [t[-3:] + t[:3] for t in tickers if len(t) == 6]))
 
 
 class ForexController(BaseController):
@@ -73,7 +74,6 @@ class ForexController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
-
             choices["load"].update({c: {} for c in FX_TICKERS})
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -293,10 +293,12 @@ class ForexController(BaseController):
 
             data = stocks_helper.process_candle(self.data)
             if ns_parser.raw:
-                if ns_parser.trendlines:
-                    if (data.index[1] - data.index[0]).total_seconds() >= 86400:
-                        data = stocks_helper.find_trendline(data, "OC_High", "high")
-                        data = stocks_helper.find_trendline(data, "OC_Low", "low")
+                if (
+                    ns_parser.trendlines
+                    and (data.index[1] - data.index[0]).total_seconds() >= 86400
+                ):
+                    data = stocks_helper.find_trendline(data, "OC_High", "high")
+                    data = stocks_helper.find_trendline(data, "OC_Low", "low")
 
                 qa_view.display_raw(
                     data=data,
