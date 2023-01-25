@@ -78,17 +78,19 @@ def apply_configs(configs: dict):
     console.print(configs, style="red")
     if configs:
         settings = configs.get("features_settings", {})
-        for k, v in settings.items():
-            if hasattr(obbff, k):
-                if isinstance(getattr(obbff, k), int):
-                    setattr(obbff, k, strtobool(v))
-                else:
-                    setattr(obbff, k, v)
+        if settings:
+            for k, v in settings.items():
+                if hasattr(obbff, k):
+                    if isinstance(getattr(obbff, k), int):
+                        setattr(obbff, k, strtobool(v))
+                    else:
+                        setattr(obbff, k, v)
 
         keys = configs.get("features_keys", {})
-        for k, v in keys.items():
-            if hasattr(cfg, k):
-                if isinstance(getattr(cfg, k), int):
-                    setattr(cfg, k, strtobool(v))
-                else:
-                    setattr(cfg, k, v)
+        if keys:
+            for k, v in keys.items():
+                if hasattr(cfg, k):
+                    if isinstance(getattr(cfg, k), int):
+                        setattr(cfg, k, strtobool(v))
+                    else:
+                        setattr(cfg, k, v)
