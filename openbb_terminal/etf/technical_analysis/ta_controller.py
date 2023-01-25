@@ -1408,5 +1408,4 @@ class TechnicalAnalysisController(BaseController):
                 mamode=ns_parser.s_mamode,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
             )
