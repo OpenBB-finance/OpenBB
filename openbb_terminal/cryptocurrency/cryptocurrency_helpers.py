@@ -625,6 +625,7 @@ def load_yf_data(symbol: str, currency: str, interval: str, days: int):
         start=datetime.now() - timedelta(days=days),
         progress=False,
         interval=interval,
+        ignore_tz=True,
     ).sort_index(ascending=False)
 
     df_coin.index.names = ["date"]
