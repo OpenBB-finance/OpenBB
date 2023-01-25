@@ -55,7 +55,6 @@ def process_session_response(response: requests.Response) -> dict:
         The login info.
     """
     if response.status_code == 200:
-        console.print("\nLogin successful.", style="green")
         login = response.json()
         return login
     if response.status_code == 401:
