@@ -27,7 +27,6 @@ def get_user_input() -> Tuple[str, str, bool]:
     console.print("\nPlease enter your credentials:", style="info")
     email = console.input("> Email: ", style="blue")
     password = console.getpass("> Password: ", style="blue")
-
     save_str = console.input("> Keep me logged in (y/n): ", style="blue").lower()
     save = False
     if save_str == "y":
