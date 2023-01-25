@@ -83,15 +83,13 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
+    console.print(configs, style="red")
     if configs:
         keys = configs.get("features_keys", {})
         if keys:
             for k, v in keys.items():
                 if hasattr(cfg, k):
-                    if isinstance(getattr(cfg, k), int):
-                        setattr(cfg, k, strtobool(v))
-                    else:
-                        setattr(cfg, k, v)
+                    setattr(cfg, k, v)
 
         # Since settings come from different files we use the format {var_name: "path:value"}
         settings = configs.get("features_settings", {})
@@ -102,7 +100,9 @@ def apply_configs(configs: dict):
 
                     module = importlib.import_module(path)
                     if hasattr(module, var_name):
-                        if isinstance(getattr(module, var_name), int):
+                        if value.lower() in ["true", "false"]:
                             setattr(module, var_name, strtobool(value))
+                        elif isinstance(getattr(module, var_name), int):
+                            setattr(module, var_name, int(value))
                         else:
                             setattr(module, var_name, value)
