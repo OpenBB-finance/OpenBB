@@ -100,9 +100,7 @@ def fetch_user_configs(session: dict) -> Optional[requests.Response]:
             url=BASE_URL + "terminal/user",
             headers={"Authorization": f"{token_type.title()} {token}"},
         )
-        if response.status_code == 200:
-            console.print("[green]\nFetched user configurations.[/green]")
-        else:
+        if response.status_code != 200:
             console.print("[red]\nFailed to fetch configurations.[/red]")
         return response
     except requests.exceptions.ConnectionError:

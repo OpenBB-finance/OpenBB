@@ -4,7 +4,7 @@ import json
 from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
 from openbb_terminal.rich_config import console
 
-# from openbb_terminal import feature_flags as obbff
+from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.base_helpers import strtobool
 
@@ -75,25 +75,29 @@ def remove_session_file(file_path: Path = SESSION_FILE_PATH) -> bool:
 
 
 def apply_configs(configs: dict):
-    """Apply configurations."""
-    console.print(f"Will apply this: {configs}", style="red")
+    """Apply configurations.
 
-    keys = configs.get("features_keys", {})
-    if keys:
-        for k, v in keys.items():
-            if hasattr(cfg, k):
-                if isinstance(getattr(cfg, k), int):
-                    setattr(cfg, k, strtobool(v))
-                else:
-                    setattr(cfg, k, v)
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
 
-    # TODO: Apply configs when uploading is implemented
-    # if configs:
-    #     settings = configs.get("features_settings", {})
-    #     if settings:
-    #         for k, v in settings.items():
-    #             if hasattr(obbff, k):
-    #                 if isinstance(getattr(obbff, k), int):
-    #                     setattr(obbff, k, strtobool(v))
-    #                 else:
-    #                     setattr(obbff, k, v)
+    if configs:
+        keys = configs.get("features_keys", {})
+        if keys:
+            for k, v in keys.items():
+                if hasattr(cfg, k):
+                    if isinstance(getattr(cfg, k), int):
+                        setattr(cfg, k, strtobool(v))
+                    else:
+                        setattr(cfg, k, v)
+
+        settings = configs.get("features_settings", {})
+        if settings:
+            for k, v in settings.items():
+                if hasattr(obbff, k):
+                    if isinstance(getattr(obbff, k), int):
+                        setattr(obbff, k, strtobool(v))
+                    else:
+                        setattr(obbff, k, v)
