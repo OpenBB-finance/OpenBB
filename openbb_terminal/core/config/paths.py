@@ -20,7 +20,6 @@ def load_dotenv_with_priority():
 
 def get_user_data_directory():
     """Gets user data path from .env file or returns default path"""
-    load_dotenv_with_priority()
     if os.getenv("OPENBB_USER_DATA_DIRECTORY"):
         user_data_directory = Path(os.getenv("OPENBB_USER_DATA_DIRECTORY"))
     else:

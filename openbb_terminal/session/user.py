@@ -56,3 +56,8 @@ class User:
         User.EMAIL = ""
         User.UUID = ""
         obbff.USE_FLAIR = ":openbb"
+
+    @classmethod
+    def is_guest(cls):
+        """Check if user is guest."""
+        return not bool(User.TOKEN)

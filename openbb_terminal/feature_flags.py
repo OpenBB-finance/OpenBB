@@ -9,7 +9,6 @@ import i18n
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_DATA_SOURCES_DEFAULT_FILE,
-    load_dotenv_with_priority,
 )
 from openbb_terminal.core.config import paths_helper
 from openbb_terminal.base_helpers import (
@@ -20,8 +19,6 @@ from openbb_terminal.base_helpers import (
 paths_helper.init_userdata()
 
 # pylint: disable=no-member,c-extension-no-member
-
-load_dotenv_with_priority()
 
 try:
     __import__("git")

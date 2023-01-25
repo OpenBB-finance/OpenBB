@@ -13,6 +13,7 @@ import sys
 import webbrowser
 from typing import List, Dict, Optional
 import contextlib
+import importlib
 
 import certifi
 from rich import panel
@@ -23,6 +24,7 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 import pandas as pd
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.session.user import User
 from openbb_terminal.terminal_helper import is_packaged_application
 from openbb_terminal.session import session_controller
 
@@ -355,13 +357,13 @@ class TerminalController(BaseController):
         """Process keys command."""
         from openbb_terminal.keys_controller import KeysController
 
-        self.queue = self.load_class(KeysController, self.queue, env_file)
+        self.queue = self.load_class(KeysController, self.queue)
 
     def call_settings(self, _):
         """Process settings command."""
         from openbb_terminal.settings_controller import SettingsController
 
-        self.queue = self.load_class(SettingsController, self.queue, env_file)
+        self.queue = self.load_class(SettingsController, self.queue)
 
     def call_featflags(self, _):
         """Process feature flags command."""
@@ -788,6 +790,14 @@ class TerminalController(BaseController):
 # pylint: disable=global-statement
 def terminal(jobs_cmds: List[str] = None, test_mode=False):
     """Terminal Menu."""
+
+    if User.is_guest():
+        load_dotenv_with_priority()
+        modules = sys.modules.copy()
+        for module in modules:
+            if module.startswith("openbb"):
+                importlib.reload(sys.modules[module])
+                
     log_terminal(test_mode=test_mode)
 
     if jobs_cmds is not None and jobs_cmds:
@@ -833,8 +843,6 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
 
         t_controller.print_help()
         check_for_updates()
-
-    load_dotenv_with_priority()
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:
@@ -904,8 +912,6 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 break
 
             # Check if the user wants to reset application
-            # TODO: exit cmd after logout and reentering the terminal is not working
-            # HELP: login -> logout -> login -> exit should leave the terminal, but it doesn't
             if an_input in ("r", "reset") or t_controller.update_success:
                 ret_code = reset(t_controller.queue if t_controller.queue else [])
                 if ret_code != 0:
