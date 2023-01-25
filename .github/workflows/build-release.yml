@@ -12,7 +12,6 @@ on:
   push:
     branches:
       - release/*
-      - hotfix/*
       - main
 
 concurrency:
