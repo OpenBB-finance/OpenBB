@@ -326,7 +326,7 @@ def pytest_addoption(parser: Parser):
         "--autodoc",
         action="store_true",
         default=False,
-        help="run auto documantation tests",
+        help="run auto documentation tests",
     )
 
 

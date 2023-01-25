@@ -26,6 +26,12 @@ def test_valinvest_score():
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
+def test_display_filings():
+    fmp_view.display_filings()
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "func, kwargs_dict",
     [

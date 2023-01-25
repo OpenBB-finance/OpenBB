@@ -31,6 +31,9 @@ else:
     WITH_GIT = True
 
 
+# Always overwrite exported files
+FILE_OVERWITE = load_env_vars("OPENBB_FILE_OVERWRITE", strtobool, False, "featflags")
+
 # Retry unknown commands with `load`
 RETRY_WITH_LOAD = load_env_vars("OPENBB_RETRY_WITH_LOAD", strtobool, False, "featflags")
 
