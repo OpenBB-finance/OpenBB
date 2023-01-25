@@ -1,5 +1,4 @@
 # IMPORTATION STANDARD
-import json
 import logging
 
 # IMPORTATION THIRDPARTY
