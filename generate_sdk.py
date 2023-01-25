@@ -44,7 +44,13 @@ sub_names = {
     "nft": "NFT",
 }
 
-sdk_init_funcs = """
+
+sdk_openbb_var = """
+class SDKLogger:
+    def __init__(self):
+        self.__suppress_logging = check_suppress_logging(suppress_dict=SUPPRESS_LOGGING_CLASSES)
+        self.__check_initialize_logging()
+
     def __check_initialize_logging(self):
         if not self.__suppress_logging:
             self.__initialize_logging()
@@ -53,73 +59,57 @@ sdk_init_funcs = """
     def __initialize_logging():
         cfg.LOGGING_SUB_APP = "sdk"
         setup_logging()
-        log_all_settings()\r\r\r
-"""
+        log_all_settings()
 
-sdk_openbb_var = """
-openbb = OpenBBSDK(
-    suppress_logging=check_suppress_logging(suppress_dict=SUPPRESS_LOGGING_CLASSES),
-)\r\r
+
+openbb = OpenBBSDK()\r\r
 """
 
 disable_lines = "# flake8: noqa\r# pylint: disable=C0301,R0902,R0903\r"
 
 
-class Trailmap:
-    def __init__(self, trailmap: str, model: str, view: Optional[str] = None):
-        tmap = trailmap.split(".")
-        if len(tmap) == 1:
-            tmap = ["root", tmap[0]]
-        self.class_attr: str = tmap.pop(-1)
-        self.location_path = tmap
-        self.model = model
-        self.view = view if view else None
-        self.view_name = "_chart"
-        self.model_func: Optional[str] = f"lib.{model}" if model else None
-        self.view_func: Optional[str] = f"lib.{view}" if view else None
-        self.short_doc: Dict[str, Optional[str]] = {}
-        self.long_doc: Dict[str, str] = {}
-        self.lineon: Dict[str, int] = {}
-        self.full_path: Dict[str, str] = {}
-        self.func_def: Dict[str, str] = {}
-        self.func_attr: Dict[str, FunctionType] = {}
-        self.get_docstrings()
+class FuncAttr:
+    def __init__(self, func: str):
+        self.short_doc: Optional[str] = None
+        self.long_doc: Optional[str] = None
+        self.func_def: Optional[str] = None
+        self.path: Optional[str] = None
+        self.lineon: Optional[int] = None
+        self.full_path: Optional[str] = None
+        self.func_unwrapped: Optional[FunctionType] = None
+        self.func_wrapped: Optional[FunctionType] = None
+        self.get_func_attrs(func)
 
-    def get_docstrings(self) -> None:
-        """Gets the function docstrings. We get the short and long docstrings."""
+    def get_func_attrs(self, func: str) -> None:
+        attr = getattr(
+            importlib.import_module("openbb_terminal.sdk_core.sdk_init"),
+            func.split(".")[0],
+        )
+        func_attr = getattr(attr, func.split(".")[1])
+        self.func_wrapped = func_attr
 
-        for key, func in zip(["model", "view"], [self.model, self.view]):
-            if func:
-                attr = getattr(
-                    importlib.import_module("openbb_terminal.sdk_core.sdk_init"),
-                    func.split(".")[0],
-                )
-                func_attr = getattr(attr, func.split(".")[1])
+        add_juan = 0
+        if hasattr(func_attr, "__wrapped__"):
+            while hasattr(func_attr, "__wrapped__"):
+                func_attr = func_attr.__wrapped__
+            add_juan = 1
 
-                add_juan = 0
-                if hasattr(func_attr, "__wrapped__"):
-                    func_attr = func_attr.__wrapped__
-                    if hasattr(func_attr, "__wrapped__"):
-                        func_attr = func_attr.__wrapped__
-                    add_juan = 1
+        self.func_unwrapped = func_attr
+        self.lineon = inspect.getsourcelines(func_attr)[1] + add_juan
 
-                self.func_attr[key] = func_attr
-                self.lineon[key] = inspect.getsourcelines(func_attr)[1] + add_juan
+        self.func_def = self.get_definition()
+        self.long_doc = func_attr.__doc__
+        self.short_doc = clean_attr_desc(func_attr)
 
-                self.func_def[key] = self.get_definition(key)
-                self.long_doc[key] = func_attr.__doc__
-                self.short_doc[key] = clean_attr_desc(func_attr)
+        self.path = inspect.getfile(func_attr)
+        full_path = (
+            inspect.getfile(func_attr).replace("\\", "/").split("openbb_terminal/")[1]
+        )
+        self.full_path = f"openbb_terminal/{full_path}"
 
-                full_path = (
-                    inspect.getfile(func_attr)
-                    .replace("\\", "/")
-                    .split("openbb_terminal/")[1]
-                )
-                self.full_path[key] = f"openbb_terminal/{full_path}"
-
-    def get_definition(self, key: str) -> str:
+    def get_definition(self) -> str:
         """Creates the function definition to be used in SDK docs."""
-        funcspec = inspect.getfullargspec(self.func_attr[key])
+        funcspec = inspect.getfullargspec(self.func_unwrapped)
 
         definition = ""
         added_comma = False
@@ -150,8 +140,29 @@ class Trailmap:
             and funcspec.annotations["return"] is not None
             else "None"
         )
-        definition = f"def {getattr(self, f'{key}_func').split('.')[-1]}({definition }) -> {return_def}"
+        definition = (
+            f"def {self.func_unwrapped.__name__}({definition }) -> {return_def}"
+        )
         return definition
+
+
+class Trailmap:
+    def __init__(self, trailmap: str, model: str, view: Optional[str] = None):
+        tmap = trailmap.split(".")
+        if len(tmap) == 1:
+            tmap = ["root", tmap[0]]
+        self.class_attr: str = tmap.pop(-1)
+        self.location_path = tmap
+        self.model = model
+        self.view = view if view else None
+        self.view_name = "_chart"
+        self.model_func: Optional[str] = f"lib.{model}" if model else None
+        self.view_func: Optional[str] = f"lib.{view}" if view else None
+        self.func_attrs: Dict[str, FuncAttr] = {}
+        if model:
+            self.func_attrs["model"] = FuncAttr(self.model)
+        if view:
+            self.func_attrs["view"] = FuncAttr(self.view)
 
 
 class BuildCategoryModelClasses:
@@ -295,20 +306,16 @@ class BuildCategoryModelClasses:
                     added_attributes = True
 
                 for key in ["model", "view"]:
-                    if v.short_doc.get(key, None):
+                    if v.func_attrs.get(key, None) and v.func_attrs[key].short_doc:
                         view = v.view_name if key == "view" else ""
                         f.write(
-                            f"{add_indent}        `{v.class_attr}{view}`: {v.short_doc[key]}\\n\r"
+                            f"{add_indent}        `{v.class_attr}{view}`: {v.func_attrs[key].short_doc}\\n\r"
                         )
 
         if module:
             f.write('    """\r\r    def __init__(self):\r        super().__init__()\r')
         elif sdk_root:
-            f.write(
-                '    """\r\r    def __init__(self, suppress_logging: bool = False):\r'
-                "        self.__suppress_logging = suppress_logging\r"
-                "        self.__check_initialize_logging()\r"
-            )
+            f.write('    """\r\r    def __init__(self):\r        SDKLogger()\r')
         else:
             f.write(f'{add_indent}    """\r\r')
 
@@ -523,7 +530,6 @@ class BuildCategoryModelClasses:
 
         with open(REPO_ROOT / "sdk.py", "w") as f:
 
-            sdk_funcs = "\r".join(sdk_init_funcs.splitlines())
             f.write(
                 f'{get_sdk_imports_text()}class OpenBBSDK:\r    """OpenBB SDK Class.\r'
             )
@@ -531,9 +537,6 @@ class BuildCategoryModelClasses:
             if root_attrs:
                 self.write_class_attr_docs(root_attrs, f, False, True)
                 self.write_class_attributes(root_attrs, f)
-                f.write(sdk_funcs)
-            else:
-                f.write(sdk_funcs)
 
             for category in self.categories:
                 self.write_class_property(category, f)
@@ -607,3 +610,6 @@ def sort_csv():
     df.set_index("trail", inplace=True)
     df.sort_index(inplace=True)
     df.to_csv(REPO_ROOT / "sdk_core/trail_map.csv", index=True)
+
+
+generate_sdk()

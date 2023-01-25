@@ -23,6 +23,7 @@ class ForecastRoot(Category):
         `combine`: Adds the given column of df2 to df1\n
         `corr`: Returns correlation for a given df\n
         `corr_chart`: Plot correlation coefficients for dataset features\n
+        `delete`: Delete a column from a dataframe\n
         `delta`: Calculate the %change of a variable based on a specific column\n
         `desc`: Returns statistics for a given df\n
         `ema`: A moving average provides an indication of the trend of the price movement\n

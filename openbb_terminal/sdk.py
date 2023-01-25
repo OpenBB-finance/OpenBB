@@ -5,9 +5,9 @@
 import logging
 
 import openbb_terminal.config_terminal as cfg
-import openbb_terminal.sdk_core.sdk_init as lib
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.config_terminal import theme
+
 from openbb_terminal.core.log.generation.settings_logger import log_all_settings
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
@@ -15,8 +15,13 @@ from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.reports.reports_controller import ReportController
-from openbb_terminal.sdk_core import controllers as ctrl, models as model
+
 from openbb_terminal.sdk_core.sdk_helpers import check_suppress_logging
+import openbb_terminal.sdk_core.sdk_init as lib
+from openbb_terminal.sdk_core import (
+    controllers as ctrl,
+    models as model,
+)
 
 logger = logging.getLogger(__name__)
 theme.applyMPLstyle()
@@ -34,20 +39,9 @@ class OpenBBSDK:
         `news`: Get news for a given term and source. [Source: Feedparser]\n
     """
 
-    def __init__(self, suppress_logging: bool = False):
-        self.__suppress_logging = suppress_logging
-        self.__check_initialize_logging()
+    def __init__(self):
+        SDKLogger()
         self.news = lib.common_feedparser_model.get_news
-
-    def __check_initialize_logging(self):
-        if not self.__suppress_logging:
-            self.__initialize_logging()
-
-    @staticmethod
-    def __initialize_logging():
-        cfg.LOGGING_SUB_APP = "sdk"
-        setup_logging()
-        log_all_settings()
 
     @property
     def alt(self):
@@ -74,7 +68,7 @@ class OpenBBSDK:
             `tools`: Tools Module
 
         Attributes:
-            `candles`: Plot candle chart from dataframe. [Source: Binance]\n
+            `candle`: Plot candle chart from dataframe. [Source: Binance]\n
             `chart`: Load data for Technical Analysis\n
             `find`: Find similar coin by coin name,symbol or id.\n
             `load`: Load crypto currency to get data for\n
@@ -222,6 +216,7 @@ class OpenBBSDK:
             `combine`: Adds the given column of df2 to df1\n
             `corr`: Returns correlation for a given df\n
             `corr_chart`: Plot correlation coefficients for dataset features\n
+            `delete`: Delete a column from a dataframe\n
             `delta`: Calculate the %change of a variable based on a specific column\n
             `desc`: Returns statistics for a given df\n
             `ema`: A moving average provides an indication of the trend of the price movement\n
@@ -499,7 +494,7 @@ class OpenBBSDK:
             `obv_chart`: Plots OBV technical indicator\n
             `rsi`: Relative strength index\n
             `rsi_chart`: Plots RSI Indicator\n
-            `sma`: Gets simple moving average (EMA) for stock\n
+            `sma`: Gets simple moving average (SMA) for stock\n
             `stoch`: Stochastic oscillator\n
             `stoch_chart`: Plots stochastic oscillator signal\n
             `vwap`: Gets volume weighted average price (VWAP)\n
@@ -511,6 +506,22 @@ class OpenBBSDK:
         return model.TaRoot()
 
 
-openbb = OpenBBSDK(
-    suppress_logging=check_suppress_logging(suppress_dict=SUPPRESS_LOGGING_CLASSES),
-)
+class SDKLogger:
+    def __init__(self):
+        self.__suppress_logging = check_suppress_logging(
+            suppress_dict=SUPPRESS_LOGGING_CLASSES
+        )
+        self.__check_initialize_logging()
+
+    def __check_initialize_logging(self):
+        if not self.__suppress_logging:
+            self.__initialize_logging()
+
+    @staticmethod
+    def __initialize_logging():
+        cfg.LOGGING_SUB_APP = "sdk"
+        setup_logging()
+        log_all_settings()
+
+
+openbb = OpenBBSDK()

@@ -42,7 +42,7 @@ class TaRoot(Category):
         `obv_chart`: Plots OBV technical indicator\n
         `rsi`: Relative strength index\n
         `rsi_chart`: Plots RSI Indicator\n
-        `sma`: Gets simple moving average (EMA) for stock\n
+        `sma`: Gets simple moving average (SMA) for stock\n
         `stoch`: Stochastic oscillator\n
         `stoch_chart`: Plots stochastic oscillator signal\n
         `vwap`: Gets volume weighted average price (VWAP)\n

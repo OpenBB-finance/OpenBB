@@ -1,7 +1,7 @@
 # flake8: noqa
 # pylint: disable=C0301,R0902,R0903
-import openbb_terminal.sdk_core.sdk_init as lib
 from openbb_terminal.sdk_core.sdk_helpers import Category
+import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class StocksRoot(Category):
@@ -243,8 +243,6 @@ class StocksDarkpoolShorts(Category):
         `sidtc`: Get short interest and days to cover. [Source: Stockgrid]\n
         `spos`: Get net short position. [Source: Stockgrid]\n
         `spos_chart`: Plot net short position. [Source: Stockgrid]\n
-        `volexch`: Gets short data for 5 exchanges [https://ftp.nyse.com] starting at 1/1/2021\n
-        `volexch_chart`: Display short data by exchange\n
     """
 
     def __init__(self):
@@ -266,8 +264,6 @@ class StocksDarkpoolShorts(Category):
         self.sidtc = lib.stocks_dps_stockgrid_model.get_short_interest_days_to_cover
         self.spos = lib.stocks_dps_stockgrid_model.get_net_short_position
         self.spos_chart = lib.stocks_dps_stockgrid_view.net_short_position
-        self.volexch = lib.stocks_dps_nyse_model.get_short_data_by_exchange
-        self.volexch_chart = lib.stocks_dps_nyse_view.display_short_by_exchange
 
 
 class StocksFundamentalAnalysis(Category):

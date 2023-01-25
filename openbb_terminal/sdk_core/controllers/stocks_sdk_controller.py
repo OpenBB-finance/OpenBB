@@ -166,8 +166,6 @@ class StocksController(model.StocksRoot):
             `sidtc`: Get short interest and days to cover. [Source: Stockgrid]\n
             `spos`: Get net short position. [Source: Stockgrid]\n
             `spos_chart`: Plot net short position. [Source: Stockgrid]\n
-            `volexch`: Gets short data for 5 exchanges [https://ftp.nyse.com] starting at 1/1/2021\n
-            `volexch_chart`: Display short data by exchange\n
         """
 
         return model.StocksDarkpoolShorts()

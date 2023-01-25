@@ -8,7 +8,7 @@ class CryptoRoot(Category):
     """OpenBB SDK Cryptocurrency Module
 
     Attributes:
-        `candles`: Plot candle chart from dataframe. [Source: Binance]\n
+        `candle`: Plot candle chart from dataframe. [Source: Binance]\n
         `chart`: Load data for Technical Analysis\n
         `find`: Find similar coin by coin name,symbol or id.\n
         `load`: Load crypto currency to get data for\n
@@ -17,7 +17,7 @@ class CryptoRoot(Category):
 
     def __init__(self):
         super().__init__()
-        self.candles = lib.crypto_helpers.plot_candles
+        self.candle = lib.crypto_helpers.plot_candles
         self.chart = lib.crypto_helpers.plot_chart
         self.find = lib.crypto_models.find
         self.load = lib.crypto_helpers.load
@@ -36,8 +36,7 @@ class CryptoDueDiligence(Category):
         `basic`: Basic coin information [Source: CoinPaprika]\n
         `basic_chart`: Prints table showing basic information for coin. Like:\n
         `binance_available_quotes_for_each_coin`: Helper methods that for every coin available on Binance add all quote assets. [Source: Binance]\n
-        `candles`: Get candles for chosen trading pair and time interval. [Source: Coinbase]\n
-        `candles_chart`: Prints table showing candles for chosen trading pair and time interval. [Source: Coinbase]\n
+        `candle`: Get candles for chosen trading pair and time interval. [Source: Coinbase]\n
         `change`: Returns 30d change of the supply held in exchange wallets of a certain symbol.\n
         `change_chart`: Plots 30d change of the supply held in exchange wallets.\n
         `check_valid_binance_str`: Check if symbol is in defined binance. [Source: Binance]\n
@@ -117,8 +116,7 @@ class CryptoDueDiligence(Category):
         self.binance_available_quotes_for_each_coin = (
             lib.crypto_dd_binance_model.get_binance_available_quotes_for_each_coin
         )
-        self.candles = lib.crypto_dd_coinbase_model.get_candles
-        self.candles_chart = lib.crypto_dd_coinbase_view.display_candles
+        self.candle = lib.crypto_dd_coinbase_model.get_candles
         self.change = lib.crypto_dd_glassnode_model.get_exchange_net_position_change
         self.change_chart = (
             lib.crypto_dd_glassnode_view.display_exchange_net_position_change
