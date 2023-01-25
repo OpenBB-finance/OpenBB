@@ -218,7 +218,7 @@ def get_info_update_file(ticker: str, file_path: Path, writemode: str) -> List[s
     # Pull ticker info from yf
     yf_ticker_info = yf.Ticker(ticker).info
 
-    if "sector" in yf_ticker_info.keys():
+    if "sector" in yf_ticker_info:
         # Ticker has valid sector
         # Replace the dash to UTF-8 readable
         ticker_info_list = [

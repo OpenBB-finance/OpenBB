@@ -55,7 +55,7 @@ def load_portfolio(
     if sector:
         df["sector"] = df.apply(
             lambda row: yf.Ticker(row.Ticker).info["sector"]
-            if "sector" in yf.Ticker(row.Ticker).info.keys()
+            if "sector" in yf.Ticker(row.Ticker).info
             else "yf Other",
             axis=1,
         )
