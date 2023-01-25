@@ -1,6 +1,6 @@
 from typing import Optional
 import requests
-from openbb_terminal.account.user import User
+from openbb_terminal.session.user import User
 
 from openbb_terminal.rich_config import console
 
