@@ -44,8 +44,8 @@ class User:
             console.print("[info]Only you know...[/info]\n")
 
     @classmethod
-    def logout(cls):
-        """Logout."""
+    def clean(cls):
+        """Clean user info."""
         User.TOKEN_TYPE = ""
         User.TOKEN = ""
         User.EMAIL = ""
