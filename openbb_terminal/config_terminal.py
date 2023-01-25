@@ -5,6 +5,17 @@ import os
 from openbb_terminal.base_helpers import load_env_vars, strtobool
 from .helper_classes import TerminalStyle as _TerminalStyle
 
+SENSITIVE_KEYS = [
+    "RH_USERNAME",
+    "RH_PASSWORD",
+    "DG_USERNAME",
+    "DG_PASSWORD",
+    "DG_TOTP_SECRET",
+    "OANDA_ACCOUNT_TYPE",
+    "OANDA_ACCOUNT",
+    "OANDA_TOKEN",
+]
+
 # Terminal UX section
 MPL_STYLE = os.getenv("OPENBB_MPLSTYLE") or "dark"
 PMF_STYLE = os.getenv("OPENBB_PMFSTYLE") or "dark"

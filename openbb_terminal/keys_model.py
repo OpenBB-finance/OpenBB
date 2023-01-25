@@ -240,7 +240,11 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
     setattr(cfg, env_var_name, env_var_value)
 
     # Send api key to server
-    if not User.is_guest():
+    if (
+        not User.is_guest()
+        and env_var_name not in cfg.SENSITIVE_KEYS
+        and env_var_name.startswith("API_")
+    ):
         patch_user_configs(key=env_var_name, value=env_var_value, type_="keys")
 
 
