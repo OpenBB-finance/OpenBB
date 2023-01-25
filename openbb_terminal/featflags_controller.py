@@ -93,7 +93,6 @@ class FeatureFlagsController(BaseController):
         persist : bool, optional
             Persist feature flag, by default False
         """
-        value = not value
 
         if User.is_guest():
             set_key(str(USER_ENV_FILE), name, str(value))
@@ -116,105 +115,107 @@ class FeatureFlagsController(BaseController):
     def call_overwrite(self, _):
         """Process overwrite command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_FILE_OVERWITE", obbff.FILE_OVERWITE
+            "OPENBB_FILE_OVERWITE", not obbff.FILE_OVERWITE
         )
 
     def call_retryload(self, _):
         """Process retryload command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_RETRY_WITH_LOAD", obbff.RETRY_WITH_LOAD
+            "OPENBB_RETRY_WITH_LOAD", not obbff.RETRY_WITH_LOAD
         )
 
     @log_start_end(log=logger)
     def call_tab(self, _):
         """Process tab command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_USE_TABULATE_DF", obbff.USE_TABULATE_DF
+            "OPENBB_USE_TABULATE_DF", not obbff.USE_TABULATE_DF
         )
 
     @log_start_end(log=logger)
     def call_cls(self, _):
         """Process cls command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_USE_CLEAR_AFTER_CMD", obbff.USE_CLEAR_AFTER_CMD
+            "OPENBB_USE_CLEAR_AFTER_CMD", not obbff.USE_CLEAR_AFTER_CMD
         )
 
     @log_start_end(log=logger)
     def call_color(self, _):
         """Process color command"""
-        FeatureFlagsController.set_feature_flag("OPENBB_USE_COLOR", obbff.USE_COLOR)
+        FeatureFlagsController.set_feature_flag("OPENBB_USE_COLOR", not obbff.USE_COLOR)
 
     @log_start_end(log=logger)
     def call_promptkit(self, _):
         """Process promptkit command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_USE_PROMPT_TOOLKIT", obbff.USE_PROMPT_TOOLKIT
+            "OPENBB_USE_PROMPT_TOOLKIT", not obbff.USE_PROMPT_TOOLKIT
         )
 
     @log_start_end(log=logger)
     def call_thoughts(self, _):
         """Process thoughts command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_ENABLE_THOUGHTS_DAY", obbff.ENABLE_THOUGHTS_DAY
+            "OPENBB_ENABLE_THOUGHTS_DAY", not obbff.ENABLE_THOUGHTS_DAY
         )
 
     @log_start_end(log=logger)
     def call_reporthtml(self, _):
         """Process reporthtml command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_OPEN_REPORT_AS_HTML", obbff.OPEN_REPORT_AS_HTML
+            "OPENBB_OPEN_REPORT_AS_HTML", not obbff.OPEN_REPORT_AS_HTML
         )
 
     @log_start_end(log=logger)
     def call_exithelp(self, _):
         """Process exithelp command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_ENABLE_EXIT_AUTO_HELP", obbff.ENABLE_EXIT_AUTO_HELP
+            "OPENBB_ENABLE_EXIT_AUTO_HELP", not obbff.ENABLE_EXIT_AUTO_HELP
         )
 
     @log_start_end(log=logger)
     def call_rcontext(self, _):
         """Process rcontext command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_REMEMBER_CONTEXTS", obbff.REMEMBER_CONTEXTS
+            "OPENBB_REMEMBER_CONTEXTS", not obbff.REMEMBER_CONTEXTS
         )
 
     @log_start_end(log=logger)
     def call_dt(self, _):
         """Process dt command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_USE_DATETIME", obbff.USE_DATETIME
+            "OPENBB_USE_DATETIME", not obbff.USE_DATETIME
         )
 
     @log_start_end(log=logger)
     def call_rich(self, _):
         """Process rich command"""
-        FeatureFlagsController.set_feature_flag("OPENBB_ENABLE_RICH", obbff.ENABLE_RICH)
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_ENABLE_RICH", not obbff.ENABLE_RICH
+        )
 
     @log_start_end(log=logger)
     def call_richpanel(self, _):
         """Process richpanel command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_ENABLE_RICH_PANEL", obbff.ENABLE_RICH_PANEL
+            "OPENBB_ENABLE_RICH_PANEL", not obbff.ENABLE_RICH_PANEL
         )
 
     @log_start_end(log=logger)
     def call_ion(self, _):
         """Process ion command"""
-        FeatureFlagsController.set_feature_flag("OPENBB_USE_ION", obbff.USE_ION)
+        FeatureFlagsController.set_feature_flag("OPENBB_USE_ION", not obbff.USE_ION)
 
     @log_start_end(log=logger)
     def call_watermark(self, _):
         """Process watermark command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_USE_WATERMARK", obbff.USE_WATERMARK
+            "OPENBB_USE_WATERMARK", not obbff.USE_WATERMARK
         )
 
     @log_start_end(log=logger)
     def call_cmdloc(self, _):
         """Process cmdloc command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_USE_CMD_LOCATION_FIGURE", obbff.USE_CMD_LOCATION_FIGURE
+            "OPENBB_USE_CMD_LOCATION_FIGURE", not obbff.USE_CMD_LOCATION_FIGURE
         )
 
     @log_start_end(log=logger)
@@ -223,5 +224,5 @@ class FeatureFlagsController(BaseController):
         if obbff.TOOLBAR_HINT:
             console.print("Will take effect when running terminal next.")
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_TOOLBAR_HINT", obbff.TOOLBAR_HINT
+            "OPENBB_TOOLBAR_HINT", not obbff.TOOLBAR_HINT
         )
