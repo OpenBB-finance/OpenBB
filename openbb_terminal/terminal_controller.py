@@ -916,7 +916,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                     print_goodbye()
                     break
 
-            if an_input == "logout" and "y" in t_controller.queue:
+            if an_input == "logout":
                 break
 
         except SystemExit:

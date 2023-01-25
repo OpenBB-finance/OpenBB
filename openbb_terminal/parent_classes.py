@@ -274,13 +274,14 @@ class BaseController(metaclass=ABCMeta):
 
     def log_queue(self) -> None:
         """Log command queue."""
-        joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
-        if self.queue and not self.contains_keys(joined_queue):
-            logger.info(
-                "QUEUE: {'path': '%s', 'queue': '%s'}",
-                self.PATH,
-                joined_queue,
-            )
+        if self.queue:
+            joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
+            if not self.contains_keys(joined_queue):
+                logger.info(
+                    "QUEUE: {'path': '%s', 'queue': '%s'}",
+                    self.PATH,
+                    joined_queue,
+                )
 
     def log_cmd_and_queue(
         self, known_cmd: str, other_args_str: str, the_input: str
@@ -673,12 +674,7 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            i = console.input("Are you sure you want to logout? (y/n) ", style="info")
-            console.print("")
-            if i.lower() == "y":
-                self.queue.insert(0, "y")
-                # TODO: this command is not working properly inside menus
-                logout()
+            logout()
 
     @log_start_end(log=logger)
     def call_whoami(self, other_args: List[str]) -> None:
@@ -942,6 +938,10 @@ class BaseController(metaclass=ABCMeta):
 
                 # Process the input command
                 self.queue = self.switch(an_input)
+
+                if an_input == "logout":
+                    return ["logout"]
+
                 if not self.queue or (
                     self.queue and self.queue[0] not in ("quit", "help")
                 ):
