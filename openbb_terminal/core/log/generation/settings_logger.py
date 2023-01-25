@@ -64,9 +64,7 @@ def log_settings() -> None:
     logger.info("SETTINGS: %s ", json.dumps(settings_dict))
 
 
-def log_config_terminal() -> None:
-    """Log config_terminal"""
-
+def collect_config_terminal() -> dict:
     config_terminal_dict = {}
 
     for item in dir(cfg):
@@ -79,12 +77,17 @@ def log_config_terminal() -> None:
         ):
             config_terminal_dict[item] = str(prop)
 
+    return config_terminal_dict
+
+
+def log_config_terminal() -> None:
+    """Log config_terminal"""
+
+    config_terminal_dict = collect_config_terminal()
     logger.info("CONFIG_TERMINAL: %s ", json.dumps(config_terminal_dict))
 
 
-def log_feature_flags() -> None:
-    """Log feature flags"""
-
+def collect_feature_flags() -> dict:
     feature_flags_dict = {}
 
     for item in dir(obbff):
@@ -96,12 +99,17 @@ def log_feature_flags() -> None:
         ):
             feature_flags_dict[item] = str(prop)
 
+    return feature_flags_dict
+
+
+def log_feature_flags() -> None:
+    """Log feature flags"""
+
+    feature_flags_dict = collect_feature_flags()
     logger.info("FEATURE_FLAGS: %s ", json.dumps(feature_flags_dict))
 
 
-def log_keys() -> None:
-    """Log keys"""
-
+def collect_keys() -> dict:
     var_list = [v for v in dir(cfg) if v.startswith("API_")]
 
     current_keys = {}
@@ -115,4 +123,11 @@ def log_keys() -> None:
         else:
             current_keys[cfg_var_name] = "not_defined"
 
+    return current_keys
+
+
+def log_keys() -> None:
+    """Log keys"""
+
+    current_keys = collect_keys()
     logger.info("KEYS: %s ", json.dumps(current_keys))

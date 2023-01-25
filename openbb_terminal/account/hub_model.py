@@ -41,12 +41,12 @@ def create_session(
         return None
 
 
-def process_session_response(response: Optional[requests.Response]) -> dict:
+def process_session_response(response: requests.Response) -> dict:
     """Process the response from the login request.
 
     Parameters
     ----------
-    response : Optional[requests.Response]
+    response : requests.Response
         The response from the login request.
 
     Returns
@@ -54,9 +54,6 @@ def process_session_response(response: Optional[requests.Response]) -> dict:
     dict
         The login info.
     """
-    if response is None:
-        return {}
-
     if response.status_code == 200:
         console.print("\nLogin successful.", style="green")
         login = response.json()
@@ -87,6 +84,8 @@ def get_session(email: str, password: str) -> dict:
         The session info.
     """
     response = create_session(email, password)
+    if response is None:
+        return {}
     return process_session_response(response)
 
 

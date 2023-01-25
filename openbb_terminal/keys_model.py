@@ -238,14 +238,6 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
     # Set cfg.env_var_name = env_var_value
     setattr(cfg, env_var_name, env_var_value)
 
-    # Just for testing, replace when patch is available,
-    # this overwrites the whole config dict
-    data = {
-        "features_settings": {},
-        "features_keys": {env_var_name: env_var_value},
-    }
-    put_user_configs(data)
-
 
 def get_keys(show: bool = False) -> pd.DataFrame:
     """Get currently set API keys.

@@ -47,3 +47,12 @@ class User:
     def is_logged_in(cls):
         """Check if user is logged in."""
         return bool(User.UUID)
+
+    @classmethod
+    def logout(cls):
+        """Logout."""
+        User.TOKEN_TYPE = ""
+        User.TOKEN = ""
+        User.EMAIL = ""
+        User.UUID = ""
+        obbff.USE_FLAIR = ":openbb"

@@ -75,22 +75,23 @@ def remove_session_file(file_path: Path = SESSION_FILE_PATH) -> bool:
 
 def apply_configs(configs: dict):
     """Apply configurations."""
-    console.print(configs, style="red")
-    if configs:
-        settings = configs.get("features_settings", {})
-        if settings:
-            for k, v in settings.items():
-                if hasattr(obbff, k):
-                    if isinstance(getattr(obbff, k), int):
-                        setattr(obbff, k, strtobool(v))
-                    else:
-                        setattr(obbff, k, v)
+    console.print(f"Will apply this: {configs}", style="red")
+    # TODO: Apply configs when uploading is implemented
+    # if configs:
+    #     settings = configs.get("features_settings", {})
+    #     if settings:
+    #         for k, v in settings.items():
+    #             if hasattr(obbff, k):
+    #                 if isinstance(getattr(obbff, k), int):
+    #                     setattr(obbff, k, strtobool(v))
+    #                 else:
+    #                     setattr(obbff, k, v)
 
-        keys = configs.get("features_keys", {})
-        if keys:
-            for k, v in keys.items():
-                if hasattr(cfg, k):
-                    if isinstance(getattr(cfg, k), int):
-                        setattr(cfg, k, strtobool(v))
-                    else:
-                        setattr(cfg, k, v)
+    #     keys = configs.get("features_keys", {})
+    #     if keys:
+    #         for k, v in keys.items():
+    #             if hasattr(cfg, k):
+    #                 if isinstance(getattr(cfg, k), int):
+    #                     setattr(cfg, k, strtobool(v))
+    #                 else:
+    #                     setattr(cfg, k, v)
