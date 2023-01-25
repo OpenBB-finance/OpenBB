@@ -1,4 +1,4 @@
-name: Nightly Build on the develop branch
+name: Trigger Build on Release and PRs to Main
 
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
@@ -6,12 +6,18 @@ env:
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
-  OPENBB_FILE_OVERWRITE: true
   PYTHONNOUSERSITE: 1
 
 on:
-  schedule:
-    - cron: "0 0 * * *"
+  push:
+    branches:
+      - release/*
+      - hotfix/*
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions: 
   actions: write
@@ -28,23 +34,23 @@ jobs:
   trigger-macos-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger M1 MacOs Build
+      - name: Trigger Windows Build
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: m1_macos_build.yml
-
+  
   trigger-intel-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Intel MacOs Build
+      - name: Trigger Windows Build
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: intel_macos_build.yml
-
+  
   trigger-docker-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger docker Build
+      - name: Trigger Windows Build
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: docker.yml
