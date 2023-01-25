@@ -44,6 +44,7 @@ def display_daily_transactions(
     symbols = ["DAI", "USDT", "BUSD", "USDC"]
     df = get_daily_transactions(symbols)
     if df.empty:
+        console.print("[red]No data found.[/red]")
         return
 
     # This plot has 1 axis
@@ -101,7 +102,7 @@ def display_dapp_stats(
     """
     df = get_dapp_stats(platform=platform)
     if df.empty:
-        console.print("No data found.", "\n")
+        console.print("[red]No data found.[/red]")
     elif not df.empty:
         if raw:
             print_rich_table(df.head(limit), headers=list(df.columns), show_index=True)
@@ -186,7 +187,7 @@ def display_total_value_locked(
     )
 
     if df.empty:
-        console.print("No data found.", "\n")
+        console.print("[red]No data found.[/red]")
         return
 
     # This plot has 1 axis

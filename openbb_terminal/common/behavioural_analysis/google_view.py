@@ -101,7 +101,7 @@ def display_correlation_interest(
         vertical_spacing=0.08,
         subplot_titles=(
             f"{symbol.upper()} stock price and interest over time on {','.join(words)}",
-            "Interest",
+            "Interest [%]",
         ),
     )
     fig.add_scatter(
@@ -113,6 +113,8 @@ def display_correlation_interest(
     )
     for word in words:
         df_interest = google_model.get_mentions(word)
+        if df_interest.empty:
+            continue
         fig.add_scatter(
             x=df_interest.index,
             y=df_interest[word],
@@ -120,7 +122,7 @@ def display_correlation_interest(
             row=2,
             col=1,
         )
-    fig.update_layout(xaxis=dict(type="date"))
+    fig.hide_holidays(data.index)
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "interest", df_interest
