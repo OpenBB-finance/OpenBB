@@ -42,3 +42,8 @@ class User:
             console.print(f"[info]uuid:[/info] {User.UUID}\n")
         else:
             console.print("[info]Only you know...[/info]\n")
+
+    @classmethod
+    def is_logged_in(cls):
+        """Check if user is logged in."""
+        return bool(User.UUID)

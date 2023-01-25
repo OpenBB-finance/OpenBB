@@ -41,8 +41,6 @@ from openbb_terminal.helper_funcs import (
     get_flair,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
-from openbb_terminal.loggers import setup_logging
-from openbb_terminal.core.log.generation.settings_logger import log_all_settings
 from openbb_terminal.menu import session, is_papermill
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
@@ -60,6 +58,7 @@ from openbb_terminal.helper_funcs import parse_and_split_input
 from openbb_terminal.keys_model import first_time_user
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.reports.reports_model import ipykernel_launcher
+from openbb_terminal.core.log.generation.custom_logger import log_terminal
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements
@@ -789,10 +788,7 @@ class TerminalController(BaseController):
 # pylint: disable=global-statement
 def terminal(jobs_cmds: List[str] = None, test_mode=False):
     """Terminal Menu."""
-    if not test_mode:
-        setup_logging()
-    logger.info("START")
-    log_all_settings()
+    log_terminal(test_mode=test_mode)
 
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))
