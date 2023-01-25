@@ -28,9 +28,11 @@ class User:
             decoded_info = jwt.decode(User.TOKEN, options={"verify_signature": False})
             User.EMAIL = decoded_info.get("sub", "")
 
+            MAX_FLAIR_LEN = 20
+
             if obbff.USE_FLAIR == ":openbb":
                 username = User.EMAIL[: User.EMAIL.find("@")]
-                setattr(obbff, "USE_FLAIR", "[" + username + "] 🦋")
+                setattr(obbff, "USE_FLAIR", "[" + username[:MAX_FLAIR_LEN] + "] 🦋")
 
     @classmethod
     def whoami(cls):

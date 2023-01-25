@@ -1,11 +1,11 @@
 from typing import Tuple
 import json
+import matplotlib.pyplot as plt
 import openbb_terminal.account.local_model as Local
 import openbb_terminal.account.hub_model as Hub
 from openbb_terminal.account.user import User
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.helper_funcs import system_clear
-import matplotlib.pyplot as plt
 from openbb_terminal.rich_config import console
 from openbb_terminal import terminal_controller
 
