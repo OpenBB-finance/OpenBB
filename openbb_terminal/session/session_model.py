@@ -9,6 +9,15 @@ from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 
 
+def create_session(email: str, password: str, save: bool) -> dict:
+    """Create a session."""
+
+    session = Hub.get_session(email, password)
+    if session and save:
+        Local.save_session(session)
+    return session
+
+
 def logout(cls: bool = False):
     """Logout and clear session."""
     if cls:
