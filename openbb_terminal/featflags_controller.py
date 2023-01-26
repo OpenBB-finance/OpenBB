@@ -81,7 +81,7 @@ class FeatureFlagsController(BaseController):
         console.print(text=mt.menu_text, menu="Feature Flags")
 
     @staticmethod
-    def set_feature_flag(name: str, value: Union[bool, str]):
+    def set_feature_flag(name: str, value: Union[bool, str], force: bool = False):
         """Set feature flag
 
         Parameters
@@ -90,8 +90,8 @@ class FeatureFlagsController(BaseController):
             Environment variable name
         value : str
             Environment variable value
-        persist : bool, optional
-            Persist feature flag, by default False
+        force : bool, optional
+            Force set feature flag, by default False
         """
 
         if User.is_guest():
@@ -105,7 +105,7 @@ class FeatureFlagsController(BaseController):
         setattr(obbff, name, value)
 
         # Send feature flag to server
-        if not User.is_guest():
+        if not not User.is_guest() and User.is_sync_enabled() or force:
             patch_user_configs(
                 key=name,
                 value=str(value),

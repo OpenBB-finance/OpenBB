@@ -81,6 +81,7 @@ class TerminalController(BaseController):
     """Terminal Controller class."""
 
     CHOICES_COMMANDS = [
+        "account",
         "keys",
         "settings",
         "survey",
@@ -165,6 +166,7 @@ class TerminalController(BaseController):
         mt.add_cmd("stop")
         mt.add_raw("\n")
         mt.add_info("_configure_")
+        mt.add_menu("account")
         mt.add_menu("keys")
         mt.add_menu("featflags")
         mt.add_menu("sources")
@@ -352,6 +354,12 @@ class TerminalController(BaseController):
                 "Find the most recent release of the OpenBB Terminal here: "
                 "https://openbb.co/products/terminal#get-started\n"
             )
+
+    def call_account(self, _):
+        """Process account command."""
+        from openbb_terminal.account.account_controller import AccountController
+
+        self.queue = self.load_class(AccountController, self.queue)
 
     def call_keys(self, _):
         """Process keys command."""

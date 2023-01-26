@@ -137,7 +137,7 @@ def patch_user_configs(key: str, value: str, type_: str) -> Optional[requests.Re
     try:
         response = requests.patch(
             url=BASE_URL + "terminal/user-json",
-            headers={"Authorization": f"{User.TOKEN_TYPE.title()} {User.TOKEN}"},
+            headers={"Authorization": User.get_token()},
             json=data,
         )
         if response.status_code == 200:
@@ -174,7 +174,7 @@ def logout_everywhere() -> Optional[requests.Response]:
     try:
         response = requests.get(
             url=BASE_URL + "logout-everywhere",
-            headers={"Authorization": f"{User.TOKEN_TYPE.title()} {User.TOKEN}"},
+            headers={"Authorization": User.get_token()},
         )
         if response.status_code == 200:
             console.print("[green]\nLogged out remotely.[/green]")
