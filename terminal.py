@@ -4,7 +4,6 @@ from openbb_terminal.core.integration_tests import integration_controller
 from openbb_terminal.session import session_controller
 from openbb_terminal.terminal_helper import is_packaged_application
 
-
 if __name__ == "__main__":
     multiprocessing.freeze_support()
     sent_args = sys.argv[1:]

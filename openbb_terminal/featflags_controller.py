@@ -16,6 +16,8 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.session.hub_model import patch_user_configs
+from openbb_terminal.session.user import User
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
@@ -78,130 +80,142 @@ class FeatureFlagsController(BaseController):
 
         console.print(text=mt.menu_text, menu="Feature Flags")
 
+    @staticmethod
+    def set_feature_flag(name: str, value: bool):
+        """Set feature flag
+
+        Parameters
+        ----------
+        name : str
+            Environment variable name
+        value : str
+            Environment variable value
+        persist : bool, optional
+            Persist feature flag, by default False
+        """
+
+        if User.is_guest():
+            set_key(str(USER_ENV_FILE), name, str(value))
+
+        # Remove "OPENBB_" prefix from env_var
+        if name.startswith("OPENBB_"):
+            name = name[7:]
+
+        # Set obbff.env_var_name = not env_var_value
+        setattr(obbff, name, value)
+
+        # Send feature flag to server
+        if not User.is_guest():
+            patch_user_configs(
+                key=name,
+                value=str(value),
+                type_="settings",
+            )
+
     def call_overwrite(self, _):
         """Process overwrite command"""
-        obbff.FILE_OVERWITE = not obbff.FILE_OVERWITE
-        set_key(USER_ENV_FILE, "OPENBB_FILE_OVERWITE", str(obbff.FILE_OVERWITE))
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_FILE_OVERWITE", not obbff.FILE_OVERWITE
+        )
 
     def call_retryload(self, _):
         """Process retryload command"""
-        obbff.RETRY_WITH_LOAD = not obbff.RETRY_WITH_LOAD
-        set_key(USER_ENV_FILE, "OPENBB_RETRY_WITH_LOAD", str(obbff.RETRY_WITH_LOAD))
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_RETRY_WITH_LOAD", not obbff.RETRY_WITH_LOAD
+        )
 
     @log_start_end(log=logger)
     def call_tab(self, _):
         """Process tab command"""
-        obbff.USE_TABULATE_DF = not obbff.USE_TABULATE_DF
-        set_key(USER_ENV_FILE, "OPENBB_USE_TABULATE_DF", str(obbff.USE_TABULATE_DF))
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_USE_TABULATE_DF", not obbff.USE_TABULATE_DF
+        )
 
     @log_start_end(log=logger)
     def call_cls(self, _):
         """Process cls command"""
-        obbff.USE_CLEAR_AFTER_CMD = not obbff.USE_CLEAR_AFTER_CMD
-        set_key(
-            USER_ENV_FILE,
-            "OPENBB_USE_CLEAR_AFTER_CMD",
-            str(obbff.USE_CLEAR_AFTER_CMD),
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_USE_CLEAR_AFTER_CMD", not obbff.USE_CLEAR_AFTER_CMD
         )
 
     @log_start_end(log=logger)
     def call_color(self, _):
         """Process color command"""
-        obbff.USE_COLOR = not obbff.USE_COLOR
-        set_key(USER_ENV_FILE, "OPENBB_USE_COLOR", str(obbff.USE_COLOR))
+        FeatureFlagsController.set_feature_flag("OPENBB_USE_COLOR", not obbff.USE_COLOR)
 
     @log_start_end(log=logger)
     def call_promptkit(self, _):
         """Process promptkit command"""
-        obbff.USE_PROMPT_TOOLKIT = not obbff.USE_PROMPT_TOOLKIT
-        set_key(
-            USER_ENV_FILE,
-            "OPENBB_USE_PROMPT_TOOLKIT",
-            str(obbff.USE_PROMPT_TOOLKIT),
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_USE_PROMPT_TOOLKIT", not obbff.USE_PROMPT_TOOLKIT
         )
 
     @log_start_end(log=logger)
     def call_thoughts(self, _):
         """Process thoughts command"""
-        obbff.ENABLE_THOUGHTS_DAY = not obbff.ENABLE_THOUGHTS_DAY
-        set_key(
-            USER_ENV_FILE,
-            "OPENBB_ENABLE_THOUGHTS_DAY",
-            str(obbff.ENABLE_THOUGHTS_DAY),
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_ENABLE_THOUGHTS_DAY", not obbff.ENABLE_THOUGHTS_DAY
         )
 
     @log_start_end(log=logger)
     def call_reporthtml(self, _):
         """Process reporthtml command"""
-        obbff.OPEN_REPORT_AS_HTML = not obbff.OPEN_REPORT_AS_HTML
-        set_key(
-            USER_ENV_FILE,
-            "OPENBB_OPEN_REPORT_AS_HTML",
-            str(obbff.OPEN_REPORT_AS_HTML),
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_OPEN_REPORT_AS_HTML", not obbff.OPEN_REPORT_AS_HTML
         )
 
     @log_start_end(log=logger)
     def call_exithelp(self, _):
         """Process exithelp command"""
-        obbff.ENABLE_EXIT_AUTO_HELP = not obbff.ENABLE_EXIT_AUTO_HELP
-        set_key(
-            USER_ENV_FILE,
-            "OPENBB_ENABLE_EXIT_AUTO_HELP",
-            str(obbff.ENABLE_EXIT_AUTO_HELP),
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_ENABLE_EXIT_AUTO_HELP", not obbff.ENABLE_EXIT_AUTO_HELP
         )
 
     @log_start_end(log=logger)
     def call_rcontext(self, _):
         """Process rcontext command"""
-        obbff.REMEMBER_CONTEXTS = not obbff.REMEMBER_CONTEXTS
-        set_key(
-            USER_ENV_FILE,
-            "OPENBB_REMEMBER_CONTEXTS",
-            str(obbff.REMEMBER_CONTEXTS),
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_REMEMBER_CONTEXTS", not obbff.REMEMBER_CONTEXTS
         )
 
     @log_start_end(log=logger)
     def call_dt(self, _):
         """Process dt command"""
-        obbff.USE_DATETIME = not obbff.USE_DATETIME
-        set_key(USER_ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_USE_DATETIME", not obbff.USE_DATETIME
+        )
 
     @log_start_end(log=logger)
     def call_rich(self, _):
         """Process rich command"""
-        obbff.ENABLE_RICH = not obbff.ENABLE_RICH
-        set_key(USER_ENV_FILE, "OPENBB_ENABLE_RICH", str(obbff.ENABLE_RICH))
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_ENABLE_RICH", not obbff.ENABLE_RICH
+        )
 
     @log_start_end(log=logger)
     def call_richpanel(self, _):
         """Process richpanel command"""
-        obbff.ENABLE_RICH_PANEL = not obbff.ENABLE_RICH_PANEL
-        set_key(
-            USER_ENV_FILE,
-            "OPENBB_ENABLE_RICH_PANEL",
-            str(obbff.ENABLE_RICH_PANEL),
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_ENABLE_RICH_PANEL", not obbff.ENABLE_RICH_PANEL
         )
 
     @log_start_end(log=logger)
     def call_ion(self, _):
         """Process ion command"""
-        obbff.USE_ION = not obbff.USE_ION
-        set_key(USER_ENV_FILE, "OPENBB_USE_ION", str(obbff.USE_ION))
+        FeatureFlagsController.set_feature_flag("OPENBB_USE_ION", not obbff.USE_ION)
 
     @log_start_end(log=logger)
     def call_watermark(self, _):
         """Process watermark command"""
-        obbff.USE_WATERMARK = not obbff.USE_WATERMARK
-        set_key(USER_ENV_FILE, "OPENBB_USE_WATERMARK", str(obbff.USE_WATERMARK))
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_USE_WATERMARK", not obbff.USE_WATERMARK
+        )
 
     @log_start_end(log=logger)
     def call_cmdloc(self, _):
         """Process cmdloc command"""
-        obbff.USE_CMD_LOCATION_FIGURE = not obbff.USE_CMD_LOCATION_FIGURE
-        set_key(
-            USER_ENV_FILE,
-            "OPENBB_USE_CMD_LOCATION_FIGURE",
-            str(obbff.USE_CMD_LOCATION_FIGURE),
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_USE_CMD_LOCATION_FIGURE", not obbff.USE_CMD_LOCATION_FIGURE
         )
 
     @log_start_end(log=logger)
@@ -209,9 +223,6 @@ class FeatureFlagsController(BaseController):
         """Process tbhint command"""
         if obbff.TOOLBAR_HINT:
             console.print("Will take effect when running terminal next.")
-        obbff.TOOLBAR_HINT = not obbff.TOOLBAR_HINT
-        set_key(
-            USER_ENV_FILE,
-            "OPENBB_TOOLBAR_HINT",
-            str(obbff.TOOLBAR_HINT),
+        FeatureFlagsController.set_feature_flag(
+            "OPENBB_TOOLBAR_HINT", not obbff.TOOLBAR_HINT
         )
