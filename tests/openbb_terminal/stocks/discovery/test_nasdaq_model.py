@@ -28,7 +28,7 @@ def test_get_retail_tickers(recorder):
 def test_get_ipo_calendar_400(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 400
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(target="request", new=mocker.Mock(return_value=mock_response))
 
     retail_tickers = nasdaq_model.get_retail_tickers()
 
@@ -39,7 +39,7 @@ def test_get_ipo_calendar_400(mocker):
 def test_dividend_fails(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 400
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(target="request", new=mocker.Mock(return_value=mock_response))
 
     retail_tickers = nasdaq_model.get_dividend_cal("2021-01-01")
 

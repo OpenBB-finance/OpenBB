@@ -1476,7 +1476,7 @@ def get_rf() -> float:
         base = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service"
         end = "/v2/accounting/od/avg_interest_rates"
         filters = "?filter=security_desc:eq:Treasury Bills&sort=-record_date"
-        response = requests.get(base + end + filters)
+        response = request(base + end + filters)
         latest = response.json()["data"][0]
         return round(float(latest["avg_interest_rate_amt"]) / 100, 8)
     except Exception:

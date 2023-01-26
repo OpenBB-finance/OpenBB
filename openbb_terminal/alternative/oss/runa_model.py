@@ -9,7 +9,7 @@ from requests.adapters import HTTPAdapter, RetryError
 from urllib3.util.retry import Retry
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -109,7 +109,7 @@ def get_startups() -> pd.DataFrame:
     pd.DataFrame
         list of startups
     """
-    response = requests.get("https://runacap.com/ross-index/", timeout=10)
+    response = request("https://runacap.com/ross-index/", timeout=10)
     soup = BeautifulSoup(response.content, "html.parser")
     startups = []
     if soup:

@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 
-import requests
+from openbb_terminal.helper_funcs import request
 from finvizfinance.quote import finvizfinance
 from finvizfinance.util import headers
 
@@ -29,7 +29,7 @@ def get_finviz_image(symbol: str) -> bytes:
     stock = finvizfinance(symbol)
     image_url = stock.ticker_charts(urlonly=True)
 
-    r = requests.get(image_url, stream=True, headers=headers, timeout=5)
+    r = request(image_url, stream=True, headers=headers, timeout=5)
     r.raise_for_status()
     r.raw.decode_content = True
     return r.content

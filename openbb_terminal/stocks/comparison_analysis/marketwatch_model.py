@@ -6,7 +6,7 @@ import logging
 from typing import Dict, List, Tuple
 
 import pandas as pd
-import requests
+from openbb_terminal.helper_funcs import request
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
@@ -215,7 +215,7 @@ def prepare_df_financials(
     try:
         period = "quarter" if quarter else "annual"
         text_soup_financials = BeautifulSoup(
-            requests.get(
+            request(
                 financial_urls[statement][period].format(ticker),
                 headers={"User-Agent": get_user_agent()},
             ).text,

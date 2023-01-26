@@ -5,7 +5,7 @@ import logging
 from typing import Dict, Tuple
 
 import pandas as pd
-import requests
+from openbb_terminal.helper_funcs import request
 from tqdm import tqdm
 import yfinance as yf
 from openbb_terminal.decorators import log_start_end
@@ -331,7 +331,7 @@ def get_symbol_allocation(
 
     # Collect data from Fidelity about the portfolio composition of the benchmark
     URL = f"https://screener.fidelity.com/ftgw/etf/goto/snapshot/portfolioComposition.jhtml?symbols={symbol}"
-    html = requests.get(URL).content
+    html = request(URL).content
     df_list = pd.read_html(html)
 
     # Find the ones that contain regions and countries

@@ -6,8 +6,8 @@ from datetime import datetime, timedelta
 import logging
 
 import pandas as pd
-import requests
 
+from openbb_terminal.helper_funcs import request
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal.rich_config import console
@@ -59,7 +59,7 @@ def get_historical(
         "limit": number,
     }
 
-    response = requests.get(
+    response = request(
         "https://api.sentimentinvestor.com/v1/historical", params=payload
     )
     response_json = response.json()
@@ -105,9 +105,7 @@ def check_supported_ticker(symbol: str) -> bool:
         "symbol": symbol,
     }
 
-    response = requests.get(
-        "https://api.sentimentinvestor.com/v1/supported", params=payload
-    )
+    response = request("https://api.sentimentinvestor.com/v1/supported", params=payload)
     if response.status_code >= 500:
         return False
     response_json = response.json()
@@ -170,9 +168,7 @@ def get_trending(
         "limit": number,
     }
 
-    response = requests.get(
-        "https://api.sentimentinvestor.com/v1/trending", params=payload
-    )
+    response = request("https://api.sentimentinvestor.com/v1/trending", params=payload)
     if response.status_code >= 500:
         return pd.DataFrame()
 

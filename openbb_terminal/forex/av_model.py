@@ -6,11 +6,11 @@ import os
 from typing import Any, Dict, List
 
 import pandas as pd
-import requests
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -75,7 +75,7 @@ def get_quote(to_symbol: str = "USD", from_symbol: str = "EUR") -> Dict[str, Any
         + f"&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     )
 
-    response = requests.get(url)
+    response = request(url)
     response_json = response.json()
     result = {}
 
@@ -128,7 +128,7 @@ def get_historical(
     if resolution == "i":
         url += f"&interval={interval}min"
 
-    r = requests.get(url)
+    r = request(url)
     response_json = r.json()
 
     if r.status_code != 200:

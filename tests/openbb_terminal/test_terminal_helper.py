@@ -78,7 +78,7 @@ def test_check_for_updates(mocker, last_release, current_release):
         },
     }
     mock_response = mocker.Mock(**attrs)
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(target="request", new=mocker.Mock(return_value=mock_response))
 
     # MOCK FF VERSION
     mocker.patch(

@@ -73,7 +73,7 @@ def test_economy_calendar_events_no_country(mocker):
         "json.return_value": MOCK_ECONOMY_CALENDAR_EVENTS_DICT,
     }
     mock_response = mocker.Mock(**attrs)
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(target="request", new=mocker.Mock(return_value=mock_response))
 
     finnhub_view.economy_calendar_events(
         country="MOCK_COUNTRY",
@@ -92,7 +92,7 @@ def test_economy_calendar_events_no_impact(mocker):
         "json.return_value": MOCK_ECONOMY_CALENDAR_EVENTS_DICT,
     }
     mock_response = mocker.Mock(**attrs)
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(target="request", new=mocker.Mock(return_value=mock_response))
 
     finnhub_view.economy_calendar_events(
         country="AU",
@@ -111,7 +111,7 @@ def test_economy_calendar_events(mocker):
         "json.return_value": MOCK_ECONOMY_CALENDAR_EVENTS_DICT,
     }
     mock_response = mocker.Mock(**attrs)
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(target="request", new=mocker.Mock(return_value=mock_response))
 
     finnhub_view.economy_calendar_events(
         country="AU",

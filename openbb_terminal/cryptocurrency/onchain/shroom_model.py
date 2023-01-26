@@ -4,10 +4,11 @@ from typing import List
 import json
 import time
 import pandas as pd
-import requests
+
 
 from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -22,8 +23,9 @@ PAGE_NUMBER = 1
 
 
 def create_query(query: str):
-    r = requests.post(
+    r = request(
         "https://node-api.flipsidecrypto.com/queries",
+        method="POST",
         data=json.dumps({"sql": query, "ttlMinutes": TTL_MINUTES}),
         headers={
             "Accept": "application/json",
@@ -40,7 +42,7 @@ def create_query(query: str):
 
 
 def get_query_results(token):
-    r = requests.get(
+    r = request(
         f"https://node-api.flipsidecrypto.com/queries/{token}?pageNumber={PAGE_NUMBER}&pageSize={PAGE_SIZE}",
         headers={
             "Accept": "application/json",

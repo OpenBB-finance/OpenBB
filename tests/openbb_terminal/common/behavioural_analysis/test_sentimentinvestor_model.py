@@ -56,7 +56,10 @@ def test_get_trending_status_400(mocker):
     }
 
     mock_response = mocker.Mock(**attrs)
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.request",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
     mock_response.status_code = 400
 

@@ -8,11 +8,11 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
-import requests
 from sklearn.linear_model import LinearRegression
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -88,7 +88,7 @@ def get_government_trading(
         "X-CSRFToken": "TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu",  # pragma: allowlist secret
         "Authorization": f"Token {API_QUIVERQUANT_KEY}",
     }
-    response = requests.get(url, headers=headers)
+    response = request(url, headers=headers)
     if response.status_code == 200:
         if gov_type in ["congress", "senate", "house"]:
             return pd.DataFrame(response.json()).rename(

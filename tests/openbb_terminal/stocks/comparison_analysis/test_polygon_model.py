@@ -33,7 +33,7 @@ def test_get_similar_companies_invalid_status(mocker, recorder):
     mock_response.status_code = 400
     # pylint: disable=protected-access
     mock_response._content = b"""{"error":"MOCK_ERROR"}"""
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(target="request", new=mocker.Mock(return_value=mock_response))
     result = polygon_model.get_similar_companies(
         symbol="TSLA",
         us_only=True,

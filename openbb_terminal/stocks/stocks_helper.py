@@ -19,7 +19,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import pytz
-import requests
+from openbb_terminal.helper_funcs import request
 from requests.exceptions import ReadTimeout
 
 import yfinance as yf
@@ -385,7 +385,7 @@ def load(
                 f"/{end_date.strftime('%Y-%m-%d')}"
                 f"?adjusted=true&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
-            r = requests.get(request_url)
+            r = request(request_url)
             if r.status_code != 200:
                 console.print("[red]Error in polygon request[/red]")
                 return pd.DataFrame()
@@ -1095,7 +1095,7 @@ def show_codes_polygon(ticker: str):
     if cfg.API_POLYGON_KEY == "REPLACE_ME":
         console.print("[red]Polygon API key missing[/red]\n")
         return
-    r = requests.get(link)
+    r = request(link)
     if r.status_code != 200:
         console.print("[red]Error in polygon request[/red]\n")
         return

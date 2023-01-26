@@ -21,7 +21,7 @@ dotenv.load_dotenv(PACKAGE_ENV_FILE, override=True)
 
 # Network requests
 # Set request timeout
-REQUEST_TIMEOUT = load_env_vars("OPENBB_REQUEST_TIMEOUT", int, 20)
+REQUEST_TIMEOUT = load_env_vars("OPENBB_REQUEST_TIMEOUT", int, 5)
 
 # Terminal UX section
 MPL_STYLE = os.getenv("OPENBB_MPLSTYLE") or "dark"
