@@ -11,7 +11,7 @@ The `OpenBBUserData` folder's default location is the home of the system user ac
 
 Within the folder you can find files that you have exported as well as files that you wish to import directly into the OpenBB Terminal. For example, this could be an orderbook which you can store in `OpenBBUserData/portfolio/holdings`.
 
-![OpenBBUserData Folder](https://user-images.githubusercontent.com/85772166/195742985-19f0e420-d8f7-4fea-a145-a0243b8f2ddc.png "OpenBBUserData Folder")
+![OpenBBUserData Folder](https://user-images.githubusercontent.com/85772166/195742985-19f0e420-d8f7-4fea-a145-a0243b8f2ddc.png)
 
 This folder contains all things user-created. For example:
 
@@ -34,7 +34,7 @@ For example, if you wish to download market data you can do so from the stocks m
 
 This results in the following:
 
-<img width="1512" alt="image" src="https://user-images.githubusercontent.com/46355364/214817681-fd5324c3-003c-45eb-adf4-96d5b41a3c02.png">
+![Export Example](https://user-images.githubusercontent.com/46355364/214817681-fd5324c3-003c-45eb-adf4-96d5b41a3c02.png)
 
 We also allow you to define a file name, for example for the same stock tickers, we can also add in the filename. This time, we export to `csv`.
 
@@ -44,7 +44,7 @@ We also allow you to define a file name, for example for the same stock tickers,
 
 Which results in the following:
 
-<img width="1512" alt="image" src="https://user-images.githubusercontent.com/46355364/214818131-597b3bd0-9c66-43f1-bf0e-2c0a703e2645.png">
+![Filename Example](https://user-images.githubusercontent.com/46355364/214818131-597b3bd0-9c66-43f1-bf0e-2c0a703e2645.png)
 
 Lastly, when you select the `xlsx` option, you can also specify the sheet name with `--sheet-name` which allows multiple datasets to be send to the same Excel file. Using the same stock ticker, we can define the following. First, get market data from the `stocks` menu:
 
@@ -54,15 +54,26 @@ Lastly, when you select the `xlsx` option, you can also specify the sheet name w
 
 Then enter the `fa` (Fundamental Analysis) menu and type:
 
+**Income Statement:**
+
 ```console
 income --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Income Statement
+```
+
+**Balance Sheet:**
+```console
 balance --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Balance Sheet
+```
+
+**Cash Flow Statement:**
+
+```console
 cash --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Cash Flow Statement
 ```
 
 This generates a file for Apple with market data from 2010-01-01 until now and income, balance and cash flow statements over the last 10 years as seen in the image below.
 
-<img width="1512" alt="image" src="https://user-images.githubusercontent.com/46355364/214819099-9b3ca54a-dea0-4294-97f3-8b8bfd6c9e93.png">
+![Sheet Name Example](https://user-images.githubusercontent.com/46355364/214819099-9b3ca54a-dea0-4294-97f3-8b8bfd6c9e93.png)
 
 Next to that, we also allow exporting to images, this can be PNG, JPG, PDF and SVG. For example, using our `portfolio` menu we can export the charts to any type of format which again can be found within the `OpenBBUserData` folder.
 
@@ -72,7 +83,7 @@ Next to that, we also allow exporting to images, this can be PNG, JPG, PDF and S
 
 Menus, such as [Econometrics](https://docs.openbb.co/terminal/guides/intros/econometrics) or [Portfolio](https://docs.openbb.co/terminal/guides/intros/portfolio), allow the user to import their own dataset. Files available to import will be included with the selections made available by auto-complete. In the Econometrics menu, this is activated after pressing the space bar, `load -f `
 
-![Importing Data](https://user-images.githubusercontent.com/85772166/204921760-38742f6c-ec78-4009-9c23-54dcb0504524.png "Importing Data")
+![Importing Data](https://user-images.githubusercontent.com/85772166/204921760-38742f6c-ec78-4009-9c23-54dcb0504524.png)
 
 The Econometrics menu looks into the `exports` and `custom_imports/econometrics` folder. For the Portfolio functionalities the `portfolio` menu looks into the `portfolio/holdings` folder whereas the `portfolio/po` menu looks into the `portfolio/allocation` and `portfolio/optimization` folder for the `load` and `file` command respectively. Please make sure to read the relevant guides to understand how this works.
 
@@ -84,4 +95,4 @@ The location of this folder can be set by the user from the `/settings` menu. Th
 userdata --folder /path_to/OpenBBUserData
 ```
 
-![The Settings Menu](https://user-images.githubusercontent.com/85772166/195736718-a1b821da-5977-437a-bd18-b44add2a29a2.png "The Settings Menu")
+![The Settings Menu](https://user-images.githubusercontent.com/85772166/195736718-a1b821da-5977-437a-bd18-b44add2a29a2.png)
