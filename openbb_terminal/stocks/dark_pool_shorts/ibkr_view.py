@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_cost_to_borrow(limit: int = 20, export: str = ""):
+def display_cost_to_borrow(limit: int = 20, export: str = "", sheet_name: str = None):
     """Display stocks with highest cost to borrow. [Source: Interactive Broker]
 
     Parameters
@@ -40,4 +40,5 @@ def display_cost_to_borrow(limit: int = 20, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "cost_to_borrow",
         df,
+        sheet_name,
     )

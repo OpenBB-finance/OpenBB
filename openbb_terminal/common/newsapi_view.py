@@ -25,6 +25,7 @@ def display_news(
     show_newest: bool = True,
     sources: str = "",
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing news for a given term. [Source: NewsAPI]
 
@@ -53,4 +54,5 @@ def display_news(
         os.path.dirname(os.path.abspath(__file__)),
         f"news_{query}_{'_'.join(sources)}",
         pd.DataFrame(tables),
+        sheet_name,
     )
