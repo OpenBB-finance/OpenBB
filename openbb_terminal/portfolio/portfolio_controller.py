@@ -6,7 +6,6 @@ import logging
 import os
 from typing import List
 from datetime import date
-import time
 
 import pandas as pd
 
@@ -345,7 +344,6 @@ class PortfolioController(BaseController):
                     "[green]Loading an example, please type `about` "
                     "to learn how to create your own Portfolio Excel sheet.[/green]\n"
                 )
-                time.sleep(3)
             elif ns_parser.file in self.DATA_HOLDINGS_FILES:
                 file_location = self.DATA_HOLDINGS_FILES[ns_parser.file]
             else:

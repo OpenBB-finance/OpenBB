@@ -1,12 +1,11 @@
 """ Portfolio Optimization Controller Module """
 __docformat__ = "numpy"
 
-# pylint: disable=too-many-lines,too-many-instance-attributes,inconsistent-return-statements
+# pylint: disable=too-many-lines,too-many-instance-attributes
 
 import argparse
 import logging
 from typing import List, Dict, Tuple
-import time
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
@@ -708,41 +707,49 @@ class PortfolioOptimizationController(BaseController):
 
         if ns_parser:
             filename = ""
+
             if ns_parser.file:
                 filename = " ".join(ns_parser.file)
             elif ns_parser.example:
                 filename = "OpenBB Example Portfolio"
             else:
-                return console.print(
+                console.print(
                     "[green]Please input a filename with load --file or obtain an example with load --example[/green]"
                 )
 
-            if ns_parser.example:
-                file_location = (
-                    MISCELLANEOUS_DIRECTORY / "portfolio" / "allocation_example.xlsx"
+            if filename:
+                if ns_parser.example:
+                    file_location = (
+                        MISCELLANEOUS_DIRECTORY
+                        / "portfolio"
+                        / "allocation_example.xlsx"
+                    )
+
+                    console.print(
+                        "[green]Loading an example, please type `about` "
+                        "to learn how to create your own Portfolio Optimization Excel sheet.[/green]\n"
+                    )
+                elif filename in self.allocation_file_map:
+                    file_location = self.allocation_file_map[filename]
+                else:
+                    file_location = filename  # type: ignore
+
+                self.tickers, self.categories = excel_model.load_allocation(
+                    file_location
                 )
+                self.available_categories = list(self.categories.keys())
+                if "CURRENT_INVESTED_AMOUNT" in self.available_categories:
+                    self.available_categories.remove("CURRENT_INVESTED_AMOUNT")
+                self.portfolios = dict()
+                self.update_runtime_choices()
+                self.current_portfolio = filename
 
                 console.print(
-                    "[green]Loading an example, please type `about` "
-                    "to learn how to create your own Portfolio Optimization Excel sheet.[/green]\n"
+                    f"[param]Portfolio loaded:[/param] {self.current_portfolio}"
                 )
-                time.sleep(3)
-
-            if not filename:
-                return
-
-            self.tickers, self.categories = excel_model.load_allocation(file_location)
-            self.available_categories = list(self.categories.keys())
-            if "CURRENT_INVESTED_AMOUNT" in self.available_categories:
-                self.available_categories.remove("CURRENT_INVESTED_AMOUNT")
-            self.portfolios = dict()
-            self.update_runtime_choices()
-            self.current_portfolio = filename
-
-            console.print(f"[param]Portfolio loaded:[/param] {self.current_portfolio}")
-            console.print(
-                f"[param]Categories:[/param] {', '.join(self.available_categories)}\n"
-            )
+                console.print(
+                    f"[param]Categories:[/param] {', '.join(self.available_categories)}\n"
+                )
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
