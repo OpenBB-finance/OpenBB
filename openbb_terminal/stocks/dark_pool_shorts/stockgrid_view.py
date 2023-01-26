@@ -29,7 +29,7 @@ def dark_pool_short_positions(
     sortby: str = "dpp_dollar",
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Get dark pool short positions. [Source: Stockgrid]
 
@@ -86,7 +86,7 @@ def dark_pool_short_positions(
 
 @log_start_end(log=logger)
 def short_interest_days_to_cover(
-    limit: int = 10, sortby: str = "float", export: str = "", sheet_name: str = ""
+    limit: int = 10, sortby: str = "float", export: str = "", sheet_name: str = None
 ):
     """Print short interest and days to cover. [Source: Stockgrid]
 
@@ -128,7 +128,7 @@ def short_interest_volume(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot price vs short interest volume. [Source: Stockgrid]
@@ -254,7 +254,7 @@ def net_short_position(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot net short position. [Source: Stockgrid]

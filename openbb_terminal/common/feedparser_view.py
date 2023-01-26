@@ -18,7 +18,7 @@ def display_news(
     sources: str = "",
     limit: int = 5,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     sort: str = "published",
 ):
     """Plots news for a given term and source. [Source: Feedparser]

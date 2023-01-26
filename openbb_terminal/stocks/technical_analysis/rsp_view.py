@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 def display_rsp(
     s_ticker: str = "",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     tickers_show: bool = False,
 ):
     """Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]

@@ -45,7 +45,7 @@ def display_plots_financials(
     currency: str = "USD",
     limit: int = 10,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     already_loaded_stocks_data=None,

@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def print_options_data(symbol: str, export: str = "", sheet_name: str = ""):
+def print_options_data(symbol: str, export: str = "", sheet_name: str = None):
     """Scrapes Barchart.com for the options information
 
     Parameters

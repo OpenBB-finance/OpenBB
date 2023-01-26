@@ -25,7 +25,7 @@ def display_news(
     show_newest: bool = True,
     sources: str = "",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing news for a given term. [Source: NewsAPI]
 

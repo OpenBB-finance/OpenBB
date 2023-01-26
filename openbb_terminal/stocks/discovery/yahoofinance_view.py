@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_gainers(limit: int = 5, export: str = "", sheet_name: str = "") -> None:
+def display_gainers(limit: int = 5, export: str = "", sheet_name: str = None) -> None:
     """Display gainers. [Source: Yahoo Finance]
 
     Parameters
@@ -43,7 +43,7 @@ def display_gainers(limit: int = 5, export: str = "", sheet_name: str = "") -> N
 
 
 @log_start_end(log=logger)
-def display_losers(limit: int = 5, export: str = "", sheet_name: str = "") -> None:
+def display_losers(limit: int = 5, export: str = "", sheet_name: str = None) -> None:
     """Display losers. [Source: Yahoo Finance]
 
     Parameters
@@ -74,7 +74,7 @@ def display_losers(limit: int = 5, export: str = "", sheet_name: str = "") -> No
 
 
 @log_start_end(log=logger)
-def display_ugs(limit: int = 5, export: str = "", sheet_name: str = "") -> None:
+def display_ugs(limit: int = 5, export: str = "", sheet_name: str = None) -> None:
     """Display most undervalued growth stock. [Source: Yahoo Finance]
 
     Parameters
@@ -104,7 +104,7 @@ def display_ugs(limit: int = 5, export: str = "", sheet_name: str = "") -> None:
 
 
 @log_start_end(log=logger)
-def display_gtech(limit: int = 5, export: str = "", sheet_name: str = "") -> None:
+def display_gtech(limit: int = 5, export: str = "", sheet_name: str = None) -> None:
     """Display growth technology stocks. [Source: Yahoo Finance]
 
     Parameters
@@ -135,7 +135,7 @@ def display_gtech(limit: int = 5, export: str = "", sheet_name: str = "") -> Non
 
 
 @log_start_end(log=logger)
-def display_active(limit: int = 5, export: str = "", sheet_name: str = "") -> None:
+def display_active(limit: int = 5, export: str = "", sheet_name: str = None) -> None:
     """Display most active stocks. [Source: Yahoo Finance]
 
     Parameters
@@ -166,7 +166,7 @@ def display_active(limit: int = 5, export: str = "", sheet_name: str = "") -> No
 
 
 @log_start_end(log=logger)
-def display_ulc(limit: int = 5, export: str = "", sheet_name: str = "") -> None:
+def display_ulc(limit: int = 5, export: str = "", sheet_name: str = None) -> None:
     """Display potentially undervalued large cap stocks. [Source: Yahoo Finance]
 
     Parameters
@@ -197,7 +197,7 @@ def display_ulc(limit: int = 5, export: str = "", sheet_name: str = "") -> None:
 
 
 @log_start_end(log=logger)
-def display_asc(limit: int = 5, export: str = "", sheet_name: str = "") -> None:
+def display_asc(limit: int = 5, export: str = "", sheet_name: str = None) -> None:
     """Display small cap stocks with earnings growth rates better than 25%. [Source: Yahoo Finance]
 
     Parameters

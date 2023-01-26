@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def upcoming_earning_release_dates(
-    num_pages: int = 5, limit: int = 1, export: str = "", sheet_name: str = ""
+    num_pages: int = 5, limit: int = 1, export: str = "", sheet_name: str = None
 ):
     """Displays upcoming earnings release dates
 
@@ -89,7 +89,7 @@ def upcoming_earning_release_dates(
 
 
 @log_start_end(log=logger)
-def news(article_id: int = -1, limit: int = 5, export: str = "", sheet_name: str = ""):
+def news(article_id: int = -1, limit: int = 5, export: str = "", sheet_name: str = None):
     """Prints the latest news article list. [Source: Seeking Alpha]
 
     Parameters
@@ -152,7 +152,7 @@ def news(article_id: int = -1, limit: int = 5, export: str = "", sheet_name: str
 
 @log_start_end(log=logger)
 def display_news(
-    news_type: str = "Top-News", limit: int = 5, export: str = "", sheet_name: str = ""
+    news_type: str = "Top-News", limit: int = 5, export: str = "", sheet_name: str = None
 ):
     """Display news. [Source: SeekingAlpha]
 

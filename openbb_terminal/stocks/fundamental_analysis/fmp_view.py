@@ -91,7 +91,7 @@ def display_enterprise(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Financial Modeling Prep ticker enterprise
 
@@ -149,7 +149,7 @@ def display_discounted_cash_flow(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Financial Modeling Prep ticker discounted cash flow
 
@@ -193,7 +193,7 @@ def display_income_statement(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Financial Modeling Prep ticker income statement
 
@@ -286,7 +286,7 @@ def display_balance_sheet(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Financial Modeling Prep ticker balance sheet
 
@@ -380,7 +380,7 @@ def display_cash_flow(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Financial Modeling Prep ticker cash flow
 
@@ -470,7 +470,7 @@ def display_key_metrics(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Financial Modeling Prep ticker key metrics
 
@@ -517,7 +517,7 @@ def display_financial_ratios(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Financial Modeling Prep ticker ratios
 
@@ -564,7 +564,7 @@ def display_financial_statement_growth(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Financial Modeling Prep ticker growth
 
@@ -610,7 +610,7 @@ def display_filings(
     limit: int = 5,
     today: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Display recent forms submitted to the SEC
 

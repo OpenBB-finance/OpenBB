@@ -61,7 +61,7 @@ def view_screener_output(
     preset: str,
     limit: int = 20,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> List:
     """Print the output of screener
 
@@ -118,7 +118,7 @@ def view_historical_greeks(
     raw: bool = False,
     limit: Union[int, str] = 20,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots historical greeks for a given option. [Source: Syncretism]

@@ -32,7 +32,7 @@ span_title_dict = {
 
 
 @log_start_end(log=logger)
-def display_holdings(export: str = "", sheet_name: str = ""):
+def display_holdings(export: str = "", sheet_name: str = None):
     """Display stock holdings in robinhood
 
     Parameters
@@ -59,7 +59,7 @@ def display_historical(
     interval: str = "day",
     window: str = "3month",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Display historical portfolio
 

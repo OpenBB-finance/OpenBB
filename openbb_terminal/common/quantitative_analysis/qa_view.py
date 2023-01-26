@@ -50,7 +50,7 @@ def lambda_color_red(val: Any) -> str:
 
 
 @log_start_end(log=logger)
-def display_summary(data: pd.DataFrame, export: str = "", sheet_name: str = "") -> None:
+def display_summary(data: pd.DataFrame, export: str = "", sheet_name: str = None) -> None:
     """Prints table showing summary statistics
 
     Parameters
@@ -162,7 +162,7 @@ def display_cdf(
     target: str,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Cumulative Distribution Function
@@ -663,7 +663,7 @@ def display_seasonal(
     target: str,
     multiplicative: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots seasonal decomposition data
@@ -808,7 +808,7 @@ def display_seasonal(
 
 @log_start_end(log=logger)
 def display_normality(
-    data: pd.DataFrame, target: str, export: str = "", sheet_name: str = ""
+    data: pd.DataFrame, target: str, export: str = "", sheet_name: str = None
 ) -> None:
     """Prints table showing normality statistics
 
@@ -850,7 +850,7 @@ def display_unitroot(
     fuller_reg: str = "c",
     kpss_reg: str = "c",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Prints table showing unit root test calculations
 
@@ -893,7 +893,7 @@ def display_raw(
     ascend: bool = False,
     limit: int = 20,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing raw stock data
 
@@ -954,7 +954,7 @@ def display_line(
     markers_lines: Optional[List[datetime]] = None,
     markers_scatter: Optional[List[datetime]] = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Display line plot of data

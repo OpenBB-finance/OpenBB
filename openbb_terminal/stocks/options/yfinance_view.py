@@ -76,7 +76,7 @@ def display_chains(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Display option chains for given ticker and expiration
 
@@ -247,7 +247,7 @@ def plot_oi(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot open interest
@@ -350,7 +350,7 @@ def plot_vol(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume
@@ -443,7 +443,7 @@ def plot_volume_open_interest(
     max_sp: float = -1,
     min_vol: float = -1,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume and open interest
@@ -669,7 +669,7 @@ def plot_plot(
     y: str = "iv",
     custom: str = "",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Generate a graph custom graph based on user input
@@ -821,7 +821,7 @@ def show_parity(
     mini: float = None,
     maxi: float = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints options and whether they are under or over priced [Source: Yahoo Finance]
 
@@ -1154,7 +1154,7 @@ def show_binom(
 def display_vol_surface(
     symbol: str,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     z: str = "IV",
     external_axes: Optional[List[plt.Axes]] = None,
 ):

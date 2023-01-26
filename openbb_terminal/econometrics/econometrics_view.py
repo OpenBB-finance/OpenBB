@@ -28,7 +28,7 @@ def show_options(
     datasets: Dict[str, pd.DataFrame],
     dataset_name: str = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Plot custom data
 
@@ -71,7 +71,7 @@ def show_options(
 def display_plot(
     data: Union[pd.Series, pd.DataFrame, Dict[str, pd.DataFrame]],
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Plot data from a dataset
@@ -140,7 +140,7 @@ def display_norm(
     column: str = "",
     plot: bool = True,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Determine the normality of a timeseries.
@@ -213,7 +213,7 @@ def display_root(
     fuller_reg: str = "c",
     kpss_reg: str = "c",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Determine the normality of a timeseries.
 
@@ -266,7 +266,7 @@ def display_granger(
     lags: int = 3,
     confidence_level: float = 0.05,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Show granger tests
 
@@ -334,7 +334,7 @@ def display_cointegration_test(
     significant: bool = False,
     plot: bool = True,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Estimates long-run and short-run cointegration relationship for series y and x and apply

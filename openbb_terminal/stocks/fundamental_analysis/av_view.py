@@ -52,7 +52,7 @@ def display_overview(symbol: str):
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_key(symbol: str, export: str = "", sheet_name: str = ""):
+def display_key(symbol: str, export: str = "", sheet_name: str = None):
     """Alpha Vantage key metrics
 
     Parameters
@@ -87,7 +87,7 @@ def display_income_statement(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Alpha Vantage income statement
 
@@ -178,7 +178,7 @@ def display_balance_sheet(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Alpha Vantage balance sheet statement
 
@@ -271,7 +271,7 @@ def display_cash_flow(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Alpha Vantage income statement
 
@@ -360,7 +360,7 @@ def display_earnings(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Alpha Vantage earnings
 
@@ -403,7 +403,7 @@ def display_earnings(
 def display_fraud(
     symbol: str,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     help_text: bool = False,
     color: bool = True,
     detail: bool = False,
@@ -469,7 +469,7 @@ def display_dupont(
     symbol: str,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Shows the extended dupont ratio

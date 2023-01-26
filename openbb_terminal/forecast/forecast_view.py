@@ -35,7 +35,7 @@ def show_options(
     datasets: Dict[str, pd.DataFrame],
     dataset_name: str = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Plot custom data
 
@@ -79,7 +79,7 @@ def display_plot(
     data: pd.DataFrame,
     columns: List[str],
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Plot data from a dataset
@@ -129,7 +129,7 @@ def display_seasonality(
     data: pd.DataFrame,
     column: str = "close",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     m: Optional[int] = None,
     max_lag: int = 24,
     alpha: float = 0.05,
@@ -186,7 +186,7 @@ def display_seasonality(
 def display_corr(
     dataset: pd.DataFrame,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Plot correlation coefficients for dataset features
@@ -254,7 +254,7 @@ def show_df(
     limit_col: int = 10,
     name: str = "",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     console.print(
         f"[green]{name} dataset has shape (row, column): {data.shape}\n[/green]"
@@ -284,7 +284,7 @@ def show_df(
 
 @log_start_end(log=logger)
 def describe_df(
-    data: pd.DataFrame, name: str = "", export: str = "", sheet_name: str = ""
+    data: pd.DataFrame, name: str = "", export: str = "", sheet_name: str = None
 ):
     new_df = forecast_model.describe_df(data)
     print_rich_table(
@@ -304,7 +304,7 @@ def describe_df(
 
 @log_start_end(log=logger)
 def export_df(
-    data: pd.DataFrame, export: str, name: str = "", sheet_name: str = ""
+    data: pd.DataFrame, export: str, name: str = "", sheet_name: str = None
 ) -> None:
     export_data(
         export,

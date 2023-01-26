@@ -29,7 +29,7 @@ def display_mean_std(
     symbol: str = "",
     window: int = 14,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots mean std deviation
@@ -142,7 +142,7 @@ def display_spread(
     symbol: str = "",
     window: int = 14,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots rolling spread
@@ -257,7 +257,7 @@ def display_quantile(
     window: int = 14,
     quantile: float = 0.5,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots rolling quantile
@@ -356,7 +356,7 @@ def display_skew(
     target: str,
     window: int = 14,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots rolling skew
@@ -443,7 +443,7 @@ def display_kurtosis(
     target: str,
     window: int = 14,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots rolling kurtosis

@@ -87,7 +87,7 @@ def cost_to_borrow(
     limit: int = 100,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot the short interest of a stock. This corresponds to the

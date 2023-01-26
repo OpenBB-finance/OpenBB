@@ -26,7 +26,7 @@ def display_news(
     ascend: bool = False,
     links: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Display recent posts from CryptoPanic news aggregator platform.
     [Source: https://cryptopanic.com/]

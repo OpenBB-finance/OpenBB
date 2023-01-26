@@ -27,7 +27,7 @@ def display_mentions(
     symbol: str,
     start_date: str = "",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].
@@ -97,7 +97,7 @@ def display_correlation_interest(
     data: pd.DataFrame,
     words: List[str],
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots interest over time of words/sentences versus stock price. [Source: Google].
@@ -173,7 +173,7 @@ def display_regions(
     symbol: str,
     limit: int = 5,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots bars of regions based on stock's interest. [Source: Google].
@@ -229,7 +229,7 @@ def display_regions(
 
 @log_start_end(log=logger)
 def display_queries(
-    symbol: str, limit: int = 5, export: str = "", sheet_name: str = ""
+    symbol: str, limit: int = 5, export: str = "", sheet_name: str = None
 ):
     """Prints table showing top related queries with this stock's query. [Source: Google].
 
@@ -267,7 +267,7 @@ def display_queries(
 
 
 @log_start_end(log=logger)
-def display_rise(symbol: str, limit: int = 10, export: str = "", sheet_name: str = ""):
+def display_rise(symbol: str, limit: int = 10, export: str = "", sheet_name: str = None):
     """Prints top rising related queries with this stock's query. [Source: Google].
 
     Parameters

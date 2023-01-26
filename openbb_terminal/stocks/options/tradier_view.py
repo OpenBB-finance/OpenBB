@@ -163,7 +163,7 @@ def display_chains(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Display option chain
 
@@ -265,7 +265,7 @@ def plot_oi(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot open interest
@@ -360,7 +360,7 @@ def plot_vol(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume
@@ -455,7 +455,7 @@ def plot_volume_open_interest(
     max_sp: float = -1,
     min_vol: float = -1,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume and open interest
@@ -653,7 +653,7 @@ def display_historical(
     raw: bool = False,
     chain_id: str = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot historical option prices

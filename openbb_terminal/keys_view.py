@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_keys(show: bool = False, export: str = "", sheet_name: str = ""):
+def display_keys(show: bool = False, export: str = "", sheet_name: str = None):
     """Display currently set API keys.
 
     Parameters

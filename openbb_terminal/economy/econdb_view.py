@@ -32,7 +32,7 @@ def show_macro_data(
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Show the received macro data about a company [Source: EconDB]
 
@@ -153,7 +153,7 @@ def show_treasuries(
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Display U.S. Treasury rates [Source: EconDB]
 

@@ -32,7 +32,7 @@ def display_fundamentals(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Display tickers balance sheet or income statement
 

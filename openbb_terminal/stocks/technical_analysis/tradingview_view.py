@@ -20,7 +20,7 @@ def print_recommendation(
     exchange: str = "",
     interval: str = "",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Print tradingview recommendation based on technical indicators
 

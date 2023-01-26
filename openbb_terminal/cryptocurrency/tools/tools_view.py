@@ -18,7 +18,7 @@ def display_apy(
     compounding_times: int,
     narrative: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Displays APY value converted from APR
 
@@ -65,7 +65,7 @@ def display_il(
     initial_pool_value: int,
     narrative: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Displays Impermanent Loss in a custom liquidity pool
 

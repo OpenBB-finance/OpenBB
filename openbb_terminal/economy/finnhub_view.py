@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
 def economy_calendar_events(
-    country: str, limit: int, impact: str, export: str = "", sheet_name: str = ""
+    country: str, limit: int, impact: str, export: str = "", sheet_name: str = None
 ):
     """Output economy calendar impact events. [Source: Finnhub]
 

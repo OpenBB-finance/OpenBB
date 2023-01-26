@@ -434,7 +434,7 @@ def get_fdols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
 
 @log_start_end(log=logger)
-def get_comparison(regressions: Dict, export: str = "", sheet_name: str = ""):
+def get_comparison(regressions: Dict, export: str = "", sheet_name: str = None):
     """Compare regression results between Panel Data regressions.
 
     Parameters

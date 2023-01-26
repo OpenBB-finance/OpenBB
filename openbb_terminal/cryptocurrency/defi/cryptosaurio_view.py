@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 def display_anchor_data(
     address: str = "",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     show_transactions: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:

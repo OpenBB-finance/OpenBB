@@ -62,7 +62,7 @@ def news(symbol: str, limit: int = 5):
 
 
 @log_start_end(log=logger)
-def analyst(symbol: str, export: str = "", sheet_name: str = ""):
+def analyst(symbol: str, export: str = "", sheet_name: str = None):
     """Display analyst ratings. [Source: Finviz]
 
     Parameters

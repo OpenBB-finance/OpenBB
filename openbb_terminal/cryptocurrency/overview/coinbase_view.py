@@ -22,7 +22,7 @@ def display_trading_pairs(
     sortby: str = "quote_increment",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Displays a list of available currency pairs for trading. [Source: Coinbase]
 

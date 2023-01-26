@@ -38,7 +38,7 @@ def display_nbeats_forecast(
     force_reset: bool = True,
     save_checkpoints: bool = True,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,

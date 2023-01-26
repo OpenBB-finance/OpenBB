@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_management(symbol: str, export: str = "", sheet_name: str = ""):
+def display_management(symbol: str, export: str = "", sheet_name: str = None):
     """Display company's managers
 
     Parameters

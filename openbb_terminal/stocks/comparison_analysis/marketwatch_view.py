@@ -25,7 +25,7 @@ def display_income_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Display income data. [Source: Marketwatch].
 
@@ -82,7 +82,7 @@ def display_balance_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Compare balance between companies. [Source: Marketwatch]
 
@@ -139,7 +139,7 @@ def display_cashflow_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Compare cashflow between companies. [Source: Marketwatch]
 

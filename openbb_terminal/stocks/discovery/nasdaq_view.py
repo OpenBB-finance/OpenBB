@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
-def display_top_retail(limit: int = 3, export: str = "", sheet_name: str = ""):
+def display_top_retail(limit: int = 3, export: str = "", sheet_name: str = None):
     """Display the top 10 retail traded stocks for last days
 
     Parameters
@@ -61,7 +61,7 @@ def display_dividend_calendar(
     ascend: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Display NASDAQ dividend calendar
 

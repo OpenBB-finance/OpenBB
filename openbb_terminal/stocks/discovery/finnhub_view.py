@@ -17,7 +17,7 @@ def past_ipo(
     start_date: Optional[str] = None,
     limit: int = 20,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Past IPOs dates. [Source: Finnhub]
 
@@ -59,7 +59,7 @@ def future_ipo(
     end_date: Optional[str] = None,
     limit: int = 20,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Future IPOs dates. [Source: Finnhub]
 

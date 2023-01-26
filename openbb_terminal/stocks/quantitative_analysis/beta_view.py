@@ -22,7 +22,7 @@ def beta_view(
     ref_data: pd.DataFrame = None,
     interval: int = 1440,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Display the beta scatterplot + linear regression.
 

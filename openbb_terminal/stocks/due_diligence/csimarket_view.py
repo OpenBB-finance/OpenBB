@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def suppliers(
-    symbol: str, export: str = "", sheet_name: str = "", limit: int = 10
+    symbol: str, export: str = "", sheet_name: str = None, limit: int = 10
 ) -> None:
     """Display suppliers from ticker provided. [Source: CSIMarket]
 
@@ -51,7 +51,7 @@ def suppliers(
 
 
 @log_start_end(log=logger)
-def customers(symbol: str, export: str = "", sheet_name: str = ""):
+def customers(symbol: str, export: str = "", sheet_name: str = None):
     """Display customers from ticker provided. [Source: CSIMarket]
 
     Parameters

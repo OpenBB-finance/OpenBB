@@ -26,7 +26,7 @@ def display_whales_transactions(
     ascend: bool = False,
     show_address: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Display huge value transactions from major blockchains. [Source: https://docs.whale-alert.io/]
 

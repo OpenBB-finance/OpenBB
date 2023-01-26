@@ -37,7 +37,7 @@ def show_indices(
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Load (and show) the selected indices over time [Source: Yahoo Finance]
     Parameters

@@ -78,7 +78,7 @@ def rating_over_time(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Rating over time (monthly). [Source: Finnhub]

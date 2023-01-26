@@ -18,7 +18,7 @@ def screener(
     similar: List[str],
     data_type: str = "overview",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Screener.
 

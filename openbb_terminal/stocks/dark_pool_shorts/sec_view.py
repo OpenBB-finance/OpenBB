@@ -35,7 +35,7 @@ def fails_to_deliver(
     limit: int = 0,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display fails-to-deliver data for a given ticker. [Source: SEC]

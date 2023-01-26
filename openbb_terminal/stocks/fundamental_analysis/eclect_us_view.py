@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_analysis(symbol: str, export: str = "", sheet_name: str = "") -> None:
+def display_analysis(symbol: str, export: str = "", sheet_name: str = None) -> None:
     """Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]
 
     Parameters

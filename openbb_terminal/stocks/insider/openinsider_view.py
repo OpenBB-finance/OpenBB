@@ -106,7 +106,7 @@ def lambda_green_highlight(values):
 
 @log_start_end(log=logger)
 def print_insider_data(
-    type_insider: str = "lcb", limit: int = 10, export: str = "", sheet_name: str = ""
+    type_insider: str = "lcb", limit: int = 10, export: str = "", sheet_name: str = None
 ):
     """Print insider data
 
@@ -154,7 +154,7 @@ def print_insider_filter(
     limit: int = 10,
     links: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Print insider filter based on loaded preset. [Source: OpenInsider]
 

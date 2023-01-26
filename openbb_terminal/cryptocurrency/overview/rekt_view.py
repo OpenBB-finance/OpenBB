@@ -21,7 +21,7 @@ def display_crypto_hacks(
     ascend: bool = False,
     slug: str = "polyntwork-rekt",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Display list of major crypto-related hacks. If slug is passed
     individual crypto hack is displayed instead of list of crypto hacks

@@ -26,7 +26,7 @@ def display_order_book(
     limit: int = 100,
     to_symbol: str = "USDT",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots order book for currency. [Source: Binance]
@@ -66,7 +66,7 @@ def display_order_book(
 
 @log_start_end(log=logger)
 def display_balance(
-    from_symbol: str, to_symbol: str = "USDT", export: str = "", sheet_name: str = ""
+    from_symbol: str, to_symbol: str = "USDT", export: str = "", sheet_name: str = None
 ) -> None:
     """Prints table showing account holdings for asset. [Source: Binance]
 

@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def high_short_interest(limit: int = 10, export: str = "", sheet_name: str = ""):
+def high_short_interest(limit: int = 10, export: str = "", sheet_name: str = None):
     """Prints top N high shorted interest stocks from https://www.highshortinterest.com
 
     Parameters

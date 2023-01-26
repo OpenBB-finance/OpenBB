@@ -37,7 +37,7 @@ def display_historical(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical sentiment data of a ticker,
@@ -160,7 +160,7 @@ def display_trending(
     number: int = 10,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Display most talked about tickers within
     the last hour together with their sentiment data.

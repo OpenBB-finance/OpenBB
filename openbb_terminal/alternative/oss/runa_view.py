@@ -32,7 +32,7 @@ def display_rossindex(
     show_growth: bool = True,
     chart_type: str = "stars",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots list of startups from ross index [Source: https://runacap.com/]

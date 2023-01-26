@@ -28,7 +28,7 @@ def display_linear_regression(
     output_chunk_length: int = 5,
     lags: Union[int, List[int]] = 14,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,

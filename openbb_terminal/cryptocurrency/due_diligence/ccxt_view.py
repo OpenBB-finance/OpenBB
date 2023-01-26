@@ -21,7 +21,7 @@ def display_order_book(
     symbol: str,
     to_symbol: str,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots order book for a coin in a given exchange
@@ -68,7 +68,7 @@ def display_trades(
     to_symbol: str,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Prints table showing trades for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]

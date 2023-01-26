@@ -20,7 +20,7 @@ def display_search_results(
     sortby: str = "id",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing Search over CoinPaprika. [Source: CoinPaprika]
 

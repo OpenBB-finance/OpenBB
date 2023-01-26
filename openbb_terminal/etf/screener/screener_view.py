@@ -21,7 +21,7 @@ def view_screener(
     sortby: str,
     ascend: bool,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Display screener output
 

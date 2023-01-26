@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 def realtime_performance_sector(
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display Real-Time Performance sector. [Source: AlphaVantage]
@@ -93,7 +93,7 @@ def display_real_gdp(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US GDP from AlphaVantage
@@ -152,7 +152,7 @@ def display_gdp_capita(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US GDP per Capita from AlphaVantage
@@ -210,7 +210,7 @@ def display_inflation(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US Inflation from AlphaVantage
@@ -268,7 +268,7 @@ def display_cpi(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US consumer price index (CPI) from AlphaVantage
@@ -329,7 +329,7 @@ def display_treasury_yield(
     start_date: str = "2010-01-01",
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical treasury yield for given maturity
@@ -391,7 +391,7 @@ def display_unemployment(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US unemployment AlphaVantage

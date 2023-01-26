@@ -37,7 +37,7 @@ def display_crypto_heatmap(
     category: str = "",
     limit: int = 15,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Shows cryptocurrencies heatmap [Source: CoinGecko]
@@ -140,7 +140,7 @@ def display_holdings_overview(
     symbol: str,
     show_bar: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     limit: int = 15,
 ) -> None:
     """Shows overview of public companies that holds ethereum or bitcoin. [Source: CoinGecko]
@@ -213,7 +213,7 @@ def display_exchange_rates(
     ascend: bool = False,
     limit: int = 15,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Shows  list of crypto, fiats, commodity exchange rates. [Source: CoinGecko]
 
@@ -252,7 +252,7 @@ def display_exchange_rates(
 
 @log_start_end(log=logger)
 def display_global_market_info(
-    pie: bool = False, export: str = "", sheet_name: str = ""
+    pie: bool = False, export: str = "", sheet_name: str = None
 ) -> None:
     """Shows global statistics about crypto. [Source: CoinGecko]
         - market cap change
@@ -317,7 +317,7 @@ def display_global_market_info(
 
 
 @log_start_end(log=logger)
-def display_global_defi_info(export: str = "", sheet_name: str = "") -> None:
+def display_global_defi_info(export: str = "", sheet_name: str = None) -> None:
     """Shows global statistics about Decentralized Finances. [Source: CoinGecko]
 
     Parameters
@@ -351,7 +351,7 @@ def display_global_defi_info(export: str = "", sheet_name: str = "") -> None:
 def display_stablecoins(
     limit: int = 15,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     sortby: str = "Market_Cap_[$]",
     ascend: bool = False,
     pie: bool = True,
@@ -439,7 +439,7 @@ def display_categories(
     sortby: str = "market_cap_desc",
     limit: int = 15,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     pie: bool = False,
 ) -> None:
     """Shows top cryptocurrency categories by market capitalization
@@ -511,7 +511,7 @@ def display_exchanges(
     limit: int = 15,
     links: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Shows list of top exchanges from CoinGecko. [Source: CoinGecko]
 
@@ -562,7 +562,7 @@ def display_platforms(
     ascend: bool = True,
     limit: int = 15,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Shows list of financial platforms. [Source: CoinGecko]
 
@@ -605,7 +605,7 @@ def display_products(
     ascend: bool = False,
     limit: int = 15,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Shows list of financial products. [Source: CoinGecko]
 
@@ -648,7 +648,7 @@ def display_indexes(
     ascend: bool = True,
     limit: int = 15,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Shows list of crypto indexes. [Source: CoinGecko]
 
@@ -690,7 +690,7 @@ def display_derivatives(
     ascend: bool = False,
     limit: int = 15,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Shows  list of crypto derivatives. [Source: CoinGecko]
 

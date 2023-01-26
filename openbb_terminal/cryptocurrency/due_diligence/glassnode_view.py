@@ -36,7 +36,7 @@ def display_active_addresses(
     end_date: Optional[str] = None,
     interval: str = "24h",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots active addresses of a certain symbol over time
@@ -101,7 +101,7 @@ def display_non_zero_addresses(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots addresses with non-zero balance of a certain symbol
@@ -165,7 +165,7 @@ def display_exchange_net_position_change(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots 30d change of the supply held in exchange wallets.
@@ -249,7 +249,7 @@ def display_exchange_balances(
     end_date: Optional[str] = None,
     percentage: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots total amount of coins held on exchange addresses in units and percentage.
@@ -332,7 +332,7 @@ def display_hashrate(
     end_date: Optional[str] = None,
     interval: str = "24h",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots dataframe with mean hashrate of btc or eth blockchain and symbol price.

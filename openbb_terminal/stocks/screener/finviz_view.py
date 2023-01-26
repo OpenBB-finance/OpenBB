@@ -131,7 +131,7 @@ def screener(
     ascend: bool = False,
     sortby: str = "",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> List[str]:
     """Screener one of the following: overview, valuation, financial, ownership, performance, technical.
 

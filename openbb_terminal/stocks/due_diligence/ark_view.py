@@ -20,7 +20,7 @@ def display_ark_trades(
     limit: int = 20,
     show_symbol: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Display ARK trades for ticker
 

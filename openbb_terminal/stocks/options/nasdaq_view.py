@@ -29,7 +29,7 @@ def display_oi(
     max_sp: float = -1,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot open interest
@@ -123,7 +123,7 @@ def display_volume(
     max_sp: float = -1,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume
@@ -217,7 +217,7 @@ def display_volume_and_oi(
     max_sp: float = -1,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume and open interest
@@ -322,7 +322,7 @@ def display_volume_and_oi(
 
 
 @log_start_end(log=logger)
-def display_chains(symbol: str, expiry: str, export: str = "", sheet_name: str = ""):
+def display_chains(symbol: str, expiry: str, export: str = "", sheet_name: str = None):
     """Display option chain for given expiration
 
     Parameters

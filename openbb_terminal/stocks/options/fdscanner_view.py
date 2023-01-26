@@ -19,7 +19,7 @@ def display_options(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Displays the unusual options table
 

@@ -15,7 +15,7 @@ def display_forward_rates(
     to_symbol: str = "USD",
     from_symbol: str = "EUR",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """Display forward rates for currency pairs
 

@@ -34,7 +34,7 @@ def display_adx(
     drift: int = 1,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots ADX indicator
@@ -126,7 +126,7 @@ def display_aroon(
     scalar: int = 100,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Aroon indicator

@@ -114,7 +114,7 @@ def show_options(
     raw: str = "",
     limit: int = 10,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ):
     """
     The ability to plot any data coming from EconDB, FRED or Yahoo Finance.

@@ -37,7 +37,7 @@ def display_sentiment_analysis(
     symbol: str,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]

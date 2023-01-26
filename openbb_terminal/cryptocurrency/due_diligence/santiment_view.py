@@ -30,7 +30,7 @@ def display_github_activity(
     end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Returns a list of github activity for a given coin and time interval.

@@ -475,7 +475,7 @@ def plot_forecast(
     precision: Optional[int] = None,
     probabilistic: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     low_quantile: float = None,
     high_quantile: float = None,
     forecast_only: bool = False,
@@ -574,7 +574,7 @@ def plot_forecast(
 def plot_explainability(
     model: type[GlobalForecastingModel],
     explainability_raw=False,
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """

@@ -38,7 +38,7 @@ def view_ma(
     ma_type: str = "EMA",
     symbol: str = "",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots MA technical indicator
@@ -144,7 +144,7 @@ def view_vwap(
     offset: int = 0,
     interval: str = "",
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots VWMA technical indicator

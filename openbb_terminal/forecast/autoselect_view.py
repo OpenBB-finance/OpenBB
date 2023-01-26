@@ -26,7 +26,7 @@ def display_autoselect_forecast(
     start_window: float = 0.85,
     forecast_horizon: int = 5,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
