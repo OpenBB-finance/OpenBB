@@ -1,7 +1,11 @@
 import os
 from pathlib import Path
 import json
-from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
+from typing import Optional
+from openbb_terminal.core.config.paths import (
+    SETTINGS_DIRECTORY,
+    USER_ROUTINES_DIRECTORY,
+)
 from openbb_terminal.rich_config import console
 
 from openbb_terminal import feature_flags as obbff
@@ -88,10 +92,12 @@ def apply_configs(configs: dict):
 
     if configs:
         settings = configs.get("features_settings", {})
+
+        # TODO: Find a cleaner way to check if user has sync enabled.
         obbff.SYNC_ENABLED = is_sync_enabled(settings)
         User.update_flair()
+
         if obbff.SYNC_ENABLED:
-            console.print("Applying...", style="red")
             if settings:
                 for k, v in settings.items():
                     if hasattr(obbff, k):
@@ -144,3 +150,20 @@ def cast_set_attr(obj, name, value):
         setattr(obj, name, int(value))
     else:
         setattr(obj, name, value)
+
+
+def get_routine(name: str) -> Optional[str]:
+    """Get the routine.
+
+    Returns
+    -------
+    str
+        The routine.
+    """
+    try:
+        with open(USER_ROUTINES_DIRECTORY / name) as f:
+            routine = "".join(f.readlines())
+        return routine
+    except Exception:
+        console.print("[red]\nFailed to find routine.[/red]")
+        return None
