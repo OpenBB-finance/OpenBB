@@ -36,10 +36,6 @@ def test_get_score():
             {"symbol": "PM"},
         ),
         (
-            "get_quote",
-            {"symbol": "PM"},
-        ),
-        (
             "get_enterprise",
             {"symbol": "PM", "limit": 5, "quarterly": False},
         ),

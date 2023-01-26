@@ -40,10 +40,6 @@ def test_display_filings():
             {"symbol": "PM"},
         ),
         (
-            "display_quote",
-            {"symbol": "PM"},
-        ),
-        (
             "display_enterprise",
             {"symbol": "PM", "limit": 5, "quarterly": False},
         ),

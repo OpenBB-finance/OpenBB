@@ -1,35 +1,35 @@
-Timestamp: 2023-01-13 13:32:45  US/Eastern
-Ticker: GAME
-CIK: 1714562
+Timestamp: 2023-01-26 17:27:59  US/Eastern
+Ticker: PBR
+CIK: 1119639
 Form Type: 6-K
-6-K - Engine Gaming & Media, Inc. (0001714562) (Filer)
-https://www.sec.gov/Archives/edgar/data/1714562/000149315223001382/0001493152-23-001382-index.htm
+6-K - PETROBRAS - PETROLEO BRASILEIRO SA (0001119639) (Filer)
+https://www.sec.gov/Archives/edgar/data/1119639/000129281423000215/0001292814-23-000215-index.htm
 
-Timestamp: 2023-01-13 13:25:12  US/Eastern
-Ticker: TEGY
-CIK: 1383394
-Form Type: 10-K
-10-K - TRANSACT ENERGY CORP (0001383394) (Filer)
-https://www.sec.gov/Archives/edgar/data/1383394/000139390523000016/0001393905-23-000016-index.htm
-
-Timestamp: 2023-01-13 13:21:18  US/Eastern
-Ticker: MOR
-CIK: 1340243
+Timestamp: 2023-01-26 17:27:59  US/Eastern
+Ticker: PBR-A
+CIK: 1119639
 Form Type: 6-K
-6-K - MorphoSys AG (0001340243) (Filer)
-https://www.sec.gov/Archives/edgar/data/1340243/000162828023001015/0001628280-23-001015-index.htm
+6-K - PETROBRAS - PETROLEO BRASILEIRO SA (0001119639) (Filer)
+https://www.sec.gov/Archives/edgar/data/1119639/000129281423000215/0001292814-23-000215-index.htm
 
-Timestamp: 2023-01-13 13:21:18  US/Eastern
-Ticker: MPSYF
-CIK: 1340243
+Timestamp: 2023-01-26 17:24:47  US/Eastern
+Ticker: None
+CIK: 1906798
+Form Type: 13F-HR
+13F-HR - Barden Capital Management, Inc. (0001906798) (Filer)
+https://www.sec.gov/Archives/edgar/data/1906798/000175496023000041/0001754960-23-000041-index.htm
+
+Timestamp: 2023-01-26 17:23:53  US/Eastern
+Ticker: CYBN
+CIK: 1833141
 Form Type: 6-K
-6-K - MorphoSys AG (0001340243) (Filer)
-https://www.sec.gov/Archives/edgar/data/1340243/000162828023001015/0001628280-23-001015-index.htm
+6-K - CYBIN INC. (0001833141) (Filer)
+https://www.sec.gov/Archives/edgar/data/1833141/000162828023001626/0001628280-23-001626-index.htm
 
-Timestamp: 2023-01-13 13:19:16  US/Eastern
-Ticker: DWAY
-CIK: 1394638
-Form Type: 10-K
-10-K - Driveitaway Holdings, Inc. (0001394638) (Filer)
-https://www.sec.gov/Archives/edgar/data/1394638/000173112223000046/0001731122-23-000046-index.htm
+Timestamp: 2023-01-26 17:22:49  US/Eastern
+Ticker: None
+CIK: 1665018
+Form Type: 13F-HR
+13F-HR - Chandler Asset Management, Inc. (0001665018) (Filer)
+https://www.sec.gov/Archives/edgar/data/1665018/000174407323000004/0001744073-23-000004-index.htm
 

@@ -2,19 +2,17 @@ interactions:
 - request:
     body: null
     headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
       Connection:
-      - keep-alive
+      - close
+      Host:
+      - financialmodelingprep.com
       User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
-        like Gecko) Chrome/39.0.2171.95 Safari/537.36
+      - Python-urllib/3.9
     method: GET
-    uri: https://finance.yahoo.com/quote/GME
+    uri: https://financialmodelingprep.com/api/v3/quote/GME?apikey=MOCK_API_KEY
   response:
     body:
+<<<<<<< HEAD
       string: !!binary |
         H4sIAAAAAAAAA9R96XrbSJLg/34KCJ6SyTYIgvdl2iVLVFndukaU7c+j1vBLAAkSZRBg4aBE09xv
         X2Nfb59kIzITIMBDpmh7ZvZzd4nIIyIy7jyQeH1wcnV8+/m6J43CsfPmNf5XMklICobneH4hHNEx
@@ -17314,6 +17312,47 @@ interactions:
       - dv6cum9ht8fn1
       y-rid:
       - dv6cum9ht8fn1
+=======
+      string: "[\n  {\n    \"symbol\": \"GME\",\n    \"name\": \"GameStop Corp.\",\n
+        \   \"price\": 20.01,\n    \"changesPercentage\": -1.0875,\n    \"change\":
+        -0.22,\n    \"dayLow\": 19.38,\n    \"dayHigh\": 21.1685,\n    \"yearHigh\":
+        49.8525,\n    \"yearLow\": 15.41,\n    \"marketCap\": 6094605460,\n    \"priceAvg50\":
+        22.042,\n    \"priceAvg200\": 28.56785,\n    \"exchange\": \"NYSE\",\n    \"volume\":
+        3489763,\n    \"avgVolume\": 5127027,\n    \"open\": 20.61,\n    \"previousClose\":
+        20.23,\n    \"eps\": -6.292,\n    \"pe\": -3.18,\n    \"earningsAnnouncement\":
+        \"2023-03-15T10:59:00.000+0000\",\n    \"sharesOutstanding\": 304577984,\n
+        \   \"timestamp\": 1674766802\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '593'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 26 Jan 2023 23:37:22 GMT
+      ETag:
+      - W/"251-F/XLqI+RwO5lW4aLVdXQ9yXMhIM"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+>>>>>>> 82b56068b7 (Update tests to reflect changes)
     status:
       code: 200
       message: OK
