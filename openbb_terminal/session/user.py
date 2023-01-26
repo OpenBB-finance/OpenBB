@@ -61,7 +61,7 @@ class User:
                 sync = "OFF"
             console.print(f"[info]sync:[/info] {sync}\n")
         else:
-            console.print("[info]Only you know...[/info]\n")
+            console.print("[info]You are currently logged as a guest.[/info]\n")
 
     @classmethod
     def clear(cls):
