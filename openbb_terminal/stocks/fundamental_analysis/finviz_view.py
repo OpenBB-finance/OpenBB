@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_screen_data(symbol: str, export: str = ""):
+def display_screen_data(symbol: str, export: str = "", sheet_name: str = None):
     """FinViz ticker screener
 
     Parameters
@@ -26,4 +26,10 @@ def display_screen_data(symbol: str, export: str = ""):
 
     print_rich_table(fund_data, title="Ticker Screener", show_index=True)
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "data", fund_data)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "data",
+        fund_data,
+        sheet_name,
+    )

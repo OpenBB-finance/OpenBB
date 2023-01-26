@@ -226,7 +226,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_analysis",
             "eclect_us_view.display_analysis",
             ["--export=csv"],
-            dict(symbol="TSLA", export="csv"),
+            dict(symbol="TSLA", export="csv", sheet_name=None),
         ),
         (
             "call_mgmt",
@@ -238,7 +238,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_data",
             "finviz_view.display_screen_data",
             ["--export=csv"],
-            dict(symbol="TSLA", export="csv"),
+            dict(symbol="TSLA", export="csv", sheet_name=None),
         ),
         (
             "call_score",
@@ -316,7 +316,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_key",
             "av_view.display_key",
             ["--export=xlsx"],
-            dict(symbol="TSLA", export="xlsx"),
+            dict(symbol="TSLA", export="xlsx", sheet_name=None),
         ),
         (
             "call_income",
@@ -329,6 +329,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=[],
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -343,6 +344,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=[],
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -356,6 +358,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=[],
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -368,6 +371,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=[],
                 export="csv",
+                sheet_name=None,
                 limit=5,
             ),
         ),
@@ -382,6 +386,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=[],
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -396,6 +401,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=[],
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -409,6 +415,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=[],
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -421,6 +428,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=[],
                 export="csv",
+                sheet_name=None,
                 limit=5,
             ),
         ),
@@ -435,6 +443,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=[],
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -448,6 +457,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=[],
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -462,6 +472,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=[],
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -474,6 +485,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=[],
                 export="csv",
+                sheet_name=None,
                 limit=5,
             ),
         ),
@@ -481,12 +493,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_earnings",
             "av_view.display_earnings",
             ["--limit=5", "--quarter", "--export=csv", "--source=AlphaVantage"],
-            dict(
-                symbol="TSLA",
-                limit=5,
-                quarterly=True,
-                export="csv",
-            ),
+            dict(symbol="TSLA", limit=5, quarterly=True, export="csv", sheet_name=None),
         ),
         (
             "call_fraud",
@@ -495,6 +502,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             dict(
                 symbol="TSLA",
                 export="csv",
+                sheet_name=None,
                 detail=False,
             ),
         ),

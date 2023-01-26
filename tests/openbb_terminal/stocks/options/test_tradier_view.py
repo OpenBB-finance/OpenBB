@@ -33,6 +33,7 @@ def test_display_historical(mocker):
         strike=180.0,
         put=True,
         export="csv",
+        sheet_name=None,
         raw=True,
         chain_id="",
     )

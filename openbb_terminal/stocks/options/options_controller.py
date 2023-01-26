@@ -439,6 +439,9 @@ class OptionsController(BaseController):
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                     ascend=ns_parser.reverse,
                     calls_only=ns_parser.calls_only,
                     puts_only=ns_parser.puts_only,
@@ -480,6 +483,9 @@ class OptionsController(BaseController):
                     window=ns_parser.length,
                     start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("No ticker loaded. First use `load <ticker>`")
@@ -499,7 +505,11 @@ class OptionsController(BaseController):
         if ns_parser:
             if self.ticker:
                 barchart_view.print_options_data(
-                    symbol=self.ticker, export=ns_parser.export
+                    symbol=self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("No ticker loaded.\n")
@@ -592,6 +602,9 @@ class OptionsController(BaseController):
                             raw=ns_parser.raw,
                             limit=ns_parser.limit,
                             export=ns_parser.export,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                     else:
                         console.print("No correct strike input")
@@ -775,6 +788,9 @@ class OptionsController(BaseController):
                     ns_parser.strike,
                     ns_parser.limit,
                     ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
             elif (
@@ -788,6 +804,9 @@ class OptionsController(BaseController):
                     raw=ns_parser.raw,
                     chain_id=ns_parser.chain_id,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("TRADIER TOKEN not supplied.")
@@ -878,6 +897,9 @@ class OptionsController(BaseController):
                         max_sp=ns_parser.max_sp,
                         current_price=self.current_price,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                         to_display=list_from_str(ns_parser.to_display),
                     )
                 else:
@@ -969,6 +991,9 @@ class OptionsController(BaseController):
                         calls_only=ns_parser.calls,
                         puts_only=ns_parser.puts,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                         raw=ns_parser.raw,
                     )
                 else:
@@ -1048,6 +1073,9 @@ class OptionsController(BaseController):
                         max_sp=ns_parser.max_sp,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 else:
                     console.print(
@@ -1139,6 +1167,9 @@ class OptionsController(BaseController):
                         calls_only=ns_parser.calls,
                         puts_only=ns_parser.puts,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                         raw=ns_parser.raw,
                     )
                 else:
@@ -1220,6 +1251,9 @@ class OptionsController(BaseController):
                             y=ns_parser.y,
                             custom=ns_parser.custom,
                             export=ns_parser.export,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`")
@@ -1250,7 +1284,12 @@ class OptionsController(BaseController):
         )
         if ns_parser:
             yfinance_view.display_vol_surface(
-                self.ticker, export=ns_parser.export, z=ns_parser.z
+                self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+                z=ns_parser.z,
             )
 
     @log_start_end(log=logger)

@@ -279,6 +279,9 @@ class QaController(StockBaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -297,7 +300,11 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_summary(
-                data=self.current_source_dataframe, export=ns_parser.export
+                data=self.current_source_dataframe,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -386,6 +393,9 @@ class QaController(StockBaseController):
                 data=self.current_source_dataframe,
                 target=self.current_id,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -447,6 +457,9 @@ class QaController(StockBaseController):
                 target=self.current_id,
                 multiplicative=ns_parser.multiplicative,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -544,6 +557,9 @@ class QaController(StockBaseController):
                 target=self.current_id,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -575,6 +591,9 @@ class QaController(StockBaseController):
                 target=self.current_id,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -624,6 +643,9 @@ class QaController(StockBaseController):
                 window=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -661,6 +683,9 @@ class QaController(StockBaseController):
                 target=self.current_id,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -698,6 +723,9 @@ class QaController(StockBaseController):
                 target=self.current_id,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -719,6 +747,9 @@ class QaController(StockBaseController):
                 data=self.current_source_dataframe,
                 target=self.current_id,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -777,4 +808,7 @@ class QaController(StockBaseController):
                 fuller_reg=ns_parser.fuller_reg,
                 kpss_reg=ns_parser.kpss_reg,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
