@@ -7,7 +7,7 @@ import os.path
 import argparse
 import logging
 from pathlib import Path
-from typing import List
+from typing import List, Union
 import pytz
 
 # IMPORTATION THIRDPARTY
@@ -29,6 +29,8 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.session.hub_model import patch_user_configs
+from openbb_terminal.session.user import User
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel
@@ -135,6 +137,38 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Settings")
 
+    @staticmethod
+    def set_cfg_plot(name: str, value: Union[bool, str]):
+        """Set cfg_plot attribute
+
+        Parameters
+        ----------
+        name : str
+            Environment variable name
+        value : str
+            Environment variable value
+        persist : bool, optional
+            Persist feature flag, by default False
+        """
+
+        if User.is_guest():
+            set_key(str(USER_ENV_FILE), name, str(value))
+
+        # Remove "OPENBB_" prefix from env_var
+        if name.startswith("OPENBB_"):
+            name = name[7:]
+
+        # Set obbff.env_var_name = not env_var_value
+        setattr(cfg_plot, name, value)
+
+        # Send feature flag to server
+        if not User.is_guest():
+            patch_user_configs(
+                key=name,
+                value=str(value),
+                type_="settings",
+            )
+
     @log_start_end(log=logger)
     def call_colors(self, _):
         """Process colors command"""
@@ -193,7 +227,6 @@ class SettingsController(BaseController):
             obbff_ctrl.FeatureFlagsController.set_feature_flag(
                 "OPENBB_PREFERRED_DATA_SOURCE_FILE", ns_parser.value
             )
-            obbff.PREFERRED_DATA_SOURCE_FILE = ns_parser.value
 
     @log_start_end(log=logger)
     def call_autoscaling(self, _):
@@ -223,8 +256,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.value:
-            set_key(USER_ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
-            cfg_plot.PLOT_DPI = ns_parser.value
+            SettingsController.set_cfg_plot("OPENBB_PLOT_DPI", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_height(self, other_args: List[str]):
@@ -247,8 +279,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(USER_ENV_FILE, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
-            cfg_plot.PLOT_HEIGHT = ns_parser.value
+            SettingsController.set_cfg_plot("OPENBB_PLOT_HEIGHT", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_width(self, other_args: List[str]):
@@ -271,8 +302,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(USER_ENV_FILE, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
-            cfg_plot.PLOT_WIDTH = ns_parser.value
+            SettingsController.set_cfg_plot("OPENBB_PLOT_WIDTH", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_pheight(self, other_args: List[str]):
@@ -294,12 +324,9 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(
-                USER_ENV_FILE,
-                "OPENBB_PLOT_HEIGHT_PERCENTAGE",
-                str(ns_parser.value),
+            SettingsController.set_cfg_plot(
+                "OPENBB_PLOT_HEIGHT_PERCENTAGE", ns_parser.value
             )
-            cfg_plot.PLOT_HEIGHT_PERCENTAGE = ns_parser.value
 
     @log_start_end(log=logger)
     def call_pwidth(self, other_args: List[str]):
@@ -321,12 +348,9 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(
-                USER_ENV_FILE,
-                "OPENBB_PLOT_WIDTH_PERCENTAGE",
-                str(ns_parser.value),
+            SettingsController.set_cfg_plot(
+                "OPENBB_PLOT_WIDTH_PERCENTAGE", ns_parser.value
             )
-            cfg_plot.PLOT_WIDTH_PERCENTAGE = ns_parser.value
 
     @log_start_end(log=logger)
     def call_monitor(self, other_args: List[str]):
@@ -348,8 +372,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(USER_ENV_FILE, "OPENBB_MONITOR", str(ns_parser.value))
-            cfg_plot.MONITOR = ns_parser.value
+            SettingsController.set_cfg_plot("OPENBB_MONITOR", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_backend(self, other_args: List[str]):
