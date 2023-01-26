@@ -88,5 +88,5 @@ def display_defi_vaults(
         os.path.dirname(os.path.abspath(__file__)),
         "vaults",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

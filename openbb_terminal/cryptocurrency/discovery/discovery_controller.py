@@ -154,7 +154,9 @@ class DiscoveryController(BaseController):
                     category=ns_parser.category,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                     ascend=ns_parser.reverse,
                 )
             elif ns_parser.source == "CoinMarketCap":
@@ -163,7 +165,9 @@ class DiscoveryController(BaseController):
                     sortby=ns_parser.sortby,
                     ascend=ns_parser.reverse,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -206,7 +210,9 @@ class DiscoveryController(BaseController):
                 sortby=" ".join(ns_parser.sortby),
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -249,7 +255,9 @@ class DiscoveryController(BaseController):
                 sortby=" ".join(ns_parser.sortby),
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -292,7 +300,9 @@ class DiscoveryController(BaseController):
                 sortby=" ".join(ns_parser.sortby),
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -336,7 +346,9 @@ class DiscoveryController(BaseController):
                 sortby=" ".join(ns_parser.sortby),
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -392,7 +404,9 @@ class DiscoveryController(BaseController):
                 interval=ns_parser.interval,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
                 sortby=" ".join(ns_parser.sortby),
             )
 
@@ -450,7 +464,9 @@ class DiscoveryController(BaseController):
                 interval=ns_parser.interval,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
                 sortby=" ".join(ns_parser.sortby),
             )
 
@@ -473,7 +489,9 @@ class DiscoveryController(BaseController):
         if ns_parser:
             pycoingecko_view.display_trending(
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -551,7 +569,9 @@ class DiscoveryController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
                 query=" ".join(ns_parser.query),
                 category=ns_parser.category,
             )

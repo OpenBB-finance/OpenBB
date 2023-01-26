@@ -90,5 +90,5 @@ def display_github_activity(
         os.path.dirname(os.path.abspath(__file__)),
         "gh",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

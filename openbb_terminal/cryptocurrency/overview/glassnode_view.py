@@ -148,5 +148,5 @@ def display_btc_rainbow(
         os.path.dirname(os.path.abspath(__file__)),
         "btcrb",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

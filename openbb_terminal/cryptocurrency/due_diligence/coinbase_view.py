@@ -45,7 +45,7 @@ def display_order_book(
         os.path.dirname(os.path.abspath(__file__)),
         "book",
         pd.DataFrame(market_book),
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -80,7 +80,7 @@ def display_trades(
         os.path.dirname(os.path.abspath(__file__)),
         "trades",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -111,7 +111,7 @@ def display_candles(
         os.path.dirname(os.path.abspath(__file__)),
         "candles",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -142,5 +142,5 @@ def display_stats(symbol: str, export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "stats",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

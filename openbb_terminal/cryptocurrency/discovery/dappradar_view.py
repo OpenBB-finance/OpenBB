@@ -56,7 +56,7 @@ def display_top_nfts(
         os.path.dirname(os.path.abspath(__file__)),
         "drnft",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -95,7 +95,7 @@ def display_top_games(
         os.path.dirname(os.path.abspath(__file__)),
         "drgames",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -134,7 +134,7 @@ def display_top_dexes(
         os.path.dirname(os.path.abspath(__file__)),
         "drdex",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -173,5 +173,5 @@ def display_top_dapps(
         os.path.dirname(os.path.abspath(__file__)),
         "drdapps",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

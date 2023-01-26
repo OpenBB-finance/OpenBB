@@ -57,7 +57,7 @@ def display_order_book(
         os.path.dirname(os.path.abspath(__file__)),
         "ob",
         market_book,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -99,5 +99,5 @@ def display_trades(
         os.path.dirname(os.path.abspath(__file__)),
         "trades",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

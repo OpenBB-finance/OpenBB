@@ -98,7 +98,7 @@ def display_global_market(export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "global",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -154,7 +154,7 @@ def display_all_coins_market_info(
         os.path.dirname(os.path.abspath(__file__)),
         "markets",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -210,7 +210,7 @@ def display_all_coins_info(
         os.path.dirname(os.path.abspath(__file__)),
         "info",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -266,7 +266,7 @@ def display_all_exchanges(
         os.path.dirname(os.path.abspath(__file__)),
         "exchanges",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -325,7 +325,7 @@ def display_exchange_markets(
         os.path.dirname(os.path.abspath(__file__)),
         "exmarkets",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -351,7 +351,7 @@ def display_all_platforms(export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "platforms",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -398,5 +398,5 @@ def display_contracts(
         os.path.dirname(os.path.abspath(__file__)),
         "contracts",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

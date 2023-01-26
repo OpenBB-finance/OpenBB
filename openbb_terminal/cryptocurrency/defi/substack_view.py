@@ -41,5 +41,5 @@ def display_newsletters(
         os.path.dirname(os.path.abspath(__file__)),
         "newsletter",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

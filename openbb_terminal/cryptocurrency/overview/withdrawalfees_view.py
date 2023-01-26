@@ -48,7 +48,7 @@ def display_overall_withdrawal_fees(
             os.path.dirname(os.path.abspath(__file__)),
             "withdrawal_fees",
             df_fees,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -84,7 +84,7 @@ def display_overall_exchange_withdrawal_fees(
             os.path.dirname(os.path.abspath(__file__)),
             "exchange_withdrawal_fees",
             df_fees,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -125,5 +125,5 @@ def display_crypto_withdrawal_fees(
             os.path.dirname(os.path.abspath(__file__)),
             "crypto_withdrawal_fees",
             df_fees,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

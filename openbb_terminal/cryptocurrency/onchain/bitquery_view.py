@@ -81,7 +81,7 @@ def display_dex_trades(
             os.path.dirname(os.path.abspath(__file__)),
             "lt",
             df_data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -156,7 +156,7 @@ def display_daily_volume_for_given_pair(
         os.path.dirname(os.path.abspath(__file__)),
         "dvcp",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -223,7 +223,7 @@ def display_dex_volume_for_token(
             os.path.dirname(os.path.abspath(__file__)),
             "tv",
             df_data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -286,7 +286,7 @@ def display_ethereum_unique_senders(
             os.path.dirname(os.path.abspath(__file__)),
             "ueat",
             df_data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -348,7 +348,7 @@ def display_most_traded_pairs(
             os.path.dirname(os.path.abspath(__file__)),
             "ttcp",
             df_data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -404,5 +404,5 @@ def display_spread_for_crypto_pair(
             os.path.dirname(os.path.abspath(__file__)),
             "baas",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

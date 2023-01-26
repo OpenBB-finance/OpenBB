@@ -92,7 +92,7 @@ def display_coins(
             os.path.dirname(os.path.abspath(__file__)),
             "cgtop",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -140,7 +140,7 @@ def display_gainers(
             os.path.dirname(os.path.abspath(__file__)),
             "gainers",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -188,7 +188,7 @@ def display_losers(
             os.path.dirname(os.path.abspath(__file__)),
             "cglosers",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -219,7 +219,7 @@ def display_trending(export: str = "", sheet_name: str = "") -> None:
             os.path.dirname(os.path.abspath(__file__)),
             "cgtrending",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")

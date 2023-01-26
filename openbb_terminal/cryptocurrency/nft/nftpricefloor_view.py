@@ -85,7 +85,7 @@ def display_collections(
         os.path.dirname(os.path.abspath(__file__)),
         "collections",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -158,5 +158,5 @@ def display_floor_price(
             os.path.dirname(os.path.abspath(__file__)),
             "fp",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

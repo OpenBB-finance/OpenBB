@@ -77,7 +77,7 @@ def display_daily_transactions(
         os.path.dirname(os.path.abspath(__file__)),
         "dt",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -147,7 +147,7 @@ def display_dapp_stats(
         os.path.dirname(os.path.abspath(__file__)),
         "ds",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -223,5 +223,5 @@ def display_total_value_locked(
         os.path.dirname(os.path.abspath(__file__)),
         "tvl",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

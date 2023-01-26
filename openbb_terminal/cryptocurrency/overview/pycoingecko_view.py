@@ -131,7 +131,7 @@ def display_crypto_heatmap(
             os.path.dirname(os.path.abspath(__file__)),
             "hm",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -203,7 +203,7 @@ def display_holdings_overview(
             os.path.dirname(os.path.abspath(__file__)),
             "cghold",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -244,7 +244,7 @@ def display_exchange_rates(
             os.path.dirname(os.path.abspath(__file__)),
             "exrates",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")
@@ -310,7 +310,7 @@ def display_global_market_info(
             os.path.dirname(os.path.abspath(__file__)),
             "cgglobal",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")
@@ -341,7 +341,7 @@ def display_global_defi_info(export: str = "", sheet_name: str = "") -> None:
             os.path.dirname(os.path.abspath(__file__)),
             "defi",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")
@@ -428,7 +428,7 @@ def display_stablecoins(
             os.path.dirname(os.path.abspath(__file__)),
             "cgstables",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -498,7 +498,7 @@ def display_categories(
             os.path.dirname(os.path.abspath(__file__)),
             "cgcategories",
             df_data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -550,7 +550,7 @@ def display_exchanges(
             os.path.dirname(os.path.abspath(__file__)),
             "exchanges",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")
@@ -593,7 +593,7 @@ def display_platforms(
             os.path.dirname(os.path.abspath(__file__)),
             "platforms",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -636,7 +636,7 @@ def display_products(
             os.path.dirname(os.path.abspath(__file__)),
             "products",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")
@@ -678,7 +678,7 @@ def display_indexes(
             os.path.dirname(os.path.abspath(__file__)),
             "indexes",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")
@@ -722,7 +722,7 @@ def display_derivatives(
             os.path.dirname(os.path.abspath(__file__)),
             "derivatives",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")

@@ -90,7 +90,7 @@ def display_active_addresses(
         os.path.dirname(os.path.abspath(__file__)),
         "active",
         df_addresses,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -153,7 +153,7 @@ def display_non_zero_addresses(
         os.path.dirname(os.path.abspath(__file__)),
         "nonzero",
         df_addresses,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -236,7 +236,7 @@ def display_exchange_net_position_change(
         os.path.dirname(os.path.abspath(__file__)),
         "change",
         df_addresses,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -320,7 +320,7 @@ def display_exchange_balances(
         os.path.dirname(os.path.abspath(__file__)),
         "eb",
         df_balance,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -401,5 +401,5 @@ def display_hashrate(
         os.path.dirname(os.path.abspath(__file__)),
         "hr",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

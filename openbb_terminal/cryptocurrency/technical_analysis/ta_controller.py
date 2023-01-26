@@ -234,7 +234,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -289,7 +291,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -341,7 +345,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -393,7 +399,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -448,7 +456,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -512,7 +522,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 end_date=ns_parser.end,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -563,7 +575,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -623,7 +637,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -688,7 +704,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -751,7 +769,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 slowdperiod=ns_parser.n_slowdperiod,
                 slowkperiod=ns_parser.n_slowkperiod,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -793,7 +813,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 data=self.stock,
                 window=ns_parser.n_length,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -835,7 +857,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -897,7 +921,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -955,7 +981,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1025,7 +1053,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 n_std=ns_parser.n_std,
                 mamode=ns_parser.s_mamode,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1077,7 +1107,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1151,7 +1183,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 mamode=ns_parser.s_mamode,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1191,7 +1225,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 data=self.stock,
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1248,7 +1284,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 fast=ns_parser.n_length_fast,
                 slow=ns_parser.n_length_slow,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1277,7 +1315,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 symbol=self.coin,
                 data=self.stock,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1328,5 +1368,7 @@ class TechnicalAnalysisController(CryptoBaseController):
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

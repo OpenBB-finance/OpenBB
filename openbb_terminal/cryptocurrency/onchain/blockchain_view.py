@@ -83,7 +83,7 @@ def display_btc_circulating_supply(
         os.path.dirname(os.path.abspath(__file__)),
         "btccp",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -147,7 +147,7 @@ def display_btc_confirmed_transactions(
         os.path.dirname(os.path.abspath(__file__)),
         "btcct",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -204,5 +204,5 @@ def display_btc_single_block(
             os.path.dirname(os.path.abspath(__file__)),
             "btcblockdata",
             df_data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

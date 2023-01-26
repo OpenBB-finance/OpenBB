@@ -57,7 +57,7 @@ def display_account_staking_info(
         os.path.dirname(os.path.abspath(__file__)),
         "sinfo",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -106,7 +106,7 @@ def display_validators(
         os.path.dirname(os.path.abspath(__file__)),
         "validators",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -144,7 +144,7 @@ def display_gov_proposals(
         os.path.dirname(os.path.abspath(__file__)),
         "govp",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -214,7 +214,7 @@ def display_account_growth(
         os.path.dirname(os.path.abspath(__file__)),
         "gacc",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -263,7 +263,7 @@ def display_staking_ratio_history(
         os.path.dirname(os.path.abspath(__file__)),
         "sratio",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -312,5 +312,5 @@ def display_staking_returns_history(
         os.path.dirname(os.path.abspath(__file__)),
         "sreturn",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

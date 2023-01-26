@@ -79,7 +79,7 @@ def display_terra_asset_history(
         os.path.dirname(os.path.abspath(__file__)),
         "aterra",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -130,5 +130,5 @@ def display_anchor_yield_reserve(
         os.path.dirname(os.path.abspath(__file__)),
         "ayr",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

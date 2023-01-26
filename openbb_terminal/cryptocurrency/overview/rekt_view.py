@@ -49,7 +49,7 @@ def display_crypto_hacks(
             os.path.dirname(os.path.abspath(__file__)),
             "ch",
             text,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         df = rekt_model.get_crypto_hacks(sortby, ascend)
@@ -75,5 +75,5 @@ def display_crypto_hacks(
                 os.path.dirname(os.path.abspath(__file__)),
                 "ch",
                 df,
-                " ".join(sheet_name) if sheet_name else None,
+                sheet_name,
             )

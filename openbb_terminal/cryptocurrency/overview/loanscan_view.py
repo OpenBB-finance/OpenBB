@@ -120,5 +120,5 @@ def display_crypto_rates(
             os.path.dirname(os.path.abspath(__file__)),
             "cr",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

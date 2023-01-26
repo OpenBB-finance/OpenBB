@@ -95,7 +95,7 @@ def display_messari_timeseries_list(
             os.path.dirname(os.path.abspath(__file__)),
             "mt",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from Messari.\n")
@@ -177,7 +177,7 @@ def display_messari_timeseries(
             os.path.dirname(os.path.abspath(__file__)),
             "mt",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -247,7 +247,7 @@ def display_marketcap_dominance(
             os.path.dirname(os.path.abspath(__file__)),
             "mcapdom",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -281,7 +281,7 @@ def display_links(symbol: str, export: str = "", sheet_name: str = "") -> None:
             os.path.dirname(os.path.abspath(__file__)),
             "links",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from Messari.\n")
@@ -385,7 +385,7 @@ def display_roadmap(
             os.path.dirname(os.path.abspath(__file__)),
             "rm",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from Messari.\n")
@@ -471,7 +471,7 @@ def display_tokenomics(
             os.path.dirname(os.path.abspath(__file__)),
             "tk",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from Messari.\n")
@@ -515,7 +515,7 @@ def display_project_info(
         os.path.dirname(os.path.abspath(__file__)),
         "pi",
         df_info,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -561,7 +561,7 @@ def display_investors(
             os.path.dirname(os.path.abspath(__file__)),
             "inv",
             df_individuals,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("\nInvestors not found\n")
@@ -609,7 +609,7 @@ def display_team(
             os.path.dirname(os.path.abspath(__file__)),
             "team",
             df_individuals,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("\nTeam not found\n")
@@ -648,7 +648,7 @@ def display_governance(
             os.path.dirname(os.path.abspath(__file__)),
             "gov",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print(f"\n{symbol} governance details not found\n")
@@ -758,5 +758,5 @@ def display_fundraising(
         os.path.dirname(os.path.abspath(__file__)),
         "fr",
         df_details,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

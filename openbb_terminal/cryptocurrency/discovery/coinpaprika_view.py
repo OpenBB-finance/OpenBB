@@ -66,5 +66,5 @@ def display_search_results(
         os.path.dirname(os.path.abspath(__file__)),
         "search",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

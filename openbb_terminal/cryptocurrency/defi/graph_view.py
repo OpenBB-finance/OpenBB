@@ -68,7 +68,7 @@ def display_uni_tokens(
         os.path.dirname(os.path.abspath(__file__)),
         "tokens",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -99,7 +99,7 @@ def display_uni_stats(export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "stats",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -169,7 +169,7 @@ def display_recently_added(
         os.path.dirname(os.path.abspath(__file__)),
         "pairs",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -222,7 +222,7 @@ def display_uni_pools(
         os.path.dirname(os.path.abspath(__file__)),
         "pools",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -261,5 +261,5 @@ def display_last_uni_swaps(
         os.path.dirname(os.path.abspath(__file__)),
         "swaps",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

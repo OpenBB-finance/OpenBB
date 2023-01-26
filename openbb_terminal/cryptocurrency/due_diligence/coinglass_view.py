@@ -48,7 +48,7 @@ def display_funding_rate(symbol: str, export: str = "", sheet_name: str = "") ->
         os.path.dirname(os.path.abspath(__file__)),
         "fundrate",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -84,7 +84,7 @@ def display_open_interest(
         os.path.dirname(os.path.abspath(__file__)),
         "oi",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -116,7 +116,7 @@ def display_liquidations(symbol: str, export: str = "", sheet_name: str = "") ->
         os.path.dirname(os.path.abspath(__file__)),
         "liquidations",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 

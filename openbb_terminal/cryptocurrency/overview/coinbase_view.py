@@ -52,5 +52,5 @@ def display_trading_pairs(
         os.path.dirname(os.path.abspath(__file__)),
         "cbpairs",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

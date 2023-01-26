@@ -102,7 +102,7 @@ def display_fundamental_metric_from_project_over_time(
         os.path.dirname(os.path.abspath(__file__)),
         "funot",
         metric_over_time,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -134,5 +134,5 @@ def display_description(project: str, export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "desc",
         pd.DataFrame(description.values(), index=description.keys()),
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

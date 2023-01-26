@@ -78,5 +78,5 @@ def display_whales_transactions(
         os.path.dirname(os.path.abspath(__file__)),
         "whales",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

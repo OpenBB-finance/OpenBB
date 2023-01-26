@@ -113,7 +113,7 @@ def display_luna_circ_supply_change(
         os.path.dirname(os.path.abspath(__file__)),
         "lcsc",
         df[RAW_COLS],
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     df.index = df.index.strftime("%Y-%m-%d")

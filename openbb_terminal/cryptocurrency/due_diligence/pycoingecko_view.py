@@ -51,7 +51,7 @@ def display_coin_potential_returns(
         os.path.dirname(os.path.abspath(__file__)),
         "prt",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -85,7 +85,7 @@ def display_info(symbol: str, export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "info",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -119,7 +119,7 @@ def display_web(symbol: str, export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "web",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -149,7 +149,7 @@ def display_social(symbol: str, export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "social",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -180,7 +180,7 @@ def display_dev(symbol: str, export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "dev",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -210,7 +210,7 @@ def display_ath(
         os.path.dirname(os.path.abspath(__file__)),
         "ath",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -240,7 +240,7 @@ def display_atl(
         os.path.dirname(os.path.abspath(__file__)),
         "atl",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -271,7 +271,7 @@ def display_score(symbol: str, export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "score",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -299,7 +299,7 @@ def display_bc(symbol: str, export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "bc",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -327,5 +327,5 @@ def display_market(symbol: str, export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "market",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

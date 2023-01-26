@@ -64,7 +64,7 @@ def display_address_info(
         os.path.dirname(os.path.abspath(__file__)),
         "balance",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -110,7 +110,7 @@ def display_top_tokens(
         os.path.dirname(os.path.abspath(__file__)),
         "top",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -156,7 +156,7 @@ def display_top_token_holders(
         os.path.dirname(os.path.abspath(__file__)),
         "holders",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -206,7 +206,7 @@ def display_address_history(
         os.path.dirname(os.path.abspath(__file__)),
         "hist",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -251,7 +251,7 @@ def display_token_info(
         os.path.dirname(os.path.abspath(__file__)),
         "info",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -285,7 +285,7 @@ def display_tx_info(
         os.path.dirname(os.path.abspath(__file__)),
         "tx",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -345,7 +345,7 @@ def display_token_history(
         os.path.dirname(os.path.abspath(__file__)),
         "th",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -400,5 +400,5 @@ def display_token_historical_prices(
         os.path.dirname(os.path.abspath(__file__)),
         "prices",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

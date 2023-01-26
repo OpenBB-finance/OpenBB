@@ -53,7 +53,7 @@ def display_apy(
         os.path.dirname(os.path.abspath(__file__)),
         "aprtoapy",
         apy_str,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -108,5 +108,5 @@ def display_il(
         os.path.dirname(os.path.abspath(__file__)),
         "il",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

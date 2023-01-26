@@ -40,5 +40,5 @@ def display_gwei_fees(export: str = "", sheet_name: str = "") -> None:
             os.path.dirname(os.path.abspath(__file__)),
             "gwei",
             df_fees,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

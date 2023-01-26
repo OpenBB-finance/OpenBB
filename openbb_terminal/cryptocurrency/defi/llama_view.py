@@ -90,7 +90,7 @@ def display_grouped_defi_protocols(
         os.path.dirname(os.path.abspath(__file__)),
         "gdapps",
         chains,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -129,7 +129,7 @@ def display_defi_protocols(
         os.path.dirname(os.path.abspath(__file__)),
         "ldapps",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -188,7 +188,7 @@ def display_historical_tvl(
             os.path.dirname(os.path.abspath(__file__)),
             "dtvl",
             None,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -242,5 +242,5 @@ def display_defi_tvl(
         os.path.dirname(os.path.abspath(__file__)),
         "stvl",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

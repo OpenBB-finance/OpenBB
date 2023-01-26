@@ -126,7 +126,7 @@ def display_twitter(
         os.path.dirname(os.path.abspath(__file__)),
         "twitter",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -181,7 +181,7 @@ def display_events(
         os.path.dirname(os.path.abspath(__file__)),
         "events",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -228,7 +228,7 @@ def display_exchanges(
         os.path.dirname(os.path.abspath(__file__)),
         "ex",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -287,7 +287,7 @@ def display_markets(
         os.path.dirname(os.path.abspath(__file__)),
         "mkt",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -329,7 +329,7 @@ def display_price_supply(
         os.path.dirname(os.path.abspath(__file__)),
         "ps",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -367,5 +367,5 @@ def display_basic(
         os.path.dirname(os.path.abspath(__file__)),
         "basic",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

@@ -751,7 +751,7 @@ def display_all_coins(
         os.path.dirname(os.path.abspath(__file__)),
         "coins",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 

@@ -57,5 +57,5 @@ def display_cmc_top_coins(
         os.path.dirname(os.path.abspath(__file__)),
         "cmctop",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

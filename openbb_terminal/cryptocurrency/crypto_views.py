@@ -49,5 +49,5 @@ def find(
             os.path.dirname(os.path.abspath(__file__)),
             "find",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
