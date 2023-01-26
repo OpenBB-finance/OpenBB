@@ -1251,9 +1251,6 @@ class OptionsController(BaseController):
                             y=ns_parser.y,
                             custom=ns_parser.custom,
                             export=ns_parser.export,
-                            sheet_name=" ".join(ns_parser.sheet_name)
-                            if ns_parser.sheet_name
-                            else None,
                         )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`")
@@ -1286,9 +1283,6 @@ class OptionsController(BaseController):
             yfinance_view.display_vol_surface(
                 self.ticker,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
                 z=ns_parser.z,
             )
 
@@ -1426,6 +1420,9 @@ class OptionsController(BaseController):
                         ns_parser.mini,
                         ns_parser.maxi,
                         ns_parser.export,
+                        " ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`")
