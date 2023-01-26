@@ -252,7 +252,7 @@ def display_chains(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
         "chains",
         chains_df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -347,7 +347,7 @@ def plot_oi(
         os.path.dirname(os.path.abspath(__file__)),
         "oi_tr",
         options,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -443,7 +443,7 @@ def plot_vol(
         os.path.dirname(os.path.abspath(__file__)),
         "vol_tr",
         options,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -640,7 +640,7 @@ def plot_volume_open_interest(
         os.path.dirname(os.path.abspath(__file__)),
         "voi_tr",
         options,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -737,5 +737,5 @@ def display_historical(
             os.path.dirname(os.path.abspath(__file__)),
             "hist",
             df_hist,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

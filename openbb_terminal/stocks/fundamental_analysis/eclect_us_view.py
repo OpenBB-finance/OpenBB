@@ -31,7 +31,7 @@ def display_analysis(symbol: str, export: str = "", sheet_name: str = "") -> Non
             os.path.dirname(os.path.abspath(__file__)),
             "analysis",
             analysis,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("Filings not found from eclect.us")

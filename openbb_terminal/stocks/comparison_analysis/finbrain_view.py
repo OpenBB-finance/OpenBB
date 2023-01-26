@@ -115,7 +115,7 @@ def display_sentiment_compare(
             os.path.dirname(os.path.abspath(__file__)),
             "sentiment",
             df_sentiment,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -192,5 +192,5 @@ def display_sentiment_correlation(
             os.path.dirname(os.path.abspath(__file__)),
             "scorr",
             corrs,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

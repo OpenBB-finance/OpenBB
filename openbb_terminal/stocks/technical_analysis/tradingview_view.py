@@ -55,7 +55,7 @@ def print_recommendation(
         os.path.dirname(os.path.abspath(__file__)),
         "recom",
         recom,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     print_rich_table(
         recom,

@@ -392,7 +392,9 @@ class OptionsController(BaseController):
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                     ascend=ns_parser.reverse,
                     calls_only=ns_parser.calls_only,
                     puts_only=ns_parser.puts_only,
@@ -434,7 +436,9 @@ class OptionsController(BaseController):
                     window=ns_parser.length,
                     start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("No ticker loaded.\n")
@@ -547,7 +551,9 @@ class OptionsController(BaseController):
                             raw=ns_parser.raw,
                             limit=ns_parser.limit,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                     else:
                         console.print("No correct strike input\n")
@@ -757,7 +763,9 @@ class OptionsController(BaseController):
                     raw=ns_parser.raw,
                     chain_id=ns_parser.chain_id,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("TRADIER TOKEN not supplied. \n")
@@ -829,7 +837,9 @@ class OptionsController(BaseController):
                                 calls_only=ns_parser.calls,
                                 puts_only=ns_parser.puts,
                                 export=ns_parser.export,
-                                sheet_name=ns_parser.sheet_name,
+                                sheet_name=" ".join(ns_parser.sheet_name)
+                                if ns_parser.sheet_name
+                                else None,
                             )
                         else:
                             console.print("TRADIER TOKEN not supplied. \n")
@@ -842,14 +852,18 @@ class OptionsController(BaseController):
                             calls_only=ns_parser.calls,
                             puts_only=ns_parser.puts,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                     elif ns_parser.source == "Nasdaq":
                         nasdaq_view.display_chains(
                             symbol=self.ticker,
                             expiry=self.selected_date,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`\n")
@@ -918,7 +932,9 @@ class OptionsController(BaseController):
                             calls_only=ns_parser.calls,
                             puts_only=ns_parser.puts,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                     elif ns_parser.source == "YahooFinance":
                         yfinance_view.plot_vol(
@@ -929,7 +945,9 @@ class OptionsController(BaseController):
                             calls_only=ns_parser.calls,
                             puts_only=ns_parser.puts,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                     elif ns_parser.source == "Nasdaq":
                         nasdaq_view.display_volume(
@@ -938,7 +956,9 @@ class OptionsController(BaseController):
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                             raw=ns_parser.raw,
                         )
                     else:
@@ -998,7 +1018,9 @@ class OptionsController(BaseController):
                             max_sp=ns_parser.max_sp,
                             min_vol=ns_parser.min_vol,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                     elif ns_parser.source == "YahooFinance":
                         yfinance_view.plot_volume_open_interest(
@@ -1008,7 +1030,9 @@ class OptionsController(BaseController):
                             max_sp=ns_parser.max_sp,
                             min_vol=ns_parser.min_vol,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                     elif ns_parser.source == "Nasdaq":
                         nasdaq_view.display_volume_and_oi(
@@ -1018,7 +1042,9 @@ class OptionsController(BaseController):
                             max_sp=ns_parser.max_sp,
                             raw=ns_parser.raw,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                     else:
                         pass
@@ -1090,7 +1116,9 @@ class OptionsController(BaseController):
                             calls_only=ns_parser.calls,
                             puts_only=ns_parser.puts,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                     elif ns_parser.source == "YahooFinance":
                         yfinance_view.plot_oi(
@@ -1101,7 +1129,9 @@ class OptionsController(BaseController):
                             calls_only=ns_parser.calls,
                             puts_only=ns_parser.puts,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                     elif ns_parser.source == "Nasdaq":
                         nasdaq_view.display_oi(
@@ -1110,7 +1140,9 @@ class OptionsController(BaseController):
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                             raw=ns_parser.raw,
                         )
                 else:
@@ -1190,7 +1222,9 @@ class OptionsController(BaseController):
                             y=ns_parser.y,
                             custom=ns_parser.custom,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`\n")
@@ -1223,7 +1257,9 @@ class OptionsController(BaseController):
             yfinance_view.display_vol_surface(
                 self.ticker,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
                 z=ns_parser.z,
             )
 

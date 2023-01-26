@@ -85,5 +85,5 @@ def ark_orders_view(
         os.path.dirname(os.path.abspath(__file__)),
         "arkord",
         df_orders,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

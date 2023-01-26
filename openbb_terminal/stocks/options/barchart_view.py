@@ -39,5 +39,5 @@ def print_options_data(symbol: str, export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "info",
         data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

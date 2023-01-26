@@ -31,5 +31,5 @@ def display_screen_data(symbol: str, export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "data",
         fund_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

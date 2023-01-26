@@ -131,7 +131,7 @@ def display_mean_std(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "rolling",
         rolling_mean.join(rolling_std, lsuffix="_mean", rsuffix="_std"),
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -245,7 +245,7 @@ def display_spread(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "spread",
         df_sd.join(df_var, lsuffix="_sd", rsuffix="_var"),
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -345,7 +345,7 @@ def display_quantile(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "quantile",
         df_med.join(df_quantile),
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -432,7 +432,7 @@ def display_skew(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "skew",
         df_skew,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -522,5 +522,5 @@ def display_kurtosis(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "kurtosis",
         df_kurt,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

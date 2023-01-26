@@ -111,7 +111,7 @@ def display_historical(
         os.path.dirname(os.path.abspath(__file__)),
         "historical",
         df_similar,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -171,7 +171,7 @@ def display_volume(
         os.path.dirname(os.path.abspath(__file__)),
         "volume",
         df_similar,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -262,7 +262,7 @@ def display_correlation(
         os.path.dirname(os.path.abspath(__file__)),
         "hcorr",
         df_similar,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 

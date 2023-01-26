@@ -134,7 +134,7 @@ def price_target_from_analysts(
         os.path.dirname(os.path.abspath(__file__)),
         "pt",
         df_analyst_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -170,7 +170,7 @@ def estimates(symbol: str, estimate: str, export: str = "", sheet_name: str = ""
             os.path.dirname(os.path.abspath(__file__)),
             "pt_year",
             df_year_estimates,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
     elif estimate == "quarterearnings":
@@ -185,7 +185,7 @@ def estimates(symbol: str, estimate: str, export: str = "", sheet_name: str = ""
             os.path.dirname(os.path.abspath(__file__)),
             "pt_qtr_earnings",
             df_quarter_earnings,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
     elif estimate == "annualrevenue":
@@ -201,7 +201,7 @@ def estimates(symbol: str, estimate: str, export: str = "", sheet_name: str = ""
             os.path.dirname(os.path.abspath(__file__)),
             "pt_qtr_revenues",
             df_quarter_revenues,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("[red]Invalid estimate type[/red]")

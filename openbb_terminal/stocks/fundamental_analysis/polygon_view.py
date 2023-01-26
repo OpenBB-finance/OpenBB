@@ -126,5 +126,5 @@ def display_fundamentals(
         os.path.dirname(os.path.abspath(__file__)),
         statement,
         fundamentals,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

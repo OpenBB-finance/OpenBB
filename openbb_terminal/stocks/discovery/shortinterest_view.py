@@ -39,7 +39,7 @@ def low_float(limit: int = 5, export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "lowfloat",
         df_low_float,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -85,5 +85,5 @@ def hot_penny_stocks(
         os.path.dirname(os.path.abspath(__file__)),
         "hotpenny",
         df_penny_stocks,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

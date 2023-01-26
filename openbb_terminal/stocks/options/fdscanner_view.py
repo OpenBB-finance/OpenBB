@@ -59,5 +59,5 @@ def display_options(
             os.path.dirname(os.path.abspath(__file__)),
             "unu_",
             data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

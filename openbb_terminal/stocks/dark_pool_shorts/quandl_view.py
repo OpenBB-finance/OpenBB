@@ -163,5 +163,5 @@ def short_interest(
         os.path.dirname(os.path.abspath(__file__)),
         "psi(quandl)",
         df_short_interest,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

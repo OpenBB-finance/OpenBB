@@ -54,5 +54,5 @@ def display_news(
         os.path.dirname(os.path.abspath(__file__)),
         f"news_{query}_{'_'.join(sources)}",
         pd.DataFrame(tables),
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

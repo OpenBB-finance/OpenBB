@@ -236,5 +236,5 @@ def insider_activity(
             os.path.dirname(os.path.abspath(__file__)),
             "act",
             df_insider,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

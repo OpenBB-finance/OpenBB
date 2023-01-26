@@ -127,7 +127,7 @@ def display_historical(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "hist",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     RAW_COLS = ["twitter", "stocktwits", "yahoo", "likes", "RHI", "AHI"]
@@ -196,7 +196,7 @@ def display_trending(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "trend",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     RAW_COLS = [

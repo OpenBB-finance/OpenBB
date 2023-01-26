@@ -56,7 +56,7 @@ def display_income_comparison(
         os.path.dirname(os.path.abspath(__file__)),
         "income",
         df_financials_compared,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     if rich_config.USE_COLOR:
@@ -113,7 +113,7 @@ def display_balance_comparison(
         os.path.dirname(os.path.abspath(__file__)),
         "balance",
         df_financials_compared,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     if rich_config.USE_COLOR:
@@ -170,7 +170,7 @@ def display_cashflow_comparison(
         os.path.dirname(os.path.abspath(__file__)),
         "cashflow",
         df_financials_compared,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     if rich_config.USE_COLOR:

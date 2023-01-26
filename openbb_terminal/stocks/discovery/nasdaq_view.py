@@ -50,7 +50,7 @@ def display_top_retail(limit: int = 3, export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "rtat",
         retails,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -114,5 +114,5 @@ def display_dividend_calendar(
         os.path.dirname(os.path.abspath(__file__)),
         "divcal",
         calendar,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

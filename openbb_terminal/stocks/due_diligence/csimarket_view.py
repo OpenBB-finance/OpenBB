@@ -46,7 +46,7 @@ def suppliers(
         os.path.dirname(os.path.abspath(__file__)),
         "supplier",
         tickers,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -77,5 +77,5 @@ def customers(symbol: str, export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "customer",
         pd.DataFrame(tickers),
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

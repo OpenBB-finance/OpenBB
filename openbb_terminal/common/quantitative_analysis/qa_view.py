@@ -75,7 +75,7 @@ def display_summary(data: pd.DataFrame, export: str = "", sheet_name: str = "") 
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "summary",
         summary,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -265,7 +265,7 @@ def display_cdf(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "cdf",
         pd.DataFrame(cdf),
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -802,7 +802,7 @@ def display_seasonal(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "summary",
         cycle.join(trend),
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -839,7 +839,7 @@ def display_normality(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "normality",
         normal,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -882,7 +882,7 @@ def display_unitroot(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "unitroot",
         data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -942,7 +942,7 @@ def display_raw(
         os.path.dirname(os.path.abspath(__file__)),
         "raw",
         data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1057,7 +1057,7 @@ def display_line(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "line",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 

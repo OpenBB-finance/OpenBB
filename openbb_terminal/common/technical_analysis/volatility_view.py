@@ -108,7 +108,7 @@ def display_bbands(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "bbands",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -192,7 +192,7 @@ def display_donchian(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "donchian",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -291,7 +291,7 @@ def view_kc(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "kc",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -365,5 +365,5 @@ def display_atr(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "atr",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

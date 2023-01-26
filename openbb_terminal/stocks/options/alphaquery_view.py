@@ -70,5 +70,5 @@ def display_put_call_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "pcr",
         pcr,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

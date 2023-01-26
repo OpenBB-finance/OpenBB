@@ -81,7 +81,7 @@ def display_inference(
         os.path.dirname(os.path.abspath(__file__)),
         "infer",
         df_tweets,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -202,5 +202,5 @@ def display_sentiment(
         os.path.dirname(os.path.abspath(__file__)),
         "sentiment",
         df_tweets,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

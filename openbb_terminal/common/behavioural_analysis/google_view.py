@@ -87,7 +87,7 @@ def display_mentions(
         os.path.dirname(os.path.abspath(__file__)),
         "mentions",
         df_interest,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -164,7 +164,7 @@ def display_correlation_interest(
         os.path.dirname(os.path.abspath(__file__)),
         "interest",
         df_interest,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -223,7 +223,7 @@ def display_regions(
         os.path.dirname(os.path.abspath(__file__)),
         "regions",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -262,7 +262,7 @@ def display_queries(
         os.path.dirname(os.path.abspath(__file__)),
         "queries",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -297,5 +297,5 @@ def display_rise(symbol: str, limit: int = 10, export: str = "", sheet_name: str
         os.path.dirname(os.path.abspath(__file__)),
         "rise",
         df_related_queries,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

@@ -141,5 +141,5 @@ def fibonacci_retracement(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "fib",
         df_fib,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

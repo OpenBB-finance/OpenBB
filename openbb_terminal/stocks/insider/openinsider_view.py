@@ -136,7 +136,7 @@ def print_insider_data(
             os.path.dirname(os.path.abspath(__file__)),
             type_insider,
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
         if df.shape[1] == 13:
@@ -259,5 +259,5 @@ def print_insider_filter(
             os.path.dirname(os.path.abspath(__file__)),
             cmd,
             df_insider,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

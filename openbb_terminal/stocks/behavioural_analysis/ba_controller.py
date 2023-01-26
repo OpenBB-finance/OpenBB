@@ -302,7 +302,9 @@ class BehaviouralAnalysisController(StockBaseController):
                 post_limit=ns_parser.num,
                 subreddits=ns_parser.s_subreddit,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -449,7 +451,9 @@ class BehaviouralAnalysisController(StockBaseController):
                     full_search=ns_parser.full_search,
                     subreddits=ns_parser.subreddits,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                     display=ns_parser.display,
                 )
             else:
@@ -583,7 +587,9 @@ class BehaviouralAnalysisController(StockBaseController):
                     symbol=self.ticker,
                     start_date=ns_parser.start,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
@@ -668,7 +674,9 @@ class BehaviouralAnalysisController(StockBaseController):
                             data=df_stock,
                             words=words,
                             export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
                         )
                     else:
                         console.print(
@@ -710,7 +718,9 @@ class BehaviouralAnalysisController(StockBaseController):
                     symbol=self.ticker,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
@@ -744,7 +754,9 @@ class BehaviouralAnalysisController(StockBaseController):
                     symbol=self.ticker,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
@@ -782,7 +794,9 @@ class BehaviouralAnalysisController(StockBaseController):
                     symbol=self.ticker,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
@@ -840,7 +854,9 @@ class BehaviouralAnalysisController(StockBaseController):
                     n_days_past=ns_parser.n_days_past,
                     compare=ns_parser.compare,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")

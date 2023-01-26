@@ -58,5 +58,5 @@ def rating(symbol: str, limit: int = 10, export: str = "", sheet_name: str = "")
         os.path.dirname(os.path.abspath(__file__)),
         "rot",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

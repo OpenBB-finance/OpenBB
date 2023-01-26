@@ -228,7 +228,7 @@ def display_popular_tickers(
         os.path.dirname(os.path.abspath(__file__)),
         "popular",
         popular_tickers_df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -477,5 +477,5 @@ def display_redditsent(
         os.path.dirname(os.path.abspath(__file__)),
         "polarity_scores",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

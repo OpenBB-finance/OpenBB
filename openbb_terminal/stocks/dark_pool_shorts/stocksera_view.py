@@ -134,5 +134,5 @@ def cost_to_borrow(
         os.path.dirname(os.path.abspath(__file__)),
         "stocksera",
         df_cost_to_borrow,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

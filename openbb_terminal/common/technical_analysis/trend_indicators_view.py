@@ -115,7 +115,7 @@ def display_adx(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "adx",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -209,5 +209,5 @@ def display_aroon(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "aroon",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

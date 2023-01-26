@@ -175,7 +175,7 @@ def display_simple_ema(
         os.path.dirname(os.path.abspath(__file__)),
         "simple_ema",
         res.stats,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     return
@@ -248,7 +248,7 @@ def display_emacross(
         os.path.dirname(os.path.abspath(__file__)),
         "emacross",
         res.stats,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     return
 
@@ -325,6 +325,6 @@ def display_rsi_strategy(
         os.path.dirname(os.path.abspath(__file__)),
         "rsi_corss",
         res.stats,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     return

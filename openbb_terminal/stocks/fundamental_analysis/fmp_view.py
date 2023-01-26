@@ -138,7 +138,7 @@ def display_enterprise(
             os.path.dirname(os.path.abspath(__file__)),
             "enterprise",
             df_fa,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -180,7 +180,7 @@ def display_discounted_cash_flow(
             os.path.dirname(os.path.abspath(__file__)),
             "dcf",
             dcf,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -270,7 +270,7 @@ def display_income_statement(
             os.path.dirname(os.path.abspath(__file__)),
             "income",
             income,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         logger.error("Could not get data")
@@ -364,7 +364,7 @@ def display_balance_sheet(
             os.path.dirname(os.path.abspath(__file__)),
             "balance",
             balance,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         logger.error("Could not get data")
@@ -456,7 +456,7 @@ def display_cash_flow(
             os.path.dirname(os.path.abspath(__file__)),
             "cash",
             cash,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         logger.error("Could not get data")
@@ -503,7 +503,7 @@ def display_key_metrics(
             os.path.dirname(os.path.abspath(__file__)),
             "metrics",
             key_metrics,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         logger.error("Could not get data")
@@ -550,7 +550,7 @@ def display_financial_ratios(
             os.path.dirname(os.path.abspath(__file__)),
             "grratiosowth",
             ratios,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         logger.error("Could not get data")
@@ -596,7 +596,7 @@ def display_financial_statement_growth(
             os.path.dirname(os.path.abspath(__file__)),
             "growth",
             growth,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         logger.error("Could not get data")
@@ -671,7 +671,7 @@ def display_filings(
             os.path.dirname(os.path.abspath(__file__)),
             "filings",
             filings,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         logger.error("Could not get data")

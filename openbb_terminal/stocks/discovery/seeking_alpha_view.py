@@ -84,7 +84,7 @@ def upcoming_earning_release_dates(
             os.path.dirname(os.path.abspath(__file__)),
             "upcoming",
             df_data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -146,7 +146,7 @@ def news(article_id: int = -1, limit: int = 5, export: str = "", sheet_name: str
             os.path.dirname(os.path.abspath(__file__)),
             "trending",
             df_articles,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -188,5 +188,5 @@ def display_news(
             os.path.dirname(os.path.abspath(__file__)),
             "cnews : " + news_type,
             pd.DataFrame(news_to_display),
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

@@ -93,7 +93,7 @@ def display_info(symbol: str, export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "info",
         df_info,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -133,7 +133,7 @@ def display_shareholders(
         os.path.dirname(os.path.abspath(__file__)),
         f"{holder}_holders",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -174,7 +174,7 @@ def display_sustainability(symbol: str, export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "sust",
         df_sustainability,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -207,7 +207,7 @@ def display_calendar_earnings(symbol: str, export: str = "", sheet_name: str = "
         os.path.dirname(os.path.abspath(__file__)),
         "cal",
         df_calendar,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -292,7 +292,7 @@ def display_dividends(
         os.path.dirname(os.path.abspath(__file__)),
         "divs",
         div_history,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -378,7 +378,7 @@ def display_splits(
         os.path.dirname(os.path.abspath(__file__)),
         "splits",
         df_splits,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -433,7 +433,7 @@ def display_mktcap(
         os.path.dirname(os.path.abspath(__file__)),
         "mktcap",
         df_mktcap,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -547,7 +547,7 @@ def display_fundamentals(
         os.path.dirname(os.path.abspath(__file__)),
         statement,
         fundamentals,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -580,5 +580,5 @@ def display_earnings(symbol: str, limit: int, export: str = "", sheet_name: str 
         os.path.dirname(os.path.abspath(__file__)),
         "earnings_yf",
         earnings,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

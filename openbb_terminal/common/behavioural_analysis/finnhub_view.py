@@ -55,7 +55,7 @@ Sector Average News Score: {round(100*d_stats['sectorAverageNewsScore'],2)} %"""
             os.path.dirname(os.path.abspath(__file__)),
             "stats",
             pd.DataFrame(d_stats),
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
     else:

@@ -39,5 +39,5 @@ def sec_filings(symbol: str, limit: int = 5, export: str = "", sheet_name: str =
         os.path.dirname(os.path.abspath(__file__)),
         "sec",
         df_financials,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

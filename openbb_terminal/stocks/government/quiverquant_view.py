@@ -78,7 +78,7 @@ def display_last_government(
         os.path.dirname(os.path.abspath(__file__)),
         "lasttrades",
         df_gov,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -159,7 +159,7 @@ def display_government_buys(
         os.path.dirname(os.path.abspath(__file__)),
         "topbuys",
         df_gov,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -242,7 +242,7 @@ def display_government_sells(
         os.path.dirname(os.path.abspath(__file__)),
         "topsells",
         df_gov,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -308,7 +308,7 @@ def display_last_contracts(
         os.path.dirname(os.path.abspath(__file__)),
         "lastcontracts",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -415,7 +415,7 @@ def display_government_trading(
         os.path.dirname(os.path.abspath(__file__)),
         "gtrades",
         df_gov,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -488,7 +488,7 @@ def display_contracts(
         os.path.dirname(os.path.abspath(__file__)),
         "contracts",
         df_contracts,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -596,7 +596,7 @@ def display_qtr_contracts(
         os.path.dirname(os.path.abspath(__file__)),
         "qtrcontracts",
         symbols,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -679,7 +679,7 @@ def display_hist_contracts(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "histcont",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -749,7 +749,7 @@ def display_top_lobbying(
         os.path.dirname(os.path.abspath(__file__)),
         "lobbying",
         df_lobbying,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 

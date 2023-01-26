@@ -120,7 +120,7 @@ def display_cci(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "cci",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -215,7 +215,7 @@ def display_macd(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "macd",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -305,7 +305,7 @@ def display_rsi(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "rsi",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -406,7 +406,7 @@ def display_stoch(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "stoch",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -501,7 +501,7 @@ def display_fisher(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "fisher",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -574,7 +574,7 @@ def display_cg(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "cg",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -651,7 +651,7 @@ def display_clenow_momentum(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "clenow",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -660,7 +660,7 @@ def display_demark(
     symbol: str = "",
     min_to_show: int = 5,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: Optional[str] = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot demark sequential indicator
@@ -768,5 +768,5 @@ def display_demark(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "demark",
         stock_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

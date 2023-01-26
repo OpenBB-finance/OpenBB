@@ -74,7 +74,7 @@ def display_key(symbol: str, export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "key",
         df_key,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -165,7 +165,7 @@ def display_income_statement(
         os.path.dirname(os.path.abspath(__file__)),
         "income",
         df_income,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -258,7 +258,7 @@ def display_balance_sheet(
         os.path.dirname(os.path.abspath(__file__)),
         "balance",
         df_balance,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -349,7 +349,7 @@ def display_cash_flow(
         os.path.dirname(os.path.abspath(__file__)),
         "cash",
         df_cash,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -394,7 +394,7 @@ def display_earnings(
         os.path.dirname(os.path.abspath(__file__)),
         "earnings",
         df_fa,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -458,7 +458,7 @@ A mckee less than 0.5 indicates a high risk of fraud.
         os.path.dirname(os.path.abspath(__file__)),
         "dupont",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     return
 
@@ -513,5 +513,5 @@ def display_dupont(
         os.path.dirname(os.path.abspath(__file__)),
         "dupont",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

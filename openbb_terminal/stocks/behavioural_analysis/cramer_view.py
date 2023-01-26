@@ -63,7 +63,7 @@ and we're investigating on finding a replacement.
         os.path.dirname(os.path.abspath(__file__)),
         "cramer",
         recs,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -132,5 +132,5 @@ def display_cramer_ticker(
         os.path.dirname(os.path.abspath(__file__)),
         df,
         "jctr",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

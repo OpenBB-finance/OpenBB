@@ -202,6 +202,6 @@ def display_plots_financials(
         os.path.dirname(os.path.abspath(__file__)),
         item_name,
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     return stocks_data, company_tickers

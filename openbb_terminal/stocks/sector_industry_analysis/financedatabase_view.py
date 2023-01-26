@@ -223,7 +223,7 @@ def display_bars_financials(
             os.path.dirname(os.path.abspath(__file__)),
             finance_metric,
             df_all,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
         return stocks_data, company_tickers
@@ -376,7 +376,7 @@ def display_companies_per_sector_in_country(
         os.path.dirname(os.path.abspath(__file__)),
         "cps",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -529,7 +529,7 @@ def display_companies_per_industry_in_country(
         os.path.dirname(os.path.abspath(__file__)),
         "cpic",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -683,7 +683,7 @@ def display_companies_per_industry_in_sector(
         os.path.dirname(os.path.abspath(__file__)),
         "cpis",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -830,7 +830,7 @@ def display_companies_per_country_in_sector(
         os.path.dirname(os.path.abspath(__file__)),
         "cpcs",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -977,5 +977,5 @@ def display_companies_per_country_in_industry(
         os.path.dirname(os.path.abspath(__file__)),
         "cpci",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

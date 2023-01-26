@@ -80,7 +80,7 @@ def dark_pool_short_positions(
         os.path.dirname(os.path.abspath(__file__)),
         "dppos",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -118,7 +118,7 @@ def short_interest_days_to_cover(
         os.path.dirname(os.path.abspath(__file__)),
         "shortdtc",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -244,7 +244,7 @@ def short_interest_volume(
         os.path.dirname(os.path.abspath(__file__)),
         "shortint(stockgrid)",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -339,5 +339,5 @@ def net_short_position(
         os.path.dirname(os.path.abspath(__file__)),
         "shortpos",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

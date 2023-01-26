@@ -130,5 +130,5 @@ def rating_over_time(
         os.path.dirname(os.path.abspath(__file__)),
         "rot",
         df_rot,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

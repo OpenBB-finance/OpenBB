@@ -48,7 +48,7 @@ def past_ipo(
         os.path.dirname(os.path.abspath(__file__)),
         "pipo",
         df_past_ipo,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -90,5 +90,5 @@ def future_ipo(
         os.path.dirname(os.path.abspath(__file__)),
         "fipo",
         df_future_ipo,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

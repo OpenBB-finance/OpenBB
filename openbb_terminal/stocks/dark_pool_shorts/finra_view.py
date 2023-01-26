@@ -130,14 +130,14 @@ def darkpool_ats_otc(
         os.path.dirname(os.path.abspath(__file__)),
         "dpotc_ats",
         ats,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "dpotc_otc",
         otc,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -233,7 +233,7 @@ def darkpool_otc(
             os.path.dirname(os.path.abspath(__file__)),
             "prom",
             df_ats,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         console.print("[red]Could not get data[/red]\n")

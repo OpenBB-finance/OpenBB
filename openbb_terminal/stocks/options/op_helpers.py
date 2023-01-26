@@ -164,7 +164,7 @@ def export_yf_options(export: str, options, file_name: str, sheet_name: str = ""
             os.path.dirname(os.path.abspath(__file__)),
             f"{file_name}_{option_name}",
             option,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 

@@ -126,5 +126,5 @@ def display_stock_price_headlines_sentiment(
                 os.path.dirname(os.path.abspath(__file__)),
                 "snews",
                 sentiment,
-                " ".join(sheet_name) if sheet_name else None,
+                sheet_name,
             )

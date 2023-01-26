@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import os
+from typing import Optional
 import pandas as pd
 
 import plotly.express as px
@@ -11,7 +12,7 @@ from openbb_terminal.stocks.discovery import finviz_model
 from openbb_terminal.helper_funcs import export_data
 
 
-def display_heatmap(timeframe: str, export: str = "", sheet_name: str = ""):
+def display_heatmap(timeframe: str, export: str = "", sheet_name: Optional[str] = ""):
     """Display heatmap from finviz
 
     Parameters
@@ -32,7 +33,7 @@ def display_heatmap(timeframe: str, export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "heatmap",
         dfs,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     color_bin = [-100, -2, -1, -0.001, 0.001, 1, 2, 100]
     dfs["colors"] = pd.cut(

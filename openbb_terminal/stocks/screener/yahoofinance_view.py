@@ -103,7 +103,7 @@ def historical(
             os.path.dirname(os.path.abspath(__file__)),
             "historical",
             df_screener,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
         return l_stocks

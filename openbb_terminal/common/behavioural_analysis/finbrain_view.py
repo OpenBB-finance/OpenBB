@@ -145,5 +145,5 @@ def display_sentiment_analysis(
         os.path.dirname(os.path.abspath(__file__)),
         "headlines",
         sentiment,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

@@ -91,7 +91,7 @@ def view_screener_output(
         os.path.dirname(os.path.abspath(__file__)),
         "scr",
         df_res,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     if limit > 0:
@@ -208,5 +208,5 @@ def view_historical_greeks(
         os.path.dirname(os.path.abspath(__file__)),
         "grhist",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

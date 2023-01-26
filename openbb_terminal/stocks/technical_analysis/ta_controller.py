@@ -265,7 +265,9 @@ class TechnicalAnalysisController(StockBaseController):
                 exchange=ns_parser.exchange,
                 interval=ns_parser.interval,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     # COMMON
@@ -322,7 +324,9 @@ class TechnicalAnalysisController(StockBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -375,7 +379,9 @@ class TechnicalAnalysisController(StockBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -425,7 +431,9 @@ class TechnicalAnalysisController(StockBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -475,7 +483,9 @@ class TechnicalAnalysisController(StockBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -528,7 +538,9 @@ class TechnicalAnalysisController(StockBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -591,7 +603,9 @@ class TechnicalAnalysisController(StockBaseController):
                 offset=ns_parser.n_offset,
                 interval=interval_text,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -640,7 +654,9 @@ class TechnicalAnalysisController(StockBaseController):
                 window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -698,7 +714,9 @@ class TechnicalAnalysisController(StockBaseController):
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -759,7 +777,9 @@ class TechnicalAnalysisController(StockBaseController):
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -798,7 +818,9 @@ class TechnicalAnalysisController(StockBaseController):
             rsp_view.display_rsp(
                 s_ticker=self.ticker,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
                 tickers_show=ns_parser.disp_tickers,
             )
 
@@ -856,7 +878,9 @@ class TechnicalAnalysisController(StockBaseController):
                 slowdperiod=ns_parser.n_slowdperiod,
                 slowkperiod=ns_parser.n_slowkperiod,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -896,7 +920,9 @@ class TechnicalAnalysisController(StockBaseController):
                 data=self.stock,
                 window=ns_parser.n_length,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -936,7 +962,9 @@ class TechnicalAnalysisController(StockBaseController):
                 data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -994,7 +1022,9 @@ class TechnicalAnalysisController(StockBaseController):
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1050,7 +1080,9 @@ class TechnicalAnalysisController(StockBaseController):
                 window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1117,7 +1149,9 @@ class TechnicalAnalysisController(StockBaseController):
                 n_std=ns_parser.n_std,
                 mamode=ns_parser.s_mamode,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1165,7 +1199,9 @@ class TechnicalAnalysisController(StockBaseController):
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1236,7 +1272,9 @@ class TechnicalAnalysisController(StockBaseController):
                 mamode=ns_parser.s_mamode,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1276,7 +1314,9 @@ class TechnicalAnalysisController(StockBaseController):
                 data=self.stock,
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1331,7 +1371,9 @@ class TechnicalAnalysisController(StockBaseController):
                 fast=ns_parser.n_length_fast,
                 slow=ns_parser.n_length_slow,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1360,7 +1402,9 @@ class TechnicalAnalysisController(StockBaseController):
                 symbol=self.ticker,
                 data=self.stock,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1409,7 +1453,9 @@ class TechnicalAnalysisController(StockBaseController):
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1465,7 +1511,7 @@ class TechnicalAnalysisController(StockBaseController):
         )
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             momentum_view.display_demark(
@@ -1473,7 +1519,9 @@ class TechnicalAnalysisController(StockBaseController):
                 self.ticker.upper(),
                 min_to_show=ns_parser.min_to_show,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1528,5 +1576,7 @@ class TechnicalAnalysisController(StockBaseController):
                 mamode=ns_parser.s_mamode,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

@@ -38,7 +38,7 @@ def display_gainers(limit: int = 5, export: str = "", sheet_name: str = "") -> N
         os.path.dirname(os.path.abspath(__file__)),
         "gainers",
         df_gainers,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -69,7 +69,7 @@ def display_losers(limit: int = 5, export: str = "", sheet_name: str = "") -> No
         os.path.dirname(os.path.abspath(__file__)),
         "losers",
         df_losers,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -99,7 +99,7 @@ def display_ugs(limit: int = 5, export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "ugs",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -130,7 +130,7 @@ def display_gtech(limit: int = 5, export: str = "", sheet_name: str = "") -> Non
         os.path.dirname(os.path.abspath(__file__)),
         "gtech",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -161,7 +161,7 @@ def display_active(limit: int = 5, export: str = "", sheet_name: str = "") -> No
         os.path.dirname(os.path.abspath(__file__)),
         "active",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -192,7 +192,7 @@ def display_ulc(limit: int = 5, export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "ulc",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -223,5 +223,5 @@ def display_asc(limit: int = 5, export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "asc",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

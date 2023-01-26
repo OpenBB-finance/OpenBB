@@ -234,7 +234,7 @@ def display_chains(
         os.path.dirname(os.path.abspath(__file__)),
         "chains_yf",
         option_chains,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -772,7 +772,7 @@ def plot_plot(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "plot",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -922,7 +922,7 @@ def show_parity(
         os.path.dirname(os.path.abspath(__file__)),
         "parity",
         show,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1205,7 +1205,7 @@ def display_vol_surface(
         os.path.dirname(os.path.abspath(__file__)),
         "vsurf",
         data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 

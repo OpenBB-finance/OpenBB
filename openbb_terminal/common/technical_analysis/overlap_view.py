@@ -131,7 +131,7 @@ def view_ma(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         f"{ma_type.lower()}{'_'.join([str(win) for win in window])}",
         price_df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -240,5 +240,5 @@ def view_vwap(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "VWAP",
         df_vwap,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

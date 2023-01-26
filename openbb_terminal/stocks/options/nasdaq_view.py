@@ -59,7 +59,7 @@ def display_oi(
         os.path.dirname(os.path.abspath(__file__)),
         "oi_nasdaq",
         option_chain,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     current_price = nasdaq_model.get_last_price(symbol)
 
@@ -153,7 +153,7 @@ def display_volume(
         os.path.dirname(os.path.abspath(__file__)),
         "oi_nasdaq",
         option_chain,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     current_price = nasdaq_model.get_last_price(symbol)
 
@@ -247,7 +247,7 @@ def display_volume_and_oi(
         os.path.dirname(os.path.abspath(__file__)),
         "voi_nasdaq",
         option_chain,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     current_price = nasdaq_model.get_last_price(symbol)
 
@@ -342,7 +342,7 @@ def display_chains(symbol: str, expiry: str, export: str = "", sheet_name: str =
         os.path.dirname(os.path.abspath(__file__)),
         "chain_nasdaq",
         option_chain,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     print_rich_table(option_chain, headers=option_chain.columns)

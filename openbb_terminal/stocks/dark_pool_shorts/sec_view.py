@@ -122,5 +122,5 @@ def fails_to_deliver(
         os.path.dirname(os.path.abspath(__file__)),
         "ftd",
         ftds_data.reset_index(),
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

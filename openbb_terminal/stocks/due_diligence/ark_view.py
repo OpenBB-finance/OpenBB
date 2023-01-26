@@ -66,5 +66,5 @@ def display_ark_trades(
         os.path.dirname(os.path.abspath(__file__)),
         "arktrades",
         ark_holdings,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

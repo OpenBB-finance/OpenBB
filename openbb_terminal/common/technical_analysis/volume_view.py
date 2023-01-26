@@ -137,7 +137,7 @@ def display_ad(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "ad",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -247,7 +247,7 @@ def display_adosc(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "adosc",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -354,5 +354,5 @@ def display_obv(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "obv",
         df_ta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

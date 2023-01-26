@@ -124,7 +124,7 @@ def display_raw(
         os.path.dirname(os.path.abspath(__file__)),
         "hist",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     print_rich_table(
         df.head(limit),
