@@ -493,18 +493,17 @@ def display_earnings(symbol: str, limit: int, export: str):
 
     Parameters
     ----------
-    symbol
-    limit
-    export
-
-    Returns
-    -------
+    symbol: str
+        Stock ticker symbol
+    limit: int
+        Number of periods to show
+    export: str
+        Format to export data
 
     """
     earnings = yahoo_finance_model.get_earnings_history(symbol)
     if earnings.empty:
         return
-    earnings = earnings.drop(columns={"Symbol", "Company"}).fillna("-")
     print_rich_table(
         earnings.head(limit),
         headers=earnings.columns,

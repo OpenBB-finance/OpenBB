@@ -519,6 +519,11 @@ def load(
     -------
     pd.DataFrame
         Dataframe consisting of price and volume data
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.crypto.load(symbol="btc",to_symbol="usd",start_date="2019-01-01",source="YahooFinance")
     """
     if isinstance(interval, int):
         interval = str(interval)
@@ -620,6 +625,7 @@ def load_yf_data(symbol: str, currency: str, interval: str, days: int):
         start=datetime.now() - timedelta(days=days),
         progress=False,
         interval=interval,
+        ignore_tz=True,
     ).sort_index(ascending=False)
 
     df_coin.index.names = ["date"]

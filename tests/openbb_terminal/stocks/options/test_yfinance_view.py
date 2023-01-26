@@ -37,8 +37,8 @@ def test_plot_oi(calls_only, max_sp, min_sp, mocker, puts_only):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.plot_oi(
-        symbol="PM",
-        expiry="2022-01-07",
+        symbol="AAPL",
+        expiry="2023-07-21",
         min_sp=min_sp,
         max_sp=max_sp,
         calls_only=calls_only,
@@ -66,8 +66,8 @@ def test_plot_vol(calls_only, max_sp, min_sp, mocker, puts_only):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.plot_vol(
-        symbol="PM",
-        expiry="2022-01-07",
+        symbol="AAPL",
+        expiry="2023-07-21",
         min_sp=min_sp,
         max_sp=max_sp,
         calls_only=calls_only,
@@ -95,8 +95,8 @@ def test_plot_volume_open_interest(max_sp, min_sp, min_vol, mocker):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.plot_volume_open_interest(
-        symbol="PM",
-        expiry="2022-01-07",
+        symbol="AAPL",
+        expiry="2023-07-21",
         min_sp=min_sp,
         max_sp=max_sp,
         min_vol=min_vol,
@@ -116,8 +116,8 @@ def test_plot_plot(mocker):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.plot_plot(
-        symbol="PM",
-        expiry="2022-01-07",
+        symbol="AAPL",
+        expiry="2023-07-21",
         put=True,
         x="c",
         y="v",
@@ -138,11 +138,7 @@ def test_plot_payoff(mocker):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.plot_payoff(
-        current_price=95.0,
-        options=[],
-        underlying=0,
-        symbol="PM",
-        expiry="2022-06-05",
+        current_price=95.0, options=[], underlying=0, symbol="AAPL", expiry="2023-07-21"
     )
 
 
@@ -158,8 +154,8 @@ def test_show_parity(mocker):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.show_parity(
-        symbol="PM",
-        expiry="2022-01-07",
+        symbol="AAPL",
+        expiry="2023-07-21",
         put=True,
         ask=True,
         mini=0.0,
@@ -180,8 +176,8 @@ def test_risk_neutral_vals(mocker):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.risk_neutral_vals(
-        symbol="PM",
-        expiry="2022-01-07",
+        symbol="AAPL",
+        expiry="2023-07-21",
         put=True,
         data=pd.DataFrame(columns=["Price", "Chance"]),
         mini=None,
@@ -205,8 +201,8 @@ def test_show_binom(mocker):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.Workbook.save")
 
     yfinance_view.show_binom(
-        symbol="PM",
-        expiry="2022-01-07",
+        symbol="AAPL",
+        expiry="2023-07-21",
         strike=90.0,
         put=True,
         europe=False,
@@ -219,12 +215,12 @@ def test_show_binom(mocker):
 @pytest.mark.default_cassette("test_show_greeks")
 @pytest.mark.vcr
 def test_show_greeks():
-    yfinance_view.show_greeks(symbol="AAPL", expiry="2022-01-28", div_cont=0)
+    yfinance_view.show_greeks(symbol="AAPL", expiry="2023-07-21", div_cont=0)
 
 
 @pytest.mark.default_cassette("test_display_chains")
 @pytest.mark.vcr
 def test_display_chains():
     yfinance_view.display_chains(
-        symbol="AAPL", expiry="2022-07-29", min_sp=-1, max_sp=-1
+        symbol="AAPL", expiry="2023-07-21", min_sp=-1, max_sp=-1
     )

@@ -36,16 +36,14 @@ def get_bursa(symbol: str) -> pd.DataFrame:
     if symbol in bursa["short_name"].values:
         df = pd.DataFrame(bursa.loc[bursa["short_name"] == symbol]).transpose()
         is_open = check_if_open(bursa, symbol)
-        df = df.append(
-            pd.DataFrame([is_open], index=["open"], columns=df.columns.values)
-        )
+        df_is_open = pd.DataFrame([is_open], index=["open"], columns=df.columns.values)
+        df = pd.concat([df, df_is_open], axis=0)
         return df
     if symbol in bursa.index:
         df = pd.DataFrame(bursa.loc[symbol])
         is_open = check_if_open(bursa, symbol)
-        df = df.append(
-            pd.DataFrame([is_open], index=["open"], columns=df.columns.values)
-        )
+        df_is_open = pd.DataFrame([is_open], index=["open"], columns=df.columns.values)
+        df = pd.concat([df, df_is_open], axis=0)
         return df
     return pd.DataFrame()
 

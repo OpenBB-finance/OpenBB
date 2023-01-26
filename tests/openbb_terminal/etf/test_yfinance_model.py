@@ -11,6 +11,10 @@ from openbb_terminal.etf import yfinance_model
 def vcr_config():
     return {
         "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("period1", "MOCK_PERIOD_1"),
+            ("period2", "MOCK_PERIOD_2"),
+        ],
     }
 
 

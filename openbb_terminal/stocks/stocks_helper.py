@@ -7,7 +7,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 from typing import Any, Union, Optional, Iterable, List, Dict
 
 import financedatabase as fd
@@ -299,18 +299,16 @@ def load(
 
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
+    int_string = "Daily"
+    if weekly:
+        int_string = "Weekly"
+    if monthly:
+        int_string = "Monthly"
 
     # Daily
     if int(interval) == 1440:
-
-        int_string = "Daily"
-        if weekly:
-            int_string = "Weekly"
-        if monthly:
-            int_string = "Monthly"
-
         if source == "AlphaVantage":
-            df_stock_candidate = load_stock_av(symbol, start_date, end_date)
+            df_stock_candidate = load_stock_av(symbol, int_string, start_date, end_date)
 
         elif source == "YahooFinance":
             df_stock_candidate = load_stock_yf(
@@ -338,11 +336,18 @@ def load(
         df_stock_candidate.index.name = "date"
         s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
-        int_string = "Daily" if interval == 1440 else "Intraday"
 
     else:
 
-        if source == "YahooFinance":
+        if source == "AlphaVantage":
+            s_start = start_date
+            int_string = "Minute"
+            s_interval = f"{interval}min"
+            df_stock_candidate = load_stock_av(
+                symbol, int_string, start_date, end_date, s_interval
+            )
+
+        elif source == "YahooFinance":
             s_int = str(interval) + "m"
             s_interval = s_int + "in"
             d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
@@ -429,7 +434,7 @@ def load(
             s_interval = f"{interval}min"
         int_string = "Intraday"
 
-    s_intraday = (f"Intraday {s_interval}", int_string)[interval == 1440]
+    s_intraday = (f"Intraday {interval}min", int_string)[interval == 1440]
 
     if verbose:
         console.print(
@@ -808,9 +813,12 @@ def load_ticker(
     >>> from openbb_terminal.sdk import openbb
     >>> msft_df = openbb.stocks.load("MSFT")
     """
-    df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
+    df_data = yf.download(
+        ticker, start=start_date, end=end_date, progress=False, ignore_tz=True
+    )
 
     df_data.index = pd.to_datetime(df_data.index)
+
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
         "timedelta64[D]"
     )
@@ -1041,8 +1049,9 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
         "1 Month": 100 * closes.pct_change(21)[-1],
         "1 Year": 100 * closes.pct_change(252)[-1],
     }
-    if "2022-01-03" in closes.index:
-        closes_ytd = closes[closes.index > f"{date.today().year}-01-01"]
+
+    closes_ytd = closes[closes.index.year == pd.to_datetime("today").year]
+    if not closes_ytd.empty:
         perfs["YTD"] = 100 * (closes_ytd[-1] - closes_ytd[0]) / closes_ytd[0]
     else:
         perfs["Period"] = 100 * (closes[-1] - closes[0]) / closes[0]
@@ -1065,7 +1074,7 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
             str(round(np.mean(volumes[-12:-2]) / 1_000_000, 2)) + " M"
         )
 
-    perf_df["Last Price"] = str(round(closes[-1], 2))
+    perf_df["Previous Close"] = str(round(closes[-1], 2))
     print_rich_table(
         perf_df,
         show_index=False,

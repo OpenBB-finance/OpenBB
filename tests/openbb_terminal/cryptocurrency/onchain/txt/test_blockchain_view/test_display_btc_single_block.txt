@@ -1,0 +1,15 @@
+                                                                          Value
+hash           000000000000000000046af49194517cc5d1cd020692857c1dd09450a7147c6d
+ver                                                                   696877060
+prev_block     00000000000000000007ae75e6aa78e6fb7f67dedc4988e616981f41411b3c01
+mrkl_root      7d7d4564c628d8a04fcacd5541c3a66839c06fe5f3be75eb10fb5a0ab2290d9a
+bits                                                                  386397584
+next_block   [00000000000000000004bf6f7ff656f57190f56fb3b3b61814489adef2df691e]
+fee                                                                     7147260
+nonce                                                                1755904304
+n_tx                                                                       1304
+size                                                                    1650338
+block_index                                                              769961
+main_chain                                                                 True
+height                                                                   769961
+weight                                                                  3957143

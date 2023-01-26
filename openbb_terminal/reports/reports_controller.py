@@ -19,7 +19,8 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
-from openbb_terminal.terminal_helper import is_packaged_application
+
+# from openbb_terminal.terminal_helper import is_packaged_application
 
 logger = logging.getLogger(__name__)
 
@@ -144,14 +145,14 @@ class ReportController(BaseController):
 
     @log_start_end(log=logger)
     def call_forecast(self, other_args: List[str]):
-        if is_packaged_application():
-            console.print("This report is disabled for the installed version")
-            return
+        # if is_packaged_application():
+        #     console.print("This report is disabled for the installed version")
+        #     return
 
         try:
-            import darts  # pyright: reportMissingImports=false # noqa: F401, E501 #pylint: disable=import-outside-toplevel, unused-import
-            from darts import (  # pyright: reportMissingImports=false # noqa: F401, E501 #pylint: disable=import-outside-toplevel, unused-import
-                utils,
+            import darts  # pyright: reportMissingImports=false # noqa: F401, E501 # pylint: disable=C0415, W0611
+            from darts import (  # pyright: reportMissingImports=false, pylint: disable=C0415, W0611
+                utils,  # noqa: F401, E501
             )
 
             FORECASTING_TOOLKIT_ENABLED = True

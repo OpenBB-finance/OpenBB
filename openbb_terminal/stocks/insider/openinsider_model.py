@@ -1,16 +1,16 @@
 import configparser
 import logging
-from pathlib import Path
 import textwrap
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, List
 
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -1451,13 +1451,19 @@ def get_print_insider_data(type_insider: str = "lcb"):
         f"http://openinsider.com/{d_open_insider[type_insider]}",
         headers={"User-Agent": "Mozilla/5.0"},
     )
-    df = (
-        pd.read_html(response.text)[-3]
-        .drop(columns=["1d", "1w", "1m", "6m"])
-        .fillna("-")
-    )
+
+    df = pd.read_html(response.text)[-3]
+    remove_cols = ["1d", "1w", "1m", "6m"]
+
+    if set(remove_cols).issubset(set(df.columns)):
+        df = df.drop(columns=remove_cols).fillna("-")
+    else:
+        console.print("No data found for the given insider type.", style="red")
+        df = pd.DataFrame()
+
     if df.empty:
         return pd.DataFrame()
+
     columns = [
         "X",
         "Filing Date",

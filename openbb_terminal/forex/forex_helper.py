@@ -258,7 +258,9 @@ def display_candle(
         External axes (1 axis is expected in the list), by default None
     """
     # We check if there's Volume data to avoid errors and empty subplots
-    has_volume = bool(data["Volume"].sum() > 0)
+    has_volume = False
+    if "Volume" in data.columns:
+        has_volume = bool(data["Volume"].sum() > 0)
 
     if add_trend:
         if (data.index[1] - data.index[0]).total_seconds() >= 86400:
@@ -340,11 +342,12 @@ def display_candle(
                 ax[0].ticklabel_format(style="plain", axis="y")
 
             cfg.theme.visualize_output(force_tight_layout=False)
-        elif is_valid_axes_count(external_axes, 2):
-            ax1, ax2 = external_axes
-            candle_chart_kwargs["ax"] = ax1
+        elif (has_volume and is_valid_axes_count(external_axes, 2)) or (
+            not has_volume and is_valid_axes_count(external_axes, 1)
+        ):
+            candle_chart_kwargs["ax"] = external_axes[0]
             if has_volume:
-                candle_chart_kwargs["volume"] = ax2
+                candle_chart_kwargs["volume"] = external_axes[1]
             mpf.plot(data, **candle_chart_kwargs)
 
     if not use_matplotlib:

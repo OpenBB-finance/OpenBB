@@ -293,7 +293,7 @@ class SectorIndustryAnalysisController(BaseController):
 
     def __load(self):
         if self.ticker:
-            data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{self.ticker}")
+            data = financedatabase_model.get_json(self.ticker)
 
             if "summaryProfile" not in data or data["summaryProfile"] is None:
                 raise Exception(

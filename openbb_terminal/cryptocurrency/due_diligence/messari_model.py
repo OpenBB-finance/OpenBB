@@ -102,6 +102,11 @@ def get_marketcap_dominance(
     -------
     pd.DataFrame
         market dominance percentage over time
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> mcapdom_df = openbb.crypto.dd.mcapdom(symbol="BTC")
     """
 
     if start_date is None:
@@ -110,13 +115,14 @@ def get_marketcap_dominance(
     if end_date is None:
         end_date = datetime.now().strftime("%Y-%m-%d")
 
-    df, _ = get_messari_timeseries(
+    messari_timeseries = get_messari_timeseries(
         symbol=symbol,
         end_date=end_date,
         start_date=start_date,
         interval=interval,
         timeseries_id="mcap.dom",
     )
+    df, _ = messari_timeseries if messari_timeseries else (pd.DataFrame(), "")
     return df
 
 
@@ -653,6 +659,11 @@ def get_fundraising(
         Sales rounds,
         Treasury Accounts,
         Metric Value launch details
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> fundraise = openbb.crypto.dd.fr(symbol="BTC")
     """
 
     url = base_url2 + f"assets/{symbol}/profile"

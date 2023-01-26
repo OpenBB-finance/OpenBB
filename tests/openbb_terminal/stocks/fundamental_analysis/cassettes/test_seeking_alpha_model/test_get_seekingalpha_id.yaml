@@ -1,0 +1,89 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Accept-Language:
+      - de,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Referer:
+      - https://seekingalpha.com/
+      Sec-Fetch-Dest:
+      - empty
+      Sec-Fetch-Mode:
+      - cors
+      Sec-Fetch-Site:
+      - same-origin
+      TE:
+      - trailers
+    method: GET
+    uri: https://seekingalpha.com/api/v3/searches?filter%5Btype%5D=symbols&filter%5Blist%5D=all&page%5Bsize%5D=1&filter%5Bquery%5D=JNJ
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWKq7MTcrPKVayiq5WykxRsjI0NDbVUcpLzE1VslLy8vNS0lEqzilNB3Ky8rKA
+        nOT8vJLUvBKQZH5GXnF+noKaApQFlE2tSM5IzEsH6fWLDHYFqS8tKkrNS64EioQGuwAFMovjC0sT
+        80riixJLUkEW1sbWAgDS1n6yhwAAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '0'
+      Allow:
+      - GET, POST, HEAD, PUT, PATCH, DELETE, OPTIONS
+      Cache-Control:
+      - max-age=3600, public
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '136'
+      Content-Security-Policy:
+      - 'default-src https: wss: data: blob: ''unsafe-inline'' ''unsafe-eval''; report-uri
+        https://seekingalpha.com/report/csp'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 13 Nov 2022 19:11:16 GMT
+      ETag:
+      - W/"cc200d9e38b2d26b2fffbef87ce15226"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains; preload
+      Vary:
+      - User-Agent, Accept-Encoding
+      X-Cache:
+      - MISS, HIT
+      X-Cache-Hits:
+      - 0, 1
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 56yPeC8_nt_3HfZ8
+      X-Runtime:
+      - '0.006611'
+      X-Served-By:
+      - cache-bfi-krnt7300038-BFI, cache-vie6371-VIE
+      X-Timer:
+      - S1668366676.346920,VS0,VE228
+      X-XSS-Protection:
+      - 1; mode=block
+      set-cookie:
+      - machine_cookie=2621104791757; expires=Sat, 13 Nov 2027 19:11:16 GMT; path=/;
+      - machine_cookie_ts=1668366676; expires=Sat, 13 Nov 2027 19:11:16 GMT; path=/;
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -236,7 +236,10 @@ def display_chains(
             for col in chain_table.columns
         ]
         print_rich_table(
-            chain_table, headers=headers, show_index=False, title="Option chain"
+            chain_table,
+            headers=headers,
+            show_index=False,
+            title=f"{symbol} Option chain for {expiry}",
         )
 
     export_data(

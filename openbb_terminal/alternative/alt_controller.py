@@ -1,6 +1,7 @@
 """Alternative Data Controller Module"""
 __docformat__ = "numpy"
 
+import argparse
 import logging
 from typing import List
 
@@ -8,9 +9,13 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+)
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.alternative import hackernews_view
 
 logger = logging.getLogger(__name__)
 # pylint:disable=import-outside-toplevel
@@ -19,7 +24,7 @@ logger = logging.getLogger(__name__)
 class AlternativeDataController(BaseController):
     """Alternative Controller class"""
 
-    CHOICES_COMMANDS: List[str] = []
+    CHOICES_COMMANDS: List[str] = ["hn"]
     CHOICES_MENUS = ["covid", "oss"]
     PATH = "/alternative/"
     CHOICES_GENERATION = True
@@ -38,6 +43,8 @@ class AlternativeDataController(BaseController):
         mt = MenuText("alternative/")
         mt.add_menu("covid")
         mt.add_menu("oss")
+        mt.add_raw("\n")
+        mt.add_cmd("hn")
         console.print(text=mt.menu_text, menu="Alternative")
 
     @log_start_end(log=logger)
@@ -53,3 +60,24 @@ class AlternativeDataController(BaseController):
         from openbb_terminal.alternative.oss.oss_controller import OSSController
 
         self.queue = self.load_class(OSSController, self.queue)
+
+    @log_start_end(log=logger)
+    def call_hn(self, other_args: List[str]):
+        """Process hn command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="hn",
+            description="Display Hacker News",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=10,
+        )
+
+        if ns_parser:
+            hackernews_view.display_stories(limit=ns_parser.limit)

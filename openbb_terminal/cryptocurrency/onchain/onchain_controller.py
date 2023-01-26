@@ -84,6 +84,7 @@ class OnchainController(BaseController):
         "baas",
         "btccp",
         "btcct",
+        "btcblockdata",
         "dt",
         "ds",
         "tvl",
@@ -115,6 +116,7 @@ class OnchainController(BaseController):
         mt.add_cmd("hr")
         mt.add_cmd("btccp")
         mt.add_cmd("btcct")
+        mt.add_cmd("btcblockdata")
         mt.add_cmd("gwei")
         mt.add_cmd("whales")
         mt.add_cmd("lt")
@@ -1516,3 +1518,37 @@ class OnchainController(BaseController):
 
             else:
                 console.print("You didn't provide coin symbol.\n")
+
+    @log_start_end(log=logger)
+    def call_btcblockdata(self, other_args: List[str]):
+        """Process btcblockdata command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="btcblockdata",
+            description="""
+                          Display block data from Blockchain.com,
+                          [Source: https://api.blockchain.info/]
+                      """,
+        )
+
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "--blockhash")
+
+        parser.add_argument(
+            "--blockhash",
+            action="store",
+            help="Flag for block hash of block.",
+            dest="blockhash",
+            default=False,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            blockchain_view.display_btc_single_block(
+                blockhash=ns_parser.blockhash,
+                export=ns_parser.export,
+            )

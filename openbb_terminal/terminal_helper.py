@@ -9,7 +9,7 @@ import logging
 import os
 import subprocess  # nosec
 import sys
-from typing import List, Union
+from typing import List
 from packaging import version
 
 # IMPORTATION THIRDPARTY
@@ -280,8 +280,8 @@ def check_for_updates() -> None:
 
 
 def check_valid_versions(
-    latest_version: Union[version.LegacyVersion, version.Version],  # type:ignore
-    current_version: Union[version.LegacyVersion, version.Version],  # type:ignore
+    latest_version: version.Version,
+    current_version: version.Version,
 ) -> bool:
     if (
         not latest_version

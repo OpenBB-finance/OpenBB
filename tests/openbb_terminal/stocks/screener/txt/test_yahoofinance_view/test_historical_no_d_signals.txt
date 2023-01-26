@@ -1,3 +1,1 @@
-
-The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed. 
-The selected list will be: CENN, VIEW
+The preset selected did not return a sufficient number of tickers. Two or more tickers are needed.

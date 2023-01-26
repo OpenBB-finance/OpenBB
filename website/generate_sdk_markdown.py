@@ -6,7 +6,7 @@ import os
 import shutil
 from pathlib import Path
 from types import FunctionType
-from typing import Any, Callable, Dict, ForwardRef, List, Literal, Optional
+from typing import Any, Callable, Dict, ForwardRef, List, Literal, Optional, Union
 
 import pandas as pd
 from docstring_parser import parse
@@ -159,8 +159,9 @@ class Trailmap:
         if added_comma:
             definition = definition[:-2]
 
+        trail = ".".join([t for t in self.location_path if t != ""])
         sdk_name = self.class_attr if key != "view" else f"{self.class_attr}_chart"
-        sdk_path = f"openbb.{'.'.join(self.location_path)}.{sdk_name}"
+        sdk_path = f"{f'openbb.{trail}' if trail else 'openbb'}.{sdk_name}"
 
         definition = f"{sdk_path}({definition })"
         return definition
@@ -295,7 +296,7 @@ def generate_markdown_section(meta: Dict[str, Any]):
     markdown = (
         f"{meta['description']}\n\nSource Code: [[link]({meta['source_code_url']})]\n\n"
     )
-    markdown += f"```python\n{meta['func_def']}\n```\n\n"
+    markdown += f"```python wordwrap\n{meta['func_def']}\n```\n\n"
 
     markdown += "---\n\n## Parameters\n\n"
     if meta["params"]:
@@ -361,7 +362,7 @@ def add_todict(d: dict, location_path: list, tmap: Trailmap) -> dict:
     return d
 
 
-def get_nested_dict(d: dict, path: Path) -> dict:
+def get_nested_dict(d: dict, path: Path) -> Union[dict, None]:
     """Returns the nested dictionary for the given key."""
     root, sub = path.parent.name, path.name
 
@@ -395,7 +396,7 @@ def main() -> bool:
 
     print("Generating markdown files...")
     content_path = website_path / "content/sdk/reference"
-    functions_dict = {}
+    functions_dict: dict = {}
 
     for file in content_path.glob("*"):
         if file.is_file():
@@ -418,7 +419,7 @@ def main() -> bool:
 
             filepath = f"{str(content_path)}/{'/'.join(trailmap.location_path)}/{trailmap.class_attr}.md"
             os.makedirs(os.path.dirname(filepath), exist_ok=True)
-            with open(filepath, "w", **kwargs) as f:
+            with open(filepath, "w", **kwargs) as f:  # type: ignore
                 f.write(markdown)
         except Exception as e:
             print(f"Error generating {trailmap.class_attr} - {e}")
@@ -431,17 +432,17 @@ def main() -> bool:
     index_markdown = (
         f"# OpenBB SDK Reference\n\n{generate_index_markdown('', functions_dict, 2)}"
     )
-    with open(content_path / "index.md", "w", **kwargs) as f:
+    with open(content_path / "index.md", "w", **kwargs) as f:  # type: ignore
         f.write(index_markdown)
 
-    with open(content_path / "_category_.json", "w", **kwargs) as f:
+    with open(content_path / "_category_.json", "w", **kwargs) as f:  # type: ignore
         f.write(json.dumps({"label": "SDK Reference", "position": 4}, indent=2))
 
     def gen_category_json(fname: str, path: Path):
         """Generate category json"""
         fdict = {fname: get_nested_dict(functions_dict, path)}
 
-        with open(path / "index.md", "w", **kwargs) as f:
+        with open(path / "index.md", "w", **kwargs) as f:  # type: ignore
             f.write(f"# {fname}\n\n{generate_index_markdown('', fdict, 2, path)}")
 
     def gen_category_recursive(nested_path: Path):

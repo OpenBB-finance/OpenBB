@@ -66,7 +66,7 @@ EXPECTED_OUTPUT = """Stuff here or stuff there, it doesn't matter, it's everywhe
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/test/mock_func.py#L69)]
 
-```python
+```python wordwrap
 openbb.mock(arg1: Optional[str] = "Test", arg2: Optional[bool] = True)
 ```
 

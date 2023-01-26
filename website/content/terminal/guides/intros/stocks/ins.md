@@ -27,7 +27,7 @@ keywords:
     "lip",
     "blip",
     "blop",
-    "bclp",
+    "blcp",
     "lis",
     "blis",
     "blos",

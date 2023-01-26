@@ -127,14 +127,15 @@ def get_option_chain_expiry(
     df_list = [x[x["impliedVolatility"] > 0].copy() for x in df_list]
     # Add in greeks to each df
     # Time to expiration:
-    dt = (datetime.strptime(expiry, "%Y-%m-%d") - datetime.now()).seconds / (
-        60 * 60 * 24
-    )
+    dt = (
+        datetime.strptime(expiry, "%Y-%m-%d") + timedelta(hours=16) - datetime.now()
+    ).total_seconds() / (60 * 60 * 24)
+    rf = get_rf()
     # Note the way the Option class is defined, put has a -1 input and call has a +1 input
     for df, option_type in zip(df_list, option_factor):
         df["Delta"] = df.apply(
             lambda x: Option(
-                last_price, x.strike, 0.03, 0, dt, x.impliedVolatility, option_type
+                last_price, x.strike, rf, 0, dt, x.impliedVolatility, option_type
             ).Delta(),
             axis=1,
         )
@@ -142,13 +143,13 @@ def get_option_chain_expiry(
             warnings.simplefilter("ignore")
             df["Gamma"] = df.apply(
                 lambda x: Option(
-                    last_price, x.strike, 0.03, 0, dt, x.impliedVolatility, option_type
+                    last_price, x.strike, rf, 0, dt, x.impliedVolatility, option_type
                 ).Gamma(),
                 axis=1,
             )
             df["Theta"] = df.apply(
                 lambda x: Option(
-                    last_price, x.strike, 0.03, 0, dt, x.impliedVolatility, option_type
+                    last_price, x.strike, rf, 0, dt, x.impliedVolatility, option_type
                 ).Theta(),
                 axis=1,
             )
@@ -539,8 +540,9 @@ def get_greeks(
 
     risk_free = rf if rf is not None else get_rf()
     expire_dt = datetime.strptime(expire, "%Y-%m-%d")
-    dif = (expire_dt - datetime.now()).total_seconds() / (60 * 60 * 24)
-
+    dif = (expire_dt - datetime.now() + timedelta(hours=16)).total_seconds() / (
+        60 * 60 * 24
+    )
     strikes = []
     for _, row in chain.iterrows():
         vol = row["impliedVolatility"]

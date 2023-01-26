@@ -17,7 +17,7 @@ export default function ShowcaseItem({
   categories,
 }: Props) {
   return (
-    <div>
+    <div className="mb-20">
       <div className="flex gap-3 items-center">
         <h3 className="font-bold text-xl my-4">{title}</h3>
         <div className="flex gap-2 items-center">

@@ -122,6 +122,11 @@ def compare_etfs(symbols: List[str]) -> pd.DataFrame:
     -------
     df_compare : pd.DataFrame
         Dataframe of etf comparisons
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> compare_etfs = openbb.etf.compare(["SPY", "QQQ", "IWM"])
     """
 
     df_compare = pd.DataFrame()

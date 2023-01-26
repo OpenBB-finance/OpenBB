@@ -74,9 +74,18 @@ class StocksController(StockBaseController):
     PATH = "/stocks/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
-    country = financedatabase.show_options("equities", "countries")
-    sector = financedatabase.show_options("equities", "sectors")
-    industry = financedatabase.show_options("equities", "industries")
+    try:
+        country = financedatabase.show_options("equities", "countries")
+        sector = financedatabase.show_options("equities", "sectors")
+        industry = financedatabase.show_options("equities", "industries")
+    except Exception:
+        country, sector, industry = {}, {}, {}
+        console.print(
+            "[red]Note: Some datasets from GitHub failed to load. This means that the `search` command and "
+            "the /stocks/sia menu will not work. If other commands are failing please check your internet connection or "
+            "communicate with your IT department that certain websites are blocked.[/red] \n"
+        )
+
     TOB_EXCHANGES = ["BZX", "EDGX", "BYX", "EDGA"]
     CHOICES_GENERATION = True
 
@@ -481,9 +490,11 @@ class StocksController(StockBaseController):
         )
         if ns_parser:
             if self.ticker:
-                if ns_parser.source == "NewsApi":
+                try:
                     d_stock = yf.Ticker(self.ticker).info
-
+                except TypeError:
+                    d_stock = dict()
+                if ns_parser.source == "NewsApi":
                     newsapi_view.display_news(
                         query=d_stock["shortName"].replace(" ", "+")
                         if "shortName" in d_stock
@@ -494,7 +505,6 @@ class StocksController(StockBaseController):
                         sources=ns_parser.sources,
                     )
                 elif ns_parser.source == "Feedparser":
-                    d_stock = yf.Ticker(self.ticker).info
 
                     feedparser_view.display_news(
                         term=d_stock["shortName"].replace(" ", "+")

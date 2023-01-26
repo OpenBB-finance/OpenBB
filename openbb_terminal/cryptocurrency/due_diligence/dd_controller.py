@@ -498,7 +498,7 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_oi(self, other_args):
         """Process oi command"""
-        assert isinstance(self.symbol, str)
+        assert isinstance(self.symbol, str)  # noqa: S101
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -533,7 +533,7 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_liquidations(self, other_args):
         """Process liquidations command"""
-        assert isinstance(self.symbol, str)
+        assert isinstance(self.symbol, str)  # noqa: S101
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -557,7 +557,7 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_fundrate(self, other_args):
         """Process fundrate command"""
-        assert isinstance(self.symbol, str)
+        assert isinstance(self.symbol, str)  # noqa: S101
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,

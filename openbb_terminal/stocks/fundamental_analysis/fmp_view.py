@@ -512,7 +512,6 @@ def display_financial_statement_growth(
     growth = fmp_model.get_financial_growth(symbol, limit, quarterly)
 
     if not growth.empty:
-        growth = growth[growth.columns[::-1]]
         print_rich_table(
             growth,
             headers=list(growth.columns),

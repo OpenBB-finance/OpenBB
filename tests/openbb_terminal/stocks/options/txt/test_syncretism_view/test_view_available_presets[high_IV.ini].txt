@@ -1,4 +1,3 @@
-
  - FILTER -
 itm          : false
 otm          : true
@@ -10,5 +9,3 @@ min-iv       : 0.80
 max-iv       : 1.0
 min-volume   : 100
 order-by     : iv_desc
-
-
