@@ -47,8 +47,11 @@ def login_prompt(welcome=True, guest_allowed=True):
 
     while True:
         email, password, save = get_user_input()
-        if not email and not password and guest_allowed:
-            return terminal_controller.parse_args_and_run()
+        if not email and not password:
+            if guest_allowed:
+                return terminal_controller.parse_args_and_run()
+            continue
+
         session = create_session(email, password, save)
         if isinstance(session, dict) and session:
             break
