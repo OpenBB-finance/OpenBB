@@ -60,7 +60,7 @@ def display_search(
         os.path.dirname(os.path.abspath(__file__)),
         "search",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -216,7 +216,7 @@ def display_historical(
         os.path.dirname(os.path.abspath(__file__)),
         "historical",
         historicals,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -296,5 +296,5 @@ def display_curve(
             os.path.dirname(os.path.abspath(__file__)),
             "curve",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
