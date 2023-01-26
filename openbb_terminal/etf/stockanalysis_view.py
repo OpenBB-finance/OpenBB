@@ -43,7 +43,7 @@ def view_overview(symbol: str, export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "overview",
         data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -76,7 +76,7 @@ def view_holdings(symbol: str, limit: int = 10, export: str = "", sheet_name: st
         os.path.dirname(os.path.abspath(__file__)),
         "holdings",
         data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -113,7 +113,7 @@ def view_comparisons(symbols: List[str], export: str = "", sheet_name: str = "")
         os.path.dirname(os.path.abspath(__file__)),
         "overview",
         data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -148,5 +148,5 @@ def display_etf_by_name(
         os.path.dirname(os.path.abspath(__file__)),
         "ln_sa",
         matching_etfs,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

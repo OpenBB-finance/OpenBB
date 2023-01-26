@@ -57,7 +57,7 @@ def display_etf_by_name(
         os.path.dirname(os.path.abspath(__file__)),
         "ln_fd",
         table_data_sorted,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -105,7 +105,7 @@ def display_etf_by_description(
         os.path.dirname(os.path.abspath(__file__)),
         "ld",
         data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -153,5 +153,5 @@ def display_etf_by_category(
         os.path.join(os.path.dirname(os.path.abspath(__file__)), "screener"),
         "sbc",
         data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

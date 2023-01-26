@@ -102,7 +102,7 @@ def display_etf_weightings(
         os.path.dirname(os.path.abspath(__file__)),
         "weights",
         holdings,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 

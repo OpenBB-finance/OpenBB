@@ -57,5 +57,5 @@ def view_screener(
         os.path.dirname(os.path.abspath(__file__)),
         "screen",
         screened_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
