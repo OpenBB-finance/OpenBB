@@ -102,6 +102,12 @@ class AccountController(BaseController):
                     "OPENBB_SYNC_ENABLED", False, force=True
                 )
 
+            if obbff.SYNC_ENABLED:
+                sync = "ON"
+            else:
+                sync = "OFF"
+            console.print(f"[info]sync:[/info] {sync}")
+
     def call_pull(self, _):
         """Pull data"""
         console.print("Pull, Diff and Merge.")
