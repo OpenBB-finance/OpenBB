@@ -797,7 +797,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
         for module in modules:
             if module.startswith("openbb"):
                 importlib.reload(sys.modules[module])
-                
+
     log_terminal(test_mode=test_mode)
 
     if jobs_cmds is not None and jobs_cmds:
