@@ -127,8 +127,9 @@ def is_sync_enabled(settings: dict) -> bool:
     bool
         The status of sync.
     """
-    if settings.get("SYNC_ENABLED", "").lower() == "false":
-        return False
+    if settings:
+        if settings.get("SYNC_ENABLED", "").lower() == "false":
+            return False
     return True
 
 

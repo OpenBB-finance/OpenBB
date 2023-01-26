@@ -105,7 +105,7 @@ class FeatureFlagsController(BaseController):
         setattr(obbff, name, value)
 
         # Send feature flag to server
-        if not not User.is_guest() and User.is_sync_enabled() or force:
+        if not User.is_guest() and User.is_sync_enabled() or force:
             patch_user_configs(
                 key=name,
                 value=str(value),
