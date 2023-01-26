@@ -108,7 +108,7 @@ def display_hist(
     """
     data = data[target]
 
-    fig = OpenBBFigure.create_subplots(1, 1)
+    fig = OpenBBFigure.create_subplots(1, 1, specs=[[{"secondary_y": True}]])
 
     if isinstance(data.index[0], datetime):
         start = data.index[0]
