@@ -6,6 +6,7 @@ import openbb_terminal.session.local_model as Local
 import openbb_terminal.session.hub_model as Hub
 from openbb_terminal.session.user import User
 from openbb_terminal.helper_funcs import system_clear
+from openbb_terminal.rich_config import console
 
 
 def create_session(email: str, password: str, save: bool) -> dict:
@@ -17,9 +18,10 @@ def create_session(email: str, password: str, save: bool) -> dict:
     return session
 
 
-def logout():
+def logout(cls: bool = False):
     """Logout and clear session."""
-    system_clear()
+    if cls:
+        system_clear()
     User.clear()
 
     # Clear openbb environment variables
@@ -36,3 +38,4 @@ def logout():
     Hub.delete_session()
     Local.remove_session_file()
     plt.close("all")
+    console.print("[green]\nLogout successful[/green]")

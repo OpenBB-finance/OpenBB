@@ -549,3 +549,5 @@ futures.historical,openbb_terminal.futures.yfinance_model.get_historical_futures
 futures.curve,openbb_terminal.futures.yfinance_model.get_curve_futures,openbb_terminal.futures.yfinance_view.display_curve
 economy.get_groups,openbb_terminal.economy.finviz_model.get_groups,
 stocks.filings,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_filings,openbb_terminal.stocks.fundamental_analysis.fmp_view.display_filings
+login,openbb_terminal.session.sdk_session.login,
+logout,openbb_terminal.session.session_model.logout,
