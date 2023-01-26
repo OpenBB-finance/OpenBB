@@ -22,7 +22,7 @@ def test_lambda_color_red(val):
 
 
 def test_display_summary():
-    qa_view.display_summary(pd.DataFrame(data, columns=["col1", "col2"]), "xlsx")
+    qa_view.display_summary(pd.DataFrame(data, columns=["col1", "col2"]), "xlsx", None)
 
 
 @pytest.mark.parametrize("df_use, external", [(df, None), (df2, None), (df, [1, 2])])
@@ -77,7 +77,7 @@ def test_display_seasonal(yearly):
 
 
 def test_display_normality():
-    qa_view.display_normality(df, "col2", "xlsx")
+    qa_view.display_normality(df, "col2", "xlsx", None)
 
 
 def test_display_unitroot():
