@@ -19,6 +19,7 @@ def display_etf_by_name(
     name: str,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Display a selection of ETFs based on name filtered by total assets. [Source: Finance Database]
 
@@ -28,6 +29,8 @@ def display_etf_by_name(
         Search by name to find ETFs matching the criteria.
     limit: int
         Limit of ETFs to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """
@@ -50,7 +53,11 @@ def display_etf_by_name(
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "ln_fd", table_data_sorted
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ln_fd",
+        table_data_sorted,
+        sheet_name,
     )
 
 
@@ -59,6 +66,7 @@ def display_etf_by_description(
     description: str,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Display a selection of ETFs based on description filtered by total assets.
     [Source: Finance Database]
@@ -69,6 +77,8 @@ def display_etf_by_description(
         Search by description to find ETFs matching the criteria.
     limit: int
         Limit of ETFs to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """
@@ -90,7 +100,13 @@ def display_etf_by_description(
         title="ETFs by Total Assets",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "ld", data)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ld",
+        data,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -98,6 +114,7 @@ def display_etf_by_category(
     category: str,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Display a selection of ETFs based on a category filtered by total assets.
     [Source: Finance Database]
@@ -108,6 +125,8 @@ def display_etf_by_category(
         Search by description to find ETFs matching the criteria.
     limit: int
         Limit of ETFs to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """
@@ -134,4 +153,5 @@ def display_etf_by_category(
         os.path.join(os.path.dirname(os.path.abspath(__file__)), "screener"),
         "sbc",
         data,
+        sheet_name,
     )

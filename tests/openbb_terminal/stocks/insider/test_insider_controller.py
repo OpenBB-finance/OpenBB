@@ -300,6 +300,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 limit=1,
                 links=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -320,6 +321,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 limit=1,
                 links=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -468,6 +470,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 limit=5,
                 raw=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -475,11 +478,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["5", "--export=csv"],
             "finviz_view.last_insider_activity",
             [],
-            dict(
-                symbol="MOCK_TICKER",
-                limit=5,
-                export="csv",
-            ),
+            dict(symbol="MOCK_TICKER", limit=5, export="csv", sheet_name=None),
         ),
     ],
 )

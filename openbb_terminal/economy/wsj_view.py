@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_overview(export: str = ""):
+def display_overview(export: str = "", sheet_name: str = None):
     """Market overview with daily change. [Source: Wall St. Journal]
 
     Parameters
@@ -38,11 +38,12 @@ def display_overview(export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "overview",
         df_data,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_indices(export: str = ""):
+def display_indices(export: str = "", sheet_name: str = None):
     """US indices. [Source: Wall St. Journal]
 
     Parameters
@@ -64,11 +65,12 @@ def display_indices(export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "indices",
         df_data,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_futures(export: str = ""):
+def display_futures(export: str = "", sheet_name: str = None):
     """Futures/Commodities. [Source: Wall St. Journal]
 
     Parameters
@@ -93,11 +95,12 @@ def display_futures(export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "futures",
         df_data,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_usbonds(export: str = ""):
+def display_usbonds(export: str = "", sheet_name: str = None):
     """US bonds. [Source: Wall St. Journal]
 
     Parameters
@@ -119,11 +122,12 @@ def display_usbonds(export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "usbonds",
         df_data,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_glbonds(export: str = ""):
+def display_glbonds(export: str = "", sheet_name: str = None):
     """Global bonds. [Source: Wall St. Journal]
 
     Parameters
@@ -145,11 +149,12 @@ def display_glbonds(export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "glbonds",
         df_data,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_currencies(export: str = ""):
+def display_currencies(export: str = "", sheet_name: str = None):
     """Display currencies. [Source: Wall St. Journal]
 
     Parameters
@@ -171,4 +176,5 @@ def display_currencies(export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "currencies",
         df_data,
+        sheet_name,
     )

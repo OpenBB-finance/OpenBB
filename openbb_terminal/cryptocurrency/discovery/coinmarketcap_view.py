@@ -20,6 +20,7 @@ def display_cmc_top_coins(
     sortby: str = "CMC_Rank",
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing top n coins. [Source: CoinMarketCap]
 
@@ -56,4 +57,5 @@ def display_cmc_top_coins(
         os.path.dirname(os.path.abspath(__file__)),
         "cmctop",
         df,
+        sheet_name,
     )

@@ -27,6 +27,7 @@ def display_panel(
     entity_effects: bool = False,
     time_effects: bool = False,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Based on the regression type, this function decides what regression to run.
 
@@ -72,6 +73,7 @@ def display_panel(
             os.path.dirname(os.path.abspath(__file__)),
             f"{dependent}_{regression_type}_regression",
             df,
+            sheet_name,
         )
 
     return model
@@ -83,6 +85,7 @@ def display_dwat(
     dependent_variable: pd.Series,
     plot: bool = True,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Show Durbin-Watson autocorrelation tests
@@ -134,6 +137,7 @@ def display_dwat(
         os.path.dirname(os.path.abspath(__file__)),
         f"{dependent_variable.name}_dwat",
         autocorr,
+        sheet_name,
     )
 
 
@@ -142,6 +146,7 @@ def display_bgod(
     model: statsmodels.regression.linear_model.RegressionResultsWrapper,
     lags: int = 3,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Show Breusch-Godfrey autocorrelation test
 
@@ -173,7 +178,13 @@ def display_bgod(
             f"The result {round(p_value, 2)} indicates no existence of autocorrelation."
         )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "results_bgod", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "results_bgod",
+        df,
+        sheet_name,
+    )
 
     console.print()
 
@@ -182,6 +193,7 @@ def display_bgod(
 def display_bpag(
     model: statsmodels.regression.linear_model.RegressionResultsWrapper,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Show Breusch-Pagan heteroscedasticity test
 
@@ -211,6 +223,12 @@ def display_bpag(
             f"The result {round(p_value, 2)} indicates no existence of heteroscedasticity."
         )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "results_bpag", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "results_bpag",
+        df,
+        sheet_name,
+    )
 
     console.print()

@@ -52,6 +52,7 @@ def display_messari_timeseries_list(
     query: str = "",
     only_free: bool = True,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing messari timeseries list
     [Source: https://messari.io/]
@@ -94,6 +95,7 @@ def display_messari_timeseries_list(
             os.path.dirname(os.path.abspath(__file__)),
             "mt",
             df,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from Messari.\n")
@@ -108,6 +110,7 @@ def display_messari_timeseries(
     end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots messari timeseries
@@ -174,6 +177,7 @@ def display_messari_timeseries(
             os.path.dirname(os.path.abspath(__file__)),
             "mt",
             df,
+            sheet_name,
         )
 
 
@@ -185,6 +189,7 @@ def display_marketcap_dominance(
     end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots market dominance of a coin over time
@@ -242,12 +247,13 @@ def display_marketcap_dominance(
             os.path.dirname(os.path.abspath(__file__)),
             "mcapdom",
             df,
+            sheet_name,
         )
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
-def display_links(symbol: str, export: str = "") -> None:
+def display_links(symbol: str, export: str = "", sheet_name: str = None) -> None:
     """Prints table showing coin links
     [Source: https://messari.io/]
 
@@ -275,6 +281,7 @@ def display_links(symbol: str, export: str = "") -> None:
             os.path.dirname(os.path.abspath(__file__)),
             "links",
             df,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from Messari.\n")
@@ -287,6 +294,7 @@ def display_roadmap(
     ascend: bool = True,
     limit: int = 5,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots coin roadmap
@@ -377,6 +385,7 @@ def display_roadmap(
             os.path.dirname(os.path.abspath(__file__)),
             "rm",
             df,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from Messari.\n")
@@ -387,6 +396,7 @@ def display_roadmap(
 def display_tokenomics(
     symbol: str,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots coin tokenomics
@@ -461,6 +471,7 @@ def display_tokenomics(
             os.path.dirname(os.path.abspath(__file__)),
             "tk",
             df,
+            sheet_name,
         )
     else:
         console.print("\nUnable to retrieve data from Messari.\n")
@@ -471,6 +482,7 @@ def display_tokenomics(
 def display_project_info(
     symbol: str,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing project info
     [Source: https://messari.io/]
@@ -503,6 +515,7 @@ def display_project_info(
         os.path.dirname(os.path.abspath(__file__)),
         "pi",
         df_info,
+        sheet_name,
     )
 
 
@@ -511,6 +524,7 @@ def display_project_info(
 def display_investors(
     symbol: str,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing coin investors
     [Source: https://messari.io/]
@@ -547,6 +561,7 @@ def display_investors(
             os.path.dirname(os.path.abspath(__file__)),
             "inv",
             df_individuals,
+            sheet_name,
         )
     else:
         console.print("\nInvestors not found\n")
@@ -557,6 +572,7 @@ def display_investors(
 def display_team(
     symbol: str,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing coin team
     [Source: https://messari.io/]
@@ -593,6 +609,7 @@ def display_team(
             os.path.dirname(os.path.abspath(__file__)),
             "team",
             df_individuals,
+            sheet_name,
         )
     else:
         console.print("\nTeam not found\n")
@@ -603,6 +620,7 @@ def display_team(
 def display_governance(
     symbol: str,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing coin governance
     [Source: https://messari.io/]
@@ -630,6 +648,7 @@ def display_governance(
             os.path.dirname(os.path.abspath(__file__)),
             "gov",
             df,
+            sheet_name,
         )
     else:
         console.print(f"\n{symbol} governance details not found\n")
@@ -640,6 +659,7 @@ def display_governance(
 def display_fundraising(
     symbol: str,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Display coin fundraising
@@ -738,4 +758,5 @@ def display_fundraising(
         os.path.dirname(os.path.abspath(__file__)),
         "fr",
         df_details,
+        sheet_name,
     )

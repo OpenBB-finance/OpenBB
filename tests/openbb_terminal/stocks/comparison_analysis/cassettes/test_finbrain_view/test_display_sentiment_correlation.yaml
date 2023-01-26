@@ -9,37 +9,37 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.26.0
+      - python-requests/2.28.1
     method: GET
     uri: https://api.finbrain.tech/v0/sentiments/TSLA
   response:
     body:
-      string: '{"ticker":"TSLA","name":"Tesla Inc.","sentimentAnalysis":{"2021-12-20":"0.169","2021-12-17":"-0.14","2021-12-16":"0.049","2021-12-15":"-0.073","2021-12-14":"0.03","2021-12-13":"0.135","2021-12-10":"0.05","2021-12-09":"0.15","2021-12-08":"0.333","2021-12-07":"0.068"}}'
+      string: '{"ticker":"TSLA","name":"Tesla Inc.","sentimentAnalysis":{"2023-01-23":"-0.115","2023-01-20":"-0.087","2023-01-19":"-0.261","2023-01-18":"-0.105","2023-01-17":"0.088","2023-01-16":"0.039","2023-01-13":"-0.131","2023-01-12":"0.06","2023-01-11":"-0.166","2023-01-10":"-0.021"}}'
     headers:
       Connection:
       - keep-alive
       Content-Length:
-      - '267'
+      - '275'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 20 Dec 2021 17:18:08 GMT
+      - Mon, 23 Jan 2023 14:40:09 GMT
       X-Amzn-Trace-Id:
-      - Root=1-61c0bad0-615a5b5e3d4d8f8d312f872d;Sampled=0
+      - Root=1-63ce9c49-4e95841319c9f6674226da75;Sampled=0
       access-control-allow-origin:
       - '*'
       etag:
-      - W/"10b-1o2byEDRNuryxKM+Mm/8tWR1vqE"
+      - W/"113-2PSDM9iL+VGIMpGQPcTfsnBZ1ro"
       x-amz-apigw-id:
-      - KqIgkH6MIAMFnZg=
+      - fM1bgGPhIAMFoGw=
       x-amzn-Remapped-connection:
       - close
       x-amzn-Remapped-content-length:
-      - '267'
+      - '275'
       x-amzn-Remapped-date:
-      - Mon, 20 Dec 2021 17:18:08 GMT
+      - Mon, 23 Jan 2023 14:40:09 GMT
       x-amzn-RequestId:
-      - aac0f124-b462-48bb-9b86-6a00052d9dc9
+      - ff59992d-a18e-4667-bc8c-dd042b89dc6f
       x-powered-by:
       - Express
     status:
@@ -55,37 +55,37 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.26.0
+      - python-requests/2.28.1
     method: GET
     uri: https://api.finbrain.tech/v0/sentiments/GM
   response:
     body:
-      string: '{"ticker":"GM","name":"General Motors","sentimentAnalysis":{"2021-12-20":"0.172","2021-12-17":"0.367","2021-12-16":"0.297","2021-12-15":"0.145","2021-12-14":"0.234","2021-12-13":"0.263","2021-12-10":"0.226","2021-12-09":"0.051","2021-12-08":"0.051","2021-12-07":"0.083"}}'
+      string: '{"ticker":"GM","name":"General Motors","sentimentAnalysis":{"2023-01-23":"0.182","2023-01-20":"0.037","2023-01-19":"0.17","2023-01-18":"0.113","2023-01-17":"0.156","2023-01-16":"0.156","2023-01-13":"0.269","2023-01-12":"0.27","2023-01-11":"0.254","2023-01-10":"0.26"}}'
     headers:
       Connection:
       - keep-alive
       Content-Length:
-      - '271'
+      - '268'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 20 Dec 2021 17:18:09 GMT
+      - Mon, 23 Jan 2023 14:40:09 GMT
       X-Amzn-Trace-Id:
-      - Root=1-61c0bad0-009de273665c62c205309c26;Sampled=0
+      - Root=1-63ce9c49-159c1bf2304e82390578bca7;Sampled=0
       access-control-allow-origin:
       - '*'
       etag:
-      - W/"10f-80PmnUbc70agmxbKhGiHPTVU2EQ"
+      - W/"10c-A/KZ0pSs+tJL8aaEhDMDkTtSHdQ"
       x-amz-apigw-id:
-      - KqIgqEb_oAMFo9g=
+      - fM1blGKsIAMFcSQ=
       x-amzn-Remapped-connection:
       - close
       x-amzn-Remapped-content-length:
-      - '271'
+      - '268'
       x-amzn-Remapped-date:
-      - Mon, 20 Dec 2021 17:18:09 GMT
+      - Mon, 23 Jan 2023 14:40:09 GMT
       x-amzn-RequestId:
-      - f07fc626-e738-4c2b-bf6f-92eaec3d552c
+      - a49a1067-5b1c-4d1c-8a2d-a72c1644e3fe
       x-powered-by:
       - Express
     status:
