@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import logging
-from typing import List
+from typing import List, Union
 
 # IMPORTATION THIRDPARTY
 from dotenv import set_key
@@ -81,7 +81,7 @@ class FeatureFlagsController(BaseController):
         console.print(text=mt.menu_text, menu="Feature Flags")
 
     @staticmethod
-    def set_feature_flag(name: str, value: bool):
+    def set_feature_flag(name: str, value: Union[bool, str]):
         """Set feature flag
 
         Parameters
