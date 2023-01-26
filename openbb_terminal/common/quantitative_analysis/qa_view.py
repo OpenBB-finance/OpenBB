@@ -50,7 +50,9 @@ def lambda_color_red(val: Any) -> str:
 
 
 @log_start_end(log=logger)
-def display_summary(data: pd.DataFrame, export: str = "", sheet_name: str = None) -> None:
+def display_summary(
+    data: pd.DataFrame, export: str = "", sheet_name: str = None
+) -> None:
     """Prints table showing summary statistics
 
     Parameters

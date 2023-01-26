@@ -26,7 +26,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_cramer_daily(inverse: bool = True, export: str = "", sheet_name: str = None):
+def display_cramer_daily(
+    inverse: bool = True, export: str = "", sheet_name: str = None
+):
     """Display Jim Cramer daily recommendations
 
     Parameters

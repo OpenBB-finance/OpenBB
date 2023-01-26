@@ -48,7 +48,9 @@ def view_overview(symbol: str, export: str = "", sheet_name: str = None):
 
 
 @log_start_end(log=logger)
-def view_holdings(symbol: str, limit: int = 10, export: str = "", sheet_name: str = None):
+def view_holdings(
+    symbol: str, limit: int = 10, export: str = "", sheet_name: str = None
+):
     """
 
     Parameters

@@ -267,7 +267,9 @@ def display_queries(
 
 
 @log_start_end(log=logger)
-def display_rise(symbol: str, limit: int = 10, export: str = "", sheet_name: str = None):
+def display_rise(
+    symbol: str, limit: int = 10, export: str = "", sheet_name: str = None
+):
     """Prints top rising related queries with this stock's query. [Source: Google].
 
     Parameters
