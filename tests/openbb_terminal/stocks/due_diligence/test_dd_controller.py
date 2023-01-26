@@ -224,25 +224,25 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_analyst",
             "finviz_view.analyst",
             [],
-            {"symbol": "TSLA", "export": ""},
+            {"symbol": "TSLA", "export": "", "sheet_name": None},
         ),
         (
             "call_analyst",
             "finviz_view.analyst",
             ["--export=csv"],
-            {"symbol": "TSLA", "export": "csv"},
+            {"symbol": "TSLA", "export": "csv", "sheet_name": None},
         ),
         (
             "call_analyst",
             "finviz_view.analyst",
             ["--export=json"],
-            {"symbol": "TSLA", "export": "json"},
+            {"symbol": "TSLA", "export": "json", "sheet_name": None},
         ),
         (
             "call_analyst",
             "finviz_view.analyst",
             ["--export=xlsx"],
-            {"symbol": "TSLA", "export": "xlsx"},
+            {"symbol": "TSLA", "export": "xlsx", "sheet_name": None},
         ),
         (
             "call_pt",
@@ -255,6 +255,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "limit": 10,
                 "raw": False,
                 "export": "",
+                "sheet_name": None,
             },
         ),
         (
@@ -265,6 +266,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "symbol": "TSLA",
                 "estimate": "annualearnings",
                 "export": "",
+                "sheet_name": None,
             },
         ),
         (
@@ -276,6 +278,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "limit": 10,
                 "raw": False,
                 "export": "",
+                "sheet_name": None,
             },
         ),
         (
@@ -286,6 +289,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "symbol": "TSLA",
                 "limit": 10,
                 "export": "",
+                "sheet_name": None,
             },
         ),
         (
@@ -296,6 +300,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "symbol": "TSLA",
                 "limit": 10,
                 "export": "",
+                "sheet_name": None,
             },
         ),
         (
@@ -305,6 +310,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             {
                 "symbol": "TSLA",
                 "export": "",
+                "sheet_name": None,
             },
         ),
         (
@@ -316,6 +322,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "limit": 10,
                 "export": "",
                 "show_symbol": True,
+                "sheet_name": None,
             },
         ),
     ],

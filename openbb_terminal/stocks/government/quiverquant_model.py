@@ -407,7 +407,7 @@ def get_last_contracts(
 
     df_contracts = df_contracts[["Date", "Ticker", "Amount", "Description", "Agency"]]
     df_contracts["Description"] = df_contracts["Description"].apply(
-        lambda x: "\n".join(textwrap.wrap(x, 50))
+        lambda x: "\n".join(textwrap.wrap(x, 50)) if x is not None else None
     )
 
     return df_contracts

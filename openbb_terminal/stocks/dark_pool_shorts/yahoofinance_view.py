@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_most_shorted(limit: int = 10, export: str = ""):
+def display_most_shorted(limit: int = 10, export: str = "", sheet_name: str = None):
     """Display most shorted stocks screener. [Source: Yahoo Finance]
 
     Parameters
@@ -39,4 +39,5 @@ def display_most_shorted(limit: int = 10, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "shorted",
         df,
+        sheet_name,
     )

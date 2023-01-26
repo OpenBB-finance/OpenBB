@@ -33,6 +33,7 @@ def display_sentiment_compare(
     similar: List[str],
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display sentiment for all ticker. [Source: FinBrain].
@@ -114,6 +115,7 @@ def display_sentiment_compare(
             os.path.dirname(os.path.abspath(__file__)),
             "sentiment",
             df_sentiment,
+            sheet_name,
         )
 
 
@@ -122,6 +124,7 @@ def display_sentiment_correlation(
     similar: List[str],
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot correlation sentiments heatmap across similar companies. [Source: FinBrain].
@@ -189,4 +192,5 @@ def display_sentiment_correlation(
             os.path.dirname(os.path.abspath(__file__)),
             "scorr",
             corrs,
+            sheet_name,
         )

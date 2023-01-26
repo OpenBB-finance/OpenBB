@@ -20,9 +20,13 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=consider-iterating-dictionary
+
 
 @log_start_end(log=logger)
-def display_sector(name: str, min_pct_to_display: float = 5, export: str = ""):
+def display_sector(
+    name: str, min_pct_to_display: float = 5, export: str = "", sheet_name: str = None
+):
     """Display sector weightings for fund
 
     Parameters
@@ -31,6 +35,8 @@ def display_sector(name: str, min_pct_to_display: float = 5, export: str = ""):
         Fund symbol
     min_pct_to_display: float
         Minimum percentage to display sector
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """
@@ -85,7 +91,13 @@ def display_sector(name: str, min_pct_to_display: float = 5, export: str = ""):
     if obbff.USE_ION:
         plt.ion()
     plt.show()
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "sector", df_weight)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "sector",
+        df_weight,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)

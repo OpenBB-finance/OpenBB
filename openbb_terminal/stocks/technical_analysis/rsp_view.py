@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 def display_rsp(
     s_ticker: str = "",
     export: str = "",
+    sheet_name: str = None,
     tickers_show: bool = False,
 ):
     """Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]
@@ -64,10 +65,12 @@ def display_rsp(
             os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
             "rsp_stock",
             df_stock_p,
+            sheet_name,
         )
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
             "rsp_industry",
             df_industries_p,
+            sheet_name,
         )

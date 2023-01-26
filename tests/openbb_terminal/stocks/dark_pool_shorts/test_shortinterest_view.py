@@ -13,4 +13,5 @@ def test_high_short_interest():
     shortinterest_view.high_short_interest(
         limit=2,
         export="",
+        sheet_name=None,
     )
