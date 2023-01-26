@@ -123,12 +123,73 @@ class ChartIndicators:
 
         return output
 
+    @classmethod
+    def from_dict(cls, indicators: Dict[str, Dict[str, Any]]) -> "ChartIndicators":
+        """Return ChartIndicators from dictionary"""
+        data = []
+        for indicator in indicators:
+            args = []
+            for arg in indicators[indicator]:
+                args.append({"label": arg, "values": indicators[indicator][arg]})
+            data.append({"name": indicator, "args": args})
 
-class ProcessTA_Data:
-    """Process technical analysis data"""
+        return cls(indicators=data)
+
+    def to_dataframe(self, df_ta: pd.DataFrame) -> pd.DataFrame:
+        """Calculate technical analysis indicators and return dataframe"""
+        output = df_ta.copy()
+        if not output.empty and self.indicators:
+            output = TA_Data(output, self).to_dataframe()
+
+        return output
+
+    def get_indicator_data(self, df_ta: pd.DataFrame, indicator: TAIndicator, **kwargs):
+        """Return dataframe with technical analysis indicators"""
+        output = None
+        if self.indicators:
+            output = TA_Data(df_ta, self).get_indicator_data(indicator, **kwargs)
+
+        return output
+
+
+class TA_Data:
+    """Process technical analysis data
+
+
+    Parameters
+    ----------
+    df_ta : pd.DataFrame
+        Dataframe with OHLCV data
+    indicators : Union[ChartIndicators, Dict[str, Dict[str, Any]]]
+        ChartIndicators object or dictionary with indicators and arguments
+        Example:
+            dict(
+                sma=dict(length=[20, 50, 100]),
+                adx=dict(length=14),
+                macd=dict(fast=12, slow=26, signal=9),
+                rsi=dict(length=14),
+            )
+
+
+    Methods
+    -------
+    to_dataframe()
+        Return dataframe with technical analysis indicators
+    get_indicator_data(indicator: TAIndicator, **kwargs)
+        Return dataframe given indicator and arguments
+
+
+    """
 
     @log_start_end(log=logger)
-    def __init__(self, df_ta: pd.DataFrame, indicators: ChartIndicators):
+    def __init__(
+        self,
+        df_ta: pd.DataFrame,
+        indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]],
+    ):
+        if not isinstance(indicators, ChartIndicators):
+            indicators = ChartIndicators.from_dict(indicators)
+
         self.df_ta = df_ta
         self.indicators = indicators
         self.ma_mode = ["sma", "ema", "wma", "hma", "zlma"]
@@ -148,7 +209,20 @@ class ProcessTA_Data:
         }
 
     def get_indicator_data(self, indicator: TAIndicator, **args) -> pd.DataFrame:
-        """Returns dataframe with indicator data"""
+        """Returns dataframe with indicator data
+
+        Parameters
+        ----------
+        indicator : TAIndicator
+            TAIndicator object
+        args : dict
+            Arguments for given indicator
+
+        Returns
+        -------
+        pd.DataFrame
+            Dataframe with indicator data
+        """
         output = None
         if indicator:
 
@@ -194,10 +268,11 @@ class ProcessTA_Data:
 
         return output
 
-    def get_indicators(self) -> Union[pd.DataFrame, None]:
+    def to_dataframe(self) -> pd.DataFrame:
         """Returns dataframe with all indicators"""
         output = None
         active_indicators = self.indicators.get_indicators()
+
         if active_indicators is not None:
             output = self.df_ta
             for indicator in active_indicators:
@@ -221,4 +296,5 @@ class ProcessTA_Data:
                     output = output.join(indicator_data).interpolate(
                         "linear", limit_direction="both"
                     )
+
         return output

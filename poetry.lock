@@ -3172,7 +3172,7 @@ python-versions = "*"
 
 [[package]]
 name = "pyrsistent"
-version = "0.19.3"
+version = "0.18.1"
 description = "Persistent/Functional/Immutable data structures"
 category = "main"
 optional = false
@@ -3487,11 +3487,11 @@ six = "*"
 
 [[package]]
 name = "rapidfuzz"
-version = "2.13.7"
+version = "1.9.1"
 description = "rapid fuzzy string matching"
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=2.7"
 
 [package.extras]
 full = ["numpy"]
@@ -4871,7 +4871,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "c0c08919ea0aef2625404fca098ed519a3f289870664f7da1a0828f6512682ec"
+content-hash = "4a4d82238d1b420cc1f07c682ba7d260bc7fc95b3e3c3292c9f9ab7cbf158cac"
 
 [metadata.files]
 absl-py = []

@@ -2,7 +2,7 @@ import importlib
 import inspect
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Union
 
 import pandas as pd
 
@@ -10,33 +10,81 @@ from openbb_terminal.base_helpers import console
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.base import PltTA
-from openbb_terminal.core.plots.plotly_ta.data_classes import (
-    ChartIndicators,
-    ProcessTA_Data,
-)
+from openbb_terminal.core.plots.plotly_ta.data_classes import ChartIndicators
 from openbb_terminal.stocks.stocks_helper import display_candle
+
+PLUGINS_PATH = Path(__file__).parent / "plugins"
+PLOTLY_TA: "PlotlyTA" = None
 
 
 class PlotlyTA(PltTA):
+    """Plotly Technical Analysis class
+
+    This class is a singleton. It is created once and then reused, so that
+    the plugins are only loaded once. This is done by overriding the __new__
+    method. The __init__ method is overridden to do nothing, except to clear
+    the internal data structures.
+
+    Attributes
+    ----------
+        inchart_colors (List[str]): List of colors for inchart indicators
+        show_volume (bool): Show volume
+        ma_mode (List[str]): List of moving average modes
+        inchart (List[str]): List of inchart indicators
+        subplots (List[str]): List of subplots
+
+    StaticMethods
+    --------------
+        plot(
+            df: pd.DataFrame,
+            indicators: ChartIndicators,
+            symbol: Optional[str],
+            candles: bool = True,
+            volume: bool = True,
+        ) -> OpenBBFigure:
+            Plots the chart with the given indicators
+
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+
+    >>> df = openbb.stocks.load("SPY", interval=15)
+    >>> indicators = dict(
+    >>>     sma=dict(length=[20, 50, 100]),
+    >>>     adx=dict(length=14),
+    >>>     macd=dict(fast=12, slow=26, signal=9),
+    >>>     rsi=dict(length=14),
+    >>> )
+    >>> fig = PlotlyTA.plot(df, indicators=indicators)
+    >>> fig.show()
+
+    """
+
     inchart_colors = theme.get_colors()
     plugins = []
     show_volume = True
+    ma_mode: List[str] = []
+    inchart: List[str] = []
+    subplots: List[str] = []
 
-    def __init__(
-        self,
-        indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]],
-        df_stock: pd.DataFrame = pd.DataFrame(),
-    ):
-        if not isinstance(indicators, ChartIndicators):
-            indicators = self.process_indicators_kwargs(indicators)
+    def __new__(cls, *args, **kwargs):
+        """This method is overridden to create a singleton instance of the class."""
+        global PLOTLY_TA  # pylint: disable=global-statement
+        if PLOTLY_TA is None:
+            # Creates the instance of the class and loads the plugins
+            # We set the global variable to the instance of the class so that
+            # the plugins are only loaded once
+            PLOTLY_TA = super().__new__(cls)
+            PLOTLY_TA._locate_plugins()
+            PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)
 
-        self.indicators = indicators
-        self.intraday = df_stock.index[-2].time() != df_stock.index[-1].time()
-        self.df_stock = df_stock
-        self.params = self.indicators.get_params()
+        return PLOTLY_TA
 
-        if type(self) is PlotlyTA:
-            self.load_plugins()
+    def __init__(self, *args, **kwargs):  # pylint: disable=unused-argument
+        """This method is overridden to do nothing, except to clear the internal data structures."""
+        self._clear_data()
 
     @property
     def ma_mode(self) -> List[str]:
@@ -62,50 +110,114 @@ class PlotlyTA(PltTA):
     def subplots(self, value: List[str]):
         self.__subplots__ = value
 
-    def process_indicators_kwargs(
+    def __plot__(
         self,
-        ta_kwargs: Dict[str, Dict[str, Any]],
-    ) -> ChartIndicators:
-        data = {"indicators": []}
-        for indicator in ta_kwargs:
-            args = []
-            for arg in ta_kwargs[indicator]:
-                args.append({"label": arg, "values": ta_kwargs[indicator][arg]})
-            data["indicators"].append({"name": indicator, "args": args})
+        df_stock: pd.DataFrame,
+        indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]],
+        symbol: str = "",
+        candles: bool = True,
+        show_volume: bool = True,
+        **kwargs,
+    ) -> OpenBBFigure:
+        """This method should not be called directly. Use the PlotlyTA.plot() static method instead."""
+        if not isinstance(indicators, ChartIndicators):
+            indicators = ChartIndicators.from_dict(indicators)
 
-        return ChartIndicators(**data)
+        self.indicators = indicators
+        self.intraday = df_stock.index[-2].time() != df_stock.index[-1].time()
+        self.df_stock = df_stock
+        self.params = self.indicators.get_params()
+        self.show_volume = show_volume
+
+        return self.plot_fig(None, symbol, candles, **kwargs)
+
+    @staticmethod
+    def plot(
+        df_stock: pd.DataFrame,
+        indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]],
+        symbol: str = "",
+        candles: bool = True,
+        volume: bool = True,
+    ) -> OpenBBFigure:
+        """Plots the chart with the given indicators
+
+        Parameters
+        ----------
+        df_stock : pd.DataFrame
+            Dataframe with stock data
+        indicators : Union[ChartIndicators, Dict[str, Dict[str, Any]]]
+            ChartIndicators object or dictionary with indicators and parameters to plot
+            Example:
+                dict(
+                    sma=dict(length=[20, 50, 100]),
+                    adx=dict(length=14),
+                    macd=dict(fast=12, slow=26, signal=9),
+                    rsi=dict(length=14),
+                )
+        symbol : str, optional
+            Symbol to plot, by default uses the dataframe.name attribute if available or ""
+        candles : bool, optional
+            Plot a candlestick chart, by default True (if False, plots a line chart)
+        volume : bool, optional
+            Plot volume, by default True
+        """
+        return PlotlyTA().__plot__(df_stock, indicators, symbol, candles, volume)
+
+    @staticmethod
+    def _locate_plugins() -> None:
+        """Locate all the plugins in the plugins folder"""
+        for plugin in Path(__file__).parent.glob("plugins/*_plugin.py"):
+            python_path = plugin.relative_to(Path(os.getcwd())).with_suffix("")
+            module = importlib.import_module(
+                ".".join(python_path.with_suffix("").parts)
+            )
+            for _, obj in inspect.getmembers(module):
+                if (
+                    inspect.isclass(obj)
+                    and issubclass(obj, (PltTA))
+                    and obj != PlotlyTA.__class__
+                ):
+                    if obj not in PlotlyTA.plugins:
+                        PlotlyTA.plugins.append(obj)
+
+    def _clear_data(self):
+        """Clears and resets all data to default values"""
+        self.df_stock = None
+        self.indicators = {}
+        self.params = None
+        self.intraday = False
+        self.show_volume = True
 
     def calculate_indicators(self):
         """Returns dataframe with all indicators"""
-        df_ta = self.df_stock.copy()
-        df_ta = ProcessTA_Data(df_ta, self.indicators).get_indicators()
-
-        return df_ta
+        return self.indicators.to_dataframe(self.df_stock.copy())
 
     def get_subplot(self, subplot: str) -> bool:
         """Returns True if subplots will be able to be plotted with current data"""
+        if subplot == "volume":
+            return self.show_volume
+
         output = False
-        for indicator in self.indicators.get_indicators():
-            if indicator.name == subplot:
-                try:
-                    df_ta = self.df_stock.copy()
-                    output = ProcessTA_Data(df_ta, self.indicators).get_indicator_data(
-                        indicator,
-                        **self.indicators.get_options_dict(indicator.name)
-                        if indicator.name
-                        in self.indicators.get_arg_names(indicator.name)
-                        else {},
-                    )
-                    if not isinstance(output, bool):
-                        output.dropna(inplace=True)
 
-                        if output is None or output.empty:
-                            output = False
+        try:
+            indicator = self.indicators.get_indicator(subplot)
+            output = self.indicators.get_indicator_data(
+                self.df_stock.copy(),
+                indicator,
+                **self.indicators.get_options_dict(indicator.name)
+                if indicator.name in self.indicators.get_arg_names(indicator.name)
+                else {},
+            )
+            if not isinstance(output, bool):
+                output.dropna(inplace=True)
 
-                    return True
-
-                except Exception:
+                if output is None or output.empty:
                     output = False
+
+            return True
+
+        except Exception:
+            output = False
 
         return output
 
@@ -121,26 +233,29 @@ class PlotlyTA(PltTA):
     def get_fig_settings_dict(self):
         """Returns dictionary with settings for plotly figure"""
         check_active = self.indicators.get_active_ids()
+
         subplots = [subplot for subplot in self.subplots if subplot in check_active]
 
-        check_rows = min(len(self.check_subplots(subplots)), 3)
+        if self.show_volume:
+            subplots.append("volume")
+
+        check_rows = min(len(self.check_subplots(subplots)), 4)
 
         if check_rows == 0:
-            rows = 2
-            row_width = [0.2, 0.7]
+            rows = 1
+            row_width = [1]
         elif check_rows == 1:
+            rows = 2
+            row_width = [0.3, 0.7]
+        elif check_rows == 2:
             rows = 3
             row_width = [0.15, 0.15, 0.7]
-        elif check_rows == 2:
+        elif check_rows == 3:
             rows = 4
             row_width = [0.2, 0.2, 0.2, 0.4]
-        elif check_rows == 3:
+        elif check_rows == 4:
             rows = 5
             row_width = [0.15, 0.15, 0.15, 0.15, 0.4]
-
-        if not self.show_volume and len(self.check_subplots(subplots)) > 3:
-            rows = 4
-            row_width = [0.2, 0.2, 0.2, 0.4]
 
         output = {
             "rows": rows,
@@ -150,35 +265,34 @@ class PlotlyTA(PltTA):
         }
         return output
 
-    def _locate_plugins(self):
-        """Locates plugins in plugins folder"""
+    def plot_candle(self, symbol: str = "") -> OpenBBFigure:
+        """Returns candle plotly figure
 
-        for plugin in Path(__file__).parent.glob("plugins/*_plugin.py"):
-            python_path = plugin.relative_to(Path(os.getcwd())).with_suffix("")
-            module = importlib.import_module(
-                ".".join(python_path.with_suffix("").parts)
-            )
-            for _, obj in inspect.getmembers(module):
-                if (
-                    inspect.isclass(obj)
-                    and issubclass(obj, (PltTA))
-                    and obj != self.__class__
-                ):
-                    if obj not in self.plugins:
-                        self.plugins.append(obj)
+        Parameters
+        ----------
+        symbol : str, optional
+            Symbol to plot, by default uses the dataframe.name attribute if available or ""
 
-    def load_plugins(self):
-        """Loads plugins into PlotlyTA class"""
-        self._locate_plugins()
-        self.add_plugins(self.plugins)
+        Returns
+        -------
+        fig : OpenBBFigure
+            Plotly figure with candlestick chart and volume bar chart
+        """
+        return display_candle(symbol, self.df_stock, external_axes=True)
 
-    def plot_candle(self, symbol: str = ""):
-        """Returns candle plotly figure"""
-        fig = display_candle(symbol, self.df_stock, external_axes=True)
-        return fig
+    def plot_line(self, symbol: str = "") -> OpenBBFigure:
+        """Returns line plotly figure
 
-    def plot_line(self, symbol: str = ""):
-        """Returns line plotly figure"""
+        Parameters
+        ----------
+        symbol : str, optional
+            Symbol to plot, by default uses the dataframe.name attribute if available or ""
+
+        Returns
+        -------
+        fig : OpenBBFigure
+            Plotly figure with line chart and volume bar chart (if show_volume is True)
+        """
         fig = OpenBBFigure.create_subplots(
             2,
             1,
@@ -212,18 +326,13 @@ class PlotlyTA(PltTA):
         return fig
 
     def plot_fig(
-        self,
-        fig: OpenBBFigure = None,
-        symbol: str = "",
-        candlestick: bool = True,
-        volume: bool = True,
+        self, fig: OpenBBFigure = None, symbol: str = "", candlestick: bool = True
     ) -> OpenBBFigure:
         """Takes candle plotly fig and adds users active indicators"""
 
         df_ta = self.calculate_indicators()
-        self.show_volume = volume
 
-        if hasattr(self.df_stock, "name"):
+        if hasattr(self.df_stock, "name") and not symbol:
             symbol = self.df_stock.name
 
         if not fig:
@@ -233,10 +342,10 @@ class PlotlyTA(PltTA):
                 fig = self.plot_line(symbol)
                 self.inchart_colors = theme.get_colors()[1:]
 
-        fig_new = {}
+        subplot_row, fig_new = 2, {}
         inchart_index, ma_done = 0, False
 
-        fig, subplot_row = self.process_fig(fig)
+        fig = self.process_fig(fig)
 
         for indicator in self.indicators.get_active_ids():
             try:
@@ -285,7 +394,7 @@ class PlotlyTA(PltTA):
         # they all match the bottom one
         xbottom = list(fig.select_xaxes())[-1].anchor
         for xa in fig.select_xaxes():
-            if not volume and subplot_row == 2:
+            if not self.show_volume and subplot_row == 2:
                 xa.showticklabels = True
                 break
             if not xa.showticklabels and xa.anchor != xbottom:
@@ -295,12 +404,22 @@ class PlotlyTA(PltTA):
 
         return fig
 
-    def process_fig(self, fig: OpenBBFigure) -> Tuple[OpenBBFigure, int]:
-        """Processes fig to add subplots and volume"""
+    def process_fig(self, fig: OpenBBFigure) -> OpenBBFigure:
+        """Processes fig to add subplots and volume
+
+        Parameters
+        ----------
+        fig : OpenBBFigure
+            Plotly figure to process
+
+        Returns
+        -------
+        fig : OpenBBFigure
+            Processed plotly figure
+        """
 
         new_subplot = OpenBBFigure.create_subplots(
-            shared_xaxes=True,
-            **self.get_fig_settings_dict(),
+            shared_xaxes=True, **self.get_fig_settings_dict()
         )
 
         subplots = {}
@@ -331,7 +450,6 @@ class PlotlyTA(PltTA):
                 except IndexError:
                     pass
                 if not self.show_volume:
-                    row -= 1
                     continue
                 fig.add_annotation(
                     xref=f"x{row} domain",
@@ -349,8 +467,6 @@ class PlotlyTA(PltTA):
 
             new_subplot.add_trace(trace, row=row, col=col)
 
-        subplot_row = row + 1
-
         fig_json = fig.to_plotly_json()["layout"]
         for layout in fig_json:
             if layout in ["xaxis2", "yaxis2"] and not self.show_volume:
@@ -367,4 +483,4 @@ class PlotlyTA(PltTA):
             fig.layout.update({layout: fig_json[layout]})
             new_subplot.layout.update({layout: fig.layout[layout]})
 
-        return new_subplot, subplot_row
+        return new_subplot
