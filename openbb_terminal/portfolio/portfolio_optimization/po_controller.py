@@ -1,7 +1,7 @@
 """ Portfolio Optimization Controller Module """
 __docformat__ = "numpy"
 
-# pylint: disable=too-many-lines,too-many-instance-attributes
+# pylint: disable=too-many-lines,too-many-instance-attributes,inconsistent-return-statements
 
 import argparse
 import logging
@@ -667,13 +667,13 @@ class PortfolioOptimizationController(BaseController):
                 if portfolio in portfolios:
                     self.portfolios.pop(portfolio)
                     portfolios.remove(portfolio)
-                    console.print(f"[yellow]Removed '{portfolio}'.[/yellow]")
+                    console.print(f"[param]Removed '{portfolio}'.[/param]")
                 else:
                     console.print(f"[red]Portfolio '{portfolio}' does not exist.[/red]")
 
             if self.portfolios:
                 console.print(
-                    f"\n[yellow]Current Portfolios: [/yellow]{('None', ', '.join(portfolios))[bool(portfolios)]}"
+                    f"\n[param]Current Portfolios: [/param]{('None', ', '.join(portfolios))[bool(portfolios)]}"
                 )
 
             self.update_runtime_choices()
@@ -710,15 +710,18 @@ class PortfolioOptimizationController(BaseController):
             filename = ""
             if ns_parser.file:
                 filename = " ".join(ns_parser.file)
-                if filename in self.allocation_file_map:
-                    file_location = self.allocation_file_map[filename]
-                else:
-                    file_location = filename  # type: ignore
             elif ns_parser.example:
+                filename = "OpenBB Example Portfolio"
+            else:
+                return console.print(
+                    "[green]Please input a filename with load --file or obtain an example with load --example[/green]"
+                )
+
+            if ns_parser.example:
                 file_location = (
                     MISCELLANEOUS_DIRECTORY / "portfolio" / "allocation_example.xlsx"
                 )
-                filename = "OpenBB Example Portfolio"
+
                 console.print(
                     "[green]Loading an example, please type `about` "
                     "to learn how to create your own Portfolio Optimization Excel sheet.[/green]\n"
@@ -735,6 +738,11 @@ class PortfolioOptimizationController(BaseController):
             self.portfolios = dict()
             self.update_runtime_choices()
             self.current_portfolio = filename
+
+            console.print(f"[param]Portfolio loaded:[/param] {self.current_portfolio}")
+            console.print(
+                f"[param]Categories:[/param] {', '.join(self.available_categories)}\n"
+            )
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -831,8 +839,8 @@ class PortfolioOptimizationController(BaseController):
                 or ns_parser.heat
             ):
                 console.print(
-                    "[yellow]Please select at least one chart to plot[/yellow]",
-                    "[yellow]from the following: -pi, -hi, -dd, -rc, -he.[/yellow]",
+                    "[red]Please select at least one chart to plot "
+                    "from the following: -pi, -hi, -dd, -rc, -he.[/red]",
                 )
                 return
 
