@@ -4,20 +4,12 @@ __docformat__ = "numpy"
 import logging
 import os
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.common.quantitative_analysis import rolling_model
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    reindex_dates,
-)
+from openbb_terminal.helper_funcs import export_data
 
 logger = logging.getLogger(__name__)
 
@@ -67,86 +59,32 @@ def display_mean_std(
         suffixes=("", "_std"),
     )
 
-    # This plot has 2 axes
-    _, axes = plt.subplots(
-        2,
-        1,
-        sharex=True,
-        figsize=plot_autoscale(),
-        dpi=PLOT_DPI,
-    )
-    ax1, ax2 = axes
-
-    plot_data2 = plot_data.copy()
-    plot_data = reindex_dates(plot_data)
-
-    ax1.plot(
-        plot_data.index,
-        plot_data[target].values,
-        label=symbol,
-    )
-    ax1.plot(
-        plot_data.index,
-        plot_data[target + "_mean"].values,
-    )
-    ax1.set_ylabel(
-        "Values",
-    )
-    ax1.legend(["Real Values", "Rolling Mean"])
-    ax1.set_title(f"Rolling mean and std (window {str(window)}) of {symbol} {target}")
-    ax1.set_xlim([plot_data.index[0], plot_data.index[-1]])
-
-    ax2.plot(
-        plot_data.index,
-        plot_data[target + "_std"].values,
-        label="Rolling std",
-    )
-    ax2.legend(["Rolling std"])
-    ax2.set_ylabel(
-        f"{target} Std Deviation",
-    )
-
-    theme.style_primary_axis(
-        ax1,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
-    )
-    theme.style_primary_axis(
-        ax2,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
-    )
-
-    if external_axes is None:
-        theme.visualize_output()
-
     fig = OpenBBFigure.create_subplots(
         2,
         1,
         shared_xaxes=True,
         subplot_titles=[
-            f"Rolling mean and std (window {str(window)}) of {symbol} {target}",
-            f"{target} Std Deviation",
+            f"Rolling mean and std (window {str(window)}) of {symbol} {target}"
         ],
         vertical_spacing=0.1,
     )
     fig.add_scatter(
-        x=plot_data2.index,
-        y=plot_data2[target].values,
+        x=plot_data.index,
+        y=plot_data[target].values,
         name="Real Values",
         row=1,
         col=1,
     )
     fig.add_scatter(
-        x=plot_data2.index,
-        y=plot_data2[target + "_mean"].values,
+        x=plot_data.index,
+        y=plot_data[target + "_mean"].values,
         name="Rolling Mean",
         row=1,
         col=1,
     )
     fig.add_scatter(
-        x=plot_data2.index,
-        y=plot_data2[target + "_std"].values,
+        x=plot_data.index,
+        y=plot_data[target + "_std"].values,
         name="Rolling Std",
         row=2,
         col=1,
@@ -154,11 +92,7 @@ def display_mean_std(
     fig.update_layout(
         yaxis=dict(title="Values"),
         yaxis2=dict(title=f"{target} Std Deviation"),
-        xaxis=dict(type="date"),
-        xaxis2=dict(type="date"),
     )
-
-    fig.show()
 
     export_data(
         export,
@@ -166,6 +100,8 @@ def display_mean_std(
         "rolling",
         rolling_mean.join(rolling_std, lsuffix="_mean", rsuffix="_std"),
     )
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)
@@ -215,60 +151,46 @@ def display_spread(
         right_index=True,
         suffixes=("", "_var"),
     )
-    plot_data = reindex_dates(plot_data)
 
-    # This plot has 1 axis
-    if external_axes is None:
-        _, axes = plt.subplots(
-            3,
-            1,
-            sharex=True,
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-        (ax1, ax2, ax3) = axes
-    elif is_valid_axes_count(external_axes, 3):
-        (ax1, ax2, ax3) = external_axes
-    else:
-        return
+    fig = OpenBBFigure.create_subplots(
+        3,
+        1,
+        shared_xaxes=True,
+        subplot_titles=[
+            "Real Values",
+            "Rolling Stdev",
+            "Rolling Variance",
+        ],
+        vertical_spacing=0.1,
+    ).set_title(f"Spread of {symbol} {target}")
 
-    ax1.plot(plot_data.index, plot_data[target].values)
-    ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
-    ax1.set_ylabel("Value")
-    ax1.set_title(f"Spread of {symbol} {target}")
-
-    ax2.plot(
-        plot_data[f"STDEV_{window}"].index,
-        plot_data[f"STDEV_{window}"].values,
-        label="Stdev",
+    fig.add_scatter(
+        x=plot_data.index,
+        y=plot_data[target].values,
+        name="Real Values",
+        row=1,
+        col=1,
     )
-    ax2.set_ylabel("Stdev")
-
-    ax3.plot(
-        plot_data[f"VAR_{window}"].index,
-        plot_data[f"VAR_{window}"].values,
-        label="Variance",
+    fig.add_scatter(
+        x=plot_data.index,
+        y=plot_data[f"STDEV_{window}"].values,
+        name="Rolling Stdev",
+        row=2,
+        col=1,
     )
-    ax3.set_ylabel("Variance")
-
-    theme.style_primary_axis(
-        ax1,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
+    fig.add_scatter(
+        x=plot_data.index,
+        y=plot_data[f"VAR_{window}"].values,
+        name="Rolling Variance",
+        row=3,
+        col=1,
     )
-    theme.style_primary_axis(
-        ax2,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
+    fig.update_layout(
+        yaxis=dict(title="Values"),
+        yaxis2=dict(title="Stdev"),
+        yaxis3=dict(title="Variance"),
     )
-    theme.style_primary_axis(
-        ax3,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
-    )
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.update_traces(showlegend=False)
 
     export_data(
         export,
@@ -276,6 +198,8 @@ def display_spread(
         "spread",
         df_sd.join(df_var, lsuffix="_sd", rsuffix="_var"),
     )
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)
@@ -326,45 +250,26 @@ def display_quantile(
         right_index=True,
         suffixes=("", "_quantile"),
     )
-    plot_data = reindex_dates(plot_data)
 
-    # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure().set_title(f"{symbol} {target} Median & Quantile")
 
-    ax.set_title(f"{symbol} {target} Median & Quantile")
-    ax.plot(plot_data.index, plot_data[target].values, label=target)
-    ax.plot(
-        plot_data.index,
-        plot_data[f"MEDIAN_{window}"].values,
-        label=f"Median w={window}",
+    fig.add_scatter(
+        x=plot_data.index,
+        y=plot_data[target].values,
+        name=target,
     )
-    ax.plot(
-        plot_data.index,
-        plot_data[f"QTL_{window}_{quantile}"].values,
-        label=f"Quantile q={quantile}",
-        linestyle="--",
+    fig.add_scatter(
+        x=plot_data.index,
+        y=plot_data[f"MEDIAN_{window}"].values,
+        name=f"Median w={window}",
     )
-
-    ax.set_xlim(plot_data.index[0], plot_data.index[-1])
-    ax.set_ylabel(f"{symbol} Value")
-    ax.legend()
-
-    theme.style_primary_axis(
-        ax,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
+    fig.add_scatter(
+        x=plot_data.index,
+        y=plot_data[f"QTL_{window}_{quantile}"].values,
+        name=f"Quantile q={quantile}",
+        line=dict(dash="dash"),
     )
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.update_layout(yaxis=dict(title=f"{symbol} Value"))
 
     export_data(
         export,
@@ -372,6 +277,8 @@ def display_quantile(
         "quantile",
         df_med.join(df_quantile),
     )
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)
@@ -410,44 +317,30 @@ def display_skew(
         left_index=True,
         right_index=True,
     )
-    plot_data = reindex_dates(plot_data)
 
-    # This plot has 1 axis
-    if external_axes is None:
-        _, axes = plt.subplots(
-            2,
-            1,
-            sharex=True,
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-        (ax1, ax2) = axes
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    fig = OpenBBFigure.create_subplots(
+        rows=2,
+        cols=1,
+        vertical_spacing=0.1,
+    ).set_title(f"{symbol} Skewness Indicator")
 
-    ax1.set_title(f"{symbol} Skewness Indicator")
-    ax1.plot(plot_data.index, plot_data[target].values)
-    ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
-    ax1.set_ylabel(f"{target}")
-
-    ax2.plot(plot_data.index, plot_data[f"SKEW_{window}"].values, label="Skew")
-    ax2.set_ylabel("Indicator")
-
-    theme.style_primary_axis(
-        ax1,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
-    )
-    theme.style_primary_axis(
-        ax2,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
+    fig.add_scatter(
+        x=plot_data.index,
+        y=plot_data[target].values,
+        name=target,
+        row=1,
+        col=1,
     )
 
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=plot_data.index,
+        y=plot_data[f"SKEW_{window}"].values,
+        name=f"Skew w={window}",
+        row=2,
+        col=1,
+    )
+
+    fig.update_layout(yaxis=dict(title=f"{target}"), yaxis2=dict(title="Indicator"))
 
     export_data(
         export,
@@ -455,6 +348,8 @@ def display_skew(
         "skew",
         df_skew,
     )
+
+    return fig.show() if not external_axes else fig
 
 
 @log_start_end(log=logger)
@@ -493,47 +388,32 @@ def display_kurtosis(
         left_index=True,
         right_index=True,
     )
-    plot_data = reindex_dates(plot_data)
 
-    # This plot has 1 axis
-    if external_axes is None:
-        _, axes = plt.subplots(
-            2,
-            1,
-            sharex=True,
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-        (ax1, ax2) = axes
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    fig = OpenBBFigure.create_subplots(
+        rows=2,
+        cols=1,
+        vertical_spacing=0.1,
+        subplot_titles=[f"{target}", "Kurtosis"],
+    ).set_title(f"{symbol} {target} Kurtosis Indicator (window {str(window)})")
 
-    ax1.set_title(f"{symbol} {target} Kurtosis Indicator (window {str(window)})")
-    ax1.plot(plot_data.index, plot_data[target].values)
-    ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
-    ax1.set_ylabel(f"{target}")
-
-    ax2.plot(
-        plot_data.index,
-        plot_data[f"KURT_{window}"].values,
-    )
-    ax2.set_ylabel("Indicator")
-
-    theme.style_primary_axis(
-        ax1,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
-    )
-    theme.style_primary_axis(
-        ax2,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
+    fig.add_scatter(
+        x=plot_data.index,
+        y=plot_data[target].values,
+        name=target,
+        row=1,
+        col=1,
     )
 
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=plot_data.index,
+        y=plot_data[f"KURT_{window}"].values,
+        name=f"Kurtosis w={window}",
+        row=2,
+        col=1,
+    )
+
+    fig.update_layout(yaxis=dict(title=f"{target}"), yaxis2=dict(title="Indicator"))
+    fig.update_traces(showlegend=False)
 
     export_data(
         export,
@@ -541,3 +421,5 @@ def display_kurtosis(
         "kurtosis",
         df_kurt,
     )
+
+    return fig.show() if not external_axes else fig

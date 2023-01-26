@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -14,12 +14,7 @@ from openbb_terminal.common.behavioural_analysis import sentimentinvestor_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -84,13 +79,8 @@ def display_historical(
         return
 
     # This plot has 2 axes
-    if external_axes is None:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax2 = ax1.twinx()
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    ax2 = ax1.twinx()
 
     ax1.plot(df.index, df["RHI"], color=theme.get_colors()[0])
 

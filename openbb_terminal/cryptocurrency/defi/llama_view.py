@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
 import matplotlib.pyplot as plt
 from matplotlib import ticker
@@ -15,7 +14,6 @@ from openbb_terminal.cryptocurrency.defi import llama_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
@@ -45,12 +43,7 @@ def display_grouped_defi_protocols(
     chains = llama_model.get_grouped_defi_protocols(limit)
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=(14, 8), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=(14, 8), dpi=PLOT_DPI)
 
     colors = iter(cfg.theme.get_colors(reverse=True))
 
@@ -147,12 +140,7 @@ def display_historical_tvl(
     """
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     available_protocols = read_data_file("defillama_dapps.json")
 
@@ -204,12 +192,7 @@ def display_defi_tvl(
     """
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     df = llama_model.get_defi_tvl()
     df_data = df.copy()

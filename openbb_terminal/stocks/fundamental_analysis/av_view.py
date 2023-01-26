@@ -441,12 +441,7 @@ def display_dupont(
             df, headers=list(df.columns), show_index=True, title="Extended Dupont"
         )
         return
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     colors = theme.get_colors()
     df.transpose().plot(kind="line", ax=ax, color=colors)

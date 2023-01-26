@@ -42,12 +42,7 @@ def plot_rating_over_time(
         Whether to return the figure object or not, by default False
     """
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     rot = data.sort_values("period")
     ax.plot(pd.to_datetime(rot["period"]), rot["strongBuy"], c="green", lw=3)

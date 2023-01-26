@@ -57,12 +57,7 @@ def display_sentiment_compare(
     else:
 
         # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         for idx, tick in enumerate(similar):
             offset = 2 * idx
@@ -147,12 +142,7 @@ def display_sentiment_correlation(
     else:
 
         # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         mask = np.zeros((len(similar), len(similar)), dtype=bool)
         mask[np.triu_indices(len(mask))] = True

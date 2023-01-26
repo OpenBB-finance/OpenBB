@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, List, Optional, Union
+from typing import Dict, Optional, Union
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -29,7 +29,7 @@ from openbb_terminal.forex.oanda.oanda_model import (
     pending_orders_request,
     positionbook_plot_data_request,
 )
-from openbb_terminal.helper_funcs import is_valid_axes_count, plot_autoscale
+from openbb_terminal.helper_funcs import plot_autoscale
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -345,37 +345,29 @@ def show_candles(
         "warn_too_much_data": 10000,
     }
     # This plot has 2 axes
-    if not external_axes:
-        candle_chart_kwargs["returnfig"] = True
-        candle_chart_kwargs["figratio"] = (10, 7)
-        candle_chart_kwargs["figscale"] = 1.10
-        candle_chart_kwargs["figsize"] = plot_autoscale()
-        if plots_to_add:
-            candle_chart_kwargs["addplot"] = plots_to_add
-        if isinstance(df_candles, pd.DataFrame):
-            fig, ax = mpf.plot(df_candles, **candle_chart_kwargs)
-            fig.suptitle(
-                f"{instrument} {granularity}",
-                x=0.055,
-                y=0.965,
-                horizontalalignment="left",
-            )
-            if len(legends) > 0:
-                ax[0].legend(legends)
-            # pylint: disable=C0200
-            for i in range(0, len(subplot_legends), 2):
-                ax[subplot_legends[i]].legend(subplot_legends[i + 1])
-            theme.visualize_output(force_tight_layout=False)
-        else:
-            logger.error("Data not found")
-            console.print("[red]Data not found[/red]\n")
-    elif is_valid_axes_count(external_axes, 2):
-        ax, volume = external_axes
-        candle_chart_kwargs["ax"] = ax
-        candle_chart_kwargs["volume"] = volume
-        mpf.plot(df_candles, **candle_chart_kwargs)
+    candle_chart_kwargs["returnfig"] = True
+    candle_chart_kwargs["figratio"] = (10, 7)
+    candle_chart_kwargs["figscale"] = 1.10
+    candle_chart_kwargs["figsize"] = plot_autoscale()
+    if plots_to_add:
+        candle_chart_kwargs["addplot"] = plots_to_add
+    if isinstance(df_candles, pd.DataFrame):
+        fig, ax = mpf.plot(df_candles, **candle_chart_kwargs)
+        fig.suptitle(
+            f"{instrument} {granularity}",
+            x=0.055,
+            y=0.965,
+            horizontalalignment="left",
+        )
+        if len(legends) > 0:
+            ax[0].legend(legends)
+        # pylint: disable=C0200
+        for i in range(0, len(subplot_legends), 2):
+            ax[subplot_legends[i]].legend(subplot_legends[i + 1])
+        theme.visualize_output(force_tight_layout=False)
     else:
-        return
+        logger.error("Data not found")
+        console.print("[red]Data not found[/red]\n")
 
 
 @log_start_end(log=logger)
@@ -508,12 +500,7 @@ def book_plot(
     )
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     ax.set_xlim(-axis_origin, +axis_origin)
 

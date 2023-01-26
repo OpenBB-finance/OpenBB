@@ -21,7 +21,7 @@ body {
 }
 
 .plotly-graph-div {
-    width: 100%;
+    width: 98.2%;
     height: 100%;
     font-size: 12px;
     font-size: 1.2rem;
@@ -377,25 +377,31 @@ form {
 
 
 .plotly-graph-div:hover .modebar--hover {
-    /* Icons menu */
-    top: 2px;
-    right: -5px !important;
-    margin-left: 10px !important;
+    position: absolute;
+    transition: 0.2s ease-in-out all !important;
+    visibility: visible;
+    transition-delay: 0.2s !important;
+    opacity: 1 !important;
+}
 
-    /* Auto layout */
-    padding: 6px 6px !important;
-    gap: 8px !important;
 
-    /* Grey/800 */
-    background: #2A2A2A;
-    /* Grey/600 */
-
-    border: 2px solid #5A5A5A !important;
-    border-radius: 4px;
-
-    /* move right of plotly div */
+.plotly-graph-div .modebar--hover {
+    position: absolute;
+    top: 50% !important;
+    margin-left: 0px !important;
+    margin-right: 2px !important;
+    transform: translate(100%, -50%) !important;
+    transition: 0.2s ease-in-out all !important;
+    visibility: hidden;
 }
 
 .modebar-btn .icon path {
     fill: rgba(255, 255, 255, 0.5);
+}
+
+
+.plotly-graph-div .modebar--hover .modebar-group {
+    border: 2px solid #5A5A5A !important;
+    border-radius: 4px;
+    padding: 2px 2px 2px !important;
 }

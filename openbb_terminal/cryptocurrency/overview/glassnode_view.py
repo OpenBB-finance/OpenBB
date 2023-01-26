@@ -54,12 +54,7 @@ def display_btc_rainbow(
         return
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
     d0 = datetime.strptime("2012-01-01", "%Y-%m-%d")
     dend = datetime.strptime(end_date, "%Y-%m-%d")

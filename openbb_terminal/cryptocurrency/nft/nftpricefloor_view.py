@@ -122,10 +122,8 @@ def display_floor_price(
                 title=f"{slug} Floor Price",
             )
         # This plot has 1 axis
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
         ax.bar(df.index, df["salesCount"], color=theme.down_color, label="Sales")
         ax.set_xlim(
             df.index[0],

@@ -5,8 +5,9 @@ from matplotlib import pyplot as plt
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import is_valid_axes_count, plot_autoscale
+from openbb_terminal.helper_funcs import plot_autoscale
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import calculator_model
 
@@ -43,12 +44,7 @@ def view_calculator(
         strike, premium, put, sell, **kwargs
     )
 
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     ax.plot(price_at_expiry, pnl, alpha=0.1, c="k")
     ax.fill_between(

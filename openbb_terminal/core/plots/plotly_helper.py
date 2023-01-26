@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 from math import floor
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -578,6 +579,7 @@ class OpenBBFigure(go.Figure):
         if kwargs.pop("margin", True):
             self._adjust_margins()
         self._apply_feature_flags()
+        self._xaxis_tickformatstops()
 
         # height = 600 if not self.layout.height else self.layout.height
         # self.update_layout(
@@ -596,6 +598,7 @@ class OpenBBFigure(go.Figure):
             self.update_layout(  # type: ignore
                 newshape_line_color="gold",
                 modebar=dict(
+                    orientation="v",
                     bgcolor="#2A2A2A",
                     color="#FFFFFF",
                     activecolor="#d1030d",
@@ -618,6 +621,33 @@ class OpenBBFigure(go.Figure):
                     console.print_exception()
 
         return pio.show(self, *args, **kwargs)
+
+    def _xaxis_tickformatstops(self) -> None:
+        """Sets the datetickformatstops for the xaxis if the x data is datetime"""
+        if (dateindex := self.get_dateindex()) is None:
+            return
+
+        tickformatstops = [
+            dict(dtickrange=[None, 86_400_000], value="%I%p\n%b,%d"),
+            dict(dtickrange=[86_400_000, 604_800_000], value="%b\n%d"),
+        ]
+        xhoverformat = "%I:%M%p %Y-%m-%d"
+
+        # We check if daily data if the first and second time are the same
+        # since daily data will have the same time (2021-01-01 00:00:00)
+        if dateindex[-1].time() == dateindex[-2].time():
+            xhoverformat = "%Y-%m-%d"
+            tickformatstops = [dict(dtickrange=[None, 604_800_000], value="%Y-%m-%d")]
+
+        self.update_xaxes(
+            tickformatstops=[
+                *tickformatstops,
+                dict(dtickrange=[604_800_000, "M1"], value="%Y-%m-%d"),
+                dict(dtickrange=["M1", None], value="%Y-%m-%d"),
+            ],
+            type="date",
+        )
+        self.update_traces(xhoverformat=xhoverformat)
 
     def to_subplot(
         self,
@@ -697,9 +727,33 @@ class OpenBBFigure(go.Figure):
 
         return color_list
 
-    def hide_holidays(
-        self, dateindex: Union[pd.DatetimeIndex, pd.Series, pd.Index]
-    ) -> None:
+    def get_dateindex(self) -> Optional[List[datetime]]:
+        """Return the dateindex of the figure
+
+        Returns
+        -------
+        `list`
+            The dateindex
+
+        Returns
+        -------
+        `list`
+            The dateindex
+        """
+
+        for trace in self.select_traces():
+            for x in trace.x:
+                if isinstance(x, datetime):
+                    return trace.x
+                if isinstance(x, (int, float)):
+                    return
+                if isinstance(x, str):
+                    try:
+                        return pd.to_datetime(trace.x)
+                    except Exception:
+                        return
+
+    def hide_holidays(self) -> None:
         """Add rangebreaks to hide holidays on the xaxis
 
         Parameters
@@ -707,8 +761,8 @@ class OpenBBFigure(go.Figure):
         dateindex : `pandas.DatetimeIndex`
             The date index
         """
-        if not isinstance(dateindex, pd.DatetimeIndex):
-            dateindex = pd.DatetimeIndex(dateindex)
+        if (dateindex := self.get_dateindex()) is None:
+            return
 
         mkt_holidays = USFederalHolidayCalendar().holidays(
             start=dateindex.min(), end=dateindex.max()
@@ -718,9 +772,9 @@ class OpenBBFigure(go.Figure):
             dict(bounds=["sat", "mon"]),
         ]
 
-        # We add a rangebreak if the first and last time are not the same
+        # We add a rangebreak if the first and second time are not the same
         # since daily data will have the same time (00:00)
-        if dateindex[0].time() != dateindex[-1].time():
+        if dateindex[-1].time() != dateindex[-2].time():
             rangebreaks.append(dict(bounds=[15.99, 9.50], pattern="hour"))
 
         self.update_xaxes(
@@ -840,7 +894,7 @@ class OpenBBFigure(go.Figure):
     def _adjust_margins(self) -> None:
         """Adjust the margins of the figure"""
         margin_add = (
-            [90, 90, 80, 40, 0] if not self._has_secondary_y else [90, 50, 80, 40, 0]
+            [90, 60, 80, 60, 0] if not self._has_secondary_y else [90, 50, 80, 40, 0]
         )
 
         # We adjust margins

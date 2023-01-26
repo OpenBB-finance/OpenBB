@@ -2,7 +2,7 @@
 import logging
 import os
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 from matplotlib import pyplot as plt
 
@@ -13,11 +13,7 @@ from openbb_terminal.cryptocurrency.overview.blockchaincenter_model import (
     get_altcoin_index,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -32,7 +28,7 @@ def display_altcoin_index(
     external_axes: bool = False,
 ) -> None:
     """Displays altcoin index overtime
-     [Source: https://blockchaincenter.net]
+    [Source: https://blockchaincenter.net]
 
     Parameters
     ----------
@@ -61,12 +57,7 @@ def display_altcoin_index(
         else:
 
             # This plot has 1 axis
-            if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 1):
-                (ax,) = external_axes
-            else:
-                return
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
             ax.set_ylabel("Altcoin Index")
             ax.axhline(y=75, color=theme.up_color, label="Altcoin Season (75)")

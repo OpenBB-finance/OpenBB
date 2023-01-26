@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
@@ -15,12 +14,7 @@ from openbb_terminal.cryptocurrency.onchain.shroom_model import (
     get_total_value_locked,
 )
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -48,12 +42,7 @@ def display_daily_transactions(
         return
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
     for name in symbols:
         ax.plot(df.index, df[name] / 1_000_000_000, label=name, lw=0.5)
@@ -108,10 +97,7 @@ def display_dapp_stats(
             print_rich_table(df.head(limit), headers=list(df.columns), show_index=True)
 
         # This plot has 1 axis
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
         ax.bar(df.index, df["n_users"], color=theme.down_color, label="Number of Users")
         ax.set_xlim(
@@ -191,12 +177,7 @@ def display_total_value_locked(
         return
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
     # ax.plot(df.index, df["amount_usd"], label="", lw=0.5)
     ax.bar(df.index, df["amount_usd"], color=theme.down_color, label="amount_usd")

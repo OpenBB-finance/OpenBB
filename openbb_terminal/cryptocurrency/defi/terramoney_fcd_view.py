@@ -168,12 +168,7 @@ def display_account_growth(
     label = "Cumulative" if cumulative and opt == "total" else "Daily"
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     df = df.sort_values("date", ascending=False).head(limit)
     df = df.set_index("date")
@@ -226,12 +221,7 @@ def display_staking_ratio_history(
     start, end = df.index[-1], df.index[0]
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     ax.plot(df, label=df["stakingRatio"])
     ax.set_ylabel("Staking ratio [%]")
@@ -269,12 +259,7 @@ def display_staking_returns_history(
 
     """
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     df = terramoney_fcd_model.get_staking_returns_history(limit)
 

@@ -285,12 +285,7 @@ def display_sp500_comps_tsne(
 
     if not no_plot:
         # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return []
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         top_100 = data[(limit + 1) : 101]
         symbol_df = data[data.index == symbol]

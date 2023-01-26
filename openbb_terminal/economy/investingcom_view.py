@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional, Union
+from typing import List, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -18,12 +18,7 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import investingcom_model
 from openbb_terminal.economy.economy_helpers import text_transform
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -104,12 +99,7 @@ def display_spread_matrix(
 
         else:
             # This plot has 1 axis
-            if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 1):
-                (ax,) = external_axes
-            else:
-                return
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
             mask = np.zeros((df.shape[0], df.shape[1]), dtype=bool)
             mask[np.tril_indices(len(mask))] = True

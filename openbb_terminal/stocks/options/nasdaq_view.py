@@ -68,12 +68,8 @@ def display_oi(
     else:
         max_strike = max_sp
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+
     ax.plot(
         option_chain.strike,
         option_chain["c_Openinterest"] / 1000,
@@ -158,12 +154,8 @@ def display_volume(
     else:
         max_strike = max_sp
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+
     ax.plot(
         option_chain.strike,
         option_chain["c_Volume"] / 1000,
@@ -269,12 +261,7 @@ def display_volume_and_oi(
         option_chain[["c_Openinterest", "c_Volume"]] / 1000
     )
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
     ax.bar(
         option_chain.strike,

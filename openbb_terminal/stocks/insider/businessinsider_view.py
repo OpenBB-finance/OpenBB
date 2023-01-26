@@ -5,7 +5,7 @@ import logging
 import math
 import os
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -17,7 +17,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     get_next_stock_market_days,
-    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
 )
@@ -92,12 +91,7 @@ def insider_activity(
             )
         else:
             # This plot has 1 axis
-            if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 1):
-                (ax,) = external_axes
-            else:
-                return
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
             if interval == "1440min":
                 ax.plot(data.index, data["Adj Close"].values, lw=3)

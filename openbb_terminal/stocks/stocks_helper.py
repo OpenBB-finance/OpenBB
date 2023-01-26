@@ -632,7 +632,7 @@ def display_candle(
             )
             fig.update_layout(yaxis_title="Stock Price ($)", bargap=0, bargroupgap=0)
             fig.add_logscale_menus()
-            fig.hide_holidays(data.index)
+            fig.hide_holidays()
 
             return fig.show() if not external_axes else fig
     else:

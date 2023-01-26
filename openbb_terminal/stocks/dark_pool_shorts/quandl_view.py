@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
 import matplotlib.ticker
 import pandas as pd
@@ -14,7 +13,6 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
@@ -49,13 +47,8 @@ def plot_short_interest(
     """
 
     # This plot has 2 axes
-    if not external_axes:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax2 = ax1.twinx()
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    ax2 = ax1.twinx()
 
     ax1.bar(
         data.index,

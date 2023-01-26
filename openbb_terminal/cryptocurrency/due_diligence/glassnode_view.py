@@ -1,7 +1,7 @@
 import logging
 import os
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 import numpy as np
 from matplotlib import pyplot as plt, ticker
@@ -17,11 +17,7 @@ from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_non_zero_addresses,
 )
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale
 
 logger = logging.getLogger(__name__)
 
@@ -64,12 +60,7 @@ def display_active_addresses(
         return
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
     ax.plot(df_addresses.index, df_addresses["v"] / 1_000, linewidth=1.5)
 
@@ -125,12 +116,7 @@ def display_non_zero_addresses(
         return
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
     ax.plot(df_addresses.index, df_addresses["v"] / 1_000, linewidth=1.5)
 
@@ -193,12 +179,7 @@ def display_exchange_net_position_change(
         return
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
     ax.fill_between(
         df_addresses[df_addresses["v"] < 0].index,
@@ -277,14 +258,8 @@ def display_exchange_balances(
         return
 
     # This plot has 2 axes
-    if not external_axes:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-        ax2 = ax1.twinx()
-
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+    ax2 = ax1.twinx()
 
     if percentage:
         ax1.plot(df_balance.index, df_balance["percentage"] * 100)
@@ -352,14 +327,8 @@ def display_hashrate(
         return
 
     # This plot has 2 axes
-    if not external_axes:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-        ax2 = ax1.twinx()
-
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+    ax2 = ax1.twinx()
 
     ax1.plot(
         df.index, df["hashrate"] / 1_000_000_000_000, color=theme.down_color, lw=0.8

@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -12,12 +11,7 @@ from openbb_terminal.common.technical_analysis import ta_helpers, volume_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    reindex_dates,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, reindex_dates
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -70,19 +64,14 @@ def display_ad(
     plot_data = reindex_dates(plot_data)
 
     # This plot has 3 axes
-    if external_axes is None:
-        _, axes = plt.subplots(
-            3,
-            1,
-            sharex=True,
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-        ax1, ax2, ax3 = axes
-    elif is_valid_axes_count(external_axes, 3):
-        (ax1, ax2, ax3) = external_axes
-    else:
-        return
+    _, axes = plt.subplots(
+        3,
+        1,
+        sharex=True,
+        figsize=plot_autoscale(),
+        dpi=PLOT_DPI,
+    )
+    ax1, ax2, ax3 = axes
 
     close_col = ta_helpers.check_columns(data)
     if close_col is None:
@@ -182,19 +171,14 @@ def display_adosc(
     plot_data = reindex_dates(plot_data)
 
     # This plot has 3 axes
-    if external_axes is None:
-        _, axes = plt.subplots(
-            3,
-            1,
-            sharex=True,
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-        ax1, ax2, ax3 = axes
-    elif is_valid_axes_count(external_axes, 3):
-        (ax1, ax2, ax3) = external_axes
-    else:
-        return
+    _, axes = plt.subplots(
+        3,
+        1,
+        sharex=True,
+        figsize=plot_autoscale(),
+        dpi=PLOT_DPI,
+    )
+    ax1, ax2, ax3 = axes
 
     ax1.set_title(f"{symbol} AD Oscillator")
     ax1.plot(plot_data.index, plot_data["Adj Close"].values)
@@ -281,19 +265,14 @@ def display_obv(
     plot_data = reindex_dates(plot_data)
 
     # This plot has 3 axes
-    if external_axes is None:
-        _, axes = plt.subplots(
-            3,
-            1,
-            sharex=True,
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-        ax1, ax2, ax3 = axes
-    elif is_valid_axes_count(external_axes, 3):
-        (ax1, ax2, ax3) = external_axes
-    else:
-        return
+    _, axes = plt.subplots(
+        3,
+        1,
+        sharex=True,
+        figsize=plot_autoscale(),
+        dpi=PLOT_DPI,
+    )
+    ax1, ax2, ax3 = axes
 
     close_col = ta_helpers.check_columns(data)
     if close_col is None:

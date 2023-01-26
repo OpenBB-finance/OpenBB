@@ -5,7 +5,7 @@ import logging
 import os
 import webbrowser
 from fractions import Fraction
-from typing import List, Optional
+from typing import Optional
 
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
@@ -17,7 +17,6 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
@@ -212,12 +211,7 @@ def display_dividends(
 
     if plot:
         # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         ax.plot(
             div_history.index,
@@ -277,12 +271,7 @@ def display_splits(
         return
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     # Get all stock data since IPO
     df_data = yf.download(symbol, progress=False, threads=False)
@@ -358,12 +347,7 @@ def display_mktcap(
         return
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     ax.stackplot(df_mktcap.index, df_mktcap.values / 1e9, colors=[theme.up_color])
     ax.set_ylabel(f"Market Cap in Billion ({currency})")

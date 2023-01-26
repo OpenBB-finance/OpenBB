@@ -122,7 +122,7 @@ def display_correlation_interest(
             row=2,
             col=1,
         )
-    fig.hide_holidays(data.index)
+    fig.hide_holidays()
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "interest", df_interest

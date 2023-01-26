@@ -95,7 +95,7 @@ class Backend(PyWry):
             )
         )
 
-    def send_html(self, html_str: str, html_path: str = "", title: str = ""):
+    def send_html(self, html_str: str = "", html_path: str = "", title: str = ""):
         """Send html to backend.
 
         Parameters

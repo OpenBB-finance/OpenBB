@@ -75,12 +75,7 @@ def display_etf_weightings(
         legend, values = zip(*main_holdings.items())
         leg = [f"{le}\n{round(v,2)}%" for le, v in zip(legend, values)]
 
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         ax.pie(
             values,

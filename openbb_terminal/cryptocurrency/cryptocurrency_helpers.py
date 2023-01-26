@@ -955,12 +955,7 @@ def plot_order_book(
         Whether to return the figure object or not, by default False
     """
     # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     ax.plot(bids[:, 0], bids[:, 2], color=theme.up_color, label="bids")
     ax.fill_between(bids[:, 0], bids[:, 2], color=theme.up_color, alpha=0.4)

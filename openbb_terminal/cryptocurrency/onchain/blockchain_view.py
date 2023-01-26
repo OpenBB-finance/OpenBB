@@ -60,12 +60,7 @@ def display_btc_circulating_supply(
     ]
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     ax.plot(df["x"], df["y"])
     ax.set_ylabel("BTC")
@@ -120,12 +115,7 @@ def display_btc_confirmed_transactions(
     ]
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     ax.plot(df["x"], df["y"], lw=0.8)
     ax.set_ylabel("Transactions")

@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
 import numpy as np
 import pandas as pd
@@ -13,11 +12,7 @@ from matplotlib import pyplot as plt
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale
 from openbb_terminal.stocks.behavioural_analysis import finnhub_model
 
 logger = logging.getLogger(__name__)
@@ -57,20 +52,15 @@ def display_stock_price_headlines_sentiment(
         if not df_stock.empty:
 
             # This plot has 2 axes
-            if external_axes is None:
-                _, axes = plt.subplots(
-                    figsize=plot_autoscale(),
-                    dpi=PLOT_DPI,
-                    nrows=2,
-                    ncols=1,
-                    sharex=True,
-                    gridspec_kw={"height_ratios": [2, 1]},
-                )
-                (ax1, ax2) = axes
-            elif is_valid_axes_count(external_axes, 2):
-                (ax1, ax2) = external_axes
-            else:
-                return
+            _, axes = plt.subplots(
+                figsize=plot_autoscale(),
+                dpi=PLOT_DPI,
+                nrows=2,
+                ncols=1,
+                sharex=True,
+                gridspec_kw={"height_ratios": [2, 1]},
+            )
+            (ax1, ax2) = axes
 
             ax1.set_title(f"Headlines sentiment and {symbol} price")
             for uniquedate in np.unique(df_stock.index.date):

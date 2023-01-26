@@ -46,6 +46,22 @@ function OpenBBMain(plotly_figure) {
         modeBarButtonsToRemove: ['lasso2d', 'select2d'],
         modeBarButtons: [
             [
+                'drawline',
+                'drawopenpath',
+                'drawcircle',
+                'drawrect',
+                'eraseshape',
+                {
+                    name: 'Download Data (Ctrl+S)',
+                    icon: Plotly.Icons.disk,
+                    click: function (gd) {
+                        downloadData(gd);
+                    },
+                },
+                'toImage',
+            ],
+            ['zoomIn2d', 'zoomOut2d', 'resetScale2d', 'zoom2d', 'pan2d'],
+            [
                 {
                     name: 'Add Text (Ctrl+T)',
                     icon: ICONS.addText,
@@ -112,22 +128,6 @@ function OpenBBMain(plotly_figure) {
                 'hoverClosestCartesian',
                 'hoverCompareCartesian',
                 'toggleSpikelines',
-            ],
-            ['zoomIn2d', 'zoomOut2d', 'resetScale2d', 'zoom2d', 'pan2d'],
-            [
-                'drawline',
-                'drawopenpath',
-                'drawcircle',
-                'drawrect',
-                'eraseshape',
-                {
-                    name: 'Download Data (Ctrl+S)',
-                    icon: Plotly.Icons.disk,
-                    click: function (gd) {
-                        downloadData(gd);
-                    },
-                },
-                'toImage',
             ],
         ],
     };

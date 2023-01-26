@@ -9,12 +9,7 @@ import matplotlib.pyplot as plt
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
 
@@ -239,7 +234,7 @@ def short_interest_volume(
             hoverdistance=1,
         )
 
-        fig.hide_holidays(df["date"])
+        fig.hide_holidays()
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "shortint(stockgrid)", df
@@ -292,13 +287,8 @@ def net_short_position(
     else:
 
         # This plot has 2 axes
-        if not external_axes:
-            _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            ax2 = ax1.twinx()
-        elif is_valid_axes_count(external_axes, 2):
-            (ax1, ax2) = external_axes
-        else:
-            return
+        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        ax2 = ax1.twinx()
 
         df = df.sort_values(by=["dates"])
         ax1.bar(

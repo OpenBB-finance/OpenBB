@@ -128,12 +128,7 @@ def display_historical(
     else:
 
         # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         colors = cycle(theme.get_colors())
         if len(symbols) > 1:
@@ -253,12 +248,7 @@ def display_curve(
 
     else:
         # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         name = yfinance_model.FUTURES_DATA[
             yfinance_model.FUTURES_DATA["Ticker"] == symbol

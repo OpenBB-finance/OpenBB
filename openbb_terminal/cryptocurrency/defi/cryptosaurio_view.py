@@ -49,12 +49,8 @@ def display_anchor_data(
     df, df_deposits, stats_str = cryptosaurio_model.get_anchor_data(address=address)
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
     console.print(f"\n{stats_str}\n")
 
     if show_transactions:

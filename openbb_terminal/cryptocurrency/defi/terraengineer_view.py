@@ -52,12 +52,7 @@ def display_terra_asset_history(
         console.print("[red]No data in the provided dataframe[/red]\n")
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     ax.plot(df["x"], df["y"])
     ax.set_ylabel(f"{asset.upper()} Amount")
@@ -98,12 +93,7 @@ def display_anchor_yield_reserve(export: str = "", external_axes: bool = False) 
         return
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     ax.plot(df["x"], df["y"])
     ax.set_ylabel("UST Amount")

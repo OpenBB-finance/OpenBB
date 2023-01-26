@@ -388,7 +388,7 @@ class PlotlyTA(PltTA):
 
         fig.update(fig_new)
         fig.update_layout(showlegend=False)
-        fig.hide_holidays(df_ta.index)
+        fig.hide_holidays()
 
         # We remove xaxis labels from all but bottom subplot, and we make sure
         # they all match the bottom one

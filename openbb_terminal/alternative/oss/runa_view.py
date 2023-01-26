@@ -1,7 +1,6 @@
 """Rekt view"""
 import logging
 import os
-from typing import List, Optional
 
 from matplotlib import pyplot as plt, ticker
 
@@ -11,7 +10,6 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
@@ -62,12 +60,8 @@ def display_rossindex(
             df = df.sort_values(by=sortby, ascending=ascend)
         df = df.head(limit)
         if show_chart:
-            if external_axes is None:
-                _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 2):
-                (ax1, _) = external_axes
-            else:
-                return
+            _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
             for _, row in df[::-1].iterrows():
                 ax1.barh(
                     y=row["GitHub"],
@@ -87,12 +81,8 @@ def display_rossindex(
             if external_axes is None:
                 theme.visualize_output()
         if show_growth:
-            if external_axes is None:
-                fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 2):
-                (ax, _) = external_axes
-            else:
-                return
+            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
             for _, row in df[::-1].iterrows():
                 ax.barh(
                     y=row["GitHub"],

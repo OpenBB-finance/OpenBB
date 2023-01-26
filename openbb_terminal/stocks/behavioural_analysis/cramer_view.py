@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
-from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import yfinance
@@ -13,12 +12,7 @@ from matplotlib.dates import DateFormatter
 import openbb_terminal.config_plot as cfp
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.behavioural_analysis import cramer_model
 
@@ -85,12 +79,7 @@ def display_cramer_ticker(
         console.print(f"No recommendations found for {symbol}.\n")
         return
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
     close_prices = yfinance.download(symbol, start="2022-01-01", progress=False)[
         "Adj Close"

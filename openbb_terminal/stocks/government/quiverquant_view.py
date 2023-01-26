@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
 import matplotlib
 import numpy as np
@@ -13,12 +12,7 @@ from matplotlib import pyplot as plt
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.government import quiverquant_model
 
@@ -121,12 +115,7 @@ def display_government_buys(
         )
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     colors = theme.get_colors()
     df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values(ascending=False).head(
@@ -196,12 +185,7 @@ def display_government_sells(
         )
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     colors = theme.get_colors()
     df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values().abs().head(
@@ -258,12 +242,7 @@ def display_last_contracts(
     if sum_contracts:
 
         # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         df["Date"] = pd.to_datetime(df["Date"]).dt.date
         df.groupby("Date").sum().div(1000).plot(kind="bar", rot=0, ax=ax)
@@ -299,12 +278,7 @@ def plot_government(
         Whether to return the figure object or not, by default False
     """
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     ax.fill_between(
         government["TransactionDate"].unique(),
@@ -415,12 +389,7 @@ def display_contracts(
     if df_contracts.Amount.abs().sum() != 0:
 
         # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         df_contracts.groupby("Date").sum(numeric_only=True).div(1000).plot(
             kind="bar", rot=0, ax=ax
@@ -481,12 +450,7 @@ def display_qtr_contracts(
             )
         else:
             # This plot has 1 axis
-            if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 1):
-                (ax,) = external_axes
-            else:
-                return
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
             max_amount = 0
             quarter_ticks = []
@@ -587,12 +551,7 @@ def display_hist_contracts(
         ]
 
         # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         ax.plot(
             np.arange(0, len(amounts)),
@@ -660,12 +619,7 @@ def display_top_lobbying(
     else:
 
         # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         colors = theme.get_colors()
         lobbying_by_ticker.head(limit).plot(kind="bar", ax=ax, color=colors)

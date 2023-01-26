@@ -6,7 +6,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -32,7 +32,6 @@ from openbb_terminal.cryptocurrency.due_diligence.messari_model import (
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
@@ -144,12 +143,7 @@ def display_messari_timeseries(
 
     if not df.empty:
         # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
         ax.get_yaxis().set_major_formatter(
             ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
@@ -216,12 +210,7 @@ def display_marketcap_dominance(
     if not df.empty:
 
         # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
         ax.plot(df.index, df["marketcap_dominance"])
 
@@ -318,12 +307,7 @@ def display_roadmap(
             interval="1d",
         )
         if not df_prices.empty:
-            if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 1):
-                (ax,) = external_axes
-            else:
-                return
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
             roadmap_dates = np.array(
                 pd.to_datetime(df["Date"], format="%Y-%m-%d", errors="coerce")
@@ -409,13 +393,9 @@ def display_tokenomics(
             show_index=False,
             title=f"{symbol} Tokenomics",
         )
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-            ax2 = ax.twinx()
-        elif is_valid_axes_count(external_axes, 2):
-            (ax, ax2) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+        ax2 = ax.twinx()
+
         df_prices, _ = cryptocurrency_helpers.load_yf_data(
             symbol=symbol,
             currency="USD",
@@ -701,10 +681,8 @@ def display_fundraising(
             values.append(airdrops[0])
             labels.append("Rewards/Airdrops")
         if len(values) > 0 and sum(values) > 0:
-            if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 1):
-                (ax,) = external_axes
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+
             ax.pie(
                 [s / 100 for s in values],
                 normalize=False,

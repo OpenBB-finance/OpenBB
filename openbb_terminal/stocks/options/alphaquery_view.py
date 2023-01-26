@@ -50,12 +50,7 @@ def display_put_call_ratio(
         console.print("No data found.\n")
         return
 
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     ax.plot(pcr.index, pcr.values)
     ax.set_title(f"Put Call Ratio for {symbol.upper()}")

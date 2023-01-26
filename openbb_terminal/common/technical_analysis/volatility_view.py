@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -12,12 +11,7 @@ from openbb_terminal.common.technical_analysis import ta_helpers, volatility_mod
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    reindex_dates,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, reindex_dates
 
 logger = logging.getLogger(__name__)
 
@@ -56,12 +50,7 @@ def display_bbands(
     plot_data = reindex_dates(plot_data)
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     close_col = ta_helpers.check_columns(data, high=False, low=False)
     if close_col is None:
@@ -138,12 +127,7 @@ def display_donchian(
     plot_data = reindex_dates(plot_data)
 
     # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     close_col = ta_helpers.check_columns(data)
     if close_col is None:
@@ -233,12 +217,7 @@ def view_kc(
     plot_data = reindex_dates(plot_data)
 
     # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     close_col = ta_helpers.check_columns(data)
     if close_col is None:
@@ -312,15 +291,8 @@ def display_atr(
     df_ta = volatility_model.atr(data, window=window, mamode=mamode, offset=offset)
 
     # This plot has 2 axes
-    if external_axes is None:
-        _, axes = plt.subplots(
-            2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI
-        )
-        (ax1, ax2) = axes
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, axes = plt.subplots(2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI)
+    (ax1, ax2) = axes
 
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)

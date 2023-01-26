@@ -59,12 +59,7 @@ def display_crypto_rates(
         df = df[symbols.upper().split(",")].loc[valid_platforms]
         df = df.sort_values(df.columns[0], ascending=False, na_position="last")
 
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         df_non_null = pd.melt(df.reset_index(), id_vars=["index"]).dropna()
 

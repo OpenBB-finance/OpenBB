@@ -72,12 +72,7 @@ def display_crypto_heatmap(
                 colors.append(cmapred(-round(val * 100)))
 
         # This plot has 1 axis
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         category_str = f"[{category}]" if category else ""
         df_copy = df

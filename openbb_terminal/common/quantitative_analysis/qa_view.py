@@ -6,6 +6,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import traceback
 import warnings
 from datetime import datetime
 from typing import Any, List, Optional
@@ -28,7 +29,6 @@ from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
@@ -204,19 +204,25 @@ def display_cdf(
     labels = [
         (minVal, q25),
         (0.25, 0.25),
+        "Q1",
         (q25, q25),
         (0, 0.25),
+        "Q1",
         (minVal, medianVal),
         (0.5, 0.5),
+        "Median",
         (medianVal, medianVal),
         (0, 0.5),
+        "Median",
         (minVal, q75),
         (0.75, 0.75),
+        "Q3",
         (q75, q75),
         (0, 0.75),
+        "Q3",
     ]
 
-    fig = OpenBBFigure.create_subplots(1, 1)
+    fig = OpenBBFigure()
 
     fig.add_scatter(
         x=cdf.index,
@@ -226,11 +232,10 @@ def display_cdf(
         mode="lines",
     )
 
-    # plot labels for quartiles
-    for xt, yt, label in zip(labels[::3], labels[1::3], ["Q1", "Median", "Q3"]):
+    for xt, yt, label in zip(labels[::3], labels[1::3], labels[2::3]):
         fig.add_annotation(
             x=minVal + (xt[1] - minVal) / 2,
-            y=yt[1] + 0.01,
+            y=yt[1] + 0.04,
             text=label,
             showarrow=False,
             font=dict(color=theme.down_color),
@@ -245,8 +250,8 @@ def display_cdf(
         )
 
     fig.update_layout(
-        title=f"Cumulative Distribution Function of {symbol} {target}<br>from {start.strftime('%Y-%m-%d')}",
-        xaxis_title=target,
+        title=f"Cumulative Distribution Function of {symbol} {target} from {start.strftime('%Y-%m-%d')}",
+        xaxis_title=target.title(),
         yaxis_title="Probability",
     )
 
@@ -349,6 +354,69 @@ def display_bw(
     return fig.show() if not external_axes else fig
 
 
+def create_corr_plot(
+    fig: OpenBBFigure,
+    series: pd.DataFrame,
+    lags: int = 15,
+    row: int = 1,
+    col: int = 1,
+    pacf: bool = False,
+):
+    corr_array = (
+        sm.tsa.stattools.pacf(np.diff(np.diff(series.values)), nlags=lags, method="ywm")
+        if pacf
+        else sm.tsa.stattools.acf(np.diff(np.diff(series.values)), nlags=lags)
+    )
+    try:
+        lower_y = np.array(
+            [
+                sm.tsa.stattools.acf(
+                    np.diff(np.diff(series.values)), nlags=lags, alpha=0.05
+                )[0][x]
+                for x in range(lags + 1)
+            ]
+        )
+        upper_y = np.array(
+            [
+                sm.tsa.stattools.acf(
+                    np.diff(np.diff(series.values)), nlags=lags, alpha=0.05
+                )[0][x]
+                for x in range(lags + 1)
+            ]
+        )
+
+        for x in range(lags + 1):
+            fig.add_scatter(
+                x=(x, x),
+                y=(0, corr_array[x]),
+                mode="lines",
+                line_color="white",
+                row=row,
+                col=col,
+            )
+
+        fig.add_scatter(
+            x=np.arange(lags + 1),
+            y=upper_y,
+            mode="lines",
+            line_color="rgba(255,255,255,0)",
+        )
+        fig.add_scatter(
+            x=np.arange(lags + 1),
+            y=lower_y,
+            mode="lines",
+            fillcolor="rgba(32, 146, 230,0.3)",
+            fill="tonexty",
+            line_color="rgba(255,255,255,0)",
+        )
+        fig.update_traces(showlegend=False)
+        fig.update_yaxes(zerolinecolor="white")
+    except Exception:
+        traceback.print_exc()
+
+    return fig
+
+
 @log_start_end(log=logger)
 def display_acf(
     data: pd.DataFrame,
@@ -382,18 +450,13 @@ def display_acf(
     start = data.index[0]
 
     # This plot has 4 axes
-    if external_axes is None:
-        fig, axes = plt.subplots(
-            nrows=2,
-            ncols=2,
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-        (ax1, ax2), (ax3, ax4) = axes
-    elif is_valid_axes_count(external_axes, 4):
-        (ax1, ax2, ax3, ax4) = external_axes
-    else:
-        return
+    fig, axes = plt.subplots(
+        nrows=2,
+        ncols=2,
+        figsize=plot_autoscale(),
+        dpi=PLOT_DPI,
+    )
+    (ax1, ax2), (ax3, ax4) = axes
 
     # Diff Auto - correlation function for original time series
     sm.graphics.tsa.plot_acf(np.diff(np.diff(data.values)), lags=lags, ax=ax1)
@@ -438,6 +501,58 @@ def display_acf(
     if external_axes is None:
         theme.visualize_output(force_tight_layout=True)
 
+    fig = OpenBBFigure.create_subplots(
+        rows=2,
+        cols=2,
+        subplot_titles=[
+            f"{symbol} Returns Auto-Correlation",
+            f"{symbol} Returns Partial Auto-Correlation",
+            f"Change in {symbol} Returns Auto-Correlation",
+            f"Change in {symbol} Returns Partial Auto-Correlation",
+        ],
+        shared_xaxes=True,
+        shared_yaxes=True,
+        vertical_spacing=0.1,
+        horizontal_spacing=0.1,
+        x_title="Lag",
+        y_title="Correlation",
+    ).set_title(title=f"ACF differentials starting from {start.strftime('%Y-%m-%d')}")
+
+    fig = create_corr_plot(
+        fig=fig,
+        series=data,
+        lags=lags,
+        row=1,
+        col=1,
+        pacf=False,
+    )
+    fig = create_corr_plot(
+        fig=fig,
+        series=data,
+        lags=lags,
+        row=1,
+        col=2,
+        pacf=True,
+    )
+    fig = create_corr_plot(
+        fig=fig,
+        series=data,
+        lags=lags,
+        row=2,
+        col=1,
+        pacf=False,
+    )
+    fig = create_corr_plot(
+        fig=fig,
+        series=data,
+        lags=lags,
+        row=2,
+        col=2,
+        pacf=True,
+    )
+
+    fig.show()
+
 
 @log_start_end(log=logger)
 def display_qqplot(
@@ -470,15 +585,10 @@ def display_qqplot(
     data = data[target]
 
     # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(
+        figsize=plot_autoscale(),
+        dpi=PLOT_DPI,
+    )
 
     qqplot(
         data,
@@ -557,19 +667,14 @@ def display_cusum(
             tai = np.append(tai, tap if gp[i] > threshold else tan)  # start
             gp[i], gn[i] = 0, 0  # reset alarm
 
-    if external_axes is None:
-        _, axes = plt.subplots(
-            2,
-            1,
-            sharex=True,
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-        (ax1, ax2) = axes
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, axes = plt.subplots(
+        2,
+        1,
+        sharex=True,
+        figsize=plot_autoscale(),
+        dpi=PLOT_DPI,
+    )
+    (ax1, ax2) = axes
 
     target_series_indexes = range(data[target].size)
     ax1.plot(target_series_indexes, target_series)
@@ -706,19 +811,14 @@ def display_seasonal(
     plot_data = reindex_dates(plot_data)
 
     # This plot has 1 axis
-    if external_axes is None:
-        fig, axes = plt.subplots(
-            4,
-            1,
-            sharex=True,
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-        (ax1, ax2, ax3, ax4) = axes
-    elif is_valid_axes_count(external_axes, 4):
-        (ax1, ax2, ax3, ax4) = external_axes
-    else:
-        return
+    fig, axes = plt.subplots(
+        4,
+        1,
+        sharex=True,
+        figsize=plot_autoscale(),
+        dpi=PLOT_DPI,
+    )
+    (ax1, ax2, ax3, ax4) = axes
 
     colors = iter(theme.get_colors())
 
@@ -951,15 +1051,11 @@ def display_line(
     >>> openbb.qa.line(data=df["Adj Close"])
     """
     # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(
+        figsize=plot_autoscale(),
+        dpi=PLOT_DPI,
+    )
+    fig = OpenBBFigure()
 
     if log_y:
         ax.semilogy(data.index, data.values)
@@ -968,13 +1064,36 @@ def display_line(
             matplotlib.ticker.LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
         )
         ax.ticklabel_format(style="plain", axis="y")
+        fig.add_scatter(
+            x=data.index,
+            y=data.values,
+            name="",
+            mode="lines",
+            showlegend=False,
+        )
+        fig.update_layout(xaxis_type="log")
 
     else:
         ax.plot(data.index, data.values)
+        fig.add_scatter(
+            x=data.index,
+            y=data.values,
+            name="",
+            mode="lines",
+            showlegend=False,
+        )
 
         if markers_lines:
             ymin, ymax = ax.get_ylim()
             ax.vlines(markers_lines, ymin, ymax, color="#00AAFF")
+            fig.add_shape(
+                type="line",
+                x0=markers_lines,
+                y0=ymin,
+                x1=markers_lines,
+                y1=ymax,
+                line=dict(color="#00AAFF", width=2),
+            )
 
         if markers_scatter:
             for n, marker_date in enumerate(markers_scatter):
@@ -1002,6 +1121,21 @@ def display_line(
                     color="#00AAFF",
                     s=100,
                 )
+                fig.add_annotation(
+                    x=marker_date,
+                    y=data.iloc[price_location_idx],
+                    text=str(n + 1),
+                    showarrow=False,
+                    xshift=text_loc[0],
+                    yshift=text_loc[1],
+                )
+                fig.add_scatter(
+                    x=marker_date,
+                    y=data.iloc[price_location_idx],
+                    mode="markers",
+                    marker=dict(color="#00AAFF", size=10),
+                    showlegend=False,
+                )
 
     data_type = data.name
     ax.set_ylabel(data_type)
@@ -1018,6 +1152,8 @@ def display_line(
 
     if external_axes is None:
         theme.visualize_output()
+
+    fig.show()
 
     export_data(
         export,
@@ -1154,9 +1290,14 @@ def display_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> N
     ax.set_ylabel("Sharpe ratio")
     ax.set_xlabel("Date")
     fig.legend()
-
     theme.style_primary_axis(ax)
     theme.visualize_output()
+
+    data = sharpe_ratio[int(window - 1) :]
+    fig = OpenBBFigure(yaxis_title="Sharpe Ratio", xaxis_title="Date")
+    fig.add_scatter(x=data.index, y=data)
+    fig.set_title(f"Sharpe Ratio - over a {window} day window")
+    fig.show()
 
 
 def display_sortino(
@@ -1191,6 +1332,12 @@ def display_sortino(
     theme.style_primary_axis(ax)
     theme.visualize_output()
 
+    data = sortino_ratio[int(window - 1) :]
+    fig = OpenBBFigure(yaxis=dict(title="Sortino Ratio"))
+    fig.add_scatter(x=data.index, y=data)
+    fig.set_title(f"Omega Curve - over last {len(data)}'s period")
+    fig.show()
+
 
 def display_omega(
     data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5
@@ -1219,3 +1366,9 @@ def display_omega(
 
     theme.style_primary_axis(ax)
     theme.visualize_output()
+    fig = OpenBBFigure(
+        yaxis=dict(title="Omega Ratio"), xaxis=dict(title="Threshold (%)")
+    )
+    fig.add_scatter(x=df["threshold"], y=df["omega"], name="Omega Curve")
+    fig.set_title(f"Omega Curve - over last {len(data)}'s period")
+    fig.show()

@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -12,12 +12,7 @@ from matplotlib import pyplot as plt
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.dark_pool_shorts import sec_model
 
@@ -72,13 +67,8 @@ def fails_to_deliver(
     ftds_data = sec_model.get_fails_to_deliver(symbol, start_date, end_date, limit)
 
     # This plot has 2 axes
-    if not external_axes:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax2 = ax1.twinx()
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    ax2 = ax1.twinx()
 
     ax1.bar(
         ftds_data["SETTLEMENT DATE"],

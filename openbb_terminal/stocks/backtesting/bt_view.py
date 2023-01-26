@@ -152,12 +152,7 @@ def display_simple_ema(
         return
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     res = bt_model.ema_strategy(symbol, data, ema_length, spy_bt, no_bench)
     res.plot(title=f"Equity for EMA({ema_length})", ax=ax)
@@ -220,12 +215,7 @@ def display_emacross(
         return
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     res = bt_model.emacross_strategy(
         symbol, data, short_ema, long_ema, spy_bt, no_bench, shortable
@@ -291,12 +281,7 @@ def display_rsi_strategy(
         return
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     res = bt_model.rsi_strategy(
         symbol, data, periods, low_rsi, high_rsi, spy_bt, no_bench, shortable

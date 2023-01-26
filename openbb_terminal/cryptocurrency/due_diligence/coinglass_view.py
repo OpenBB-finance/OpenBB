@@ -123,15 +123,9 @@ def plot_data(
 ):
 
     # This plot has 2 axes
-    if not external_axes:
-        _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI
-        )
-        (ax1, ax2) = axes
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, axes = plt.subplots(
+        2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI
+    )
 
     df_price = df[["price"]].copy()
     df_without_price = df.drop("price", axis=1)
@@ -175,15 +169,9 @@ def plot_data_bar(
 ):
 
     # This plot has 2 axes
-    if not external_axes:
-        _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI
-        )
-        (ax1, ax2) = axes
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, axes = plt.subplots(
+        2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI
+    )
 
     df_price = df[["price"]].copy()
     df_without_price = df.drop("price", axis=1)

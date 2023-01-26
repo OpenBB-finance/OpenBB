@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
 from matplotlib import pyplot as plt, ticker
 
@@ -14,12 +13,7 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 
 logger = logging.getLogger(__name__)
 
@@ -41,12 +35,8 @@ def display_star_history(
     """
     df = github_model.get_stars_history(repo)
     if not df.empty:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
         ax.plot(df["Date"], df["Stars"])
 
         ax.set_xlabel("Date")
@@ -86,12 +76,8 @@ def display_top_repos(
     """
     df = github_model.get_top_repos(categories=categories, sortby=sortby, limit=limit)
     if not df.empty:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=(14, 8), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=(14, 8), dpi=PLOT_DPI)
+
         for _, row in df.iterrows():
             ax.barh(
                 y=row["full_name"],
