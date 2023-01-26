@@ -1,5 +1,11 @@
 ,0,1
 0,0.07%,Percentage of Shares Held by All Insider
+<<<<<<< HEAD
 1,61.15%,Percentage of Shares Held by Institutions
+2,61.20%,Percentage of Float Held by Institutions
+3,5513,Number of Institutions Holding Shares
+=======
+1,61.14%,Percentage of Shares Held by Institutions
 2,61.19%,Percentage of Float Held by Institutions
-3,5524,Number of Institutions Holding Shares
+3,5510,Number of Institutions Holding Shares
+>>>>>>> 82b56068b7 (Update tests to reflect changes)

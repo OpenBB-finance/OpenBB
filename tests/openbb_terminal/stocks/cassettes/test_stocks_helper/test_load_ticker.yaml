@@ -12,6 +12,7 @@ interactions:
       - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
         like Gecko) Chrome/39.0.2171.95 Safari/537.36
     method: GET
+<<<<<<< HEAD
     uri: https://query2.finance.yahoo.com/v8/finance/chart/PM?interval=1d&range=1d
   response:
     body:

@@ -1,2 +1,6 @@
 ,Earnings Date,Earnings Average,Earnings Low,Earnings High,Revenue Average,Revenue Low,Revenue High
-Value,02/02/2023,1.940,1.710,2.120,121.582 B,112.106 B,129.379 B
+<<<<<<< HEAD
+Value,02/02/2023,1.940,1.710,2.120,121.668 B,112.106 B,129.379 B
+=======
+Value,02/02/2023,1.950,1.710,2.120,121.904 B,112.106 B,129.379 B
+>>>>>>> 82b56068b7 (Update tests to reflect changes)
