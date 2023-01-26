@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-import webbrowser
 from typing import List, Optional
 from fractions import Fraction
 
@@ -40,7 +39,7 @@ def open_headquarters_map(symbol: str):
     symbol : str
         Fundamental analysis ticker symbol
     """
-    webbrowser.open(yahoo_finance_model.get_hq(symbol))
+    console.print(yahoo_finance_model.get_hq(symbol))
 
 
 @log_start_end(log=logger)
@@ -51,7 +50,7 @@ def open_web(symbol: str):
     symbol : str
         Fundamental analysis ticker symbol
     """
-    webbrowser.open(yahoo_finance_model.get_website(symbol))
+    console.print(yahoo_finance_model.get_website(symbol))
 
 
 @log_start_end(log=logger)

@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 import logging
 from typing import Optional
 
-from datetime import datetime
 import warnings
 from requests.exceptions import HTTPError
 
@@ -78,53 +77,6 @@ def get_profile(symbol: str) -> pd.DataFrame:
     except HTTPError:
         console.print("[red]API Key not authorized for Premium feature[/red]\n")
     return df
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def get_quote(symbol: str) -> pd.DataFrame:
-    """Gets ticker quote from FMP
-
-    Parameters
-    ----------
-    symbol : str
-        Stock ticker symbol
-
-    Returns
-    -------
-    pd.DataFrame
-        Dataframe of ticker quote
-    """
-
-    df_fa = pd.DataFrame()
-
-    try:
-        df_fa = fa.quote(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
-    # Invalid API Keys
-    except ValueError:
-        console.print("[red]Invalid API Key[/red]\n")
-    # Premium feature, API plan is not authorized
-    except HTTPError:
-        console.print("[red]API Key not authorized for Premium feature[/red]\n")
-
-    if not df_fa.empty:
-        clean_df_index(df_fa)
-        df_fa.loc["Market cap"][0] = lambda_long_number_format(
-            df_fa.loc["Market cap"][0]
-        )
-        df_fa.loc["Shares outstanding"][0] = lambda_long_number_format(
-            df_fa.loc["Shares outstanding"][0]
-        )
-        df_fa.loc["Volume"][0] = lambda_long_number_format(df_fa.loc["Volume"][0])
-        # Check if there is a valid earnings announcement
-        if df_fa.loc["Earnings announcement"][0]:
-            earning_announcement = datetime.strptime(
-                df_fa.loc["Earnings announcement"][0][0:19], "%Y-%m-%dT%H:%M:%S"
-            )
-            df_fa.loc["Earnings announcement"][
-                0
-            ] = f"{earning_announcement.date()} {earning_announcement.time()}"
-    return df_fa
 
 
 @log_start_end(log=logger)

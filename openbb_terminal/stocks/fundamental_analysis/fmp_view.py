@@ -68,24 +68,6 @@ def display_profile(symbol: str):
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def display_quote(symbol: str):
-    """Financial Modeling Prep ticker quote
-
-    Parameters
-    ----------
-    symbol : str
-        Fundamental analysis ticker symbol
-    """
-
-    quote = fmp_model.get_quote(symbol)
-    if quote.empty:
-        console.print("[red]Data not found[/red]\n")
-    else:
-        print_rich_table(quote, headers=[""], title=f"{symbol} Quote", show_index=True)
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_enterprise(
     symbol: str,
     limit: int = 5,
