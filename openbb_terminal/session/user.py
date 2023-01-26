@@ -45,9 +45,19 @@ class User:
             setattr(obbff, "USE_FLAIR", flair)
 
     @classmethod
+    def get_uuid(cls):
+        """Get uuid."""
+        return User._UUID
+
+    @classmethod
+    def get_email(cls):
+        """Get email."""
+        return User._EMAIL
+
+    @classmethod
     def is_logged_in(cls):
         """Check if user is logged in."""
-        return bool(User.UUID)
+        return bool(User._UUID)
 
     @classmethod
     def whoami(cls):
