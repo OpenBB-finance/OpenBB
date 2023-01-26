@@ -73,7 +73,7 @@ cash --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Cash 
 
 This generates a file for Apple with market data from 2010-01-01 until now and income, balance and cash flow statements over the last 10 years as seen in the image below.
 
-![Sheet Name Example](https://user-images.githubusercontent.com/46355364/214819099-9b3ca54a-dea0-4294-97f3-8b8bfd6c9e93.png)
+![Sheet Name Example](https://user-images.githubusercontent.com/46355364/214824561-6eaf3a88-746a-4abc-91e1-420c9036c00d.png)
 
 Next to that, we also allow exporting to images, this can be PNG, JPG, PDF and SVG. For example, using our `portfolio` menu we can export the charts to any type of format which again can be found within the `OpenBBUserData` folder.
 
