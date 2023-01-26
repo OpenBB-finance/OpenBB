@@ -241,7 +241,7 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
 
     # Send api key to server
     if (
-        not User.is_guest()
+        User.is_sync_enabled()
         and env_var_name not in cfg.SENSITIVE_KEYS
         and env_var_name.startswith("API_")
     ):
