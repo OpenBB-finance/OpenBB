@@ -70,7 +70,7 @@ def show_options(
                 os.path.dirname(os.path.abspath(__file__)),
                 f"{dataset}_options",
                 data_values.set_index("column"),
-                " ".join(sheet_name) if sheet_name else None,
+                sheet_name,
             )
 
 
@@ -120,7 +120,7 @@ def display_plot(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "plot",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -178,7 +178,7 @@ def display_seasonality(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "plot",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -243,7 +243,7 @@ def display_corr(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "plot",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -278,7 +278,7 @@ def show_df(
         os.path.dirname(os.path.abspath(__file__)),
         f"{name}_show",
         data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -298,7 +298,7 @@ def describe_df(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"{name}_show",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -311,5 +311,5 @@ def export_df(
         os.path.dirname(os.path.abspath(__file__)),
         f"{name}_show",
         data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

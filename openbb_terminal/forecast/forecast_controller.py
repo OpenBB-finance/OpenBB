@@ -935,7 +935,9 @@ class ForecastController(BaseController):
                 df,
                 ns_parser.target_dataset,
                 ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)

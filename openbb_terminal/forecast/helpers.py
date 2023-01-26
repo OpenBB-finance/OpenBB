@@ -543,7 +543,7 @@ def plot_forecast(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         name,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     # user wants to export only raw predictions
@@ -567,7 +567,7 @@ def plot_forecast(
             os.path.dirname(os.path.abspath(__file__)),
             name + "_predictions",
             numeric_forecast,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -609,7 +609,7 @@ def plot_explainability(
             os.path.dirname(os.path.abspath(__file__)),
             "explainability_raw",
             raw_df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
     ax.yaxis.set_label_position("left")
