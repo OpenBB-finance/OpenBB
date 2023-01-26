@@ -38,7 +38,7 @@ def display_overview(export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "overview",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -65,7 +65,7 @@ def display_indices(export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "indices",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -95,7 +95,7 @@ def display_futures(export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "futures",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -122,7 +122,7 @@ def display_usbonds(export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "usbonds",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -149,7 +149,7 @@ def display_glbonds(export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "glbonds",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -176,5 +176,5 @@ def display_currencies(export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "currencies",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

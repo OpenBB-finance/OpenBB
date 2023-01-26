@@ -134,7 +134,7 @@ def show_macro_data(
             os.path.dirname(os.path.abspath(__file__)),
             "macro_data",
             df_rounded,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
     theme.style_primary_axis(ax)
@@ -231,7 +231,7 @@ def show_treasuries(
             os.path.dirname(os.path.abspath(__file__)),
             "treasuries_data",
             treasury_data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 

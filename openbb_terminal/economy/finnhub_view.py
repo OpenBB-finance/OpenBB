@@ -84,5 +84,5 @@ def economy_calendar_events(
         os.path.dirname(os.path.abspath(__file__)),
         "events",
         df_econ_calendar,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

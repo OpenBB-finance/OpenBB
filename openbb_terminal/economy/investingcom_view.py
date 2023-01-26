@@ -204,7 +204,7 @@ def display_spread_matrix(
             os.path.dirname(os.path.abspath(__file__)),
             "spread",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -293,7 +293,7 @@ def display_yieldcurve(
             os.path.dirname(os.path.abspath(__file__)),
             "ycrv",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -346,5 +346,5 @@ def display_economic_calendar(
             os.path.dirname(os.path.abspath(__file__)),
             "events",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

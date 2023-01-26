@@ -163,7 +163,7 @@ def display_fred_series(
             os.path.dirname(os.path.abspath(__file__)),
             "fred",
             data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
     if get_data:
@@ -241,5 +241,5 @@ def display_yield_curve(
         os.path.dirname(os.path.abspath(__file__)),
         "ycrv",
         rates,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

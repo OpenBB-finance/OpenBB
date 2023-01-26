@@ -128,7 +128,7 @@ def show_indices(
             os.path.dirname(os.path.abspath(__file__)),
             "index_data",
             indices_data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
     return indices_data

@@ -65,7 +65,7 @@ def display_valuation(
         os.path.dirname(os.path.abspath(__file__)),
         "valuation",
         df_group,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -107,7 +107,7 @@ def display_performance(
         os.path.dirname(os.path.abspath(__file__)),
         "performance",
         df_group,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -133,7 +133,7 @@ def display_spectrum(group: str = "sector", export: str = "", sheet_name: str = 
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "spectrum",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     img.show()
@@ -174,5 +174,5 @@ def display_future(
         os.path.dirname(os.path.abspath(__file__)),
         future_type.lower(),
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

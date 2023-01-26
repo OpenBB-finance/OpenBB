@@ -62,7 +62,7 @@ def display_economic_calendar(
         os.path.dirname(os.path.abspath(__file__)),
         "events",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -119,7 +119,7 @@ def display_big_mac_index(
             os.path.dirname(os.path.abspath(__file__)),
             "bigmac",
             big_mac,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
     else:
         logger.error("Unable to get big mac data")

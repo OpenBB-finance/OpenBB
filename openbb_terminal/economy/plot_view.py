@@ -19,7 +19,7 @@ def show_plot(
     dataset_yaxis_1,
     dataset_yaxis_2,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: Optional[str] = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """
@@ -105,7 +105,7 @@ def show_plot(
             os.path.dirname(os.path.abspath(__file__)),
             "plot_macro_data",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -152,7 +152,7 @@ def show_options(
                 os.path.dirname(os.path.abspath(__file__)),
                 "dataset",
                 df,
-                " ".join(sheet_name) if sheet_name else None,
+                sheet_name,
             )
     else:
         options = {

@@ -82,7 +82,7 @@ def realtime_performance_sector(
         os.path.dirname(os.path.abspath(__file__)),
         "rtps",
         df_rtp,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -138,7 +138,7 @@ def display_real_gdp(
         os.path.dirname(os.path.abspath(__file__)),
         "gdp",
         gdp,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -193,7 +193,7 @@ def display_gdp_capita(
         os.path.dirname(os.path.abspath(__file__)),
         "gdpc",
         gdp,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -250,7 +250,7 @@ def display_inflation(
         os.path.dirname(os.path.abspath(__file__)),
         "inf",
         inf,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -313,7 +313,7 @@ def display_cpi(
         os.path.dirname(os.path.abspath(__file__)),
         "cpi",
         cpi,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -374,7 +374,7 @@ def display_treasury_yield(
         os.path.dirname(os.path.abspath(__file__)),
         "tyld",
         yld,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -433,7 +433,7 @@ def display_unemployment(
         os.path.dirname(os.path.abspath(__file__)),
         "unemp",
         un,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     if raw:

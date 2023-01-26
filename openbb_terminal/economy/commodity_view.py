@@ -52,5 +52,5 @@ def display_debt(export: str = "", sheet_name: str = "", limit: int = 20):
             os.path.dirname(os.path.abspath(__file__)),
             "cdebt",
             debt_df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
