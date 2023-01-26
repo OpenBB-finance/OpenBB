@@ -59,7 +59,7 @@ holidays = "^0.14.2"
 degiro-connector = "^2.0.3"
 python-binance = "^1.0.15"
 python-i18n = "^0.3.9"
-thepassiveinvestor = "^1.0.11"
+thepassiveinvestor = "^1.1.2"
 pandas-ta = "^0.3.14-beta.0"
 pyrsistent = "^0.18.0"
 openpyxl = "^3.0.9"
@@ -86,7 +86,7 @@ feedparser = "^6.0.10"
 pyinstaller = {version = "^4.10", optional = true}
 jupyterlab-code-formatter = {version = "^1.4.10", optional = true}
 jupyterlab-lsp = {version = "^3.10.1", optional = true}
-jedi-language-server = {version = "^0.35.1", optional = true}
+jedi-language-server = {version = "^0.40.0", optional = true}
 tokenterminal = "^1.0.1"
 torch = {version = "1.11.0", optional = true}
 streamlit = "^1.12.2"
