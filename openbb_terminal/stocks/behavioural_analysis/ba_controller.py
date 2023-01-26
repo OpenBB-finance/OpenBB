@@ -42,8 +42,8 @@ class BehaviouralAnalysisController(StockBaseController):
 
     CHOICES_COMMANDS = [
         "load",
-        "watchlist",
-        "spac",
+        # "watchlist",
+        # "spac",
         "spacc",
         "wsb",
         "popular",
@@ -59,8 +59,8 @@ class BehaviouralAnalysisController(StockBaseController):
         "queries",
         "rise",
         "headlines",
-        "popular",
-        "getdd",
+        # "popular",
+        # "getdd",
         "snews",
         "interest",
     ]
@@ -95,11 +95,11 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("headlines", self.ticker)
         mt.add_cmd("snews", self.ticker)
         mt.add_cmd("wsb")
-        mt.add_cmd("watchlist")
-        mt.add_cmd("popular")
+        # mt.add_cmd("watchlist")
+        # mt.add_cmd("popular")
         mt.add_cmd("spacc")
-        mt.add_cmd("spac")
-        mt.add_cmd("getdd", self.ticker)
+        # mt.add_cmd("spac")
+        # mt.add_cmd("getdd", self.ticker)
         mt.add_cmd("redditsent", self.ticker)
         mt.add_cmd("trending")
         mt.add_cmd("stalker")
