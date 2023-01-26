@@ -349,12 +349,16 @@ class StocksController(StockBaseController):
                 required="-h" not in other_args,
                 help=translate("stocks/QUOTE_ticker"),
             )
+
         # For the case where a user uses: 'quote BB'
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            stocks_view.display_quote(ns_parser.s_ticker)
+            if ns_parser.source == "FinancialModelingPrep":
+                stocks_view.display_quote_fmp(ns_parser.s_ticker)
+            elif ns_parser.source == "YahooFinance":
+                stocks_view.display_quote_yf(ns_parser.s_ticker)
 
     @log_start_end(log=logger)
     def call_codes(self, _):

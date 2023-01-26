@@ -2,15 +2,20 @@ import os
 from datetime import datetime
 
 import logging
+from urllib.error import HTTPError
 import pyEX
 import pandas as pd
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
+import fundamentalanalysis as fa  # Financial Modeling Prep
 
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.helper_funcs import lambda_long_number_format
+from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 # pylint: disable=unsupported-assignment-operation,no-member
 
@@ -251,7 +256,54 @@ def load_stock_polygon(
     return df_stock_candidate
 
 
-def load_quote(symbol: str) -> pd.DataFrame:
+@log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_quote_fmp(symbol: str) -> pd.DataFrame:
+    """Gets ticker quote from FMP
+
+    Parameters
+    ----------
+    symbol : str
+        Stock ticker symbol
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of ticker quote
+    """
+
+    df_fa = pd.DataFrame()
+
+    try:
+        df_fa = fa.quote(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+    # Invalid API Keys
+    except ValueError:
+        console.print("[red]Invalid API Key[/red]\n")
+    # Premium feature, API plan is not authorized
+    except HTTPError:
+        console.print("[red]API Key not authorized for Premium feature[/red]\n")
+
+    if not df_fa.empty:
+        clean_df_index(df_fa)
+        df_fa.loc["Market cap"][0] = lambda_long_number_format(
+            df_fa.loc["Market cap"][0]
+        )
+        df_fa.loc["Shares outstanding"][0] = lambda_long_number_format(
+            df_fa.loc["Shares outstanding"][0]
+        )
+        df_fa.loc["Volume"][0] = lambda_long_number_format(df_fa.loc["Volume"][0])
+        # Check if there is a valid earnings announcement
+        if df_fa.loc["Earnings announcement"][0]:
+            earning_announcement = datetime.strptime(
+                df_fa.loc["Earnings announcement"][0][0:19], "%Y-%m-%dT%H:%M:%S"
+            )
+            df_fa.loc["Earnings announcement"][
+                0
+            ] = f"{earning_announcement.date()} {earning_announcement.time()}"
+    return df_fa
+
+
+def get_quote_yf(symbol: str) -> pd.DataFrame:
     """Ticker quote.  [Source: YahooFinance]
 
     Parameters

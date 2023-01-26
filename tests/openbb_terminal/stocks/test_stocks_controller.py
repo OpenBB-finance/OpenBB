@@ -269,7 +269,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_quote",
             [],
-            "stocks_view.display_quote",
+            "stocks_view.display_quote_fmp",
             [],
             dict(),
         ),
