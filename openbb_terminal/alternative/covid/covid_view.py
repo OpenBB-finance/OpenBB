@@ -133,7 +133,7 @@ def display_covid_ov(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     plot: bool = True,
 ) -> None:
     """Prints table showing historical cases and deaths by country.
@@ -185,7 +185,7 @@ def display_covid_stat(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
     plot: bool = True,
 ) -> None:
     """Prints table showing historical cases and deaths by country.
@@ -242,7 +242,7 @@ def display_case_slopes(
     threshold: int = 10000,
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing countries with the highest case slopes.
 
