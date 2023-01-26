@@ -505,7 +505,11 @@ class OptionsController(BaseController):
         if ns_parser:
             if self.ticker:
                 barchart_view.print_options_data(
-                    symbol=self.ticker, export=ns_parser.export
+                    symbol=self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("No ticker loaded.\n")
@@ -784,6 +788,9 @@ class OptionsController(BaseController):
                     ns_parser.strike,
                     ns_parser.limit,
                     ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
             elif (
@@ -890,6 +897,9 @@ class OptionsController(BaseController):
                         max_sp=ns_parser.max_sp,
                         current_price=self.current_price,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                         to_display=list_from_str(ns_parser.to_display),
                     )
                 else:
@@ -981,6 +991,9 @@ class OptionsController(BaseController):
                         calls_only=ns_parser.calls,
                         puts_only=ns_parser.puts,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                         raw=ns_parser.raw,
                     )
                 else:
@@ -1060,6 +1073,9 @@ class OptionsController(BaseController):
                         max_sp=ns_parser.max_sp,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 else:
                     console.print(
@@ -1151,6 +1167,9 @@ class OptionsController(BaseController):
                         calls_only=ns_parser.calls,
                         puts_only=ns_parser.puts,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                         raw=ns_parser.raw,
                     )
                 else:
