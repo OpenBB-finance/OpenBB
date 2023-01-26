@@ -726,7 +726,7 @@ class PortfolioOptimizationController(BaseController):
                     )
 
                     console.print(
-                        "[green]Loading an example, please type`about` "
+                        "[green]Loading an example, please type `about` "
                         "to learn how to create your own Portfolio Optimization Excel sheet.[/green]\n"
                     )
                 elif filename in self.allocation_file_map:
