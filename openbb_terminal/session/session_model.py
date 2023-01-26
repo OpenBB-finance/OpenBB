@@ -10,7 +10,17 @@ from openbb_terminal.rich_config import console
 
 
 def create_session(email: str, password: str, save: bool) -> dict:
-    """Create a session."""
+    """Create a session.
+
+    Parameters
+    ----------
+    email : str
+        The email.
+    password : str
+        The password.
+    save : bool
+        Save the session.
+    """
 
     session = Hub.get_session(email, password)
     if session and save:
@@ -19,7 +29,13 @@ def create_session(email: str, password: str, save: bool) -> dict:
 
 
 def logout(cls: bool = False):
-    """Logout and clear session."""
+    """Logout and clear session.
+
+    Parameters
+    ----------
+    cls : bool
+        Clear the screen.
+    """
     if cls:
         system_clear()
     User.clear()
@@ -38,4 +54,4 @@ def logout(cls: bool = False):
     Hub.delete_session()
     Local.remove_session_file()
     plt.close("all")
-    console.print("[green]\nLogout successful[/green]")
+    console.print("[green]\nLogout successful.[/green]")
