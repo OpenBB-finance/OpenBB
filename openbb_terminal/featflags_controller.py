@@ -108,7 +108,7 @@ class FeatureFlagsController(BaseController):
         if not User.is_guest():
             patch_user_configs(
                 key=name,
-                value="openbb_terminal.feature_flags:" + str(value),
+                value=str(value),
                 type_="settings",
             )
 

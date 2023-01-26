@@ -1,4 +1,3 @@
-import importlib
 import os
 from pathlib import Path
 import json
@@ -7,6 +6,7 @@ from openbb_terminal.rich_config import console
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal import config_plot as cfgp
 from openbb_terminal.base_helpers import strtobool
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
@@ -94,15 +94,30 @@ def apply_configs(configs: dict):
         # Since settings come from different files we use the format {var_name: "path:value"}
         settings = configs.get("features_settings", {})
         if settings:
-            for var_name, v in settings.items():
-                if v.find(":") > 0:
-                    path, value = v.split(":")
+            for k, v in settings.items():
+                if hasattr(obbff, k):
+                    cast_set_attr(obbff, k, v)
+                elif hasattr(cfg, k):
+                    cast_set_attr(cfg, k, v)
+                elif hasattr(cfgp, k):
+                    cast_set_attr(cfgp, k, v)
 
-                    module = importlib.import_module(path)
-                    if hasattr(module, var_name):
-                        if value.lower() in ["true", "false"]:
-                            setattr(module, var_name, strtobool(value))
-                        elif isinstance(getattr(module, var_name), int):
-                            setattr(module, var_name, int(value))
-                        else:
-                            setattr(module, var_name, value)
+
+def cast_set_attr(obj, name, value):
+    """Set attribute in object.
+
+    Parameters
+    ----------
+    obj : object
+        The object.
+    name : str
+        The attribute name.
+    value : str
+        The attribute value.
+    """
+    if value.lower() in ["true", "false"]:
+        setattr(obj, name, strtobool(value))
+    elif isinstance(getattr(obj, value), int):
+        setattr(obj, name, int(value))
+    else:
+        setattr(obj, name, value)
