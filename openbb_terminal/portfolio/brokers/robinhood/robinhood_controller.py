@@ -71,7 +71,10 @@ class RobinhoodController(BaseController):
         )
         if ns_parser:
             robinhood_view.display_holdings(
-                export=ns_parser.export, sheet_name=ns_parser.sheet_name
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -109,5 +112,7 @@ class RobinhoodController(BaseController):
                 interval=ns_parser.interval,
                 window=ns_parser.span,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

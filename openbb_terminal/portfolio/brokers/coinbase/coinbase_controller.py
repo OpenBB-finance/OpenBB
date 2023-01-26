@@ -98,7 +98,9 @@ class CoinbaseController(BaseController):
             coinbase_view.display_account(
                 currency=ns_parser.currency,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -194,7 +196,9 @@ class CoinbaseController(BaseController):
                 sortby=ns_parser.sortby,
                 descend=not ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -254,5 +258,7 @@ class CoinbaseController(BaseController):
                 deposit_type=ns_parser.type,
                 descend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

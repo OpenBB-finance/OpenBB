@@ -50,7 +50,7 @@ def display_holdings(export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
         "rh_holdings",
         holdings,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -101,5 +101,5 @@ def display_historical(
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
         "rh_hist",
         hist,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

@@ -137,7 +137,7 @@ def display_transactions(
             os.path.dirname(os.path.abspath(__file__)),
             "transactions",
             df.set_index("Date"),
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -452,7 +452,7 @@ def display_yearly_returns(
         os.path.dirname(os.path.abspath(__file__)),
         "yret",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -554,7 +554,7 @@ def display_monthly_returns(
         os.path.dirname(os.path.abspath(__file__)),
         "mret",
         portfolio_returns,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -632,7 +632,7 @@ def display_daily_returns(
         os.path.dirname(os.path.abspath(__file__)),
         "dret",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -721,7 +721,7 @@ def display_distribution_returns(
         os.path.dirname(os.path.abspath(__file__)),
         "distr",
         stats,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -804,7 +804,7 @@ def display_holdings_value(
         os.path.dirname(os.path.abspath(__file__)),
         "holdv",
         all_holdings,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -892,7 +892,7 @@ def display_holdings_percentage(
         os.path.dirname(os.path.abspath(__file__)),
         "holdp",
         all_holdings,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -952,7 +952,7 @@ def display_rolling_volatility(
         os.path.dirname(os.path.abspath(__file__)),
         metric,
         df_portfolio.to_frame().join(df_benchmark),
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1015,7 +1015,7 @@ def display_rolling_sharpe(
         os.path.dirname(os.path.abspath(__file__)),
         metric,
         df_portfolio.to_frame().join(df_benchmark),
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1078,7 +1078,7 @@ def display_rolling_sortino(
         os.path.dirname(os.path.abspath(__file__)),
         metric,
         df_portfolio.to_frame().join(df_benchmark),
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1143,7 +1143,7 @@ def display_rolling_beta(
         os.path.dirname(os.path.abspath(__file__)),
         metric,
         rolling_beta,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1192,7 +1192,7 @@ def display_maximum_drawdown(
         os.path.dirname(os.path.abspath(__file__)),
         "maxdd",
         drawdown,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1227,7 +1227,7 @@ def display_rsquare(
         os.path.dirname(os.path.abspath(__file__)),
         "rsquare",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1260,7 +1260,7 @@ def display_skewness(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "skew",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1293,7 +1293,7 @@ def display_kurtosis(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "kurt",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1329,7 +1329,7 @@ def display_stats(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "stats",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1362,7 +1362,7 @@ def display_volatility(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_volatility",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1398,7 +1398,7 @@ def display_sharpe_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_sharpe",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1434,7 +1434,7 @@ def display_sortino_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_sortino",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1467,7 +1467,7 @@ def display_maximum_drawdown_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_maxdrawdown",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1499,7 +1499,7 @@ def display_gaintopain_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_gaintopain_ratio",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1532,7 +1532,7 @@ def display_tracking_error(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_tracking_error",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1564,7 +1564,7 @@ def display_information_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_information_ratio",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1599,7 +1599,7 @@ def display_tail_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_tail_ratio",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1631,7 +1631,7 @@ def display_common_sense_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_common_sense_ratio",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1667,7 +1667,7 @@ def display_jensens_alpha(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_jensens_alpha",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1700,7 +1700,7 @@ def display_calmar_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_calmar_ratio",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1732,7 +1732,7 @@ def display_kelly_criterion(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_kelly_criterion",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1764,7 +1764,7 @@ def display_payoff_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_payoff_ratio",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1796,7 +1796,7 @@ def display_profit_factor(
         os.path.dirname(os.path.abspath(__file__)),
         "metric_profit_factor",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -1835,7 +1835,7 @@ def display_summary(
         os.path.dirname(os.path.abspath(__file__)),
         "summary",
         summary,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 

@@ -45,7 +45,7 @@ def display_account(
         os.path.dirname(os.path.abspath(__file__)),
         "account",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -83,7 +83,7 @@ def display_history(
         os.path.dirname(os.path.abspath(__file__)),
         "history",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -123,7 +123,7 @@ def display_orders(
         os.path.dirname(os.path.abspath(__file__)),
         "orders",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -169,5 +169,5 @@ def display_deposits(
         os.path.dirname(os.path.abspath(__file__)),
         "deposits",
         df_data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

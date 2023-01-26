@@ -389,7 +389,9 @@ class PortfolioController(BaseController):
                 show_index=False,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1038,7 +1040,9 @@ class PortfolioController(BaseController):
                 portfolio_view.display_maximum_drawdown(
                     self.portfolio,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1073,7 +1077,9 @@ class PortfolioController(BaseController):
                     self.portfolio,
                     window=ns_parser.period,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1117,7 +1123,9 @@ class PortfolioController(BaseController):
                     risk_free_rate=ns_parser.risk_free_rate / 100,
                     window=ns_parser.period,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1161,7 +1169,9 @@ class PortfolioController(BaseController):
                     risk_free_rate=ns_parser.risk_free_rate / 100,
                     window=ns_parser.period,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1196,7 +1206,9 @@ class PortfolioController(BaseController):
                     self.portfolio,
                     window=ns_parser.period,
                     export=ns_parser.export,
-                    sheet_name=ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1239,19 +1251,25 @@ class PortfolioController(BaseController):
                     portfolio_view.display_skewness(
                         self.portfolio,
                         ns_parser.export,
-                        sheet_name=ns_parser.sheet_name,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "kurtosis":
                     portfolio_view.display_kurtosis(
                         self.portfolio,
                         ns_parser.export,
-                        sheet_name=ns_parser.sheet_name,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "volatility":
                     portfolio_view.display_volatility(
                         self.portfolio,
                         ns_parser.export,
-                        sheet_name=ns_parser.sheet_name,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "sharpe":
                     portfolio_view.display_sharpe_ratio(
@@ -1275,7 +1293,9 @@ class PortfolioController(BaseController):
                     portfolio_view.display_rsquare(
                         self.portfolio,
                         ns_parser.export,
-                        sheet_name=ns_parser.sheet_name,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "gaintopain":
                     portfolio_view.display_gaintopain_ratio(
@@ -1293,7 +1313,9 @@ class PortfolioController(BaseController):
                     portfolio_view.display_tail_ratio(
                         self.portfolio,
                         ns_parser.export,
-                        sheet_name=ns_parser.sheet_name,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "commonsense":
                     portfolio_view.display_common_sense_ratio(

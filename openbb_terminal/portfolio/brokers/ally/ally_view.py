@@ -27,7 +27,7 @@ def display_history(limit: int = 15, export: str = "", sheet_name: str = "") -> 
         os.path.dirname(os.path.abspath(__file__)),
         "ally_history",
         history,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -51,7 +51,7 @@ def display_holdings(export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
         "ally_holdings",
         holdings,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -71,7 +71,7 @@ def display_balances(export: str = "", sheet_name: str = "") -> None:
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
         "ally_balances",
         balances,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
     # Pick which balances to show
     balances = balances[
@@ -142,5 +142,5 @@ def display_top_lists(
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
         "ally_movers",
         movers,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
