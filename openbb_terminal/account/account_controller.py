@@ -1,4 +1,4 @@
-import argparse
+# import argparse
 import logging
 from typing import List, Dict
 from pathlib import Path
@@ -11,7 +11,8 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.menu import session
-from openbb_terminal.session.user import User
+
+# from openbb_terminal.session.user import User
 
 # from openbb_terminal.session import hub_model as Hub
 # from openbb_terminal.session import local_model as Local
