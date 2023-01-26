@@ -1,6 +1,8 @@
 ---
 title: Importing and Exporting Data
 sidebar_position: 3
+description: The OpenBBUserData folder's default location is the home of the system user account. By default this will be the following paths. Within the folder you can find files that you have exported as well as files that you wish to import directly into the OpenBB Terminal. For example, this could be an orderbook which you can store in OpenBBUserData/portfolio/holdings.
+keywords: [export, import, data, excel, xlsx, csv, json, png, pdf, jpg, openbbuserdata, where is data exported, market data, financial data, free, openbb terminal]
 ---
 
 ## The OpenBBUserData Folder
