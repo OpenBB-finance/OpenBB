@@ -12,7 +12,6 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal.base_helpers import strtobool
-from openbb_terminal.session.user import User
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
