@@ -25,7 +25,7 @@ from prompt_toolkit.formatted_text import HTML
 import pandas as pd
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.session.user import User
-from openbb_terminal.terminal_helper import is_packaged_application
+from openbb_terminal.terminal_helper import is_installer, is_packaged_application
 from openbb_terminal.session import session_controller
 
 from openbb_terminal.core.config.paths import (
@@ -968,7 +968,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 t_controller.queue.insert(0, an_input)
 
     if an_input == "logout":
-        return session_controller.main(guest_allowed=not is_packaged_application())
+        return session_controller.main(guest_allowed=not is_installer())
 
 
 def insert_start_slash(cmds: List[str]) -> List[str]:
