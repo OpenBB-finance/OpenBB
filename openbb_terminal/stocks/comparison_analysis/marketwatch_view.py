@@ -25,6 +25,7 @@ def display_income_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Display income data. [Source: Marketwatch].
 
@@ -55,6 +56,7 @@ def display_income_comparison(
         os.path.dirname(os.path.abspath(__file__)),
         "income",
         df_financials_compared,
+        sheet_name,
     )
 
     if rich_config.USE_COLOR:
@@ -80,6 +82,7 @@ def display_balance_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Compare balance between companies. [Source: Marketwatch]
 
@@ -110,6 +113,7 @@ def display_balance_comparison(
         os.path.dirname(os.path.abspath(__file__)),
         "balance",
         df_financials_compared,
+        sheet_name,
     )
 
     if rich_config.USE_COLOR:
@@ -135,6 +139,7 @@ def display_cashflow_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Compare cashflow between companies. [Source: Marketwatch]
 
@@ -165,6 +170,7 @@ def display_cashflow_comparison(
         os.path.dirname(os.path.abspath(__file__)),
         "cashflow",
         df_financials_compared,
+        sheet_name,
     )
 
     if rich_config.USE_COLOR:

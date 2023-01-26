@@ -931,7 +931,14 @@ class ForecastController(BaseController):
                 return
 
             df = self.datasets[ns_parser.target_dataset]
-            forecast_view.describe_df(df, ns_parser.target_dataset, ns_parser.export)
+            forecast_view.describe_df(
+                df,
+                ns_parser.target_dataset,
+                ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -1658,6 +1665,7 @@ class ForecastController(BaseController):
             self.datasets[ns_parser.target_dataset],
             ns_parser.type,
             ns_parser.target_dataset,
+            ns_parser.sheet_name,
         )
 
     # Best Statistical Model

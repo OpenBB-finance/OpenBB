@@ -15,8 +15,8 @@ from openbb_terminal.portfolio import portfolio_helper, metrics_model
 from openbb_terminal.portfolio.portfolio_engine import PortfolioEngine
 
 
-# pylint: disable=E1136,W0201,R0902,C0302
-# pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods, consider-using-f-string
+# pylint: disable=E1136,W0201,R0902,C0302, consider-using-f-string, consider-iterating-dictionary
+# pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods
 
 logger = logging.getLogger(__name__)
 

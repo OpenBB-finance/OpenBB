@@ -315,6 +315,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 sortby="",
                 descend=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -322,10 +323,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--export=csv"],
             "qa_view.display_summary",
             [],
-            dict(
-                data=QA_CONTROLLER.stock,
-                export="csv",
-            ),
+            dict(data=QA_CONTROLLER.stock, export="csv", sheet_name=None),
         ),
         (
             "call_hist",
@@ -349,6 +347,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 data=QA_CONTROLLER.stock,
                 target=QA_CONTROLLER.target,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -374,6 +373,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 target=QA_CONTROLLER.target,
                 window=1,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -387,6 +387,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 target=QA_CONTROLLER.target,
                 multiplicative=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -424,6 +425,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 target=QA_CONTROLLER.target,
                 window=1,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -438,6 +440,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 window=1,
                 quantile=0.1,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -451,6 +454,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 target=QA_CONTROLLER.target,
                 window=1,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -464,6 +468,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 target=QA_CONTROLLER.target,
                 window=1,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -475,6 +480,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 data=QA_CONTROLLER.stock,
                 target=QA_CONTROLLER.target,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -499,6 +505,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 fuller_reg="ctt",
                 kpss_reg="ct",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (

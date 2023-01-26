@@ -11,7 +11,7 @@ The `OpenBBUserData` folder's default location is the home of the system user ac
 
 Within the folder you can find files that you have exported as well as files that you wish to import directly into the OpenBB Terminal. For example, this could be an orderbook which you can store in `OpenBBUserData/portfolio/holdings`.
 
-![OpenBBUserData Folder](https://user-images.githubusercontent.com/85772166/195742985-19f0e420-d8f7-4fea-a145-a0243b8f2ddc.png "OpenBBUserData Folder")
+![OpenBBUserData Folder](https://user-images.githubusercontent.com/85772166/195742985-19f0e420-d8f7-4fea-a145-a0243b8f2ddc.png)
 
 This folder contains all things user-created. For example:
 
@@ -22,86 +22,77 @@ This folder contains all things user-created. For example:
  - Styles and themes
  - Preferred data sources
 
-The location of this folder can be set by the user from the `/settings` menu. There should be no need to update paths in this menu unless the folders have been moved manually.
-
-![The Settings Menu](https://user-images.githubusercontent.com/85772166/195736718-a1b821da-5977-437a-bd18-b44add2a29a2.png "The Settings Menu")
-
 ## Exporting Files
 
-If the location of the OpenBBUserData folder must be changed, it is best to move the entire existing folder to the new path. The path is then changed under the settings menu with:
+Within many of the functionalities, we offer the capability to export to Excel (xlsx and csv) or JSON. This can be demonstrated with the `--export` argument, e.g. if you wish to export to `xlsx` you would add `--export xlsx`. 
+
+For example, if you wish to download market data you can do so from the stocks menu with the following:
 
 ```console
-userdata --folder /path_to/OpenBBUserData
+/stocks/load AAPL -s 2010-01-01 --export xlsx
 ```
 
-The types of files which can be exported from tables and raw data are:
+This results in the following:
 
-- CSV
-- JSON
-- XLSX
+![Export Example](https://user-images.githubusercontent.com/46355364/214817681-fd5324c3-003c-45eb-adf4-96d5b41a3c02.png)
 
-It is optional to name the file; the minimum requirement is the file type.
+We also allow you to define a file name, for example for the same stock tickers, we can also add in the filename. This time, we export to `csv`.
 
 ```console
-/stocks/load CHWY -s 2019-06-01 --export chwy_ohlc.csv
+/stocks/load AAPL -s 2010-01-01 --export apple.csv
 ```
 
-![Screenshot 2022-11-30 at 2 10 22 PM](https://user-images.githubusercontent.com/85772166/204919033-d6d5632a-c6ce-42cf-a038-b93d579e38d4.png)
+Which results in the following:
+
+![Filename Example](https://user-images.githubusercontent.com/46355364/214818131-597b3bd0-9c66-43f1-bf0e-2c0a703e2645.png)
+
+Lastly, when you select the `xlsx` option, you can also specify the sheet name with `--sheet-name` which allows multiple datasets to be send to the same Excel file. Using the same stock ticker, we can define the following. First, get market data from the `stocks` menu:
 
 ```console
-Saved file: /Users/{username}/OpenBBUserData/exports/chwy_ohlc.csv
+/stocks/load AAPL -s 2010-01-01 --export apple.xlsx --sheet-name Market Data
 ```
 
-The types of image files charts can be exported as are:
+Then enter the `fa` (Fundamental Analysis) menu and type:
 
-- PNG
-- JPG
-- PDG
-- SVG
-
-If no file name is specified, the file will be automatically named starting with the date and time generated.
+**Income Statement:**
 
 ```console
-candle --ma 20,50,150 -t --export svg
-
-Saved file: /Users/{username}/OpenBBUserData/exports/20221130_141425_stocks_CHWY.svg
+income --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Income Statement
 ```
 
-![Screenshot 2022-11-30 at 2 16 19 PM](https://user-images.githubusercontent.com/85772166/204919882-3cf7ba23-7fba-4b9d-b278-25752efab0c6.png)
+**Balance Sheet:**
+```console
+balance --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Balance Sheet
+```
 
-Every function capable of exporting content will work in exactly the same manner. Print the `--help` dialogue for any function to see the options available.
+**Cash Flow Statement:**
 
 ```console
-(🦋) /stocks/options/ $ chains --help
-
-usage: chains [-c] [-p] [-m MIN_SP] [-M MAX_SP] [-d TO_DISPLAY] [-h] [--export EXPORT] [--source {YahooFinance,Tradier,Nasdaq}]
-
-Display option chains
-
-options:
-  -c, --calls           Flag to show calls only (default: False)
-  -p, --puts            Flag to show puts only (default: False)
-  -m MIN_SP, --min MIN_SP
-                        minimum strike price to consider. (default: -1)
-  -M MAX_SP, --max MAX_SP
-                        maximum strike price to consider. (default: -1)
-  -d TO_DISPLAY, --display TO_DISPLAY
-                        (tradier only) Columns to look at. Columns can be: bid, ask, strike, bidsize, asksize, volume, open_interest, delta, gamma, theta, vega, ask_iv, bid_iv,
-                        mid_iv. E.g. 'bid,ask,strike' (default: ['mid_iv', 'vega', 'delta', 'gamma', 'theta', 'volume', 'open_interest', 'bid', 'ask'])
-  -h, --help            show this help message (default: False)
-  --export EXPORT       Export raw data into csv, json, xlsx (default: )
-  --source {YahooFinance,Tradier,Nasdaq}
-                        Data source to select from (default: YahooFinance)
-
-For more information and examples, use 'about chains' to access the related guide.
-
-(🦋) /stocks/options/ $
+cash --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Cash Flow Statement
 ```
+
+This generates a file for Apple with market data from 2010-01-01 until now and income, balance and cash flow statements over the last 10 years as seen in the image below.
+
+![Sheet Name Example](https://user-images.githubusercontent.com/46355364/214824561-6eaf3a88-746a-4abc-91e1-420c9036c00d.png)
+
+Next to that, we also allow exporting to images, this can be PNG, JPG, PDF and SVG. For example, using our `portfolio` menu we can export the charts to any type of format which again can be found within the `OpenBBUserData` folder.
+
+![image](https://user-images.githubusercontent.com/46355364/214819518-cec40468-9019-440c-8bfe-7bcabc207578.png)
 
 ## Importing Data
 
 Menus, such as [Econometrics](https://docs.openbb.co/terminal/guides/intros/econometrics) or [Portfolio](https://docs.openbb.co/terminal/guides/intros/portfolio), allow the user to import their own dataset. Files available to import will be included with the selections made available by auto-complete. In the Econometrics menu, this is activated after pressing the space bar, `load -f `
 
-![Importing Data](https://user-images.githubusercontent.com/85772166/204921760-38742f6c-ec78-4009-9c23-54dcb0504524.png "Importing Data")
+![Importing Data](https://user-images.githubusercontent.com/85772166/204921760-38742f6c-ec78-4009-9c23-54dcb0504524.png)
 
-As illustrated above, the exported file that was created in the previous example is ready to be loaded into the Econometrics menu. Use the arrow keys to scroll the files available to import.
+The Econometrics menu looks into the `exports` and `custom_imports/econometrics` folder. For the Portfolio functionalities the `portfolio` menu looks into the `portfolio/holdings` folder whereas the `portfolio/po` menu looks into the `portfolio/allocation` and `portfolio/optimization` folder for the `load` and `file` command respectively. Please make sure to read the relevant guides to understand how this works.
+
+## Alternative Folder
+
+The location of this folder can be set by the user from the `/settings` menu. There should be no need to update paths in this menu unless the folders have been moved manually. If the location of the OpenBBUserData folder must be changed, it is best to move the entire existing folder to the new path. The path is then changed under the settings menu with:
+
+```console
+userdata --folder /path_to/OpenBBUserData
+```
+
+![The Settings Menu](https://user-images.githubusercontent.com/85772166/195736718-a1b821da-5977-437a-bd18-b44add2a29a2.png)

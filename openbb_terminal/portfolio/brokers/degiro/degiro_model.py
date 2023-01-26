@@ -472,7 +472,7 @@ class DegiroModel:
 
     @staticmethod
     @log_start_end(log=logger)
-    def export_data(portfolio_df: pd.DataFrame, export: str):
+    def export_data(portfolio_df: pd.DataFrame, export: str = ""):
         # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
 
         if "." in export:

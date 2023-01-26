@@ -38,6 +38,7 @@ def ark_orders_view(
     sells_only: bool = False,
     fund: str = "",
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints a table of the last N ARK Orders
 
@@ -55,6 +56,8 @@ def ark_orders_view(
         Flag to sort on sells only
     fund: str
         Optional filter by fund
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     """
@@ -82,4 +85,5 @@ def ark_orders_view(
         os.path.dirname(os.path.abspath(__file__)),
         "arkord",
         df_orders,
+        sheet_name,
     )
