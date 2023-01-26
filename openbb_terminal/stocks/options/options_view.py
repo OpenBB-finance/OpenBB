@@ -473,7 +473,7 @@ def display_chains(
     chain = chain[chain["strike"] <= max_strike]
     calls, puts = get_calls_and_puts(chain)
 
-    df = get_greeks(
+    chain = get_greeks(
         current_price=current_price,
         calls=calls,
         expire=expire,
@@ -482,9 +482,12 @@ def display_chains(
     )
 
     # if the greeks calculation went with no problems, otherwise keep the previous
-    if not df.empty:
-        calls, puts = get_calls_and_puts(df)
+    if not chain.empty:
+        calls, puts = get_calls_and_puts(chain)
         console.print("Greeks calculated by OpenBB.")
+
+    calls = calls.sort_index(axis=1)
+    puts = puts.sort_index(axis=1)
 
     print_raw(calls, puts, "Option chain", calls_only, puts_only)
 
