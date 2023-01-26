@@ -50,11 +50,6 @@ class User:
         return User._EMAIL
 
     @classmethod
-    def is_logged_in(cls):
-        """Check if user is logged in."""
-        return bool(User._UUID)
-
-    @classmethod
     def whoami(cls):
         """Display user info."""
         if User._UUID:
