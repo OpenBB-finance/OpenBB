@@ -234,7 +234,7 @@
       "analysis": ["Elect"],
       "score": ["FinancialModelingPrep"],
       "quote": ["FinancialModelingPrep"],
-      "enterprise": ["FinancialModelingPrep"],
+      "enterprise": ["FinancialModelingPrep", "YahooFinance"],
       "metrics": ["FinancialModelingPrep"],
       "ratios": ["FinancialModelingPrep"],
       "growth": ["FinancialModelingPrep"],

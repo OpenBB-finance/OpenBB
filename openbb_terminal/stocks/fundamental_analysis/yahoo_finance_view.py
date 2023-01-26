@@ -32,28 +32,6 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def open_headquarters_map(symbol: str):
-    """Headquarters location of the company
-    Parameters
-    ----------
-    symbol : str
-        Fundamental analysis ticker symbol
-    """
-    console.print(yahoo_finance_model.get_hq(symbol))
-
-
-@log_start_end(log=logger)
-def open_web(symbol: str):
-    """Website of the company
-    Parameters
-    ----------
-    symbol : str
-        Fundamental analysis ticker symbol
-    """
-    console.print(yahoo_finance_model.get_website(symbol))
-
-
-@log_start_end(log=logger)
 def display_info(symbol: str, export: str = "", sheet_name: str = None):
     """Yahoo Finance ticker info
     Parameters
