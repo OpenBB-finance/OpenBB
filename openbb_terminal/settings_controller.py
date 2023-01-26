@@ -7,7 +7,7 @@ import os.path
 import argparse
 import logging
 from pathlib import Path
-from typing import List, Union
+from typing import List, Optional, Union
 import pytz
 
 # IMPORTATION THIRDPARTY
@@ -138,8 +138,8 @@ class SettingsController(BaseController):
         console.print(text=mt.menu_text, menu="Settings")
 
     @staticmethod
-    def set_cfg_plot(name: str, value: Union[bool, str]):
-        """Set cfg_plot attribute
+    def set_cfg_plot(name: str, value: Optional[Union[bool, str]]):
+        """Set plot config attribute
 
         Parameters
         ----------
@@ -204,7 +204,7 @@ class SettingsController(BaseController):
             "-v",
             "--value",
             type=str,
-            default=os.getcwd() + os.path.sep + "sources.json.default",
+            default=str(USER_DATA_DIRECTORY / "data_sources_default.json"),
             dest="value",
             help="value",
         )
@@ -214,19 +214,19 @@ class SettingsController(BaseController):
         if ns_parser:
             try:
 
-                the_path = os.getcwd() + os.path.sep + ns_parser.value
-                console.print("Loading sources from " + the_path)
+                the_path = ns_parser.value
+                console.print("Loading sources from " + str(the_path))
                 with open(the_path):
                     # Try to open the file to get an exception if the file doesn't exist
                     pass
 
+                obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                    "OPENBB_PREFERRED_DATA_SOURCE_FILE", ns_parser.value
+                )
+
             except Exception as e:
                 console.print("Couldn't open the sources file!")
                 console.print(e)
-
-            obbff_ctrl.FeatureFlagsController.set_feature_flag(
-                "OPENBB_PREFERRED_DATA_SOURCE_FILE", ns_parser.value
-            )
 
     @log_start_end(log=logger)
     def call_autoscaling(self, _):
@@ -394,11 +394,9 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(USER_ENV_FILE, "OPENBB_BACKEND", str(ns_parser.value))
-            if ns_parser.value == "None":
-                cfg_plot.BACKEND = None  # type: ignore
-            else:
-                cfg_plot.BACKEND = ns_parser.value
+            SettingsController.set_cfg_plot(
+                "OPENBB_BACKEND", None if ns_parser.value == "None" else ns_parser.value
+            )
 
     @log_start_end(log=logger)
     def call_lang(self, other_args: List[str]):
