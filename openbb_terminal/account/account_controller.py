@@ -1,4 +1,4 @@
-# import argparse
+import argparse
 import logging
 from typing import List, Dict
 from pathlib import Path
@@ -48,6 +48,7 @@ class AccountController(BaseController):
         self.ROUTINE_CHOICES = {filename: None for filename in self.ROUTINE_FILES}
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["sync"] = {"--on": {}, "--off": {}}
             # choices["upload"]["--file"] = self.ROUTINE_CHOICES
             # choices["upload"]["-f"] = choices["upload"]["--file"]
 
@@ -67,11 +68,39 @@ class AccountController(BaseController):
         console.print(text=mt.menu_text, menu="Account")
 
     @log_start_end(log=logger)
-    def call_sync(self, _):
+    def call_sync(self, other_args: List[str]):
         """Sync"""
-        FeatureFlagsController.set_feature_flag(
-            "OPENBB_SYNC_ENABLED", not obbff.SYNC_ENABLED, force=True
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load your portfolio transactions.",
         )
+        parser.add_argument(
+            "--on",
+            dest="on",
+            help="Turn on sync",
+            action="store_true",
+            default=False,
+        )
+        parser.add_argument(
+            "--off",
+            dest="off",
+            help="Turn on sync",
+            action="store_true",
+            default=False,
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            if ns_parser.on:
+                if not obbff.SYNC_ENABLED:
+                    FeatureFlagsController.set_feature_flag(
+                        "OPENBB_SYNC_ENABLED", True, force=True
+                    )
+            elif ns_parser.off:
+                FeatureFlagsController.set_feature_flag(
+                    "OPENBB_SYNC_ENABLED", False, force=True
+                )
 
     def call_pull(self, _):
         """Pull data"""

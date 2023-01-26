@@ -28,6 +28,7 @@ class User:
             decoded_info = jwt.decode(User._TOKEN, options={"verify_signature": False})
             User._EMAIL = decoded_info.get("sub", "")
 
+            # Add username to flair
             User.update_flair()
 
     @staticmethod
@@ -84,11 +85,6 @@ class User:
     def is_sync_enabled(cls):
         """Check if sync is enabled."""
         return obbff.SYNC_ENABLED
-
-    @classmethod
-    def toggle_sync(cls):
-        """Toggle sync."""
-        obbff.SYNC_ENABLED = not obbff.SYNC_ENABLED
 
     @classmethod
     def get_token(cls):
