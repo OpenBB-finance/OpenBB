@@ -47,7 +47,7 @@ def login_prompt(welcome=True, guest_allowed=True):
 
     while True:
         email, password, save = get_user_input()
-        if not email and not password:
+        if not email or not password:
             if guest_allowed:
                 return terminal_controller.parse_args_and_run()
             continue
