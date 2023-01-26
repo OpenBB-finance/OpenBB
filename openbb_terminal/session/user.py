@@ -61,7 +61,10 @@ class User:
                 sync = "OFF"
             console.print(f"[info]sync:[/info] {sync}\n")
         else:
-            console.print("[info]You are currently logged as a guest.[/info]\n")
+            console.print(
+                "[info]You are currently logged as a guest.\n"
+                "Create an account here https://my.openbb.co/register.[/info]\n"
+            )
 
     @classmethod
     def clear(cls):
