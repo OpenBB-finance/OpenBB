@@ -17,8 +17,9 @@ en:
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   account/_info_: Synchronization
-  account/sync: Enable/disable sync
-  account/force: Force synchronization
+  account/sync: Send keys, settings and features flags on changes
+  account/pull: Pull keys, settings and feature flags from server
+  account/defaults: Reset to defaults
   account/_routines_: Routines
   account/upload: Upload routine
   account/download: Download routine
