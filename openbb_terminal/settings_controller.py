@@ -162,7 +162,7 @@ class SettingsController(BaseController):
         setattr(cfg_plot, name, value)
 
         # Send feature flag to server
-        if User.is_sync_enabled():
+        if not not User.is_guest() and User.is_sync_enabled():
             patch_user_configs(
                 key=name,
                 value=str(value),
