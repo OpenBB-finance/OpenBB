@@ -7,10 +7,12 @@ from openbb_terminal.session.user import User
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal import terminal_controller
+from openbb_terminal.helper_funcs import system_clear
 
 
 def display_welcome_message():
     """Display welcome message"""
+    system_clear()
     with open(PACKAGE_DIRECTORY / "session" / "banner.txt") as f:
         console.print(f.read(), style="menu")
 
