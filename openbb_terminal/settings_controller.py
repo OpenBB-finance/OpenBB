@@ -16,6 +16,7 @@ from dotenv import set_key
 # IMPORTATION INTERNAL
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal import featflags_controller as obbff_ctrl
 from openbb_terminal.core.config.paths import USER_ENV_FILE, USER_DATA_DIRECTORY
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -152,8 +153,9 @@ class SettingsController(BaseController):
     @log_start_end(log=logger)
     def call_dt(self, _):
         """Process dt command"""
-        obbff.USE_DATETIME = not obbff.USE_DATETIME
-        set_key(USER_ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
+        obbff_ctrl.FeatureFlagsController.set_feature_flag(
+            "OPENBB_USE_DATETIME", not obbff.USE_DATETIME
+        )
 
     @log_start_end(log=logger)
     def call_source(self, other_args: List[str]):
@@ -187,21 +189,17 @@ class SettingsController(BaseController):
             except Exception as e:
                 console.print("Couldn't open the sources file!")
                 console.print(e)
-            obbff.PREFERRED_DATA_SOURCE_FILE = ns_parser.value
-            set_key(
-                USER_ENV_FILE,
-                "OPENBB_PREFERRED_DATA_SOURCE_FILE",
-                str(ns_parser.value),
+
+            obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                "OPENBB_PREFERRED_DATA_SOURCE_FILE", ns_parser.value
             )
+            obbff.PREFERRED_DATA_SOURCE_FILE = ns_parser.value
 
     @log_start_end(log=logger)
     def call_autoscaling(self, _):
         """Process autoscaling command"""
-        obbff.USE_PLOT_AUTOSCALING = not obbff.USE_PLOT_AUTOSCALING
-        set_key(
-            USER_ENV_FILE,
-            "OPENBB_USE_PLOT_AUTOSCALING",
-            str(obbff.USE_PLOT_AUTOSCALING),
+        obbff_ctrl.FeatureFlagsController.set_feature_flag(
+            "OPENBB_USE_PLOT_AUTOSCALING", not obbff.USE_PLOT_AUTOSCALING
         )
 
     @log_start_end(log=logger)
@@ -402,8 +400,9 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             if ns_parser.value:
-                set_key(USER_ENV_FILE, "OPENBB_USE_LANGUAGE", str(ns_parser.value))
-                obbff.USE_LANGUAGE = ns_parser.value
+                obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                    "OPENBB_USE_LANGUAGE", ns_parser.value
+                )
             else:
                 console.print(
                     f"Languages available: {', '.join(self.languages_available)}"
@@ -460,8 +459,10 @@ class SettingsController(BaseController):
                 ns_parser.emoji = ""
             else:
                 ns_parser.emoji = " ".join(ns_parser.emoji)
-            set_key(USER_ENV_FILE, "OPENBB_USE_FLAIR", str(ns_parser.emoji))
-            obbff.USE_FLAIR = ns_parser.emoji
+
+            obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                "OPENBB_USE_FLAIR", ns_parser.emoji
+            )
 
     @log_start_end(log=logger)
     def call_userdata(self, other_args: List[str]):
