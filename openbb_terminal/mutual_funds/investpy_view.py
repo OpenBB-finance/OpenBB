@@ -101,7 +101,7 @@ def display_overview(
         os.path.dirname(os.path.abspath(__file__)),
         f"overview_{country.replace(' ','_')}",
         overview,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -184,5 +184,5 @@ def display_historical(
         os.path.dirname(os.path.abspath(__file__)),
         "historical",
         data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

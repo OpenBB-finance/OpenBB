@@ -96,7 +96,7 @@ def display_sector(
         os.path.dirname(os.path.abspath(__file__)),
         "sector",
         df_weight,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
