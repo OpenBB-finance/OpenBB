@@ -159,7 +159,7 @@ class DarkPoolShortsController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if ns_parser.source == "ibkr":
+            if ns_parser.source == "InteractiveBrokers":
                 ibkr_view.display_cost_to_borrow(
                     limit=ns_parser.number,
                     export=ns_parser.export,
@@ -167,7 +167,7 @@ class DarkPoolShortsController(StockBaseController):
                     if ns_parser.sheet_name
                     else None,
                 )
-            else:
+            elif ns_parser.source == "Stocksera":
                 stocksera_view.cost_to_borrow(
                     self.ticker, limit=ns_parser.number, raw=ns_parser.raw
                 )

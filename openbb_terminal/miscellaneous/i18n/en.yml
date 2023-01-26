@@ -334,7 +334,6 @@ en:
   stocks/fa/dcf: advanced Excel customizable discounted cash flow
   stocks/fa/shrs: shareholders (insiders, institutions and mutual funds)
   stocks/fa/sust: sustainability values (environment, social and governance)
-  stocks/fa/cal: calendar earnings and estimates of the company
   stocks/fa/divs: show historical dividends for company
   stocks/fa/splits: stock split and reverse split events since IPO
   stocks/fa/income: income statements of the company

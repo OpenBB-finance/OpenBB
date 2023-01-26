@@ -94,7 +94,7 @@
     "dps": {
       "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
       "shorted": ["YahooFinance"],
-      "ctb": ["InteractiveBrokers"],
+      "ctb": ["InteractiveBrokers", "Stocksera"],
       "hsi": ["Shortinterest"],
       "prom": ["FINRA"],
       "pos": ["Stockgrid"],
@@ -102,8 +102,7 @@
       "dpotc": ["FINRA"],
       "ftd": ["SEC"],
       "spos": ["Stockgrid"],
-      "psi": ["Stockgrid", "Quandl"],
-      "ctb": ["ibkr", "stocksera"]
+      "psi": ["Stockgrid", "Quandl"]
     },
     "scr": {
       "view": [],
