@@ -1528,7 +1528,11 @@ class EconometricsController(BaseController):
         )
         if ns_parser:
             regression_model.get_comparison(
-                self.regression, ns_parser.export, sheet_name=ns_parser.sheet_name
+                self.regression,
+                ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
             console.print()
 
@@ -1753,7 +1757,9 @@ class EconometricsController(BaseController):
                         significant=ns_parser.significant,
                         plot=ns_parser.plot,
                         export=ns_parser.export,
-                        sheet_name=ns_parser.sheet_name,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
 
                 else:

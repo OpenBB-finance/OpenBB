@@ -51,5 +51,5 @@ def display_forward_rates(
         os.path.dirname(os.path.abspath(__file__)),
         "fwd",
         forward_rates,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

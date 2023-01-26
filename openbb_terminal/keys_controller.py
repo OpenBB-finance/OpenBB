@@ -110,7 +110,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             keys_view.display_keys(
                 show=ns_parser.show,
                 export=ns_parser.export,
-                sheet_name=ns_parser.sheet_name,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)

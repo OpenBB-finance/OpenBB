@@ -174,7 +174,7 @@ def display_covid_ov(
             os.path.dirname(os.path.abspath(__file__)),
             "ov",
             data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -231,7 +231,7 @@ def display_covid_stat(
             os.path.dirname(os.path.abspath(__file__)),
             stat,
             data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -273,5 +273,5 @@ def display_case_slopes(
         os.path.dirname(os.path.abspath(__file__)),
         f"slopes_{days_back}day",
         data,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )

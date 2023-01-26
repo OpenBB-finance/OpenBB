@@ -477,7 +477,7 @@ def get_comparison(regressions: Dict, export: str = "", sheet_name: str = ""):
             os.path.dirname(os.path.abspath(__file__)),
             "regressions_compare",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
     return comparison_result

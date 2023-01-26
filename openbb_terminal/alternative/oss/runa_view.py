@@ -131,5 +131,5 @@ def display_rossindex(
             os.path.dirname(os.path.abspath(__file__)),
             "runaidx",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

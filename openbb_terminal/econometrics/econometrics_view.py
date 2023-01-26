@@ -63,7 +63,7 @@ def show_options(
                 os.path.dirname(os.path.abspath(__file__)),
                 f"{dataset}_options",
                 data_values.set_index("column"),
-                " ".join(sheet_name) if sheet_name else None,
+                sheet_name,
             )
 
 
@@ -129,7 +129,7 @@ def display_plot(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "plot",
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -199,7 +199,7 @@ def display_norm(
                 os.path.dirname(os.path.abspath(__file__)),
                 f"{column}_{dataset}_norm",
                 results,
-                " ".join(sheet_name) if sheet_name else None,
+                sheet_name,
             )
         else:
             console.print()
@@ -255,7 +255,7 @@ def display_root(
             os.path.dirname(os.path.abspath(__file__)),
             f"{dataset}_{column}_root",
             results,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -324,7 +324,7 @@ def display_granger(
             os.path.dirname(os.path.abspath(__file__)),
             f'{dependent_series.name.replace(".","-")}_{independent_series.name.replace(".","-")}_granger',
             granger_df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -412,5 +412,5 @@ def display_cointegration_test(
             os.path.dirname(os.path.abspath(__file__)),
             "coint",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

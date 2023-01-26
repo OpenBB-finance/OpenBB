@@ -73,7 +73,7 @@ def display_panel(
             os.path.dirname(os.path.abspath(__file__)),
             f"{dependent}_{regression_type}_regression",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
     return model
@@ -137,7 +137,7 @@ def display_dwat(
         os.path.dirname(os.path.abspath(__file__)),
         f"{dependent_variable.name}_dwat",
         autocorr,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
 
@@ -183,7 +183,7 @@ def display_bgod(
         os.path.dirname(os.path.abspath(__file__)),
         "results_bgod",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     console.print()
@@ -228,7 +228,7 @@ def display_bpag(
         os.path.dirname(os.path.abspath(__file__)),
         "results_bpag",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
 
     console.print()

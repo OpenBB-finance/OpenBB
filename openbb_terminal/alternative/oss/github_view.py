@@ -66,7 +66,7 @@ def display_star_history(
             os.path.dirname(os.path.abspath(__file__)),
             "sh",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -131,7 +131,7 @@ def display_top_repos(
             os.path.dirname(os.path.abspath(__file__)),
             "tr",
             df,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )
 
 
@@ -157,5 +157,5 @@ def display_repo_summary(repo: str, export: str = "", sheet_name: str = "") -> N
             os.path.dirname(os.path.abspath(__file__)),
             "rs",
             data,
-            " ".join(sheet_name) if sheet_name else None,
+            sheet_name,
         )

@@ -42,5 +42,5 @@ def display_keys(show: bool = False, export: str = "", sheet_name: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "mykeys",
         df,
-        " ".join(sheet_name) if sheet_name else None,
+        sheet_name,
     )
