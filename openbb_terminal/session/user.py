@@ -10,7 +10,6 @@ class User:
     _TOKEN: str = ""
     _EMAIL: str = ""
     _UUID: str = ""
-    _SYNC_ENABLED: bool = True
 
     @classmethod
     def load_user_info(cls, session: dict):
@@ -29,15 +28,21 @@ class User:
             decoded_info = jwt.decode(User._TOKEN, options={"verify_signature": False})
             User._EMAIL = decoded_info.get("sub", "")
 
-            MAX_FLAIR_LEN = 20
+            User.update_flair()
 
-            if obbff.USE_FLAIR == ":openbb":
-                username = User._EMAIL[: User._EMAIL.find("@")]
-                if User._SYNC_ENABLED:
-                    flair = "[" + username[:MAX_FLAIR_LEN] + "] 🟢"
-                else:
-                    flair = "[" + username[:MAX_FLAIR_LEN] + "] 🔴"
-                setattr(obbff, "USE_FLAIR", flair)
+    @staticmethod
+    def update_flair():
+        MAX_FLAIR_LEN = 20
+        username = User._EMAIL[: User._EMAIL.find("@")]
+        username = "[" + username[:MAX_FLAIR_LEN] + "]"
+
+        if obbff.USE_FLAIR == ":openbb" or username in obbff.USE_FLAIR:
+
+            if obbff.SYNC_ENABLED:
+                flair = username + " 🟢"
+            else:
+                flair = username + " 🔴"
+            setattr(obbff, "USE_FLAIR", flair)
 
     @classmethod
     def whoami(cls):
@@ -45,7 +50,7 @@ class User:
         if User._UUID:
             console.print(f"[info]email:[/info] {User._EMAIL}")
             console.print(f"[info]uuid:[/info] {User._UUID}")
-            if User._SYNC_ENABLED:
+            if obbff.SYNC_ENABLED:
                 sync = "enabled"
             else:
                 sync = "disabled"
@@ -70,12 +75,12 @@ class User:
     @classmethod
     def is_sync_enabled(cls):
         """Check if sync is enabled."""
-        return User._SYNC_ENABLED
+        return obbff.SYNC_ENABLED
 
     @classmethod
     def toggle_sync(cls):
         """Toggle sync."""
-        User._SYNC_ENABLED = not User._SYNC_ENABLED
+        obbff.SYNC_ENABLED = not obbff.SYNC_ENABLED
 
     @classmethod
     def get_token(cls):

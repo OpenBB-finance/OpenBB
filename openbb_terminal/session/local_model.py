@@ -8,6 +8,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal.base_helpers import strtobool
+from openbb_terminal.session.user import User
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
@@ -84,23 +85,45 @@ def apply_configs(configs: dict):
         The configurations.
     """
     console.print(configs, style="red")
-    if configs:
-        keys = configs.get("features_keys", {})
-        if keys:
-            for k, v in keys.items():
-                if hasattr(cfg, k):
-                    setattr(cfg, k, v)
 
-        # Since settings come from different files we use the format {var_name: "path:value"}
+    if configs:
         settings = configs.get("features_settings", {})
-        if settings:
-            for k, v in settings.items():
-                if hasattr(obbff, k):
-                    cast_set_attr(obbff, k, v)
-                elif hasattr(cfg, k):
-                    cast_set_attr(cfg, k, v)
-                elif hasattr(cfg_plot, k):
-                    cast_set_attr(cfg_plot, k, v)
+        obbff.SYNC_ENABLED = is_sync_enabled(settings)
+        User.update_flair()
+        if obbff.SYNC_ENABLED:
+            console.print("Applying...", style="red")
+            if settings:
+                for k, v in settings.items():
+                    if hasattr(obbff, k):
+                        cast_set_attr(obbff, k, v)
+                    elif hasattr(cfg, k):
+                        cast_set_attr(cfg, k, v)
+                    elif hasattr(cfg_plot, k):
+                        cast_set_attr(cfg_plot, k, v)
+
+            keys = configs.get("features_keys", {})
+            if keys:
+                for k, v in keys.items():
+                    if hasattr(cfg, k):
+                        setattr(cfg, k, v)
+
+
+def is_sync_enabled(settings: dict) -> bool:
+    """Check if sync is enabled.
+
+    Parameters
+    ----------
+    settings : dict
+        The settings.
+
+    Returns
+    -------
+    bool
+        The status of sync.
+    """
+    if settings.get("SYNC_ENABLED", "").lower() == "false":
+        return False
+    return True
 
 
 def cast_set_attr(obj, name, value):
