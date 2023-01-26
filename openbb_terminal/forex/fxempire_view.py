@@ -12,7 +12,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_forward_rates(
-    to_symbol: str = "USD", from_symbol: str = "EUR", export: str = ""
+    to_symbol: str = "USD",
+    from_symbol: str = "EUR",
+    export: str = "",
+    sheet_name: str = None,
 ):
     """Display forward rates for currency pairs
 
@@ -22,6 +25,8 @@ def display_forward_rates(
         To currency
     from_symbol: str
         From currency
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -46,4 +51,5 @@ def display_forward_rates(
         os.path.dirname(os.path.abspath(__file__)),
         "fwd",
         forward_rates,
+        sheet_name,
     )

@@ -92,7 +92,10 @@ class ScreenerController(BaseController):
         See `BaseController.parse_input()` for details.
         """
         # Filtering out sorting parameters with forward slashes like P/E
-        sort_filter = r"((\ -s |\ --sort ).*?(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)*)"
+        f0 = r"(p\/e|fwd p\/e|p\/s|p\/b|p\/c|p\/fcf)"
+        f1 = r"(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)"
+
+        sort_filter = r"((\ -s |\ --sort ).*?" + r"(" + f0 + r"|" + f1 + r")" + r"*)"
 
         custom_filters = [sort_filter]
 
@@ -313,6 +316,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -386,6 +392,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -459,6 +468,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -532,6 +544,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -605,6 +620,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -677,6 +695,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)

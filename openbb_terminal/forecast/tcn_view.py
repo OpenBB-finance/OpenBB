@@ -38,6 +38,7 @@ def display_tcn_forecast(
     force_reset: bool = True,
     save_checkpoints: bool = True,
     export: str = "",
+    sheet_name: str = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
@@ -89,6 +90,8 @@ def display_tcn_forecast(
         (all checkpoints will be discarded). Defaults to True.
     save_checkpoints: bool
         Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     residuals: bool
@@ -158,6 +161,7 @@ def display_tcn_forecast(
         precision=precision,
         probabilistic=probabilistic,
         export=export,
+        sheet_name=sheet_name,
         forecast_only=forecast_only,
         naive=naive,
         export_pred_raw=export_pred_raw,

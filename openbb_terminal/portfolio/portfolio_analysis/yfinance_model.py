@@ -89,7 +89,7 @@ def get_market(start: datetime, ticker: str = "SPY") -> pd.DataFrame:
 
 def get_country(ticker):
     country = "NA"
-    data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{ticker}")
+    data = yf.Ticker(ticker).stats()
 
     if "summaryProfile" in data:
         country = data["summaryProfile"]["country"]

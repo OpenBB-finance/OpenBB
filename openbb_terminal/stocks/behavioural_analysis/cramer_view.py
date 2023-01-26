@@ -26,13 +26,17 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_cramer_daily(inverse: bool = True, export: str = ""):
+def display_cramer_daily(
+    inverse: bool = True, export: str = "", sheet_name: str = None
+):
     """Display Jim Cramer daily recommendations
 
     Parameters
     ----------
     inverse: bool
         Include inverse recommendation
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -56,7 +60,13 @@ and we're investigating on finding a replacement.
 
     print_rich_table(recs, title=f"Jim Cramer Recommendations for {date}")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "cramer", recs)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cramer",
+        recs,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -64,6 +74,7 @@ def display_cramer_ticker(
     symbol: str,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display ticker close with Cramer recommendations
@@ -74,6 +85,8 @@ def display_cramer_ticker(
         Stock ticker
     raw: bool
         Display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]] = None,
@@ -116,4 +129,10 @@ def display_cramer_ticker(
         df["Date"] = df["Date"].apply(lambda x: x.strftime("%Y-%m-%d"))
         print_rich_table(df, title=f"Jim Cramer Recommendations for {symbol}")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), df, "jctr")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        df,
+        "jctr",
+        sheet_name,
+    )

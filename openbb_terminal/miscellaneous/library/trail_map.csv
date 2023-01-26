@@ -18,13 +18,9 @@ stocks.ba.mentions,openbb_terminal.common.behavioural_analysis.google_model.get_
 stocks.ba.queries,openbb_terminal.common.behavioural_analysis.google_model.get_queries,
 stocks.ba.regions,openbb_terminal.common.behavioural_analysis.google_model.get_regions,openbb_terminal.common.behavioural_analysis.google_view.display_regions
 stocks.ba.rise,openbb_terminal.common.behavioural_analysis.google_model.get_rise,
-stocks.ba.getdd,openbb_terminal.common.behavioural_analysis.reddit_model.get_due_dilligence,
-stocks.ba.popular,openbb_terminal.common.behavioural_analysis.reddit_model.get_popular_tickers,
 stocks.ba.redditsent,openbb_terminal.common.behavioural_analysis.reddit_model.get_posts_about,
 stocks.ba.text_sent,openbb_terminal.common.behavioural_analysis.reddit_model.get_sentiment,
-stocks.ba.spac,openbb_terminal.common.behavioural_analysis.reddit_model.get_spac,
 stocks.ba.spacc,openbb_terminal.common.behavioural_analysis.reddit_model.get_spac_community,
-stocks.ba.watchlist,openbb_terminal.common.behavioural_analysis.reddit_model.get_watchlists,
 stocks.ba.wsb,openbb_terminal.common.behavioural_analysis.reddit_model.get_wsb_community,
 stocks.ba.hist,openbb_terminal.common.behavioural_analysis.sentimentinvestor_model.get_historical,openbb_terminal.common.behavioural_analysis.sentimentinvestor_view.display_historical
 stocks.ba.trend,openbb_terminal.common.behavioural_analysis.sentimentinvestor_model.get_trending,openbb_terminal.common.behavioural_analysis.sentimentinvestor_view.display_trending
@@ -462,6 +458,10 @@ stocks.options.grhist,openbb_terminal.stocks.options.screen.syncretism_model.get
 stocks.options.screen.screener_output,openbb_terminal.stocks.options.screen.syncretism_model.get_screener_output,openbb_terminal.stocks.options.screen.syncretism_view.view_screener_output
 stocks.options.hist,openbb_terminal.stocks.options.options_sdk_helper.hist,
 stocks.options.chains,openbb_terminal.stocks.options.options_sdk_helper.get_full_option_chain,
+stocks.options.price,openbb_terminal.stocks.options.options_sdk_helper.get_option_current_price,
+stocks.options.vol,openbb_terminal.stocks.options.options_view.plot_vol,
+stocks.options.oi,openbb_terminal.stocks.options.options_view.plot_oi,
+stocks.options.voi,openbb_terminal.stocks.options.options_view.plot_voi,
 stocks.options.last_price,openbb_terminal.stocks.options.tradier_model.last_price,
 stocks.options.expirations,openbb_terminal.stocks.options.options_sdk_helper.get_option_expirations,
 stocks.options.process_chains,openbb_terminal.stocks.options.tradier_model.process_chains,
@@ -549,4 +549,3 @@ futures.historical,openbb_terminal.futures.yfinance_model.get_historical_futures
 futures.curve,openbb_terminal.futures.yfinance_model.get_curve_futures,openbb_terminal.futures.yfinance_view.display_curve
 economy.get_groups,openbb_terminal.economy.finviz_model.get_groups,
 stocks.filings,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_filings,openbb_terminal.stocks.fundamental_analysis.fmp_view.display_filings
-
