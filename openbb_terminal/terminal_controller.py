@@ -43,8 +43,6 @@ from openbb_terminal.helper_funcs import (
     get_flair,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
-from openbb_terminal.loggers import setup_logging
-from openbb_terminal.core.log.generation.settings_logger import log_all_settings
 from openbb_terminal.menu import session, is_papermill
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
@@ -62,6 +60,7 @@ from openbb_terminal.helper_funcs import parse_and_split_input
 from openbb_terminal.keys_model import first_time_user
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.reports.reports_model import ipykernel_launcher
+from openbb_terminal.core.log.generation.custom_logger import log_terminal
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements
@@ -82,6 +81,7 @@ class TerminalController(BaseController):
     """Terminal Controller class."""
 
     CHOICES_COMMANDS = [
+        "account",
         "keys",
         "settings",
         "survey",
@@ -166,6 +166,7 @@ class TerminalController(BaseController):
         mt.add_cmd("stop")
         mt.add_raw("\n")
         mt.add_info("_configure_")
+        mt.add_menu("account")
         mt.add_menu("keys")
         mt.add_menu("featflags")
         mt.add_menu("sources")
@@ -353,6 +354,12 @@ class TerminalController(BaseController):
                 "Find the most recent release of the OpenBB Terminal here: "
                 "https://openbb.co/products/terminal#get-started\n"
             )
+
+    def call_account(self, _):
+        """Process account command."""
+        from openbb_terminal.account.account_controller import AccountController
+
+        self.queue = self.load_class(AccountController, self.queue)
 
     def call_keys(self, _):
         """Process keys command."""
@@ -799,10 +806,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
             if module.startswith("openbb"):
                 importlib.reload(sys.modules[module])
 
-    if not test_mode:
-        setup_logging()
-    logger.info("START")
-    log_all_settings()
+    log_terminal(test_mode=test_mode)
 
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))

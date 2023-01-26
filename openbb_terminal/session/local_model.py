@@ -1,13 +1,18 @@
 import os
 from pathlib import Path
 import json
-from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
+from typing import Optional
+from openbb_terminal.core.config.paths import (
+    SETTINGS_DIRECTORY,
+    USER_ROUTINES_DIRECTORY,
+)
 from openbb_terminal.rich_config import console
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal.base_helpers import strtobool
+from openbb_terminal.session.user import User
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
@@ -84,23 +89,47 @@ def apply_configs(configs: dict):
         The configurations.
     """
     console.print(configs, style="red")
-    if configs:
-        keys = configs.get("features_keys", {})
-        if keys:
-            for k, v in keys.items():
-                if hasattr(cfg, k):
-                    setattr(cfg, k, v)
 
-        # Since settings come from different files we use the format {var_name: "path:value"}
+    if configs:
         settings = configs.get("features_settings", {})
-        if settings:
-            for k, v in settings.items():
-                if hasattr(obbff, k):
-                    cast_set_attr(obbff, k, v)
-                elif hasattr(cfg, k):
-                    cast_set_attr(cfg, k, v)
-                elif hasattr(cfg_plot, k):
-                    cast_set_attr(cfg_plot, k, v)
+
+        # TODO: Find a cleaner way to check if user has sync enabled.
+        obbff.SYNC_ENABLED = is_sync_enabled(settings)
+
+        if obbff.SYNC_ENABLED:
+            if settings:
+                for k, v in settings.items():
+                    if hasattr(obbff, k):
+                        cast_set_attr(obbff, k, v)
+                    elif hasattr(cfg, k):
+                        cast_set_attr(cfg, k, v)
+                    elif hasattr(cfg_plot, k):
+                        cast_set_attr(cfg_plot, k, v)
+
+            keys = configs.get("features_keys", {})
+            if keys:
+                for k, v in keys.items():
+                    if hasattr(cfg, k):
+                        setattr(cfg, k, v)
+
+
+def is_sync_enabled(settings: dict) -> bool:
+    """Check if sync is enabled.
+
+    Parameters
+    ----------
+    settings : dict
+        The settings.
+
+    Returns
+    -------
+    bool
+        The status of sync.
+    """
+    if settings:
+        if settings.get("SYNC_ENABLED", "").lower() == "false":
+            return False
+    return True
 
 
 def cast_set_attr(obj, name, value):
@@ -121,3 +150,20 @@ def cast_set_attr(obj, name, value):
         setattr(obj, name, int(value))
     else:
         setattr(obj, name, value)
+
+
+def get_routine(name: str) -> Optional[str]:
+    """Get the routine.
+
+    Returns
+    -------
+    str
+        The routine.
+    """
+    try:
+        with open(USER_ROUTINES_DIRECTORY / name) as f:
+            routine = "".join(f.readlines())
+        return routine
+    except Exception:
+        console.print("[red]\nFailed to find routine.[/red]")
+        return None

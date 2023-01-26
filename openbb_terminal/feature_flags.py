@@ -27,6 +27,8 @@ except ImportError:
 else:
     WITH_GIT = True
 
+# Sync with OpenBB server
+SYNC_ENABLED = load_env_vars("OPENBB_SYNC_ENABLED", strtobool, True, "featflags")
 
 # Always overwrite exported files
 FILE_OVERWITE = load_env_vars("OPENBB_FILE_OVERWRITE", strtobool, False, "featflags")

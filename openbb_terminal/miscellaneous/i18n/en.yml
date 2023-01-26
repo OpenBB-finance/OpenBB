@@ -16,6 +16,13 @@ en:
   intro: introduction on the OpenBB Terminal
   _configure_: Configure your own terminal
   _main_menu_: Main menu
+  account/_info_: Synchronization
+  account/sync: Send keys, settings and features flags on changes
+  account/pull: Pull keys, settings and feature flags from server
+  account/defaults: Reset to defaults
+  account/_routines_: Routines
+  account/upload: Upload routine
+  account/download: Download routine
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
   keys/mykeys: get your defined keys
   keys/_status_: Status
@@ -88,7 +95,7 @@ en:
   forecast: timeseries forecasting with machine learning
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
   dashboards: interactive dashboards using voila and jupyter notebooks
-  stocks/filings: the most-recent form submissions to the SEC 
+  stocks/filings: the most-recent form submissions to the SEC
   stocks/search: search a specific stock ticker for analysis
   stocks/load: load a specific stock ticker and additional info for analysis
   stocks/_ticker: Stock

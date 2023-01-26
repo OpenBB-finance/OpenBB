@@ -12,7 +12,7 @@ from openbb_terminal import terminal_controller
 def display_welcome_message():
     """Display welcome message"""
     with open(PACKAGE_DIRECTORY / "session" / "banner.txt") as f:
-        console.print(f.read(), style="blue")
+        console.print(f.read(), style="menu")
 
 
 def get_user_input() -> Tuple[str, str, bool]:
@@ -24,9 +24,9 @@ def get_user_input() -> Tuple[str, str, bool]:
         The user email, password and save login option.
     """
     console.print("\nPlease enter your credentials:", style="info")
-    email = console.input("> Email: ", style="blue")
-    password = console.getpass("> Password: ", style="blue")
-    save_str = console.input("> Keep me logged in (y/n): ", style="blue").lower()
+    email = console.input("> Email: ", style="menu")
+    password = console.getpass("> Password: ", style="menu")
+    save_str = console.input("> Remember me? (y/n): ", style="menu").lower()
     save = False
     if save_str == "y":
         save = True
@@ -47,8 +47,11 @@ def login_prompt(welcome=True, guest_allowed=True):
 
     while True:
         email, password, save = get_user_input()
-        if not email and not password and guest_allowed:
-            return terminal_controller.parse_args_and_run()
+        if not email or not password:
+            if guest_allowed:
+                return terminal_controller.parse_args_and_run()
+            continue
+
         session = create_session(email, password, save)
         if isinstance(session, dict) and session:
             break

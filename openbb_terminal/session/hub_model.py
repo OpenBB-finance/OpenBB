@@ -137,7 +137,7 @@ def patch_user_configs(key: str, value: str, type_: str) -> Optional[requests.Re
     try:
         response = requests.patch(
             url=BASE_URL + "terminal/user-json",
-            headers={"Authorization": f"{User.TOKEN_TYPE.title()} {User.TOKEN}"},
+            headers={"Authorization": User.get_token()},
             json=data,
         )
         if response.status_code == 200:
@@ -174,7 +174,7 @@ def logout_everywhere() -> Optional[requests.Response]:
     try:
         response = requests.get(
             url=BASE_URL + "logout-everywhere",
-            headers={"Authorization": f"{User.TOKEN_TYPE.title()} {User.TOKEN}"},
+            headers={"Authorization": User.get_token()},
         )
         if response.status_code == 200:
             console.print("[green]\nLogged out remotely.[/green]")
@@ -187,3 +187,59 @@ def logout_everywhere() -> Optional[requests.Response]:
     except Exception:
         console.print("[red]\nFailed to logout remotely.[/red]")
         return None
+
+
+def upload_routine(
+    name: str = "",
+    routine: str = "",
+) -> Optional[requests.Response]:
+    """Send a routine to the server."""
+
+    data = {"name": name, "script": routine}
+
+    try:
+        response = requests.post(
+            headers={"Authorization": User.get_token()},
+            url=BASE_URL + "terminal/script",
+            json=data,
+        )
+        if response.status_code == 200:
+            console.print("[green]Successfully uploaded your routine.[/green]")
+        else:
+            console.print("[red]Error uploading your routine.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console.print("[red]Connection error.[/red]")
+        return None
+    except Exception:
+        console.print("[red]Failed to upload your routine.[/red]")
+        return None
+
+
+def download_routine(
+    name: str = "",
+) -> Optional[requests.Response]:
+    """Download a routine from the server."""
+    console.print("[red]Not implemented yet.[/red]")
+
+    # TODO: Implement when endpoint is ready.
+
+    # data = {"name": name}
+
+    # try:
+    #     response = requests.get(
+    #         headers={"Authorization": User.get_token()},
+    #         url=BASE_URL + "terminal/script",
+    #         json=data,
+    #     )
+    #     if response.status_code == 200:
+    #         console.print("Successfully downloaded your routine.")
+    #     else:
+    #         console.print("[red]Error downloading your routine.[/red]")
+    #     return response
+    # except requests.exceptions.ConnectionError:
+    #     console.print("[red]Connection error.[/red]")
+    #     return None
+    # except Exception:
+    #     console.print("[red]Failed to download your routine.[/red]")
+    #     return None
