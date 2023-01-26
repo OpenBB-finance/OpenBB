@@ -89,15 +89,6 @@ def login(session: dict):
         login_prompt(welcome=True)
 
 
-def main(guest_allowed: bool = True):
-    """Main function"""
-    local_session = Local.get_session()
-    if not local_session:
-        login_prompt(guest_allowed=guest_allowed)
-    else:
-        login(session=local_session)
-
-
 def logout():
     """Logout and clear session."""
     system_clear()
@@ -108,7 +99,7 @@ def logout():
         if v.startswith("OPENBB"):
             os.environ.pop(v)
 
-    # Reload all openbb modules
+    # Reload all openbb modules to clear memorized variables
     modules = sys.modules.copy()
     for module in modules:
         if module.startswith("openbb"):
@@ -117,6 +108,15 @@ def logout():
     Hub.delete_session()
     Local.remove_session_file()
     plt.close("all")
+
+
+def main(guest_allowed: bool = True):
+    """Main function"""
+    local_session = Local.get_session()
+    if not local_session:
+        login_prompt(guest_allowed=guest_allowed)
+    else:
+        login(session=local_session)
 
 
 if __name__ == "__main__":

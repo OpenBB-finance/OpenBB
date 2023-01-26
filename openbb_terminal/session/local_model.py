@@ -4,9 +4,10 @@ import json
 from openbb_terminal.core.config.paths import SETTINGS_DIRECTORY
 from openbb_terminal.rich_config import console
 
-# from openbb_terminal import feature_flags as obbff
-# from openbb_terminal import config_terminal as cfg
-# from openbb_terminal.base_helpers import strtobool
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal import config_terminal as cfg
+from openbb_terminal import config_plot as cfgp
+from openbb_terminal.base_helpers import strtobool
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
@@ -75,24 +76,48 @@ def remove_session_file(file_path: Path = SESSION_FILE_PATH) -> bool:
 
 
 def apply_configs(configs: dict):
-    """Apply configurations."""
-    console.print(f"Will apply this: {configs}", style="red")
-    # TODO: Apply configs when uploading is implemented
-    # if configs:
-    #     settings = configs.get("features_settings", {})
-    #     if settings:
-    #         for k, v in settings.items():
-    #             if hasattr(obbff, k):
-    #                 if isinstance(getattr(obbff, k), int):
-    #                     setattr(obbff, k, strtobool(v))
-    #                 else:
-    #                     setattr(obbff, k, v)
+    """Apply configurations.
 
-    #     keys = configs.get("features_keys", {})
-    #     if keys:
-    #         for k, v in keys.items():
-    #             if hasattr(cfg, k):
-    #                 if isinstance(getattr(cfg, k), int):
-    #                     setattr(cfg, k, strtobool(v))
-    #                 else:
-    #                     setattr(cfg, k, v)
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
+    console.print(configs, style="red")
+    if configs:
+        keys = configs.get("features_keys", {})
+        if keys:
+            for k, v in keys.items():
+                if hasattr(cfg, k):
+                    setattr(cfg, k, v)
+
+        # Since settings come from different files we use the format {var_name: "path:value"}
+        settings = configs.get("features_settings", {})
+        if settings:
+            for k, v in settings.items():
+                if hasattr(obbff, k):
+                    cast_set_attr(obbff, k, v)
+                elif hasattr(cfg, k):
+                    cast_set_attr(cfg, k, v)
+                elif hasattr(cfgp, k):
+                    cast_set_attr(cfgp, k, v)
+
+
+def cast_set_attr(obj, name, value):
+    """Set attribute in object.
+
+    Parameters
+    ----------
+    obj : object
+        The object.
+    name : str
+        The attribute name.
+    value : str
+        The attribute value.
+    """
+    if value.lower() in ["true", "false"]:
+        setattr(obj, name, strtobool(value))
+    elif isinstance(getattr(obj, value), int):
+        setattr(obj, name, int(value))
+    else:
+        setattr(obj, name, value)
