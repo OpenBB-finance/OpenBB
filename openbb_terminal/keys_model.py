@@ -1457,10 +1457,10 @@ def check_oanda_key(show_output: bool = False) -> str:
         account = cfg.OANDA_ACCOUNT
         try:
             parameters = {"instruments": "EUR_USD"}
-            request = oandapyV20.endpoints.pricing.PricingInfo(
+            request_ = oandapyV20.endpoints.pricing.PricingInfo(
                 accountID=account, params=parameters
             )
-            client.request(request)
+            client.request(request_)
             logger.info("Oanda key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
 

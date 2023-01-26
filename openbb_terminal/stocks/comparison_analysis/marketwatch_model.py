@@ -1,16 +1,15 @@
 """ Comparison Analysis Marketwatch Model """
 __docformat__ = "numpy"
 
-from datetime import datetime
 import logging
+from datetime import datetime
 from typing import Dict, List, Tuple
 
 import pandas as pd
-from openbb_terminal.helper_funcs import request
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)

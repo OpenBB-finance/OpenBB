@@ -2,17 +2,18 @@
 __docformat__ = "numpy"
 
 import argparse
-import binascii
-import logging
-
-from typing import Optional, Any, Union
-import hmac
-import hashlib
-import time
 import base64
-from openbb_terminal.helper_funcs import request
+import binascii
+import hashlib
+import hmac
+import logging
+import time
+from typing import Any, Optional, Union
+
 from requests.auth import AuthBase
+
 import openbb_terminal.config_terminal as cfg
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
