@@ -37,12 +37,7 @@ class User:
         username = "[" + username[:MAX_FLAIR_LEN] + "]"
 
         if obbff.USE_FLAIR == ":openbb" or username in obbff.USE_FLAIR:
-
-            if obbff.SYNC_ENABLED:
-                flair = username + " 🟢"
-            else:
-                flair = username + " 🔴"
-            setattr(obbff, "USE_FLAIR", flair)
+            setattr(obbff, "USE_FLAIR", username + " 🦋")
 
     @classmethod
     def get_uuid(cls):
@@ -66,9 +61,9 @@ class User:
             console.print(f"[info]email:[/info] {User._EMAIL}")
             console.print(f"[info]uuid:[/info] {User._UUID}")
             if obbff.SYNC_ENABLED:
-                sync = "enabled"
+                sync = "ON"
             else:
-                sync = "disabled"
+                sync = "OFF"
             console.print(f"[info]sync:[/info] {sync}\n")
         else:
             console.print("[info]Only you know...[/info]\n")

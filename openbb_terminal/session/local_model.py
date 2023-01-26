@@ -95,7 +95,6 @@ def apply_configs(configs: dict):
 
         # TODO: Find a cleaner way to check if user has sync enabled.
         obbff.SYNC_ENABLED = is_sync_enabled(settings)
-        User.update_flair()
 
         if obbff.SYNC_ENABLED:
             if settings:
