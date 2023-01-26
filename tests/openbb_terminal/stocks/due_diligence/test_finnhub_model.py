@@ -37,7 +37,7 @@ def test_get_rating_over_time_invalid_status(mocker):
     mock_response = mocker.Mock(**attrs)
 
     mocker.patch(
-        target="request",
+        target="openbb_terminal.helper_funcs.requests.get",
         new=mocker.Mock(return_value=mock_response),
     )
     result_df = finnhub_model.get_rating_over_time(symbol="FAILING_REQUEST")
