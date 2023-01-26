@@ -214,7 +214,7 @@ class PortfolioController(BaseController):
 >   bro              brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
 >   po               portfolio optimization, \t optimize your portfolio weights efficiently[/menu]
 [cmds]
-    load             load transactions into the portfolio (use 'load --example' for an example)
+    load             load transactions into the portfolio (use load --example for an example)
     show             show existing transactions
     bench            define the benchmark
 [/cmds]
