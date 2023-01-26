@@ -1,0 +1,5 @@
+forex
+load EURUSD --source YahooFinance
+load EURUSD --source Polygon
+load EURUSD --source AlphaVantage
+exit

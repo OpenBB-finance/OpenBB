@@ -20,6 +20,7 @@ def print_recommendation(
     exchange: str = "",
     interval: str = "",
     export: str = "",
+    sheet_name: str = None,
 ):
     """Print tradingview recommendation based on technical indicators
 
@@ -33,6 +34,8 @@ def print_recommendation(
         Exchange based on tradingview docs https://python-tradingview-ta.readthedocs.io/en/latest/usage.html
     interval: str
         Interval time to check technical indicators and correspondent recommendation
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format of export file
     """
@@ -52,6 +55,7 @@ def print_recommendation(
         os.path.dirname(os.path.abspath(__file__)),
         "recom",
         recom,
+        sheet_name,
     )
     print_rich_table(
         recom,

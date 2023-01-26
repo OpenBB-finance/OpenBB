@@ -80,4 +80,10 @@ class AlternativeDataController(BaseController):
         )
 
         if ns_parser:
-            hackernews_view.display_stories(limit=ns_parser.limit)
+            hackernews_view.display_stories(
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )

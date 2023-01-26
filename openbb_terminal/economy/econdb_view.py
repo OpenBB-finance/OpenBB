@@ -32,6 +32,7 @@ def show_macro_data(
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Show the received macro data about a company [Source: EconDB]
 
@@ -133,6 +134,7 @@ def show_macro_data(
             os.path.dirname(os.path.abspath(__file__)),
             "macro_data",
             df_rounded,
+            sheet_name,
         )
 
     theme.style_primary_axis(ax)
@@ -151,6 +153,7 @@ def show_treasuries(
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Display U.S. Treasury rates [Source: EconDB]
 
@@ -228,6 +231,7 @@ def show_treasuries(
             os.path.dirname(os.path.abspath(__file__)),
             "treasuries_data",
             treasury_data,
+            sheet_name,
         )
 
 

@@ -61,6 +61,7 @@ def get_ark_trades_by_ticker(symbol: str) -> pd.DataFrame:
         end=df_orders.Date.iloc[0],
         start=df_orders.Date.iloc[-1],
         progress=False,
+        ignore_tz=True,
     )["Close"]
 
     df_orders.set_index("Date", inplace=True)
