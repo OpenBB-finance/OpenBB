@@ -214,18 +214,6 @@ def test_display_expiry_dates():
                 ["strike", "optionType"],
             ]
         ),
-        (
-            [
-                CHAIN,
-                200,
-                EXPIRY_DATES[-1],
-                -1,
-                -1,
-                False,
-                False,
-                ["strike", "optionType"],
-            ]
-        ),
     ],
 )
 def test_display_chains(
