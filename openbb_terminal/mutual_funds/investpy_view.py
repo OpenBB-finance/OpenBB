@@ -71,7 +71,12 @@ def display_search(
 
 
 @log_start_end(log=logger)
-def display_overview(country: str = "united states", limit: int = 10, export: str = ""):
+def display_overview(
+    country: str = "united states",
+    limit: int = 10,
+    export: str = "",
+    sheet_name: str = None,
+):
     """Displays an overview of the main funds from a country.
 
     Parameters
@@ -96,6 +101,7 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
         os.path.dirname(os.path.abspath(__file__)),
         f"overview_{country.replace(' ','_')}",
         overview,
+        sheet_name,
     )
 
 
@@ -139,6 +145,7 @@ def display_historical(
     data: pd.DataFrame,
     name: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical fund price
@@ -149,6 +156,8 @@ def display_historical(
         Dataframe containing historical data
     name: str
         Fund symbol or name
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes:Optional[List[plt.Axes]]:
@@ -170,4 +179,10 @@ def display_historical(
     if external_axes is None:
         theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "historical", data)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "historical",
+        data,
+        sheet_name,
+    )

@@ -80,6 +80,7 @@ def plot_vol(
     puts_only: bool = False,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume
@@ -104,6 +105,8 @@ def plot_vol(
         Show puts only
     export: str
         Format to export file
+    sheet_name: str
+        Optionally specify the name of the sheet to export to
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
 
@@ -168,6 +171,7 @@ def plot_vol(
         os.path.dirname(os.path.abspath(__file__)),
         f"vol_{symbol}_{expiry}",
         chain,
+        sheet_name,
     )
 
 
@@ -183,6 +187,7 @@ def plot_oi(
     puts_only: bool = False,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot open interest
@@ -207,6 +212,8 @@ def plot_oi(
         Show puts only
     export: str
         Format to export file
+    sheet_name: str
+        Optionally specify the name of the sheet to export to
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
 
@@ -272,6 +279,7 @@ def plot_oi(
         os.path.dirname(os.path.abspath(__file__)),
         f"oi_{symbol}_{expiry}",
         chain,
+        sheet_name,
     )
 
 
@@ -285,6 +293,7 @@ def plot_voi(
     max_sp: float = -1,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume and open interest
@@ -305,6 +314,8 @@ def plot_voi(
         Max strike price
     export: str
         Format for exporting data
+    sheet_name: str
+        Optionally specify the name of the sheet to export to
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
 
@@ -404,6 +415,7 @@ def plot_voi(
         os.path.dirname(os.path.abspath(__file__)),
         f"voi_{symbol}_{expiry}",
         chain,
+        sheet_name,
     )
 
 
@@ -437,6 +449,7 @@ def display_chains(
     min_sp: float = -1,
     max_sp: float = -1,
     export: str = "",
+    sheet_name: str = None,
     to_display: list = None,
 ):
     """Display chains
@@ -457,6 +470,8 @@ def display_chains(
         Show puts only
     export: str
         Format for exporting data
+    sheet_name: str
+        Optionally specify the name of the sheet to export to
     to_display: list
         List of columns to display
     """
@@ -492,8 +507,5 @@ def display_chains(
     print_raw(calls, puts, "Option chain", calls_only, puts_only)
 
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "chain",
-        chain,
+        export, os.path.dirname(os.path.abspath(__file__)), "chain", chain, sheet_name
     )

@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 warnings.filterwarnings("ignore")
 
-
+# pylint: disable=too-many-arguments
 @log_start_end(log=logger)
 def display_historical(
     symbol: str,
@@ -35,6 +35,7 @@ def display_historical(
     raw: bool = False,
     chain_id: str = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot historical option prices
@@ -55,6 +56,8 @@ def display_historical(
         OCC option symbol
     export: str
         Format of export file
+    sheet_name: str
+        Optionally specify the name of the sheet to export to
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
@@ -116,4 +119,5 @@ def display_historical(
             os.path.dirname(os.path.abspath(__file__)),
             "hist",
             df_hist,
+            sheet_name,
         )

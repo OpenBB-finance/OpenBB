@@ -228,7 +228,7 @@ def test_display_history(mocker):
             },
         },
     ]
-    bro_coinbase_view.display_history("ETH", "", 2)
+    bro_coinbase_view.display_history("ETH", "", None, 2)
 
 
 @check_print(assert_in="base_currency")
