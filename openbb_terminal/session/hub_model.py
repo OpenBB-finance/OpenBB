@@ -221,6 +221,7 @@ def download_routine(
 ) -> Optional[requests.Response]:
     """Download a routine from the server."""
     console.print("[red]Not implemented yet.[/red]")
+    return None
 
     # TODO: Implement when endpoint is ready.
 
