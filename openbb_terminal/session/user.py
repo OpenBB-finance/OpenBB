@@ -60,7 +60,7 @@ class User:
                 sync = "ON"
             else:
                 sync = "OFF"
-            console.print(f"[info]sync:[/info] {sync}")
+            console.print(f"[info]sync:[/info] {sync}\n")
         else:
             console.print(
                 "[info]You are currently logged as a guest.\n"
