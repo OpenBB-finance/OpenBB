@@ -40,6 +40,16 @@ class User:
             setattr(obbff, "USE_FLAIR", username + " 🦋")
 
     @classmethod
+    def get_uuid(cls):
+        """Get uuid."""
+        return User._UUID
+
+    @classmethod
+    def get_email(cls):
+        """Get email."""
+        return User._EMAIL
+
+    @classmethod
     def whoami(cls):
         """Display user info."""
         if User._UUID:
