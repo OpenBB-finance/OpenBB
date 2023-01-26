@@ -16,7 +16,12 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def view_screener(
-    preset: str, num_to_show: int, sortby: str, ascend: bool, export: str = ""
+    preset: str,
+    num_to_show: int,
+    sortby: str,
+    ascend: bool,
+    export: str = "",
+    sheet_name: str = None,
 ):
     """Display screener output
 
@@ -30,6 +35,8 @@ def view_screener(
         Column to sort by
     ascend: bool
         Ascend when sorted
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Output format of export
 
@@ -50,4 +57,5 @@ def view_screener(
         os.path.dirname(os.path.abspath(__file__)),
         "screen",
         screened_data,
+        sheet_name,
     )

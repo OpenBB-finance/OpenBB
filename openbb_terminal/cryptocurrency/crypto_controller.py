@@ -295,6 +295,7 @@ class CryptoController(CryptoBaseController):
                 os.path.join(os.path.dirname(os.path.abspath(__file__))),
                 f"{self.symbol}",
                 self.current_df,
+                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
 
             plot_chart(
@@ -520,6 +521,9 @@ class CryptoController(CryptoBaseController):
                     skip=ns_parser.skip,
                     show_all=True,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 find(
@@ -528,6 +532,9 @@ class CryptoController(CryptoBaseController):
                     key=ns_parser.key,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)

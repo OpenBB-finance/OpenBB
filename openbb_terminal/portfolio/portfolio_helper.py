@@ -19,7 +19,7 @@ from openbb_terminal.portfolio.statics import REGIONS
 logger = logging.getLogger(__name__)
 
 
-# pylint: disable=too-many-return-statements, too-many-lines, too-many-statements
+# pylint: disable=too-many-return-statements, too-many-lines, too-many-statements, consider-iterating-dictionary
 # pylint: disable=C0302
 
 

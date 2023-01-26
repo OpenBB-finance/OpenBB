@@ -133,6 +133,7 @@ def display_covid_ov(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = None,
     plot: bool = True,
 ) -> None:
     """Prints table showing historical cases and deaths by country.
@@ -145,6 +146,8 @@ def display_covid_ov(
         Flag to display raw data
     limit: int
         Number of raw data to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     plot: bool
@@ -165,7 +168,14 @@ def display_covid_ov(
         )
 
     if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "ov", data)
+        data = covid_model.get_covid_ov(country, limit)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "ov",
+            data,
+            sheet_name,
+        )
 
 
 @log_start_end(log=logger)
@@ -175,6 +185,7 @@ def display_covid_stat(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = None,
     plot: bool = True,
 ) -> None:
     """Prints table showing historical cases and deaths by country.
@@ -189,6 +200,8 @@ def display_covid_stat(
         Flag to display raw data
     limit: int
         Number of raw data to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     plot : bool
@@ -213,7 +226,13 @@ def display_covid_stat(
         cols = data.columns.tolist()
         cols = cols[-1:] + cols[:-1]
         data = data[cols]
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), stat, data)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            stat,
+            data,
+            sheet_name,
+        )
 
 
 @log_start_end(log=logger)
@@ -223,6 +242,7 @@ def display_case_slopes(
     threshold: int = 10000,
     ascend: bool = False,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing countries with the highest case slopes.
 
@@ -253,4 +273,5 @@ def display_case_slopes(
         os.path.dirname(os.path.abspath(__file__)),
         f"slopes_{days_back}day",
         data,
+        sheet_name,
     )

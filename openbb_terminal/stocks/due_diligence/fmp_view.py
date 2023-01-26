@@ -21,7 +21,7 @@ def add_color(value: str) -> str:
 
 
 @log_start_end(log=logger)
-def rating(symbol: str, limit: int = 10, export: str = ""):
+def rating(symbol: str, limit: int = 10, export: str = "", sheet_name: str = None):
     """Display ratings for a given ticker. [Source: Financial Modeling Prep]
 
     Parameters
@@ -30,6 +30,8 @@ def rating(symbol: str, limit: int = 10, export: str = ""):
         Stock ticker symbol
     limit: int
         Number of last days ratings to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     """
@@ -56,4 +58,5 @@ def rating(symbol: str, limit: int = 10, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "rot",
         df,
+        sheet_name,
     )
