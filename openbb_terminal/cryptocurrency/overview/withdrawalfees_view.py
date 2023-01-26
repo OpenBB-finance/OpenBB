@@ -15,7 +15,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_overall_withdrawal_fees(limit: int = 15, export: str = "") -> None:
+def display_overall_withdrawal_fees(
+    limit: int = 15, export: str = "", sheet_name: str = None
+) -> None:
     """Top coins withdrawal fees
     [Source: https://withdrawalfees.com/]
 
@@ -46,11 +48,14 @@ def display_overall_withdrawal_fees(limit: int = 15, export: str = "") -> None:
             os.path.dirname(os.path.abspath(__file__)),
             "withdrawal_fees",
             df_fees,
+            sheet_name,
         )
 
 
 @log_start_end(log=logger)
-def display_overall_exchange_withdrawal_fees(export: str = "") -> None:
+def display_overall_exchange_withdrawal_fees(
+    export: str = "", sheet_name: str = None
+) -> None:
     """Exchange withdrawal fees
     [Source: https://withdrawalfees.com/]
 
@@ -79,11 +84,14 @@ def display_overall_exchange_withdrawal_fees(export: str = "") -> None:
             os.path.dirname(os.path.abspath(__file__)),
             "exchange_withdrawal_fees",
             df_fees,
+            sheet_name,
         )
 
 
 @log_start_end(log=logger)
-def display_crypto_withdrawal_fees(symbol: str, export: str = "") -> None:
+def display_crypto_withdrawal_fees(
+    symbol: str, export: str = "", sheet_name: str = None
+) -> None:
     """Coin withdrawal fees per exchange
     [Source: https://withdrawalfees.com/]
 
@@ -117,4 +125,5 @@ def display_crypto_withdrawal_fees(symbol: str, export: str = "") -> None:
             os.path.dirname(os.path.abspath(__file__)),
             "crypto_withdrawal_fees",
             df_fees,
+            sheet_name,
         )

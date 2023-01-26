@@ -36,6 +36,7 @@ def display_rnn_forecast(
     force_reset: bool = True,
     save_checkpoints: bool = True,
     export: str = "",
+    sheet_name: str = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
@@ -81,6 +82,8 @@ def display_rnn_forecast(
         Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
     forecast_only: bool
         Whether to only show dates in the forecasting range. Defaults to False.
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     residuals: bool
@@ -142,6 +145,7 @@ def display_rnn_forecast(
         precision=precision,
         probabilistic=probabilistic,
         export=export,
+        sheet_name=sheet_name,
         forecast_only=forecast_only,
         naive=naive,
         export_pred_raw=export_pred_raw,

@@ -28,6 +28,7 @@ def display_theta_forecast(
     start_window: float = 0.85,
     forecast_horizon: int = 5,
     export: str = "",
+    sheet_name: str = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
@@ -58,6 +59,8 @@ def display_theta_forecast(
         Size of sliding window from start of timeseries and onwards
     forecast_horizon: int
         Number of days to forecast when backtesting and retraining historical
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     residuals: bool
@@ -112,6 +115,7 @@ def display_theta_forecast(
         precision=precision,
         probabilistic=probabilistic,
         export=export,
+        sheet_name=sheet_name,
         forecast_only=forecast_only,
         naive=naive,
         export_pred_raw=export_pred_raw,

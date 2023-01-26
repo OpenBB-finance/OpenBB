@@ -18,7 +18,7 @@ def vcr_config():
 @pytest.mark.parametrize(
     "timeframe, quarter",
     [
-        ("31-Dec-2020", True),
+        ("31-Dec-2021", True),
         ("2020", False),
     ],
 )
