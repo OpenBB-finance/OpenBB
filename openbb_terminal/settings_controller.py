@@ -7,7 +7,7 @@ import os.path
 import argparse
 import logging
 from pathlib import Path
-from typing import List
+from typing import List, Optional, Union
 import pytz
 
 # IMPORTATION THIRDPARTY
@@ -16,6 +16,7 @@ from dotenv import set_key
 # IMPORTATION INTERNAL
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal import featflags_controller as obbff_ctrl
 from openbb_terminal.core.config.paths import USER_ENV_FILE, USER_DATA_DIRECTORY
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -28,6 +29,8 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.session.hub_model import patch_user_configs
+from openbb_terminal.session.user import User
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel
@@ -134,6 +137,38 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Settings")
 
+    @staticmethod
+    def set_cfg_plot(name: str, value: Optional[Union[bool, str]]):
+        """Set plot config attribute
+
+        Parameters
+        ----------
+        name : str
+            Environment variable name
+        value : str
+            Environment variable value
+        persist : bool, optional
+            Persist feature flag, by default False
+        """
+
+        if User.is_guest():
+            set_key(str(USER_ENV_FILE), name, str(value))
+
+        # Remove "OPENBB_" prefix from env_var
+        if name.startswith("OPENBB_"):
+            name = name[7:]
+
+        # Set obbff.env_var_name = not env_var_value
+        setattr(cfg_plot, name, value)
+
+        # Send feature flag to server
+        if not User.is_guest():
+            patch_user_configs(
+                key=name,
+                value=str(value),
+                type_="settings",
+            )
+
     @log_start_end(log=logger)
     def call_colors(self, _):
         """Process colors command"""
@@ -152,8 +187,9 @@ class SettingsController(BaseController):
     @log_start_end(log=logger)
     def call_dt(self, _):
         """Process dt command"""
-        obbff.USE_DATETIME = not obbff.USE_DATETIME
-        set_key(USER_ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
+        obbff_ctrl.FeatureFlagsController.set_feature_flag(
+            "OPENBB_USE_DATETIME", not obbff.USE_DATETIME
+        )
 
     @log_start_end(log=logger)
     def call_source(self, other_args: List[str]):
@@ -168,7 +204,7 @@ class SettingsController(BaseController):
             "-v",
             "--value",
             type=str,
-            default=os.getcwd() + os.path.sep + "sources.json.default",
+            default=str(USER_DATA_DIRECTORY / "data_sources_default.json"),
             dest="value",
             help="value",
         )
@@ -178,30 +214,25 @@ class SettingsController(BaseController):
         if ns_parser:
             try:
 
-                the_path = os.getcwd() + os.path.sep + ns_parser.value
-                console.print("Loading sources from " + the_path)
+                the_path = ns_parser.value
+                console.print("Loading sources from " + str(the_path))
                 with open(the_path):
                     # Try to open the file to get an exception if the file doesn't exist
                     pass
 
+                obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                    "OPENBB_PREFERRED_DATA_SOURCE_FILE", ns_parser.value
+                )
+
             except Exception as e:
                 console.print("Couldn't open the sources file!")
                 console.print(e)
-            obbff.PREFERRED_DATA_SOURCE_FILE = ns_parser.value
-            set_key(
-                USER_ENV_FILE,
-                "OPENBB_PREFERRED_DATA_SOURCE_FILE",
-                str(ns_parser.value),
-            )
 
     @log_start_end(log=logger)
     def call_autoscaling(self, _):
         """Process autoscaling command"""
-        obbff.USE_PLOT_AUTOSCALING = not obbff.USE_PLOT_AUTOSCALING
-        set_key(
-            USER_ENV_FILE,
-            "OPENBB_USE_PLOT_AUTOSCALING",
-            str(obbff.USE_PLOT_AUTOSCALING),
+        obbff_ctrl.FeatureFlagsController.set_feature_flag(
+            "OPENBB_USE_PLOT_AUTOSCALING", not obbff.USE_PLOT_AUTOSCALING
         )
 
     @log_start_end(log=logger)
@@ -225,8 +256,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.value:
-            set_key(USER_ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
-            cfg_plot.PLOT_DPI = ns_parser.value
+            SettingsController.set_cfg_plot("OPENBB_PLOT_DPI", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_height(self, other_args: List[str]):
@@ -249,8 +279,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(USER_ENV_FILE, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
-            cfg_plot.PLOT_HEIGHT = ns_parser.value
+            SettingsController.set_cfg_plot("OPENBB_PLOT_HEIGHT", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_width(self, other_args: List[str]):
@@ -273,8 +302,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(USER_ENV_FILE, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
-            cfg_plot.PLOT_WIDTH = ns_parser.value
+            SettingsController.set_cfg_plot("OPENBB_PLOT_WIDTH", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_pheight(self, other_args: List[str]):
@@ -296,12 +324,9 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(
-                USER_ENV_FILE,
-                "OPENBB_PLOT_HEIGHT_PERCENTAGE",
-                str(ns_parser.value),
+            SettingsController.set_cfg_plot(
+                "OPENBB_PLOT_HEIGHT_PERCENTAGE", ns_parser.value
             )
-            cfg_plot.PLOT_HEIGHT_PERCENTAGE = ns_parser.value
 
     @log_start_end(log=logger)
     def call_pwidth(self, other_args: List[str]):
@@ -323,12 +348,9 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(
-                USER_ENV_FILE,
-                "OPENBB_PLOT_WIDTH_PERCENTAGE",
-                str(ns_parser.value),
+            SettingsController.set_cfg_plot(
+                "OPENBB_PLOT_WIDTH_PERCENTAGE", ns_parser.value
             )
-            cfg_plot.PLOT_WIDTH_PERCENTAGE = ns_parser.value
 
     @log_start_end(log=logger)
     def call_monitor(self, other_args: List[str]):
@@ -350,8 +372,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(USER_ENV_FILE, "OPENBB_MONITOR", str(ns_parser.value))
-            cfg_plot.MONITOR = ns_parser.value
+            SettingsController.set_cfg_plot("OPENBB_MONITOR", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_backend(self, other_args: List[str]):
@@ -373,11 +394,9 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(USER_ENV_FILE, "OPENBB_BACKEND", str(ns_parser.value))
-            if ns_parser.value == "None":
-                cfg_plot.BACKEND = None  # type: ignore
-            else:
-                cfg_plot.BACKEND = ns_parser.value
+            SettingsController.set_cfg_plot(
+                "OPENBB_BACKEND", None if ns_parser.value == "None" else ns_parser.value
+            )
 
     @log_start_end(log=logger)
     def call_lang(self, other_args: List[str]):
@@ -402,8 +421,9 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             if ns_parser.value:
-                set_key(USER_ENV_FILE, "OPENBB_USE_LANGUAGE", str(ns_parser.value))
-                obbff.USE_LANGUAGE = ns_parser.value
+                obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                    "OPENBB_USE_LANGUAGE", ns_parser.value
+                )
             else:
                 console.print(
                     f"Languages available: {', '.join(self.languages_available)}"
@@ -460,8 +480,10 @@ class SettingsController(BaseController):
                 ns_parser.emoji = ""
             else:
                 ns_parser.emoji = " ".join(ns_parser.emoji)
-            set_key(USER_ENV_FILE, "OPENBB_USE_FLAIR", str(ns_parser.emoji))
-            obbff.USE_FLAIR = ns_parser.emoji
+
+            obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                "OPENBB_USE_FLAIR", ns_parser.emoji
+            )
 
     @log_start_end(log=logger)
     def call_userdata(self, other_args: List[str]):

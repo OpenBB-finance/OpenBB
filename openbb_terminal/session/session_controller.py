@@ -1,16 +1,12 @@
-import importlib
-import os
-import sys
 from typing import Tuple
 import json
-import matplotlib.pyplot as plt
 import openbb_terminal.session.local_model as Local
 import openbb_terminal.session.hub_model as Hub
+from openbb_terminal.session.session_model import create_session
 from openbb_terminal.session.user import User
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal import terminal_controller
-from openbb_terminal.helper_funcs import system_clear
 
 
 def display_welcome_message():
@@ -38,15 +34,6 @@ def get_user_input() -> Tuple[str, str, bool]:
     return email, password, save
 
 
-def create_session(email: str, password: str, save: bool) -> dict:
-    """Create a session."""
-
-    session = Hub.get_session(email, password)
-    if session and save:
-        Local.save_session(session)
-    return session
-
-
 def login_prompt(welcome=True, guest_allowed=True):
     """Login prompt and launch terminal if login is successful.
 
@@ -69,6 +56,7 @@ def login_prompt(welcome=True, guest_allowed=True):
     login(session=session)
 
 
+# TODO: Move some login inside this function to the session_model.py
 def login(session: dict):
     """Login and launch terminal.
 
@@ -87,27 +75,6 @@ def login(session: dict):
             login_prompt(welcome=False)
     else:
         login_prompt(welcome=True)
-
-
-def logout():
-    """Logout and clear session."""
-    system_clear()
-    User.clear()
-
-    # Clear openbb environment variables
-    for v in os.environ:
-        if v.startswith("OPENBB"):
-            os.environ.pop(v)
-
-    # Reload all openbb modules to clear memorized variables
-    modules = sys.modules.copy()
-    for module in modules:
-        if module.startswith("openbb"):
-            importlib.reload(sys.modules[module])
-
-    Hub.delete_session()
-    Local.remove_session_file()
-    plt.close("all")
 
 
 def main(guest_allowed: bool = True):

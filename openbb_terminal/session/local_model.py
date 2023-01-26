@@ -6,7 +6,7 @@ from openbb_terminal.rich_config import console
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal import config_plot as cfgp
+from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal.base_helpers import strtobool
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
@@ -99,8 +99,8 @@ def apply_configs(configs: dict):
                     cast_set_attr(obbff, k, v)
                 elif hasattr(cfg, k):
                     cast_set_attr(cfg, k, v)
-                elif hasattr(cfgp, k):
-                    cast_set_attr(cfgp, k, v)
+                elif hasattr(cfg_plot, k):
+                    cast_set_attr(cfg_plot, k, v)
 
 
 def cast_set_attr(obj, name, value):
@@ -117,7 +117,7 @@ def cast_set_attr(obj, name, value):
     """
     if value.lower() in ["true", "false"]:
         setattr(obj, name, strtobool(value))
-    elif isinstance(getattr(obj, value), int):
+    elif isinstance(getattr(obj, name), int):
         setattr(obj, name, int(value))
     else:
         setattr(obj, name, value)
