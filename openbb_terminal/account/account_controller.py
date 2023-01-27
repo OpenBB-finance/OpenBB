@@ -101,9 +101,10 @@ class AccountController(BaseController):
                         "OPENBB_SYNC_ENABLED", True, force=True
                     )
             elif ns_parser.off:
-                FeatureFlagsController.set_feature_flag(
-                    "OPENBB_SYNC_ENABLED", False, force=True
-                )
+                if obbff.SYNC_ENABLED:
+                    FeatureFlagsController.set_feature_flag(
+                        "OPENBB_SYNC_ENABLED", False, force=True
+                    )
 
             if obbff.SYNC_ENABLED:
                 sync = "ON"
