@@ -1,18 +1,17 @@
 from typing import Tuple
-import json
+from openbb_terminal import terminal_controller
 import openbb_terminal.session.local_model as Local
-import openbb_terminal.session.hub_model as Hub
-from openbb_terminal.session.session_model import create_session
-from openbb_terminal.session.user import User
+from openbb_terminal.session.session_model import (
+    LoginStatus,
+    create_session,
+    login,
+)
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
-from openbb_terminal import terminal_controller
-from openbb_terminal.helper_funcs import system_clear
 
 
 def display_welcome_message():
     """Display welcome message"""
-    system_clear()
     with open(PACKAGE_DIRECTORY / "session" / "banner.txt") as f:
         console.print(f.read(), style="menu")
 
@@ -36,8 +35,8 @@ def get_user_input() -> Tuple[str, str, bool]:
     return email, password, save
 
 
-def login_prompt(welcome=True, guest_allowed=True):
-    """Login prompt and launch terminal if login is successful.
+def prompt(welcome=True, guest_allowed=False):
+    """Prompt and launch terminal if login is successful.
 
     Parameters
     ----------
@@ -51,44 +50,51 @@ def login_prompt(welcome=True, guest_allowed=True):
         email, password, save = get_user_input()
         if not email or not password:
             if guest_allowed:
-                return terminal_controller.parse_args_and_run()
+                return launch_terminal()
             continue
 
         session = create_session(email, password, save)
         if isinstance(session, dict) and session:
-            break
-
-    login(session=session)
+            return login_and_launch(session=session, guest_allowed=guest_allowed)
 
 
-# TODO: Move some login inside this function to the session_model.py
-def login(session: dict):
+def launch_terminal():
+    """Launch terminal"""
+    terminal_controller.parse_args_and_run()
+
+
+def login_and_launch(session: dict, guest_allowed: bool = True):
     """Login and launch terminal.
 
     Parameters
     ----------
     session : dict
         The session info.
+    guest_allowed : bool, optional
+        Allow guest login, by default True
     """
-    User.load_user_info(session)
-    response = Hub.fetch_user_configs(session)
-    if response:
-        if response.status_code == 200:
-            Local.apply_configs(configs=json.loads(response.content))
-            terminal_controller.parse_args_and_run()
-        else:
-            login_prompt(welcome=False)
+    status = login(session)
+    if status == LoginStatus.SUCCESS:
+        launch_terminal()
+    elif status == LoginStatus.FAILED:
+        prompt(welcome=False, guest_allowed=guest_allowed)
     else:
-        login_prompt(welcome=True)
+        prompt(welcome=True, guest_allowed=guest_allowed)
 
 
 def main(guest_allowed: bool = True):
-    """Main function"""
+    """Main function
+
+    Parameters
+    ----------
+    guest_allowed : bool, optional
+        Allow guest login, by default True
+    """
     local_session = Local.get_session()
     if not local_session:
-        login_prompt(guest_allowed=guest_allowed)
+        prompt(guest_allowed=guest_allowed)
     else:
-        login(session=local_session)
+        login_and_launch(session=local_session, guest_allowed=guest_allowed)
 
 
 if __name__ == "__main__":

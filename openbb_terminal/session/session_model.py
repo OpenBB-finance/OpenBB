@@ -2,12 +2,20 @@ import importlib
 import logging
 import os
 import sys
+import json
+from enum import Enum
 import matplotlib.pyplot as plt
 import openbb_terminal.session.local_model as Local
 import openbb_terminal.session.hub_model as Hub
 from openbb_terminal.session.user import User
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
+
+
+class LoginStatus(Enum):
+    SUCCESS = "success"
+    FAILED = "failed"
+    NO_RESPONSE = "no_response"
 
 
 def create_session(email: str, password: str, save: bool) -> dict:
@@ -27,6 +35,24 @@ def create_session(email: str, password: str, save: bool) -> dict:
     if session and save:
         Local.save_session(session)
     return session
+
+
+def login(session: dict) -> LoginStatus:
+    """Login and load user info.
+
+    Parameters
+    ----------
+    session : dict
+        The session info.
+    """
+    response = Hub.fetch_user_configs(session)
+    if response:
+        if response.status_code == 200:
+            User.load_user_info(session)
+            Local.apply_configs(configs=json.loads(response.content))
+            return LoginStatus.SUCCESS
+        return LoginStatus.FAILED
+    return LoginStatus.NO_RESPONSE
 
 
 def logout(cls: bool = False):
