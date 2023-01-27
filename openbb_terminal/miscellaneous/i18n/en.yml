@@ -78,7 +78,6 @@ en:
   etf: exchange traded funds. Historical pricing, compare holdings and screening
   economy: global macroeconomic data, e.g. futures, yield, treasury
   forex: foreign exchanges, quotes, forward rates for currency pairs and oanda integration
-  funds: mutual funds search, overview, holdings and sector weights
   futures: commodities, bonds, index, bitcoin and forex
   futures/search: search for a future based on category or exchange
   futures/historical: get historical timeseries
@@ -88,7 +87,7 @@ en:
   forecast: timeseries forecasting with machine learning
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
   dashboards: interactive dashboards using voila and jupyter notebooks
-  stocks/filings: the most-recent form submissions to the SEC 
+  stocks/filings: the most-recent form submissions to the SEC
   stocks/search: search a specific stock ticker for analysis
   stocks/load: load a specific stock ticker and additional info for analysis
   stocks/_ticker: Stock
@@ -848,18 +847,6 @@ en:
   forex/oanda/order: place limit order -u NUMBER of units -p price
   forex/oanda/orderbook: print orderbook
   forex/oanda/positionbook: print positionbook
-  funds/country: set a country for filtering
-  funds/_country: Current Country
-  funds/search: search for Mutual Funds
-  funds/load: load historical fund data
-  funds/_fund: Current Fund
-  funds/info: get fund information
-  funds/plot: plot loaded historical fund data
-  funds/sector: sector weightings
-  funds/equity: equity holdings
-  funds/alswe: display fund allocation (sector, country, holdings)
-  funds/infoswe: get fund information
-  funds/forecast: forecasting techniques
   alternative/hn: Hacker News most popular stories
   alternative/covid: COVID menu,                 cases, deaths, rates
   alternative/oss: Open Source menu,           star history, repos information
