@@ -9,12 +9,16 @@ function get_popup(data = null, popup_id = null) {
         let yaxis = 'title' in data.yaxis && 'text' in data.yaxis.title ? data.yaxis.title.text : '';
 
         TITLE_DIV.innerHTML = `
-        <label for="title_text">Title:</label>
-        <input id="title_text" type="text" value="${title}">
-        <label for="title_xaxis">X axis:</label>
-        <input id="title_xaxis" type="text" value="${xaxis}">
-        <label for="title_yaxis">Y axis:</label>
-        <input id="title_yaxis" type="text" value="${yaxis}">
+        <div style="margin-top: 10px;">
+            <label for="title_text">Title:</label>
+            <input id="title_text" type="text" value="${title}">
+
+            <label for="title_xaxis">X axis:</label>
+            <input id="title_xaxis" type="text" value="${xaxis}">
+
+            <label for="title_yaxis">Y axis:</label>
+            <input id="title_yaxis" type="text" value="${yaxis}">
+        </div>
 
         <button id="title_submit" onclick="on_submit('title')">Submit</button>
         <button id="title_cancel" onclick="closePopup()">Cancel</button>
