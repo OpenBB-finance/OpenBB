@@ -3,10 +3,9 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +47,7 @@ def etf_movers(sort_type: str = "gainers", export: bool = False) -> pd.DataFrame
         url = ""
 
     if url:
-        data = requests.get(url, headers={"User-Agent": get_user_agent()}).json()
+        data = request(url, headers={"User-Agent": get_user_agent()}).json()
         symbol, name, last_price, net_change, percent_change, volume = (
             [],
             [],

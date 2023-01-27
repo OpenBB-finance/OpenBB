@@ -4,8 +4,8 @@ import logging
 from datetime import datetime
 
 import pandas as pd
-import requests
 
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -27,7 +27,7 @@ def get_collection_stats(slug: str) -> pd.DataFrame:
     pd.DataFrame
         collection stats
     """
-    res = requests.get(f"{API_URL}/collection/{slug}")
+    res = request(f"{API_URL}/collection/{slug}")
     if res.status_code == 200:
         data = res.json()
         collection = data["collection"]

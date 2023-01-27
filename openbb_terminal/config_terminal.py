@@ -19,6 +19,10 @@ dotenv.load_dotenv(USER_ENV_FILE)
 dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 dotenv.load_dotenv(PACKAGE_ENV_FILE, override=True)
 
+# Network requests
+# Set request timeout
+REQUEST_TIMEOUT = load_env_vars("OPENBB_REQUEST_TIMEOUT", int, 5)
+
 # Terminal UX section
 MPL_STYLE = os.getenv("OPENBB_MPLSTYLE") or "dark"
 PMF_STYLE = os.getenv("OPENBB_PMFSTYLE") or "dark"
