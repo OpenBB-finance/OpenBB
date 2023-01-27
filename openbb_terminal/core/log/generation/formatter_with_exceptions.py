@@ -68,6 +68,13 @@ class FormatterWithExceptions(logging.Formatter):
         return text_mocked
 
     @staticmethod
+    def mock_password(text: str) -> str:
+        pattern = r'("password": ")[^"]+'
+        replacement = r"\1 FILTERED_PASSWORD "
+        text_mocked = re.sub(pattern, replacement, text)
+        return text_mocked
+
+    @staticmethod
     def mock_home_directory(text: str) -> str:
         user_home_directory = str(HOME_DIRECTORY)
         text_mocked = text.replace(user_home_directory, "MOCKING_USER_PATH")
@@ -85,6 +92,7 @@ class FormatterWithExceptions(logging.Formatter):
     def filter_piis(cls, text: str) -> str:
         text_filtered = cls.mock_ipv4(text=text)
         text_filtered = cls.mock_email(text=text_filtered)
+        text_filtered = cls.mock_password(text=text_filtered)
         text_filtered = cls.mock_home_directory(text=text_filtered)
 
         return text_filtered
