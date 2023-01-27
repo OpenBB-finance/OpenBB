@@ -153,7 +153,7 @@ class Backend(PyWry):
 
     def del_temp(self):
         """Delete the temporary html file"""
-        if self.plotly_html:
+        if self.plotly_html.exists():
             self.plotly_html.unlink(missing_ok=True)
 
     def start(self, debug: bool = False):
@@ -163,10 +163,10 @@ class Backend(PyWry):
 
 
 # To avoid having plotly.js in the repo, we download it if it's not present
-if not (PLOTS_CORE_PATH / "assets" / "plotly.js").exists():
-    download = requests.get("https://cdn.plot.ly/plotly-2.16.1.min.js", stream=True)
+if not (PLOTS_CORE_PATH / "assets" / "plotly-2.18.0.min.js").exists():
+    download = requests.get("https://cdn.plot.ly/plotly-2.18.0.min.js", stream=True)
 
-    with open(str(PLOTS_CORE_PATH / "assets" / "plotly.js"), "wb") as f:
+    with open(str(PLOTS_CORE_PATH / "assets" / "plotly-2.18.0.min.js"), "wb") as f:
         for chunk in download.iter_content(chunk_size=1024):
             f.write(chunk)
 
