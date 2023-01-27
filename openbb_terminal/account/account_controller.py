@@ -11,6 +11,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.menu import session
+from openbb_terminal.session import hub_model as Hub
 
 # from openbb_terminal.session.user import User
 
@@ -26,7 +27,7 @@ class AccountController(BaseController):
     CHOICES_COMMANDS = [
         "sync",
         "pull",
-        "defaults",
+        "clear",
         # "upload",
         # "download",
     ]
@@ -61,7 +62,7 @@ class AccountController(BaseController):
         mt.add_info("_info_")
         mt.add_cmd("sync")
         mt.add_cmd("pull")
-        mt.add_cmd("defaults")
+        mt.add_cmd("clear")
         # mt.add_info("_routines_")
         # mt.add_cmd("upload")
         # mt.add_cmd("download")
@@ -106,17 +107,28 @@ class AccountController(BaseController):
                 sync = "ON"
             else:
                 sync = "OFF"
-            console.print(f"[info]sync:[/info] {sync}")
+
+            if ns_parser.on or ns_parser.off:
+                console.print(f"[info]sync:[/info] {sync}")
+            else:
+                console.print(f"sync is {sync}, use --on or --off to change.")
 
     def call_pull(self, _):
         """Pull data"""
         console.print("Pull, Diff and Merge.")
         pass
 
-    def call_defaults(self, _):
-        """Reset to defaults"""
-        console.print("No implemented yet.")
-        pass
+    def call_clear(self, _):
+        """Clear data"""
+        i = console.input(
+            "[red]This action is irreversible!\n"
+            "Are you sure you want to permanently delete your data? (y/n): [/red]"
+        )
+        if i.lower() in ["y", "yes"]:
+            console.print("")
+            Hub.clear_user_configs()
+        else:
+            console.print("\nAborted.", style="info")
 
     # @log_start_end(log=logger)
     # def call_upload(self, other_args: List[str]):

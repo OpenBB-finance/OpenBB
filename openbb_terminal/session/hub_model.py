@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Dict, Optional
 import requests
 from openbb_terminal.session.user import User
 
@@ -153,9 +153,27 @@ def patch_user_configs(key: str, value: str, type_: str) -> Optional[requests.Re
         return None
 
 
-def put_user_configs() -> Optional[requests.Response]:
-    """Push user configurations to the server."""
-    pass
+def clear_user_configs() -> Optional[requests.Response]:
+    """Clear user configurations to the server."""
+    data: Dict[str, dict] = {"features_keys": {}, "features_settings": {}}
+
+    try:
+        response = requests.put(
+            url=BASE_URL + "terminal/user",
+            headers={"Authorization": User.get_token()},
+            json=data,
+        )
+        if response.status_code == 200:
+            console.print("[green]Cleared configurations.[/green]")
+        else:
+            console.print("[red]Failed to clear configurations.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console.print("[red]Connection error.[/red]")
+        return None
+    except Exception:
+        console.print("[red]Failed to clear configurations.[/red]")
+        return None
 
 
 def delete_session():

@@ -16,10 +16,10 @@ en:
   intro: introduction on the OpenBB Terminal
   _configure_: Configure your own terminal
   _main_menu_: Main menu
-  account/_info_: Synchronization
-  account/sync: Send keys, settings and features flags on changes
-  account/pull: Pull keys, settings and feature flags from server
-  account/defaults: Reset to defaults
+  account/_info_: Remote storage of keys, settings and feature flags
+  account/sync: Automatically send to remote on changes
+  account/pull: Pull from remote
+  account/clear: Clear from remote
   account/_routines_: Routines
   account/upload: Upload routine
   account/download: Download routine
