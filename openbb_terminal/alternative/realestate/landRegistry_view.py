@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_estate_sales(postcode: str, export: str = "") -> None:
+def display_estate_sales(postcode: str, limit: int, export: str = "") -> None:
     """Display real estate sales.
 
     Parameters
@@ -21,8 +21,11 @@ def display_estate_sales(postcode: str, export: str = "") -> None:
     postcode : str
         Postcode
 
+    limit : int
+        number of rows to return
+
     """
-    sales = landRegistry_model.get_estate_sales(postcode)
+    sales = landRegistry_model.get_estate_sales(postcode, limit)
 
     if sales.empty or len(sales) == 0:
         console.print(
@@ -49,7 +52,7 @@ def display_estate_sales(postcode: str, export: str = "") -> None:
 
 @log_start_end(log=logger)
 def display_towns_sold_prices(
-    town: str, startdate: str, enddate: str, export: str = ""
+    town: str, startdate: str, enddate: str, limit: int, export: str = ""
 ):
     """Get towns sold house price data.
 
@@ -64,6 +67,9 @@ def display_towns_sold_prices(
     enddate : str
         endDate
 
+    limit : int
+        number of rows to return
+
 
     Returns
     -------
@@ -71,7 +77,7 @@ def display_towns_sold_prices(
         All sales for that town within the date range specified
     """
 
-    sales = landRegistry_model.get_towns_sold_prices(town, startdate, enddate)
+    sales = landRegistry_model.get_towns_sold_prices(town, startdate, enddate, limit)
 
     if sales.empty or len(sales) == 0:
         console.print(

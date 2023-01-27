@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-
+from datetime import datetime, timedelta
 from typing import List
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -13,12 +13,26 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
 )
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.alternative.realestate import landRegistry_view
 
 logger = logging.getLogger(__name__)
+
+
+def get_relative_date(months: int):
+    date = datetime.now() - timedelta(days=365 / 12 * months)
+    return date.strftime("%Y-%m-%d")
+
+
+def start_date():
+    return get_relative_date(13)
+
+
+def end_date():
+    return get_relative_date(1)
 
 
 class RealEstateController(BaseController):
@@ -39,6 +53,7 @@ class RealEstateController(BaseController):
         self.town = None
         self.postcode = None
         self.region = None
+        self.limit = 25
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
@@ -54,14 +69,14 @@ class RealEstateController(BaseController):
         mt.add_cmd("townsales")
         mt.add_raw("\n")
         mt.add_param("_town", self.town or "")
-        mt.add_param("_startdate <YYYY-MM-DD>", self.startdate or "")
-        mt.add_param("_enddate <YYYY-MM-DD>", self.enddate or "")
+        mt.add_param("_startdate", self.startdate or "")
+        mt.add_param("_enddate", self.enddate or "")
         mt.add_raw("\n")
         mt.add_cmd("regionstats")
         mt.add_raw("\n")
         mt.add_param("_region", self.region or "")
-        mt.add_param("_startdate <YYYY-MM-DD>", self.startdate or "")
-        mt.add_param("_enddate <YYYY-MM-DD>", self.enddate or "")
+        mt.add_param("_startdate", self.startdate or "")
+        mt.add_param("_enddate", self.enddate or "")
 
         console.print(text=mt.menu_text, menu="UK Real Estate Sales Data")
 
@@ -84,6 +99,17 @@ class RealEstateController(BaseController):
             metavar="postcode",
         )
 
+        parser.add_argument(
+            "-l",
+            "--limit",
+            help="Number of entries to return",
+            type=check_positive,
+            required=False,
+            dest="limit",
+            metavar="limit",
+            default=25,
+        )
+
         if (
             other_args
             and "-p" not in other_args[0]
@@ -99,12 +125,10 @@ class RealEstateController(BaseController):
         if ns_parser:
             if ns_parser.postcode:
                 landRegistry_view.display_estate_sales(
-                    ns_parser.postcode, export=ns_parser.export
+                    ns_parser.postcode, ns_parser.limit, export=ns_parser.export
                 )
             else:
                 console.print("[red]Select valid postcode[/red]\n")
-        else:
-            console.print("[red]Select valid postcode[/red]\n")
 
     @log_start_end(log=logger)
     def call_townsales(self, other_args: List[str]):
@@ -132,9 +156,10 @@ class RealEstateController(BaseController):
             "--startdate",
             help="Start date that we want sales information for",
             type=str,
-            required=True,
+            required=False,
             dest="startdate",
             metavar="startdate",
+            default=start_date(),
         )
 
         parser.add_argument(
@@ -142,9 +167,21 @@ class RealEstateController(BaseController):
             "--enddate",
             help="End date that we want sales information for",
             type=str,
-            required=True,
+            required=False,
             dest="enddate",
             metavar="enddate",
+            default=end_date(),
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            help="Number of entries to return",
+            type=check_positive,
+            required=False,
+            dest="limit",
+            metavar="limit",
+            default=25,
         )
 
         if (
@@ -155,26 +192,10 @@ class RealEstateController(BaseController):
         ):
             other_args.insert(0, "-t")
 
-        if (
-            other_args
-            and len(other_args) > 2
-            and "-s" not in other_args[2]
-            and "--startdate" not in other_args[2]
-            and "-h" not in other_args
-        ):
-            other_args.insert(2, "-s")
-
-        if (
-            other_args
-            and len(other_args) > 4
-            and "-e" not in other_args[4]
-            and "--enddate" not in other_args[4]
-            and "-h" not in other_args
-        ):
-            other_args.insert(4, "-e")
-
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
 
         if ns_parser:
@@ -183,16 +204,13 @@ class RealEstateController(BaseController):
                     ns_parser.town,
                     ns_parser.startdate,
                     ns_parser.enddate,
+                    ns_parser.limit,
                     ns_parser.export,
                 )
             else:
                 console.print(
                     "[red]Select the town you want to know about and a valid date range.[/red]\n"
                 )
-        else:
-            console.print(
-                "[red]Select the town you want to know about and a valid date range.[/red]\n"
-            )
 
     @log_start_end(log=logger)
     def call_regionstats(self, other_args: List[str]):
@@ -219,9 +237,10 @@ class RealEstateController(BaseController):
             "--startdate",
             help="Start date that we want sales information for",
             type=str,
-            required=True,
+            required=False,
             dest="startdate",
             metavar="startdate",
+            default=start_date(),
         )
 
         parser.add_argument(
@@ -229,9 +248,10 @@ class RealEstateController(BaseController):
             "--enddate",
             help="End date that we want sales information for",
             type=str,
-            required=True,
+            required=False,
             dest="enddate",
             metavar="enddate",
+            default=end_date(),
         )
 
         if (
@@ -241,24 +261,6 @@ class RealEstateController(BaseController):
             and "-h" not in other_args
         ):
             other_args.insert(0, "-r")
-
-        if (
-            other_args
-            and len(other_args) > 2
-            and "-s" not in other_args[2]
-            and "--startdate" not in other_args[2]
-            and "-h" not in other_args
-        ):
-            other_args.insert(2, "-s")
-
-        if (
-            other_args
-            and len(other_args) > 4
-            and "-e" not in other_args[4]
-            and "--enddate" not in other_args[4]
-            and "-h" not in other_args
-        ):
-            other_args.insert(4, "-e")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -276,7 +278,3 @@ class RealEstateController(BaseController):
                 console.print(
                     "[red]Select the region you want to know about and a valid date range.[/red]\n"
                 )
-        else:
-            console.print(
-                "[red]Select the region you want to know about and a valid date range.[/red]\n"
-            )

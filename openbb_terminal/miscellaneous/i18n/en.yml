@@ -876,8 +876,13 @@ en:
   alternative/oss/sh: repo star history
   alternative/oss/tr: top starred repos
   alternative/realestate/sales: list UK house sales via postcode
+  alternative/realestate/_postcode: UK Postcode
   alternative/realestate/townsales: list UK house sales via town
+  alternative/realestate/_town: Town
+  alternative/realestate/_startdate: Start Date <YYYY-MM-DD>
+  alternative/realestate/_enddate: End Date <YYYY-MM-DD>
   alternative/realestate/regionstats: retrieve UK sold house price stats by region
+  alternative/realestate/_region: Region
   econometrics/_data_loc: Looking for data in
   econometrics/load: load a dataset (also works with StatsModels datasets)
   econometrics/export: export a processed dataset

@@ -20,7 +20,7 @@ def pcd_format(postcode: str):
 
 
 @log_start_end(log=logger)
-def get_estate_sales(postcode: str) -> pd.DataFrame:
+def get_estate_sales(postcode: str, limit: int) -> pd.DataFrame:
 
     """All sales for specified postcode.
 
@@ -28,6 +28,9 @@ def get_estate_sales(postcode: str) -> pd.DataFrame:
     ----------
     postcode : str
         Postcode
+
+    limit : int
+        number of rows to return
 
 
     Returns
@@ -70,6 +73,8 @@ def get_estate_sales(postcode: str) -> pd.DataFrame:
                     OPTIONAL {{ ?addr  lrcommon:town  ?town }}
                     }}
                 ORDER BY DESC(?date)
+
+                LIMIT {limit}
             """
     endpoint = "http://landregistry.data.gov.uk/landregistry/query"
 
@@ -91,7 +96,10 @@ def get_estate_sales(postcode: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_towns_sold_prices(
-    town: str, startdate: str = "2010-01-01", enddate: str = ""
+    town: str,
+    startdate: str,
+    enddate: str,
+    limit: int,
 ) -> pd.DataFrame:
     """Get towns sold house price data.
 
@@ -105,6 +113,9 @@ def get_towns_sold_prices(
 
     enddate : str
         endDate
+
+    limit : int
+        number of rows to return
 
 
     Returns
@@ -152,6 +163,8 @@ def get_towns_sold_prices(
                 OPTIONAL {{?addr lrcommon:street ?street}}
                 }}
                 ORDER BY (?date && ?postcode)
+
+                LIMIT {limit}
             """
 
     endpoint = "http://landregistry.data.gov.uk/landregistry/query"
