@@ -99,10 +99,9 @@ body {
     background-color: #131313;
     border: 2px solid #7d7d7d;
     border-radius: 5px;
-    padding: 5px 5px 15px 18px;
+    padding: 10px 5px 15px 18px;
     box-sizing: border-box;
     display: none;
-    vertical-align: top;
     font-family: 'Fira Code', monospace, 'Arial Black';
     animation: popup 0.3s ease-in-out;
 }
@@ -121,6 +120,7 @@ body {
     display: inline-block !important;
     vertical-align: top !important;
     margin-right: 10px !important;
+    z-index: 2;
 }
 
 .popup_overlay input {

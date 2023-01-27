@@ -78,16 +78,11 @@ def fibonacci_retracement(
     plot_data = reindex_dates(data)
 
     # This plot has 2 axes
-    if external_axes is None:
-        _, ax1 = plt.subplots(
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-        ax2 = ax1.twinx()
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
+    _, ax1 = plt.subplots(
+        figsize=plot_autoscale(),
+        dpi=PLOT_DPI,
+    )
+    ax2 = ax1.twinx()
 
     close_col = ta_helpers.check_columns(data)
     if close_col is None:

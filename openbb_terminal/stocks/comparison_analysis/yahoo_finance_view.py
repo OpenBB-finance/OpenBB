@@ -87,12 +87,7 @@ def display_historical(
         )
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     companies_names = df_similar.columns.to_list()
     ax.plot(df_similar, label=companies_names)
@@ -144,12 +139,8 @@ def display_volume(
     df_similar = yahoo_finance_model.get_volume(similar, start_date, end_date)
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     df_similar = df_similar.div(1_000_000)
     companies_names = df_similar.columns.to_list()
@@ -226,12 +217,7 @@ def display_correlation(
         mask[np.triu_indices(len(mask))] = True
 
     # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     if raw:
         print_rich_table(

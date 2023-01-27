@@ -924,9 +924,6 @@ def plot_candles(  # pylint: disable=too-many-arguments
             ax[0].ticklabel_format(style="plain", axis="y")
         theme.visualize_output(force_tight_layout=False)
     else:
-        nr_external_axes = 2 if volume else 1
-        if not is_valid_axes_count(external_axes, nr_external_axes):
-            return None
 
         if volume:
             (ax, volume) = external_axes

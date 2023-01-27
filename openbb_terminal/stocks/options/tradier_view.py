@@ -90,27 +90,19 @@ def display_historical(
         },
         "datetime_format": "%Y-%b-%d",
     }
-    if external_axes is None:
-        candle_chart_kwargs["returnfig"] = True
-        candle_chart_kwargs["figratio"] = (10, 7)
-        candle_chart_kwargs["figscale"] = 1.10
-        candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, ax = mpf.plot(df_hist, **candle_chart_kwargs)
-        fig.suptitle(
-            f"Historical {strike} {op_type.title()}",
-            x=0.055,
-            y=0.965,
-            horizontalalignment="left",
-        )
-        lambda_long_number_format_y_axis(df_hist, "volume", ax)
-        theme.visualize_output(force_tight_layout=False)
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-        candle_chart_kwargs["ax"] = ax1
-        candle_chart_kwargs["volume"] = ax2
-        mpf.plot(df_hist, **candle_chart_kwargs)
-    else:
-        return
+    candle_chart_kwargs["returnfig"] = True
+    candle_chart_kwargs["figratio"] = (10, 7)
+    candle_chart_kwargs["figscale"] = 1.10
+    candle_chart_kwargs["figsize"] = plot_autoscale()
+    fig, ax = mpf.plot(df_hist, **candle_chart_kwargs)
+    fig.suptitle(
+        f"Historical {strike} {op_type.title()}",
+        x=0.055,
+        y=0.965,
+        horizontalalignment="left",
+    )
+    lambda_long_number_format_y_axis(df_hist, "volume", ax)
+    theme.visualize_output(force_tight_layout=False)
 
     console.print()
 
