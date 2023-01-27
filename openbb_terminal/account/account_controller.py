@@ -131,17 +131,17 @@ class AccountController(BaseController):
             response = Hub.fetch_user_configs(User.get_session())
             if response:
                 configs = json.loads(response.content)
-                show_diff(configs=configs)
-
-                i = console.input(
-                    "\nDo you want to overwrite your local configurations "
-                    "with the above? (y/n): "
-                )
-                if i.lower() in ["y", "yes"]:
-                    Local.apply_configs(configs=configs)
-                    console.print("\nDone.", style="info")
-                else:
-                    console.print("\nAborted.", style="info")
+                configs.pop("email", None)
+                if show_diff(configs=configs):
+                    i = console.input(
+                        "\nDo you want to overwrite your local configurations "
+                        "with the above? (y/n): "
+                    )
+                    if i.lower() in ["y", "yes"]:
+                        Local.apply_configs(configs=configs)
+                        console.print("\nDone.", style="info")
+                    else:
+                        console.print("\nAborted.", style="info")
 
     def call_clear(self, _):
         """Clear data"""
