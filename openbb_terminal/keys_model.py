@@ -1764,7 +1764,7 @@ def check_walert_key(show_output: bool = False) -> str:
             + cfg.API_WHALE_ALERT_KEY
         )
         try:
-            response = request(url, timeout=2)
+            response = request(url)
             if not 200 <= response.status_code < 300:
                 logger.warning("Walert key defined, test failed")
                 status = KeyStatus.DEFINED_TEST_FAILED
