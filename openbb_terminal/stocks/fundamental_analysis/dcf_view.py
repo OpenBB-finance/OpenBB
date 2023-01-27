@@ -1087,7 +1087,9 @@ class CreateExcelFA:
                 pdiv1 = dcf_model.get_value(val[1][1], "Preferred Dividends", j)[1]
                 opcf1 = dcf_model.get_value(val[1][2], "Operating Cash Flow", j)[1]
 
-                info, outstand = self.data["info"], float(self.data["f_info"]["shares"])
+                info, outstand = self.data["f_info"], float(
+                    self.data["f_info"]["shares"]
+                )
 
                 # Enter row offset, number to display, and format number
                 rows = [
@@ -1128,7 +1130,7 @@ class CreateExcelFA:
                     [
                         31,
                         dcf_model.frac(
-                            float(info["previousClose"]) * outstand,
+                            float(info["regular_market_previous_close"]) * outstand,
                             (ni1 - pdiv1) * self.info["rounding"],
                         ),
                         0,
