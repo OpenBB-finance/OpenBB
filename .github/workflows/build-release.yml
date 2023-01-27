@@ -1,4 +1,4 @@
-name: Trigger Build on Release and PRs to Main
+name: Build and publish release
 
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
@@ -12,6 +12,7 @@ on:
   push:
     branches:
       - release/*
+      - feature/*
       - main
 
 concurrency:
@@ -50,6 +51,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Windows Build
-        uses: benc-uk/workflow-dispatch@v1
+        uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: docker.yml
