@@ -4,12 +4,11 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 from pandas.core.frame import DataFrame
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +26,7 @@ def get_high_short_interest() -> DataFrame:
     url_high_short_interested_stocks = "https://www.highshortinterest.com"
 
     text_soup_high_short_interested_stocks = BeautifulSoup(
-        requests.get(
+        request(
             url_high_short_interested_stocks, headers={"User-Agent": get_user_agent()}
         ).text,
         "lxml",

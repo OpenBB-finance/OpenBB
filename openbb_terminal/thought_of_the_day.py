@@ -5,10 +5,9 @@ from __future__ import annotations
 import random
 import re
 
-import requests
 from bs4 import BeautifulSoup
 
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 __docformat__ = "numpy"
@@ -55,10 +54,7 @@ class ThoughtOfTheDay:
             Metadata dictionary that includes number of quotes, number of pages and first 30 quotes
         """
         quotes_page = BeautifulSoup(
-            requests.get(
-                self.urls[author],
-                headers={"User-Agent": get_user_agent()},
-            ).text,
+            request(self.urls[author]).text,
             "lxml",
         )
 
