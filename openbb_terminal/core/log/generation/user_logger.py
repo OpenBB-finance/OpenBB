@@ -15,13 +15,13 @@ logger = logging.getLogger(__name__)
 def log_user(with_rollover: bool = True):
     """Log user"""
     if not User.is_guest():
-        log_user_info()
+        _log_user_info()
 
     if with_rollover:
         do_rollover()
 
 
-def log_user_info():
+def _log_user_info():
     """Log user info"""
     user_info = {"user_uuid": User.get_uuid()}
     logger.info("USER: %s ", json.dumps(user_info))
