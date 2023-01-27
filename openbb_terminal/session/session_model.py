@@ -1,4 +1,5 @@
 import importlib
+import logging
 import os
 import sys
 import matplotlib.pyplot as plt
@@ -44,6 +45,10 @@ def logout(cls: bool = False):
     for v in os.environ:
         if v.startswith("OPENBB"):
             os.environ.pop(v)
+
+    # Remove the log handlers - needs to be done before reloading modules
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
 
     # Reload all openbb modules to clear memorized variables
     modules = sys.modules.copy()
