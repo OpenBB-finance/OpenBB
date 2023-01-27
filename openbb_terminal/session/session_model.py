@@ -5,7 +5,6 @@ import sys
 import json
 from enum import Enum
 import matplotlib.pyplot as plt
-from enum import Enum
 import openbb_terminal.session.local_model as Local
 import openbb_terminal.session.hub_model as Hub
 from openbb_terminal.session.user import User
