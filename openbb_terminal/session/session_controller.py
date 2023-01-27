@@ -7,12 +7,10 @@ from openbb_terminal.session.user import User
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal import terminal_controller
-from openbb_terminal.helper_funcs import system_clear
 
 
 def display_welcome_message():
     """Display welcome message"""
-    system_clear()
     with open(PACKAGE_DIRECTORY / "session" / "banner.txt") as f:
         console.print(f.read(), style="menu")
 
@@ -36,7 +34,7 @@ def get_user_input() -> Tuple[str, str, bool]:
     return email, password, save
 
 
-def login_prompt(welcome=True, guest_allowed=True):
+def login_prompt(welcome=True, guest_allowed=False):
     """Login prompt and launch terminal if login is successful.
 
     Parameters
@@ -62,24 +60,26 @@ def login_prompt(welcome=True, guest_allowed=True):
 
 
 # TODO: Move some login inside this function to the session_model.py
-def login(session: dict):
+def login(session: dict, guest_allowed: bool = True):
     """Login and launch terminal.
 
     Parameters
     ----------
     session : dict
         The session info.
+    guest_allowed : bool, optional
+        Allow guest login, by default True
     """
-    User.load_user_info(session)
     response = Hub.fetch_user_configs(session)
     if response:
         if response.status_code == 200:
+            User.load_user_info(session)
             Local.apply_configs(configs=json.loads(response.content))
             terminal_controller.parse_args_and_run()
         else:
-            login_prompt(welcome=False)
+            login_prompt(welcome=False, guest_allowed=guest_allowed)
     else:
-        login_prompt(welcome=True)
+        login_prompt(welcome=True, guest_allowed=guest_allowed)
 
 
 def main(guest_allowed: bool = True):
@@ -88,7 +88,7 @@ def main(guest_allowed: bool = True):
     if not local_session:
         login_prompt(guest_allowed=guest_allowed)
     else:
-        login(session=local_session)
+        login(session=local_session, guest_allowed=guest_allowed)
 
 
 if __name__ == "__main__":
