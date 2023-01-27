@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
 import squarify
 from matplotlib import cm, pyplot as plt, ticker
@@ -16,12 +15,7 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)

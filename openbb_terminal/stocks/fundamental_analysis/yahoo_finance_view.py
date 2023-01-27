@@ -214,7 +214,7 @@ def display_dividends(
     plot: bool = True,
     export: str = "",
     sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display historical dividends
 
@@ -292,7 +292,7 @@ def display_splits(
     symbol: str,
     export: str = "",
     sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display splits and reverse splits events. [Source: Yahoo Finance]
 
@@ -374,7 +374,7 @@ def display_mktcap(
     start_date: Optional[str] = None,
     export: str = "",
     sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display market cap over time. [Source: Yahoo Finance]
 

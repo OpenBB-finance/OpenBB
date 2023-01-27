@@ -1,7 +1,7 @@
 """ Plot Controller """
 import os
 from textwrap import fill
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt

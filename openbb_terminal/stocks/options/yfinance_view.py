@@ -140,8 +140,8 @@ def plot_plot(
 
     x_data = values[x]
     y_data = values[y]
-    option = "puts" if put else "calls"
 
+    option = "puts" if put else "calls"
     fig = OpenBBFigure(
         title=f"{varis[y]['label']} vs. {varis[x]['label']} for {symbol} {option} on {expiry}",
         xaxis_title=varis[x]["label"],
@@ -149,8 +149,6 @@ def plot_plot(
     )
     fig.add_scatter(x=x_data, y=y_data, mode="lines+markers")
 
-    if external_axes is None:
-        theme.visualize_output()
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -394,9 +392,6 @@ def plot_expected_prices(
     up_moves.reverse()
     probs = [100 * binom.pmf(r, len(up_moves), p) for r in up_moves]
 
-    if external_axes is None:
-        theme.visualize_output()
-
     fig = OpenBBFigure()
 
     fig.add_scatter(
@@ -625,8 +620,30 @@ def show_greeks(
         Whether to show all greeks
     """
 
-    df = yfinance_model.get_greeks(
-        symbol, expiry, div_cont, rf, opt_type, mini, maxi, show_all
+    current_price = get_price(symbol)
+    chain = get_option_chain(symbol, expiry)
+
+    min_strike, max_strike = op_helpers.get_strikes(
+        min_sp=mini, max_sp=maxi, current_price=current_price
+    )
+
+    for option in ["calls", "puts"]:
+        attr = getattr(chain, option)
+        attr = attr[attr["strike"] >= min_strike]
+        attr = attr[attr["strike"] <= max_strike]
+
+    chain.puts["optionType"] = "put"
+    chain.calls["optionType"] = "call"
+
+    df = op_helpers.get_greeks(
+        current_price=current_price,
+        expire=expiry,
+        calls=chain.calls,
+        puts=chain.puts,
+        div_cont=div_cont,
+        rf=rf,
+        opt_type=opt_type,
+        show_extra_greeks=show_all,
     )
 
     column_formatting = [".1f", ".4f" + ".6f" * 4]

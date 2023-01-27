@@ -3,9 +3,9 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
+from typing import Optional
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 

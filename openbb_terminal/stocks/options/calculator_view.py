@@ -5,7 +5,8 @@ from matplotlib import pyplot as plt
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+
+# from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale
 from openbb_terminal.rich_config import console

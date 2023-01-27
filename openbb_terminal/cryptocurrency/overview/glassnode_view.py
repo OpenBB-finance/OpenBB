@@ -1,7 +1,7 @@
 import logging
 import os
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 import matplotlib
 import numpy as np
@@ -12,11 +12,7 @@ from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.overview.glassnode_model import get_btc_rainbow
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale
 
 logger = logging.getLogger(__name__)
 

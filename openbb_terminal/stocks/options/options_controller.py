@@ -141,6 +141,7 @@ class OptionsController(BaseController):
             else:
                 console.print("Loaded expiry dates from Tradier")
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
+                self.source = "Tradier"
 
             self.set_option_chain()
             self.set_current_price()

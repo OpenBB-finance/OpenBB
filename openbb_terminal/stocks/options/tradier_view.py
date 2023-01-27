@@ -6,6 +6,7 @@ import os
 import warnings
 from typing import List, Optional
 
+import matplotlib.pyplot as plt
 import mplfinance as mpf
 
 from openbb_terminal.config_terminal import theme
@@ -24,6 +25,7 @@ logger = logging.getLogger(__name__)
 
 warnings.filterwarnings("ignore")
 
+
 # pylint: disable=too-many-arguments
 @log_start_end(log=logger)
 def display_historical(
@@ -35,7 +37,7 @@ def display_historical(
     chain_id: str = None,
     export: str = "",
     sheet_name: str = "",
-    external_axes: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot historical option prices
 
@@ -57,8 +59,8 @@ def display_historical(
         Format of export file
     sheet_name: str
         Optionally specify the name of the sheet to export to
-    external_axes : bool, optional
-        Whether to return the figure object or not, by default False
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
 
     df_hist = tradier_model.get_historical_options(
@@ -88,19 +90,27 @@ def display_historical(
         },
         "datetime_format": "%Y-%b-%d",
     }
-    candle_chart_kwargs["returnfig"] = True
-    candle_chart_kwargs["figratio"] = (10, 7)
-    candle_chart_kwargs["figscale"] = 1.10
-    candle_chart_kwargs["figsize"] = plot_autoscale()
-    fig, ax = mpf.plot(df_hist, **candle_chart_kwargs)
-    fig.suptitle(
-        f"Historical {strike} {op_type.title()}",
-        x=0.055,
-        y=0.965,
-        horizontalalignment="left",
-    )
-    lambda_long_number_format_y_axis(df_hist, "volume", ax)
-    theme.visualize_output(force_tight_layout=False)
+    if external_axes is None:
+        candle_chart_kwargs["returnfig"] = True
+        candle_chart_kwargs["figratio"] = (10, 7)
+        candle_chart_kwargs["figscale"] = 1.10
+        candle_chart_kwargs["figsize"] = plot_autoscale()
+        fig, ax = mpf.plot(df_hist, **candle_chart_kwargs)
+        fig.suptitle(
+            f"Historical {strike} {op_type.title()}",
+            x=0.055,
+            y=0.965,
+            horizontalalignment="left",
+        )
+        lambda_long_number_format_y_axis(df_hist, "volume", ax)
+        theme.visualize_output(force_tight_layout=False)
+    elif is_valid_axes_count(external_axes, 2):
+        (ax1, ax2) = external_axes
+        candle_chart_kwargs["ax"] = ax1
+        candle_chart_kwargs["volume"] = ax2
+        mpf.plot(df_hist, **candle_chart_kwargs)
+    else:
+        return
 
     console.print()
 

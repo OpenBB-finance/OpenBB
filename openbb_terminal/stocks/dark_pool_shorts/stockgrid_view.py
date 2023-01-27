@@ -343,6 +343,67 @@ def net_short_position(
 
         # if not external_axes:
         #     theme.visualize_output()
+        fig = OpenBBFigure.create_subplots(
+            rows=1,
+            cols=1,
+            shared_xaxes=True,
+            specs=[[{"secondary_y": False}]],
+        )
+        fig.add_bar(
+            x=df["dates"],
+            y=df["Net Short Vol. (1k $)"],
+            name="Net Short Vol. (1k $)",
+            marker_color=theme.down_color,
+            row=1,
+            col=1,
+            secondary_y=False,
+        )
+        fig.add_scatter(
+            name="Position (1M $)",
+            x=df["dates"],
+            y=df["Position (1M $)"],
+            connectgaps=True,
+            marker_color=theme.up_color,
+            row=1,
+            col=1,
+            secondary_y=True,
+            yaxis="y2",
+        )
+        fig.update_traces(hovertemplate="%{y:.2f}")
+        fig.update_layout(
+            margin=dict(l=40, r=0),
+            title=f"<b>Net Short Vol. vs Position for {symbol}</b>",
+            title_x=0.025,
+            title_font_size=14,
+            yaxis2_title="Net Short Vol. (1k $)",
+            yaxis_title="Position (1M $)",
+            yaxis=dict(
+                side="left",
+                fixedrange=False,
+                showgrid=False,
+                titlefont=dict(color="#d81aea"),
+                tickfont=dict(color="#d81aea"),
+                nticks=20,
+                title_standoff=20,
+                layer="above traces",
+            ),
+            yaxis2=dict(
+                side="right",
+                fixedrange=False,
+                anchor="x",
+                overlaying="y",
+                titlefont=dict(color="#fdc708"),
+                tickfont=dict(color="#fdc708"),
+                nticks=10,
+                layer="below traces",
+                title_standoff=10,
+            ),
+            hovermode="x unified",
+            spikedistance=1,
+            hoverdistance=1,
+        )
+
+        fig.hide_holidays()
 
     export_data(
         export,
@@ -351,3 +412,5 @@ def net_short_position(
         df,
         sheet_name,
     )
+
+    return None if raw else fig.show() if not external_axes else fig

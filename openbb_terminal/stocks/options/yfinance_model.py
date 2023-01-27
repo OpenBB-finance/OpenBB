@@ -85,14 +85,16 @@ def option_expirations(symbol: str):
     symbol: str
         Ticker symbol to get expirations for
 
+    Returns
+    -------
+    dates: List[str]
+        List of of available expirations
+    """
     yf_ticker = yf.Ticker(symbol)
-    try:
-        chain = yf_ticker.option_chain(expiry)
-    except Exception:
-        console.print(f"[red]Error: Expiration {expiry} cannot be found.[/red]")
-        chain = pd.DataFrame()
-
-    return chain
+    dates = list(yf_ticker.options)
+    if not dates:
+        console.print("No expiration dates found for ticker. \n")
+    return dates
 
 
 @log_start_end(log=logger)
