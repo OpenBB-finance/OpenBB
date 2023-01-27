@@ -85,6 +85,7 @@ class CreateExcelFA:
             "info": yf.Ticker(symbol).info,
             "t_bill": get_rf(),
             "r_ff": dcf_model.get_fama_coe(self.info["symbol"]),
+            "f_info": yf.Ticker(symbol).fast_info,
         }
 
     @log_start_end(log=logger)
@@ -592,9 +593,7 @@ class CreateExcelFA:
             font=dcf_static.red,
         )
         dcf_model.set_cell(self.ws[2], "A16", "Shares Outstanding")
-        dcf_model.set_cell(
-            self.ws[2], "B16", int(self.data["info"]["sharesOutstanding"])
-        )
+        dcf_model.set_cell(self.ws[2], "B16", int(self.data["f_info"]["shares"]))
         dcf_model.set_cell(self.ws[2], "A17", "Shares Price")
         dcf_model.set_cell(
             self.ws[2],
@@ -603,9 +602,7 @@ class CreateExcelFA:
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws[2], "A18", "Actual Price")
-        dcf_model.set_cell(
-            self.ws[2], "B18", float(self.data["info"]["regularMarketPrice"])
-        )
+        dcf_model.set_cell(self.ws[2], "B18", float(self.data["f_info"]["last_price"]))
 
     @log_start_end(log=logger)
     def create_header(self, ws: Workbook):
@@ -1090,9 +1087,7 @@ class CreateExcelFA:
                 pdiv1 = dcf_model.get_value(val[1][1], "Preferred Dividends", j)[1]
                 opcf1 = dcf_model.get_value(val[1][2], "Operating Cash Flow", j)[1]
 
-                info, outstand = self.data["info"], float(
-                    self.data["info"]["sharesOutstanding"]
-                )
+                info, outstand = self.data["info"], float(self.data["f_info"]["shares"])
 
                 # Enter row offset, number to display, and format number
                 rows = [
