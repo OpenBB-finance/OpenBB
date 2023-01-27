@@ -21,6 +21,7 @@ def display_crypto_hacks(
     ascend: bool = False,
     slug: str = "polyntwork-rekt",
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Display list of major crypto-related hacks. If slug is passed
     individual crypto hack is displayed instead of list of crypto hacks
@@ -48,6 +49,7 @@ def display_crypto_hacks(
             os.path.dirname(os.path.abspath(__file__)),
             "ch",
             text,
+            sheet_name,
         )
     else:
         df = rekt_model.get_crypto_hacks(sortby, ascend)
@@ -73,4 +75,5 @@ def display_crypto_hacks(
                 os.path.dirname(os.path.abspath(__file__)),
                 "ch",
                 df,
+                sheet_name,
             )

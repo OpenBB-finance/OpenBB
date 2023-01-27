@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_history(limit: int = 15, export: str = "") -> None:
+def display_history(limit: int = 15, export: str = "", sheet_name: str = None) -> None:
     history = ally_model.get_history(limit)
     show_history = history[["amount", "date", "symbol", "transactiontype", "quantity"]]
     print_rich_table(
@@ -23,12 +23,16 @@ def display_history(limit: int = 15, export: str = "") -> None:
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "ally_history", history
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ally_history",
+        history,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_holdings(export: str = "") -> None:
+def display_holdings(export: str = "", sheet_name: str = None) -> None:
     """Display holdings from ally account
 
     Parameters
@@ -47,11 +51,12 @@ def display_holdings(export: str = "") -> None:
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
         "ally_holdings",
         holdings,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_balances(export: str = "") -> None:
+def display_balances(export: str = "", sheet_name: str = None) -> None:
     """Display balances from ally account
 
     Parameters
@@ -66,6 +71,7 @@ def display_balances(export: str = "") -> None:
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
         "ally_balances",
         balances,
+        sheet_name,
     )
     # Pick which balances to show
     balances = balances[
@@ -102,7 +108,11 @@ def display_stock_quote(symbol: str) -> None:
 
 @log_start_end(log=logger)
 def display_top_lists(
-    list_type: str = "", exchange: str = "", limit: int = 20, export: str = ""
+    list_type: str = "",
+    exchange: str = "",
+    limit: int = 20,
+    export: str = "",
+    sheet_name: str = None,
 ):
     """
     Display top lists from ally Invest API.  Documentation for parameters below:
@@ -132,4 +142,5 @@ def display_top_lists(
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
         "ally_movers",
         movers,
+        sheet_name,
     )

@@ -60,4 +60,5 @@ def test_fails_to_deliver(mocker, raw):
         limit=2,
         raw=raw,
         export="",
+        sheet_name=None,
     )
