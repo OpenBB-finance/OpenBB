@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import jwt
 import openbb_terminal.feature_flags as obbff
 from openbb_terminal.rich_config import console
 
@@ -12,7 +11,7 @@ class User:
     _UUID: str = ""
 
     @classmethod
-    def load_user_info(cls, session: dict):
+    def load_user_info(cls, session: dict, email: str):
         """Load user info from login info.
 
         Parameters
@@ -23,12 +22,8 @@ class User:
         User._TOKEN_TYPE = session.get("token_type", "")
         User._TOKEN = session.get("access_token", "")
         User._UUID = session.get("uuid", "")
-
-        if User._TOKEN:
-            decoded_info = jwt.decode(User._TOKEN, options={"verify_signature": False})
-            User._EMAIL = decoded_info.get("sub", "")
-
-            # Add username to flair
+        User._EMAIL = email
+        if User._EMAIL:
             User.update_flair()
 
     @classmethod

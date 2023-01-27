@@ -48,8 +48,10 @@ def login(session: dict) -> LoginStatus:
     response = Hub.fetch_user_configs(session)
     if response:
         if response.status_code == 200:
-            User.load_user_info(session)
-            Local.apply_configs(configs=json.loads(response.content))
+            configs = json.loads(response.content)
+            email = configs.get("email", "")
+            User.load_user_info(session, email)
+            Local.apply_configs(configs=configs)
             return LoginStatus.SUCCESS
         return LoginStatus.FAILED
     return LoginStatus.NO_RESPONSE
