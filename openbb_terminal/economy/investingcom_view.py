@@ -45,6 +45,7 @@ def display_spread_matrix(
     raw: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Display spread matrix. [Source: Investing.com]
 
@@ -198,7 +199,13 @@ def display_spread_matrix(
             if not external_axes:
                 theme.visualize_output()
 
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "spread", df)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "spread",
+            df,
+            sheet_name,
+        )
 
 
 @log_start_end(log=logger)
@@ -207,6 +214,7 @@ def display_yieldcurve(
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Display yield curve for specified country. [Source: Investing.com]
 
@@ -285,6 +293,7 @@ def display_yieldcurve(
             os.path.dirname(os.path.abspath(__file__)),
             "ycrv",
             df,
+            sheet_name,
         )
 
 
@@ -297,6 +306,7 @@ def display_economic_calendar(
     end_date: str = "",
     limit=100,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Display economic calendar. [Source: Investing.com]
 
@@ -336,4 +346,5 @@ def display_economic_calendar(
             os.path.dirname(os.path.abspath(__file__)),
             "events",
             df,
+            sheet_name,
         )

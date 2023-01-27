@@ -36,7 +36,7 @@ from openbb_terminal.stocks.options.yfinance_model import (
     get_price,
 )
 
-# pylint: disable=C0302,R0913
+# pylint: disable=C0302, R0913, too-many-arguments
 
 
 logger = logging.getLogger(__name__)
@@ -74,6 +74,7 @@ def plot_plot(
     y: str = "iv",
     custom: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Generate a graph custom graph based on user input
@@ -94,6 +95,8 @@ def plot_plot(
         type of plot
     put: bool
         put option instead of call
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         type of data to export
     external_axes : Optional[List[plt.Axes]], optional
@@ -170,7 +173,12 @@ def plot_plot(
 
     if external_axes is None:
         theme.visualize_output()
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "plot")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "plot",
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -218,6 +226,7 @@ def show_parity(
     mini: float = None,
     maxi: float = None,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints options and whether they are under or over priced [Source: Yahoo Finance]
 
@@ -318,6 +327,7 @@ def show_parity(
         os.path.dirname(os.path.abspath(__file__)),
         "parity",
         show,
+        sheet_name,
     )
 
 
@@ -549,6 +559,7 @@ def show_binom(
 def display_vol_surface(
     symbol: str,
     export: str = "",
+    sheet_name: str = None,
     z: str = "IV",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -599,6 +610,7 @@ def display_vol_surface(
         os.path.dirname(os.path.abspath(__file__)),
         "vsurf",
         data,
+        sheet_name,
     )
 
 

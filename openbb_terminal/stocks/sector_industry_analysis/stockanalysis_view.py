@@ -45,6 +45,7 @@ def display_plots_financials(
     currency: str = "USD",
     limit: int = 10,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     already_loaded_stocks_data=None,
@@ -73,6 +74,8 @@ def display_plots_financials(
         Choose in what currency you wish to convert each company's financial statement. Default is USD (US Dollars).
     limit: int
         Limit amount of companies displayed (default is 10)
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data as
     raw: bool
@@ -199,5 +202,6 @@ def display_plots_financials(
         os.path.dirname(os.path.abspath(__file__)),
         item_name,
         df,
+        sheet_name,
     )
     return stocks_data, company_tickers

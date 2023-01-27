@@ -34,4 +34,5 @@ def test_short_interest(mocker, nyse, raw):
         limit=2,
         raw=raw,
         export="",
+        sheet_name=None,
     )

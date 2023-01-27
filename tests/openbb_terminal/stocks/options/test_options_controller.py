@@ -449,6 +449,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 limit=1,
                 sortby=["Vol"],
                 export="csv",
+                sheet_name=None,
                 ascend=True,
                 calls_only=False,
                 puts_only=True,
@@ -464,6 +465,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 window="10",
                 start_date="2021-12-01",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -471,10 +473,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             ["--export=csv"],
             "barchart_view.print_options_data",
             [],
-            dict(
-                symbol="MOCK_TICKER",
-                export="csv",
-            ),
+            dict(symbol="MOCK_TICKER", export="csv", sheet_name=None),
         ),
         (
             # PUT
@@ -500,6 +499,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 raw=True,
                 limit="2",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -526,6 +526,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 raw=True,
                 limit="2",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -594,6 +595,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 strike=200.0,
                 put=True,
                 export="csv",
+                sheet_name=None,
                 raw=True,
                 chain_id="MOCK_CHAIN_ID",
             ),
@@ -636,6 +638,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 calls_only=True,
                 puts_only=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -655,6 +658,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 calls_only=False,
                 puts_only=False,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -678,6 +682,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 calls_only=True,
                 puts_only=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -701,6 +706,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 calls_only=True,
                 puts_only=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -722,6 +728,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 max_sp=3.0,
                 min_vol=1.0,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -743,6 +750,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 max_sp=3.0,
                 min_vol=1.0,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -766,6 +774,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 calls_only=True,
                 puts_only=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -789,6 +798,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 calls_only=True,
                 puts_only=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (

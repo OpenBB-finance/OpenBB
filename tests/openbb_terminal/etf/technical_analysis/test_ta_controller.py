@@ -288,6 +288,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 window=[1, 2],
                 offset=2,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -306,6 +307,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 window=[1, 2],
                 offset=2,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -324,6 +326,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 window=[1, 2],
                 offset=2,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -342,6 +345,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 window=[1, 2],
                 offset=2,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -360,6 +364,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 window=[1, 2],
                 offset=2,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -377,6 +382,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 window=1,
                 scalar=2,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -396,6 +402,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 n_slow=2,
                 n_signal=3,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -415,6 +422,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 scalar=2,
                 drift=3,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -434,6 +442,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 slowdperiod=2,
                 slowkperiod=3,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -449,6 +458,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 data=MOCK_STOCK_DF,
                 window=1,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -464,6 +474,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 data=MOCK_STOCK_DF["Adj Close"],
                 window=1,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -483,6 +494,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 scalar=2,
                 drift=3,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -500,6 +512,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 window=1,
                 scalar=2,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -519,6 +532,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 n_std=2,
                 mamode="ema",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -536,6 +550,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 upper_length=1,
                 lower_length=2,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -557,6 +572,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 mamode="sma",
                 offset=3,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -572,6 +588,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 data=MOCK_STOCK_DF,
                 use_open=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -591,6 +608,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 fast=1,
                 slow=2,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -601,9 +619,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "volume_view.display_obv",
             [],
             dict(
-                symbol="MOCK_TICKER",
-                data=MOCK_STOCK_DF,
-                export="csv",
+                symbol="MOCK_TICKER", data=MOCK_STOCK_DF, export="csv", sheet_name=None
             ),
         ),
         (
@@ -623,6 +639,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 start_date=datetime.strptime("2021-12-01", "%Y-%m-%d"),
                 end_date=datetime.strptime("2021-12-02", "%Y-%m-%d"),
                 export="csv",
+                sheet_name=None,
             ),
         ),
     ],
