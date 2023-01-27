@@ -61,7 +61,6 @@ sub_folders_abbr = {
     "technical_analysis": "ta",
     "tradinghours": "th",
     "fundamental_analysis": "fa",
-    "mutual_funds": "funds",
     "government": "gov",
     "insider": "ins",
 }
@@ -78,7 +77,6 @@ sub_names_full = {
     "etf": "ETFs",
     "fa": "Fundamental Analysis",
     "forecast": "Forecasting",
-    "funds": "Mutual Funds",
     "gov": "Government",
     "ins": "Insiders",
     "keys": "Keys",
