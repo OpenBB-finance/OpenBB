@@ -150,8 +150,16 @@ class ForexController(BaseController):
             "--start",
             default=(datetime.now() - timedelta(days=365)),
             type=valid_date,
-            help="Start date of data.",
+            help="The starting date (format YYYY-MM-DD) of the forex pair",
             dest="start_date",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the forex pair",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -179,6 +187,7 @@ class ForexController(BaseController):
                     resolution=ns_parser.resolution,
                     interval=ns_parser.interval,
                     start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.end.strftime("%Y-%m-%d"),
                     source=ns_parser.source,
                 )
 

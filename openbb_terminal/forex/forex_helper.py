@@ -98,6 +98,7 @@ def load(
     resolution: str = "d",
     interval: str = "1day",
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     source: str = "YahooFinance",
     verbose: bool = False,
 ) -> pd.DataFrame:
@@ -115,6 +116,8 @@ def load(
         What interval to get data for, by default "1day"
     start_date : Optional[str], optional
         When to begin loading in data, by default last_year.strftime("%Y-%m-%d")
+    end_date : Optional[str], optional
+        When to end loading in data, by default None
     source : str, optional
         Where to get data from, by default "YahooFinance"
     verbose : bool, optional
@@ -128,6 +131,8 @@ def load(
 
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
@@ -159,6 +164,7 @@ def load(
                 resolution=resolution,
                 interval=clean_interval,
                 start_date=start_date,
+                end_date=end_date,
             )
             df.index.name = "date"
             return df
@@ -167,6 +173,7 @@ def load(
             df = yf.download(
                 f"{from_symbol}{to_symbol}=X",
                 start=datetime.strptime(start_date, "%Y-%m-%d"),
+                end=datetime.strptime(end_date, "%Y-%m-%d"),
                 interval=clean_interval,
                 progress=verbose,
             )
@@ -185,6 +192,7 @@ def load(
             multiplier=multiplier,
             timespan=timeframe,
             start_date=start_date,
+            end_date=end_date,
         )
         df.index.name = "date"
         return df
