@@ -91,7 +91,7 @@ class FeatureFlagsController(BaseController):
         value : str
             Environment variable value
         force : bool, optional
-            Force set feature flag, by default False
+            Force remote storage of feature flag, by default False
         """
 
         if User.is_guest():

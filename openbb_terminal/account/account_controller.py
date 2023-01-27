@@ -116,7 +116,6 @@ class AccountController(BaseController):
     def call_pull(self, _):
         """Pull data"""
         console.print("Pull, Diff and Merge.")
-        pass
 
     def call_clear(self, _):
         """Clear data"""

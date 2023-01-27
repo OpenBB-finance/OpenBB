@@ -147,8 +147,6 @@ class SettingsController(BaseController):
             Environment variable name
         value : str
             Environment variable value
-        persist : bool, optional
-            Persist feature flag, by default False
         """
 
         if User.is_guest():
