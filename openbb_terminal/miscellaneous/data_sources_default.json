@@ -1,6 +1,5 @@
 {
   "stocks": {
-    "filings": ["FinancialModelingPrep"],
     "search": ["FinanceDatabase"],
     "quote": ["FinancialModelingPrep", "YahooFinance"],
     "tob": ["CBOE"],
@@ -235,7 +234,7 @@
       "score": ["FinancialModelingPrep"],
       "quote": ["FinancialModelingPrep"],
       "enterprise": ["FinancialModelingPrep", "YahooFinance"],
-      "metrics": ["FinancialModelingPrep"],
+      "metrics": ["FinancialModelingPrep", "AlphaVantage"],
       "ratios": ["FinancialModelingPrep"],
       "growth": ["FinancialModelingPrep"],
       "revfc": ["SeekingAlpha", "YahooFinance"],
@@ -249,19 +248,14 @@
       "cal": ["YahooFinance"],
       "divs": ["YahooFinance"],
       "splits": ["YahooFinance"],
-      "key": ["AlphaVantage"],
       "earnings": ["AlphaVantage", "YahooFinance"],
       "fraud": ["AlphaVantage"],
-      "dupont": ["AlphaVantage"]
-    },
-    "dd": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
-      "analyst": ["Finviz"],
-      "rating": ["FinancialModelingPrep"],
+      "dupont": ["AlphaVantage"],
+      "rating": ["Finviz", "FinancialModelingPrep"],
       "rot": ["Finnhub"],
       "pt": ["BusinessInsider"],
       "est": ["BusinessInsider"],
-      "sec": ["MarketWatch"],
+      "sec": ["MarketWatch", "FinancialModelingPrep"],
       "supplier": ["CSIMarket"],
       "customer": ["CSIMarket"],
       "arktrades": ["Cathiesark"]

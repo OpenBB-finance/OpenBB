@@ -18,6 +18,8 @@ from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=protected-access
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])

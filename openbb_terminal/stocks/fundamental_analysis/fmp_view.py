@@ -650,7 +650,7 @@ def display_filings(
             sheet_name,
         )
     else:
-        logger.error(f"Could not find any data for {ticker}")
+        logger.error("Could not find any data.")
         console.print("[red]Could not find any data for {ticker}[/red]\n")
 
 
