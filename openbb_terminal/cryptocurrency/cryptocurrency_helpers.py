@@ -639,7 +639,13 @@ def load_yf_data(symbol: str, currency: str, interval: str, days: int):
 
 
 def display_all_coins(
-    source: str, symbol: str, limit: int, skip: int, show_all: bool, export: str
+    source: str,
+    symbol: str,
+    limit: int,
+    skip: int,
+    show_all: bool,
+    export: str,
+    sheet_name: str,
 ) -> None:
     """Find similar coin by coin name,symbol or id.
     If you don't remember exact name or id of the Coin at CoinGecko, CoinPaprika, Coinbase, Binance
@@ -745,6 +751,7 @@ def display_all_coins(
         os.path.dirname(os.path.abspath(__file__)),
         "coins",
         df,
+        sheet_name,
     )
 
 

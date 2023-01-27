@@ -27,6 +27,7 @@ def display_mentions(
     symbol: str,
     start_date: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].
@@ -37,6 +38,8 @@ def display_mentions(
         Ticker symbol
     start_date : str
         Start date as YYYY-MM-DD string
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -80,7 +83,11 @@ def display_mentions(
         theme.visualize_output()
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "mentions", df_interest
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "mentions",
+        df_interest,
+        sheet_name,
     )
 
 
@@ -90,6 +97,7 @@ def display_correlation_interest(
     data: pd.DataFrame,
     words: List[str],
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots interest over time of words/sentences versus stock price. [Source: Google].
@@ -102,6 +110,8 @@ def display_correlation_interest(
         Data dataframe
     words : List[str]
         Words to check for interest for
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -150,7 +160,11 @@ def display_correlation_interest(
         theme.visualize_output()
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "interest", df_interest
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "interest",
+        df_interest,
+        sheet_name,
     )
 
 
@@ -159,6 +173,7 @@ def display_regions(
     symbol: str,
     limit: int = 5,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots bars of regions based on stock's interest. [Source: Google].
@@ -169,6 +184,8 @@ def display_regions(
         Ticker symbol
     limit: int
         Number of regions to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -201,11 +218,19 @@ def display_regions(
     if external_axes is None:
         theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "regions", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "regions",
+        df,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
-def display_queries(symbol: str, limit: int = 5, export: str = ""):
+def display_queries(
+    symbol: str, limit: int = 5, export: str = "", sheet_name: str = None
+):
     """Prints table showing top related queries with this stock's query. [Source: Google].
 
     Parameters
@@ -214,6 +239,8 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
         Ticker symbol
     limit: int
         Number of regions to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
         {"csv","json","xlsx","png","jpg","pdf","svg"}
@@ -235,11 +262,14 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "queries",
         df,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_rise(symbol: str, limit: int = 10, export: str = ""):
+def display_rise(
+    symbol: str, limit: int = 10, export: str = "", sheet_name: str = None
+):
     """Prints top rising related queries with this stock's query. [Source: Google].
 
     Parameters
@@ -248,6 +278,8 @@ def display_rise(symbol: str, limit: int = 10, export: str = ""):
         Ticker symbol
     limit: int
         Number of queries to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -263,5 +295,9 @@ def display_rise(symbol: str, limit: int = 10, export: str = ""):
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "rise", df_related_queries
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rise",
+        df_related_queries,
+        sheet_name,
     )

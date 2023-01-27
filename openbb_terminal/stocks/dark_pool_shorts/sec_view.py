@@ -23,6 +23,8 @@ from openbb_terminal.stocks.dark_pool_shorts import sec_model
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=too-many-arguments
+
 
 @log_start_end(log=logger)
 def fails_to_deliver(
@@ -33,6 +35,7 @@ def fails_to_deliver(
     limit: int = 0,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display fails-to-deliver data for a given ticker. [Source: SEC]
@@ -51,6 +54,8 @@ def fails_to_deliver(
         Number of latest fails-to-deliver being printed
     raw: bool
         Print raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
@@ -117,4 +122,5 @@ def fails_to_deliver(
         os.path.dirname(os.path.abspath(__file__)),
         "ftd",
         ftds_data.reset_index(),
+        sheet_name,
     )

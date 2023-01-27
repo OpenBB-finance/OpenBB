@@ -26,7 +26,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_inference(symbol: str, limit: int = 100, export: str = ""):
+def display_inference(
+    symbol: str, limit: int = 100, export: str = "", sheet_name: str = None
+):
     """Prints Inference sentiment from past n tweets.
 
     Parameters
@@ -35,6 +37,8 @@ def display_inference(symbol: str, limit: int = 100, export: str = ""):
         Stock ticker symbol
     limit: int
         Number of tweets to analyze
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export tweet dataframe
     """
@@ -72,7 +76,13 @@ def display_inference(symbol: str, limit: int = 100, export: str = ""):
         f"Of the last {len(df_tweets)} tweets, {100*percent_neg:.2f} % had a higher negative sentiment"
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "infer", df_tweets)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "infer",
+        df_tweets,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -82,6 +92,7 @@ def display_sentiment(
     n_days_past: int = 2,
     compare: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots sentiments from symbol
@@ -96,6 +107,8 @@ def display_sentiment(
         Number of days to extract tweets for
     compare: bool
         Show corresponding change in stock price
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export tweet dataframe
     external_axes: Optional[List[plt.Axes]], optional
@@ -185,5 +198,9 @@ def display_sentiment(
         theme.visualize_output()
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "sentiment", df_tweets
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "sentiment",
+        df_tweets,
+        sheet_name,
     )

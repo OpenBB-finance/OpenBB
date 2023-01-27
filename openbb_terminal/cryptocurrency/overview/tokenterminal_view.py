@@ -132,8 +132,5 @@ def display_fundamental_metrics(
             theme.visualize_output()
 
         export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "fun",
-            metric_series,
+            export, os.path.dirname(os.path.abspath(__file__)), "fun", metric_series
         )

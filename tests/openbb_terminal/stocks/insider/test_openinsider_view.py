@@ -38,6 +38,7 @@ def test_print_insider_filter(mocker):
         limit=5,
         links=False,
         export="csv",
+        sheet_name=None,
     )
 
 

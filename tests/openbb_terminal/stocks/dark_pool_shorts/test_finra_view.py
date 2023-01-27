@@ -19,6 +19,7 @@ def test_plot_dark_pools(mocker):
     finra_view.darkpool_ats_otc(
         symbol="RIVN",
         export="",
+        sheet_name=None,
     )
 
 
@@ -42,4 +43,5 @@ def test_darkpool_otc(mocker):
         limit=2,
         tier="T1",
         export="",
+        sheet_name=None,
     )
