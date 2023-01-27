@@ -34,7 +34,6 @@ else:
     else:
         pathex = str(venv_path / "lib" / "site-packages")
 
-# pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
 
 # Removing unused ARM64 binary
 binary_to_remove = Path(os.path.join(pathex, "_scs_direct.cpython-39-darwin.so"))
@@ -60,6 +59,7 @@ set_key(default_env_file, "OPENBB_LOGGING_COMMIT_HASH", str(commit_hash))
 # Files that are explicitly pulled into the bundle
 added_files = [
     (os.path.join(os.getcwd(), "openbb_terminal"), "openbb_terminal"),
+    (os.path.join(os.getcwd(), "openbb_terminal", "core", "plots"), "openbb_terminal/core/plots"),
     (os.path.join(pathex, "property_cached"), "property_cached"),
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
@@ -84,6 +84,7 @@ added_files = [
     (".env", "."),
     (os.path.join(pathex, "blib2to3", "Grammar.txt"), "blib2to3"),
     (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
+    (os.path.join(pathex, "pywry"), "pywry"),
     (shutil.which("voila"), "."),
     (shutil.which("jupyter-lab"), "."),
     (shutil.which("streamlit"), "."),
@@ -94,7 +95,7 @@ if is_win:
         (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
     )
 
-        
+
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
     "sklearn.utils._cython_blas",
