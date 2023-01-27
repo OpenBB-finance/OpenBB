@@ -5,11 +5,11 @@ import logging
 
 import pandas as pd
 import numpy as np
-import requests
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +47,7 @@ def get_financials(
         f"::{['yearly', 'quarterly'][quarterly]}"
     )
 
-    r = requests.get(request_url)
+    r = request(request_url)
     if r.status_code != 200:
         console.print("[red]Invalid API Key for eodhistoricaldata [/red]")
         console.print(

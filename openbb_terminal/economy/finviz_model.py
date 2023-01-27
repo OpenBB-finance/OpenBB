@@ -7,12 +7,11 @@ import webbrowser
 from typing import List
 
 import pandas as pd
-import requests
 from finvizfinance.group import performance, spectrum, valuation
 
 from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 # pylint: disable=unsupported-assignment-operation
 
@@ -203,7 +202,7 @@ def get_futures(
     pd.Dataframe
         Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
     """
-    source = requests.get(
+    source = request(
         "https://finviz.com/futures.ashx", headers={"User-Agent": get_user_agent()}
     ).text
 

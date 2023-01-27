@@ -11,7 +11,6 @@ from zipfile import ZipFile
 
 import financedatabase as fd
 import pandas as pd
-import requests
 import yfinance as yf
 from bs4 import BeautifulSoup
 from openpyxl import worksheet
@@ -19,7 +18,7 @@ from sklearn.linear_model import LinearRegression
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks.fundamental_analysis import dcf_static
-from openbb_terminal.helper_funcs import compose_export_path
+from openbb_terminal.helper_funcs import compose_export_path, request
 
 logger = logging.getLogger(__name__)
 
@@ -404,7 +403,7 @@ def create_dataframe(symbol: str, statement: str, period: str = "annual"):
     URL += dcf_static.statement_url[statement] + per_url
     ignores = dcf_static.statement_ignore[statement]
 
-    r = requests.get(URL, headers=dcf_static.headers)
+    r = request(URL, headers=dcf_static.headers)
 
     if "404 - Page Not Found" in r.text:
         return pd.DataFrame(), None, None
