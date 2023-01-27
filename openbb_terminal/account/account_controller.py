@@ -76,8 +76,8 @@ class AccountController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load your portfolio transactions.",
+            prog="sync",
+            description="Turn on/off the automatic sending of configurations when changed.",
         )
         parser.add_argument(
             "--on",
@@ -118,30 +118,46 @@ class AccountController(BaseController):
 
     def call_pull(self, _):
         """Pull data"""
-        response = Hub.fetch_user_configs(User.get_session())
-        if response:
-            console.print("Remote data:", style="info")
-            console.print(json.loads(response.content))
-            i = console.input(
-                "\nDo you want to overwrite your local configurations "
-                "with the remote? (y/n): "
-            )
-            if i.lower() in ["y", "yes"]:
-                console.print("[green]\nApplied remote configs.[/green]")
-            else:
-                console.print("\nAborted.", style="info")
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pull",
+            description="Pull and apply stored configurations from the cloud.",
+        )
+        ns_parser = self.parse_simple_args(parser, _)
+        if ns_parser:
+            response = Hub.fetch_user_configs(User.get_session())
+            if response:
+                console.print("Remote data:", style="info")
+                console.print(json.loads(response.content))
+                i = console.input(
+                    "\nDo you want to overwrite your local configurations "
+                    "with the remote? (y/n): "
+                )
+                if i.lower() in ["y", "yes"]:
+                    console.print("[green]\nApplied remote configs.[/green]")
+                else:
+                    console.print("\nAborted.", style="info")
 
     def call_clear(self, _):
         """Clear data"""
-        i = console.input(
-            "[red]This action is irreversible!\n"
-            "Are you sure you want to permanently delete your data? (y/n): [/red]"
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="clear",
+            description="Clear stored configurations from the cloud.",
         )
-        if i.lower() in ["y", "yes"]:
-            console.print("")
-            Hub.clear_user_configs()
-        else:
-            console.print("\nAborted.", style="info")
+        ns_parser = self.parse_simple_args(parser, _)
+        if ns_parser:
+            i = console.input(
+                "[red]This action is irreversible!\n"
+                "Are you sure you want to permanently delete your data? (y/n): [/red]"
+            )
+            if i.lower() in ["y", "yes"]:
+                console.print("")
+                Hub.clear_user_configs()
+            else:
+                console.print("\nAborted.", style="info")
 
     # @log_start_end(log=logger)
     # def call_upload(self, other_args: List[str]):
