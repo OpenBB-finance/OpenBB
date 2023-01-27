@@ -688,6 +688,7 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser:
             User.whoami()
+            console.print("")
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
