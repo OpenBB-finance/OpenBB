@@ -13,7 +13,9 @@ from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.menu import session
 from openbb_terminal.session import hub_model as Hub
+from openbb_terminal.session import local_model as Local
 from openbb_terminal.session.user import User
+from openbb_terminal.account.account_model import show_diff
 
 # from openbb_terminal.session.user import User
 
@@ -128,14 +130,16 @@ class AccountController(BaseController):
         if ns_parser:
             response = Hub.fetch_user_configs(User.get_session())
             if response:
-                console.print("Remote data:", style="info")
-                console.print(json.loads(response.content))
+                configs = json.loads(response.content)
+                show_diff(configs=configs)
+
                 i = console.input(
                     "\nDo you want to overwrite your local configurations "
-                    "with the remote? (y/n): "
+                    "with the above? (y/n): "
                 )
                 if i.lower() in ["y", "yes"]:
-                    console.print("[green]\nApplied remote configs.[/green]")
+                    Local.apply_configs(configs=configs)
+                    console.print("\nDone.", style="info")
                 else:
                     console.print("\nAborted.", style="info")
 

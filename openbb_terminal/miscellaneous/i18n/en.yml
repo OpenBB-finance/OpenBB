@@ -19,8 +19,8 @@ en:
   _main_menu_: Main menu
   account/_info_: Cloud storage of keys, settings and feature flags
   account/sync: Turns the cloud synchronization on/off
-  account/pull: Pull from cloud
-  account/clear: Clear data from remote cloud
+  account/pull: Pull data from cloud
+  account/clear: Clear data from cloud
   account/_routines_: Routines
   account/upload: Upload routine
   account/download: Download routine

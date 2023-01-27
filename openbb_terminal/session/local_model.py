@@ -87,7 +87,7 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-    console.print(configs, style="red")
+    # console.print(configs, style="red")
 
     if configs:
         settings = configs.get("features_settings", {})
