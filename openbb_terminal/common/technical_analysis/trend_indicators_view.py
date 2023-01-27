@@ -27,6 +27,7 @@ def display_adx(
     drift: int = 1,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Plots ADX indicator
@@ -100,6 +101,7 @@ def display_adx(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "adx",
         df_ta,
+        sheet_name,
     )
 
 
@@ -110,6 +112,7 @@ def display_aroon(
     scalar: int = 100,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Plots Aroon indicator
@@ -124,6 +127,8 @@ def display_aroon(
         Ticker
     scalar: int
         Scalar variable
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
@@ -183,4 +188,5 @@ def display_aroon(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "aroon",
         df_ta,
+        sheet_name,
     )

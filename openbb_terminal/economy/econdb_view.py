@@ -32,6 +32,7 @@ def show_macro_data(
     raw: bool = False,
     external_axes: bool = False,
     export: str = "",
+    sheet_name: str = None,
 ) -> Union[OpenBBFigure, None]:
     """Show the received macro data about a company [Source: EconDB]
 
@@ -134,6 +135,7 @@ def show_macro_data(
             os.path.dirname(os.path.abspath(__file__)),
             "macro_data",
             df_rounded,
+            sheet_name,
         )
 
     return fig.show() if not external_axes else fig
@@ -149,7 +151,8 @@ def show_treasuries(
     raw: bool = False,
     external_axes: bool = False,
     export: str = "",
-) -> Union[None, OpenBBFigure]:
+    sheet_name: str = None,
+) -> Union[OpenBBFigure, None]:
     """Display U.S. Treasury rates [Source: EconDB]
 
     Parameters
@@ -214,6 +217,7 @@ def show_treasuries(
             os.path.dirname(os.path.abspath(__file__)),
             "treasuries_data",
             treasury_data,
+            sheet_name,
         )
 
     return fig.show() if not external_axes else fig

@@ -40,6 +40,7 @@ def display_crypto_sentiment_analysis(
     symbol: str,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ) -> None:
     """Sentiment analysis from FinBrain for Cryptocurrencies
@@ -127,4 +128,5 @@ def display_crypto_sentiment_analysis(
         os.path.dirname(os.path.abspath(__file__)),
         "finbrain",
         sentiment,
+        sheet_name,
     )

@@ -54,6 +54,7 @@ def view_screener_output(
     preset: str,
     limit: int = 20,
     export: str = "",
+    sheet_name: str = None,
 ) -> List:
     """Print the output of screener
 
@@ -63,6 +64,8 @@ def view_screener_output(
         Chosen preset
     limit: int
         Number of randomly sorted rows to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format for export file
 
@@ -81,6 +84,7 @@ def view_screener_output(
         os.path.dirname(os.path.abspath(__file__)),
         "scr",
         df_res,
+        sheet_name,
     )
 
     if limit > 0:
@@ -107,7 +111,8 @@ def view_historical_greeks(
     raw: bool = False,
     limit: Union[int, str] = 20,
     export: str = "",
-    external_axes: bool = False,  # pylint:disable=unused-argument
+    sheet_name: str = None,
+    external_axes: bool = False,
 ):
     """Plots historical greeks for a given option. [Source: Syncretism]
 
@@ -129,6 +134,8 @@ def view_historical_greeks(
         Print to console
     limit: int
         Number of rows to show in raw
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : bool, optional
@@ -195,6 +202,7 @@ def view_historical_greeks(
         os.path.dirname(os.path.abspath(__file__)),
         "grhist",
         df,
+        sheet_name,
     )
 
     return fig.show() if not external_axes else fig

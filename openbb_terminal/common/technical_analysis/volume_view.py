@@ -23,6 +23,7 @@ def display_ad(
     use_open: bool = False,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Plots AD technical indicator
@@ -35,6 +36,8 @@ def display_ad(
         Whether to use open prices in calculation
     symbol : str
         Ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data as
     external_axes : bool, optional
@@ -122,6 +125,7 @@ def display_ad(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "ad",
         df_ta,
+        sheet_name,
     )
 
 
@@ -133,6 +137,7 @@ def display_adosc(
     use_open: bool = False,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Plots AD Osc Indicator
@@ -225,6 +230,7 @@ def display_adosc(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "adosc",
         df_ta,
+        sheet_name,
     )
 
 
@@ -233,6 +239,7 @@ def display_obv(
     data: pd.DataFrame,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Plots OBV technical indicator
@@ -243,6 +250,8 @@ def display_obv(
         Dataframe of ohlc prices
     symbol : str
         Ticker
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data as
     external_axes : bool, optional
@@ -323,4 +332,5 @@ def display_obv(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "obv",
         df_ta,
+        sheet_name,
     )

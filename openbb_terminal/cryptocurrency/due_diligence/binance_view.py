@@ -24,6 +24,7 @@ def display_order_book(
     limit: int = 100,
     to_symbol: str = "USDT",
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ) -> None:
     """Plots order book for currency. [Source: Binance]
@@ -37,6 +38,8 @@ def display_order_book(
         Limit parameter. Adjusts the weight
     to_symbol: str
         Quote currency (what to view coin vs)
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx
     external_axes : bool, optional
@@ -55,12 +58,13 @@ def display_order_book(
         os.path.dirname(os.path.abspath(__file__)),
         "book",
         market_book,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
 def display_balance(
-    from_symbol: str, to_symbol: str = "USDT", export: str = ""
+    from_symbol: str, to_symbol: str = "USDT", export: str = "", sheet_name: str = None
 ) -> None:
     """Prints table showing account holdings for asset. [Source: Binance]
 
@@ -70,6 +74,8 @@ def display_balance(
         Cryptocurrency
     to_symbol: str
         Cryptocurrency
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx
     """
@@ -92,4 +98,5 @@ def display_balance(
         os.path.dirname(os.path.abspath(__file__)),
         "book",
         df,
+        sheet_name,
     )

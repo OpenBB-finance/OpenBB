@@ -3,10 +3,8 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
 import numpy as np
-from matplotlib import pyplot as plt
 
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from openbb_terminal.cryptocurrency.due_diligence import ccxt_model
@@ -22,6 +20,7 @@ def display_order_book(
     symbol: str,
     to_symbol: str,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Plots order book for a coin in a given exchange
@@ -57,12 +56,18 @@ def display_order_book(
         os.path.dirname(os.path.abspath(__file__)),
         "ob",
         market_book,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
 def display_trades(
-    exchange: str, symbol: str, to_symbol: str, limit: int = 10, export: str = ""
+    exchange: str,
+    symbol: str,
+    to_symbol: str,
+    limit: int = 10,
+    export: str = "",
+    sheet_name: str = None,
 ):
     """Prints table showing trades for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
@@ -93,4 +98,5 @@ def display_trades(
         os.path.dirname(os.path.abspath(__file__)),
         "trades",
         df,
+        sheet_name,
     )

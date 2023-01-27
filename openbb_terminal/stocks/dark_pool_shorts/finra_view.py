@@ -13,11 +13,7 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import finra_model
 
@@ -25,8 +21,11 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def darkpool_ats_otc(  # pylint: disable=R1710
-    symbol: str, export: str = "", external_axes: bool = False
+def darkpool_ats_otc(
+    symbol: str,
+    export: str = "",
+    sheet_name: str = None,
+    external_axes: bool = False,
 ):
     """Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
 
@@ -180,6 +179,21 @@ def darkpool_ats_otc(  # pylint: disable=R1710
         hoverdistance=1,
     )
 
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "dpotc_ats",
+        ats,
+        sheet_name,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "dpotc_otc",
+        otc,
+        sheet_name,
+    )
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dpotc_ats", ats)
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dpotc_otc", otc)
 
@@ -231,6 +245,7 @@ def darkpool_otc(
     limit: int = 10,
     tier: str = "T1",
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]
@@ -263,7 +278,13 @@ def darkpool_otc(
 
         plot_dark_pools_ats(df_ats, symbols, external_axes)
 
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "prom", df_ats)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "prom",
+            df_ats,
+            sheet_name,
+        )
     else:
         console.print("[red]Could not get data[/red]\n")
         return

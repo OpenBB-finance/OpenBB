@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 def realtime_performance_sector(
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display Real-Time Performance sector. [Source: AlphaVantage]
@@ -80,6 +81,7 @@ def realtime_performance_sector(
         os.path.dirname(os.path.abspath(__file__)),
         "rtps",
         df_rtp,
+        sheet_name,
     )
 
     return fig.show() if not external_axes else fig if not raw else None
@@ -92,6 +94,7 @@ def display_real_gdp(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display US GDP from AlphaVantage
@@ -132,6 +135,7 @@ def display_real_gdp(
         os.path.dirname(os.path.abspath(__file__)),
         "gdp",
         gdp,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -147,6 +151,7 @@ def display_gdp_capita(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display US GDP per Capita from AlphaVantage
@@ -182,6 +187,7 @@ def display_gdp_capita(
         os.path.dirname(os.path.abspath(__file__)),
         "gdpc",
         gdp,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -200,6 +206,7 @@ def display_inflation(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display US Inflation from AlphaVantage
@@ -235,6 +242,7 @@ def display_inflation(
         os.path.dirname(os.path.abspath(__file__)),
         "inf",
         inf,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -254,6 +262,7 @@ def display_cpi(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display US consumer price index (CPI) from AlphaVantage
@@ -294,6 +303,7 @@ def display_cpi(
         os.path.dirname(os.path.abspath(__file__)),
         "cpi",
         cpi,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -311,6 +321,7 @@ def display_treasury_yield(
     start_date: str = "2010-01-01",
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display historical treasury yield for given maturity
@@ -351,6 +362,7 @@ def display_treasury_yield(
         os.path.dirname(os.path.abspath(__file__)),
         "tyld",
         yld,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -369,6 +381,7 @@ def display_unemployment(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display US unemployment AlphaVantage
@@ -406,6 +419,7 @@ def display_unemployment(
         os.path.dirname(os.path.abspath(__file__)),
         "unemp",
         un,
+        sheet_name,
     )
 
     if raw:

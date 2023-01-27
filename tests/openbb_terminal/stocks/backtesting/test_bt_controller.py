@@ -230,6 +230,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 spy_bt=True,
                 no_bench=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -253,6 +254,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 no_bench=True,
                 shortable=False,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -277,6 +279,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 no_bench=True,
                 shortable=False,
                 export="csv",
+                sheet_name=None,
             ),
         ),
     ],

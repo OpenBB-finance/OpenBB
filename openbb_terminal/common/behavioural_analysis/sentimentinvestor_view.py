@@ -17,6 +17,8 @@ from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 
+# pylint: disable=too-many-arguments
+
 logger = logging.getLogger(__name__)
 
 
@@ -30,6 +32,7 @@ def display_historical(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Display historical sentiment data of a ticker,
@@ -51,6 +54,8 @@ def display_historical(
     limit: int
         Number of results display on the terminal
         Default: 10
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
@@ -112,6 +117,7 @@ def display_historical(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "hist",
         df,
+        sheet_name,
     )
 
     RAW_COLS = ["twitter", "stocktwits", "yahoo", "likes", "RHI", "AHI"]
@@ -144,6 +150,7 @@ def display_trending(
     number: int = 10,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Display most talked about tickers within
     the last hour together with their sentiment data.
@@ -160,6 +167,8 @@ def display_trending(
     limit: int
         Number of results display on the terminal
         Default: 10
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -177,6 +186,7 @@ def display_trending(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "trend",
         df,
+        sheet_name,
     )
 
     RAW_COLS = [

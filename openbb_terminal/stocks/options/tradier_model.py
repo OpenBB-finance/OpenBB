@@ -6,6 +6,7 @@ from typing import List, Optional
 
 import pandas as pd
 import requests
+from tqdm import tqdm
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
@@ -143,7 +144,7 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
     expirations = option_expirations(symbol)
     options_dfs: pd.DataFrame = []
 
-    for expiry in expirations:
+    for expiry in tqdm(expirations, desc="Getting option chains"):
         chain = get_option_chain(symbol, expiry)
         options_dfs.append(chain)
 

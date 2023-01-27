@@ -1,7 +1,6 @@
 """Token Terminal View"""
 import logging
 import os
-from typing import List, Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -31,6 +30,7 @@ def display_fundamental_metric_from_project_over_time(
     metric: str,
     project: str,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Plots fundamental metric from a project over time [Source: Token Terminal]
@@ -95,12 +95,13 @@ def display_fundamental_metric_from_project_over_time(
         os.path.dirname(os.path.abspath(__file__)),
         "funot",
         metric_over_time,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_TOKEN_TERMINAL_KEY"])
-def display_description(project: str, export: str = ""):
+def display_description(project: str, export: str = "", sheet_name: str = None):
     """Prints description from a project [Source: Token Terminal]
 
     Parameters
@@ -126,4 +127,5 @@ def display_description(project: str, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "desc",
         pd.DataFrame(description.values(), index=description.keys()),
+        sheet_name,
     )

@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import List, Optional
+from typing import Optional
 
 from matplotlib import pyplot as plt
 
@@ -10,11 +10,7 @@ from openbb_terminal.cryptocurrency.due_diligence.santiment_model import (
     get_github_activity,
 )
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +24,7 @@ def display_github_activity(
     end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ) -> None:
     """Returns a list of github activity for a given coin and time interval.
@@ -82,4 +79,5 @@ def display_github_activity(
         os.path.dirname(os.path.abspath(__file__)),
         "gh",
         df,
+        sheet_name,
     )

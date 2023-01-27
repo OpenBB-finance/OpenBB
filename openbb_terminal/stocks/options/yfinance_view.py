@@ -4,17 +4,12 @@ __docformat__ = "numpy"
 import logging
 import os
 import re
-
-# from bisect import bisect_left
 from datetime import date, datetime, timedelta
 from typing import Any, Dict, List
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
-# import seaborn as sns
-import yfinance as yf
 from openpyxl import Workbook
 from scipy.stats import binom
 
@@ -38,7 +33,7 @@ from openbb_terminal.stocks.options.yfinance_model import (
     get_price,
 )
 
-# pylint: disable=C0302,unused-argument
+# pylint: disable=C0302, R0913, too-many-arguments
 
 
 logger = logging.getLogger(__name__)
@@ -68,429 +63,6 @@ def header_fmt(header: str) -> str:
 
 
 @log_start_end(log=logger)
-def display_chains(
-    symbol: str,
-    expiry: str,
-    min_sp: float = -1,
-    max_sp: float = -1,
-    calls_only: bool = False,
-    puts_only: bool = False,
-    export: str = "",
-):
-    """Display option chains for given ticker and expiration
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-    expiry: str
-        Expiration for option chain
-    min_sp: float
-        Min strike
-    max_sp: float
-        Max strike
-    calls_only: bool
-        Flag to get calls only
-    puts_only: bool
-        Flag to get puts only
-    export: str
-        Format to export data
-
-    """
-    # Logic for converting calls/puts into "get calls/puts"
-    call_bool = True
-    put_bool = True
-    if calls_only:
-        call_bool = True
-        put_bool = False
-    if puts_only:
-        call_bool = False
-        put_bool = True
-
-    option_chains = yfinance_model.get_option_chain_expiry(
-        symbol=symbol,
-        expiry=expiry,
-        calls=call_bool,
-        puts=put_bool,
-        min_sp=min_sp,
-        max_sp=max_sp,
-    ).fillna("-")
-    if option_chains.empty:
-        console.print("[red]Option chains not found.[/red]")
-        return
-
-    # There are 3 possibilities.  Calls only, puts only or both.
-    # If calls only or puts only, we are actually set
-    # because the columns are nicely named
-    if calls_only or puts_only:
-        title = "Call " if calls_only else "Put "
-        print_rich_table(
-            option_chains,
-            title=f"{symbol} {title} Option Chain\nYahoo (15 min delayed)",
-            floatfmt=[".2f" * 4 + ".0f" * 2 + ".3f" * 4],
-            headers=[
-                "Strike",
-                "Last Price",
-                "Bid",
-                "Ask",
-                "Volume",
-                "Open Interest",
-                "IV",
-                "Delta",
-                "Gamma",
-                "Theta",
-            ],
-        )
-
-    # Put the columns into the order for showing them
-    if calls_only and puts_only:
-        option_chains = option_chains[
-            [
-                "impliedVolatility_call",
-                "Theta_call",
-                "Gamma_call",
-                "Delta_call",
-                "volume_call",
-                "openInterest_call",
-                "bid_call",
-                "ask_call",
-                "lastPrice_call",
-                "strike",
-                "lastPrice_put",
-                "ask_put",
-                "bid_put",
-                "openInterest_put",
-                "volume_put",
-                "Delta_put",
-                "Gamma_put",
-                "Theta_put",
-                "impliedVolatility_put",
-            ]
-        ]
-
-        # In order to add color to call/put, the numbers will have to be strings.
-        # So floatfmt will not work in print_rich_table, so lets format them now.
-
-        float_fmt = [".3f" * 4 + ".0f" * 2 + ".2f" * 7 + ".0f" * 2 + ".3f" * 4]
-
-        # pylint: disable=W0640
-
-        for idx, fmt in enumerate(float_fmt):
-            option_chains.iloc[:, idx] = option_chains.iloc[:, idx].apply(
-                lambda x: str("{:" + fmt + "}").format(float(x)) if x != "-" else x
-            )
-        # pylint: enable=W0640
-
-    # Make anything _call green and anything _put red
-    for col in option_chains.columns:
-        if col.endswith("_call"):
-            option_chains[col] = option_chains[col].apply(
-                lambda x: f"[green]{x}[/green]"
-            )
-        if col.endswith("_put"):
-            option_chains[col] = option_chains[col].apply(lambda x: f"[red]{x}[/red]")
-
-    print_rich_table(
-        option_chains,
-        title=f"{symbol} Option Chain for {expiry}\nYahoo (15 min delayed)",
-        headers=[header_fmt(x) for x in option_chains.columns],
-    )
-    console.print("Greeks calculated by OpenBB")
-    export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "chains_yf", option_chains
-    )
-
-
-@log_start_end(log=logger)
-def plot_oi(
-    symbol: str,
-    expiry: str,
-    min_sp: float = -1,
-    max_sp: float = -1,
-    calls_only: bool = False,
-    puts_only: bool = False,
-    export: str = "",
-    external_axes: bool = False,
-):
-    """Plot open interest
-
-    Parameters
-    ----------
-    symbol: str
-        Ticker symbol
-    expiry: str
-        expiration date for options
-    min_sp: float
-        Min strike to consider
-    max_sp: float
-        Max strike to consider
-    calls_only: bool
-        Show calls only
-    puts_only: bool
-        Show puts only
-    export: str
-        Format to export file
-    external_axes : bool, optional
-        Whether to return the figure object or not, by default False
-    """
-    options = yfinance_model.get_option_chain(symbol, expiry)
-    op_helpers.export_yf_options(export, options, "oi_yf")
-    calls = options.calls
-    puts = options.puts
-    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
-
-    if min_sp == -1:
-        min_strike = 0.75 * current_price
-    else:
-        min_strike = min_sp
-
-    if max_sp == -1:
-        max_strike = 1.25 * current_price
-    else:
-        max_strike = max_sp
-
-    if calls_only and puts_only:
-        return console.print("Both flags selected, please select one", "\n")
-
-    call_oi = calls.set_index("strike")["openInterest"] / 1000
-    put_oi = puts.set_index("strike")["openInterest"] / 1000
-
-    df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
-    df_opt = df_opt.rename(
-        columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
-    )
-
-    max_pain = op_helpers.calculate_max_pain(df_opt)
-
-    fig = OpenBBFigure(
-        title=f"Open Interest for {symbol.upper()} expiring {expiry}",
-        xaxis_title="Strike Price",
-        yaxis_title="Open Interest [1k]",
-        xaxis_range=[min_strike, max_strike],
-    )
-
-    fig.add_scatter(
-        x=call_oi.index, y=call_oi.values, mode="lines+markers", name="Calls"
-    )
-    fig.add_scatter(x=put_oi.index, y=put_oi.values, mode="lines+markers", name="Puts")
-    fig.add_vline_legend(
-        x=current_price,
-        name="Current Price",
-        line=dict(dash="dash", width=2, color="grey"),
-    )
-    fig.add_vline_legend(
-        x=max_pain,
-        name=f"Max Pain: {max_pain}",
-        line=dict(dash="dash", width=2, color="white"),
-    )
-
-    return fig.show() if not external_axes else fig
-
-
-@log_start_end(log=logger)
-def plot_vol(
-    symbol: str,
-    expiry: str,
-    min_sp: float = -1,
-    max_sp: float = -1,
-    calls_only: bool = False,
-    puts_only: bool = False,
-    export: str = "",
-    external_axes: bool = False,
-):
-    """Plot volume
-
-    Parameters
-    ----------
-    symbol: str
-        Ticker symbol
-    expiry: str
-        expiration date for options
-    min_sp: float
-        Min strike to consider
-    max_sp: float
-        Max strike to consider
-    calls_only: bool
-        Show calls only
-    puts_only: bool
-        Show puts only
-    export: str
-        Format to export file
-    external_axes : bool, optional
-        Whether to return the figure object or not, by default False
-    """
-    options = yfinance_model.get_vol(symbol, expiry)
-    calls = options.calls
-    puts = options.puts
-    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
-
-    if min_sp == -1:
-        min_strike = 0.75 * current_price
-    else:
-        min_strike = min_sp
-
-    if max_sp == -1:
-        max_strike = 1.25 * current_price
-    else:
-        max_strike = max_sp
-
-    if calls_only and puts_only:
-        return console.print("Both flags selected, please select one", "\n")
-
-    call_v = calls.set_index("strike")["volume"] / 1000
-    put_v = puts.set_index("strike")["volume"] / 1000
-
-    fig = OpenBBFigure(
-        title=f"Volume for {symbol.upper()} expiring {expiry}",
-        xaxis_title="Strike Price",
-        yaxis_title="Volume [1k]",
-        xaxis_range=[min_strike, max_strike],
-    )
-    fig.add_scatter(x=call_v.index, y=call_v.values, mode="lines+markers", name="Calls")
-    fig.add_scatter(x=put_v.index, y=put_v.values, mode="lines+markers", name="Puts")
-    fig.add_vline(x=current_price, line_dash="dash", line_width=2, name="Current Price")
-
-    op_helpers.export_yf_options(export, options, "vol_yf")
-
-    return fig.show() if not external_axes else fig
-
-
-@log_start_end(log=logger)
-def plot_volume_open_interest(
-    symbol: str,
-    expiry: str,
-    min_sp: float = -1,
-    max_sp: float = -1,
-    min_vol: float = -1,
-    export: str = "",
-    external_axes: bool = False,
-):
-    """Plot volume and open interest
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-    expiry: str
-        Option expiration
-    min_sp: float
-        Min strike price
-    max_sp: float
-        Max strike price
-    min_vol: float
-        Min volume to consider
-    export: str
-        Format for exporting data
-    external_axes : bool, optional
-        Whether to return the figure object or not, by default False
-    """
-    options = yfinance_model.get_volume_open_interest(symbol, expiry)
-    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
-
-    # Process Data
-    def get_df_options(df: pd.DataFrame, opt_type: str):
-        df = df.pivot_table(
-            index="strike", values=["volume", "openInterest"], aggfunc="sum"
-        ).reindex()
-        df["strike"] = df.index
-        df["type"] = opt_type
-        df["openInterest"] = df["openInterest"] * (-1 if opt_type == "puts" else 1)
-        df["volume"] = df["volume"] * (-1 if opt_type == "puts" else 1)
-        df["oi+v"] = df["openInterest"] + df["volume"]
-        df["spot"] = round(current_price, 2)
-
-        if (vol := min_vol) == -1:
-            # If no argument provided, we use the percentile 50 to get 50% of upper volume data
-            volume_percentile_threshold = 50
-            vol = np.percentile(df["oi+v"], volume_percentile_threshold)
-        if (min_strike := min_sp) == -1:
-            min_strike = 0.75 * current_price
-        if (max_strike := max_sp) == -1:
-            max_strike = 1.25 * current_price
-
-        df = df[
-            (df["strike"] >= min_strike)
-            & (df["strike"] <= max_strike)
-            & (df["oi+v"] >= vol if opt_type == "calls" else df["oi+v"] <= vol)
-        ]
-
-        return df
-
-    df_calls = get_df_options(options.calls, "calls")
-    df_puts = get_df_options(options.puts, "puts")
-
-    df_opt = pd.merge(
-        options.calls.set_index("strike")["openInterest"] / 1000,
-        options.puts.set_index("strike")["openInterest"] / 1000,
-        left_index=True,
-        right_index=True,
-    )
-    df_opt = df_opt.rename(
-        columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
-    )
-
-    max_pain = op_helpers.calculate_max_pain(df_opt)
-
-    df_calls = df_calls.loc[df_calls.index.intersection(df_puts.index)]
-    df_puts = df_puts.loc[df_puts.index.intersection(df_calls.index)]
-
-    if df_calls.empty and df_puts.empty:
-        return console.print(
-            "The filtering applied is too strong, there is no data available for such conditions.\n"
-        )
-
-    fig = OpenBBFigure(
-        title=f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)",
-        xaxis_title="Volume",
-        yaxis_title="Strike Price",
-    )
-    fig.add_bar(
-        x=df_calls["oi+v"],
-        y=df_calls["strike"],
-        name="Calls: Open Interest",
-        orientation="h",
-        marker_color="lightgreen",
-    )
-    fig.add_bar(
-        x=df_calls["volume"],
-        y=df_calls["strike"],
-        name="Calls: Volume",
-        orientation="h",
-        marker_color="green",
-    )
-    fig.add_bar(
-        x=df_puts["oi+v"],
-        y=df_puts["strike"],
-        name="Puts: Open Interest",
-        orientation="h",
-        marker_color="pink",
-    )
-    fig.add_bar(
-        x=df_puts["volume"],
-        y=df_puts["strike"],
-        name="Puts: Volume",
-        orientation="h",
-        marker_color="red",
-    )
-    fig.add_hline_legend(
-        y=current_price,
-        name="Current stock price",
-        line=dict(dash="dash", width=2, color="white"),
-    )
-    fig.add_hline_legend(
-        y=max_pain,
-        name=f"Max pain = {max_pain}",
-        line=dict(dash="dash", width=2, color="red"),
-    )
-
-    fig.update_layout(barmode="relative", hovermode="y unified")
-
-    op_helpers.export_yf_options(export, options, "voi_yf")
-
-    return fig.show() if not external_axes else fig
-
-
-@log_start_end(log=logger)
 def plot_plot(
     symbol: str,
     expiry: str,
@@ -499,6 +71,7 @@ def plot_plot(
     y: str = "iv",
     custom: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ) -> None:
     """Generate a graph custom graph based on user input
@@ -519,6 +92,8 @@ def plot_plot(
         type of plot
     put: bool
         put option instead of call
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         type of data to export
     external_axes : bool, optional
@@ -574,7 +149,14 @@ def plot_plot(
     )
     fig.add_scatter(x=x_data, y=y_data, mode="lines+markers")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "plot")
+    if external_axes is None:
+        theme.visualize_output()
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "plot",
+        sheet_name,
+    )
 
     return fig.show() if not external_axes else fig
 
@@ -614,6 +196,7 @@ def show_parity(
     mini: float = None,
     maxi: float = None,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints options and whether they are under or over priced [Source: Yahoo Finance]
 
@@ -709,7 +292,13 @@ def show_parity(
         "[yellow]Warning: Low volume options may be difficult to trade.[/yellow]"
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "parity", show)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "parity",
+        show,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -947,6 +536,7 @@ def show_binom(
 def display_vol_surface(
     symbol: str,
     export: str = "",
+    sheet_name: str = None,
     z: str = "IV",
     external_axes: bool = False,
 ):
@@ -992,7 +582,13 @@ def display_vol_surface(
         fig.suptitle(f"{label} Surface for {symbol.upper()}")
         theme.visualize_output(force_tight_layout=False)
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "vsurf", data)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "vsurf",
+        data,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -1002,8 +598,8 @@ def show_greeks(
     div_cont: float = 0,
     rf: float = None,
     opt_type: int = 1,
-    mini: float = None,
-    maxi: float = None,
+    mini: float = -1,
+    maxi: float = -1,
     show_all: bool = False,
 ) -> None:
     """

@@ -27,7 +27,11 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_collections(
-    show_fp: bool = False, show_sales: bool = False, limit: int = 5, export: str = ""
+    show_fp: bool = False,
+    show_sales: bool = False,
+    limit: int = 5,
+    export: str = "",
+    sheet_name: str = None,
 ):
     """Display NFT collections. [Source: https://nftpricefloor.com/]
 
@@ -83,6 +87,7 @@ def display_collections(
         os.path.dirname(os.path.abspath(__file__)),
         "collections",
         df,
+        sheet_name,
     )
 
 
@@ -91,6 +96,7 @@ def display_floor_price(
     slug: str,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
     raw: bool = False,
 ):
@@ -104,6 +110,8 @@ def display_floor_price(
         Flag to display raw data
     limit: int
         Number of raw data to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : bool, optional
@@ -150,4 +158,5 @@ def display_floor_price(
             os.path.dirname(os.path.abspath(__file__)),
             "fp",
             df,
+            sheet_name,
         )

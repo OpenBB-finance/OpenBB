@@ -12,6 +12,7 @@ from openbb_terminal.stocks.options import (
     op_helpers,
     tradier_model,
     yfinance_model,
+    op_helpers,
 )
 
 logger = logging.getLogger(__name__)

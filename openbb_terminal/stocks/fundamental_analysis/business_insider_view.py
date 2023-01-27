@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_management(symbol: str, export: str = ""):
+def display_management(symbol: str, export: str = "", sheet_name: str = None):
     """Display company's managers
 
     Parameters
@@ -39,7 +39,11 @@ def display_management(symbol: str, export: str = ""):
         )
 
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "mgmt", df_management
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "mgmt",
+            df_management,
+            sheet_name,
         )
     else:
         logger.error("Data not available")

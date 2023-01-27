@@ -2,19 +2,37 @@
 __docformat__ = "numpy"
 
 import logging
-import os
+from datetime import datetime, timedelta
 from math import e, log
-from typing import Union
+from typing import Tuple, Union
 
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data
+from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+# pylint: disable=too-many-arguments
+
+
+def get_strikes(
+    min_sp: float, max_sp: float, current_price: float
+) -> Tuple[float, float]:
+    if min_sp == -1:
+        min_strike = 0.75 * current_price
+    else:
+        min_strike = min_sp
+
+    if max_sp == -1:
+        max_strike = 1.25 * current_price
+    else:
+        max_strike = max_sp
+
+    return min_strike, max_strike
 
 
 @log_start_end(log=logger)
@@ -124,30 +142,6 @@ def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> flo
 
 
 @log_start_end(log=logger)
-def export_options(export: str, options, file_name: str):
-    """Special function to assist in exporting options
-
-    Parameters
-    ----------
-    export: str
-        Format to export file
-    options: Chain
-        Chain object object
-    file_name: str
-        The file_name to export to
-
-    """
-    for option_name in ["calls", "puts"]:
-        option = getattr(options, option_name)
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            f"{file_name}_{option_name}",
-            option,
-        )
-
-
-@log_start_end(log=logger)
 def process_option_chain(data: pd.DataFrame, source: str) -> pd.DataFrame:
     """
     Create an option chain DataFrame from the given symbol.
@@ -207,6 +201,122 @@ def process_option_chain(data: pd.DataFrame, source: str) -> pd.DataFrame:
 
     else:
         df = pd.DataFrame()
+
+    return df
+
+
+@log_start_end(log=logger)
+def get_greeks(
+    current_price: float,
+    calls: pd.DataFrame,
+    puts: pd.DataFrame,
+    expire: str,
+    div_cont: float = 0,
+    rf: float = None,
+    opt_type: int = 0,
+    show_all: bool = False,
+    show_extra_greeks: bool = False,
+) -> pd.DataFrame:
+    """
+    Gets the greeks for a given option
+
+    Parameters
+    ----------
+    current_price: float
+        The current price of the underlying
+    div_cont: float
+        The dividend continuous rate
+    expire: str
+        The date of expiration
+    rf: float
+        The risk-free rate
+    opt_type: Union[-1, 0, 1]
+        The option type 1 is for call and -1 is for put
+    mini: float
+        The minimum strike price to include in the table
+    maxi: float
+        The maximum strike price to include in the table
+    show_all: bool
+        Whether to show all columns from puts and calls
+    show_extra_greeks: bool
+        Whether to show all greeks
+    """
+
+    chain = pd.DataFrame()
+
+    if opt_type not in [-1, 0, 1]:
+        console.print("[red]Invalid option type[/red]")
+    elif opt_type == 1:
+        chain = calls
+    elif opt_type == -1:
+        chain = puts
+    else:
+        chain = pd.concat([calls, puts])
+
+    chain_columns = chain.columns.tolist()
+    if not all(
+        col in chain_columns for col in ["strike", "impliedVolatility", "optionType"]
+    ):
+        console.print(
+            "[red]It's not possible to calculate the greeks without the following "
+            "columns: `strike`, `impliedVolatility`, `optionType`.\n[/red]"
+        )
+        return pd.DataFrame()
+
+    risk_free = rf if rf is not None else get_rf()
+    expire_dt = datetime.strptime(expire, "%Y-%m-%d")
+    dif = (expire_dt - datetime.now() + timedelta(hours=16)).total_seconds() / (
+        60 * 60 * 24
+    )
+    strikes = []
+    for _, row in chain.iterrows():
+        vol = row["impliedVolatility"]
+        opt_type = 1 if row["optionType"] == "call" else -1
+        opt = Option(
+            current_price, row["strike"], risk_free, div_cont, dif, vol, opt_type
+        )
+        tmp = [
+            opt.Delta(),
+            opt.Gamma(),
+            opt.Vega(),
+            opt.Theta(),
+        ]
+        result = (
+            [row[col] for col in row.index.tolist()]
+            if show_all
+            else [row[col] for col in ["strike", "impliedVolatility"]]
+        )
+        result += tmp
+
+        if show_extra_greeks:
+            result += [
+                opt.Rho(),
+                opt.Phi(),
+                opt.Charm(),
+                opt.Vanna(0.01),
+                opt.Vomma(0.01),
+            ]
+        strikes.append(result)
+
+    greek_columns = [
+        "Delta",
+        "Gamma",
+        "Vega",
+        "Theta",
+    ]
+    if show_all:
+        columns = chain_columns + greek_columns
+    else:
+        columns = [
+            "Strike",
+            "Implied Vol",
+        ] + greek_columns
+
+    if show_extra_greeks:
+        additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
+        columns += additional_columns
+
+    df = pd.DataFrame(strikes, columns=columns)
 
     return df
 

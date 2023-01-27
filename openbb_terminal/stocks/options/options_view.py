@@ -3,38 +3,33 @@ import logging
 import os
 
 # IMPORTATION THIRDPARTY
-from typing import Tuple
+from typing import List, Optional, Tuple
 
-import numpy as np
+import matplotlib.pyplot as plt
 import pandas as pd
 
+# IMPORTATION INTERNAL
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 
 # IMPORTATION INTERNAL
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options.op_helpers import calculate_max_pain
+from openbb_terminal.stocks.options.op_helpers import (
+    calculate_max_pain,
+    get_greeks,
+    get_strikes,
+)
 
 logger = logging.getLogger(__name__)
 
 # pylint: disable=C0302,R0913
 
 
-def get_strikes(
-    min_sp: float, max_sp: float, current_price: float
-) -> Tuple[float, float]:
-    if min_sp == -1:
-        min_strike = 0.75 * current_price
-    else:
-        min_strike = min_sp
-
-    if max_sp == -1:
-        max_strike = 1.25 * current_price
-    else:
-        max_strike = max_sp
-
-    return min_strike, max_strike
+def get_calls_and_puts(chain: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    calls = chain[chain["optionType"] == "call"]
+    puts = chain[chain["optionType"] == "put"]
+    return calls, puts
 
 
 def get_max_pain(calls: pd.DataFrame, puts: pd.DataFrame) -> float:
@@ -82,7 +77,8 @@ def plot_vol(
     puts_only: bool = False,
     raw: bool = False,
     export: str = "",
-    external_axes: bool = False,
+    sheet_name: str = None,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume
 
@@ -106,6 +102,8 @@ def plot_vol(
         Show puts only
     export: str
         Format to export file
+    sheet_name: str
+        Optionally specify the name of the sheet to export to
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
 
@@ -122,8 +120,7 @@ def plot_vol(
             expiry="2023-07-21",
         )
     """
-    calls = chain[chain["optionType"] == "call"]
-    puts = chain[chain["optionType"] == "put"]
+    calls, puts = get_calls_and_puts(chain)
 
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
     title = f"Volume for {symbol.upper()} expiring {expiry}"
@@ -156,7 +153,9 @@ def plot_vol(
         os.path.dirname(os.path.abspath(__file__)),
         f"vol_{symbol}_{expiry}",
         chain,
+        sheet_name,
     )
+
     return fig.show() if not external_axes else fig
 
 
@@ -172,6 +171,7 @@ def plot_oi(
     puts_only: bool = False,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Plot open interest
@@ -196,6 +196,8 @@ def plot_oi(
         Show puts only
     export: str
         Format to export file
+    sheet_name: str
+        Optionally specify the name of the sheet to export to
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
 
@@ -211,8 +213,7 @@ def plot_oi(
             expiry="2023-07-21",
         )
     """
-    calls = chain[chain["optionType"] == "call"]
-    puts = chain[chain["optionType"] == "put"]
+    calls, puts = get_calls_and_puts(chain)
 
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
     max_pain = get_max_pain(calls, puts)
@@ -254,6 +255,7 @@ def plot_oi(
         os.path.dirname(os.path.abspath(__file__)),
         f"oi_{symbol}_{expiry}",
         chain,
+        sheet_name,
     )
 
     return fig.show() if not external_axes else fig
@@ -269,6 +271,7 @@ def plot_voi(
     max_sp: float = -1,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Plot volume and open interest
@@ -289,6 +292,8 @@ def plot_voi(
         Max strike price
     export: str
         Format for exporting data
+    sheet_name: str
+        Optionally specify the name of the sheet to export to
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
 
@@ -304,47 +309,33 @@ def plot_voi(
             expiry="2023-07-21",
         )
     """
-    calls = chain[chain["optionType"] == "call"]
-    puts = chain[chain["optionType"] == "put"]
+    calls, puts = get_calls_and_puts(chain)
 
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
     max_pain = get_max_pain(calls, puts)
     title = f"Volume and Open Interest for {symbol.upper()} expiring {expiry}"
 
-    # Process Data
-    def get_df_options(df: pd.DataFrame, opt_type: str):
-        df = df.pivot_table(
-            index="strike", values=["volume", "openInterest"], aggfunc="sum"
-        ).reindex()
-        df["strike"] = df.index
-        df["type"] = opt_type
-        df["openInterest"] = df["openInterest"] * (-1 if opt_type == "puts" else 1)
-        df["volume"] = df["volume"] * (-1 if opt_type == "puts" else 1)
-        df["oi+v"] = df["openInterest"] + df["volume"]
-        df["spot"] = round(current_price, 2)
+    option_chain = pd.merge(
+        calls[["volume", "strike", "openInterest"]],
+        puts[["volume", "strike", "openInterest"]],
+        on="strike",
+    )
 
-        # we use the percentile 50 to get 50% of upper volume data
-        volume_percentile_threshold = 50
-        vol = np.percentile(df["oi+v"], volume_percentile_threshold)
+    option_chain = option_chain.rename(
+        columns={
+            "volume_x": "volume_call",
+            "volume_y": "volume_put",
+            "openInterest_x": "openInterest_call",
+            "openInterest_y": "openInterest_put",
+        }
+    )
 
-        df = df[
-            (df["strike"] >= min_strike)
-            & (df["strike"] <= max_strike)
-            & (df["oi+v"] >= vol if opt_type == "calls" else df["oi+v"] <= vol)
-        ]
-
-        return df
-
-    df_calls = get_df_options(calls, "calls")
-    df_puts = get_df_options(puts, "puts")
-
-    df_calls = df_calls.loc[df_calls.index.intersection(df_puts.index)]
-    df_puts = df_puts.loc[df_puts.index.intersection(df_calls.index)]
-
-    if df_calls.empty and df_puts.empty:
-        return console.print(
-            "The filtering applied is too strong, there is no data available for such conditions.\n"
-        )
+    option_chain[["openInterest_put", "volume_put"]] = (
+        option_chain[["openInterest_put", "volume_put"]] * -1 / 1000
+    )
+    option_chain[["openInterest_call", "volume_call"]] = (
+        option_chain[["openInterest_call", "volume_call"]] / 1000
+    )
 
     fig = OpenBBFigure(
         title=title,
@@ -353,29 +344,29 @@ def plot_voi(
     )
 
     fig.add_bar(
-        x=df_calls["oi+v"],
-        y=df_calls["strike"],
+        x=option_chain.openInterest_call,
+        y=option_chain.strike,
         name="Calls: Open Interest",
         orientation="h",
         marker_color="lightgreen",
     )
     fig.add_bar(
-        x=df_calls["volume"],
-        y=df_calls["strike"],
+        x=option_chain.volume_call,
+        y=option_chain.strike,
         name="Calls: Volume",
         orientation="h",
         marker_color="green",
     )
     fig.add_bar(
-        x=df_puts["oi+v"],
-        y=df_puts["strike"],
+        x=option_chain.openInterest_put,
+        y=option_chain.strike,
         name="Puts: Open Interest",
         orientation="h",
         marker_color="pink",
     )
     fig.add_bar(
-        x=df_puts["volume"],
-        y=df_puts["strike"],
+        x=option_chain.volume_put,
+        y=option_chain.strike,
         name="Puts: Volume",
         orientation="h",
         marker_color="red",
@@ -391,7 +382,9 @@ def plot_voi(
         line=dict(dash="dash", width=2, color="red"),
     )
 
-    fig.update_layout(barmode="relative", hovermode="y unified")
+    fig.update_layout(
+        barmode="relative", hovermode="y unified", yaxis_range=[min_strike, max_strike]
+    )
 
     if raw:
         print_raw(calls, puts, title)
@@ -401,6 +394,7 @@ def plot_voi(
         os.path.dirname(os.path.abspath(__file__)),
         f"voi_{symbol}_{expiry}",
         chain,
+        sheet_name,
     )
 
     return fig.show() if not external_axes else fig
@@ -423,4 +417,76 @@ def display_expiry_dates(expiry_dates: list):
         title="Available expiry dates",
         show_index=True,
         index_name="Identifier",
+    )
+
+
+@log_start_end(log=logger)
+def display_chains(
+    chain: pd.DataFrame,
+    expire: str,
+    current_price: float = 0,
+    calls_only: bool = False,
+    puts_only: bool = False,
+    min_sp: float = -1,
+    max_sp: float = -1,
+    export: str = "",
+    sheet_name: str = None,
+    to_display: list = None,
+):
+    """Display chains
+
+    chain: pd.Dataframe
+        Dataframe with options chain
+    current_price: float
+        Current price of selected symbol
+    expire: str
+        The date of expiration
+    min_sp: float
+        Min strike price
+    max_sp: float
+        Max strike price
+    calls_only: bool
+        Show calls only
+    puts_only: bool
+        Show puts only
+    export: str
+        Format for exporting data
+    sheet_name: str
+        Optionally specify the name of the sheet to export to
+    to_display: list
+        List of columns to display
+    """
+    if to_display:
+        to_display += ["strike", "optionType"]
+        to_display = list(set(to_display))
+        chain = chain[to_display]
+
+    min_strike, max_strike = get_strikes(
+        min_sp=min_sp, max_sp=max_sp, current_price=current_price
+    )
+
+    chain = chain[chain["strike"] >= min_strike]
+    chain = chain[chain["strike"] <= max_strike]
+    calls, puts = get_calls_and_puts(chain)
+
+    chain = get_greeks(
+        current_price=current_price,
+        calls=calls,
+        expire=expire,
+        puts=puts,
+        show_all=True,
+    )
+
+    # if the greeks calculation went with no problems, otherwise keep the previous
+    if not chain.empty:
+        calls, puts = get_calls_and_puts(chain)
+        console.print("Greeks calculated by OpenBB.")
+
+    calls = calls.sort_index(axis=1)
+    puts = puts.sort_index(axis=1)
+
+    print_raw(calls, puts, "Option chain", calls_only, puts_only)
+
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "chain", chain, sheet_name
     )

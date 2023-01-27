@@ -21,6 +21,7 @@ def display_economic_calendar(
     end_date: str,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Display economic calendar for specified country between start and end dates
 
@@ -47,7 +48,13 @@ def display_economic_calendar(
         headers=df.columns,
     )
     console.print()
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "events", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "events",
+        df,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -56,6 +63,7 @@ def display_big_mac_index(
     country_codes: List[str] = None,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Display Big Mac Index for given countries
@@ -92,7 +100,11 @@ def display_big_mac_index(
             )
 
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "bigmac", big_mac
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "bigmac",
+            big_mac,
+            sheet_name,
         )
 
         return fig.show() if not external_axes else fig

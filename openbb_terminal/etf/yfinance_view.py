@@ -29,6 +29,7 @@ def display_etf_weightings(
     raw: bool = False,
     min_pct_to_display: float = 5,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Display sector weightings allocation of ETF. [Source: Yahoo Finance]
@@ -41,6 +42,8 @@ def display_etf_weightings(
         Display sector weighting allocation
     min_pct_to_display: float
         Minimum percentage to display sector
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     external_axes : bool, optional
@@ -89,7 +92,13 @@ def display_etf_weightings(
         if external_axes is None:
             theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "weights", holdings)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "weights",
+        holdings,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)

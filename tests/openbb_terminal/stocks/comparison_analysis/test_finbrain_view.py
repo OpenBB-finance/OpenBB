@@ -22,6 +22,7 @@ def test_display_sentiment_compare(raw, mocker):
         similar=["TSLA", "GM"],
         raw=raw,
         export="",
+        sheet_name=None,
     )
 
 
@@ -40,4 +41,5 @@ def test_display_sentiment_correlation(raw, mocker):
         similar=["TSLA", "GM"],
         raw=raw,
         export="",
+        sheet_name=None,
     )

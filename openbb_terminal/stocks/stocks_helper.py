@@ -110,6 +110,7 @@ def search(
     exchange_country: str = "",
     limit: int = 0,
     export: str = "",
+    sheet_name: Optional[str] = "",
 ) -> None:
     """Search selected query for tickers.
 
@@ -224,7 +225,13 @@ def search(
         title=title,
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "search", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "search",
+        df,
+        sheet_name,
+    )
 
 
 def load(

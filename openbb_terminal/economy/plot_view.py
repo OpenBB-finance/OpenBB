@@ -14,7 +14,8 @@ from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich
 def show_plot(
     dataset_yaxis_1,
     dataset_yaxis_2,
-    export,
+    export: str = "",
+    sheet_name: Optional[str] = "",
     external_axes: bool = False,
 ):
     """
@@ -100,11 +101,16 @@ def show_plot(
             os.path.dirname(os.path.abspath(__file__)),
             "plot_macro_data",
             df,
+            sheet_name,
         )
 
 
 def show_options(
-    datasets: Dict[Any, pd.DataFrame], raw: str = "", limit: int = 10, export: str = ""
+    datasets: Dict[Any, pd.DataFrame],
+    raw: str = "",
+    limit: int = 10,
+    export: str = "",
+    sheet_name: str = None,
 ):
     """
     The ability to plot any data coming from EconDB, FRED or Yahoo Finance.
@@ -142,6 +148,7 @@ def show_options(
                 os.path.dirname(os.path.abspath(__file__)),
                 "dataset",
                 df,
+                sheet_name,
             )
     else:
         options = {

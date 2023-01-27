@@ -79,43 +79,6 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
     return pd.DataFrame()
 
 
-@log_start_end(log=logger)
-def get_option_chain(symbol: str, expiration: str) -> pd.DataFrame:
-    """Get option chain for symbol at a given expiration
-
-    Parameters
-    ----------
-    symbol: str
-        Symbol to get chain for
-    expiration: str
-        Expiration to get chain for
-
-    Returns
-    -------
-    pd.DataFrame
-        Dataframe of option chain
-    """
-    for asset in ["stocks", "index", "etf"]:
-        url = (
-            f"https://api.nasdaq.com/api/quote/{symbol}/option-chain?assetclass={asset}&"
-            f"fromdate={expiration}&todate={expiration}&excode=oprac&callput=callput&money=all&type=all"
-        )
-
-        response_json = requests.get(
-            url,
-            headers={
-                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
-                " AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Safari/605.1.15"
-            },
-        ).json()
-
-        if response_json["status"]["rCode"] == 200:
-            return process_response(response_json)
-
-    console.print(f"[red]{symbol} Option Chain not found.[/red]\n")
-    return pd.DataFrame()
-
-
 def process_response(response_json):
     df = pd.DataFrame(response_json["data"]["table"]["rows"]).drop(
         columns=["c_colour", "p_colour", "drillDownURL"]

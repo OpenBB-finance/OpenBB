@@ -221,6 +221,7 @@ class TerminalController(BaseController):
                 sources=news_parser.sources,
                 limit=news_parser.limit,
                 export=news_parser.export,
+                sheet_name=news_parser.sheet_name,
             )
 
     def call_guess(self, other_args: List[str]) -> None:

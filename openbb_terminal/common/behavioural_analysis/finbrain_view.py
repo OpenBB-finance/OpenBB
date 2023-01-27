@@ -35,6 +35,7 @@ def display_sentiment_analysis(
     symbol: str,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]
@@ -45,6 +46,8 @@ def display_sentiment_analysis(
         Ticker symbol to get the sentiment analysis from
     raw: False
         Display raw table data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: bool, optional
@@ -131,5 +134,9 @@ def display_sentiment_analysis(
             )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "headlines", sentiment
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "headlines",
+        sentiment,
+        sheet_name,
     )

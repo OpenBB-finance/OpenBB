@@ -27,6 +27,7 @@ def display_btc_rainbow(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Displays bitcoin rainbow chart
@@ -138,4 +139,5 @@ def display_btc_rainbow(
         os.path.dirname(os.path.abspath(__file__)),
         "btcrb",
         df_data,
+        sheet_name,
     )

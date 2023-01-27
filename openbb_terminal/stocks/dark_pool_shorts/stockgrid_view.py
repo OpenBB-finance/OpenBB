@@ -18,7 +18,11 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def dark_pool_short_positions(
-    limit: int = 10, sortby: str = "dpp_dollar", ascend: bool = False, export: str = ""
+    limit: int = 10,
+    sortby: str = "dpp_dollar",
+    ascend: bool = False,
+    export: str = "",
+    sheet_name: str = None,
 ):
     """Get dark pool short positions. [Source: Stockgrid]
 
@@ -64,12 +68,18 @@ def dark_pool_short_positions(
         title=f"Data for: {dp_date}",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dppos", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "dppos",
+        df,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
 def short_interest_days_to_cover(
-    limit: int = 10, sortby: str = "float", export: str = ""
+    limit: int = 10, sortby: str = "float", export: str = "", sheet_name: str = None
 ):
     """Print short interest and days to cover. [Source: Stockgrid]
 
@@ -96,7 +106,13 @@ def short_interest_days_to_cover(
         title=f"Data for: {dp_date}",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "shortdtc", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "shortdtc",
+        df,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -105,6 +121,7 @@ def short_interest_volume(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Plot price vs short interest volume. [Source: Stockgrid]
@@ -237,7 +254,11 @@ def short_interest_volume(
         fig.hide_holidays()
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "shortint(stockgrid)", df
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "shortint(stockgrid)",
+        df,
+        sheet_name,
     )
 
     return None if raw else fig.show() if not external_axes else fig
@@ -249,6 +270,7 @@ def net_short_position(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Plot net short position. [Source: Stockgrid]
@@ -322,4 +344,10 @@ def net_short_position(
         # if not external_axes:
         #     theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "shortpos", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "shortpos",
+        df,
+        sheet_name,
+    )

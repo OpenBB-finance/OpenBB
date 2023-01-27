@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
-# pylint: disable=R0912
+# pylint: disable=R0912,too-many-arguments
 
 
 @log_start_end(log=logger)
@@ -39,6 +39,7 @@ def insider_activity(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: bool = False,
 ):
     """Display insider activity. [Source: Business Insider]
@@ -57,6 +58,8 @@ def insider_activity(
         Number of latest days of inside activity
     raw: bool
         Print to console
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     external_axes: bool, optional
@@ -227,4 +230,5 @@ def insider_activity(
             os.path.dirname(os.path.abspath(__file__)),
             "act",
             df_insider,
+            sheet_name,
         )

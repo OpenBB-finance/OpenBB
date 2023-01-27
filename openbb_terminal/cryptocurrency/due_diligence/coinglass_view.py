@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
-def display_funding_rate(symbol: str, export: str = "") -> None:
+def display_funding_rate(symbol: str, export: str = "", sheet_name: str = None) -> None:
     """Plots funding rate by exchange for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/]
 
@@ -46,12 +46,15 @@ def display_funding_rate(symbol: str, export: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "fundrate",
         df,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
-def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> None:
+def display_open_interest(
+    symbol: str, interval: int = 0, export: str = "", sheet_name: str = None
+) -> None:
     """Plots open interest by exchange for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/]
 
@@ -79,12 +82,13 @@ def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> N
         os.path.dirname(os.path.abspath(__file__)),
         "oi",
         df,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
-def display_liquidations(symbol: str, export: str = "") -> None:
+def display_liquidations(symbol: str, export: str = "", sheet_name: str = None) -> None:
     """Plots liquidation per day data for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/#liquidation-chart]
 
@@ -110,6 +114,7 @@ def display_liquidations(symbol: str, export: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "liquidations",
         df,
+        sheet_name,
     )
 
 
