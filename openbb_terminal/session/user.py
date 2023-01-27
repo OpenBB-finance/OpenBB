@@ -31,6 +31,15 @@ class User:
             # Add username to flair
             User.update_flair()
 
+    @classmethod
+    def get_session(cls):
+        """Get session info."""
+        return {
+            "token_type": User._TOKEN_TYPE,
+            "access_token": User._TOKEN,
+            "uuid": User._UUID,
+        }
+
     @staticmethod
     def update_flair():
         MAX_FLAIR_LEN = 20

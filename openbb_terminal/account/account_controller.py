@@ -1,4 +1,5 @@
 import argparse
+import json
 import logging
 from typing import List, Dict
 from pathlib import Path
@@ -12,6 +13,7 @@ from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.menu import session
 from openbb_terminal.session import hub_model as Hub
+from openbb_terminal.session.user import User
 
 # from openbb_terminal.session.user import User
 
@@ -115,7 +117,18 @@ class AccountController(BaseController):
 
     def call_pull(self, _):
         """Pull data"""
-        console.print("Pull, Diff and Merge.")
+        response = Hub.fetch_user_configs(User.get_session())
+        if response:
+            console.print("Remote data:", style="info")
+            console.print(json.loads(response.content))
+            i = console.input(
+                "\nDo you want to overwrite your local configurations "
+                "with the remote? (y/n): "
+            )
+            if i.lower() in ["y", "yes"]:
+                console.print("[green]\nApplied remote configs.[/green]")
+            else:
+                console.print("\nAborted.", style="info")
 
     def call_clear(self, _):
         """Clear data"""
