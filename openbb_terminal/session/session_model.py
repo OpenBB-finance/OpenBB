@@ -1,7 +1,9 @@
 import importlib
+import logging
 import os
 import sys
 import json
+from enum import Enum
 import matplotlib.pyplot as plt
 from enum import Enum
 import openbb_terminal.session.local_model as Local
@@ -12,9 +14,9 @@ from openbb_terminal.rich_config import console
 
 
 class LoginStatus(Enum):
-    SUCCESS = 1
-    FAILED = 2
-    NO_RESPONSE = 3
+    SUCCESS = "success"
+    FAILED = "failed"
+    NO_RESPONSE = "no_response"
 
 
 def create_session(email: str, password: str, save: bool) -> dict:
@@ -70,6 +72,10 @@ def logout(cls: bool = False):
     for v in os.environ:
         if v.startswith("OPENBB"):
             os.environ.pop(v)
+
+    # Remove the log handlers - needs to be done before reloading modules
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
 
     # Reload all openbb modules to clear memorized variables
     modules = sys.modules.copy()
