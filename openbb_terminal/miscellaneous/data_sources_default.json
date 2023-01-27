@@ -487,18 +487,6 @@
     "quote": ["YahooFinance", "AlphaVantage"],
     "fwd": ["FXEmpire"]
   },
-  "funds": {
-    "country": ["Investing"],
-    "overview": ["Investing"],
-    "search": ["Investing"],
-    "load": ["Investing"],
-    "info": ["Investing"],
-    "plot": ["Investing"],
-    "sector": ["YahooFinance"],
-    "equity": ["YahooFinance"],
-    "alswe": ["Avanza"],
-    "infoswe": ["Avanza"]
-  },
   "futures": {
     "search": ["YahooFinance"],
     "historical": ["YahooFinance"],
