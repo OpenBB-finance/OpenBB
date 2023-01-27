@@ -68,10 +68,10 @@ Enterprise value                                           185.196 B
 Price hint                                                         2
 Last dividend date                                           1.672 B
 Earnings quarterly growth                                     -0.140
-Price to sales trailing 12 months                              5.085
+Price to sales trailing 12 months                              5.094
 Date short interest                                          1.674 B
 PEG ratio                                                      5.250
-Forward PE                                                    17.967
+Forward PE                                                    17.997
 Short percent of float                                         0.005
 Shares short prior month                                     8.926 M
 Implied shares outstanding                                         0
@@ -80,7 +80,7 @@ Payout ratio                                                   0.893
 Trailing annual dividend rate                                  5.020
 Dividend rate                                                  5.080
 Ex dividend date                                             1.672 B
-Trailing PE                                                   18.511
+Trailing PE                                                   18.542
 Ask                                                                0
 Ask size                                                         900
 Five year avg dividend yield                                   5.440

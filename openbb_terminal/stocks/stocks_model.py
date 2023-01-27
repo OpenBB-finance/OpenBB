@@ -262,19 +262,21 @@ def load_quote(symbol: str) -> pd.DataFrame:
     ticker = yf.Ticker(symbol)
 
     try:
+        info = ticker.info
+        f_info = ticker.fast_info
         quote_df = pd.DataFrame(
             [
                 {
-                    "Symbol": ticker.info["symbol"],
-                    "Name": ticker.info["shortName"],
-                    "Price": ticker.info["regularMarketPrice"],
-                    "Open": ticker.info["regularMarketOpen"],
-                    "High": ticker.info["dayHigh"],
-                    "Low": ticker.info["dayLow"],
-                    "Previous Close": ticker.info["previousClose"],
-                    "Volume": ticker.info["volume"],
-                    "52 Week High": ticker.info["fiftyTwoWeekHigh"],
-                    "52 Week Low": ticker.info["fiftyTwoWeekLow"],
+                    "Symbol": symbol,
+                    "Name": info["shortName"],
+                    "Price": f_info["last_price"],
+                    "Open": f_info["open"],
+                    "High": f_info["day_high"],
+                    "Low": f_info["day_low"],
+                    "Previous Close": f_info["regular_market_previous_close"],
+                    "Volume": f_info["last_volume"],
+                    "52 Week High": f_info["year_high"],
+                    "52 Week Low": f_info["year_low"],
                 }
             ]
         )

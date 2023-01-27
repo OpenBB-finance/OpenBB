@@ -1,1 +1,0 @@
-Exchange data removed from info (key='currency'). Use Ticker.fast_info or Ticker.get_history_metadata() instead
