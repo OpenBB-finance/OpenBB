@@ -35,7 +35,7 @@ bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (pytho
 cachetools==5.2.0; python_version >= "3.7" and python_version < "4.0" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7") and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7")
 catboost==1.1.1; python_version >= "3.7"
 ccxt==2.5.80
-certifi==2022.9.24; python_version >= "3.8" and python_version < "4" and python_full_version >= "3.7.1" and python_full_version < "4.0.0" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7")
+certifi==2022.12.7; python_version >= "3.8" and python_version < "4" and python_full_version >= "3.7.1" and python_full_version < "4.0.0" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7")
 cffi==1.15.1; implementation_name == "pypy" and python_version >= "3.7" and python_full_version >= "3.7.0" and python_full_version < "4.0.0"
 cfgv==3.3.1; python_full_version >= "3.6.1" and python_version >= "3.7"
 charset-normalizer==2.1.1; python_full_version >= "3.6.0"
@@ -47,7 +47,7 @@ colorama==0.4.6; python_full_version >= "3.7.2" and python_version >= "3.8" and 
 commonmark==0.9.1; python_full_version >= "3.6.3" and python_full_version < "4.0.0" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7")
 convertdate==2.4.0; python_version >= "3.7" and python_version < "4"
 coverage==6.5.0; python_version >= "3.7"
-cryptography==38.0.2; python_version >= "3.6"
+cryptography==39.0.0; python_version >= "3.6"
 cssselect==1.1.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
 cvxpy==1.2.1; python_version >= "3.7"
 cycler==0.11.0; python_version >= "3.7"
@@ -85,11 +85,11 @@ fred==3.1
 fredapi==0.4.3
 frozendict==2.3.4; python_version >= "3.6"
 frozenlist==1.3.1; python_version >= "3.7" and python_full_version >= "3.7.0"
-fsspec==2022.11.0; python_version >= "3.7"
+fsspec==2023.1.0; python_version >= "3.7"
 fundamentalanalysis==0.2.14
-future==0.18.2; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
+future==0.18.3; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 gitdb==4.0.9; python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7"
-gitpython==3.1.29; python_version >= "3.7"
+gitpython==3.1.30; python_version >= "3.7"
 google-auth-oauthlib==0.4.6; python_version >= "3.7"
 google-auth==2.14.1; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7"
 graphviz==0.20.1; python_version >= "3.7"
@@ -117,7 +117,7 @@ ipython==8.5.0; python_version >= "3.8"
 ipywidgets==8.0.2; python_version >= "3.7"
 iso8601==0.1.16
 isort==5.10.1; python_full_version >= "3.7.2" and python_version < "4.0"
-jedi==0.18.1; python_version >= "3.8"
+jedi==0.18.2; python_version >= "3.8"
 jinja2==3.1.2; python_version >= "3.7"
 joblib==1.2.0; python_version >= "3.8" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.8"
 json5==0.9.10; python_version >= "3.7"
@@ -185,7 +185,7 @@ patsy==0.5.3; python_version >= "3.8"
 pbr==5.11.0; python_version >= "3.8"
 pexpect==4.8.0; sys_platform != "win32" and python_version >= "3.8"
 pickleshare==0.7.5; python_version >= "3.8"
-pillow==9.2.0; python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7"
+pillow==9.4.0; python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7"
 platformdirs==2.5.2; python_version >= "3.7" and python_full_version >= "3.7.2"
 plotly==5.10.0; python_version >= "3.6"
 pluggy==1.0.0; python_full_version >= "3.7.0" and python_full_version < "4.0.0" and python_version >= "3.7"
@@ -211,7 +211,7 @@ pycares==4.2.2; python_version >= "3.5.2" and python_full_version >= "3.7.0"
 pycodestyle==2.7.0; python_full_version >= "3.7.0"
 pycoingecko==2.3.0
 pycparser==2.21; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
-pydantic==1.8.2; python_full_version >= "3.7.0" and python_full_version < "4.0.0"
+pydantic==1.10.4; python_full_version >= "3.7.0" and python_full_version < "4.0.0" and python_version >= "3.7"
 pydeck==0.8.0b4; python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7"
 pydeprecate==0.3.2; python_version >= "3.7"
 pyerfa==2.0.0.1; python_version >= "3.8"
@@ -306,7 +306,7 @@ tensorboard-data-server==0.6.1; python_version >= "3.7"
 tensorboard-plugin-wit==1.8.1; python_version >= "3.7"
 tensorboard==2.11.0; python_version >= "3.7"
 terminado==0.16.0; python_version >= "3.7"
-thepassiveinvestor==1.0.11
+thepassiveinvestor==1.1.2
 threadpoolctl==3.1.0; python_version >= "3.8" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.8"
 tinycss2==1.2.1; python_version >= "3.7"
 tokenize-rt==4.2.1; python_full_version >= "3.6.1" and python_version >= "3.7"
