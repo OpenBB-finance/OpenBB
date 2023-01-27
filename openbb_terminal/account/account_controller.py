@@ -150,8 +150,8 @@ class AccountController(BaseController):
         ns_parser = self.parse_simple_args(parser, _)
         if ns_parser:
             i = console.input(
-                "[red]This action is irreversible!\n"
-                "Are you sure you want to permanently delete your data? (y/n): [/red]"
+                "[red]This action is irreversible![/red]\n"
+                "> Are you sure you want to permanently delete your data? (y/n): "
             )
             if i.lower() in ["y", "yes"]:
                 console.print("")

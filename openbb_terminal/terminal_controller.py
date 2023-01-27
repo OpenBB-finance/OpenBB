@@ -360,12 +360,12 @@ class TerminalController(BaseController):
         """Process account command."""
         from openbb_terminal.account.account_controller import AccountController
 
-        # if User.is_guest():
-        #     console.print(
-        #         "[info]You need to be logged in to use this menu.\n"
-        #         "Create an account here https://my.openbb.co/register.[/info]\n"
-        #     )
-        #     return
+        if User.is_guest():
+            console.print(
+                "[info]You need to be logged in to use this menu.\n"
+                "Create an account here https://my.openbb.co/register.[/info]\n"
+            )
+            return
         self.queue = self.load_class(AccountController, self.queue)
 
     def call_keys(self, _):
