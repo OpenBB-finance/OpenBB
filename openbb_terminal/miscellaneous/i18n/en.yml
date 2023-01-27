@@ -9,6 +9,7 @@ en:
   settings: tune settings (export folder, timezone, language, plot size)
   featflags: enable and disable feature flags
   sources: select your preferred data sources
+  account: manage your OpenBB account
   keys: set API keys and check their validity
   wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
   record: record session to be converted into a .openbb routine
