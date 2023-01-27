@@ -5,6 +5,8 @@ import logging
 from datetime import datetime, timedelta
 from typing import List
 
+from pandas.core.frame import DataFrame
+
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
@@ -21,16 +23,20 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import (
+    ark_view,
     av_view,
     business_insider_view,
+    csimarket_view,
     dcf_view,
     eclect_us_view,
+    finnhub_view,
     finviz_view,
     market_watch_view,
     yahoo_finance_view,
     polygon_view,
     fmp_view,
     eodhd_view,
+    marketwatch_view,
     seeking_alpha_view,
 )
 
@@ -62,7 +68,6 @@ class FundamentalAnalysisController(StockBaseController):
         "shrs",
         "sust",
         "overview",
-        "key",
         "income",
         "balance",
         "cash",
@@ -72,11 +77,20 @@ class FundamentalAnalysisController(StockBaseController):
         "dcf",
         "dcfc",
         "dupont",
+        "sec",
+        "rating",
+        "pt",
+        "rot",
+        "est",
+        "supplier",
+        "customer",
+        "arktrades",
     ]
 
     PATH = "/stocks/fa/"
 
     SHRS_CHOICES = ["major", "institutional", "mutualfund"]
+    ESTIMATE_CHOICES = ["annualrevenue", "annualearnings", "quarterearnings"]
     CHOICES_GENERATION = True
 
     def __init__(
@@ -84,6 +98,7 @@ class FundamentalAnalysisController(StockBaseController):
         ticker: str,
         start: str,
         interval: str,
+        stock: DataFrame,
         suffix: str = "",
         queue: List[str] = None,
     ):
@@ -94,6 +109,7 @@ class FundamentalAnalysisController(StockBaseController):
         self.start = start
         self.interval = interval
         self.suffix = suffix
+        self.stock = stock
 
         self.default_income = get_ordered_list_sources(f"{self.PATH}income")[0]
         self.default_balance = get_ordered_list_sources(f"{self.PATH}balance")[0]
@@ -110,30 +126,44 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker.upper())
         mt.add_raw("\n")
+        mt.add_info("_company_overview")
+        mt.add_cmd("enterprise")
+        mt.add_cmd("overview")
+        mt.add_cmd("divs", not self.suffix)
+        mt.add_cmd("splits", not self.suffix)
+        mt.add_cmd("rating")
+        mt.add_cmd("rot")
+        mt.add_cmd("score")
+        mt.add_cmd("warnings")
+        mt.add_cmd("sust", not self.suffix)
+        mt.add_cmd("arktrades")
+        mt.add_raw("\n")
+        mt.add_info("_management_shareholders")
+        mt.add_cmd("mgmt")
+        mt.add_cmd("shrs", not self.suffix)
+        mt.add_cmd("supplier")
+        mt.add_cmd("customer")
+        mt.add_raw("\n")
+        mt.add_info("_financial_statements")
         mt.add_cmd("income")
         mt.add_cmd("balance")
         mt.add_cmd("cash")
-        mt.add_cmd("overview")
-        mt.add_cmd("mgmt")
-        mt.add_cmd("analysis")
-        mt.add_cmd("score")
-        mt.add_cmd("enterprise")
+        mt.add_cmd("growth")
         mt.add_cmd("metrics")
         mt.add_cmd("ratios")
-        mt.add_cmd("growth")
-        mt.add_cmd("revfc")
+        mt.add_cmd("dupont")
+        mt.add_cmd("fraud")
+        mt.add_cmd("sec")
+        mt.add_cmd("analysis")
+        mt.add_raw("\n")
+        mt.add_info("_future_estimations")
+        mt.add_cmd("earnings")
         mt.add_cmd("epsfc")
-        mt.add_cmd("warnings")
+        mt.add_cmd("revfc")
+        mt.add_cmd("est")
+        mt.add_cmd("pt")
         mt.add_cmd("dcf")
         mt.add_cmd("dcfc")
-        mt.add_cmd("shrs", not self.suffix)
-        mt.add_cmd("sust", not self.suffix)
-        mt.add_cmd("divs", not self.suffix)
-        mt.add_cmd("splits", not self.suffix)
-        mt.add_cmd("key")
-        mt.add_cmd("earnings")
-        mt.add_cmd("fraud")
-        mt.add_cmd("dupont")
         console.print(text=mt.menu_text, menu="Stocks - Fundamental Analysis")
 
     def custom_reset(self):
@@ -235,11 +265,19 @@ class FundamentalAnalysisController(StockBaseController):
                 and Benjamin Graham thoughts [Source: FMP]
                 """,
         )
+        parser.add_argument(
+            "-y",
+            "--years",
+            type=int,
+            default=10,
+            dest="years",
+            help="Define the amount of years required to calculate the score.",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            fmp_view.valinvest_score(self.ticker)
+            fmp_view.valinvest_score(self.ticker, ns_parser.years)
 
     @log_start_end(log=logger)
     def call_enterprise(self, other_args: List[str]):
@@ -350,15 +388,24 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            fmp_view.display_key_metrics(
-                symbol=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
+            if ns_parser.source == "FinancialModelingPrep":
+                fmp_view.display_key_metrics(
+                    symbol=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            if ns_parser.source == "AlphaVantage":
+                av_view.display_key(
+                    symbol=self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 
     @log_start_end(log=logger)
     def call_ratios(self, other_args: List[str]):
@@ -630,33 +677,6 @@ class FundamentalAnalysisController(StockBaseController):
                 )
             else:
                 console.print("Only US tickers are recognized.", "\n")
-
-    @log_start_end(log=logger)
-    def call_key(self, other_args: List[str]):
-        """Process key command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="key",
-            description="""
-                Gives main key metrics about the company (it's a subset of the Overview data from Alpha
-                Vantage API). The following fields are expected: Market capitalization, EBITDA, EPS, PE
-                ratio, PEG ratio, Price to book ratio, Return on equity TTM, Payout ratio, Price to
-                sales ratio TTM, Dividend yield, 50 day moving average, Analyst target price, Beta
-                [Source: Alpha Vantage API]
-            """,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            av_view.display_key(
-                symbol=self.ticker,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
 
     @log_start_end(log=logger)
     def call_income(self, other_args: List[str]):
@@ -1374,3 +1394,314 @@ class FundamentalAnalysisController(StockBaseController):
                 while line:
                     console.print(f"{line.strip()}")
                     line = fp.readline()
+
+    @log_start_end(log=logger)
+    def call_pt(self, other_args: List[str]):
+        """Process pt command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="pt",
+            description="""Prints price target from analysts. [Source: Business Insider]""",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of latest price targets from analysts to print.",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            business_insider_view.price_target_from_analysts(
+                symbol=self.ticker,
+                data=self.stock,
+                start_date=self.start,
+                limit=ns_parser.limit,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_est(self, other_args: List[str]):
+        """Process est command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="est",
+            description="""Yearly estimates and quarter earnings/revenues.
+            [Source: Business Insider]""",
+        )
+        parser.add_argument(
+            "-e",
+            "--estimate",
+            help="Estimates to get",
+            dest="estimate",
+            choices=self.ESTIMATE_CHOICES,
+            default="annualearnings",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            business_insider_view.estimates(
+                symbol=self.ticker,
+                estimate=ns_parser.estimate,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_rot(self, other_args: List[str]):
+        """Process rot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="rot",
+            description="""
+                Rating over time (monthly). [Source: Finnhub]
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of last months",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            finnhub_view.rating_over_time(
+                symbol=self.ticker,
+                limit=ns_parser.limit,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_rating(self, other_args: List[str]):
+        """Process rating command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="rating",
+            description="""
+                Based on specific ratios, prints information whether the company
+                is a (strong) buy, neutral or a (strong) sell. The following fields are expected:
+                P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="limit of last days to display ratings",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if ns_parser.source == "Finviz":
+                finviz_view.analyst(
+                    symbol=self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            elif ns_parser.source == "FinancialModelingPrep":
+                fmp_view.rating(
+                    symbol=self.ticker,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+
+    @log_start_end(log=logger)
+    def call_sec(self, other_args: List[str]):
+        """Process sec command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="sec",
+            description="""
+                Prints SEC filings of the company. The following fields are expected: Filing Date,
+                Document Date, Type, Category, Amended, and Link. [Source: Market Watch and FinancialModelingPrep]
+            """,
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            default=self.ticker,
+            help="The ticker to be used to get SEC filings.",
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=20,
+            help="number of latest SEC filings.",
+        )
+
+        parser.add_argument(
+            "-p",
+            "--pages",
+            dest="pages",
+            type=check_positive,
+            default=5,
+            help="number of pages of SEC filings to search through, only relevant for FinancialModellingPrep.",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if ns_parser.source == "MarketWatch":
+                marketwatch_view.sec_filings(
+                    symbol=ns_parser.ticker,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            if ns_parser.source == "FinancialModelingPrep":
+                fmp_view.display_filings(
+                    ns_parser.ticker,
+                    ns_parser.pages,
+                    ns_parser.limit,
+                    ns_parser.export,
+                    heet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+
+    @log_start_end(log=logger)
+    def call_supplier(self, other_args: List[str]):
+        """Process supplier command"""
+        parser = argparse.ArgumentParser(
+            prog="supplier",
+            add_help=False,
+            description="List of suppliers from ticker provided. [Source: CSIMarket]",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            csimarket_view.suppliers(
+                symbol=self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_customer(self, other_args: List[str]):
+        """Process customer command"""
+        parser = argparse.ArgumentParser(
+            prog="customer",
+            add_help=False,
+            description="List of customers from ticker provided. [Source: CSIMarket]",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            csimarket_view.customers(
+                symbol=self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_arktrades(self, other_args):
+        """Process arktrades command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="arktrades",
+            description="""
+                Get trades for ticker across all ARK funds.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            help="Limit of rows to show",
+            dest="limit",
+            default=10,
+            type=check_positive,
+        )
+        parser.add_argument(
+            "-s",
+            "--show_symbol",
+            action="store_true",
+            default=False,
+            help="Flag to show ticker in table",
+            dest="show_symbol",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            ark_view.display_ark_trades(
+                symbol=self.ticker,
+                limit=ns_parser.limit,
+                show_symbol=ns_parser.show_symbol,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )

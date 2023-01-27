@@ -1,4 +1,5 @@
                               Holder     Shares Date Reported   Stake     Value
+<<<<<<< HEAD
 0         Vanguard Group, Inc. (The)  132.481 M    2022-09-29  8.55 %  13.805 B
 1                     Blackrock Inc.  100.951 M    2022-09-29  6.51 %  10.520 B
 2            Capital World Investors   84.894 M    2022-09-29  5.48 %   8.846 B
@@ -9,3 +10,15 @@
 7      Price (T.Rowe) Associates Inc   35.468 M    2022-09-29  2.29 %   3.696 B
 8      Geode Capital Management, LLC   29.846 M    2022-09-29  1.93 %   3.110 B
 9          JP Morgan Chase & Company   26.098 M    2022-09-29  1.68 %   2.720 B
+=======
+0         Vanguard Group, Inc. (The)  132.481 M    2022-09-29  8.55 %  13.820 B
+1                     Blackrock Inc.  100.951 M    2022-09-29  6.51 %  10.531 B
+2            Capital World Investors   84.894 M    2022-09-29  5.48 %   8.856 B
+3    Capital International Investors   82.685 M    2022-09-29  5.33 %   8.626 B
+4  Capital Research Global Investors   63.077 M    2022-09-29  4.07 %   6.580 B
+5           State Street Corporation   57.778 M    2022-09-29  3.73 %   6.027 B
+6                     Morgan Stanley   43.101 M    2022-09-29  2.78 %   4.496 B
+7      Price (T.Rowe) Associates Inc   35.468 M    2022-09-29  2.29 %   3.700 B
+8      Geode Capital Management, LLC   29.846 M    2022-09-29  1.93 %   3.114 B
+9          JP Morgan Chase & Company   26.098 M    2022-09-29  1.68 %   2.723 B
+>>>>>>> 1b3ca01e82 (Update tests for new change)

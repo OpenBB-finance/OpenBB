@@ -10,8 +10,290 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/rss_feed?apikey=MOCK_API_KEY&page=0
   response:
     body:
-      string: "[\n  {\n    \"title\": \"6-K - PETROBRAS - PETROLEO BRASILEIRO SA (0001119639)
-        (Filer)\",\n    \"date\": \"2023-01-26 17:27:59\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1119639/000129281423000215/0001292814-23-000215-index.htm\",\n
+      string: "[\n  {\n    \"title\": \"10-K - Concentrix Corp (0001803599) (Filer)\",\n
+        \   \"date\": \"2023-01-27 08:03:53\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1803599/000180359923000016/0001803599-23-000016-index.htm\",\n
+        \   \"cik\": \"0001803599\",\n    \"form_type\": \"10-K\",\n    \"ticker\":
+        \"CNXC\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - PRUDENTIAL
+        PLC (0001116578) (Filer)\",\n    \"date\": \"2023-01-27 07:40:03\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1116578/000165495423000902/0001654954-23-000902-index.htm\",\n
+        \   \"cik\": \"0001116578\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"PUKPF\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - PRUDENTIAL
+        PLC (0001116578) (Filer)\",\n    \"date\": \"2023-01-27 07:40:03\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1116578/000165495423000902/0001654954-23-000902-index.htm\",\n
+        \   \"cik\": \"0001116578\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"PUK\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Strid Group,
+        LLC (0001625800) (Filer)\",\n    \"date\": \"2023-01-27 07:31:13\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1625800/000108514623000413/0001085146-23-000413-index.htm\",\n
+        \   \"cik\": \"0001625800\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Successful
+        Portfolios LLC (0001721780) (Filer)\",\n    \"date\": \"2023-01-27 07:30:37\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1721780/000108514623000412/0001085146-23-000412-index.htm\",\n
+        \   \"cik\": \"0001721780\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Beach
+        Point Capital Management LP (0001453885) (Filer)\",\n    \"date\": \"2023-01-27
+        07:30:17\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1453885/000108514623000411/0001085146-23-000411-index.htm\",\n
+        \   \"cik\": \"0001453885\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Baugh
+        & Associates, LLC (0001730818) (Filer)\",\n    \"date\": \"2023-01-27 07:29:45\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1730818/000108514623000410/0001085146-23-000410-index.htm\",\n
+        \   \"cik\": \"0001730818\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - MONTRUSCO
+        BOLTON INVESTMENTS INC. (0001475940) (Filer)\",\n    \"date\": \"2023-01-27
+        07:28:45\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1475940/000108514623000408/0001085146-23-000408-index.htm\",\n
+        \   \"cik\": \"0001475940\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Gratus
+        Capital LLC (0001652103) (Filer)\",\n    \"date\": \"2023-01-27 07:28:19\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1652103/000108514623000407/0001085146-23-000407-index.htm\",\n
+        \   \"cik\": \"0001652103\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - SIGMA
+        INVESTMENT COUNSELORS INC (0001085163) (Filer)\",\n    \"date\": \"2023-01-27
+        07:26:44\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1085163/000108514623000405/0001085146-23-000405-index.htm\",\n
+        \   \"cik\": \"0001085163\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Joel Isaacson
+        & Co., LLC (0001599330) (Filer)\",\n    \"date\": \"2023-01-27 07:26:15\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1599330/000108514623000404/0001085146-23-000404-index.htm\",\n
+        \   \"cik\": \"0001599330\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Triad
+        Investment Management (0001615717) (Filer)\",\n    \"date\": \"2023-01-27
+        07:25:55\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1615717/000108514623000403/0001085146-23-000403-index.htm\",\n
+        \   \"cik\": \"0001615717\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Hartford
+        Funds Management Co LLC (0001546587) (Filer)\",\n    \"date\": \"2023-01-27
+        07:25:33\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1546587/000108514623000402/0001085146-23-000402-index.htm\",\n
+        \   \"cik\": \"0001546587\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Sicart
+        Associates LLC (0001696494) (Filer)\",\n    \"date\": \"2023-01-27 07:24:37\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1696494/000108514623000400/0001085146-23-000400-index.htm\",\n
+        \   \"cik\": \"0001696494\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - MUFG SECURITIES
+        (CANADA), LTD. (0001656187) (Filer)\",\n    \"date\": \"2023-01-27 07:24:14\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1656187/000108514623000399/0001085146-23-000399-index.htm\",\n
+        \   \"cik\": \"0001656187\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Bridgewater
+        Advisors Inc. (0001600319) (Filer)\",\n    \"date\": \"2023-01-27 07:23:53\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1600319/000108514623000398/0001085146-23-000398-index.htm\",\n
+        \   \"cik\": \"0001600319\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Integrated
+        Advisors Network LLC (0001660177) (Filer)\",\n    \"date\": \"2023-01-27 07:23:11\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1660177/000108514623000397/0001085146-23-000397-index.htm\",\n
+        \   \"cik\": \"0001660177\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Blue Zone
+        Wealth Advisors, LLC (0001803106) (Filer)\",\n    \"date\": \"2023-01-27 07:22:40\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1803106/000108514623000396/0001085146-23-000396-index.htm\",\n
+        \   \"cik\": \"0001803106\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - ECOPETROL
+        S.A. (0001444406) (Filer)\",\n    \"date\": \"2023-01-27 07:17:15\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1444406/000129281423000219/0001292814-23-000219-index.htm\",\n
+        \   \"cik\": \"0001444406\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"EC\",\n    \"done\": true\n  },\n  {\n    \"title\": \"10-K - CCO HOLDINGS
+        LLC (0001271833) (Filer)\",\n    \"date\": \"2023-01-27 07:15:54\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1271833/000127183323000003/0001271833-23-000003-index.htm\",\n
+        \   \"cik\": \"0001271833\",\n    \"form_type\": \"10-K\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"10-K - CCO HOLDINGS
+        CAPITAL CORP (0001271834) (Filer)\",\n    \"date\": \"2023-01-27 07:15:54\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1271834/000127183323000003/0001271833-23-000003-index.htm\",\n
+        \   \"cik\": \"0001271834\",\n    \"form_type\": \"10-K\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Sol-Gel Technologies
+        Ltd. (0001684693) (Filer)\",\n    \"date\": \"2023-01-27 07:15:12\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1684693/000117891323000306/0001178913-23-000306-index.htm\",\n
+        \   \"cik\": \"0001684693\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"SLGL\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Sol-Gel Technologies
+        Ltd. (0001684693) (Filer)\",\n    \"date\": \"2023-01-27 07:10:22\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1684693/000117891323000304/0001178913-23-000304-index.htm\",\n
+        \   \"cik\": \"0001684693\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"SLGL\",\n    \"done\": true\n  },\n  {\n    \"title\": \"10-K - CHARTER
+        COMMUNICATIONS, INC. /MO/ (0001091667) (Filer)\",\n    \"date\": \"2023-01-27
+        07:04:46\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1091667/000109166723000024/0001091667-23-000024-index.htm\",\n
+        \   \"cik\": \"0001091667\",\n    \"form_type\": \"10-K\",\n    \"ticker\":
+        \"CHTR\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Vertical
+        Aerospace Ltd. (0001867102) (Filer)\",\n    \"date\": \"2023-01-27 07:00:33\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1867102/000110465923007235/0001104659-23-007235-index.htm\",\n
+        \   \"cik\": \"0001867102\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"EVTL\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Vertical
+        Aerospace Ltd. (0001867102) (Filer)\",\n    \"date\": \"2023-01-27 07:00:33\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1867102/000110465923007235/0001104659-23-007235-index.htm\",\n
+        \   \"cik\": \"0001867102\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"EVTL-WT\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - HEXO Corp.
+        (0001690947) (Filer)\",\n    \"date\": \"2023-01-27 07:00:23\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1690947/000115752323000105/0001157523-23-000105-index.htm\",\n
+        \   \"cik\": \"0001690947\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"HEXO\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - POSCO HOLDINGS
+        INC. (0000889132) (Filer)\",\n    \"date\": \"2023-01-27 06:56:06\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/889132/000119312523016788/0001193125-23-016788-index.htm\",\n
+        \   \"cik\": \"0000889132\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"PKX\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - POSCO HOLDINGS
+        INC. (0000889132) (Filer)\",\n    \"date\": \"2023-01-27 06:53:51\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/889132/000119312523016786/0001193125-23-016786-index.htm\",\n
+        \   \"cik\": \"0000889132\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"PKX\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - MICRO FOCUS
+        INTERNATIONAL PLC (0001359711) (Filer)\",\n    \"date\": \"2023-01-27 06:49:46\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1359711/000165495423000899/0001654954-23-000899-index.htm\",\n
+        \   \"cik\": \"0001359711\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"MFGP\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - MICRO FOCUS
+        INTERNATIONAL PLC (0001359711) (Filer)\",\n    \"date\": \"2023-01-27 06:49:46\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1359711/000165495423000899/0001654954-23-000899-index.htm\",\n
+        \   \"cik\": \"0001359711\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"MCFUF\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - POSCO HOLDINGS
+        INC. (0000889132) (Filer)\",\n    \"date\": \"2023-01-27 06:48:58\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/889132/000119312523016781/0001193125-23-016781-index.htm\",\n
+        \   \"cik\": \"0000889132\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"PKX\",\n    \"done\": true\n  },\n  {\n    \"title\": \"10-Q - Booz Allen
+        Hamilton Holding Corp (0001443646) (Filer)\",\n    \"date\": \"2023-01-27
+        06:48:19\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1443646/000144364623000021/0001443646-23-000021-index.htm\",\n
+        \   \"cik\": \"0001443646\",\n    \"form_type\": \"10-Q\",\n    \"ticker\":
+        \"BAH\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - LG Display
+        Co., Ltd. (0001290109) (Filer)\",\n    \"date\": \"2023-01-27 06:27:58\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1290109/000119312523016759/0001193125-23-016759-index.htm\",\n
+        \   \"cik\": \"0001290109\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"LPL\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - LG Display
+        Co., Ltd. (0001290109) (Filer)\",\n    \"date\": \"2023-01-27 06:21:58\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1290109/000119312523016752/0001193125-23-016752-index.htm\",\n
+        \   \"cik\": \"0001290109\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"LPL\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - LG Display
+        Co., Ltd. (0001290109) (Filer)\",\n    \"date\": \"2023-01-27 06:17:28\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1290109/000119312523016750/0001193125-23-016750-index.htm\",\n
+        \   \"cik\": \"0001290109\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"LPL\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Bilibili Inc.
+        (0001723690) (Filer)\",\n    \"date\": \"2023-01-27 06:08:59\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1723690/000119312523016736/0001193125-23-016736-index.htm\",\n
+        \   \"cik\": \"0001723690\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"BILI\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Full Truck
+        Alliance Co. Ltd. (0001838413) (Filer)\",\n    \"date\": \"2023-01-27 06:07:28\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1838413/000119312523016730/0001193125-23-016730-index.htm\",\n
+        \   \"cik\": \"0001838413\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"YMM\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Grindrod Shipping
+        Holdings Ltd. (0001725293) (Filer)\",\n    \"date\": \"2023-01-27 06:05:49\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1725293/000157587223000156/0001575872-23-000156-index.htm\",\n
+        \   \"cik\": \"0001725293\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"GRIN\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Locafy Ltd
+        (0001875547) (Filer)\",\n    \"date\": \"2023-01-27 06:03:50\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1875547/000149315223002659/0001493152-23-002659-index.htm\",\n
+        \   \"cik\": \"0001875547\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"LCFYW\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Locafy Ltd
+        (0001875547) (Filer)\",\n    \"date\": \"2023-01-27 06:03:50\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1875547/000149315223002659/0001493152-23-002659-index.htm\",\n
+        \   \"cik\": \"0001875547\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"LCFY\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - CREDICORP
+        LTD (0001001290) (Filer)\",\n    \"date\": \"2023-01-27 06:01:11\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1001290/000114036123002988/0001140361-23-002988-index.htm\",\n
+        \   \"cik\": \"0001001290\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"BAP\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Ellomay Capital
+        Ltd. (0000946394) (Filer)\",\n    \"date\": \"2023-01-27 06:01:02\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/946394/000117891323000302/0001178913-23-000302-index.htm\",\n
+        \   \"cik\": \"0000946394\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"ELLO\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - SAP SE (0001000184)
+        (Filer)\",\n    \"date\": \"2023-01-27 06:00:23\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1000184/000110465923007144/0001104659-23-007144-index.htm\",\n
+        \   \"cik\": \"0001000184\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"SAP\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - SAP SE (0001000184)
+        (Filer)\",\n    \"date\": \"2023-01-27 06:00:23\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1000184/000110465923007144/0001104659-23-007144-index.htm\",\n
+        \   \"cik\": \"0001000184\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"SAPGF\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Spectrum
+        Asset Management, Inc. (NB/CA) (0001632078) (Filer)\",\n    \"date\": \"2023-01-26
+        21:05:56\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1632078/000163207823000002/0001632078-23-000002-index.htm\",\n
+        \   \"cik\": \"0001632078\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Iyo Bank,
+        Ltd. (0001890435) (Filer)\",\n    \"date\": \"2023-01-26 20:45:47\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1890435/000189043523000001/0001890435-23-000001-index.htm\",\n
+        \   \"cik\": \"0001890435\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Incannex
+        Healthcare Ltd (0001873875) (Filer)\",\n    \"date\": \"2023-01-26 20:32:28\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1873875/000121390023005449/0001213900-23-005449-index.htm\",\n
+        \   \"cik\": \"0001873875\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"IXHL\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Regency
+        Capital Management Inc.\\\\DE (0001863894) (Filer)\",\n    \"date\": \"2023-01-26
+        19:20:00\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1863894/000186389423000001/0001863894-23-000001-index.htm\",\n
+        \   \"cik\": \"0001863894\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Capital
+        Planning LLC (0001790688) (Filer)\",\n    \"date\": \"2023-01-26 19:02:21\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1790688/000179068823000001/0001790688-23-000001-index.htm\",\n
+        \   \"cik\": \"0001790688\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Day &
+        Ennis, LLC (0001535677) (Filer)\",\n    \"date\": \"2023-01-26 18:56:37\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1535677/000153567723000001/0001535677-23-000001-index.htm\",\n
+        \   \"cik\": \"0001535677\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - B2GOLD CORP
+        (0001429937) (Filer)\",\n    \"date\": \"2023-01-26 18:46:13\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1429937/000117184323000514/0001171843-23-000514-index.htm\",\n
+        \   \"cik\": \"0001429937\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"BTG\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - SignalPoint
+        Asset Management, LLC (0001566414) (Filer)\",\n    \"date\": \"2023-01-26
+        18:42:46\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1566414/000175496023000044/0001754960-23-000044-index.htm\",\n
+        \   \"cik\": \"0001566414\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Financial
+        Council Asset Management Inc (0001883629) (Filer)\",\n    \"date\": \"2023-01-26
+        18:35:02\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1883629/000188362923000002/0001883629-23-000002-index.htm\",\n
+        \   \"cik\": \"0001883629\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - DR REDDYS
+        LABORATORIES LTD (0001135951) (Filer)\",\n    \"date\": \"2023-01-26 18:26:03\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1135951/000157587223000152/0001575872-23-000152-index.htm\",\n
+        \   \"cik\": \"0001135951\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"RDY\",\n    \"done\": true\n  },\n  {\n    \"title\": \"10-Q - KOSS CORP
+        (0000056701) (Filer)\",\n    \"date\": \"2023-01-26 18:18:41\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/56701/000005670123000007/0000056701-23-000007-index.htm\",\n
+        \   \"cik\": \"0000056701\",\n    \"form_type\": \"10-Q\",\n    \"ticker\":
+        \"KOSS\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - ENDEAVOUR
+        SILVER CORP (0001277866) (Filer)\",\n    \"date\": \"2023-01-26 18:17:09\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1277866/000106299323001445/0001062993-23-001445-index.htm\",\n
+        \   \"cik\": \"0001277866\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"EXK\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - ENDEAVOUR
+        SILVER CORP (0001277866) (Filer)\",\n    \"date\": \"2023-01-26 18:15:24\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1277866/000106299323001444/0001062993-23-001444-index.htm\",\n
+        \   \"cik\": \"0001277866\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"EXK\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - ENDEAVOUR
+        SILVER CORP (0001277866) (Filer)\",\n    \"date\": \"2023-01-26 18:15:07\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1277866/000117184323000513/0001171843-23-000513-index.htm\",\n
+        \   \"cik\": \"0001277866\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"EXK\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Summit
+        Place Financial Advisors, LLC (0001801413) (Filer)\",\n    \"date\": \"2023-01-26
+        18:13:58\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1801413/000180141323000001/0001801413-23-000001-index.htm\",\n
+        \   \"cik\": \"0001801413\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"10-Q - RESMED INC
+        (0000943819) (Filer)\",\n    \"date\": \"2023-01-26 18:09:53\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/943819/000094381923000003/0000943819-23-000003-index.htm\",\n
+        \   \"cik\": \"0000943819\",\n    \"form_type\": \"10-Q\",\n    \"ticker\":
+        \"RSMDF\",\n    \"done\": true\n  },\n  {\n    \"title\": \"10-Q - RESMED
+        INC (0000943819) (Filer)\",\n    \"date\": \"2023-01-26 18:09:53\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/943819/000094381923000003/0000943819-23-000003-index.htm\",\n
+        \   \"cik\": \"0000943819\",\n    \"form_type\": \"10-Q\",\n    \"ticker\":
+        \"RMD\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Arbor Investment
+        Advisors, LLC (0001590073) (Filer)\",\n    \"date\": \"2023-01-26 17:57:40\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1590073/000159007323000001/0001590073-23-000001-index.htm\",\n
+        \   \"cik\": \"0001590073\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Kohmann
+        Bosshard Financial Services, LLC (0001696615) (Filer)\",\n    \"date\": \"2023-01-26
+        17:48:50\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1696615/000175496023000043/0001754960-23-000043-index.htm\",\n
+        \   \"cik\": \"0001696615\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Destiny
+        Wealth Partners, LLC (0001844369) (Filer)\",\n    \"date\": \"2023-01-26 17:46:30\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1844369/000184436923000001/0001844369-23-000001-index.htm\",\n
+        \   \"cik\": \"0001844369\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - PETROBRAS
+        - PETROLEO BRASILEIRO SA (0001119639) (Filer)\",\n    \"date\": \"2023-01-26
+        17:40:35\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1119639/000129281423000217/0001292814-23-000217-index.htm\",\n
+        \   \"cik\": \"0001119639\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"PBR\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - PETROBRAS
+        - PETROLEO BRASILEIRO SA (0001119639) (Filer)\",\n    \"date\": \"2023-01-26
+        17:40:35\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1119639/000129281423000217/0001292814-23-000217-index.htm\",\n
+        \   \"cik\": \"0001119639\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"PBR-A\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - PDS Planning,
+        Inc (0000838618) (Filer)\",\n    \"date\": \"2023-01-26 17:40:02\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/838618/000083861823000001/0000838618-23-000001-index.htm\",\n
+        \   \"cik\": \"0000838618\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - DIAGEO PLC
+        (0000835403) (Filer)\",\n    \"date\": \"2023-01-26 17:36:36\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/835403/000165495423000888/0001654954-23-000888-index.htm\",\n
+        \   \"cik\": \"0000835403\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"DGEAF\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - DIAGEO PLC
+        (0000835403) (Filer)\",\n    \"date\": \"2023-01-26 17:36:36\",\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/835403/000165495423000888/0001654954-23-000888-index.htm\",\n
+        \   \"cik\": \"0000835403\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
+        \"DEO\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Monument
+        Capital Management (0001729428) (Filer)\",\n    \"date\": \"2023-01-26 17:35:22\",\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1729428/000156806823000001/0001568068-23-000001-index.htm\",\n
+        \   \"cik\": \"0001729428\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
+        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - PETROBRAS
+        - PETROLEO BRASILEIRO SA (0001119639) (Filer)\",\n    \"date\": \"2023-01-26
+        17:27:59\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1119639/000129281423000215/0001292814-23-000215-index.htm\",\n
         \   \"cik\": \"0001119639\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
         \"PBR\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - PETROBRAS
         - PETROLEO BRASILEIRO SA (0001119639) (Filer)\",\n    \"date\": \"2023-01-26
@@ -3722,290 +4004,7 @@ interactions:
         Financial Group, LLC (0001847661) (Filer)\",\n    \"date\": \"2023-01-23 07:59:05\",\n
         \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1847661/000108514623000276/0001085146-23-000276-index.htm\",\n
         \   \"cik\": \"0001847661\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"10-Q - Medies (0001918694)
-        (Filer)\",\n    \"date\": \"2023-01-23 07:58:47\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1918694/000168316823000266/0001683168-23-000266-index.htm\",\n
-        \   \"cik\": \"0001918694\",\n    \"form_type\": \"10-Q\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - NOVO NORDISK
-        A S (0000353278) (Filer)\",\n    \"date\": \"2023-01-23 07:45:47\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/353278/000117184323000373/0001171843-23-000373-index.htm\",\n
-        \   \"cik\": \"0000353278\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"NVO\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - NOVO NORDISK
-        A S (0000353278) (Filer)\",\n    \"date\": \"2023-01-23 07:45:47\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/353278/000117184323000373/0001171843-23-000373-index.htm\",\n
-        \   \"cik\": \"0000353278\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"NONOF\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Liberty
-        Capital Management, Inc. (0001366838) (Filer)\",\n    \"date\": \"2023-01-23
-        07:41:58\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1366838/000108514623000273/0001085146-23-000273-index.htm\",\n
-        \   \"cik\": \"0001366838\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Alvotech
-        (0001898416) (Filer)\",\n    \"date\": \"2023-01-23 07:10:59\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1898416/000119312523012558/0001193125-23-012558-index.htm\",\n
-        \   \"cik\": \"0001898416\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"ALVO\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Alvotech
-        (0001898416) (Filer)\",\n    \"date\": \"2023-01-23 07:10:59\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1898416/000119312523012558/0001193125-23-012558-index.htm\",\n
-        \   \"cik\": \"0001898416\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"ALVOW\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Spotify
-        Technology S.A. (0001639920) (Filer)\",\n    \"date\": \"2023-01-23 07:00:53\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1639920/000119312523012552/0001193125-23-012552-index.htm\",\n
-        \   \"cik\": \"0001639920\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"SPOT\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - RYANAIR HOLDINGS
-        PLC (0001038683) (Filer)\",\n    \"date\": \"2023-01-23 06:47:48\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1038683/000165495423000645/0001654954-23-000645-index.htm\",\n
-        \   \"cik\": \"0001038683\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"RYAOF\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - RYANAIR
-        HOLDINGS PLC (0001038683) (Filer)\",\n    \"date\": \"2023-01-23 06:47:48\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1038683/000165495423000645/0001654954-23-000645-index.htm\",\n
-        \   \"cik\": \"0001038683\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"RYAAY\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - HUTCHMED
-        (China) Ltd (0001648257) (Filer)\",\n    \"date\": \"2023-01-23 06:39:42\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1648257/000164825723000008/0001648257-23-000008-index.htm\",\n
-        \   \"cik\": \"0001648257\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"HMDCF\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - HUTCHMED
-        (China) Ltd (0001648257) (Filer)\",\n    \"date\": \"2023-01-23 06:39:42\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1648257/000164825723000008/0001648257-23-000008-index.htm\",\n
-        \   \"cik\": \"0001648257\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"HCM\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Bishop
-        & Co Investment Management, LLC (0001603276) (Filer)\",\n    \"date\": \"2023-01-23
-        06:15:39\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1603276/000095012323000293/0000950123-23-000293-index.htm\",\n
-        \   \"cik\": \"0001603276\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Argo Blockchain
-        Plc (0001841675) (Filer)\",\n    \"date\": \"2023-01-23 06:12:20\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1841675/000165495423000642/0001654954-23-000642-index.htm\",\n
-        \   \"cik\": \"0001841675\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"ARBKL\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Argo Blockchain
-        Plc (0001841675) (Filer)\",\n    \"date\": \"2023-01-23 06:12:20\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1841675/000165495423000642/0001654954-23-000642-index.htm\",\n
-        \   \"cik\": \"0001841675\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"ARBKF\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Argo Blockchain
-        Plc (0001841675) (Filer)\",\n    \"date\": \"2023-01-23 06:12:20\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1841675/000165495423000642/0001654954-23-000642-index.htm\",\n
-        \   \"cik\": \"0001841675\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"ARBK\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - TATA MOTORS
-        LTD/FI (0000926042) (Filer)\",\n    \"date\": \"2023-01-23 06:10:55\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/926042/000156459023000617/0001564590-23-000617-index.htm\",\n
-        \   \"cik\": \"0000926042\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"TTM\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - enCore Energy
-        Corp. (0001500881) (Filer)\",\n    \"date\": \"2023-01-23 06:10:46\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1500881/000121390023004257/0001213900-23-004257-index.htm\",\n
-        \   \"cik\": \"0001500881\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"EU\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - enCore Energy
-        Corp. (0001500881) (Filer)\",\n    \"date\": \"2023-01-23 06:10:46\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1500881/000121390023004257/0001213900-23-004257-index.htm\",\n
-        \   \"cik\": \"0001500881\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"ENCUF\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - enCore Energy
-        Corp. (0001500881) (Filer)\",\n    \"date\": \"2023-01-23 06:10:46\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1500881/000121390023004257/0001213900-23-004257-index.htm\",\n
-        \   \"cik\": \"0001500881\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"ENCUD\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Ambow Education
-        Holding Ltd. (0001494558) (Filer)\",\n    \"date\": \"2023-01-23 06:09:30\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1494558/000110465923005550/0001104659-23-005550-index.htm\",\n
-        \   \"cik\": \"0001494558\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"AMBO\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - HONDA MOTOR
-        CO LTD (0000715153) (Filer)\",\n    \"date\": \"2023-01-23 06:08:53\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/715153/000119312523012511/0001193125-23-012511-index.htm\",\n
-        \   \"cik\": \"0000715153\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"HMC\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - HONDA MOTOR
-        CO LTD (0000715153) (Filer)\",\n    \"date\": \"2023-01-23 06:08:53\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/715153/000119312523012511/0001193125-23-012511-index.htm\",\n
-        \   \"cik\": \"0000715153\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"HNDAF\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Caledonia
-        Mining Corp Plc (0000766011) (Filer)\",\n    \"date\": \"2023-01-23 06:05:11\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/766011/000117184323000369/0001171843-23-000369-index.htm\",\n
-        \   \"cik\": \"0000766011\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"CMCL\",\n    \"done\": true\n  },\n  {\n    \"title\": \"10-Q - LZG INTERNATIONAL,
-        INC. (0001126115) (Filer)\",\n    \"date\": \"2023-01-23 06:01:57\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1126115/000165495423000638/0001654954-23-000638-index.htm\",\n
-        \   \"cik\": \"0001126115\",\n    \"form_type\": \"10-Q\",\n    \"ticker\":
-        \"LZGI\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - IM Cannabis
-        Corp. (0001792030) (Filer)\",\n    \"date\": \"2023-01-23 06:01:07\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1792030/000117891323000215/0001178913-23-000215-index.htm\",\n
-        \   \"cik\": \"0001792030\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"IMCC\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Steakholder
-        Foods Ltd. (0001828098) (Filer)\",\n    \"date\": \"2023-01-23 06:01:00\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1828098/000117891323000214/0001178913-23-000214-index.htm\",\n
-        \   \"cik\": \"0001828098\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"MTTCF\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Steakholder
-        Foods Ltd. (0001828098) (Filer)\",\n    \"date\": \"2023-01-23 06:01:00\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1828098/000117891323000214/0001178913-23-000214-index.htm\",\n
-        \   \"cik\": \"0001828098\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"STKH\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - UP Fintech
-        Holding Ltd (0001756699) (Filer)\",\n    \"date\": \"2023-01-23 06:00:44\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1756699/000095017023000986/0000950170-23-000986-index.htm\",\n
-        \   \"cik\": \"0001756699\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"TIGR\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Caledonia
-        Mining Corp Plc (0000766011) (Filer)\",\n    \"date\": \"2023-01-23 06:00:11\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/766011/000117184323000364/0001171843-23-000364-index.htm\",\n
-        \   \"cik\": \"0000766011\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"CMCL\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - MARKET
-        STREET WEALTH MANAGEMENT ADVISORS LLC (0001767601) (Filer)\",\n    \"date\":
-        \"2023-01-20 21:39:46\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1767601/000176760123000001/0001767601-23-000001-index.htm\",\n
-        \   \"cik\": \"0001767601\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Hall Private
-        Wealth Advisors (0001744091) (Filer)\",\n    \"date\": \"2023-01-20 21:35:08\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1744091/000121465923000974/0001214659-23-000974-index.htm\",\n
-        \   \"cik\": \"0001744091\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - PENNSYLVANIA
-        CAPITAL MANAGEMENT INC /ADV (0001004140) (Filer)\",\n    \"date\": \"2023-01-20
-        21:34:38\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1004140/000100414023000001/0001004140-23-000001-index.htm\",\n
-        \   \"cik\": \"0001004140\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Deane
-        Retirement Strategies, Inc. (0001659346) (Filer)\",\n    \"date\": \"2023-01-20
-        21:27:48\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1659346/000165934623000001/0001659346-23-000001-index.htm\",\n
-        \   \"cik\": \"0001659346\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Newton
-        One Investments LLC (0001842787) (Filer)\",\n    \"date\": \"2023-01-20 21:24:38\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1842787/000184278723000001/0001842787-23-000001-index.htm\",\n
-        \   \"cik\": \"0001842787\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Tradewinds
-        Capital Management, LLC (0001616026) (Filer)\",\n    \"date\": \"2023-01-20
-        21:16:29\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1616026/000161602623000001/0001616026-23-000001-index.htm\",\n
-        \   \"cik\": \"0001616026\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - TAL Education
-        Group (0001499620) (Filer)\",\n    \"date\": \"2023-01-20 20:45:27\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1499620/000110465923005519/0001104659-23-005519-index.htm\",\n
-        \   \"cik\": \"0001499620\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"TAL\",\n    \"done\": true\n  },\n  {\n    \"title\": \"20-F - FLJ Group
-        Ltd (0001769256) (Filer)\",\n    \"date\": \"2023-01-20 20:45:09\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1769256/000095017023000984/0000950170-23-000984-index.htm\",\n
-        \   \"cik\": \"0001769256\",\n    \"form_type\": \"20-F\",\n    \"ticker\":
-        \"QK\",\n    \"done\": true\n  },\n  {\n    \"title\": \"20-F - FLJ Group
-        Ltd (0001769256) (Filer)\",\n    \"date\": \"2023-01-20 20:45:09\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1769256/000095017023000984/0000950170-23-000984-index.htm\",\n
-        \   \"cik\": \"0001769256\",\n    \"form_type\": \"20-F\",\n    \"ticker\":
-        \"FLJ\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Verdence
-        Capital Advisors LLC (0001719305) (Filer)\",\n    \"date\": \"2023-01-20 20:35:44\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1719305/000171930523000001/0001719305-23-000001-index.htm\",\n
-        \   \"cik\": \"0001719305\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Newman
-        & Schimel, LLC (0001838938) (Filer)\",\n    \"date\": \"2023-01-20 20:30:52\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1838938/000183893823000001/0001838938-23-000001-index.htm\",\n
-        \   \"cik\": \"0001838938\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Cardinal
-        Capital Management (0001434845) (Filer)\",\n    \"date\": \"2023-01-20 20:21:19\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1434845/000143484523000001/0001434845-23-000001-index.htm\",\n
-        \   \"cik\": \"0001434845\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - IDG Technology
-        Venture Investment IV, LLC (0001879976) (Filer)\",\n    \"date\": \"2023-01-20
-        19:58:15\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1879976/000110465923005511/0001104659-23-005511-index.htm\",\n
-        \   \"cik\": \"0001879976\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - IDG China
-        Venture Capital Fund V Associates L.P. (0001709671) (Filer)\",\n    \"date\":
-        \"2023-01-20 19:57:32\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1709671/000110465923005510/0001104659-23-005510-index.htm\",\n
-        \   \"cik\": \"0001709671\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - IDG China
-        Venture Capital Fund IV Associates L.P. (0001609021) (Filer)\",\n    \"date\":
-        \"2023-01-20 19:55:57\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1609021/000110465923005509/0001104659-23-005509-index.htm\",\n
-        \   \"cik\": \"0001609021\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Orion
-        Capital Management LLC (0001846758) (Filer)\",\n    \"date\": \"2023-01-20
-        19:10:21\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1846758/000109544923000022/0001095449-23-000022-index.htm\",\n
-        \   \"cik\": \"0001846758\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Artemis
-        Wealth Advisors, LLC (0001767435) (Filer)\",\n    \"date\": \"2023-01-20 19:04:17\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1767435/000172035023000002/0001720350-23-000002-index.htm\",\n
-        \   \"cik\": \"0001767435\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - BAKER
-        BOYER NATIONAL BANK (0001079398) (Filer)\",\n    \"date\": \"2023-01-20 18:49:52\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1079398/000107939823000002/0001079398-23-000002-index.htm\",\n
-        \   \"cik\": \"0001079398\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - McCarthy
-        Asset Management, Inc. (0001843169) (Filer)\",\n    \"date\": \"2023-01-20
-        18:39:51\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1843169/000109544923000021/0001095449-23-000021-index.htm\",\n
-        \   \"cik\": \"0001843169\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - BEAM WEALTH
-        ADVISORS, INC. (0001803426) (Filer)\",\n    \"date\": \"2023-01-20 18:38:08\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1803426/000180342623000001/0001803426-23-000001-index.htm\",\n
-        \   \"cik\": \"0001803426\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Trinity
-        Financial Advisors LLC (0001809574) (Filer)\",\n    \"date\": \"2023-01-20
-        18:24:36\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1809574/000180957423000001/0001809574-23-000001-index.htm\",\n
-        \   \"cik\": \"0001809574\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Pathway
-        Financial Advisors LLC (0001738828) (Filer)\",\n    \"date\": \"2023-01-20
-        18:16:54\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1738828/000173882823000001/0001738828-23-000001-index.htm\",\n
-        \   \"cik\": \"0001738828\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - JANICZEK
-        WEALTH MANAGEMENT, LLC (0001598561) (Filer)\",\n    \"date\": \"2023-01-20
-        18:11:40\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1598561/000159856123000001/0001598561-23-000001-index.htm\",\n
-        \   \"cik\": \"0001598561\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - QV Investors
-        Inc. (0001570253) (Filer)\",\n    \"date\": \"2023-01-20 18:10:31\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1570253/000157025323000001/0001570253-23-000001-index.htm\",\n
-        \   \"cik\": \"0001570253\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - QUATTRO
-        FINANCIAL ADVISORS LLC (0001705929) (Filer)\",\n    \"date\": \"2023-01-20
-        18:09:27\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1705929/000121465923000950/0001214659-23-000950-index.htm\",\n
-        \   \"cik\": \"0001705929\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Lytus Technologies
-        Holdings PTV. Ltd. (0001816319) (Filer)\",\n    \"date\": \"2023-01-20 18:05:54\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1816319/000121390023004207/0001213900-23-004207-index.htm\",\n
-        \   \"cik\": \"0001816319\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"LYT\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - IRONWOOD
-        WEALTH MANAGEMENT, INC. (0001844821) (Filer)\",\n    \"date\": \"2023-01-20
-        17:45:00\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1844821/000184482123000001/0001844821-23-000001-index.htm\",\n
-        \   \"cik\": \"0001844821\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - G&S Capital
-        LLC (0001731448) (Filer)\",\n    \"date\": \"2023-01-20 17:40:29\",\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1731448/000173144823000001/0001731448-23-000001-index.htm\",\n
-        \   \"cik\": \"0001731448\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Annapolis
-        Financial Services, LLC (0001843110) (Filer)\",\n    \"date\": \"2023-01-20
-        17:39:21\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1843110/000184311023000001/0001843110-23-000001-index.htm\",\n
-        \   \"cik\": \"0001843110\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Domani
-        Wealth, LLC (0001634553) (Filer)\",\n    \"date\": \"2023-01-20 17:35:08\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1634553/000163455323000001/0001634553-23-000001-index.htm\",\n
-        \   \"cik\": \"0001634553\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Fuwei Films
-        (Holdings), Co. Ltd. (0001381074) (Filer)\",\n    \"date\": \"2023-01-20 17:30:18\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1381074/000110465923005471/0001104659-23-005471-index.htm\",\n
-        \   \"cik\": \"0001381074\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"FFHL\",\n    \"done\": true\n  },\n  {\n    \"title\": \"20-F - Fuwei Films
-        (Holdings), Co. Ltd. (0001381074) (Filer)\",\n    \"date\": \"2023-01-20 17:26:47\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1381074/000141057823000035/0001410578-23-000035-index.htm\",\n
-        \   \"cik\": \"0001381074\",\n    \"form_type\": \"20-F\",\n    \"ticker\":
-        \"FFHL\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Bray Capital
-        Advisors (0001631738) (Filer)\",\n    \"date\": \"2023-01-20 17:23:59\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1631738/000158064223000299/0001580642-23-000299-index.htm\",\n
-        \   \"cik\": \"0001631738\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - MOUNTAIN
-        PACIFIC INVESTMENT ADVISERS INC/ID (0001067324) (Filer)\",\n    \"date\":
-        \"2023-01-20 17:21:16\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1067324/000106732423000001/0001067324-23-000001-index.htm\",\n
-        \   \"cik\": \"0001067324\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - CARDEROCK
-        CAPITAL MANAGEMENT INC (0001168889) (Filer)\",\n    \"date\": \"2023-01-20
-        17:20:42\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1168889/000116888923000001/0001168889-23-000001-index.htm\",\n
-        \   \"cik\": \"0001168889\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Summit
-        Financial Strategies, Inc. (0001625246) (Filer)\",\n    \"date\": \"2023-01-20
-        17:13:13\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1625246/000117266123000247/0001172661-23-000247-index.htm\",\n
-        \   \"cik\": \"0001625246\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Vestmark
-        Advisory Solutions, Inc. (0001736982) (Filer)\",\n    \"date\": \"2023-01-20
-        17:11:46\",\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1736982/000117266123000246/0001172661-23-000246-index.htm\",\n
-        \   \"cik\": \"0001736982\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Avestar
-        Capital, LLC (0001704404) (Filer)\",\n    \"date\": \"2023-01-20 17:05:46\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1704404/000117266123000245/0001172661-23-000245-index.htm\",\n
-        \   \"cik\": \"0001704404\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Banco Santander
-        (Brasil) S.A. (0001471055) (Filer)\",\n    \"date\": \"2023-01-20 17:04:39\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1471055/000129281423000181/0001292814-23-000181-index.htm\",\n
-        \   \"cik\": \"0001471055\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"BSBR\",\n    \"done\": true\n  },\n  {\n    \"title\": \"13F-HR - Florin
-        Court Capital LLP (0001696263) (Filer)\",\n    \"date\": \"2023-01-20 17:04:00\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1696263/000117266123000244/0001172661-23-000244-index.htm\",\n
-        \   \"cik\": \"0001696263\",\n    \"form_type\": \"13F-HR\",\n    \"ticker\":
-        \"None\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Banco Santander
-        (Brasil) S.A. (0001471055) (Filer)\",\n    \"date\": \"2023-01-20 17:02:48\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1471055/000129281423000179/0001292814-23-000179-index.htm\",\n
-        \   \"cik\": \"0001471055\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"BSBR\",\n    \"done\": true\n  },\n  {\n    \"title\": \"6-K - Banco Santander
-        (Brasil) S.A. (0001471055) (Filer)\",\n    \"date\": \"2023-01-20 17:01:41\",\n
-        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1471055/000129281423000177/0001292814-23-000177-index.htm\",\n
-        \   \"cik\": \"0001471055\",\n    \"form_type\": \"6-K\",\n    \"ticker\":
-        \"BSBR\",\n    \"done\": true\n  }\n]"
+        \"None\",\n    \"done\": true\n  }\n]"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -4021,13 +4020,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '316197'
+      - '315927'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 26 Jan 2023 23:10:49 GMT
+      - Fri, 27 Jan 2023 13:15:59 GMT
       ETag:
-      - W/"4d325-XHziylbdNDcTyeqZzIf/JCunNCo"
+      - W/"4d217-INx42B0skrfFrlFgL/U004hryGM"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:

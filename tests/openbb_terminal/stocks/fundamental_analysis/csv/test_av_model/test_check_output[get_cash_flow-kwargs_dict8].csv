@@ -1,1 +1,29 @@
-""
+,2021-09-30,2021-12-31,2022-03-31,2022-06-30,2022-09-30
+reportedCurrency,USD,USD,USD,USD,USD
+operatingCashflow,3.147 B,4.585 B,3.995 B,2.351 B,5.100 B
+paymentsForOperatingActivities,0,0,0,0,0
+proceedsFromOperatingActivities,0,0,0,0,0
+changeInOperatingLiabilities,1.545 B,2.384 B,1.598 B,957 M,3.976 B
+changeInOperatingAssets,964 M,-5.755 B,1.942 B,2.058 B,3.363 B
+depreciationDepletionAndAmortization,496 M,997 M,552 M,578 M,620 M
+capitalExpenditures,1.819 B,1.810 B,1.767 B,3.230 B,303 M
+changeInReceivables,-135 M,-278 M,409 M,-176 M,193 M
+changeInInventory,488 M,-2.884 B,633 M,1.559 B,2.300 B
+profitLoss,1.659 B,2.343 B,3.280 B,2.269 B,3.331 B
+cashflowFromInvestment,-1.855 B,-1.916 B,-2.167 B,-884 M,-2.791 B
+cashflowFromFinancing,-1.381 B,-1.257 B,-1.914 B,-406 M,-712 M
+proceedsFromRepaymentsOfShortTermDebt,0,0,0,0,0
+paymentsForRepurchaseOfCommonStock,0,0,0,0,0
+paymentsForRepurchaseOfEquity,0,0,0,0,0
+paymentsForRepurchaseOfPreferredStock,0,0,0,0,0
+dividendPayout,0,0,0,0,0
+dividendPayoutCommonStock,0,0,0,0,0
+dividendPayoutPreferredStock,0,0,0,0,0
+proceedsFromIssuanceOfCommonStock,0,0,0,0,0
+proceedsFromIssuanceOfLongTermDebtAndCapitalSecuritiesNet,0,0,0,0,0
+proceedsFromIssuanceOfPreferredStock,0,0,0,0,0
+proceedsFromRepurchaseOfEquity,192 M,262 M,202 M,43 M,229 M
+proceedsFromSaleOfTreasuryStock,0,0,0,0,0
+changeInCashAndCashEquivalents,2.154 B,1.412 B,-86 M,2.847 B,1.597 B
+changeInExchangeRate,0,0,0,0,0
+netIncome,1.618 B,2.321 B,3.318 B,2.259 B,3.292 B

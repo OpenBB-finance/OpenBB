@@ -1,3 +1,31 @@
+<<<<<<< HEAD
+=======
+Price data removed from info. Use Ticker.fast_info or history() instead
+Exchange data removed from info. Use Ticker.fast_info or Ticker.get_history_metadata() instead
+Exchange data removed from info. Use Ticker.fast_info or Ticker.get_history_metadata() instead
+Exchange data removed from info. Use Ticker.fast_info or Ticker.get_history_metadata() instead
+Symbol removed from info. You know this already
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Exchange data removed from info. Use Ticker.fast_info or Ticker.get_history_metadata() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Market cap removed from info. Use Ticker.fast_info instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+Price data removed from info. Use Ticker.fast_info or history() instead
+>>>>>>> 1b3ca01e82 (Update tests for new change)
                                                                Value
 Zip                                                       10017-5592
 Sector                                            Consumer Defensive
@@ -68,6 +96,7 @@ Enterprise value                                           185.196 B
 Price hint                                                         2
 Last dividend date                                           1.672 B
 Earnings quarterly growth                                     -0.140
+<<<<<<< HEAD
 Price to sales trailing 12 months                              5.094
 Date short interest                                          1.674 B
 PEG ratio                                                      5.250
@@ -76,11 +105,25 @@ Short percent of float                                         0.005
 Shares short prior month                                     8.926 M
 Implied shares outstanding                                         0
 Trailing annual dividend yield                                 0.048
+=======
+Price to sales trailing 12 months                              5.099
+Date short interest                                          1.674 B
+PEG ratio                                                      5.200
+Forward PE                                                    18.017
+Short percent of float                                         0.005
+Shares short prior month                                     8.926 M
+Implied shares outstanding                                         0
+Trailing annual dividend yield                                 0.049
+>>>>>>> 1b3ca01e82 (Update tests for new change)
 Payout ratio                                                   0.893
 Trailing annual dividend rate                                  5.020
 Dividend rate                                                  5.080
 Ex dividend date                                             1.672 B
+<<<<<<< HEAD
 Trailing PE                                                   18.542
+=======
+Trailing PE                                                   18.562
+>>>>>>> 1b3ca01e82 (Update tests for new change)
 Ask                                                                0
 Ask size                                                         900
 Five year avg dividend yield                                   5.440
@@ -88,7 +131,11 @@ Bid                                                                0
 Tradeable                                                      False
 Dividend yield                                                 0.049
 Bid size                                                     2.200 K
+<<<<<<< HEAD
 Pre market price                                             104.820
+=======
+Pre market price                                             104.250
+>>>>>>> 1b3ca01e82 (Update tests for new change)
 Logo_url                           https://logo.clearbit.com/pmi.com
 Trailing peg ratio                                             3.429
 Business Summary:

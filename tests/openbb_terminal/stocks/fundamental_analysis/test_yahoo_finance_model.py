@@ -53,7 +53,7 @@ def test_get_mktcap(recorder):
     recorder.capture_list(result_list)
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "ticker, statement",
     [("ABBV", "cash-flow"), ("ABBV", "financials"), ("ABBV", "balance-sheet")],

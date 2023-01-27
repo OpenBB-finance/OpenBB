@@ -21,7 +21,7 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_valinvest_score():
-    fmp_view.valinvest_score(symbol="PM")
+    fmp_view.valinvest_score(symbol="PM", years=10)
 
 
 @pytest.mark.vcr
@@ -80,3 +80,9 @@ def test_display_filings():
 def test_check_output(func, kwargs_dict, monkeypatch, use_tab):
     monkeypatch.setattr(helper_funcs.obbff, "USE_TABULATE_DF", use_tab)
     getattr(fmp_view, func)(**kwargs_dict)
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_rating():
+    fmp_view.rating(symbol="TSLA", limit=5, export=None)

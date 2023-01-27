@@ -1,35 +1,24 @@
-Timestamp: 2023-01-26 17:27:59  US/Eastern
-Ticker: PBR
-CIK: 1119639
-Form Type: 6-K
-6-K - PETROBRAS - PETROLEO BRASILEIRO SA (0001119639) (Filer)
-https://www.sec.gov/Archives/edgar/data/1119639/000129281423000215/0001292814-23-000215-index.htm
+[red]No filings found for ticker , consider increasing the value for --pages. Showing recent filings instead.[/red]
 
-Timestamp: 2023-01-26 17:27:59  US/Eastern
-Ticker: PBR-A
-CIK: 1119639
-Form Type: 6-K
-6-K - PETROBRAS - PETROLEO BRASILEIRO SA (0001119639) (Filer)
-https://www.sec.gov/Archives/edgar/data/1119639/000129281423000215/0001292814-23-000215-index.htm
-
-Timestamp: 2023-01-26 17:24:47  US/Eastern
-Ticker: None
-CIK: 1906798
-Form Type: 13F-HR
-13F-HR - Barden Capital Management, Inc. (0001906798) (Filer)
-https://www.sec.gov/Archives/edgar/data/1906798/000175496023000041/0001754960-23-000041-index.htm
-
-Timestamp: 2023-01-26 17:23:53  US/Eastern
-Ticker: CYBN
-CIK: 1833141
-Form Type: 6-K
-6-K - CYBIN INC. (0001833141) (Filer)
-https://www.sec.gov/Archives/edgar/data/1833141/000162828023001626/0001628280-23-001626-index.htm
-
-Timestamp: 2023-01-26 17:22:49  US/Eastern
-Ticker: None
-CIK: 1665018
-Form Type: 13F-HR
-13F-HR - Chandler Asset Management, Inc. (0001665018) (Filer)
-https://www.sec.gov/Archives/edgar/data/1665018/000174407323000004/0001744073-23-000004-index.htm
-
+                    Ticker      CIK Form Type                                                            Title                                                                                                URL
+Date                                                                                                                                                                                                             
+2023-01-27 08:03:53   CNXC  1803599      10-K                      10-K - Concentrix Corp (0001803599) (Filer)  https://www.sec.gov/Archives/edgar/data/1803599/000180359923000016/0001803599-23-000016-index.htm
+2023-01-27 07:40:03  PUKPF  1116578       6-K                        6-K - PRUDENTIAL PLC (0001116578) (Filer)  https://www.sec.gov/Archives/edgar/data/1116578/000165495423000902/0001654954-23-000902-index.htm
+2023-01-27 07:40:03    PUK  1116578       6-K                        6-K - PRUDENTIAL PLC (0001116578) (Filer)  https://www.sec.gov/Archives/edgar/data/1116578/000165495423000902/0001654954-23-000902-index.htm
+2023-01-27 07:31:13   None  1625800    13F-HR                   13F-HR - Strid Group, LLC (0001625800) (Filer)  https://www.sec.gov/Archives/edgar/data/1625800/000108514623000413/0001085146-23-000413-index.htm
+2023-01-27 07:30:37   None  1721780    13F-HR          13F-HR - Successful Portfolios LLC (0001721780) (Filer)  https://www.sec.gov/Archives/edgar/data/1721780/000108514623000412/0001085146-23-000412-index.htm
+2023-01-27 07:30:17   None  1453885    13F-HR  13F-HR - Beach Point Capital Management LP (0001453885) (Filer)  https://www.sec.gov/Archives/edgar/data/1453885/000108514623000411/0001085146-23-000411-index.htm
+2023-01-27 07:29:45   None  1730818    13F-HR            13F-HR - Baugh & Associates, LLC (0001730818) (Filer)  https://www.sec.gov/Archives/edgar/data/1730818/000108514623000410/0001085146-23-000410-index.htm
+2023-01-27 07:28:45   None  1475940    13F-HR  13F-HR - MONTRUSCO BOLTON INVESTMENTS INC. (0001475940) (Filer)  https://www.sec.gov/Archives/edgar/data/1475940/000108514623000408/0001085146-23-000408-index.htm
+2023-01-27 07:28:19   None  1652103    13F-HR                 13F-HR - Gratus Capital LLC (0001652103) (Filer)  https://www.sec.gov/Archives/edgar/data/1652103/000108514623000407/0001085146-23-000407-index.htm
+2023-01-27 07:26:44   None  1085163    13F-HR    13F-HR - SIGMA INVESTMENT COUNSELORS INC (0001085163) (Filer)  https://www.sec.gov/Archives/edgar/data/1085163/000108514623000405/0001085146-23-000405-index.htm
+2023-01-27 07:26:15   None  1599330    13F-HR           13F-HR - Joel Isaacson & Co., LLC (0001599330) (Filer)  https://www.sec.gov/Archives/edgar/data/1599330/000108514623000404/0001085146-23-000404-index.htm
+2023-01-27 07:25:55   None  1615717    13F-HR        13F-HR - Triad Investment Management (0001615717) (Filer)  https://www.sec.gov/Archives/edgar/data/1615717/000108514623000403/0001085146-23-000403-index.htm
+2023-01-27 07:25:33   None  1546587    13F-HR   13F-HR - Hartford Funds Management Co LLC (0001546587) (Filer)  https://www.sec.gov/Archives/edgar/data/1546587/000108514623000402/0001085146-23-000402-index.htm
+2023-01-27 07:24:37   None  1696494    13F-HR              13F-HR - Sicart Associates LLC (0001696494) (Filer)  https://www.sec.gov/Archives/edgar/data/1696494/000108514623000400/0001085146-23-000400-index.htm
+2023-01-27 07:24:14   None  1656187    13F-HR     13F-HR - MUFG SECURITIES (CANADA), LTD. (0001656187) (Filer)  https://www.sec.gov/Archives/edgar/data/1656187/000108514623000399/0001085146-23-000399-index.htm
+2023-01-27 07:23:53   None  1600319    13F-HR          13F-HR - Bridgewater Advisors Inc. (0001600319) (Filer)  https://www.sec.gov/Archives/edgar/data/1600319/000108514623000398/0001085146-23-000398-index.htm
+2023-01-27 07:23:11   None  1660177    13F-HR    13F-HR - Integrated Advisors Network LLC (0001660177) (Filer)  https://www.sec.gov/Archives/edgar/data/1660177/000108514623000397/0001085146-23-000397-index.htm
+2023-01-27 07:22:40   None  1803106    13F-HR     13F-HR - Blue Zone Wealth Advisors, LLC (0001803106) (Filer)  https://www.sec.gov/Archives/edgar/data/1803106/000108514623000396/0001085146-23-000396-index.htm
+2023-01-27 07:17:15     EC  1444406       6-K                        6-K - ECOPETROL S.A. (0001444406) (Filer)  https://www.sec.gov/Archives/edgar/data/1444406/000129281423000219/0001292814-23-000219-index.htm
+2023-01-27 07:15:54   None  1271833      10-K                     10-K - CCO HOLDINGS LLC (0001271833) (Filer)  https://www.sec.gov/Archives/edgar/data/1271833/000127183323000003/0001271833-23-000003-index.htm

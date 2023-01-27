@@ -18,8 +18,6 @@ interactions:
       - cors
       Sec-Fetch-Site:
       - same-origin
-      TE:
-      - trailers
     method: GET
     uri: https://seekingalpha.com/api/v3/searches?filter%5Btype%5D=symbols&filter%5Blist%5D=all&page%5Bsize%5D=1&filter%5Bquery%5D=JNJ
   response:
@@ -32,7 +30,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '0'
+      - '2107'
       Allow:
       - GET, POST, HEAD, PUT, PATCH, DELETE, OPTIONS
       Cache-Control:
@@ -49,7 +47,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 13 Nov 2022 19:11:16 GMT
+      - Fri, 27 Jan 2023 13:16:28 GMT
       ETag:
       - W/"cc200d9e38b2d26b2fffbef87ce15226"
       Referrer-Policy:
@@ -71,18 +69,18 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - 56yPeC8_nt_3HfZ8
+      - 9PDfi-OAbZg_-jvd
       X-Runtime:
-      - '0.006611'
+      - '0.008156'
       X-Served-By:
-      - cache-bfi-krnt7300038-BFI, cache-vie6371-VIE
+      - cache-bfi-krnt7300064-BFI, cache-ams21081-AMS
       X-Timer:
-      - S1668366676.346920,VS0,VE228
+      - S1674825388.430934,VS0,VE1
       X-XSS-Protection:
       - 1; mode=block
       set-cookie:
-      - machine_cookie=2621104791757; expires=Sat, 13 Nov 2027 19:11:16 GMT; path=/;
-      - machine_cookie_ts=1668366676; expires=Sat, 13 Nov 2027 19:11:16 GMT; path=/;
+      - machine_cookie=0014705576030; expires=Thu, 27 Jan 2028 13:16:28 GMT; path=/;
+      - machine_cookie_ts=1674825388; expires=Thu, 27 Jan 2028 13:16:28 GMT; path=/;
     status:
       code: 200
       message: OK
