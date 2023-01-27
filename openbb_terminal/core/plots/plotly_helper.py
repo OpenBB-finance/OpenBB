@@ -161,7 +161,7 @@ class TerminalStyle:
         Returns
         -------
         list
-            List of colors
+            List of colors e.g. ["#00ACFF", "#FF0000"]
         """
         colors = self.plotly_template.get("layout", {}).get("colorway", PLT_COLORWAY)
         if reverse:
@@ -408,7 +408,7 @@ class OpenBBFigure(go.Figure):
         self,
         y: float,
         name: str,
-        line: dict,
+        line: dict = None,
         legendrank: int = None,
         **kwargs,
     ) -> None:
@@ -425,6 +425,9 @@ class OpenBBFigure(go.Figure):
         legendrank : `int`, optional
             Legend rank, by default None (e.g. 1 is above 2)
         """
+        if line is None:
+            line = {}
+
         self.add_hline(
             y,
             line=line,
@@ -432,8 +435,8 @@ class OpenBBFigure(go.Figure):
         self.add_legend_label(
             label=name,
             mode="lines",
-            line_dash=line["dash"],
-            marker=dict(color=line["color"]),
+            line_dash=line.get("dash", "solid"),
+            marker=dict(color=line.get("color", theme.line_color)),
             legendrank=legendrank,
             **kwargs,
         )
@@ -442,7 +445,7 @@ class OpenBBFigure(go.Figure):
         self,
         x: float,
         name: str,
-        line: dict,
+        line: dict = None,
         legendrank: int = None,
         **kwargs,
     ) -> None:
@@ -459,6 +462,9 @@ class OpenBBFigure(go.Figure):
         legendrank : `int`, optional
             Legend rank, by default None (e.g. 1 is above 2)
         """
+        if line is None:
+            line = {}
+
         self.add_vline(
             x,
             line=line,
@@ -466,8 +472,8 @@ class OpenBBFigure(go.Figure):
         self.add_legend_label(
             label=name,
             mode="lines",
-            line_dash=line["dash"],
-            marker=dict(color=line["color"]),
+            line_dash=line.get("dash", "solid"),
+            marker=dict(color=line.get("color", theme.line_color)),
             legendrank=legendrank,
             **kwargs,
         )
@@ -581,16 +587,6 @@ class OpenBBFigure(go.Figure):
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
-        # height = 600 if not self.layout.height else self.layout.height
-        # self.update_layout(
-        #     legend=dict(
-        #         tracegroupgap=height / 4.5,
-        #         groupclick="toggleitem",
-        #     ),
-        #     barmode="overlay",
-        #     bargap=0,
-        #     bargroupgap=0,
-        # )
         self.update_traces(marker_line_width=0.0001, selector=dict(type="bar"))
 
         # Set modebar style
@@ -619,6 +615,17 @@ class OpenBBFigure(go.Figure):
                 # This is a very rare case, but it's better to have a fallback
                 if strtobool(os.environ.get("DEBUG_MODE", False)):
                     console.print_exception()
+
+        height = 600 if not self.layout.height else self.layout.height
+        self.update_layout(
+            legend=dict(
+                tracegroupgap=height / 4.5,
+                groupclick="toggleitem",
+            ),
+            barmode="overlay",
+            bargap=0,
+            bargroupgap=0,
+        )
 
         return pio.show(self, *args, **kwargs)
 
@@ -740,18 +747,17 @@ class OpenBBFigure(go.Figure):
         `list`
             The dateindex
         """
+        output = None
 
         for trace in self.select_traces():
             for x in trace.x:
-                if isinstance(x, datetime):
-                    return trace.x
                 if isinstance(x, (int, float)):
-                    return
-                if isinstance(x, str):
-                    try:
-                        return pd.to_datetime(trace.x)
-                    except Exception:
-                        return
+                    break
+                if isinstance(x, datetime):
+                    output = trace.x
+                    break
+
+        return output
 
     def hide_holidays(self) -> None:
         """Add rangebreaks to hide holidays on the xaxis

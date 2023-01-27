@@ -95,6 +95,7 @@ class Backend(PyWry):
             )
         )
 
+    # pylint: disable=arguments-renamed
     def send_html(self, html_str: str = "", html_path: str = "", title: str = ""):
         """Send html to backend.
 
