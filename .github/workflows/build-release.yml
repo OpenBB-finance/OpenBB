@@ -54,3 +54,4 @@ jobs:
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: docker.yml
+          token: ${{ secrets.GITHUB_TOKEN }}
