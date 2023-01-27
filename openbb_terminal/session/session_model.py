@@ -3,8 +3,8 @@ import logging
 import os
 import sys
 import json
-import matplotlib.pyplot as plt
 from enum import Enum
+import matplotlib.pyplot as plt
 import openbb_terminal.session.local_model as Local
 import openbb_terminal.session.hub_model as Hub
 from openbb_terminal.session.user import User
@@ -13,9 +13,9 @@ from openbb_terminal.rich_config import console
 
 
 class LoginStatus(Enum):
-    SUCCESS = 1
-    FAILED = 2
-    NO_RESPONSE = 3
+    SUCCESS = "success"
+    FAILED = "failed"
+    NO_RESPONSE = "no_response"
 
 
 def create_session(email: str, password: str, save: bool) -> dict:
