@@ -148,13 +148,13 @@ def get_series_ids(search_query: str, limit: int = -1) -> pd.DataFrame:
             console.print("[red]Invalid API Key[/red]\n")
         else:
             console.print(d_series["error_message"])
-        return pd.DataFrame()
+        return [], []
 
     if "seriess" not in d_series:
-        return pd.DataFrame()
+        return [], []
 
     if not d_series["seriess"]:
-        return pd.DataFrame()
+        return [], []
 
     df_series = pd.DataFrame(d_series["seriess"])
     df_series = df_series.sort_values(by=["popularity"], ascending=False)
