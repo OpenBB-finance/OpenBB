@@ -5,12 +5,8 @@ import re
 # IMPORTATION THIRDPARTY
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.log.generation.user_logger import __name__ as user_logger_name
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.log.generation.settings import AppSettings
-
-# considering starting at 0 and after the logging prefix i.e., just the text to be filtered
-MODULE_POSITION = 1
 
 
 class FormatterWithExceptions(logging.Formatter):
@@ -58,9 +54,6 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def mock_email(text: str) -> str:
-        if text.split("|")[MODULE_POSITION] == user_logger_name:
-            return text
-
         pattern = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
         replacement = " FILTERED_EMAIL "
         text_mocked = re.sub(pattern, replacement, text)
