@@ -2,12 +2,12 @@
 __docformat__ = "numpy"
 
 from typing import Union, Dict
-import requests
 import pandas as pd
 
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 
 @check_api_key(["API_SMARTSTAKE_KEY", "API_SMARTSTAKE_TOKEN"])
@@ -38,7 +38,7 @@ def get_luna_supply_stats(
         "token": cfg.API_SMARTSTAKE_TOKEN,
     }
 
-    response = requests.get(
+    response = request(
         "https://prod.smartstakeapi.com/listData?app=TERRA",
         params=payload,
     )

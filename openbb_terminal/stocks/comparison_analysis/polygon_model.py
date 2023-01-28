@@ -4,11 +4,10 @@ __docformat__ = "numpy"
 import logging
 from typing import List
 
-import requests
-
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +29,7 @@ def get_similar_companies(symbol: str, us_only: bool = False) -> List[str]:
     List[str]:
         List of similar tickers
     """
-    result = requests.get(
+    result = request(
         f"https://api.polygon.io/v1/meta/symbols/{symbol.upper()}/company?&apiKey={cfg.API_POLYGON_KEY}"
     )
 
@@ -43,7 +42,7 @@ def get_similar_companies(symbol: str, us_only: bool = False) -> List[str]:
             mkw_link = "https://www.marketwatch.com/investing/stock/"
             for sym in similar:
                 prep_link = mkw_link + sym
-                sent_req = requests.get(prep_link)
+                sent_req = request(prep_link)
                 if prep_link == sent_req.request.url:
                     us_similar.append(sym)
                 similar = us_similar

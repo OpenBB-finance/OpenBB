@@ -2,14 +2,13 @@ import logging
 from datetime import datetime, timedelta
 from typing import Optional
 
-import requests
-
 import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import read_file_data
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -79,8 +78,8 @@ def get_github_activity(
         f'from: "{start_date}" to: "{end_date}" interval: "{interval}"){{ datetime value }} }} }}'
     )
 
-    response = requests.post(
-        "https://api.santiment.net/graphql", headers=headers, data=data
+    response = request(
+        "https://api.santiment.net/graphql", method="POST", headers=headers, data=data
     )
 
     df = pd.DataFrame()
