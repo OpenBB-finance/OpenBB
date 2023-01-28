@@ -40,6 +40,7 @@ from PIL import Image, ImageDraw
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal import config_terminal as cfg
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -1473,7 +1474,7 @@ def get_rf() -> float:
         base = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service"
         end = "/v2/accounting/od/avg_interest_rates"
         filters = "?filter=security_desc:eq:Treasury Bills&sort=-record_date"
-        response = requests.get(base + end + filters)
+        response = request(base + end + filters)
         latest = response.json()["data"][0]
         return round(float(latest["avg_interest_rate_amt"]) / 100, 8)
     except Exception:
@@ -1975,3 +1976,39 @@ def check_start_less_than_end(start_date: str, end_date: str) -> bool:
         console.print("[red]Start date cannot be greater than end date.[/red]")
         return True
     return False
+
+
+# Write an abstract helper to make requests from a url with potential headers and params
+def request(url: str, method="GET", **kwargs) -> requests.Response:
+    """Abstract helper to make requests from a url with potential headers and params.
+
+    Parameters
+    ----------
+    url : str
+       Url to make the request to
+    method : str, optional
+       HTTP method to use.  Can be "GET" or "POST", by default "GET"
+
+    Returns
+    -------
+    requests.Response
+        Request response object
+
+    Raises
+    ------
+    ValueError
+        If invalid method is passed
+    """
+    # We want to add a user agent to the request, so check if there are any headers
+    # If there are headers, check if there is a user agent, if not add one.
+    # Some requests seem to work only with a specific user agent, so we want to be able to override it.
+    headers = kwargs.pop("headers") if "headers" in kwargs else {}
+    if "User-Agent" not in headers:
+        headers["User-Agent"] = get_user_agent()
+    if method.upper() == "GET":
+        return requests.get(url, headers=headers, timeout=cfg.REQUEST_TIMEOUT, **kwargs)
+    if method.upper() == "POST":
+        return requests.post(
+            url, headers=headers, timeout=cfg.REQUEST_TIMEOUT, **kwargs
+        )
+    raise ValueError("Method must be GET or POST")

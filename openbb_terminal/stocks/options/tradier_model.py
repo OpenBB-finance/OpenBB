@@ -11,6 +11,7 @@ from tqdm import tqdm
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -87,7 +88,7 @@ def get_historical_options(
     else:
         symbol = chain_id
 
-    response = requests.get(
+    response = request(
         "https://sandbox.tradier.com/v1/markets/history",
         params={"symbol": {symbol}, "interval": "daily"},
         headers={
@@ -166,7 +167,7 @@ def option_expirations(symbol: str) -> List[str]:
     dates: List[str]
         List of of available expirations
     """
-    r = requests.get(
+    r = request(
         "https://sandbox.tradier.com/v1/markets/options/expirations",
         params={"symbol": symbol, "includeAllRoots": "true", "strikes": "false"},
         headers={
@@ -211,7 +212,7 @@ def get_option_chain(symbol: str, expiry: str) -> pd.DataFrame:
         "Accept": "application/json",
     }
 
-    response = requests.get(
+    response = request(
         "https://sandbox.tradier.com/v1/markets/options/chains",
         params=params,
         headers=headers,
@@ -227,7 +228,7 @@ def get_option_chain(symbol: str, expiry: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def process_chains(response: requests.models.Response) -> pd.DataFrame:
-    """Function to take in the requests.get and return a DataFrame
+    """Function to take in the request and return a DataFrame
 
     Parameters
     ----------
@@ -277,7 +278,7 @@ def get_last_price(symbol: str):
     float:
         Last price
     """
-    r = requests.get(
+    r = request(
         "https://sandbox.tradier.com/v1/markets/quotes",
         params={"symbols": symbol, "includeAllRoots": "true", "strikes": "false"},
         headers={

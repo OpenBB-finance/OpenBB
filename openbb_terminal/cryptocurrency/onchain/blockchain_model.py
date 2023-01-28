@@ -4,8 +4,8 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
-import requests
 
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -27,7 +27,7 @@ def _make_request(endpoint: str) -> dict:
     """
 
     url = f"https://api.blockchain.info/{endpoint}"
-    response = requests.get(
+    response = request(
         url,
         headers={
             "Accept": "application/json",
@@ -59,7 +59,7 @@ def _blockchain_data_api_make_request(endpoint: str) -> dict:
     """
 
     url = f"https://blockchain.info/{endpoint}"
-    response = requests.get(
+    response = request(
         url,
         headers={
             "Accept": "application/json",
