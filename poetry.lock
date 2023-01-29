@@ -2060,7 +2060,7 @@ pandas = "*"
 
 [[package]]
 name = "mstarpy"
-version = "0.0.1"
+version = "0.0.2"
 description = "Mutual funds data extraction from MorningStar with Python"
 category = "main"
 optional = false

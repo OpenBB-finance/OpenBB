@@ -20,6 +20,8 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=too-many-arguments
+
 
 @log_start_end(log=logger)
 def display_rossindex(
@@ -30,6 +32,7 @@ def display_rossindex(
     show_growth: bool = True,
     chart_type: str = "stars",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots list of startups from ross index [Source: https://runacap.com/]
@@ -128,4 +131,5 @@ def display_rossindex(
             os.path.dirname(os.path.abspath(__file__)),
             "runaidx",
             df,
+            sheet_name,
         )

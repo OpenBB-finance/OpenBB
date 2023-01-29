@@ -12,7 +12,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def last_insider_activity(symbol: str, limit: int = 10, export: str = ""):
+def last_insider_activity(
+    symbol: str, limit: int = 10, export: str = "", sheet_name: str = None
+):
     """Display insider activity for a given stock ticker. [Source: Finviz]
 
     Parameters
@@ -41,4 +43,5 @@ def last_insider_activity(symbol: str, limit: int = 10, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "lins",
         df,
+        sheet_name,
     )
