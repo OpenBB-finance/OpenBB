@@ -42,6 +42,9 @@ def display_grouped_defi_protocols(
     """
 
     df = llama_model.get_defi_protocols(limit, drop_chain=False)
+
+    df["TVL ($)"] = df["TVL ($)"].apply(lambda x: lambda_long_number_format(x))
+
     chains = llama_model.get_grouped_defi_protocols(limit)
 
     # This plot has 1 axis
@@ -116,6 +119,8 @@ def display_defi_protocols(
     """
 
     df = llama_model.get_defi_protocols(limit, sortby, ascend, description)
+
+    df["TVL ($)"] = df["TVL ($)"].apply(lambda x: lambda_long_number_format(x))
 
     print_rich_table(df.head(limit), headers=list(df.columns), show_index=False)
 
