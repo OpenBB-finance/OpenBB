@@ -260,7 +260,6 @@ economy.perfmap,openbb_terminal.economy.finviz_model.get_performance_map,
 economy.fred,openbb_terminal.economy.fred_model.get_aggregated_series_data,openbb_terminal.economy.fred_view.display_fred_series
 economy.fred_ids,openbb_terminal.economy.fred_model.get_series_ids,
 economy.fred_notes,openbb_terminal.economy.fred_model.get_series_notes,
-economy.ycrv,openbb_terminal.economy.fred_model.get_yield_curve,openbb_terminal.economy.fred_view.display_yield_curve
 economy.events,openbb_terminal.economy.nasdaq_model.get_economic_calendar,
 economy.country_codes,openbb_terminal.economy.nasdaq_model.get_country_codes,
 economy.bigmac,openbb_terminal.economy.nasdaq_model.get_big_mac_indices,openbb_terminal.economy.nasdaq_view.display_big_mac_index
@@ -312,6 +311,7 @@ fixedincome.obfr,openbb_terminal.fixedincome.nyfed_model.get_obfr_data,openbb_te
 fixedincome.iorb,openbb_terminal.fixedincome.fred_model.get_series_data,openbb_terminal.fixedincome.fred_view.plot_iobr
 fixedincome.projection,openbb_terminal.fixedincome.fred_model.get_series_data,openbb_terminal.fixedincome.fred_view.plot_projection
 fixedincome.oldprojection,openbb_terminal.fixedincome.fred_model.get_series_data,openbb_terminal.fixedincome.fred_view.plot_oldprojection
+fixedincome.ycrv,openbb_terminal.fixedincome.fred_model.get_yield_curve,openbb_terminal.economy.fixedincome.display_yield_curve
 portfolio.load,openbb_terminal.portfolio.portfolio_model.generate_portfolio,
 portfolio.show,openbb_terminal.portfolio.portfolio_model.get_transactions,
 portfolio.bench,openbb_terminal.portfolio.portfolio_model.set_benchmark,

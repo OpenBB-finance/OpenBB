@@ -16,8 +16,10 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     is_valid_axes_count,
+    print_rich_table,
 )
-from openbb_terminal.fixedincome.fred_model import get_series_data
+from openbb_terminal.fixedincome import fred_model
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -90,6 +92,16 @@ ID_TO_NAME_DWPCR = {
     "DPCREDIT": "Daily (excl. Weekends)",
     "RIFSRPF02NA": "Annual",
 }
+ID_TO_NAME_TMC = {
+    "T10Y3M": "3-Month",
+    "T10Y2Y": "2-Year",
+}
+ID_TO_NAME_FFRMC = {
+    "T10YFF": "10-Year",
+    "T5YFF": "5-Year",
+    "T1YFF": "1-Year",
+    "T6MFF": "6-Month",
+}
 
 
 @log_start_end(log=logger)
@@ -116,7 +128,9 @@ def plot_estr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -174,7 +188,9 @@ def plot_sofr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -232,7 +248,9 @@ def plot_sonia(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -290,7 +308,9 @@ def plot_ameribor(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -352,7 +372,9 @@ def plot_ffer(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -413,10 +435,10 @@ def plot_fftr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df_upper = get_series_data(
+    df_upper = fred_model.get_series_data(
         series_id="DFEDTARU", start_date=start_date, end_date=end_date
     )
-    df_lower = get_series_data(
+    df_lower = fred_model.get_series_data(
         series_id="DFEDTARL", start_date=start_date, end_date=end_date
     )
     df = pd.DataFrame([df_upper, df_lower]).transpose()
@@ -476,7 +498,9 @@ def plot_effr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -538,7 +562,9 @@ def plot_obfr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -597,7 +623,9 @@ def plot_iorb(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = get_series_data(series_id="IORB", start_date=start_date, end_date=end_date)
+    df = fred_model.get_series_data(
+        series_id="IORB", start_date=start_date, end_date=end_date
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -652,25 +680,25 @@ def plot_projection(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df_range_high = get_series_data(
+    df_range_high = fred_model.get_series_data(
         series_id="FEDTARRH", start_date=start_date, end_date=end_date
     )
-    df_central_tendency_high = get_series_data(
+    df_central_tendency_high = fred_model.get_series_data(
         series_id="FEDTARCTH", start_date=start_date, end_date=end_date
     )
-    df_median = get_series_data(
+    df_median = fred_model.get_series_data(
         series_id="FEDTARMD", start_date=start_date, end_date=end_date
     )
-    df_range_midpoint = get_series_data(
+    df_range_midpoint = fred_model.get_series_data(
         series_id="FEDTARRM", start_date=start_date, end_date=end_date
     )
-    df_central_tendency_midpoint = get_series_data(
+    df_central_tendency_midpoint = fred_model.get_series_data(
         series_id="FEDTARCTM", start_date=start_date, end_date=end_date
     )
-    df_range_low = get_series_data(
+    df_range_low = fred_model.get_series_data(
         series_id="FEDTARRL", start_date=start_date, end_date=end_date
     )
-    df_central_tendency_low = get_series_data(
+    df_central_tendency_low = fred_model.get_series_data(
         series_id="FEDTARCTL", start_date=start_date, end_date=end_date
     )
     df = pd.DataFrame(
@@ -749,25 +777,25 @@ def plot_oldprojection(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df_range_high = get_series_data(
+    df_range_high = fred_model.get_series_data(
         series_id="FEDTARRHLR", start_date=start_date, end_date=end_date
     )
-    df_central_tendency_high = get_series_data(
+    df_central_tendency_high = fred_model.get_series_data(
         series_id="FEDTARCTHLR", start_date=start_date, end_date=end_date
     )
-    df_median = get_series_data(
+    df_median = fred_model.get_series_data(
         series_id="FEDTARMDLR", start_date=start_date, end_date=end_date
     )
-    df_range_midpoint = get_series_data(
+    df_range_midpoint = fred_model.get_series_data(
         series_id="FEDTARRMLR", start_date=start_date, end_date=end_date
     )
-    df_central_tendency_midpoint = get_series_data(
+    df_central_tendency_midpoint = fred_model.get_series_data(
         series_id="FEDTARCTMLR", start_date=start_date, end_date=end_date
     )
-    df_range_low = get_series_data(
+    df_range_low = fred_model.get_series_data(
         series_id="FEDTARRLLR", start_date=start_date, end_date=end_date
     )
-    df_central_tendency_low = get_series_data(
+    df_central_tendency_low = fred_model.get_series_data(
         series_id="FEDTARCTLLR", start_date=start_date, end_date=end_date
     )
     df = pd.DataFrame(
@@ -849,7 +877,9 @@ def plot_dwpcr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -884,4 +914,466 @@ def plot_dwpcr(
         os.path.dirname(os.path.abspath(__file__)),
         f"dwpcr, {series_id}",
         df,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_ecbdfr(
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Plot ECB Deposit Facility Rate for Euro Area.
+
+    The deposit facility rate is one of the three interest rates the ECB sets every six weeks as part of its monetary
+    policy. The rate defines the interest banks receive for depositing money with the central bank overnight.
+
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
+    central banks charge are set to stabilize the economy.
+
+    Parameters
+    ----------
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    export: str
+        Export data to csv or excel file
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    df = fred_model.get_series_data(
+        series_id="ECBDFR", start_date=start_date, end_date=end_date
+    )
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    colors = cycle(theme.get_colors())
+    ax.plot(
+        df.index,
+        df.values,
+        color=next(colors, "#FCED00"),
+    )
+    ax.set_title("ECB Deposit Facility Rate for Euro Area [Percent]")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ecbdfr",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_ecbmlfr(
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Plot ECB Marginal Lending Facility Rate for Euro Area.
+
+    A standing facility of the Euro-system which counterparties may use to receive overnight credit from a national
+    central bank at a pre-specified interest rate against eligible assets.
+
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
+    central banks charge are set to stabilize the economy.
+
+    Parameters
+    ----------
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    export: str
+        Export data to csv or excel file
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    df = fred_model.get_series_data(
+        series_id="ECBMLFR", start_date=start_date, end_date=end_date
+    )
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    colors = cycle(theme.get_colors())
+    ax.plot(
+        df.index,
+        df.values,
+        color=next(colors, "#FCED00"),
+    )
+    ax.set_title("ECB Marginal Lending Facility Rate for Euro Area [Percent]")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ecbmlfr",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_ecbmrofr(
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Plot ECB Marginal Lending Facility Rate for Euro Area.
+
+    A regular open market operation executed by the Euro-system (in the form of a reverse transaction) for the purpose
+    of providing the banking system with the amount of liquidity that the former deems to be appropriate. Main
+    refinancing operations are conducted through weekly standard tenders (in which banks can bid for liquidity) and
+    normally have a maturity of one week.
+
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
+    central banks charge are set to stabilize the economy.
+
+    Parameters
+    ----------
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    export: str
+        Export data to csv or excel file
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    df = fred_model.get_series_data(
+        series_id="ECBMRRFR", start_date=start_date, end_date=end_date
+    )
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    colors = cycle(theme.get_colors())
+    ax.plot(
+        df.index,
+        df.values,
+        color=next(colors, "#FCED00"),
+    )
+    ax.set_title(
+        "ECB Main Refinancing Operations Rate: Fixed Rate Tenders for Euro Area [Percent]"
+    )
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ecbmrofr",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_tmc(
+    series_id: str = "T10Y3M",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Plot 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity data.
+
+    Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
+    Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
+    yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+
+    Parameters
+    ----------
+    series_id: str
+        FRED ID of TMC data to plot, options: ['T10Y3M', 'T10Y3M']
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    export: str
+        Export data to csv or excel file
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    colors = cycle(theme.get_colors())
+    ax.plot(
+        df.index,
+        df.values,
+        marker="o",
+        linestyle="dashed",
+        linewidth=2,
+        markersize=4,
+        color=next(colors, "#FCED00"),
+    )
+    ax.set_title(
+        "10-Year Treasury Constant Maturity Minus "
+        + ID_TO_NAME_TMC[series_id]
+        + " Treasury Constant Maturity [Percent]"
+    )
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"tmc, {series_id}",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_ffrmc(
+    series_id: str = "T10YFF",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Plot Selected Treasury Constant Maturity Minus Federal Funds Rate data.
+
+    Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
+    Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
+    yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+
+    Parameters
+    ----------
+    series_id: str
+        FRED ID of FFRMC data to plot, options: ['T10YFF', 'T5YFF', 'T1YFF', 'T6MFF']
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    export: str
+        Export data to csv or excel file
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    colors = cycle(theme.get_colors())
+    ax.plot(
+        df.index,
+        df.values,
+        marker="o",
+        linestyle="dashed",
+        linewidth=2,
+        markersize=4,
+        color=next(colors, "#FCED00"),
+    )
+    ax.set_title(
+        ID_TO_NAME_FFRMC[series_id]
+        + " Treasury Constant Maturity Minus Federal Funds Rate [Percent]"
+    )
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"tmc, {series_id}",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def display_yield_curve(
+    date: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+    raw: bool = False,
+    export: str = "",
+):
+    """Display yield curve based on US Treasury rates for a specified date.
+
+    The graphic depiction of the relationship between the yield on bonds of the same credit quality but different
+    maturities is known as the yield curve. In the past, most market participants have constructed yield curves from
+    the observations of prices and yields in the Treasury market. Two reasons account for this tendency. First,
+    Treasury securities are viewed as free of default risk, and differences in creditworthiness do not affect yield
+    estimates. Second, as the most active bond market, the Treasury market offers the fewest problems of illiquidity
+    or infrequent trading. The key function of the Treasury yield curve is to serve as a benchmark for pricing bonds
+    and setting yields in other sectors of the debt market.
+
+    It is clear that the market’s expectations of future rate changes are one important determinant of the
+    yield-curve shape. For example, a steeply upward-sloping curve may indicate market expectations of near-term Fed
+    tightening or of rising inflation. However, it may be too restrictive to assume that the yield differences across
+    bonds with different maturities only reflect the market’s rate expectations. The well-known pure expectations
+    hypothesis has such an extreme implication. The pure expectations hypothesis asserts that all government bonds
+    have the same near-term expected return (as the nominally riskless short-term bond) because the return-seeking
+    activity of risk-neutral traders removes all expected return differentials across bonds.
+
+    Parameters
+    ----------
+    date: str
+        Date to get curve for. If None, gets most recent date (format yyyy-mm-dd)
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    raw : bool
+        Output only raw data
+    export : str
+        Export data to csv,json,xlsx or png,jpg,pdf,svg file
+    """
+    rates, date_of_yield = fred_model.get_yield_curve(date, True)
+    if rates.empty:
+        console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
+        return
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    ax.plot(rates["Maturity"], rates["Rate"], "-o")
+    ax.set_xlabel("Maturity")
+    ax.set_ylabel("Rate (%)")
+    theme.style_primary_axis(ax)
+    if external_axes is None:
+        ax.set_title(f"US Yield Curve for {date_of_yield} ")
+        theme.visualize_output()
+
+    if raw:
+        print_rich_table(
+            rates,
+            headers=list(rates.columns),
+            show_index=False,
+            title=f"United States Yield Curve for {date_of_yield}",
+            floatfmt=".3f",
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ycrv",
+        rates,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def display_inflation_indexed_yield_curve(
+    date: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+    raw: bool = False,
+    export: str = "",
+):
+    """Display inflation-indexed yield curve based on US Treasury rates for a specified date.
+
+    The graphic depiction of the relationship between the yield on bonds of the same credit quality but different
+    maturities is known as the yield curve. In the past, most market participants have constructed yield curves from
+    the observations of prices and yields in the Treasury market. Two reasons account for this tendency. First,
+    Treasury securities are viewed as free of default risk, and differences in creditworthiness do not affect yield
+    estimates. Second, as the most active bond market, the Treasury market offers the fewest problems of illiquidity
+    or infrequent trading. The key function of the Treasury yield curve is to serve as a benchmark for pricing bonds
+    and setting yields in other sectors of the debt market.
+
+    It is clear that the market’s expectations of future rate changes are one important determinant of the
+    yield-curve shape. For example, a steeply upward-sloping curve may indicate market expectations of near-term Fed
+    tightening or of rising inflation. However, it may be too restrictive to assume that the yield differences across
+    bonds with different maturities only reflect the market’s rate expectations. The well-known pure expectations
+    hypothesis has such an extreme implication. The pure expectations hypothesis asserts that all government bonds
+    have the same near-term expected return (as the nominally riskless short-term bond) because the return-seeking
+    activity of risk-neutral traders removes all expected return differentials across bonds.
+
+    Parameters
+    ----------
+    date: str
+        Date to get curve for. If None, gets most recent date (format yyyy-mm-dd)
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    raw : bool
+        Output only raw data
+    export : str
+        Export data to csv,json,xlsx or png,jpg,pdf,svg file
+    """
+    rates, date_of_yield = fred_model.get_inflation_indexed_yield_curve(date, True)
+    if rates.empty:
+        console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
+        return
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    ax.plot(rates["Maturity"], rates["Rate"], "-o")
+    ax.set_xlabel("Maturity")
+    ax.set_ylabel("Rate (%)")
+    theme.style_primary_axis(ax)
+    if external_axes is None:
+        ax.set_title(f"US Yield Curve for {date_of_yield} ")
+        theme.visualize_output()
+
+    if raw:
+        print_rich_table(
+            rates,
+            headers=list(rates.columns),
+            show_index=False,
+            title=f"United States Yield Curve for {date_of_yield}",
+            floatfmt=".3f",
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "iiycrv",
+        rates,
     )

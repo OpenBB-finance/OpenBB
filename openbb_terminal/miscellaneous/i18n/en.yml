@@ -785,6 +785,18 @@ en:
   fixedincome/projection: FOMC summary of economic projections for the fed funds rate
   fixedincome/oldprojection: longer run FOMC summary of economic projections for the fed funds rate
   fixedincome/dwpcr: discount window primary credit rate
+  fixedincome/ecbdfr: ECB deposit facility rate
+  fixedincome/ecbmlfr: ECB marginal facility rate
+  fixedincome/ecbmrofr: ECB main refinancing operations rate, fixed rate tender
+  fixedincome/stir: plot countries (incl. forecasted) short term interest rate
+  fixedincome/ltir: plot countries (incl. forecasted) long term interest rate
+  fixedincome/_constant_maturities_spreads_: Constant Maturity Spreads
+  fixedincome/tmc: 10-year treasury constant maturity minus selected treasury constant maturity
+  fixedincome/ffrmc: selected treasury constant maturity minus federal funds rate
+  fixedincome/_yield_curves_: Yield curves
+  fixedincome/ycrv: plot US yield curve
+  fixedincome/iiycrv: plot US inflation-indexed yield curve
+  fixedincome/ecbycrv: plot euro area yield curve
   forex/_ticker: Ticker
   forex/_from: From
   forex/_to: To

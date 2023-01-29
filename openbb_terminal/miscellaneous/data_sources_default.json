@@ -470,7 +470,6 @@
     "futures": ["WallStreetJournal", "Finviz"],
     "map": ["Finviz"],
     "bigmac": ["Nasdaq"],
-    "ycrv": ["FRED"],
     "events": ["Nasdaq"],
     "edebt": ["Wikipedia"],
     "rtps": ["AlphaVantage"],
@@ -516,7 +515,17 @@
     "iorb": ["FRED"],
     "projection": ["FRED"],
     "oldprojetion": ["FRED"],
-    "dwpcr": ["FRED"]
+    "dwpcr": ["FRED"],
+    "ecbdfr": ["FRED"],
+    "ecbmlfr": ["FRED"],
+    "ecbmrofr": ["FRED"],
+    "stir": ["OECD"],
+    "ltir": ["OECD"],
+    "tmc": ["FRED"],
+    "ffrmc": ["FRED"],
+    "ycrv": ["FRED"],
+    "iiycrv": ["FRED"],
+    "ecbycrv": ["ECB"]
   },
   "alternative": {
     "oss": {
