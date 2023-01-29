@@ -28,6 +28,7 @@ def display_regression(
     output_chunk_length: int = 5,
     lags: Union[int, List[int]] = 14,
     export: str = "",
+    sheet_name: str = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
@@ -59,6 +60,8 @@ def display_regression(
         The length of the forecast of the model. Defaults to 1.
     lags: Union[int, List[int]]
         lagged target values to predict the next time step
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     residuals: bool
@@ -114,6 +117,7 @@ def display_regression(
         precision=precision,
         probabilistic=probabilistic,
         export=export,
+        sheet_name=sheet_name,
         forecast_only=forecast_only,
         naive=naive,
         export_pred_raw=export_pred_raw,

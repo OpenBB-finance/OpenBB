@@ -1,4 +1,4 @@
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments,too-many-lines
 import os
 import argparse
 from typing import Any, Union, Optional, List, Dict, Tuple
@@ -475,6 +475,7 @@ def plot_forecast(
     precision: Optional[int] = None,
     probabilistic: bool = False,
     export: str = "",
+    sheet_name: str = None,
     low_quantile: float = None,
     high_quantile: float = None,
     forecast_only: bool = False,
@@ -538,7 +539,12 @@ def plot_forecast(
     print_pretty_prediction(numeric_forecast, data[target_col].iloc[-1])
 
     # user wants to export plot
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), name)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        name,
+        sheet_name,
+    )
 
     # user wants to export only raw predictions
     if export_pred_raw:
@@ -561,12 +567,14 @@ def plot_forecast(
             os.path.dirname(os.path.abspath(__file__)),
             name + "_predictions",
             numeric_forecast,
+            sheet_name,
         )
 
 
 def plot_explainability(
     model: type[GlobalForecastingModel],
     explainability_raw=False,
+    sheet_name: str = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """
@@ -601,6 +609,7 @@ def plot_explainability(
             os.path.dirname(os.path.abspath(__file__)),
             "explainability_raw",
             raw_df,
+            sheet_name,
         )
 
     ax.yaxis.set_label_position("left")
@@ -721,7 +730,7 @@ def get_prediction(
     if model_name not in ["Regression", "Logistic Regression"]:
         # need to create a new pytorch trainer for historical backtesting to remove progress bar
         best_model.trainer = None
-        best_model.trainer_params["enable_progress_bar"] = False
+        # best_model.trainer_params["enable_progress_bar"] = True
 
     # Historical backtest if with covariates
     if past_covariates is not None:

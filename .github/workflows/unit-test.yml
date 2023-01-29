@@ -5,6 +5,7 @@ env:
   OPENBB_LOG_COLLECT: false
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
+  OPENBB_FILE_OVERWRITE: true
   PIP_DEFAULT_TIMEOUT: 100
 
 on:
@@ -12,20 +13,23 @@ on:
     branches:
       - develop
       - main
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, synchronize, edited, closed]
+  push:
+    branches:
+      - release/*
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # Check for changes to Python code
-  python-changes:
-    name: Check for changes to Python code
+  check-files-changed:
+    name: Check for changes
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged != true
+    # Run this job only if the PR is not merged and the event is not a push
+    if: github.event.pull_request.merged == false && github.event_name != 'push'
     outputs:
-      python-changes: ${{ steps.python-changes.outputs.python-changes }}
+      check-changes: ${{ steps.check-changes.outputs.check-changes }}
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -35,30 +39,30 @@ jobs:
           # to be able to push to GitHub.
           persist-credentials: false
 
-      # Check for changes to Python code to avoid running tests unnecessarily
-      - name: Check for changes to Python code
-        id: python-changes
+      # Check for changes to python files, lockfiles and the openbb_terminal folder
+      - name: Check for changes to files to trigger unit test
+        id: check-changes
         run: |
-          # Extract the source and target branches for the PR
           source_branch=$(jq -r .pull_request.head.ref "$GITHUB_EVENT_PATH")
           target_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
 
-          # Check for changes to Python code to avoid running tests unnecessarily
-          if git diff --name-only origin/$target_branch HEAD | grep -E "\.py$"; then
-            echo "python-changes=true" >> $GITHUB_OUTPUT
+          if git diff --name-only origin/$target_branch HEAD | grep -E ".py$|openbb_terminal\/.*|pyproject.toml|poetry.lock|requirements.txt|requirements-full.txt"; then
+            echo "check-changes=true" >> $GITHUB_OUTPUT
           else
-            echo "python-changes=false" >> $GITHUB_OUTPUT
+            echo "check-changes=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Show Output result for python-changes
+      - name: Show output of previous step
         run: |
-          echo "python-changes=${{ steps.python-changes.outputs.python-changes }}"
+          # echo "python-changes=${{ steps.python-changes.outputs.python-changes }}"
+          # echo "folder-changes=${{ steps.folder-changes.outputs.folder-changes }}"
+          echo "check-changes=${{ steps.check-changes.outputs.check-changes }}"
 
   base-test:
     name: Base Tests - Ubuntu-latest - Python 3.9
-    needs: [python-changes]
+    needs: [check-files-changed]
     runs-on: ubuntu-latest
-    if: needs.python-changes.outputs.python-changes == 'true'
+    if: needs.check-files-changed.outputs.check-changes == 'true' && github.event.pull_request.base.ref == 'develop'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -92,7 +96,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization
+          pytest tests/ --optimization --autodoc
 
       - name: Start Terminal and exit
         run: |
@@ -101,9 +105,8 @@ jobs:
 
   tests-python:
     name: Vanilla Python Tests - ${{ matrix.python-version }}
-    needs: [python-changes, base-test]
+    needs: [base-test]
     runs-on: ${{ matrix.os }}
-    if: needs.python-changes.outputs.python-changes == 'true' && github.event.pull_request.base.ref == 'develop' && github.event.pull_request.merged != true
     strategy:
       fail-fast: true
       matrix:
@@ -151,7 +154,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization
+          pytest tests/ --optimization --autodoc
 
       - name: Start Terminal and exit
         run: |
@@ -161,7 +164,8 @@ jobs:
   full-test:
     name: Full Test Suite - (${{ matrix.python-version }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
-    if: github.event.pull_request.merged == true
+    # Run only when a PR is merged or a push to release/* branch
+    if: github.event_name == 'push' || github.event.pull_request.merged == true
     strategy:
       fail-fast: true
       matrix:
@@ -209,7 +213,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization
+          pytest tests/ --optimization --autodoc
 
       - name: Start Terminal and exit
         run: |
@@ -219,7 +223,7 @@ jobs:
   tests-conda:
     name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}-latest
-    if: github.event.pull_request.merged == true
+    if: github.event_name == 'push' || github.event.pull_request.merged == true
     strategy:
       fail-fast: false
       matrix:

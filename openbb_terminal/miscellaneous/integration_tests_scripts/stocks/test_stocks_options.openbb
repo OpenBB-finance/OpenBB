@@ -1,0 +1,34 @@
+stocks
+options
+screen
+view
+view --preset high_IV.ini
+set --preset high_IV.ini
+scr
+q
+unu -l 2 -s Strike -r -c
+unu -l 2 -s Vol
+calc
+load aapl
+exp 0
+pcr
+info
+chains
+oi
+vol
+voi
+hist 100
+grhist 100
+greeks
+plot -x ltd -y iv
+parity -p -m 150 -M 175
+binom -s 150
+load spy
+vsurf
+load NDX --source Nasdaq
+exp 0
+chains --source Nasdaq
+oi
+vol
+voi
+exit

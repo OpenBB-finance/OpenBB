@@ -222,7 +222,6 @@ class ControllerDoc:
             "call_about",
             "call_reset",
             "call_support",
-            "call_glossary",
             "call_wiki",
             "call_record",
             "call_stop",
