@@ -1,7 +1,7 @@
 """Parent Classes."""
 __docformat__ = "numpy"
 
-# pylint: disable=C0301,C0302,R0902,global-statement
+# pylint: disable=C0301,C0302,R0902,global-statement,too-many-boolean-expressions
 
 import argparse
 import difflib
@@ -33,7 +33,6 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     export_data,
     get_flair,
-    load_json,
     parse_and_split_input,
     prefill_form,
     screenshot,
@@ -91,7 +90,6 @@ class BaseController(metaclass=ABCMeta):
         "r",
         "reset",
         "support",
-        "glossary",
         "wiki",
         "record",
         "stop",
@@ -542,42 +540,6 @@ class BaseController(metaclass=ABCMeta):
             )
 
     @log_start_end(log=logger)
-    def call_glossary(self, other_args: List[str]) -> None:
-        """Process glossary command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="support",
-            description="Submit your support request",
-        )
-        parser.add_argument(
-            "-w",
-            "--word",
-            action="store",
-            dest="word",
-            type=str,
-            required="-h" not in other_args,
-            help="Word that you want defined",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-w")
-
-        ns_parser = self.parse_simple_args(parser, other_args)
-
-        glossary_file = os.path.join(os.path.dirname(__file__), "glossary.json")
-        glossary_dict = load_json(glossary_file)
-
-        if ns_parser:
-            word = glossary_dict.get(ns_parser.word, "")
-            word = word.lower()
-            word = word.replace("--", "")
-            word = word.replace("-", " ")
-            if word:
-                console.print(word + "\n")
-            else:
-                console.print("Word is not in the glossary.\n")
-
-    @log_start_end(log=logger)
     def call_wiki(self, other_args: List[str]) -> None:
         """Process wiki command."""
         parser = argparse.ArgumentParser(
@@ -998,7 +960,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
             description="Load stock ticker to perform analysis on. When the data source"
-            + " is syf', an Indian ticker can be"
+            + " is yf, an Indian ticker can be"
             + " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
             + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
@@ -1077,7 +1039,20 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             type=str,
             default="ytd",
         )
-
+        parser.add_argument(
+            "--exchange",
+            dest="exchange",
+            action="store_true",
+            default=False,
+            help="Show exchange information.",
+        )
+        parser.add_argument(
+            "--performance",
+            dest="performance",
+            action="store_true",
+            default=False,
+            help="Show performance information.",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
@@ -1126,17 +1101,20 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     return
             if not df_stock_candidate.empty:
                 self.stock = df_stock_candidate
-                self.add_info = stocks_helper.additional_info_about_ticker(
-                    ns_parser.ticker
-                )
-                console.print(self.add_info)
+                if ns_parser.exchange:
+                    self.add_info = stocks_helper.additional_info_about_ticker(
+                        ns_parser.ticker
+                    )
+                    console.print(self.add_info)
                 if (
                     ns_parser.interval == 1440
                     and not ns_parser.weekly
                     and not ns_parser.monthly
                     and ns_parser.filepath is None
                     and self.PATH == "/stocks/"
+                    and ns_parser.performance
                 ):
+                    console.print()
                     stocks_helper.show_quick_performance(self.stock, ns_parser.ticker)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
@@ -1167,7 +1145,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 export_data(
                     ns_parser.export,
                     os.path.dirname(os.path.abspath(__file__)),
-                    "load",
+                    f"load_{self.ticker}",
                     self.stock.copy(),
                 )
 

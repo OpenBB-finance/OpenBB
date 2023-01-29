@@ -17,5 +17,8 @@ def get_quote_type(symbol: str) -> str:
     str
         Returns the quote type of the symbol.
     """
-    quote_type = yf.Ticker(symbol).info["quoteType"]
-    return quote_type
+    try:
+        quote_type = yf.Ticker(symbol).info["quoteType"]
+        return quote_type
+    except TypeError:
+        return "N/A"
