@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from typing import List
+from datetime import datetime, timedelta
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
@@ -19,11 +20,13 @@ from openbb_terminal.cryptocurrency.discovery import (
     dappradar_view,
     pycoingecko_model,
     pycoingecko_view,
+    cryptostats_view,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -45,6 +48,7 @@ class DiscoveryController(BaseController):
         "games",
         "dapps",
         "dex",
+        "fees",
     ]
 
     PATH = "/crypto/disc/"
@@ -71,7 +75,85 @@ class DiscoveryController(BaseController):
         mt.add_cmd("games")
         mt.add_cmd("dapps")
         mt.add_cmd("dex")
+        mt.add_cmd("fees")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Discovery")
+
+    @log_start_end(log=logger)
+    def call_fees(self, other_args: List[str]):
+        """Process fees command"""
+
+        parser = argparse.ArgumentParser(
+            prog="fees",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Cryptos where users pay most fees on [Source: CryptoStats]
+            """,
+        )
+
+        parser.add_argument(
+            "-mc",
+            "--marketcap",
+            action="store_true",
+            dest="marketcap",
+            default=False,
+            help="Include the market cap rank",
+        )
+        parser.add_argument(
+            "-tvl",
+            action="store_true",
+            dest="tvl",
+            default=False,
+            help="Include the total value locked",
+        )
+
+        parser.add_argument(
+            "-d",
+            "--date",
+            dest="date",
+            type=valid_date,
+            help="Initial date. Default: yesterday",
+            default=(datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d"),
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            nargs="+",
+            help="Sort by given column. Default: One Day Fees",
+            default="One Day Fees",
+            choices=["One Day Fees", "Market Cap Rank"],
+            metavar="SORTBY",
+        )
+
+        parser.add_argument(
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+        )
+
+        if ns_parser:
+            cryptostats_view.display_fees(
+                marketcap=ns_parser.marketcap,
+                tvl=ns_parser.tvl,
+                date=ns_parser.date,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.reverse,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_top(self, other_args):
