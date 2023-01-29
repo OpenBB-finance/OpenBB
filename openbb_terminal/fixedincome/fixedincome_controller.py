@@ -28,6 +28,7 @@ from openbb_terminal.helper_funcs import (
     list_from_str,
     print_rich_table,
     valid_date,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -1542,4 +1543,505 @@ class FixedIncomeController(BaseController):
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
                 else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_ecbdfr(self, other_args: List[str]):
+        """Process ecbdfr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ecbdfr",
+            description="Plot ECB Deposit Facility Rate for Euro Area. The deposit facility rate is one of the three "
+            "interest rates the ECB sets every six weeks as part of its monetary policy. The rate defines "
+            "the interest banks receive for depositing money with the central bank overnight. A bank rate "
+            "is the interest rate a nation's central bank charges to its domestic banks to borrow money. "
+            "The rates central banks charge are set to stabilize the economy.",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            fred_view.plot_ecbdfr(
+                ns_parser.start_date,
+                ns_parser.end_date,
+                ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_ecbmlfr(self, other_args: List[str]):
+        """Process ecbmlfr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ecbmlfr",
+            description="Plot ECB Deposit Facility Rate for Euro Area. A standing facility of the Euro-system which "
+            "counterparties may use to receive overnight credit from a national central bank at a "
+            "pre-specified interest rate against eligible assets. A bank rate "
+            "is the interest rate a nation's central bank charges to its domestic banks to borrow money. "
+            "The rates central banks charge are set to stabilize the economy.",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            fred_view.plot_ecbmlfr(
+                ns_parser.start_date,
+                ns_parser.end_date,
+                ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_ecbmrofr(self, other_args: List[str]):
+        """Process ecbmrofr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ecbmrofr",
+            description="Plot ECB Main Refinancing Operations Rate: Fixed Rate Tenders for Euro Area. A regular open "
+            "market operation executed by the Euro-system (in the form of a reverse transaction) for the "
+            "purpose of providing the banking system with the amount of liquidity that the former deems "
+            "to be appropriate. Main refinancing operations are conducted through weekly standard tenders "
+            "(in which banks can bid for liquidity) and normally have a maturity of one week. A bank rate "
+            "is the interest rate a nation's central bank charges to its domestic banks to borrow money. "
+            "The rates central banks charge are set to stabilize the economy.",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            fred_view.plot_ecbmrofr(
+                ns_parser.start_date,
+                ns_parser.end_date,
+                ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_stir(self, other_args: List[str]):
+        """Process stir command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="str",
+            description='Plot short term interest rates from selected countries. \nShort-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage. Short-term interest rates are based on three-month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate".',
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            type=str,
+            action="store",
+            nargs="+",
+            dest="countries",
+            help="Countries to get data for.",
+            default=["USA"],
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            help="Start date of data, in YYYY-MM-DD format",
+            dest="start_date",
+            default=None,
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            help="End date of data, in YYYY-MM-DD format",
+            dest="end_date",
+            default=None,
+        )
+        parser.add_argument(
+            "--forecast",
+            action="store_true",
+            dest="forecast",
+            default=False,
+            help="If True, plot forecasts for short term interest rates",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            oecd_view.plot_short_term_interest_rate(
+                countries=ns_parser.countries,
+                forecast=ns_parser.forecast,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_ltir(self, other_args: List[str]):
+        """Process ltir command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="str",
+            description="Plot long term interest rates from selected countries. \nLong-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued. In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term interest rates are one of the determinants of business investment. Low long-term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth.",
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            type=str,
+            action="store",
+            nargs="+",
+            dest="countries",
+            help="Countries to get data for, use three letter country codes.",
+            default=["USA"],
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            help="Start date of data, in YYYY-MM-DD format",
+            dest="start_date",
+            default=None,
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            help="End date of data, in YYYY-MM-DD format",
+            dest="end_date",
+            default=None,
+        )
+        parser.add_argument(
+            "--forecast",
+            action="store_true",
+            dest="forecast",
+            default=False,
+            help="If True, plot forecasts for long term interest rates",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            oecd_view.plot_long_term_interest_rate(
+                countries=ns_parser.countries,
+                forecast=ns_parser.forecast,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_tmc(self, other_args: List[str]):
+        """Process tmc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tmc",
+            description="Get 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity data. "
+            "Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values "
+            "of auctioned U.S. Treasuries. The value is obtained by the U.S. Treasury on a daily basis "
+            "through interpolation of the Treasury yield curve which, in turn, is based on closing "
+            "bid-yields of actively-traded Treasury securities.",
+        )
+        parser.add_argument(
+            "-p",
+            "--parameter",
+            dest="parameter",
+            type=str,
+            help="Selected treasury constant maturity to subtract",
+            default="3_month",
+            choices=list(self.tmc_parameter_to_fred_id.keys()),
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            fred_view.plot_tmc(
+                self.tmc_parameter_to_fred_id[ns_parser.parameter],
+                ns_parser.start_date,
+                ns_parser.end_date,
+                ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_ffrmc(self, other_args: List[str]):
+        """Process ffrmc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ffrmc",
+            description="Get Selected Treasury Constant Maturity Minus Federal Funds Rate. "
+            "Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values "
+            "of auctioned U.S. Treasuries. The value is obtained by the U.S. Treasury on a daily basis "
+            "through interpolation of the Treasury yield curve which, in turn, is based on closing "
+            "bid-yields of actively-traded Treasury securities.",
+        )
+        parser.add_argument(
+            "-p",
+            "--parameter",
+            dest="parameter",
+            type=str,
+            help="Selected Treasury Constant Maturity",
+            default="10_year",
+            choices=list(self.ffrmc_parameter_to_fred_id.keys()),
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            fred_view.plot_ffrmc(
+                self.ffrmc_parameter_to_fred_id[ns_parser.parameter],
+                ns_parser.start_date,
+                ns_parser.end_date,
+                ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_ycrv(self, other_args: List[str]):
+        """Process ycrv command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ycrv",
+            description="Generate US yield curve. \nThe yield curve shows the bond rates"
+            "at different maturities.\nThe graphic depiction of the relationship between the yield on bonds of the "
+            "same credit quality but different maturities is known as the yield curve. In the past, "
+            "most market participants have constructed yield curves from the observations of prices and "
+            "yields in the Treasury market. Two reasons account for this tendency. First, "
+            "Treasury securities are viewed as free of default risk, and differences in creditworthiness "
+            "do not affect yield estimates. Second, as the most active bond market, the Treasury market "
+            "offers the fewest problems of illiquidity or infrequent trading. The key function of the "
+            "Treasury yield curve is to serve as a benchmark for pricing bonds and setting yields in "
+            "other sectors of the debt market.\nIt is clear that the market’s expectations of future rate "
+            "changes are one important determinant of the yield-curve shape. For example, "
+            "a steeply upward-sloping curve may indicate market expectations of near-term Fed tightening "
+            "or of rising inflation. However, it may be too restrictive to assume that the yield "
+            "differences across bonds with different maturities only reflect the market’s rate "
+            "expectations. The well-known pure expectations hypothesis has such an extreme implication. "
+            "The pure expectations hypothesis asserts that all government bonds have the same near-term "
+            "expected return (as the nominally riskless short-term bond) because the return-seeking "
+            "activity of risk-neutral traders removes all expected return differentials across bonds.",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            type=valid_date,
+            help="Date to get data from FRED. If not supplied, the most recent entry will be used.",
+            dest="date",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+
+            fred_view.display_yield_curve(
+                date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_iiycrv(self, other_args: List[str]):
+        """Process iiycrv command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="iiycrv",
+            description="Generate US inflation-indexed yield curve. \nThe yield curve shows the bond rates"
+            "at different maturities.\nThe graphic depiction of the relationship between the yield on bonds of the "
+            "same credit quality but different maturities is known as the yield curve. In the past, "
+            "most market participants have constructed yield curves from the observations of prices and "
+            "yields in the Treasury market. Two reasons account for this tendency. First, "
+            "Treasury securities are viewed as free of default risk, and differences in creditworthiness "
+            "do not affect yield estimates. Second, as the most active bond market, the Treasury market "
+            "offers the fewest problems of illiquidity or infrequent trading. The key function of the "
+            "Treasury yield curve is to serve as a benchmark for pricing bonds and setting yields in "
+            "other sectors of the debt market.\nIt is clear that the market’s expectations of future rate "
+            "changes are one important determinant of the yield-curve shape. For example, "
+            "a steeply upward-sloping curve may indicate market expectations of near-term Fed tightening "
+            "or of rising inflation. However, it may be too restrictive to assume that the yield "
+            "differences across bonds with different maturities only reflect the market’s rate "
+            "expectations. The well-known pure expectations hypothesis has such an extreme implication. "
+            "The pure expectations hypothesis asserts that all government bonds have the same near-term "
+            "expected return (as the nominally riskless short-term bond) because the return-seeking "
+            "activity of risk-neutral traders removes all expected return differentials across bonds.",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            type=valid_date,
+            help="Date to get data from FRED. If not supplied, the most recent entry will be used.",
+            dest="date",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            fred_view.display_inflation_indexed_yield_curve(
+                date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_ecbycrv(self, other_args: List[str]):
+        """Process ecbycrv command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ecbycrv",
+            description="Generate euro area yield curve from ECB. \nThe yield curve shows the bond rates"
+            "at different maturities.\nThe graphic depiction of the relationship between the yield on bonds of the "
+            "same credit quality but different maturities is known as the yield curve. In the past, "
+            "most market participants have constructed yield curves from the observations of prices and "
+            "yields in the Treasury market. Two reasons account for this tendency. First, "
+            "Treasury securities are viewed as free of default risk, and differences in creditworthiness "
+            "do not affect yield estimates. Second, as the most active bond market, the Treasury market "
+            "offers the fewest problems of illiquidity or infrequent trading. The key function of the "
+            "Treasury yield curve is to serve as a benchmark for pricing bonds and setting yields in "
+            "other sectors of the debt market.\nIt is clear that the market’s expectations of future rate "
+            "changes are one important determinant of the yield-curve shape. For example, "
+            "a steeply upward-sloping curve may indicate market expectations of near-term Fed tightening "
+            "or of rising inflation. However, it may be too restrictive to assume that the yield "
+            "differences across bonds with different maturities only reflect the market’s rate "
+            "expectations. The well-known pure expectations hypothesis has such an extreme implication. "
+            "The pure expectations hypothesis asserts that all government bonds have the same near-term "
+            "expected return (as the nominally riskless short-term bond) because the return-seeking "
+            "activity of risk-neutral traders removes all expected return differentials across bonds.",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            type=valid_date,
+            help="Date to get data from ECB. If not supplied, the most recent entry will be used.",
+            dest="date",
+            default=None,
+        )
+        parser.add_argument(
+            "-p",
+            "--parameter",
+            dest="parameter",
+            type=str,
+            help="Selected type of yield curve",
+            default="spot_rate",
+            choices=["spot_rate", "instantaneous_forward", "par_yield"],
+        )
+        parser.add_argument(
+            "--detailed",
+            action="store_true",
+            dest="detailed",
+            default=False,
+            help="If True, returns detailed data. Note that this is very slow.",
+        )
+        parser.add_argument(
+            "--aaa_only",
+            action="store_true",
+            dest="aaa_only",
+            default=True,
+            help="If True, it only returns rates for AAA rated bonds. If False, it returns rates for all bonds.",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            ecb_view.display_ecb_yield_curve(
+                date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
+                yield_type=ns_parser.parameter,
+                detailed=ns_parser.detailed,
+                aaa_only=ns_parser.aaa_only,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
             )
