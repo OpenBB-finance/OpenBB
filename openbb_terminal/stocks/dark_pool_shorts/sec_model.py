@@ -7,11 +7,10 @@ from typing import Optional
 from urllib.error import HTTPError
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 logger = logging.getLogger(__name__)
 
@@ -97,7 +96,7 @@ def get_fails_to_deliver(
     if limit > 0:
         url_ftds = "https://www.sec.gov/data/foiadocsfailsdatahtm"
         text_soup_ftds = BeautifulSoup(
-            requests.get(url_ftds, headers={"User-Agent": get_user_agent()}).text,
+            request(url_ftds, headers={"User-Agent": get_user_agent()}).text,
             "lxml",
         )
 

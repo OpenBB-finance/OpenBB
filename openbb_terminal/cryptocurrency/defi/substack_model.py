@@ -7,12 +7,12 @@ import textwrap
 from typing import List
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 from dateutil import parser
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ def scrape_substack(url: str) -> List[List[str]]:
             - str datetime of newsletter [Format: "%Y-%m-%d %H:%M:%S"]
     """
 
-    req = requests.get(url)
+    req = request(url)
     soup = BeautifulSoup(req.text, features="lxml")
     results: List[List[str]] = []
     archive = soup.find("div", class_="portable-archive-list")

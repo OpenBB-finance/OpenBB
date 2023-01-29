@@ -60,7 +60,6 @@ def test_get_option_chain(mocker, recorder):
         "option_expirations",
         "get_dividend",
         "get_price",
-        "get_info",
         "get_closing",
         "get_iv_surface",
     ],

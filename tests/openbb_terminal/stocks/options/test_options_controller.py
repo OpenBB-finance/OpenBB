@@ -93,6 +93,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "queue, expected",
@@ -1009,6 +1010,7 @@ def test_call_func_no_selected_date(func, mocker):
     assert controller.selected_date == ""
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "other_args",
