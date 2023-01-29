@@ -3691,7 +3691,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "ruff"
-version = "0.0.210"
+version = "0.0.236"
 description = "An extremely fast Python linter, written in Rust."
 category = "dev"
 optional = false
@@ -4886,7 +4886,7 @@ multidict = ">=4.0"
 
 [[package]]
 name = "yfinance"
-version = "0.2.4"
+version = "0.2.9"
 description = "Download market data from Yahoo! Finance API"
 category = "main"
 optional = false
@@ -4941,7 +4941,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "80a1a29b160bb77a07f1e8bf11d5a47ddd6219601d420f11c93cdcb56ef1bfcf"
+content-hash = "51a54217dbc5dd2288842c3fa960b894b5e2cd5a85f1c0f4f442bbf7b8a0a324"
 [metadata.files]
 absl-py = []
 aiodns = []
