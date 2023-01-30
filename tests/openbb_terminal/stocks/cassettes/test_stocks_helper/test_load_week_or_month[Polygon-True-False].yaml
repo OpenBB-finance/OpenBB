@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1
+    method: GET
+    uri: https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/week/2019-12-01/2021-12-02?adjusted=true&apiKey=MOCK_API_KEY2&limit=49999&sort=desc
+  response:
+    body:
+      string: !!binary |
+        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
+        AP//sll5FbETAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1721'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 30 Jan 2023 16:58:52 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Request-Id:
+      - 97151e476558397ada582e7e1a75d835
+    status:
+      code: 200
+      message: OK
+version: 1

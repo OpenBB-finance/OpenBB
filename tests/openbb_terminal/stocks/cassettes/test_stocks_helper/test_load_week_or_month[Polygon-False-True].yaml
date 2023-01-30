@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1
+    method: GET
+    uri: https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/month/2019-12-01/2021-12-02?adjusted=true&apiKey=MOCK_API_KEY2&limit=49999&sort=desc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/1zUz2ojRxAG8Hfpa4ai/lf13EyOCST3EBZZklnvGhtLIy+L8bsvo+kZtVdHMfDr
+        r/rrei/T4/778VTGcnf3799lKK+X4+nnny+X56mMbDyU0/F8eZrO7S/ioewO3y7n6Xgo43S6HLcv
+        yvjfe3krI4OqBImpHf/AOpS3H2WkYAjBHMpLGckDNIeyn/8PsBjK1zJSMpAM5amMZAE5lNlzSRFN
+        nH9DeZ4/w6g168dw1Qg8q5ugU6eZQWDWRdOEmrZwbiCL5gaxYLqcZtEspHKnMaUG86aZK4lq9poa
+        YKA0jaAultY5xGyZALktmiRwrJqgY5+NOJ0JNy3R0tw9ey2Bt2zGkNI4AmtcAHvLRp2G6tlrIlWs
+        3jQ1D87A3zSx0JbNQXzRjK5wS6e1cTqf4apxREXtNJQaYrJplXyeN8nnSZLOZ581cWiYGqQ3DNsY
+        DcJXyoiWO1uDoVVxv1UEidypvzOukJZNYgNsfRSH2igJUFo0lms1F42tYWswR067aUHIwoy15xzC
+        fQ3GgLpwrODUOAVsjWQGXudINZW8b6S6qeetI+nOXKWfoxBUVW7pBLwNUgj0lq7j5gtcuGCtPSfM
+        gtUax+AaqKHEfTqCMNaNi/bamIFaJzkheOHIgWnl1KJ/3YwZQXwbZnIgi37qpCAQZntv0nF07X1L
+        l9HiUYJs8ZjM+ngWHqiyxWPJEFTU3hMw0dy8eS22aa5dmVdAewPsIMnNw6oR/T4JDOOwj/+Hcp52
+        0+VcxvLPX2Xeoq+X43n68ngoY7FaK99X3UX6/v5BRMn1geNA+/tDxK4MZb8u5I9fAQAA//9R66L0
+        xQUAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '631'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 30 Jan 2023 16:58:52 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Request-Id:
+      - 59992b94a786cbf334164f27d1cbd77a
+    status:
+      code: 200
+      message: OK
+version: 1

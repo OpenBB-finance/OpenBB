@@ -1,0 +1,114 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits%2CcapitalGains&includePrePost=False&interval=1mo&range=5y
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO2ZS3MbxxWF/wvWyKTfD+9ccSpJVexyLHrhcqlSiAjLjEmAAUE5ior/Pd+5PbQw
+        Q6e8yk5cQI1Gz+37PPfc0YfNmx93p/Pmsw+b0/7h8ZbV9x82d/vzTltvHk+n/eHN+81nm29ffbHZ
+        bh7e3/3jeMvXq1d//Zzv+3/z+OHt/qvd3Z7dr758xebN4eF8erzbH85X7++1/ce/ffuXq+/45Yeb
+        08P56rS73n+xO/OLD7U234JzW65/+3i7O325O/20P1/dSJ4vNbteU0vbzdu78/GHHx72KPg735ye
+        OHPoP8eD3fDq6kKbq/mHWavP7/anmze733+1//nv3x1PP21Wl33Nr7qtxslzkznk69P+3c3x8eEP
+        t8cHfgtxcjlvN/c6+uebA1qE7eweM+jm8PZrbjley233p73+eaHfw9lcbWaVblbvD9fzRutm1As7
+        n37R9jdlziJ+kel9SP9L5v3x4fxbAp+f/ygwlPbrApF4vTvv/nTaHaTqzVk54++O8rVCwrf8ni/v
+        drc3199o54FM2/hr9rI+xtlon8U+vc4HfdiT3unz/VmH73b/3rx+GhmAvnf3yPLZ11S8vMqyt+aS
+        LUPIOY/dkH2q87K2kIsto0u+zsvoenFjmWtNQ0JssZSxTN6l1MYysjfvlujbvNt6n6/gMj8/lpPr
+        s2a5lBbnZY/Fj4uL7znOS6SFoUOp0c9XlN5dGMsacnPjNiJS5ysopDxr1hyGjCtadHHWrOXq5ysa
+        27Px3fWWxm0dk2fjewl5Nr63HoNJKA63pXmZghtXFFdqb/NuT3UYTxxk6limXOfHfA2pz7vcO4wv
+        REgG21I5Ny9r7cP4QoTKfAURKm5e5hr7uI0IxfkKIuRnzYhQn68gMfz8WGp4auxmH2udl8k8YkuC
+        3eYltg//loLM+YqScNC8rKGO5CqltzpfQYTSrNkzgL2mit6BFQ+quYf725ux+uhqfbseoIjPsVZ6
+        bQ7A6Gl3PlL7oM/1/nC8uzmM73475HyzO98cVV6f+Q0l8VHpC4mFIMQUVhLjb0iMkqjKvjlcg5+c
+        MZ3/9XiUUNrEjzdvf2QBOPbeSbkUase5vmzZCinhHlIxhIBPt8FNRC8qM8kDHNO01VC39xBAEW9b
+        aeqqQyQl33rKUVuUV5Hbmw/4hq08kcKITz0rAkmiKDyk54CxZECTDliNdKdffEpZolJWqtUSehzS
+        8xSkPNkUYqulZz2I6khHo9BDr9vgp+JXiropVSkaqAv0i2Xr+1RXRvs6hWBWZ2SnkqmoqSTdhxY8
+        5V3WoRqVca10y5dK4kwcQIfmuqM/Ru0ALfwV34CsUFE9TJVrCkoLX6oUTZOrdizESgrRs0KfXJAo
+        HwIVkUPcpjhli0QLqbqK9JKmLC+kSsqS3G2b40RdI7y7Wj0ZnLa5TuR4BxEKUBSitsoUvKyhZEqj
+        uLY1TGoTJRHAjrfa1uMXrsc+YDR4QELVMoFG/FlACRbXTkADiAdmAQ2xCSDlBB5zwFyu8nmYJIcE
+        cjEDioFY9Skr7rGaSjzHM9OlbI8LMBjfuAlE6B2Mqb5VdoqbgpISnwqqlbfcufBMiBikLGKvzHkV
+        12cS5nS5OCqBuBjRxQ6lmB3Qi82xesLMoQjjidpJPi1s5kwnjckgGlblUVRMMpk/2gIFIRUjGdSV
+        U/ISJyQ3KzUwpMIAONESOa18AlmIQeeZJgcQ5UAxdBA5u2qOaZM1m6riNZ9QKC8uVCoQdgA5kBty
+        HKmgOqmTPNMjGZFGzBDYvQ77MqqXepmKHg9FMfRB+U6hVG4FL3AdCQE6vhlE63uSGhyVAg5vlDDK
+        Q9jlMglpZqvSsrIuYObQk3tITp3C4T3TfVQeTcENwl8fqS49h/ooAwqUEQTqmNbAfcAIHdZE1Umt
+        gQATBxT0EpXaskIBCYpJhU1fDeZ3ThlO4YtG/ifDvKROAcPAM5VEFpTEINwoyToqOYzqZZXDirGq
+        CHBLSTeyFaZocNYKroTrsZXABD1IQEU2XBBMeKIp/AEpElRBsuij8mgDCBxMQ6fISrkUUIVECPQE
+        oCvE9myp3jCPRkoIt6FO9CZlOsgIGxKURFVycviVlh1Ja7AE80AasBgXklOA+rIYMq6SF0i5JlDw
+        W4q9GOiSTUHZuCWv5TMQ3Vm2hm2nOMVWTKwogQGJt0bge4oWUDB/IgsWDgYDoyA9pdDqQKDWJ29w
+        2hN1HIKVvrA61BLLMz5giscBveKPoJTKk192BoIO0YjiZCIOhiGF1iCcUWuKlhmuTRaCkQVJz5Up
+        L+ssCKlXWwmdRM/gE3FGqIyoC6SeEWCFNU2YgKje56rG4aFcWAJGTcGaYxhAQyWpXUb4E24Cw3im
+        Tyoo+oZQTpWrQ4vkRR2a0DKdg7psXTqyV4R/RArKrhJvsIheZkAuZ2OrXFxXeEtkp7IIlVdrb4vW
+        4Gsd/fECizTPXeKTYObd8fZRQ+H3kEaoitFOIo8bqDKWQKZRPe1Gqa9dIFLIbgdyA1LVlrYyODlb
+        BuIFCbBdqwuns+RXxgh7zHfatLFKGk4im8cBekh+vqKghC1tiunZhKG6oRoHSIbcx238k+0KfqIW
+        xq611z4keGBh7Ebl05BAZI1nuy39s1GsOguSNMMFdsERU8HR6mE6xdSBWjgNMJIAy+Ey7TKbcNU4
+        AEr5aCyYj9bG5KCfhPqmA2NBNx5Np+suDj/QhV2bpwyMqBAWBYDOl22IwCDNRV4HSCJa4jxMKYd1
+        1kfylFLRUkyvJttFLOjdx6SDz6OR8q6UTHme+KgdO2vzwWD4sTN6FNut1HYNQ4Ii0WcJTU4xzTgK
+        Q7WzzIPzBEXrD2XMHoQoVMsHslC7w4qWhQgjYRg9Uh/hJh3GpBPonYyohUS9Pf6sLIU6ZeGbVxCM
+        eILdeVVexhbV1vAS2aBypqcEjW0yjqY1N0ixRUYdYCPAwdUO3ap42QoL8mQtpRnoMdDBm8voHyij
+        ksQEstna2hK+TVRxhjkzYptWRS2SoSsYMo4L1WyjMlUYXiTdsgXUwewkmKWHyQ4hqAN86TPqh0G9
+        L+SeVUVSy4uoyB7cgszarUV6Qb9G0GRwyZbBLJQUUtDmU1kdWGHLGTz12oIoykTgnfPGFHCaxhxh
+        gGiLrF67JjT4hJQnEZi5cqWAJit9DcTRgGiQh5UoOJFxW8LWms0TgD/oqCIiAekmYtt9wQCMbrsl
+        Ge1+IpNcR31hn0qsEnb8RZaIdVFHUAGbKaJUE/fJz31BdC25Ja2J6ksinDPrlCvKigKL07WPM406
+        nMiWpa5oiPVv3+AwSkE3IJ/ortsigtuSkFJyBPqCfzbrsEEjv0vC2tGHCGFYnOKml/0LBiG/24jJ
+        nrX4BVv4NXpPj3P+YkwQD4qLdjNc0vKCiajrF6UjdV+TzUIyZkUgaN7NLWo3FOhmvdDcaPWC44fB
+        fATxxlkHUeY+6+lwqjGIsPVCOsR8OVYBNsf7/WEM8nE9Y4pMKYrC5KA5UPTYtbhUBj5erBg5Quqk
+        gS2LkrLZ1Ilh4lm9Ruv23PoFgIZoy1xQE549RntY34K9QbpyXozHEm50W7tgezcuZAycsKFZw6Mp
+        90HJxawpAg1DRaCk+UBn1I8B9u3ziAXnojfqnYbRbzMx+UCHgfpyKBoQd3U8fjNs9uuCEvcV5CEm
+        0h2YuoyjWwQETR2WKCBxGq272D+etp1FASszm15VfJzt8XJKY05Q2wFiIEKJOVoopW6kl42QwTiZ
+        IDwg3eW/7KbVqxgGusENnt+MCFkuCTJTZC+TuRLP5ap3eTa1WzdPo1fI3LIeAKNfY0UX916OGmDM
+        uu4pjBQWgyO8axLLIe60Bikgzpzy5bQI2XjxjgAwDMuoiGX2FUf9lbE+vahfOPGym4hqr+blVlbY
+        QEukfBcE3a9fBoC1PLXg30WJv3iPgeTL0Z+uN9UFxJlhcArKHtNIupFyslgvZvTypojblWfINH+J
+        0V1Q6a4Cv4RyT4ksAInI17Z87PUTOLK7/ufzHP/h8sunof7TUP9pqP801P9fhvqn10/Cnv3ppP/E
+        ODze3j49/RdA+yv21x4AAA==
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-encoding:
+      - gzip
+      content-length:
+      - '3037'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Mon, 30 Jan 2023 16:51:25 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '6'
+      x-request-id:
+      - bb82473f-74cc-4eb9-915b-231d4b7fec94
+      x-yahoo-request-id:
+      - 14nhflhhtftcd
+      y-rid:
+      - 14nhflhhtftcd
+    status:
+      code: 200
+      message: OK
+version: 1

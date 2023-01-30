@@ -379,13 +379,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_dd",
-            [],
-            "StocksController.load_class",
-            [],
-            dict(),
-        ),
-        (
             "call_ca",
             [],
             "StocksController.load_class",
@@ -506,7 +499,6 @@ def test_call_func_no_parser(func, mocker):
     [
         "call_candle",
         "call_res",
-        "call_dd",
         "call_fa",
         "call_bt",
         "call_ta",
