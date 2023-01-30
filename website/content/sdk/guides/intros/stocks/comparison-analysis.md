@@ -40,7 +40,7 @@ help(openbb.stocks.ca)
 `openbb.stocks.ca.balance` compares the balance sheets for a list of companies.
 
 ```python
-openbb.stocks.ca.balance(["TSLA","F", "GE"])
+openbb.stocks.ca.balance(["TSLA","F", "GE"], timeframe = '2021')
 ```
 
 | Item                                 | TSLA   | F       | GE      |
@@ -123,8 +123,12 @@ openbb.stocks.ca.screener(["f", "ge", "tsla"])
 Calculates the historical price (or returns) correlation for a list of tickers, over a specified window.
 
 ```python
-correlation,historical = openbb.stocks.ca.hcorr(similar = openbb.stocks.ca.similar('TSLA', source = 'Polygon'), candle_type = 'R', start_date = '2018-11-01')
-
+correlation,historical = (
+    openbb.stocks.ca.hcorr(similar = openbb.stocks.ca.similar('TSLA', source = 'Polygon'),
+    candle_type = 'R',
+    start_date = '2018-11-01'
+    )
+)
 correlation
 ```
 
