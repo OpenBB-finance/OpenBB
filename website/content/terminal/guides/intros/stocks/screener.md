@@ -9,7 +9,19 @@ The Stock sScreener menu is a diverse tool for stock discovery. There are catego
 
 ### How to use
 
-The default preset is `top_gainers.ini`. Use the commands `view` and `set` to select a new one. The file in the presets folder, `template.ini`, is a blank slate for creating something fresh. Modify individual parameters within the different presets to get more precision from a starting point. To get started, simply choose one of the categories to scour, like `technical`.
+The default preset is `top_gainers.ini`. Use the commands `view` and `set` to select a new one. Modify individual parameters within the different presets to get more precision from a starting point.
+
+:::note To create your own preset please use the following steps:
+
+1. Download the default preset as found [here](https://www.dropbox.com/s/xqdo5m87j1krh0h/stocks_screener_template.ini?dl=0).
+2. Place the `stocks_screener_template.ini` in the [OpenBBUserData](https://docs.openbb.co/terminal/guides/advanced/data) folder under `presets/stocks/screener`.
+3. Rename that file to something you find meaningful, e.g. `my_own_filter.ini`.
+4. Open the file you just renamed (e.g. `my_own_filter.ini`), and set the parameters you want to filter.
+5. It may be useful to play with the main source ([Finviz](https://finviz.com/screener.ashx)) since you can tweak these and understand how they influence the outcome of the filtered stocks.
+6. Start the terminal, and go to the `stocks/scr` menu. In there, you load in your template with `set`.
+:::
+
+To get started, simply choose one of the categories, like `technical`.
 
 ```
 (🦋) /stocks/scr/ $ technical
@@ -47,8 +59,6 @@ The columns can be sorted with the optional argument `-s`, and autocomplete will
 To see a description of each preset, use `view`, and autocomplete will allow the user to scroll presets with the arrow keys to `set` the choice.
 
 <img width="1412" alt="Autocomplete with the set function" src="https://user-images.githubusercontent.com/85772166/173903152-c59f37f7-9b90-47ee-8ad1-87bb5939caa0.png"></img>
-
-Unexpected results can be obtained through combining presets with the category of screen.
 
 ### Examples
 

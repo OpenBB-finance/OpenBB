@@ -68,6 +68,3 @@ Bollinger Bands with a 1-minute resolution for AMZN - `bbands`
 The Accumulation/Distribution line of AMZN - `ad`
 
 ![AMZN Accumulation/Distribution Line](https://user-images.githubusercontent.com/85772166/174499247-e63f8f57-a06a-446b-bca3-0fe89258fd4b.png)
-
-To play a demonstration of this menu in the OpenBB Terminal run,
-`exe ta_demo.openbb`, from the main menu.

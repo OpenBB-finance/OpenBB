@@ -1,8 +1,8 @@
 reports
 
-portfolio Public_Equity_Orderbook.xlsx
+portfolio --transactions holdings_example.xlsx
 
 # Test with invalid path
-portfolio Public_Equity_Orderbook_test.xlsx
+portfolio --transactions holdings_test.xlsx
 
 exit
