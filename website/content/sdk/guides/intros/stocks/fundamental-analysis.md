@@ -1,5 +1,7 @@
 ---
 title: Fundamental Analysis
+keywords: [fundamentals, fundamental, fa, ratios, earnings, balance, income, cash, statement, statements, sec, multiples, price, ebitda, ebitdam, revenue, quarter, annual, change, company, performance, filing, filings, 10K, 8K, audit, audited]
+description: This guide introduces the Fundamental Analysis menu within the Stocks menu, briefly explains the features, and provides examples in context.
 ---
 
 The FA module provides programmatic access to the commands from within the OpenBB Terminal. To get the most out of these functions, we recommend obtaining API keys from:
