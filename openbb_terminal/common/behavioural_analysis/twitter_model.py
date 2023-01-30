@@ -6,12 +6,11 @@ import logging
 from typing import Optional
 
 import pandas as pd
-import requests
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import clean_tweet, get_data
+from openbb_terminal.helper_funcs import clean_tweet, get_data, request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -58,7 +57,7 @@ def load_analyze_tweets(
         params["end_time"] = end_date
 
     # Request Twitter API
-    response = requests.get(
+    response = request(
         "https://api.twitter.com/2/tweets/search/recent",
         params=params,  # type: ignore
         headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},

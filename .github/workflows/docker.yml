@@ -40,4 +40,4 @@ jobs:
       - name: Publishing the Docker image
         run: |
           docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
-        if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/release/')
+        if: startsWith(github.ref, 'refs/heads/main')

@@ -1,5 +1,7 @@
 ---
 title: Due Diligence
+keywords: [dd, due, diligence, research, company, ticker, analyst, rating, rot, pt, est, sec, supplier, customer, arktrades, ratings, analysts, filings, form, forms, customers, suppliers]
+description: This guide introduces the Due Diligence menu within the Stocks menu, explains the features briefly, then provides examples.
 ---
 
 ## How to Use

@@ -3,8 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 
-import requests
-
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
@@ -25,7 +24,7 @@ def get_technical_summary_report(symbol: str) -> str:
     report: str
         technical summary report
     """
-    result = requests.get(f"https://api.finbrain.tech/v0/technicalSummary/{symbol}")
+    result = request(f"https://api.finbrain.tech/v0/technicalSummary/{symbol}")
     report = ""
     if result.status_code == 200:
         if "technicalSummary" in result.json():
