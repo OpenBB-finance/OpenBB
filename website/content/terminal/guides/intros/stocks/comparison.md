@@ -296,5 +296,3 @@ Other available yearly timeframes are: 2017, 2018, 2019, 2020, 2021
 │ Diluted Shares Outstanding                   │ 444.2M   │ 8.56B    │ 2.05B    │ 1.35B    │ 3.03B    │ 355.8M  │ 426M     │ 4.1B      │ 1.82B    │ 1.49B    │
 └──────────────────────────────────────────────┴──────────┴──────────┴──────────┴──────────┴──────────┴─────────┴──────────┴───────────┴──────────┴──────────┘
 ````
-
-To run a demonstration of the commands presented here, in the OpenBB Terminal, run this command from the home menu: `exe routines/comparison_demo.openbb`

@@ -238,5 +238,3 @@ The consistency of quarterly contract awards over time is reflected in a chart r
 The ten most purchased and sold stocks amongst Senate Representatives, `topsells senate` & `topbuys senate`:
 
 ![Senate's Most Bought and Sold Stocks](https://user-images.githubusercontent.com/85772166/173206214-964bfe40-a72c-4833-8cc1-a803bba97c6e.png)
-
-To play a demonstration in the OpenBB Terminal of the features presented in this guide, execute the routine file, `gov_demo.openbb`, from the home menu.
