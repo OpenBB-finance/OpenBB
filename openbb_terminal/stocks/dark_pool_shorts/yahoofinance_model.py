@@ -4,10 +4,9 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 logger = logging.getLogger(__name__)
 
@@ -23,8 +22,6 @@ def get_most_shorted() -> pd.DataFrame:
     """
     url = "https://finance.yahoo.com/screener/predefined/most_shorted_stocks"
 
-    data = pd.read_html(
-        requests.get(url, headers={"User-Agent": get_user_agent()}).text
-    )[0]
+    data = pd.read_html(request(url, headers={"User-Agent": get_user_agent()}).text)[0]
     data = data.iloc[:, :-1]
     return data

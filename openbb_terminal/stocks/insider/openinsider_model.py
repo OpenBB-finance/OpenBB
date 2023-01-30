@@ -6,12 +6,12 @@ from pathlib import Path
 from typing import Dict, List
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -1316,7 +1316,7 @@ def get_open_insider_data(url: str, has_company_name: bool) -> pd.DataFrame:
     data : pd.DataFrame
         open insider filtered data
     """
-    text_soup_open_insider = BeautifulSoup(requests.get(url).text, "lxml")
+    text_soup_open_insider = BeautifulSoup(request(url).text, "lxml")
 
     if len(text_soup_open_insider.find_all("tbody")) == 0:
         console.print("No insider trading found.")
@@ -1447,7 +1447,7 @@ def get_print_insider_data(type_insider: str = "lcb"):
     data : pd.DataFrame
         Open insider filtered data
     """
-    response = requests.get(
+    response = request(
         f"http://openinsider.com/{d_open_insider[type_insider]}",
         headers={"User-Agent": "Mozilla/5.0"},
     )

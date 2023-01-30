@@ -27,7 +27,10 @@ def test_get_economy_calendar_events(mocker):
         "json.return_value": mock_json,
     }
     mock_response = mocker.Mock(**attrs)
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
     result_df = finnhub_model.get_economy_calendar_events()
 
@@ -42,7 +45,10 @@ def test_get_economy_calendar_events_no_response(mocker):
     }
     mock_response = mocker.Mock(**attrs)
 
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
     result_df = finnhub_model.get_economy_calendar_events()
 
