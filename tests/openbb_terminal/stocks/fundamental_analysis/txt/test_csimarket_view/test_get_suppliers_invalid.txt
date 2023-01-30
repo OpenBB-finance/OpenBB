@@ -1,4 +1,0 @@
-List of suppliers: Market Cap., Revenues Ttm, Net Income Ttm, Employees, Shares Outstanding, P/E, Revenue Growth, Income Growth
-
-      Market Cap.   Revenues Ttm Net Income Ttm Employees Shares Outstanding    P/E Revenue Growth Income Growth
-0  $ 16,437 mill.  $ 1,400 mill.    $ 386 mill.         -           25 mill.  43.22     Y/Y 6.98 %   Y/Y 14.93 %
