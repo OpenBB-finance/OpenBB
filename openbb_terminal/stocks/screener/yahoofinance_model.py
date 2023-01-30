@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 import configparser
 import datetime
 import logging
-from pathlib import Path
 from typing import List, Tuple
 import random
 
@@ -17,7 +16,10 @@ from sklearn.preprocessing import MinMaxScaler
 
 from openbb_terminal.decorators import log_start_end
 
-from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    USER_PRESETS_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
+)
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.screener import finviz_model
 
@@ -26,7 +28,7 @@ logger = logging.getLogger(__name__)
 register_matplotlib_converters()
 
 PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "screener"
-PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
+PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
 preset_choices = {
     filepath.name: filepath
     for filepath in PRESETS_PATH.iterdir()
