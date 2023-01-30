@@ -1,18 +1,7 @@
 ---
 title: Forecast
-keywords:
-  [
-    "machine learning",
-    "statistics",
-    "deep learning",
-    "neural networks",
-    "time series",
-    "research",
-    "feature engineering",
-    "hyperparameters",
-  ]
-excerpt: "The introduction to Forecasting explains how to use the menu"
-
+keywords: [machine learning, statistics, artificial intelligence, deep learning, neural networks, time series, research, feature engineering, hyperparameters, ai, ml, openbb terminal]
+description: The Forecast menu is a machine learning toolkit that provides practitioners with high-level components that can quickly provide state-of-the-art results, be it with with classical or deep learning models, while also providing researchers with low-level components that can be mixed, matched and fine tuned to build new approaches and custom tuned models. Bring in multiple datasets and train machine learning models with unlimited external factors to see how underlying data may change future forecasting predictions and accuracy.
 ---
 
 The Forecast menu is a machine learning toolkit that provides practitioners with high-level components that can quickly provide state-of-the-art results, be it with with classical or deep learning models, while also providing researchers with low-level components that can be mixed, matched and fine tuned to build new approaches and custom tuned models. Bring in multiple datasets and train machine learning models with unlimited external factors to see how underlying data may change future forecasting predictions and accuracy.

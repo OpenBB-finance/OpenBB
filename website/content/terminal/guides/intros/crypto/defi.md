@@ -1,9 +1,7 @@
 ---
 title: Decentralized Finance (DeFi)
-keywords: ["cryptocurrency", "defi", "decentralized finance", "crypto", "dapps", "uniswap", "funding", "luna", "terra", "blockchain"]
-excerpt: "An Introduction to Cryptocurrency DeFi menu, within the Cryptocurrency Menu,
-with a brief overview of the features."
-geekdocCollapseSection: true
+keywords: [cryptocurrency, defi, decentralized finance, crypto, dapps, uniswap, funding, luna, terra, blockchain]
+description: An Introduction to Cryptocurrency DeFi menu, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 
 The Cryptocurrency Decentralized Finance (DeFi) menu gives the user the ability to delve deeper into Uniswap statistics (<a href="/terminal/reference/crypto/defi/tokens" target="_blank" rel="noreferrer noopener">tokens</a>, <a href="/terminal/reference/crypto/defi/stats" target="_blank" rel="noreferrer noopener">stats</a> and <a href="/terminal/reference/crypto/defi/pairs" target="_blank" rel="noreferrer noopener">pairs</a>), information about dApps (<a href="/terminal/reference/crypto/defi/gdapps" target="_blank" rel="noreferrer noopener">gdapps</a> and <a href="/terminal/reference/crypto/defi/stvl" target="_blank" rel="noreferrer noopener">stvl</a>) as well as information about terra blockchain (<a href="/terminal/reference/crypto/defi/sreturn" target="_blank" rel="noreferrer noopener">sreturn</a>) and luna (<a href="/terminal/reference/crypto/defi/lcsc" target="_blank" rel="noreferrer noopener">lcsc</a>).
