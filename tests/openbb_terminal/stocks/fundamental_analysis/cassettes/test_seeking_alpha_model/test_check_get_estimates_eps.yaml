@@ -1,0 +1,183 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Accept-Language:
+      - de,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Referer:
+      - https://seekingalpha.com/
+      Sec-Fetch-Dest:
+      - empty
+      Sec-Fetch-Mode:
+      - cors
+      Sec-Fetch-Site:
+      - same-origin
+    method: GET
+    uri: https://seekingalpha.com/api/v3/searches?filter%5Btype%5D=symbols&filter%5Blist%5D=all&page%5Bsize%5D=1&filter%5Bquery%5D=JNJ
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWKq7MTcrPKVayiq5WykxRsjI0NDbVUcpLzE1VslLy8vNS0lEqzilNB3Ky8rKA
+        nOT8vJLUvBKQZH5GXnF+noKaApQFlE2tSM5IzEsH6fWLDHYFqS8tKkrNS64EioQGuwAFMovjC0sT
+        80riixJLUkEW1sbWAgDS1n6yhwAAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '0'
+      Allow:
+      - GET, POST, HEAD, PUT, PATCH, DELETE, OPTIONS
+      Cache-Control:
+      - max-age=3600, public
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '136'
+      Content-Security-Policy:
+      - 'default-src https: wss: data: blob: ''unsafe-inline'' ''unsafe-eval''; report-uri
+        https://seekingalpha.com/report/csp'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 30 Jan 2023 10:57:53 GMT
+      ETag:
+      - W/"cc200d9e38b2d26b2fffbef87ce15226"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains; preload
+      Vary:
+      - User-Agent, Accept-Encoding
+      X-Cache:
+      - MISS, HIT
+      X-Cache-Hits:
+      - 0, 1
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - P-TuodL83-26a8Ly
+      X-Runtime:
+      - '0.005920'
+      X-Served-By:
+      - cache-bfi-krnt7300038-BFI, cache-ams21036-AMS
+      X-Timer:
+      - S1675076274.722252,VS0,VE1
+      X-XSS-Protection:
+      - 1; mode=block
+      set-cookie:
+      - machine_cookie=7867534463593; expires=Sun, 30 Jan 2028 10:57:53 GMT; path=/;
+      - machine_cookie_ts=1675076273; expires=Sun, 30 Jan 2028 10:57:53 GMT; path=/;
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Accept-Language:
+      - de,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Sec-Fetch-Dest:
+      - empty
+      Sec-Fetch-Mode:
+      - cors
+      Sec-Fetch-Site:
+      - same-origin
+    method: GET
+    uri: https://seekingalpha.com/api/v3/symbol_data/estimates?estimates_data_items=eps_normalized_actual%2Ceps_normalized_consensus_low%2Ceps_normalized_consensus_mean%2Ceps_normalized_consensus_high%2Ceps_normalized_num_of_estimates&period_type=annual&relative_periods=-3%2C-2%2C-1%2C0%2C1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10%2C11&ticker_ids=1135
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2aYW/aMBCG/0s+g+WzE9vJ7+DbNCELzBophI4Epq7iv+8M7doON3W0U1WnRUgk
+        0UF4X92dnyR3n+3dse7qXdtl1f1plrmur7e2d343A5CF/3S33bLd7be2qX+79bI9bJe7zfJFKMZ9
+        w8DNxq36+ujW+BNZlQku5JzDXKgF59X5zTjnc17gVjbLMMzWvdsebXPw8Yr5o7duX+/W/sSXrf7u
+        1tW4n9m2PdgGIzZ1t7LNz4Pd926fVfnjkTtncRfPqmcZBrh2bffPox6PPY+7nANDn/6znoOYSwj/
+        Z7s+2nb1oLA9NM3p9H2WqWH9xQKg4mUlikH9gkq/idSPcQH9Zrx+TaIfqPSXkfoxLqC/HK8/H9Yf
+        mf+aSr+K1I9xAf1qvH4xrF/7/JeykljhA/UPJZUB2BKiGgDGBQzIxxsghw2ITABDpb+I1I9xAf3F
+        eP0wrP/dE0BGGoBxAQPkeAP4sAH8YQUo5DtVgIg0AOMCBohoA54W+dxLFH5pfybxvDrOX80OccYD
+        /Cav/Ao5jAdA1h8h0hyMC5gDo8y5SDwTQNicV3snnM3hC24qif6g+qHeSdY7eKQ5GBcwh48y5yJR
+        eXNyEcqcV/sqUiSaAwsoK5BvZg6VORBJFj7u2hyIJwtfVheJ4rx2/sPOWFae1l+C+Qox3rXdoVs2
+        u1+en2moHIAJ86m5HB0ocxoHUiVzwXKgcSCygkSwgkR8Bf29NqNhc8wBrmkcSJXOOVkOJIrnwJkm
+        qoJUAR0JTdBUQaqEjg7QGDBBQi+ZKmnMmSCha6YKGnMmSOiGKZq+kgih39Q/bggRXTDzyRFdMilp
+        qusL0dNF9JKmiYhUER0v1WmKIFVCB1YQNcJ0CZ0KM9IldKKbNZMkdEPUISZI6HiXWNG0z0kSuqa5
+        fEmE0LfOtqSEDhJfNOmV6HwLCKZwpOjx0ch/jfh8UXq6lK4AcqJKSBXUOTO5kUSrTbqwLgpB1A/S
+        xfVcAxCZkC6xcyVzosdrk6R2bUpDlCQTBHfNSi0N0aO5SbK7UiXQ3Bj50PhuV70fEcfZlzfm8YLD
+        atcT6fjEl6o3p9SWgtNq1+6UjCalREotKTisdu0N3ksgQtyU+lFwWC1kjqLJnI/UjE6n0x8dlcJr
+        UDMAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '0'
+      Allow:
+      - GET, POST, HEAD, PUT, PATCH, DELETE, OPTIONS
+      Cache-Control:
+      - max-age=60, public
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '859'
+      Content-Security-Policy:
+      - 'default-src https: wss: data: blob: ''unsafe-inline'' ''unsafe-eval''; report-uri
+        https://seekingalpha.com/report/csp'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 30 Jan 2023 10:57:54 GMT
+      ETag:
+      - W/"394bd0a0720e3b610865ee4a07f32415"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains; preload
+      Vary:
+      - User-Agent, Accept-Encoding
+      X-Cache:
+      - MISS, MISS
+      X-Cache-Hits:
+      - 0, 0
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - UatUyEArKjOeKthh
+      X-Runtime:
+      - '0.501474'
+      X-Served-By:
+      - cache-bfi-krnt7300119-BFI, cache-ams21082-AMS
+      X-Timer:
+      - S1675076274.831272,VS0,VE718
+      X-XSS-Protection:
+      - 1; mode=block
+      set-cookie:
+      - machine_cookie=5525853452782; expires=Sun, 30 Jan 2028 10:57:54 GMT; path=/;
+      - machine_cookie_ts=1675076274; expires=Sun, 30 Jan 2028 10:57:54 GMT; path=/;
+    status:
+      code: 200
+      message: OK
+version: 1

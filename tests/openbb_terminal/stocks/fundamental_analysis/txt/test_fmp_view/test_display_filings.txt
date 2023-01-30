@@ -1,0 +1,24 @@
+[red]No filings found for ticker , consider increasing the value for --pages. Showing recent filings instead.[/red]
+
+                    Ticker      CIK Form Type                                                              Title                                                                                                URL
+Date                                                                                                                                                                                                               
+2023-01-27 17:29:57    OGI  1620737       6-K                6-K - ORGANIGRAM HOLDINGS INC. (0001620737) (Filer)  https://www.sec.gov/Archives/edgar/data/1620737/000119312523017794/0001193125-23-017794-index.htm
+2023-01-27 17:28:41   None  1909800    13F-HR       13F-HR - DENVER WEALTH MANAGEMENT, INC. (0001909800) (Filer)  https://www.sec.gov/Archives/edgar/data/1909800/000195175723000081/0001951757-23-000081-index.htm
+2023-01-27 17:25:28   None  1834985    13F-HR              13F-HR - TruWealth Advisors, LLC (0001834985) (Filer)  https://www.sec.gov/Archives/edgar/data/1834985/000122107323000017/0001221073-23-000017-index.htm
+2023-01-27 17:24:06   None  1660531    13F-HR     13F-HR - FengHe Fund Management Pte. Ltd. (0001660531) (Filer)  https://www.sec.gov/Archives/edgar/data/1660531/000117266123000326/0001172661-23-000326-index.htm
+2023-01-27 17:23:24   None  1737987    13F-HR   13F-HR - Wells Trecaso Financial Group, LLC (0001737987) (Filer)  https://www.sec.gov/Archives/edgar/data/1737987/000122107323000015/0001221073-23-000015-index.htm
+2023-01-27 17:22:55   None  1801926    13F-HR          13F-HR - Mayfair Advisory Group, LLC (0001801926) (Filer)  https://www.sec.gov/Archives/edgar/data/1801926/000122107323000014/0001221073-23-000014-index.htm
+2023-01-27 17:22:37   None  1769063    13F-HR   13F-HR - Foster Victor Wealth Advisors, LLC (0001769063) (Filer)  https://www.sec.gov/Archives/edgar/data/1769063/000122107323000013/0001221073-23-000013-index.htm
+2023-01-27 17:21:50   None  1842440    13F-HR  13F-HR - Alpha DNA Investment Management LLC (0001842440) (Filer)  https://www.sec.gov/Archives/edgar/data/1842440/000117266123000325/0001172661-23-000325-index.htm
+2023-01-27 17:20:47   CNEY  1780785       6-K                   6-K - CN ENERGY GROUP. INC. (0001780785) (Filer)  https://www.sec.gov/Archives/edgar/data/1780785/000110465923007597/0001104659-23-007597-index.htm
+2023-01-27 17:18:28   DRUG  1827401       6-K           6-K - BRIGHT MINDS BIOSCIENCES INC. (0001827401) (Filer)  https://www.sec.gov/Archives/edgar/data/1827401/000118374023000009/0001183740-23-000009-index.htm
+2023-01-27 17:11:54    DOX  1062579       6-K                              6-K - AMDOCS LTD (0001062579) (Filer)  https://www.sec.gov/Archives/edgar/data/1062579/000119312523017753/0001193125-23-017753-index.htm
+2023-01-27 17:11:37    PYR  1743344       6-K                 6-K - PyroGenesis Canada Inc. (0001743344) (Filer)  https://www.sec.gov/Archives/edgar/data/1743344/000117184323000524/0001171843-23-000524-index.htm
+2023-01-27 17:11:07   CNEY  1780785      20-F                  20-F - CN ENERGY GROUP. INC. (0001780785) (Filer)  https://www.sec.gov/Archives/edgar/data/1780785/000141057823000045/0001410578-23-000045-index.htm
+2023-01-27 17:00:27    MFH  1527762       6-K          6-K - Mercurity Fintech Holding Inc. (0001527762) (Filer)  https://www.sec.gov/Archives/edgar/data/1527762/000110465923007581/0001104659-23-007581-index.htm
+2023-01-27 16:59:59    JEF    96223      10-K         10-K - Jefferies Financial Group Inc. (0000096223) (Filer)    https://www.sec.gov/Archives/edgar/data/96223/000009622323000009/0000096223-23-000009-index.htm
+2023-01-27 16:56:30    PBR  1119639       6-K      6-K - PETROBRAS - PETROLEO BRASILEIRO SA (0001119639) (Filer)  https://www.sec.gov/Archives/edgar/data/1119639/000129281423000225/0001292814-23-000225-index.htm
+2023-01-27 16:56:30  PBR-A  1119639       6-K      6-K - PETROBRAS - PETROLEO BRASILEIRO SA (0001119639) (Filer)  https://www.sec.gov/Archives/edgar/data/1119639/000129281423000225/0001292814-23-000225-index.htm
+2023-01-27 16:56:21   None  1742315    13F-HR         13F-HR - J. L. Bainbridge & Co., Inc. (0001742315) (Filer)  https://www.sec.gov/Archives/edgar/data/1742315/000174231523000001/0001742315-23-000001-index.htm
+2023-01-27 16:54:00   EURN  1604481       6-K                              6-K - Euronav NV (0001604481) (Filer)  https://www.sec.gov/Archives/edgar/data/1604481/000119312523017684/0001193125-23-017684-index.htm
+2023-01-27 16:50:19   None  1844480    13F-HR                            13F-HR - COWA, LLC (0001844480) (Filer)  https://www.sec.gov/Archives/edgar/data/1844480/000117266123000323/0001172661-23-000323-index.htm
