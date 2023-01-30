@@ -100,7 +100,7 @@ def search(
     sector: str = "",
     industry: str = "",
     exchange_country: str = "",
-    us_only: bool = False,
+    all_exchanges: bool = False,
     limit: int = 0,
     export: str = "",
     sheet_name: Optional[str] = "",
@@ -119,8 +119,8 @@ def search(
         Search by industry to find stocks matching the criteria
     exchange_country: str
         Search by exchange country to find stock matching
-    us_only: bool
-        Whether or not to only search within United States exchanges
+    all_exchanges: bool
+       Whether to search all exchanges, without this option only the United States market is searched
     limit : int
         The limit of companies shown.
     export : str
@@ -138,7 +138,7 @@ def search(
         kwargs["sector"] = sector
     if industry:
         kwargs["industry"] = industry
-    kwargs["exclude_exchanges"] = False if exchange_country else us_only
+    kwargs["exclude_exchanges"] = False if exchange_country else not all_exchanges
 
     try:
         data = fd.select_equities(**kwargs)
@@ -182,7 +182,6 @@ def search(
         ["long_name", "short_name", "country", "sector", "industry", "exchange"]
     ]
     if exchange_country:
-        us_only = False
         if exchange_country in market_coverage_suffix:
             suffix_tickers = [
                 ticker.split(".")[1] if "." in ticker else ""
