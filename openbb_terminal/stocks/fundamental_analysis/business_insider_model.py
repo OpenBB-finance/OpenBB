@@ -138,7 +138,7 @@ def get_price_target_from_analysts(symbol: str) -> pd.DataFrame:
         f"https://markets.businessinsider.com/stocks/{symbol.lower()}-stock"
     )
     text_soup_market_business_insider = BeautifulSoup(
-        requests.get(
+        request(
             url_market_business_insider, headers={"User-Agent": get_user_agent()}
         ).text,
         "lxml",
@@ -198,7 +198,7 @@ def get_estimates(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame
         f"https://markets.businessinsider.com/stocks/{symbol.lower()}-stock"
     )
     text_soup_market_business_insider = BeautifulSoup(
-        requests.get(
+        request(
             url_market_business_insider, headers={"User-Agent": get_user_agent()}
         ).text,
         "lxml",
