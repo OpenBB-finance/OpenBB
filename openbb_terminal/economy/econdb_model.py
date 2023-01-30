@@ -607,6 +607,10 @@ def get_macro_data(
                     f"NEW: {df_new_oldest} - {df_new_newest}"
                 )
 
+        if not df.empty:
+            df = df.groupby(df.index.strftime("%Y-%m")).head(1)
+            df.index = df.index.strftime("%Y-%m")
+
     except HTTPError:
         return console.print(
             f"There is no data available for the combination {parameter} and {country}."
@@ -724,6 +728,7 @@ def get_aggregated_macro_data(
     ).T
 
     (df_rounded, denomination) = transform_by_denomination(country_data_df)
+    df_rounded.index = pd.DatetimeIndex(df_rounded.index)
 
     return (
         df_rounded,

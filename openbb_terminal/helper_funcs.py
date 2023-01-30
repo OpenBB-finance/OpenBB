@@ -151,8 +151,6 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     if an_input:
         if an_input == "/":
             an_input = "home"
-        elif an_input[0] == "/":
-            an_input = "home" + an_input
 
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"

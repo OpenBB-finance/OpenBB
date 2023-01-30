@@ -1,44 +1,7 @@
 ---
 title: Behavioural Analysis
-keywords:
-  [
-    "stocks",
-    "behaviour",
-    "analysis",
-    "ba",
-    "headlines",
-    "snews",
-    "wsb",
-    "watchlist",
-    "popular",
-    "spac",
-    "trending",
-    "stalking",
-    "bullbear",
-    "messages",
-    "inter",
-    "sentiment",
-    "Google",
-    "Twitter",
-    "Reddit",
-    "Stocktwits",
-    "SentimentInvestor",
-    "Cramer",
-    "Jim",
-    "mentions",
-    "regions",
-    "interest",
-    "queries",
-    "rise",
-    "trend",
-    "hist",
-    "jcrd",
-    "jctr",
-  ]
-date: "2022-05-23"
-type: guides
-status: publish
-excerpt: "An Introduction to the Behavioural Analysis menu, within the Stocks menu."
+keywords: [stocks, behaviour, analysis, ba, headlines, snews, wsb, watchlist, popular, spac, trending, stalking, bullbear, messages, inter, sentiment, Google, Twitter, Reddit, Stocktwits, SentimentInvestor, Cramer, Jim, mentions, regions, interest, queries, rise, trend, hist, jcrd, jctr]
+description: The Behavioural Analysis menu offers the user tools for gauging the overall public sentiment of a company online. The complexity of the tools range from message board scrapers to deep learning algorithms for financial analysis and prediction. Sentiment is particularly useful for momentum trading strategies, discovery, and general fundamental research.
 ---
 
 The Behavioural Analysis menu offers the user tools for gauging the overall public sentiment of a company online. The complexity of the tools range from message board scrapers to deep learning algorithms for financial analysis and prediction. Sentiment is particularly useful for momentum trading strategies, discovery, and general fundamental research. Navigate into the menu from the <a href="/terminal/guides/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks</a> menu by entering, `ba`; or, using absolute paths from anywhere in the Terminal: `/stocks/ba`
