@@ -1,11 +1,7 @@
 ---
 title: Comparison Analysis
-keywords: ["Comparison", "analysis", "ca", "menu", "submenu", "stocks", "compare", "correlation", "similar", "historical", "hcorr", "volume", "income", "balance", "cashflow", "sentiment", "scorr", "overview", "valuation", "financial", "ownership", "performance", "technical", "tsne", "get --source Polygon", "get --source Finnhub", "get", "set", "add", "rmv", "Polygon", "Finnhub", "Finviz", "Yahoo", "yFinance", "FinBrain", "market", "watch"]
-date: "2022-05-27"
-type: guides
-status: publish
-excerpt: "An Introduction to Comparison Analysis, within the Stocks Menu, with a brief overview of the features."
-geekdocCollapseSection: true
+keywords: [comparison, analysis, ca, menu, submenu, stocks, compare, correlation, similar, historical, hcorr, volume, income, balance, cashflow, sentiment, scorr, overview, valuation, financial, ownership, performance, technical, tsne, get --source Polygon, get --source Finnhub, get, set, add, rmv, Polygon, Finnhub, Finviz, Yahoo, yFinance, FinBrain, market, watch, openbb terminal]
+description: The Comparison Analysis menu provides the user with tools for comparison (similar) stocks. It is not necessary to load a ticker from the Stocks menu to use these features.
 ---
 The Comparison Analysis menu provides the user with tools for comparison (similar) stocks. It is not necessary to load a ticker from the <a href="/terminal/guides/intros/stocks" target="_blank" rel="noreferrer noopener">Stocks menu</a> to use these features. Enter the Comparison Analysis submenu by typing `ca` and pressing `ENTER` (⏎).
 
