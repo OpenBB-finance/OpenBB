@@ -255,6 +255,15 @@ class StocksController(StockBaseController):
             dest="exchange_country",
             help="Search by a specific exchange country to find stocks matching the criteria",
         )
+
+        parser.add_argument(
+            "-u",
+            "--us-only",
+            default=True,
+            action="store_false",
+            dest="us_only",
+            help="Whether to only search tickers in the United States market",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
         ns_parser = self.parse_known_args_and_warn(
@@ -279,6 +288,7 @@ class StocksController(StockBaseController):
                 sector=sector,
                 industry=industry,
                 exchange_country=exchange,
+                us_only=ns_parser.us_only,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
