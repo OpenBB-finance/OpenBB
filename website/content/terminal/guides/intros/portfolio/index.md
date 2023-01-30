@@ -13,18 +13,14 @@ The Portfolio menu is called upon by typing `portfolio` which opens the followin
 
 ![Portfolio Menu](https://user-images.githubusercontent.com/46355364/180178234-0cb80009-74d8-41fb-9f4c-fa393361903a.png)
 
-The first step in using this menu is loading a portfolio with <a href="/terminal/reference/portfolio/load" target="_blank" rel="noreferrer noopener">load</a>. Here, we provide an example titled "Public_Equity_Orderbook.xlsx" which can be loaded in. This file also serves as a template when you wish to fill in your own orders. This results in the following:
+The first step in using this menu is loading a portfolio with <a href="/terminal/reference/portfolio/load" target="_blank" rel="noreferrer noopener">load</a>. Within this guide, we provide an example file when running `load --example` which will be used to explain the functionality through the guide. 
 
-```
-2022 Jul 19, 10:03 (🦋) /portfolio/ $ load Public_Equity_Orderbook.xlsx
- Preprocessing orderbook: ..........
-      Loading price data: .
-     Calculating returns: .
-
-
-Portfolio: Public_Equity_Orderbook.xlsx
-Risk Free Rate: 0
-```
+:::note If you wish to load in your own Excel holdings file, please follow the following steps:
+1. Download the Excel file that can be used as a template [here](https://www.dropbox.com/s/03wjjf1lfkqjmtn/holdings_example.xlsx?dl=0).
+2. Move the file inside the `portfolio/holdings` folder within the [OpenBBUserData](https://docs.openbb.co/terminal/guides/advanced/data) folder and, optionally, adjust the name to your liking.
+3. Open the Excel file and remove, edit or add to the values as you desire (e.g. your own orders). This is the default template that is also loaded in with `load --example`.
+4. Open up the OpenBB Terminal, go to `portfolio` and type `load --file`. Your Excel file should then be one of the options.
+:::
 
 Note that the Excel sheet requires the following columns:
 
@@ -38,7 +34,24 @@ Note that the Excel sheet requires the following columns:
   portfolio or Sell/Withdrawal/0 to remove from the portfolio a search criteria,
   country, sector or industry.
 
-Furthermore, the chosen Excel sheet above also has additional columns but these are _optional_. The OpenBB Terminal can figure out by itself what industry, sector, country and region belongs to the loaded in equity. You can see this in action by loading in the "Public_Equity_Orderbook_No_Categorization.xlsx" Excel sheet.
+The template Excel file also has additional columns but these are _optional_. The OpenBB Terminal can figure out by itself what industry, sector, country and region belongs to the loaded in Equity. So the field can be left blank if your holdings do not include this information.
+
+Continuing with the example, this results in the following:
+
+```
+(🦋) /portfolio/ $ load --example
+
+Loading an example, please type `about` to learn how to create your own Portfolio Excel sheet.
+
+Preprocessing transactions: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 14/14 [00:02<00:00,  4.88it/s]
+        Loading price data: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  1.83it/s]
+       Calculating returns: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  2.46it/s]
+         Loading benchmark: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:01<00:00,  2.35it/s]
+
+Portfolio: OpenBB Example Portfolio
+Risk Free Rate: 0.00%
+Benchmark: SPDR S&P 500 ETF Trust (SPY)
+```
 
 With the <a href="/terminal/reference/portfolio/show" target="_blank" rel="noreferrer noopener">show</a> command we can show how the data has been loaded in:
 
@@ -67,19 +80,32 @@ With the <a href="/terminal/reference/portfolio/show" target="_blank" rel="noref
 <continues>
 ```
 
-After loading in the portfolio, it is time to select a benchmark. This is important to be able to properly compare if your decision to trade actively or deviate from an index have actually been fruitful. For example, let's load in the <a href="https://www.ssga.com/us/en/individual/etfs/funds/spdr-sp-500-etf-trust-spy" target="_blank" rel="noreferrer noopener">SPDR S&P 500 ETF Trust (SPY)</a> with the <a href="/terminal/reference/portfolio/bench" target="_blank" rel="noreferrer noopener">bench</a> command as follows:
+After loading in the portfolio, it is time to select a benchmark. By default, this is set to <a href="https://www.ssga.com/us/en/individual/etfs/funds/spdr-sp-500-etf-trust-spy" target="_blank" rel="noreferrer noopener">SPDR S&P 500 ETF Trust (SPY)</a>. It is important to choose a benchmark that closely matches your portfolio so that you can understand if the trades you have made actually were beneficial. For example, let's load in the  with the <a href="/terminal/reference/portfolio/bench" target="_blank" rel="noreferrer noopener">bench</a> command as follows:
 
 ```
-2022 Jul 19, 10:14 (🦋) /portfolio/ $ bench SPDR S&P 500 ETF Trust (SPY)
+(🦋) /portfolio/ $ bench --benchmark VTI
 
-Benchmark: SPDR S&P 500 ETF Trust (SPY) (SPY)
+         Loading benchmark: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:01<00:00,  2.91it/s]
 
-2022 Jul 19, 10:16 (🦋) /portfolio/ $
+(🦋) /portfolio/ $ ?
+
+╭─────────────────────────────────────────────────────────────────────────────────────── Portfolio ───────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                                                                                         │
+│                                                                                                                                                                                         │
+│ >   bro              brokers holdings,           supports: robinhood, ally, degiro, coinbase                                                                                            │
+│ >   po               portfolio optimization,     optimize your portfolio weights efficiently                                                                                            │
+│                                                                                                                                                                                         │
+│     load             load data into the portfolio                                                                                                                                       │
+│     show             show existing transactions                                                                                                                                         │
+│     bench            define the benchmark                                                                                                                                               │
+│                                                                                                                                                                                         │
+│ Loaded transactions file: OpenBB Example Portfolio                                                                                                                                      │
+│ Risk Free Rate:   0.00%                                                                                                                                                                 │
+│ Benchmark: Vanguard Total Stock Market ETF (VTI)      
+<continues>
 ```
 
 Note that the `bench` command has a large selection of products you can choose from. Instead of taking the index directly, an ETF product is used to represent something that you could have actually invested in. By using the `DOWN` (⌄) arrow and pressing `ENTER` (⏎) you can select a different benchmark.
-
-![Benchmark Selection](https://user-images.githubusercontent.com/46355364/180178291-eacebad5-79be-4c57-85a2-c75d88b0470c.png)
 
 After defining both the portfolio and the benchmark, a lot more options become available:
 
@@ -88,7 +114,7 @@ After defining both the portfolio and the benchmark, a lot more options become a
 For example, with `perf`, we can see how the portfolio performed compared to if you invested the same amount of money into the benchmark instead. This reflects the capabilities of you, as an investor, to outperform a passive strategy.
 
 ```
-2022 Jul 20, 08:26 (🦋) /portfolio/ $ perf
+(🦋) /portfolio/ $ perf
 
      Portfolio vs. Benchmark - Totals in period: all
 ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓
@@ -107,7 +133,7 @@ For example, with `perf`, we can see how the portfolio performed compared to if 
 Compliment this by showing the volatility of the portfolio for different time periods with `metric` as follows:
 
 ```
-2022 Jul 20, 08:27 (🦋) /portfolio/ $ metric volatility
+(🦋) /portfolio/ $ metric volatility
 
 Volatility for Portfolio and Benchmark
 ┏━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
@@ -137,32 +163,31 @@ Volatility for Portfolio and Benchmark
 
 ### Examples
 
-Instead of loading the "Public_Equity_Orderbook.xlsx" file, we now load in "Public_Equity_Orderbook_No_Categorization.xlsx" which does not include categorization of the stocks by industry, sector, country and region. Therefore, we let the OpenBB Terminal figure this out. This takes a bit longer to load.
+Starting off by loading in the OpenBB Example Portfolio again and changing the benchmark, the <a href="https://investor.vanguard.com/investment-products/etfs/profile/vti" target="_blank" rel="noreferrer noopener">Vanguard Total Stock Market ETF (VTI)</a>.
 
 ```
-2022 Jul 21, 04:43 (🦋) /portfolio/ $ load Public_Equity_Orderbook_No_Categorization.xlsx
- Preprocessing orderbook: ..........
-    Loading company data: ..........
-      Loading price data: .
-     Calculating returns: .
+(🦋) /portfolio/ $ load --example
 
+Loading an example, please type `about` to learn how to create your own Portfolio Excel sheet.
 
-Portfolio: Public_Equity_Orderbook_No_Categorization.xlsx
-Risk Free Rate: 0
-```
+Preprocessing transactions: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 14/14 [00:02<00:00,  4.88it/s]
+        Loading price data: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  1.83it/s]
+       Calculating returns: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  2.46it/s]
+         Loading benchmark: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:01<00:00,  2.35it/s]
 
-Then we load in a benchmark again with `bench` where we select the <a href="https://investor.vanguard.com/investment-products/etfs/profile/vti" target="_blank" rel="noreferrer noopener">Vanguard Total Stock Market ETF (VTI)</a>.
+Portfolio: OpenBB Example Portfolio
+Risk Free Rate: 0.00%
+Benchmark: SPDR S&P 500 ETF Trust (SPY)
 
-```
-2022 Jul 21, 04:44 (🦋) /portfolio/ $ bench Vanguard Total Stock Market ETF (VTI)
+(🦋) /portfolio/ $ bench VTI
 
-Benchmark: Vanguard Total Stock Market ETF (VTI) (VTI)
+         Loading benchmark: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:01<00:00,  3.32it/s]
 ```
 
 Then, we can show our performance compared to that of the benchmark with `perf` as well as show the rolling beta with `rbeta`.
 
 ```
-2022 Jul 21, 04:45 (🦋) /portfolio/ $ perf
+(🦋) /portfolio/ $ perf
 
      Portfolio vs. Benchmark - Totals in period: all
 ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓
@@ -177,7 +202,7 @@ Then, we can show our performance compared to that of the benchmark with `perf` 
 │ Total Abs Return │ 13149.27  │ 11235.47  │ 1913.79    │
 └──────────────────┴───────────┴───────────┴────────────┘
 
-2022 Jul 21, 04:46 (🦋) /portfolio/ $ rbeta
+(🦋) /portfolio/ $ rbeta
 ```
 
 ![Rolling Beta of the Portfolio](https://user-images.githubusercontent.com/46355364/180178392-96efb6e1-60a1-4f76-92d8-434fb3637c21.png)
@@ -185,7 +210,7 @@ Then, we can show our performance compared to that of the benchmark with `perf` 
 This helps in understanding that, even though you achieved a superior return, this also came at a greater risk compared to that of the benchmark. With the available functionalities you can further look into these results, e.g. by looking at the `summary` statistics:
 
 ```
-2022 Jul 21, 04:46 (🦋) /portfolio/ $ summary
+🦋) /portfolio/ $ summary
 
 Summary of Portfolio vs Benchmark for all period
 ┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
@@ -210,7 +235,7 @@ Summary of Portfolio vs Benchmark for all period
 As well as look into how the allocations differ per sector and country with `alloc`. This shows that there is a clear difference in how the benchmark and the portfolio are constructed implying the Total Market ETF might not be the best benchmark for your portfolio.
 
 ```
-2022 Jul 21, 04:52 (🦋) /portfolio/ $ alloc sectors
+(🦋) /portfolio/ $ alloc sectors
 
 
       Portfolio vs. Benchmark - Top 4 Sectors Allocation
@@ -226,7 +251,7 @@ As well as look into how the allocations differ per sector and country with `all
 │ Communication Services │ 1.50%     │ 7.98%     │ -6.48%     │
 └────────────────────────┴───────────┴───────────┴────────────┘
 
-2022 Jul 21, 04:52 (🦋) /portfolio/ $ alloc countries
+(🦋) /portfolio/ $ alloc countries
 
 
  Portfolio vs. Benchmark - Top 5 Countries Allocation
