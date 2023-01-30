@@ -249,14 +249,14 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_search",
             [
-                "--query=mock_query",
+                "--query=microsoft",
                 "--limit=1",
                 "--export=csv",
             ],
             "stocks_helper.search",
             [],
             dict(
-                query="mock_query",
+                query="microsoft",
                 limit=1,
                 country="",
                 sector="",
