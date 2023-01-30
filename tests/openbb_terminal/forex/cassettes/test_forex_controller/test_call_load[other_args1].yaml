@@ -1,0 +1,62 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/EURUSD=X?events=div%2Csplits%2CcapitalGains&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
+  response:
+    body:
+      string: '{"chart":{"result":null,"error":{"code":"Bad Request","description":"Invalid
+        input - start date cannot be after end date. startDate = 1672531200, endDate
+        = 1640995200"}}}'
+    headers:
+      Age:
+      - '0'
+      Cache-Control:
+      - max-age=0, private
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Expires:
+      - '-1'
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '170'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Mon, 30 Jan 2023 11:16:57 GMT
+      server:
+      - ATS
+      vary:
+      - Origin
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '1'
+      x-request-id:
+      - 5e68dc52-003c-47ad-9401-4bf4309fe4cd
+      x-yahoo-request-id:
+      - 3rle4ulhtf9p9
+      y-rid:
+      - 3rle4ulhtf9p9
+    status:
+      code: 400
+      message: Bad Request
+version: 1
