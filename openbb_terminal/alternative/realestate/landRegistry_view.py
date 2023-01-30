@@ -52,7 +52,7 @@ def display_estate_sales(postcode: str, limit: int, export: str = "") -> None:
 
 @log_start_end(log=logger)
 def display_towns_sold_prices(
-    town: str, startdate: str, enddate: str, limit: int, export: str = ""
+    town: str, start_date: str, end_date: str, limit: int, export: str = ""
 ):
     """Get towns sold house price data.
 
@@ -61,10 +61,10 @@ def display_towns_sold_prices(
     town : str
         town
 
-    startdate : str
+    start_date : str
         startDate
 
-    enddate : str
+    end_date : str
         endDate
 
     limit : int
@@ -77,7 +77,7 @@ def display_towns_sold_prices(
         All sales for that town within the date range specified
     """
 
-    sales = landRegistry_model.get_towns_sold_prices(town, startdate, enddate, limit)
+    sales = landRegistry_model.get_towns_sold_prices(town, start_date, end_date, limit)
 
     if sales.empty or len(sales) == 0:
         console.print(
@@ -91,7 +91,7 @@ def display_towns_sold_prices(
     print_rich_table(
         sales,
         show_index=False,
-        title=f"[bold]{town} : {startdate} - {enddate}[/bold]",
+        title=f"[bold]{town} : {start_date} - {end_date}[/bold]",
     )
 
     export_data(
@@ -103,7 +103,7 @@ def display_towns_sold_prices(
 
 
 @log_start_end(log=logger)
-def display_region_stats(region: str, startdate: str, enddate: str, export: str = ""):
+def display_region_stats(region: str, start_date: str, end_date: str, export: str = ""):
     """Get towns sold house price data.
 
     Parameters
@@ -111,10 +111,10 @@ def display_region_stats(region: str, startdate: str, enddate: str, export: str 
     region : str
         region
 
-    startdate : str
+    start_date : str
         startDate
 
-    enddate : str
+    end_date : str
         endDate
 
 
@@ -124,7 +124,7 @@ def display_region_stats(region: str, startdate: str, enddate: str, export: str 
         All stats for that region within the date range specified
     """
 
-    stats = landRegistry_model.get_region_stats(region, startdate, enddate)
+    stats = landRegistry_model.get_region_stats(region, start_date, end_date)
 
     if stats.empty or len(stats) == 0:
         console.print(
@@ -138,7 +138,7 @@ def display_region_stats(region: str, startdate: str, enddate: str, export: str 
     print_rich_table(
         stats,
         show_index=False,
-        title=f"[bold]{region} : {startdate} - {enddate}[/bold]",
+        title=f"[bold]{region} : {start_date} - {end_date}[/bold]",
     )
 
     export_data(

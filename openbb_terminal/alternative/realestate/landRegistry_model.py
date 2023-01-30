@@ -20,7 +20,7 @@ def pcd_format(postcode: str):
 
 
 @log_start_end(log=logger)
-def get_estate_sales(postcode: str, limit: int) -> pd.DataFrame:
+def get_estate_sales(postcode: str, limit: int = 25) -> pd.DataFrame:
 
     """All sales for specified postcode.
 
@@ -97,9 +97,9 @@ def get_estate_sales(postcode: str, limit: int) -> pd.DataFrame:
 @log_start_end(log=logger)
 def get_towns_sold_prices(
     town: str,
-    startdate: str,
-    enddate: str,
-    limit: int,
+    start_date: str,
+    end_date: str,
+    limit: int = 25,
 ) -> pd.DataFrame:
     """Get towns sold house price data.
 
@@ -108,10 +108,10 @@ def get_towns_sold_prices(
     town : str
         town
 
-    startdate : str
+    start_date : str
         startDate
 
-    enddate : str
+    end_date : str
         endDate
 
     limit : int
@@ -152,8 +152,8 @@ def get_towns_sold_prices(
                         lrppi:transactionCategory/skos:prefLabel ?category.
                 
                 FILTER (
-                    ?date > "{startdate}"^^xsd:date &&
-                    ?date < "{enddate}"^^xsd:date
+                    ?date > "{start_date}"^^xsd:date &&
+                    ?date < "{end_date}"^^xsd:date
                 ).
 
                 OPTIONAL {{?addr lrcommon:county ?county}}
@@ -185,7 +185,7 @@ def get_towns_sold_prices(
 
 @log_start_end(log=logger)
 def get_region_stats(
-    region: str, startdate: str = "2010-01-01", enddate: str = ""
+    region: str, start_date: str = "2010-01-01", end_date: str = ""
 ) -> pd.DataFrame:
     """Get regional house price statistics.
 
@@ -194,10 +194,10 @@ def get_region_stats(
     region : str
         region
 
-    startdate : str
+    startd_ate : str
         startDate
 
-    enddate : str
+    end_date : str
         endDate
 
 
@@ -239,8 +239,8 @@ def get_region_stats(
                     ?refRegion rdfs:label ?regionLabel .
                     FILTER(LANG(?regionLabel) = "en").
                     FILTER (
-                        ?month > "{startdate}"^^xsd:date &&
-                        ?month < "{enddate}"^^xsd:date
+                        ?month > "{start_date}"^^xsd:date &&
+                        ?month < "{end_date}"^^xsd:date
                     )
                     
                     OPTIONAL {{?region ukhpi:housePriceIndexDetached ?detachedhpi}}
