@@ -1,8 +1,8 @@
 portfolio
-load --file Public_Equity_Orderbook.xlsx
+load --example
 po
 params
-load OpenBB_Parameters_Template_v1.0.0.xlsx
+load
 set ef
 arg tangency False
 arg log_returns True

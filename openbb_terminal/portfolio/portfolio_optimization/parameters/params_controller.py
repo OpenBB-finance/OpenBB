@@ -161,13 +161,13 @@ class ParametersController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="file",
-            description="Load portfolio risk parameters (ini or xlsx)",
+            description="Select parameter file to use (ini or xlsx). The OpenBB Parameters Template can be "
+            "found inside the Portfolio Optimization documentation. Please type `about` to access the documentation.",
         )
 
         parser.add_argument(
             "-f",
             "--file",
-            required="-h" not in other_args,
             nargs="+",
             dest="file",
             help="Parameter file to be used",
@@ -178,14 +178,21 @@ class ParametersController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            self.current_file = " ".join(ns_parser.file)
-
-            if self.current_file in self.DATA_FILES:
-                file_location = str(self.DATA_FILES[self.current_file])
+            if not ns_parser.file:
+                console.print(
+                    "[green]The OpenBB Parameters Template can be found inside "
+                    "the Portfolio Optimization documentation. Please type `about` "
+                    "to access the documentation. [green]\n"
+                )
             else:
-                file_location = str(self.current_file)
+                self.current_file = " ".join(ns_parser.file)
 
-            self.params, self.current_model = params_view.load_file(file_location)
+                if self.current_file in self.DATA_FILES:
+                    file_location = str(self.DATA_FILES[self.current_file])
+                else:
+                    file_location = str(self.current_file)
+
+                self.params, self.current_model = params_view.load_file(file_location)
 
     @log_start_end(log=logger)
     def call_save(self, other_args: List[str]):
