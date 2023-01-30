@@ -35,7 +35,7 @@ jobs:
   trigger-macos-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Windows Build
+      - name: Trigger M1 MacOs Build
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: m1_macos_build.yml
@@ -45,7 +45,7 @@ jobs:
   trigger-intel-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Windows Build
+      - name: Trigger Intel MacOs Build
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: intel_macos_build.yml
@@ -55,7 +55,7 @@ jobs:
   trigger-docker-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Windows Build
+      - name: Trigger docker Build
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: docker.yml
