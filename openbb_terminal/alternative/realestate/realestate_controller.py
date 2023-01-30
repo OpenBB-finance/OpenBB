@@ -63,20 +63,9 @@ class RealEstateController(BaseController):
 
         mt = MenuText("alternative/realestate/")
         mt.add_cmd("sales")
-        mt.add_raw("\n")
-        mt.add_param("_postcode", self.postcode or "")
-        mt.add_raw("\n")
         mt.add_cmd("townsales")
-        mt.add_raw("\n")
-        mt.add_param("_town", self.town or "")
-        mt.add_param("_startdate", self.startdate or "")
-        mt.add_param("_enddate", self.enddate or "")
-        mt.add_raw("\n")
         mt.add_cmd("regionstats")
-        mt.add_raw("\n")
-        mt.add_param("_region", self.region or "")
-        mt.add_param("_startdate", self.startdate or "")
-        mt.add_param("_enddate", self.enddate or "")
+
 
         console.print(text=mt.menu_text, menu="UK Real Estate Sales Data")
 
