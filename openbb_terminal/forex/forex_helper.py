@@ -127,6 +127,11 @@ def load(
     -------
     pd.DataFrame
         The loaded data
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.forex.load(from_symbol="EUR", to_symbol="USD", start_date="2020-11-30", end_date="2022-12-01")
     """
 
     if start_date is None:
