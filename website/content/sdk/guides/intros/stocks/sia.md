@@ -1,10 +1,7 @@
 ---
 title: Sector and Industry Analysis
-keywords:
-  [
-    "sector, stock, industry, analysis, country, pie, chart, analyze",
-  ]
-excerpt: "This guide introduces the SIA SDK in the context of the OpenBB SDK."
+keywords: [sector, industry, analysis, stocks, openbb terminal]
+description: A sector analysis is a study of the economic and financial state and prospects of a certain economic sector. An investor can use sector analysis to make a prediction about how well companies in the sector will perform. Investors that specialize in a specific sector or who utilize a top-down or sector rotation approach to investing generally use sector analysis.
 ---
 
 The SIA module provides programmatic access to the commands from within the
