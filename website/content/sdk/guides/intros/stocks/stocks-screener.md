@@ -4,11 +4,7 @@ keywords: [screen, screener, stock, stocks, historical, overview, valuation, fin
 description: This guide introduces the Stock Screener, within the Stocks menu, briefly explains the features, and shows examples in context.
 ---
 
-The Stocks Screener module imports the same screener found in the OpenBB Terminal, and adds advanced scripting capabilities in the SDK layer. The screener utilizes presets (.ini files) to scan for stocks meeting the criteria defined. User-generated files are kept in the `OpenBBUserData` folder under, `~/OpenBBUserData/presets/stocks/screener/`. There are also presets included within the cloned repo folder: 
-
-`path_to_git_clone/OpenBBTerminal/openbb_terminal/stocks/screener/presets`
-
-For convenience, they are supplied here as a ZIP file, [stocks_screener_preset.zip](https://github.com/OpenBB-finance/OpenBBTerminal/files/10127462/stocks_screener_preset.zip).
+The Stocks Screener module imports the same screener found in the OpenBB Terminal, and adds advanced scripting capabilities in the SDK layer. The screener utilizes presets (.ini files) to scan for stocks meeting the criteria defined. User-generated files are kept in the `stocks/screener` folder within the [OpenBBUserData](https://docs.openbb.co/sdk/guides/advanced/data) folder.
 
 This screener can find stocks on three exchanges:
 
@@ -26,9 +22,7 @@ The data returned is grouped into five categories:
 
 ## How to Use
 
-### Template.ini
-
-This file is for seeing all possible arguments and parameters for the screener. Reference this file (included in the ZIP file above) for the master list of settings. There are four categories of parameters to set. Without any parameters, a screener preset file must contain the following at a minimum:
+Without any parameters, a screener preset file must contain the following at a minimum:
 
 ```console
 # Author of preset: 
@@ -50,6 +44,17 @@ Parameters should be added as required, and they all have pre-defined values; fo
 
 Price/Free Cash Flow = Any
 ```
+
+:::note To create your own preset please use the following steps:
+
+1. Download the default preset as found [here](https://www.dropbox.com/s/xqdo5m87j1krh0h/stocks_screener_template.ini?dl=0).
+2. Place the `stocks_screener_template.ini` in the [OpenBBUserData](https://docs.openbb.co/terminal/guides/advanced/data) folder under `presets/stocks/screener`.
+3. Rename that file to something you find meaningful, e.g. `my_own_filter.ini`.
+4. Open the file you just renamed (e.g. `my_own_filter.ini`), and set the parameters you want to filter.
+5. It may be useful to play with the main source ([Finviz](https://finviz.com/screener.ashx)) since you can tweak these and understand how they influence the outcome of the filtered stocks.
+6. Load in your preset within the OpenBB SDK with `openbb.stocks.screener.screener_data(preset_loaded='my_own_filter.ini')` which is explained further in the examples.
+:::
+
 
 ## Examples
 
@@ -74,9 +79,7 @@ Price/Free Cash Flow = Low (<15)
 Beta = Under 1
 ```
 
-Copy the block above to a new text file in any editor, and save the file to the OpenBBUserData folder, naming it something like, `sdk_guide_preset.ini`. Declaring the path to the preset file, when located in the OpenBBUserData folder, is not required. The kernel must be restarted in order for the file to be recalled this way; however, changes to the preset itself will be reflected without a restart. 
-
-**This preset file has been included in the ZIP file at the top of the page.**
+Copy the block above to a new text file in any editor, and save the file to the [OpenBBUserData](https://docs.openbb.co/sdk/guides/advanced/data) folder, naming it something like, `sdk_guide_preset.ini`. Declaring the path to the preset file, when located in the OpenBBUserData folder, is not required. The kernel must be restarted in order for the file to be recalled this way; however, changes to the preset itself will be reflected without a restart. 
 
 It is a good idea to test choices made before making it too complicated. Start with a handful of filters and modify, or add, them one-at-a-time. Let's pass what we have so far through the screener with `performance` selected as the `data_type`.
 

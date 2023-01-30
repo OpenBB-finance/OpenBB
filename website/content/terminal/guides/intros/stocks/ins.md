@@ -335,5 +335,3 @@ The latest purchases from insiders of penny stock companies is displayed with `l
 D: Derivative transaction in filing (usually option exercise)
 M: Multiple transactions in filing; earliest reported transaction date & weighted average transaction price
 ```
-
-Run `exe insider_demo.openbb`, from the Main Menu, to play a demonstration of the features in the OpenBB Terminal.
