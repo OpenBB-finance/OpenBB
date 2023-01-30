@@ -200,7 +200,9 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="search",
-            description="Show companies matching the search query",
+            description="Show companies matching the search query, country, sector, industry and/or exchange. "
+            "Note that by default only the United States exchanges are searched which tend to contain the most "
+            "extensive data for each company. To search all exchanges use the --all-exchanges flag.",
         )
         parser.add_argument(
             "-q",
