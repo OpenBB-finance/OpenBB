@@ -15,10 +15,10 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/GME?events=div%2Csplits%2CcapitalGains&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"GME","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1013610600,"regularMarketTime":1674853202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":22.82,"chartPreviousClose":4.14,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1674810000,"end":1674829800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1674829800,"end":1674853200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1674853200,"end":1674867600,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1606833000,1606919400,1607005800,1607092200,1607351400],"indicators":{"quote":[{"volume":[50615600,31533600,25180000,35890800,29545200],"low":[3.940000057220459,3.8450000286102295,3.9674999713897705,4.065000057220459,4.054999828338623],"open":[4.277500152587891,3.924999952316284,4.119999885559082,4.074999809265137,4.25],"close":[3.950000047683716,4.144999980926514,4.03000020980835,4.224999904632568,4.087500095367432],"high":[4.349999904632568,4.170000076293945,4.159999847412109,4.322500228881836,4.375]}],"adjclose":[{"adjclose":[3.950000047683716,4.144999980926514,4.03000020980835,4.224999904632568,4.087500095367432]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"GME","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1013610600,"regularMarketTime":1675112402,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":21.25,"chartPreviousClose":4.14,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675069200,"end":1675089000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675089000,"end":1675112400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675112400,"end":1675126800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1606833000,1606919400,1607005800,1607092200,1607351400],"indicators":{"quote":[{"open":[4.277500152587891,3.924999952316284,4.119999885559082,4.074999809265137,4.25],"volume":[50615600,31533600,25180000,35890800,29545200],"low":[3.940000057220459,3.8450000286102295,3.9674999713897705,4.065000057220459,4.054999828338623],"high":[4.349999904632568,4.170000076293945,4.159999847412109,4.322500228881836,4.375],"close":[3.950000047683716,4.144999980926514,4.03000020980835,4.224999904632568,4.087500095367432]}],"adjclose":[{"adjclose":[3.950000047683716,4.144999980926514,4.03000020980835,4.224999904632568,4.087500095367432]}]}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
@@ -40,21 +40,21 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Fri, 27 Jan 2023 21:15:16 GMT
+      - Mon, 30 Jan 2023 23:26:30 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '12'
+      - '37'
       x-request-id:
-      - d86064bf-2580-48cb-9db0-8ddb98fce67e
+      - defe90bf-643a-4c44-88e5-c3cfb69cacaa
       x-yahoo-request-id:
-      - c879iipht8fn4
+      - cutcqtlhtgkh7
       y-rid:
-      - c879iipht8fn4
+      - cutcqtlhtgkh7
     status:
       code: 200
       message: OK
