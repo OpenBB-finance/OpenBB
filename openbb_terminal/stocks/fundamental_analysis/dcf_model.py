@@ -19,6 +19,7 @@ from sklearn.linear_model import LinearRegression
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks.fundamental_analysis import dcf_static
 from openbb_terminal.helper_funcs import compose_export_path, request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -404,6 +405,10 @@ def create_dataframe(symbol: str, statement: str, period: str = "annual"):
     ignores = dcf_static.statement_ignore[statement]
 
     r = request(URL, headers=dcf_static.headers)
+
+    if r.status_code == 429:
+        console.print("Too many requests, please try again later")
+        return pd.DataFrame(), None, None
 
     if "404 - Page Not Found" in r.text:
         return pd.DataFrame(), None, None
