@@ -66,7 +66,6 @@ class RealEstateController(BaseController):
         mt.add_cmd("townsales")
         mt.add_cmd("regionstats")
 
-
         console.print(text=mt.menu_text, menu="UK Real Estate Sales Data")
 
     @log_start_end(log=logger)
