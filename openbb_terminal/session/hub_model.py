@@ -54,9 +54,7 @@ def delete_session(base_url=BASE_URL):
             json={"token": User.get_token()},
             timeout=TIMEOUT,
         )
-        if response.status_code == 200:
-            console.print("[green]Server session deleted.[/green]")
-        else:
+        if response.status_code != 200:
             console.print("[red]Failed to delete server session.[/red]")
         return response
     except requests.exceptions.ConnectionError:

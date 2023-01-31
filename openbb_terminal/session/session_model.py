@@ -73,8 +73,11 @@ def logout(cls: bool = False):
     if cls:
         system_clear()
 
+    success = True
     if not User.is_guest():
-        Hub.delete_session()
+        r = Hub.delete_session()
+        if r and r.status_code != 200:
+            success = False
     User.clear()
 
     # Clear openbb environment variables
@@ -92,10 +95,15 @@ def logout(cls: bool = False):
         if module.startswith("openbb"):
             importlib.reload(sys.modules[module])
 
-    Local.remove_session_file()
-    Local.remove_cli_history_file()
+    if not Local.remove_session_file():
+        success = False
+
+    if not Local.remove_cli_history_file():
+        success = False
     plt.close("all")
-    console.print("[green]\nLogout successful.[/green]")
+
+    if success:
+        console.print("[green]\nLogout successful.[/green]")
 
 
 def get_color() -> str:
