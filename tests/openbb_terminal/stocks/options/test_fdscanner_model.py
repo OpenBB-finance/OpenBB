@@ -30,7 +30,10 @@ def test_unusual_options(recorder):
 def test_unusual_options_invalid_status(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 400
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
     result_tuple = fdscanner_model.unusual_options(limit=5)
 

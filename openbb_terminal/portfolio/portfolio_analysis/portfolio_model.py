@@ -10,8 +10,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.portfolio.portfolio_analysis import yfinance_model
 
-# pylint: disable=no-member,unsupported-assignment-operation,unsubscriptable-object
-
+# pylint: disable=no-member,unsupported-assignment-operation,unsubscriptable-object, consider-iterating-dictionary
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +55,7 @@ def load_portfolio(
     if sector:
         df["sector"] = df.apply(
             lambda row: yf.Ticker(row.Ticker).info["sector"]
-            if "sector" in yf.Ticker(row.Ticker).info.keys()
+            if "sector" in yf.Ticker(row.Ticker).info
             else "yf Other",
             axis=1,
         )

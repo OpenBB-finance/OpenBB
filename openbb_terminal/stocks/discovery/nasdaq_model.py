@@ -9,7 +9,7 @@ import requests
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 
@@ -26,7 +26,7 @@ def get_retail_tickers() -> pd.DataFrame:
     pd.DataFrame
         Dataframe of tickers
     """
-    r = requests.get(
+    r = request(
         f"https://data.nasdaq.com/api/v3/datatables/NDAQ/RTAT10/?api_key={cfg.API_KEY_QUANDL}"
     )
 
@@ -79,10 +79,9 @@ def get_dividend_cal(date: str = None) -> pd.DataFrame:
     ):
         ag = get_user_agent()
     try:
-        r = requests.get(
+        r = request(
             f"https://api.nasdaq.com/api/calendar/dividends?date={date}",
             headers={"User-Agent": ag},
-            timeout=5,
         )
 
         df = pd.DataFrame()

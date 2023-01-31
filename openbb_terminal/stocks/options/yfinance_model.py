@@ -3,34 +3,18 @@ __docformat__ = "numpy"
 
 import logging
 import math
-import warnings
 from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Tuple
 
-import numpy as np
 import pandas as pd
 import yfinance as yf
+from tqdm import tqdm
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options import op_helpers
-from openbb_terminal.stocks.options.op_helpers import Option
 
 logger = logging.getLogger(__name__)
-
-
-option_chain_cols = [
-    "strike",
-    "lastPrice",
-    "bid",
-    "ask",
-    "volume",
-    "openInterest",
-    "impliedVolatility",
-]
-
-option_chain_dict = {"openInterest": "openinterest", "impliedVolatility": "iv"}
 
 
 def get_full_option_chain(symbol: str) -> pd.DataFrame:
@@ -51,11 +35,10 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
 
     options = pd.DataFrame()
 
-    for _date in dates:
+    for _date in tqdm(dates, desc="Getting option chains"):
         calls = ticker.option_chain(_date).calls
         puts = ticker.option_chain(_date).puts
-        calls = calls[option_chain_cols].rename(columns=option_chain_dict)
-        puts = puts[option_chain_cols].rename(columns=option_chain_dict)
+
         calls.columns = [x + "_c" if x != "strike" else x for x in calls.columns]
         puts.columns = [x + "_p" if x != "strike" else x for x in puts.columns]
 
@@ -64,141 +47,6 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
         options = pd.concat([options, temp], axis=0).reset_index(drop=True)
 
     return options
-
-
-# pylint: disable=W0640
-@log_start_end(log=logger)
-def get_option_chain_expiry(
-    symbol: str,
-    expiry: str,
-    min_sp: float = -1,
-    max_sp: float = -1,
-    calls: bool = True,
-    puts: bool = True,
-) -> pd.DataFrame:
-    """Get full option chains with calculated greeks
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-    expiry: str
-        Expiration date for chain in format YYY-mm-dd
-    calls: bool
-        Flag to get calls
-    puts: bool
-        Flag to get puts
-
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame of option chain.  If both calls and puts
-    """
-    try:
-        yf_ticker = yf.Ticker(symbol)
-        options = yf_ticker.option_chain(expiry)
-    except ValueError:
-        console.print(f"[red]{symbol} options for {expiry} not found.[/red]")
-        return pd.DataFrame()
-
-    last_price = yf_ticker.info["regularMarketPrice"]
-
-    # Columns we want to get
-    yf_option_cols = [
-        "strike",
-        "lastPrice",
-        "bid",
-        "ask",
-        "volume",
-        "openInterest",
-        "impliedVolatility",
-    ]
-    # Get call and put dataframes if the booleans are true
-    put_df = options.puts[yf_option_cols].copy() if puts else pd.DataFrame()
-    call_df = options.calls[yf_option_cols].copy() if calls else pd.DataFrame()
-    # so that the loop below doesn't break if only one call/put is supplied
-    df_list, option_factor = [], []
-    if puts:
-        df_list.append(put_df)
-        option_factor.append(-1)
-    if calls:
-        df_list.append(call_df)
-        option_factor.append(1)
-    df_list = [x[x["impliedVolatility"] > 0].copy() for x in df_list]
-    # Add in greeks to each df
-    # Time to expiration:
-    dt = (
-        datetime.strptime(expiry, "%Y-%m-%d") + timedelta(hours=16) - datetime.now()
-    ).total_seconds() / (60 * 60 * 24)
-    rf = get_rf()
-    # Note the way the Option class is defined, put has a -1 input and call has a +1 input
-    for df, option_type in zip(df_list, option_factor):
-        df["Delta"] = df.apply(
-            lambda x: Option(
-                last_price, x.strike, rf, 0, dt, x.impliedVolatility, option_type
-            ).Delta(),
-            axis=1,
-        )
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            df["Gamma"] = df.apply(
-                lambda x: Option(
-                    last_price, x.strike, rf, 0, dt, x.impliedVolatility, option_type
-                ).Gamma(),
-                axis=1,
-            )
-            df["Theta"] = df.apply(
-                lambda x: Option(
-                    last_price, x.strike, rf, 0, dt, x.impliedVolatility, option_type
-                ).Theta(),
-                axis=1,
-            )
-    if len(df_list) == 1:
-        options_df = df_list[0]
-    if len(df_list) == 2:
-        options_df = pd.merge(
-            left=df_list[1],
-            right=df_list[0],
-            on="strike",
-            how="outer",
-            suffixes=["_call", "_put"],
-        )
-        # If min/max strike aren't provided, just get the middle 50% of strikes
-    if min_sp == -1:
-        min_strike = np.percentile(options_df["strike"], 25)
-    else:
-        min_strike = min_sp
-
-    if max_sp == -1:
-        max_strike = np.percentile(options_df["strike"], 75)
-    else:
-        max_strike = max_sp
-
-    options_df = options_df[
-        (options_df.strike >= min_strike) & (options_df.strike <= max_strike)
-    ]
-    return options_df
-
-
-@log_start_end(log=logger)
-def option_expirations(symbol: str):
-    """Get available expiration dates for given ticker
-
-    Parameters
-    ----------
-    symbol: str
-        Ticker symbol to get expirations for
-
-    Returns
-    -------
-    dates: List[str]
-        List of of available expirations
-    """
-    yf_ticker = yf.Ticker(symbol)
-    dates = list(yf_ticker.options)
-    if not dates:
-        console.print("No expiration dates found for ticker. \n")
-    return dates
 
 
 @log_start_end(log=logger)
@@ -220,12 +68,33 @@ def get_option_chain(symbol: str, expiry: str):
 
     yf_ticker = yf.Ticker(symbol)
     try:
-        chains = yf_ticker.option_chain(expiry)
+        chain = yf_ticker.option_chain(expiry)
     except Exception:
         console.print(f"[red]Error: Expiration {expiry} cannot be found.[/red]")
-        chains = op_helpers.Chain(pd.DataFrame(), "yahoo")
+        chain = pd.DataFrame()
 
-    return chains
+    return chain
+
+
+@log_start_end(log=logger)
+def option_expirations(symbol: str):
+    """Get available expiration dates for given ticker
+
+    Parameters
+    ----------
+    symbol: str
+        Ticker symbol to get expirations for
+
+    Returns
+    -------
+    dates: List[str]
+        List of of available expirations
+    """
+    yf_ticker = yf.Ticker(symbol)
+    dates = list(yf_ticker.options)
+    if not dates:
+        console.print("No expiration dates found for ticker. \n")
+    return dates
 
 
 @log_start_end(log=logger)
@@ -425,7 +294,7 @@ def get_binom(
     """
     # Base variables to calculate values
     info = get_info(symbol)
-    price = info["regularMarketPrice"]
+    price = yf.Ticker(symbol).fast_info["last_price"]
     if vol is None:
         closings = get_closing(symbol)
         vol = (closings / closings.shift()).std() * (252**0.5)
@@ -493,128 +362,17 @@ def get_binom(
 
 
 @log_start_end(log=logger)
-def get_greeks(
-    symbol: str,
-    expire: str,
-    div_cont: float = 0,
-    rf: float = None,
-    opt_type: int = 1,
-    mini: float = None,
-    maxi: float = None,
-    show_all: bool = False,
-) -> pd.DataFrame:
-    """
-    Gets the greeks for a given option
+def get_last_price(symbol: str) -> float:
+    """Get the last price from nasdaq
 
     Parameters
     ----------
     symbol: str
-        The ticker symbol value of the option
-    div_cont: float
-        The dividend continuous rate
-    expire: str
-        The date of expiration
-    rf: float
-        The risk-free rate
-    opt_type: Union[1, -1]
-        The option type 1 is for call and -1 is for put
-    mini: float
-        The minimum strike price to include in the table
-    maxi: float
-        The maximum strike price to include in the table
-    show_all: bool
-        Whether to show all greeks
+        Symbol to get quote for
+
+    Returns
+    -------
+    float
+        Last price
     """
-
-    s = get_price(symbol)
-    chains = get_option_chain(symbol, expire)
-    chain = chains.calls if opt_type == 1 else chains.puts
-
-    if mini is None:
-        mini = chain.strike.quantile(0.25)
-    if maxi is None:
-        maxi = chain.strike.quantile(0.75)
-
-    chain = chain[chain["strike"] >= mini]
-    chain = chain[chain["strike"] <= maxi]
-
-    risk_free = rf if rf is not None else get_rf()
-    expire_dt = datetime.strptime(expire, "%Y-%m-%d")
-    dif = (expire_dt - datetime.now() + timedelta(hours=16)).total_seconds() / (
-        60 * 60 * 24
-    )
-    strikes = []
-    for _, row in chain.iterrows():
-        vol = row["impliedVolatility"]
-        opt = Option(s, row["strike"], risk_free, div_cont, dif, vol, opt_type)
-        result = [
-            row["strike"],
-            row["impliedVolatility"],
-            opt.Delta(),
-            opt.Gamma(),
-            opt.Vega(),
-            opt.Theta(),
-        ]
-        if show_all:
-            result += [
-                opt.Rho(),
-                opt.Phi(),
-                opt.Charm(),
-                opt.Vanna(0.01),
-                opt.Vomma(0.01),
-            ]
-        strikes.append(result)
-
-    columns = [
-        "Strike",
-        "Implied Vol",
-        "Delta",
-        "Gamma",
-        "Vega",
-        "Theta",
-    ]
-    if show_all:
-        additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
-        columns += additional_columns
-
-    df = pd.DataFrame(strikes, columns=columns)
-
-    return df
-
-
-@log_start_end(log=logger)
-def get_vol(
-    symbol: str,
-    expiry: str,
-) -> pd.DataFrame:
-    """Plot volume
-
-    Parameters
-    ----------
-    symbol: str
-        Ticker symbol
-    expiry: str
-        expiration date for options
-    """
-    options = get_option_chain(symbol, expiry)
-
-    return options
-
-
-@log_start_end(log=logger)
-def get_volume_open_interest(
-    symbol: str,
-    expiry: str,
-) -> pd.DataFrame:
-    """Plot volume and open interest
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-    expiry: str
-        Option expiration
-    """
-    options = get_option_chain(symbol, expiry)
-
-    return options
+    return float(yf.Ticker(symbol).fast_info["last_price"])

@@ -1,5 +1,5 @@
 portfolio
-load -f Public_Equity_Orderbook.xlsx
+load --example
 show
 bench QQQ
 alloc assets -t -l 4

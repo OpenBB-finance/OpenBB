@@ -19,6 +19,7 @@ def display_options(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Displays the unusual options table
 
@@ -34,6 +35,8 @@ def display_options(
         Flag to only show calls
     puts_only : bool
         Flag to show puts only
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         File type to export
     """
@@ -56,4 +59,5 @@ def display_options(
             os.path.dirname(os.path.abspath(__file__)),
             "unu_",
             data,
+            sheet_name,
         )

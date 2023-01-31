@@ -1,8 +1,7 @@
 ---
 title: Forex
-keywords: ["forex", "currency", "money", "hedge", "dollar", "euro"]
-excerpt: "The Introduction to Forex explains how to use the
-menu and provides a brief description of its sub-menus"
+keywords: [forex, currency, money, hedge, dollar, euro, pound, currencies, market, openbb terminal]
+description: The Forex menu enables you to load any combination of currencies (e.g. USDEUR or JPYGBP), show current quote and historical data as well as forward rates. Furthermore, the menu has the ability to also apply Technical Analysis and Forecasting techniques.
 ---
 
 The Forex menu enables you to <a href="/terminal/reference/forex/load" target="_blank" rel="noreferrer noopener">load</a> any combination of currencies (e.g. USDEUR or JPYGBP), show current <a href="/terminal/reference/forex/quote" target="_blank" rel="noreferrer noopener">quote</a> and historical data (<a href="/terminal/reference/forex/candle" target="_blank" rel="noreferrer noopener">candle</a>) as well as forward rates (<a href="/terminal/reference/forex/fwd" target="_blank" rel="noreferrer noopener">fwd</a>). Furthermore, the menu has the ability to also apply <a href="/terminal/guides/intros/common/ta" target="_blank" rel="noreferrer noopener">Technical Analysis</a> and <a href="/terminal/guides/intros/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a> while also having an integration with <a href="/terminal/reference#oanda" target="_blank" rel="noreferrer noopener">Oanda</a>.

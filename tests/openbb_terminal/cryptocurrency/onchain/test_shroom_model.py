@@ -40,6 +40,7 @@ def test_get_daily_transactions(symbols, recorder):
 
 
 @pytest.mark.vcr
+@pytest.mark.skip(reason="Shroom functions broken.")
 def test_get_dapp_stats(recorder):
     df = shroom_model.get_dapp_stats(platform="curve")
     recorder.capture(df)

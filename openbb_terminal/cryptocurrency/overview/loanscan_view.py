@@ -27,6 +27,7 @@ def display_crypto_rates(
     rate_type: str = "borrow",
     limit: int = 10,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Displays crypto {borrow,supply} interest rates for cryptocurrencies across several platforms
@@ -119,4 +120,5 @@ def display_crypto_rates(
             os.path.dirname(os.path.abspath(__file__)),
             "cr",
             df,
+            sheet_name,
         )
