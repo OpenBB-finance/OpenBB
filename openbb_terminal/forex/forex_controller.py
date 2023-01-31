@@ -199,6 +199,7 @@ class ForexController(BaseController):
                     )
                 else:
                     self.data.index.name = "date"
+                    console.print(f"{self.from_symbol}-{self.to_symbol} loaded.")
 
                 export_data(
                     ns_parser.export,
@@ -207,12 +208,8 @@ class ForexController(BaseController):
                     self.data.copy(),
                     " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
-
                 self.source = ns_parser.source
-                if self.source != "YahooFinance":
-                    console.print(f"{self.from_symbol}-{self.to_symbol} loaded.\n")
             else:
-
                 console.print("\n[red]Make sure to load.[/red]\n")
 
     @log_start_end(log=logger)
