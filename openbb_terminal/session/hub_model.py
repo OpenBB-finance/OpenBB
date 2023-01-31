@@ -5,6 +5,7 @@ from openbb_terminal.session.user import User
 from openbb_terminal.rich_config import console
 
 BASE_URL = "http://127.0.0.1:8000/"
+TIMEOUT = 5
 
 
 def create_session(
@@ -32,9 +33,12 @@ def create_session(
             "password": password,
             "remember": True,
         }
-        return requests.post(base_url + "login", json=data)
+        return requests.post(url=base_url + "login", json=data, timeout=TIMEOUT)
     except requests.exceptions.ConnectionError:
         console.print("[red]\nConnection error.[/red]")
+        return None
+    except requests.exceptions.Timeout:
+        console.print("[red]\nConnection timeout.[/red]")
         return None
     except Exception:
         console.print("[red]\nFailed to request login info.[/red]")
@@ -98,12 +102,16 @@ def fetch_user_configs(session: dict) -> Optional[requests.Response]:
         response = requests.get(
             url=BASE_URL + "terminal/user",
             headers={"Authorization": f"{token_type.title()} {token}"},
+            timeout=TIMEOUT,
         )
         if response.status_code != 200:
             console.print("[red]\nFailed to fetch configurations.[/red]")
         return response
     except requests.exceptions.ConnectionError:
         console.print("[red]\nConnection error.[/red]")
+        return None
+    except requests.exceptions.Timeout:
+        console.print("[red]\nConnection timeout.[/red]")
         return None
     except Exception:
         console.print("[red]\nFailed to fetch configurations.[/red]")
@@ -139,6 +147,7 @@ def patch_user_configs(key: str, value: str, type_: str) -> Optional[requests.Re
             url=BASE_URL + "terminal/user-json",
             headers={"Authorization": User.get_token()},
             json=data,
+            timeout=TIMEOUT,
         )
         if response.status_code == 200:
             console.print("[green]Saved remotely.[/green]")
@@ -147,6 +156,9 @@ def patch_user_configs(key: str, value: str, type_: str) -> Optional[requests.Re
         return response
     except requests.exceptions.ConnectionError:
         console.print("[red]Connection error.[/red]")
+        return None
+    except requests.exceptions.Timeout:
+        console.print("[red]\nConnection timeout.[/red]")
         return None
     except Exception:
         console.print("[red]Failed to save remotely.[/red]")
@@ -162,6 +174,7 @@ def clear_user_configs() -> Optional[requests.Response]:
             url=BASE_URL + "terminal/user",
             headers={"Authorization": User.get_token()},
             json=data,
+            timeout=TIMEOUT,
         )
         if response.status_code == 200:
             console.print("[green]Cleared configurations.[/green]")
@@ -170,6 +183,9 @@ def clear_user_configs() -> Optional[requests.Response]:
         return response
     except requests.exceptions.ConnectionError:
         console.print("[red]Connection error.[/red]")
+        return None
+    except requests.exceptions.Timeout:
+        console.print("[red]\nConnection timeout.[/red]")
         return None
     except Exception:
         console.print("[red]Failed to clear configurations.[/red]")
@@ -193,6 +209,7 @@ def logout_everywhere() -> Optional[requests.Response]:
         response = requests.get(
             url=BASE_URL + "logout-everywhere",
             headers={"Authorization": User.get_token()},
+            timeout=TIMEOUT,
         )
         if response.status_code == 200:
             console.print("[green]\nLogged out remotely.[/green]")
@@ -201,6 +218,9 @@ def logout_everywhere() -> Optional[requests.Response]:
         return None
     except requests.exceptions.ConnectionError:
         console.print("[red]\nConnection error.[/red]")
+        return None
+    except requests.exceptions.Timeout:
+        console.print("[red]\nConnection timeout.[/red]")
         return None
     except Exception:
         console.print("[red]\nFailed to logout remotely.[/red]")
@@ -220,6 +240,7 @@ def upload_routine(
             headers={"Authorization": User.get_token()},
             url=BASE_URL + "terminal/script",
             json=data,
+            timeout=TIMEOUT,
         )
         if response.status_code == 200:
             console.print("[green]Successfully uploaded your routine.[/green]")
@@ -228,6 +249,9 @@ def upload_routine(
         return response
     except requests.exceptions.ConnectionError:
         console.print("[red]Connection error.[/red]")
+        return None
+    except requests.exceptions.Timeout:
+        console.print("[red]\nConnection timeout.[/red]")
         return None
     except Exception:
         console.print("[red]Failed to upload your routine.[/red]")
@@ -250,6 +274,7 @@ def download_routine(
     #         headers={"Authorization": User.get_token()},
     #         url=BASE_URL + "terminal/script",
     #         json=data,
+    #         timeout=TIMEOUT,
     #     )
     #     if response.status_code == 200:
     #         console.print("Successfully downloaded your routine.")
@@ -258,6 +283,9 @@ def download_routine(
     #     return response
     # except requests.exceptions.ConnectionError:
     #     console.print("[red]Connection error.[/red]")
+    #     return None
+    # except requests.exceptions.Timeout:
+    #     console.print("[red]\nConnection timeout.[/red]")
     #     return None
     # except Exception:
     #     console.print("[red]Failed to download your routine.[/red]")
