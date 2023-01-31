@@ -13,8 +13,6 @@ from openbb_terminal.session.session_model import (
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
 
-# pylint: disable=consider-using-f-string
-
 
 def display_welcome_message():
     """Display welcome message"""

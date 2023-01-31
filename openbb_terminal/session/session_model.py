@@ -14,6 +14,9 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.rich_config import CUSTOM_THEME
 
 
+# pylint: disable=consider-using-f-string
+
+
 class LoginStatus(Enum):
     SUCCESS = "success"
     FAILED = "failed"
