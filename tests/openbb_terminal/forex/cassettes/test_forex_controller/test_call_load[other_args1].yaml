@@ -41,7 +41,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 30 Jan 2023 11:16:57 GMT
+      - Tue, 31 Jan 2023 10:11:30 GMT
       server:
       - ATS
       vary:
@@ -51,11 +51,11 @@ interactions:
       x-envoy-upstream-service-time:
       - '1'
       x-request-id:
-      - 5e68dc52-003c-47ad-9401-4bf4309fe4cd
+      - 3eaf57ce-28be-4aa0-a8a5-f8ec5b33b8fb
       x-yahoo-request-id:
-      - 3rle4ulhtf9p9
+      - 0qbkk6phthqai
       y-rid:
-      - 3rle4ulhtf9p9
+      - 0qbkk6phthqai
     status:
       code: 400
       message: Bad Request
