@@ -1,10 +1,13 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
+import shutil
+import scipy
 import subprocess
+
 import sys
 from pathlib import Path
 
-import scipy
+
 from dotenv import set_key
 from PyInstaller.building.api import COLLECT, EXE, PYZ
 from PyInstaller.building.build_main import Analysis
