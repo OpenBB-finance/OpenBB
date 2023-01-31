@@ -375,4 +375,4 @@ def get_last_price(symbol: str) -> float:
     float
         Last price
     """
-    return float(yf.Ticker(symbol).info["regularMarketPrice"])
+    return float(yf.Ticker(symbol).fast_info["last_price"])
