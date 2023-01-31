@@ -17,7 +17,7 @@ interactions:
         = 1640995200"}}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Cache-Control:
       - max-age=0, private
       Connection:
@@ -41,7 +41,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 31 Jan 2023 10:11:30 GMT
+      - Tue, 31 Jan 2023 10:44:03 GMT
       server:
       - ATS
       vary:
@@ -49,13 +49,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '1'
+      - '2'
       x-request-id:
-      - 3eaf57ce-28be-4aa0-a8a5-f8ec5b33b8fb
+      - bde1efaa-ba06-46cb-9208-7060fbca2530
       x-yahoo-request-id:
-      - 0qbkk6phthqai
+      - b2qctqphths7k
       y-rid:
-      - 0qbkk6phthqai
+      - b2qctqphths7k
     status:
       code: 400
       message: Bad Request
