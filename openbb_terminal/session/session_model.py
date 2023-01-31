@@ -86,5 +86,6 @@ def logout(cls: bool = False):
 
     Hub.delete_session()
     Local.remove_session_file()
+    Local.remove_cli_history_file()
     plt.close("all")
     console.print("[green]\nLogout successful.[/green]")

@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 from typing import Optional
 from openbb_terminal.core.config.paths import (
+    HIST_FILE_PATH,
     SETTINGS_DIRECTORY,
     USER_ROUTINES_DIRECTORY,
 )
@@ -76,6 +77,30 @@ def remove_session_file(file_path: Path = SESSION_FILE_PATH) -> bool:
         return True
     except Exception:
         console.print("[red]\nFailed to remove login file.[/red]")
+        return False
+
+
+def remove_cli_history_file(file_path: Path = Path(HIST_FILE_PATH)) -> bool:
+    """Remove the cli history file.
+
+    Parameters
+    ----------
+    file_path : Path
+        The file path.
+
+    Returns
+    -------
+    bool
+        The status of the removal.
+    """
+
+    try:
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+            return True
+        return True
+    except Exception:
+        console.print("[red]\nFailed to remove terminal history file.[/red]")
         return False
 
 
