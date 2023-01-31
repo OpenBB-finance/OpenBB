@@ -9,10 +9,66 @@ interactions:
       Connection:
       - keep-alive
     method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?interval=1d&range=1d
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1675112404,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":166.66,"chartPreviousClose":177.9,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1675175400,"start":1675155600,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1675198800,"start":1675175400,"gmtoffset":-18000},"post":{"timezone":"EST","end":1675213200,"start":1675198800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675089000],"indicators":{"quote":[{"close":[166.66000366210938],"low":[166.5],"high":[179.77000427246094],"volume":[230203200],"open":[178.0500030517578]}],"adjclose":[{"adjclose":[166.66000366210938]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '933'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 31 Jan 2023 10:43:27 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '2'
+      x-request-id:
+      - 02d12b9f-32cc-4196-acc2-5b6618f03847
+      x-yahoo-request-id:
+      - 4hstn7hhths6g
+      y-rid:
+      - 4hstn7hhths6g
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
     uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits%2CcapitalGains&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1675112404,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":166.66,"chartPreviousClose":308.973,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1675089000,"start":1675069200,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1675112400,"start":1675089000,"gmtoffset":-18000},"post":{"timezone":"EST","end":1675126800,"start":1675112400,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639751400],"indicators":{"quote":[{"close":[310.8566589355469],"low":[303.0133361816406],"open":[304.92333984375],"volume":[100437300],"high":[320.2200012207031]}],"adjclose":[{"adjclose":[310.8566589355469]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1675112404,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":166.66,"chartPreviousClose":308.973,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675155600,"end":1675175400,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675175400,"end":1675198800,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675198800,"end":1675213200,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639751400],"indicators":{"quote":[{"high":[320.2200012207031],"volume":[100437300],"open":[304.92333984375],"close":[310.8566589355469],"low":[303.0133361816406]}],"adjclose":[{"adjclose":[310.8566589355469]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -37,7 +93,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 30 Jan 2023 22:59:43 GMT
+      - Tue, 31 Jan 2023 10:43:28 GMT
       server:
       - ATS
       vary:
@@ -45,13 +101,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '2'
+      - '3'
       x-request-id:
-      - 12549ea2-5200-46e1-b3c7-5f09f446fa77
+      - 9031a406-8c92-4926-81ad-dfc7bfc9c214
       x-yahoo-request-id:
-      - e5prp8phtgiuv
+      - cgodos1hths6g
       y-rid:
-      - e5prp8phtgiuv
+      - cgodos1hths6g
     status:
       code: 200
       message: OK
