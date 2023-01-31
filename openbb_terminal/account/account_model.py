@@ -1,3 +1,4 @@
+from typing import Dict, Any
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
@@ -5,7 +6,7 @@ from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal.base_helpers import strtobool
 
 
-def show_diff(configs: dict) -> bool:
+def get_diff(configs: dict) -> dict:
     """Show the diff between the local and remote configs.
 
     Parameters
@@ -18,25 +19,34 @@ def show_diff(configs: dict) -> bool:
     bool
         True if there is a diff.
     """
-    diff_settings = get_diff_settings(configs)
+    SETTINGS = "features_settings"
+    KEYS = "features_keys"
+    configs_diff: Dict[str, Dict[str, Any]] = {SETTINGS: {}, KEYS: {}}
+
+    diff_settings = get_diff_settings(configs.get(SETTINGS, {}))
     if diff_settings:
         console.print("Settings:", style="info")
-        console.print("")
         for k, v in diff_settings.items():
+            configs_diff[SETTINGS][k] = v[1]
             console.print(f"  [menu]{k}[/menu]: {v[0]} -> {v[1]}")
 
-    diff_keys = get_diff_keys(configs)
+    diff_keys = get_diff_keys(configs.get(KEYS, {}))
     if diff_keys:
         console.print("Keys:", style="info")
         for k, v in diff_keys.items():
+            configs_diff[KEYS][k] = v[1]
             console.print(f"  [menu]{k}[/menu]: {v[0]} -> {v[1]}")
 
-    if diff_settings or diff_keys:
-        return True
-    return False
+    if not configs_diff[SETTINGS]:
+        configs_diff.pop(SETTINGS)
+
+    if not configs_diff[KEYS]:
+        configs_diff.pop(KEYS)
+
+    return configs_diff
 
 
-def get_diff_settings(configs: dict) -> dict:
+def get_diff_settings(settings: dict) -> dict:
     """Get the diff between the local and remote settings.
 
     Parameters
@@ -49,27 +59,26 @@ def get_diff_settings(configs: dict) -> dict:
     dict
         The diff.
     """
-    settings = configs.get("features_settings", {})
     diff = {}
     if settings:
         for k, v in sorted(settings.items()):
             if hasattr(obbff, k):
-                old, new = get_diff(obbff, k, v)
+                old, new = get_var_diff(obbff, k, v)
                 if new is not None:
                     diff[k] = (old, new)
             elif hasattr(cfg, k):
-                old, new = get_diff(cfg, k, v)
+                old, new = get_var_diff(cfg, k, v)
                 if new is not None:
                     diff[k] = (old, new)
             elif hasattr(cfg_plot, k):
-                old, new = get_diff(cfg_plot, k, v)
+                old, new = get_var_diff(cfg_plot, k, v)
                 if new is not None:
                     diff[k] = (old, new)
 
     return diff
 
 
-def get_diff_keys(configs: dict) -> dict:
+def get_diff_keys(keys: dict) -> dict:
     """Get the diff between the local and remote keys.
 
     Parameters
@@ -82,18 +91,17 @@ def get_diff_keys(configs: dict) -> dict:
     dict
         The diff.
     """
-    keys = configs.get("features_keys", {})
     diff = {}
     if keys:
         for k, v in sorted(keys.items()):
-            old, new = get_diff(cfg, k, v)
+            old, new = get_var_diff(cfg, k, v)
             if new is not None:
                 diff[k] = (old, new)
 
     return diff
 
 
-def get_diff(obj, name, value):
+def get_var_diff(obj, name, value):
     """Set attribute in object.
 
     Parameters
@@ -107,7 +115,7 @@ def get_diff(obj, name, value):
     """
     current_value = getattr(obj, name)
 
-    if value.lower() in ["true", "false"]:
+    if str(value).lower() in ["true", "false"]:
         cast_value = strtobool(value)
     elif isinstance(getattr(obj, name), int):
         cast_value = int(value)

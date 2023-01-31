@@ -168,7 +168,8 @@ def cast_set_attr(obj, name, value):
     value : str
         The attribute value.
     """
-    if value.lower() in ["true", "false"]:
+
+    if str(value).lower() in ["true", "false"]:
         setattr(obj, name, strtobool(value))
     elif isinstance(getattr(obj, name), int):
         setattr(obj, name, int(value))

@@ -15,7 +15,7 @@ from openbb_terminal.menu import session
 from openbb_terminal.session import hub_model as Hub
 from openbb_terminal.session import local_model as Local
 from openbb_terminal.session.user import User
-from openbb_terminal.account.account_model import show_diff
+from openbb_terminal.account.account_model import get_diff
 
 # from openbb_terminal.session.user import User
 
@@ -133,13 +133,14 @@ class AccountController(BaseController):
                 configs = json.loads(response.content)
                 configs.pop("email", None)
 
-                if show_diff(configs=configs):
+                configs_diff = get_diff(configs=configs)
+                if configs_diff:
                     i = console.input(
                         "\nDo you want to overwrite your local configurations "
                         "with the above? (y/n): "
                     )
                     if i.lower() in ["y", "yes"]:
-                        Local.apply_configs(configs=configs)
+                        Local.apply_configs(configs=configs_diff)
                         console.print("\nDone.", style="info")
                     else:
                         console.print("\nAborted.", style="info")
