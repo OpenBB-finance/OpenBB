@@ -72,6 +72,9 @@ jobs:
           name: OpenBB-Windows10-ENV
           path: dist
 
+      - name: Checkout
+        uses: actions/checkout@v2.4.2
+        
       - name: Move Files into App Folder
         run: cp -r .\dist\OpenBBTerminal\ .\build\nsis\app\
       # don't need this because log collection is turned off
@@ -98,4 +101,3 @@ jobs:
           Remove-Item '.\build\nsis\OpenBB Terminal Setup.exe' -Recurse
           Remove-Item .\build\nsis\app\ -Recurse
           Remove-Item .\dist\ -Recurse
-
