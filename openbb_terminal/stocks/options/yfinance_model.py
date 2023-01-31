@@ -294,7 +294,7 @@ def get_binom(
     """
     # Base variables to calculate values
     info = get_info(symbol)
-    price = yf.Ticker(symbol).fast_info["last_price"]
+    price = yf.Ticker(symbol).fast_info.last_price
     if vol is None:
         closings = get_closing(symbol)
         vol = (closings / closings.shift()).std() * (252**0.5)
@@ -375,4 +375,4 @@ def get_last_price(symbol: str) -> float:
     float
         Last price
     """
-    return float(yf.Ticker(symbol).info["regularMarketPrice"])
+    return float(yf.Ticker(symbol).fast_info.last_price)
