@@ -35,7 +35,12 @@ from openbb_terminal.core.config.paths import (
     load_dotenv_with_priority,
 )
 from openbb_terminal.core.log.generation.settings_logger import log_all_settings
-from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, check_positive, get_flair, parse_and_split_input
+from openbb_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+    get_flair,
+    parse_and_split_input,
+)
 from openbb_terminal.keys_model import first_time_user
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.menu import is_papermill, session
@@ -408,7 +413,9 @@ class TerminalController(BaseController):
 
     def call_dashboards(self, _):
         """Process dashboards command."""
-        from openbb_terminal.dashboards.dashboards_controller import DashboardsController
+        from openbb_terminal.dashboards.dashboards_controller import (
+            DashboardsController,
+        )
 
         self.queue = self.load_class(DashboardsController, self.queue)
 
@@ -420,7 +427,9 @@ class TerminalController(BaseController):
 
     def call_econometrics(self, _):
         """Process econometrics command."""
-        from openbb_terminal.econometrics.econometrics_controller import EconometricsController
+        from openbb_terminal.econometrics.econometrics_controller import (
+            EconometricsController,
+        )
 
         self.queue = EconometricsController(self.queue).menu()
 
