@@ -923,10 +923,10 @@ class SectorIndustryAnalysisController(BaseController):
                     self.mktcap,
                     self.exclude_exchanges,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                     ns_parser.raw,
                     ns_parser.max_sectors_to_display,
                     ns_parser.min_pct_to_display_sector,
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
 
     @log_start_end(log=logger)
