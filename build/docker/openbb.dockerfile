@@ -25,6 +25,12 @@ RUN apt-get -y install --no-install-recommends \
     libxt6 \
     libgl1-mesa-glx \
     libpng16-16 \
+    libwebkit2gtk-4.0-dev \
+    build-essential \
+    libssl-dev \
+    libgtk-3-dev \
+    libayatana-appindicator3-dev \
+    librsvg2-dev \
     python3-tk
 
 RUN apt-get clean
@@ -37,8 +43,12 @@ WORKDIR /home/python
 # SETUP POETRY IMAGE
 FROM debian as poetry
 
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
+
+ENV PATH="/home/python/.cargo/bin:${PATH}"
 ENV PATH="/home/python/.local/bin:${PATH}"
 
+RUN /bin/bash -c "source $HOME/.cargo/env"
 RUN pip install --upgrade pip wheel
 RUN pip install poetry==1.1.15
 
