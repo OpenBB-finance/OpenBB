@@ -10,11 +10,11 @@ def get_session(email: str, password: str, save: bool):
     return session
 
 
-def login(email: str = "", password: str = "", save: bool = False):
+def login(email: str = "", password: str = "", keep_session: bool = False):
     session = Local.get_session()
 
     if not session:
-        session = get_session(email, password, save)
+        session = get_session(email, password, keep_session)
 
     if session_model.login(session) in [
         session_model.LoginStatus.FAILED,
