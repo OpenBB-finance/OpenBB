@@ -124,7 +124,7 @@ class PlotlyTA(PltTA):
 
     def __plot__(
         self,
-        df: pd.DataFrame,
+        df_stock: pd.DataFrame,
         indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]] = None,
         symbol: str = "",
         candles: bool = True,
@@ -137,8 +137,8 @@ class PlotlyTA(PltTA):
             indicators = ChartIndicators.from_dict(indicators)
 
         self.indicators = indicators
-        self.intraday = df.index[-2].time() != df.index[-1].time()
-        self.df_stock = df
+        self.intraday = df_stock.index[-2].time() != df_stock.index[-1].time()
+        self.df_stock = df_stock
         self.params = self.indicators.get_params()
         self.show_volume = volume
         self.prepost = prepost
