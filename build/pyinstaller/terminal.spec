@@ -56,6 +56,7 @@ set_key(default_env_file, "OPENBB_LOGGING_COMMIT_HASH", str(commit_hash))
 # Files that are explicitly pulled into the bundle
 added_files = [
     (os.path.join(os.getcwd(), "openbb_terminal"), "openbb_terminal"),
+    (os.path.join(os.getcwd(), "openbb_terminal", "core", "plots"), "openbb_terminal/core/plots"),
     (os.path.join(pathex, "property_cached"), "property_cached"),
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
@@ -80,11 +81,17 @@ added_files = [
     (".env", "."),
     (os.path.join(pathex, "blib2to3", "Grammar.txt"), "blib2to3"),
     (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
+    (shutil.which("voila"), "."),
+    (shutil.which("jupyter-lab"), "."),
+    (shutil.which("streamlit"), "."),
 ]
 if is_win:
+    print("Adding scipy.libs to bundle")
     added_files.append(
         (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
     )
+
+
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
     "sklearn.utils._cython_blas",
@@ -109,7 +116,8 @@ hidden_imports = [
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
-    "scipy.sparse.linalg._isolve._iterative",
+    "pywry.pywry",
+    "scipy.sparse.linalg._isolve._iterative"
 ]
 
 
@@ -131,6 +139,45 @@ analysis_kwargs = dict(
 
 a = Analysis(**analysis_kwargs)
 pyz = PYZ(a.pure, a.zipped_data, cipher=analysis_kwargs["cipher"])
+
+
+block_cipher = None
+# PyWry
+pywry_a = Analysis(
+    [os.path.join(pathex, "pywry", "backend.py")],
+    pathex=[],
+    binaries=[],
+    datas=[],
+    hiddenimports=[],
+    hookspath=[],
+    hooksconfig={},
+    runtime_hooks=[],
+    excludes=[],
+    win_no_prefer_redirects=False,
+    win_private_assemblies=False,
+    cipher=block_cipher,
+    noarchive=False,
+)
+pywry_pyz = PYZ(pywry_a.pure, pywry_a.zipped_data, cipher=block_cipher)
+
+# PyWry EXE
+pywry_exe = EXE(
+    pywry_pyz,
+    pywry_a.scripts,
+    [],
+    exclude_binaries=True,
+    name="pywry_backend",
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    console=True,
+    disable_windowed_traceback=False,
+    target_arch="x86_64",
+    codesign_identity=None,
+    entitlements_file=None,
+)
+
 
 exe_args = [
     pyz,
@@ -189,6 +236,13 @@ if is_darwin:
     exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "openbb.icns"),)
 
 exe = EXE(*exe_args, **exe_kwargs)
+pywry_collect_args = [
+    pywry_a.binaries,
+    pywry_a.zipfiles,
+    pywry_a.datas,
+]
 
 if build_type == "folder":
-    coll = COLLECT(*([exe] + collect_args), **collect_kwargs)
+    coll = COLLECT(
+        *([exe] + collect_args + [pywry_exe] + pywry_collect_args), **collect_kwargs
+    )
