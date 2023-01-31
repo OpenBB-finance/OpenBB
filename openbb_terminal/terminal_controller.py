@@ -144,6 +144,7 @@ class TerminalController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["support"] = self.SUPPORT_CHOICES
             choices["exe"] = self.ROUTINE_CHOICES
+            choices["news"] = self.NEWS_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

@@ -193,7 +193,9 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="search",
-            description="Show companies matching the search query",
+            description="Show companies matching the search query, country, sector, industry and/or exchange. "
+            "Note that by default only the United States exchanges are searched which tend to contain the most "
+            "extensive data for each company. To search all exchanges use the --all-exchanges flag.",
         )
         parser.add_argument(
             "-q",
@@ -248,6 +250,15 @@ class StocksController(StockBaseController):
             dest="exchange_country",
             help="Search by a specific exchange country to find stocks matching the criteria",
         )
+
+        parser.add_argument(
+            "-a",
+            "--all-exchanges",
+            default=False,
+            action="store_true",
+            dest="all_exchanges",
+            help="Whether to search all exchanges, without this option only the United States market is searched.",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
         ns_parser = self.parse_known_args_and_warn(
@@ -272,6 +283,7 @@ class StocksController(StockBaseController):
                 sector=sector,
                 industry=industry,
                 exchange_country=exchange,
+                all_exchanges=ns_parser.all_exchanges,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
