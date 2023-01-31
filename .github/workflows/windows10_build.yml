@@ -54,7 +54,7 @@ jobs:
       #   run: Remove-Item .\build\nsis\app\openbb_terminal\logs\ -Recurse
       - name: Build Exe File
         run: |
-          conda activate obb
+          source venv/Scripts/activate
           C:\'.\Program Files (x86)\'\nsis\makensis.exe .\build\nsis\setup.nsi
       - name: Save Build Artifact
         uses: actions/upload-artifact@v3
@@ -74,7 +74,4 @@ jobs:
           Remove-Item .\build\terminal\ -Recurse
       - name: Deactivate & Remove Conda Environment
         run: |
-          conda deactivate obb
-          conda deactivate base
-          conda env remove -n obb
-          Remove-Item C:\Users\Administrator\miniconda3\envs\obb\ -Recurse
+          Remove-Item .\venv\ -Recurse
