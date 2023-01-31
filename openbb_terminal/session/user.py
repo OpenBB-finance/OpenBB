@@ -91,6 +91,11 @@ class User:
         return obbff.SYNC_ENABLED
 
     @classmethod
-    def get_token(cls):
+    def get_auth_header(cls):
         """Get token."""
         return f"{User._TOKEN_TYPE.title()} {User._TOKEN}"
+
+    @classmethod
+    def get_token(cls):
+        """Get token."""
+        return User._TOKEN

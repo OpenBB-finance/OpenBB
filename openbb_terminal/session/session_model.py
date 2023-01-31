@@ -72,6 +72,9 @@ def logout(cls: bool = False):
     """
     if cls:
         system_clear()
+
+    if not User.is_guest():
+        Hub.delete_session()
     User.clear()
 
     # Clear openbb environment variables
@@ -89,7 +92,6 @@ def logout(cls: bool = False):
         if module.startswith("openbb"):
             importlib.reload(sys.modules[module])
 
-    Hub.delete_session()
     Local.remove_session_file()
     Local.remove_cli_history_file()
     plt.close("all")

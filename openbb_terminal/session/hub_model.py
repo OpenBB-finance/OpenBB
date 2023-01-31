@@ -5,7 +5,7 @@ from openbb_terminal.session.user import User
 from openbb_terminal.rich_config import console
 
 BASE_URL = "http://127.0.0.1:8000/"
-TIMEOUT = 5
+TIMEOUT = 15
 
 
 def create_session(
@@ -42,6 +42,31 @@ def create_session(
         return None
     except Exception:
         console.print("[red]\nFailed to request login info.[/red]")
+        return None
+
+
+def delete_session(base_url=BASE_URL):
+    """Delete the session."""
+    try:
+        response = requests.post(
+            url=base_url + "logout",
+            headers={"Authorization": User.get_auth_header()},
+            json={"token": User.get_token()},
+            timeout=TIMEOUT,
+        )
+        if response.status_code == 200:
+            console.print("[green]Server session deleted.[/green]")
+        else:
+            console.print("[red]Failed to delete server session.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console.print("[red]Connection error.[/red]")
+        return None
+    except requests.exceptions.Timeout:
+        console.print("[red]\nConnection timeout.[/red]")
+        return None
+    except Exception:
+        console.print("[red]Failed to delete server session.[/red]")
         return None
 
 
@@ -92,7 +117,7 @@ def get_session(email: str, password: str) -> dict:
     return process_session_response(response)
 
 
-def fetch_user_configs(session: dict) -> Optional[requests.Response]:
+def fetch_user_configs(session: dict, base_url=BASE_URL) -> Optional[requests.Response]:
     """Fetch user configurations."""
 
     token_type = session.get("token_type", "")
@@ -100,7 +125,7 @@ def fetch_user_configs(session: dict) -> Optional[requests.Response]:
 
     try:
         response = requests.get(
-            url=BASE_URL + "terminal/user",
+            url=base_url + "terminal/user",
             headers={"Authorization": f"{token_type.title()} {token}"},
             timeout=TIMEOUT,
         )
@@ -118,7 +143,9 @@ def fetch_user_configs(session: dict) -> Optional[requests.Response]:
         return None
 
 
-def patch_user_configs(key: str, value: str, type_: str) -> Optional[requests.Response]:
+def patch_user_configs(
+    key: str, value: str, type_: str, base_url=BASE_URL
+) -> Optional[requests.Response]:
     """Patch user configurations to the server.
 
     Parameters
@@ -144,8 +171,8 @@ def patch_user_configs(key: str, value: str, type_: str) -> Optional[requests.Re
 
     try:
         response = requests.patch(
-            url=BASE_URL + "terminal/user-json",
-            headers={"Authorization": User.get_token()},
+            url=base_url + "terminal/user-json",
+            headers={"Authorization": User.get_auth_header()},
             json=data,
             timeout=TIMEOUT,
         )
@@ -165,14 +192,14 @@ def patch_user_configs(key: str, value: str, type_: str) -> Optional[requests.Re
         return None
 
 
-def clear_user_configs() -> Optional[requests.Response]:
+def clear_user_configs(base_url=BASE_URL) -> Optional[requests.Response]:
     """Clear user configurations to the server."""
     data: Dict[str, dict] = {"features_keys": {}, "features_settings": {}}
 
     try:
         response = requests.put(
-            url=BASE_URL + "terminal/user",
-            headers={"Authorization": User.get_token()},
+            url=base_url + "terminal/user",
+            headers={"Authorization": User.get_auth_header()},
             json=data,
             timeout=TIMEOUT,
         )
@@ -192,44 +219,10 @@ def clear_user_configs() -> Optional[requests.Response]:
         return None
 
 
-def delete_session():
-    """Delete the session."""
-    pass
-
-
-def logout_everywhere() -> Optional[requests.Response]:
-    """Request a remote logout.
-
-    Returns
-    -------
-    bool
-        The status of the logout.
-    """
-    try:
-        response = requests.get(
-            url=BASE_URL + "logout-everywhere",
-            headers={"Authorization": User.get_token()},
-            timeout=TIMEOUT,
-        )
-        if response.status_code == 200:
-            console.print("[green]\nLogged out remotely.[/green]")
-            return response
-        console.print("[red]\nFailed to logout remotely.[/red]")
-        return None
-    except requests.exceptions.ConnectionError:
-        console.print("[red]\nConnection error.[/red]")
-        return None
-    except requests.exceptions.Timeout:
-        console.print("[red]\nConnection timeout.[/red]")
-        return None
-    except Exception:
-        console.print("[red]\nFailed to logout remotely.[/red]")
-        return None
-
-
 def upload_routine(
     name: str = "",
     routine: str = "",
+    base_url=BASE_URL,
 ) -> Optional[requests.Response]:
     """Send a routine to the server."""
 
@@ -237,8 +230,8 @@ def upload_routine(
 
     try:
         response = requests.post(
-            headers={"Authorization": User.get_token()},
-            url=BASE_URL + "terminal/script",
+            headers={"Authorization": User.get_auth_header()},
+            url=base_url + "terminal/script",
             json=data,
             timeout=TIMEOUT,
         )
@@ -271,7 +264,7 @@ def download_routine(
 
     # try:
     #     response = requests.get(
-    #         headers={"Authorization": User.get_token()},
+    #         headers={"Authorization": User.get_auth_header()},
     #         url=BASE_URL + "terminal/script",
     #         json=data,
     #         timeout=TIMEOUT,
