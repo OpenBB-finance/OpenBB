@@ -100,6 +100,7 @@ def get_historical(
     resolution: str = "d",
     interval: int = 5,
     start_date: str = "",
+    end_date: str = "",
 ) -> pd.DataFrame:
     """Get historical forex data.
 
@@ -115,6 +116,8 @@ def get_historical(
         Interval for intraday data
     start_date : str, optional
         Start date for data.
+    end_date : str, optional
+        End date for data.
 
     Returns
     -------
@@ -146,12 +149,19 @@ def get_historical(
         if not response_json:
             console.print("No data found.\n")
         else:
+            if "Meta Data" not in response_json and "Information" in response_json:
+                console.print(response_json["Information"])
+                return pd.DataFrame()
+
             key = list(response_json.keys())[1]
 
             df = pd.DataFrame.from_dict(response_json[key], orient="index")
 
             if start_date and resolution != "i":
                 df = df[df.index > start_date]
+
+            if end_date and resolution != "i":
+                df = df[df.index < end_date]
 
             df = df.rename(
                 columns={
