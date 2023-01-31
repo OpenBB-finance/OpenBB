@@ -52,20 +52,19 @@ def get_diff_settings(configs: dict) -> dict:
     settings = configs.get("features_settings", {})
     diff = {}
     if settings:
-        if settings:
-            for k, v in sorted(settings.items()):
-                if hasattr(obbff, k):
-                    new, old = get_diff(obbff, k, v)
-                    if new is not None:
-                        diff[k] = (new, old)
-                elif hasattr(cfg, k):
-                    new, old = get_diff(cfg, k, v)
-                    if new is not None:
-                        diff[k] = (new, old)
-                elif hasattr(cfg_plot, k):
-                    new, old = get_diff(cfg_plot, k, v)
-                    if new is not None:
-                        diff[k] = (new, old)
+        for k, v in sorted(settings.items()):
+            if hasattr(obbff, k):
+                old, new = get_diff(obbff, k, v)
+                if new is not None:
+                    diff[k] = (old, new)
+            elif hasattr(cfg, k):
+                old, new = get_diff(cfg, k, v)
+                if new is not None:
+                    diff[k] = (old, new)
+            elif hasattr(cfg_plot, k):
+                old, new = get_diff(cfg_plot, k, v)
+                if new is not None:
+                    diff[k] = (old, new)
 
     return diff
 
@@ -87,9 +86,9 @@ def get_diff_keys(configs: dict) -> dict:
     diff = {}
     if keys:
         for k, v in sorted(keys.items()):
-            new, old = get_diff(cfg, k, v)
+            old, new = get_diff(cfg, k, v)
             if new is not None:
-                diff[k] = (new, old)
+                diff[k] = (old, new)
 
     return diff
 
