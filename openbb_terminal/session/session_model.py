@@ -5,11 +5,13 @@ import sys
 import json
 from enum import Enum
 import matplotlib.pyplot as plt
+from prompt_toolkit import HTML
 import openbb_terminal.session.local_model as Local
 import openbb_terminal.session.hub_model as Hub
 from openbb_terminal.session.user import User
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import CUSTOM_THEME
 
 
 class LoginStatus(Enum):
@@ -89,3 +91,39 @@ def logout(cls: bool = False):
     Local.remove_cli_history_file()
     plt.close("all")
     console.print("[green]\nLogout successful.[/green]")
+
+
+def get_color() -> str:
+    """Get prompt session
+
+    Returns
+    -------
+    str
+        The hex color.
+    """
+    hex_color = "#ffffff"
+    c = CUSTOM_THEME.styles["menu"].color
+    if c:
+        rgb = c.triplet
+        if rgb:
+            hex_color = "#%02x%02x%02x" % (rgb.red, rgb.green, rgb.blue)
+
+    return hex_color
+
+
+def color_message(msg: str, color: str) -> HTML:
+    """Get colorized message
+
+    Parameters
+    ----------
+    msg : str
+        The message.
+    color : str
+        The hex color.
+
+    Returns
+    -------
+    HTML
+        The HTML message.
+    """
+    return HTML(f'<style fg="{color}">{msg}</style>')

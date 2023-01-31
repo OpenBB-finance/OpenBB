@@ -1,13 +1,19 @@
 from typing import Tuple
+from prompt_toolkit import PromptSession
+from prompt_toolkit.output.color_depth import ColorDepth
 from openbb_terminal import terminal_controller
 import openbb_terminal.session.local_model as Local
 from openbb_terminal.session.session_model import (
     LoginStatus,
+    color_message,
     create_session,
+    get_color,
     login,
 )
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
+
+# pylint: disable=consider-using-f-string
 
 
 def display_welcome_message():
@@ -25,9 +31,20 @@ def get_user_input() -> Tuple[str, str, bool]:
         The user email, password and save login option.
     """
     console.print("\nPlease enter your credentials:", style="info")
-    email = console.input("> Email: ", style="menu")
-    password = console.getpass("> Password: ", style="menu")
-    save_str = console.input("> Remember me? (y/n): ", style="menu").lower()
+
+    s: PromptSession = PromptSession(color_depth=ColorDepth.TRUE_COLOR)
+    color = get_color()
+
+    email = s.prompt(
+        message=color_message("> Email: ", color),
+    )
+    password = s.prompt(
+        message=color_message("> Password: ", color),
+        is_password=True,
+    )
+    save_str = s.prompt(
+        message=color_message("> Remember me? (y/n): ", color), is_password=False
+    ).lower()
     save = False
     if save_str == "y":
         save = True
