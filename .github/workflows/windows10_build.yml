@@ -16,8 +16,8 @@ concurrency:
 
 jobs:
   Windows-Build:
-    name: Windows10 Build
-    runs-on: [self-hosted, Windows, x64]
+    name: Windows10 Build ENV
+    runs-on: windows-latest
     # Configuring -------------
     steps:
       - name: Setup Windows Git Configuration # This is under the assumption that git is already installed on the system
@@ -26,7 +26,6 @@ jobs:
           git config --system core.longpaths true
       - name: Checkout
         uses: actions/checkout@v2.4.2
-
       - name: Set up Python & Create OpenBB Environment
         uses: actions/setup-python@v4
         with:
@@ -37,15 +36,38 @@ jobs:
           python -m venv venv
           source venv/Scripts/activate
           python -m pip install --upgrade pip
-          python -m pip install poetry==1.1.13 --force-reinstall --no-cache-dir
-          python -m pip install setuptools==64.0.2 wheel --force-reinstall --no-cache-dir
-          python -m pip install charset_normalizer==2.1.1 virtualenv==20.16.5
+          python -m pip install poetry==1.1.13
+          python -m pip install setuptools==64.0.2 wheel
+          python -m pip install charset_normalizer==2.1.1
           python -m poetry install -E installer -E all
           python -m pip uninstall papermill -y
           python -m pip install git+https://github.com/nteract/papermill.git@main
           python -m PyInstaller build/pyinstaller/terminal.spec --clean
 
         shell: bash
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: OpenBB-Windows10-ENV
+          path: dist/OpenBBTerminal
+
+
+  Build-Exe:
+    name: Windows10 Build-Exe
+    runs-on: [self-hosted, Windows, x64]
+    # Configuring -------------
+    steps:
+      - name: Setup Windows Git Configuration # This is under the assumption that git is already installed on the system
+        run: |
+          Set-ItemProperty 'HKLM:\System\CurrentControlSet\Control\FileSystem' -Name 'LongPathsEnabled' -value 1
+          git config --system core.longpaths true
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: OpenBB-Windows10-ENV
+          path: dist
 
       - name: Move Files into App Folder
         run: cp -r .\dist\OpenBBTerminal\ .\build\nsis\app\
@@ -54,16 +76,18 @@ jobs:
       #   run: Remove-Item .\build\nsis\app\openbb_terminal\logs\ -Recurse
       - name: Build Exe File
         run: |
-          source venv/Scripts/activate
           C:\'.\Program Files (x86)\'\nsis\makensis.exe .\build\nsis\setup.nsi
+
       - name: Save Build Artifact
         uses: actions/upload-artifact@v3
         with:
           name: Windows EXE Artifact
           path: '.\build\nsis\OpenBB Terminal Setup.exe'
+
       - name: Run Integration Tests
         run: |
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\integration_tests_scripts -t
+          dist\OpenBBTerminal\OpenBBTerminal.exe -t
+
       # Cleaning ------------------------
       # Make sure to add Remove-Item C:\Users\Administrator\Desktop\OPENBB-exports -Recurse whenever integration tests get fixed
       - name: Remove Previous Build
@@ -72,6 +96,4 @@ jobs:
           Remove-Item .\build\nsis\app\ -Recurse
           Remove-Item .\dist\ -Recurse
           Remove-Item .\build\terminal\ -Recurse
-      - name: Deactivate & Remove Conda Environment
-        run: |
-          Remove-Item .\venv\ -Recurse
+
