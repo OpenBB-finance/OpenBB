@@ -42,11 +42,12 @@ def test_search(mocker, use_tab):
         target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
     )
     stocks_helper.search(
-        query="sonae",
-        country="Portugal",
+        query="microsoft",
+        country="United_States",
         sector="",
         industry="",
         exchange_country="",
+        all_exchanges=False,
         limit=5,
         export="",
     )
