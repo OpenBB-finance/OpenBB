@@ -2,6 +2,7 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
+import pandas as pd
 
 # IMPORTATION INTERNAL
 from openbb_terminal.economy import fred_model
@@ -61,7 +62,7 @@ def test_invalid_response_status(func, kwargs_dict, mocker):
     mock_response = mocker.Mock(**attrs)
 
     mocker.patch(
-        target="requests.get",
+        target="openbb_terminal.helper_funcs.requests.get",
         new=mocker.Mock(return_value=mock_response),
     )
 
@@ -107,4 +108,20 @@ def test_yield_curve_none(date, recorder):
     result_df, returned_date = fred_model.get_yield_curve(date)
     assert returned_date.strftime("%Y-%m-%d") == "2022-03-21"
     assert not result_df.empty
+    recorder.capture(result_df)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "func, kwargs_dict",
+    [
+        ("get_series_ids", {"search_query": "unemployment rate"}),
+        ("get_series_ids", {"search_query": "gdp"}),
+        ("get_series_ids", {"search_query": "xyz"}),
+    ],
+)
+def test_get_series_ids(func, kwargs_dict, recorder):
+    result_df = getattr(fred_model, func)(**kwargs_dict)
+
+    assert isinstance(result_df, pd.DataFrame)
     recorder.capture(result_df)

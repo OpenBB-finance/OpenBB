@@ -32,6 +32,7 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 from openbb_terminal.terminal_helper import suppress_stdout
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
@@ -397,7 +398,7 @@ def check_fmp_key(show_output: bool = False) -> str:
         logger.info("Financial Modeling Prep key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        r = requests.get(
+        r = request(
             f"https://financialmodelingprep.com/api/v3/profile/AAPL?apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
         )
         if r.status_code in [403, 401] or "Error Message" in str(r.content):
@@ -525,7 +526,7 @@ def check_polygon_key(show_output: bool = False) -> str:
         logger.info("Polygon key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        r = requests.get(
+        r = request(
             "https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17"
             f"?apiKey={cfg.API_POLYGON_KEY}"
         )
@@ -592,7 +593,7 @@ def check_fred_key(show_output: bool = False) -> str:
         logger.info("FRED key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        r = requests.get(
+        r = request(
             f"https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key={cfg.API_FRED_KEY}"
         )
         if r.status_code in [403, 401, 400]:
@@ -658,7 +659,7 @@ def check_news_key(show_output: bool = False) -> str:
         logger.info("News API key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        r = requests.get(
+        r = request(
             f"https://newsapi.org/v2/everything?q=keyword&apiKey={cfg.API_NEWS_TOKEN}"
         )
         if r.status_code in [401, 403]:
@@ -724,7 +725,7 @@ def check_tradier_key(show_output: bool = False) -> str:
         logger.info("Tradier key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        r = requests.get(
+        r = request(
             "https://sandbox.tradier.com/v1/markets/quotes",
             params={"symbols": "AAPL"},
             headers={
@@ -857,7 +858,7 @@ def check_finnhub_key(show_output: bool = False) -> str:
         logger.info("Finnhub key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        r = r = requests.get(
+        r = r = request(
             f"https://finnhub.io/api/v1/quote?symbol=AAPL&token={cfg.API_FINNHUB_KEY}"
         )
         if r.status_code in [403, 401, 400]:
@@ -1113,8 +1114,11 @@ def check_bitquery_key(show_output: bool = False) -> str:
             protocol
         }}}
         """
-        r = requests.post(
-            "https://graphql.bitquery.io", json={"query": query}, headers=headers
+        r = request(
+            "https://graphql.bitquery.io",
+            method="POST",
+            json={"query": query},
+            headers=headers,
         )
         if r.status_code == 200:
             logger.info("Bitquery key defined, test passed")
@@ -1203,7 +1207,7 @@ def check_twitter_key(show_output: bool = False) -> str:
             "max_results": "10",
             "tweet.fields": "created_at,lang",
         }
-        r = requests.get(
+        r = request(
             "https://api.twitter.com/2/tweets/search/recent",
             params=params,  # type: ignore
             headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},
@@ -1453,10 +1457,10 @@ def check_oanda_key(show_output: bool = False) -> str:
         account = cfg.OANDA_ACCOUNT
         try:
             parameters = {"instruments": "EUR_USD"}
-            request = oandapyV20.endpoints.pricing.PricingInfo(
+            request_ = oandapyV20.endpoints.pricing.PricingInfo(
                 accountID=account, params=parameters
             )
-            client.request(request)
+            client.request(request_)
             logger.info("Oanda key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
 
@@ -1599,7 +1603,7 @@ def check_si_key(show_output: bool = False) -> str:
         status = KeyStatus.NOT_DEFINED
     else:
         try:
-            account = requests.get(
+            account = request(
                 f"https://api.sentimentinvestor.com/v1/trending"
                 f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}"
             )
@@ -1760,7 +1764,7 @@ def check_walert_key(show_output: bool = False) -> str:
             + cfg.API_WHALE_ALERT_KEY
         )
         try:
-            response = requests.get(url, timeout=2)
+            response = request(url)
             if not 200 <= response.status_code < 300:
                 logger.warning("Walert key defined, test failed")
                 status = KeyStatus.DEFINED_TEST_FAILED
@@ -1836,7 +1840,7 @@ def check_glassnode_key(show_output: bool = False) -> str:
             "u": str(1_641_227_783_561),
         }
 
-        r = requests.get(url, params=parameters)
+        r = request(url, params=parameters)
         if r.status_code == 200:
             logger.info("Glassnode key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
@@ -1903,7 +1907,7 @@ def check_coinglass_key(show_output: bool = False) -> str:
 
         headers = {"coinglassSecret": cfg.API_COINGLASS_KEY}
 
-        response = requests.request("GET", url, headers=headers)
+        response = request(url, headers=headers)
 
         if """success":false""" in str(response.content):
             logger.warning("Coinglass key defined, test failed")
@@ -1969,7 +1973,7 @@ def check_cpanic_key(show_output: bool = False) -> str:
         status = KeyStatus.NOT_DEFINED
     else:
         crypto_panic_url = f"https://cryptopanic.com/api/v1/posts/?auth_token={cfg.API_CRYPTO_PANIC_KEY}"
-        response = requests.get(crypto_panic_url)
+        response = request(crypto_panic_url)
 
         if response.status_code == 200:
             logger.info("Cpanic key defined, test passed")
@@ -2037,7 +2041,7 @@ def check_ethplorer_key(show_output: bool = False) -> str:
         ethplorer_url += cfg.API_ETHPLORER_KEY
 
         try:
-            response = requests.get(ethplorer_url)
+            response = request(ethplorer_url)
             if response.status_code == 200:
                 logger.info("ethplorer key defined, test passed")
                 status = KeyStatus.DEFINED_TEST_PASSED
@@ -2119,7 +2123,7 @@ def check_smartstake_key(show_output: bool = False) -> str:
         }
 
         smartstake_url = "https://prod.smartstakeapi.com/listData?app=TERRA"
-        response = requests.get(smartstake_url, params=payload)  # type: ignore
+        response = request(smartstake_url, params=payload)  # type: ignore
 
         try:
             if (
@@ -2255,7 +2259,7 @@ def check_messari_key(show_output: bool = False) -> str:
         url = "https://data.messari.io/api/v2/assets/bitcoin/profile"
         headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
         params = {"fields": "profile/general/overview/official_links"}
-        r = requests.get(url, headers=headers, params=params)
+        r = request(url, headers=headers, params=params)
 
         if r.status_code == 200:
             logger.info("Messari key defined, test passed")
@@ -2318,7 +2322,7 @@ def check_eodhd_key(show_output: bool = False) -> str:
         status = KeyStatus.NOT_DEFINED
     else:
         request_url = f"https://eodhistoricaldata.com/api/exchanges-list/?api_token={cfg.API_EODHD_KEY}&fmt=json"
-        r = requests.get(request_url)
+        r = request(request_url)
         if r.status_code == 200:
             logger.info("Eodhd key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
@@ -2389,8 +2393,11 @@ def check_santiment_key(show_output: bool = False) -> str:
         # pylint: disable=line-too-long
         data = '\n{{ getMetric(metric: "dev_activity"){{ timeseriesData( slug: "ethereum" from: ""2020-02-10T07:00:00Z"" to: "2020-03-10T07:00:00Z" interval: "1w"){{ datetime value }} }} }}'  # noqa: E501
 
-        response = requests.post(
-            "https://api.santiment.net/graphql", headers=headers, data=data
+        response = request(
+            "https://api.santiment.net/graphql",
+            method="POST",
+            headers=headers,
+            data=data,
         )
         try:
             if response.status_code == 200:
@@ -2457,8 +2464,9 @@ def check_shroom_key(show_output: bool = False) -> str:
         status = KeyStatus.NOT_DEFINED
     else:
         try:
-            response = requests.post(
+            response = request(
                 "https://node-api.flipsidecrypto.com/queries",
+                method="POST",
                 headers={"x-api-key": cfg.API_SHROOM_KEY},
             )
             if response.status_code == 400:

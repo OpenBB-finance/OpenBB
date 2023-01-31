@@ -3459,21 +3459,6 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
-name = "pywry"
-version = "0.1.9"
-description = ""
-category = "main"
-optional = false
-python-versions = ">=3.8"
-
-[package.dependencies]
-psutil = ">=5.8.0"
-websockets = ">=5.0.1"
-
-[package.extras]
-dev = ["maturin (==0.14.6)"]
-
-[[package]]
 name = "pyyaml"
 version = "6.0"
 description = "YAML parser and emitter for Python"
@@ -3675,7 +3660,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "ruff"
-version = "0.0.210"
+version = "0.0.236"
 description = "An extremely fast Python linter, written in Rust."
 category = "dev"
 optional = false
@@ -4853,7 +4838,7 @@ multidict = ">=4.0"
 
 [[package]]
 name = "yfinance"
-version = "0.2.6"
+version = "0.2.9"
 description = "Download market data from Yahoo! Finance API"
 category = "main"
 optional = false
@@ -4908,7 +4893,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "8be785e20fceb858359299a468ca9be3fd45f6f1ea2ad9b096116db7131c7fde"
+content-hash = "51a54217dbc5dd2288842c3fa960b894b5e2cd5a85f1c0f4f442bbf7b8a0a324"
 
 [metadata.files]
 absl-py = []

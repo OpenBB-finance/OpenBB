@@ -1,11 +1,10 @@
 import logging
 import re
 
-import requests
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +33,7 @@ def get_debt() -> pd.DataFrame:
         Country, Debt [$], Debt [% of GDP], Debt per capita [$], Debt per capita [% of GDP]
     """
     url = "https://en.wikipedia.org/wiki/List_of_countries_by_external_debt"
-    response = requests.get(url, headers={"User-Agent": get_user_agent()})
+    response = request(url, headers={"User-Agent": get_user_agent()})
     df = pd.read_html(response.text)[0]
     df = df.rename(
         columns={

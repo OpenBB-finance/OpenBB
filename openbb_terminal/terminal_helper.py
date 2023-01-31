@@ -15,7 +15,6 @@ from typing import List
 import matplotlib.pyplot as plt
 
 # IMPORTATION THIRDPARTY
-import requests
 from packaging import version
 
 from openbb_terminal import feature_flags as obbff, thought_of_the_day as thought
@@ -23,6 +22,7 @@ from openbb_terminal import feature_flags as obbff, thought_of_the_day as though
 # IMPORTATION INTERNAL
 from openbb_terminal.config_terminal import LOGGING_APP_NAME, LOGGING_COMMIT_HASH
 from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
@@ -140,6 +140,9 @@ def open_openbb_documentation(
     elif "sources" in path:
         path = "/guides/advanced/changing-sources"
         command = ""
+    elif "params" in path:
+        path = "/guides/intros/portfolio/po"
+        command = ""
     else:
         if arg_type == "command":  # user passed a command name
             path = f"/reference/{path}"
@@ -169,8 +172,19 @@ def open_openbb_documentation(
         elif "sources" in path:
             path = "/guides/advanced/changing-sources"
             command = ""
-        elif "exe" == command:
+        elif command in ["record", "stop", "exe"]:
             path = "/guides/advanced/scripts-and-routines"
+            command = ""
+        elif command in [
+            "intro",
+            "about",
+            "support",
+            "survey",
+            "update",
+            "wiki",
+            "news",
+        ]:
+            path = ""
             command = ""
         elif command in ["ta", "ba", "qa"]:
             path = f"/guides/intros/common/{command}"
@@ -242,7 +256,7 @@ def check_for_updates() -> None:
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
     try:
-        r = requests.get(
+        r = request(
             "https://api.github.com/repos/openbb-finance/openbbterminal/releases/latest",
             timeout=1,
         )

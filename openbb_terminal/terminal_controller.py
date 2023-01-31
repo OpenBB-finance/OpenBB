@@ -9,6 +9,7 @@ import logging
 import os
 import re
 import sys
+import time
 import webbrowser
 from datetime import datetime
 from pathlib import Path
@@ -34,12 +35,7 @@ from openbb_terminal.core.config.paths import (
     load_dotenv_with_priority,
 )
 from openbb_terminal.core.log.generation.settings_logger import log_all_settings
-from openbb_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_positive,
-    get_flair,
-    parse_and_split_input,
-)
+from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, check_positive, get_flair, parse_and_split_input
 from openbb_terminal.keys_model import first_time_user
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.menu import is_papermill, session
@@ -59,7 +55,7 @@ from openbb_terminal.terminal_helper import (
 )
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
-# pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements
+# pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
 
 logger = logging.getLogger(__name__)
 
@@ -130,15 +126,20 @@ class TerminalController(BaseController):
         """Update runtime choices."""
         self.ROUTINE_FILES = {
             filepath.name: filepath
-            for filepath in (MISCELLANEOUS_DIRECTORY / "routines").rglob("*.openbb")
+            for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
         }
-        self.ROUTINE_FILES.update(
-            {
-                filepath.name: filepath
-                for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
-            }
-        )
-        self.ROUTINE_CHOICES = {filename: None for filename in self.ROUTINE_FILES}
+
+        self.ROUTINE_CHOICES = {}
+        self.ROUTINE_CHOICES["--file"] = {
+            filename: None for filename in self.ROUTINE_FILES
+        }
+        self.ROUTINE_CHOICES["--example"] = None
+        self.ROUTINE_CHOICES["-e"] = None
+        self.ROUTINE_CHOICES["--input"] = None
+        self.ROUTINE_CHOICES["-i"] = None
+        self.ROUTINE_CHOICES["--help"] = None
+        self.ROUTINE_CHOICES["--h"] = None
+
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["support"] = self.SUPPORT_CHOICES
@@ -157,8 +158,7 @@ class TerminalController(BaseController):
         if not is_packaged_application():
             mt.add_cmd("update")
         mt.add_cmd("wiki")
-        mt.add_cmd("record")
-        mt.add_cmd("stop")
+        mt.add_cmd("news")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         mt.add_menu("keys")
@@ -166,7 +166,9 @@ class TerminalController(BaseController):
         mt.add_menu("sources")
         mt.add_menu("settings")
         mt.add_raw("\n")
-        mt.add_cmd("news")
+        mt.add_info("_scripts_")
+        mt.add_cmd("record")
+        mt.add_cmd("stop")
         mt.add_cmd("exe")
         mt.add_raw("\n")
         mt.add_info("_main_menu_")
@@ -228,7 +230,6 @@ class TerminalController(BaseController):
         """Process guess command."""
         import json
         import random
-        import time
 
         if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_SUM_SCORE < 0.01:
             parser_exe = argparse.ArgumentParser(
@@ -406,9 +407,7 @@ class TerminalController(BaseController):
 
     def call_dashboards(self, _):
         """Process dashboards command."""
-        from openbb_terminal.dashboards.dashboards_controller import (
-            DashboardsController,
-        )
+        from openbb_terminal.dashboards.dashboards_controller import DashboardsController
 
         self.queue = self.load_class(DashboardsController, self.queue)
 
@@ -420,9 +419,7 @@ class TerminalController(BaseController):
 
     def call_econometrics(self, _):
         """Process econometrics command."""
-        from openbb_terminal.econometrics.econometrics_controller import (
-            EconometricsController,
-        )
+        from openbb_terminal.econometrics.econometrics_controller import EconometricsController
 
         self.queue = EconometricsController(self.queue).menu()
 
@@ -634,7 +631,9 @@ class TerminalController(BaseController):
 
         if not other_args:
             console.print(
-                "[red]Provide a path to the routine you wish to execute.\n[/red]"
+                "[red]Provide a path to the routine you wish to execute. For an example, please use "
+                "`exe --example` and for documentation and to learn how create your own script "
+                "type `about exe`.\n[/red]"
             )
             return
 
@@ -661,14 +660,15 @@ class TerminalController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="exe",
-            description="Execute automated routine script.",
+            description="Execute automated routine script. For an example, please use "
+            "`exe --example` and for documentation and to learn how create your own script "
+            "type `about exe`.",
         )
         parser_exe.add_argument(
             "--file",
             help="The path or .openbb file to run.",
             dest="path",
-            default="",
-            required="-h" not in args,
+            default=None,
         )
         parser_exe.add_argument(
             "-i",
@@ -677,12 +677,33 @@ class TerminalController(BaseController):
             dest="routine_args",
             type=lambda s: [str(item) for item in s.split(",")],
         )
+        parser_exe.add_argument(
+            "-e",
+            "--example",
+            help="Run an example script to understand how routines can be used.",
+            dest="example",
+            action="store_true",
+            default=False,
+        )
+
+        if not args[0]:
+            return console.print("[red]Please select an .openbb routine file.[/red]\n")
+
         if args and "-" not in args[0][0]:
             args.insert(0, "--file")
         ns_parser_exe = self.parse_simple_args(parser_exe, args)
         if ns_parser_exe:
-            if ns_parser_exe.path:
-                if ns_parser_exe.path in self.ROUTINE_CHOICES:
+            if ns_parser_exe.path or ns_parser_exe.example:
+                if ns_parser_exe.example:
+                    path = (
+                        MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
+                    )
+                    console.print(
+                        "[green]Executing an example, please type `about exe` "
+                        "to learn how to create your own script.[/green]\n"
+                    )
+                    time.sleep(3)
+                elif ns_parser_exe.path in self.ROUTINE_CHOICES["--file"]:
                     path = self.ROUTINE_FILES[ns_parser_exe.path]
                 else:
                     path = ns_parser_exe.path

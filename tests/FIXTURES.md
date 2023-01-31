@@ -75,7 +75,7 @@ def test_function(default_csv_path):
     result_dataframe.to_csv(default_csv_path)
 
     expected_dataframe = result_dataframe.read_csv(default_csv_path)
-    
+
     pd.testing.assert_frame_equal(result_dataframe, expected_dataframe)
 ```
 
@@ -96,7 +96,7 @@ def test_function(default_txt_path):
 
     with open(file=default_txt_path, encoding="utf-8") as f:
         expected_txt = f.read()
-    
+
     assert result_txt == expected_txt
 ```
 
@@ -111,10 +111,10 @@ def test_function(default_json_path):
 
     with open(file=default_txt_path, mode="w", encoding="utf-8") as f:
         json.dump(result_json, f)
-    
+
     with open(file=default_json_path, encoding="utf-8") as f:
         expected_json = json.load(f)
-    
+
     assert result_json == expected_json
 ```
 
@@ -181,8 +181,8 @@ import requests
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_function():
-    response = requests.get('https://api.github.com/user', auth=('user', 'pass'))
-    
+    response = request('https://api.github.com/user', auth=('user', 'pass'))
+
     print(response.status_code)
     print(response.text)
 ```
@@ -319,8 +319,8 @@ import requests
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_function():
-    response = requests.get('https://api.github.com/user', auth=('user', 'pass'))
-    
+    response = request('https://api.github.com/user', auth=('user', 'pass'))
+
     recorder.capture(response.status_code)
     recorder.capture(response.text)
 ```

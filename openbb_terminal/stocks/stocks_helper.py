@@ -14,7 +14,6 @@ import financedatabase as fd
 import numpy as np
 import pandas as pd
 import pytz
-import requests
 import yfinance as yf
 from pandas.tseries.holiday import USFederalHolidayCalendar
 from requests.exceptions import ReadTimeout
@@ -22,7 +21,7 @@ from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
-from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table, request
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import
@@ -406,7 +405,7 @@ def load(
                 f"/{end_date.strftime('%Y-%m-%d')}"
                 f"?adjusted=true&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
-            r = requests.get(request_url)
+            r = request(request_url)
             if r.status_code != 200:
                 console.print("[red]Error in polygon request[/red]")
                 return pd.DataFrame()
@@ -951,7 +950,7 @@ def show_codes_polygon(ticker: str):
     if cfg.API_POLYGON_KEY == "REPLACE_ME":
         console.print("[red]Polygon API key missing[/red]\n")
         return
-    r = requests.get(link)
+    r = request(link)
     if r.status_code != 200:
         console.print("[red]Error in polygon request[/red]\n")
         return

@@ -10,12 +10,12 @@ from datetime import datetime
 
 import pandas as pd
 import pandas_datareader.data as web
-import requests
 import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 from openbb_terminal.helpers_denomination import transform as transform_by_denomination
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -544,7 +544,7 @@ def get_macro_data(
         if transform:
             code += f"~{transform}"
 
-        r = requests.get(f"https://www.econdb.com/series/context/?tickers={code}")
+        r = request(f"https://www.econdb.com/series/context/?tickers={code}")
         res_json = r.json()
         if res_json:
             data = res_json[0]
@@ -606,6 +606,10 @@ def get_macro_data(
                     f"OLD: {df_old_oldest} - {df_old_newest}\n"
                     f"NEW: {df_new_oldest} - {df_new_newest}"
                 )
+
+        if not df.empty:
+            df = df.groupby(df.index.strftime("%Y-%m")).head(1)
+            df.index = df.index.strftime("%Y-%m")
 
     except HTTPError:
         return console.print(
@@ -724,6 +728,7 @@ def get_aggregated_macro_data(
     ).T
 
     (df_rounded, denomination) = transform_by_denomination(country_data_df)
+    df_rounded.index = pd.DatetimeIndex(df_rounded.index)
 
     return (
         df_rounded,

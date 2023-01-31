@@ -5,9 +5,9 @@ import logging
 from typing import Any, Dict, List, Tuple
 
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -29,9 +29,7 @@ def get_bullbear(symbol: str) -> Tuple[int, int, int, int]:
         Number of bullish statements,
         Number of bearish statements,
     """
-    result = requests.get(
-        f"https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json"
-    )
+    result = request(f"https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json")
     if result.status_code == 200:
         result_json = result.json()
         watchlist_count = result_json["symbol"]["watchlist_count"]
@@ -64,9 +62,7 @@ def get_messages(symbol: str, limit: int = 30) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of messages
     """
-    result = requests.get(
-        f"https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json"
-    )
+    result = request(f"https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json")
     if result.status_code == 200:
         return pd.DataFrame(
             [message["body"] for message in result.json()["messages"][:limit]]
@@ -84,7 +80,7 @@ def get_trending() -> pd.DataFrame:
     pd.DataFrame
         Dataframe of trending tickers and watchlist count
     """
-    result = requests.get("https://api.stocktwits.com/api/2/trending/symbols.json")
+    result = request("https://api.stocktwits.com/api/2/trending/symbols.json")
     if result.status_code == 200:
         l_symbols = [
             [symbol["symbol"], symbol["watchlist_count"], symbol["title"]]
@@ -115,7 +111,7 @@ def get_stalker(user: str, limit: int = 30) -> List[Dict[str, Any]]:
     List[Dict[str, Any]]
         List of posts
     """
-    result = requests.get(f"https://api.stocktwits.com/api/2/streams/user/{user}.json")
+    result = request(f"https://api.stocktwits.com/api/2/streams/user/{user}.json")
     if result.status_code == 200:
         return list(result.json()["messages"][:limit])
 
