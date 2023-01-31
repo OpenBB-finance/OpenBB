@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.27.1
+      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0
       X-CSRFToken:
       - TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu
       accept:
@@ -31,7 +31,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 739861f6fb065d3b-LIS
+      - 7921d3267820950a-LIS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -39,15 +39,13 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 12 Aug 2022 10:03:43 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Tue, 31 Jan 2023 10:39:40 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Referrer-Policy:
       - same-origin
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=UnJm2uu8ix4XZK6xZdjszbhXgRwIhjASevNKX1Hj2zWCr%2FUuW3Zln6cIb9wIFbjgvuBmMymxj1Yd4wwJeXMlF29IyZjIahkeDxbNvNWTRmcN3FT0uwlqNVQtn3Ske2QZRd%2Fe0WU%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=UIPLL0Pt2vS4lpEdW8fZh2wuiElb7McxC%2B%2B9quBx4PG01evW5FgjQn7YsxjMl7tSfQK4BfTTdqiqllNp2S8%2FK2E053pydML7kUnz9wBq5NcF%2BnzUU51qYtnmxRQL%2BZmNMrHgQTosT7U%2Br14p7c8ZRQg%3D"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Transfer-Encoding:

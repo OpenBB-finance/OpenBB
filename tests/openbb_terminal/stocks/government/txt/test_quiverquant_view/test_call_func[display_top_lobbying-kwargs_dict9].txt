@@ -1,4 +1,4 @@
         Amount
 Ticker        
-PFE       67.8
-META      55.7
+OXY      80.87
+AMZN     47.90
