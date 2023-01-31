@@ -1,9 +1,7 @@
 ---
 title: Non Fungible Token (NFT)
-keywords: ["cryptocurrency", "nft", "Non Fungible Token", "tokenomics", "digital asset", "art"]
-excerpt: "An Introduction to Non Fungible Token (NFT), within the Cryptocurrency Menu,
-with a brief overview of the features."
-geekdocCollapseSection: true
+keywords: [cryptocurrency, nft, Non Fungible Token, tokenomics, digital asset, art]
+description: An Introduction to Non Fungible Token (NFT), within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 
 The Non Fungible Token (NFT) menu gives the user the ability to dive into certain NFTs (<a href="/terminal/reference/crypto/nft/stats/" target="_blank" rel="noreferrer noopener">stats</a>).

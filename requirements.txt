@@ -261,6 +261,6 @@ win32-setctime==1.1.0; python_version >= "3.5" and python_full_version >= "3.7.0
 wrapt==1.14.1; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.8"
 xlsxwriter==3.0.3; python_version >= "3.7"
 yarl==1.8.1; python_version >= "3.7" and python_full_version >= "3.7.0"
-yfinance==0.2.4
+yfinance==0.2.9
 zipp==3.10.0; python_version >= "3.7" and python_full_version < "3.9.7" and python_version < "3.10" or python_full_version > "3.9.7" and python_version >= "3.7" and python_version < "3.10"
 zope.interface==5.5.0; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5"

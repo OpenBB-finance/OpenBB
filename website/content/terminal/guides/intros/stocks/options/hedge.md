@@ -1,7 +1,7 @@
 ---
 title: Hedge
-keywords: ["Options", "stocks", "derivatives", "puts", "calls", "oi", "vol", "greeks", "hedge", "gamme", "delta", "theta", "rho", "vanna", "vomma", "phi", "charm", "iv", "volatility", "implied", "realized", "price", "last", "bid", "ask", "expiry", "expiration", "chains", "chain", "put", "call", "strategy"]
-excerpt: "This guide introduces the Hedge submenu, within the Options menu, providing examples in use."
+keywords: [options, stocks, derivatives, puts, calls, oi, vol, greeks, hedge, gamme, delta, theta, rho, vanna, vomma, phi, charm, iv, volatility, implied, realized, price, last, bid, ask, expiry, expiration, chains, chain, put, call, strategy]
+excerpt: This guide introduces the Hedge submenu, within the Options menu, providing examples in use.
 ---
 The Hedge menu is designed to help the user calculate positions within the selected expiration chain to be directionally neutral. Enter the submenu after choosing the desired <a href="/terminal/reference/stocks/options/exp" target="_blank" rel="noreferrer noopener">expiration</a> date by using the command, `hedge`, from the Options menu.
 
