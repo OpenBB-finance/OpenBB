@@ -11,7 +11,6 @@ from PyInstaller.building.build_main import Analysis
 from PyInstaller.building.splash import Splash
 from PyInstaller.compat import is_darwin, is_win
 
-# import subprocess
 from openbb_terminal.loggers import get_commit_hash
 
 NAME = "OpenBBTerminal"
@@ -84,8 +83,8 @@ added_files = [
 ]
 if is_win:
     added_files.append(
-            (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
-        )
+        (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
+    )
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
     "sklearn.utils._cython_blas",
@@ -110,7 +109,7 @@ hidden_imports = [
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
-    "scipy.sparse.linalg._isolve._iterative"
+    "scipy.sparse.linalg._isolve._iterative",
 ]
 
 
