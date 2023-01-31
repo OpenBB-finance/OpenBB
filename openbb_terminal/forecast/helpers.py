@@ -503,7 +503,7 @@ def plot_forecast(
             line_color="green",
             mode="lines",
         )
-    predicted_values.plot()
+
     pred_label = f"{name} Forecast"
     if past_covariates:
         pred_label += " w/ past covs"

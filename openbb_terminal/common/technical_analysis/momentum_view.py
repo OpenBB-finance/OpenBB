@@ -152,7 +152,7 @@ def display_rsi(
     fig = ta.plot(
         data,
         dict(rsi=dict(length=window, scalar=scalar, drift=drift)),
-        f"{symbol} RSI{window}",
+        f"{symbol} RSI {window}",
         False,
         volume=False,
     )

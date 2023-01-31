@@ -1,12 +1,14 @@
 import importlib
 import inspect
 import os
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Union, overload
 
 import pandas as pd
 
 from openbb_terminal.base_helpers import console
+from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.base import PltTA
@@ -72,6 +74,7 @@ class PlotlyTA(PltTA):
     inchart_colors = theme.get_colors()
     plugins = []
     df_ta: pd.DataFrame = None
+    close_column: str = "Close"
     show_volume = True
     ma_mode: List[str] = []
     inchart: List[str] = []
@@ -124,7 +127,7 @@ class PlotlyTA(PltTA):
 
     def __plot__(
         self,
-        df_stock: pd.DataFrame,
+        df_stock: Union[pd.DataFrame, pd.Series],
         indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]] = None,
         symbol: str = "",
         candles: bool = True,
@@ -133,12 +136,16 @@ class PlotlyTA(PltTA):
         fig: OpenBBFigure = None,
     ) -> OpenBBFigure:
         """This method should not be called directly. Use the PlotlyTA.plot() static method instead."""
+        if isinstance(df_stock, pd.Series):
+            df_stock = df_stock.to_frame()
+
         if not isinstance(indicators, ChartIndicators):
             indicators = ChartIndicators.from_dict(indicators)
 
         self.indicators = indicators
         self.intraday = df_stock.index[-2].time() != df_stock.index[-1].time()
         self.df_stock = df_stock
+        self.close_column = ta_helpers.check_columns(self.df_stock)
         self.params = self.indicators.get_params()
         self.show_volume = volume
         self.prepost = prepost
@@ -148,7 +155,7 @@ class PlotlyTA(PltTA):
     @overload
     def plot(
         self,
-        df_stock: pd.DataFrame,
+        df_stock: Union[pd.DataFrame, pd.Series],
         indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]] = None,
         symbol: str = "",
         candles: bool = True,
@@ -160,7 +167,7 @@ class PlotlyTA(PltTA):
 
     @staticmethod
     def plot(
-        df_stock: pd.DataFrame,
+        df_stock: Union[pd.DataFrame, pd.Series],
         indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]] = None,
         symbol: str = "",
         candles: bool = True,
@@ -201,10 +208,24 @@ class PlotlyTA(PltTA):
     @staticmethod
     def _locate_plugins() -> None:
         """Locate all the plugins in the plugins folder"""
+        if hasattr(sys, "frozen"):
+            path = Path(sys.executable).parent
+        else:
+            path = Path(os.getcwd())
+
+        console.print(f"[bold green]Loading plugins from {path}[/]")
+        console.print("[bold green]Plugins found:[/]")
         for plugin in Path(__file__).parent.glob("plugins/*_plugin.py"):
-            python_path = plugin.relative_to(Path(os.getcwd())).with_suffix("")
+            console.print(f"    [bold red]{plugin.name}[/]")
+            python_path = plugin.relative_to(path).with_suffix("")
+            console.print(f"        [bold yellow]{python_path}[/]")
+            console.print(f"        [bold bright_cyan]{__package__}[/]")
+            console.print(f"        [bold magenta]{python_path.parts}[/]")
+            console.print(
+                f"        [bold bright_magenta]{'.'.join(python_path.parts)}[/]"
+            )
             module = importlib.import_module(
-                ".".join(python_path.with_suffix("").parts)
+                ".".join(python_path.parts), package=__package__
             )
             for _, obj in inspect.getmembers(module):
                 if (
@@ -339,15 +360,17 @@ class PlotlyTA(PltTA):
         else:
             fig.add_scatter(
                 x=self.df_stock.index,
-                y=self.df_stock["Close"],
+                y=self.df_stock[self.close_column],
                 connectgaps=True,
                 row=1,
                 col=1,
             )
             self.inchart_colors = theme.get_colors()[1:]
-        if self.show_volume:
+        if self.show_volume and "Volume" in self.df_stock.columns:
             colors = [
-                theme.down_color if row.Open < row["Close"] else theme.up_color
+                theme.down_color
+                if row.Open < row[self.close_column]
+                else theme.up_color
                 for _, row in self.df_stock.iterrows()
             ]
             fig.add_bar(

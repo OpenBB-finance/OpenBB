@@ -1,3 +1,4 @@
+import asyncio
 import atexit
 import json
 import os
@@ -5,8 +6,8 @@ import re
 import sys
 from pathlib import Path
 
+import aiohttp
 import plotly.graph_objects as go
-import requests
 from pywry import PyWry
 
 try:
@@ -25,6 +26,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
+PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.18.0.min.js"
 BACKEND = None
 
 
@@ -162,13 +164,35 @@ class Backend(PyWry):
             super().start(debug)
 
 
-# To avoid having plotly.js in the repo, we download it if it's not present
-if not (PLOTS_CORE_PATH / "assets" / "plotly-2.18.0.min.js").exists():
-    download = requests.get("https://cdn.plot.ly/plotly-2.18.0.min.js", stream=True)
+async def download_plotly_js():
+    """Downloads or updates plotly.js to the assets folder"""
 
-    with open(str(PLOTS_CORE_PATH / "assets" / "plotly-2.18.0.min.js"), "wb") as f:
-        for chunk in download.iter_content(chunk_size=1024):
-            f.write(chunk)
+    js_filename = PLOTLYJS_PATH.name
+    try:
+        # we use aiohttp to download plotly.js
+        # this is so we don't have to block the main thread
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
+                with open(str(PLOTLYJS_PATH), "wb") as f:
+                    while True:
+                        chunk = await resp.content.read(1024)
+                        if not chunk:
+                            break
+                        f.write(chunk)
+
+        # We delete the old version of plotly.js
+        for file in (PLOTS_CORE_PATH / "assets").glob("plotly*.js"):
+            if file.name != js_filename:
+                file.unlink(missing_ok=True)
+
+    except Exception as err:  # pylint: disable=W0703
+        print(f"Error downloading plotly.js: {err}")
+        print("Plotly.js will not be available")
+
+
+# To avoid having plotly.js in the repo, we download it if it's not present
+if not PLOTLYJS_PATH.exists():
+    asyncio.run(download_plotly_js())
 
 
 def plots_backend() -> Backend:

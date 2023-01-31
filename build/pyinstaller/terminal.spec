@@ -1,13 +1,11 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
 import shutil
-import scipy
 import subprocess
-
 import sys
 from pathlib import Path
 
-
+import scipy
 from dotenv import set_key
 from PyInstaller.building.api import COLLECT, EXE, PYZ
 from PyInstaller.building.build_main import Analysis
@@ -59,7 +57,10 @@ set_key(default_env_file, "OPENBB_LOGGING_COMMIT_HASH", str(commit_hash))
 # Files that are explicitly pulled into the bundle
 added_files = [
     (os.path.join(os.getcwd(), "openbb_terminal"), "openbb_terminal"),
-    (os.path.join(os.getcwd(), "openbb_terminal", "core", "plots"), "openbb_terminal/core/plots"),
+    (
+        os.path.join(os.getcwd(), "openbb_terminal", "core", "plots"),
+        "openbb_terminal/core/plots",
+    ),
     (os.path.join(pathex, "property_cached"), "property_cached"),
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
@@ -120,7 +121,7 @@ hidden_imports = [
     "prophet",
     "debugpy",
     "pywry.pywry",
-    "scipy.sparse.linalg._isolve._iterative"
+    "scipy.sparse.linalg._isolve._iterative",
 ]
 
 
@@ -143,6 +144,11 @@ analysis_kwargs = dict(
 a = Analysis(**analysis_kwargs)
 pyz = PYZ(a.pure, a.zipped_data, cipher=analysis_kwargs["cipher"])
 
+# Executable icon
+if is_win:
+    exe_icon = (os.path.join(os.getcwd(), "images", "openbb_icon.ico"),)
+if is_darwin:
+    exe_icon = (os.path.join(os.getcwd(), "images", "openbb.icns"),)
 
 block_cipher = None
 # PyWry
@@ -163,6 +169,7 @@ pywry_a = Analysis(
 )
 pywry_pyz = PYZ(pywry_a.pure, pywry_a.zipped_data, cipher=block_cipher)
 
+
 # PyWry EXE
 pywry_exe = EXE(
     pywry_pyz,
@@ -179,6 +186,7 @@ pywry_exe = EXE(
     target_arch="x86_64",
     codesign_identity=None,
     entitlements_file=None,
+    icon=exe_icon,
 )
 
 
@@ -200,6 +208,7 @@ exe_kwargs = dict(
     target_arch="x86_64",
     codesign_identity=None,
     entitlements_file=None,
+    icon=exe_icon,
 )
 
 
@@ -233,10 +242,7 @@ if is_win:
         text_color="white",
     )
     exe_args += [splash, splash.binaries]
-    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "openbb_icon.ico"),)
 
-if is_darwin:
-    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "openbb.icns"),)
 
 exe = EXE(*exe_args, **exe_kwargs)
 pywry_collect_args = [

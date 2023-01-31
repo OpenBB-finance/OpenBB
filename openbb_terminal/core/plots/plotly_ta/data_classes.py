@@ -185,10 +185,13 @@ class TA_Data:
     @log_start_end(log=logger)
     def __init__(
         self,
-        df_ta: pd.DataFrame,
+        df_ta: Union[pd.DataFrame, pd.Series],
         indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]],
         ma_mode: Optional[List[str]] = None,
     ):
+        if isinstance(df_ta, pd.Series):
+            df_ta = df_ta.to_frame()
+
         if not isinstance(indicators, ChartIndicators):
             indicators = ChartIndicators.from_dict(indicators)
 

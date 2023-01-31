@@ -144,7 +144,7 @@ class Momentum(PltTA):
     def plot_clenow(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Adds current close price to plotly figure"""
         window = self.params["clenow"].get_argument_values("window") or 90
-        _, _, fit_data = clenow_momentum(df_ta["Close"], window=window)
+        _, _, fit_data = clenow_momentum(df_ta[self.close_column], window=window)
 
         fig.add_scatter(
             x=df_ta.index[-window:],
@@ -176,7 +176,7 @@ class Momentum(PltTA):
         """Adds denmark to plotly figure"""
         min_val = self.params["denmark"].get_argument_values("min_val") or 5
 
-        denmark = ta.td_seq(df_ta["Close"], asint=True)
+        denmark = ta.td_seq(df_ta[self.close_column], asint=True)
         denmark.set_index(df_ta.index, inplace=True)
 
         denmark["up"] = denmark.TD_SEQ_UPa.apply(
