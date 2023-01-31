@@ -363,6 +363,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "",
                 True,
                 "csv",
+                None,
                 True,
                 1,
                 0.1,
