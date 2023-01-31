@@ -132,6 +132,8 @@ class AccountController(BaseController):
             if response:
                 configs = json.loads(response.content)
                 configs.pop("email", None)
+
+
                 if show_diff(configs=configs):
                     i = console.input(
                         "\nDo you want to overwrite your local configurations "
