@@ -4,12 +4,9 @@ __docformat__ = "numpy"
 import logging
 import os
 
-import matplotlib.pyplot as plt
-
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
 
@@ -261,7 +258,7 @@ def short_interest_volume(
         sheet_name,
     )
 
-    return None if raw else fig.show() if not external_axes else fig
+    return None if raw else fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -307,42 +304,8 @@ def net_short_position(
         )
 
     else:
-
-        # This plot has 2 axes
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax2 = ax1.twinx()
-
         df = df.sort_values(by=["dates"])
-        ax1.bar(
-            df["dates"],
-            df["Net Short Vol. (1k $)"],
-            color=theme.down_color,
-            label="Net Short Vol. (1k $)",
-        )
-        ax1.set_ylabel("Net Short Vol. (1k $)")
 
-        ax2.plot(
-            df["dates"].values,
-            df["Position (1M $)"],
-            c=theme.up_color,
-            label="Position (1M $)",
-        )
-        ax2.set_ylabel("Position (1M $)")
-
-        lines, labels = ax1.get_legend_handles_labels()
-        lines2, labels2 = ax2.get_legend_handles_labels()
-        ax2.legend(lines + lines2, labels + labels2, loc="upper left")
-
-        ax1.set_xlim(
-            df["dates"].values[max(0, len(df) - limit)], df["dates"].values[len(df) - 1]
-        )
-
-        ax1.set_title(f"Net Short Vol. vs Position for {symbol}")
-
-        # theme.style_twin_axes(ax1, ax2)
-
-        # if not external_axes:
-        #     theme.visualize_output()
         fig = OpenBBFigure.create_subplots(
             rows=1,
             cols=1,
@@ -413,4 +376,4 @@ def net_short_position(
         sheet_name,
     )
 
-    return None if raw else fig.show() if not external_axes else fig
+    return None if raw else fig.show(external=external_axes)

@@ -3,20 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
-from matplotlib import pyplot as plt
-
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.defi import smartstake_model
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 # pylint: disable=E1101
 
@@ -57,42 +48,37 @@ def display_luna_circ_supply_change(
     if df.empty:
         return
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(xaxis_title="Time", yaxis_title="Luna Circulating Supply [M]")
+    fig.set_title("Luna Circulating Supply Changes (In Millions)")
 
-    ax.plot(
-        df.index,
-        df["circulatingSupplyInMil"],
-        c="black",
-        label="Circulating Supply",
+    fig.add_scatter(
+        x=df.index,
+        y=df["circulatingSupplyInMil"],
+        mode="lines",
+        name="Circulating Supply",
+        line=dict(color="black"),
     )
-    ax.plot(
-        df.index,
-        df["liquidCircSupplyInMil"],
-        c="red",
-        label="Liquid Circulating Supply",
+    fig.add_scatter(
+        x=df.index,
+        y=df["liquidCircSupplyInMil"],
+        mode="lines",
+        name="Liquid Circulating Supply",
+        line=dict(color="red"),
     )
-    ax.plot(
-        df.index, df["stakeFromCircSupplyInMil"], c="green", label="Stake of Supply"
+    fig.add_scatter(
+        x=df.index,
+        y=df["stakeFromCircSupplyInMil"],
+        mode="lines",
+        name="Stake of Supply",
+        line=dict(color="green"),
     )
-    ax.plot(
-        df.index,
-        df["recentTotalLunaBurntInMil"],
-        c="blue",
-        label="Supply Reduction (Luna Burnt)",
+    fig.add_scatter(
+        x=df.index,
+        y=df["recentTotalLunaBurntInMil"],
+        mode="lines",
+        name="Supply Reduction (Luna Burnt)",
+        line=dict(color="blue"),
     )
-
-    ax.grid()
-    ax.set_ylabel("Millions")
-    ax.set_xlabel("Time")
-    ax.set_title("Luna Circulating Supply Changes (In Millions)")
-    ax.set_xlim(df.index[0], df.index[-1])
-    ax.legend(loc="best")
-
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
 
     RAW_COLS = [
         "circulatingSupplyInMil",
@@ -124,3 +110,5 @@ def display_luna_circ_supply_change(
         index_name="Time",
         title="Luna Circulating Supply Changes (in Millions)",
     )
+
+    return fig.show(external=external_axes)

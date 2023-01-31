@@ -46,4 +46,4 @@ def view(symbol: str, external_axes: bool = False):
     fig.update_yaxes(visible=False, range=[im.height, 0], scaleanchor="y")
     fig.update_layout(height=im.height, width=im.width)
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)

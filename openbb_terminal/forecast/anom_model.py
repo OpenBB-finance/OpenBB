@@ -3,15 +3,13 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Tuple, Union, List
+from typing import List, Tuple, Union
 
 import pandas as pd
-
 from darts import TimeSeries
-from darts.ad import KMeansScorer
-from darts.ad import QuantileDetector
-from openbb_terminal.decorators import log_start_end
+from darts.ad import KMeansScorer, QuantileDetector
 
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
 
 logger = logging.getLogger(__name__)
@@ -22,7 +20,7 @@ def get_anomaly_detection_data(
     data: Union[pd.Series, pd.DataFrame],
     target_column: str = "close",
     train_split: float = 0.6,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries]]:
+) -> Tuple[TimeSeries, List[TimeSeries], List[TimeSeries]]:
     """Get Quantile Anomaly Detection Data
 
     Parameters

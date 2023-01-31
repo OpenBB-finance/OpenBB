@@ -20,18 +20,20 @@ from requests.exceptions import ReadTimeout
 from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.helper_funcs import export_data, print_rich_table, request
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import
-from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import INTERVALS  # noqa: F401
-from openbb_terminal.stocks.stock_statics import SOURCES  # noqa: F401
-from openbb_terminal.stocks.stock_statics import market_coverage_suffix
+from openbb_terminal.stocks.stock_statics import (
+    BALANCE_PLOT,  # noqa: F401
+    CANDLE_SORT,  # noqa: F401
+    CASH_PLOT,  # noqa: F401
+    INCOME_PLOT,  # noqa: F401
+    INTERVALS,  # noqa: F401
+    SOURCES,  # noqa: F401
+    market_coverage_suffix,
+)
 from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
     load_stock_eodhd,
@@ -479,7 +481,6 @@ def load(
 def display_candle(
     symbol: str,
     data: pd.DataFrame = None,
-    use_matplotlib: bool = True,
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = "",
@@ -505,10 +506,6 @@ def display_candle(
         Ticker name
     data: pd.DataFrame
         Stock dataframe
-    use_matplotlib: bool
-        Flag to use matplotlib instead of interactive plotly chart
-    intraday: bool
-        Flag for intraday data for plotly range breaks
     add_trend: bool
         Flag to add high and low trends to chart
     ma: Tuple[int]
@@ -545,7 +542,6 @@ def display_candle(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.stocks.candle("AAPL")
     """
-    del yscale, asset_type
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
 
@@ -574,84 +570,23 @@ def display_candle(
             data = find_trendline(data, "OC_High", "high")
             data = find_trendline(data, "OC_Low", "low")
 
-    if not raw:
-        if use_matplotlib:
-            fig = OpenBBFigure.create_subplots(
-                rows=2,
-                cols=1,
-                shared_xaxes=True,
-                vertical_spacing=0.06,
-                subplot_titles=(f"{symbol}", "Volume"),
-                row_width=[0.2, 0.7],
-            )
-            fig.add_candlestick(
-                x=data.index,
-                open=data.Open,
-                high=data.High,
-                low=data.Low,
-                close=data.Close,
-                name="OHLC",
-                showlegend=False,
-                row=1,
-                col=1,
-            )
-            if ma:
-                for ma_val in ma:
-                    temp = data["Adj Close"].copy()
-                    temp[f"ma{ma_val}"] = data["Adj Close"].rolling(ma_val).mean()
-                    temp = temp.dropna()
-                    fig.add_scatter(
-                        x=temp.index,
-                        y=temp[f"ma{ma_val}"],
-                        name=f"MA{ma_val}",
-                        mode="lines",
-                        line=dict(width=0.8),
-                        row=1,
-                        col=1,
-                    )
-
-            if add_trend:
-                if "OC_High_trend" in data.columns:
-                    fig.add_scatter(
-                        x=data.index,
-                        y=data["OC_High_trend"],
-                        name="High Trend",
-                        mode="lines",
-                        line=dict(color="#00ACFF"),
-                        row=1,
-                        col=1,
-                    )
-                if "OC_Low_trend" in data.columns:
-                    fig.add_scatter(
-                        x=data.index,
-                        y=data["OC_Low_trend"],
-                        name="Low Trend",
-                        mode="lines",
-                        line=dict(color="#e4003a"),
-                        row=1,
-                        col=1,
-                    )
-
-            colors = [
-                "#e4003a" if row.Open < row["Close"] else "#00ACFF"
-                for _, row in data.iterrows()
-            ]
-            fig.add_bar(
-                x=data.index,
-                y=data.Volume,
-                name="Volume",
-                marker_color=colors,
-                showlegend=False,
-                row=2,
-                col=1,
-            )
-            fig.update_layout(yaxis_title="Stock Price ($)", bargap=0, bargroupgap=0)
-            fig.add_logscale_menus()
-            fig.hide_holidays()
-
-            return fig.show() if not external_axes else fig
-    else:
+    if raw:
         return data
+
+    kwargs = {}
+    if ma:
+        kwargs["rma"] = dict(length=ma)
+
+    data.name = f"{asset_type} {symbol}"
+    fig = PlotlyTA.plot(data, dict(**kwargs), prepost=prepost)
+
+    if add_trend:
+        fig.add_trend(data)
+
+    fig.update_layout(yaxis=dict(title="Stock Price ($)", type=yscale))
+    fig.add_logscale_menus()
+
+    return fig.show(external=external_axes)
 
 
 def load_ticker(

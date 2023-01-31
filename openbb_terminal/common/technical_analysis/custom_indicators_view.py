@@ -18,7 +18,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     is_intraday,
-    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
     reindex_dates,

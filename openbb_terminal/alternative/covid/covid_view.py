@@ -94,7 +94,7 @@ def plot_covid_ov(
         hovermode="x unified",
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 def plot_covid_stat(
@@ -150,7 +150,7 @@ def plot_covid_stat(
 
     fig.update_layout(hovermode="x unified")
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

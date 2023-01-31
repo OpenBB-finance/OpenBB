@@ -147,7 +147,7 @@ def display_government_buys(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -228,7 +228,7 @@ def display_government_sells(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -290,7 +290,7 @@ def display_last_contracts(
     fig.add_bar(x=df.index, y=df["Amount"].values, marker_color=theme.get_colors())
     fig.update_layout(xaxis=dict(nticks=min(len(df.index) + 1, 10)))
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -332,7 +332,7 @@ def plot_government(
     fig.update_traces(mode="lines", line_color=color, fillcolor=color, fill="tonexty")
     fig.update_layout(showlegend=False)
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -455,7 +455,7 @@ def display_contracts(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -563,7 +563,7 @@ def display_qtr_contracts(
         sheet_name,
     )
 
-    return None if not fig else fig.show() if not external_axes else fig
+    return None if not fig else fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -644,7 +644,7 @@ def display_hist_contracts(
         sheet_name,
     )
 
-    return None if raw else fig.show() if not external_axes else fig
+    return None if raw else fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -709,7 +709,7 @@ def display_top_lobbying(
         sheet_name,
     )
 
-    return None if raw else fig.show() if not external_axes else fig
+    return None if raw else fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

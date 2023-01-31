@@ -75,7 +75,7 @@ def display_mentions(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -142,7 +142,7 @@ def display_correlation_interest(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -199,7 +199,7 @@ def display_regions(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

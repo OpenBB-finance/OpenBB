@@ -90,6 +90,7 @@ class PltTA(metaclass=PluginMeta):
     indicators: ChartIndicators = None
     intraday: bool = False
     df_stock: pd.DataFrame = None
+    df_ta: pd.DataFrame = None
     params: Dict[str, TAIndicator] = None
     ma_mode: List[str] = []
     inchart_colors: List[str] = []

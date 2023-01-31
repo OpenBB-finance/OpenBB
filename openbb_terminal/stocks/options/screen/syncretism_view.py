@@ -205,4 +205,4 @@ def view_historical_greeks(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)

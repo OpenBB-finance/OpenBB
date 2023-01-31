@@ -21,8 +21,8 @@ class Momentum(PltTA):
     def plot_cci(self, fig: OpenBBFigure, df_ta: pd.DataFrame, subplot_row: int):
         """Adds cci to plotly figure"""
         cci_col = columns_regex(df_ta, "CCI")[0]
-        dmax = df_ta[cci_col].values.max()
-        dmin = df_ta[cci_col].values.min()
+        dmax = df_ta[cci_col].max()
+        dmin = df_ta[cci_col].min()
         fig.add_scatter(
             name="CCI",
             mode="lines",
@@ -56,7 +56,6 @@ class Momentum(PltTA):
         )
         fig.add_hline(
             y=100,
-            fillcolor=theme.down_color,
             opacity=1,
             layer="below",
             line=dict(width=2, color=theme.down_color, dash="dash"),
@@ -65,7 +64,6 @@ class Momentum(PltTA):
         )
         fig.add_hline(
             y=-100,
-            fillcolor=theme.up_color,
             opacity=1,
             layer="below",
             line=dict(width=2, color=theme.up_color, dash="dash"),
@@ -257,8 +255,8 @@ class Momentum(PltTA):
             row=subplot_row,
             col=1,
         )
-        dmax = df_ta[fishers_col].values.max()
-        dmin = df_ta[fishers_col].values.min()
+        dmax = df_ta[fishers_col].max()
+        dmin = df_ta[fishers_col].min()
 
         fig.add_annotation(
             xref=f"x{subplot_row} domain",

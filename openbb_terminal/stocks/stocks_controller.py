@@ -388,11 +388,11 @@ class StocksController(StockBaseController):
         )
         parser.add_argument(
             "-p",
-            "--plotly",
-            dest="plotly",
-            action="store_false",
-            default=True,
-            help="Flag to show interactive plotly chart",
+            "--prepost",
+            action="store_true",
+            default=False,
+            dest="prepost",
+            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
         )
         parser.add_argument(
             "--sort",
@@ -484,9 +484,10 @@ class StocksController(StockBaseController):
                     stocks_helper.display_candle(
                         symbol=self.ticker,
                         data=data,
-                        use_matplotlib=ns_parser.plotly,
                         add_trend=ns_parser.trendlines,
                         ma=mov_avgs,
+                        prepost=ns_parser.prepost,
+                        asset_type="Stock",
                         yscale="log" if ns_parser.logy else "linear",
                     )
 

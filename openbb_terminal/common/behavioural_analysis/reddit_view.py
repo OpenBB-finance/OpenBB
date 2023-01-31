@@ -464,7 +464,6 @@ def display_redditsent(
             title=f"Sentiment Score of {symbol}", xaxis_title="Sentiment Score"
         )
         fig.add_bar(x=polarity_scores)
-        fig.show()
 
     console.print(f"Sentiment Analysis for {symbol} is {avg_polarity}\n")
 
@@ -475,3 +474,5 @@ def display_redditsent(
         df,
         sheet_name,
     )
+
+    return fig.show(external=external_axes) if graphic else None

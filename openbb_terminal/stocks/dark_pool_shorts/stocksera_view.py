@@ -4,17 +4,14 @@ __docformat__ = "numpy"
 import logging
 import os
 
-import matplotlib.ticker
 import pandas as pd
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     lambda_long_number_format,
-    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
@@ -41,35 +38,33 @@ def plot_cost_to_borrow(
         Whether to return the figure object or not, by default False
     """
 
-    # This plot has 2 axes
-    _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax2 = ax1.twinx()
+    fig = OpenBBFigure.create_subplots(1, 1, specs=[[{"secondary_y": True}]])
+    fig.set_title(f"Cost to Borrow of {symbol}")
 
     if data.empty:
         return
 
-    ax1.bar(
-        data.index,
-        data["Available"],
-        0.3,
-        color=theme.up_color,
+    fig.add_bar(
+        x=data.index,
+        y=data["Available"],
+        name="Number Shares",
+        marker_color=theme.up_color,
+        secondary_y=False,
     )
 
-    ax1.set_title(f"Cost to Borrow of {symbol}")
+    fig.add_scatter(
+        x=data.index,
+        y=data["Fees"].values,
+        name="Fees",
+        marker_color=theme.get_colors()[0],
+        secondary_y=True,
+    )
+    fig.update_yaxes(title_text="Fees %", secondary_y=True)
+    fig.update_yaxes(secondary_y=False, side="left")
+    fig.update_xaxes(title_text="Date", type="category", nticks=6)
+    fig.update_layout(margin=dict(l=50))
 
-    ax1.legend(labels=["Number Shares"], loc="best")
-    ax1.yaxis.set_major_formatter(matplotlib.ticker.EngFormatter())
-
-    ax2.set_ylabel("Fees %")
-    ax2.plot(data.index, data["Fees"].values)
-    ax2.tick_params(axis="y", which="major")
-
-    theme.style_twin_axes(ax1, ax2)
-
-    ax1.xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(6))
-
-    if not external_axes:
-        theme.visualize_output()
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

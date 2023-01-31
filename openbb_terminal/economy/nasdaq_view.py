@@ -107,7 +107,7 @@ def display_big_mac_index(
             sheet_name,
         )
 
-        return fig.show() if not external_axes else fig
+        return fig.show(external=external_axes)
     else:
         logger.error("Unable to get big mac data")
         console.print("[red]Unable to get big mac data[/red]\n")

@@ -3,27 +3,17 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Dict, Optional, List
+from typing import Dict, List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-import seaborn as sns
-from darts.utils.statistics import plot_acf
 
-from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-)
-from openbb_terminal.helper_funcs import (
-    print_rich_table,
-)
+from openbb_terminal.forecast import forecast_model, helpers
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
-from openbb_terminal.forecast import forecast_model
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.forecast import helpers
 
 logger = logging.getLogger(__name__)
 
@@ -80,7 +70,7 @@ def display_plot(
     columns: List[str],
     export: str = "",
     sheet_name: str = None,
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot data from a dataset
     Parameters
@@ -93,28 +83,21 @@ def display_plot(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export image
-    external_axes:Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     # Check that there's at least a valid dataframe
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
+    if data.empty:
+        return console.print("No data to plot")
 
     # Only do if data is not plotted, otherwise an error will occur
     if "date" in data.columns and "date" not in columns:
         data = data.set_index("date")
 
+    fig = OpenBBFigure()
     for column in columns:
-        ax.plot(data[column], label=column)
-
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
-
-    ax.legend()
+        fig.add_scatter(x=data.index, y=data[column], name=column)
 
     export_data(
         export,
@@ -122,6 +105,8 @@ def display_plot(
         "plot",
         sheet_name,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -133,7 +118,7 @@ def display_seasonality(
     m: Optional[int] = None,
     max_lag: int = 24,
     alpha: float = 0.05,
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot seasonality from a dataset
 
@@ -153,26 +138,18 @@ def display_seasonality(
         The maximal lag order to consider. Default is 24.
     alpha: float
         The confidence interval to display. Default is 0.05.
-    external_axes:Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
-    if not data.empty:
-        _, series = helpers.get_series(data, column)
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes[0]
+    if data.empty:
+        return console.print("No data to plot")
 
-        # TODO: Add darts check_seasonality here
-        plot_acf(
-            series, m=m, max_lag=max_lag, alpha=alpha, axis=ax, default_formatting=False
-        )
+    _, series = helpers.get_series(data, column)
 
-        theme.style_primary_axis(ax)
-
-        if external_axes is None:
-            theme.visualize_output()
+    # TODO: Add darts check_seasonality here
+    fig = OpenBBFigure()
+    fig.add_corr_plot(series.values(), m=m, max_lag=max_lag, alpha=alpha)
 
     export_data(
         export,
@@ -180,6 +157,8 @@ def display_seasonality(
         "plot",
         sheet_name,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -203,41 +182,33 @@ def display_corr(
         External axes to plot on
     """
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
+    fig = OpenBBFigure()
 
     # correlation
     correlation = forecast_model.corr_df(dataset)
-    sns.heatmap(
-        correlation,
-        vmin=correlation.values.min(),
-        vmax=1,
-        square=True,
-        linewidths=0.1,
-        annot=True,
-        annot_kws={"size": 8},
-        cbar_kws=dict(use_gridspec=True, location="left"),
+    fig.add_heatmap(
+        z=correlation,
+        x=correlation.columns,
+        y=correlation.index,
+        zmin=correlation.values.min(),
+        zmax=1,
+        showscale=True,
+        textfont=dict(color="black"),
+        text=correlation,
+        texttemplate="%{text:.2f}",
+        colorscale="RdBu",
+        colorbar=dict(
+            thickness=10,
+            thicknessmode="pixels",
+            x=1.2,
+            y=1,
+            xanchor="right",
+            yanchor="top",
+            xpad=10,
+        ),
+        xgap=1,
+        ygap=1,
     )
-
-    ax.set_title("Correlation Matrix")
-
-    for t in ax.get_yticklabels():
-        t.set_fontsize(7)
-        t.set_fontweight("bold")
-        t.set_horizontalalignment("left")
-
-    for t in ax.get_xticklabels():
-        t.set_fontsize(7)
-        t.set_fontweight("bold")
-        t.set_rotation(60)
-        t.set_horizontalalignment("right")
-
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
 
     export_data(
         export,
@@ -245,6 +216,8 @@ def display_corr(
         "plot",
         sheet_name,
     )
+    fig.update_layout(margin=dict(l=0, r=120, t=0, b=0), title="Correlation Matrix")
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

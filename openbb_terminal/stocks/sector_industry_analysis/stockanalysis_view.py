@@ -83,6 +83,7 @@ def display_plots_financials(
     list
         List of tickers filtered
     """
+
     if already_loaded_stocks_data is None:
         already_loaded_stocks_data = {}
 
@@ -177,7 +178,9 @@ def display_plots_financials(
                 y=df[company],
                 mode="lines+markers",
                 name=company,
+                marker=dict(size=16, line=dict(width=1)),
             )
+        fig.show(external=external_axes)
 
     export_data(
         export,
@@ -186,4 +189,8 @@ def display_plots_financials(
         df,
         sheet_name,
     )
-    return stocks_data, company_tickers, (fig.show() if not external_axes else fig)
+
+    if external_axes:
+        return (stocks_data, company_tickers, fig.show(external=external_axes))
+
+    return stocks_data, company_tickers

@@ -4,17 +4,11 @@ __docformat__ = "numpy"
 import logging
 import os
 
-import mplfinance as mpf
 import pandas as pd
 
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    lambda_long_number_format_y_axis,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import chartexchange_model
 
@@ -22,27 +16,48 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def plot_chart(
-    df: pd.DataFrame,
-    candle_chart_kwargs: dict,
-    option_type: str,
-    symbol: str,
-    external_axes: bool = False,
-):
-    candle_chart_kwargs["returnfig"] = True
-    candle_chart_kwargs["figratio"] = (10, 7)
-    candle_chart_kwargs["figscale"] = 1.10
-    candle_chart_kwargs["figsize"] = plot_autoscale()
-    fig, ax = mpf.plot(df, **candle_chart_kwargs)
-    fig.suptitle(
-        f"Historical quotes for {symbol} {option_type}",
-        x=0.055,
-        y=0.965,
-        horizontalalignment="left",
+def plot_chart(df: pd.DataFrame, option_type: str, symbol: str) -> OpenBBFigure:
+    """Plot Candlestick chart
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Dataframe with OHLC data
+    option_type : str
+        Type of option (call or put)
+    symbol : str
+        Ticker symbol
+
+    Returns
+    -------
+    OpenBBFigure
+        Plotly figure object
+    """
+
+    fig = OpenBBFigure.create_subplots(
+        rows=2,
+        cols=1,
+        shared_xaxes=True,
+        vertical_spacing=0.1,
+        row_width=[0.2, 0.7],
+        subplot_titles=["", "Volume"],
     )
-    lambda_long_number_format_y_axis(df, "Volume", ax)
-    theme.visualize_output(force_tight_layout=False)
-    ax[0].legend()
+    fig.set_title(f"Historical {symbol} {option_type}")
+
+    fig.add_candlestick(
+        open=df.Open,
+        high=df.High,
+        low=df.Low,
+        close=df.Close,
+        x=df.index,
+        name=f"OHLC {symbol}",
+        row=1,
+        col=1,
+    )
+    fig.add_stock_volume(df)
+    fig.hide_holidays()
+
+    return fig
 
 
 @log_start_end(log=logger)
@@ -83,31 +98,7 @@ def display_raw(
     df["Date"] = pd.to_datetime(df["Date"])
     df = df.set_index("Date")
 
-    candle_chart_kwargs = {
-        "type": "candle",
-        "style": theme.mpf_style,
-        "volume": True,
-        "xrotation": theme.xticks_rotation,
-        "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-        "update_width_config": {
-            "candle_linewidth": 0.6,
-            "candle_width": 0.8,
-            "volume_linewidth": 0.8,
-            "volume_width": 0.8,
-        },
-        "warn_too_much_data": 10000,
-        "datetime_format": "%Y-%b-%d",
-    }
-    # This plot has 2 axes
     option_type = "call" if call else "put"
-
-    plot_chart(
-        df=df,
-        candle_chart_kwargs=candle_chart_kwargs,
-        option_type=option_type,
-        symbol=symbol,
-        external_axes=external_axes,
-    )
 
     export_data(
         export,
@@ -122,3 +113,7 @@ def display_raw(
         show_index=True,
         title=f"{symbol.upper()} raw data",
     )
+
+    fig = plot_chart(df, option_type, symbol)
+
+    return fig.show(external=external_axes)

@@ -2,15 +2,13 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, Optional, List
 from datetime import datetime
+from typing import Optional, Union
 
 import pandas as pd
-import matplotlib.pyplot as plt
 
-from openbb_terminal.forecast import rnn_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
+from openbb_terminal.forecast import helpers, rnn_model
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -43,7 +41,7 @@ def display_rnn_forecast(
     end_date: Optional[datetime] = None,
     naive: bool = False,
     export_pred_raw: bool = False,
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
 ):
     """Display RNN forecast
 
@@ -131,7 +129,7 @@ def display_rnn_forecast(
 
     past_covariates = None
     probabilistic = True
-    helpers.plot_forecast(
+    fig = helpers.plot_forecast(
         name="RNN",
         target_col=target_column,
         historical_fcast=historical_fcast,
@@ -155,3 +153,5 @@ def display_rnn_forecast(
         helpers.plot_residuals(
             _model, past_covariates, ticker_series, forecast_horizon=forecast_horizon
         )
+
+    return fig

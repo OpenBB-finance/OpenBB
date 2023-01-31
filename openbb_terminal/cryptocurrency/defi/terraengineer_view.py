@@ -9,6 +9,7 @@ from matplotlib import ticker
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.defi import terraengineer_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -52,8 +53,11 @@ def display_terra_asset_history(
 
     # This plot has 1 axis
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(yaxis_title=f"{asset.upper()} Amount")
+    fig.set_title(f"{asset.upper()} Amount in {address}")
 
     ax.plot(df["x"], df["y"])
+    fig.add_scatter(x=df["x"], y=df["y"], name=f"{asset.upper()} Amount")
     ax.set_ylabel(f"{asset.upper()} Amount")
     ax.set_title(f"{asset.upper()} Amount in {address}")
     ax.get_yaxis().set_major_formatter(
@@ -72,6 +76,8 @@ def display_terra_asset_history(
         df,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

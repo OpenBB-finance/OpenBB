@@ -11,7 +11,7 @@ class Overlap(PltTA):
     """Overlap technical indicators"""
 
     __inchart__ = ["vwap"]
-    __ma_mode__ = ["sma", "ema", "wma", "hma", "zlma"]
+    __ma_mode__ = ["sma", "ema", "wma", "hma", "zlma", "rma"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -30,7 +30,7 @@ class Overlap(PltTA):
                             continue
 
                         fig.add_scatter(
-                            name=column,
+                            name=column.replace("RMA", "MA"),
                             mode="lines",
                             line=dict(
                                 width=1.2, color=self.inchart_colors[inchart_index]
@@ -38,6 +38,7 @@ class Overlap(PltTA):
                             x=df_ta.index,
                             y=df_ta[column].values,
                             opacity=0.9,
+                            connectgaps=True,
                             row=1,
                             col=1,
                         )
@@ -50,7 +51,7 @@ class Overlap(PltTA):
                 fig.add_annotation(
                     xref="paper",
                     yref="paper",
-                    text=f"{ma.replace('_', '')}",
+                    text=f"{ma.replace('_', '').replace('RMA', 'MA')}",
                     x=0,
                     xanchor="left",
                     yshift=-i * 20,

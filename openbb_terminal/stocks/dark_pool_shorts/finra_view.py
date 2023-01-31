@@ -38,7 +38,7 @@ def darkpool_ats_otc(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
-    del external_axes
+
     ats, otc = finra_model.getTickerFINRAdata(symbol)
     if ats.empty:
         console.print("[red]Could not get data[/red]\n")
@@ -197,7 +197,7 @@ def darkpool_ats_otc(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dpotc_ats", ats)
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dpotc_otc", otc)
 
-    return fig.show()
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -276,8 +276,6 @@ def darkpool_otc(
             ).keys()
         )[:limit]
 
-        plot_dark_pools_ats(df_ats, symbols, external_axes)
-
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
@@ -285,6 +283,8 @@ def darkpool_otc(
             df_ats,
             sheet_name,
         )
+
+        return plot_dark_pools_ats(df_ats, symbols, external_axes)
     else:
         console.print("[red]Could not get data[/red]\n")
         return

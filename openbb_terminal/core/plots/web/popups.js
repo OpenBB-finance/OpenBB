@@ -9,15 +9,14 @@ function get_popup(data = null, popup_id = null) {
         let yaxis = 'title' in data.yaxis && 'text' in data.yaxis.title ? data.yaxis.title.text : '';
 
         TITLE_DIV.innerHTML = `
-        <div style="margin-top: 10px;">
+        <div>
             <label for="title_text">Title:</label>
-            <input id="title_text" type="text" value="${title}">
-
+            <input id="title_text" type="text" value="${title}"></input>
             <label for="title_xaxis">X axis:</label>
-            <input id="title_xaxis" type="text" value="${xaxis}">
-
+            <input id="title_xaxis" type="text" value="${xaxis}"></input>
             <label for="title_yaxis">Y axis:</label>
-            <input id="title_yaxis" type="text" value="${yaxis}">
+            <input id="title_yaxis" type="text" value="${yaxis}"></input>
+
         </div>
 
         <button id="title_submit" onclick="on_submit('title')">Submit</button>
@@ -59,21 +58,22 @@ function get_popup(data = null, popup_id = null) {
         <textarea id="addtext_textarea" rows="4" cols="50" value="${data.text}"
             placeholder="Enter text here">${data.text}</textarea><br>
 
-        <div style="margin-top: 10px;">
+        <div class="popup_input">
             <label for="addtext_color"><b>Font color:</b></label>
-            <input type="color" id="addtext_color" value="${data.font.color}">
+            <input type="color" id="addtext_color" value="${data.font.color}"></input>
 
             <label for="addtext_border"><b>Border color:</b></label>
-            <input type="color" id="addtext_border" value="${data.bordercolor}">
+            <input type="color" id="addtext_border" value="${data.bordercolor}"></input>
+        </div><br>
 
+        <div>
             <label for="addtext_size"><b>Font size:</b></label>
-            <input style="width: 45px;" type="number" id="addtext_size" value="${data.font.size}">
+            <input style="width: 45px;" type="number" id="addtext_size" value="${data.font.size}"></input>
 
             <label><b>Position:</b></label>
-            <label style="margin-left: 23px !important; margin-top: 25px !important;"
-                for="addtext_above"><b>Above</b></label>
-            <input style="margin-top: 25px !important;" type="checkbox" id="addtext_above" name="check"
-                value="above" ${yanchor == 'above' ? 'checked' : ''}>
+            <label for="addtext_above"><b>Above</b></label>
+            <input type="checkbox" id="addtext_above" name="check"
+                value="above" ${yanchor == 'above' ? 'checked' : ''}></input>
         </div><br>
         `;
 

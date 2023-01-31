@@ -84,7 +84,7 @@ def realtime_performance_sector(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig if not raw else None
+    return fig.show(external=external_axes) if not raw else None
 
 
 @log_start_end(log=logger)
@@ -142,7 +142,7 @@ def display_real_gdp(
             gdp.head(20), headers=["Date", "GDP"], show_index=False, title="US GDP"
         )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -197,7 +197,7 @@ def display_gdp_capita(
             title="US GDP Per Capita",
         )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -252,7 +252,7 @@ def display_inflation(
             title="US Inflation",
         )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -310,7 +310,7 @@ def display_cpi(
             cpi.head(20), headers=["Date", "CPI"], show_index=False, title="US CPI"
         )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -372,7 +372,7 @@ def display_treasury_yield(
             show_index=False,
         )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -430,4 +430,4 @@ def display_unemployment(
             show_index=False,
         )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)

@@ -7,8 +7,7 @@ from typing import List, Optional
 
 import pandas as pd
 
-from openbb_terminal.common.technical_analysis import overlap_model
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
@@ -65,50 +64,13 @@ def view_ma(
     price_df = pd.DataFrame(data)
     price_df.index.name = "date"
 
-    l_legend = [symbol]
-    if not window:
-        window = [20, 50]
-
-    for win in window:
-        if ma_type == "EMA":
-            df_ta = overlap_model.ema(data, win, offset)
-            l_legend.append(f"EMA {win}")
-        elif ma_type == "SMA":
-            df_ta = overlap_model.sma(data, win, offset)
-            l_legend.append(f"SMA {win}")
-        elif ma_type == "WMA":
-            df_ta = overlap_model.wma(data, win, offset)
-            l_legend.append(f"WMA {win}")
-        elif ma_type == "HMA":
-            df_ta = overlap_model.hma(data, win, offset)
-            l_legend.append(f"HMA {win}")
-        elif ma_type == "ZLMA":
-            df_ta = overlap_model.zlma(data, win, offset)
-            l_legend.append(f"ZLMA {win}")
-        price_df = price_df.join(df_ta)
-
-    plot_data = price_df
-
-    fig = OpenBBFigure()
-
-    fig.add_scatter(
-        x=plot_data.index,
-        y=plot_data.iloc[:, 1].values,
-        name=f"{symbol} Price",
-        line=dict(color="gold"),
-    )
-    for idx in range(2, plot_data.shape[1]):
-        fig.add_scatter(
-            x=plot_data.index,
-            y=plot_data.iloc[:, idx].values,
-            name=l_legend[idx - 1],
-        )
-    fig.update_layout(
-        title=f"{symbol} {ma_type.upper()}",
-        xaxis=dict(
-            title="Date",
-        ),
-        yaxis_title=f"{symbol} Price",
+    ta = PlotlyTA()
+    fig = ta.plot(
+        data,
+        {f"{ma_type.lower()}": dict(length=window, offset=offset)},
+        f"{symbol} {ma_type.upper()}",
+        False,
+        volume=False,
     )
 
     export_data(
@@ -119,7 +81,7 @@ def view_ma(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -176,44 +138,20 @@ def view_vwap(
             f"[red]No data found between {start.strftime('%Y-%m-%d')} and {end.strftime('%Y-%m-%d')}\n[/red]"
         )
 
-    df_vwap = overlap_model.vwap(day_df, offset)
-
-    fig = OpenBBFigure.create_subplots(
-        rows=1,
-        cols=1,
-        shared_xaxes=True,
-    )
-
-    fig.add_candlestick(
-        x=day_df.index,
-        open=day_df["Open"],
-        high=day_df["High"],
-        low=day_df["Low"],
-        close=day_df["Close"],
-        name="Candlestick",
-    )
-    fig.add_scatter(
-        x=day_df.index,
-        y=df_vwap["VWAP_D"],
-        name="VWAP",
-        line=dict(width=1.2),
-    )
-
-    fig.update_layout(
-        title=f"{symbol} {interval} VWAP",
-        xaxis=dict(
-            title="Date",
-            type="date",
-        ),
-        yaxis_title=f"{symbol} Price",
+    ta = PlotlyTA()
+    fig = ta.plot(
+        day_df,
+        {"vwap": dict(offset=offset)},
+        f"{symbol} {interval} VWAP",
+        volume=False,
     )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "VWAP",
-        df_vwap,
+        ta.df_ta,
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)

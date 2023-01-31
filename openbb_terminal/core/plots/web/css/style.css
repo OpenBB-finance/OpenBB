@@ -3,8 +3,9 @@
 @font-face {
     font-family: 'Fira Code';
     src: url('fonts/FiraCode-Regular.ttf') format('truetype');
+    /* fix Fire Code font width issue that makes Text get cut off in Plotly.js */
     font-weight: 400 700;
-    font-style: normal;
+    font-stretch: 50%;
 }
 
 html {
@@ -18,6 +19,7 @@ body {
     font-size: 1.2rem;
     color: #ffffff;
     background-color: #000000;
+    font-stretch: 50%;
 }
 
 .plotly-graph-div {
@@ -104,6 +106,7 @@ body {
     display: none;
     font-family: 'Fira Code', monospace, 'Arial Black';
     animation: popup 0.3s ease-in-out;
+    z-index: 2;
 }
 
 .popup_content {
@@ -115,15 +118,33 @@ body {
     z-index: 3;
 }
 
-.popup_overlay label {
-    position: absolute;
+.popup_input {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    z-index: 1;
+    display: flex;
+    flex-direction: calc(100% / 3);
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: center;
+    flex: 1 1 auto;
+}
+
+.popup_input label {
+    position: relative;
     display: inline-block !important;
     vertical-align: top !important;
     margin-right: 10px !important;
     z-index: 2;
+    flex: 1 1 auto;
 }
 
-.popup_overlay input {
+.popup_input input {
     width: 48px;
     height: 32px;
     margin-top: 5px;
@@ -133,10 +154,11 @@ body {
     box-sizing: border-box;
     background-color: #131313;
     color: #ffffff;
-    display: inline-block;
+    flex: 1 1 auto;
     margin-right: 5px !important;
-    margin-top: 20px !important;
+    z-index: 5;
 }
+
 
 .popup_overlay select {
     height: 30px;
@@ -241,7 +263,7 @@ body {
     color: #131313;
 }
 
-.popup_overlay input[type="color"] {
+.popup_overlay .popup_input input[type="color"] {
     margin-top: 20px;
     border: 1px solid #5A5A5A;
     border-radius: 4px;
@@ -257,15 +279,15 @@ body {
     gap: 10px;
 }
 
-.popup_overlay input[type="color"]::-webkit-color-swatch-wrapper {
+.popup_overlay .popup_input input[type="color"]::-webkit-color-swatch-wrapper {
     padding: 0;
 }
 
-.popup_overlay input[type="color"]::-webkit-color-swatch {
+.popup_overlay .popup_input input[type="color"]::-webkit-color-swatch {
     border: none;
 }
 
-.popup_overlay input[type="color"]:nth-of-type(2n) {
+.popup_overlay .popup_input input[type="color"]:nth-of-type(2n) {
     clear: left !important;
 }
 
@@ -279,6 +301,10 @@ body {
     box-sizing: border-box;
     background-color: #131313;
     color: #ffffff;
+    margin-right: 40px !important;
+    margin-top: 20px !important;
+    vertical-align: top !important;
+    max-width: 385px;
 }
 
 .popup_overlay input[type="number"] {

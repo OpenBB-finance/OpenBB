@@ -13,7 +13,6 @@ from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.explainability.shap_explainer import ShapExplainer
 from darts.metrics import mape
 from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
-from darts.utils.statistics import plot_residuals_analysis
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
@@ -135,10 +134,7 @@ def plot_data_predictions(
     )
 
     fig.add_vline(
-        x=forecast_data.index[0],
-        line_width=1,
-        line_dash="dash",
-        line_color="white",
+        x=forecast_data.index[0], line=dict(width=1, dash="dash", color="white")
     )
     if n_loops == 1:
         fig.add_scatter(
@@ -206,7 +202,7 @@ def plot_data_predictions(
         legend_title="Legend",
         font=dict(family="Courier New, monospace", size=18, color="#7f7f7f"),
     )
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 def prepare_scale_train_valid_test(
@@ -465,7 +461,7 @@ def plot_forecast(
     naive: bool = False,
     export_pred_raw: bool = False,
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     quant_kwargs = {}
     if low_quantile:
         quant_kwargs["low_quantile"] = low_quantile
@@ -507,7 +503,7 @@ def plot_forecast(
             line_color="green",
             mode="lines",
         )
-
+    predicted_values.plot()
     pred_label = f"{name} Forecast"
     if past_covariates:
         pred_label += " w/ past covs"
@@ -521,15 +517,15 @@ def plot_forecast(
     )
 
     fig.update_layout(
-        title={
-            "text": f"{name} for <{ticker_name}> for next [{n_predict}] days (MAPE={precision:.2f}%)",
-            "x": 0.5,
-            "xanchor": "center",
-            "yanchor": "top",
-        },
-        xaxis_title="Date",
+        title=dict(
+            text=f"{name} for <{ticker_name}> for next [{n_predict}] days (MAPE={precision:.2f}%)",
+            x=0.5,
+            xanchor="center",
+            yanchor="top",
+        ),
         yaxis_title=target_col,
         xaxis=dict(
+            title="Date",
             type="date",
             tickformat="%m/%d/%Y",
         ),
@@ -576,7 +572,7 @@ def plot_forecast(
             sheet_name,
         )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 def plot_explainability(
@@ -826,6 +822,8 @@ def plot_residuals(
     num_bins: int = 20,
     default_formatting: bool = False,
 ):
+    del default_formatting
+
     if past_covariates:
         console.print(
             "[red]Cannot calculate and plot residuals if there are past covariates.[/red]"
@@ -837,18 +835,31 @@ def plot_residuals(
         my_stopper = early_stopper(5, "val_loss")
         pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
         model.trainer_params = pl_trainer_kwargs
-        residuals = model.residuals(
+        residuals: TimeSeries = model.residuals(
             series=series,
             forecast_horizon=forecast_horizon,
             retrain=False,
             verbose=True,
         )
-        plot_residuals_analysis(
-            residuals=residuals,
-            num_bins=num_bins,
-            fill_nan=True,
-            default_formatting=default_formatting,
+
+        residuals._assert_univariate()  # pylint: disable=protected-access
+
+        fig = OpenBBFigure.create_subplots(
+            rows=2,
+            cols=2,
+            shared_xaxes=False,
+            specs=[
+                [{"colspan": 2}, None],
+                [{"type": "scatter"}, {"type": "histogram"}],
+            ],
         )
+
+        df_res = residuals.pd_dataframe()
+        fig.add_scatter(x=df_res.index, y=df_res["close"], name="close", row=1, col=1)
+        fig.add_corr_plot(residuals.values(), row=2, col=1)
+        fig.add_histplot(residuals.univariate_values(), row=2, col=2, bins=num_bins)
+        fig.update_layout(hovermode="closest")
+        fig.show()
 
 
 def check_data_length(

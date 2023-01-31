@@ -1,13 +1,15 @@
-from datetime import timedelta, datetime, date
-from unittest.mock import patch
-from typing import Callable, Any
+from datetime import date, datetime, timedelta
 from inspect import signature
-import streamlit as st
+from typing import Any, Callable
+from unittest.mock import patch
+
 import pandas as pd
+import streamlit as st
 import yfinance as yf
-from openbb_terminal.sdk import openbb
+
 from openbb_terminal.forecast import helpers
 from openbb_terminal.rich_config import console
+from openbb_terminal.sdk import openbb
 
 st.set_page_config(layout="wide")
 
@@ -151,12 +153,12 @@ class Handler:
     ):
         del naive, forecast_only
         if tickers and target_column:
-            start_n = datetime(start.year, start.month, start.day)
-            end_n = datetime(end.year, end.month, end.day)
+            start_n = datetime(start.year, start.month, start.day).date()
+            end_n = datetime(end.year, end.month, end.day).date()
             if interval in ["1d", "5d", "1wk", "1mo", "3mo"]:
                 result = st.session_state["df"].loc[
-                    (st.session_state["df"]["date"] >= start_n)
-                    & (st.session_state["df"]["date"] <= end_n)
+                    (st.session_state["df"]["date"].dt.date >= start_n)
+                    & (st.session_state["df"]["date"].dt.date <= end_n)
                 ]
             else:
                 result = st.session_state["df"]

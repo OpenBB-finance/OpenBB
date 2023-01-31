@@ -2,15 +2,13 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, Optional, List
 from datetime import datetime
+from typing import Optional, Union
 
 import pandas as pd
-import matplotlib.pyplot as plt
 
-from openbb_terminal.forecast import expo_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
+from openbb_terminal.forecast import expo_model, helpers
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -37,7 +35,7 @@ def display_expo_forecast(
     end_date: Optional[datetime] = None,
     naive: bool = False,
     export_pred_raw: bool = False,
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
 ):
     """Display Probabilistic Exponential Smoothing forecast
 
@@ -110,7 +108,7 @@ def display_expo_forecast(
         return
 
     probabilistic = True
-    helpers.plot_forecast(
+    fig = helpers.plot_forecast(
         name="PES",
         target_col=target_column,
         historical_fcast=historical_fcast,
@@ -135,3 +133,5 @@ def display_expo_forecast(
         # helpers.plot_residuals(
         #     _model, None, ticker_series, forecast_horizon=forecast_horizon
         # )
+
+    return fig

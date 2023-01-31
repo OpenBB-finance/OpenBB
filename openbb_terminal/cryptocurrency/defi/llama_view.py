@@ -4,20 +4,12 @@ __docformat__ = "numpy"
 import logging
 import os
 
-import matplotlib.pyplot as plt
-from matplotlib import ticker
-
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from openbb_terminal.cryptocurrency.defi import llama_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    lambda_long_number_format,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 logger = logging.getLogger(__name__)
 
@@ -45,38 +37,30 @@ def display_grouped_defi_protocols(
     df = llama_model.get_defi_protocols(limit, drop_chain=False)
     chains = llama_model.get_grouped_defi_protocols(limit)
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=(14, 8), dpi=PLOT_DPI)
+    fig = OpenBBFigure(
+        xaxis_title="Total Value Locked ($)",
+        yaxis_title="Decentralized Application Name",
+    )
+    fig.set_title(f"Top {limit} dApp TVL grouped by chain")
 
     colors = iter(cfg.theme.get_colors(reverse=True))
 
     for chain in chains:
         chain_filter = df.loc[df.Chain == chain]
-        ax.barh(
+        fig.add_bar(
             y=chain_filter.index,
-            width=chain_filter["TVL ($)"],
-            label=chain,
-            height=0.5,
-            color=next(colors, "#B6A9CB"),
+            x=chain_filter["TVL ($)"],
+            name=chain,
+            orientation="h",
+            marker_color=next(colors, "#B6A9CB"),
         )
 
-    ax.set_xlabel("Total Value Locked ($)")
-    ax.set_ylabel("Decentralized Application Name")
-    ax.get_xaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
+    fig.update_layout(
+        margin=dict(l=150),
+        yaxis=dict(side="left", tickfont=dict(size=8)),
+        legend=dict(yanchor="bottom", y=0, xanchor="right", x=1),
     )
-
-    ax.set_title(f"Top {limit} dApp TVL grouped by chain")
-    cfg.theme.style_primary_axis(ax)
-    ax.tick_params(axis="y", labelsize=8)
-
-    ax.yaxis.set_label_position("left")
-    ax.yaxis.set_ticks_position("left")
-    handles, labels = ax.get_legend_handles_labels()
-    ax.legend(handles[::-1], labels[::-1], loc="best")
-
-    if not external_axes:
-        cfg.theme.visualize_output()
+    fig.update_xaxes(tickvals=list(range(0, 40)), ticktext=list(range(0, 40)))
 
     export_data(
         export,
@@ -85,6 +69,8 @@ def display_grouped_defi_protocols(
         chains,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -146,8 +132,8 @@ def display_historical_tvl(
         Whether to return the figure object or not, by default False
     """
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(yaxis_title="Total Value Locked ($)")
+    fig.set_title("TVL in dApps")
 
     available_protocols = read_data_file("defillama_dapps.json")
 
@@ -156,20 +142,13 @@ def display_historical_tvl(
             if dapp in available_protocols.keys():
                 df = llama_model.get_defi_protocol(dapp)
                 if not df.empty:
-                    ax.plot(df, label=available_protocols[dapp])
+                    fig.add_scatter(
+                        x=df.index,
+                        y=df["totalLiquidityUSD"].values,
+                        name=available_protocols[dapp],
+                    )
             else:
                 print(f"{dapp} not found\n")
-
-        ax.set_ylabel("Total Value Locked ($)")
-        ax.get_yaxis().set_major_formatter(
-            ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
-        )
-        cfg.theme.style_primary_axis(ax)
-        ax.legend()
-        ax.set_title("TVL in dApps")
-
-        if not external_axes:
-            cfg.theme.visualize_output()
 
         export_data(
             export,
@@ -178,6 +157,8 @@ def display_historical_tvl(
             None,
             sheet_name,
         )
+
+        return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -200,25 +181,14 @@ def display_defi_tvl(
         Whether to return the figure object or not, by default False
     """
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(yaxis_title="Total Value Locked ($)")
+    fig.set_title("Total Value Locked in DeFi")
 
     df = llama_model.get_defi_tvl()
     df_data = df.copy()
     df = df.tail(limit)
 
-    ax.plot(df["date"], df["totalLiquidityUSD"], ms=2)
-    # ax.set_xlim(df["date"].iloc[0], df["date"].iloc[-1])
-
-    ax.set_ylabel("Total Value Locked ($)")
-    ax.set_title("Total Value Locked in DeFi")
-    ax.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
-    )
-    cfg.theme.style_primary_axis(ax)
-
-    if not external_axes:
-        cfg.theme.visualize_output()
+    fig.add_scatter(x=df["date"], y=df["totalLiquidityUSD"], name="TVL")
 
     export_data(
         export,
@@ -227,3 +197,5 @@ def display_defi_tvl(
         df_data,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)

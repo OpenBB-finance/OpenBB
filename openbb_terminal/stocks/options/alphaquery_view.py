@@ -5,12 +5,9 @@ import logging
 import os
 from datetime import datetime, timedelta
 
-import matplotlib.pyplot as plt
-
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import alphaquery_model
 
@@ -46,14 +43,8 @@ def display_put_call_ratio(
         console.print("No data found.\n")
         return
 
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-    ax.plot(pcr.index, pcr.values)
-    ax.set_title(f"Put Call Ratio for {symbol.upper()}")
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    fig = OpenBBFigure().set_title(f"Put Call Ratio for {symbol.upper()}")
+    fig.add_scatter(x=pcr.index, y=pcr["PCR"], name="Put Call Ratio")
 
     export_data(
         export,
@@ -62,3 +53,5 @@ def display_put_call_ratio(
         pcr,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)

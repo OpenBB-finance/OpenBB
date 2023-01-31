@@ -4,13 +4,15 @@ __docformat__ = "numpy"
 import logging
 import os
 
-import squarify
-from matplotlib import cm, pyplot as plt, ticker
+import pandas as pd
+import plotly.express as px
+from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
 import openbb_terminal.cryptocurrency.overview.pycoingecko_model as gecko
-from openbb_terminal import config_terminal as cfg, feature_flags as obbff
+from openbb_terminal import feature_flags as obbff
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
 )
@@ -55,64 +57,89 @@ def display_crypto_heatmap(
         df = df.fillna(
             0
         )  # to prevent errors with rounding when values aren't available
-        max_abs = max(
-            -df.price_change_percentage_24h_in_currency.min(),
-            df.price_change_percentage_24h_in_currency.max(),
-        )
-        cmapred = cm.get_cmap("Reds", 100)
-        cmapgreen = cm.get_cmap("Greens", 100)
-        colors = list()
-        for val in df.price_change_percentage_24h_in_currency / max_abs:
-            if val > 0:
-                colors.append(cmapgreen(round(val * 100)))
-            else:
-                colors.append(cmapred(-round(val * 100)))
-
-        # This plot has 1 axis
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         category_str = f"[{category}]" if category else ""
-        df_copy = df
-        the_row = "price_change_percentage_24h_in_currency"
-        df_copy["symbol"] = df_copy.apply(
-            lambda row: f"{row['symbol'].upper()}\n{round(row[the_row], 2)}%",
-            axis=1,
+        fig = OpenBBFigure.create_subplots(
+            print_grid=False,
+            vertical_spacing=0,
+            horizontal_spacing=-0,
+            specs=[[{"type": "domain"}]],
+            rows=1,
+            cols=1,
         )
+        fig.set_title(f"Top {limit} Cryptocurrencies {category_str}")
+
+        df_copy = df.copy()
+        the_row = "price_change_percentage_24h_in_currency"
+        df_copy["symbol"] = df_copy.apply(lambda row: row["symbol"].upper(), axis=1)
+        df_copy["change"] = df_copy.apply(lambda row: round(row[the_row], 2), axis=1)
 
         # index needs to get sorted - was matching with different values
         df.sort_index(inplace=True)
         df_copy.sort_index(inplace=True)
-        squarify.plot(
-            df["market_cap"],
-            alpha=0.5,
-            color=colors,
+
+        color_bin = [-100, -2, -1, -0.001, 0.001, 1, 2, 100]
+        df_copy["colors"] = pd.cut(
+            df_copy["change"],
+            bins=color_bin,
+            labels=[
+                "rgb(246, 53, 56)",
+                "rgb(191, 64, 69)",
+                "rgb(139, 68, 78)",
+                "grey",
+                "rgb(53, 118, 78)",
+                "rgb(47, 158, 79)",
+                "rgb(48, 204, 90)",
+            ],
         )
 
-        text_sizes = squarify.normalize_sizes(df["market_cap"], 100, 100)
+        treemap = px.treemap(
+            df_copy,
+            path=["symbol"],
+            values="market_cap",
+            custom_data=[the_row],
+            color="colors",
+            color_discrete_map={
+                "(?)": "#262931",
+                "grey": "grey",
+                "rgb(246, 53, 56)": "rgb(246, 53, 56)",
+                "rgb(191, 64, 69)": "rgb(191, 64, 69)",
+                "rgb(139, 68, 78)": "rgb(139, 68, 78)",
+                "rgb(53, 118, 78)": "rgb(53, 118, 78)",
+                "rgb(47, 158, 79)": "rgb(47, 158, 79)",
+                "rgb(48, 204, 90)": "rgb(48, 204, 90)",
+            },
+        )
+        fig.add_trace(treemap["data"][0], row=1, col=1)
 
-        rects = squarify.squarify(text_sizes, 0, 0, 100, 100)
-        for la, r in zip(df_copy["symbol"], rects):
-            x, y, dx, dy = r["x"], r["y"], r["dx"], r["dy"]
-            ax.text(
-                x + dx / 2,
-                y + dy / 2,
-                la,
-                va="center",
-                ha="center",
-                color="black",
-                size=(
-                    text_sizes[df_copy.index[df_copy["symbol"] == la].tolist()[0]]
-                    ** 0.5
-                    * 0.8
-                ),
-            )
-        ax.set_title(f"Top {limit} Cryptocurrencies {category_str}")
-        ax.set_axis_off()
+        fig.data[
+            0
+        ].texttemplate = (
+            "<br> <br> <b>%{label}<br>    %{customdata[0]:.2f}% <br> <br> <br><br><b>"
+        )
+        fig.data[0].insidetextfont = dict(
+            family="Arial Black",
+            size=30,
+            color="white",
+        )
 
-        cfg.theme.style_primary_axis(ax)
-
-        if not external_axes:
-            cfg.theme.visualize_output()
+        fig.update_traces(
+            textinfo="label+text",
+            textposition="middle center",
+            selector=dict(type="treemap"),
+            marker_line_width=0.3,
+            marker_pad_b=20,
+            marker_pad_l=0,
+            marker_pad_r=0,
+            marker_pad_t=50,
+            tiling_pad=2,
+        )
+        fig.update_layout(
+            margin=dict(t=0, l=0, r=0, b=0),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            hovermode=False,
+        )
 
         export_data(
             export,
@@ -121,6 +148,8 @@ def display_crypto_heatmap(
             df,
             sheet_name,
         )
+
+        return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -157,26 +186,22 @@ def display_holdings_overview(
         console.print("\nZero companies holding this crypto\n")
     else:
         if show_bar:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            fig = OpenBBFigure(xaxis_title="Company Symbol")
 
-            for _, row in df.iterrows():
-                ax.bar(x=row["Symbol"], height=row["Total Holdings"])
+            fig.add_bar(x=df["Symbol"], y=df["Total Holdings"], name="Total Holdings")
+
+            ylabel = "ETH Number"
+            title = "Total ETH Holdings per company"
+
             if symbol == "bitcoin":
-                ax.set_ylabel("BTC Number")
-            else:
-                ax.set_ylabel("ETH Number")
-            ax.get_yaxis().set_major_formatter(
-                ticker.FuncFormatter(
-                    lambda x, _: lambda_long_number_format_with_type_check(x)
-                )
-            )
-            ax.set_xlabel("Company Symbol")
-            fig.tight_layout(pad=8)
-            if symbol == "bitcoin":
-                ax.set_title("Total BTC Holdings per company")
-            else:
-                ax.set_title("Total ETH Holdings per company")
-            ax.tick_params(axis="x", labelrotation=90)
+                ylabel = "BTC Number"
+                title = "Total BTC Holdings per company"
+
+            fig.set_title(title)
+            fig.set_yaxis_title(ylabel)
+
+            fig.show()
+
         console.print(f"\n{stats_string}\n")
         df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         print_rich_table(
@@ -261,34 +286,29 @@ def display_global_market_info(
 
     if not df.empty:
         if pie:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            ax.pie(
-                [
-                    round(
-                        df.loc[df["Metric"] == "Btc Market Cap In Pct"]["Value"].item(),
-                        2,
-                    ),
-                    round(
-                        df.loc[df["Metric"] == "Eth Market Cap In Pct"]["Value"].item(),
-                        2,
-                    ),
-                    round(
-                        df.loc[df["Metric"] == "Altcoin Market Cap In Pct"][
-                            "Value"
-                        ].item(),
-                        2,
-                    ),
-                ],
+            fig = OpenBBFigure()
+            fig.set_title("Market Cap Distribution")
+
+            df = df.loc[
+                df["Metric"].isin(
+                    [
+                        "Btc Market Cap In Pct",
+                        "Eth Market Cap In Pct",
+                        "Altcoin Market Cap In Pct",
+                    ]
+                )
+            ]
+
+            fig.add_pie(
                 labels=["BTC", "ETH", "Altcoins"],
-                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
-                labeldistance=1.05,
-                autopct="%1.0f%%",
-                startangle=90,
+                values=df["Value"],
+                textinfo="label+percent",
+                showlegend=False,
+                hoverinfo="label+percent",
+                marker=dict(line=dict(color="white", width=0.5)),
             )
-            ax.set_title("Market cap distribution")
-            if obbff.USE_ION:
-                plt.ion()
-            plt.show()
+            fig.show()
+
         print_rich_table(
             df, headers=list(df.columns), show_index=False, title="Global Statistics"
         )
@@ -383,19 +403,32 @@ def display_stablecoins(
             values_list.append(other_stables[f"Percentage [%] of top {limit}"].sum())
             labels_list = list(stables_to_display["Name"].values)
             labels_list.append("Others")
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            ax.pie(
-                values_list,
+
+            fig = OpenBBFigure()
+
+            fig.add_pie(
                 labels=labels_list,
-                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
-                labeldistance=1.05,
-                autopct="%1.0f%%",
-                startangle=90,
+                values=values_list,
+                textinfo="label+percent",
+                showlegend=False,
+                hoverinfo="label+percent",
+                marker=dict(line=dict(color="white", width=1)),
+                automargin=True,
+                textposition="outside",
+                rotation=180,
             )
-            ax.set_title(f"Market cap distribution of top {limit} Stablecoins")
-            if obbff.USE_ION:
-                plt.ion()
-            plt.show()
+
+            fig.update_layout(
+                margin=dict(l=0, r=0, t=60, b=0),
+                title=dict(
+                    text=f"Market cap distribution of top {limit} Stablecoins",
+                    y=0.97,
+                    x=0.5,
+                    xanchor="center",
+                    yanchor="top",
+                ),
+            )
+            fig.show()
 
         console.print(
             f"First {limit} stablecoins have a total "
@@ -462,6 +495,18 @@ def display_categories(
             labels_list = list(stables_to_display["Name"].values)
             labels_list.append("Others")
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            fig = OpenBBFigure()
+            fig.add_pie(
+                labels=labels_list,
+                values=values_list,
+                textinfo="label+percent",
+                showlegend=False,
+                hoverinfo="label+percent",
+                marker=dict(line=dict(color="white", width=1)),
+                automargin=True,
+                textposition="outside",
+                rotation=180,
+            )
             ax.pie(
                 values_list,
                 labels=labels_list,
@@ -470,6 +515,17 @@ def display_categories(
                 startangle=90,
             )
             ax.set_title(f"Market Cap distribution of top {limit} crypto categories")
+            fig.update_layout(
+                margin=dict(l=0, r=0, t=60, b=0),
+                title=dict(
+                    text=f"Market Cap distribution of top {limit} crypto categories",
+                    y=0.97,
+                    x=0.5,
+                    xanchor="center",
+                    yanchor="top",
+                ),
+            )
+            fig.show()
             if obbff.USE_ION:
                 plt.ion()
             plt.show()

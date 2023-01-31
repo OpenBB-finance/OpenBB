@@ -4,24 +4,17 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import List, Optional, Tuple, Union
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
 from pandas.plotting import register_matplotlib_converters
 from sklearn.preprocessing import MinMaxScaler
 
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.comparison_analysis import yahoo_finance_model
 
 logger = logging.getLogger(__name__)
@@ -86,20 +79,17 @@ def display_historical(
             index=df_similar.index,
         )
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(
+        yaxis_title=f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}"
+    )
+    fig.set_title("Historical price of similar companies")
 
-    companies_names = df_similar.columns.to_list()
-    ax.plot(df_similar, label=companies_names)
-    ax.set_title("Historical price of similar companies")
-    ax.set_ylabel(f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}")
-    # ensures that the historical data starts from same datapoint
-    ax.set_xlim([df_similar.index[0], df_similar.index[-1]])
-    ax.legend()
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    for ticker in df_similar.columns:
+        fig.add_scatter(
+            x=df_similar.index,
+            y=df_similar[ticker],
+            name=ticker,
+        )
 
     export_data(
         export,
@@ -108,6 +98,8 @@ def display_historical(
         df_similar,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -138,24 +130,15 @@ def display_volume(
     """
     df_similar = yahoo_finance_model.get_volume(similar, start_date, end_date)
 
-    # This plot has 1 axis
-
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-    df_similar = df_similar.div(1_000_000)
-    companies_names = df_similar.columns.to_list()
-
-    ax.plot(df_similar, label=companies_names)
-    ax.set_title("Historical volume of similar companies")
-    ax.set_ylabel("Volume [M]")
-    # ensures that the historical data starts from same datapoint
-    ax.set_xlim([df_similar.index[0], df_similar.index[-1]])
-
-    ax.legend()
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    fig = OpenBBFigure(yaxis_title="Volume").set_title(
+        "Historical volume of similar companies"
+    )
+    for ticker in df_similar.columns:
+        fig.add_scatter(
+            x=df_similar.index,
+            y=df_similar[ticker],
+            name=ticker,
+        )
 
     export_data(
         export,
@@ -164,6 +147,8 @@ def display_volume(
         df_similar,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -211,13 +196,41 @@ def display_correlation(
         similar, start_date, end_date, candle_type
     )
 
-    mask = None
+    df_corr = correlations
     if not display_full_matrix:
         mask = np.zeros((df_similar.shape[1], df_similar.shape[1]), dtype=bool)
         mask[np.triu_indices(len(mask))] = True
+        df_corr = correlations.mask(mask)
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    df_corr[df_corr < 0] = np.nan
+    df_corr.fillna("", inplace=True)
+
+    fig = OpenBBFigure()
+    fig.set_title(f"Correlation Heatmap of similar companies from {start_date}")
+    fig.add_heatmap(
+        x=df_corr.columns,
+        y=df_corr.index,
+        z=df_corr.values.tolist(),
+        zmin=-1,
+        zmax=1,
+        hoverongaps=False,
+        showscale=True,
+        colorscale="RdYlGn",
+        text=df_corr.to_numpy(),
+        textfont=dict(color="black"),
+        texttemplate="%{text:.2f}",
+        colorbar=dict(
+            thickness=10,
+            thicknessmode="pixels",
+            x=1.2,
+            y=1,
+            xanchor="right",
+            yanchor="top",
+            xpad=10,
+        ),
+        xgap=1,
+        ygap=1,
+    )
 
     if raw:
         print_rich_table(
@@ -225,23 +238,6 @@ def display_correlation(
             headers=[x.title().upper() for x in correlations.columns],
             show_index=True,
         )
-
-    sns.heatmap(
-        correlations,
-        cbar_kws={"ticks": [-1.0, -0.5, 0.0, 0.5, 1.0]},
-        cmap="RdYlGn",
-        linewidths=1,
-        annot=True,
-        annot_kws={"fontsize": 10},
-        vmin=-1,
-        vmax=1,
-        mask=mask,
-        ax=ax,
-    )
-    ax.set_title(f"Correlation Heatmap of similar companies from {start_date}")
-
-    if not external_axes:
-        theme.visualize_output()
 
     export_data(
         export,
@@ -251,6 +247,12 @@ def display_correlation(
         sheet_name,
     )
 
+    fig.update_layout(
+        margin=dict(l=0, r=120, t=0, b=0), yaxis=dict(autorange="reversed")
+    )
+
+    return fig.show(external=external_axes)
+
 
 @log_start_end(log=logger)
 def display_sp500_comps_tsne(
@@ -259,7 +261,7 @@ def display_sp500_comps_tsne(
     no_plot: bool = False,
     limit: int = 10,
     external_axes: bool = False,
-) -> List[str]:
+) -> Union[List[str], Tuple[List[str], OpenBBFigure]]:
     """Runs TSNE on SP500 tickers (along with ticker if not in SP500).
     TSNE is a method of visualing higher dimensional data
     https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html
@@ -289,47 +291,51 @@ def display_sp500_comps_tsne(
     top_n_name = top_n.index.to_list()
 
     if not no_plot:
-        # This plot has 1 axis
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        fig = OpenBBFigure(xaxis_title="Dimension 1", yaxis_title="Dimension 2")
+        fig.set_title(
+            f"Top 100 closest stocks on S&P500 to {symbol} using TSNE algorithm"
+        )
 
         top_100 = data[(limit + 1) : 101]
         symbol_df = data[data.index == symbol]
 
-        ax.scatter(
-            top_n.X,
-            top_n.Y,
-            alpha=0.8,
-            c=theme.up_color,
-            label=f"Top {limit} closest tickers",
+        fig.add_scatter(
+            x=top_n.X,
+            y=top_n.Y,
+            text=top_n.index,
+            textfont=dict(color=theme.up_color),
+            textposition="top center",
+            texttemplate="%{text}",
+            mode="markers+text",
+            marker=dict(size=10, color=theme.up_color),
+            name=f"Top {limit} closest tickers",
         )
-        ax.scatter(
-            top_100.X, top_100.Y, alpha=0.5, c="grey", label="Top 100 closest tickers"
+        fig.add_scatter(
+            x=top_100.X,
+            y=top_100.Y,
+            text=top_100.index,
+            textfont=dict(color="grey"),
+            textposition="top center",
+            texttemplate="%{text}",
+            mode="markers+text",
+            marker=dict(size=10, color="grey"),
+            name="Top 100 closest tickers",
         )
 
-        for x, y, company in zip(top_n.X, top_n.Y, top_n.index):
-            ax.annotate(company, (x, y), fontsize=9, alpha=0.9)
-
-        for x, y, company in zip(top_100.X, top_100.Y, top_100.index):
-            ax.annotate(company, (x, y), fontsize=9, alpha=0.75)
-
-        ax.scatter(
-            symbol_df.X,
-            symbol_df.Y,
-            s=50,
-            c=theme.down_color,
+        fig.add_scatter(
+            x=symbol_df.X,
+            y=symbol_df.Y,
+            mode="markers+text",
+            name=symbol,
+            text=symbol_df.index,
+            textfont=dict(color=theme.down_color),
+            textposition="top center",
+            texttemplate="%{text}",
+            marker=dict(size=12, color=theme.down_color),
         )
-        ax.annotate(symbol, (symbol_df.X, symbol_df.Y), fontsize=9, alpha=1)
-        ax.legend()
+        if external_axes:
+            return top_n_name, fig.show(external=external_axes)
 
-        ax.set_title(
-            f"Top 100 closest stocks on S&P500 to {symbol} using TSNE algorithm",
-            fontsize=11,
-        )
-        ax.set_xlabel("Dimension 1")
-        ax.set_ylabel("Dimension 2")
-        theme.style_primary_axis(ax)
-
-        if not external_axes:
-            theme.visualize_output()
+        fig.show()
 
     return top_n_name

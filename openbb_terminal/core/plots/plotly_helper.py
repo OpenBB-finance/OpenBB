@@ -1,16 +1,18 @@
 import json
 import os
+import textwrap
 from datetime import datetime
 from math import floor
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.io as pio
+import scipy.stats as stats
+import statsmodels.api as sm
 from pandas.tseries.holiday import USFederalHolidayCalendar
-from plotly.figure_factory import create_distplot
 from plotly.subplots import make_subplots
 
 from openbb_terminal.base_helpers import console, strtobool
@@ -50,6 +52,8 @@ class TerminalStyle:
     down_color: str = ""
     up_colorway: List[str] = []
     down_colorway: List[str] = []
+    up_color_transparent: str = ""
+    down_color_transparent: str = ""
 
     line_width: float = 1.5
 
@@ -145,6 +149,12 @@ class TerminalStyle:
 
         self.up_color = line.get("up_color", "#00ACFF")
         self.down_color = line.get("down_color", "#FF0000")
+        self.up_color_transparent = line.get(
+            "up_color_transparent", "rgba(0, 170, 255, 0.50)"
+        )
+        self.down_color_transparent = line.get(
+            "down_color_transparent", "rgba(230, 0, 57, 0.50)"
+        )
         self.line_color = line.get("color", "#ffed00")
         self.line_width = line.get("width", self.line_width)
         self.down_colorway = line.get("down_colorway", PLT_DECREASING_COLORWAY)
@@ -215,6 +225,7 @@ class OpenBBFigure(go.Figure):
             self.__dict__ = fig.__dict__
 
         self._has_secondary_y = kwargs.pop("has_secondary_y", False)
+        self._date_xaxs = {}
 
         if xaxis := kwargs.pop("xaxis", None):
             self.update_xaxes(xaxis)
@@ -287,63 +298,176 @@ class OpenBBFigure(go.Figure):
 
         return cls(fig, **kwargs)
 
-    def add_histplot(
-        self,
-        x: Union[List[List[float]], np.ndarray, pd.Series],
-        name: Union[str, List[str]] = None,
-        colors: List[str] = None,
-        bins: Union[int, str] = "auto",
-        show_curve: bool = True,
-        show_rug: bool = True,
-        show_hist: bool = True,
-        row: int = None,
-        col: int = None,
-        secondary_y: bool = None,
-    ) -> None:
-        """Add a histogram plot to the figure
+    def add_trend(self, data: pd.DataFrame) -> None:
+        """Add a trend line to the figure
 
         Parameters
         ----------
-        x : `Union[List[List[float]], np.ndarray, pd.Series]`
+        data : `pd.DataFrame`
             Data to plot
-        name : `Union[str, List[str]]`, optional
-            Name of the plot, by default None
-        colors : `List[str]`, optional
-            Colors of the plot, by default None
-        bins : `Union[int, str]`, optional
-            Number of bins or bin size, by default "auto"
-        show_curve : `str`, optional
-            Whether to show the curve, by default "kde"
-        show_rug : `bool`, optional
-            Whether to show the rug, by default False
-        show_hist : `bool`, optional
-            Whether to show the histogram, by default True
-        row : `int`, optional
-            Row of the subplot, by default None
-        col : `int`, optional
-            Column of the subplot, by default None
-        secondary_y : `bool`, optional
-            Whether to plot on the secondary y axis, by default None
+        name : `str`
+            Name of the plot
         """
+        try:
+            if "OC_High_trend" in data.columns:
+                high_trend = data.loc[
+                    data["OC_High_trend"].idxmin() : data["OC_High_trend"].idxmax()
+                ]
+                self.add_shape(
+                    type="line",
+                    name="High Trend",
+                    x0=high_trend.index[0],
+                    y0=high_trend["OC_High_trend"].iloc[0],
+                    x1=high_trend.index[-1],
+                    y1=high_trend["OC_High_trend"].iloc[-1],
+                    line=dict(color=theme.up_color, width=2),
+                    row=1,
+                    col=1,
+                )
+            if "OC_Low_trend" in data.columns:
+                low_trend = data.loc[
+                    data["OC_Low_trend"].idxmin() : data["OC_Low_trend"].idxmax()
+                ]
+                self.add_shape(
+                    type="line",
+                    name="Low Trend",
+                    x0=low_trend.index[0],
+                    y0=low_trend["OC_Low_trend"].iloc[0],
+                    x1=low_trend.index[-1],
+                    y1=low_trend["OC_Low_trend"].iloc[-1],
+                    line=dict(color=theme.down_color, width=2),
+                    row=1,
+                    col=1,
+                )
+        except Exception:
+            console.print("[red]Error adding trend line[/red]")
 
-        fig = create_distplot(
-            [x] if not isinstance(x, list) else x,
-            [name] if not isinstance(name, list) else name,
-            colors=colors,
-            bin_size=bins,
-            show_rug=show_rug,
-            show_hist=show_hist,
-            show_curve=show_curve,
-            histnorm="probability",
-            curve_type="kde",
-        )
+    def add_histplot(
+        self,
+        dataset: Union[List[List[float]], np.ndarray, pd.Series],
+        name: Union[str, List[str]] = None,
+        colors: List[str] = None,
+        bins: Union[int, str] = 15,
+        curve: Literal["normal", "kde"] = "normal",
+        show_curve: bool = True,
+        show_rug: bool = True,
+        show_hist: bool = True,
+        row: int = 1,
+        col: int = 1,
+    ) -> None:
 
-        for trace in fig.select_traces():
-            if trace.type == "scatter":
-                trace.showlegend = False
-            self.add_trace(trace, row=row, col=col, secondary_y=secondary_y)
+        callback = stats.norm if curve == "normal" else stats.gaussian_kde
 
-    def set_title(self, title: str, **kwargs) -> "OpenBBFigure":
+        def _validate_x(data: Union[List[List[float]], np.ndarray, pd.Series]):
+            if isinstance(data, pd.Series):
+                data = data.values
+            if isinstance(data, np.ndarray):
+                data = data.tolist()
+            if isinstance(data, list) and curve == "kde":
+                data = [data]
+
+            return data
+
+        valid_x = _validate_x(dataset)
+
+        if isinstance(name, str):
+            name = [name]
+
+        if isinstance(colors, str):
+            colors = [colors]
+
+        if not name:
+            name = [None] * len(valid_x)
+
+        if not colors:
+            colors = [None] * len(valid_x)
+
+        max_y = 0
+        for i, (x_i, name_i, color_i) in enumerate(zip(valid_x, name, colors)):
+            if not color_i:
+                color_i = theme.up_color if i % 2 == 0 else theme.down_color
+
+            res_mean, res_std = np.mean(x_i), np.std(x_i)
+            res_min, res_max = min(x_i), max(x_i)
+            x = np.linspace(res_min, res_max, 100)
+            if show_hist:
+                self.add_histogram(
+                    x=x_i,
+                    name=name_i,
+                    marker_color=color_i,
+                    histnorm="probability",
+                    histfunc="count",
+                    nbinsx=bins,
+                    opacity=0.7,
+                    row=row,
+                    col=col,
+                )
+
+            if show_rug:
+                self.add_scatter(
+                    x=x_i,
+                    y=[0.002] * len(x_i),
+                    name=name_i,
+                    mode="markers",
+                    marker=dict(
+                        color=theme.down_color,
+                        symbol="line-ns-open",
+                        size=8,
+                    ),
+                    row=row,
+                    col=col,
+                )
+            if show_curve:
+                if curve == "kde":
+                    curve_x = [None] * len(valid_x)
+                    curve_y = [None] * len(valid_x)
+                    # pylint: disable=consider-using-enumerate
+                    for index in range(len(valid_x)):
+                        curve_x[index] = [
+                            res_min + xx * (res_max - res_min) / 500
+                            for xx in range(500)
+                        ]
+                        curve_y[index] = stats.gaussian_kde(valid_x[index])(
+                            curve_x[index]
+                        )
+                    for index in range(len(valid_x)):
+                        self.add_scatter(
+                            x=curve_x[index],
+                            y=curve_y[index] / bins,
+                            name=name_i,
+                            mode="lines",
+                            marker=dict(color=color_i),
+                            row=row,
+                            col=col,
+                        )
+                        max_y = max(max_y, max(curve_y[index]) / bins)
+
+                else:
+                    y = (
+                        callback(res_mean, res_std).pdf(valid_x)
+                        * len(x_i)
+                        * (res_max - res_min)
+                    )
+
+                    self.add_scatter(
+                        x=x if curve == "normal" else x_i,
+                        y=y / bins,
+                        name=name_i,
+                        mode="lines",
+                        marker=dict(color=color_i),
+                        row=row,
+                        col=col,
+                    )
+
+                    max_y = max(max_y, max(x_i))
+
+        self.update_yaxes(position=0.0, range=[0, max_y], anchor="x", row=row, col=col)
+
+        self.update_layout(barmode="overlay", bargap=0.01, bargroupgap=0)
+
+    def set_title(
+        self, title: str, wrap: bool = False, wrap_width: int = 80, **kwargs
+    ) -> "OpenBBFigure":
         """Sets the main title of the figure
 
         Parameters
@@ -351,11 +475,18 @@ class OpenBBFigure(go.Figure):
         title : `str`
             Title of the figure
         """
-        self.update_layout(title=title, **kwargs)
+        if wrap:
+            title = "<br>".join(textwrap.wrap(title, width=wrap_width))
+
+        self.update_layout(title=dict(text=title, **kwargs))
         return self
 
     def set_xaxis_title(
-        self, title: str, row: int = None, col: int = None, **kwargs
+        self,
+        title: str,
+        row: int = None,
+        col: int = None,
+        **kwargs,
     ) -> "OpenBBFigure":
         """Set the x axis title of the figure or subplot (if row and col are specified)
 
@@ -513,6 +644,47 @@ class OpenBBFigure(go.Figure):
             )
         )
 
+    def add_stock_volume(
+        self,
+        df_stock: pd.DataFrame,
+        close_col: str = "Close",
+        volume_col: str = "Volume",
+        row: int = 2,
+        col: int = 1,
+        secondary_y: bool = False,
+    ) -> None:
+        """Add the volume of a stock to the figure
+
+        Parameters
+        ----------
+        df_stock : `pd.DataFrame`
+            Dataframe of the stock
+        close_col : `str`, optional
+            Name of the close column, by default "Close"
+        volume_col : `str`, optional
+            Name of the volume column, by default "Volume"
+        row : `int`, optional
+            Row number, by default 2
+        col : `int`, optional
+            Column number, by default 1
+        secondary_y : `bool`, optional
+            Whether to use the secondary y axis, by default False
+        """
+
+        colors = [
+            theme.down_color if row.Open < row[close_col] else theme.up_color
+            for _, row in df_stock.iterrows()
+        ]
+        self.add_bar(
+            x=df_stock.index,
+            y=df_stock[volume_col],
+            name="Volume",
+            marker_color=colors,
+            row=row,
+            col=col,
+            secondary_y=secondary_y,
+        )
+
     def add_legend_label(
         self,
         trace: str = None,
@@ -580,8 +752,17 @@ class OpenBBFigure(go.Figure):
             )
         )
 
-    def show(self, *args, **kwargs) -> None:
-        """Show the figure"""
+    def show(self, *args, external: bool = False, **kwargs) -> None:
+        """Show the figure
+
+        Parameters
+        ----------
+        external : `bool`, optional
+            Whether to return the figure object instead of showing it, by default False
+        """
+        if external:
+            return self
+
         if kwargs.pop("margin", True):
             self._adjust_margins()
         self._apply_feature_flags()
@@ -621,6 +802,7 @@ class OpenBBFigure(go.Figure):
             legend=dict(
                 tracegroupgap=height / 4.5,
                 groupclick="toggleitem",
+                orientation="h",
             ),
             barmode="overlay",
             bargap=0,
@@ -646,15 +828,20 @@ class OpenBBFigure(go.Figure):
             xhoverformat = "%Y-%m-%d"
             tickformatstops = [dict(dtickrange=[None, 604_800_000], value="%Y-%m-%d")]
 
-        self.update_xaxes(
-            tickformatstops=[
-                *tickformatstops,
-                dict(dtickrange=[604_800_000, "M1"], value="%Y-%m-%d"),
-                dict(dtickrange=["M1", None], value="%Y-%m-%d"),
-            ],
-            type="date",
-        )
-        self.update_traces(xhoverformat=xhoverformat)
+        for entry in self._date_xaxs.values():
+            self.update_xaxes(
+                tickformatstops=[
+                    *tickformatstops,
+                    dict(dtickrange=[604_800_000, "M1"], value="%Y-%m-%d"),
+                    dict(dtickrange=["M1", None], value="%Y-%m-%d"),
+                ],
+                type="date",
+                selector=dict(xaxis=entry["xaxis"], yaxis=entry["yaxis"]),
+                overwrite=True,
+            )
+            self.update_traces(
+                xhoverformat=xhoverformat, selector=dict(name=entry["name"])
+            )
 
     def to_subplot(
         self,
@@ -749,23 +936,34 @@ class OpenBBFigure(go.Figure):
         """
         output = None
 
-        for trace in self.select_traces():
+        for trace in self.select_traces(
+            lambda trace: hasattr(trace, "x") and trace.x is not None
+        ):
             for x in trace.x:
                 if isinstance(x, (int, float)):
                     break
-                if isinstance(x, datetime):
+                if isinstance(x, (datetime, np.datetime64)):
                     output = trace.x
+                    name = trace.name if hasattr(trace, "name") else f"{trace}"
+                    self._date_xaxs[trace.xaxis] = {
+                        "x": trace.x,
+                        "xaxis": trace.xaxis,
+                        "yaxis": trace.yaxis,
+                        "name": name,
+                    }
                     break
 
         return output
 
-    def hide_holidays(self) -> None:
+    def hide_holidays(self, prepost: bool = False) -> None:
         """Add rangebreaks to hide holidays on the xaxis
 
         Parameters
         ----------
         dateindex : `pandas.DatetimeIndex`
             The date index
+        prepost : `bool`, optional
+            Whether to add rangebreaks for pre and post market hours, by default False
         """
         if (dateindex := self.get_dateindex()) is None:
             return
@@ -780,13 +978,19 @@ class OpenBBFigure(go.Figure):
 
         # We add a rangebreak if the first and second time are not the same
         # since daily data will have the same time (00:00)
-        if dateindex[-1].time() != dateindex[-2].time():
-            rangebreaks.append(dict(bounds=[15.99, 9.50], pattern="hour"))
+        for entry in self._date_xaxs.values():
+            breaks = rangebreaks.copy()
+            if entry["x"][-1].time() != entry["x"][-2].time():
+                if prepost:
+                    breaks.append(dict(bounds=[20.00, 4.00], pattern="hour"))
+                else:
+                    breaks.append(dict(bounds=[15.99, 9.50], pattern="hour"))
 
-        self.update_xaxes(
-            rangebreaks=rangebreaks,
-            type="date",
-        )
+            self.update_xaxes(
+                rangebreaks=breaks,
+                type="date",
+                overwrite=True,
+            )
 
     @staticmethod
     def _tbl_values(df: pd.DataFrame, print_index: bool) -> Tuple[List[str], List]:
@@ -920,8 +1124,8 @@ class OpenBBFigure(go.Figure):
     def _set_watermark(self) -> None:
         """Sets the watermark for OpenBB Terminal"""
         self.add_annotation(
-            yref="y domain" if not self.has_subplots else "paper",
-            xref="x domain",
+            yref="paper",
+            xref="paper",
             x=1,
             y=0,
             text="OpenBB Terminal",
@@ -945,11 +1149,14 @@ class OpenBBFigure(go.Figure):
             yaxis2 = self.layout.yaxis2 if hasattr(self.layout, "yaxis2") else None
             xshift = -60 if yaxis.side == "right" else -80
 
+            if self.layout.margin["l"] > 100:
+                xshift -= 150
+
             if yaxis2 and yaxis2.overlaying == "y":
                 xshift = -110 if not yaxis2.title.text else -120
 
             self.add_annotation(
-                x=-0.015,
+                x=0,
                 y=0.5,
                 yref="paper",
                 xref="paper",
@@ -1035,3 +1242,100 @@ class OpenBBFigure(go.Figure):
                 )
             ],
         )
+
+    def add_corr_plot(
+        self,
+        series: pd.DataFrame,
+        m: Optional[int] = None,
+        max_lag: int = 20,
+        alpha=0.05,
+        marker: dict = None,
+        row: int = None,
+        col: int = None,
+        pacf: bool = False,
+        **kwargs,
+    ) -> None:
+        """Adds a correlation plot to a figure object
+
+        Parameters
+        ----------
+        fig : OpenBBFigure
+            Figure object to add plot to
+        series : pd.DataFrame
+            Dataframe to look at
+        m: Optional[int]
+            Optionally, a time lag to highlight on the plot. Default is none.
+        max_lag : int, optional
+            Number of lags to look at, by default 15
+        row : int, optional
+            Row to add plot to, by default 1
+        col : int, optional
+            Column to add plot to, by default 1
+        pacf : bool, optional
+            Flag to indicate whether to use partial autocorrelation or not, by default False
+        """
+        mode = "lines"
+        if marker:
+            mode = "markers+lines"
+
+        line = kwargs.pop("line", None)
+
+        callback = sm.tsa.stattools.pacf if pacf else sm.tsa.stattools.acf
+        if not pacf:
+            kwargs.update(dict(bartlett_confint=True, fft=False))
+
+        r, confint = callback(
+            series,
+            nlags=max_lag,
+            alpha=alpha,
+            **kwargs,
+        )
+
+        try:
+            upp_band = [confint[lag][1] - r[lag] for lag in range(1, max_lag + 1)]
+            low_band = [-x for x in upp_band]
+
+            # pylint: disable=C0200
+            for x in range(len(r)):
+                self.add_scatter(
+                    x=(x, x),
+                    y=(0, r[x]),
+                    mode=mode,
+                    marker=marker,
+                    line=line,
+                    line_width=(2 if m is not None and x == m else 1),
+                    row=row,
+                    col=col,
+                )
+
+            self.add_scatter(
+                x=np.arange(1, max_lag + 1),
+                y=upp_band,
+                mode="lines",
+                line_color="rgba(0, 0, 0, 0)",
+                opacity=0,
+                row=row,
+                col=col,
+            )
+            self.add_scatter(
+                x=np.arange(1, max_lag + 1),
+                y=low_band,
+                mode="lines",
+                fillcolor="rgba(255, 217, 0, 0.30)",
+                fill="tonexty",
+                line_color="rgba(0, 0, 0, 0.0)",
+                opacity=0,
+                row=row,
+                col=col,
+            )
+            self.add_scatter(
+                x=[0, max_lag + 1],
+                y=[0, 0],
+                mode="lines",
+                line_color="white",
+                row=row,
+                col=col,
+            )
+            self.update_traces(showlegend=False)
+        except Exception:
+            pass

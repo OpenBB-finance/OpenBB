@@ -126,16 +126,10 @@ function checkFile(popup, type = false) {
                             ${options}
                         </select>
                     `;
-
-                    if (i == 0) {
-                        csv_columns.innerHTML += '<br>';
-                    } else if (i == option_ids.length - 1) {
-                        csv_columns.innerHTML += '<br><br>';
-                    }
                 }
 
                 csv_colors.innerHTML = `
-                    <b>Candlestick colors:</b><br>
+                    <b>Candlestick colors:</b><br><br>
 
                     <label for="csv_increasing">Increasing</label>
                     <input type="color" id="csv_increasing" value="#00ACFF"></input>

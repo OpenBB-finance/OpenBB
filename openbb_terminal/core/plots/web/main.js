@@ -248,6 +248,35 @@ function OpenBBMain(plotly_figure) {
         globals.barButtons[button.getAttribute('data-title')] = button;
     }
 
+    // We add a listener to the chart div to listen for relayout events
+    // we only care about the yaxis.type event
+    CHART_DIV.on('plotly_relayout', function (eventdata) {
+        if (eventdata['yaxis.type'] == 'log' || (CHART_DIV.layout.yaxis.type == 'log' && !globals.logYaxis)) {
+            console.log('yaxis.type changed to log');
+            globals.logYaxis = true;
+
+            // We update the yaxis exponent format to SI,
+            // set the tickformat to '.0s' and the exponentbase to 100
+            Plotly.relayout(CHART_DIV, {
+                'yaxis.exponentformat': 'SI',
+                'yaxis.tickformat': '.0s',
+                'yaxis.exponentbase': 100,
+            });
+        }
+        if (eventdata['yaxis.type'] == 'linear' && globals.logYaxis) {
+            console.log('yaxis.type changed to linear');
+            globals.logYaxis = false;
+
+            // We update the yaxis exponent format to none,
+            // set the tickformat to null and the exponentbase to 10
+            Plotly.relayout(CHART_DIV, {
+                'yaxis.exponentformat': 'none',
+                'yaxis.tickformat': null,
+                'yaxis.exponentbase': 10,
+            });
+        }
+    });
+
     // send a relayout event to trigger the initial zoom/bars-resize
     Plotly.relayout(CHART_DIV, {
         'xaxis.range[0]': graphs.layout.xaxis.range[0],

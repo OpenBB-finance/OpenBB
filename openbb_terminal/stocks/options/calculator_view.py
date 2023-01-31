@@ -92,4 +92,4 @@ Max loss: ${-100 * premium}\n"""
 
     console.print(print_string)
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)

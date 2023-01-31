@@ -143,7 +143,7 @@ def display_fred_series(
     if get_data:
         return data, detail
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame, str]:
@@ -218,4 +218,4 @@ def display_yield_curve(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)

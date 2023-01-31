@@ -8,9 +8,8 @@ from typing import List
 
 import yfinance as yf
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -19,7 +18,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.sector_industry_analysis import (
     financedatabase_model,
@@ -851,6 +850,7 @@ class SectorIndustryAnalysisController(BaseController):
                     (
                         self.stocks_data,
                         self.tickers,
+                        _,
                     ) = stockanalysis_view.display_plots_financials(
                         finance_key=ns_parser.metric,
                         country=self.country,
@@ -975,6 +975,7 @@ class SectorIndustryAnalysisController(BaseController):
                     self.mktcap,
                     self.exclude_exchanges,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                     ns_parser.raw,
                     ns_parser.max_industries_to_display,
                     ns_parser.min_pct_to_display_industry,
@@ -1026,6 +1027,7 @@ class SectorIndustryAnalysisController(BaseController):
                     self.mktcap,
                     self.exclude_exchanges,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                     ns_parser.raw,
                     ns_parser.max_industries_to_display,
                     ns_parser.min_pct_to_display_industry,
@@ -1077,6 +1079,7 @@ class SectorIndustryAnalysisController(BaseController):
                     self.mktcap,
                     self.exclude_exchanges,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                     ns_parser.raw,
                     ns_parser.max_countries_to_display,
                     ns_parser.min_pct_to_display_country,
@@ -1128,6 +1131,7 @@ class SectorIndustryAnalysisController(BaseController):
                     self.mktcap,
                     self.exclude_exchanges,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                     ns_parser.raw,
                     ns_parser.max_countries_to_display,
                     ns_parser.min_pct_to_display_country,

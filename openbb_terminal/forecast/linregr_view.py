@@ -2,15 +2,13 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, List, Optional
 from datetime import datetime
+from typing import List, Optional, Union
 
 import pandas as pd
-import matplotlib.pyplot as plt
 
-from openbb_terminal.forecast import linregr_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
+from openbb_terminal.forecast import helpers, linregr_model
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -36,7 +34,7 @@ def display_linear_regression(
     naive: bool = False,
     explainability_raw: bool = False,
     export_pred_raw: bool = False,
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
 ):
     """Display Linear Regression Forecasting
 
@@ -104,7 +102,7 @@ def display_linear_regression(
     )
 
     probabilistic = True
-    helpers.plot_forecast(
+    fig = helpers.plot_forecast(
         name="LINREGR",
         target_col=target_column,
         historical_fcast=historical_fcast,
@@ -131,3 +129,5 @@ def display_linear_regression(
 
     # SHAP
     helpers.plot_explainability(_model, explainability_raw)
+
+    return fig

@@ -25,7 +25,7 @@
                 <div>
                     <label for="csv_file">Choose a CSV file</label>
                     <input type="file" id="csv_file" accept=".csv, .txt"></input>
-                </div><br>
+                </div>
 
                 <div style="margin-top: 10px;">
                     <label for="csv_trace_type">Choose how to display the data</label>
@@ -33,23 +33,23 @@
                         <option value="scatter">Scatter</option>
                         <option value="candlestick">Candlestick</option>
                     </select>
-                </div><br>
+                </div>
 
-                <div id="csv_columns"><!-- Empty --></div>
-                <div id="csv_colors"><!-- Empty --></div>
+                <div style="margin-top: 10px;" id="csv_columns"><!-- Empty --></div>
+                <div style="margin-top: 10px;" id="csv_colors"><!-- Empty --></div><br>
 
                 <label for="csv_name">Name of the trace</label>
-                <input type="text" id="csv_name" value=""></input>
+                <input type="text" id="csv_name" value=""></input><br>
 
                 <button id="csv_submit" onclick="on_submit('csv')">Submit</button>
                 <button id="csv_cancel" onclick="closePopup()">Cancel</button>
             </div>
 
             <!-- Text Popup -->
-            <div id="popup_text"></div>
+            <div class="popup_content" id="popup_text"></div>
 
             <!-- Title Popup -->
-            <div id="popup_title"></div>
+            <div class="popup_content" id="popup_title"></div>
 
         </div>
     </div>

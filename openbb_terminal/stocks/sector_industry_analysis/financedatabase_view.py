@@ -5,25 +5,83 @@ __docformat__ = "numpy"
 import logging
 import os
 from collections import OrderedDict
-from typing import Dict, List, Optional
+from typing import Dict
 
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.sector_industry_analysis import financedatabase_model
 
 logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
+def plot_pie_chart(labels: list, values: list, title: str = "") -> OpenBBFigure:
+    """Plots a pie chart with the given labels and values.
+
+    Parameters
+    ----------
+    labels : list
+        List of labels
+    values : list
+        List of values
+    title : str, optional
+        Title of the plot, by default ""
+
+    Returns
+    -------
+    OpenBBFigure
+        Plotly figure object
+    """
+
+    colors = theme.get_colors()
+
+    fig = OpenBBFigure.create_subplots(
+        1,
+        3,
+        specs=[[{"type": "domain"}, {"type": "pie", "colspan": 2}, None]],
+        row_heights=[1],
+        column_widths=[0.1, 0.8, 0.1],
+    )
+
+    fig.add_pie(
+        labels=labels,
+        values=values,
+        textinfo="label+percent",
+        hoverinfo="label+percent",
+        hovertemplate="%{label}:<br>%{value} companies (%{percent})<extra></extra>",
+        automargin=True,
+        rotation=45,
+        row=1,
+        col=2,
+    )
+    fig.update_traces(
+        textposition="outside",
+        textfont_size=15,
+        marker=dict(
+            colors=colors,
+            line=dict(color="#F5EFF3", width=0.8),
+        ),
+    )
+
+    fig.update_layout(
+        title=dict(
+            text=title,
+            y=0.97,
+            x=0.5,
+            xanchor="center",
+            yanchor="top",
+        ),
+        colorway=colors,
+        showlegend=False,
+    )
+
+    return fig
 
 
 @log_start_end(log=logger)
@@ -80,6 +138,7 @@ def display_bars_financials(
     list
         List of tickers filtered
     """
+
     if already_loaded_stocks_data:
         stocks_data = already_loaded_stocks_data
     else:
@@ -144,14 +203,7 @@ def display_bars_financials(
             )
         else:
 
-            # This plot has 1 axis
-            if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 1):
-                (ax,) = external_axes
-            else:
-                # set returns statement to be compatible with others
-                return dict(), list()
+            fig = OpenBBFigure()
 
             magnitude = 0
             while max(company_metric) > 1_000 or abs(min(company_metric)) > 1_000:
@@ -176,7 +228,16 @@ def display_bars_financials(
                 if len(name.split(" ")) > 6 and len(name) > 40:
                     name = f'{" ".join(name.split(" ")[:4])}\n{" ".join(name.split(" ")[4:])}'
 
-                ax.barh(f"{name} ({ticker})", metric, label=ticker)
+                # We add spaces to all yaxis data, due to Fira Code font width issues
+                # to make sure that the names are cut off
+                fig.add_bar(
+                    x=[metric],
+                    y=[f"{name} ({ticker})     "],
+                    orientation="h",
+                    name=ticker,
+                    hovertext=f"{name} ({ticker})",
+                    hovertemplate="%{x:.2f}" + unit,
+                )
 
             metric_title = (
                 "".join(
@@ -188,7 +249,9 @@ def display_bars_financials(
             )
 
             benchmark = np.median(company_metric)
-            ax.axvline(x=benchmark, lw=3, ls="--", c="grey")
+            fig.add_vline(
+                x=benchmark, line_width=3, line_dash="dash", line_color="grey"
+            )
 
             title = f"The {metric_title.title()} (benchmark: {benchmark:.2f}{unit}) of "
             title += marketcap + " cap companies " if marketcap else "Companies "
@@ -207,16 +270,19 @@ def display_bars_financials(
                 else "(incl. data from international exchanges)"
             )
 
-            ax.set_title(title, wrap=True, fontsize=11)
-
-            labels = ax.get_xticks().tolist()
-            ax.set_xticks(labels)
-            ax.set_xticklabels([f"{label:.2f}{unit}" for label in labels])
-
-            theme.style_primary_axis(ax)
-
-            if not external_axes:
-                theme.visualize_output()
+            fig.set_title(
+                title,
+                wrap=True,
+                wrap_width=80,
+                y=0.97,
+                x=0.5,
+                xanchor="center",
+                yanchor="top",
+            )
+            fig.update_layout(
+                margin=dict(t=40),
+                showlegend=False,
+            )
 
         export_data(
             export,
@@ -226,16 +292,21 @@ def display_bars_financials(
             sheet_name,
         )
 
+        if external_axes:
+            return stocks_data, company_tickers, fig.show(external=external_axes)
+
+        fig.show()
+
         return stocks_data, company_tickers
 
     if len(metric_data) == 1:
         console.print(
             f"Only 1 company found '{list(metric_data.keys())[0]}'. No barchart will be depicted.\n"
         )
-        return stocks_data, [list(metric_data.values())[0][1]]
+        return stocks_data, [list(metric_data.values())[0][1]], None
 
     console.print("No company found. No barchart will be depicted.\n")
-    return dict(), list()
+    return dict(), list(), None
 
 
 @log_start_end(log=logger)
@@ -288,8 +359,7 @@ def display_companies_per_sector_in_country(
             del companies_per_sector[key]
 
     if not companies_per_sector:
-        console.print("No companies found with these parameters!\n")
-        return
+        return console.print("No companies found with these parameters!\n")
 
     df = pd.DataFrame.from_dict(companies_per_sector, orient="index")
     df.index.name = "Sector"
@@ -303,7 +373,6 @@ def display_companies_per_sector_in_country(
     if raw:
         print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
     else:
-        colors = theme.get_colors()
 
         if len(companies_per_sector) > 1:
             total_num_companies = sum(companies_per_sector.values())
@@ -343,33 +412,14 @@ def display_companies_per_sector_in_country(
             else:
                 legend, values = zip(*companies_per_sector.items())
 
-            # This plot has 1 axis
-            if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 1):
-                (ax,) = external_axes
-            else:
-                return
-
-            plt.pie(
-                values,
-                labels=legend,
-                colors=colors,
-                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
-                labeldistance=1.05,
-                startangle=45,
-            )
-            ax.set_title(title, fontsize=14)
-
-            if not external_axes:
-                theme.visualize_output()
+            fig = plot_pie_chart(labels=legend, values=values, title=title)
 
         elif len(companies_per_sector) == 1:
-            console.print(
+            return console.print(
                 f"Only 1 sector found '{list(companies_per_sector.keys())[0]}'. No pie chart will be depicted."
             )
         else:
-            console.print("No sector found. No pie chart will be depicted.")
+            return console.print("No sector found. No pie chart will be depicted.")
 
     export_data(
         export,
@@ -378,6 +428,8 @@ def display_companies_per_sector_in_country(
         df,
         sheet_name,
     )
+
+    return None if raw else fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -433,8 +485,7 @@ def display_companies_per_industry_in_country(
             del companies_per_industry[key]
 
     if not companies_per_industry:
-        console.print("No companies found with these parameters!\n")
-        return
+        return console.print("No companies found with these parameters!\n")
 
     df = pd.DataFrame.from_dict(companies_per_industry, orient="index")
     df.index.name = "Industry"
@@ -448,7 +499,6 @@ def display_companies_per_industry_in_country(
     if raw:
         print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
     else:
-        colors = theme.get_colors()
 
         if len(companies_per_industry) > 1:
             total_num_companies = sum(companies_per_industry.values())
@@ -495,34 +545,14 @@ def display_companies_per_industry_in_country(
             else:
                 legend, values = zip(*companies_per_industry.items())
 
-            # This plot has 1 axis
-            if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 1):
-                (ax,) = external_axes
-            else:
-                return
-
-            ax.pie(
-                values,
-                labels=legend,
-                colors=colors,
-                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
-                labeldistance=1.05,
-                startangle=45,
-            )
-
-            ax.set_title(title, fontsize=14)
-
-            if not external_axes:
-                theme.visualize_output()
+            fig = plot_pie_chart(labels=legend, values=values, title=title)
 
         elif len(companies_per_industry) == 1:
-            console.print(
+            return console.print(
                 f"Only 1 industry found '{list(companies_per_industry.keys())[0]}'. No pie chart will be depicted."
             )
         else:
-            console.print("No industry found. No pie chart will be depicted.")
+            return console.print("No industry found. No pie chart will be depicted.")
 
     export_data(
         export,
@@ -531,6 +561,8 @@ def display_companies_per_industry_in_country(
         df,
         sheet_name,
     )
+
+    return None if raw else fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -583,8 +615,7 @@ def display_companies_per_industry_in_sector(
             del companies_per_industry[key]
 
     if not companies_per_industry:
-        console.print("No companies found with these parameters!\n")
-        return
+        return console.print("No companies found with these parameters!\n")
 
     df = pd.DataFrame.from_dict(companies_per_industry, orient="index")
     df.index.name = "Industry"
@@ -603,7 +634,6 @@ def display_companies_per_industry_in_sector(
             title=title,
         )
     else:
-        colors = theme.get_colors()
 
         if len(companies_per_industry) > 1:
             total_num_companies = sum(companies_per_industry.values())
@@ -650,33 +680,14 @@ def display_companies_per_industry_in_sector(
             else:
                 legend, values = zip(*companies_per_industry.items())
 
-            # This plot has 1 axis
-            if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 1):
-                (ax,) = external_axes
-            else:
-                return
-
-            ax.pie(
-                values,
-                labels=legend,
-                colors=colors,
-                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
-                labeldistance=1.05,
-                startangle=45,
-            )
-            ax.set_title(title, fontsize=14)
-
-            if not external_axes:
-                theme.visualize_output()
+            fig = plot_pie_chart(labels=legend, values=values, title=title)
 
         elif len(companies_per_industry) == 1:
-            console.print(
+            return console.print(
                 f"Only 1 industry found '{list(companies_per_industry.keys())[0]}'. No pie chart will be depicted."
             )
         else:
-            console.print("No industry found. No pie chart will be depicted.")
+            return console.print("No industry found. No pie chart will be depicted.")
 
     export_data(
         export,
@@ -685,6 +696,8 @@ def display_companies_per_industry_in_sector(
         df,
         sheet_name,
     )
+
+    return None if raw else fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -737,8 +750,7 @@ def display_companies_per_country_in_sector(
             del companies_per_country[key]
 
     if not companies_per_country:
-        console.print("No companies found with these parameters!\n")
-        return
+        return console.print("No companies found with these parameters!\n")
 
     df = pd.DataFrame.from_dict(companies_per_country, orient="index")
     df.index.name = "Country"
@@ -752,7 +764,6 @@ def display_companies_per_country_in_sector(
     if raw:
         print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
     else:
-        colors = theme.get_colors()
 
         if len(companies_per_country) > 1:
             total_num_companies = sum(companies_per_country.values())
@@ -797,33 +808,14 @@ def display_companies_per_country_in_sector(
             else:
                 legend, values = zip(*companies_per_country.items())
 
-            # This plot has 1 axis
-            if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 1):
-                (ax,) = external_axes
-            else:
-                return
-
-            ax.pie(
-                values,
-                labels=legend,
-                colors=colors,
-                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
-                labeldistance=1.05,
-                startangle=45,
-            )
-            ax.set_title(title, fontsize=14)
-
-            if not external_axes:
-                theme.visualize_output()
+            fig = plot_pie_chart(labels=legend, values=values, title=title)
 
         elif len(companies_per_country) == 1:
-            console.print(
+            return console.print(
                 f"Only 1 country found '{list(companies_per_country.keys())[0]}'. No pie chart will be depicted."
             )
         else:
-            console.print("No country found. No pie chart will be depicted.")
+            return console.print("No country found. No pie chart will be depicted.")
 
     export_data(
         export,
@@ -832,6 +824,8 @@ def display_companies_per_country_in_sector(
         df,
         sheet_name,
     )
+
+    return None if raw else fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -899,7 +893,6 @@ def display_companies_per_country_in_industry(
     if raw:
         print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
     else:
-        colors = theme.get_colors()
 
         if len(companies_per_country) > 1:
             total_num_companies = sum(companies_per_country.values())
@@ -944,33 +937,14 @@ def display_companies_per_country_in_industry(
             else:
                 legend, values = zip(*companies_per_country.items())
 
-            # This plot has 1 axis
-            if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 1):
-                (ax,) = external_axes
-            else:
-                return
-
-            ax.pie(
-                values,
-                labels=legend,
-                colors=colors,
-                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
-                labeldistance=1.05,
-                startangle=45,
-            )
-            ax.set_title(title, fontsize=14)
-
-            if not external_axes:
-                theme.visualize_output()
+            fig = plot_pie_chart(labels=legend, values=values, title=title)
 
         elif len(companies_per_country) == 1:
-            console.print(
+            return console.print(
                 f"Only 1 country found '{list(companies_per_country.keys())[0]}'. No pie chart will be depicted."
             )
         else:
-            console.print("No country found. No pie chart will be depicted.")
+            return console.print("No country found. No pie chart will be depicted.")
 
     export_data(
         export,
@@ -979,3 +953,5 @@ def display_companies_per_country_in_industry(
         df,
         sheet_name,
     )
+
+    return None if raw else fig.show(external=external_axes)

@@ -3,20 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 
-import matplotlib.pyplot as plt
-
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.defi import cryptosaurio_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -49,9 +40,6 @@ def display_anchor_data(
 
     df, df_deposits, stats_str = cryptosaurio_model.get_anchor_data(address=address)
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
     console.print(f"\n{stats_str}\n")
 
     if show_transactions:
@@ -62,14 +50,10 @@ def display_anchor_data(
             title="Transactions history in Anchor Earn",
         )
 
-    ax.plot(df["time"], df["yield"])
-    ax.set_ylabel("Earnings Value [UST]")
-    ax.set_title("Earnings in Anchor Earn")
+    fig = OpenBBFigure(yaxis_title="Earnings Value [UST]")
+    fig.set_title("Earnings in Anchor Earn")
 
-    cfg.theme.style_primary_axis(ax)
-
-    if not external_axes:
-        cfg.theme.visualize_output()
+    fig.add_scatter(x=df["time"], y=df["yield"], name="Earnings")
 
     export_data(
         export,
@@ -78,3 +62,5 @@ def display_anchor_data(
         df,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)

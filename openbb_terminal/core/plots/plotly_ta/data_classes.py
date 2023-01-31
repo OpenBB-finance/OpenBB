@@ -135,11 +135,13 @@ class ChartIndicators:
 
         return cls(indicators=data)
 
-    def to_dataframe(self, df_ta: pd.DataFrame) -> pd.DataFrame:
+    def to_dataframe(
+        self, df_ta: pd.DataFrame, ma_mode: List[str] = None
+    ) -> pd.DataFrame:
         """Calculate technical analysis indicators and return dataframe"""
         output = df_ta.copy()
         if not output.empty and self.indicators:
-            output = TA_Data(output, self).to_dataframe()
+            output = TA_Data(output, self, ma_mode).to_dataframe()
 
         return output
 
@@ -178,7 +180,6 @@ class TA_Data:
     get_indicator_data(indicator: TAIndicator, **kwargs)
         Return dataframe given indicator and arguments
 
-
     """
 
     @log_start_end(log=logger)
@@ -186,13 +187,14 @@ class TA_Data:
         self,
         df_ta: pd.DataFrame,
         indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]],
+        ma_mode: Optional[List[str]] = None,
     ):
         if not isinstance(indicators, ChartIndicators):
             indicators = ChartIndicators.from_dict(indicators)
 
         self.df_ta = df_ta
         self.indicators = indicators
-        self.ma_mode = ["sma", "ema", "wma", "hma", "zlma"]
+        self.ma_mode = ma_mode or ["sma", "ema", "wma", "hma", "zlma", "rma"]
         self.close_col = ta_helpers.check_columns(df_ta)
         self.columns = {
             "aroon": ["High", "Low"],
@@ -224,43 +226,43 @@ class TA_Data:
             Dataframe with indicator data
         """
         output = None
-        if indicator:
+        if indicator and indicator.name in self.ma_mode:
 
-            if indicator.name in self.ma_mode:
+            if isinstance(indicator.get_argument_values("length"), list):
+                df_ta = pd.DataFrame()
 
-                if isinstance(indicator.get_argument_values("length"), list):
-                    df_ta = pd.DataFrame()
-
-                    for length in indicator.get_argument_values("length"):
-                        df_ma = getattr(ta, indicator.name)(
-                            self.df_ta[self.close_col], length=length
-                        )
-                        df_ta.insert(0, f"{indicator.name.upper()}_{length}", df_ma)
-
-                    output = df_ta
-
-                else:
-                    output = getattr(ta, indicator.name)(
-                        self.df_ta[self.close_col],
-                        length=indicator.get_argument_values("length"),
+                for length in indicator.get_argument_values("length"):
+                    df_ma = getattr(ta, indicator.name)(
+                        self.df_ta[self.close_col], length=length
                     )
-                    if indicator.name == "zlma" and output is not None:
-                        output.name = output.name.replace("ZL_EMA", "ZLMA")
-            elif indicator.name == "vwap":
-                ta_columns = self.columns[indicator.name]
-                ta_columns = [self.df_ta[col] for col in ta_columns]
+                    df_ta.insert(0, f"{indicator.name.upper()}_{length}", df_ma)
 
-                output = getattr(ta, indicator.name)(
-                    *ta_columns,
-                )
-            elif indicator.name in self.columns:
-                ta_columns = self.columns[indicator.name]
-                ta_columns = [self.df_ta[col] for col in ta_columns]
+                output = df_ta
 
-                output = getattr(ta, indicator.name)(*ta_columns, **args)
             else:
-                output = getattr(ta, indicator.name)(self.df_ta[self.close_col], **args)
+                output = getattr(ta, indicator.name)(
+                    self.df_ta[self.close_col],
+                    length=indicator.get_argument_values("length"),
+                )
+                if indicator.name == "zlma" and output is not None:
+                    output.name = output.name.replace("ZL_EMA", "ZLMA")
 
+        elif indicator.name == "vwap":
+            ta_columns = self.columns[indicator.name]
+            ta_columns = [self.df_ta[col] for col in ta_columns]
+
+            output = getattr(ta, indicator.name)(
+                *ta_columns,
+            )
+        elif indicator.name in self.columns:
+            ta_columns = self.columns[indicator.name]
+            ta_columns = [self.df_ta[col] for col in ta_columns]
+
+            output = getattr(ta, indicator.name)(*ta_columns, **args)
+        else:
+            output = getattr(ta, indicator.name)(self.df_ta[self.close_col], **args)
+
+        # Drop NaN values from output and return None if empty
         if output is not None:
             output.dropna(inplace=True)
             if output.empty:
@@ -270,31 +272,29 @@ class TA_Data:
 
     def to_dataframe(self) -> pd.DataFrame:
         """Returns dataframe with all indicators"""
-        output = None
         active_indicators = self.indicators.get_indicators()
 
-        if active_indicators is not None:
-            output = self.df_ta
-            for indicator in active_indicators:
-                if indicator.name in ["fib", "srlines", "clenow", "denmark"]:
-                    continue
-                try:
-                    indicator_data = self.get_indicator_data(
-                        indicator,
-                        **self.indicators.get_options_dict(indicator.name)
-                        if indicator.name
-                        in self.indicators.get_arg_names(indicator.name)
-                        else {},
-                    )
-                except Exception as e:
-                    console.print(
-                        f"[red]Error processing indicator {indicator.name}: {e}[/red]"
-                    )
-                    indicator_data = None
+        if not active_indicators:
+            return None
 
-                if indicator_data is not None:
-                    output = output.join(indicator_data).interpolate(
-                        "linear", limit_direction="both"
-                    )
+        output = self.df_ta
+        for indicator in active_indicators:
+            if indicator.name in ["fib", "srlines", "clenow", "denmark"]:
+                continue
+            try:
+                indicator_data = self.get_indicator_data(
+                    indicator,
+                    **self.indicators.get_options_dict(indicator.name)
+                    if indicator.name in self.indicators.get_arg_names(indicator.name)
+                    else {},
+                )
+            except Exception as e:
+                console.print(
+                    f"[red]Error processing indicator {indicator.name}: {e}[/red]"
+                )
+                indicator_data = None
+
+            if indicator_data is not None:
+                output = output.join(indicator_data).interpolate("linear")
 
         return output

@@ -7,22 +7,24 @@ import re
 from datetime import date, datetime, timedelta
 from typing import Any, Dict, List
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from openpyxl import Workbook
+from scipy.spatial import Delaunay
 from scipy.stats import binom
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.plots.config.openbb_styles import (
+    PLT_3DMESH_COLORSCALE,
+    PLT_3DMESH_HOVERLABEL,
+    PLT_3DMESH_SCENE,
+)
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     excel_columns,
     export_data,
     get_rf,
-    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
@@ -156,7 +158,7 @@ def plot_plot(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -409,7 +411,7 @@ def plot_expected_prices(
         yaxis_tickformat=".0%",
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -549,33 +551,68 @@ def display_vol_surface(
         Whether to return the figure object or not, by default False
     """
     data = yfinance_model.get_iv_surface(symbol)
+    z = z.upper()
+
     if data.empty:
-        console.print(f"No options data found for {symbol}.\n")
-        return
+        return console.print(f"No options data found for {symbol}.\n")
+
+    z_dict = {
+        "IV": (data.impliedVolatility, "Volatility"),
+        "OI": (data.openInterest, "Open Interest"),
+        "LP": (data.lastPrice, "Last Price"),
+    }
+    label = z_dict[z][1]
+
+    if z not in z_dict:
+        return console.print(
+            f"Invalid z value: {z}.\n Valid values are: IV, OI, LP. (case insensitive)\n"
+        )
+
     X = data.dte
     Y = data.strike
-    if z == "IV":
-        Z = data.impliedVolatility
-        label = "Volatility"
-    elif z == "OI":
-        Z = data.openInterest
-        label = "Open Interest"
-    elif z == "LP":
-        Z = data.lastPrice
-        label = "Last Price"
-    if external_axes is None:
-        fig = plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax = plt.axes(projection="3d")
-    else:
-        ax = external_axes[0]
-    ax.plot_trisurf(X, Y, Z, cmap="jet", linewidth=0.2)
-    ax.set_xlabel("DTE")
-    ax.set_ylabel("Strike")
-    ax.set_zlabel(z)
+    Z = z_dict[z][0]
 
-    if external_axes is None:
-        fig.suptitle(f"{label} Surface for {symbol.upper()}")
-        theme.visualize_output(force_tight_layout=False)
+    points3D = np.vstack((X, Y, Z)).T
+    points2D = points3D[:, :2]
+    tri = Delaunay(points2D)
+    II, J, K = tri.simplices.T
+
+    fig = OpenBBFigure()
+    fig.set_title(f"{label} Surface for {symbol.upper()}")
+
+    fig_kwargs = dict(z=Z, x=X, y=Y, i=II, j=J, k=K, intensity=Z)
+    fig.add_mesh3d(
+        **fig_kwargs,
+        colorscale=PLT_3DMESH_COLORSCALE,
+        hovertemplate="<b>DTE</b>: %{y} <br><b>Strike</b>: %{x} <br><b>"
+        + z_dict[z][1]
+        + "</b>: %{z}<extra></extra>",
+        showscale=False,
+        flatshading=True,
+        lighting=dict(
+            ambient=0.5, diffuse=0.5, roughness=0.5, specular=0.4, fresnel=0.4
+        ),
+    )
+
+    tick_kwargs = dict(tickfont=dict(size=13), titlefont=dict(size=16))
+    fig.update_layout(
+        scene=dict(
+            xaxis=dict(title="Strike", **tick_kwargs),
+            yaxis=dict(title="DTE", **tick_kwargs),
+            zaxis=dict(title=z, **tick_kwargs),
+        )
+    )
+    fig.update_layout(
+        margin=dict(l=5, r=10, t=40, b=20),
+        title_x=0.5,
+        hoverlabel=PLT_3DMESH_HOVERLABEL,
+        scene_camera=dict(
+            up=dict(x=0, y=0, z=2),
+            center=dict(x=0, y=0, z=-0.3),
+            eye=dict(x=1.25, y=1.25, z=0.69),
+        ),
+        scene=PLT_3DMESH_SCENE,
+    )
 
     export_data(
         export,
@@ -584,6 +621,8 @@ def display_vol_surface(
         data,
         sheet_name,
     )
+
+    fig.show(external=external_axes, margin=False)
 
 
 @log_start_end(log=logger)

@@ -3,9 +3,8 @@ import logging
 import os
 
 # IMPORTATION THIRDPARTY
-from typing import List, Optional, Tuple
+from typing import Tuple
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
 # IMPORTATION INTERNAL
@@ -78,7 +77,7 @@ def plot_vol(
     raw: bool = False,
     export: str = "",
     sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot volume
 
@@ -156,7 +155,7 @@ def plot_vol(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -258,7 +257,7 @@ def plot_oi(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -337,38 +336,30 @@ def plot_voi(
         option_chain[["openInterest_call", "volume_call"]] / 1000
     )
 
-    fig = OpenBBFigure(
-        title=title,
-        xaxis_title="Volume",
-        yaxis_title="Strike Price",
-    )
+    fig = OpenBBFigure(title=title, xaxis_title="Volume", yaxis_title="Strike Price")
 
     fig.add_bar(
         x=option_chain.openInterest_call,
         y=option_chain.strike,
         name="Calls: Open Interest",
-        orientation="h",
         marker_color="lightgreen",
     )
     fig.add_bar(
         x=option_chain.volume_call,
         y=option_chain.strike,
         name="Calls: Volume",
-        orientation="h",
         marker_color="green",
     )
     fig.add_bar(
         x=option_chain.openInterest_put,
         y=option_chain.strike,
         name="Puts: Open Interest",
-        orientation="h",
         marker_color="pink",
     )
     fig.add_bar(
         x=option_chain.volume_put,
         y=option_chain.strike,
         name="Puts: Volume",
-        orientation="h",
         marker_color="red",
     )
     fig.add_hline_legend(
@@ -382,6 +373,7 @@ def plot_voi(
         line=dict(dash="dash", width=2, color="red"),
     )
 
+    fig.update_traces(selector=dict(type="bar"), orientation="h")
     fig.update_layout(
         barmode="relative", hovermode="y unified", yaxis_range=[min_strike, max_strike]
     )
@@ -397,7 +389,7 @@ def plot_voi(
         sheet_name,
     )
 
-    return fig.show() if not external_axes else fig
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

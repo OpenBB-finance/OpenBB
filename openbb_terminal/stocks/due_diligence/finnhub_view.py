@@ -5,13 +5,11 @@ import logging
 import os
 
 import pandas as pd
-from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.due_diligence import finnhub_model
 
 logger = logging.getLogger(__name__)
@@ -36,27 +34,23 @@ def plot_rating_over_time(
     external_axes: bool, optional
         Whether to return the figure object or not, by default False
     """
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(yaxis_title="Rating")
+    fig.set_title(f"{symbol}'s ratings over time")
 
     rot = data.sort_values("period")
-    ax.plot(pd.to_datetime(rot["period"]), rot["strongBuy"], c="green", lw=3)
-    ax.plot(pd.to_datetime(rot["period"]), rot["buy"], c="lightgreen", lw=3)
-    ax.plot(pd.to_datetime(rot["period"]), rot["hold"], c="grey", lw=3)
-    ax.plot(pd.to_datetime(rot["period"]), rot["sell"], c="pink", lw=3)
-    ax.plot(pd.to_datetime(rot["period"]), rot["strongSell"], c="red", lw=3)
-    ax.set_xlim(
-        pd.to_datetime(rot["period"].values[0]),
-        pd.to_datetime(rot["period"].values[-1]),
+    fig.add_scatter(
+        x=rot["period"], y=rot["strongBuy"], name="Strong Buy", line_color="green"
     )
-    ax.set_title(f"{symbol}'s ratings over time")
-    ax.set_ylabel("Rating")
-    ax.legend(["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"])
+    fig.add_scatter(x=rot["period"], y=rot["buy"], name="Buy", line_color="lightgreen")
+    fig.add_scatter(x=rot["period"], y=rot["hold"], name="Hold", line_color="grey")
+    fig.add_scatter(x=rot["period"], y=rot["sell"], name="Sell", line_color="pink")
+    fig.add_scatter(
+        x=rot["period"], y=rot["strongSell"], name="Strong Sell", line_color="red"
+    )
 
-    theme.style_primary_axis(ax)
+    fig.update_traces(selector=dict(type="scatter"), line_width=3, mode="lines")
 
-    if not external_axes:
-        theme.visualize_output()
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

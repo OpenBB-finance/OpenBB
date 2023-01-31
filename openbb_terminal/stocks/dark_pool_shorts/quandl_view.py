@@ -4,17 +4,14 @@ __docformat__ = "numpy"
 import logging
 import os
 
-import matplotlib.ticker
 import pandas as pd
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     lambda_long_number_format,
-    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.stocks.dark_pool_shorts import quandl_model
@@ -46,42 +43,41 @@ def plot_short_interest(
         Whether to return the figure object or not, by default False
     """
 
-    # This plot has 2 axes
-    _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax2 = ax1.twinx()
+    fig = OpenBBFigure.create_subplots(1, 1, specs=[[{"secondary_y": True}]])
+    fig.set_title(f"{('NASDAQ', 'NYSE')[nyse]} Short Interest on {symbol}")
 
-    ax1.bar(
-        data.index,
-        data["Short Volume"],
-        0.3,
-        color=theme.down_color,
+    data.index = pd.to_datetime(data.index).strftime("%Y-%m-%d")
+    fig.add_bar(
+        x=data.index,
+        y=data["Short Volume"],
+        name="Short Volume",
+        marker_color=theme.down_color,
+        secondary_y=False,
     )
-    ax1.bar(
-        data.index,
-        data["Total Volume"] - data["Short Volume"],
-        0.3,
-        bottom=data["Short Volume"],
-        color=theme.up_color,
+    fig.add_bar(
+        x=data.index,
+        y=data["Total Volume"] - data["Short Volume"],
+        name="Total Volume",
+        marker_color=theme.up_color,
+        secondary_y=False,
     )
-    ax1.set_ylabel("Shares")
-    ax1.set_title(f"{('NASDAQ', 'NYSE')[nyse]} Short Interest on {symbol}")
 
-    ax1.legend(labels=["Short Volume", "Total Volume"], loc="best")
-    ax1.yaxis.set_major_formatter(matplotlib.ticker.EngFormatter())
-
-    ax2.tick_params(axis="y")
-    ax2.set_ylabel("Percentage of Volume Shorted")
-    ax2.plot(
-        data.index,
-        data["% of Volume Shorted"],
+    fig.add_scatter(
+        x=data.index,
+        y=data["% of Volume Shorted"].values,
+        name="Fees",
+        marker_color=theme.get_colors()[0],
+        secondary_y=True,
+        showlegend=False,
     )
-    ax2.tick_params(axis="y", which="major")
-    ax2.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%.0f%%"))
+    fig.update_yaxes(
+        title_text="Percentage of Volume Shorted", secondary_y=True, tickformat="%.0f%%"
+    )
+    fig.update_yaxes(secondary_y=False, side="left", title_text="Shares")
+    fig.update_xaxes(title_text="Date", type="category", nticks=6)
+    fig.update_layout(barmode="stack", margin=dict(l=50))
 
-    theme.style_twin_axes(ax1, ax2)
-
-    if not external_axes:
-        theme.visualize_output()
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

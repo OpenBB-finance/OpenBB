@@ -4,25 +4,18 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
+from typing import Tuple, Union
 
-from matplotlib import pyplot as plt
+import pandas as pd
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
-
-# from openbb_terminal.config_plot import PLOT_DPI
-# from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy.yfinance_model import (
     INDICES,
     get_indices,
     get_search_indices,
 )
-from openbb_terminal.helper_funcs import (
-    export_data,
-    print_rich_table,
-    reindex_dates,
-)  # plot_autoscale,
+from openbb_terminal.helper_funcs import export_data, print_rich_table, reindex_dates
 
 logger = logging.getLogger(__name__)
 
@@ -36,10 +29,10 @@ def show_indices(
     column: str = "Adj Close",
     returns: bool = False,
     raw: bool = False,
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
     export: str = "",
     sheet_name: str = None,
-):
+) -> Union[pd.DataFrame, Tuple[pd.DataFrame, OpenBBFigure]]:
     """Load (and show) the selected indices over time [Source: Yahoo Finance]
     Parameters
     ----------
@@ -59,8 +52,8 @@ def show_indices(
         Flag to show cumulative returns on index
     raw : bool
         Whether to display the raw output.
-    external_axes: Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     Returns
@@ -102,7 +95,7 @@ def show_indices(
                     name=label,
                 )
 
-    fig.show()
+            fig.show(external=external_axes)
 
     if raw:
         print_rich_table(
@@ -121,7 +114,10 @@ def show_indices(
             sheet_name,
         )
 
-    return indices_data
+    if (output := indices_data) is not None and external_axes:
+        output = (indices_data, fig.show(external_axes=external_axes))
+
+    return output
 
 
 @log_start_end(log=logger)
