@@ -160,6 +160,10 @@ class PortfolioController(BaseController):
             self.update_choices()
             choices: dict = self.choices_default
             self.choices = choices
+            self.choices["bench"] = {
+                "--benchmark": {c: None for c in statics.BENCHMARK_CHOICES},
+                "-b": "--benchmark",
+            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_choices(self):
@@ -411,7 +415,6 @@ class PortfolioController(BaseController):
             dest="benchmark",
             required="-h" not in other_args,
             help="Set the benchmark for the portfolio. By default, this is SPDR S&P 500 ETF Trust (SPY).",
-            choices={c: {} for c in statics.BENCHMARK_CHOICES},
             metavar="BENCHMARK",
         )
         parser.add_argument(
@@ -432,9 +435,11 @@ class PortfolioController(BaseController):
                     "[red]Please first load transactions file using 'load'[/red]"
                 )
             else:
-                self.benchmark_name = statics.BENCHMARK_CHOICES.get(ns_parser.benchmark)
-                self.original_benchmark_ticker = ns_parser.benchmark
-                self.portfolio.set_benchmark(ns_parser.benchmark, ns_parser.full_shares)
+                if self.portfolio.set_benchmark(ns_parser.benchmark, ns_parser.full_shares):
+                    self.benchmark_name = statics.BENCHMARK_CHOICES.get(
+                        ns_parser.benchmark, ns_parser.benchmark
+                    )
+                    self.original_benchmark_ticker = ns_parser.benchmark
 
     @log_start_end(log=logger)
     def call_alloc(self, other_args: List[str]):
@@ -573,9 +578,13 @@ class PortfolioController(BaseController):
                 bench_result = attribution_model.get_spy_sector_contributions(
                     start_date, end_date
                 )
+                if bench_result.empty:
+                    return
                 portfolio_result = attribution_model.get_portfolio_sector_contributions(
                     start_date, self.portfolio.portfolio_trades
                 )
+                if portfolio_result.empty:
+                    return
 
                 # relative results - the proportions of return attribution
                 if ns_parser.type == "relative":

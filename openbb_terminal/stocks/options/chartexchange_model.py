@@ -4,11 +4,10 @@ import logging
 from typing import Union
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options.op_helpers import convert
 
@@ -45,7 +44,7 @@ def get_option_history(
     )
     url += f"{'c' if call else 'p'}{float(price):g}/historical/"
 
-    data = requests.get(url, headers={"User-Agent": get_user_agent()}).content
+    data = request(url, headers={"User-Agent": get_user_agent()}).content
     soup = BeautifulSoup(data, "html.parser")
     table = soup.find("div", attrs={"style": "display: table; font-size: 0.9em; "})
     if table:

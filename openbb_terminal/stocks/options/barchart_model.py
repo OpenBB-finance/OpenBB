@@ -4,11 +4,10 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +28,7 @@ def get_options_info(symbol: str) -> pd.DataFrame:
     """
     page = f"https://www.barchart.com/stocks/quotes/{symbol}/overview"
 
-    r = requests.get(page, headers={"User-Agent": get_user_agent()})
+    r = request(page, headers={"User-Agent": get_user_agent()})
     soup = BeautifulSoup(r.text, "html.parser")
     tags = soup.find(
         "div",

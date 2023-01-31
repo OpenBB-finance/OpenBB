@@ -16,6 +16,10 @@ SENSITIVE_KEYS = [
     "OANDA_TOKEN",
 ]
 
+# Network requests
+# Set request timeout
+REQUEST_TIMEOUT = load_env_vars("OPENBB_REQUEST_TIMEOUT", int, 5)
+
 # Terminal UX section
 MPL_STYLE = os.getenv("OPENBB_MPLSTYLE") or "dark"
 PMF_STYLE = os.getenv("OPENBB_PMFSTYLE") or "dark"
