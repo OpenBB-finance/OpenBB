@@ -435,7 +435,9 @@ class PortfolioController(BaseController):
                     "[red]Please first load transactions file using 'load'[/red]"
                 )
             else:
-                if self.portfolio.set_benchmark(ns_parser.benchmark, ns_parser.full_shares):
+                if self.portfolio.set_benchmark(
+                    ns_parser.benchmark, ns_parser.full_shares
+                ):
                     self.benchmark_name = statics.BENCHMARK_CHOICES.get(
                         ns_parser.benchmark, ns_parser.benchmark
                     )
