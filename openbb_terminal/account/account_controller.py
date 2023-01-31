@@ -130,10 +130,7 @@ class AccountController(BaseController):
         if ns_parser:
             response = Hub.fetch_user_configs(User.get_session())
             if response:
-                configs = json.loads(response.content)
-                configs.pop("email", None)
-
-                configs_diff = get_diff(configs=configs)
+                configs_diff = get_diff(configs=json.loads(response.content))
                 if configs_diff:
                     i = console.input(
                         "\nDo you want to overwrite your local configurations "
