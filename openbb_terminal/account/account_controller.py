@@ -143,6 +143,8 @@ class AccountController(BaseController):
                         console.print("\nDone.", style="info")
                     else:
                         console.print("\nAborted.", style="info")
+                else:
+                    console.print("No changes to apply.", style="info")
 
     def call_clear(self, _):
         """Clear data"""
