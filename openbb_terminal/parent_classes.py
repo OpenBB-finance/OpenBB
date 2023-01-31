@@ -414,7 +414,7 @@ class BaseController(metaclass=ABCMeta):
             dest="command",
             default=None,
             help="Obtain documentation on the given command or menu",
-            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS,
+            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS + self.CHOICES_COMMON,
         )
 
         if other_args and "-" not in other_args[0][0]:

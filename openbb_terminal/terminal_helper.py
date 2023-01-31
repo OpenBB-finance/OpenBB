@@ -13,7 +13,6 @@ from typing import List
 from packaging import version
 
 # IMPORTATION THIRDPARTY
-import requests
 import matplotlib.pyplot as plt
 
 # IMPORTATION INTERNAL
@@ -21,6 +20,7 @@ from openbb_terminal.config_terminal import LOGGING_APP_NAME, LOGGING_COMMIT_HAS
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import thought_of_the_day as thought
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
@@ -137,6 +137,9 @@ def open_openbb_documentation(
     elif "sources" in path:
         path = "/guides/advanced/changing-sources"
         command = ""
+    elif "params" in path:
+        path = "/guides/intros/portfolio/po"
+        command = ""
     else:
         if arg_type == "command":  # user passed a command name
             path = f"/reference/{path}"
@@ -166,8 +169,19 @@ def open_openbb_documentation(
         elif "sources" in path:
             path = "/guides/advanced/changing-sources"
             command = ""
-        elif "exe" == command:
+        elif command in ["record", "stop", "exe"]:
             path = "/guides/advanced/scripts-and-routines"
+            command = ""
+        elif command in [
+            "intro",
+            "about",
+            "support",
+            "survey",
+            "update",
+            "wiki",
+            "news",
+        ]:
+            path = ""
             command = ""
         elif command in ["ta", "ba", "qa"]:
             path = f"/guides/intros/common/{command}"
@@ -239,7 +253,7 @@ def check_for_updates() -> None:
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
     try:
-        r = requests.get(
+        r = request(
             "https://api.github.com/repos/openbb-finance/openbbterminal/releases/latest",
             timeout=1,
         )
