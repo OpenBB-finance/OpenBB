@@ -45,8 +45,19 @@ def create_session(
         return None
 
 
-def delete_session(base_url=BASE_URL):
-    """Delete the session."""
+def delete_session(base_url=BASE_URL) -> Optional[requests.Response]:
+    """Delete the session.
+
+    Parameters
+    ----------
+    base_url : str, optional
+        The base url, by default BASE_URL
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the logout request.
+    """
     try:
         response = requests.post(
             url=base_url + "logout",
@@ -116,7 +127,20 @@ def get_session(email: str, password: str) -> dict:
 
 
 def fetch_user_configs(session: dict, base_url=BASE_URL) -> Optional[requests.Response]:
-    """Fetch user configurations."""
+    """Fetch user configurations.
+
+    Parameters
+    ----------
+    session : dict
+        The session info.
+    base_url : str, optional
+        The base url, by default BASE_URL
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the get request.
+    """
 
     token_type = session.get("token_type", "")
     token = session.get("access_token", "")
@@ -154,11 +178,13 @@ def patch_user_configs(
         The value to patch.
     type_ : str
         The type of the patch, either "keys" or "settings".
+    base_url : str, optional
+        The base url, by default BASE_URL
 
     Returns
     -------
-    bool
-        The status of the patch.
+    Optional[requests.Response]
+        The response from the patch request.
     """
 
     if type_ not in ["keys", "settings"]:
@@ -191,7 +217,18 @@ def patch_user_configs(
 
 
 def clear_user_configs(base_url=BASE_URL) -> Optional[requests.Response]:
-    """Clear user configurations to the server."""
+    """Clear user configurations to the server.
+
+    Parameters
+    ----------
+    base_url : str, optional
+        The base url, by default BASE_URL
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the put request.
+    """
     data: Dict[str, dict] = {"features_keys": {}, "features_settings": {}}
 
     try:
