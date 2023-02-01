@@ -70,6 +70,7 @@ command_location = ""
 
 # pylint: disable=R0912
 
+
 # pylint: disable=global-statement
 def set_command_location(cmd_loc: str):
     """Set command location.
@@ -351,7 +352,6 @@ def print_rich_table(
             table.add_row(*row_idx)
         console.print(table)
     else:
-
         if obbff.USE_COLOR and automatic_coloring:
             if columns_to_auto_color:
                 for col in columns_to_auto_color:
@@ -387,6 +387,7 @@ def check_int_range(mini: int, maxi: int):
     int_range_checker:
         Function that compares the three integers
     """
+
     # Define the function with default arguments
     def int_range_checker(num: int) -> int:
         """Check if int is between a high and low value.
@@ -1064,7 +1065,7 @@ def check_ohlc(type_ohlc: str) -> str:
 def lett_to_num(word: str) -> str:
     """Match ohlca to integers."""
     replacements = [("o", "1"), ("h", "2"), ("l", "3"), ("c", "4"), ("a", "5")]
-    for (a, b) in replacements:
+    for a, b in replacements:
         word = word.replace(a, b)
     return word
 
@@ -1409,7 +1410,6 @@ def export_data(
                 df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
-
                 if sheet_name is None:
                     exists, overwrite = ask_file_overwrite(saved_path)
                     if exists and not overwrite:
@@ -1709,6 +1709,7 @@ def check_list_values(valid_values: List[str]):
     check_list_values_from_valid_values_list:
         Function that ensures that the valid values go through and notifies user when value is not valid.
     """
+
     # Define the function with default arguments
     def check_list_values_from_valid_values_list(given_values: str) -> List[str]:
         """Check if argparse argument is an str format.

@@ -689,7 +689,6 @@ def display_all_coins(
         df.drop("index", axis=1, inplace=True)
 
     else:
-
         if source == "CoinGecko":
             coins_df = pycoingecko_model.get_coin_list().drop("index", axis=1)
             df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)

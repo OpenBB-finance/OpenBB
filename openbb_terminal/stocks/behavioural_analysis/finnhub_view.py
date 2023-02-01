@@ -53,7 +53,6 @@ def display_stock_price_headlines_sentiment(
         )
 
         if not df_stock.empty:
-
             # This plot has 2 axes
             _, axes = plt.subplots(
                 figsize=plot_autoscale(),

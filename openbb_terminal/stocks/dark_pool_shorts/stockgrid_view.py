@@ -293,7 +293,6 @@ def net_short_position(
         return
 
     if raw:
-
         df["dates"] = df["dates"].dt.date
 
         print_rich_table(

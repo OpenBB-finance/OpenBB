@@ -183,7 +183,6 @@ class AllyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-
             ally_view.display_top_lists(
                 list_type=ns_parser.list_type,
                 exchange=ns_parser.exchange,

@@ -65,7 +65,6 @@ class Custom(PltTA):
                 x_range = x_range + timedelta(days=7 - x_range.weekday())
 
         for i in range(2, len(df_ta2) - 2):
-
             if is_support(df_ta2, i):
                 lv = df_ta2["Low"][i]
                 if is_far_from_level(lv, levels, df_ta2):

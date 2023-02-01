@@ -239,7 +239,6 @@ class DashboardsController(BaseController):
             filepath = Path(__file__).absolute()
 
         for process in self.processes:
-
             if not process.is_running():
                 self.processes.remove(process)
                 continue

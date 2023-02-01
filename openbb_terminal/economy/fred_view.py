@@ -111,7 +111,6 @@ def display_fred_series(
 
         fig = OpenBBFigure()
         for s_id, sub_dict in detail.items():
-
             data_to_plot, title = format_data_to_plot(data[s_id], sub_dict)
 
             fig.add_scatter(

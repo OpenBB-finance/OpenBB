@@ -231,7 +231,6 @@ class TA_Data:
         """
         output = None
         if indicator and indicator.name in self.ma_mode:
-
             if isinstance(indicator.get_argument_values("length"), list):
                 df_ta = pd.DataFrame()
 

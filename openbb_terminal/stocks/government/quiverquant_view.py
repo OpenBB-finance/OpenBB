@@ -688,7 +688,6 @@ def display_top_lobbying(
             title="Top Lobbying Tickers",
         )
     else:
-
         df = lobbying_by_ticker.head(limit)
 
         fig = OpenBBFigure(xaxis_title="Ticker", yaxis_title="Total Amount ($100k)")

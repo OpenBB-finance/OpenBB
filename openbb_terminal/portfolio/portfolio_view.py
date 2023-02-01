@@ -401,7 +401,6 @@ def display_yearly_returns(
         )
 
     else:
-
         fig = OpenBBFigure()
 
         creturns_year_idx = list()
@@ -532,7 +531,6 @@ def display_monthly_returns(
         for i, df, name in enumerate(
             zip([portfolio_returns, benchmark_returns], ["Portfolio", "Benchmark"])
         ):
-
             fig.add_heatmap(
                 z=df,
                 x=df.columns,

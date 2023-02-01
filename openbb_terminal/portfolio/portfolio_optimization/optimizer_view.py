@@ -3964,7 +3964,6 @@ def additional_plots(
             theme.visualize_output()
 
     if heat:
-
         if len(weights) == 1:
             single_key = list(weights.keys())[0].upper()
             console.print(

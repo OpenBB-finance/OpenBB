@@ -126,7 +126,6 @@ def plot_data(
     ylabel: str = "",
     external_axes: bool = False,
 ):
-
     # This plot has 2 axes
     _, axes = plt.subplots(
         2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI
@@ -172,7 +171,6 @@ def plot_data_bar(
     ylabel: str = "",
     external_axes: bool = False,
 ):
-
     # This plot has 2 axes
     _, axes = plt.subplots(
         2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI
