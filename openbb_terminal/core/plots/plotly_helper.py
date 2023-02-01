@@ -880,7 +880,7 @@ class OpenBBFigure(go.Figure):
         """Return the figure as HTML"""
         kwargs.update(
             dict(
-                config={"displayModeBar": False, "scrollZoom": True},
+                config={"displayModeBar": True, "scrollZoom": True},
                 include_plotlyjs=kwargs.get("include_plotlyjs", False),
                 full_html=False,
             )
@@ -1219,8 +1219,7 @@ class OpenBBFigure(go.Figure):
         self.update_layout(
             updatemenus=[
                 dict(
-                    bgcolor="#000000",
-                    bordercolor="gold",
+                    bgcolor="#0f0f0f",
                     font=dict(color="white", size=14),
                     buttons=[
                         dict(
