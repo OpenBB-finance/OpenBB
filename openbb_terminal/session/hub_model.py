@@ -1,6 +1,5 @@
 from typing import Dict, Optional
 import requests
-from openbb_terminal.session.user import User
 
 from openbb_terminal.rich_config import console
 
@@ -285,18 +284,33 @@ def clear_user_configs(
 
 
 def upload_routine(
+    auth_header: str,
     name: str = "",
     routine: str = "",
     base_url=BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
-    """Send a routine to the server."""
+    """Send a routine to the server.
+
+    Parameters
+    ----------
+    auth_header : str
+
+    name : str
+        The name of the routine.
+    routine : str
+        The routine.
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+    """
 
     data = {"name": name, "script": routine}
 
     try:
         response = requests.post(
-            headers={"Authorization": User.get_auth_header()},
+            headers={"Authorization": auth_header},
             url=base_url + "terminal/script",
             json=data,
             timeout=timeout,
@@ -317,35 +331,7 @@ def upload_routine(
         return None
 
 
-def download_routine(
-    name: str = "",
-) -> Optional[requests.Response]:
+def download_routine() -> Optional[requests.Response]:
     """Download a routine from the server."""
     console.print("[red]Not implemented yet.[/red]")
     return None
-
-    # TODO: Implement when endpoint is ready.
-
-    # data = {"name": name}
-
-    # try:
-    #     response = requests.get(
-    #         headers={"Authorization": User.get_auth_header()},
-    #         url=BASE_URL + "terminal/script",
-    #         json=data,
-    #         timeout=TIMEOUT,
-    #     )
-    #     if response.status_code == 200:
-    #         console.print("Successfully downloaded your routine.")
-    #     else:
-    #         console.print("[red]Error downloading your routine.[/red]")
-    #     return response
-    # except requests.exceptions.ConnectionError:
-    #     console.print("[red]Connection error.[/red]")
-    #     return None
-    # except requests.exceptions.Timeout:
-    #     console.print("[red]\nConnection timeout.[/red]")
-    #     return None
-    # except Exception:
-    #     console.print("[red]Failed to download your routine.[/red]")
-    #     return None
