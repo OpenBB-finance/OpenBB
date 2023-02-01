@@ -3,7 +3,8 @@ import os
 from typing import List, Optional
 
 import pandas as pd
-from matplotlib import pyplot as plt, ticker
+from matplotlib import pyplot as plt
+from matplotlib import ticker
 
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.config_terminal import theme
@@ -130,6 +131,7 @@ def plot_data(
     _, axes = plt.subplots(
         2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI
     )
+    (ax1, ax2) = axes
 
     df_price = df[["price"]].copy()
     df_without_price = df.drop("price", axis=1)
@@ -175,6 +177,7 @@ def plot_data_bar(
     _, axes = plt.subplots(
         2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI
     )
+    (ax1, ax2) = axes
 
     df_price = df[["price"]].copy()
     df_without_price = df.drop("price", axis=1)
