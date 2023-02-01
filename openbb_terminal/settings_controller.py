@@ -569,7 +569,7 @@ class SettingsController(BaseController):
             console.print("Will take effect when running terminal next.")
         obbff.TOOLBAR_TWEET_NEWS = not obbff.TOOLBAR_TWEET_NEWS
         set_key(
-            obbff.USER_ENV_FILE,
+            USER_ENV_FILE,
             "OPENBB_TOOLBAR_TWEET_NEWS",
             str(obbff.TOOLBAR_TWEET_NEWS),
         )
@@ -613,7 +613,7 @@ class SettingsController(BaseController):
             if ns_parser.time:
                 obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES = ns_parser.time
                 set_key(
-                    obbff.USER_ENV_FILE,
+                    USER_ENV_FILE,
                     "OPENBB_TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES",
                     str(ns_parser.time),
                 )
@@ -621,7 +621,7 @@ class SettingsController(BaseController):
             if ns_parser.number:
                 obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ = ns_parser.number
                 set_key(
-                    obbff.USER_ENV_FILE,
+                    USER_ENV_FILE,
                     "OPENBB_TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ",
                     str(ns_parser.number),
                 )
@@ -629,7 +629,7 @@ class SettingsController(BaseController):
             if ns_parser.accounts:
                 obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK = ns_parser.accounts
                 set_key(
-                    obbff.USER_ENV_FILE,
+                    USER_ENV_FILE,
                     "OPENBB_TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK",
                     str(ns_parser.accounts),
                 )
