@@ -42,7 +42,6 @@ from PIL import Image, ImageDraw
 from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
