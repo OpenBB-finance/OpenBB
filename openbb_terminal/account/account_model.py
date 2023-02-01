@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Dict, Any
 from openbb_terminal.core.config import paths
 from openbb_terminal.rich_config import console
@@ -126,6 +127,8 @@ def get_var_diff(obj, name, value):
         cast_value = int(value)
     elif isinstance(getattr(obj, name), float):
         cast_value = float(value)
+    elif isinstance(getattr(obj, name), Path):
+        cast_value = Path(value)
     else:
         cast_value = value
 
