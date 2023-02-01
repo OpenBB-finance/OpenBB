@@ -10,6 +10,8 @@ import aiohttp
 import plotly.graph_objects as go
 from pywry import PyWry
 
+from openbb_terminal.base_helpers import strtobool
+
 try:
     from IPython import get_ipython
 
@@ -39,15 +41,16 @@ class Backend(PyWry):
         return cls.instance
 
     def __init__(self, daemon: bool = True, max_retries: int = 30):
+        atexit.register(self.del_temp)
         super().__init__(daemon=daemon, max_retries=max_retries)
         self.plotly_html: Path = PLOTS_CORE_PATH / "plotly_temp.html"
         self.inject_path_to_html()
         self.isatty = (
             not JUPYTER_NOTEBOOK
             and sys.stdin.isatty()
-            and os.environ.get("TEST_MODE", "False") != "True"
+            and not strtobool(os.environ.get("TEST_MODE", False))
+            and not strtobool(os.environ.get("OPENBB_ENABLE_QUICK_EXIT", False))
         )
-        atexit.register(self.del_temp)
 
     def inject_path_to_html(self):
         """Update the script tag in html with local path"""

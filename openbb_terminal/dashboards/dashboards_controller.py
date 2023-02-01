@@ -7,6 +7,7 @@ import logging
 import os
 import re
 import socket
+import sys
 import threading
 import time
 from pathlib import Path
@@ -53,6 +54,9 @@ class DashboardsController(BaseController):
         super().__init__(queue)
         self.jupyter_token = None
         self.processes: List[psutil.Process] = []
+        self.parent_path = (
+            Path(sys.executable).parent if hasattr(sys, "frozen") else Path(os.getcwd())
+        )
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -187,7 +191,7 @@ class DashboardsController(BaseController):
                 self.processes.append(
                     psutil.Popen(
                         f"{cmd} --no-browser --port {port}"
-                        + (f" {file}" if ns_parser.jupyter else ""),
+                        + (f" '{file}'" if ns_parser.jupyter else ""),
                         stdout=PIPE,
                         stderr=STDOUT,
                         stdin=PIPE,
@@ -206,7 +210,7 @@ class DashboardsController(BaseController):
                     self.get_jupyter_token(f"http://localhost:{port}")
 
             elif response.lower() == "n":
-                path = file.relative_to(Path(os.getcwd())).as_posix()
+                path = file.relative_to(self.parent_path).as_posix()
                 console.print(f"Type: {cmd} {path}\ninto a terminal to run.")
 
             if self.check_processes(ns_parser):
@@ -292,7 +296,7 @@ class DashboardsController(BaseController):
             cmd = "streamlit run"
 
             filepath = Path(__file__).parent / "stream" / f"{filename}.py"
-            file = filepath.relative_to(Path(os.getcwd())).as_posix()
+            file = filepath.relative_to(self.parent_path).as_posix()
 
             if not ns_parser.input:
                 console.print(
@@ -302,10 +306,10 @@ class DashboardsController(BaseController):
 
             if ns_parser.input or response.lower() == "y":
                 port = self.get_free_port()
-                os.environ["PYTHONPATH"] = os.getcwd()
+                os.environ["PYTHONPATH"] = str(self.parent_path)
                 self.processes.append(
                     psutil.Popen(
-                        f"{cmd} --server.port {port} {file}",
+                        f"{cmd} --server.port {port} '{file}'",
                         stdout=PIPE,
                         stderr=STDOUT,
                         stdin=PIPE,
@@ -324,7 +328,7 @@ class DashboardsController(BaseController):
                 )
                 thread.start()
             else:
-                console.print(f"Type: {cmd} {file}\ninto a terminal to run.")
+                console.print(f"Type: {cmd} '{file}'\ninto a terminal to run.")
 
 
 def non_blocking_streamlit(process: psutil.Popen) -> None:
