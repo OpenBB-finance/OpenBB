@@ -1,7 +1,10 @@
 # flake8: noqa pylint: disable=R0402,C0412,unused-import
 # noqa: F401
 
+
 # Alternative
+import openbb_terminal.alternative.hackernews_model as alt_hackernews_model
+import openbb_terminal.alternative.hackernews_view as alt_hackernews_view
 import openbb_terminal.alternative.oss.github_model as alt_oss_github_model
 import openbb_terminal.alternative.oss.github_view as alt_oss_github_view
 import openbb_terminal.alternative.oss.runa_model as alt_oss_runa_model
@@ -9,6 +12,8 @@ import openbb_terminal.alternative.oss.runa_view as alt_oss_runa_view
 
 # Crypto Helpers
 import openbb_terminal.cryptocurrency.cryptocurrency_helpers as crypto_helpers
+
+# ETF
 import openbb_terminal.etf.discovery.wsj_model as etf_disc_wsj_model
 import openbb_terminal.etf.discovery.wsj_view as etf_disc_wsj_view
 import openbb_terminal.etf.screener.screener_model as etf_scr_model
@@ -140,6 +145,7 @@ from openbb_terminal.cryptocurrency.due_diligence import (
     pycoingecko_view as crypto_dd_pycoingecko_view,
     santiment_model as crypto_dd_santiment_model,
     santiment_view as crypto_dd_santiment_view,
+    sdk_helper as crypto_dd_sdk_helper,
 )
 
 # Cryptocurrency NFT
@@ -331,9 +337,12 @@ from openbb_terminal.stocks.fundamental_analysis import (
     eclect_us_model as stocks_fa_eclect_us_model,
     finviz_model as stocks_fa_finviz_model,
     fmp_model as stocks_fa_fmp_model,
+    fmp_view as stocks_fa_fmp_view,
     polygon_model as stocks_fa_polygon_model,
     polygon_view as stocks_fa_polygon_view,
     sdk_helpers as stocks_fa_sdk_helpers,
+    seeking_alpha_model as stocks_fa_seeking_alpha_model,
+    seeking_alpha_view as stocks_fa_seeking_alpha_view,
     yahoo_finance_model as stocks_fa_yahoo_finance_model,
     yahoo_finance_view as stocks_fa_yahoo_finance_view,
 )
@@ -352,6 +361,7 @@ from openbb_terminal.stocks.insider import (
     finviz_view as stocks_insider_finviz_view,
     openinsider_model as stocks_insider_openinsider_model,
     openinsider_view as stocks_insider_openinsider_view,
+    sdk_helper as stocks_insider_sdk_helper,
 )
 
 # Stocks - Options
@@ -366,6 +376,7 @@ from openbb_terminal.stocks.options import (
     fdscanner_view as stocks_options_fdscanner_view,
     nasdaq_model as stocks_options_nasdaq_model,
     options_sdk_helper as stocks_options_sdk_helper,
+    options_view as stocks_options_view,
     tradier_model as stocks_options_tradier_model,
     tradier_view as stocks_options_tradier_view,
     yfinance_model as stocks_options_yfinance_model,
@@ -420,6 +431,8 @@ try:
 
     FORECASTING = True
     from openbb_terminal.forecast import (
+        anom_model as forecast_anom_model,
+        anom_view as forecast_anom_view,
         autoarima_model as forecast_autoarima_model,
         autoarima_view as forecast_autoarima_view,
         autoces_model as forecast_autoces_model,

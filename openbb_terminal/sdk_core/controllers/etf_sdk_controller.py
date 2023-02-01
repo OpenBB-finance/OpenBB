@@ -12,6 +12,7 @@ class EtfController(model.EtfRoot):
 
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
+        `compare`: Compare selected ETFs\n
         `etf_by_category`: Return a selection of ETFs based on category filtered by total assets.\n
         `etf_by_name`: Get an ETF symbol and name based on ETF string to search. [Source: StockAnalysis]\n
         `holdings`: Get ETF holdings\n

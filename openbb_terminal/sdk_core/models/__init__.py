@@ -16,3 +16,4 @@ from .stocks_sdk_model import StocksRoot
 from .root_sdk_model import RootRoot
 from .qa_sdk_model import QaRoot
 from .ta_sdk_model import TaRoot
+from .alt_sdk_model import AltRoot

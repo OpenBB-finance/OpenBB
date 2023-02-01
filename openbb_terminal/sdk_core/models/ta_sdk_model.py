@@ -24,6 +24,10 @@ class TaRoot(Category):
         `cci_chart`: Plots CCI Indicator\n
         `cg`: Center of gravity\n
         `cg_chart`: Plots center of gravity Indicator\n
+        `clenow`: Gets the Clenow Volatility Adjusted Momentum.  this is defined as the regression coefficient on log prices\n
+        `clenow_chart`: Prints table and plots clenow momentum\n
+        `demark`: Get the integer value for demark sequential indicator\n
+        `demark_chart`: Plot demark sequential indicator\n
         `donchian`: Calculate Donchian Channels\n
         `donchian_chart`: Plots donchian channels\n
         `ema`: Gets exponential moving average (EMA) for stock\n
@@ -69,6 +73,10 @@ class TaRoot(Category):
         self.cci_chart = lib.common_ta_momentum_view.display_cci
         self.cg = lib.common_ta_momentum_model.cg
         self.cg_chart = lib.common_ta_momentum_view.display_cg
+        self.clenow = lib.common_ta_momentum_model.clenow_momentum
+        self.clenow_chart = lib.common_ta_momentum_view.display_clenow_momentum
+        self.demark = lib.common_ta_momentum_model.demark_seq
+        self.demark_chart = lib.common_ta_momentum_view.display_demark
         self.donchian = lib.common_ta_volatility_model.donchian
         self.donchian_chart = lib.common_ta_volatility_view.display_donchian
         self.ema = lib.common_ta_overlap_model.ema

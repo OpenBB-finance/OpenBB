@@ -31,6 +31,8 @@ class CryptoDueDiligence(Category):
         `active`: Returns active addresses of a certain symbol\n
         `active_chart`: Plots active addresses of a certain symbol over time\n
         `all_binance_trading_pairs`: Returns all available pairs on Binance in DataFrame format. DataFrame has 3 columns symbol, baseAsset, quoteAsset\n
+        `ath`: Get all time high for a coin in a given currency\n
+        `atl`: Get all time low for a coin in a given currency\n
         `balance`: Get account holdings for asset. [Source: Binance]\n
         `balance_chart`: Prints table showing account holdings for asset. [Source: Binance]\n
         `basic`: Basic coin information [Source: CoinPaprika]\n
@@ -43,6 +45,7 @@ class CryptoDueDiligence(Category):
         `close`: Returns the price of a cryptocurrency\n
         `coin`: Get coin by id [Source: CoinPaprika]\n
         `coin_market_chart`: Get prices for given coin. [Source: CoinGecko]\n
+        `dev`: Get developer stats for a coin\n
         `eb`: Returns the total amount of coins held on exchange addresses in units and percentage.\n
         `eb_chart`: Plots total amount of coins held on exchange addresses in units and percentage.\n
         `events`: Get all events related to given coin like conferences, start date of futures trading etc.\n
@@ -86,7 +89,9 @@ class CryptoDueDiligence(Category):
         `ps_chart`: Prints table showing ticker information for single coin [Source: CoinPaprika]\n
         `rm`: Returns coin roadmap\n
         `rm_chart`: Plots coin roadmap\n
+        `score`: Get scores for a coin from CoinGecko\n
         `show_available_pairs_for_given_symbol`: Return all available quoted assets for given symbol. [Source: Coinbase]\n
+        `social`: Get social media stats for a coin\n
         `stats`: Get 24 hr stats for the product. Volume is in base currency units.\n
         `stats_chart`: Prints table showing 24 hr stats for the product. Volume is in base currency units.\n
         `team`: Returns coin team\n
@@ -109,6 +114,8 @@ class CryptoDueDiligence(Category):
         self.all_binance_trading_pairs = (
             lib.crypto_dd_binance_model.get_all_binance_trading_pairs
         )
+        self.ath = lib.crypto_dd_sdk_helper.ath
+        self.atl = lib.crypto_dd_sdk_helper.atl
         self.balance = lib.crypto_dd_binance_view.get_balance
         self.balance_chart = lib.crypto_dd_binance_view.display_balance
         self.basic = lib.crypto_dd_coinpaprika_model.basic_coin_info
@@ -127,6 +134,7 @@ class CryptoDueDiligence(Category):
         self.close = lib.crypto_dd_glassnode_model.get_close_price
         self.coin = lib.crypto_dd_coinpaprika_model.get_coin
         self.coin_market_chart = lib.crypto_dd_pycoingecko_model.get_coin_market_chart
+        self.dev = lib.crypto_dd_sdk_helper.dev_stats
         self.eb = lib.crypto_dd_glassnode_model.get_exchange_balances
         self.eb_chart = lib.crypto_dd_glassnode_view.display_exchange_balances
         self.events = lib.crypto_dd_coinpaprika_model.get_coin_events_by_id
@@ -172,9 +180,11 @@ class CryptoDueDiligence(Category):
         self.ps_chart = lib.crypto_dd_coinpaprika_view.display_price_supply
         self.rm = lib.crypto_dd_messari_model.get_roadmap
         self.rm_chart = lib.crypto_dd_messari_view.display_roadmap
+        self.score = lib.crypto_dd_sdk_helper.score
         self.show_available_pairs_for_given_symbol = (
             lib.crypto_dd_coinbase_model.show_available_pairs_for_given_symbol
         )
+        self.social = lib.crypto_dd_sdk_helper.social
         self.stats = lib.crypto_dd_coinbase_model.get_product_stats
         self.stats_chart = lib.crypto_dd_coinbase_view.display_stats
         self.team = lib.crypto_dd_messari_model.get_team
@@ -388,6 +398,8 @@ class CryptoOnChain(Category):
         `btc_supply_chart`: Returns BTC circulating supply [Source: https://api.blockchain.info/]\n
         `btc_transac`: Returns BTC confirmed transactions [Source: https://api.blockchain.info/]\n
         `btc_transac_chart`: Returns BTC confirmed transactions [Source: https://api.blockchain.info/]\n
+        `btcsingleblock`: Returns BTC block data in json format. [Source: https://blockchain.info/]\n
+        `btcsingleblock_chart`: Returns BTC block data. [Source: https://api.blockchain.info/]\n
         `dex_trades_monthly`: Get list of trades on Decentralized Exchanges monthly aggregated.\n
         `dvcp`: Get daily volume for given pair [Source: https://graphql.bitquery.io/]\n
         `dvcp_chart`: Prints table showing daily volume for given pair\n
@@ -441,6 +453,10 @@ class CryptoOnChain(Category):
         )
         self.btc_transac_chart = (
             lib.crypto_onchain_blockchain_view.display_btc_confirmed_transactions
+        )
+        self.btcsingleblock = lib.crypto_onchain_blockchain_model.get_btc_single_block
+        self.btcsingleblock_chart = (
+            lib.crypto_onchain_blockchain_view.display_btc_single_block
         )
         self.dex_trades_monthly = (
             lib.crypto_onchain_bitquery_model.get_dex_trades_monthly

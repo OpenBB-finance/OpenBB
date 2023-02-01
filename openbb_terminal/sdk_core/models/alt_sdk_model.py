@@ -4,6 +4,20 @@ from openbb_terminal.sdk_core.sdk_helpers import Category
 import openbb_terminal.sdk_core.sdk_init as lib
 
 
+class AltRoot(Category):
+    """OpenBB SDK Alternative Module
+
+    Attributes:
+        `hn`: Get top stories from HackerNews.\n
+        `hn_chart`: View top stories from HackerNews.\n
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.hn = lib.alt_hackernews_model.get_stories
+        self.hn_chart = lib.alt_hackernews_view.display_stories
+
+
 class AltCovid(Category):
     """OpenBB SDK Covid Module.
 

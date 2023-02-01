@@ -24,6 +24,8 @@ class StocksController(model.StocksRoot):
 
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
+        `filings`: Get SEC Filings RSS feed, disseminated by FMP\n
+        `filings_chart`: Display recent forms submitted to the SEC\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Ticker quote.  [Source: YahooFinance]\n
@@ -177,10 +179,12 @@ class StocksController(model.StocksRoot):
             `cash`: Get Cash Flow.\n
             `data`: Get fundamental data from finviz\n
             `dcf`: Get stocks dcf from FMP\n
+            `dcfc`: Get stocks dcf from FMP\n
             `divs`: Get historical dividend for ticker\n
             `dupont`: Get dupont ratios\n
             `earnings`: Get earnings data.\n
             `enterprise`: Financial Modeling Prep ticker enterprise\n
+            `epsfc`: Takes the ticker, asks for seekingalphaID and gets eps estimates\n
             `fama_coe`: Use Fama and French to get the cost of equity for a company\n
             `fama_raw`: Get Fama French data\n
             `fraud`: Get fraud ratios based on fundamentals\n
@@ -198,6 +202,7 @@ class StocksController(model.StocksRoot):
             `profile`: Get ticker profile from FMP\n
             `quote`: Gets ticker quote from FMP\n
             `ratios`: Get key ratios\n
+            `revfc`: Takes the ticker, asks for seekingalphaID and gets rev estimates\n
             `score`: Gets value score from fmp\n
             `shrs`: Get shareholders from yahoo\n
             `similar_dfs`: Get dataframes for similar companies\n
@@ -244,10 +249,23 @@ class StocksController(model.StocksRoot):
         Attributes:
             `act`: Get insider activity. [Source: Business Insider]\n
             `act_chart`: Display insider activity. [Source: Business Insider]\n
+            `blcp`: Get latest CEO/CFO purchases > 25k\n
+            `blcs`: Get latest CEO/CFO sales > 100k\n
+            `blip`: Get latest insider purchases > 25k\n
+            `blis`: Get latest insider sales > 100k\n
+            `blop`: Get latest officer purchases > 25k\n
+            `blos`: Get latest officer sales > 100k\n
+            `filter`: GEt insider trades based on preset filter\n
+            `lcb`: Get latest cluster buys\n
             `lins`: Get last insider activity for a given stock ticker. [Source: Finviz]\n
             `lins_chart`: Display insider activity for a given stock ticker. [Source: Finviz]\n
+            `lip`: Get latest insider purchases\n
+            `lis`: Get latest insider sales\n
+            `lit`: Get latest insider trades\n
+            `lpsb`: Get latest penny stock buys\n
             `print_insider_data`: Print insider data\n
             `print_insider_data_chart`: Print insider data\n
+            `stats`: Get OpenInsider stats for ticker\n
         """
 
         return model.StocksInsiders()
@@ -272,11 +290,15 @@ class StocksController(model.StocksRoot):
             `info`: Get info for a given ticker\n
             `info_chart`: Scrapes Barchart.com for the options information\n
             `last_price`: Makes api request for last price\n
+            `oi`: Plot open interest\n
             `pcr`: Gets put call ratio over last time window [Source: AlphaQuery.com]\n
             `pcr_chart`: Display put call ratio [Source: AlphaQuery.com]\n
+            `price`: Get Option current price for a stock.\n
             `process_chains`: Function to take in the request and return a DataFrame\n
             `unu`: Get unusual option activity from fdscanner.com\n
             `unu_chart`: Displays the unusual options table\n
+            `voi`: Plot volume and open interest\n
+            `vol`: Plot volume\n
             `vsurf`: Gets IV surface for calls and puts for ticker\n
             `vsurf_chart`: Display vol surface\n
         """
@@ -329,6 +351,7 @@ class StocksController(model.StocksRoot):
             `filter_stocks`: Filter stocks based on country, sector, industry, market cap and exclude exchanges.\n
             `industries`: Get all industries in Yahoo Finance data based on country or sector. [Source: Finance Database]\n
             `maketcap`: Get all market cap division in Yahoo Finance data. [Source: Finance Database]\n
+            `marketcap`: Get all market cap division in Yahoo Finance data. [Source: Finance Database]\n
             `sectors`: Get all sectors in Yahoo Finance data based on country or industry. [Source: Finance Database]\n
             `stocks_data`: Get stocks data based on a list of stocks and the finance key. The function searches for the\n
         """

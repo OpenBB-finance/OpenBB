@@ -31,6 +31,8 @@ class CryptoController(model.CryptoRoot):
             `active`: Returns active addresses of a certain symbol\n
             `active_chart`: Plots active addresses of a certain symbol over time\n
             `all_binance_trading_pairs`: Returns all available pairs on Binance in DataFrame format. DataFrame has 3 columns symbol, baseAsset, quoteAsset\n
+            `ath`: Get all time high for a coin in a given currency\n
+            `atl`: Get all time low for a coin in a given currency\n
             `balance`: Get account holdings for asset. [Source: Binance]\n
             `balance_chart`: Prints table showing account holdings for asset. [Source: Binance]\n
             `basic`: Basic coin information [Source: CoinPaprika]\n
@@ -43,6 +45,7 @@ class CryptoController(model.CryptoRoot):
             `close`: Returns the price of a cryptocurrency\n
             `coin`: Get coin by id [Source: CoinPaprika]\n
             `coin_market_chart`: Get prices for given coin. [Source: CoinGecko]\n
+            `dev`: Get developer stats for a coin\n
             `eb`: Returns the total amount of coins held on exchange addresses in units and percentage.\n
             `eb_chart`: Plots total amount of coins held on exchange addresses in units and percentage.\n
             `events`: Get all events related to given coin like conferences, start date of futures trading etc.\n
@@ -86,7 +89,9 @@ class CryptoController(model.CryptoRoot):
             `ps_chart`: Prints table showing ticker information for single coin [Source: CoinPaprika]\n
             `rm`: Returns coin roadmap\n
             `rm_chart`: Plots coin roadmap\n
+            `score`: Get scores for a coin from CoinGecko\n
             `show_available_pairs_for_given_symbol`: Return all available quoted assets for given symbol. [Source: Coinbase]\n
+            `social`: Get social media stats for a coin\n
             `stats`: Get 24 hr stats for the product. Volume is in base currency units.\n
             `stats_chart`: Prints table showing 24 hr stats for the product. Volume is in base currency units.\n
             `team`: Returns coin team\n
@@ -214,6 +219,8 @@ class CryptoController(model.CryptoRoot):
             `btc_supply_chart`: Returns BTC circulating supply [Source: https://api.blockchain.info/]\n
             `btc_transac`: Returns BTC confirmed transactions [Source: https://api.blockchain.info/]\n
             `btc_transac_chart`: Returns BTC confirmed transactions [Source: https://api.blockchain.info/]\n
+            `btcsingleblock`: Returns BTC block data in json format. [Source: https://blockchain.info/]\n
+            `btcsingleblock_chart`: Returns BTC block data. [Source: https://api.blockchain.info/]\n
             `dex_trades_monthly`: Get list of trades on Decentralized Exchanges monthly aggregated.\n
             `dvcp`: Get daily volume for given pair [Source: https://graphql.bitquery.io/]\n
             `dvcp_chart`: Prints table showing daily volume for given pair\n

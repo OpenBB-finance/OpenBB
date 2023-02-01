@@ -8,6 +8,8 @@ class ForecastRoot(Category):
     """OpenBB SDK Forecasting Module
 
     Attributes:
+        `anom`: Get Quantile Anomaly Detection Data\n
+        `anom_chart`: Display Quantile Anomaly Detection\n
         `atr`: Calculate the Average True Range of a variable based on a a specific stock ticker.\n
         `autoarima`: Performs Automatic ARIMA forecasting\n
         `autoarima_chart`: Display Automatic ARIMA model.\n
@@ -72,6 +74,8 @@ class ForecastRoot(Category):
                 'Forecasting is not enabled in your OpenBB installation. To enable, `pip install pip install "openbb[all]"`'
             )
         if lib.FORECASTING:
+            self.anom = lib.forecast_anom_model.get_anomaly_detection_data
+            self.anom_chart = lib.forecast_anom_view.display_anomaly_detection
             self.atr = lib.forecast_model.add_atr
             self.autoarima = lib.forecast_autoarima_model.get_autoarima_data
             self.autoarima_chart = (

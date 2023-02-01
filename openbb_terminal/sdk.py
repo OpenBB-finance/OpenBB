@@ -50,6 +50,10 @@ class OpenBBSDK:
         Submodules:
             `covid`: Covid Module
             `oss`: Oss Module
+
+        Attributes:
+            `hn`: Get top stories from HackerNews.\n
+            `hn_chart`: View top stories from HackerNews.\n
         """
 
         return ctrl.AltController()
@@ -180,6 +184,7 @@ class OpenBBSDK:
 
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
+            `compare`: Compare selected ETFs\n
             `etf_by_category`: Return a selection of ETFs based on category filtered by total assets.\n
             `etf_by_name`: Get an ETF symbol and name based on ETF string to search. [Source: StockAnalysis]\n
             `holdings`: Get ETF holdings\n
@@ -201,6 +206,8 @@ class OpenBBSDK:
         """OpenBB SDK Forecast Submodule
 
         Attributes:
+            `anom`: Get Quantile Anomaly Detection Data\n
+            `anom_chart`: Display Quantile Anomaly Detection\n
             `atr`: Calculate the Average True Range of a variable based on a a specific stock ticker.\n
             `autoarima`: Performs Automatic ARIMA forecasting\n
             `autoarima_chart`: Display Automatic ARIMA model.\n
@@ -446,6 +453,8 @@ class OpenBBSDK:
 
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
+            `filings`: Get SEC Filings RSS feed, disseminated by FMP\n
+            `filings_chart`: Display recent forms submitted to the SEC\n
             `load`: Load a symbol to perform analysis using the string above as a template.\n
             `process_candle`: Process DataFrame into candle style plot.\n
             `quote`: Ticker quote.  [Source: YahooFinance]\n
@@ -476,6 +485,10 @@ class OpenBBSDK:
             `cci_chart`: Plots CCI Indicator\n
             `cg`: Center of gravity\n
             `cg_chart`: Plots center of gravity Indicator\n
+            `clenow`: Gets the Clenow Volatility Adjusted Momentum.  this is defined as the regression coefficient on log prices\n
+            `clenow_chart`: Prints table and plots clenow momentum\n
+            `demark`: Get the integer value for demark sequential indicator\n
+            `demark_chart`: Plot demark sequential indicator\n
             `donchian`: Calculate Donchian Channels\n
             `donchian_chart`: Plots donchian channels\n
             `ema`: Gets exponential moving average (EMA) for stock\n

@@ -9,6 +9,8 @@ class StocksRoot(Category):
 
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
+        `filings`: Get SEC Filings RSS feed, disseminated by FMP\n
+        `filings_chart`: Display recent forms submitted to the SEC\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Ticker quote.  [Source: YahooFinance]\n
@@ -19,6 +21,8 @@ class StocksRoot(Category):
     def __init__(self):
         super().__init__()
         self.candle = lib.stocks_helper.display_candle
+        self.filings = lib.stocks_fa_fmp_model.get_filings
+        self.filings_chart = lib.stocks_fa_fmp_view.display_filings
         self.load = lib.stocks_helper.load
         self.process_candle = lib.stocks_helper.process_candle
         self.quote = lib.stocks_model.load_quote
@@ -268,10 +272,12 @@ class StocksFundamentalAnalysis(Category):
         `cash`: Get Cash Flow.\n
         `data`: Get fundamental data from finviz\n
         `dcf`: Get stocks dcf from FMP\n
+        `dcfc`: Get stocks dcf from FMP\n
         `divs`: Get historical dividend for ticker\n
         `dupont`: Get dupont ratios\n
         `earnings`: Get earnings data.\n
         `enterprise`: Financial Modeling Prep ticker enterprise\n
+        `epsfc`: Takes the ticker, asks for seekingalphaID and gets eps estimates\n
         `fama_coe`: Use Fama and French to get the cost of equity for a company\n
         `fama_raw`: Get Fama French data\n
         `fraud`: Get fraud ratios based on fundamentals\n
@@ -289,6 +295,7 @@ class StocksFundamentalAnalysis(Category):
         `profile`: Get ticker profile from FMP\n
         `quote`: Gets ticker quote from FMP\n
         `ratios`: Get key ratios\n
+        `revfc`: Takes the ticker, asks for seekingalphaID and gets rev estimates\n
         `score`: Gets value score from fmp\n
         `shrs`: Get shareholders from yahoo\n
         `similar_dfs`: Get dataframes for similar companies\n
@@ -306,10 +313,12 @@ class StocksFundamentalAnalysis(Category):
         self.cash = lib.stocks_fa_sdk_helpers.get_cash_flow
         self.data = lib.stocks_fa_finviz_model.get_data
         self.dcf = lib.stocks_fa_fmp_model.get_dcf
+        self.dcfc = lib.stocks_fa_fmp_model.get_dcf
         self.divs = lib.stocks_fa_yahoo_finance_model.get_dividends
         self.dupont = lib.stocks_fa_av_model.get_dupont
         self.earnings = lib.stocks_fa_sdk_helpers.earnings
         self.enterprise = lib.stocks_fa_fmp_model.get_enterprise
+        self.epsfc = lib.stocks_fa_seeking_alpha_model.get_estimates_eps
         self.fama_coe = lib.stocks_fa_dcf_model.get_fama_coe
         self.fama_raw = lib.stocks_fa_dcf_model.get_fama_raw
         self.fraud = lib.stocks_fa_av_model.get_fraud_ratios
@@ -327,6 +336,7 @@ class StocksFundamentalAnalysis(Category):
         self.profile = lib.stocks_fa_fmp_model.get_profile
         self.quote = lib.stocks_fa_fmp_model.get_quote
         self.ratios = lib.stocks_fa_fmp_model.get_key_ratios
+        self.revfc = lib.stocks_fa_seeking_alpha_model.get_estimates_rev
         self.score = lib.stocks_fa_fmp_model.get_score
         self.shrs = lib.stocks_fa_yahoo_finance_model.get_shareholders
         self.similar_dfs = lib.stocks_fa_dcf_model.get_similar_dfs
@@ -394,24 +404,50 @@ class StocksInsiders(Category):
     Attributes:
         `act`: Get insider activity. [Source: Business Insider]\n
         `act_chart`: Display insider activity. [Source: Business Insider]\n
+        `blcp`: Get latest CEO/CFO purchases > 25k\n
+        `blcs`: Get latest CEO/CFO sales > 100k\n
+        `blip`: Get latest insider purchases > 25k\n
+        `blis`: Get latest insider sales > 100k\n
+        `blop`: Get latest officer purchases > 25k\n
+        `blos`: Get latest officer sales > 100k\n
+        `filter`: GEt insider trades based on preset filter\n
+        `lcb`: Get latest cluster buys\n
         `lins`: Get last insider activity for a given stock ticker. [Source: Finviz]\n
         `lins_chart`: Display insider activity for a given stock ticker. [Source: Finviz]\n
+        `lip`: Get latest insider purchases\n
+        `lis`: Get latest insider sales\n
+        `lit`: Get latest insider trades\n
+        `lpsb`: Get latest penny stock buys\n
         `print_insider_data`: Print insider data\n
         `print_insider_data_chart`: Print insider data\n
+        `stats`: Get OpenInsider stats for ticker\n
     """
 
     def __init__(self):
         super().__init__()
         self.act = lib.stocks_insider_businessinsider_model.get_insider_activity
         self.act_chart = lib.stocks_insider_businessinsider_view.insider_activity
+        self.blcp = lib.stocks_insider_sdk_helper.blcp
+        self.blcs = lib.stocks_insider_sdk_helper.blcs
+        self.blip = lib.stocks_insider_sdk_helper.blip
+        self.blis = lib.stocks_insider_sdk_helper.blis
+        self.blop = lib.stocks_insider_sdk_helper.blop
+        self.blos = lib.stocks_insider_sdk_helper.blos
+        self.filter = lib.stocks_insider_sdk_helper.insider_filter
+        self.lcb = lib.stocks_insider_sdk_helper.lcb
         self.lins = lib.stocks_insider_finviz_model.get_last_insider_activity
         self.lins_chart = lib.stocks_insider_finviz_view.last_insider_activity
+        self.lip = lib.stocks_insider_sdk_helper.lip
+        self.lis = lib.stocks_insider_sdk_helper.lis
+        self.lit = lib.stocks_insider_sdk_helper.lit
+        self.lpsb = lib.stocks_insider_sdk_helper.lpsb
         self.print_insider_data = (
             lib.stocks_insider_openinsider_model.get_print_insider_data
         )
         self.print_insider_data_chart = (
             lib.stocks_insider_openinsider_view.print_insider_data
         )
+        self.stats = lib.stocks_insider_sdk_helper.stats
 
 
 class StocksOptions(Category):
@@ -433,11 +469,15 @@ class StocksOptions(Category):
         `info`: Get info for a given ticker\n
         `info_chart`: Scrapes Barchart.com for the options information\n
         `last_price`: Makes api request for last price\n
+        `oi`: Plot open interest\n
         `pcr`: Gets put call ratio over last time window [Source: AlphaQuery.com]\n
         `pcr_chart`: Display put call ratio [Source: AlphaQuery.com]\n
+        `price`: Get Option current price for a stock.\n
         `process_chains`: Function to take in the request and return a DataFrame\n
         `unu`: Get unusual option activity from fdscanner.com\n
         `unu_chart`: Displays the unusual options table\n
+        `voi`: Plot volume and open interest\n
+        `vol`: Plot volume\n
         `vsurf`: Gets IV surface for calls and puts for ticker\n
         `vsurf_chart`: Display vol surface\n
     """
@@ -458,11 +498,15 @@ class StocksOptions(Category):
         self.info = lib.stocks_options_yfinance_model.get_info
         self.info_chart = lib.stocks_options_barchart_view.print_options_data
         self.last_price = lib.stocks_options_tradier_model.get_last_price
+        self.oi = lib.stocks_options_view.plot_oi
         self.pcr = lib.stocks_options_alphaquery_model.get_put_call_ratio
         self.pcr_chart = lib.stocks_options_alphaquery_view.display_put_call_ratio
+        self.price = lib.stocks_options_sdk_helper.get_option_current_price
         self.process_chains = lib.stocks_options_tradier_model.process_chains
         self.unu = lib.stocks_options_fdscanner_model.unusual_options
         self.unu_chart = lib.stocks_options_fdscanner_view.display_options
+        self.voi = lib.stocks_options_view.plot_voi
+        self.vol = lib.stocks_options_view.plot_vol
         self.vsurf = lib.stocks_options_yfinance_model.get_iv_surface
         self.vsurf_chart = lib.stocks_options_yfinance_view.display_vol_surface
 
@@ -523,6 +567,7 @@ class StocksSectorIndustryAnalysis(Category):
         `filter_stocks`: Filter stocks based on country, sector, industry, market cap and exclude exchanges.\n
         `industries`: Get all industries in Yahoo Finance data based on country or sector. [Source: Finance Database]\n
         `maketcap`: Get all market cap division in Yahoo Finance data. [Source: Finance Database]\n
+        `marketcap`: Get all market cap division in Yahoo Finance data. [Source: Finance Database]\n
         `sectors`: Get all sectors in Yahoo Finance data based on country or industry. [Source: Finance Database]\n
         `stocks_data`: Get stocks data based on a list of stocks and the finance key. The function searches for the\n
     """
@@ -563,6 +608,7 @@ class StocksSectorIndustryAnalysis(Category):
         self.filter_stocks = lib.stocks_sia_financedatabase_model.filter_stocks
         self.industries = lib.stocks_sia_financedatabase_model.get_industries
         self.maketcap = lib.stocks_sia_financedatabase_model.get_marketcap
+        self.marketcap = lib.stocks_sia_financedatabase_model.get_marketcap
         self.sectors = lib.stocks_sia_financedatabase_model.get_sectors
         self.stocks_data = lib.stocks_sia_stockanalysis_model.get_stocks_data
 

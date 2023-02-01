@@ -9,6 +9,7 @@ class EtfRoot(Category):
 
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
+        `compare`: Compare selected ETFs\n
         `etf_by_category`: Return a selection of ETFs based on category filtered by total assets.\n
         `etf_by_name`: Get an ETF symbol and name based on ETF string to search. [Source: StockAnalysis]\n
         `holdings`: Get ETF holdings\n
@@ -26,6 +27,7 @@ class EtfRoot(Category):
     def __init__(self):
         super().__init__()
         self.candle = lib.stocks_helper.display_candle
+        self.compare = lib.etf_stockanalysis_model.compare_etfs
         self.etf_by_category = lib.etf_financedatabase_model.get_etfs_by_category
         self.etf_by_name = lib.etf_stockanalysis_model.get_etfs_by_name
         self.holdings = lib.etf_stockanalysis_model.get_etf_holdings

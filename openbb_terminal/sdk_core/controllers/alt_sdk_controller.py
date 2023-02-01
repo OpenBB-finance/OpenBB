@@ -3,12 +3,16 @@
 from openbb_terminal.sdk_core.models import alt_sdk_model as model
 
 
-class AltController:
+class AltController(model.AltRoot):
     """OpenBB SDK Alternative Module.
 
     Submodules:
         `covid`: Covid Module
         `oss`: Oss Module
+
+    Attributes:
+        `hn`: Get top stories from HackerNews.\n
+        `hn_chart`: View top stories from HackerNews.\n
     """
 
     @property
