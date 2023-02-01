@@ -48,7 +48,6 @@ def get_expo_data(
     Optional[Union[float, ndarray]],
     ExponentialSmoothing,
 ]:
-
     """Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
     we refer to this link for the original and more complete documentation of the parameters.

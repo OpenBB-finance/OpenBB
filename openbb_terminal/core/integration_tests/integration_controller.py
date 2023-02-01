@@ -125,7 +125,6 @@ def convert_list_to_test_files(path_list: List[str]) -> List[Path]:
     test_files = []
 
     for path in path_list:
-
         if path.startswith(
             str(Path("openbb_terminal", "core", "integration_tests", "scripts"))
         ):
@@ -377,7 +376,6 @@ def run_test_files(
     fails: Dict[str, Dict[str, Any]] = {}
 
     if test_files:
-
         n = len(test_files)
 
         start = time.time()
@@ -407,7 +405,6 @@ def run_test_files(
                 style="bold",
             )
             with Pool(processes=subprocesses) as pool:
-
                 # Choosing chunksize: line 477 .../lib/python3.9/multiprocessing/pool.py
                 chunksize, extra = divmod(n, subprocesses * 4)
                 if extra:
@@ -424,7 +421,6 @@ def run_test_files(
                         chunksize=chunksize,
                     )
                 ):
-
                     file_short_name, exception = result
                     if exception:
                         n_failures += 1
@@ -501,7 +497,6 @@ def display_summary(
         console.print("\n" + to_section_title("integration test summary"))
 
         for file, exception in fails.items():
-
             # Assuming the broken command is the last one called in the traceback
             broken_cmd = "unknown"
             frame: FrameSummary

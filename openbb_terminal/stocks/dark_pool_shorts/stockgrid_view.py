@@ -163,7 +163,6 @@ def short_interest_volume(
             title="Price vs Short Volume",
         )
     else:
-
         # This plot has 3 axes
         if not external_axes:
             _, axes = plt.subplots(
@@ -280,7 +279,6 @@ def net_short_position(
         return
 
     if raw:
-
         df["dates"] = df["dates"].dt.date
 
         print_rich_table(
@@ -291,7 +289,6 @@ def net_short_position(
         )
 
     else:
-
         # This plot has 2 axes
         if not external_axes:
             _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
