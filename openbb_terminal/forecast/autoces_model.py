@@ -39,7 +39,6 @@ def get_autoces_data(
     Optional[float],
     Optional[StatsForecast],
 ]:
-
     """Performs Automatic Complex Exponential Smoothing forecasting
     This is a wrapper around StatsForecast AutoCES;
     we refer to this link for the original and more complete documentation of the parameters.

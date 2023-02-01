@@ -22,7 +22,6 @@ def vcr_config():
     ],
 )
 def test_get_github_activity(symbol, dev_activity, interval, start, end, recorder):
-
     start = start + "T00:00:00Z"
     end = end + "T00:00:00Z"
     df = santiment_model.get_github_activity(

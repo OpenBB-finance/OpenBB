@@ -36,7 +36,6 @@ def unusual_options(limit: int = 100) -> Tuple[pd.DataFrame, pd.Timestamp]:
     pages = np.arange(0, limit // 20 + 1)
     data_list = []
     for page_num in pages:
-
         r = request(
             f"https://app.fdscanner.com/api2/unusualvolume?p=0&page_size=20&page={int(page_num)}",
             headers={"User-Agent": get_user_agent()},

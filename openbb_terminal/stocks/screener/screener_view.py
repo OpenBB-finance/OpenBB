@@ -35,7 +35,6 @@ def display_presets(preset: str):
         filters_headers = ["General", "Descriptive", "Fundamental", "Technical"]
 
         for i, filter_header in enumerate(filters_headers):
-
             console.print(f" - {filter_header} -")
             d_filters = {**preset_filter[filter_header]}
             d_filters = {k: v for k, v in d_filters.items() if v}

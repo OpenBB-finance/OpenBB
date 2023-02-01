@@ -177,7 +177,6 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             try:
-
                 the_path = os.getcwd() + os.path.sep + ns_parser.value
                 console.print("Loading sources from " + the_path)
                 with open(the_path):
