@@ -200,7 +200,6 @@ def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
             },
         ).json()
         if response_json["status"]["rCode"] == 200:
-
             greeks = pd.DataFrame(response_json["data"]["table"]["rows"])
             greeks = greeks.drop(columns="url")
             return greeks
