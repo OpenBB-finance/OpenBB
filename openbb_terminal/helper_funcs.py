@@ -44,9 +44,7 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
-    USER_ENV_FILE,
     USER_EXPORTS_DIRECTORY,
-    load_dotenv_with_priority,
 )
 from openbb_terminal.core.config import paths
 
@@ -1104,7 +1102,6 @@ def get_flair() -> str:
         else str(obbff.USE_FLAIR)
     )
 
-    set_default_timezone()
     if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
@@ -1117,14 +1114,6 @@ def get_flair() -> str:
         return f"{dtime} {flair}"
 
     return flair
-
-
-def set_default_timezone() -> None:
-    """Set a default (America/New_York) timezone if one doesn't exist."""
-    load_dotenv_with_priority()
-    user_tz = os.getenv("OPENBB_TIMEZONE")
-    if not user_tz:
-        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", "America/New_York")
 
 
 def is_timezone_valid(user_tz: str) -> bool:
@@ -1151,11 +1140,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on .env file
     """
-    load_dotenv_with_priority()
-    user_tz = os.getenv("OPENBB_TIMEZONE")
-    if user_tz:
-        return user_tz
-    return ""
+    return obbff.TIMEZONE
 
 
 def get_user_timezone_or_invalid() -> str:
@@ -1170,21 +1155,6 @@ def get_user_timezone_or_invalid() -> str:
     if is_timezone_valid(user_tz):
         return f"{user_tz}"
     return "INVALID"
-
-
-def replace_user_timezone(user_tz: str) -> None:
-    """Replace user timezone.
-
-    Parameters
-    ----------
-    user_tz: str
-        User timezone to set
-    """
-    if is_timezone_valid(user_tz):
-        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", user_tz)
-        console.print("Timezone successfully updated", "\n")
-    else:
-        console.print("Timezone selected is not valid", "\n")
 
 
 def str_to_bool(value) -> bool:

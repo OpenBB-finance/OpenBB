@@ -47,9 +47,6 @@ USE_CLEAR_AFTER_CMD = load_env_vars(
 # Use coloring features
 USE_COLOR = load_env_vars("OPENBB_USE_COLOR", strtobool, True, "featflags")
 
-# Select console flair (choose from config_terminal.py list)
-USE_FLAIR = str(os.getenv("OPENBB_USE_FLAIR", ":openbb"))
-
 # Add date and time to command line
 USE_DATETIME = load_env_vars("OPENBB_USE_DATETIME", strtobool, True, "featflags")
 
@@ -131,6 +128,12 @@ PREFERRED_DATA_SOURCE_FILE = str(
         USER_DATA_SOURCES_DEFAULT_FILE,
     )
 )
+
+# Timezone
+TIMEZONE = str(os.getenv("OPENBB_TIMEZONE", "America/New_York"))
+
+# Select console flair (choose from config_terminal.py list)
+USE_FLAIR = str(os.getenv("OPENBB_USE_FLAIR", ":openbb"))
 
 # Guess file
 GUESS_EASTER_EGG_FILE = str(

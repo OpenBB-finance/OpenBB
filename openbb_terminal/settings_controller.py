@@ -27,7 +27,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     get_flair,
     get_user_timezone_or_invalid,
-    replace_user_timezone,
+    parse_and_split_input,
     set_user_data_folder,
 )
 from openbb_terminal.menu import session
@@ -65,8 +65,6 @@ class SettingsController(BaseController):
     PATH = "/settings/"
     CHOICES_GENERATION = True
 
-    all_timezones = [tz.replace("/", "_") for tz in pytz.all_timezones]
-
     languages_available = [
         lang.strip(".yml")
         for lang in os.listdir(obbff.i18n_dict_location)
@@ -80,10 +78,32 @@ class SettingsController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
-            choices["tz"] = {c: None for c in self.all_timezones}
+            choices["tz"] = {c: None for c in pytz.all_timezones}
             choices["lang"] = {c: None for c in self.languages_available}
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+        self.sort_filter = r"((tz\ -t |tz ).*?("
+        for tz in pytz.all_timezones:
+            tz = tz.replace("/", r"\/")
+            self.sort_filter += f"{tz}|"
+        self.sort_filter += ")*)"
+
+    def parse_input(self, an_input: str) -> List:
+        """Parse controller input
+
+        Overrides the parent class function to handle github org/repo path convention.
+        See `BaseController.parse_input()` for details.
+        """
+        # Filtering out
+        sort_filter = self.sort_filter
+
+        custom_filters = [sort_filter]
+
+        commands = parse_and_split_input(
+            an_input=an_input, custom_filters=custom_filters
+        )
+        return commands
 
     def print_help(self):
         """Print help"""
@@ -447,16 +467,18 @@ class SettingsController(BaseController):
             dest="timezone",
             help="Choose timezone",
             required="-h" not in other_args,
-            choices=self.all_timezones,
+            metavar="TIMEZONE",
+            choices=pytz.all_timezones,
         )
 
         if other_args and "-t" not in other_args[0]:
             other_args.insert(0, "-t")
 
         ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            if ns_parser.timezone:
-                replace_user_timezone(ns_parser.timezone.replace("_", "/", 1))
+        if ns_parser and ns_parser.timezone:
+            obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                "OPENBB_TIMEZONE", ns_parser.timezone
+            )
 
     @log_start_end(log=logger)
     def call_flair(self, other_args: List[str]):
