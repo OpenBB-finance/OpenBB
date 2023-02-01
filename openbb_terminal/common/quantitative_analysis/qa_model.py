@@ -277,7 +277,6 @@ def get_var(
     std = data_return.std(axis=0)
 
     if adjusted_var:
-
         # Kurtosis
         # Measures height and sharpness of the central peak relative to that of a standard bell curve
         k = data_return.kurtosis(axis=0)

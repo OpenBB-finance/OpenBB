@@ -600,7 +600,6 @@ def test_call_func_no_stock(func):
 
 @pytest.mark.vcr(record_mode="none")
 def test_call_load(mocker):
-
     # MOCK LOAD
     yf_download = yfinance.download
 

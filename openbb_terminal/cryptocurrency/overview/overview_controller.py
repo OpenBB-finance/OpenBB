@@ -348,7 +348,6 @@ class OverviewController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-
             display_btc_rainbow(
                 start_date=ns_parser.since.strftime("%Y-%m-%d"),
                 end_date=ns_parser.until.strftime("%Y-%m-%d"),

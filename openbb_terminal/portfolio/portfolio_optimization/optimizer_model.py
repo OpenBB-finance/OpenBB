@@ -1206,7 +1206,6 @@ def get_max_decorrelation_portfolio(
     )
 
     try:
-
         # Building the portfolio object
         port = rp.Portfolio(returns=stock_returns)
 
