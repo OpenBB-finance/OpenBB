@@ -16,9 +16,9 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    list_from_str,
     parse_and_split_input,
     valid_date,
-    list_from_str,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -37,18 +37,18 @@ from openbb_terminal.stocks.options import (
     yfinance_view,
 )
 from openbb_terminal.stocks.options.hedge import hedge_controller
+from openbb_terminal.stocks.options.options_view import (
+    display_chains,
+    display_expiry_dates,
+    plot_oi,
+    plot_voi,
+    plot_vol,
+)
 from openbb_terminal.stocks.options.pricing import pricing_controller
 from openbb_terminal.stocks.options.screen import (
     screener_controller,
     syncretism_model,
     syncretism_view,
-)
-from openbb_terminal.stocks.options.options_view import (
-    plot_vol,
-    plot_oi,
-    plot_voi,
-    display_expiry_dates,
-    display_chains,
 )
 
 # pylint: disable=R1710,C0302,R0916,R0902
@@ -141,6 +141,7 @@ class OptionsController(BaseController):
             else:
                 console.print("Loaded expiry dates from Tradier")
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
+                self.source = "Tradier"
 
             self.set_option_chain()
             self.set_current_price()
