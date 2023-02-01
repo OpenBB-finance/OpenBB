@@ -23,8 +23,6 @@ class User:
         User._TOKEN = session.get("access_token", "")
         User._UUID = session.get("uuid", "")
         User._EMAIL = email
-        if User._EMAIL:
-            User.update_flair()
 
     @classmethod
     def get_session(cls):
@@ -41,7 +39,7 @@ class User:
         username = User._EMAIL[: User._EMAIL.find("@")]
         username = "[" + username[:MAX_FLAIR_LEN] + "]"
 
-        if obbff.USE_FLAIR == ":openbb" or username in obbff.USE_FLAIR:
+        if obbff.USE_FLAIR == ":openbb":
             setattr(obbff, "USE_FLAIR", username + " 🦋")
 
     @classmethod

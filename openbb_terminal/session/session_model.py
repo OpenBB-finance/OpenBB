@@ -55,6 +55,7 @@ def login(session: dict) -> LoginStatus:
             email = configs.get("email", "")
             User.load_user_info(session, email)
             Local.apply_configs(configs=configs)
+            User.update_flair()
             return LoginStatus.SUCCESS
         return LoginStatus.FAILED
     return LoginStatus.NO_RESPONSE
