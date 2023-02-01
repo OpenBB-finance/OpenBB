@@ -42,7 +42,7 @@ class Volatility(PltTA):
         )
         fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
 
-        return fig
+        return fig, subplot_row + 1
 
     @indicator()
     def plot_bbands(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
