@@ -1,5 +1,7 @@
 ---
 sidebar_position: 1
+keywords: [getting started, openbb, api, beginner guide, how to use openbb, openbb keys, openbb terminal, introduction, intro, how-to, how to, openbb, sdk]
+description: The OpenBB Documentation provides guidance on how to use the OpenBB SDK, a free, custom built financial SDK that will help you make more informed decisions, faster.
 ---
 
 import Card from "@site/src/components/General/Card";

@@ -92,7 +92,7 @@ def get_economic_calendar(
 
     calendar = calendar.rename(
         columns={
-            "gmt": "Time (GMT)",
+            "gmt": "Time (ET)",
             "country": "Country",
             "eventName": "Event",
             "actual": "Actual",

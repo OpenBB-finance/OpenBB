@@ -1,4 +1,4 @@
-    load               load tickers and categories from .xlsx or .csv file
+    load               load tickers and categories from .xlsx or .csv file (use load --example for an example)
 
 Portfolio loaded: 
 

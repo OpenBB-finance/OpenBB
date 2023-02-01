@@ -1,4 +1,4 @@
-name: Nightly Build on the develop branch
+name: Nightly Build
 
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
@@ -21,30 +21,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Windows Build
-        uses: benc-uk/workflow-dispatch@v1
+        uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: windows10_build.yml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          wait-for-completion-timeout: 2h
   
   trigger-macos-build:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger M1 MacOs Build
-        uses: benc-uk/workflow-dispatch@v1
+        uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: m1_macos_build.yml
-
+          token: ${{ secrets.GITHUB_TOKEN }}
+          wait-for-completion-timeout: 2h
+  
   trigger-intel-build:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Intel MacOs Build
-        uses: benc-uk/workflow-dispatch@v1
+        uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: intel_macos_build.yml
-
+          token: ${{ secrets.GITHUB_TOKEN }}
+          wait-for-completion-timeout: 2h
+  
   trigger-docker-build:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger docker Build
-        uses: benc-uk/workflow-dispatch@v1
+        uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: docker.yml
+          token: ${{ secrets.GITHUB_TOKEN }}

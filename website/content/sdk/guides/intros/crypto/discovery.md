@@ -1,5 +1,7 @@
 ---
 title: Discovery
+keywords: [cryptocurrency, discovery, nft, app, decentralized, coins]
+description: An Introduction to Cryptocurrency Discovery, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 
 The Discovery sub-module contains the tools for finding new trends in Crpyto markets and making new discoveries. The commands within the menu are listed below along with a short description. The module is accessed by entering, `openbb.crypto.disc`, and then a `.` activates code completion and type hints.

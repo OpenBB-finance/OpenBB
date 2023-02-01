@@ -1,9 +1,7 @@
 ---
 title: Due Diligence
-keywords: ["cryptocurrency", "dd", "due diligence", "tokenomics", "overview", "bitcoin"]
-excerpt: "An Introduction to Cryptocurrency Due Diligence, within the Cryptocurrency Menu,
-with a brief overview of the features."
-geekdocCollapseSection: true
+keywords: [cryptocurrency, dd, due diligence, tokenomics, overview, bitcoin]
+description: An Introduction to Cryptocurrency Due Diligence, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 
 The Cryptocurrency Due Diligence menu gives the user the ability to delve deeper into the coin of choice. To be able to do this, the menu offers basic information about the loaded coin (<a href="/terminal/reference/crypto/dd/info" target="_blank" rel="noreferrer noopener">info</a> and <a href="/terminal/reference/crypto/dd/basic" target="_blank" rel="noreferrer noopener">basic</a>), information about the project, technology details, audits etcetera (<a href="/terminal/reference/crypto/dd/pi" target="_blank" rel="noreferrer noopener">pi</a>), insights into the coin balance (<a href="/terminal/reference/crypto/dd/balance" target="_blank" rel="noreferrer noopener">balance</a>), the tokenomics and fundraising details

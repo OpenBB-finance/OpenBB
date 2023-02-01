@@ -104,6 +104,7 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_MENUS: List[str] = []
     SUPPORT_CHOICES: dict = {}
     ABOUT_CHOICES: dict = {}
+    NEWS_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
     TRY_RELOAD = False
@@ -164,6 +165,7 @@ class BaseController(metaclass=ABCMeta):
             c for c in self.controller_choices if c not in self.CHOICES_COMMON
         ]
 
+        # Add in support options
         support_choices: dict = {c: {} for c in self.controller_choices}
 
         support_choices = {c: None for c in (["generic"] + self.support_commands)}
@@ -177,6 +179,10 @@ class BaseController(metaclass=ABCMeta):
         support_choices["--type"] = {c: None for c in (SUPPORT_TYPE)}
 
         self.SUPPORT_CHOICES = support_choices
+
+        # Add in news options
+        news_choices = ["--term", "-t", "--sources", "-s", "--help", "-h"]
+        self.NEWS_CHOICES = {c: None for c in news_choices}
 
     def check_path(self) -> None:
         """Check if command path is valid."""
@@ -413,7 +419,7 @@ class BaseController(metaclass=ABCMeta):
             dest="command",
             default=None,
             help="Obtain documentation on the given command or menu",
-            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS,
+            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS + self.CHOICES_COMMON,
         )
 
         if other_args and "-" not in other_args[0][0]:
