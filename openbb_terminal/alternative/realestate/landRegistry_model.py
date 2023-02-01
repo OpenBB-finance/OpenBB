@@ -21,7 +21,6 @@ def pcd_format(postcode: str):
 
 @log_start_end(log=logger)
 def get_estate_sales(postcode: str, limit: int = 25) -> pd.DataFrame:
-
     """All sales for specified postcode.
 
     Parameters

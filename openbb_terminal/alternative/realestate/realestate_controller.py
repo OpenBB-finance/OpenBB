@@ -60,7 +60,6 @@ class RealEstateController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
-
         mt = MenuText("alternative/realestate/")
         mt.add_cmd("sales")
         mt.add_cmd("townsales")
