@@ -119,7 +119,7 @@ interactions:
         U89+iGTLaeL2NBChyLCUTiKDAwkATjga2wHZZ8d+o//4i7vddrd4sXlYr//++/8BeXdHH/6iAAA=
     headers:
       Age:
-      - '1'
+      - '3'
       Connection:
       - keep-alive
       Expect-CT:
@@ -275,14 +275,14 @@ interactions:
       - '0'
       Connection:
       - keep-alive
+      Content-Length:
+      - '3302'
       Expect-CT:
       - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
       Referrer-Policy:
       - no-referrer-when-downgrade
       Strict-Transport-Security:
       - max-age=15552000
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -302,7 +302,7 @@ interactions:
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-quote-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-quote-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '34'
       x-request-id:

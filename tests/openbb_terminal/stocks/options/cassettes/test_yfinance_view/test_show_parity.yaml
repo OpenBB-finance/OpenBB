@@ -6034,7 +6034,7 @@ interactions:
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-quote-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-quote-api--mtls-baseline-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '48'
       x-request-id:
