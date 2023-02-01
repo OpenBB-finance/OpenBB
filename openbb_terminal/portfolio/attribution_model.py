@@ -9,7 +9,6 @@ from typing import Dict
 import yfinance as yf
 import pandas as pd
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -69,11 +68,7 @@ def get_spy_sector_contributions(
 
     # Load in info
     sp500_tickers_data = get_daily_sector_prices(start_date, end_date)
-    try:
-        weight_data = yf.Ticker(sectors_ticker).info["sectorWeightings"]
-    except Exception as _:  # noqa
-        console.print("[red]Could not get info for S&P 500.")
-        return pd.DataFrame()
+    weight_data = yf.Ticker(sectors_ticker).info["sectorWeightings"]
 
     # reformat Data
     weights: Dict[str, dict] = {"SPY": {}}

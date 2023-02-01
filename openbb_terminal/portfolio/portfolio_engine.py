@@ -21,8 +21,7 @@ from openbb_terminal.portfolio.allocation_model import get_allocation
 from openbb_terminal.terminal_helper import suppress_stdout
 
 # pylint: disable=E1136,W0201,R0902,C0302
-# pylint: disable=unsupported-assignment-operation,redefined-outer-name
-# pylint: too-many-public-methods, consider-using-f-string,disable=raise-missing-from
+# pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods, consider-using-f-string
 
 logger = logging.getLogger(__name__)
 
@@ -496,7 +495,7 @@ class PortfolioEngine:
                         ] = info_list
 
     @log_start_end(log=logger)
-    def set_benchmark(self, symbol: str = "SPY", full_shares: bool = False) -> bool:
+    def set_benchmark(self, symbol: str = "SPY", full_shares: bool = False):
         """Load benchmark into portfolio.
 
         Parameters
@@ -506,14 +505,11 @@ class PortfolioEngine:
         full_shares: bool
             Whether to mimic the portfolio trades exactly (partial shares) or round down the
             quantity to the nearest number
-
-        Returns
-        -------
-        bool
-            True if successful, False otherwise
         """
 
         p_bar = tqdm(range(4), desc="         Loading benchmark")
+
+        self.benchmark_ticker = symbol
 
         self.benchmark_historical_prices = yf.download(
             symbol,
@@ -522,15 +518,6 @@ class PortfolioEngine:
             progress=False,
             ignore_tz=True,
         )["Adj Close"]
-
-        if self.benchmark_historical_prices.empty:
-            console.print(
-                f"\n[red]Could not download benchmark data for {symbol}."
-                " Choose another symbol.\n[/red]"
-            )
-            return False
-
-        self.benchmark_ticker = symbol
 
         p_bar.n += 1
         p_bar.refresh()
@@ -551,6 +538,11 @@ class PortfolioEngine:
         p_bar.refresh()
 
         self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
+        self.benchmark_info = yf.Ticker(symbol).info
+
+        p_bar.n += 1
+        p_bar.refresh()
+
         (
             self.portfolio_returns,
             self.benchmark_returns,
@@ -558,20 +550,6 @@ class PortfolioEngine:
 
         p_bar.n += 1
         p_bar.refresh()
-
-        try:
-            self.benchmark_info = yf.Ticker(symbol).info
-        except Exception as _:  # noqa
-            console.print(
-                f"[red]\n\nCould not get info for {symbol}."
-                " This affects 'alloc' command.[/red]\n"
-            )
-            return False
-
-        p_bar.n += 1
-        p_bar.refresh()
-
-        return True
 
     @log_start_end(log=logger)
     def __mimic_trades_for_benchmark(self, full_shares: bool = False):
@@ -927,12 +905,6 @@ class PortfolioEngine:
         recalculate: bool
             Flag to force recalculate allocation if already exists
         """
-
-        if not self.benchmark_info:
-            return
-
-        if self.portfolio_trades.empty:
-            return
 
         if category == "Asset":
             if (

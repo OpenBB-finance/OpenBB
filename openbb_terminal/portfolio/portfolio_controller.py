@@ -82,7 +82,6 @@ class PortfolioController(BaseController):
     CHOICES_MENUS = [
         "bro",
         "po",
-        "pa",
     ]
     VALID_DISTRIBUTIONS = ["laplace", "student_t", "logistic", "normal"]
     AGGREGATION_METRICS = ["assets", "sectors", "countries", "regions"]
@@ -121,15 +120,6 @@ class PortfolioController(BaseController):
             for file_type in self.file_types
             for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
         }
-        self.DATA_HOLDINGS_FILES.update(
-            {
-                filepath.name: filepath
-                for file_type in self.file_types
-                for filepath in (
-                    MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "holdings"
-                ).rglob(f"*.{file_type}")
-            }
-        )
 
         self.portfolio_df = pd.DataFrame(
             columns=[
@@ -160,10 +150,6 @@ class PortfolioController(BaseController):
             self.update_choices()
             choices: dict = self.choices_default
             self.choices = choices
-            self.choices["bench"] = {
-                "--benchmark": {c: None for c in statics.BENCHMARK_CHOICES},
-                "-b": "--benchmark",
-            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_choices(self):
@@ -228,7 +214,7 @@ class PortfolioController(BaseController):
 >   bro              brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
 >   po               portfolio optimization, \t optimize your portfolio weights efficiently[/menu]
 [cmds]
-    load             load data into the portfolio
+    load             load transactions into the portfolio (use load --example for an example)
     show             show existing transactions
     bench            define the benchmark
 [/cmds]
@@ -318,7 +304,6 @@ class PortfolioController(BaseController):
             "--file",
             type=str,
             dest="file",
-            required="-h" not in other_args,
             help="The file to be loaded",
             choices={c: {} for c in self.DATA_HOLDINGS_FILES},
             metavar="FILE",
@@ -338,12 +323,28 @@ class PortfolioController(BaseController):
             dest="risk_free_rate",
             help="Set the risk free rate.",
         )
+        parser.add_argument(
+            "-e",
+            "--example",
+            help="Run an example holdings file to understand how the portfolio menu can be used.",
+            dest="example",
+            action="store_true",
+            default=False,
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser and ns_parser.file:
-            if ns_parser.file in self.DATA_HOLDINGS_FILES:
+        if ns_parser and ns_parser.file or ns_parser and ns_parser.example:
+            if ns_parser.example:
+                file_location = (
+                    MISCELLANEOUS_DIRECTORY / "portfolio" / "holdings_example.xlsx"
+                )
+                console.print(
+                    "[green]Loading an example, please type `about` "
+                    "to learn how to create your own Portfolio Excel sheet.[/green]\n"
+                )
+            elif ns_parser.file in self.DATA_HOLDINGS_FILES:
                 file_location = self.DATA_HOLDINGS_FILES[ns_parser.file]
             else:
                 file_location = ns_parser.file  # type: ignore
@@ -356,6 +357,8 @@ class PortfolioController(BaseController):
 
             if ns_parser.name:
                 self.portfolio_name = ns_parser.name
+            elif ns_parser.example:
+                self.portfolio_name = "OpenBB Example Portfolio"
             else:
                 self.portfolio_name = ns_parser.file
             console.print(
@@ -415,6 +418,7 @@ class PortfolioController(BaseController):
             dest="benchmark",
             required="-h" not in other_args,
             help="Set the benchmark for the portfolio. By default, this is SPDR S&P 500 ETF Trust (SPY).",
+            choices={c: {} for c in statics.BENCHMARK_CHOICES},
             metavar="BENCHMARK",
         )
         parser.add_argument(
@@ -435,13 +439,9 @@ class PortfolioController(BaseController):
                     "[red]Please first load transactions file using 'load'[/red]"
                 )
             else:
-                if self.portfolio.set_benchmark(
-                    ns_parser.benchmark, ns_parser.full_shares
-                ):
-                    self.benchmark_name = statics.BENCHMARK_CHOICES.get(
-                        ns_parser.benchmark, ns_parser.benchmark
-                    )
-                    self.original_benchmark_ticker = ns_parser.benchmark
+                self.benchmark_name = statics.BENCHMARK_CHOICES.get(ns_parser.benchmark)
+                self.original_benchmark_ticker = ns_parser.benchmark
+                self.portfolio.set_benchmark(ns_parser.benchmark, ns_parser.full_shares)
 
     @log_start_end(log=logger)
     def call_alloc(self, other_args: List[str]):
@@ -580,13 +580,9 @@ class PortfolioController(BaseController):
                 bench_result = attribution_model.get_spy_sector_contributions(
                     start_date, end_date
                 )
-                if bench_result.empty:
-                    return
                 portfolio_result = attribution_model.get_portfolio_sector_contributions(
                     start_date, self.portfolio.portfolio_trades
                 )
-                if portfolio_result.empty:
-                    return
 
                 # relative results - the proportions of return attribution
                 if ns_parser.type == "relative":

@@ -58,8 +58,8 @@ def generate_portfolio(
     transactions = PortfolioEngine.read_transactions(transactions_file_path)
     portfolio_engine = PortfolioEngine(transactions)
     portfolio_engine.generate_portfolio_data()
-    portfolio_engine.set_risk_free_rate(risk_free_rate)
     portfolio_engine.set_benchmark(symbol=benchmark_symbol, full_shares=full_shares)
+    portfolio_engine.set_risk_free_rate(risk_free_rate)
 
     return portfolio_engine
 
@@ -92,7 +92,7 @@ def get_transactions(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
 @log_start_end(log=logger)
 def set_benchmark(
     portfolio_engine: PortfolioEngine, symbol: str, full_shares: bool = False
-) -> bool:
+):
     """Load benchmark into portfolio
 
     Parameters
@@ -106,11 +106,6 @@ def set_benchmark(
         Whether to mimic the portfolio trades exactly (partial shares) or round down the
         quantity to the nearest number
 
-    Returns
-    -------
-    bool
-        True if successful, False otherwise
-
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
@@ -118,7 +113,7 @@ def set_benchmark(
     >>> output = openbb.portfolio.bench(p, symbol="SPY")
     """
 
-    return portfolio_engine.set_benchmark(symbol=symbol, full_shares=full_shares)
+    portfolio_engine.set_benchmark(symbol=symbol, full_shares=full_shares)
 
 
 @log_start_end(log=logger)
@@ -435,13 +430,6 @@ def join_allocation(
     pd.DataFrame
         DataFrame with portfolio and benchmark allocations
     """
-
-    if portfolio.empty:
-        portfolio = pd.DataFrame(columns=[column, "Portfolio"])
-
-    if benchmark.empty:
-        benchmark = pd.DataFrame(columns=[column, "Benchmark"])
-
     combined = pd.merge(portfolio, benchmark, on=column, how="left")
     combined["Difference"] = combined["Portfolio"] - combined["Benchmark"]
     combined = combined.replace(np.nan, "-")
