@@ -79,7 +79,7 @@ def test_check_for_updates(mocker, last_release, current_release):
     }
     mock_response = mocker.Mock(**attrs)
     mocker.patch(
-        target="openbb_terminal.helper_funcs.requests.get",
+        target="openbb_terminal.helper_funcs.request",
         new=mocker.Mock(return_value=mock_response),
     )
 
