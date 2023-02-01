@@ -1,4 +1,5 @@
 from typing import Dict, Any
+from openbb_terminal.core.config import paths
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
@@ -72,6 +73,10 @@ def get_diff_settings(settings: dict) -> dict:
                     diff[k] = (old, new)
             elif hasattr(cfg_plot, k):
                 old, new = get_var_diff(cfg_plot, k, v)
+                if new is not None:
+                    diff[k] = (old, new)
+            elif hasattr(paths, k):
+                old, new = get_var_diff(paths, k, v)
                 if new is not None:
                     diff[k] = (old, new)
 

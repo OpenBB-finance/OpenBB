@@ -82,21 +82,6 @@ def set_command_location(cmd_loc: str):
     command_location = cmd_loc
 
 
-# pylint: disable=global-statement
-def set_user_data_folder(env_file: str = ".env", path_folder: str = ""):
-    """Set user data folder location.
-
-    Parameters
-    ----------
-    env_file : str
-        Env file to be updated
-    path_folder: str
-        Path folder location
-    """
-    dotenv.set_key(env_file, "OPENBB_USER_DATA_DIRECTORY", path_folder)
-    paths.USER_DATA_DIRECTORY = Path(path_folder)
-
-
 def check_path(path: str) -> str:
     """Check that path file exists.
 

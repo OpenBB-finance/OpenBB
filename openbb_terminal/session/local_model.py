@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import json
 from typing import Optional
+from openbb_terminal.core.config import paths
 from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
     SETTINGS_DIRECTORY,
@@ -112,6 +113,11 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
+
+    # TODO: Here I'm assuming that obbff, cfg, cfg_plot and paths don't have variables
+    # with the same name. If they do, then this assignment will hit the first variable
+    # that matches the name.
+
     if configs:
         settings = configs.get("features_settings", {})
         sync = update_sync_flag(settings)
@@ -124,6 +130,8 @@ def apply_configs(configs: dict):
                         cast_set_attr(cfg, k, v)
                     elif hasattr(cfg_plot, k):
                         cast_set_attr(cfg_plot, k, v)
+                    elif hasattr(paths, k):
+                        cast_set_attr(paths, k, v)
 
             keys = configs.get("features_keys", {})
             if keys:

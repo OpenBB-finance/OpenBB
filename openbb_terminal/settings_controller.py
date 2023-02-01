@@ -16,10 +16,10 @@ from dotenv import set_key
 # IMPORTATION INTERNAL
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config import paths
 from openbb_terminal import featflags_controller as obbff_ctrl
 from openbb_terminal.core.config.paths import (
     USER_ENV_FILE,
-    USER_DATA_DIRECTORY,
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -28,8 +28,7 @@ from openbb_terminal.helper_funcs import (
     get_flair,
     get_user_timezone_or_invalid,
     parse_and_split_input,
-    set_user_data_folder,
-)
+    )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
@@ -124,7 +123,7 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param(
             "_user_data_folder",
-            USER_DATA_DIRECTORY,
+            paths.USER_DATA_DIRECTORY,
         )
         mt.add_raw("\n")
         mt.add_cmd("tz")
@@ -184,6 +183,37 @@ class SettingsController(BaseController):
 
         # Set obbff.env_var_name = not env_var_value
         setattr(cfg_plot, name, value)
+
+        # Send feature flag to server
+        if not User.is_guest() and User.is_sync_enabled():
+            patch_user_configs(
+                key=name,
+                value=str(value),
+                type_="settings",
+                auth_header=User.get_auth_header(),
+            )
+
+    @staticmethod
+    def set_path_config(name: str, value: Optional[Union[Path, str]]):
+        """Set path config attribute
+
+        Parameters
+        ----------
+        name : str
+            Environment variable name
+        value : str
+            Environment variable value
+        """
+
+        if User.is_guest():
+            set_key(str(USER_ENV_FILE), name, str(value))
+
+        # Remove "OPENBB_" prefix from env_var
+        if name.startswith("OPENBB_"):
+            name = name[7:]
+
+        # Set obbff.env_var_name = not env_var_value
+        setattr(paths, name, value)
 
         # Send feature flag to server
         if not User.is_guest() and User.is_sync_enabled():
@@ -551,9 +581,7 @@ class SettingsController(BaseController):
                         console.print(
                             f"User data to be saved in the default folder: '{default_path}'"
                         )
-                        set_user_data_folder(
-                            self.env_file, path_folder=str(default_path)
-                        )
+                        self.set_path_config("OPENBB_USER_DATA_DIRECTORY", default_path)
                         success_userdata = True
                     else:
                         # If the path selected does not start from the user root, give relative location from root
@@ -567,8 +595,8 @@ class SettingsController(BaseController):
                             console.print(
                                 f"User data to be saved in the selected folder: '{userdata_path}'"
                             )
-                            set_user_data_folder(
-                                self.env_file, path_folder=userdata_path
+                            self.set_path_config(
+                                "OPENBB_USER_DATA_DIRECTORY", userdata_path
                             )
                             success_userdata = True
                         else:
@@ -586,14 +614,14 @@ class SettingsController(BaseController):
                                 console.print(
                                     f"[green]Folder '{userdata_path}' successfully created.[/green]"
                                 )
-                                set_user_data_folder(
-                                    self.env_file, path_folder=userdata_path
+                                self.set_path_config(
+                                    "OPENBB_USER_DATA_DIRECTORY", userdata_path
                                 )
                             else:
                                 # Do not update userdata_folder path since we will keep the same as before
                                 console.print(
                                     "[yellow]User data to keep being saved in "
-                                    + f"the selected folder: {str(USER_DATA_DIRECTORY)}[/yellow]"
+                                    + f"the selected folder: {str(paths.USER_DATA_DIRECTORY)}[/yellow]"
                                 )
                             success_userdata = True
 
