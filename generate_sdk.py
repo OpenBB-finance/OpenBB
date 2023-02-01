@@ -13,7 +13,7 @@ import pandas as pd
 
 from openbb_terminal.rich_config import console
 from openbb_terminal.sdk_core.sdk_helpers import clean_attr_desc, get_sdk_imports_text
-from openbb_terminal.sdk_core.sdk_init import FORECASTING
+from openbb_terminal.sdk_core.sdk_init import FORECASTING, OPTIMIZATION
 
 REPO_ROOT = Path(__file__).parent.joinpath("openbb_terminal").resolve()
 
@@ -333,8 +333,21 @@ class BuildCategoryModelClasses:
         """
         add_indent = ""
         if cat == "forecast":
+            f.write(
+                "        if not lib.FORECASTING:\r            raise NotImplementedError("
+                "'Forecasting is not enabled in your OpenBB installation. To enable, "
+                '`pip install pip install "openbb[all]"`\')\r'
+            )
             add_indent = "    "
             f.write("        if lib.FORECASTING:\r")
+        if cat == "po":
+            f.write(
+                "        if not lib.OPTIMIZATION:\r            raise NotImplementedError("
+                "'Optimization is not enabled in your OpenBB installation. To enable, "
+                '`pip install pip install "openbb[all]"`\')\r'
+            )
+            add_indent = "    "
+            f.write("        if lib.OPTIMIZATION:\r")
 
         for v in d.values():
             if isinstance(v, Trailmap):
@@ -395,7 +408,7 @@ class BuildCategoryModelClasses:
 
             if isinstance(nested_dict, dict):
                 self.write_class_attr_docs(nested_dict, f)
-                self.write_class_attributes(nested_dict, f)
+                self.write_class_attributes(nested_dict, f, nested_category)
 
     def write_submodule_doc(
         self, k: str, f: TextIO, added: bool = False, indent: bool = False
@@ -587,6 +600,11 @@ def get_trailmaps() -> List[Trailmap]:
             if not FORECASTING and "forecast" in trail:
                 console.print(
                     f"[bold red]Forecasting is disabled. {trail} will not be included in the SDK.[/bold red]"
+                )
+                continue
+            if not OPTIMIZATION and "portfolio.po" in trail:
+                console.print(
+                    f"[bold red]Optimization is disabled. {trail} will not be included in the SDK.[/bold red]"
                 )
                 continue
             trail_map = Trailmap(trail, model, view)

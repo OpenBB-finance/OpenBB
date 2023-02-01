@@ -172,29 +172,36 @@ class PortfolioPortfolioOptimization(Category):
 
     def __init__(self):
         super().__init__()
-        self.blacklitterman = lib.portfolio_optimization_po_model.get_blacklitterman
-        self.dividend = lib.portfolio_optimization_po_model.get_dividend
-        self.ef = lib.portfolio_optimization_po_model.get_ef
-        self.ef_chart = lib.portfolio_optimization_po_view.display_ef
-        self.equal = lib.portfolio_optimization_po_model.get_equal
-        self.file = lib.portfolio_optimization_po_model.load_parameters_file
-        self.get_properties = lib.portfolio_optimization_optimizer_model.get_properties
-        self.hcp = lib.portfolio_optimization_optimizer_model.get_hcp_portfolio
-        self.herc = lib.portfolio_optimization_po_model.get_herc
-        self.hrp = lib.portfolio_optimization_po_model.get_hrp
-        self.load = lib.portfolio_optimization_po_model.generate_portfolio
-        self.load_bl_views = lib.portfolio_optimization_excel_model.load_bl_views
-        self.maxdecorr = lib.portfolio_optimization_po_model.get_maxdecorr
-        self.maxdiv = lib.portfolio_optimization_po_model.get_maxdiv
-        self.maxret = lib.portfolio_optimization_po_model.get_maxret
-        self.maxsharpe = lib.portfolio_optimization_po_model.get_maxsharpe
-        self.maxutil = lib.portfolio_optimization_po_model.get_maxutil
-        self.minrisk = lib.portfolio_optimization_po_model.get_minrisk
-        self.mktcap = lib.portfolio_optimization_po_model.get_mktcap
-        self.nco = lib.portfolio_optimization_po_model.get_nco
-        self.plot = lib.portfolio_optimization_po_view.display_plot
-        self.plot_chart = lib.portfolio_optimization_po_view.display_plot
-        self.property = lib.portfolio_optimization_po_model.get_property
-        self.relriskparity = lib.portfolio_optimization_po_model.get_relriskparity
-        self.riskparity = lib.portfolio_optimization_po_model.get_riskparity
-        self.show = lib.portfolio_optimization_po_model.show
+        if not lib.OPTIMIZATION:
+            raise NotImplementedError(
+                'Optimization is not enabled in your OpenBB installation. To enable, `pip install pip install "openbb[all]"`'
+            )
+        if lib.OPTIMIZATION:
+            self.blacklitterman = lib.portfolio_optimization_po_model.get_blacklitterman
+            self.dividend = lib.portfolio_optimization_po_model.get_dividend
+            self.ef = lib.portfolio_optimization_po_model.get_ef
+            self.ef_chart = lib.portfolio_optimization_po_view.display_ef
+            self.equal = lib.portfolio_optimization_po_model.get_equal
+            self.file = lib.portfolio_optimization_po_model.load_parameters_file
+            self.get_properties = (
+                lib.portfolio_optimization_optimizer_model.get_properties
+            )
+            self.hcp = lib.portfolio_optimization_optimizer_model.get_hcp_portfolio
+            self.herc = lib.portfolio_optimization_po_model.get_herc
+            self.hrp = lib.portfolio_optimization_po_model.get_hrp
+            self.load = lib.portfolio_optimization_po_model.generate_portfolio
+            self.load_bl_views = lib.portfolio_optimization_excel_model.load_bl_views
+            self.maxdecorr = lib.portfolio_optimization_po_model.get_maxdecorr
+            self.maxdiv = lib.portfolio_optimization_po_model.get_maxdiv
+            self.maxret = lib.portfolio_optimization_po_model.get_maxret
+            self.maxsharpe = lib.portfolio_optimization_po_model.get_maxsharpe
+            self.maxutil = lib.portfolio_optimization_po_model.get_maxutil
+            self.minrisk = lib.portfolio_optimization_po_model.get_minrisk
+            self.mktcap = lib.portfolio_optimization_po_model.get_mktcap
+            self.nco = lib.portfolio_optimization_po_model.get_nco
+            self.plot = lib.portfolio_optimization_po_view.display_plot
+            self.plot_chart = lib.portfolio_optimization_po_view.display_plot
+            self.property = lib.portfolio_optimization_po_model.get_property
+            self.relriskparity = lib.portfolio_optimization_po_model.get_relriskparity
+            self.riskparity = lib.portfolio_optimization_po_model.get_riskparity
+            self.show = lib.portfolio_optimization_po_model.show

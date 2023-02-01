@@ -67,6 +67,10 @@ class ForecastRoot(Category):
 
     def __init__(self):
         super().__init__()
+        if not lib.FORECASTING:
+            raise NotImplementedError(
+                'Forecasting is not enabled in your OpenBB installation. To enable, `pip install pip install "openbb[all]"`'
+            )
         if lib.FORECASTING:
             self.atr = lib.forecast_model.add_atr
             self.autoarima = lib.forecast_autoarima_model.get_autoarima_data

@@ -252,16 +252,6 @@ from openbb_terminal.mutual_funds import (
     investpy_view as mutual_funds_investpy_view,
 )
 
-# Portfolio
-from openbb_terminal.portfolio import portfolio_model, portfolio_view
-from openbb_terminal.portfolio.portfolio_optimization import (
-    excel_model as portfolio_optimization_excel_model,
-    optimizer_model as portfolio_optimization_optimizer_model,
-    optimizer_view as portfolio_optimization_optimizer_view,
-    po_model as portfolio_optimization_po_model,
-    po_view as portfolio_optimization_po_view,
-)
-
 # Stocks Helpers
 from openbb_terminal.stocks import (
     cboe_model as stocks_cboe_model,
@@ -471,3 +461,21 @@ try:
     )
 except ImportError:
     FORECASTING = False
+
+
+# Portfolio
+from openbb_terminal.portfolio import portfolio_model, portfolio_view
+
+try:
+    # pylint: disable=W0611 # noqa: F401 # pyright: reportMissingImports=false
+    from openbb_terminal.portfolio.portfolio_optimization import (
+        excel_model as portfolio_optimization_excel_model,
+        optimizer_model as portfolio_optimization_optimizer_model,
+        optimizer_view as portfolio_optimization_optimizer_view,
+        po_model as portfolio_optimization_po_model,
+        po_view as portfolio_optimization_po_view,
+    )
+
+    OPTIMIZATION = True
+except ModuleNotFoundError:
+    OPTIMIZATION = False
