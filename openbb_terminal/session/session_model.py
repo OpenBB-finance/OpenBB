@@ -72,7 +72,7 @@ def logout(cls: bool = False):
 
     success = True
     if not User.is_guest():
-        r = Hub.delete_session()
+        r = Hub.delete_session(auth_header=User.get_auth_header(), token=User.get_token())
         if r and r.status_code != 200:
             success = False
     User.clear()

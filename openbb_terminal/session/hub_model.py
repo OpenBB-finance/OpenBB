@@ -48,12 +48,17 @@ def create_session(
 
 
 def delete_session(
-    base_url: str = BASE_URL, timeout: int = TIMEOUT
+    auth_header: str, token: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
 ) -> Optional[requests.Response]:
     """Delete the session.
 
     Parameters
     ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    token : str
+        The token to delete.
+        In the terminal we want to delete the current session, so we use the user own token.
     base_url : str
         The base url, by default BASE_URL
     timeout : int
@@ -67,8 +72,8 @@ def delete_session(
     try:
         response = requests.post(
             url=base_url + "logout",
-            headers={"Authorization": User.get_auth_header()},
-            json={"token": User.get_token()},
+            headers={"Authorization": auth_header},
+            json={"token": token},
             timeout=timeout,
         )
         if response.status_code != 200:
