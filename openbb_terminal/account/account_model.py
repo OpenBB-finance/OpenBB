@@ -119,6 +119,8 @@ def get_var_diff(obj, name, value):
         cast_value = strtobool(value)
     elif isinstance(getattr(obj, name), int):
         cast_value = int(value)
+    elif isinstance(getattr(obj, name), float):
+        cast_value = float(value)
     else:
         cast_value = value
 

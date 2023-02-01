@@ -170,6 +170,8 @@ def cast_set_attr(obj, name, value):
         setattr(obj, name, strtobool(value))
     elif isinstance(getattr(obj, name), int):
         setattr(obj, name, int(value))
+    elif isinstance(getattr(obj, name), float):
+        setattr(obj, name, float(value))
     else:
         setattr(obj, name, value)
 

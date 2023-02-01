@@ -315,7 +315,7 @@ class SettingsController(BaseController):
         parser.add_argument(
             "-v",
             "--value",
-            type=int,
+            type=float,
             dest="value",
             help="value",
         )
