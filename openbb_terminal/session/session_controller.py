@@ -1,13 +1,10 @@
 from typing import Tuple
 from prompt_toolkit import PromptSession
-from prompt_toolkit.output.color_depth import ColorDepth
 from openbb_terminal import terminal_controller
 import openbb_terminal.session.local_model as Local
 from openbb_terminal.session.session_model import (
     LoginStatus,
-    color_message,
     create_session,
-    get_color,
     login,
 )
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
@@ -30,19 +27,16 @@ def get_user_input() -> Tuple[str, str, bool]:
     """
     console.print("\nPlease enter your credentials:", style="info")
 
-    s: PromptSession = PromptSession(color_depth=ColorDepth.TRUE_COLOR)
-    color = get_color()
+    s: PromptSession = PromptSession()
 
     email = s.prompt(
-        message=color_message("> Email: ", color),
+        message="> Email: ",
     )
     password = s.prompt(
-        message=color_message("> Password: ", color),
+        message="> Password: ",
         is_password=True,
     )
-    save_str = s.prompt(
-        message=color_message("> Remember me? (y/n): ", color), is_password=False
-    ).lower()
+    save_str = s.prompt(message="> Remember me? (y/n): ", is_password=False).lower()
     save = False
     if save_str == "y":
         save = True
