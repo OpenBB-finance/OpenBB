@@ -18,6 +18,8 @@ interactions:
       - cors
       Sec-Fetch-Site:
       - same-origin
+      TE:
+      - trailers
       User-Agent:
       - Mozilla/5.0 (X11; Linux x86_64; rv:106.0) Gecko/20100101 Firefox/106.0
     method: GET
@@ -32,7 +34,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '1'
+      - '2042'
       Allow:
       - GET, POST, HEAD, PUT, PATCH, DELETE, OPTIONS
       Cache-Control:
@@ -49,7 +51,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 30 Jan 2023 16:52:49 GMT
+      - Sun, 13 Nov 2022 19:45:18 GMT
       ETag:
       - W/"cc200d9e38b2d26b2fffbef87ce15226"
       Referrer-Policy:
@@ -71,18 +73,18 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - P-TuodL83-26a8Ly
+      - 56yPeC8_nt_3HfZ8
       X-Runtime:
-      - '0.005920'
+      - '0.006611'
       X-Served-By:
-      - cache-bfi-krnt7300038-BFI, cache-ams21059-AMS
+      - cache-bfi-krnt7300038-BFI, cache-vie6328-VIE
       X-Timer:
-      - S1675097569.162587,VS0,VE1
+      - S1668368719.580650,VS0,VE1
       X-XSS-Protection:
       - 1; mode=block
       set-cookie:
-      - machine_cookie=7784961124486; expires=Sun, 30 Jan 2028 16:52:49 GMT; path=/;
-      - machine_cookie_ts=1675097569; expires=Sun, 30 Jan 2028 16:52:49 GMT; path=/;
+      - machine_cookie=9030003503847; expires=Sat, 13 Nov 2027 19:45:18 GMT; path=/;
+      - machine_cookie_ts=1668368718; expires=Sat, 13 Nov 2027 19:45:18 GMT; path=/;
     status:
       code: 200
       message: OK
@@ -110,27 +112,27 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA+2aYW/aMBCG/0s+g+WzE8fO7+DbNCELzBophI4Epq7iv+8M7doON3W0U1WnrZBK
-        omvD+3J3fuLcfbZ3x7qrd22XVfenWea6vt7a3vnDDEAW/re77Zbtbr+1Tf3brZftYbvcbZYvQjHu
-        GwZuNm7V10e3xn+RVZngQs45zIVacF6dX4xzPucFvstmGYbZunfbo20OPl4xf/bW7evd2l/48q6/
-        u3U1Hme2bQ+2wYhN3a1s8/Ng973bZ1X+eObOWTzEq5azDANcu7b751GP557HXa6BoU+fuZyDmEsI
-        f2a7Ptp29aCwPTTN6fR9lqlh/cUCoOKmEsWgfkGlX0fqx7iAfj1ef0miH6j0m0j9GBfQb8brz4f1
-        R+Z/SaVfRerHuIB+NV6/GNQv+YKrCkugwAwfqH8wVAZgS4hqABgXMCAfb4AkMYBMfxGpH+MC+ovx
-        +oFEP10CyEgDMC5ggBxvAB80QPCHFaCQ71QBItIAjAsYIKINeFrkcy9R+KX9mcTz6jh/NTvEGQ/w
-        L7lvD2/gAZD1R4g0B+MC5sAocy4SzwQQNufV3glnc7B36kqiP6h+qHdqqt7JI83BuIA5fJQ5F4nK
-        m5OLUOa82leRItEcWICpQL6ZOVTmQCRZ+LhrcyCeLHxZXSQKbw5+//+Wlaf1l2C+Qox3bXfols3u
-        l+dnGioHYEJ/ai5HB0xO40CqZC5YDjQORFaQCFaQiK+gv/dmNGyOOcBLGgdSpXPOckPjQKJ4DpyV
-        RFWQKqAj2wmaHEiV0NEBGgMmSOiGKaIOMUFCL5kqaDJngoSumaLpK4kQ+k3944YQ0QXTnxzRJZOS
-        prq+ED1dRDc0TUSkiuh4q05TBKkSOrCCqBGmS+hUmJEuoRNt1kyS0DVRh5ggoeMusaJpn5Mk9JLm
-        9iURQt8625ISOkj8oUmvROdbQDCFI0WPj0b+a8Tni9LTpXQFkBNVQqqgzpkucyCqhXRhXSitiXYM
-        0+X1XJuC6NFSusjOlcyJTJgktpfaaKJ2MUFyL5kppSZ6NjdJeFfKAM3OyIfmd7vq/Yw4Dr+8MZAX
-        nFa7HknHR75Uq3RKbSk4rnbtjmE0KSVSaknBabVrb3AzgYhxU+pHwWm1kDmKJnM+UjM6nU5/AHPB
-        5chRMwAA
+        H4sIAAAAAAAAA+2a4W6bMBCA34XfwfLZYLCfg3/TFKHEWZEI6QLJ1FV5951Lu7WNkxrpVtUoUqUW
+        dCrcx3H3xfFjsrfHpm92XZ+Yx9Misf3QbOvBusMEQObut73vl91uv63b5rddL7vDdrnbLN+EqsR8
+        w8DNxq6G5mjX+C8SkwguRAqQcqhAmkwYmTHOecozw3mySDCsbga7PdbtwcUDc2fv7b7Zrd2Fx7+G
+        h3vb4HFSd92hbjFi0/Sruv15qPeD3ScmeznzYGs8xKsWiwQDbLeu96+jXs69jhuvgaH/7rlIQaQS
+        Ks7xNvFnvOd8vOd6fay71XOG3aFtT6fvi6T4WvmXgfljnCf/cnr+WCcfPH9l8sJkxdXnr6ievwrM
+        H+M8+avp+cvr+YuKa8MLA/pq/iCoAOArEfQCYJwHQDYdQHYdADaATy2APDB/jPPkn0/PXwTkD7kR
+        8noBYH3QdEAZCADjPADkdADwxQCIQAAY5wGAY2vqCOCXAXBIRVYBNwDvx8nZCMQOSVMBEAgA4zwA
+        IBjAOOVdinmF+Qk3J19NzKfxmF6sDicHqeAVL41EPs/z4XnWnsEpqeDwQDgY54HDJ8EZU1QODiqQ
+        B87F3oGmhHCwd2qD/vRORP4bHNBhcFzcORzQk+CMKQoHB5+/B86lyYrXQThQVjhW0dIEuqMzy0uV
+        Q9VYIVCtXJwHTrha4Ws1piie4GTncJyuvzXzFXq87fpDv2x3v5xAE2k5ZyXQNKVYxRyYLGgIBNaP
+        8NaPCK+fvx9NaNQcOJOahkCkcq6ZzmgARCrnWAIgaQhEqueaZUTvQKx6jmYnaEogUj/XTBGVwAz9
+        vGAqp6mOGfp5yRTNqzNHPy9xtJQ5jWRGouh3zY+7m6MTLp7fHB2Xj0ua/hupowMwmh4rYnV0YErR
+        lECkjo4lQDNGRLyOTgQgWkUviZrADBUdV9CJ+sMsFb2g+fwyU0WnkYtI/Hxr6+7m5zc/dwSI1tCB
+        5SAl0RpqrIrOWaFVTjSE4tV0IHKUWDUdv09SqiAy1XhVnWdZSTNWRbS6XpS6pPEuMUNjL5guJNX3
+        77OUdqU00LxDM/V2RbR54Uube70a3O5w3PXywU487za1883omtHUVFQ9ybtL7ZwNriIQWWxMDcm7
+        S80HR9FUTkzdyL9LzQeHqlUHbqT6jI14p9PpD2wJzVtKMwAA
     headers:
       Accept-Ranges:
       - bytes
       Age:
-      - '0'
+      - '1956'
       Allow:
       - GET, POST, HEAD, PUT, PATCH, DELETE, OPTIONS
       Cache-Control:
@@ -140,16 +142,16 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '861'
+      - '891'
       Content-Security-Policy:
       - 'default-src https: wss: data: blob: ''unsafe-inline'' ''unsafe-eval''; report-uri
         https://seekingalpha.com/report/csp'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 30 Jan 2023 16:52:49 GMT
+      - Sun, 13 Nov 2022 19:45:18 GMT
       ETag:
-      - W/"faf2a338e3568286fd781631507a1ecb"
+      - W/"fa3611a593042edf6a005a94c3df2e84"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Strict-Transport-Security:
@@ -169,18 +171,18 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - vheq6wZ7rlDNV6Ok
+      - DHRGVFfYyLSA9Aph
       X-Runtime:
-      - '0.178642'
+      - '0.563933'
       X-Served-By:
-      - cache-bfi-krnt7300119-BFI, cache-ams21072-AMS
+      - cache-bfi-krnt7300119-BFI, cache-vie6383-VIE
       X-Timer:
-      - S1675097569.267883,VS0,VE1
+      - S1668368719.647015,VS0,VE1
       X-XSS-Protection:
       - 1; mode=block
       set-cookie:
-      - machine_cookie=4765132313732; expires=Sun, 30 Jan 2028 16:52:49 GMT; path=/;
-      - machine_cookie_ts=1675097569; expires=Sun, 30 Jan 2028 16:52:49 GMT; path=/;
+      - machine_cookie=2152441849684; expires=Sat, 13 Nov 2027 19:45:18 GMT; path=/;
+      - machine_cookie_ts=1668368718; expires=Sat, 13 Nov 2027 19:45:18 GMT; path=/;
     status:
       code: 200
       message: OK

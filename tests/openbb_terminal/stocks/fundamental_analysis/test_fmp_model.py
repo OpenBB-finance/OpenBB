@@ -2,6 +2,7 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
+import numpy as np
 import pandas as pd
 
 # IMPORTATION INTERNAL
@@ -21,9 +22,9 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_get_score():
-    result = fmp_model.get_score(symbol="PM", years=10)
+    result = fmp_model.get_score(symbol="PM")
     if result:
-        assert isinstance(result, dict)
+        assert isinstance(result, np.number)
 
 
 @pytest.mark.vcr
@@ -32,6 +33,10 @@ def test_get_score():
     [
         (
             "get_profile",
+            {"symbol": "PM"},
+        ),
+        (
+            "get_quote",
             {"symbol": "PM"},
         ),
         (
@@ -76,10 +81,3 @@ def test_get_score():
 def test_valid_df(func, kwargs_dict):
     result_df = getattr(fmp_model, func)(**kwargs_dict)
     assert isinstance(result_df, pd.DataFrame)
-
-
-@pytest.mark.vcr
-def test_get_rating(recorder):
-    result_df = fmp_model.get_rating(symbol="TSLA")
-
-    recorder.capture(result_df)

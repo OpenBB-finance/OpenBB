@@ -1,1 +1,13 @@
-ERROR
+                                               2021-10-29 2022-10-28
+Assets                                          351.002 B  352.755 B
+Equity Attributable To Noncontrolling Interest          0          0
+Other Than Fixed Noncurrent Assets              216.166 B  217.350 B
+Equity                                           63.090 B   50.672 B
+Fixed Assets                                     39.440 B   42.117 B
+Liabilities And Equity                          351.002 B  352.755 B
+Noncurrent Assets                               216.166 B  217.350 B
+Current Liabilities                             125.481 B  153.982 B
+Equity Attributable To Parent                    63.090 B   50.672 B
+Noncurrent Liabilities                          162.431 B  148.101 B
+Current Assets                                  134.836 B  135.405 B
+Liabilities                                     287.912 B  302.083 B

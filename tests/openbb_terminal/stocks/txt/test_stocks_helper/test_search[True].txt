@@ -1,0 +1,2 @@
+                       name        country      sector                   industry exchange
+MSFT  Microsoft Corporation  United States  Technology  Software - Infrastructure      NMS

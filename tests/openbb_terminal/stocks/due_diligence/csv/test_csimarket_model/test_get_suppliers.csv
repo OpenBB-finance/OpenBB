@@ -1,0 +1,51 @@
+TICKER,Company Name,Revenue,Net Income,Net Margin,Cash Flow
+HMC,Honda Motor Co. Ltd.,108264.49,5659.22,5.23 %,24088.27
+MT,Arcelormittal,76571.0,15565.0,20.33 %,5600.0
+GM,General Motors Company,35759.0,1642.0,4.59 %,-263.0
+EC,Ecopetrol S a,23422.95,4494.49,19.19 %,1295.61
+GE,General Electric Company,18646.0,-771.0,-,647.0
+TSLA,Tesla Inc.,16934.0,2269.0,13.4 %,847.0
+DOW,Dow Inc.,15664.0,1681.0,10.73 %,-738.0
+ACN,Accenture Plc,15423.66,1587.94,10.3 %,1186.27
+CAT,Caterpillar Inc,14247.0,1673.0,11.74 %,-509.0
+KYO,Kyocera Corp,13536.56,1044.69,7.72 %,207.28
+NUE,Nucor Corporation,11794.47,2727.24,23.12 %,-1722.54
+QCOM,Qualcomm Inc,10936.0,3730.0,34.11 %,-3975.0
+NJ,Nidec Corp,10752.78,847.44,7.88 %,328.89
+HON,Honeywell International Inc,8953.0,1263.0,14.11 %,-1033.0
+MMM,3m Company,8702.0,82.0,0.94 %,-525.0
+DHR,Danaher Corporation,7751.0,1680.0,21.67 %,267.0
+NRG,Nrg Energy Inc,7282.0,513.0,7.04 %,1598.0
+PCAR,Paccar Inc,7158.7,720.4,10.06 %,-83.6
+JCI,Johnson Controls International Plc,6614.0,443.0,6.7 %,-279.0
+CMI,Cummins Inc.,6586.0,707.0,10.73 %,186.0
+XEL,Xcel Energy Inc,6347.0,328.0,5.17 %,245.0
+X,United States Steel Corp,6290.0,978.0,15.55 %,158.0
+UNP,Union Pacific Corp,6269.0,1835.0,29.27 %,-116.0
+SO,The Southern Company,6238.0,1110.0,17.79 %,484.0
+STLD,Steel Dynamics Inc,6212.88,1214.65,19.55 %,-128.1
+GPC,Genuine Parts Co,5602.41,372.53,6.65 %,-91.65
+ETN,Eaton Corporation Plc,5243.0,601.0,11.46 %,126.0
+GT,The Goodyear Tire and Rubber Company,5212.0,170.0,3.26 %,190.0
+PCG,Pg and e Corp,5118.0,360.0,7.03 %,39.0
+NVLCN,Novelis Inc.,5089.0,306.0,6.01 %,-1.0
+LEA,Lear Corp,5071.0,85.6,1.69 %,-333.9
+EMR,Emerson Electric Co.,5005.0,952.0,19.02 %,-4400.0
+PPG,Ppg Industries Inc,4691.0,446.0,9.51 %,-29.0
+TEN,Tenneco Inc,4665.0,-104.0,-,-246.0
+WLK,Westlake Corporation,4483.0,873.0,19.47 %,260.0
+EXC,Exelon Corporation,4239.0,465.0,10.97 %,-1162.0
+TT,Trane Technologies Plc,4190.4,514.9,12.29 %,-258.2
+PH,Parker hannifin Corporation,4187.83,128.91,3.08 %,3692.72
+TEL,Te Connectivity ltd.,4097.0,594.0,14.5 %,71.0
+APTV,Aptiv Plc,4057.0,-72.0,-,-181.0
+ITW,Illinois Tool Works Inc,4011.0,738.0,18.4 %,-417.0
+EIX,Edison International,4008.0,292.0,7.29 %,-111.0
+CSX,Csx Corporation,3815.0,1178.0,30.88 %,-1212.0
+BWA,Borgwarner Inc.,3759.0,231.0,6.15 %,-114.0
+AA,Alcoa Corp,3644.0,674.0,18.5 %,83.0
+GLW,Corning Inc,3615.0,584.0,16.15 %,-387.0
+D,Dominion Energy Inc.,3596.0,-453.0,-,-187.0
+SRE,Sempra Energy,3547.0,659.0,18.58 %,-443.0
+ED,Consolidated Edison Inc.,3415.0,254.0,7.44 %,1043.0
+ETR,Entergy Corporation,3395.2,164.01,4.83 %,-121.7
