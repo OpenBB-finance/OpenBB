@@ -194,7 +194,7 @@ def patch_user_configs(
     type_ : str
         The type of the patch, either "keys" or "settings".
     auth_header : str
-        The authorization header.
+        The authorization header, e.g. "Bearer <token>".
     base_url : str
         The base url, by default BASE_URL
     timeout : int
@@ -236,16 +236,16 @@ def patch_user_configs(
 
 
 def clear_user_configs(
-    base_url: str = BASE_URL, auth_header: Optional[str] = None, timeout: int = TIMEOUT
+    auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
 ) -> Optional[requests.Response]:
     """Clear user configurations to the server.
 
     Parameters
     ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
     base_url : str
         The base url, by default BASE_URL
-    auth_header : Optional[str]
-        The authorization header, by default None
     timeout : int
         The timeout, by default TIMEOUT
 
@@ -254,8 +254,6 @@ def clear_user_configs(
     Optional[requests.Response]
         The response from the put request.
     """
-    auth_header = User.get_auth_header() if auth_header is None else auth_header
-
     data: Dict[str, dict] = {"features_keys": {}, "features_settings": {}}
 
     try:

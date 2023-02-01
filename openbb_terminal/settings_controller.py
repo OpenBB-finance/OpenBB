@@ -165,6 +165,7 @@ class SettingsController(BaseController):
                 key=name,
                 value=str(value),
                 type_="settings",
+                auth_header=User.get_auth_header(),
             )
 
     @log_start_end(log=logger)
