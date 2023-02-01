@@ -17,7 +17,11 @@ from dotenv import set_key
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import featflags_controller as obbff_ctrl
-from openbb_terminal.core.config.paths import USER_ENV_FILE, USER_DATA_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    USER_ENV_FILE,
+    USER_DATA_DIRECTORY,
+    USER_DATA_SOURCES_DEFAULT_FILE,
+)
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -59,6 +63,7 @@ class SettingsController(BaseController):
         "colors",
     ]
     PATH = "/settings/"
+    CHOICES_GENERATION = True
 
     all_timezones = [tz.replace("/", "_") for tz in pytz.all_timezones]
 
@@ -74,9 +79,10 @@ class SettingsController(BaseController):
         self.env_file = env_file
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = self.choices_default
             choices["tz"] = {c: None for c in self.all_timezones}
             choices["lang"] = {c: None for c in self.languages_available}
+            self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -200,27 +206,25 @@ class SettingsController(BaseController):
             description="Preferred data source file.",
         )
         parser.add_argument(
-            "-v",
-            "--value",
+            "-f",
+            "--file",
             type=str,
-            default=str(USER_DATA_DIRECTORY / "data_sources_default.json"),
-            dest="value",
-            help="value",
+            default=str(USER_DATA_SOURCES_DEFAULT_FILE),
+            dest="file",
+            help="file",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
+            other_args.insert(0, "-f")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             try:
-
-                the_path = ns_parser.value
-                console.print("Loading sources from " + str(the_path))
-                with open(the_path):
+                console.print("Loading sources from: " + str(ns_parser.file))
+                with open(ns_parser.file):
                     # Try to open the file to get an exception if the file doesn't exist
                     pass
 
                 obbff_ctrl.FeatureFlagsController.set_feature_flag(
-                    "OPENBB_PREFERRED_DATA_SOURCE_FILE", ns_parser.value
+                    "OPENBB_PREFERRED_DATA_SOURCE_FILE", ns_parser.file
                 )
 
             except Exception as e:
