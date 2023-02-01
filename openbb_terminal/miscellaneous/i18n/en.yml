@@ -352,8 +352,8 @@ en:
   stocks/fa/ratios: extensive set of ratios over time
   stocks/fa/dupont: detailed breakdown for Return on Equity (RoE)
   stocks/fa/fraud: key fraud ratios including M-score, Z-score and McKee
+  stocks/fa/sec: obtain recent SEC filings of the company
   stocks/fa/analysis: analyse SEC filings with the help of machine learning
-  stocks/fa/sec: SEC filings
   stocks/fa/_future_estimations: Future Expectations
   stocks/fa/earnings: earnings dates and reported EPS
   stocks/fa/epsfc: Earning Estimate by Analysts - EPS

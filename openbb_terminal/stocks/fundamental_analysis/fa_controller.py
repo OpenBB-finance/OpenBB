@@ -1617,7 +1617,7 @@ class FundamentalAnalysisController(StockBaseController):
                     ns_parser.pages,
                     ns_parser.limit,
                     ns_parser.export,
-                    heet_name=" ".join(ns_parser.sheet_name)
+                    sheet_name=" ".join(ns_parser.sheet_name)
                     if ns_parser.sheet_name
                     else None,
                 )
