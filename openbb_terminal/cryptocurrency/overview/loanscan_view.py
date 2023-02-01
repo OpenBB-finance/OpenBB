@@ -71,7 +71,6 @@ def display_crypto_rates(
         colors = iter(cfg.theme.get_colors(reverse=True))
 
         for asset in assets:
-
             width = df_non_null.loc[(df_non_null.variable == asset)]
             # silence Setcopywarnings
             pd.options.mode.chained_assignment = None

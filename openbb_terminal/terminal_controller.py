@@ -151,6 +151,7 @@ class TerminalController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["support"] = self.SUPPORT_CHOICES
             choices["exe"] = self.ROUTINE_CHOICES
+            choices["news"] = self.NEWS_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -313,7 +314,6 @@ class TerminalController(BaseController):
 
                 # Compute average score and provide a result if it's the last try
                 if self.GUESS_TOTAL_TRIES > 0:
-
                     self.GUESS_NUMBER_TRIES_LEFT -= 1
                     if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_TOTAL_TRIES > 1:
                         color = (

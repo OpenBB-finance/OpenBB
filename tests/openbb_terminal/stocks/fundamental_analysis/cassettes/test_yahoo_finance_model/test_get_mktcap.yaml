@@ -456,7 +456,7 @@ interactions:
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '45'
       x-request-id:
@@ -512,9 +512,9 @@ interactions:
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '2'
+      - '1'
       x-request-id:
       - 522e9705-0de9-4546-82af-4d891696a656
       x-yahoo-request-id:

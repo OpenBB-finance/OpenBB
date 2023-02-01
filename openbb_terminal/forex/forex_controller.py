@@ -150,8 +150,16 @@ class ForexController(BaseController):
             "--start",
             default=(datetime.now() - timedelta(days=365)),
             type=valid_date,
-            help="Start date of data.",
+            help="The starting date (format YYYY-MM-DD) of the forex pair",
             dest="start_date",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the forex pair",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -172,13 +180,13 @@ class ForexController(BaseController):
             self.to_symbol = ns_parser.ticker[3:]
 
             if self.to_symbol and self.from_symbol:
-
                 self.data = forex_helper.load(
                     to_symbol=self.to_symbol,
                     from_symbol=self.from_symbol,
                     resolution=ns_parser.resolution,
                     interval=ns_parser.interval,
                     start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.end.strftime("%Y-%m-%d"),
                     source=ns_parser.source,
                 )
 
@@ -190,6 +198,7 @@ class ForexController(BaseController):
                     )
                 else:
                     self.data.index.name = "date"
+                    console.print(f"{self.from_symbol}-{self.to_symbol} loaded.")
 
                 export_data(
                     ns_parser.export,
@@ -198,12 +207,8 @@ class ForexController(BaseController):
                     self.data.copy(),
                     " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
-
                 self.source = ns_parser.source
-                if self.source != "YahooFinance":
-                    console.print(f"{self.from_symbol}-{self.to_symbol} loaded.\n")
             else:
-
                 console.print("\n[red]Make sure to load.[/red]\n")
 
     @log_start_end(log=logger)

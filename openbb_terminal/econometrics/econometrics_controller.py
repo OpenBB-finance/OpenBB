@@ -1682,7 +1682,6 @@ class EconometricsController(BaseController):
         )
 
         if ns_parser and ns_parser.ts:
-
             datasetcol_y, datasetcol_x = ns_parser.ts.split(",")
 
             dataset_y, column_y = datasetcol_y.split(".")
@@ -1737,7 +1736,6 @@ class EconometricsController(BaseController):
         )
 
         if ns_parser:
-
             if ns_parser.ts:
                 # We are going to pass through a variable number of series, so datasets will be a list of series
                 if len(ns_parser.ts) > 1:

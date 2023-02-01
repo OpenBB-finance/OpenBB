@@ -100,6 +100,7 @@ def search(
     sector: str = "",
     industry: str = "",
     exchange_country: str = "",
+    all_exchanges: bool = False,
     limit: int = 0,
     export: str = "",
     sheet_name: Optional[str] = "",
@@ -118,6 +119,8 @@ def search(
         Search by industry to find stocks matching the criteria
     exchange_country: str
         Search by exchange country to find stock matching
+    all_exchanges: bool
+       Whether to search all exchanges, without this option only the United States market is searched
     limit : int
         The limit of companies shown.
     export : str
@@ -135,6 +138,7 @@ def search(
         kwargs["sector"] = sector
     if industry:
         kwargs["industry"] = industry
+    kwargs["exclude_exchanges"] = False if exchange_country else not all_exchanges
 
     try:
         data = fd.select_equities(**kwargs)
@@ -158,6 +162,15 @@ def search(
         d = fd.search_products(
             data, query, search="long_name", case_sensitive=False, new_database=None
         )
+        d.update(
+            fd.search_products(
+                data,
+                query,
+                search="short_name",
+                case_sensitive=False,
+                new_database=None,
+            )
+        )
     else:
         d = data
 
@@ -165,7 +178,9 @@ def search(
         console.print("No companies found.\n")
         return
 
-    df = pd.DataFrame.from_dict(d).T[["long_name", "country", "sector", "industry"]]
+    df = pd.DataFrame.from_dict(d).T[
+        ["long_name", "short_name", "country", "sector", "industry", "exchange"]
+    ]
     if exchange_country:
         if exchange_country in market_coverage_suffix:
             suffix_tickers = [
@@ -184,10 +199,8 @@ def search(
         for x in v:
             exchange_suffix[x] = k
 
-    df["exchange"] = [
-        exchange_suffix.get(ticker.split(".")[1]) if "." in ticker else "USA"
-        for ticker in list(df.index)
-    ]
+    df["name"] = df["long_name"].combine_first(df["short_name"])
+    df = df[["name", "country", "sector", "industry", "exchange"]]
 
     title = "Companies found"
     if query:
@@ -203,12 +216,8 @@ def search(
     if not sector and industry:
         title += f" within {industry}"
 
-    df["exchange"] = df["exchange"].apply(
-        lambda x: x.replace("_", " ").title() if x else None
-    )
-    df["exchange"] = df["exchange"].apply(
-        lambda x: "United States" if x == "Usa" else None
-    )
+    df = df.fillna(value=np.nan)
+    df = df.iloc[df.isnull().sum(axis=1).mul(1).argsort()]
 
     print_rich_table(
         df.iloc[:limit] if limit else df,
@@ -347,7 +356,6 @@ def load(
         s_interval = f"{interval}min"
 
     else:
-
         if source == "AlphaVantage":
             s_start = start_date
             int_string = "Minute"

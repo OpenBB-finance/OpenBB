@@ -87,7 +87,6 @@ def price_target_from_analysts(
         )
 
     else:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -158,7 +157,6 @@ def estimates(symbol: str, estimate: str, export: str = "", sheet_name: str = No
     ) = business_insider_model.get_estimates(symbol)
 
     if estimate == "annualearnings":
-
         print_rich_table(
             df_year_estimates,
             headers=list(df_year_estimates.columns),

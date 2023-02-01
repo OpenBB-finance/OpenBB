@@ -120,7 +120,6 @@ def show_macro_data(
     df_rounded.columns = ["_".join(column) for column in df_rounded.columns]
 
     if raw:
-
         print_rich_table(
             df_rounded.fillna("-").iloc[-10:],
             headers=list(df_rounded.columns),
@@ -217,7 +216,6 @@ def show_treasuries(
         theme.visualize_output()
 
     if raw:
-
         print_rich_table(
             treasury_data.iloc[-10:],
             headers=list(treasury_data.columns),

@@ -37,7 +37,6 @@ def get_mstl_data(
     Optional[float],
     Optional[StatsForecast],
 ]:
-
     """Performs MSTL forecasting
     This is a wrapper around StatsForecast MSTL;
     we refer to this link for the original and more complete documentation of the parameters.

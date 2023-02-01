@@ -519,7 +519,6 @@ class QaController(StockBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-
             qa_view.display_acf(
                 symbol="",
                 data=self.current_source_dataframe,

@@ -18653,13 +18653,16 @@ interactions:
         https://pnr.ouryahoo.com https://*.search.aol.com https://*.onesearch.com
         https://*.publishing.oath.com https://*.aol.com; sandbox allow-downloads allow-forms
         allow-modals allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox
-        allow-top-navigation-by-user-activation allow-presentation;
+        allow-top-navigation-by-user-activation allow-presentation; report-uri https://csp.yahoo.com/beacon/csp?src=yahoofinance;
+        report-to csp-endpoint;
       content-type:
       - text/html; charset=utf-8
       date:
       - Fri, 27 Jan 2023 18:57:51 GMT
       referrer-policy:
       - no-referrer-when-downgrade
+      report-to:
+      - '{"group":"csp-endpoint","max-age":10886400,"endpoints":[{"url":"https://csp.yahoo.com/beacon/csp?src=yahoofinance"}]}'
       server:
       - ATS
       strict-transport-security:
@@ -18667,7 +18670,7 @@ interactions:
       vary:
       - Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-nodejs--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-nodejs--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '589'
       x-frame-options:

@@ -64,7 +64,6 @@ def find(
 
 
 def _find_CoinGecko(key: str, query: str, limit: int) -> pd.DataFrame:
-
     # pylint: disable=C0415
     from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
         get_coin_list,
@@ -85,7 +84,6 @@ def _find_CoinGecko(key: str, query: str, limit: int) -> pd.DataFrame:
 
 
 def _find_CoinPaprika(key: str, query: str, limit: int) -> pd.DataFrame:
-
     # pylint: disable=C0415
     from openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model import (
         get_coin_list,
@@ -107,7 +105,6 @@ def _find_CoinPaprika(key: str, query: str, limit: int) -> pd.DataFrame:
 
 
 def _find_Binance(key: str, query: str, limit: int) -> pd.DataFrame:
-
     # pylint: disable=C0415
     from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
         get_coin_list,
@@ -134,7 +131,6 @@ def _find_Binance(key: str, query: str, limit: int) -> pd.DataFrame:
 
 
 def _find_Coinbase(key: str, query: str, limit: int) -> pd.DataFrame:
-
     # pylint: disable=C0415
     from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
         get_coin_list,
