@@ -149,7 +149,7 @@ def display_crypto_heatmap(
             sheet_name,
         )
 
-        return fig.show(external=external_axes)
+        return fig.show(external=external_axes, margin=False)
 
 
 @log_start_end(log=logger)

@@ -47,4 +47,4 @@ def check_columns(
         )
         return None
 
-    return [col for col in close_col if col in data.columns][0]
+    return [col for col in close_col if col in data.columns][-1]

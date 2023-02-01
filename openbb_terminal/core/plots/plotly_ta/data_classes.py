@@ -82,11 +82,11 @@ class ChartIndicators:
         return output
 
     def get_indicator_args(self, name: str, label: str) -> Union[Arguments, None]:
-        """Returns arguments for given indicator and label"""
+        """Returns argument values for given indicator and label"""
         output = None
         indicator = self.get_indicator(name)
         if indicator is not None:
-            output = indicator.get_args(label)
+            output = indicator.get_args(label).values
         return output
 
     def get_indicators(self) -> List[TAIndicator]:
@@ -113,7 +113,7 @@ class ChartIndicators:
         return output
 
     def get_options_dict(self, name: str) -> Dict[str, Optional[Arguments]]:
-        """Returns dictionary of arguments for given indicator"""
+        """Returns dictionary of argument labels and values for given indicator"""
         output = None
         options = self.get_arg_names(name)
         if options:
@@ -200,17 +200,18 @@ class TA_Data:
         self.ma_mode = ma_mode or ["sma", "ema", "wma", "hma", "zlma", "rma"]
         self.close_col = ta_helpers.check_columns(df_ta)
         self.columns = {
-            "aroon": ["High", "Low"],
-            "adx": ["High", "Low", self.close_col],
-            "cci": ["High", "Low", self.close_col],
-            "obv": [self.close_col, "Volume"],
-            "fisher": ["High", "Low"],
-            "kc": ["High", "Low", self.close_col],
-            "stoch": ["High", "Low", self.close_col],
             "ad": ["High", "Low", self.close_col, "Volume"],
             "adosc": ["High", "Low", self.close_col, "Volume"],
-            "vwap": ["High", "Low", self.close_col, "Volume"],
+            "adx": ["High", "Low", self.close_col],
+            "aroon": ["High", "Low"],
+            "atr": ["High", "Low", self.close_col],
+            "cci": ["High", "Low", self.close_col],
             "donchian": ["High", "Low"],
+            "fisher": ["High", "Low"],
+            "kc": ["High", "Low", self.close_col],
+            "obv": [self.close_col, "Volume"],
+            "stoch": ["High", "Low", self.close_col],
+            "vwap": ["High", "Low", self.close_col, "Volume"],
         }
 
     def get_indicator_data(self, indicator: TAIndicator, **args) -> pd.DataFrame:
@@ -261,6 +262,9 @@ class TA_Data:
             ta_columns = self.columns[indicator.name]
             ta_columns = [self.df_ta[col] for col in ta_columns]
 
+            if indicator.get_argument_values("use_open") is True:
+                ta_columns.append(self.df_ta["Open"])
+
             output = getattr(ta, indicator.name)(*ta_columns, **args)
         else:
             output = getattr(ta, indicator.name)(self.df_ta[self.close_col], **args)
@@ -282,14 +286,12 @@ class TA_Data:
 
         output = self.df_ta
         for indicator in active_indicators:
-            if indicator.name in ["fib", "srlines", "clenow", "denmark"]:
+            if indicator.name in ["fib", "srlines", "clenow", "demark"]:
                 continue
             try:
                 indicator_data = self.get_indicator_data(
                     indicator,
-                    **self.indicators.get_options_dict(indicator.name)
-                    if indicator.name in self.indicators.get_arg_names(indicator.name)
-                    else {},
+                    **self.indicators.get_options_dict(indicator.name) or {},
                 )
             except Exception as e:
                 console.print(

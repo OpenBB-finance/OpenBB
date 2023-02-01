@@ -12,7 +12,7 @@ class Momentum(PltTA):
     """Momentum technical indicators"""
 
     __subplots__ = ["rsi", "macd", "stoch", "cci", "fisher", "cg"]
-    __inchart__ = ["clenow", "denmark"]
+    __inchart__ = ["clenow", "demark"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -172,30 +172,30 @@ class Momentum(PltTA):
         return fig, inchart_index + 1
 
     @indicator()
-    def plot_denmark(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
-        """Adds denmark to plotly figure"""
-        min_val = self.params["denmark"].get_argument_values("min_val") or 5
+    def plot_demark(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
+        """Adds demark to plotly figure"""
+        min_val = self.params["demark"].get_argument_values("min_val") or 5
 
-        denmark = ta.td_seq(df_ta[self.close_column], asint=True)
-        denmark.set_index(df_ta.index, inplace=True)
+        demark = ta.td_seq(df_ta[self.close_column], asint=True)
+        demark.set_index(df_ta.index, inplace=True)
 
-        denmark["up"] = denmark.TD_SEQ_UPa.apply(
+        demark["up"] = demark.TD_SEQ_UPa.apply(
             lambda x: f"<b>{x}</b>" if x > min_val else None
         )
-        denmark["down"] = denmark.TD_SEQ_DNa.apply(
+        demark["down"] = demark.TD_SEQ_DNa.apply(
             lambda x: f"<b>{x}</b>" if x > min_val else None
         )
 
         # we only keep the High/Low values that are not None in up/down columns
-        high = df_ta["High"][denmark["up"].notnull()]
-        low = df_ta["Low"][denmark["down"].notnull()]
+        high = df_ta["High"][demark["up"].notnull()]
+        low = df_ta["Low"][demark["down"].notnull()]
 
         fig.add_scatter(
             x=low.index,
             y=low,
-            name="Denmark Down",
+            name="Demark Down",
             mode="text",
-            text=denmark["down"],
+            text=demark["down"],
             textposition="bottom center",
             textfont=dict(color=theme.down_color),
             row=1,
@@ -204,9 +204,9 @@ class Momentum(PltTA):
         fig.add_scatter(
             x=high.index,
             y=high,
-            name="Denmark Up",
+            name="Demark Up",
             mode="text",
-            text=denmark["up"],
+            text=demark["up"],
             textposition="top center",
             textfont=dict(color=theme.up_color),
             row=1,
@@ -216,7 +216,7 @@ class Momentum(PltTA):
         fig.add_annotation(
             xref="paper",
             yref="paper",
-            text="<b>Denmark</b>",
+            text="<b>Demark</b>",
             x=0,
             xanchor="left",
             yshift=-inchart_index * 20,

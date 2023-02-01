@@ -685,7 +685,7 @@ def show_greeks(
         show_extra_greeks=show_all,
     )
 
-    column_formatting = [".1f", ".4f" + ".6f" * 4]
+    column_formatting = [".1f", ".4f"] + [".6f"] * 4
 
     if show_all:
         additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]

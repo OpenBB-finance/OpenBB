@@ -141,7 +141,7 @@ def view_vwap(
     ta = PlotlyTA()
     fig = ta.plot(
         day_df,
-        {"vwap": dict(offset=offset)},
+        dict(vwap=dict(offset=offset)),
         f"{symbol} {interval} VWAP",
         volume=False,
     )

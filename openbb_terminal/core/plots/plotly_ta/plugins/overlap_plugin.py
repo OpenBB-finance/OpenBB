@@ -1,5 +1,3 @@
-# pylint: disable=C0302,R0915,R0914,R0913,R0903,R0904
-
 import pandas as pd
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure

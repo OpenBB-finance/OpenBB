@@ -90,7 +90,7 @@ def display_historical(
         low=df_hist["Low"],
         close=df_hist["Close"],
         x=df_hist.index,
-        name=f"OHLC {symbol}",
+        name=f"{symbol} OHLC",
         row=1,
         col=1,
     )

@@ -260,9 +260,7 @@ class PlotlyTA(PltTA):
             output = self.indicators.get_indicator_data(
                 self.df_stock.copy(),
                 indicator,
-                **self.indicators.get_options_dict(indicator.name)
-                if indicator.name in self.indicators.get_arg_names(indicator.name)
-                else {},
+                **self.indicators.get_options_dict(indicator.name) or {},
             )
             if not isinstance(output, bool):
                 output.dropna(inplace=True)
@@ -296,6 +294,9 @@ class PlotlyTA(PltTA):
             subplots.append("volume")
 
         check_rows = min(len(self.check_subplots(subplots)), 4)
+
+        if "aroon" in subplots:
+            check_rows += 1
 
         if check_rows == 0:
             rows = 1
@@ -361,10 +362,12 @@ class PlotlyTA(PltTA):
             fig.add_scatter(
                 x=self.df_stock.index,
                 y=self.df_stock[self.close_column],
+                name=f"{symbol} Close",
                 connectgaps=True,
                 row=1,
                 col=1,
             )
+            fig.update_layout(yaxis=dict(nticks=15))
             self.inchart_colors = theme.get_colors()[1:]
         if self.show_volume and "Volume" in self.df_stock.columns:
             colors = [
@@ -383,7 +386,6 @@ class PlotlyTA(PltTA):
             )
 
         fig.update_layout(yaxis_title="Price ($)")
-        fig.add_logscale_menus()
         return fig
 
     def plot_fig(
@@ -404,6 +406,9 @@ class PlotlyTA(PltTA):
 
         subplot_row, fig_new = 2, {}
         inchart_index, ma_done = 0, False
+
+        if self.show_volume and "Volume" in self.df_stock.columns:
+            subplot_row += 1
 
         fig = self.process_fig(fig)
 
@@ -427,7 +432,7 @@ class PlotlyTA(PltTA):
                     fig, inchart_index = getattr(self, f"plot_{indicator}")(
                         fig, self.df_ta, inchart_index
                     )
-                elif indicator in ["fib", "srlines"]:
+                elif indicator in ["fib", "srlines", "demark", "clenow"]:
                     fig = getattr(self, f"plot_{indicator}")(fig, self.df_ta)
                 else:
                     raise ValueError(f"Unknown indicator: {indicator}")
@@ -445,6 +450,7 @@ class PlotlyTA(PltTA):
                 continue
 
         fig.update(fig_new)
+        fig.update_traces(selector=dict(type="scatter", mode="lines"), connectgaps=True)
         fig.update_layout(showlegend=False)
         fig.hide_holidays(self.prepost)
 

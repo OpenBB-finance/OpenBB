@@ -355,9 +355,7 @@ class OpenBBFigure(go.Figure):
         row: int = 1,
         col: int = 1,
     ) -> None:
-
         callback = stats.norm if curve == "normal" else stats.gaussian_kde
-
         def _validate_x(data: Union[List[List[float]], np.ndarray, pd.Series]):
             if isinstance(data, pd.Series):
                 data = data.values
@@ -375,10 +373,8 @@ class OpenBBFigure(go.Figure):
 
         if isinstance(colors, str):
             colors = [colors]
-
         if not name:
             name = [None] * len(valid_x)
-
         if not colors:
             colors = [None] * len(valid_x)
 
@@ -836,7 +832,6 @@ class OpenBBFigure(go.Figure):
                     dict(dtickrange=["M1", None], value="%Y-%m-%d"),
                 ],
                 type="date",
-                selector=dict(xaxis=entry["xaxis"], yaxis=entry["yaxis"]),
                 overwrite=True,
             )
             self.update_traces(
@@ -1147,7 +1142,7 @@ class OpenBBFigure(go.Figure):
         if command_location:
             yaxis = self.layout.yaxis
             yaxis2 = self.layout.yaxis2 if hasattr(self.layout, "yaxis2") else None
-            xshift = -60 if yaxis.side == "right" else -80
+            xshift = -70 if yaxis.side == "right" else -80
 
             if self.layout.margin["l"] > 100:
                 xshift -= 150

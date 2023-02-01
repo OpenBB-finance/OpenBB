@@ -3,13 +3,13 @@ __docformat__ = "numpy"
 
 import os
 from typing import Optional
+
 import pandas as pd
-
 import plotly.express as px
-from plotly.subplots import make_subplots
 
-from openbb_terminal.stocks.discovery import finviz_model
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.helper_funcs import export_data
+from openbb_terminal.stocks.discovery import finviz_model
 
 
 def display_heatmap(timeframe: str, export: str = "", sheet_name: Optional[str] = ""):
@@ -49,15 +49,17 @@ def display_heatmap(timeframe: str, export: str = "", sheet_name: Optional[str] 
             "rgb(48, 204, 90)",
         ],
     )
-    path_tree = [px.Constant("SP 500"), "Sector", "Ticker"]
-    fig = make_subplots(
+
+    fig = OpenBBFigure.create_subplots(
         print_grid=False,
-        vertical_spacing=0.02,
+        vertical_spacing=0,
         horizontal_spacing=-0,
         specs=[[{"type": "domain"}]],
         rows=1,
         cols=1,
     )
+
+    path_tree = [px.Constant("SP 500"), "Sector", "Ticker"]
     treemap = px.treemap(
         dfs,
         path=path_tree,
@@ -82,11 +84,7 @@ def display_heatmap(timeframe: str, export: str = "", sheet_name: Optional[str] 
     ].texttemplate = (
         "<br> <br> <b>%{label}<br>    %{customdata[0]:.2f}% <br> <br> <br><br><b>"
     )
-    fig.data[0].insidetextfont = dict(
-        family="Arial Black",
-        size=50,
-        color="white",
-    )
+    fig.data[0].insidetextfont = dict(family="Arial Black", size=30, color="white")
 
     fig.update_traces(
         textinfo="label+text+value",
@@ -111,4 +109,4 @@ def display_heatmap(timeframe: str, export: str = "", sheet_name: Optional[str] 
         ),
     )
 
-    fig.show()
+    fig.show(margin=False)
