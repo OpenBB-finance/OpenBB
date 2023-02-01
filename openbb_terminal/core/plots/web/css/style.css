@@ -24,7 +24,7 @@ body {
 
 .plotly-graph-div {
   width: 100%;
-  height: 98%;
+  height: 94%;
   font-size: 12px;
   font-size: 1.2rem;
   font-family: "Fira Code", monospace, "Arial Black";
@@ -423,7 +423,7 @@ form {
   top: auto !important;
   left: 50% !important;
   right: auto !important;
-  transform: translateX(-50%) translateY(30%) !important;
+  transform: translateX(-50%) translateY(100%) !important;
 }
 
 @media screen and (max-width: 600px) {
@@ -437,11 +437,17 @@ form {
 }
 
 .modebar-group:nth-child(2) {
-  border-left: 2px solid white !important;
-  border-right: 2px solid white !important;
+  border-left: 3px solid #5a5a5a !important;
+  border-right: 3px solid #5a5a5a !important;
   margin-right: 5px !important;
   margin-left: 5px !important;
   padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.modebar-group:nth-child(3) {
+  border-right: 3px solid #5a5a5a !important;
+  margin-right: 5px !important;
   padding-right: 5px !important;
 }
 
