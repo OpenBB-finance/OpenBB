@@ -313,7 +313,6 @@ def get_mktcap(
         symbol, start=start_date, progress=False, threads=False, ignore_tz=True
     )
     if not df_data.empty:
-
         data = yf.Ticker(symbol).fast_info
         if data:
             df_data["Adj Close"] = df_data["Adj Close"] * data["shares"]

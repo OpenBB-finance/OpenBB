@@ -264,7 +264,6 @@ def display_ethereum_unique_senders(
 
     df = bitquery_model.get_ethereum_unique_senders(interval, limit, sortby, ascend)
     if not df.empty:
-
         column_names = ["uniqueSenders", "transactions", "maximumGasPrice"]
         column_names = prettify_column_names(column_names)
 
@@ -391,7 +390,6 @@ def display_spread_for_crypto_pair(
         symbol=symbol, to_symbol=to_symbol, limit=limit, sortby=sortby, ascend=ascend
     )
     if not df.empty:
-
         print_rich_table(
             df,
             headers=list(df.columns),
