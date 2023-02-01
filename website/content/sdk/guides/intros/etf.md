@@ -1,10 +1,7 @@
 ---
 title: ETF
-keywords:
-  [
-    "stocks, stock, options, option, call, put, earnings, calendar, how-to, guide, scripts, fundamental, analysis, technical, behavioural, analyst, equity, research, api, sdk, application, python, notebook, jupyter",
-  ]
-excerpt: "This guide introduces the ETF SDK in the context of the OpenBB SDK."
+keywords: [etfs, exchange traded funds, fund, basket, retail, stocks, openbb terminal]
+description: The ETF menu enables you to lookup any ETF and obtain an overview about the chosen ETF. Furthermore, sub-menus reside in this menu that can be used to compare companies within the ETF, discover gainers and losers within discovery and apply advanced technical indicators. Lastly, it also has the option to export multiple ETFs to Excel.
 ---
 
 The ETF module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.etf`

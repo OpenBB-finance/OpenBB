@@ -262,7 +262,7 @@ robin-stocks==2.1.0; python_version >= "3"
 rsa==4.9; python_version >= "3.6" and python_version < "4" and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7")
 ruamel.yaml.clib==0.2.7; platform_python_implementation == "CPython" and python_version < "3.11" and python_version >= "3.5"
 ruamel.yaml==0.17.21; python_version >= "3"
-ruff==0.0.210; python_version >= "3.7"
+ruff==0.0.236; python_version >= "3.7"
 scikit-learn==1.1.2; python_version >= "3.8" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.8"
 scipy==1.10.0; python_version >= "3.8" and python_version < "3.12"
 screeninfo==0.6.7
@@ -355,6 +355,6 @@ xarray==2022.11.0; python_version >= "3.8"
 xgboost==1.7.2; python_version >= "3.8"
 xlsxwriter==3.0.3; python_version >= "3.7"
 yarl==1.8.1; python_version >= "3.7" and python_full_version >= "3.7.0"
-yfinance==0.2.4
+yfinance==0.2.9
 zipp==3.10.0; python_version >= "3.7" and python_full_version < "3.9.7" and python_version < "3.10" or python_full_version > "3.9.7" and python_version >= "3.7" and python_version < "3.10"
 zope.interface==5.5.0; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5"

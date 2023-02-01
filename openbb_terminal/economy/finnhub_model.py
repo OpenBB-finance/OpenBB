@@ -1,11 +1,11 @@
 import logging
 
 import pandas as pd
-import requests
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 
 logger = logging.getLogger(__name__)
@@ -21,7 +21,7 @@ def get_economy_calendar_events() -> pd.DataFrame:
     pd.DataFrame
         Get dataframe with economic calendar events
     """
-    response = requests.get(
+    response = request(
         f"https://finnhub.io/api/v1/calendar/economic?token={cfg.API_FINNHUB_KEY}"
     )
 

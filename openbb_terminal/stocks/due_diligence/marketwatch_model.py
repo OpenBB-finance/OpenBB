@@ -4,11 +4,10 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 # pylint: disable=too-many-branches
 
@@ -38,7 +37,7 @@ def get_sec_filings(symbol: str) -> pd.DataFrame:
     )
 
     text_soup_financials = BeautifulSoup(
-        requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+        request(url_financials, headers={"User-Agent": get_user_agent()}).text,
         "lxml",
     )
 

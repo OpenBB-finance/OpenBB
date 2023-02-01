@@ -1,6 +1,7 @@
 ---
 title: FAQ
 sidebar_position: 3
+keywords: [faq, frequently asked questions, openbb sdk]
 ---
 
 ## General

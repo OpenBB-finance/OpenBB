@@ -1,24 +1,7 @@
 ---
 title: Futures
-keywords:
-  [
-    "forex",
-    "currency",
-    "money",
-    "hedge",
-    "dollar",
-    "euro",
-    "futures",
-    "future",
-    "interest",
-    "rates",
-    "forwards",
-    "commodities",
-    "bonds",
-    "treasuries",
-  ]
-excerpt: "This guide explains how to use the Futures menu and provides a brief description of its sub-menus"
-
+keywords: [forex, currency, money, hedge, dollar, euro, futures, future, interest, rates, forwards, commodities, bonds, treasuries, bond, gold, oil, openbb terminal]
+description: The Futures menu provides historical prices and the current term structure for an asset.
 ---
 
 The Futures menu provides historical prices and the current term structure for an asset. This menu is accessible from the Main menu by typing `futures` and pressing the `enter` key.

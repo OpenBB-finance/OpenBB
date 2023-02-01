@@ -179,7 +179,7 @@ Several things worth noting here:
 @pytest.mark.default_cassette("example.yaml")
 @pytest.mark.vcr
 def test_default():
-    assert requests.get("http://httpbin.org/get").text == '{"get": true}'
+    assert request("http://httpbin.org/get").text == '{"get": true}'
 ```
 
 ## 3.2. View Test

@@ -1,35 +1,7 @@
 ---
 title: Due Diligence
-keywords:
-  [
-    "dd",
-    "due",
-    "diligence",
-    "research",
-    "company",
-    "ticker",
-    "analyst",
-    "rating",
-    "rot",
-    "pt",
-    "est",
-    "sec",
-    "supplier",
-    "customer",
-    "arktrades",
-    "ratings",
-    "analysts",
-    "filings",
-    "form",
-    "forms",
-    "customers",
-    "suppliers",
-  ]
-date: "2022-06-01"
-type: guides
-status: publish
-excerpt: "This guide introduces the Due Diligence menu within the Stocks menu, explains the features briefly, then provides examples."
-geekdocCollapseSection: true
+keywords: [dd, due, diligence, research, company, ticker, analyst, rating, rot, pt, est, sec, supplier, customer, arktrades, ratings, analysts, filings, form, forms, customers, suppliers]
+description: This guide introduces the Due Diligence menu within the Stocks menu, explains the features briefly, then provides examples.
 ---
 
 The Due Diligence submenu, located within the <a href="/terminal/guides/intros/stocks" target="_blank" rel="noreferrer noopener">`Stocks menu`</a>, is primarily for supplementing fundamental analysis with information such as analyst ratings and price targets over time, earnings estimates, SEC filings and business-to-business customers and suppliers. Entering the submenu requires having a ticker <a href="/terminal/reference/#explanation-of-commands" target="_blank" rel="noreferrer noopener">loaded</a> from the `Stocks` menu. With a stock selected, type `dd` into the command line and press `enter`.
