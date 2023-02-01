@@ -1127,7 +1127,6 @@ python-versions = ">=3.7"
 [[package]]
 name = "fsspec"
 version = "2023.1.0"
-version = "2023.1.0"
 description = "File-system specification"
 category = "main"
 optional = true
