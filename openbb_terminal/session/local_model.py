@@ -180,6 +180,8 @@ def cast_set_attr(obj, name, value):
         setattr(obj, name, int(value))
     elif isinstance(getattr(obj, name), float):
         setattr(obj, name, float(value))
+    elif isinstance(getattr(obj, name), Path):
+        setattr(obj, name, Path(value))
     else:
         setattr(obj, name, value)
 
