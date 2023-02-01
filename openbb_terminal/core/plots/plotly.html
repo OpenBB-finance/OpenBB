@@ -23,26 +23,31 @@
             <!-- CSV Popup -->
             <div id="popup_csv" class="popup_content">
                 <div>
-                    <label for="csv_file">Choose a CSV file</label>
+                    <label for="csv_file">CSV file</label>
                     <input type="file" id="csv_file" accept=".csv, .txt"></input>
                 </div>
 
                 <div style="margin-top: 10px;">
-                    <label for="csv_trace_type">Choose how to display the data</label>
+                    <label for="csv_trace_type">Display data type</label>
                     <select id="csv_trace_type" value="scatter">
                         <option value="scatter">Scatter</option>
                         <option value="candlestick">Candlestick</option>
                     </select>
                 </div>
 
+                
+                <div style="margin-top: 10px;">
+                    <label for="csv_name">Name of the trace</label>
+                    <input type="text" id="csv_name" value=""></input>
+                </div>
+
                 <div style="margin-top: 10px;" id="csv_columns"><!-- Empty --></div>
-                <div style="margin-top: 10px;" id="csv_colors"><!-- Empty --></div><br>
+                <div style="margin-top: 10px;" id="csv_colors"><!-- Empty --></div>
 
-                <label for="csv_name">Name of the trace</label>
-                <input type="text" id="csv_name" value=""></input><br>
-
-                <button id="csv_submit" onclick="on_submit('csv')">Submit</button>
-                <button id="csv_cancel" onclick="closePopup()">Cancel</button>
+                <div style="float: right; margin-top: 20px;">
+                    <button class="_btn-tertiary" id="csv_cancel" onclick="closePopup()">Cancel</button>
+                    <button class="_btn" id="csv_submit" onclick="on_submit('csv')">Submit</button>
+                </div>
             </div>
 
             <!-- Text Popup -->
