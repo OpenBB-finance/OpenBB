@@ -5,11 +5,11 @@ import pytest
 from pycoingecko import CoinGeckoAPI
 
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
-    read_data_file,
+    _create_closest_match_df,
     _load_coin_map,
     load,
     load_coins_list,
-    _create_closest_match_df,
+    read_data_file,
 )
 
 # pylint: disable=unused-import

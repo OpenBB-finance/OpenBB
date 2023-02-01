@@ -4,6 +4,7 @@ import functools
 import logging
 import os
 from ssl import SSLError
+
 import pandas as pd
 from requests.exceptions import RequestException
 

@@ -10,8 +10,8 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 # pylint: disable=unsupported-assignment-operation
 

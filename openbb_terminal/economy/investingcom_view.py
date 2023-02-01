@@ -3,16 +3,15 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List, Union
-from matplotlib import ticker
+from typing import List, Optional, Union
 
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FormatStrFormatter
-from matplotlib import colors
 import numpy as np
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
+from matplotlib import colors, ticker
+from matplotlib.ticker import FormatStrFormatter
+from pandas.plotting import register_matplotlib_converters
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
@@ -21,9 +20,9 @@ from openbb_terminal.economy import investingcom_model
 from openbb_terminal.economy.economy_helpers import text_transform
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 

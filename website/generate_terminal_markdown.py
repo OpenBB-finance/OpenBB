@@ -12,8 +12,8 @@ from openbb_terminal.rich_config import console
 from website.controller_doc_classes import (
     ControllerDoc,
     LoadControllersDoc,
-    sub_names_full as subnames,
 )
+from website.controller_doc_classes import sub_names_full as subnames
 
 website_path = Path(__file__).parent.absolute()
 USER_PATH = (f"{USER_DATA_DIRECTORY}", "`USER_DATA_DIRECTORY`")

@@ -9,15 +9,15 @@ from typing import Dict, List
 
 from tqdm import tqdm
 
-from openbb_terminal import feature_flags as obbff, keys_view
-from openbb_terminal import keys_model
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal import keys_model, keys_view
 from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, translate
+from openbb_terminal.rich_config import MenuText, console, translate
 
 logger = logging.getLogger(__name__)
 

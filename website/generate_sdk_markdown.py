@@ -11,11 +11,11 @@ from typing import Any, Callable, Dict, ForwardRef, List, Literal, Optional, Uni
 import pandas as pd
 from docstring_parser import parse
 
+from openbb_terminal.core.library.trail_map import FORECASTING_TOOLKIT_ENABLED as FORECASTING
 from openbb_terminal.core.library.trail_map import (
-    FORECASTING_TOOLKIT_ENABLED as FORECASTING,
     MISCELLANEOUS_DIRECTORY,
-    OPTIMIZATION_TOOLKIT_ENABLED as OPTIMIZATION,
 )
+from openbb_terminal.core.library.trail_map import OPTIMIZATION_TOOLKIT_ENABLED as OPTIMIZATION
 from openbb_terminal.rich_config import console
 from website.controller_doc_classes import sub_names_full as subnames
 
