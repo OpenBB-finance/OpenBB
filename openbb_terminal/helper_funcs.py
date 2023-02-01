@@ -1989,7 +1989,6 @@ def update_news_from_tweet_to_be_displayed() -> str:
     if (
         datetime.now() - LAST_TWEET_NEWS_UPDATE_CHECK_TIME
     ).seconds > obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES:
-
         # This doesn't depende on the time of the tweet but the time that the check was made
         LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now()
 
@@ -2007,7 +2006,6 @@ def update_news_from_tweet_to_be_displayed() -> str:
             tzinfo=timezone.utc
         )
         for handle in news_sources_twitter_handles:
-
             try:
                 # Get last N tweets from each handle
                 for last_tweet in twitter_api.user_timeline(

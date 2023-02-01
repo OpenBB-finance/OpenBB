@@ -897,10 +897,8 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
             try:
                 # Get input from user using auto-completion
                 if session and obbff.USE_PROMPT_TOOLKIT:
-
                     # Check if tweet news is enabled
                     if obbff.TOOLBAR_TWEET_NEWS:
-
                         news_tweet = update_news_from_tweet_to_be_displayed()
 
                         # Check if there is a valid tweet news to be displayed

@@ -613,7 +613,6 @@ class EconomyController(BaseController):
                 )
 
                 if not df.empty:
-
                     df.columns = ["_".join(column) for column in df.columns]
 
                     if ns_parser.transform:
@@ -889,7 +888,6 @@ class EconomyController(BaseController):
                     )
 
                     if not df.empty:
-
                         self.DATASETS["index"][index] = df
 
                         self.stored_datasets = (

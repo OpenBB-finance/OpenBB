@@ -610,7 +610,6 @@ class SettingsController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-
             if ns_parser.time:
                 obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES = ns_parser.time
                 set_key(
