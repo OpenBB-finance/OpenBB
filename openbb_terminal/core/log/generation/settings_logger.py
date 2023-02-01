@@ -108,7 +108,6 @@ def log_keys() -> None:
     current_keys = {}
 
     for cfg_var_name in var_list:
-
         cfg_var_value = getattr(cfg, cfg_var_name)
 
         if cfg_var_value != "REPLACE_ME":
