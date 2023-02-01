@@ -1,7 +1,6 @@
 """Token Terminal View"""
 import logging
 import os
-from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
@@ -17,7 +16,6 @@ from openbb_terminal.cryptocurrency.overview.tokenterminal_model import (
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
     plot_autoscale,
 )
 from openbb_terminal.rich_config import console

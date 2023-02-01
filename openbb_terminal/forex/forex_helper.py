@@ -8,7 +8,6 @@ from typing import Dict, Iterable, List, Optional
 
 import pandas as pd
 import yfinance as yf
-from plotly.subplots import make_subplots
 
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.decorators import log_start_end

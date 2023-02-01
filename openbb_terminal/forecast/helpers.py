@@ -1,7 +1,6 @@
 # pylint: disable=too-many-arguments,too-many-lines
 import argparse
 import logging
-import math
 import os
 from datetime import datetime, time, timedelta
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -14,7 +13,6 @@ from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.explainability.shap_explainer import ShapExplainer
 from darts.metrics import mape
 from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
-from darts.utils.statistics import plot_residuals_analysis
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
