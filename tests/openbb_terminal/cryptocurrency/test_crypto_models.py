@@ -74,6 +74,7 @@ from openbb_terminal.cryptocurrency import crypto_models
     ],
 )
 def test_find(query, source, key, recorder):
+
     result_df = getattr(crypto_models, "find")(query=query, source=source, key=key)
 
     assert not result_df.empty

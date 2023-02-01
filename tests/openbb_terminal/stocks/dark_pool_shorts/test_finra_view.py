@@ -12,6 +12,7 @@ from openbb_terminal.stocks.dark_pool_shorts import finra_view
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_plot_dark_pools(mocker):
+
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 

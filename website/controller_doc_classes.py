@@ -206,6 +206,7 @@ class ControllerDoc:
     """
 
     def __init__(self, controller: BaseController, trailmap: str):
+
         self.controller = controller(**get_parameters(controller))
         self.trailmap = trailmap
         self.name = trailmap.split(".")[-1]
@@ -233,6 +234,7 @@ class ControllerDoc:
         """Get commands"""
         commands = []
         for name, _ in getmembers(self.controller, predicate=inspect.ismethod):
+
             if name.startswith("call_") and name not in self.ignore:
                 func = getattr(self.controller, name)
 

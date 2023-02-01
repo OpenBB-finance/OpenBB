@@ -58,6 +58,7 @@ def display_stock_price_headlines_sentiment(
         )
 
         if not df_stock.empty:
+
             # This plot has 2 axes
             if external_axes is None:
                 _, axes = plt.subplots(

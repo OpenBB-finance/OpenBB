@@ -284,6 +284,7 @@ def display_last_contracts(
         title="Last Government Contracts",
     )
     if sum_contracts:
+
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -458,6 +459,7 @@ def display_contracts(
         )
 
     if df_contracts.Amount.abs().sum() != 0:
+
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -722,6 +724,7 @@ def display_top_lobbying(
             title="Top Lobbying Tickers",
         )
     else:
+
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

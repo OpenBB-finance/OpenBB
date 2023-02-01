@@ -513,6 +513,7 @@ class DegiroView:
         )
 
         if portfolio_df is not None:
+
             print_rich_table(
                 df=portfolio_df,
                 headers=list(portfolio_df.columns),

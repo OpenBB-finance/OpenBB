@@ -222,6 +222,7 @@ def display_marketcap_dominance(
     )
 
     if not df.empty:
+
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)

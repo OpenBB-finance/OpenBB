@@ -71,6 +71,7 @@ def display_spread_matrix(
     df = investingcom_model.get_spread_matrix(countries, maturity, change)
 
     if not df.empty:
+
         if raw:
             pretty_df = df.copy()
 
@@ -332,6 +333,7 @@ def display_economic_calendar(
     )
 
     if not df.empty:
+
         print_rich_table(
             df,
             headers=list(df.columns),

@@ -126,6 +126,7 @@ class Trailmap:
         definition = ""
         added_comma = False
         for arg in funcspec:
+
             annotation = (
                 (
                     str(funcspec[arg].annotation)
@@ -324,6 +325,7 @@ def generate_markdown_section(meta: Dict[str, Any]):
     markdown += "---\n\n## Examples\n\n" if meta["examples"] else ""
     prev_snippet = "  "
     for example in meta["examples"]:
+
         if isinstance(example["snippet"], str) and ">>>" in example["snippet"]:
             snippet = example["snippet"].replace(">>> ", "")
             markdown += f"```python\n{snippet}\n```\n\n"

@@ -76,6 +76,7 @@ def insider_activity(
         logger.warning("The insider activity on the ticker does not exist")
         console.print("[red]The insider activity on the ticker does not exist.\n[/red]")
     else:
+
         if start_date:
             df_insider = df_ins[start_date:].copy()  # type: ignore
         else:

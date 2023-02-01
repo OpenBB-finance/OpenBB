@@ -563,6 +563,7 @@ class StocksController(StockBaseController):
                         sources=ns_parser.sources,
                     )
                 elif ns_parser.source == "Feedparser":
+
                     feedparser_view.display_news(
                         term=d_stock["shortName"].replace(" ", "+")
                         if "shortName" in d_stock

@@ -677,6 +677,7 @@ def get_indices(
     column: str = "Adj Close",
     returns: bool = False,
 ) -> pd.DataFrame:
+
     """Get data on selected indices over time [Source: Yahoo Finance]
 
     Parameters

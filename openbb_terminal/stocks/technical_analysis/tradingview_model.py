@@ -91,6 +91,7 @@ def get_tradingview_recommendation(
     df_recommendation = pd.DataFrame()
     index_recommendation = []
     for an_interval in intervals:
+
         if exchange:
             stock_recommendation = TA_Handler(
                 symbol=symbol,

@@ -218,6 +218,7 @@ class OptionsController(BaseController):
     def update_runtime_choices(self):
         """Update runtime choices"""
         if session and obbff.USE_PROMPT_TOOLKIT:
+
             if not self.chain.empty:
                 strike = set(self.chain["strike"])
 

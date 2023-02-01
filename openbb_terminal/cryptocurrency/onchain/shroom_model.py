@@ -175,6 +175,7 @@ def get_total_value_locked(
     symbol: str = "USDC",
     interval: int = 1,
 ) -> pd.DataFrame:
+
     """
     Get total value locked for a user/name address and symbol
     TVL measures the total amount of a token that is locked in a contract.

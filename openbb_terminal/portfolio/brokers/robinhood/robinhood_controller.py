@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 class RobinhoodController(BaseController):
+
     CHOICES_COMMANDS = ["holdings", "history"]
     CHOICES_MENUS = ["login"]
     valid_span = ["day", "week", "month", "3month", "year", "5year", "all"]

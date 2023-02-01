@@ -25,6 +25,7 @@ def test_get_similar_companies(recorder):
 
 @pytest.mark.vcr(record_mode="none")
 def test_get_similar_companies_invalid_status(mocker, recorder):
+
     attrs = {
         "status_code": 400,
         "json.return_value": {"error": "mock error message"},

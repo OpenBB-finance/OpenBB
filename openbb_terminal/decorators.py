@@ -32,6 +32,7 @@ def log_start_end(func=None, log=None):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+
             logging_name = ""
 
             args_passed_in_function = [

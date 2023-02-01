@@ -38,6 +38,7 @@ def get_autoets_data(
     Optional[float],
     Optional[StatsForecast],
 ]:
+
     """Performs Automatic ETS forecasting
     This is a wrapper around StatsForecast ETS;
     we refer to this link for the original and more complete documentation of the parameters.

@@ -131,6 +131,7 @@ def get_coins(
     sortby: str = "Symbol",
     ascend: bool = False,
 ) -> pd.DataFrame:
+
     """Get N coins from CoinGecko [Source: CoinGecko]
 
     Parameters
@@ -247,6 +248,7 @@ def get_gainers_or_losers(
     )
 
     if sortby in GAINERS_LOSERS_COLUMNS:
+
         sorted_df = sorted_df[
             (sorted_df["Volume [$]"].notna()) & (sorted_df["Market Cap"].notna())
         ]

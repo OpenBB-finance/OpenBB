@@ -42,6 +42,7 @@ def get_theta_data(
     Optional[float],
     Optional[type[Theta]],
 ]:
+
     """Performs Theta forecasting
     An implementation of the 4Theta method with configurable theta parameter.
 

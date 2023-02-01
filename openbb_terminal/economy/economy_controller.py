@@ -602,6 +602,7 @@ class EconomyController(BaseController):
                 return self.queue
 
             if ns_parser.parameters and ns_parser.countries:
+
                 # Store data
                 (df, units, _) = econdb_model.get_aggregated_macro_data(
                     parameters=parameters,
@@ -613,6 +614,7 @@ class EconomyController(BaseController):
                 )
 
                 if not df.empty:
+
                     df.columns = ["_".join(column) for column in df.columns]
 
                     if ns_parser.transform:
@@ -757,6 +759,7 @@ class EconomyController(BaseController):
                 )
 
                 if not df.empty:
+
                     for series_id, data in detail.items():
                         self.FRED_TITLES[
                             series_id
@@ -888,6 +891,7 @@ class EconomyController(BaseController):
                     )
 
                     if not df.empty:
+
                         self.DATASETS["index"][index] = df
 
                         self.stored_datasets = (
@@ -1001,6 +1005,7 @@ class EconomyController(BaseController):
                 )
 
                 if not df.empty:
+
                     cols = []
                     for column in df.columns:
                         if isinstance(column, tuple):
@@ -1067,6 +1072,7 @@ class EconomyController(BaseController):
             raw=True,
         )
         if ns_parser:
+
             fred_view.display_yield_curve(
                 date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
                 raw=ns_parser.raw,
@@ -1137,6 +1143,7 @@ class EconomyController(BaseController):
         )
 
         if ns_parser:
+
             if ns_parser.names:
                 for name in nasdaq_model.get_country_names():
                     console.print(name)

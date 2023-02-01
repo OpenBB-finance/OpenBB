@@ -239,6 +239,7 @@ def display_balance_sheet(
             fig.autofmt_xdate()
 
     else:
+
         indexes = df_balance.index
         new_indexes = [camel_case_split(ind) for ind in indexes]
         df_balance.index = new_indexes
@@ -329,6 +330,7 @@ def display_cash_flow(
             fig.autofmt_xdate()
 
     else:
+
         indexes = df_cash.index
         new_indexes = [camel_case_split(ind) for ind in indexes]
         df_cash.index = new_indexes

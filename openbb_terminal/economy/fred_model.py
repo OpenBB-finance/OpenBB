@@ -92,6 +92,7 @@ def get_series_notes(search_query: str, limit: int = -1) -> pd.DataFrame:
         else:
             console.print(d_series["error_message"])
     else:
+
         if "seriess" in d_series:
             if d_series["seriess"]:
                 df_fred = pd.DataFrame(d_series["seriess"])
@@ -241,6 +242,7 @@ def get_aggregated_series_data(
             }
 
     for s_id in series_ids:
+
         series = pd.DataFrame(
             get_series_data(s_id, start_date, end_date), columns=[s_id]
         ).dropna()

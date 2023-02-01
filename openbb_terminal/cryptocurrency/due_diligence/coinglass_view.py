@@ -128,6 +128,7 @@ def plot_data(
     ylabel: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
+
     # This plot has 2 axes
     if not external_axes:
         _, axes = plt.subplots(
@@ -179,6 +180,7 @@ def plot_data_bar(
     ylabel: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
+
     # This plot has 2 axes
     if not external_axes:
         _, axes = plt.subplots(

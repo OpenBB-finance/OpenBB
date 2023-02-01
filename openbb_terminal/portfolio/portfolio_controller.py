@@ -153,6 +153,7 @@ class PortfolioController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_choices(self):
+
         self.DEFAULT_HOLDINGS_PATH = portfolio_helper.DEFAULT_HOLDINGS_PATH
 
         self.DATA_HOLDINGS_FILES.update(
@@ -477,6 +478,7 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=10)
 
         if ns_parser and self.portfolio is not None:
+
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -556,6 +558,7 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=10)
 
         if ns_parser and self.portfolio is not None:
+
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -639,6 +642,7 @@ class PortfolioController(BaseController):
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
+
                 portfolio_view.display_performance_vs_benchmark(
                     self.portfolio,
                     ns_parser.show_trades,

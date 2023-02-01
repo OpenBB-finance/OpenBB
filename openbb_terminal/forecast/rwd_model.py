@@ -33,6 +33,7 @@ def get_rwd_data(
 ) -> Tuple[
     List[np.ndarray], List[np.ndarray], List[np.ndarray], Optional[float], StatsForecast
 ]:
+
     """Performs Random Walk with Drift forecasting
     This is a wrapper around StatsForecast RandomWalkWithDrift;
     we refer to this link for the original and more complete documentation of the parameters.

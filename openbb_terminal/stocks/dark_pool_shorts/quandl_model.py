@@ -38,6 +38,7 @@ def get_short_interest(symbol: str, nyse: bool = False) -> pd.DataFrame:
     df = pd.DataFrame()
 
     try:
+
         if nyse:
             df = quandl.get(f"FINRA/FNYX_{symbol}")
         else:

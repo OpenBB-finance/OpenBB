@@ -118,6 +118,7 @@ def display_historical(
         return
 
     if raw or len(historicals) == 1:
+
         if not raw and len(historicals) == 1:
             console.print(
                 "\nA single datapoint is not enough to depict a chart, data is presented below."
@@ -132,6 +133,7 @@ def display_historical(
         console.print()
 
     else:
+
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

@@ -749,6 +749,7 @@ class ForecastController(BaseController):
         )
 
         if ns_parser:
+
             console.print(
                 f"[green]Current Compute Device (CPU or GPU):[/green] {self.device.upper()}"
             )

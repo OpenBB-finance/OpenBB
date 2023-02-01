@@ -141,6 +141,7 @@ class BacktestingController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+
             bt_view.display_simple_ema(
                 symbol=self.ticker,
                 data=self.stock,

@@ -162,6 +162,7 @@ def display_total_value_locked(
     sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
+
     """
     Get total value locked for a certain address
     TVL measures the total amount of a token that is locked in a contract.

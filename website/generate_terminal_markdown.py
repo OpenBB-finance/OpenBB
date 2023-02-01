@@ -47,6 +47,7 @@ def existing_markdown_file_examples(
     examples_dict: Dict[str, Union[str, List[str]]] = {}
 
     if os.path.exists(website_path / examples_path):
+
         with open(website_path / examples_path, encoding="utf-8") as f:
             content = f.read()
 
@@ -71,12 +72,14 @@ def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
 
     commands = []
     for cmd, parser in ctrl.cmd_parsers.items():
+
         actions = []
         for action in parser._actions:  # pylint: disable=protected-access
             if action.dest == "help":
                 continue
 
             if (default := action.default) is not None:
+
                 if isinstance(default, list):
                     default = ", ".join([str(x) for x in default])
 
@@ -87,8 +90,10 @@ def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
                         default = "datetime.now()"
 
             if (choices := action.choices) is not None:
+
                 # We do this so that range(0, N) objects are not converted to a list
                 if isinstance(choices, (dict, type({}.keys()), list)):
+
                     listdict: list = []
                     for choice in choices:
                         # We check for nested dicts

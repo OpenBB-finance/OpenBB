@@ -314,6 +314,7 @@ class TerminalController(BaseController):
 
                 # Compute average score and provide a result if it's the last try
                 if self.GUESS_TOTAL_TRIES > 0:
+
                     self.GUESS_NUMBER_TRIES_LEFT -= 1
                     if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_TOTAL_TRIES > 1:
                         color = (

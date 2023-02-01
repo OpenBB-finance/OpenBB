@@ -54,6 +54,7 @@ def load_file(path: str = "") -> Tuple[dict, str]:
     help_text = "[info]Parameters:[/info]\n"
 
     if current_model:
+
         for k, v in converted_parameters.items():
             all_params = (
                 params_statics.DEFAULT_PARAMETERS

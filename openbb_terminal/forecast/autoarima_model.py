@@ -38,6 +38,7 @@ def get_autoarima_data(
     Optional[float],
     Optional[StatsForecast],
 ]:
+
     """Performs Automatic ARIMA forecasting
     This is a wrapper around StatsForecast AutoARIMA;
     we refer to this link for the original and more complete documentation of the parameters.

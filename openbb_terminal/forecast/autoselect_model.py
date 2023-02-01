@@ -44,6 +44,7 @@ def get_autoselect_data(
     Optional[StatsForecast],
     Optional[Union[int, str]],
 ]:
+
     """Performs Automatic Statistical forecasting
     This is a wrapper around StatsForecast models;
     we refer to this link for the original and more complete documentation of the parameters.

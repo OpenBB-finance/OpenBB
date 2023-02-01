@@ -320,6 +320,7 @@ class ComparisonAnalysisController(BaseController):
                     self.similar = finnhub_model.get_similar_companies(self.ticker)
 
                     if self.similar:
+
                         self.user = "Finnhub"
 
                         if self.ticker.upper() in self.similar:

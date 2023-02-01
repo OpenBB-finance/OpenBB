@@ -39,6 +39,7 @@ def get_seasonalnaive_data(
     Optional[float],
     Optional[type[StatsForecast]],
 ]:
+
     """Performs Seasonal Naive forecasting
     This is a wrapper around StatsForecast Seasonal Naive;
     we refer to this link for the original and more complete documentation of the parameters.

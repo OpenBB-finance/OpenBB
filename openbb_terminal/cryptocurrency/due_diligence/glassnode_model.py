@@ -512,6 +512,7 @@ def get_exchange_balances(
     )  # get price TODO: grab data from loaded symbol
 
     if r1.status_code == 200 and r2.status_code == 200 and r3.status_code == 200:
+
         df1 = pd.DataFrame(json.loads(r1.text))
         df1.set_index("t", inplace=True)
         df1.rename(columns={"v": "stacked"}, inplace=True)

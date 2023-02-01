@@ -396,6 +396,7 @@ def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **k
 
 @log_start_end(log=logger)
 def display_heat(**kwargs):
+
     weights = kwargs.get("weights", None)
     data = kwargs.get("data", None)
     category = kwargs.get("category", None)
@@ -481,6 +482,7 @@ def display_heat(**kwargs):
 
 @log_start_end(log=logger)
 def display_rc(**kwargs):
+
     weights = kwargs.get("weights", None)
     data = kwargs.get("data", None)
     colors = kwargs.get("colors", None)
@@ -531,6 +533,7 @@ def display_rc(**kwargs):
 
 @log_start_end(log=logger)
 def display_hist(**kwargs):
+
     weights = kwargs.get("weights", None)
     data = kwargs.get("data", None)
     colors = kwargs.get("colors", None)
@@ -569,6 +572,7 @@ def display_hist(**kwargs):
 
 @log_start_end(log=logger)
 def display_dd(**kwargs):
+
     weights = kwargs.get("weights", None)
     data = kwargs.get("data", None)
     colors = kwargs.get("colors", None)

@@ -228,6 +228,7 @@ class PortfolioEngine:
         p_bar = tqdm(range(14), desc="Preprocessing transactions")
 
         try:
+
             # 0. If optional fields not in the transactions add missing
             optional_fields = [
                 "Sector",

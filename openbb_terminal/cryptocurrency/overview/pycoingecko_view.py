@@ -382,6 +382,7 @@ def display_stablecoins(
     df = gecko.get_stable_coins(limit, sortby=sortby, ascend=ascend)
 
     if not df.empty:
+
         total_market_cap = int(df["Market_Cap_[$]"].sum())
         df.columns = df.columns.str.replace("_", " ")
 
@@ -531,6 +532,7 @@ def display_exchanges(
     df = gecko.get_exchanges(sortby, ascend)
 
     if not df.empty:
+
         if links is True:
             df = df[["Rank", "Name", "Url"]]
         else:
@@ -707,6 +709,7 @@ def display_derivatives(
     df = gecko.get_derivatives(sortby=sortby, ascend=ascend)
 
     if not df.empty:
+
         print_rich_table(
             df.head(limit),
             headers=list(df.columns),
