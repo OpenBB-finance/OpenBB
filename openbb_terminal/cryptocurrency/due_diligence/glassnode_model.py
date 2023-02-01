@@ -4,12 +4,10 @@ import json
 from typing import Optional
 
 import pandas as pd
-import requests
-
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal.rich_config import console
-from openbb_terminal.helper_funcs import str_date_to_timestamp
+from openbb_terminal.helper_funcs import str_date_to_timestamp, request
 
 # pylint: disable=unsupported-assignment-operation
 
@@ -221,7 +219,7 @@ def get_close_price(
         "u": str(ts_end_date),
     }
 
-    r = requests.get(url, params=parameters)
+    r = request(url, params=parameters)
 
     df = pd.DataFrame()
 
@@ -286,7 +284,7 @@ def get_non_zero_addresses(
         "u": str(ts_end_date),
     }
 
-    r = requests.get(url, params=parameters)
+    r = request(url, params=parameters)
 
     df = pd.DataFrame()
 
@@ -351,7 +349,7 @@ def get_active_addresses(
         "u": str(ts_end_date),
     }
 
-    r = requests.get(url, params=parameters)
+    r = request(url, params=parameters)
     df = pd.DataFrame()
 
     if r.status_code == 200:
@@ -418,8 +416,8 @@ def get_hashrate(
 
     df = pd.DataFrame()
 
-    r = requests.get(url, params=parameters)
-    r2 = requests.get(url2, params=parameters)
+    r = request(url, params=parameters)
+    r2 = request(url2, params=parameters)
 
     if r.status_code == 200 and r2.status_code == 200:
         df = pd.DataFrame(json.loads(r.text))
@@ -507,14 +505,13 @@ def get_exchange_balances(
     }
     df = pd.DataFrame()
 
-    r1 = requests.get(url, params=parameters)  # get balances
-    r2 = requests.get(url2, params=parameters)  # get relative (percentage) balances
-    r3 = requests.get(
+    r1 = request(url, params=parameters)  # get balances
+    r2 = request(url2, params=parameters)  # get relative (percentage) balances
+    r3 = request(
         url3, params=parameters
     )  # get price TODO: grab data from loaded symbol
 
     if r1.status_code == 200 and r2.status_code == 200 and r3.status_code == 200:
-
         df1 = pd.DataFrame(json.loads(r1.text))
         df1.set_index("t", inplace=True)
         df1.rename(columns={"v": "stacked"}, inplace=True)
@@ -596,7 +593,7 @@ def get_exchange_net_position_change(
         "u": str(ts_end_date),
     }
 
-    r = requests.get(url, params=parameters)
+    r = request(url, params=parameters)
     df = pd.DataFrame()
 
     if r.status_code == 200:

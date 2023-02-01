@@ -5,10 +5,11 @@ import logging
 from typing import Dict, Tuple
 
 import pandas as pd
-import requests
-from tqdm import tqdm
 import yfinance as yf
+from tqdm import tqdm
+
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -157,7 +158,6 @@ def get_sectors_allocation(
     if not etf_ticker_value.empty:
         # Loop through each etf and multiply sector weights by current value
         for item in tqdm(etf_ticker_value.index.values, desc="Loading ETF data"):
-
             # TODO: This can be improved by caching this info similar to what is done in stocks
             etf_info = yf.Ticker(item).info
 
@@ -331,7 +331,7 @@ def get_symbol_allocation(
 
     # Collect data from Fidelity about the portfolio composition of the benchmark
     URL = f"https://screener.fidelity.com/ftgw/etf/goto/snapshot/portfolioComposition.jhtml?symbols={symbol}"
-    html = requests.get(URL).content
+    html = request(URL).content
     df_list = pd.read_html(html)
 
     # Find the ones that contain regions and countries
@@ -394,11 +394,9 @@ def get_portfolio_allocation(
     etf_global_alloc = pd.DataFrame(columns=[category, "Portfolio Value"])
 
     if not etf_ticker_value.empty:
-
         no_info = []
         # Loop through each etf and multiply sector weights by current value
         for item in tqdm(etf_ticker_value.index.values, desc="Loading ETF data"):
-
             etf_weight = get_symbol_allocation(
                 symbol=item, category=category, col_name="Portfolio Value"
             )

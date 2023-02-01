@@ -42,11 +42,12 @@ def test_search(mocker, use_tab):
         target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
     )
     stocks_helper.search(
-        query="sonae",
-        country="Portugal",
+        query="microsoft",
+        country="United_States",
         sector="",
         industry="",
         exchange_country="",
+        all_exchanges=False,
         limit=5,
         export="",
     )
@@ -80,12 +81,22 @@ def test_load(interval, recorder, source):
     recorder.capture(result_df)
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(record_mode="once")
 @pytest.mark.parametrize(
-    "weekly, monthly",
-    [(True, True), (True, False), (False, True)],
+    "source, weekly, monthly",
+    [
+        ("AlphaVantage", True, True),
+        ("AlphaVantage", True, False),
+        ("AlphaVantage", False, True),
+        ("YahooFinance", True, True),
+        ("YahooFinance", True, False),
+        ("YahooFinance", False, True),
+        ("Polygon", True, True),
+        ("Polygon", True, False),
+        ("Polygon", False, True),
+    ],
 )
-def test_load_week_or_month(recorder, weekly, monthly):
+def test_load_week_or_month(recorder, source, weekly, monthly):
     ticker = "AAPL"
     start = datetime.strptime("2019-12-01", "%Y-%m-%d")
     end = datetime.strptime("2021-12-02", "%Y-%m-%d")
@@ -96,7 +107,7 @@ def test_load_week_or_month(recorder, weekly, monthly):
         interval=1440,
         end_date=end,
         prepost=prepost,
-        source="YahooFinance",
+        source=source,
         weekly=weekly,
         monthly=monthly,
     )

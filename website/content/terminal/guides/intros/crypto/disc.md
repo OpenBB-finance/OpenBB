@@ -1,9 +1,7 @@
 ---
 title: Discovery
-keywords: ["cryptocurrency", "discovery", "nft", "app", "decentralized", "coins"]
-excerpt: "An Introduction to Cryptocurrency Discovery, within the Cryptocurrency Menu,
-with a brief overview of the features."
-geekdocCollapseSection: true
+keywords: [cryptocurrency, discovery, nft, app, decentralized, coins]
+description: An Introduction to Cryptocurrency Discovery, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 
 The Cryptocurrency Discovery menu provides the option to look into a wide selection of trending coins (<a href="/terminal/reference/crypto/disc/trending" target="_blank" rel="noreferrer noopener">trending</a>), gainers and losers (<a href="/terminal/reference/crypto/disc/gainers" target="_blank" rel="noreferrer noopener">gainers</a> and <a href="/terminal/reference/crypto/disc/losers" target="_blank" rel="noreferrer noopener">losers</a>) as well as NFTs (<a href="/terminal/reference/crypto/disc/nft" target="_blank" rel="noreferrer noopener">nft</a>) and decentralized apps (<a href="/terminal/reference/crypto/disc/dex" target="_blank" rel="noreferrer noopener">dex</a>).

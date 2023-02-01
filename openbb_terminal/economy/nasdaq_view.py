@@ -25,14 +25,19 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_economic_calendar(
-    country: str, start_date: str, end_date: str, limit: int = 10, export: str = ""
+    countries: List[str],
+    start_date: str,
+    end_date: str,
+    limit: int = 10,
+    export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Display economic calendar for specified country between start and end dates
 
     Parameters
     ----------
-    country : str
-        Country to display calendar for
+    countries : List[str]
+        List of countries to include in calendar.  Empty returns all
     start_date : str
         Start date for calendar
     end_date : str
@@ -42,7 +47,7 @@ def display_economic_calendar(
     export : str
         Export data to csv or excel file
     """
-    df = nasdaq_model.get_economic_calendar(country, start_date, end_date)
+    df = nasdaq_model.get_economic_calendar(countries, start_date, end_date)
     if df.empty:
         return
     print_rich_table(
@@ -52,7 +57,13 @@ def display_economic_calendar(
         headers=df.columns,
     )
     console.print()
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "events", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "events",
+        df,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -61,6 +72,7 @@ def display_big_mac_index(
     country_codes: List[str] = None,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display Big Mac Index for given countries
@@ -103,7 +115,11 @@ def display_big_mac_index(
             )
 
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "bigmac", big_mac
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "bigmac",
+            big_mac,
+            sheet_name,
         )
     else:
         logger.error("Unable to get big mac data")

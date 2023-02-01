@@ -16,6 +16,7 @@ from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks import cboe_view
+from openbb_terminal.stocks.fundamental_analysis import fmp_view
 
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -50,6 +51,7 @@ class StocksController(StockBaseController):
         "news",
         "resources",
         "codes",
+        "filings",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -109,6 +111,7 @@ class StocksController(StockBaseController):
                 stock_text += f" (from {self.start.strftime('%Y-%m-%d')})"
 
         mt = MenuText("stocks/", 100)
+        mt.add_cmd("filings")
         mt.add_cmd("search")
         mt.add_cmd("load")
         mt.add_raw("\n")
@@ -152,13 +155,54 @@ class StocksController(StockBaseController):
         return []
 
     @log_start_end(log=logger)
+    def call_filings(self, other_args: List[str]) -> None:
+        """Process Filings command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="filings",
+            description="The most-recent filings submitted to the SEC",
+        )
+        parser.add_argument(
+            "-p",
+            "--pages",
+            dest="pages",
+            metavar="pages",
+            type=int,
+            default=1,
+            help="The number of pages to get data from (1000 entries/page; maximum 30 pages)",
+        )
+        parser.add_argument(
+            "-t",
+            "--today",
+            dest="today",
+            action="store_true",
+            default=False,
+            help="Show all filings from today",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
+        )
+        if ns_parser:
+            fmp_view.display_filings(
+                ns_parser.pages, ns_parser.limit, ns_parser.today, ns_parser.export
+            )
+
+    @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
         """Process search command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="search",
-            description="Show companies matching the search query",
+            description="Show companies matching the search query, country, sector, industry and/or exchange. "
+            "Note that by default only the United States exchanges are searched which tend to contain the most "
+            "extensive data for each company. To search all exchanges use the --all-exchanges flag.",
         )
         parser.add_argument(
             "-q",
@@ -213,6 +257,15 @@ class StocksController(StockBaseController):
             dest="exchange_country",
             help="Search by a specific exchange country to find stocks matching the criteria",
         )
+
+        parser.add_argument(
+            "-a",
+            "--all-exchanges",
+            default=False,
+            action="store_true",
+            dest="all_exchanges",
+            help="Whether to search all exchanges, without this option only the United States market is searched.",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
         ns_parser = self.parse_known_args_and_warn(
@@ -237,8 +290,12 @@ class StocksController(StockBaseController):
                 sector=sector,
                 industry=industry,
                 exchange_country=exchange,
+                all_exchanges=ns_parser.all_exchanges,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -446,6 +503,7 @@ class StocksController(StockBaseController):
                     os.path.dirname(os.path.abspath(__file__)),
                     f"{self.ticker}",
                     self.stock,
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
             else:
                 console.print("No ticker loaded. First use 'load <ticker>'")
@@ -490,9 +548,11 @@ class StocksController(StockBaseController):
         )
         if ns_parser:
             if self.ticker:
-                if ns_parser.source == "NewsApi":
+                try:
                     d_stock = yf.Ticker(self.ticker).info
-
+                except TypeError:
+                    d_stock = dict()
+                if ns_parser.source == "NewsApi":
                     newsapi_view.display_news(
                         query=d_stock["shortName"].replace(" ", "+")
                         if "shortName" in d_stock
@@ -503,8 +563,6 @@ class StocksController(StockBaseController):
                         sources=ns_parser.sources,
                     )
                 elif ns_parser.source == "Feedparser":
-                    d_stock = yf.Ticker(self.ticker).info
-
                     feedparser_view.display_news(
                         term=d_stock["shortName"].replace(" ", "+")
                         if "shortName" in d_stock
@@ -512,6 +570,9 @@ class StocksController(StockBaseController):
                         sources=ns_parser.sources,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
             else:
                 console.print("Use 'load <ticker>' prior to this command!")

@@ -25,6 +25,8 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=too-many-arguments
+
 register_matplotlib_converters()
 
 
@@ -36,6 +38,7 @@ def view_ma(
     ma_type: str = "EMA",
     symbol: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots MA technical indicator
@@ -52,6 +55,8 @@ def view_ma(
         Type of moving average.  Either "EMA" "ZLMA" or "SMA"
     symbol: str
         Ticker
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
@@ -126,6 +131,7 @@ def view_ma(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         f"{ma_type.lower()}{'_'.join([str(win) for win in window])}",
         price_df,
+        sheet_name,
     )
 
 
@@ -138,6 +144,7 @@ def view_vwap(
     offset: int = 0,
     interval: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots VWMA technical indicator
@@ -233,4 +240,5 @@ def view_vwap(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "VWAP",
         df_vwap,
+        sheet_name,
     )

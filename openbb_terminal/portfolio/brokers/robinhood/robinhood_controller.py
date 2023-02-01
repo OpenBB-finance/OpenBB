@@ -25,7 +25,6 @@ logger = logging.getLogger(__name__)
 
 
 class RobinhoodController(BaseController):
-
     CHOICES_COMMANDS = ["holdings", "history"]
     CHOICES_MENUS = ["login"]
     valid_span = ["day", "week", "month", "3month", "year", "5year", "all"]
@@ -70,7 +69,12 @@ class RobinhoodController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            robinhood_view.display_holdings(export=ns_parser.export)
+            robinhood_view.display_holdings(
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_history(self, other_args: List[str]):
@@ -107,4 +111,7 @@ class RobinhoodController(BaseController):
                 interval=ns_parser.interval,
                 window=ns_parser.span,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

@@ -28,6 +28,7 @@ logger = logging.getLogger(__name__)
 def realtime_performance_sector(
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display Real-Time Performance sector. [Source: AlphaVantage]
@@ -56,7 +57,6 @@ def realtime_performance_sector(
         )
 
     else:
-
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
         elif is_valid_axes_count(external_axes, 1):
@@ -81,6 +81,7 @@ def realtime_performance_sector(
         os.path.dirname(os.path.abspath(__file__)),
         "rtps",
         df_rtp,
+        sheet_name,
     )
 
 
@@ -91,6 +92,7 @@ def display_real_gdp(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US GDP from AlphaVantage
@@ -135,6 +137,7 @@ def display_real_gdp(
         os.path.dirname(os.path.abspath(__file__)),
         "gdp",
         gdp,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -148,6 +151,7 @@ def display_gdp_capita(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US GDP per Capita from AlphaVantage
@@ -188,6 +192,7 @@ def display_gdp_capita(
         os.path.dirname(os.path.abspath(__file__)),
         "gdpc",
         gdp,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -204,6 +209,7 @@ def display_inflation(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US Inflation from AlphaVantage
@@ -243,6 +249,7 @@ def display_inflation(
         os.path.dirname(os.path.abspath(__file__)),
         "inf",
         inf,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -260,6 +267,7 @@ def display_cpi(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US consumer price index (CPI) from AlphaVantage
@@ -304,6 +312,7 @@ def display_cpi(
         os.path.dirname(os.path.abspath(__file__)),
         "cpi",
         cpi,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -319,6 +328,7 @@ def display_treasury_yield(
     start_date: str = "2010-01-01",
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical treasury yield for given maturity
@@ -363,6 +373,7 @@ def display_treasury_yield(
         os.path.dirname(os.path.abspath(__file__)),
         "tyld",
         yld,
+        sheet_name,
     )
     if raw:
         print_rich_table(
@@ -379,6 +390,7 @@ def display_unemployment(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US unemployment AlphaVantage
@@ -420,6 +432,7 @@ def display_unemployment(
         os.path.dirname(os.path.abspath(__file__)),
         "unemp",
         un,
+        sheet_name,
     )
 
     if raw:

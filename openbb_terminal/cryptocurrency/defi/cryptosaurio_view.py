@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 def display_anchor_data(
     address: str = "",
     export: str = "",
+    sheet_name: str = None,
     show_transactions: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -78,4 +79,5 @@ def display_anchor_data(
         os.path.dirname(os.path.abspath(__file__)),
         "anchor",
         df,
+        sheet_name,
     )

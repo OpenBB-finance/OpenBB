@@ -139,6 +139,9 @@ class FuturesController(BaseController):
                 exchange=ns_parser.exchange,
                 description=" ".join(ns_parser.description),
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -169,6 +172,13 @@ class FuturesController(BaseController):
         )
         parser.add_argument(
             "-e",
+            "--end",
+            dest="end",
+            type=valid_date,
+            help="Final date. Default: today",
+            default=datetime.now(),
+        )
+        parser.add_argument(
             "--expiry",
             dest="expiry",
             type=valid_expiry_date,
@@ -189,8 +199,12 @@ class FuturesController(BaseController):
                 symbols=ns_parser.ticker.upper().split(","),
                 expiry=ns_parser.expiry,
                 start_date=ns_parser.start.strftime("%Y-%m-%d"),
+                end_date=ns_parser.end.strftime("%Y-%m-%d"),
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -227,4 +241,7 @@ class FuturesController(BaseController):
                 symbol=ns_parser.ticker.upper(),
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

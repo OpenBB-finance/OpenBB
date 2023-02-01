@@ -1,6 +1,8 @@
 ---
 title: Installation
 sidebar_position: 2
+description: The OpenBB SDK can be directly installed on your computer via our installation instructions. Within this section, you are guided through the installation process and how to launch the program. If you struggle with the installation process, please don’t hesitate to reach us on Discord or visit our contact page.
+keywords: [installation, installer, install, guide, mac, windows, linux, python, github, macos, how to, explanation, openbb sdk]
 ---
 
 # Installation
@@ -12,6 +14,10 @@ We provide a simple installation method in order to utilize the OpenBB SDK. You 
 :::note NOTE
 Make sure you meet all [requirements](requirements.md) before proceeding.
 :::
+
+<p>Follow along with the instructions of the video or use the steps below to use the OpenBB SDK:</p>
+
+<iframe width="100%" height="450" src="https://www.youtube.com/embed/gQu6Paz5xN4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ### 1. **Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)**
 

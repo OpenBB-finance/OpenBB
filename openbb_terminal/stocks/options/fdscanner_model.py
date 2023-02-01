@@ -6,10 +6,9 @@ from typing import Tuple
 
 import numpy as np
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -37,8 +36,7 @@ def unusual_options(limit: int = 100) -> Tuple[pd.DataFrame, pd.Timestamp]:
     pages = np.arange(0, limit // 20 + 1)
     data_list = []
     for page_num in pages:
-
-        r = requests.get(
+        r = request(
             f"https://app.fdscanner.com/api2/unusualvolume?p=0&page_size=20&page={int(page_num)}",
             headers={"User-Agent": get_user_agent()},
         )

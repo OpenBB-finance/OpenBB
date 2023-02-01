@@ -228,6 +228,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 past_transaction_days=5,
                 raw=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -245,6 +246,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 past_transactions_months=5,
                 raw=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -266,6 +268,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 limit=5,
                 sum_contracts=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -282,6 +285,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 limit=5,
                 representative="MOCK_TEXT",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -297,12 +301,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_qtrcontracts",
             "quiverquant_view.display_qtr_contracts",
             ["--limit=5", "--analysis=total", "--raw", "--export=csv"],
-            dict(
-                analysis="total",
-                limit=5,
-                raw=True,
-                export="csv",
-            ),
+            dict(analysis="total", limit=5, raw=True, export="csv", sheet_name=None),
         ),
         (
             "call_topbuys",
@@ -320,6 +319,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 limit=5,
                 raw=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -348,6 +348,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 limit=5,
                 raw=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
     ],

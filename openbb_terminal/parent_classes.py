@@ -1,7 +1,7 @@
 """Parent Classes."""
 __docformat__ = "numpy"
 
-# pylint: disable=C0301,C0302,R0902,global-statement
+# pylint: disable=C0301,C0302,R0902,global-statement,too-many-boolean-expressions
 
 import argparse
 import difflib
@@ -33,7 +33,6 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     export_data,
     get_flair,
-    load_json,
     parse_and_split_input,
     prefill_form,
     screenshot,
@@ -94,7 +93,6 @@ class BaseController(metaclass=ABCMeta):
         "r",
         "reset",
         "support",
-        "glossary",
         "wiki",
         "record",
         "stop",
@@ -105,6 +103,7 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_MENUS: List[str] = []
     SUPPORT_CHOICES: dict = {}
     ABOUT_CHOICES: dict = {}
+    NEWS_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
     TRY_RELOAD = False
@@ -165,6 +164,7 @@ class BaseController(metaclass=ABCMeta):
             c for c in self.controller_choices if c not in self.CHOICES_COMMON
         ]
 
+        # Add in support options
         support_choices: dict = {c: {} for c in self.controller_choices}
 
         support_choices = {c: None for c in (["generic"] + self.support_commands)}
@@ -178,6 +178,10 @@ class BaseController(metaclass=ABCMeta):
         support_choices["--type"] = {c: None for c in (SUPPORT_TYPE)}
 
         self.SUPPORT_CHOICES = support_choices
+
+        # Add in news options
+        news_choices = ["--term", "-t", "--sources", "-s", "--help", "-h"]
+        self.NEWS_CHOICES = {c: None for c in news_choices}
 
     def check_path(self) -> None:
         """Check if command path is valid."""
@@ -327,7 +331,6 @@ class BaseController(metaclass=ABCMeta):
 
         # Navigation slash is being used first split commands
         elif len(actions) > 1:
-
             # Absolute path is specified
             if not actions[0]:
                 actions[0] = "home"
@@ -413,7 +416,7 @@ class BaseController(metaclass=ABCMeta):
             dest="command",
             default=None,
             help="Obtain documentation on the given command or menu",
-            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS,
+            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS + self.CHOICES_COMMON,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -543,42 +546,6 @@ class BaseController(metaclass=ABCMeta):
                 message=" ".join(ns_parser.msg),
                 path=self.PATH,
             )
-
-    @log_start_end(log=logger)
-    def call_glossary(self, other_args: List[str]) -> None:
-        """Process glossary command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="support",
-            description="Submit your support request",
-        )
-        parser.add_argument(
-            "-w",
-            "--word",
-            action="store",
-            dest="word",
-            type=str,
-            required="-h" not in other_args,
-            help="Word that you want defined",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-w")
-
-        ns_parser = self.parse_simple_args(parser, other_args)
-
-        glossary_file = os.path.join(os.path.dirname(__file__), "glossary.json")
-        glossary_dict = load_json(glossary_file)
-
-        if ns_parser:
-            word = glossary_dict.get(ns_parser.word, "")
-            word = word.lower()
-            word = word.replace("--", "")
-            word = word.replace("-", " ")
-            if word:
-                console.print(word + "\n")
-            else:
-                console.print("Word is not in the glossary.\n")
 
     @log_start_end(log=logger)
     def call_wiki(self, other_args: List[str]) -> None:
@@ -793,6 +760,19 @@ class BaseController(metaclass=ABCMeta):
                 dest="export",
                 help=help_export,
             )
+
+            # If excel is an option, add the sheet name
+            if export_allowed in [
+                EXPORT_ONLY_RAW_DATA_ALLOWED,
+                EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            ]:
+                parser.add_argument(
+                    "--sheet-name",
+                    dest="sheet_name",
+                    default=None,
+                    nargs="+",
+                    help="Name of excel sheet to save data to. Only valid for .xlsx files.",
+                )
 
         if raw:
             parser.add_argument(
@@ -1051,7 +1031,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
             description="Load stock ticker to perform analysis on. When the data source"
-            + " is syf', an Indian ticker can be"
+            + " is yf, an Indian ticker can be"
             + " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
             + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
         )
@@ -1130,7 +1110,20 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             type=str,
             default="ytd",
         )
-
+        parser.add_argument(
+            "--exchange",
+            dest="exchange",
+            action="store_true",
+            default=False,
+            help="Show exchange information.",
+        )
+        parser.add_argument(
+            "--performance",
+            dest="performance",
+            action="store_true",
+            default=False,
+            help="Show performance information.",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
@@ -1177,19 +1170,26 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 )
                 if df_stock_candidate.empty:
                     return
-            if not df_stock_candidate.empty:
+            is_df = isinstance(df_stock_candidate, pd.DataFrame)
+            if not (
+                (is_df and df_stock_candidate.empty)
+                or (not is_df and not df_stock_candidate)
+            ):
                 self.stock = df_stock_candidate
-                self.add_info = stocks_helper.additional_info_about_ticker(
-                    ns_parser.ticker
-                )
-                console.print(self.add_info)
+                if ns_parser.exchange:
+                    self.add_info = stocks_helper.additional_info_about_ticker(
+                        ns_parser.ticker
+                    )
+                    console.print(self.add_info)
                 if (
                     ns_parser.interval == 1440
                     and not ns_parser.weekly
                     and not ns_parser.monthly
                     and ns_parser.filepath is None
                     and self.PATH == "/stocks/"
+                    and ns_parser.performance
                 ):
+                    console.print()
                     stocks_helper.show_quick_performance(self.stock, ns_parser.ticker)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
@@ -1220,8 +1220,11 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 export_data(
                     ns_parser.export,
                     os.path.dirname(os.path.abspath(__file__)),
-                    "load",
+                    f"load_{self.ticker}",
                     self.stock.copy(),
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
 
@@ -1351,4 +1354,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                     os.path.dirname(os.path.abspath(__file__)),
                     "load",
                     self.current_df.copy(),
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )

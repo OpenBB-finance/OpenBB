@@ -293,7 +293,7 @@ class SectorIndustryAnalysisController(BaseController):
 
     def __load(self):
         if self.ticker:
-            data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{self.ticker}")
+            data = financedatabase_model.get_json(self.ticker)
 
             if "summaryProfile" not in data or data["summaryProfile"] is None:
                 raise Exception(
@@ -747,7 +747,6 @@ class SectorIndustryAnalysisController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-
             if not self.country and not self.sector and not self.industry:
                 console.print(
                     "[red]Select at least one filter from sector, country or industry.[/red]\n"
@@ -770,6 +769,9 @@ class SectorIndustryAnalysisController(BaseController):
                         self.exclude_exchanges,
                         ns_parser.limit,
                         ns_parser.export,
+                        " ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                         ns_parser.raw,
                         self.stocks_data,
                     )
@@ -833,7 +835,6 @@ class SectorIndustryAnalysisController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10, raw=True
         )
         if ns_parser:
-
             if not self.country and not self.sector and not self.industry:
                 console.print(
                     "[red]Select at least one filter from sector, country or industry.[/red]\n"
@@ -860,6 +861,9 @@ class SectorIndustryAnalysisController(BaseController):
                         exclude_exchanges=self.exclude_exchanges,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                         raw=ns_parser.raw,
                         already_loaded_stocks_data=self.stocks_data,
                     )
@@ -917,6 +921,7 @@ class SectorIndustryAnalysisController(BaseController):
                     self.mktcap,
                     self.exclude_exchanges,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                     ns_parser.raw,
                     ns_parser.max_sectors_to_display,
                     ns_parser.min_pct_to_display_sector,
