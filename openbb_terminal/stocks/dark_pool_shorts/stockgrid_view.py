@@ -152,6 +152,7 @@ def short_interest_volume(
             title="Price vs Short Volume",
         )
     else:
+
         # Output data
         fig = OpenBBFigure.create_subplots(
             rows=2,
@@ -303,6 +304,7 @@ def net_short_position(
         )
 
     else:
+
         df = df.sort_values(by=["dates"])
 
         fig = OpenBBFigure.create_subplots(

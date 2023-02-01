@@ -257,8 +257,7 @@ def check_for_updates() -> None:
     # ({str(git.Repo('.').head.commit)[:7]})
     try:
         r = request(
-            "https://api.github.com/repos/openbb-finance/openbbterminal/releases/latest",
-            timeout=1,
+            "https://api.github.com/repos/openbb-finance/openbbterminal/releases/latest"
         )
     except Exception:
         r = None
