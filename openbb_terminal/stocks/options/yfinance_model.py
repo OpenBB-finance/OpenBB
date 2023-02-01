@@ -93,7 +93,7 @@ def option_expirations(symbol: str):
     yf_ticker = yf.Ticker(symbol)
     dates = list(yf_ticker.options)
     if not dates:
-        console.print("No expiration dates found for ticker. \n")
+        console.print("No expiration dates found for ticker.")
     return dates
 
 
