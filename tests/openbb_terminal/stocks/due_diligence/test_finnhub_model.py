@@ -28,7 +28,6 @@ def test_get_rating_over_time_invalid_ticker():
 
 @pytest.mark.vcr(mode="none")
 def test_get_rating_over_time_invalid_status(mocker):
-
     attrs = {
         "status_code": 400,
         "json.return_value": {"error": "mock error message"},

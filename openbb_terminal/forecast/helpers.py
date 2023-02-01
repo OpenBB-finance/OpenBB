@@ -96,7 +96,6 @@ def plot_data_predictions(
         label="Real data",
     )
     for i in range(len(y_valid) - 1):
-
         if scaler:
             y_pred = scaler.inverse_transform(preds[i].reshape(-1, 1)).ravel()
             y_act = scaler.inverse_transform(y_valid[i].reshape(-1, 1)).ravel()
@@ -403,7 +402,6 @@ def past_covs(
     is_scaler: bool = True,
 ):
     if past_covariates is not None:
-
         target_covariates_names = past_covariates.split(",")
 
         # create first covariate to then stack

@@ -57,7 +57,6 @@ def realtime_performance_sector(
         )
 
     else:
-
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
         elif is_valid_axes_count(external_axes, 1):
