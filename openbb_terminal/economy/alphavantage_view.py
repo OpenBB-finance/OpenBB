@@ -58,7 +58,6 @@ def realtime_performance_sector(
         )
 
     else:
-    
         df_rtp.set_index("Sector", inplace=True)
         df_rtp = df_rtp.squeeze(axis=1)
         colors = [theme.up_color if x > 0 else theme.down_color for x in df_rtp.values]

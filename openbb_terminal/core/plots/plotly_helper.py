@@ -1148,8 +1148,9 @@ class OpenBBFigure(go.Figure):
             if self.layout.margin["l"] > 100:
                 xshift -= 150
 
-            if yaxis2 and yaxis2.overlaying == "y":
+            if yaxis2:
                 xshift = -110 if not yaxis2.title.text else -120
+                self.layout.margin["l"] += 50
 
             self.add_annotation(
                 x=0,

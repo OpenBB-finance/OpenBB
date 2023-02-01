@@ -112,7 +112,7 @@ def display_hist(
 
     fig.add_histplot(
         data,
-        name="Univariate distribution",
+        name=["Univariate distribution", "Marginal distributions"],
         colors=[theme.up_color],
         bins=bins,
         curve="kde",
@@ -131,6 +131,7 @@ def display_hist(
             line=dict(color="white", width=2.5),
         ),
     )
+    fig.update_yaxes(autorange=True)
 
     return fig.show(external=external_axes)
 

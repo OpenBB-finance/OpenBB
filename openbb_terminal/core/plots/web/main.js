@@ -46,11 +46,6 @@ function OpenBBMain(plotly_figure) {
         modeBarButtonsToRemove: ['lasso2d', 'select2d'],
         modeBarButtons: [
             [
-                'drawline',
-                'drawopenpath',
-                'drawcircle',
-                'drawrect',
-                'eraseshape',
                 {
                     name: 'Download Data (Ctrl+S)',
                     icon: Plotly.Icons.disk,
@@ -60,6 +55,7 @@ function OpenBBMain(plotly_figure) {
                 },
                 'toImage',
             ],
+            ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'],
             ['zoomIn2d', 'zoomOut2d', 'resetScale2d', 'zoom2d', 'pan2d'],
             [
                 {
