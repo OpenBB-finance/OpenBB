@@ -1,6 +1,7 @@
 # pylint: disable=too-many-arguments,too-many-lines
 import argparse
 import logging
+import math
 import os
 from datetime import datetime, time, timedelta
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -13,6 +14,7 @@ from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.explainability.shap_explainer import ShapExplainer
 from darts.metrics import mape
 from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
+from darts.utils.statistics import plot_residuals_analysis
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
@@ -80,7 +82,6 @@ def plot_data_predictions(
         name="Real data",
     )
     for i in range(len(y_valid) - 1):
-
         if scaler:
             y_pred = scaler.inverse_transform(preds[i].reshape(-1, 1)).ravel()
             y_act = scaler.inverse_transform(y_valid[i].reshape(-1, 1)).ravel()
@@ -382,7 +383,6 @@ def past_covs(
     is_scaler: bool = True,
 ):
     if past_covariates is not None:
-
         target_covariates_names = past_covariates.split(",")
 
         # create first covariate to then stack
@@ -848,11 +848,18 @@ def plot_residuals(
             rows=2,
             cols=2,
             shared_xaxes=False,
+            subplot_titles=("Residuals Values", "ACF", "Distribution"),
             specs=[
                 [{"colspan": 2}, None],
                 [{"type": "scatter"}, {"type": "histogram"}],
             ],
         )
+        fig.set_xaxis_title("date", row=1, col=1)
+        fig.set_yaxis_title("value", row=1, col=1)
+        fig.set_xaxis_title("lag", row=2, col=1)
+        fig.set_yaxis_title("ACF value", row=2, col=1)
+        fig.set_xaxis_title("value", row=2, col=2)
+        fig.set_yaxis_title("count", row=2, col=2)
 
         df_res = residuals.pd_dataframe()
         fig.add_scatter(x=df_res.index, y=df_res["close"], name="close", row=1, col=1)

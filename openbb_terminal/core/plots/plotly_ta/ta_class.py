@@ -2,6 +2,7 @@ import importlib
 import inspect
 import os
 import sys
+import traceback
 from pathlib import Path
 from typing import Any, Dict, List, Union, overload
 
@@ -418,12 +419,10 @@ class PlotlyTA(PltTA):
         for indicator in plot_indicators:
             try:
                 if indicator in self.subplots:
-
                     fig, subplot_row = getattr(self, f"plot_{indicator}")(
                         fig, self.df_ta, subplot_row
                     )
                 elif indicator in self.ma_mode or indicator in self.inchart:
-
                     if indicator in self.ma_mode:
                         if ma_done:
                             continue

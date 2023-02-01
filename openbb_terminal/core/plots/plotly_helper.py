@@ -356,6 +356,7 @@ class OpenBBFigure(go.Figure):
         col: int = 1,
     ) -> None:
         callback = stats.norm if curve == "normal" else stats.gaussian_kde
+
         def _validate_x(data: Union[List[List[float]], np.ndarray, pd.Series]):
             if isinstance(data, pd.Series):
                 data = data.values
