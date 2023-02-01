@@ -1082,8 +1082,8 @@ scipy = ">=1.6"
 wrapt = ">=1.0"
 
 [package.extras]
-arrow = ["pyarrow (>=1)"]
 calculus = ["sympy (>=1.3,<1.10)"]
+arrow = ["pyarrow (>=1)"]
 
 [[package]]
 name = "fred"
@@ -1302,6 +1302,9 @@ all = ["chardet (>=2.2)", "genshi", "lxml"]
 chardet = ["chardet (>=2.2)"]
 genshi = ["genshi"]
 lxml = ["lxml"]
+genshi = ["genshi"]
+chardet = ["chardet (>=2.2)"]
+all = ["lxml", "chardet (>=2.2)", "genshi"]
 
 [[package]]
 name = "httpcore"
@@ -5029,6 +5032,7 @@ exceptiongroup = [
     {file = "exceptiongroup-1.1.0-py3-none-any.whl", hash = "sha256:327cbda3da756e2de031a3107b81ab7b3770a602c4d16ca618298c526f4bec1e"},
     {file = "exceptiongroup-1.1.0.tar.gz", hash = "sha256:bcb67d800a4497e1b404c2dd44fca47d3b7a5e5433dbab67f96c1a685cdfdf23"},
 ]
+exceptiongroup = []
 exchange-calendars = []
 executing = []
 fastjsonschema = []

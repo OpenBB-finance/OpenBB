@@ -613,6 +613,7 @@ class EconomyController(BaseController):
                 )
 
                 if not df.empty:
+
                     df.columns = ["_".join(column) for column in df.columns]
 
                     if ns_parser.transform:
@@ -888,6 +889,7 @@ class EconomyController(BaseController):
                     )
 
                     if not df.empty:
+
                         self.DATASETS["index"][index] = df
 
                         self.stored_datasets = (
@@ -1137,6 +1139,11 @@ class EconomyController(BaseController):
         )
 
         if ns_parser:
+            if ns_parser.names:
+                for name in nasdaq_model.get_country_names():
+                    console.print(name)
+                return
+
             if ns_parser.names:
                 for name in nasdaq_model.get_country_names():
                     console.print(name)
