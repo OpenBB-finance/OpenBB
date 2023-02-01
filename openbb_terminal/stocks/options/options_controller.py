@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
     list_from_str,
     parse_and_split_input,
     valid_date,
+    list_from_str,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -49,6 +50,13 @@ from openbb_terminal.stocks.options.screen import (
     screener_controller,
     syncretism_model,
     syncretism_view,
+)
+from openbb_terminal.stocks.options.options_view import (
+    plot_vol,
+    plot_oi,
+    plot_voi,
+    display_expiry_dates,
+    display_chains,
 )
 
 # pylint: disable=R1710,C0302,R0916,R0902

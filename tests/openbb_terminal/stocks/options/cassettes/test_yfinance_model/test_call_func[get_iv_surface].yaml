@@ -64,7 +64,7 @@ interactions:
         LEsz7zRZxPHPn/8HRWsOy1Y1AAA=
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
@@ -526,7 +526,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-quote-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '20'
+      - '32'
       x-request-id:
       - 0ce8f946-4fcf-4b3e-b099-aa68425828e6
       x-yahoo-request-id:
