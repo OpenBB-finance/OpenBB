@@ -4,6 +4,7 @@ import os
 import sys
 import json
 from enum import Enum
+from typing import Optional
 import matplotlib.pyplot as plt
 import openbb_terminal.session.local_model as Local
 import openbb_terminal.session.hub_model as Hub
@@ -59,11 +60,23 @@ def login(session: dict) -> LoginStatus:
     return LoginStatus.NO_RESPONSE
 
 
-def logout(cls: bool = False):
+def logout(
+    auth_header: Optional[str] = None,
+    token: Optional[str] = None,
+    guest: bool = True,
+    cls: bool = False,
+):
     """Logout and clear session.
 
     Parameters
     ----------
+    auth_header : str, optional
+        The authorization header, e.g. "Bearer <token>".
+    token : str, optional
+        The token to delete.
+        In the terminal we want to delete the current session, so we use the user own token.
+    guest : bool
+        True if the user is guest, False otherwise.
     cls : bool
         Clear the screen.
     """
@@ -71,8 +84,11 @@ def logout(cls: bool = False):
         system_clear()
 
     success = True
-    if not User.is_guest():
-        r = Hub.delete_session(auth_header=User.get_auth_header(), token=User.get_token())
+    if not guest:
+        if not auth_header or not token:
+            return
+
+        r = Hub.delete_session(auth_header=auth_header, token=token)
         if r and r.status_code != 200:
             success = False
     User.clear()

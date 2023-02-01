@@ -57,7 +57,6 @@ def delete_session(
         The authorization header, e.g. "Bearer <token>".
     token : str
         The token to delete.
-        In the terminal we want to delete the current session, so we use the user own token.
     base_url : str
         The base url, by default BASE_URL
     timeout : int

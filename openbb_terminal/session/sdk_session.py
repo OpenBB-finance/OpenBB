@@ -1,6 +1,7 @@
 from openbb_terminal.session import local_model as Local
 from openbb_terminal.session import session_model
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import User
 
 
 def get_session(email: str, password: str, save: bool):
@@ -23,3 +24,11 @@ def login(email: str = "", password: str = "", keep_session: bool = False):
         raise Exception("Login failed")
 
     console.print("[green]Login successful[/green]")
+
+
+def logout():
+    session_model.logout(
+        auth_header=User.get_auth_header(),
+        token=User.get_token(),
+        guest=User.is_guest(),
+    )

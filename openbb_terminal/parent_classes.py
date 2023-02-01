@@ -673,7 +673,12 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            logout(cls=True)
+            logout(
+                auth_header=User.get_auth_header(),
+                token=User.get_token(),
+                guest=User.is_guest(),
+                cls=True,
+            )
 
     @log_start_end(log=logger)
     def call_whoami(self, other_args: List[str]) -> None:
