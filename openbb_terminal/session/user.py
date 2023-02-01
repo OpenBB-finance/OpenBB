@@ -34,12 +34,12 @@ class User:
         }
 
     @staticmethod
-    def update_flair():
-        MAX_FLAIR_LEN = 20
-        username = User._EMAIL[: User._EMAIL.find("@")]
-        username = "[" + username[:MAX_FLAIR_LEN] + "]"
-
-        if obbff.USE_FLAIR == ":openbb":
+    def update_flair(flair: str):
+        """Update flair if user has not changed it."""
+        if flair is None:
+            MAX_FLAIR_LEN = 20
+            username = User._EMAIL[: User._EMAIL.find("@")]
+            username = "[" + username[:MAX_FLAIR_LEN] + "]"
             setattr(obbff, "USE_FLAIR", username + " 🦋")
 
     @classmethod
