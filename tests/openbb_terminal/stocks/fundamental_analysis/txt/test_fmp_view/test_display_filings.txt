@@ -1,35 +1,24 @@
-Timestamp: 2023-01-13 13:32:45  US/Eastern
-Ticker: GAME
-CIK: 1714562
-Form Type: 6-K
-6-K - Engine Gaming & Media, Inc. (0001714562) (Filer)
-https://www.sec.gov/Archives/edgar/data/1714562/000149315223001382/0001493152-23-001382-index.htm
+[red]No filings found for ticker , consider increasing the value for --pages. Showing recent filings instead.[/red]
 
-Timestamp: 2023-01-13 13:25:12  US/Eastern
-Ticker: TEGY
-CIK: 1383394
-Form Type: 10-K
-10-K - TRANSACT ENERGY CORP (0001383394) (Filer)
-https://www.sec.gov/Archives/edgar/data/1383394/000139390523000016/0001393905-23-000016-index.htm
-
-Timestamp: 2023-01-13 13:21:18  US/Eastern
-Ticker: MOR
-CIK: 1340243
-Form Type: 6-K
-6-K - MorphoSys AG (0001340243) (Filer)
-https://www.sec.gov/Archives/edgar/data/1340243/000162828023001015/0001628280-23-001015-index.htm
-
-Timestamp: 2023-01-13 13:21:18  US/Eastern
-Ticker: MPSYF
-CIK: 1340243
-Form Type: 6-K
-6-K - MorphoSys AG (0001340243) (Filer)
-https://www.sec.gov/Archives/edgar/data/1340243/000162828023001015/0001628280-23-001015-index.htm
-
-Timestamp: 2023-01-13 13:19:16  US/Eastern
-Ticker: DWAY
-CIK: 1394638
-Form Type: 10-K
-10-K - Driveitaway Holdings, Inc. (0001394638) (Filer)
-https://www.sec.gov/Archives/edgar/data/1394638/000173112223000046/0001731122-23-000046-index.htm
-
+                    Ticker      CIK Form Type                                                          Title                                                                                                URL
+Date                                                                                                                                                                                                           
+2023-01-31 17:30:26   None  1508120    13F-HR   13F-HR - Cohen Capital Management, Inc. (0001508120) (Filer)  https://www.sec.gov/Archives/edgar/data/1508120/000150812023000001/0001508120-23-000001-index.htm
+2023-01-31 17:24:29   ZKIN  1687451      20-F   20-F - ZK International Group Co., Ltd. (0001687451) (Filer)  https://www.sec.gov/Archives/edgar/data/1687451/000141057823000049/0001410578-23-000049-index.htm
+2023-01-31 17:24:08   None  1520478    13F-HR         13F-HR - RWC Asset Management LLP (0001520478) (Filer)  https://www.sec.gov/Archives/edgar/data/1520478/000139834423001627/0001398344-23-001627-index.htm
+2023-01-31 17:23:58    PBR  1119639       6-K  6-K - PETROBRAS - PETROLEO BRASILEIRO SA (0001119639) (Filer)  https://www.sec.gov/Archives/edgar/data/1119639/000129281423000253/0001292814-23-000253-index.htm
+2023-01-31 17:23:58  PBR-A  1119639       6-K  6-K - PETROBRAS - PETROLEO BRASILEIRO SA (0001119639) (Filer)  https://www.sec.gov/Archives/edgar/data/1119639/000129281423000253/0001292814-23-000253-index.htm
+2023-01-31 17:23:07   None  1800234    13F-HR   13F-HR - ATTICUS WEALTH MANAGEMENT, LLC (0001800234) (Filer)  https://www.sec.gov/Archives/edgar/data/1800234/000139834423001626/0001398344-23-001626-index.htm
+2023-01-31 17:19:55    CIB  1071371       6-K                      6-K - BANCOLOMBIA SA (0001071371) (Filer)  https://www.sec.gov/Archives/edgar/data/1071371/000107137123000006/0001071371-23-000006-index.htm
+2023-01-31 17:19:06   None  1170152    13F-HR              13F-HR - LEUTHOLD GROUP, LLC (0001170152) (Filer)  https://www.sec.gov/Archives/edgar/data/1170152/000156761923001568/0001567619-23-001568-index.htm
+2023-01-31 17:17:47   None  1638081    13F-HR      13F-HR - RWC ASSET ADVISORS (US) LLC (0001638081) (Filer)  https://www.sec.gov/Archives/edgar/data/1638081/000139834423001623/0001398344-23-001623-index.htm
+2023-01-31 17:12:09   VALE   917851       6-K                           6-K - Vale S.A. (0000917851) (Filer)   https://www.sec.gov/Archives/edgar/data/917851/000129281423000251/0001292814-23-000251-index.htm
+2023-01-31 17:09:17  EBR-B  1439124       6-K         6-K - BRAZILIAN ELECTRIC POWER CO (0001439124) (Filer)  https://www.sec.gov/Archives/edgar/data/1439124/000129281423000249/0001292814-23-000249-index.htm
+2023-01-31 17:09:17    EBR  1439124       6-K         6-K - BRAZILIAN ELECTRIC POWER CO (0001439124) (Filer)  https://www.sec.gov/Archives/edgar/data/1439124/000129281423000249/0001292814-23-000249-index.htm
+2023-01-31 17:06:10   BBCP  1703956      10-K    10-K - Concrete Pumping Holdings, Inc. (0001703956) (Filer)  https://www.sec.gov/Archives/edgar/data/1703956/000143774923002137/0001437749-23-002137-index.htm
+2023-01-31 17:06:10  BBCPW  1703956      10-K    10-K - Concrete Pumping Holdings, Inc. (0001703956) (Filer)  https://www.sec.gov/Archives/edgar/data/1703956/000143774923002137/0001437749-23-002137-index.htm
+2023-01-31 17:03:34   None  1059187    13F-HR      13F-HR - TWIN CAPITAL MANAGEMENT INC (0001059187) (Filer)  https://www.sec.gov/Archives/edgar/data/1059187/000105918723000002/0001059187-23-000002-index.htm
+2023-01-31 17:02:24    GFF    50725      10-Q                       10-Q - GRIFFON CORP (0000050725) (Filer)    https://www.sec.gov/Archives/edgar/data/50725/000005072523000006/0000050725-23-000006-index.htm
+2023-01-31 17:01:07   None  1840293    13F-HR    13F-HR - Alterity Financial Group, LLC (0001840293) (Filer)  https://www.sec.gov/Archives/edgar/data/1840293/000195175723000102/0001951757-23-000102-index.htm
+2023-01-31 16:57:47   None  1522877    13F-HR                    13F-HR - AIA Group Ltd (0001522877) (Filer)  https://www.sec.gov/Archives/edgar/data/1522877/000110465923008665/0001104659-23-008665-index.htm
+2023-01-31 16:56:39  LMDXW  1685428       6-K                        6-K - LumiraDx Ltd (0001685428) (Filer)  https://www.sec.gov/Archives/edgar/data/1685428/000095017023001499/0000950170-23-001499-index.htm
+2023-01-31 16:56:39   LMDX  1685428       6-K                        6-K - LumiraDx Ltd (0001685428) (Filer)  https://www.sec.gov/Archives/edgar/data/1685428/000095017023001499/0000950170-23-001499-index.htm

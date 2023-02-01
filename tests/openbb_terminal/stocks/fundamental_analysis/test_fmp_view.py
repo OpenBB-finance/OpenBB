@@ -40,10 +40,6 @@ def test_display_filings():
             {"symbol": "PM"},
         ),
         (
-            "display_quote",
-            {"symbol": "PM"},
-        ),
-        (
             "display_enterprise",
             {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
@@ -84,3 +80,9 @@ def test_display_filings():
 def test_check_output(func, kwargs_dict, monkeypatch, use_tab):
     monkeypatch.setattr(helper_funcs.obbff, "USE_TABULATE_DF", use_tab)
     getattr(fmp_view, func)(**kwargs_dict)
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_rating():
+    fmp_view.rating(symbol="TSLA", limit=5, export=None)

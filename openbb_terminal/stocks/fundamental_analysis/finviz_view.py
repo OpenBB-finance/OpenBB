@@ -3,11 +3,9 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Any, List
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import finviz_model
 from openbb_terminal import rich_config
 
@@ -59,30 +57,6 @@ def lambda_category_color_red_green(val: str) -> str:
     if val == "Reiterated":
         return f"[yellow]{val}[/yellow]"
     return val
-
-
-@log_start_end(log=logger)
-def news(symbol: str, limit: int = 5):
-    """Display news for a given stock ticker
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker
-    limit: int
-        Number of latest news being printed
-    """
-    fnews: List[Any] = finviz_model.get_news(symbol)
-
-    if fnews:
-        fnews = sorted(fnews, reverse=True)[:limit]
-
-        for news_date, news_title, news_link, _ in fnews:
-            console.print(f"{news_date} - {news_title}")
-            console.print(f"{news_link}\n")
-
-    else:
-        console.print("No news found for this ticker")
 
 
 @log_start_end(log=logger)

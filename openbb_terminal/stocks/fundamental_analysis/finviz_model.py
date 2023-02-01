@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Dict, List
 
 import finviz
 import pandas as pd
@@ -35,23 +35,6 @@ def get_data(symbol: str) -> pd.DataFrame:
     d_finviz_stock = finviz.get_stock(symbol)
     df_fa = pd.DataFrame.from_dict(d_finviz_stock, orient="index", columns=["Values"])
     return df_fa[df_fa.Values != "-"]
-
-
-@log_start_end(log=logger)
-def get_news(symbol: str) -> List[Any]:
-    """Get news from Finviz
-
-    Parameters
-    ----------
-    symbol : str
-        Stock ticker symbol
-
-    Returns
-    -------
-    List[Any]
-        News
-    """
-    return finviz.get_news(symbol)
 
 
 @log_start_end(log=logger)

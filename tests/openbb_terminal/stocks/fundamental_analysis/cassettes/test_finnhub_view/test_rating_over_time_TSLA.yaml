@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1
+    method: GET
+    uri: https://finnhub.io/api/v1/stock/recommendation?symbol=TSLA&token=MOCK_TOKEN
+  response:
+    body:
+      string: '{"error":"Invalid API key"}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Origin
+      Access-Control-Allow-Methods:
+      - POST, GET, OPTIONS, PUT, DELETE
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Content-Length
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7929ff6b2ee20bad-AMS
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '27'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 01 Feb 2023 10:27:59 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=Nko7LczW3OWxOeKUz2D88Z1huyr%2F4LtlekkbXvgYmcsOtAWK5DPxdtrNtvcs%2F5NMeBt7cMmEyoJT77TnbDcC4vL2Ao8hHJyC%2F7Yf2IeC20%2FgsXpvywdrDh4n%2BGx6"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

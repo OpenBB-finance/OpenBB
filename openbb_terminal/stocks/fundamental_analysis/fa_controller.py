@@ -1104,8 +1104,6 @@ class FundamentalAnalysisController(StockBaseController):
                 yahoo_finance_view.display_earnings(
                     symbol=self.ticker, limit=ns_parser.limit, export=ns_parser.export
                 )
-            else:
-                pass
 
     @log_start_end(log=logger)
     def call_fraud(self, other_args: List[str]):
