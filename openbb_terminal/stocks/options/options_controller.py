@@ -141,6 +141,7 @@ class OptionsController(BaseController):
             else:
                 console.print("Loaded expiry dates from Tradier")
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
+                self.source = "Tradier"
 
             self.set_option_chain()
             self.set_current_price()
@@ -217,7 +218,6 @@ class OptionsController(BaseController):
     def update_runtime_choices(self):
         """Update runtime choices"""
         if session and obbff.USE_PROMPT_TOOLKIT:
-
             if not self.chain.empty:
                 strike = set(self.chain["strike"])
 
