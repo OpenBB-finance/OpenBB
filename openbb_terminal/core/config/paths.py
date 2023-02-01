@@ -35,7 +35,7 @@ REPOSITORY_ENV_FILE = REPOSITORY_DIRECTORY / ".env"
 PACKAGE_ENV_FILE = PACKAGE_DIRECTORY / ".env"
 
 SETTINGS_DIRECTORY = HOME_DIRECTORY / ".openbb_terminal"
-HIST_FILE_PATH = os.path.join(os.path.expanduser("~"), ".openbb_terminal.his")
+HIST_FILE_PATH = SETTINGS_DIRECTORY / ".openbb_terminal.his"
 USER_ENV_FILE = SETTINGS_DIRECTORY / ".env"
 USER_DATA_DIRECTORY = get_user_data_directory()
 USER_EXPORTS_DIRECTORY = USER_DATA_DIRECTORY / "exports"

@@ -80,7 +80,7 @@ def remove_session_file(file_path: Path = SESSION_FILE_PATH) -> bool:
         return False
 
 
-def remove_cli_history_file(file_path: Path = Path(HIST_FILE_PATH)) -> bool:
+def remove_cli_history_file(file_path: Path = HIST_FILE_PATH) -> bool:
     """Remove the cli history file.
 
     Parameters
