@@ -9,7 +9,7 @@ TIMEOUT = 15
 
 
 def create_session(
-    email: str, password: str, base_url=BASE_URL
+    email: str, password: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
 ) -> Optional[requests.Response]:
     """Create a session.
 
@@ -19,8 +19,10 @@ def create_session(
         The email.
     password : str
         The password.
-    base_url : str, optional
+    base_url : str
         The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
 
     Returns
     -------
@@ -33,7 +35,7 @@ def create_session(
             "password": password,
             "remember": True,
         }
-        return requests.post(url=base_url + "login", json=data, timeout=TIMEOUT)
+        return requests.post(url=base_url + "login", json=data, timeout=timeout)
     except requests.exceptions.ConnectionError:
         console.print("[red]\nConnection error.[/red]")
         return None
@@ -45,13 +47,17 @@ def create_session(
         return None
 
 
-def delete_session(base_url=BASE_URL) -> Optional[requests.Response]:
+def delete_session(
+    base_url: str = BASE_URL, timeout: int = TIMEOUT
+) -> Optional[requests.Response]:
     """Delete the session.
 
     Parameters
     ----------
-    base_url : str, optional
+    base_url : str
         The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
 
     Returns
     -------
@@ -63,7 +69,7 @@ def delete_session(base_url=BASE_URL) -> Optional[requests.Response]:
             url=base_url + "logout",
             headers={"Authorization": User.get_auth_header()},
             json={"token": User.get_token()},
-            timeout=TIMEOUT,
+            timeout=timeout,
         )
         if response.status_code != 200:
             console.print("[red]Failed to delete server session.[/red]")
@@ -126,15 +132,19 @@ def get_session(email: str, password: str) -> dict:
     return process_session_response(response)
 
 
-def fetch_user_configs(session: dict, base_url=BASE_URL) -> Optional[requests.Response]:
+def fetch_user_configs(
+    session: dict, base_url: str = BASE_URL, timeout: int = TIMEOUT
+) -> Optional[requests.Response]:
     """Fetch user configurations.
 
     Parameters
     ----------
     session : dict
         The session info.
-    base_url : str, optional
+    base_url : str
         The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
 
     Returns
     -------
@@ -149,7 +159,7 @@ def fetch_user_configs(session: dict, base_url=BASE_URL) -> Optional[requests.Re
         response = requests.get(
             url=base_url + "terminal/user",
             headers={"Authorization": f"{token_type.title()} {token}"},
-            timeout=TIMEOUT,
+            timeout=timeout,
         )
         if response.status_code != 200:
             console.print("[red]\nFailed to fetch configurations.[/red]")
@@ -166,7 +176,7 @@ def fetch_user_configs(session: dict, base_url=BASE_URL) -> Optional[requests.Re
 
 
 def patch_user_configs(
-    key: str, value: str, type_: str, base_url=BASE_URL
+    key: str, value: str, type_: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
 ) -> Optional[requests.Response]:
     """Patch user configurations to the server.
 
@@ -178,8 +188,10 @@ def patch_user_configs(
         The value to patch.
     type_ : str
         The type of the patch, either "keys" or "settings".
-    base_url : str, optional
+    base_url : str
         The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
 
     Returns
     -------
@@ -198,7 +210,7 @@ def patch_user_configs(
             url=base_url + "terminal/user-json",
             headers={"Authorization": User.get_auth_header()},
             json=data,
-            timeout=TIMEOUT,
+            timeout=timeout,
         )
         if response.status_code == 200:
             console.print("[green]Saved remotely.[/green]")
@@ -216,13 +228,19 @@ def patch_user_configs(
         return None
 
 
-def clear_user_configs(base_url=BASE_URL) -> Optional[requests.Response]:
+def clear_user_configs(
+    auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
+) -> Optional[requests.Response]:
     """Clear user configurations to the server.
 
     Parameters
     ----------
-    base_url : str, optional
+    auth_header : str
+        The authorization header.
+    base_url : str
         The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
 
     Returns
     -------
@@ -234,9 +252,9 @@ def clear_user_configs(base_url=BASE_URL) -> Optional[requests.Response]:
     try:
         response = requests.put(
             url=base_url + "terminal/user",
-            headers={"Authorization": User.get_auth_header()},
+            headers={"Authorization": auth_header},
             json=data,
-            timeout=TIMEOUT,
+            timeout=timeout,
         )
         if response.status_code == 200:
             console.print("[green]Cleared configurations.[/green]")
@@ -258,6 +276,7 @@ def upload_routine(
     name: str = "",
     routine: str = "",
     base_url=BASE_URL,
+    timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
     """Send a routine to the server."""
 
@@ -268,7 +287,7 @@ def upload_routine(
             headers={"Authorization": User.get_auth_header()},
             url=base_url + "terminal/script",
             json=data,
-            timeout=TIMEOUT,
+            timeout=timeout,
         )
         if response.status_code == 200:
             console.print("[green]Successfully uploaded your routine.[/green]")

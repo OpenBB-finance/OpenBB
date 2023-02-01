@@ -160,7 +160,7 @@ class AccountController(BaseController):
             )
             if i.lower() in ["y", "yes"]:
                 console.print("")
-                Hub.clear_user_configs()
+                Hub.clear_user_configs(auth_header=User.get_auth_header())
             else:
                 console.print("\nAborted.", style="info")
 
