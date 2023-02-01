@@ -136,6 +136,15 @@ function get_popup(data = null, popup_id = null) {
     CSV_DIV.style.display = "inline-block";
     popup = CSV_DIV;
     console.log("csv");
+  } else if (popup_id == "upload") {
+    TEXT_DIV.style.display = "inline-block";
+    TEXT_DIV.innerHTML = `
+    <div style="margin-bottom: 20px;">
+      EXPORTTT
+      <a href="${data.url}" target="_blank" rel="noreferrer noopener">${data.url}</a>
+      `;
+    popup = TEXT_DIV;
+    console.log("upload");
   }
 
   let popup_divs = [TITLE_DIV, TEXT_DIV, CSV_DIV];
@@ -397,11 +406,11 @@ function closePopup() {
   popup.style.display = "none";
 }
 
-function openPopup(popup_id) {
+function openPopup(popup_id, popup_data = null) {
   // We make sure to close the incase there is a popup already open
   closePopup();
   var overlay = document.getElementById("popup_overlay");
   // We get the popup div and set the display to block to show the popup
   overlay.style.display = "block";
-  get_popup(null, popup_id);
+  get_popup(popup_data, popup_id);
 }

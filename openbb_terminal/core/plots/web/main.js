@@ -54,6 +54,13 @@ function OpenBBMain(plotly_figure) {
             downloadData(gd);
           },
         },
+        {
+          name: "Upload Image (Ctrl+U)",
+          icon: Plotly.Icons.uploadImage,
+          click: function (gd) {
+            downloadImage();
+          },
+        },
         "toImage",
       ],
       ["drawline", "drawopenpath", "drawcircle", "drawrect", "eraseshape"],
