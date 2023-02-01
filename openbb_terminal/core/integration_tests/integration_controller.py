@@ -2,35 +2,32 @@
 """Main Testing Module"""
 __docformat__ = "numpy"
 
-from functools import partial
-from multiprocessing.pool import Pool
-from multiprocessing import cpu_count
-from pathlib import Path
-import re
-import time
-from typing import Any, List, Dict, Optional, Tuple
-from traceback import FrameSummary, format_list, extract_tb
 import argparse
 import logging
-import sys
 import os
-from openbb_terminal.helper_funcs import check_positive
+import re
+import sys
+import time
+from functools import partial
+from multiprocessing import cpu_count
+from multiprocessing.pool import Pool
+from pathlib import Path
+from traceback import FrameSummary, extract_tb, format_list
+from typing import Any, Dict, List, Optional, Tuple
 
-from openbb_terminal.rich_config import console
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
 )
+from openbb_terminal.helper_funcs import check_positive
+from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_controller import (
     insert_start_slash,
-    terminal,
-    replace_dynamic,
     obbff,
+    replace_dynamic,
+    terminal,
 )
-from openbb_terminal.terminal_helper import (
-    is_reset,
-    suppress_stdout,
-)
+from openbb_terminal.terminal_helper import is_reset, suppress_stdout
 
 logger = logging.getLogger(__name__)
 special_arguments_values = [
@@ -696,6 +693,11 @@ def main():
         sys.argv.remove("-t")
     if "--test" in sys.argv:
         sys.argv.remove("--test")
+
+    os.environ["OPENBB_ENABLE_QUICK_EXIT"] = "True"
+    os.environ["OPENBB_LOG_COLLECT"] = "False"
+    os.environ["OPENBB_USE_ION"] = "False"
+    os.environ["OPENBB_USE_PROMPT_TOOLKIT"] = "False"
 
     parse_args_and_run()
 

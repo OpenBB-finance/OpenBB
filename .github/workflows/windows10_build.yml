@@ -16,47 +16,62 @@ concurrency:
 
 jobs:
   Windows-Build:
-    name: Windows10 Build
-    runs-on: [self-hosted, Windows, x64]
+    name: Windows10 Build ENV
+    runs-on: windows-latest
     # Configuring -------------
     steps:
       - name: Setup Windows Git Configuration # This is under the assumption that git is already installed on the system
         run: |
           Set-ItemProperty 'HKLM:\System\CurrentControlSet\Control\FileSystem' -Name 'LongPathsEnabled' -value 1
           git config --system core.longpaths true
+
       - name: Checkout
         uses: actions/checkout@v2.4.2
-      - name: Activate Base & Create OpenBB Environment
+
+      - name: Set up Python & Create OpenBB Environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Create and start virtual environment
         run: |
-          conda activate base
-          conda env create -n obb --file build/conda/conda-3-9-env-full.yaml
-          conda init
-          conda activate obb
-          conda env list
-      - name: Poetry Install
-        # Conda activate needs to be run every time because of the way that the workflow steps work
-        # on powershell where it creates a new shell every time for every step
+          python -m venv venv
+          source venv/Scripts/activate
+          python -m pip install --upgrade pip
+          python -m pip install poetry==1.1.13
+          python -m pip install setuptools==64.0.2 wheel
+          python -m pip install charset_normalizer==2.1.1
+          python -m poetry install -E installer -E all
+          python -m pip uninstall papermill -y
+          python -m pip install git+https://github.com/nteract/papermill.git@main
+          python -m PyInstaller build/pyinstaller/terminal.spec --clean
+
+        shell: bash
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: OpenBB-Windows10-ENV
+          path: dist
+
+
+  Build-Exe:
+    name: Windows10 Build-Exe
+    runs-on: [self-hosted, Windows, x64]
+    needs: Windows-Build
+    # Configuring -------------
+    steps:
+      - name: Setup Windows Git Configuration # This is under the assumption that git is already installed on the system
         run: |
-          conda activate obb
-          poetry install
-      - name: Poetry Install Portfolio Optimization and Forecasting Toolkits
-        run: |
-          conda activate obb
-          poetry install -E all
-      - name: Poetry Install Installer
-        run: |
-          conda activate obb
-          poetry install -E installer
-      - name: Install Specific Papermill
-        run: |
-          conda activate obb
-          pip uninstall papermill -y
-          pip install git+https://github.com/nteract/papermill.git@main
-      # Building ------------
-      - name: Build Terminal.spec file
-        run: |
-          conda activate obb
-          pyinstaller build/pyinstaller/terminal.spec --clean
+          Set-ItemProperty 'HKLM:\System\CurrentControlSet\Control\FileSystem' -Name 'LongPathsEnabled' -value 1
+          git config --system core.longpaths true
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: OpenBB-Windows10-ENV
+          path: dist
+
       - name: Move Files into App Folder
         run: cp -r .\dist\OpenBBTerminal\ .\build\nsis\app\
       # don't need this because log collection is turned off
@@ -64,16 +79,18 @@ jobs:
       #   run: Remove-Item .\build\nsis\app\openbb_terminal\logs\ -Recurse
       - name: Build Exe File
         run: |
-          conda activate obb
           C:\'.\Program Files (x86)\'\nsis\makensis.exe .\build\nsis\setup.nsi
+
       - name: Save Build Artifact
         uses: actions/upload-artifact@v3
         with:
           name: Windows EXE Artifact
           path: '.\build\nsis\OpenBB Terminal Setup.exe'
+
       - name: Run Integration Tests
         run: |
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\integration_tests_scripts -t
+          dist\OpenBBTerminal\OpenBBTerminal.exe -t
+
       # Cleaning ------------------------
       # Make sure to add Remove-Item C:\Users\Administrator\Desktop\OPENBB-exports -Recurse whenever integration tests get fixed
       - name: Remove Previous Build
@@ -81,10 +98,4 @@ jobs:
           Remove-Item '.\build\nsis\OpenBB Terminal Setup.exe' -Recurse
           Remove-Item .\build\nsis\app\ -Recurse
           Remove-Item .\dist\ -Recurse
-          Remove-Item .\build\terminal\ -Recurse
-      - name: Deactivate & Remove Conda Environment
-        run: |
-          conda deactivate obb
-          conda deactivate base
-          conda env remove -n obb
-          Remove-Item C:\Users\Administrator\miniconda3\envs\obb\ -Recurse
+
