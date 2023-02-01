@@ -1292,7 +1292,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '10'
+      - '13'
       x-request-id:
       - a91f37dd-3526-4b54-b0c7-08733d22d8bb
       x-yahoo-request-id:
@@ -1404,7 +1404,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '12'
+      - '10'
       x-request-id:
       - afe155a4-f804-4641-b869-90bab5f82dd8
       x-yahoo-request-id:

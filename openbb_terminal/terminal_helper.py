@@ -254,8 +254,7 @@ def check_for_updates() -> None:
     # ({str(git.Repo('.').head.commit)[:7]})
     try:
         r = request(
-            "https://api.github.com/repos/openbb-finance/openbbterminal/releases/latest",
-            timeout=1,
+            "https://api.github.com/repos/openbb-finance/openbbterminal/releases/latest"
         )
     except Exception:
         r = None
@@ -266,7 +265,6 @@ def check_for_updates() -> None:
         current_version = version.parse(obbff.VERSION)
 
         if check_valid_versions(latest_version, current_version):
-
             if current_version == latest_version:
                 console.print("[green]You are using the latest stable version[/green]")
             else:

@@ -93,7 +93,7 @@ def option_expirations(symbol: str):
     yf_ticker = yf.Ticker(symbol)
     dates = list(yf_ticker.options)
     if not dates:
-        console.print("No expiration dates found for ticker. \n")
+        console.print("No expiration dates found for ticker.")
     return dates
 
 
@@ -294,7 +294,7 @@ def get_binom(
     """
     # Base variables to calculate values
     info = get_info(symbol)
-    price = yf.Ticker(symbol).fast_info["last_price"]
+    price = yf.Ticker(symbol).fast_info.last_price
     if vol is None:
         closings = get_closing(symbol)
         vol = (closings / closings.shift()).std() * (252**0.5)
@@ -375,4 +375,4 @@ def get_last_price(symbol: str) -> float:
     float
         Last price
     """
-    return float(yf.Ticker(symbol).fast_info["last_price"])
+    return float(yf.Ticker(symbol).fast_info.last_price)

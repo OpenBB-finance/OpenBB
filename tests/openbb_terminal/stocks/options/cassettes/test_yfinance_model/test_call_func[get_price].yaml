@@ -13,25 +13,25 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAO1WTZPbNgz9LzqrKgHwM7dO0ml7yM6mcQ47Ozsd1dZ61diWK8mbbHf83wNQdOoV
-        ncmxl/pAkyD4+AA80H4ulg91Pxavnou+GQ4bnt0+F9tmrMW0PPR9s1s+Fa+KD+/fFGUxPG3/7Da8
-        vH7Lq+YzH96tm6t627Dt6uYdG9vdMPaHbbMbF097Mf/87sNvixveuW/7YVz09ap5U4+8A6iMs8oq
-        VfLl68Om7t/W/cdmXLSCB9YZCMorVxbr7djd3w8N0/sBvJITIzv90+3iDe8XZ2wWaSOx+mnb9O2y
-        /vGq+fTHTdd/LGaXXfOu3Kaosr6c0nHdN49tdxheb7oh7kGFUBZ7cf213TELLFNyYkDtbn3Nt3Qr
-        Sdq+b+Qr4zeMMdExLGNi1M1ulQzOaDFkcR6/sv0uZoL4FzN4/y3MfTeM3wVM578CIhBeBmTEVT3W
-        v/T1Tqi2oygGVpJqqYgsth2vHutNu/pdTAPrbPIwMkzbFEcbR3jiAWUwMoCS8WkU5239ubg7Tgpg
-        vts9YzE/dMYKP5l6jTZNAwY1TUlBTJFM0enkQGTh5KC1OzkYIp+mjJpwKViTrFoZTFYN5BOYRjQJ
-        TGsmkabGqZOD5XmaOk3pNu0xJFyj/IlvUv+d9NSKJTx2/SBF+/vQSftwnz52m4OI/BY5ODllfDBM
-        oCQTImfjp5C1t5GM5iSBfBsLwkiDCrJG5zDa0VOY/MDJt9XpvJr8GU/2ySot9wCiD/EATMnXABSJ
-        kIltCsgA2nMMy6mXbqWZIllSolnnoYz9JTYiYwMXhC2q8hD4YwMnh9NaSoNqviw4b8nZYIhNmENh
-        BZJA1Bq0smiiSRk5aIw3gZyJF2o984LKnl0I4QKtECrRleJOsLyjXfTJ7oOcO3uJMMCg8c5P2Bl1
-        DlDOebA+aENi0hXlaXBzDlR5AQNPoIy2oZxes3N8rsBDu35IBQh58Czul7mFSkm6LRETZrfIBiVH
-        1mpSPESLfhFGzHYWPVZBCsBy5g5Da6PJ5DWRNlKK+5H4iZy89PwgV076laxlxQby5RRPVjlpqHNB
-        MZSaVyDMLDoXChdAsD13KyBMJdHz23RlLqQKBZxHpwiQ89/tm13KvzThTEWZSeWgLOQwJ6OiXZpP
-        yaNmPKrUGXkVDMpp5/hNtH7KHFF2B8yxWAk5ufhqntdKQngpDozkWPp2pmpmEiV6QWCkZgWgPBDO
-        rTpXBed2032KqVV5N6pZJ0gXZx0EeQdhhS5Ll4uSCfwDzk+uvpybC40DM8aRVnjZOcFXdvZGKH5/
-        Zl3J76KAs/CD5V8YPSG5c6lF01zsF6LBXMiUdyVVeKkMd0fOer366/SsP58v/n/j/5s3/nh3lLI0
-        fd/x/0X+L7Y5Hr8AGOJTMOILAAA=
+        H4sIAAAAAAAAAO1WTXPbRgz9Lzyr7GKx2I/cOkmn7SEep1EOnoynw0q0zEYiVZJy4nr03wssV7G1
+        VCbHXurDaokFHx4egKWfitV91Y/Fq6eir4fDlncfn4pdPVZiWh36vm5Xj8Wr4sP7N8WiGB53f3Zb
+        frx+y0/1F3653dRX1a5m29XNOzY27TD2h13djsvHvZh/fvfht+UNn9w1/TAu+2pdv6lGPgGtyFll
+        lVpw8M1hW/Vvq/5TPS4bwQPrSFvjjFsUm93Y3d0NNdP7AbySN0Z2+qdrY4T3yxdslukgsfppV/fN
+        qvrxqv78x03XfyqyYNd8KtEUleBoMelx3dcPTXcYXm+7IR5CqWFR7MX316ZlGnqR1IkZNe3mmsN0
+        a1Ft39fyMyM4jFHpmJfRMYm6XZ8SlbQuJHr8Sve7mAniGdOT/hbmvhvG7wKm958BQ7CXARlxXY3V
+        L33VCtVmlJaBtWgtJZGHXcdPD9W2Wf8upoEbbfIgWaZjjKuNKzzyomUhWUDJ+jiK8676UtwepxZg
+        vrs9YzE/7cgKYdl6o23aBh3UtEUFZNJWO5McEC2cHAy3W9oSok9bRk24GCwlq1Gkk9UA+gRmtKYE
+        Zow3Jwdy6uRgeZ+2zmCKZrwOCZeUP/ElbsjkkCbhVuZrze08dv0g9fv70Mko8cx2+7oVHbhVSfLR
+        wLxR8fRcNKmSfOB6IjqOZzWbdKnYEjwHAg3AFlOqaBdZlShGXiuMJgTxtYGZc87RJP0RvHMsuPU+
+        hkWcxYAcC0o1JxdLonhFArIpBcGyBhUvE91oBythwfpgCGFiwiuWKk/QlCgZOiJPAd3klSXC/buN
+        rsRa3zeb+6RpMMLRGDCMRTGwk+Sct+hsoJTJPKS257RNyVv+QyXldT4S9nM1A4lJeW5Jbe2UFmXs
+        oZS+O9NJlyZ/EUojaqK1GlTAqTLBPAeEMJlklBHJBh6JCUrAgTR5TmjyySzcITkpVtnkbWTyaCZv
+        v6Q7X8LhpSsXYTXdwbEKZ8pBZKTxnLWai4ml8Vmp9ByKWzNkNdbz7FjMeSfYMBPznFYIpdxH2VDO
+        4sGcO3tRXoQZdU4QsiEw8wnF0uUcsPQCBh5ZemPDizLwRfQcg8uw7T7HIqg5bR5Xf9bSnO4sFOSh
+        RF7tZleGiy0WgEjzfXz5frgwaKy4yvpeleF80oIvbSam4kJlrcENJOA8KMHyFW4mJLm0gS98pxB0
+        NOXDcSEbPW98nE8xlqzi13vn7L5g3R+67UH+kfnIckjEBQ8OcRYLpBA/S+Snr5rxNn5vDH8HQX7J
+        gnx0ePiDPGvndLRrj2HyAye/1qT31eTPeHKOVhmJw1mzHhFo+r4aAIxEkKSkE3VnndX69siMq/Vf
+        p5l9evnw/wD/hwN8vD1Kbeq+7/g/SfE6Hv8FoWj71f0LAAA=
     headers:
       Age:
       - '0'
@@ -54,11 +54,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1046'
+      - '1061'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 31 Jan 2023 18:46:52 GMT
+      - Wed, 01 Feb 2023 15:19:29 GMT
       server:
       - ATS
       vary:
@@ -66,13 +66,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '24'
+      - '34'
       x-request-id:
-      - 42f117d5-7052-4ce4-a233-bcd0141d321c
+      - 0793ae71-9189-4480-8970-e8638faa7de0
       x-yahoo-request-id:
-      - 6kat83hhtiogs
+      - 2njhui5htl0o1
       y-rid:
-      - 6kat83hhtiogs
+      - 2njhui5htl0o1
     status:
       code: 200
       message: OK

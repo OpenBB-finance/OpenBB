@@ -125,7 +125,6 @@ def lambda_very_long_number_formatter(num: Union[str, int, float]) -> str:
 
 
 def prettify_paragraph(text):
-
     # Add tab to the beginning of paragraph
     text = "\t" + text
     pat = "(?<!\n)\n(?!\n)"
