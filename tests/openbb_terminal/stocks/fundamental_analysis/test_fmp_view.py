@@ -21,7 +21,7 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_valinvest_score():
-    fmp_view.valinvest_score(symbol="PM")
+    fmp_view.valinvest_score(symbol="PM", years=10)
 
 
 @pytest.mark.vcr

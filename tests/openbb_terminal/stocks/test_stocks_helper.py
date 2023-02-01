@@ -27,7 +27,8 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_quote():
-    stocks_view.display_quote("GME")
+    stocks_view.display_quote_fmp("GME")
+    stocks_view.display_quote_yf("GME")
 
 
 @pytest.mark.default_cassette("test_search")

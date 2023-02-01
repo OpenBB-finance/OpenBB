@@ -3,6 +3,7 @@ import os
 
 # IMPORTATION THIRDPARTY
 import pytest
+import pandas as pd
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import fa_controller
@@ -32,6 +33,7 @@ def test_menu_with_queue(expected, mocker, queue):
         ticker="TSLA",
         start="10/25/2021",
         interval="1440min",
+        stock=pd.DataFrame(),
         suffix="",
         queue=queue,
     ).menu()
@@ -69,7 +71,12 @@ def test_menu_without_queue_completion(mocker):
     )
 
     result_menu = fa_controller.FundamentalAnalysisController(
-        ticker="TSLA", start="10/25/2021", interval="1440min", suffix="", queue=None
+        ticker="TSLA",
+        start="10/25/2021",
+        interval="1440min",
+        stock=pd.DataFrame(),
+        suffix="",
+        queue=None,
     ).menu()
 
     assert result_menu == ["help"]
@@ -116,7 +123,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     )
 
     result_menu = fa_controller.FundamentalAnalysisController(
-        ticker="TSLA", start="10/25/2021", interval="1440min", suffix="", queue=None
+        ticker="TSLA",
+        start="10/25/2021",
+        interval="1440min",
+        stock=pd.DataFrame(),
+        suffix="",
+        queue=None,
     ).menu()
 
     assert result_menu == ["help"]
@@ -129,6 +141,7 @@ def test_print_help():
         ticker="TSLA",
         start="10/25/2021",
         interval="1440min",
+        stock=pd.DataFrame(),
         suffix="",
     )
     controller.print_help()
@@ -151,6 +164,7 @@ def test_switch(an_input, expected_queue):
         ticker="",
         start="",
         interval="",
+        stock=pd.DataFrame(),
         suffix="",
         queue=None,
     )
@@ -166,6 +180,7 @@ def test_call_cls(mocker):
         ticker="TSLA",
         start="10/25/2021",
         interval="1440min",
+        stock=pd.DataFrame(),
         suffix="",
     )
     controller.call_cls([])
@@ -209,6 +224,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ticker="",
         start="",
         interval="",
+        stock=pd.DataFrame(),
         suffix="",
         queue=queue,
     )
@@ -530,6 +546,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         ticker="TSLA",
         start="10/25/2021",
         interval="1440min",
+        stock=pd.DataFrame(),
         suffix="",
     )
 
@@ -578,6 +595,7 @@ def test_call_func_no_parser(func, mocker):
         ticker="AAPL",
         start="10/25/2021",
         interval="1440min",
+        stock=pd.DataFrame(),
         suffix="",
     )
 
@@ -599,6 +617,7 @@ def test_custom_reset(expected, ticker):
         ticker=None,
         start="10/25/2021",
         interval="1440min",
+        stock=pd.DataFrame(),
         suffix="",
     )
     controller.ticker = ticker

@@ -22,7 +22,7 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_get_score():
-    result = fmp_model.get_score(symbol="PM")
+    result = fmp_model.get_score(symbol="PM", years=10)
     if result:
         assert isinstance(result, np.number)
 

@@ -787,7 +787,6 @@ class FundamentalAnalysisController(StockBaseController):
                     limit=ns_parser.limit,
                 )
             elif ns_parser.source == "EODHD":
-                console.print("Source is EOD Historical Data!")
                 eodhd_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="Income_Statement",
@@ -913,7 +912,6 @@ class FundamentalAnalysisController(StockBaseController):
                     limit=ns_parser.limit,
                 )
             elif ns_parser.source == "EODHD":
-                console.print("Source is EOD Historical Data!")
                 eodhd_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="Balance_Sheet",
@@ -1045,7 +1043,6 @@ class FundamentalAnalysisController(StockBaseController):
                     limit=ns_parser.limit,
                 )
             elif ns_parser.source == "EODHD":
-                console.print("Source is EOD Historical Data!")
                 eodhd_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="Cash_Flow",
