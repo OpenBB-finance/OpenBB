@@ -112,15 +112,10 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-    # console.print(configs, style="red")
-
     if configs:
         settings = configs.get("features_settings", {})
-
-        # TODO: Find a cleaner way to check if user has sync enabled.
-        obbff.SYNC_ENABLED = is_sync_enabled(settings)
-
-        if obbff.SYNC_ENABLED:
+        sync = update_sync_flag(settings)
+        if sync:
             if settings:
                 for k, v in settings.items():
                     if hasattr(obbff, k):
@@ -137,8 +132,8 @@ def apply_configs(configs: dict):
                         setattr(cfg, k, v)
 
 
-def is_sync_enabled(settings: dict) -> bool:
-    """Check if sync is enabled.
+def update_sync_flag(settings: dict) -> bool:
+    """Update the sync flag.
 
     Parameters
     ----------
@@ -148,11 +143,13 @@ def is_sync_enabled(settings: dict) -> bool:
     Returns
     -------
     bool
-        The status of sync.
+        The sync flag.
     """
     if settings:
         if settings.get("SYNC_ENABLED", "").lower() == "false":
+            obbff.SYNC_ENABLED = False
             return False
+    obbff.SYNC_ENABLED = True
     return True
 
 
@@ -177,16 +174,20 @@ def cast_set_attr(obj, name, value):
         setattr(obj, name, value)
 
 
-def get_routine(name: str) -> Optional[str]:
+def get_routine(
+    name: str, routines_folder: Path = USER_ROUTINES_DIRECTORY
+) -> Optional[str]:
     """Get the routine.
 
     Returns
     -------
     str
         The routine.
+    routines_folder : Path
+        The routines folder.
     """
     try:
-        with open(USER_ROUTINES_DIRECTORY / name) as f:
+        with open(routines_folder / name) as f:
             routine = "".join(f.readlines())
         return routine
     except Exception:
