@@ -35,8 +35,6 @@ class StocksBehavioralAnalysis(Category):
         `getdd`: Gets due diligence posts from list of subreddits [Source: reddit].\n
         `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].\n
         `headlines_chart`: Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]\n
-        `hist`: Get hour-level sentiment data for the chosen symbol.\n
-        `hist_chart`: Display historical sentiment data of a ticker,\n
         `infer`: Load tweets from twitter API and analyzes using VADER.\n
         `infer_chart`: Prints Inference sentiment from past n tweets.\n
         `mentions`: Get interest over time from google api [Source: google].\n
@@ -56,8 +54,6 @@ class StocksBehavioralAnalysis(Category):
         `spacc`: Get top tickers from r/SPACs [Source: reddit].\n
         `stalker`: Gets messages from given user [Source: stocktwits].\n
         `text_sent`: Find the sentiment of a post and related comments.\n
-        `trend`: Get sentiment data on the most talked about tickers\n
-        `trend_chart`: Display most talked about tickers within\n
         `trending`: Get trending tickers from stocktwits [Source: stocktwits].\n
         `watchlist`: Get reddit users watchlists [Source: reddit].\n
         `wsb`: Get wsb posts [Source: reddit].\n
@@ -70,8 +66,6 @@ class StocksBehavioralAnalysis(Category):
         self.getdd = lib.stocks_ba_reddit_model.get_due_dilligence
         self.headlines = lib.stocks_ba_finbrain_model.get_sentiment
         self.headlines_chart = lib.stocks_ba_finbrain_view.display_sentiment_analysis
-        self.hist = lib.stocks_ba_sentimentinvestor_model.get_historical
-        self.hist_chart = lib.stocks_ba_sentimentinvestor_view.display_historical
         self.infer = lib.stocks_ba_twitter_model.load_analyze_tweets
         self.infer_chart = lib.stocks_ba_twitter_view.display_inference
         self.mentions = lib.stocks_ba_google_model.get_mentions
@@ -93,8 +87,6 @@ class StocksBehavioralAnalysis(Category):
         self.spacc = lib.stocks_ba_reddit_model.get_spac_community
         self.stalker = lib.stocks_ba_stocktwits_model.get_stalker
         self.text_sent = lib.stocks_ba_reddit_model.get_sentiment
-        self.trend = lib.stocks_ba_sentimentinvestor_model.get_trending
-        self.trend_chart = lib.stocks_ba_sentimentinvestor_view.display_trending
         self.trending = lib.stocks_ba_stocktwits_model.get_trending
         self.watchlist = lib.stocks_ba_reddit_model.get_watchlists
         self.wsb = lib.stocks_ba_reddit_model.get_wsb_community
@@ -443,7 +435,7 @@ class StocksOptions(Category):
         `last_price`: Makes api request for last price\n
         `pcr`: Gets put call ratio over last time window [Source: AlphaQuery.com]\n
         `pcr_chart`: Display put call ratio [Source: AlphaQuery.com]\n
-        `process_chains`: Function to take in the requests.get and return a DataFrame\n
+        `process_chains`: Function to take in the request and return a DataFrame\n
         `unu`: Get unusual option activity from fdscanner.com\n
         `unu_chart`: Displays the unusual options table\n
         `vsurf`: Gets IV surface for calls and puts for ticker\n
@@ -465,7 +457,7 @@ class StocksOptions(Category):
         self.hist_ce_chart = lib.stocks_options_chartexchange_view.display_raw
         self.info = lib.stocks_options_yfinance_model.get_info
         self.info_chart = lib.stocks_options_barchart_view.print_options_data
-        self.last_price = lib.stocks_options_tradier_model.last_price
+        self.last_price = lib.stocks_options_tradier_model.get_last_price
         self.pcr = lib.stocks_options_alphaquery_model.get_put_call_ratio
         self.pcr_chart = lib.stocks_options_alphaquery_view.display_put_call_ratio
         self.process_chains = lib.stocks_options_tradier_model.process_chains

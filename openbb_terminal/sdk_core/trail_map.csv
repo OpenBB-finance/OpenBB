@@ -400,7 +400,6 @@ stocks.ba.bullbear,stocks_ba_stocktwits_model.get_bullbear,
 stocks.ba.cnews,stocks_ba_finnhub_model.get_company_news,
 stocks.ba.getdd,stocks_ba_reddit_model.get_due_dilligence,
 stocks.ba.headlines,stocks_ba_finbrain_model.get_sentiment,stocks_ba_finbrain_view.display_sentiment_analysis
-stocks.ba.hist,stocks_ba_sentimentinvestor_model.get_historical,stocks_ba_sentimentinvestor_view.display_historical
 stocks.ba.infer,stocks_ba_twitter_model.load_analyze_tweets,stocks_ba_twitter_view.display_inference
 stocks.ba.mentions,stocks_ba_google_model.get_mentions,stocks_ba_google_view.display_mentions
 stocks.ba.messages,stocks_ba_stocktwits_model.get_messages,
@@ -415,7 +414,6 @@ stocks.ba.spac,stocks_ba_reddit_model.get_spac,
 stocks.ba.spacc,stocks_ba_reddit_model.get_spac_community,
 stocks.ba.stalker,stocks_ba_stocktwits_model.get_stalker,
 stocks.ba.text_sent,stocks_ba_reddit_model.get_sentiment,
-stocks.ba.trend,stocks_ba_sentimentinvestor_model.get_trending,stocks_ba_sentimentinvestor_view.display_trending
 stocks.ba.trending,stocks_ba_stocktwits_model.get_trending,
 stocks.ba.watchlist,stocks_ba_reddit_model.get_watchlists,
 stocks.ba.wsb,stocks_ba_reddit_model.get_wsb_community,
@@ -524,7 +522,7 @@ stocks.options.grhist,stocks_options_screen_syncretism_model.get_historical_gree
 stocks.options.hist,stocks_options_sdk_helper.hist,
 stocks.options.hist_ce,stocks_options_chartexchange_model.get_option_history,stocks_options_chartexchange_view.display_raw
 stocks.options.info,stocks_options_yfinance_model.get_info,stocks_options_barchart_view.print_options_data
-stocks.options.last_price,stocks_options_tradier_model.last_price,
+stocks.options.last_price,stocks_options_tradier_model.get_last_price,
 stocks.options.pcr,stocks_options_alphaquery_model.get_put_call_ratio,stocks_options_alphaquery_view.display_put_call_ratio
 stocks.options.process_chains,stocks_options_tradier_model.process_chains,
 stocks.options.screen.check_presets,stocks_options_screen_syncretism_model.check_presets,

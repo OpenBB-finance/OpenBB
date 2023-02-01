@@ -41,8 +41,6 @@ class StocksController(model.StocksRoot):
             `getdd`: Gets due diligence posts from list of subreddits [Source: reddit].\n
             `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].\n
             `headlines_chart`: Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]\n
-            `hist`: Get hour-level sentiment data for the chosen symbol.\n
-            `hist_chart`: Display historical sentiment data of a ticker,\n
             `infer`: Load tweets from twitter API and analyzes using VADER.\n
             `infer_chart`: Prints Inference sentiment from past n tweets.\n
             `mentions`: Get interest over time from google api [Source: google].\n
@@ -62,8 +60,6 @@ class StocksController(model.StocksRoot):
             `spacc`: Get top tickers from r/SPACs [Source: reddit].\n
             `stalker`: Gets messages from given user [Source: stocktwits].\n
             `text_sent`: Find the sentiment of a post and related comments.\n
-            `trend`: Get sentiment data on the most talked about tickers\n
-            `trend_chart`: Display most talked about tickers within\n
             `trending`: Get trending tickers from stocktwits [Source: stocktwits].\n
             `watchlist`: Get reddit users watchlists [Source: reddit].\n
             `wsb`: Get wsb posts [Source: reddit].\n
@@ -278,7 +274,7 @@ class StocksController(model.StocksRoot):
             `last_price`: Makes api request for last price\n
             `pcr`: Gets put call ratio over last time window [Source: AlphaQuery.com]\n
             `pcr_chart`: Display put call ratio [Source: AlphaQuery.com]\n
-            `process_chains`: Function to take in the requests.get and return a DataFrame\n
+            `process_chains`: Function to take in the request and return a DataFrame\n
             `unu`: Get unusual option activity from fdscanner.com\n
             `unu_chart`: Displays the unusual options table\n
             `vsurf`: Gets IV surface for calls and puts for ticker\n
