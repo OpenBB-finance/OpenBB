@@ -1420,9 +1420,6 @@ class OptionsController(BaseController):
                         ns_parser.mini,
                         ns_parser.maxi,
                         ns_parser.export,
-                        " ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
                     )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`")
