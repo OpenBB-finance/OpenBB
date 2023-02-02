@@ -53,7 +53,7 @@ def get_session(file_path: Path = SESSION_FILE_PATH) -> dict:
             with open(file_path) as file:
                 return json.load(file)
     except Exception:
-        console.print("[red]\nFailed to get login info.[/red]")
+        console.print("\n[red]Failed to get login info.[/red]")
     return {}
 
 
