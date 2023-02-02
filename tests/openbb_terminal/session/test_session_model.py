@@ -58,7 +58,9 @@ def test_login_no_response():
     ):
         mock_fetch_user_configs.return_value = None
 
-        assert session_model.login(TEST_SESSION) == session_model.LoginStatus.NO_RESPONSE
+        assert (
+            session_model.login(TEST_SESSION) == session_model.LoginStatus.NO_RESPONSE
+        )
 
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_not_called()
