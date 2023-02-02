@@ -40,6 +40,7 @@ def test_get_session():
 
 def test_remove_session_file():
     with patch("openbb_terminal.session.local_model.os") as os_mock:
-        local_model.remove_session_file()
+        assert local_model.remove_session_file() is True
 
+    os_mock.path.isfile.assert_called_with(local_model.SESSION_FILE_PATH)
     os_mock.remove.assert_called_with(local_model.SESSION_FILE_PATH)
