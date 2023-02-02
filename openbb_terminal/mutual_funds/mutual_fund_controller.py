@@ -81,6 +81,7 @@ class FundController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
+            choices["country"].update({c: {} for c in self.fund_countries})
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -292,7 +293,7 @@ class FundController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load the funds to access his data",
+            description="Load the fund to perform analysis on.",
         )
         parser.add_argument(
             "--fund",
