@@ -2,25 +2,22 @@
 __docformat__ = "numpy"
 
 import logging
+import re
+import ssl
 from datetime import datetime, timedelta
 from typing import Optional, Tuple
 from urllib.request import Request, urlopen
-import re
 
-import ssl
 import numpy as np
 import pandas as pd
 import yfinance as yf
-
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
-from openbb_terminal.helpers_denomination import (
-    transform as transform_by_denomination,
-)
 
 logger = logging.getLogger(__name__)
 # pylint: disable=W0212
@@ -309,12 +306,13 @@ def get_mktcap(
         start_date = (datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d")
 
     currency = ""
-    df_data = yf.download(symbol, start=start_date, progress=False, threads=False)
+    df_data = yf.download(
+        symbol, start=start_date, progress=False, threads=False, ignore_tz=True
+    )
     if not df_data.empty:
-
-        data = yf.Ticker(symbol).info
+        data = yf.Ticker(symbol).fast_info
         if data:
-            df_data["Adj Close"] = df_data["Adj Close"] * data["sharesOutstanding"]
+            df_data["Adj Close"] = df_data["Adj Close"] * data["shares"]
             df_data = df_data["Adj Close"]
 
             currency = data["currency"]
@@ -482,8 +480,12 @@ def get_earnings_history(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of historical earnings if present
     """
-    earnings = yf.Ticker(symbol).earnings_history
-    return earnings
+    df = yf.Ticker(symbol).earnings_dates
+    df.reset_index(inplace=True)
+    df["Earnings Date"] = df["Earnings Date"].dt.strftime("%Y-%m-%d")
+    df.drop_duplicates(inplace=True)
+    df = df.fillna("-")
+    return df
 
 
 @log_start_end(log=logger)

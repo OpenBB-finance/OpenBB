@@ -36,6 +36,7 @@ def price_target_from_analysts(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display analysts' price targets for a given stock. [Source: Business Insider]
@@ -52,6 +53,8 @@ def price_target_from_analysts(
         Number of latest price targets from analysts to print
     raw: bool
         Display raw data only
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
@@ -84,7 +87,6 @@ def price_target_from_analysts(
         )
 
     else:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -131,11 +133,12 @@ def price_target_from_analysts(
         os.path.dirname(os.path.abspath(__file__)),
         "pt",
         df_analyst_data,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def estimates(symbol: str, estimate: str, export: str = ""):
+def estimates(symbol: str, estimate: str, export: str = "", sheet_name: str = None):
     """Display analysts' estimates for a given ticker. [Source: Business Insider]
 
     Parameters
@@ -154,7 +157,6 @@ def estimates(symbol: str, estimate: str, export: str = ""):
     ) = business_insider_model.get_estimates(symbol)
 
     if estimate == "annualearnings":
-
         print_rich_table(
             df_year_estimates,
             headers=list(df_year_estimates.columns),
@@ -166,6 +168,7 @@ def estimates(symbol: str, estimate: str, export: str = ""):
             os.path.dirname(os.path.abspath(__file__)),
             "pt_year",
             df_year_estimates,
+            sheet_name,
         )
 
     elif estimate == "quarterearnings":
@@ -180,6 +183,7 @@ def estimates(symbol: str, estimate: str, export: str = ""):
             os.path.dirname(os.path.abspath(__file__)),
             "pt_qtr_earnings",
             df_quarter_earnings,
+            sheet_name,
         )
 
     elif estimate == "annualrevenue":
@@ -195,6 +199,7 @@ def estimates(symbol: str, estimate: str, export: str = ""):
             os.path.dirname(os.path.abspath(__file__)),
             "pt_qtr_revenues",
             df_quarter_revenues,
+            sheet_name,
         )
     else:
         console.print("[red]Invalid estimate type[/red]")

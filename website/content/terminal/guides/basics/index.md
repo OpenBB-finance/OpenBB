@@ -1,5 +1,7 @@
 ---
 title: Basics
+description: The OpenBB Terminal is a modern investment research platform for everyone. It is a desktop application that allows you to access all the data and tools you need to make better investment decisions.
+keywords: [basics, installation, commands, menus, your own data, introduction, openbb terminal, explanation, basic usage, usage, how to]
 ---
 
 The OpenBB Terminal is based off the <a href="https://en.wikipedia.org/wiki/Command-line_interface" target="_blank" rel="noreferrer noopener">Command Line Interface (CLI)</a>
@@ -18,7 +20,6 @@ Throughout the entire terminal, the same set of colors are used which all share 
 - <b><span style={{color:"#FCED00"}}>Yellow</span></b>: represents descriptions of a parameter or variable.
 - <b>White</b>: represents text, usually in combination with a description that is in Yellow.
 
-
 ### Explanation of Menus
 
 Menus, depicted in <b><span style={{color:"#005CA9"}}>Dark Blue</span></b>, take you to a new section of the terminal referred to as a menu. For example, if you wish to view information about stocks, you can do so by typing `stocks` and pressing `ENTER` (⏎). This opens a new menu as depicted below.
@@ -27,7 +28,7 @@ Menus, depicted in <b><span style={{color:"#005CA9"}}>Dark Blue</span></b>, take
 
 Depending on the menu you are in, you are presented with a new set of commands and menus you can select. There are interactions in place between each menu. For example, when selecting a company within the `stocks` menu, the terminal will remember your selection when you visit the `fa` or `options` menu. See [Introduction to Stocks](/terminal/guides/intros/stocks).
 
-:::note **Pro tip:** you can quickly jump between menus by using a forward slash (`/`). For example, if I want to access the options menu, You can type `/stocks/options` to instantly arrive at this menu. You can do this from any location within theOpenBB Terminal!
+:::note **Pro tip:** you can quickly jump between menus by using a forward slash (`/`). For example, if I want to access the options menu, You can type `/stocks/options` to instantly arrive at this menu. You can do this from any location within the OpenBB Terminal!
 :::
 
 ### Explanation of Commands
@@ -48,17 +49,17 @@ Continuing with the example mentioned at `quit`, revisit the `stocks` menu and l
 
 ```
 2022 May 19, 05:27 (🦋) /stocks/ $ load -h
-usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [-w] [-r {ytd,1y,2y,5y,6m}] [-h] [--source {yf,av,iex,polygon}]
+usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [-w] [-r {ytd,1y,2y,5y,6m}] [--exchange] [--performance] [-h] [--export EXPORT]
+            [--source {YahooFinance,IEXCloud,AlphaVantage,Polygon,EODHD}]
 
-Load stock ticker to perform analysis on. When the data source is Yahoo Finance, an Indian ticker can be loaded by
-using '.NS' at the end, e.g. 'SBIN.NS'. American tickers do not have this addition, e.g. AMZN.
+Load stock ticker to perform analysis on. When the data source is yf, an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'.
 
 optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
   -s START, --start START
-                        The starting date (format YYYY-MM-DD) of the stock (default: 2019-07-01)
-  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2022-07-05)
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2020-01-09)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2023-01-13)
   -i {1,5,15,30,60}, --interval {1,5,15,30,60}
                         Intraday stock minutes (default: 1440)
   -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
@@ -67,33 +68,24 @@ optional arguments:
   -m, --monthly         Load monthly data (default: False)
   -w, --weekly          Load weekly data (default: False)
   -r {ytd,1y,2y,5y,6m}, --iexrange {ytd,1y,2y,5y,6m}
-                        Range for using the iexcloud api. Note that longer range requires more tokens in account (default: ytd)
+                        Range for using the iexcloud api. Longer range requires more tokens in account (default: ytd)
+  --exchange            Show exchange information. (default: False)
+  --performance         Show performance information. (default: False)
   -h, --help            show this help message (default: False)
-  --source {yf,av,iex,polygon}
-                        Data source to select from (default: yf)
+  --export EXPORT       Export raw data into csv, json, xlsx (default: )
+  --source {YahooFinance,IEXCloud,AlphaVantage,Polygon,EODHD}
+                        Data source to select from (default: YahooFinance)
 
 For more information and examples, use 'about load' to access the related guide.
+
 ```
 
 This shows you all **arguments** the command has. These are additional options you can provide to the command. Each default value is also displayed which is used when you do not select this option. For example, if I would use the <a href="https://www.investopedia.com/ask/answers/12/what-is-a-stock-ticker.asp" target="_blank" rel="noreferrer noopener">stock ticker</a> of Amazon (AMZN, which can also be found with `search amazon`), I can use `load AMZN` which will return the following:
 
 ```
-2022 May 19, 05:27 (🦋) /stocks/ $ load AMZN
+2023 Jan 13, 11:22 (🦋) /stocks/ $ load AMZN
 
-Loading Daily AMZN stock with starting period 2019-05-15 for analysis.
-
-Datetime: 2022 May 19 05:33
-Timezone: America/New_York
-Currency: USD
-Market:   OPEN
-Company:  Amazon.com, Inc.
-
-                                           AMZN Performance
-┏━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
-┃ 1 Day   ┃ 1 Week ┃ 1 Month  ┃ 1 Year   ┃ YTD      ┃ Volatility (1Y) ┃ Volume (10D avg) ┃ Last Price ┃
-┡━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━┩
-│ -3.34 % │ 1.65 % │ -32.26 % │ -33.71 % │ -37.14 % │ 31.36 %         │ 5.51 M           │ 2142.25    │
-└─────────┴────────┴──────────┴──────────┴──────────┴─────────────────┴──────────────────┴────────────┘
+Loading Daily data for AMZN with starting period 2020-01-09.
 ```
 
 The default values you see within `load -h` have been inputted here. E.g. the starting period is 2019-05-15. I can decide to change these default values by calling the argument and inputting a different value.
@@ -103,22 +95,9 @@ Whenever you wish to apply an optional argument, you use the related shortcode, 
 Let's change the starting and ending period of the data that is being loaded in by doing the following:
 
 ```
-2022 May 19, 05:38 (🦋) /stocks/ $ load AMZN -s 2005-01-01 -e 2010-01-01
+2023 Jan 13, 11:23 (🦋) /stocks/ $ load AMZN -s 2005-01-01 -e 2010-01-01
 
-Loading Daily AMZN stock with starting period 2005-01-01 for analysis.
-
-Datetime: 2022 May 19 05:43
-Timezone: America/New_York
-Currency: USD
-Market:   OPEN
-Company:  Amazon.com, Inc.
-
-                                           AMZN Performance
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
-┃ 1 Day   ┃ 1 Week  ┃ 1 Month ┃ 1 Year   ┃ Period   ┃ Volatility (1Y) ┃ Volume (10D avg) ┃ Last Price ┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━┩
-│ -3.51 % │ -3.18 % │ -2.87 % │ 162.32 % │ 203.73 % │ 49.78 %         │ 8.53 M           │ 134.52     │
-└─────────┴─────────┴─────────┴──────────┴──────────┴─────────────────┴──────────────────┴────────────┘
+Loading Daily data for AMZN with starting period 2005-01-03.
 ```
 
 We can check that this period has changed by looking into the <a href="https://www.investopedia.com/trading/candlestick-charting-what-is-it/" target="_blank" rel="noreferrer noopener">candle chart</a> with `candle`. This, again shares the same `-h` argument. This results in the following which indeed depicts our selected period.
@@ -130,7 +109,6 @@ We can check that this period has changed by looking into the <a href="https://w
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png"><img src="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png" alt="Amazon Candle Chart" width="800"/></a>
 
 As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, some information also transfers over to other menus and this includes the loaded market data from <a href="/terminal/reference/stocks/load" target="_blank" rel="noreferrer noopener">load</a>. So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank" rel="noreferrer noopener">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
-
 
 ### Defining your own source of data
 

@@ -106,7 +106,7 @@ def get_most_shorted() -> pd.DataFrame:
     url = "https://finance.yahoo.com/screener/predefined/most_shorted_stocks"
 
     data = pd.read_html(
-        requests.get(url, headers={"User-Agent": get_user_agent()}).text
+        request(url, headers={"User-Agent": get_user_agent()}).text
     )[0]
     data = data.iloc[:, :-1]
     return data
@@ -137,7 +137,7 @@ def get_economy_calendar_events() -> pd.DataFrame:
     pd.DataFrame
         Get dataframe with economic calendar events
     """
-    response = requests.get(
+    response = request(
         f"https://finnhub.io/api/v1/calendar/economic?token={cfg.API_FINNHUB_KEY}"
     )
 
@@ -718,7 +718,7 @@ With:
     vals = list()
 
     for period in portfolio_helper.PERIODS:
-           port_rets = portfolio_helper.filter_df_by_period(self.returns, period)
+           port_rets = portfolio_helper.filter_df_by_period(self.portfolio_returns, period)
            bench_rets =  portfolio_helper.filter_df_by_period(self.benchmark_returns, period)
 
     ...

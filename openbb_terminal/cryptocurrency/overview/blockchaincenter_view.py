@@ -29,6 +29,7 @@ def display_altcoin_index(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Displays altcoin index overtime
@@ -59,7 +60,6 @@ def display_altcoin_index(
         if df.empty:
             console.print("\nError scraping blockchain central\n")
         else:
-
             # This plot has 1 axis
             if not external_axes:
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -86,4 +86,5 @@ def display_altcoin_index(
                 os.path.dirname(os.path.abspath(__file__)),
                 "altindex",
                 df,
+                sheet_name,
             )

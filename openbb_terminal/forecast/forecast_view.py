@@ -35,6 +35,7 @@ def show_options(
     datasets: Dict[str, pd.DataFrame],
     dataset_name: str = None,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Plot custom data
 
@@ -44,6 +45,8 @@ def show_options(
         The loaded in datasets
     dataset_name: str
         The name of the dataset you wish to show options for
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export image
     """
@@ -67,6 +70,7 @@ def show_options(
                 os.path.dirname(os.path.abspath(__file__)),
                 f"{dataset}_options",
                 data_values.set_index("column"),
+                sheet_name,
             )
 
 
@@ -75,6 +79,7 @@ def display_plot(
     data: pd.DataFrame,
     columns: List[str],
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Plot data from a dataset
@@ -84,6 +89,8 @@ def display_plot(
         The dataframe to plot
     columns: List[str]
         The columns to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export image
     external_axes:Optional[List[plt.axes]]
@@ -113,6 +120,7 @@ def display_plot(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "plot",
+        sheet_name,
     )
 
 
@@ -121,6 +129,7 @@ def display_seasonality(
     data: pd.DataFrame,
     column: str = "close",
     export: str = "",
+    sheet_name: str = None,
     m: Optional[int] = None,
     max_lag: int = 24,
     alpha: float = 0.05,
@@ -134,6 +143,8 @@ def display_seasonality(
         The dataframe to plot
     column: str
         The column of the dataframe to analyze
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export image
     m: Optional[int]
@@ -163,13 +174,19 @@ def display_seasonality(
         if external_axes is None:
             theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "plot")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "plot",
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
 def display_corr(
     dataset: pd.DataFrame,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Plot correlation coefficients for dataset features
@@ -178,6 +195,8 @@ def display_corr(
     ----------
     dataset : pd.DataFrame
         The dataset fore calculating correlation coefficients
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export image
     external_axes:Optional[List[plt.axes]]
@@ -220,7 +239,12 @@ def display_corr(
     if external_axes is None:
         theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "plot")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "plot",
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -230,6 +254,7 @@ def show_df(
     limit_col: int = 10,
     name: str = "",
     export: str = "",
+    sheet_name: str = None,
 ):
     console.print(
         f"[green]{name} dataset has shape (row, column): {data.shape}\n[/green]"
@@ -249,12 +274,18 @@ def show_df(
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), f"{name}_show", data
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"{name}_show",
+        data,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def describe_df(data: pd.DataFrame, name: str = "", export: str = ""):
+def describe_df(
+    data: pd.DataFrame, name: str = "", export: str = "", sheet_name: str = None
+):
     new_df = forecast_model.describe_df(data)
     print_rich_table(
         new_df,
@@ -263,11 +294,22 @@ def describe_df(data: pd.DataFrame, name: str = "", export: str = ""):
         title=f"Showing Descriptive Statistics for Dataset {name}",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), f"{name}_show")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"{name}_show",
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
-def export_df(data: pd.DataFrame, export: str, name: str = "") -> None:
+def export_df(
+    data: pd.DataFrame, export: str, name: str = "", sheet_name: str = None
+) -> None:
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), f"{name}_show", data
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"{name}_show",
+        data,
+        sheet_name,
     )

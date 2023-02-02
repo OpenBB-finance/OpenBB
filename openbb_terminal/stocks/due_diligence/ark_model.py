@@ -5,12 +5,11 @@ import json
 import logging
 
 import pandas as pd
-import requests
 import yfinance as yf
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +29,7 @@ def get_ark_trades_by_ticker(symbol: str) -> pd.DataFrame:
         DataFrame of trades
     """
     url = f"https://cathiesark.com/ark-combined-holdings-of-{symbol}"
-    r = requests.get(url, headers={"User-Agent": get_user_agent()})
+    r = request(url, headers={"User-Agent": get_user_agent()})
     # Error in request
     if r.status_code != 200:
         return pd.DataFrame()
@@ -61,6 +60,7 @@ def get_ark_trades_by_ticker(symbol: str) -> pd.DataFrame:
         end=df_orders.Date.iloc[0],
         start=df_orders.Date.iloc[-1],
         progress=False,
+        ignore_tz=True,
     )["Close"]
 
     df_orders.set_index("Date", inplace=True)

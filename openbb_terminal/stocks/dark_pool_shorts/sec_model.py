@@ -4,13 +4,13 @@ __docformat__ = "numpy"
 import logging
 from datetime import datetime, timedelta
 from typing import Optional
+from urllib.error import HTTPError
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 logger = logging.getLogger(__name__)
 
@@ -96,7 +96,7 @@ def get_fails_to_deliver(
     if limit > 0:
         url_ftds = "https://www.sec.gov/data/foiadocsfailsdatahtm"
         text_soup_ftds = BeautifulSoup(
-            requests.get(url_ftds, headers={"User-Agent": get_user_agent()}).text,
+            request(url_ftds, headers={"User-Agent": get_user_agent()}).text,
             "lxml",
         )
 
@@ -170,16 +170,20 @@ def get_fails_to_deliver(
         ftd_urls = catching_diff_url_formats(ftd_urls)
 
         for ftd_link in ftd_urls:
-            all_ftds = pd.read_csv(
-                ftd_link,
-                compression="zip",
-                sep="|",
-                engine="python",
-                skipfooter=2,
-                usecols=[0, 2, 3, 5],
-                dtype={"QUANTITY (FAILS)": "Int64"},
-                encoding="iso8859",
-            )
+            try:
+                all_ftds = pd.read_csv(
+                    ftd_link,
+                    compression="zip",
+                    sep="|",
+                    engine="python",
+                    skipfooter=2,
+                    usecols=[0, 2, 3, 5],
+                    dtype={"QUANTITY (FAILS)": "Int64"},
+                    encoding="iso8859",
+                )
+            except HTTPError:
+                continue
+
             tmp_ftds = all_ftds[all_ftds["SYMBOL"] == symbol]
             del tmp_ftds["PRICE"]
             del tmp_ftds["SYMBOL"]

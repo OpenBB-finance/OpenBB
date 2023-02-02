@@ -52,7 +52,7 @@ def display_overview(symbol: str):
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_key(symbol: str, export: str = ""):
+def display_key(symbol: str, export: str = "", sheet_name: str = None):
     """Alpha Vantage key metrics
 
     Parameters
@@ -69,7 +69,13 @@ def display_key(symbol: str, export: str = ""):
         df_key, headers=[""], title=f"{symbol} Key Metrics", show_index=True
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "key", df_key)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "key",
+        df_key,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -81,6 +87,7 @@ def display_income_statement(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Alpha Vantage income statement
 
@@ -96,6 +103,8 @@ def display_income_statement(
         Shows percentage change, by default False
     plot: list
         List of row labels to plot
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -151,7 +160,13 @@ def display_income_statement(
             show_index=True,
         )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", df_income)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "income",
+        df_income,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -163,6 +178,7 @@ def display_balance_sheet(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Alpha Vantage balance sheet statement
 
@@ -178,6 +194,8 @@ def display_balance_sheet(
         Shows percentage change, by default False
     plot: list
         List of row labels to plot
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -221,7 +239,6 @@ def display_balance_sheet(
             fig.autofmt_xdate()
 
     else:
-
         indexes = df_balance.index
         new_indexes = [camel_case_split(ind) for ind in indexes]
         df_balance.index = new_indexes
@@ -236,7 +253,11 @@ def display_balance_sheet(
         )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "balance", df_balance
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "balance",
+        df_balance,
+        sheet_name,
     )
 
 
@@ -249,6 +270,7 @@ def display_cash_flow(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Alpha Vantage income statement
 
@@ -264,6 +286,8 @@ def display_cash_flow(
         Shows percentage change, by default False
     plot: list
         List of row labels to plot
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -305,7 +329,6 @@ def display_cash_flow(
             fig.autofmt_xdate()
 
     else:
-
         indexes = df_cash.index
         new_indexes = [camel_case_split(ind) for ind in indexes]
         df_cash.index = new_indexes
@@ -319,13 +342,23 @@ def display_cash_flow(
             show_index=True,
         )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", df_cash)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cash",
+        df_cash,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_earnings(
-    symbol: str, limit: int = 5, quarterly: bool = False, export: str = ""
+    symbol: str,
+    limit: int = 5,
+    quarterly: bool = False,
+    export: str = "",
+    sheet_name: str = None,
 ):
     """Alpha Vantage earnings
 
@@ -337,6 +370,8 @@ def display_earnings(
         Number of events to show
     quarterly: bool
         Flag to show quarterly instead of annual
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -352,7 +387,13 @@ def display_earnings(
         title=f"{symbol} Earnings",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "earnings", df_fa)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "earnings",
+        df_fa,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -360,6 +401,7 @@ def display_earnings(
 def display_fraud(
     symbol: str,
     export: str = "",
+    sheet_name: str = None,
     help_text: bool = False,
     color: bool = True,
     detail: bool = False,
@@ -409,7 +451,13 @@ A mckee less than 0.5 indicates a high risk of fraud.
 
     if help_text:
         console.print(help_message)
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dupont", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "dupont",
+        df,
+        sheet_name,
+    )
     return
 
 
@@ -419,6 +467,7 @@ def display_dupont(
     symbol: str,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Shows the extended dupont ratio
@@ -457,4 +506,10 @@ def display_dupont(
     if not external_axes:
         theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dupont", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "dupont",
+        df,
+        sheet_name,
+    )

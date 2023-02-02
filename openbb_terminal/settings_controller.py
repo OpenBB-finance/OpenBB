@@ -153,7 +153,7 @@ class SettingsController(BaseController):
     def call_dt(self, _):
         """Process dt command"""
         obbff.USE_DATETIME = not obbff.USE_DATETIME
-        set_key(obbff.USER_ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
+        set_key(USER_ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
 
     @log_start_end(log=logger)
     def call_source(self, other_args: List[str]):
@@ -177,7 +177,6 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             try:
-
                 the_path = os.getcwd() + os.path.sep + ns_parser.value
                 console.print("Loading sources from " + the_path)
                 with open(the_path):
@@ -189,7 +188,7 @@ class SettingsController(BaseController):
                 console.print(e)
             obbff.PREFERRED_DATA_SOURCE_FILE = ns_parser.value
             set_key(
-                obbff.USER_ENV_FILE,
+                USER_ENV_FILE,
                 "OPENBB_PREFERRED_DATA_SOURCE_FILE",
                 str(ns_parser.value),
             )
@@ -199,7 +198,7 @@ class SettingsController(BaseController):
         """Process autoscaling command"""
         obbff.USE_PLOT_AUTOSCALING = not obbff.USE_PLOT_AUTOSCALING
         set_key(
-            obbff.USER_ENV_FILE,
+            USER_ENV_FILE,
             "OPENBB_USE_PLOT_AUTOSCALING",
             str(obbff.USE_PLOT_AUTOSCALING),
         )
@@ -225,7 +224,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.value:
-            set_key(obbff.USER_ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
+            set_key(USER_ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
             cfg_plot.PLOT_DPI = ns_parser.value
 
     @log_start_end(log=logger)
@@ -249,7 +248,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(obbff.USER_ENV_FILE, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
+            set_key(USER_ENV_FILE, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
             cfg_plot.PLOT_HEIGHT = ns_parser.value
 
     @log_start_end(log=logger)
@@ -273,7 +272,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(obbff.USER_ENV_FILE, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
+            set_key(USER_ENV_FILE, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
             cfg_plot.PLOT_WIDTH = ns_parser.value
 
     @log_start_end(log=logger)
@@ -297,7 +296,7 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(
-                obbff.USER_ENV_FILE,
+                USER_ENV_FILE,
                 "OPENBB_PLOT_HEIGHT_PERCENTAGE",
                 str(ns_parser.value),
             )
@@ -324,7 +323,7 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(
-                obbff.USER_ENV_FILE,
+                USER_ENV_FILE,
                 "OPENBB_PLOT_WIDTH_PERCENTAGE",
                 str(ns_parser.value),
             )
@@ -350,7 +349,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(obbff.USER_ENV_FILE, "OPENBB_MONITOR", str(ns_parser.value))
+            set_key(USER_ENV_FILE, "OPENBB_MONITOR", str(ns_parser.value))
             cfg_plot.MONITOR = ns_parser.value
 
     @log_start_end(log=logger)
@@ -373,7 +372,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(obbff.USER_ENV_FILE, "OPENBB_BACKEND", str(ns_parser.value))
+            set_key(USER_ENV_FILE, "OPENBB_BACKEND", str(ns_parser.value))
             if ns_parser.value == "None":
                 cfg_plot.BACKEND = None  # type: ignore
             else:
@@ -402,9 +401,7 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             if ns_parser.value:
-                set_key(
-                    obbff.USER_ENV_FILE, "OPENBB_USE_LANGUAGE", str(ns_parser.value)
-                )
+                set_key(USER_ENV_FILE, "OPENBB_USE_LANGUAGE", str(ns_parser.value))
                 obbff.USE_LANGUAGE = ns_parser.value
             else:
                 console.print(
@@ -462,7 +459,7 @@ class SettingsController(BaseController):
                 ns_parser.emoji = ""
             else:
                 ns_parser.emoji = " ".join(ns_parser.emoji)
-            set_key(obbff.USER_ENV_FILE, "OPENBB_USE_FLAIR", str(ns_parser.emoji))
+            set_key(USER_ENV_FILE, "OPENBB_USE_FLAIR", str(ns_parser.emoji))
             obbff.USE_FLAIR = ns_parser.emoji
 
     @log_start_end(log=logger)
@@ -547,7 +544,7 @@ class SettingsController(BaseController):
                             else:
                                 # Do not update userdata_folder path since we will keep the same as before
                                 console.print(
-                                    "[yellow]User data to keep being saved in"
+                                    "[yellow]User data to keep being saved in "
                                     + f"the selected folder: {str(USER_DATA_DIRECTORY)}[/yellow]"
                                 )
                             success_userdata = True

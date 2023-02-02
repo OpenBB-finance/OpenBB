@@ -3,20 +3,20 @@
 [yellow]Warning[/yellow]: We noticed Jim Crammer recommendation data has not been updated for a while, and we're investigating on finding a replacement.
         
                       Company Symbol   Price  LastPrice  Change (%) Recommendation InverseCramer
-0          Applied Materials    AMAT   97.42     108.04        9.83            Buy          Sell
-1    AMN Healthcare Services     AMN  103.32     112.63        8.27            Buy          Sell
-2                    Alibaba    BABA  108.03     114.88        5.96           Sell           Buy
-3                 Dutch Bros    BROS   34.17      32.72       -4.43            Buy          Sell
-4                Chargepoint    CHPT   13.36      10.08      -32.54           Sell           Buy
-5           Cleveland-Cliffs     CLF   18.05      18.81        4.04           Sell           Buy
-6                 Ford Motor       F   12.27      12.84        4.44            Buy          Sell
-7                  Eli Lilly     LLY  292.99     352.75       16.94            Buy          Sell
-8             Meta Platforms    META  169.35     132.99      -27.34            Buy          Sell
-9   Medical Properties Trust     MPW   14.99      12.49      -20.02            Buy          Sell
-10                     Nucor     NUE  116.46     151.16       22.96            Buy          Sell
-11            Planet Fitness    PLNT   64.42      83.05       22.43            Buy          Sell
-12                  Prothena    PRTA   23.68      53.29       55.56           Sell           Buy
-13         SoFi Technologies    SOFI    5.94       5.12      -16.02            Buy          Sell
-14             Toll Brothers     TOL   44.38      53.91       17.68            Buy          Sell
-15     Woodside Energy Group     WDS   22.11      24.36        9.24            Buy          Sell
-16                 Whirlpool     WHR  155.52     154.70       -0.53            Buy          Sell
+0          Applied Materials    AMAT   97.42     109.65       11.15            Buy          Sell
+1    AMN Healthcare Services     AMN  103.32      99.14       -4.22            Buy          Sell
+2                    Alibaba    BABA  108.03     119.86        9.87           Sell           Buy
+3                 Dutch Bros    BROS   34.17      34.00       -0.50            Buy          Sell
+4                Chargepoint    CHPT   13.36      11.09      -20.47           Sell           Buy
+5           Cleveland-Cliffs     CLF   18.05      20.97       13.92           Sell           Buy
+6                 Ford Motor       F   12.27      12.40        1.05            Buy          Sell
+7                  Eli Lilly     LLY  292.99     346.07       15.34            Buy          Sell
+8             Meta Platforms    META  169.35     139.37      -21.51            Buy          Sell
+9   Medical Properties Trust     MPW   14.99      13.72       -9.26            Buy          Sell
+10                     Nucor     NUE  116.46     153.47       24.12            Buy          Sell
+11            Planet Fitness    PLNT   64.42      79.22       18.68            Buy          Sell
+12                  Prothena    PRTA   23.68      54.56       56.60           Sell           Buy
+13         SoFi Technologies    SOFI    5.94       5.67       -4.76            Buy          Sell
+14             Toll Brothers     TOL   44.38      55.86       20.55            Buy          Sell
+15     Woodside Energy Group     WDS   22.11      25.98       14.90            Buy          Sell
+16                 Whirlpool     WHR  155.52     150.82       -3.12            Buy          Sell
