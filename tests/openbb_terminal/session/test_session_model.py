@@ -33,14 +33,13 @@ TEST_SESSION = {
     ],
 )
 def test_create_session(email, password, save):
-    with patch(
-        "openbb_terminal.session.session_model.Hub.get_session"
-    ) as mock_get_session:
+    path = "openbb_terminal.session.session_model."
+    with (
+        patch(path + "Hub.get_session") as mock_get_session,
+        patch(path + "Local.save_session") as mock_save_session,
+    ):
         mock_get_session.return_value = TEST_SESSION
-        with patch(
-            "openbb_terminal.session.session_model.Local.save_session"
-        ) as mock_save_session:
-            session = session_model.create_session(email, password, save)
+        session = session_model.create_session(email, password, save)
 
     assert session == TEST_SESSION
 
