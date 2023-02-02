@@ -6,6 +6,7 @@ import os
 
 from pandas.plotting import register_matplotlib_converters
 
+from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
 )
@@ -34,6 +35,7 @@ COINS_COLUMNS = [
 @log_start_end(log=logger)
 def display_coins(
     category: str,
+    interactive: bool = False,
     limit: int = 250,
     sortby: str = "Symbol",
     export: str = "",
@@ -78,6 +80,8 @@ def display_coins(
             axis=1,
             copy=True,
         )
+        if interactive:
+            plots_backend().send_table(df, title="Top Coins")
         for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))

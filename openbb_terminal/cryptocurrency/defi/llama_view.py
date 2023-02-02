@@ -107,8 +107,8 @@ def display_defi_protocols(
 
     if interactive:
         plots_backend().send_table(df, title="DeFi Protocols")
-
-    print_rich_table(df.head(limit), headers=list(df.columns), show_index=False)
+    else:
+        print_rich_table(df.head(limit), headers=list(df.columns), show_index=False)
 
     export_data(
         export,

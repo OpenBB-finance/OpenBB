@@ -122,10 +122,6 @@ class Backend(PyWry):
         """
         self.check_backend()
 
-        # we get the dtypes of the columns and create a "types" column
-        # this is used to display the correct type in the table
-        df_table["types"] = df_table.dtypes.astype(str)
-
         self.outgoing.append(
             json.dumps(
                 {

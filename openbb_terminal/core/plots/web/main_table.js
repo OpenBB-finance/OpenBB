@@ -3,17 +3,17 @@ function TableProcessor(data) {
   console.log(parsedData);
   const processedData = processData(parsedData);
   console.log(processedData);
+  const body = document.getElementsByTagName("body")[0];
   const table = new Tabulator("#example-table", {
-    height: "311px",
+    height: body.clientHeight - 54,
     layout: "fitColumns",
     data: processedData.data,
     columns: processedData.columns,
   });
 
-  const body = document.getElementsByTagName("body")[0];
   const div = document.createElement("div");
   div.innerHTML = `
-    <div>
+    <div style="margin-top:10px;">
   <select id="filter-field">
     <option></option>
     ${processedData.columns.map((column) => {
@@ -91,8 +91,18 @@ function processData(data) {
     return {
       title: column,
       field: column,
-      // figure out the fucking Type
-      sorter: column.startsWith("Change"),
+      sorter: column.includes("Change"),
+      /*formatter: (cell) => {
+        if (column.startsWith("Change")) {
+          if (cell.getValue() > 0) {
+            return `<span style="color: green">${cell.getValue()}</span>`;
+          } else {
+            return `<span style="color: red">${cell.getValue()}</span>`;
+          }
+        } else {
+          return cell.getValue();
+        }
+      },*/
     };
   });
   const finalData = data.data.map((row) => {
