@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import List, Union, Optional, Dict, Tuple
 from functools import lru_cache
 from datetime import datetime, timedelta, timezone
+from dateutil.relativedelta import relativedelta
 from datetime import date as d
 import types
 from collections.abc import Iterable
@@ -82,13 +83,10 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 NEWS_TWEET = ""
-LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now() - timedelta(hours=1)
+LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now(pytz.utc) - timedelta(hours=1)
 
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
-
-NEWS_TWEET = ""
-LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now() - timedelta(hours=1)
 
 # pylint: disable=R1702,R0912
 
@@ -1986,10 +1984,24 @@ def update_news_from_tweet_to_be_displayed() -> str:
 
     # Check whether it has passed a certain amount of time since the last news update
     if (
-        datetime.now() - LAST_TWEET_NEWS_UPDATE_CHECK_TIME
+        datetime.now(pytz.utc) - LAST_TWEET_NEWS_UPDATE_CHECK_TIME
     ).seconds > obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES:
         # This doesn't depende on the time of the tweet but the time that the check was made
-        LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now()
+        LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now(pytz.utc)
+
+        dhours = 0
+        dminutes = 0
+        # Get timezone that corresponds to the user
+        if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+            utcnow = pytz.timezone("utc").localize(datetime.utcnow())  # generic time
+            here = utcnow.astimezone(pytz.timezone("Etc/UTC")).replace(tzinfo=None)
+            there = utcnow.astimezone(pytz.timezone(get_user_timezone())).replace(
+                tzinfo=None
+            )
+
+            offset = relativedelta(here, there)
+            dhours = offset.hours
+            dminutes = offset.minutes
 
         if "," in obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK:
             news_sources_twitter_handles = (
@@ -2018,6 +2030,7 @@ def update_news_from_tweet_to_be_displayed() -> str:
                         if last_tweet.created_at > last_tweet_dt:
                             handle_to_use = handle
                             last_tweet_dt = last_tweet.created_at
+
                             news_tweet_to_use = last_tweet.text.replace(
                                 "JUST IN: ", ""
                             ).replace("BREAKING: ", "")
@@ -2033,8 +2046,19 @@ def update_news_from_tweet_to_be_displayed() -> str:
 
         if news_tweet_to_use:
             global NEWS_TWEET
+
+            tweet_hr = last_tweet_dt.hour
+            tweet_min = last_tweet_dt.minute
+            # Update time based on timezone specified by user
+            if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+                if dhours > 0 or dminutes > 0:
+                    tweet_hr = f"{round((int(last_tweet_dt.hour) - dhours) % 60):02}"
+                    tweet_min = (
+                        f"{round((int(last_tweet_dt.minute) - dminutes) % 60):02}"
+                    )
+
             # Update NEWS_TWEET with the new news tweet found
-            NEWS_TWEET = f"{last_tweet_dt.hour}:{last_tweet_dt.hour} - @{handle_to_use} - {url}\n\n{news_tweet_to_use}"
+            NEWS_TWEET = f"{tweet_hr}:{tweet_min} - @{handle_to_use} - {url}\n\n{news_tweet_to_use}"
 
     return NEWS_TWEET
 
