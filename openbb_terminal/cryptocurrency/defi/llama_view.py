@@ -77,6 +77,7 @@ def display_grouped_defi_protocols(
 @log_start_end(log=logger)
 def display_defi_protocols(
     sortby: str,
+    interactive: bool = False,
     limit: int = 20,
     ascend: bool = False,
     description: bool = False,
@@ -88,6 +89,8 @@ def display_defi_protocols(
 
     Parameters
     ----------
+    interactive: bool
+        Flag to display interactive table
     limit: int
         Number of records to display
     sortby: str
@@ -102,7 +105,8 @@ def display_defi_protocols(
 
     df = llama_model.get_defi_protocols(limit, sortby, ascend, description)
 
-    plots_backend().send_table(df, title="DeFi Protocols")
+    if interactive:
+        plots_backend().send_table(df, title="DeFi Protocols")
 
     print_rich_table(df.head(limit), headers=list(df.columns), show_index=False)
 

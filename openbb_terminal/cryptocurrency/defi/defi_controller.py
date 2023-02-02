@@ -452,6 +452,16 @@ class DefiController(BaseController):
                 "Only works when raw data is displayed."
             ),
         )
+
+        parser.add_argument(
+            "-i",
+            "--interactive",
+            action="store_true",
+            dest="interactive",
+            default=False,
+            help=("Show interactive table"),
+        )
+
         parser.add_argument(
             "--desc",
             action="store_true",
@@ -464,6 +474,7 @@ class DefiController(BaseController):
         )
         if ns_parser:
             llama_view.display_defi_protocols(
+                interactive=ns_parser.interactive,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
