@@ -119,8 +119,8 @@ class FundController(BaseController):
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        if self.fund_symbol:
-            return ["funds", f"load {self.fund_symbol}"]
+        if self.fund_symbol and self.country:
+            return ["funds", f"country {self.country}", f"load {self.fund_symbol}"]
         return []
 
     @log_start_end(log=logger)
