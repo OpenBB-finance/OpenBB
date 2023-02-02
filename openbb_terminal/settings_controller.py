@@ -143,6 +143,7 @@ class SettingsController(BaseController):
             mt.add_param("_tbnu", obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES)
             mt.add_param("_nttli", obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ)
             mt.add_param("_tatt", obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK)
+            mt.add_param("_tk", obbff.TOOLBAR_TWEET_NEWS_KEYWORDS)
         console.print(text=mt.menu_text, menu="Settings")
 
     @log_start_end(log=logger)
@@ -601,6 +602,16 @@ class SettingsController(BaseController):
             "For instance: 'WatcherGuru,unusual_whales,gurgavin'",
         )
         parser.add_argument(
+            "-k",
+            "--keywords",
+            type=str,
+            required=False,
+            dest="keywords",
+            nargs="+",
+            help="Keywords to look for, separated by commmas."
+            "For instance: 'Just In, Breaking'",
+        )
+        parser.add_argument(
             "-n",
             "--number",
             type=check_positive,
@@ -632,4 +643,12 @@ class SettingsController(BaseController):
                     USER_ENV_FILE,
                     "OPENBB_TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK",
                     str(ns_parser.accounts),
+                )
+
+            if ns_parser.keywords:
+                obbff.TOOLBAR_TWEET_NEWS_KEYWORDS = " ".join(ns_parser.keywords)
+                set_key(
+                    USER_ENV_FILE,
+                    "OPENBB_TOOLBAR_TWEET_NEWS_KEYWORDS",
+                    str(" ".join(ns_parser.keywords)),
                 )

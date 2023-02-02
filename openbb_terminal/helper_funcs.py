@@ -2023,17 +2023,21 @@ def update_news_from_tweet_to_be_displayed() -> str:
                     screen_name=handle,
                     count=obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
                 )[: obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ]:
-                    # Check if the tweet contains "JUST IN:" or "BREAKING:"
-                    if "JUST IN" in last_tweet.text or "BREAKING" in last_tweet.text:
+
+                    if "," in obbff.TOOLBAR_TWEET_NEWS_KEYWORDS:
+                        keywords = obbff.TOOLBAR_TWEET_NEWS_KEYWORDS.split(",")
+                    else:
+                        keywords = [obbff.TOOLBAR_TWEET_NEWS_KEYWORDS]
+
+                    # Check if the tweet contains a keywords
+                    if bool([key for key in keywords if key in last_tweet.text]):
                         # Check if the tweet is newer than the last one
                         # we want to grab the most recent one
                         if last_tweet.created_at > last_tweet_dt:
                             handle_to_use = handle
                             last_tweet_dt = last_tweet.created_at
 
-                            news_tweet_to_use = last_tweet.text.replace(
-                                "JUST IN: ", ""
-                            ).replace("BREAKING: ", "")
+                            news_tweet_to_use = last_tweet.text
 
                             # Get url associated with tweet
                             # Twitter has a weird API where the you just need the id of the tweet

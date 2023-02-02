@@ -140,6 +140,15 @@ TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK = load_env_vars(
     "settings",
 )
 
+# Toolbar Twitter news keywords to look for
+TOOLBAR_TWEET_NEWS_KEYWORDS = load_env_vars(
+    "OPENBB_TOOLBAR_TWEET_NEWS_KEYWORDS",
+    str,
+    "BREAKING,JUST IN",
+    "settings",
+)
+
+
 # Toolbar Twitter news number of last tweets to read
 TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ = load_env_vars(
     "OPENBB_TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ", int, 3, "settings"
