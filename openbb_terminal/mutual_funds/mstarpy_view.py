@@ -70,24 +70,25 @@ def display_historical(
     loaded_funds: mstarpy.funds
         class mstarpy.Funds instantiated with selected funds
     """
-
+    start_date = datetime.strptime(start_date,"%Y-%m-%d")
+    end_date = datetime.strptime(end_date,"%Y-%m-%d")
     title = f"Performance of {loaded_funds.name}"
-    data = loaded_funds.historicalData()
+    
     if not comparison:
+        data = loaded_funds.nav(start_date,end_date,frequency="daily")
         fig, ax = plt.subplots(figsize=(10, 10))
         ax.set_xlabel("Date")
-        ax.set_ylabel("Price")
-        df = pd.DataFrame(data["graphData"]["fund"])
+        ax.set_ylabel("Nav")
+        df = pd.DataFrame(data)
         df["date"] = pd.to_datetime(df["date"])
-        df = df.loc[(df["date"] >= start_date) & (df["date"] <= end_date)]
-
-        ax.plot(df.date, df.value, label=loaded_funds.name)
+        ax.plot(df.date, df.nav, label=loaded_funds.name)
         ax.legend(loc="best")
         ax.set_title(title)
         ax.tick_params(axis="x", rotation=45)
         fig.tight_layout(pad=2)
 
     else:
+        data = loaded_funds.historicalData()
         comparison_list = {
             "index": [
                 "fund",
