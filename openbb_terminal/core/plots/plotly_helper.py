@@ -760,6 +760,8 @@ class OpenBBFigure(go.Figure):
         if external:
             return self
 
+        png_path = kwargs.pop("png_path", "")
+
         if kwargs.pop("margin", True):
             self._adjust_margins()
         self._apply_feature_flags()
@@ -787,7 +789,7 @@ class OpenBBFigure(go.Figure):
         if plots_backend().isatty:
             try:
                 # We send the figure to the backend to be displayed
-                return plots_backend().send_figure(self)
+                return plots_backend().send_figure(self, png_path=png_path)
             except Exception:
                 # If the backend fails, we just show the figure normally
                 # This is a very rare case, but it's better to have a fallback

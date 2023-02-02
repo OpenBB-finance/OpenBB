@@ -78,7 +78,7 @@ class Backend(PyWry):
             return str(icon_path)
         return ""
 
-    def send_figure(self, fig: go.Figure):
+    def send_figure(self, fig: go.Figure, png_path: str = ""):
         """Send a Plotly figure to the backend
 
         Parameters
@@ -95,6 +95,7 @@ class Backend(PyWry):
                 {
                     "html_path": self.get_plotly_html(),
                     "plotly": json.loads(fig.to_json()),
+                    "png_path": png_path,
                     **self.get_kwargs(title),
                 }
             )
