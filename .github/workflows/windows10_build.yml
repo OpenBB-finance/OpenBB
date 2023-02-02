@@ -35,12 +35,9 @@ jobs:
 
       - name: Create and start virtual environment
         run: |
-          python -m venv venv
+          python -m venv venv --system-site-packages --upgrade-deps
           source venv/Scripts/activate
-          python -m pip install --upgrade pip
-          python -m pip install poetry==1.1.13
-          python -m pip install setuptools==64.0.2 wheel
-          python -m pip install charset_normalizer==2.1.1
+          python -m pip install poetry --no-cache-dir --exists-action w
           python -m poetry install -E installer -E all
           python -m pip uninstall papermill -y
           python -m pip install git+https://github.com/nteract/papermill.git@main
