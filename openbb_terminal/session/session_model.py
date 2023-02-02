@@ -49,7 +49,7 @@ def login(session: dict) -> LoginStatus:
         The session info.
     """
     response = Hub.fetch_user_configs(session)
-    if response:
+    if response is not None:
         if response.status_code == 200:
             configs = json.loads(response.content)
             email = configs.get("email", "")
