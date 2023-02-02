@@ -69,7 +69,7 @@ class FundController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        self.country = ""
+        self.country = "united_states"
         self.funds_loaded = None
         self.fund_name = ""
         self.fund_symbol = ""
