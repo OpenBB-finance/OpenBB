@@ -6,6 +6,7 @@ on:
       - feature/deploy-to-pypi
       - release/*
       - main
+
   workflow_dispatch:
 
 jobs:
