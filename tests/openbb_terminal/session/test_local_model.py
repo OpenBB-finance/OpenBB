@@ -29,8 +29,17 @@ def test_get_session():
         "uuid": "test_uuid",
     }
     open_mock = mock_open(read_data=json.dumps(data))
-    with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
-        assert local_model.get_session() == data
+    with patch("openbb_terminal.session.local_model.os.path") as path_mock:
+        with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
+            assert local_model.get_session() == data
 
+    path_mock.isfile.assert_called_with(local_model.SESSION_FILE_PATH)
     open_mock.assert_called_with(local_model.SESSION_FILE_PATH)
     open_mock.return_value.read.assert_called_once()
+
+
+def test_remove_session_file():
+    with patch("openbb_terminal.session.local_model.os") as os_mock:
+        local_model.remove_session_file()
+
+    os_mock.remove.assert_called_with(local_model.SESSION_FILE_PATH)
