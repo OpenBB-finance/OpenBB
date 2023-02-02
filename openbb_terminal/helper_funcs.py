@@ -2023,7 +2023,6 @@ def update_news_from_tweet_to_be_displayed() -> str:
                     screen_name=handle,
                     count=obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
                 )[: obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ]:
-
                     if "," in obbff.TOOLBAR_TWEET_NEWS_KEYWORDS:
                         keywords = obbff.TOOLBAR_TWEET_NEWS_KEYWORDS.split(",")
                     else:
