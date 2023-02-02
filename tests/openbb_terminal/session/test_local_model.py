@@ -9,7 +9,7 @@ from unittest.mock import patch, mock_open
 # IMPORTATION INTERNAL
 from openbb_terminal.session import local_model
 
-TEST_DATA = {
+TEST_SESSION = {
     "access_token": "test_token",
     "token_type": "bearer",
     "uuid": "test_uuid",
@@ -19,10 +19,10 @@ TEST_DATA = {
 def test_save_session():
     open_mock = mock_open()
     with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
-        local_model.save_session(data=TEST_DATA)
+        local_model.save_session(data=TEST_SESSION)
 
     open_mock.assert_called_with(local_model.SESSION_FILE_PATH, "w")
-    open_mock.return_value.write.assert_called_once_with(json.dumps(TEST_DATA))
+    open_mock.return_value.write.assert_called_once_with(json.dumps(TEST_SESSION))
 
 
 @pytest.mark.record_stdout
@@ -30,17 +30,17 @@ def test_save_session_exception():
     open_mock = mock_open()
     with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
         open_mock.side_effect = Exception
-        local_model.save_session(data=TEST_DATA)
+        local_model.save_session(data=TEST_SESSION)
 
     open_mock.assert_called_with(local_model.SESSION_FILE_PATH, "w")
     open_mock.return_value.write.assert_not_called()
 
 
 def test_get_session():
-    open_mock = mock_open(read_data=json.dumps(TEST_DATA))
+    open_mock = mock_open(read_data=json.dumps(TEST_SESSION))
     with patch("openbb_terminal.session.local_model.os.path") as path_mock:
         with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
-            assert local_model.get_session() == TEST_DATA
+            assert local_model.get_session() == TEST_SESSION
 
     path_mock.isfile.assert_called_with(local_model.SESSION_FILE_PATH)
     open_mock.assert_called_with(local_model.SESSION_FILE_PATH)

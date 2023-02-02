@@ -36,13 +36,13 @@ def create_session(
         }
         return requests.post(url=base_url + "login", json=data, timeout=timeout)
     except requests.exceptions.ConnectionError:
-        console.print("[red]\nConnection error.[/red]")
+        console.print("\n[red]Connection error.[/red]")
         return None
     except requests.exceptions.Timeout:
-        console.print("[red]\nConnection timeout.[/red]")
+        console.print("\n[red]Connection timeout.[/red]")
         return None
     except Exception:
-        console.print("[red]\nFailed to request login info.[/red]")
+        console.print("\n[red]Failed to request login info.[/red]")
         return None
 
 
@@ -105,12 +105,12 @@ def process_session_response(response: requests.Response) -> dict:
         login = response.json()
         return login
     if response.status_code == 401:
-        console.print("[red]\nWrong credentials.[/red]")
+        console.print("\n[red]Wrong credentials.[/red]")
         return {}
     if response.status_code == 403:
-        console.print("[red]\nUnverified email.[/red]")
+        console.print("\n[red]Unverified email.[/red]")
         return {}
-    console.print("[red]\nFailed to login.[/red]")
+    console.print("\n[red]Failed to login.[/red]")
     return {}
 
 
