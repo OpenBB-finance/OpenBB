@@ -1147,6 +1147,11 @@ class EconomyController(BaseController):
                     console.print(name)
                 return
 
+            if ns_parser.names:
+                for name in nasdaq_model.get_country_names():
+                    console.print(name)
+                return
+
             if ns_parser.start_date:
                 start_date = ns_parser.start_date.strftime("%Y-%m-%d")
             else:
