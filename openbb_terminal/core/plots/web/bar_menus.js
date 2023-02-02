@@ -168,7 +168,8 @@ function downloadImage() {
       image: url,
     };
 
-    fetch("https://uppy-self.vercel.app/api/upload-image", {
+    fetch("/api/upload-image", {
+      //TODO: change to hosting server
       method: "POST",
       headers: {
         "Content-Type": "application/json",

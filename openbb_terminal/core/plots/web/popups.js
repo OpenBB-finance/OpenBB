@@ -139,9 +139,18 @@ function get_popup(data = null, popup_id = null) {
   } else if (popup_id == "upload") {
     TEXT_DIV.style.display = "inline-block";
     TEXT_DIV.innerHTML = `
-    <div style="margin-bottom: 20px;">
-      EXPORTTT
-      <a href="${data.url}" target="_blank" rel="noreferrer noopener">${data.url}</a>
+    <div>
+      <p>Media preview (you can share it on twitter):</p>
+      <a style="margin-top: 10px;" href="${data.url}" target="_blank" rel="noreferrer noopener">${data.url}</a>
+      <div style="margin-top: 10px; float: right;">
+      <button onclick="closePopup()" style="margin-top: 10px;" class="_btn-tertiary">Close</button>
+      <a 
+      class="_btn"
+      href="https://twitter.com/intent/tweet?text=Check this chart from @openbb_finance - ${data.url}"
+      >Share</a>
+      <button onclick="navigator.clipboard.writeText('${data.url}')" style="margin-top: 10px;" class="_btn">Copy to clipboard</button>
+      </div>
+      </div>
       `;
     popup = TEXT_DIV;
     console.log("upload");
