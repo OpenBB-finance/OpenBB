@@ -123,15 +123,21 @@ class OptionsController(BaseController):
     PATH = "/stocks/options/"
     CHOICES_GENERATION = True
 
-    def __init__(self, ticker: str, queue: List[str] = None):
+    def __init__(
+        self,
+        ticker: str,
+        queue: List[str] = None,
+        full_chain: pd.DataFrame = None,
+        chain: pd.DataFrame = None,
+    ):
         """Constructor"""
         super().__init__(queue)
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
         self.selected_date = ""
-        self.chain: pd.DataFrame = pd.DataFrame()
-        self.full_chain: pd.DataFrame = pd.DataFrame()
+        self.chain: pd.DataFrame = chain if chain else pd.DataFrame()
+        self.full_chain: pd.DataFrame = full_chain if full_chain else pd.DataFrame()
         self.current_price = 0.0
         # Keeps track of initial source of load so we can use correct commands later
         self.source = ""
@@ -183,6 +189,9 @@ class OptionsController(BaseController):
 
         elif self.source == "Nasdaq":
             df = nasdaq_model.get_full_option_chain(self.ticker)
+
+        elif self.source == "Intrinio":
+            df = intrinio_model.get_full_option_chain(self.ticker)
 
         else:
             self.source = "YahooFinance"

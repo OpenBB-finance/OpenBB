@@ -220,6 +220,15 @@ class BaseController(metaclass=ABCMeta):
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
             return old_class.menu()
+        # Add another case so options data is saved
+        if (
+            class_ins.PATH == "/stocks/options/"
+            and obbff.REMEMBER_CONTEXTS
+            and "/stocks/options/" in controllers
+        ):
+            old_class = controllers[class_ins.PATH]
+            old_class.queue = self.queue
+            return old_class.menu()
         return class_ins(*args, **kwargs).menu()
 
     def save_class(self) -> None:

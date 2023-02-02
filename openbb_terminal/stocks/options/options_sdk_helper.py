@@ -12,7 +12,6 @@ from openbb_terminal.stocks.options import (
     chartexchange_model,
     intrinio_model,
     nasdaq_model,
-    op_helpers,
     tradier_model,
     yfinance_model,
     op_helpers,
@@ -98,10 +97,9 @@ def get_option_current_price(
         last_price = tradier_model.get_last_price(symbol)
         return last_price if last_price else 0.0
     if source == "Nasdaq":
-        # Nasdaq handles these slightly differently
-        if expiration:
-            return nasdaq_model.get_chain_given_expiration(symbol, expiration)
-        return nasdaq_model.get_full_option_chain(symbol)
+        return nasdaq_model.get_last_price(symbol)
+    if source == "YahooFinance":
+        return yfinance_model.get_last_price(symbol)
     logger.info("Invalid Source")
     return 0.0
 

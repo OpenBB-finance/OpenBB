@@ -18,9 +18,8 @@ logger = logging.getLogger(__name__)
 
 # pylint: disable=too-many-arguments
 
-logger = logging.getLogger(__name__)
 
-
+@log_start_end(log=logger)
 def get_strikes(
     min_sp: float, max_sp: float, current_price: float
 ) -> Tuple[float, float]:
