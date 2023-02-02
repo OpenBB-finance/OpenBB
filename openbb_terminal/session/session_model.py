@@ -91,25 +91,14 @@ def logout(
         if not auth_header or not token:
             return
 
-        r = Hub.delete_session(auth_header=auth_header, token=token)
+        r = Hub.delete_session(auth_header, token)
         if r and r.status_code != 200:
             success = False
     User.clear()
 
-    # Clear openbb environment variables
-    for v in os.environ:
-        if v.startswith("OPENBB"):
-            os.environ.pop(v)
-
-    # Remove the log handlers - needs to be done before reloading modules
-    for handler in logging.root.handlers[:]:
-        logging.root.removeHandler(handler)
-
-    # Reload all openbb modules to clear memorized variables
-    modules = sys.modules.copy()
-    for module in modules:
-        if module.startswith("openbb"):
-            importlib.reload(sys.modules[module])
+    clear_openbb_env_vars()
+    remove_log_handlers()
+    reload_openbb_modules()
 
     if not Local.remove_session_file():
         success = False
@@ -120,3 +109,24 @@ def logout(
 
     if success:
         console.print("[green]\nLogout successful.[/green]")
+
+
+def clear_openbb_env_vars():
+    """Clear openbb environment variables."""
+    for v in os.environ:
+        if v.startswith("OPENBB"):
+            os.environ.pop(v)
+
+
+def remove_log_handlers():
+    """Remove the log handlers - needs to be done before reloading modules."""
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
+
+
+def reload_openbb_modules():
+    """Reload all openbb modules to clear memorized variables."""
+    modules = sys.modules.copy()
+    for module in modules:
+        if module.startswith("openbb"):
+            importlib.reload(sys.modules[module])

@@ -42,40 +42,23 @@ def test_create_session(email, password, save):
             session = session_model.create_session(email, password, save)
 
     assert session == TEST_SESSION
+
     mock_get_session.assert_called_once_with(email, password)
     if save and session:
         mock_save_session.assert_called_once_with(session)
 
 
-@patch("openbb_terminal.session.session_model.Hub.fetch_user_configs")
-@patch("openbb_terminal.session.session_model.Local.apply_configs")
-@patch("openbb_terminal.session.session_model.User.load_user_info")
-@patch("openbb_terminal.session.session_model.User.update_flair")
-def test_login_no_response(
-    mock_update_flair, mock_load_user_info, mock_apply_configs, mock_fetch_user_configs
-):
+def test_login_no_response():
+    path = "openbb_terminal.session.session_model."
+    with (
+        patch(path + "Hub.fetch_user_configs") as mock_fetch_user_configs,
+        patch(path + "Local.apply_configs") as mock_apply_configs,
+        patch(path + "User.load_user_info") as mock_load_user_info,
+        patch(path + "User.update_flair") as mock_update_flair,
+    ):
+        mock_fetch_user_configs.return_value = None
 
-    mock_fetch_user_configs.return_value = None
-    assert session_model.login(TEST_SESSION) == session_model.LoginStatus.NO_RESPONSE
-
-    mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
-    mock_apply_configs.assert_not_called()
-    mock_load_user_info.assert_not_called()
-    mock_update_flair.assert_not_called()
-
-
-@patch("openbb_terminal.session.session_model.Hub.fetch_user_configs")
-@patch("openbb_terminal.session.session_model.Local.apply_configs")
-@patch("openbb_terminal.session.session_model.User.load_user_info")
-@patch("openbb_terminal.session.session_model.User.update_flair")
-def test_login_fail_response(
-    mock_update_flair, mock_load_user_info, mock_apply_configs, mock_fetch_user_configs
-):
-
-    response = Response()
-    response.status_code = 400
-    mock_fetch_user_configs.return_value = response
-    assert session_model.login(TEST_SESSION) == session_model.LoginStatus.FAILED
+        assert session_model.login(TEST_SESSION) == session_model.LoginStatus.NO_RESPONSE
 
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_not_called()
@@ -83,21 +66,75 @@ def test_login_fail_response(
     mock_update_flair.assert_not_called()
 
 
-@patch("openbb_terminal.session.session_model.Hub.fetch_user_configs")
-@patch("openbb_terminal.session.session_model.Local.apply_configs")
-@patch("openbb_terminal.session.session_model.User.load_user_info")
-@patch("openbb_terminal.session.session_model.User.update_flair")
-def test_login_success_response(
-    mock_update_flair, mock_load_user_info, mock_apply_configs, mock_fetch_user_configs
-):
+def test_login_fail_response():
+    path = "openbb_terminal.session.session_model."
+    with (
+        patch(path + "Hub.fetch_user_configs") as mock_fetch_user_configs,
+        patch(path + "Local.apply_configs") as mock_apply_configs,
+        patch(path + "User.load_user_info") as mock_load_user_info,
+        patch(path + "User.update_flair") as mock_update_flair,
+    ):
+        response = Response()
+        response.status_code = 400
+        mock_fetch_user_configs.return_value = response
 
-    response = Response()
-    response.status_code = 200
-    response._content = json.dumps(TEST_SESSION)  # pylint: disable=protected-access
-    mock_fetch_user_configs.return_value = response
-    assert session_model.login(TEST_SESSION) == session_model.LoginStatus.SUCCESS
+        assert session_model.login(TEST_SESSION) == session_model.LoginStatus.FAILED
+
+    mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
+    mock_apply_configs.assert_not_called()
+    mock_load_user_info.assert_not_called()
+    mock_update_flair.assert_not_called()
+
+
+def test_login_success_response():
+    path = "openbb_terminal.session.session_model."
+    with (
+        patch(path + "Hub.fetch_user_configs") as mock_fetch_user_configs,
+        patch(path + "Local.apply_configs") as mock_apply_configs,
+        patch(path + "User.load_user_info") as mock_load_user_info,
+        patch(path + "User.update_flair") as mock_update_flair,
+    ):
+        response = Response()
+        response.status_code = 200
+        response._content = json.dumps(TEST_SESSION)  # pylint: disable=protected-access
+        mock_fetch_user_configs.return_value = response
+
+        assert session_model.login(TEST_SESSION) == session_model.LoginStatus.SUCCESS
 
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_called_once()
     mock_load_user_info.assert_called_once()
     mock_update_flair.assert_called_once()
+
+
+@pytest.mark.parametrize(
+    "guest",
+    [
+        False,
+        True,
+    ],
+)
+def test_logout_user(guest):
+    path = "openbb_terminal.session.session_model."
+    with (
+        patch(path + "Hub.delete_session") as mock_delete_session,
+        patch(path + "Local.remove_session_file") as mock_remove_session_file,
+        patch(path + "Local.remove_cli_history_file") as mock_remove_cli_history_file,
+        patch(path + "reload_openbb_modules") as mock_reload_openbb_modules,
+        patch(path + "clear_openbb_env_vars") as mock_clear_openbb_env_vars,
+        patch(path + "User.clear") as mock_clear_user,
+        patch(path + "plt.close") as mock_plt_close,
+    ):
+
+        auth_header = "Bearer test_token"
+        token = "test_token"
+        session_model.logout(auth_header, token, guest)
+
+    if not guest:
+        mock_delete_session.assert_called_once_with(auth_header, token)
+    mock_clear_user.assert_called_once()
+    mock_clear_openbb_env_vars.assert_called_once()
+    mock_reload_openbb_modules.assert_called_once()
+    mock_remove_session_file.assert_called_once()
+    mock_remove_cli_history_file.assert_called_once()
+    mock_plt_close.assert_called_once()
