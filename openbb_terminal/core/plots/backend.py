@@ -134,7 +134,6 @@ class Backend(PyWry):
             )
         )
 
-    # pylint: disable=arguments-renamed
     def send_html(self, html_str: str = "", html_path: str = "", title: str = ""):
         """Send html to backend.
 
@@ -192,8 +191,9 @@ class Backend(PyWry):
 
     def del_temp(self):
         """Delete the temporary html file"""
-        if self.plotly_html.exists():
-            self.plotly_html.unlink(missing_ok=True)
+        for file in (self.plotly_html, self.table_html):
+            if file.exists():
+                file.unlink(missing_ok=True)
 
     def start(self, debug: bool = False):
         """Starts the backend WindowManager process"""

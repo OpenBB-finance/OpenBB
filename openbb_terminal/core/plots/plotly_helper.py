@@ -20,7 +20,9 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_DATA_DIRECTORY,
 )
-from openbb_terminal.core.plots.backend import plots_backend
+
+# noqa: F401 # pylint: disable=unused-import
+from openbb_terminal.core.plots.backend import PLOTLYJS_PATH, plots_backend
 from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_COLORWAY,
     PLT_DECREASING_COLORWAY,
@@ -128,7 +130,7 @@ class TerminalStyle:
         ----------
         style : str
             Name of the style to load
-        """ 
+        """
         if not style:
             style = self.plt_style
 
@@ -1335,5 +1337,5 @@ class OpenBBFigure(go.Figure):
                 col=col,
             )
             self.update_traces(showlegend=False)
-        except Exception:
+        except ValueError:
             pass
