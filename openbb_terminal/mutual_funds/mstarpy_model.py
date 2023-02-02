@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def load_carbon_metrics(loaded_funds: mstarpy.Funds):
+def load_carbon_metrics(loaded_funds: mstarpy.Funds) -> pd.DataFrame:
     """Search mstarpy for carbon metrics
 
     Parameters
@@ -26,7 +26,7 @@ def load_carbon_metrics(loaded_funds: mstarpy.Funds):
 
 
 @log_start_end(log=logger)
-def load_exclusion_policy(loaded_funds: mstarpy.Funds):
+def load_exclusion_policy(loaded_funds: mstarpy.Funds) -> pd.DataFrame:
     """Search mstarpy exclusion policy in esgData
 
     Parameters
@@ -40,7 +40,6 @@ def load_exclusion_policy(loaded_funds: mstarpy.Funds):
     """
     esgData = loaded_funds.esgData()
     if "sustainabilityIntentionality" in esgData:
-
         return pd.Series(
             esgData["sustainabilityIntentionality"], name="exclusionPolicy"
         ).reset_index()
@@ -51,7 +50,7 @@ def load_exclusion_policy(loaded_funds: mstarpy.Funds):
 def load_funds(
     term: str = "",
     country: str = "",
-):
+) -> mstarpy.Funds:
     """Search mstarpy for matching funds
 
     Parameters
@@ -69,7 +68,9 @@ def load_funds(
 
 
 @log_start_end(log=logger)
-def load_holdings(loaded_funds: mstarpy.Funds, holding_type: str = "all"):
+def load_holdings(
+    loaded_funds: mstarpy.Funds, holding_type: str = "all"
+) -> pd.DataFrame:
     """Search mstarpy for holdings
 
     Parameters
@@ -95,7 +96,7 @@ def search_funds(
     term: str = "",
     country: str = "",
     pageSize=10,
-):
+) -> pd.DataFrame:
     """Search mstarpy for matching funds
 
     Parameters
