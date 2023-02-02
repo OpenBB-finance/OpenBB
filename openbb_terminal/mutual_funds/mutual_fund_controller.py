@@ -75,9 +75,10 @@ class FundController(BaseController):
         self.funds_loaded = None
         self.fund_name = ""
         self.fund_symbol = ""
+        self.fund_isin = ""
         self.TRY_RELOAD = True
         self.end_date = datetime.today()
-        self.start_date = datetime.today() - timedelta(3650)
+        self.start_date = datetime.today() - timedelta(365)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
@@ -325,11 +326,22 @@ class FundController(BaseController):
             funds_loaded = mstarpy_view.display_load(
                 term=ns_parser.fund, country=self.country
             )
-            self.funds_loaded = funds_loaded
-            self.fund_name = funds_loaded.name
-            self.fund_symbol = funds_loaded.code
-            self.end_date = ns_parser.end.strftime("%Y-%m-%d")
-            self.start_date = ns_parser.start.strftime("%Y-%m-%d")
+
+            if funds_loaded:
+                self.funds_loaded = funds_loaded
+                self.fund_name = funds_loaded.name
+                self.fund_symbol = funds_loaded.code
+                self.fund_isin = funds_loaded.isin
+                self.end_date = ns_parser.end.strftime("%Y-%m-%d")
+                self.start_date = ns_parser.start.strftime("%Y-%m-%d")
+
+                console.print(
+                    f"The fund {self.fund_name} - {self.fund_isin} ({self.fund_symbol})"
+                    " was successfully loaded."
+                )
+
+            else:
+                console.print("No funds were loaded.")
         return self.queue
 
     @log_start_end(log=logger)

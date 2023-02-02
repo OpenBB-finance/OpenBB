@@ -1,4 +1,5 @@
 import logging
+from typing import Union
 
 from datetime import datetime
 import mstarpy
@@ -100,7 +101,6 @@ def display_historical(
         ax.set_ylabel("Performance (Base 100)")
 
         for x in comparison_list[comparison]:
-
             df = pd.DataFrame(data["graphData"][x])
             df["date"] = pd.to_datetime(df["date"])
             df = df.loc[(df["date"] >= start_date) & (df["date"] <= end_date)]
@@ -112,7 +112,6 @@ def display_historical(
             else:
                 key = f"{x}Name"
                 if key in data:
-
                     label = f"{x} : {data[key]}"
                     title += f" vs {label}"
                 else:
@@ -158,7 +157,7 @@ def display_holdings(loaded_funds: mstarpy.Funds, holding_type: str = "all"):
 def display_load(
     term: str = "",
     country: str = "",
-):
+) -> Union[mstarpy.Funds, None]:
     """instantiate mstarpy Funds class and display the funds selected
 
     Parameters
@@ -175,14 +174,10 @@ def display_load(
     else:
         iso_country = ""
     funds = mstarpy_model.load_funds(term, country=iso_country)
-    if country:
-        console.print(
-            f"The funds {funds.name} - {funds.isin} ({funds.code}) from the country {country.title()} is loaded"
-        )
-    else:
-        console.print(f"The funds {funds.name} - {funds.isin} ({funds.code}) is loaded")
+    if isinstance(funds, mstarpy.Funds):
+        return funds
 
-    return funds
+    return None
 
 
 @log_start_end(log=logger)
@@ -208,7 +203,7 @@ def display_search(
         iso_country = ""
     searches = mstarpy_model.search_funds(term, country=iso_country, pageSize=limit)
     if searches.empty:
-        console.print("No matches found.\n")
+        console.print("No matches found.")
         return
 
     if country:
@@ -245,7 +240,6 @@ def display_sector(loaded_funds: mstarpy.Funds, asset_type: str = "equity"):
 
     title = "Sector breakdown of "
     for x in ["fund", "index", "category"]:
-
         name = d[key][f"{x}Name"]
 
         data = d[key][f"{x}Portfolio"]
