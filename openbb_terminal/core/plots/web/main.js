@@ -320,4 +320,15 @@ function OpenBBMain(plotly_figure) {
       clearInterval(check_csv);
     }
   }, 100);
+
+  // We check to see if window.save_png is defined and true
+  if (window.save_png != undefined && window.save_png) {
+    // We click the toImage button to save the chart as a png
+    globals.barButtons["Download plot as a png"].click();
+    // we use a timeout to make sure the image is saved before closing
+    // before closing the window
+    setTimeout(function () {
+      window.close();
+    }, 500);
+  }
 }

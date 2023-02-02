@@ -13,8 +13,7 @@ import types
 import urllib.parse
 import webbrowser
 from collections.abc import Iterable
-from datetime import date as d
-from datetime import datetime, timedelta
+from datetime import date as d, datetime, timedelta
 from difflib import SequenceMatcher
 from functools import lru_cache
 from pathlib import Path
@@ -37,9 +36,11 @@ from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
 
-from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import (
+    config_plot as cfgPlot,
+    config_terminal as cfg,
+    feature_flags as obbff,
+)
 from openbb_terminal.core.config import paths
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -47,6 +48,7 @@ from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     load_dotenv_with_priority,
 )
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -1349,6 +1351,7 @@ def export_data(
     func_name: str,
     df: pd.DataFrame = pd.DataFrame(),
     sheet_name: str = None,
+    fig: Optional[OpenBBFigure] = None,
 ) -> None:
     """Export data to a file.
 
@@ -1439,7 +1442,7 @@ def export_data(
                 exists, overwrite = ask_file_overwrite(saved_path)
                 if exists and not overwrite:
                     return
-                plt.savefig(saved_path)
+                fig.show(png_path=saved_path)
             elif exp_type.endswith("jpg"):
                 exists, overwrite = ask_file_overwrite(saved_path)
                 if exists and not overwrite:
@@ -1454,7 +1457,7 @@ def export_data(
                 exists, overwrite = ask_file_overwrite(saved_path)
                 if exists and not overwrite:
                     return
-                plt.savefig(saved_path)
+                fig.show(png_path=saved_path)
             else:
                 console.print("\nWrong export file specified.")
 

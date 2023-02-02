@@ -13,28 +13,28 @@ interactions:
   response:
     body:
       string: !!binary |
-        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
+        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
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -54,11 +54,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1076'
+      - '1061'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Fri, 27 Jan 2023 19:45:06 GMT
+      - Wed, 01 Feb 2023 15:19:29 GMT
       server:
       - ATS
       vary:
@@ -66,13 +66,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '18'
+      - '34'
       x-request-id:
-      - bcea2122-d23f-40ac-803a-a5c27670ec09
+      - 0793ae71-9189-4480-8970-e8638faa7de0
       x-yahoo-request-id:
-      - ducch9lht8ae3
+      - 2njhui5htl0o1
       y-rid:
-      - ducch9lht8ae3
+      - 2njhui5htl0o1
     status:
       code: 200
       message: OK

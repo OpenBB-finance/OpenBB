@@ -144,7 +144,7 @@ function get_popup(data = null, popup_id = null) {
       <a style="margin-top: 10px;" href="${data.url}" target="_blank" rel="noreferrer noopener">${data.url}</a>
       <div style="margin-top: 10px; float: right;">
       <button onclick="closePopup()" style="margin-top: 10px;" class="_btn-tertiary">Close</button>
-      <a 
+      <a
       class="_btn"
       href="https://twitter.com/intent/tweet?text=Check this chart from @openbb_finance - ${data.url}"
       >Share</a>
