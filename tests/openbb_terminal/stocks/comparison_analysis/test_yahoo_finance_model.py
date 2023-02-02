@@ -82,7 +82,7 @@ def test_get_sp500_comps_tsne(mocker, recorder):
         side_effect=lambda x: np.full((len(x), 2), 1),
     )
     result_df = yahoo_finance_model.get_sp500_comps_tsne(
-        symbol="TOT.TO",
+        symbol="AAPL",
     )
 
     recorder.capture(result_df)
