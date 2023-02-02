@@ -56,7 +56,7 @@ class Backend(PyWry):
     def inject_path_to_html(self):
         """Update the script tag in html with local path"""
         for html_file, temp_file in zip(
-            ["plotly_temp.html", "table_temp.html"], [self.plotly_html, self.table_html]
+            ["plotly.html", "table.html"], [self.plotly_html, self.table_html]
         ):
             with open(PLOTS_CORE_PATH / html_file, encoding="utf-8") as file:  # type: ignore
                 html = file.read()
