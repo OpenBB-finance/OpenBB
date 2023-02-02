@@ -11,13 +11,12 @@ from requests import HTTPError
 
 import fred
 import pandas as pd
-import requests
 from fredapi import Fred
 import certifi
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -40,7 +39,7 @@ def check_series_id(series_id: str) -> Tuple[bool, dict]:
         Dictionary of series information
     """
     url = f"https://api.stlouisfed.org/fred/series?series_id={series_id}&api_key={cfg.API_FRED_KEY}&file_type=json"
-    r = requests.get(url, headers={"User-Agent": get_user_agent()})
+    r = request(url, headers={"User-Agent": get_user_agent()})
     # The above returns 200 if series is found
     # There seems to be an occasional bug giving a 503 response where the json decoding fails
     if r.status_code == 200:
@@ -93,7 +92,6 @@ def get_series_notes(search_query: str, limit: int = -1) -> pd.DataFrame:
         else:
             console.print(d_series["error_message"])
     else:
-
         if "seriess" in d_series:
             if d_series["seriess"]:
                 df_fred = pd.DataFrame(d_series["seriess"])
@@ -148,13 +146,13 @@ def get_series_ids(search_query: str, limit: int = -1) -> pd.DataFrame:
             console.print("[red]Invalid API Key[/red]\n")
         else:
             console.print(d_series["error_message"])
-        return [], []
+        return pd.DataFrame()
 
     if "seriess" not in d_series:
-        return [], []
+        return pd.DataFrame()
 
     if not d_series["seriess"]:
-        return [], []
+        return pd.DataFrame()
 
     df_series = pd.DataFrame(d_series["seriess"])
     df_series = df_series.sort_values(by=["popularity"], ascending=False)
@@ -243,7 +241,6 @@ def get_aggregated_series_data(
             }
 
     for s_id in series_ids:
-
         series = pd.DataFrame(
             get_series_data(s_id, start_date, end_date), columns=[s_id]
         ).dropna()

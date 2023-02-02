@@ -50,7 +50,9 @@ def lambda_color_red(val: Any) -> str:
 
 
 @log_start_end(log=logger)
-def display_summary(data: pd.DataFrame, export: str = "") -> None:
+def display_summary(
+    data: pd.DataFrame, export: str = "", sheet_name: str = None
+) -> None:
     """Prints table showing summary statistics
 
     Parameters
@@ -75,6 +77,7 @@ def display_summary(data: pd.DataFrame, export: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "summary",
         summary,
+        sheet_name,
     )
 
 
@@ -161,6 +164,7 @@ def display_cdf(
     target: str,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Cumulative Distribution Function
@@ -263,6 +267,7 @@ def display_cdf(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "cdf",
         pd.DataFrame(cdf),
+        sheet_name,
     )
 
 
@@ -660,6 +665,7 @@ def display_seasonal(
     target: str,
     multiplicative: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots seasonal decomposition data
@@ -798,11 +804,14 @@ def display_seasonal(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "summary",
         cycle.join(trend),
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_normality(data: pd.DataFrame, target: str, export: str = "") -> None:
+def display_normality(
+    data: pd.DataFrame, target: str, export: str = "", sheet_name: str = None
+) -> None:
     """Prints table showing normality statistics
 
     Parameters
@@ -832,6 +841,7 @@ def display_normality(data: pd.DataFrame, target: str, export: str = "") -> None
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "normality",
         normal,
+        sheet_name,
     )
 
 
@@ -842,6 +852,7 @@ def display_unitroot(
     fuller_reg: str = "c",
     kpss_reg: str = "c",
     export: str = "",
+    sheet_name: str = None,
 ):
     """Prints table showing unit root test calculations
 
@@ -873,6 +884,7 @@ def display_unitroot(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "unitroot",
         data,
+        sheet_name,
     )
 
 
@@ -883,6 +895,7 @@ def display_raw(
     ascend: bool = False,
     limit: int = 20,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing raw stock data
 
@@ -931,6 +944,7 @@ def display_raw(
         os.path.dirname(os.path.abspath(__file__)),
         "raw",
         data,
+        sheet_name,
     )
 
 
@@ -942,6 +956,7 @@ def display_line(
     markers_lines: Optional[List[datetime]] = None,
     markers_scatter: Optional[List[datetime]] = None,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Display line plot of data
@@ -958,6 +973,8 @@ def display_line(
         List of dates to highlight using vertical lines
     markers_scatter: Optional[List[datetime]]
         List of dates to highlight using scatter
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -1042,6 +1059,7 @@ def display_line(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "line",
+        sheet_name,
     )
 
 

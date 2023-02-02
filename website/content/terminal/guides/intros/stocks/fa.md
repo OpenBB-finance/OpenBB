@@ -1,11 +1,7 @@
 ---
 title: Fundamental Analysis
-keywords: ["fundamentals", "fundamental", "fa", "ratios", "earnings", "balance", "income", "cash", "statement", "statements", "sec", "multiples", "price", "ebitda", "ebitdam", "revenue", "quarter", "annual", "change", "company", "performance", "filing", "filings", "10K", "8K", "audit", "audited"]
-date: "2022-06-20"
-type: guides
-status: publish
-excerpt: "This guide introduces the Fundamental Analysis menu within the Stocks menu, briefly explains the features, and provides examples in context."
-geekdocCollapseSection: true
+keywords: [fundamentals, fundamental, fa, ratios, earnings, balance, income, cash, statement, statements, sec, multiples, price, ebitda, ebitdam, revenue, quarter, annual, change, company, performance, filing, filings, 10K, 8K, audit, audited]
+description: This guide introduces the Fundamental Analysis menu within the Stocks menu, briefly explains the features, and provides examples in context.
 ---
 
 The Fundamental Analysis menu is a set of tools for measuring a company's intrinsic value, relative to the market price. Functions within this menu are generally microeconomic factors. The purpose is to harness data reported in financial statements and estimate the tangible value of a share. Revenue of companies with a long public history are easier to forecast, and the consensus of many analysts will indicate the level of confidence in future expectations. In addition to these features, there are <a href="/terminal/guides/intros/stocks/screener/" target="_blank" rel="noreferrer noopener">screeners</a> to compare fundamentals across groups of companies.

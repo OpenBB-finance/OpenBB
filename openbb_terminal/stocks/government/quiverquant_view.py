@@ -34,6 +34,7 @@ def display_last_government(
     limit: int = 5,
     representative: str = "",
     export: str = "",
+    sheet_name: str = None,
 ):
     """Display last government trading [Source: quiverquant.com]
 
@@ -45,6 +46,8 @@ def display_last_government(
         Number of days to look back
     representative: str
         Specific representative to look at
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -71,7 +74,11 @@ def display_last_government(
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "lasttrades", df_gov
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "lasttrades",
+        df_gov,
+        sheet_name,
     )
 
 
@@ -82,6 +89,7 @@ def display_government_buys(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Top buy government trading [Source: quiverquant.com]
@@ -96,6 +104,8 @@ def display_government_buys(
         Number of tickers to show
     raw: bool
         Display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -144,7 +154,13 @@ def display_government_buys(
     if not external_axes:
         theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "topbuys", df_gov)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "topbuys",
+        df_gov,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -154,6 +170,7 @@ def display_government_sells(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Top sell government trading [Source: quiverquant.com]
@@ -168,6 +185,8 @@ def display_government_sells(
         Number of tickers to show
     raw: bool
         Display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -218,7 +237,13 @@ def display_government_sells(
     if not external_axes:
         theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "topsells", df_gov)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "topsells",
+        df_gov,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -227,6 +252,7 @@ def display_last_contracts(
     limit: int = 20,
     sum_contracts: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Last government contracts [Source: quiverquant.com]
@@ -239,6 +265,8 @@ def display_last_contracts(
         Number of contracts to show
     sum_contracts: bool
         Flag to show total amount of contracts given out.
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -256,7 +284,6 @@ def display_last_contracts(
         title="Last Government Contracts",
     )
     if sum_contracts:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -275,7 +302,13 @@ def display_last_contracts(
         if not external_axes:
             theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "lastcontracts", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "lastcontracts",
+        df,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -334,6 +367,7 @@ def display_government_trading(
     past_transactions_months: int = 6,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Government trading for specific ticker [Source: quiverquant.com]
@@ -348,6 +382,8 @@ def display_government_trading(
         Number of months to get transactions for
     raw: bool
         Show raw output of trades
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -373,7 +409,13 @@ def display_government_trading(
     else:
         plot_government(df_gov, symbol, gov_type, external_axes)
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "gtrades", df_gov)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "gtrades",
+        df_gov,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -382,6 +424,7 @@ def display_contracts(
     past_transaction_days: int = 10,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Show government contracts for ticker [Source: quiverquant.com]
@@ -394,6 +437,8 @@ def display_contracts(
         Number of days to get transactions for
     raw: bool
         Flag to display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -413,7 +458,6 @@ def display_contracts(
         )
 
     if df_contracts.Amount.abs().sum() != 0:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -438,7 +482,11 @@ def display_contracts(
     if df_contracts.Amount.abs().sum() == 0:
         console.print("Contracts found, but they are all equal to $0.00.\n")
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "contracts", df_contracts
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "contracts",
+        df_contracts,
+        sheet_name,
     )
 
 
@@ -448,6 +496,7 @@ def display_qtr_contracts(
     limit: int = 5,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Quarterly contracts [Source: quiverquant.com]
@@ -460,6 +509,8 @@ def display_qtr_contracts(
         Number to show
     raw: bool
         Flag to display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -539,7 +590,11 @@ def display_qtr_contracts(
         )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "qtrcontracts", symbols
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "qtrcontracts",
+        symbols,
+        sheet_name,
     )
 
 
@@ -548,6 +603,7 @@ def display_hist_contracts(
     symbol: str,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Show historical quarterly government contracts [Source: quiverquant.com]
@@ -558,6 +614,8 @@ def display_hist_contracts(
         Ticker symbol to get congress trading data from
     raw: bool
         Flag to display raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -615,7 +673,12 @@ def display_hist_contracts(
         if not external_axes:
             theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "histcont")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "histcont",
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -623,6 +686,7 @@ def display_top_lobbying(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Top lobbying tickers based on total spent
@@ -658,7 +722,6 @@ def display_top_lobbying(
             title="Top Lobbying Tickers",
         )
     else:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -679,7 +742,11 @@ def display_top_lobbying(
             theme.visualize_output()
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "lobbying", df_lobbying
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "lobbying",
+        df_lobbying,
+        sheet_name,
     )
 
 

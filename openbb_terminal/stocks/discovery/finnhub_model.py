@@ -3,11 +3,11 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 import pandas as pd
-import requests
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +39,7 @@ def get_ipo_calendar(
     if end_date is None:
         end_date = datetime.now().strftime("%Y-%m-%d")
 
-    response = requests.get(
+    response = request(
         f"https://finnhub.io/api/v1/calendar/ipo?from={start_date}&to={end_date}&token={cfg.API_FINNHUB_KEY}"
     )
 

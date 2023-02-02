@@ -30,6 +30,7 @@ def display_search(
     exchange: str = "",
     description: str = "",
     export: str = "",
+    sheet_name: str = None,
 ):
     """Display search futures [Source: Yahoo Finance]
 
@@ -41,6 +42,8 @@ def display_search(
         Select the exchange where the future exists
     description: str
         Select the description of the future
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """
@@ -57,6 +60,7 @@ def display_search(
         os.path.dirname(os.path.abspath(__file__)),
         "search",
         df,
+        sheet_name,
     )
 
 
@@ -68,6 +72,7 @@ def display_historical(
     end_date: Optional[str] = None,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical futures [Source: Yahoo Finance]
@@ -84,6 +89,8 @@ def display_historical(
         End date of the historical data with format YYYY-MM-DD
     raw: bool
         Display futures timeseries in raw format
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -111,7 +118,6 @@ def display_historical(
         return
 
     if raw or len(historicals) == 1:
-
         if not raw and len(historicals) == 1:
             console.print(
                 "\nA single datapoint is not enough to depict a chart, data is presented below."
@@ -126,7 +132,6 @@ def display_historical(
         console.print()
 
     else:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -209,6 +214,7 @@ def display_historical(
         os.path.dirname(os.path.abspath(__file__)),
         "historical",
         historicals,
+        sheet_name,
     )
 
 
@@ -217,6 +223,7 @@ def display_curve(
     symbol: str,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display curve futures [Source: Yahoo Finance]
@@ -227,6 +234,8 @@ def display_curve(
         Curve future symbol to display
     raw: bool
         Display futures timeseries in raw format
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -285,4 +294,5 @@ def display_curve(
             os.path.dirname(os.path.abspath(__file__)),
             "curve",
             df,
+            sheet_name,
         )

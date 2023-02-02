@@ -5,7 +5,7 @@ import argparse
 import io
 import logging
 from pathlib import Path
-from typing import List, Union, Optional, Dict
+from typing import List, Union, Optional, Dict, Tuple
 from functools import lru_cache
 from datetime import datetime, timedelta
 from datetime import date as d
@@ -40,6 +40,7 @@ from PIL import Image, ImageDraw
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal import config_terminal as cfg
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -69,6 +70,7 @@ command_location = ""
 
 
 # pylint: disable=R0912
+
 
 # pylint: disable=global-statement
 def set_command_location(cmd_loc: str):
@@ -150,8 +152,6 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     if an_input:
         if an_input == "/":
             an_input = "home"
-        elif an_input[0] == "/":
-            an_input = "home" + an_input
 
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
@@ -353,7 +353,6 @@ def print_rich_table(
             table.add_row(*row_idx)
         console.print(table)
     else:
-
         if obbff.USE_COLOR and automatic_coloring:
             if columns_to_auto_color:
                 for col in columns_to_auto_color:
@@ -389,6 +388,7 @@ def check_int_range(mini: int, maxi: int):
     int_range_checker:
         Function that compares the three integers
     """
+
     # Define the function with default arguments
     def int_range_checker(num: int) -> int:
         """Check if int is between a high and low value.
@@ -1066,7 +1066,7 @@ def check_ohlc(type_ohlc: str) -> str:
 def lett_to_num(word: str) -> str:
     """Match ohlca to integers."""
     replacements = [("o", "1"), ("h", "2"), ("l", "3"), ("c", "4"), ("a", "5")]
-    for (a, b) in replacements:
+    for a, b in replacements:
         word = word.replace(a, b)
     return word
 
@@ -1322,8 +1322,34 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
     return full_path
 
 
+def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
+    """Helper to provide a prompt for overwriting existing files.
+
+    Returns two values, the first is a boolean indicating if the file exists and the
+    second is a boolean indicating if the user wants to overwrite the file.
+    """
+    # Jeroen asked for a flag to overwrite no matter what
+    if obbff.FILE_OVERWITE:
+        return False, True
+    if os.path.exists(file_path):
+        overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
+        if overwrite == "y":
+            # File exists and user wants to overwrite
+            return True, True
+        # File exists and user does not want to overwrite
+        return True, False
+    # File does not exist
+    return False, True
+
+
+# This is a false positive on pylint and being tracked in pylint #3060
+# pylint: disable=abstract-class-instantiated
 def export_data(
-    export_type: str, dir_path: str, func_name: str, df: pd.DataFrame = pd.DataFrame()
+    export_type: str,
+    dir_path: str,
+    func_name: str,
+    df: pd.DataFrame = pd.DataFrame(),
+    sheet_name: str = None,
 ) -> None:
     """Export data to a file.
 
@@ -1337,6 +1363,8 @@ def export_data(
         Name of the command that invokes this function
     df : pd.Dataframe
         Dataframe of data to save
+    sheet_name : str
+        If provided.  The name of the sheet to save in excel file
     """
     if export_type:
         export_path = compose_export_path(func_name, dir_path)
@@ -1372,19 +1400,61 @@ def export_data(
             )
 
             if exp_type.endswith("csv"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 df.to_csv(saved_path)
             elif exp_type.endswith("json"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
-                df.to_excel(saved_path, index=True, header=True)
+                if sheet_name is None:
+                    exists, overwrite = ask_file_overwrite(saved_path)
+                    if exists and not overwrite:
+                        return
+                    df.to_excel(saved_path, index=True, header=True)
+
+                else:
+                    if os.path.exists(saved_path):
+                        with pd.ExcelWriter(
+                            saved_path,
+                            mode="a",
+                            if_sheet_exists="new",
+                            engine="openpyxl",
+                        ) as writer:
+                            df.to_excel(
+                                writer, sheet_name=sheet_name, index=True, header=True
+                            )
+                    else:
+                        with pd.ExcelWriter(
+                            saved_path,
+                            engine="openpyxl",
+                        ) as writer:
+                            df.to_excel(
+                                writer, sheet_name=sheet_name, index=True, header=True
+                            )
             elif exp_type.endswith("png"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             elif exp_type.endswith("jpg"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             elif exp_type.endswith("pdf"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             elif exp_type.endswith("svg"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             else:
                 console.print("\nWrong export file specified.")
@@ -1404,7 +1474,7 @@ def get_rf() -> float:
         base = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service"
         end = "/v2/accounting/od/avg_interest_rates"
         filters = "?filter=security_desc:eq:Treasury Bills&sort=-record_date"
-        response = requests.get(base + end + filters)
+        response = request(base + end + filters)
         latest = response.json()["data"][0]
         return round(float(latest["avg_interest_rate_amt"]) / 100, 8)
     except Exception:
@@ -1640,6 +1710,7 @@ def check_list_values(valid_values: List[str]):
     check_list_values_from_valid_values_list:
         Function that ensures that the valid values go through and notifies user when value is not valid.
     """
+
     # Define the function with default arguments
     def check_list_values_from_valid_values_list(given_values: str) -> List[str]:
         """Check if argparse argument is an str format.
@@ -1906,3 +1977,39 @@ def check_start_less_than_end(start_date: str, end_date: str) -> bool:
         console.print("[red]Start date cannot be greater than end date.[/red]")
         return True
     return False
+
+
+# Write an abstract helper to make requests from a url with potential headers and params
+def request(url: str, method="GET", **kwargs) -> requests.Response:
+    """Abstract helper to make requests from a url with potential headers and params.
+
+    Parameters
+    ----------
+    url : str
+       Url to make the request to
+    method : str, optional
+       HTTP method to use.  Can be "GET" or "POST", by default "GET"
+
+    Returns
+    -------
+    requests.Response
+        Request response object
+
+    Raises
+    ------
+    ValueError
+        If invalid method is passed
+    """
+    # We want to add a user agent to the request, so check if there are any headers
+    # If there are headers, check if there is a user agent, if not add one.
+    # Some requests seem to work only with a specific user agent, so we want to be able to override it.
+    headers = kwargs.pop("headers") if "headers" in kwargs else {}
+    if "User-Agent" not in headers:
+        headers["User-Agent"] = get_user_agent()
+    if method.upper() == "GET":
+        return requests.get(url, headers=headers, timeout=cfg.REQUEST_TIMEOUT, **kwargs)
+    if method.upper() == "POST":
+        return requests.post(
+            url, headers=headers, timeout=cfg.REQUEST_TIMEOUT, **kwargs
+        )
+    raise ValueError("Method must be GET or POST")

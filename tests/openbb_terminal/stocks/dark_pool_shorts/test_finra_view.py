@@ -12,13 +12,13 @@ from openbb_terminal.stocks.dark_pool_shorts import finra_view
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_plot_dark_pools(mocker):
-
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     finra_view.darkpool_ats_otc(
         symbol="RIVN",
         export="",
+        sheet_name=None,
     )
 
 
@@ -42,4 +42,5 @@ def test_darkpool_otc(mocker):
         limit=2,
         tier="T1",
         export="",
+        sheet_name=None,
     )
