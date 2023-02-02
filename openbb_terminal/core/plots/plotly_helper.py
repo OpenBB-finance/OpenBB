@@ -128,7 +128,7 @@ class TerminalStyle:
         ----------
         style : str
             Name of the style to load
-        """
+        """ 
         if not style:
             style = self.plt_style
 

@@ -129,6 +129,16 @@ class DiscoveryController(BaseController):
             choices=argument_sort_choices,
             metavar="SORTBY",
         )
+
+        parser.add_argument(
+            "-i",
+            "--interactive",
+            action="store_true",
+            dest="interactive",
+            default=False,
+            help=("Show interactive table"),
+        )
+
         parser.add_argument(
             "-r",
             "--reverse",
@@ -150,6 +160,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             if ns_parser.source == "CoinGecko":
                 pycoingecko_view.display_coins(
+                    interactive=ns_parser.interactive,
                     sortby=" ".join(ns_parser.sortby),
                     category=ns_parser.category,
                     limit=ns_parser.limit,

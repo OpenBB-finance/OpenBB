@@ -827,6 +827,32 @@ button {
   color: #474747ff;
 }
 
+.loader {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 4px solid #00acff;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  opacity: 0;
+}
+
+.loader.show {
+  opacity: 1;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 ul {
   margin: 0;
   padding: 0;

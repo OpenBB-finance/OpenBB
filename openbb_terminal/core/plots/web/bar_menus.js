@@ -159,32 +159,44 @@ function changeColor() {
 }
 
 function downloadImage() {
+  const loader = document.getElementById("loader");
+  loader.classList.add("show");
   Plotly.toImage(globals.chartDiv, {
     format: "png",
     height: 627,
     width: 1200,
-  }).then(function (url) {
-    let data = {
-      image: url,
-    };
+  })
+    .then(function (url) {
+      let data = {
+        image: url,
+        title: globals.title,
+        description: "Check out this chart from OpenBB",
+      };
 
-    fetch("https://uppy-self.vercel.app/api/upload-image", {
-      //TODO: change to hosting server
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then(function (response) {
-        return response.json();
+      fetch("https://uppy-self.vercel.app/api/upload-image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       })
-      .then(function (data) {
-        const { url, id } = data;
-        // show popup
-        openPopup("popup_upload", { url });
-      });
-  });
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          const { url, id } = data;
+          loader.classList.remove("show");
+          openPopup("popup_upload", { url });
+        })
+        .catch(function (err) {
+          console.log(err);
+          loader.classList.remove("show");
+        });
+    })
+    .catch(function (err) {
+      console.log(err);
+      loader.classList.remove("show");
+    });
 }
 
 function downloadData(gd) {

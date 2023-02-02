@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 import aiohttp
+import pandas as pd
 import plotly.graph_objects as go
 from pywry import PyWry
 
@@ -41,9 +42,9 @@ class Backend(PyWry):
         return cls.instance
 
     def __init__(self, daemon: bool = True, max_retries: int = 30):
-        atexit.register(self.del_temp)
         super().__init__(daemon=daemon, max_retries=max_retries)
-        self.plotly_html: Path = PLOTS_CORE_PATH / "plotly_temp.html"
+        self.plotly_html: Path = (PLOTS_CORE_PATH / "plotly_temp.html").resolve()
+        self.table_html: Path = (PLOTS_CORE_PATH / "table_temp.html").resolve()
         self.inject_path_to_html()
         self.isatty = (
             not JUPYTER_NOTEBOOK
@@ -54,21 +55,29 @@ class Backend(PyWry):
 
     def inject_path_to_html(self):
         """Update the script tag in html with local path"""
-        with open(PLOTS_CORE_PATH / "plotly.html", encoding="utf-8") as file:  # type: ignore
-            html = file.read()
+        for html_file, temp_file in zip(
+            ["plotly.html", "table.html"], [self.plotly_html, self.table_html]
+        ):
+            with open(PLOTS_CORE_PATH / html_file, encoding="utf-8") as file:  # type: ignore
+                html = file.read()
+                html = html.replace("{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri()))
 
-        html = html.replace("{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri()))
-
-        # We create a temporary file to inject the path to the script tag
-        # This is so we don't have to modify the original file
-        # The file is deleted at program exit.
-        with open(self.plotly_html, "w", encoding="utf-8") as file:  # type: ignore
-            file.write(html)
+            # We create a temporary file to inject the path to the script tag
+            # This is so we don't have to modify the original file
+            # The file is deleted at program exit.
+            with open(temp_file, "w", encoding="utf-8") as file:  # type: ignore
+                file.write(html)
 
     def get_plotly_html(self) -> str:
         """Get the plotly html file"""
         if self.plotly_html and self.plotly_html.exists():
             return str(self.plotly_html)
+        return ""
+
+    def get_table_html(self) -> str:
+        """Get the table html file"""
+        if self.table_html and self.table_html.exists():
+            return str(self.table_html)
         return ""
 
     def get_window_icon(self) -> str:
@@ -96,6 +105,30 @@ class Backend(PyWry):
                     "html_path": self.get_plotly_html(),
                     "plotly": json.loads(fig.to_json()),
                     "png_path": png_path,
+                    **self.get_kwargs(title),
+                }
+            )
+        )
+
+    def send_table(self, df_table: pd.DataFrame, title: str = ""):
+        """Sends table data to the backend to be displayed in a table.
+
+        Parameters
+        ----------
+        df_table : pd.DataFrame
+            Dataframe to send to backend.
+        title : str, optional
+            Title to display in the window, by default ""
+        """
+        self.check_backend()
+
+        self.outgoing.append(
+            json.dumps(
+                {
+                    "html_path": self.get_table_html(),
+                    "plotly": df_table.to_json(orient="split"),
+                    "width": 1200,
+                    "height": 800,
                     **self.get_kwargs(title),
                 }
             )
@@ -204,4 +237,5 @@ def plots_backend() -> Backend:
     global BACKEND  # pylint: disable=W0603
     if BACKEND is None:
         BACKEND = Backend()
+        atexit.register(BACKEND.del_temp)
     return BACKEND
