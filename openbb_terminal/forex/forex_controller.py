@@ -14,7 +14,11 @@ from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.forex import av_view, forex_helper, fxempire_view
-from openbb_terminal.forex.forex_helper import FOREX_SOURCES, SOURCES_INTERVALS, parse_forex_symbol
+from openbb_terminal.forex.forex_helper import (
+    FOREX_SOURCES,
+    SOURCES_INTERVALS,
+    parse_forex_symbol,
+)
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,

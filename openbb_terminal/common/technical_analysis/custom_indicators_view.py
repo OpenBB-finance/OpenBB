@@ -8,7 +8,10 @@ from typing import List, Optional, Union
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.common.technical_analysis import custom_indicators_model, ta_helpers
+from openbb_terminal.common.technical_analysis import (
+    custom_indicators_model,
+    ta_helpers,
+)
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end

@@ -21,7 +21,12 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio import attribution_model, portfolio_helper, portfolio_view, statics
+from openbb_terminal.portfolio import (
+    attribution_model,
+    portfolio_helper,
+    portfolio_view,
+    statics,
+)
 from openbb_terminal.portfolio.portfolio_model import generate_portfolio
 from openbb_terminal.rich_config import MenuText, console
 
