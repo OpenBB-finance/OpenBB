@@ -1,6 +1,7 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
+import os
 import json
 from unittest.mock import patch
 import pytest
@@ -140,3 +141,20 @@ def test_logout_user(guest):
     mock_remove_session_file.assert_called_once()
     mock_remove_cli_history_file.assert_called_once()
     mock_plt_close.assert_called_once()
+
+
+def test_clear_openbb_env_vars():
+    mock_env = {"OPENBB_TEST": "test", "OPENBB_TEST2": "test2", "TEST": "test"}
+    with patch.dict("openbb_terminal.session.session_model.os.environ", mock_env):
+        session_model.clear_openbb_env_vars()
+
+        assert "OPENBB_TEST" not in os.environ
+        assert "OPENBB_TEST2" not in os.environ
+        assert "TEST" in os.environ
+
+
+def test_reload_openbb_modules():
+    with patch("openbb_terminal.session.session_model.importlib.reload") as mock_reload:
+        session_model.reload_openbb_modules()
+
+    mock_reload.assert_called()
