@@ -39,6 +39,7 @@ website/functions
 *_sdk_audit.csv
 website/terminaltest
 !build/docker/compose.env
+.dccache
 
 # pyinstaller artifacts
 *.pyo

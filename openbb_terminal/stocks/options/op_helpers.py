@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 logger = logging.getLogger(__name__)
 
+
 def get_strikes(
     min_sp: float, max_sp: float, current_price: float
 ) -> Tuple[float, float]:
