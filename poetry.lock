@@ -5250,6 +5250,10 @@ jedi = [
     {file = "jedi-0.18.2-py2.py3-none-any.whl", hash = "sha256:203c1fd9d969ab8f2119ec0a3342e0b49910045abe6af0a3ae83a5764d54639e"},
     {file = "jedi-0.18.2.tar.gz", hash = "sha256:bae794c30d07f6d910d32a7048af09b5a39ed740918da923c6b780790ebac612"},
 ]
+jedi-language-server = [
+    {file = "jedi_language_server-0.40.0-py3-none-any.whl", hash = "sha256:53e590400b5cd2f6e363e77a4d824b1883798994b731cb0b4370d103748d30e2"},
+    {file = "jedi_language_server-0.40.0.tar.gz", hash = "sha256:bacbae2930b6a8a0f1f284c211672fceec94b4808b0415d1c3352fa4b1ac5ad6"},
+]
 isodate = []
 iso8601 = [
     {file = "iso8601-0.1.16-py2.py3-none-any.whl", hash = "sha256:906714829fedbc89955d52806c903f2332e3948ed94e31e85037f9e0226b8376"},
