@@ -70,7 +70,6 @@ class FundController(BaseController):
         super().__init__(queue)
 
         self.country = ""
-        self.data = pd.DataFrame()
         self.funds_loaded = None
         self.fund_name = ""
         self.fund_symbol = ""
@@ -186,19 +185,6 @@ class FundController(BaseController):
             avanza_view.display_info(self.fund_name)
 
         return self.queue
-
-    @log_start_end(log=logger)
-    def call_forecast(self, _):
-        """Process forecast command"""
-        # pylint: disable=import-outside-toplevel
-        from openbb_terminal.forecast import forecast_controller
-
-        self.queue = self.load_class(
-            forecast_controller.ForecastController,
-            self.fund_name,
-            self.data,
-            self.queue,
-        )
 
     @log_start_end(log=logger)
     def call_country(self, other_args: List[str]):
