@@ -333,7 +333,6 @@ class BaseController(metaclass=ABCMeta):
 
         # Navigation slash is being used first split commands
         elif len(actions) > 1:
-
             # Absolute path is specified
             if not actions[0]:
                 actions[0] = "home"

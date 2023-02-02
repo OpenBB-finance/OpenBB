@@ -85,7 +85,6 @@ def get_github_activity(
     df = pd.DataFrame()
 
     if response.status_code == 200:
-
         if "getMetric" in response.json()["data"]:
             df = pd.DataFrame(response.json()["data"]["getMetric"]["timeseriesData"])
             df["datetime"] = pd.to_datetime(df["datetime"])

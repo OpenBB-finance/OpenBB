@@ -155,7 +155,6 @@ def set_keys(
         expected_args_dict = get_keys_info()
 
         if api in expected_args_dict:
-
             received_kwargs_list = list(kwargs.keys())
             expected_kwargs_list = expected_args_dict[api]
 
@@ -1037,7 +1036,6 @@ def check_reddit_key(show_output: bool = False) -> str:
         logger.info("Reddit key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-
         try:
             with suppress_stdout():
                 praw_api = praw.Reddit(
@@ -2271,7 +2269,6 @@ def check_messari_key(show_output: bool = False) -> str:
         logger.info("Messari key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-
         url = "https://data.messari.io/api/v2/assets/bitcoin/profile"
         headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
         params = {"fields": "profile/general/overview/official_links"}
@@ -2611,7 +2608,6 @@ def check_stocksera_key(show_output: bool = False):
         logger.info("Stocksera key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-
         client = stocksera.Client(api_key=cfg.API_STOCKSERA_KEY)
 
         try:

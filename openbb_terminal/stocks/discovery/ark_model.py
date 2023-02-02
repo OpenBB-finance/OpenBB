@@ -24,7 +24,6 @@ def get_ark_orders(
     sells_only: bool = False,
     fund: str = "",
 ) -> DataFrame:
-
     """Returns ARK orders in a Dataframe
 
     Parameters

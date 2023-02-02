@@ -180,7 +180,6 @@ class ForexController(BaseController):
             self.to_symbol = ns_parser.ticker[3:]
 
             if self.to_symbol and self.from_symbol:
-
                 self.data = forex_helper.load(
                     to_symbol=self.to_symbol,
                     from_symbol=self.from_symbol,

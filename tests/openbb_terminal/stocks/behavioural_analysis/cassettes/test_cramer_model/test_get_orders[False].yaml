@@ -1012,7 +1012,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '11'
+      - '10'
       x-request-id:
       - 9d0a77f6-76f6-410b-af7a-7654414fac5c
       x-yahoo-request-id:
