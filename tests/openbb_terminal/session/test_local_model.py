@@ -1,37 +1,45 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
+import pytest
 import json
 from unittest.mock import patch, mock_open
 
 # IMPORTATION INTERNAL
 from openbb_terminal.session import local_model
 
+TEST_DATA = {
+    "access_token": "test_token",
+    "token_type": "bearer",
+    "uuid": "test_uuid",
+}
+
 
 def test_save_session():
     open_mock = mock_open()
     with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
-        data = {
-            "access_token": "test_token",
-            "token_type": "bearer",
-            "uuid": "test_uuid",
-        }
-        local_model.save_session(data=data)
+        local_model.save_session(data=TEST_DATA)
 
     open_mock.assert_called_with(local_model.SESSION_FILE_PATH, "w")
-    open_mock.return_value.write.assert_called_once_with(json.dumps(data))
+    open_mock.return_value.write.assert_called_once_with(json.dumps(TEST_DATA))
+
+
+@pytest.mark.record_stdout
+def test_save_session_exception():
+    open_mock = mock_open()
+    with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
+        open_mock.side_effect = Exception
+        local_model.save_session(data=TEST_DATA)
+
+    open_mock.assert_called_with(local_model.SESSION_FILE_PATH, "w")
+    open_mock.return_value.write.assert_not_called()
 
 
 def test_get_session():
-    data = {
-        "access_token": "test_token",
-        "token_type": "bearer",
-        "uuid": "test_uuid",
-    }
-    open_mock = mock_open(read_data=json.dumps(data))
+    open_mock = mock_open(read_data=json.dumps(TEST_DATA))
     with patch("openbb_terminal.session.local_model.os.path") as path_mock:
         with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
-            assert local_model.get_session() == data
+            assert local_model.get_session() == TEST_DATA
 
     path_mock.isfile.assert_called_with(local_model.SESSION_FILE_PATH)
     open_mock.assert_called_with(local_model.SESSION_FILE_PATH)
@@ -50,6 +58,19 @@ def test_get_session_not_exist():
     open_mock.return_value.read.assert_not_called()
 
 
+@pytest.mark.record_stdout
+def test_get_session_exception():
+    open_mock = mock_open()
+    with patch("openbb_terminal.session.local_model.os.path") as path_mock:
+        with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
+            open_mock.side_effect = Exception
+            assert local_model.get_session() == {}
+
+    path_mock.isfile.assert_called_with(local_model.SESSION_FILE_PATH)
+    open_mock.assert_called_with(local_model.SESSION_FILE_PATH)
+    open_mock.return_value.read.assert_not_called()
+
+
 def test_remove_session_file():
     with patch("openbb_terminal.session.local_model.os") as os_mock:
         assert local_model.remove_session_file() is True
@@ -65,3 +86,13 @@ def test_remove_session_file_not_exist():
 
     os_mock.path.isfile.assert_called_with(local_model.SESSION_FILE_PATH)
     os_mock.remove.assert_not_called()
+
+
+@pytest.mark.record_stdout
+def test_remove_session_file_exception():
+    with patch("openbb_terminal.session.local_model.os") as os_mock:
+        os_mock.remove.side_effect = Exception
+        assert local_model.remove_session_file() is False
+
+    os_mock.path.isfile.assert_called_with(local_model.SESSION_FILE_PATH)
+    os_mock.remove.assert_called_with(local_model.SESSION_FILE_PATH)

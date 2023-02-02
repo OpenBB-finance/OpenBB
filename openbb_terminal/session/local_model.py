@@ -32,7 +32,7 @@ def save_session(data: dict, file_path: Path = SESSION_FILE_PATH):
         with open(file_path, "w") as file:
             file.write(json.dumps(data))
     except Exception:
-        console.print("Failed to save session info.", style="red")
+        console.print("[red]Failed to save session info.[/red]")
 
 
 def get_session(file_path: Path = SESSION_FILE_PATH) -> dict:
@@ -77,7 +77,7 @@ def remove_session_file(file_path: Path = SESSION_FILE_PATH) -> bool:
             return True
         return True
     except Exception:
-        console.print("[red]\nFailed to remove login file.[/red]")
+        console.print("\n[red]Failed to remove login file.[/red]")
         return False
 
 
@@ -101,7 +101,7 @@ def remove_cli_history_file(file_path: Path = HIST_FILE_PATH) -> bool:
             return True
         return True
     except Exception:
-        console.print("[red]\nFailed to remove terminal history file.[/red]")
+        console.print("\n[red]Failed to remove terminal history file.[/red]")
         return False
 
 
