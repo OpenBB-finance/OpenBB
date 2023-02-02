@@ -3,11 +3,14 @@ name: Deploy to PyPI
 on:
   push:
     branches:
-      - feature/deploy-to-pypi
       - release/*
       - main
 
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   deploy-pypi:
@@ -15,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Python 3.9
       uses: actions/setup-python@v4
       with:
