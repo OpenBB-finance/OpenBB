@@ -24,7 +24,6 @@ import pytz
 import pandas as pd
 from rich.table import Table
 import iso8601
-import dotenv
 import matplotlib
 import matplotlib.pyplot as plt
 from holidays import US as us_holidays
@@ -46,7 +45,6 @@ from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     USER_EXPORTS_DIRECTORY,
 )
-from openbb_terminal.core.config import paths
 
 logger = logging.getLogger(__name__)
 
