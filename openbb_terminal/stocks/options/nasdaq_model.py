@@ -7,10 +7,10 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 # pylint: disable=unsupported-assignment-operation
@@ -64,7 +64,7 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
             "fromdate=2010-09-09&todate=2030-09-09&excode=oprac&callput=callput&money=all&type=all"
         )
         # I have had issues with nasdaq requests, and this user agent seems to work in US and EU
-        response_json = requests.get(
+        response_json = request(
             url,
             headers={
                 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
@@ -155,7 +155,7 @@ def get_last_price(symbol: str) -> float:
     """
     for asset in ["stocks", "index", "etf"]:
         url = f"https://api.nasdaq.com/api/quote/{symbol}/info?assetclass={asset}"
-        response_json = requests.get(
+        response_json = request(
             url,
             headers={
                 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
@@ -192,7 +192,7 @@ def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
     """
     for asset in ["stocks", "index", "etf"]:
         url_greeks = f"https://api.nasdaq.com/api/quote/{symbol}/option-chain/greeks?assetclass={asset}&date={expiration}"
-        response_json = requests.get(
+        response_json = request(
             url_greeks,
             headers={
                 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
@@ -200,7 +200,6 @@ def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
             },
         ).json()
         if response_json["status"]["rCode"] == 200:
-
             greeks = pd.DataFrame(response_json["data"]["table"]["rows"])
             greeks = greeks.drop(columns="url")
             return greeks

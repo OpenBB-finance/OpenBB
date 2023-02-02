@@ -1,6 +1,8 @@
 ---
 title: Requirements
 sidebar_position: 1
+description: The OpenBB Terminal can be directly installed on your computer via our installation programs, these are the requirements.
+keywords: [installation, installer, install, guide, mac, windows, linux, python, github, macos, how to, explanation, requirements, openbb terminal]
 ---
 
 import Tabs from '@theme/Tabs';

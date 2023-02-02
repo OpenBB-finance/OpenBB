@@ -69,7 +69,7 @@ def _make_request(url: str) -> Union[BeautifulSoup, None]:
     headers = {"User-Agent": get_user_agent()}
     session = _retry_session("https://www.coingecko.com")
     try:
-        req = session.get(url, headers=headers, timeout=5)
+        req = session.get(url, headers=headers)
     except Exception as error:
         logger.exception(str(error))
         console.print(error)

@@ -4,9 +4,9 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +43,7 @@ def get_history_asset_from_terra_address(
             "Select a valid address. Valid terra addresses start with 'terra'"
         )
 
-    response = requests.get(
+    response = request(
         f"{api_url}/terra_addresses/{address}/show_snapshot_data.json?asset={asset.lower()}"
     )
     if response.status_code != 200:

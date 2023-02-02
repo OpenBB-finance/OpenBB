@@ -8,8 +8,9 @@ from time import sleep
 from typing import Any, Optional
 
 import pandas as pd
-import requests
 
+
+from openbb_terminal.helper_funcs import request
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
 from openbb_terminal.cryptocurrency.dataframe_helpers import create_df_index
@@ -155,7 +156,7 @@ def make_request(
         url += f"&limit={kwargs['limit']}"
 
     sleep(0.5)  # Limit is 2 API calls per 1 sec.
-    response = requests.get(url)
+    response = request(url)
     result = {}
 
     if response.status_code == 200:

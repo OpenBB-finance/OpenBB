@@ -141,6 +141,7 @@ class OptionsController(BaseController):
             else:
                 console.print("Loaded expiry dates from Tradier")
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
+                self.source = "Tradier"
 
             self.set_option_chain()
             self.set_current_price()
@@ -217,7 +218,6 @@ class OptionsController(BaseController):
     def update_runtime_choices(self):
         """Update runtime choices"""
         if session and obbff.USE_PROMPT_TOOLKIT:
-
             if not self.chain.empty:
                 strike = set(self.chain["strike"])
 
@@ -1251,9 +1251,6 @@ class OptionsController(BaseController):
                             y=ns_parser.y,
                             custom=ns_parser.custom,
                             export=ns_parser.export,
-                            sheet_name=" ".join(ns_parser.sheet_name)
-                            if ns_parser.sheet_name
-                            else None,
                         )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`")
@@ -1286,9 +1283,6 @@ class OptionsController(BaseController):
             yfinance_view.display_vol_surface(
                 self.ticker,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
                 z=ns_parser.z,
             )
 

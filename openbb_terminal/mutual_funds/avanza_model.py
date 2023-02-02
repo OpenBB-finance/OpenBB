@@ -5,11 +5,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
-import requests
 
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +30,6 @@ def get_data(name: str):
     ava_fund.index = ava_fund.index.str.upper()
     fund_id = ava_fund.loc[name, "ID"]
     url = f"https://www.avanza.se/_api/fund-guide/guide/{fund_id}"
-    response = requests.get(url)
+    response = request(url)
     fund_data = response.json()
     return fund_data

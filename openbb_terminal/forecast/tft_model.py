@@ -50,7 +50,6 @@ def get_tft_data(
     Optional[float],
     Optional[type[TFTModel]],
 ]:
-
     """Performs Temporal Fusion Transformer forecasting
     The TFT applies multi-head attention queries on future inputs from mandatory future_covariates.
     Specifying future encoders with add_encoders (read below) can automatically generate future

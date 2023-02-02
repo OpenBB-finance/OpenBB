@@ -1729,6 +1729,7 @@ interactions:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
       - '1661'
+      - '1653'
       content-type:
       - application/json;charset=utf-8
       date:
@@ -1738,7 +1739,7 @@ interactions:
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-baseline-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '12'
       x-request-id:

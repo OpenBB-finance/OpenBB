@@ -82,7 +82,6 @@ class PortfolioController(BaseController):
     CHOICES_MENUS = [
         "bro",
         "po",
-        "pa",
     ]
     VALID_DISTRIBUTIONS = ["laplace", "student_t", "logistic", "normal"]
     AGGREGATION_METRICS = ["assets", "sectors", "countries", "regions"]
@@ -121,15 +120,6 @@ class PortfolioController(BaseController):
             for file_type in self.file_types
             for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
         }
-        self.DATA_HOLDINGS_FILES.update(
-            {
-                filepath.name: filepath
-                for file_type in self.file_types
-                for filepath in (
-                    MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "holdings"
-                ).rglob(f"*.{file_type}")
-            }
-        )
 
         self.portfolio_df = pd.DataFrame(
             columns=[
@@ -163,7 +153,6 @@ class PortfolioController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_choices(self):
-
         self.DEFAULT_HOLDINGS_PATH = portfolio_helper.DEFAULT_HOLDINGS_PATH
 
         self.DATA_HOLDINGS_FILES.update(
@@ -224,7 +213,7 @@ class PortfolioController(BaseController):
 >   bro              brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
 >   po               portfolio optimization, \t optimize your portfolio weights efficiently[/menu]
 [cmds]
-    load             load data into the portfolio
+    load             load transactions into the portfolio (use load --example for an example)
     show             show existing transactions
     bench            define the benchmark
 [/cmds]
@@ -314,7 +303,6 @@ class PortfolioController(BaseController):
             "--file",
             type=str,
             dest="file",
-            required="-h" not in other_args,
             help="The file to be loaded",
             choices={c: {} for c in self.DATA_HOLDINGS_FILES},
             metavar="FILE",
@@ -334,12 +322,28 @@ class PortfolioController(BaseController):
             dest="risk_free_rate",
             help="Set the risk free rate.",
         )
+        parser.add_argument(
+            "-e",
+            "--example",
+            help="Run an example holdings file to understand how the portfolio menu can be used.",
+            dest="example",
+            action="store_true",
+            default=False,
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser and ns_parser.file:
-            if ns_parser.file in self.DATA_HOLDINGS_FILES:
+        if ns_parser and ns_parser.file or ns_parser and ns_parser.example:
+            if ns_parser.example:
+                file_location = (
+                    MISCELLANEOUS_DIRECTORY / "portfolio" / "holdings_example.xlsx"
+                )
+                console.print(
+                    "[green]Loading an example, please type `about` "
+                    "to learn how to create your own Portfolio Excel sheet.[/green]\n"
+                )
+            elif ns_parser.file in self.DATA_HOLDINGS_FILES:
                 file_location = self.DATA_HOLDINGS_FILES[ns_parser.file]
             else:
                 file_location = ns_parser.file  # type: ignore
@@ -352,6 +356,8 @@ class PortfolioController(BaseController):
 
             if ns_parser.name:
                 self.portfolio_name = ns_parser.name
+            elif ns_parser.example:
+                self.portfolio_name = "OpenBB Example Portfolio"
             else:
                 self.portfolio_name = ns_parser.file
             console.print(
@@ -471,7 +477,6 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=10)
 
         if ns_parser and self.portfolio is not None:
-
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -551,7 +556,6 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=10)
 
         if ns_parser and self.portfolio is not None:
-
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -635,7 +639,6 @@ class PortfolioController(BaseController):
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
-
                 portfolio_view.display_performance_vs_benchmark(
                     self.portfolio,
                     ns_parser.show_trades,

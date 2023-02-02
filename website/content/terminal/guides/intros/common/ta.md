@@ -1,42 +1,7 @@
 ---
 title: Technical Analysis
-keywords:
-  [
-    "technical",
-    "analysis",
-    "ta",
-    "t/a",
-    "intraday",
-    "daily",
-    "indicators",
-    "signals",
-    "average",
-    "moving",
-    "exponential",
-    "rsi",
-    "fibonacci",
-    "retracement",
-    "bollinger",
-    "heltner",
-    "accumulation",
-    "distribution",
-    "obv",
-    "on-balance",
-    "volume",
-    "volatility",
-    "trend",
-    "momentum",
-    "overlap",
-    "crypto",
-    "stocks",
-    "funds",
-    "etf",
-    "etfs",
-  ]
-date: "2022-06-17"
-type: guides
-status: publish
-excerpt: "This guide introduces the Technical Analysis menu, which is common across many sections of the OpenBB Terminal."
+keywords: [technical, analysis, ta, t/a, intraday, daily, indicators, signals, average, moving, exponential, rsi, fibonacci, retracement, bollinger, heltner, accumulation, distribution, obv, on-balance, volume, volatility, trend, momentum, overlap, crypto, stocks, funds, etf, etfs]
+description: This guide introduces the Technical Analysis menu, which is common across many sections of the OpenBB Terminal.
 ---
 
 The Technical Analysis menu offers the user a suite of tools for analyzing the technical components of an asset's trading history. The menu can be found in most wings of the Terminal:
@@ -103,6 +68,3 @@ Bollinger Bands with a 1-minute resolution for AMZN - `bbands`
 The Accumulation/Distribution line of AMZN - `ad`
 
 ![AMZN Accumulation/Distribution Line](https://user-images.githubusercontent.com/85772166/174499247-e63f8f57-a06a-446b-bca3-0fe89258fd4b.png)
-
-To play a demonstration of this menu in the OpenBB Terminal run,
-`exe ta_demo.openbb`, from the main menu.

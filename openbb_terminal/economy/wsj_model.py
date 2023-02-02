@@ -6,7 +6,7 @@ import pandas as pd
 import requests
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ def us_indices() -> pd.DataFrame:
         "%20500%20Futures%22%7D%5D%7D&type=mdc_quotes"
     )
     try:
-        response = requests.get(
+        response = request(
             url,
             headers={"User-Agent": get_user_agent()},
         )
@@ -84,7 +84,7 @@ def market_overview() -> pd.DataFrame:
         "22Euro%22%7D%5D%7D&type=mdc_quotes"
     )
     try:
-        response = requests.get(url, headers={"User-Agent": get_user_agent()})
+        response = request(url, headers={"User-Agent": get_user_agent()})
     except requests.exceptions.RequestException:
         console.print("[red]Could not retrieve data from wsj.[/red]\n")
         return pd.DataFrame()
@@ -131,7 +131,7 @@ def top_commodities() -> pd.DataFrame:
         "%20Futures%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FXX%2F%2FBCOM%22%7D%5D%7D&type=mdc_quotes"
     )
     try:
-        response = requests.get(url, headers={"User-Agent": get_user_agent()})
+        response = request(url, headers={"User-Agent": get_user_agent()})
     except requests.exceptions.RequestException:
         console.print("[red]Could not retrieve data from wsj.[/red]\n")
         return pd.DataFrame()
@@ -181,7 +181,7 @@ def us_bonds() -> pd.DataFrame:
     )
 
     try:
-        response = requests.get(url, headers={"User-Agent": get_user_agent()})
+        response = request(url, headers={"User-Agent": get_user_agent()})
     except requests.exceptions.RequestException:
         console.print("[red]Could not retrieve data from wsj.[/red]\n")
         return pd.DataFrame()
@@ -219,7 +219,7 @@ def global_bonds() -> pd.DataFrame:
         "%20Year%22%7D%5D%7D&type=mdc_governmentbonds"
     )
     try:
-        response = requests.get(url, headers={"User-Agent": get_user_agent()})
+        response = request(url, headers={"User-Agent": get_user_agent()})
     except requests.exceptions.RequestException:
         console.print("[red]Could not retrieve data from wsj.[/red]\n")
         return pd.DataFrame()
@@ -262,7 +262,7 @@ def global_currencies() -> pd.DataFrame:
         "2INDEX%2FUS%2F%2FDXY%22%2C%22name%22%3A%22U.S.%20Dollar%20Index%22%7D%5D%7D&type=mdc_quotes"
     )
     try:
-        response = requests.get(url, headers={"User-Agent": get_user_agent()})
+        response = request(url, headers={"User-Agent": get_user_agent()})
     except requests.exceptions.RequestException:
         console.print("[red]Could not retrieve data from wsj.[/red]\n")
         return pd.DataFrame()

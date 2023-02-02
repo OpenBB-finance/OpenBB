@@ -1,7 +1,7 @@
 ---
 title: Options Pricing
-keywords: ["Options", "stocks", "derivatives", "puts", "calls", "oi", "vol", "greeks", "hedge", "gamme", "delta", "theta", "rho", "vanna", "vomma", "phi", "charm", "iv", "volatility", "implied", "realized", "price", "last", "bid", "ask", "expiry", "expiration", "chains", "chain", "put", "call"]
-excerpt: "This guide introduces the user to the Options Pricing submenu, within the Options menu."
+keywords: [Options, stocks, derivatives, puts, calls, oi, vol, greeks, hedge, gamme, delta, theta, rho, vanna, vomma, phi, charm, iv, volatility, implied, realized, price, last, bid, ask, expiry, expiration, chains, chain, put, call]
+description: This guide introduces the user to the Options Pricing submenu, within the Options menu.
 ---
 
 This set of features is for composing hypothetical outcomes through user-defined inputs. There are two columns of inputs: the price for the underlying at the close on expiration and the statistical probability of the outcome.
