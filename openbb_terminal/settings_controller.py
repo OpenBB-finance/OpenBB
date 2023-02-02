@@ -28,7 +28,7 @@ from openbb_terminal.helper_funcs import (
     get_flair,
     get_user_timezone_or_invalid,
     parse_and_split_input,
-    )
+)
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
