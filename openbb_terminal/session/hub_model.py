@@ -217,7 +217,7 @@ def patch_user_configs(
 
     try:
         response = requests.patch(
-            url=base_url + "terminal/user-json",
+            url=base_url + "terminal/user",
             headers={"Authorization": auth_header},
             json=data,
             timeout=timeout,
