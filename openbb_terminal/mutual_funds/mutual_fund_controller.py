@@ -107,8 +107,8 @@ class FundController(BaseController):
         mt.add_cmd("holdings", self.fund_symbol)
         mt.add_cmd("carbon", self.fund_symbol)
         mt.add_cmd("exclusion", self.fund_symbol)
-        mt.add_cmd("alswe", self.fund_symbol)
-        mt.add_cmd("infoswe", self.fund_symbol)
+        mt.add_cmd("alswe", self.fund_symbol and self.country == "sweden")
+        mt.add_cmd("infoswe", self.fund_symbol and self.country == "sweden")
 
         if self.country == "sweden":
             mt.add_cmd("alswe", self.fund_symbol)
@@ -151,10 +151,14 @@ class FundController(BaseController):
                     "Avanza implementation currently only supports funds from sweden."
                 )
                 return self.queue
-            if self.fund_name.upper() not in ava_fund.index.str.upper().to_numpy():
-                console.print("No fund data. Please use another fund")
+
+            if self.fund_isin not in ava_fund["ISIN"].tolist():
+                console.print("No fund data. Please use another fund.")
                 return self.queue
-            avanza_view.display_allocation(self.fund_name, ns_parser.focus)
+
+            avanza_view.display_allocation(
+                name=self.fund_name, isin=self.fund_isin, focus=ns_parser.focus
+            )
 
         return self.queue
 
@@ -179,10 +183,12 @@ class FundController(BaseController):
                     "Avanza implementation currently only supports funds from sweden."
                 )
                 return self.queue
-            if self.fund_name.upper() not in ava_fund.index.str.upper().to_numpy():
-                console.print("No fund data. Please use another fund")
+
+            if self.fund_isin not in ava_fund["ISIN"].tolist():
+                console.print("No fund data. Please use another fund.")
                 return self.queue
-            avanza_view.display_info(self.fund_name)
+
+            avanza_view.display_info(self.fund_isin)
 
         return self.queue
 
