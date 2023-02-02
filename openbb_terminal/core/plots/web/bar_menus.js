@@ -161,15 +161,16 @@ function changeColor() {
 function downloadImage() {
   Plotly.toImage(globals.chartDiv, {
     format: "png",
-    height: 600,
-    width: 800,
+    height: 627,
+    width: 1200,
   }).then(function (url) {
     let data = {
       image: url,
     };
 
-    fetch("/api/upload-image", {
-      //TODO: change to hosting server
+    // include credentials
+
+    fetch("https://uppy-self.vercel.app/api/upload-image", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
