@@ -96,3 +96,30 @@ def test_remove_session_file_exception():
 
     os_mock.path.isfile.assert_called_with(local_model.SESSION_FILE_PATH)
     os_mock.remove.assert_called_with(local_model.SESSION_FILE_PATH)
+
+
+def test_remove_cli_history_file():
+    with patch("openbb_terminal.session.local_model.os") as os_mock:
+        assert local_model.remove_cli_history_file() is True
+
+    os_mock.path.isfile.assert_called_with(local_model.HIST_FILE_PATH)
+    os_mock.remove.assert_called_with(local_model.HIST_FILE_PATH)
+
+
+def test_remove_cli_history_file_not_exist():
+    with patch("openbb_terminal.session.local_model.os") as os_mock:
+        os_mock.path.isfile.return_value = False
+        assert local_model.remove_cli_history_file() is True
+
+    os_mock.path.isfile.assert_called_with(local_model.HIST_FILE_PATH)
+    os_mock.remove.assert_not_called()
+
+
+@pytest.mark.record_stdout
+def test_remove_cli_history_file_exception():
+    with patch("openbb_terminal.session.local_model.os") as os_mock:
+        os_mock.remove.side_effect = Exception
+        assert local_model.remove_cli_history_file() is False
+
+    os_mock.path.isfile.assert_called_with(local_model.HIST_FILE_PATH)
+    os_mock.remove.assert_called_with(local_model.HIST_FILE_PATH)
