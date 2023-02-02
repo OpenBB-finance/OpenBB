@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import List, Union, Optional, Dict, Tuple
 from functools import lru_cache
 from datetime import datetime, timedelta, timezone
-from dateutil.relativedelta import relativedelta
 from datetime import date as d
 import types
 from collections.abc import Iterable
@@ -20,6 +19,7 @@ from difflib import SequenceMatcher
 import webbrowser
 import urllib.parse
 import json
+from dateutil.relativedelta import relativedelta
 
 import pytz
 import pandas as pd
